@@ -35,9 +35,10 @@ class rootkit_detection_test_set extends cms_test_case
             'do_files' => '0',
         );
         $result = http_get_contents(get_base_url() . '/rootkit_detection.php?type=go', array('post_params' => $post_params));
-        $this->assertTrue(strpos($result, 'Privileges:') !== false);
-        $this->assertTrue(strpos($result, 'PHP Warning') === false);
-        $this->assertTrue(strpos($result, 'PHP Error') === false);
-        $this->assertTrue(strpos($result, 'PHP Notice') === false);
+        $this->assertTrue(strpos($result, 'Privileges:') !== false, 'Failed to see listed privileges');
+        $this->assertTrue(strpos($result, 'Fatal error') === false, 'Found a fatal error');
+        $this->assertTrue(strpos($result, 'PHP Error') === false, 'Found an error');
+        $this->assertTrue(strpos($result, 'PHP Warning') === false, 'Found a warning');
+        $this->assertTrue(strpos($result, 'PHP Notice') === false, 'Found a notice');
     }
 }

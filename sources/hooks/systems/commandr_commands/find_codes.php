@@ -56,6 +56,7 @@ class Hook_commandr_command_find_codes
                         unset($contents); // Got to be careful with that memory :-(
                     }
                 }
+                closedir($dh);
 
                 return array('', do_template('COMMANDR_FIND_CODES', array('_GUID' => '3374d1a80727aecc271722f2184743d0', 'FILES' => $files)), '', '');
             } else {

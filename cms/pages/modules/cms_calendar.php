@@ -25,28 +25,28 @@ require_code('crud_module');
  */
 class Module_cms_calendar extends Standard_crud_module
 {
-    public $lang_type = 'CALENDAR_EVENT';
-    public $select_name = 'TITLE';
-    public $orderer = 'id';
-    public $orderer_is_multi_lang = false;
-    public $array_key = 'id';
-    public $title_is_multi_lang = true;
-    public $non_integer_id = false;
-    public $table = 'calendar_events';
-    public $code_require = 'calendar';
-    public $permissions_require = 'low';
-    public $user_facing = true;
-    public $seo_type = 'event';
-    public $content_type = 'event';
-    public $possibly_some_kind_of_upload = true;
-    public $menu_label = 'CALENDAR';
-    public $permissions_cat_require = 'calendar';
-    public $permissions_cat_name = 'type';
-    public $posting_field_required = false;
+    protected $lang_type = 'CALENDAR_EVENT';
+    protected $select_name = 'TITLE';
+    protected $orderer = 'id';
+    protected $orderer_is_multi_lang = false;
+    protected $array_key = 'id';
+    protected $title_is_multi_lang = true;
+    protected $non_integer_id = false;
+    protected $table = 'calendar_events';
+    protected $code_require = 'calendar';
+    protected $permissions_require = 'low';
+    protected $user_facing = true;
+    protected $seo_type = 'event';
+    protected $content_type = 'event';
+    protected $possibly_some_kind_of_upload = true;
+    protected $menu_label = 'CALENDAR';
+    protected $permissions_cat_require = 'calendar';
+    protected $permissions_cat_name = 'type';
+    protected $posting_field_required = false;
 
     // These are state-set, for usage by the specialised donext manager
-    public $donext_type = null;
-    public $donext_date = null;
+    protected $donext_type = null;
+    protected $donext_date = null;
 
     /**
      * Find entry-points available within this module.
@@ -1236,19 +1236,19 @@ class Module_cms_calendar extends Standard_crud_module
  */
 class Module_cms_calendar_cat extends Standard_crud_module
 {
-    public $lang_type = 'EVENT_TYPE';
-    public $select_name = 'EVENT_TYPE';
-    public $select_name_description = 'DESCRIPTION_EVENT_TYPE';
-    public $orderer = 't_title';
-    public $array_key = 'id';
-    public $title_is_multi_lang = true;
-    public $non_integer_id = false;
-    public $protect_first = 2;
-    public $table = 'calendar_types';
-    public $permissions_require = 'cat_high';
-    public $permission_module = 'calendar';
-    public $menu_label = 'CALENDAR';
-    public $is_chained_with_parent_browse = true;
+    protected $lang_type = 'EVENT_TYPE';
+    protected $select_name = 'EVENT_TYPE';
+    protected $select_name_description = 'DESCRIPTION_EVENT_TYPE';
+    protected $orderer = 't_title';
+    protected $array_key = 'id';
+    protected $title_is_multi_lang = true;
+    protected $non_integer_id = false;
+    protected $protect_first = 2;
+    protected $table = 'calendar_types';
+    protected $permissions_require = 'cat_high';
+    protected $permission_module = 'calendar';
+    protected $menu_label = 'CALENDAR';
+    protected $is_chained_with_parent_browse = true;
 
     /**
      * Get Tempcode for a post template adding/editing form.

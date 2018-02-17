@@ -100,7 +100,7 @@ class Block_main_content_filtering
      * @param  string $separator Separarator between pairs
      * @return array Mapping
      */
-    public function interpret_pairs_from_string($str, $separator = ',')
+    protected function interpret_pairs_from_string($str, $separator = ',')
     {
         $pairs = array();
         $matches = array();

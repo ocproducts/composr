@@ -53,15 +53,15 @@ class lang_administrative_split_test_set extends cms_test_case
     {
         $d = get_file_base() . '/lang/' . fallback_lang();
         $dh = opendir($d);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.ini') {
-                $strings = get_lang_file_map(fallback_lang(), basename($f, '.ini'), true);
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, -4) == '.ini') {
+                $strings = get_lang_file_map(fallback_lang(), basename($file, '.ini'), true);
                 foreach ($strings as $key => $val) {
                     if (in_array($key, array('date_withinweek_joiner', '_HTTP_REDIRECT_PROBLEM_INSTALLING')/*We'll allow these ones*/)) {
                         continue;
                     }
 
-                    $this->assertTrue(trim($val) != '', 'Transifex does not support empty language strings, ' . $key . ' in ' . $f);
+                    $this->assertTrue(trim($val) != '', 'Transifex does not support empty language strings, ' . $key . ' in ' . $file);
                 }
             }
         }

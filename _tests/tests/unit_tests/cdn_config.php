@@ -30,10 +30,10 @@ class cdn_config_test_set extends cms_test_case
         $path = get_file_base() . '/themes/default/images';
         $dh = opendir($path);
         if ($dh !== false) {
-            while (($f = readdir($dh)) !== false) {
-                if (is_image($f, IMAGE_CRITERIA_RASTER)) {
-                    $ext = get_file_extension($f);
-                    $url = find_theme_image(basename($f, '.' . $ext));
+            while (($file = readdir($dh)) !== false) {
+                if (is_image($file, IMAGE_CRITERIA_RASTER)) {
+                    $ext = get_file_extension($file);
+                    $url = find_theme_image(basename($file, '.' . $ext));
                     if (strpos($url, 'localhost') !== false) {
                         $a = true;
                     }

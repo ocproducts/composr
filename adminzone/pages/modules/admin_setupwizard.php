@@ -1440,7 +1440,7 @@ class Module_admin_setupwizard
             require_code('files2');
             foreach (find_all_zones() as $zone) {
                 $dir = get_custom_file_base() . '/' . (($zone == '') ? '' : ($zone . '/')) . 'pages/comcode_custom/' . fallback_lang();
-                $files = get_directory_contents($dir);
+                $files = get_directory_contents($dir, '', 0, true, true, array('txt'));
                 foreach ($files as $file) {
                     $matches = array();
                     $regexp = '#^\_' . preg_quote($source_theme, '#') . '__([\w\-]+)\.txt$#';

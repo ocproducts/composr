@@ -32,19 +32,19 @@ class missing_colour_equations_test_set extends cms_test_case
         );
 
         $dh = opendir(get_file_base() . '/themes/default/css');
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.css') {
-                if (in_array($f, $dont_check)) {
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, -4) == '.css') {
+                if (in_array($file, $dont_check)) {
                     continue;
                 }
 
-                $contents = file_get_contents(get_file_base() . '/themes/default/css/' . $f);
+                $c = file_get_contents(get_file_base() . '/themes/default/css/' . $file);
                 $matches = array();
-                $count = preg_match_all('/^.+(\#[0-9A-Fa-f]{3,6})(.*)$/m', $contents, $matches);
+                $count = preg_match_all('/^.+(\#[0-9A-Fa-f]{3,6})(.*)$/m', $c, $matches);
                 for ($i = 0; $i < $count; $i++) {
                     if (strpos($matches[0][$i], '{$') === false) {
-                        $line = substr_count(substr($contents, 0, strpos($contents, $matches[0][$i])), "\n") + 1;
-                        $this->assertTrue(false, 'Missing colour equation in ' . $f . ':' . strval($line) . ' for ' . $matches[1][$i]);
+                        $line = substr_count(substr($c, 0, strpos($c, $matches[0][$i])), "\n") + 1;
+                        $this->assertTrue(false, 'Missing colour equation in ' . $file . ':' . strval($line) . ' for ' . $matches[1][$i]);
                     }
                 }
             }

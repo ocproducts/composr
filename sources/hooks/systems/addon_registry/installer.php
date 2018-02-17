@@ -63,8 +63,11 @@ class Hook_addon_registry_installer
     {
         return array(
             'tut_install',
-            'tut_adv_install',
-            'sup_chmod',
+            'tut_install_permissions',
+            'tut_install_linux',
+            'tut_install_windows_desktop',
+            'tut_install_windows_server',
+            'tut_webhosting',
         );
     }
 

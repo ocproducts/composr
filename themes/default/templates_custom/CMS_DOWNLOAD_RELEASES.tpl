@@ -23,7 +23,7 @@
 		</div>
 
 		<div class="dlBody">
-			<p>This is a ZIP containing all Composr files (several thousand). It is much slower, and only recommended if you cannot use the quick installer. Some <a target="_blank" title="Advanced installation tutorial ({!LINK_NEW_WINDOW})" href="{$TUTORIAL_URL*,tut_adv_install}">chmodding</a> is required.</p>
+			<p>This is a ZIP containing all Composr files (several thousand). It is much slower, and only recommended if you cannot use the quick installer. Some <a target="_blank" title="File permissions tutorial ({!LINK_NEW_WINDOW})" href="{$TUTORIAL_URL*,tut_install_permissions}">chmodding</a> is required.</p>
 
 			<p><strong>Do not use this for upgrading.</strong></p>
 

@@ -18,7 +18,7 @@
  */
 class news_test_set extends cms_test_case
 {
-    public $news_id;
+    protected $news_id;
 
     public function setUp()
     {

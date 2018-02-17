@@ -1,0 +1,146 @@
+[title sub="Written by Jean Gosselin, and Chris Graham (ocProducts)"]Composr Tutorial: Installation on Linux[/title]
+
+This tutorial covers some more advanced installation considerations when installing on Linux. The majority of people on Linux hosting will not need to read this tutorial.
+
+These instructions also apply to a Mac server.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Pre-setup[/title]
+
+If you are on a new server remember to install any system updates.
+
+[title="2"]Quick installation, without the quick installer![/title]
+
+If you have difficulties with the quick installer, and do not wish to upload all the files and perform chmodding individually, then you may wish to transfer directly to the server and unzip from the server.
+
+[title="3"]Unzipping via the Linux shell[/title]
+
+First, some warnings:
+ - Due to the varying configurations of Linux servers, we can't provide precise instructions, so we do not recommend that anyone perform this if they are not already comfortable with the Linux shell.
+ - We are not responsible for misuse of these commands. If you do not know the effect each will have on your system, do not run them until you do.
+ - Do not run subsequent commands if one command fails, or you might make a mess.
+ - If you are on shared hosting it may be that you do not have shell access anyway.
+
+A sequence of commands similar to the following need to be run...
+
+Enter the web directory:
+[code="Bash"]
+cd httpdocs
+[/code]
+Download the archive from the {$BRAND_BASE_URL} website:
+[code="Bash"]
+wget <url-to-composr-zip-file>
+[/code]
+Unzip the archive:
+[code="Bash"]
+unzip cms-<version>.zip
+[/code]
+Remove the archive:
+[code="Bash"]
+rm -f cms-<version>.zip
+[/code]
+
+Fix all the necessary file permissions, but [b]only if you are not running on a suEXEC-style server[/b]:
+[code="Bash"]
+sh fixperms.sh
+[/code]
+
+You must then launch the URL to the [tt]install.php[/tt] in your web browser, and proceed through the installation steps.
+
+After this, you must delete the [tt]install.php[/tt] file:
+[code="Bash"]
+rm -f install.php
+[/code]
+
+[title="3"]Unzipping from a webhosting control panel[/title]
+
+Many webhosting control panels allow you to unzip uploaded files, using their file manager. You can do this on the manual installer archive.
+
+[title="2"]Package installation (advanced)[/title]
+
+This section contains some suggestions for which packages to install on different Linux distributions to get a good PHP environment. It is only applicable to people who aren't on traditional hosting with a webhosting control panel to manage things from.
+
+This section is not actively maintained. Package names may change, but it is designed to give a leg-up to people configuring new Linux servers.
+
+[title="3"]Ubuntu/Debian[/title]
+
+[code="Bash"]
+apt-get install apache2 libapache2-mod-php5 php5 php5-common php5-cli php5-apcu php5-curl php5-enchant php5-ffmpeg php5-gd php5-imap php5-mysqlnd php5-pspell openssl mysql-server mysql-client postfix nano wget lynx hunspell git openssh-server nano wget
+[/code]
+
+Some lines in the default PHP ini ([tt]/etc/php5/apache2/php.ini[/tt]) file need changing:
+[tt]upload_max_filesize = 2M[/tt] --> [tt]upload_max_filesize = 500M[/tt]
+[tt]post_max_size = 8M[/tt] --> [tt]post_max_size = 500M[/tt]
+[tt];date.timezone = [/tt] --> [tt]date.timezone = "UTC"[/tt] (to avoid errors on PHP startup)
+[tt]; extension_dir = "./"[/tt] --> [tt]extension_dir = "usr/lib/php5/20121212"[/tt]
+[tt];opcache.enable=0[/tt] --> [tt]opcache.enable=1[/tt]
+
+(the extension_dir may actually be different on different versions, so check that)
+
+[title="3"]Fedora/RHEL/CentOS[/title]
+
+[code="Bash"]
+yum install httpd php php-common php-cli php-pecl-apc php-pdo curl enchant freetype gd php-gd php-imap php-mysql php-mbstring php-pspell php-xml openssl mysql-server mysql sendmail nano wget lynx hunspell git openssh-server aspell aspell-en nano wget
+[/code]
+
+You may have selinux installed, you can see if you do with [tt]sestatus[/tt]:
+[quote]
+[root@localhost html]# sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Max kernel policy version:      28
+[/quote]
+
+If so, you need to set additional write permissions with something like:
+[tt]chcon -R -t httpd_sys_rw_content_t /var/www[/tt]
+
+You may also want to include [tt]yum-cron[/tt] (or [url="whatever it is now"]https://fedoraproject.org/wiki/AutoUpdates[/url]) in there, for automatic system updates (who has time to stay on top of all server software for urgent security patches?).
+
+Some lines in the default PHP ini ([tt]/etc/php.ini[/tt]) file need changing:
+[tt]upload_max_filesize = 2M[/tt] --> [tt]upload_max_filesize = 500M[/tt]
+[tt]post_max_size = 8M[/tt] --> [tt]post_max_size = 500M[/tt]
+[tt];date.timezone = [/tt] --> [tt]date.timezone = "UTC"[/tt] (to avoid errors on PHP startup)
+
+[title="2"]Installing on Cloud hosting[/title]
+
+[media framed="0" width="300" float="right"]data_custom/images/docs/tut_install_linux/cloud_hosting.png[/media]
+There is nothing stopping Composr working on compatible cloud hosting.
+
+One note is that PaaS providers may host files separately to where execution happens, and this can slow down disk access. You may need to change the "Number of files per cycle" in the quick installer to something lower such as 50 to avoid time-outs (e.g. white screens).
+
+[title="3"]Rackspace Cloud[/title]
+
+Specifically on Rackspace Cloud, you will need to set execution permissions of the [tt]install.php[/tt] file lower than the defaults may have been after you uploaded:
+ - Open your SFTP/FTP client and find [tt]install.php[/tt]
+ - Access the permissions for the file, and remove [tt]write[/tt] access for the [tt]owner[/tt], [tt]group[/tt], and [tt]others[/tt] (the UNIX code for this is [tt]444[/tt])
+
+[title="2"]Working out of git (advanced)[/title]
+
+It is possible to run Composr direct from a [url="main git repository"]{$COMPOSR_REPOS_URL}[/url] checkout.
+
+However, be aware the main git repository contains all non-bundled addons. It is used by developers who want to keep everything in the ecosystem in-harmony when developing new features.
+
+If you are going to run from the main git repository, it is best to install it properly rather than just downloading the ZIP from github. Then you can do [tt]git pull[/tt] commands whenever you want to update the code with the latest changes.
+
+If you are a programmer making your own standalone site you can use git, but you should make your own repository from a normal Composr install.
+
+Here is some specific advice for people working from our git repository:
+ - To temporarily turn off addons, use safe mode ([tt]&keep_safe_mode=1[/tt])
+ - You'll want to uninstall lots of non-bundled addons hosted in the repository. When merging with upstream files may come back, so there is a script [tt]delete_alien_files.php[/tt] which should help you decide what files to delete.
+ - Running from git runs Composr in dev mode, which adds extra constraints and checks (or maybe even removes some designed for live sites). No live site should ever be left in dev mode. To change that add this to [tt]_config.php[/tt]: [tt]$SITE_INFO['dev_mode'] = '0';[/tt]
+ - To stop Composr complaints about the installer being there, while also blocking the installer from running, create empty [tt]install_ok[/tt] and [tt]install_locked[/tt] files.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_install"]Installation[/page]
+ - [page="_SEARCH:tut_install_permissions"]File permissions[/page]
+ - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
+
+{$SET,tutorial_tags,linux_helper_scripts,installer,core_database_drivers,Installation,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial covers advanced installation issues on Linux which most users do not need to be concerned with.}[block]main_tutorial_rating[/block]

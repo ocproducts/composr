@@ -18,7 +18,7 @@
  */
 class shopping_test_set extends cms_test_case
 {
-    public $entry_id;
+    protected $entry_id;
 
     public function setUp()
     {

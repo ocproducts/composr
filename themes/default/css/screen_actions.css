@@ -8,7 +8,7 @@
 	overflow: visible !important;
 	box-sizing: border-box;
 
-	/* Needed so the :after clearfix works in a constrained context */
+	/* Needed so the ::after clearfix works in a constrained context */
 	display: inline-block;
 	width: 100%;
 }
@@ -17,7 +17,7 @@
 }
 
 /* We normally hide stuff with overflow:hidden, but some share buttons use absolute positioned layers that need to escape our box */
-.screen-actions:after {
+.screen-actions::after {
 	content: "";
 	display: table;
 	clear: both;

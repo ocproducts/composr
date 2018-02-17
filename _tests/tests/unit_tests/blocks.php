@@ -32,10 +32,11 @@ class blocks_test_set extends cms_test_case
         $blocks = find_all_blocks();
         foreach ($blocks as $block => $type) {
             $parameters = get_block_parameters($block, true);
-            $this->assertTrue(count(array_unique($parameters)) == count($parameters));
+            $this->assertTrue(count(array_unique($parameters)) == count($parameters), 'Duplicated parameters in ' . $block);
 
             foreach ($standard as $param) {
-                $this->assertTrue(do_lang('BLOCK_' . $block . '_PARAM_' . $param . '_TITLE', null, null, null, null, false) === null);
+                $str = 'BLOCK_' . $block . '_PARAM_' . $param . '_TITLE';
+                $this->assertTrue(do_lang($str, null, null, null, null, false) === null, $str . ' missing');
             }
         }
     }

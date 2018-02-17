@@ -26,8 +26,8 @@ class csrf_tags_test_set extends cms_test_case
         );
         foreach ($dirs as $dir) {
             $dh = opendir($dir);
-            while (($f = readdir($dh)) !== false) {
-                $c = file_get_contents($dir . '/' . $f);
+            while (($file = readdir($dh)) !== false) {
+                $c = file_get_contents($dir . '/' . $file);
                 if (strpos($c, '<form') !== false) {
                     if (strpos($c, 'button-hyperlink') !== false) {
                         continue;
@@ -46,18 +46,18 @@ class csrf_tags_test_set extends cms_test_case
                         continue;
                     }
 
-                    if (in_array($f, array(
+                    if (in_array($file, array(
                         'INSTALLER_STEP_1.tpl',
                         'INSTALLER_STEP_2.tpl',
                         'INSTALLER_STEP_3.tpl',
                     ))) {
                         continue;
                     }
-                    if (preg_match('#^ECOM_.*_VIA_.*#', $f) != 0) {
+                    if (preg_match('#^ECOM_.*_VIA_.*#', $file) != 0) {
                         continue;
                     }
 
-                    $this->assertTrue(strpos($c, '{$INSERT_SPAMMER_BLACKHOLE') !== false, $f);
+                    $this->assertTrue(strpos($c, '{$INSERT_SPAMMER_BLACKHOLE') !== false, $file);
                 }
             }
             closedir($dh);

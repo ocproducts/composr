@@ -53,6 +53,7 @@ class Hook_commandr_fs_home
                     );
                 }
             }
+            closedir($dh);
             return $listing;
         }
 

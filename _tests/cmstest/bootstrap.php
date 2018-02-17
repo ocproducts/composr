@@ -33,6 +33,10 @@ function unit_testing_run()
     if (($id === null) && (isset($_SERVER['argv'][1]))) {
         $id = $_SERVER['argv'][1];
         $cli = true;
+
+        if (strpos($id, '/') === false) {
+            $id = 'unit_tests/' . $id;
+        }
     } else {
         $cli = false;
     }
@@ -74,6 +78,7 @@ function find_testsets($dir = '')
             }
         }
     }
+    closedir($dh);
     sort($tests);
     return $tests;
 }

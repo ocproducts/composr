@@ -20,11 +20,11 @@ require_code('crud_module');
  */
 class Module_admin_workflow extends Standard_crud_module
 {
-    public $lang_type = 'WORKFLOW';
-    public $select_name = 'NAME';
-    public $menu_label = 'WORKFLOW';
-    public $appended_actions_already = true;
-    public $do_preview = null;
+    protected $lang_type = 'WORKFLOW';
+    protected $select_name = 'NAME';
+    protected $menu_label = 'WORKFLOW';
+    protected $appended_actions_already = true;
+    protected $do_preview = null;
 
     /**
      * Find details of the module.

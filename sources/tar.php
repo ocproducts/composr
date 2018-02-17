@@ -322,7 +322,7 @@ function tar_add_folder(&$resource, $log_file, $path, $max_size = null, $subpath
             }
 
             if ($tick) {
-                @print(' ');
+                send_http_output_ping();
             }
 
             $_subpath = ($subpath == '') ? $entry : ($subpath . '/' . $entry);

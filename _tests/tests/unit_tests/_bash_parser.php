@@ -15,6 +15,8 @@
 
 /*EXTRA FUNCTIONS: shell_exec|escapeshellarg*/
 
+// php _tests/index.php _bash_parser
+
 /**
  * Composr test case class (unit testing).
  */
@@ -25,15 +27,19 @@ class _bash_parser_test_set extends cms_test_case
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(0);
         }
+
         require_code('files2');
         $php_path = find_php_path();
-        $contents = get_directory_contents(get_file_base());
-        foreach ($contents as $c) {
-            if ((substr($c, -4) == '.php') && (basename($c) != 'errorlog.php') && (basename($c) != 'phpstub.php')) {
-                // NB: php-no-ext bit works around bug in Windows version of PHP with slow startup. Make a ../php-no-ext/php.ini file with no extensions listed for loading
-                $message = shell_exec($php_path . ' -l ' . $c . ' -c ' . escapeshellarg(get_file_base() . '/../php-no-ext'));
-                $this->assertTrue(strpos($message, 'No syntax errors detected') !== false, $message . ' (' . $c . ')');
+        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_BUNDLED_VOLATILE, true, true, array('php'));
+        $files[] = 'install.php';
+        foreach ($files as $path) {
+            if (basename($path) == 'phpstub.php') {
+                continue;
             }
+
+            // NB: php-no-ext bit works around bug in Windows version of PHP with slow startup. Make a ../php-no-ext/php.ini file with no extensions listed for loading
+            $message = shell_exec($php_path . ' -l ' . escapeshellarg(get_file_base() . '/' . $path) . ' -c ' . escapeshellarg(get_file_base() . '/../php-no-ext'));
+            $this->assertTrue(strpos($message, 'No syntax errors detected') !== false, $message . ' (' . $path . ')');
         }
     }
 }

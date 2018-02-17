@@ -25,20 +25,21 @@ require_code('crud_module');
  */
 class Module_cms_polls extends Standard_crud_module
 {
-    public $lang_type = 'POLL';
-    public $archive_entry_point = '_SEARCH:polls:browse';
-    public $view_entry_point = '_SEARCH:polls:view:_ID';
-    public $user_facing = true;
-    public $send_validation_request = false;
-    public $permissions_require = 'mid';
-    public $select_name = 'QUESTION';
-    public $select_name_description = 'DESCRIPTION_QUESTION';
-    public $menu_label = 'POLLS';
-    public $table = 'poll';
-    public $title_is_multi_lang = true;
-    public $content_type = 'poll';
-    public $donext_entry_content_type = 'poll';
-    public $donext_category_content_type = null;
+    protected $lang_type = 'POLL';
+    protected $archive_entry_point = '_SEARCH:polls:browse';
+    protected $view_entry_point = '_SEARCH:polls:view:_ID';
+    protected $user_facing = true;
+    protected $send_validation_request = false;
+    protected $permissions_require = 'mid';
+    protected $select_name = 'QUESTION';
+    protected $select_name_description = 'DESCRIPTION_QUESTION';
+    protected $menu_label = 'POLLS';
+    protected $table = 'poll';
+    protected $title_is_multi_lang = true;
+    protected $content_type = 'poll';
+
+    protected $donext_entry_content_type = 'poll';
+    protected $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.

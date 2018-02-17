@@ -13,6 +13,8 @@
  * @package    testing_platform
  */
 
+// php _tests/index.php _installer_xml_db
+
 /**
  * Composr test case class (unit testing).
  */

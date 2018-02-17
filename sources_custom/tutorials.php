@@ -433,45 +433,45 @@ function _find_tutorial_image_for_tag($tag)
 
     switch ($tag) {
         case 'addon':
-            return 'icons/menu/adminzone/structure/addons.svg';
+            return 'icons/menu/adminzone/structure/addons';
         case 'banners':
-            return 'icons/menu/cms/banners.svg';
+            return 'icons/menu/cms/banners';
         case 'calendar':
-            return 'icons/menu/rich_content/calendar.svg';
+            return 'icons/menu/rich_content/calendar';
         case 'catalogues':
-            return 'icons/menu/rich_content/catalogues/catalogues.svg';
+            return 'icons/menu/rich_content/catalogues/catalogues';
         case 'chatrooms':
-            return 'icons/menu/social/chat/chat.svg';
+            return 'icons/menu/social/chat/chat';
         case 'configuration':
-            return 'icons/menu/adminzone/setup/config/config.svg';
+            return 'icons/menu/adminzone/setup/config/config';
         case 'design_and_themeing':
-            return 'icons/menu/adminzone/style.svg';
+            return 'icons/menu/adminzone/style';
         case 'downloads':
-            return 'icons/menu/rich_content/downloads.svg';
+            return 'icons/menu/rich_content/downloads';
         case 'ecommerce':
-            return 'icons/menu/adminzone/audit/ecommerce/ecommerce.svg';
+            return 'icons/menu/adminzone/audit/ecommerce/ecommerce';
         case 'forum':
-            return 'icons/buttons/forum.svg';
+            return 'icons/buttons/forum';
         case 'galleries':
-            return 'icons/menu/rich_content/galleries.svg';
+            return 'icons/menu/rich_content/galleries';
         case 'members':
-            return 'icons/menu/social/members.svg';
+            return 'icons/menu/social/members';
         case 'news':
-            return 'icons/menu/rich_content/news.svg';
+            return 'icons/menu/rich_content/news';
         case 'newsletters':
-            return 'icons/menu/site_meta/newsletters.svg';
+            return 'icons/menu/site_meta/newsletters';
         case 'pages':
-            return 'icons/menu/pages.svg';
+            return 'icons/menu/pages';
         case 'security':
-            return 'icons/menu/adminzone/security.svg';
+            return 'icons/menu/adminzone/security';
         case 'support':
-            return 'icons/help.svg';
+            return 'icons/help';
         case 'structure_and_navigation':
-            return 'icons/menu/adminzone/structure.svg';
+            return 'icons/menu/adminzone/structure';
         case 'upgrading':
-            return 'icons/menu/adminzone/tools/upgrade.svg';
+            return 'icons/menu/adminzone/tools/upgrade';
         case 'wiki':
-            return 'icons/menu/rich_content/wiki.svg';
+            return 'icons/menu/rich_content/wiki';
     }
 
     return 'icons/spare/' . $tag;

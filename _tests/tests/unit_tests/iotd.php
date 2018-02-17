@@ -18,7 +18,7 @@
  */
 class iotd_test_set extends cms_test_case
 {
-    public $iotd_id;
+    protected $iotd_id;
 
     public function setUp()
     {

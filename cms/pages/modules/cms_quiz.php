@@ -25,27 +25,26 @@ require_code('crud_module');
  */
 class Module_cms_quiz extends Standard_crud_module
 {
-    public $lang_type = 'QUIZ';
-    public $select_name = 'NAME';
-    public $permissions_require = 'high';
-    public $permissions_cat_require = 'quiz';
-    public $permission_module = 'quiz';
-    public $permissions_cat_name = null;
-    public $user_facing = true;
-    public $seo_type = 'quiz';
-    public $content_type = 'quiz';
-    public $view_entry_point = '_SEARCH:quiz:do:_ID';
-    public $archive_entry_point = '_SEARCH:quiz:browse';
-    public $functions = 'moduleCmsQuiz';
+    protected $lang_type = 'QUIZ';
+    protected $select_name = 'NAME';
+    protected $permissions_require = 'high';
+    protected $permissions_cat_require = 'quiz';
+    protected $permission_module = 'quiz';
+    protected $permissions_cat_name = null;
+    protected $user_facing = true;
+    protected $seo_type = 'quiz';
+    protected $content_type = 'quiz';
+    protected $view_entry_point = '_SEARCH:quiz:do:_ID';
+    protected $archive_entry_point = '_SEARCH:quiz:browse';
+    protected $functions = 'moduleCmsQuiz';
+    protected $menu_label = 'QUIZZES';
+    protected $table = 'quizzes';
+    protected $orderer = 'q_add_date';
+    protected $orderer_is_multi_lang = false;
 
-    public $menu_label = 'QUIZZES';
-    public $table = 'quizzes';
-    public $orderer = 'q_add_date';
-    public $orderer_is_multi_lang = false;
-
-    public $donext_type = null;
-    public $donext_entry_content_type = 'quiz';
-    public $donext_category_content_type = null;
+    protected $donext_type = null;
+    protected $donext_entry_content_type = 'quiz';
+    protected $donext_category_content_type = null;
 
     /**
      * Find privileges defined as overridable by this module.

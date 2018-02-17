@@ -8,6 +8,10 @@ Postgres has been tested for Composr v10.0.x under a commercial relationship (st
 
 Postgres is a very high quality Open Source database backend developed by developers working for a number of different companies. It is much more sophisticated than MySQL, although it also tends to be stricter in a number of ways, more technical, and not as available on shared hosting. Usage is likely of most interest to technical organisations that are standardising on Postgres.
 
+This tutorial broadly assumes you are responsible for configuring and managing the server that is running Postgres. It is not written for shared hosting customers, who would typically configure a database using a proprietary control panel of some kind.
+
+[contents]decimal,lower-alpha[/contents]
+
 [title="2"]What is and is not supported[/title]
 
 The following parts of our ecosystem are MySQL-specific:
@@ -151,6 +155,10 @@ The main complexities of Postgres support, for MySQL developers are:
 7) You have to be much more careful about aggregate functions like [tt]COUNT[/tt], or [tt]GROUP BY[/tt], or [tt]DISTINCT[/tt]. If you do a [tt]COUNT[/tt] then you are not allowed an [tt]ORDER BY[/tt] clause (you don't need one, but it's easy to add one by mistake when you are deriving a count query from your pagination query and this causes the count query to fail). If you do a [tt]GROUP BY[/tt] then you may not select anything that is not covered by the [tt]GROUP BY[/tt] clause or is itself an aggregate like [tt]COUNT[/tt] or [tt]SUM[/tt] or [tt]MAX[/tt] or [tt]MIN[/tt] -- this is because Postgres won't allow selecting an arbitrary value out of a result set for you like MySQL will. If doing a [tt]DISTINCT[/tt] query then you can only do an [tt]ORDER BY[/tt] with something that is also being [tt]SELECT[/tt]ed (because Postgres reserves the right to apply the ordering [i]after[/i] it has whittled down the result set).
 8) Stay away from hand-coding anything sophisticated like [acronym="Data Definition Language"]DDL[/acronym] or Information Schema. I haven't covered any of the cases of obvious MySQL-specific syntax, syntax which is very poorly standardised, or case sensitivity differences. The SQL standards only really cover some very core things, they don't even properly standardise basic data types, or moderately sophisticated use of indexes, or pagination, let alone complicated expressions, further let alone triggers or stored procedures (!).
 
+[concepts
+ 1_key="Postgres" 1_value="An Open Source database server"
+]Concepts[/concepts]
+
 [title="2"]See also[/title]
 
  - http://www.psequel.com/ (a free MacOS Postgres GUI)
@@ -159,7 +167,7 @@ The main complexities of Postgres support, for MySQL developers are:
  - http://dbeaver.jkiss.org/ (a free cross-platform Postgres GUI)
  - http://squirrel-sql.sourceforge.net/ (a free cross-platform Postgres GUI)
  - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
- - [page="_SEARCH:sup_sqlserver"]Using SQL Server with Composr[/page]
+ - [page="_SEARCH:tut_sqlserver"]Using SQL Server with Composr[/page]
  - http://troels.arvin.dk/db/rdbms/ (a comparison of SQL support in different databases)
 
 {$SET,tutorial_tags,core_database_drivers,Installation,expert}{$SET,tutorial_add_date,May 2017}{$SET,tutorial_summary,A guide on using PostgreSQL with Composr, and providing some information relevant to other non-MySQL backends.}[block]main_tutorial_rating[/block]

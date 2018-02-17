@@ -23,9 +23,9 @@ class js_strict_mode_test_set extends cms_test_case
         $templates = array();
         $path = get_file_base() . '/themes/default/javascript';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (strtolower(substr($f, -3)) == '.js') {
-                if (in_array($f, array(
+        while (($file = readdir($dh)) !== false) {
+            if (strtolower(substr($file, -3)) == '.js') {
+                if (in_array($file, array(
                     'ATTACHMENT_UI_DEFAULTS.js',
                     'button_realtime_rain.js',
                     'jquery.js',
@@ -40,9 +40,9 @@ class js_strict_mode_test_set extends cms_test_case
                     continue;
                 }
 
-                $c = file_get_contents($path . '/' . $f);
+                $c = file_get_contents($path . '/' . $file);
 
-                $this->assertTrue(strpos($c, 'use strict') !== false, 'Strict mode not enabled for ' . $f);
+                $this->assertTrue(strpos($c, 'use strict') !== false, 'Strict mode not enabled for ' . $file);
             }
         }
         closedir($dh);

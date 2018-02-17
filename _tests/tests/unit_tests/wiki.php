@@ -18,7 +18,7 @@
  */
 class wiki_test_set extends cms_test_case
 {
-    public $id;
+    protected $id;
 
     public function setUp()
     {

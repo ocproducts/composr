@@ -13,6 +13,8 @@
  * @package    testing_platform
  */
 
+// php _tests/index.php _find_broken_screen_links
+
 // This covers internal links. Also see _broken_links, which does scanning for external links.
 
 /**
@@ -23,11 +25,16 @@ class _find_broken_screen_links_test_set extends cms_test_case
     // This test is not necessarily required to pass, but it may hint at issues; best just to make it pass anyway (it does at the time at writing)
     public function testScreenLinks()
     {
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(0);
+        }
+
         $found = array();
-        require_code('files');
-        $files = $this->do_dir(get_file_base(), '', 'php');
-        foreach ($files as $file) {
-            $c = file_get_contents($file);
+        require_code('files2');
+        $files = get_directory_contents(get_file_base(), '', IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('php'));
+        $files[] = 'install.php';
+        foreach ($files as $path) {
+            $c = file_get_contents(get_file_base() . '/' . $path);
             $matches = array();
             $num_matches = preg_match_all("#build_url\(array\('page'\s*=>\s*'(\w+)',\s*'type'\s*=>\s*'(\w+)'#", $c, $matches);
             for ($i = 0; $i < $num_matches; $i++) {
@@ -58,29 +65,5 @@ class _find_broken_screen_links_test_set extends cms_test_case
                 }
             }
         }
-    }
-
-    private function do_dir($dir, $dir_stub, $ext)
-    {
-        $files = array();
-
-        $dh = @opendir($dir);
-        if ($dh !== false) {
-            while (($file = readdir($dh)) !== false) {
-                if (($file[0] != '.') && (!should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
-                    if (is_file($dir . '/' . $file)) {
-                        if (substr($file, -4, 4) == '.' . $ext) {
-                            $files[] = $dir . '/' . $file;
-                        }
-                    } elseif (is_dir($dir . '/' . $file)) {
-                        $_files = $this->do_dir($dir . '/' . $file, (($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, $ext);
-                        $files = array_merge($_files, $files);
-                    }
-                }
-            }
-            closedir($dh);
-        }
-
-        return $files;
     }
 }

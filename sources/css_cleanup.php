@@ -121,6 +121,7 @@ abstract class CSSCleanup
                         $this->css_files_old_names[$new_path] = $path;
                     }
                 }
+                closedir($dh);
             }
         }
     }

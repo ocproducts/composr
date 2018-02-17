@@ -25,17 +25,17 @@ require_code('crud_module');
  */
 class Module_admin_cns_post_templates extends Standard_crud_module
 {
-    public $lang_type = 'POST_TEMPLATE';
-    public $select_name = 'TITLE';
-    public $table_prefix = 't_';
-    public $title_is_multi_lang = false;
-    public $archive_entry_point = '_SEARCH:forumview';
-    public $archive_label = 'SECTION_FORUMS';
-    public $menu_label = 'POST_TEMPLATES';
-    public $table = 'f_post_templates';
-    public $orderer = 't_title';
-    public $donext_entry_content_type = 'post_template';
-    public $donext_category_content_type = null;
+    protected $lang_type = 'POST_TEMPLATE';
+    protected $select_name = 'TITLE';
+    protected $table_prefix = 't_';
+    protected $title_is_multi_lang = false;
+    protected $archive_entry_point = '_SEARCH:forumview';
+    protected $archive_label = 'SECTION_FORUMS';
+    protected $menu_label = 'POST_TEMPLATES';
+    protected $table = 'f_post_templates';
+    protected $orderer = 't_title';
+    protected $donext_entry_content_type = 'post_template';
+    protected $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.

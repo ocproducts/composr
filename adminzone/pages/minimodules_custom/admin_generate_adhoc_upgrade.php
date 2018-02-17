@@ -55,9 +55,9 @@ if ($type == 'auto_probe') {
     if (file_exists($path)) {
         // Via addon_registry hooks (bundled ones)
         $files = array();
-        $files = array_merge($files, get_directory_contents($path, '', IGNORE_ACCESS_CONTROLLERS, false));
+        $files = array_merge($files, get_directory_contents($path, '', 0, false, true, array('php')));
         if (file_exists(str_replace('/sources/', '/sources_custom/', $path))) {
-            $files = array_merge($files, get_directory_contents(str_replace('/sources/', '/sources_custom/', $path), '', IGNORE_ACCESS_CONTROLLERS, false));
+            $files = array_merge($files, get_directory_contents(str_replace('/sources/', '/sources_custom/', $path), '', 0, false, true, array('php')));
         }
         foreach ($files as $file) {
             if (substr($file, -4) == '.php') {
@@ -108,41 +108,38 @@ if ($type == 'auto_probe') {
                         }
 
                         if (preg_match('#^themes/default/(css/[^/]*\.css|templates/[^/]*\.tpl)$#', $file) != 0) {
-                            // Looks for themes which may override
-                            $themes = get_directory_contents($probe_dir . '/themes', '', IGNORE_ACCESS_CONTROLLERS, false);
-                            foreach ($themes as $theme) {
-                                if ($theme == 'map.ini') {
-                                    continue;
-                                }
-                                if ($theme == 'index.html') {
+                            // Looks for theme files which may override
+                            $theme_files = get_directory_contents($probe_dir . '/themes', '', IGNORE_ACCESS_CONTROLLERS, false);
+                            foreach ($theme_files as $theme_file) {
+                                if ($theme_file == 'map.ini' || $theme_file == 'index.html') {
                                     continue;
                                 }
 
                                 $override_file = str_replace(
-                                                     array(
-                                                         'themes/default/templates/',
-                                                         'themes/default/javascript/',
-                                                         'themes/default/xml/',
-                                                         'themes/default/text/',
-                                                         'themes/default/css/',
-                                                     ),
-                                                     array(
-                                                         'themes/' . $theme . '/templates_custom/',
-                                                         'themes/' . $theme . '/javascript_custom/',
-                                                         'themes/' . $theme . '/xml_custom/',
-                                                         'themes/' . $theme . '/text_custom/',
-                                                         'themes/' . $theme . '/css_custom/',
-                                                     ),
-                                                     $file
-                                                 ) . '.editfrom';
+                                    array(
+                                        'themes/default/templates/',
+                                        'themes/default/javascript/',
+                                        'themes/default/xml/',
+                                        'themes/default/text/',
+                                        'themes/default/css/',
+                                    ),
+                                    array(
+                                        'themes/' . $theme_file . '/templates_custom/',
+                                        'themes/' . $theme_file . '/javascript_custom/',
+                                        'themes/' . $theme_file . '/xml_custom/',
+                                        'themes/' . $theme_file . '/text_custom/',
+                                        'themes/' . $theme_file . '/css_custom/',
+                                    ),
+                                    $file
+                                ) . '.editfrom';
 
                                 if (file_exists($probe_dir . '/' . $override_file)) {
-                                    $theme_old = file_get_contents($probe_dir . '/' . $override_file);
-                                    $theme_new = $new;
-                                    $theme_old = preg_replace('#/\*.*\*/#sU', '', $theme_old);
-                                    $theme_new = preg_replace('#/\*.*\*/#sU', '', $theme_new);
-                                    if ($theme_new != $theme_old) {
-                                        $manual_changes['css_diff'][basename($override_file, 'editfrom')] = diff_simple_2($theme_old, $theme_new, true);
+                                    $theme_file_old = file_get_contents($probe_dir . '/' . $override_file);
+                                    $theme_file_new = $new;
+                                    $theme_file_old = preg_replace('#/\*.*\*/#sU', '', $theme_file_old);
+                                    $theme_file_new = preg_replace('#/\*.*\*/#sU', '', $theme_file_new);
+                                    if ($theme_file_new != $theme_file_old) {
+                                        $manual_changes['css_diff'][basename($override_file, 'editfrom')] = diff_simple_2($theme_file_old, $theme_file_new, true);
                                     }
                                 }
                             }

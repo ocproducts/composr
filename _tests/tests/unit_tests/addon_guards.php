@@ -25,8 +25,8 @@ class addon_guards_test_set extends cms_test_case
         $addons = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
         foreach ($addons as $addon => $ob) {
             $files = $ob->get_file_list();
-            foreach ($files as $file) {
-                $files_in_addons[$file] = $addon;
+            foreach ($files as $path) {
+                $files_in_addons[$path] = $addon;
             }
         }
 
@@ -36,23 +36,23 @@ class addon_guards_test_set extends cms_test_case
             $dependencies = $ob->get_dependencies();
             $requires = $dependencies['requires'];
 
-            foreach ($files as $file) {
-                if ($file == 'data_custom/execute_temp.php') {
+            foreach ($files as $path) {
+                if ($path == 'data_custom/execute_temp.php') {
                     continue;
                 }
 
-                if (!is_file(get_file_base() . '/' . $file)) {
+                if (!is_file(get_file_base() . '/' . $path)) {
                     continue;
                 }
 
-                if (substr($file, -4) == '.ini') {
-                    $c = file_get_contents(get_file_base() . '/' . $file);
+                if (substr($path, -4) == '.ini') {
+                    $c = file_get_contents(get_file_base() . '/' . $path);
 
-                    $this->assertTrue(strpos($c, 'require_lang(\'' . basename($file, '.ini') . '\')') === false, 'Unnecessary require_lang call for ' . $file . ' in ' . $addon);
+                    $this->assertTrue(strpos($c, 'require_lang(\'' . basename($path, '.ini') . '\')') === false, 'Unnecessary require_lang call for ' . $path . ' in ' . $addon);
                 }
 
-                if ((substr($file, -4) == '.php') && (preg_match('#(^_tests/|^data_custom/stress_test_loader\.php$|^sources/hooks/modules/admin_import/)#', $file) == 0)) {
-                    $c = file_get_contents(get_file_base() . '/' . $file);
+                if ((substr($path, -4) == '.php') && (preg_match('#(^_tests/|^data_custom/stress_test_loader\.php$|^sources/hooks/modules/admin_import/)#', $path) == 0)) {
+                    $c = file_get_contents(get_file_base() . '/' . $path);
 
                     $matches = array();
                     $num_matches = preg_match_all('#(require_lang|require_code|require_css|require_javascript|do_template)\(\'([^\']*)\'[\),]#', $c, $matches);
@@ -84,7 +84,7 @@ class addon_guards_test_set extends cms_test_case
                                 ($file_in_addon != $addon) &&
                                 (substr($file_in_addon, 0, 5) != 'core_') &&
                                 ($file_in_addon != 'core') &&
-                                (strpos($file, $file_in_addon) === false/*looks like a hook for this addon*/) &&
+                                (strpos($path, $file_in_addon) === false/*looks like a hook for this addon*/) &&
                                 ((!in_array($file_in_addon, $requires)) && ((!in_array('news', $requires)) || ($file_in_addon != 'news_shared')))
                             ) {
                                 $search_for = 'addon_installed(\'' . $file_in_addon . '\')';
@@ -96,7 +96,7 @@ class addon_guards_test_set extends cms_test_case
                                     }
                                 }
 
-                                $error_message = 'Cannot find a guard for the ' . $file_in_addon . ' addon in ' . $file . ' [' . $addon . '], due to ' . $matches[0][$i];
+                                $error_message = 'Cannot find a guard for the ' . $file_in_addon . ' addon in ' . $path . ' [' . $addon . '], due to ' . $matches[0][$i];
 
                                 if (in_array($error_message, array(
                                     'Cannot find a guard for the google_appengine addon in sources/global.php [core], due to require_code(\'google_appengine\')',

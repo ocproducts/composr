@@ -37,7 +37,7 @@ class Block_main_forum_topics
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'limit', 'hot', 'date_key', 'username_key', 'title', 'check', 'check');
+        $info['parameters'] = array('param', 'limit', 'hot', 'date_key', 'username_key', 'title', 'check');
         return $info;
     }
 

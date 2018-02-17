@@ -18,7 +18,7 @@
  */
 class tutorials_all_linked_test_set extends cms_test_case
 {
-    public $tutorials;
+    protected $tutorials;
 
     public function setUp()
     {
@@ -70,15 +70,16 @@ class tutorials_all_linked_test_set extends cms_test_case
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.txt') {
-                if ($f == 'panel_top.txt') {
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, -4) == '.txt') {
+                if ($file == 'panel_top.txt') {
                     continue;
                 }
 
-                $this->assertTrue(strpos(file_get_contents($path . '/' . $f), '"_SEARCH:' . $f . '"') === false, $f . ' is self linking');
+                $this->assertTrue(strpos(file_get_contents($path . '/' . $file), '"_SEARCH:' . $file . '"') === false, $file . ' is self linking');
             }
         }
+        closedir($dh);
     }
 
     public function testHasSomePinned()
@@ -106,9 +107,9 @@ class tutorials_all_linked_test_set extends cms_test_case
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.txt') {
-                $c = file_get_contents($path . '/' . $f);
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, -4) == '.txt') {
+                $c = file_get_contents($path . '/' . $file);
 
                 if (get_param_integer('full', 0) == 1) {
                     $see_also_pos = 0;
@@ -136,11 +137,11 @@ class tutorials_all_linked_test_set extends cms_test_case
                             $tutorial_title = $matches2[2];
                             $correct = ($tutorial_title == $title);
 
-                            $this->assertTrue($correct, '"' . $page_name . '" linked to with "' . $title . '" but should be "' . $tutorial_title . '" in ' . $f);
+                            $this->assertTrue($correct, '"' . $page_name . '" linked to with "' . $title . '" but should be "' . $tutorial_title . '" in ' . $file);
 
                             if (get_param_integer('fix', 0) == 1) {
                                 $c = str_replace($title, $tutorial_title, $c);
-                                file_put_contents($path . '/' . $f, $c);
+                                file_put_contents($path . '/' . $file, $c);
                             }
                         } else {
                             $this->assertTrue(false, 'Missing title for ' . $page_name);
@@ -149,5 +150,6 @@ class tutorials_all_linked_test_set extends cms_test_case
                 }
             }
         }
+        closedir($dh);
     }
 }

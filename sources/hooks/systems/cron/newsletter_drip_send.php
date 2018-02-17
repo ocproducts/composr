@@ -47,6 +47,7 @@ class Hook_cron_newsletter_drip_send
     public function run($last_run)
     {
         $mails_per_send = intval(get_option('mails_per_send'));
+        $minutes_between_sends = intval(get_option('minutes_between_sends'));
 
         $time = time();
         $last_time = intval(get_value('last_newsletter_drip_send', null, true));

@@ -17,6 +17,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
 {
     require_code('lorem');
     require_code('lang_compile');
+    require_code('files');
+    require_code('files2');
 
     $source_files_admin = array();
     $source_files_non_admin = array();
@@ -45,11 +47,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
                 }
             }
         }
-        $source_files_admin = array_merge($source_files_admin, find_files_in_dir('adminzone'));
-        $source_files_admin = array_merge($source_files_admin, find_files_in_dir('cms'));
-        $source_files_non_admin = array_merge($source_files_non_admin, find_files_in_dir('site'));
-        $source_files_non_admin = array_merge($source_files_non_admin, find_files_in_dir('pages'));
-        $source_files_non_admin = array_merge($source_files_non_admin, find_files_in_dir('forum'));
+        $source_files_admin = array_merge($source_files_admin, get_directory_contents(get_file_base() . '/adminzone', 'adminzone', IGNORE_NONBUNDLED_VERY_SCATTERED, false, false, array('php')));
+        $source_files_admin = array_merge($source_files_admin, get_directory_contents(get_file_base() . '/cms', 'cms', IGNORE_NONBUNDLED_VERY_SCATTERED, false, false, array('php')));
+        $source_files_non_admin = array_merge($source_files_non_admin, get_directory_contents(get_file_base() . '/site', 'site', IGNORE_NONBUNDLED_VERY_SCATTERED, false, false, array('php')));
+        $source_files_non_admin = array_merge($source_files_non_admin, get_directory_contents(get_file_base() . '/pages', 'pages', IGNORE_NONBUNDLED_VERY_SCATTERED, false, false, array('php')));
+        $source_files_non_admin = array_merge($source_files_non_admin, get_directory_contents(get_file_base() . '/forum', 'forum', IGNORE_NONBUNDLED_VERY_SCATTERED, false, false, array('php')));
     }
 
     $admin_files = array(
@@ -229,6 +231,103 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TRANSCODING
         LOST_DISK_CONTENT
         DESCRIPTION_LOST_DISK_CONTENT
+        ADVANCED_EMAIL_SEND_SETTINGS
+        BLOCK_bottom_forum_news_PARAM_check
+        BLOCK_bottom_forum_news_PARAM_check_TITLE
+        BLOCK_bottom_news_PARAM_check
+        BLOCK_bottom_news_PARAM_check_TITLE
+        BLOCK_main_cc_embed_PARAM_check
+        BLOCK_main_cc_embed_PARAM_check_TITLE
+        BLOCK_main_cns_involved_topics_PARAM_check
+        BLOCK_main_cns_involved_topics_PARAM_check_TITLE
+        BLOCK_main_content_PARAM_check
+        BLOCK_main_content_PARAM_check_TITLE
+        BLOCK_main_forum_news_PARAM_check
+        BLOCK_main_forum_news_PARAM_check_TITLE
+        BLOCK_main_gallery_embed_PARAM_check
+        BLOCK_main_gallery_embed_PARAM_check_TITLE
+        BLOCK_main_image_fader_PARAM_check
+        BLOCK_main_image_fader_PARAM_check_TITLE
+        BLOCK_main_image_fader_news_PARAM_check
+        BLOCK_main_image_fader_news_PARAM_check_TITLE
+        BLOCK_main_multi_content_PARAM_check
+        BLOCK_main_multi_content_PARAM_check_TITLE
+        BLOCK_main_news_PARAM_check
+        BLOCK_main_news_PARAM_check_TITLE
+        BLOCK_main_personal_galleries_list_PARAM_check
+        BLOCK_main_personal_galleries_list_PARAM_check_TITLE
+        BLOCK_side_calendar_PARAM_check
+        BLOCK_side_calendar_PARAM_check_TITLE
+        BLOCK_side_forum_news_PARAM_check
+        BLOCK_side_forum_news_PARAM_check_TITLE
+        BLOCK_side_galleries_PARAM_check
+        BLOCK_side_galleries_PARAM_check_TITLE
+        BLOCK_side_news_PARAM_check
+        BLOCK_side_news_PARAM_check_TITLE
+        BLOCK_side_news_categories_PARAM_check
+        BLOCK_side_news_categories_PARAM_check_TITLE
+        CACHE_CATALOGUES
+        CHECKLIST_HEALTH_CHECK
+        CLEAR_LOG
+        CMD_FS_SEARCH_HELP
+        CMD_FS_SEARCH_HELP_PARAM_0
+        CMD_FS_SEARCH_HELP_PARAM_1
+        CMD_FS_SEARCH_HELP_PARAM_2
+        CONFIG_GROUP_DESCRIP_DASHBOARD
+        CONFIG_OPTION_allow_audio_videos_VALUE_0
+        CONFIG_OPTION_allow_audio_videos_VALUE_1
+        CONFIG_OPTION_allow_audio_videos_VALUE_2
+        CONFIG_OPTION_dashboard_actions
+        CONFIG_OPTION_dashboard_checklist
+        CONFIG_OPTION_dashboard_composr_news
+        CONFIG_OPTION_dashboard_db_notes
+        CONFIG_OPTION_dashboard_forum_topics
+        CONFIG_OPTION_dashboard_links
+        CONFIG_OPTION_dashboard_new_version
+        CONFIG_OPTION_dashboard_tips
+        CONFIG_OPTION_dashboard_website_monitoring
+        CONFIG_OPTION_hc_cpu_normative_threshold
+        CONFIG_OPTION_hc_io_mbs
+        CONFIG_OPTION_list_unsubscribe_target
+        CONFIG_OPTION_max_queued_mails_per_cron_cycle
+        CRON_SCRIPTS
+        CSS_UNKNOWN_PSEUDO
+        DASHBOARD_ACTIONS
+        DASHBOARD_CHECKLIST
+        DASHBOARD_COMPOSR_NEWS
+        DASHBOARD_DB_NOTES
+        DASHBOARD_FORUM_TOPICS
+        DASHBOARD_LINKS
+        DASHBOARD_NEW_VERSION
+        DASHBOARD_TIPS
+        DASHBOARD_WEBSITE_MONITORING
+        DATABASE_UPDATE_QUERY
+        DELETE_ADDON_TAR
+        DELETE_LOG
+        DESCRIPTION_CACHE_CATALOGUES
+        DESCRIPTION_DELETE_ADDON_TAR
+        DISABLE_CRON_HOOK
+        DOWNLOAD_LOG
+        EMAIL_GENERAL
+        ENABLE_CRON_HOOK
+        EXECUTE_SCRIPT
+        HC_CPU_NORMATIVE_THRESHOLD
+        HC_IO_MBS
+        INIT_LOG
+        LAST_RUN
+        LIST_UNSUBSCRIBE_TARGET
+        MATCHES_TAR_SAVED_TO
+        MAX_QUEUED_MAILS_PER_CRON_CYCLE
+        NO_CURL_ON_SERVER
+        PATREON_PATRONS_LABEL
+        QUEUED_ITEMS
+        SPONSORS_LABEL
+        SPONSORS_NEEDED
+        STAFF_EMAIL_ADDRESSES
+        TIME_BETWEEN_RUNS
+        CONTRIBUTE_HEADING
+        CONTRIBUTE_PARAGRAPH
+        UNAVAILABLE
         CONFIG_CATEGORY_DESCRIPTION__TRANSACTION_FEES
         CONFIG_OPTION_page_after_join
         CONFIG_OPTION_page_after_login
@@ -287,7 +386,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DOCS
         EXPLANATION_WITH_DEFAULT
         PROJECT_SPONSORS
-        PROJECT_SPONSORS_LABEL
         CONFIG_OPTION_complex_lists
         COMPLEX_LISTS
         HERE_SURVEY_RESULTS
@@ -1056,8 +1154,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_main_content_DESCRIPTION
         BLOCK_main_content_PARAM_as_guest
         BLOCK_main_content_PARAM_as_guest_TITLE
-        BLOCK_main_content_PARAM_efficient
-        BLOCK_main_content_PARAM_efficient_TITLE
         BLOCK_main_content_PARAM_give_context
         BLOCK_main_content_PARAM_give_context_TITLE
         BLOCK_main_content_PARAM_guid
@@ -1318,8 +1414,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_main_multi_content_PARAM_attach_to_url_filter_TITLE
         BLOCK_main_multi_content_PARAM_days
         BLOCK_main_multi_content_PARAM_days_TITLE
-        BLOCK_main_multi_content_PARAM_efficient
-        BLOCK_main_multi_content_PARAM_efficient_TITLE
         BLOCK_main_multi_content_PARAM_filter
         BLOCK_main_multi_content_PARAM_filter_TITLE
         BLOCK_main_multi_content_PARAM_give_context
@@ -1954,14 +2048,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_enable_timezones_VALUE_2
         CONFIG_OPTION_staff_email_receipt_configurability
         CHECKLIST_INITIAL_TASK_CONTENT
-        CHECKLIST_INITIAL_TASK_FAVICON
         CHECKLIST_INITIAL_TASK_GOOGLE_WEBMASTER_TOOLS
-        CHECKLIST_INITIAL_TASK_MAIL
-        CHECKLIST_INITIAL_TASK_MAIL_LOGO
-        CHECKLIST_INITIAL_TASK_STRUCTURE
-        CHECKLIST_INITIAL_TASK_THEME
         CHECKLIST_INITIAL_TASK_UPTIME_MONITOR
-        CHECKLIST_INITIAL_TASK_WEBCLIP
         CHECK_BROKEN_URLS
         CHECK_LIST
         CHECK_LIST_ADD
@@ -3561,7 +3649,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DELETE_PERIODIC_NEWSLETTER
         DELETE_POLL
         DELETE_POST_TEMPLATE
-        DELETE_CONTENTS
         DELETE_PRIVATE_CALENDAR_EVENT
         DELETE_PUBLIC_CALENDAR_EVENT
         DELETE_QUIZ
@@ -4553,7 +4640,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ENTRY_POINTS_DESCRIPTION
         ENVELOPER_OVERRIDE
         ERRORS_IN_ERRORLOG
-        ERRORS_IN_PERMISSIONS_LOG
         ERROR_FRACTIONAL_EDIT
         ERROR_HANDLING_RSS_FEED
         ERROR_INACCESSIBLE_DIR
@@ -4857,7 +4943,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FTP_SERVER_URL
         FTP_USERNAME
         FULL_BACKUP
-        FULL_PERMISSION_LIST_SEE_FILE
         FUSED_LANG_STRINGS
         FU_ADDON_MANAGEMENT
         FU_ALL_CHMODDED_GOOD
@@ -5313,9 +5398,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MADE_IP_BANNABLE
         MADE_IP_UNBANNABLE
         MAILS_PER_SEND
-        MAIL_BAD_TAG
-        MAIL_BODY
-        MAIL_DOCTYPE
         MAIL_DOMAIN
         MAIL_END
         MAIL_ERROR_CONNECT
@@ -5326,15 +5408,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MAIL_ERROR_FROM
         MAIL_ERROR_TO
         MAIL_FAIL
-        MAIL_FLASHWORD
         MAIL_FOLDER
         MAIL_IP_ADDRESS_REPORT_BODY
         MAIL_IP_ADDRESS_REPORT_SUBJECT
-        MAIL_JAVASCRIPT
-        MAIL_LOCAL_REF
-        MAIL_LONG_LINE
-        MAIL_POSITIONING
-        MAIL_PROLOG
         MAIL_QUEUE
         MAIL_QUEUE_DEBUG
         MAIL_REQUEST_CUSTOM
@@ -5345,11 +5421,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MAIL_SERVER
         MAIL_START
         MAIL_UHOH
-        MAIL_UNSUBSCRIBE
         MAIL_WAS_LOGGED
         MAIL_WAS_QUEUED
-        MAIL_WEB_VERSION
-        MAIL_WIDTH
         MAIN_CATEGORY
         MAIN_FORUM_NAME
         MAKE_MEMBER_GROUP_LEADER
@@ -5655,15 +5728,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         M_INTEREST_MINUS
         M_INTEREST_PLUS
         NAG_CONTENT_REVIEWS
-        NAG_COPYRIGHT_DATE
-        NAG_FORUMS
-        NAG_MONITOR_GIFTS
         NAG_OPEN_WEBSITE
         NAG_ECOM_PRODUCT_SETUP
         NAG_SETUP_CRON
         NAG_SETUP_PROFILE
         NAG_VALIDATE
-        NAG_WIKI
         NEED_FTP
         NEED_GEOLOCATION_DATA
         NETWORKING
@@ -7382,7 +7451,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         XHTML_BAD_ENTITY
         XHTML_BAD_PARENT
         XHTML_BAD_ROOT
-        XHTML_BROKEN_URL
         XHTML_CASE_ATTRIBUTE
         XHTML_CASE_TAG
         XHTML_CEMPTY_TAG
@@ -7399,7 +7467,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         XHTML_FORM_TYPE
         XHTML_ID_UNBOUND
         XHTML_IE_ONCHANGE
-        XHTML_LOCAL_BROKEN_URL
         XHTML_MISSING_ANCESTER
         XHTML_MISSING_ATTRIBUTE
         XHTML_MISSING_TAG
@@ -7414,7 +7481,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         XHTML_TEXT_NO_BLOCK
         XHTML_UNKNOWN_ATTRIBUTE
         XHTML_UNKNOWN_TAG
-        XHTML_UNSAFE_CHAR
         XHTML_WIDTH
         XHTML_WRONG_COMMENTING
         XML_ATTRIBUTE_ERROR
@@ -7686,6 +7752,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MEMBERS_NEW_THIS_MONTH
         MEMBERS_NEW_THIS_WEEK
         MEMBERS_NEW_TODAY
+        MULTIMEDIA_FILE
         PAGE_VIEWS_THIS_MONTH
         PAGE_VIEWS_THIS_WEEK
         PAGE_VIEWS_TODAY
@@ -9720,7 +9787,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SPELLCHECKER_TOGGLE
         SPLIT_POSTS
         SPOILER_WARNING
-        SPREAD_TABLE
         STAFF
         STAFF_ACTIONS
         START
@@ -10324,27 +10390,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
     $lang_strings_shared = array_intersect($lang_strings_non_admin, $lang_strings_admin);
 
     return array($just_lang_strings_admin, $just_lang_strings_non_admin, $lang_strings_shared, $lang_strings_unknown, $all_strings_in_lang, $strings_files);
-}
-
-function find_files_in_dir($dir)
-{
-    $files = array();
-
-    $d = get_file_base() . '/' . $dir;
-
-    $dh = opendir($d);
-    while (($f = readdir($dh)) !== false) {
-        if (is_dir($dir . '/' . $f) && $f != '.' && $f != '..' && strpos($f, 'custom') === false) {
-            $files = array_merge($files, find_files_in_dir($dir . '/' . $f));
-        } else {
-            if (substr($f, -4) == '.php') {
-                $files[] = $dir . '/' . $f;
-            }
-        }
-    }
-    closedir($dh);
-
-    return $files;
 }
 
 function find_strings($from)

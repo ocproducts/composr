@@ -994,7 +994,11 @@ class Virtual_shell
 
             $this->output[STREAM_STDCOMMAND] = '';
             $this->output[STREAM_STDHTML] = '';
-            $this->output[STREAM_STDOUT] = shell_exec($this->parsed_input[SECTION_COMMAND]);
+            if (php_function_allowed('shell_exec')) {
+                $this->output[STREAM_STDOUT] = shell_exec($this->parsed_input[SECTION_COMMAND]);
+            } else {
+                $this->output[STREAM_STDOUT] = '';
+            }
             $this->output[STREAM_STDERR] = '';
         }
 

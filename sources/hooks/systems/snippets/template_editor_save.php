@@ -34,7 +34,6 @@ class Hook_snippet_template_editor_save
             access_denied('I_ERROR');
         }
 
-        require_code('files');
         require_code('files2');
 
         $contents = post_param_string('contents');

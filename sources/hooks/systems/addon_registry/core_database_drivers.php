@@ -62,9 +62,12 @@ class Hook_addon_registry_core_database_drivers
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_webhosting',
             'tut_install',
-            'tut_adv_install',
+            'tut_install_linux',
+            'tut_webhosting',
+            'tut_sqlserver',
+            'tut_postgresql',
+            'tut_sql',
         );
     }
 

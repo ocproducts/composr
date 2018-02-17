@@ -18,11 +18,11 @@
  */
 class banners_test_set extends cms_test_case
 {
-    public $banner_type;
-    public $banner_name;
-    public $banner_url;
-    public $title_text;
-    public $caption;
+    protected $banner_type;
+    protected $banner_name;
+    protected $banner_url;
+    protected $title_text;
+    protected $caption;
 
     public function setUp()
     {

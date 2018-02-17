@@ -18,8 +18,8 @@
  */
 class posts_test_set extends cms_test_case
 {
-    public $post_id;
-    public $topic_id;
+    protected $post_id;
+    protected $topic_id;
 
     public function setUp()
     {

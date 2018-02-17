@@ -493,13 +493,15 @@ function make_installers($skip_file_grab = false)
 // Used in the APS build process
 function make_file_elements(DOMDocument $app_list_doc, DOMElement $files_el, $dir_path)
 {
-    $entries = scandir($dir_path);
-    if ($entries === false) {
+    $dh = @opendir($dir_path);
+    if ($dh === false) {
         return false;
     }
-    $entries = array_diff($entries, array('.', '..'));
+    while (($entry = readdir($dh)) !== false) {
+        if ($entry == '.' || $entry == '..') {
+            continue;
+        }
 
-    foreach ($entries as $entry) {
         $entry_path = $dir_path . '/' . $entry;
 
         if (is_dir($entry_path)) {
@@ -519,6 +521,7 @@ function make_file_elements(DOMDocument $app_list_doc, DOMElement $files_el, $di
 
         $files_el->appendChild($el);
     }
+    closedir($dh);
 
     return true;
 }
@@ -549,8 +552,9 @@ function copy_r($path, $dest)
     if (is_dir($path)) {
         @mkdir($dest, 0777);
         fix_permissions($dest);
-        $objects = scandir($path);
-        foreach ($objects as $file) {
+
+        $dh = opendir($path);
+        while (($file = readdir($dh)) !== false) {
             if (($file == '.') || ($file == '..')) {
                 continue;
             }
@@ -562,6 +566,7 @@ function copy_r($path, $dest)
                 fix_permissions($dest . '/' . $file);
             }
         }
+        closedir($dh);
         return true;
     } elseif (is_file($path)) {
         return copy($path, $dest);
@@ -663,6 +668,7 @@ function populate_build_files_list($dir = '', $pretend_dir = '')
             cms_file_put_contents_safe($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file], FILE_WRITE_FIX_PERMISSIONS);
         }
     }
+    closedir($dh);
 
     $out .= do_build_directory_output($pretend_dir);
     return $out;

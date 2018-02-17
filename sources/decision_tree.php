@@ -204,7 +204,7 @@ class DecisionTree
      * @param  ID_TEXT $target_position Tree position to go to
      * @return Tempcode URL
      */
-    private function build_url($target_position)
+    protected function build_url($target_position)
     {
         return build_url(array('page' => '_SELF', 'type' => $target_position), '_SELF', array(), true);
     }
@@ -215,7 +215,7 @@ class DecisionTree
      * @param  ID_TEXT $tree_position Tree position at
      * @return Tempcode Screen output
      */
-    private function render($tree_position)
+    protected function render($tree_position)
     {
         $details = $this->decision_tree[$tree_position];
 
@@ -349,7 +349,7 @@ class DecisionTree
      * @param  integer $i Question number in sequence
      * @return array Tuple of field details: hook object, field details map, default field value
      */
-    private function get_question_field_details($question_name, $question_details, $i)
+    protected function get_question_field_details($question_name, $question_details, $i)
     {
         $default = either_param_string($question_name, isset($question_details['default']) ? $question_details['default'] : '');
         $default_list = isset($question_details['default_list']) ? $question_details['default_list'] : array($default);
@@ -380,7 +380,7 @@ class DecisionTree
      * @param  ID_TEXT $tree_position Tree position coming from
      * @return mixed Tree position going to or Tempcode URL
      */
-    private function process_input($tree_position)
+    protected function process_input($tree_position)
     {
         $details = $this->decision_tree[$tree_position];
 

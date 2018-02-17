@@ -20,14 +20,14 @@ require_code('crud_module');
  */
 class Module_admin_community_billboard extends Standard_crud_module
 {
-    public $lang_type = 'COMMUNITY_BILLBOARD';
-    public $special_edit_frontend = true;
-    public $redirect_type = 'edit';
-    public $menu_label = 'COMMUNITY_BILLBOARD';
-    public $select_name = 'MESSAGE';
-    public $table = 'community_billboard';
-    public $orderer = 'the_message';
-    public $title_is_multi_lang = true;
+    protected $lang_type = 'COMMUNITY_BILLBOARD';
+    protected $special_edit_frontend = true;
+    protected $redirect_type = 'edit';
+    protected $menu_label = 'COMMUNITY_BILLBOARD';
+    protected $select_name = 'MESSAGE';
+    protected $table = 'community_billboard';
+    protected $orderer = 'the_message';
+    protected $title_is_multi_lang = true;
 
     /**
      * Find details of the module.

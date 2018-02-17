@@ -125,7 +125,7 @@ Positive advice:[list="1"]
 [/list]
 
 More extreme advice:[list="1"]
-[*] If you're really stuck with your e-mail server being blocked, you could [b]use a third-party e-mailing service[/b] like [url="Amazon SES"]https://aws.amazon.com/ses/[/url] or [url="Mandrill"]https://www.mandrill.com/[/url]. Amazon SES likely needs the non-bundled [tt]aws[/tt] and [tt]better_mail[/tt] addons installing. Mandrill may require the "Enable Blind CC (BCC)" configuration option (Admin Zone > Setup > Configuration > Messages > E-mail) to be turned off, as we have had a report of it not working on Mandrill, but that they provide an account setting to make CC behave like BCC.
+[*] If you're really stuck with your e-mail server being blocked, you could [b]use a third-party e-mailing service[/b] like [url="Amazon SES"]https://aws.amazon.com/ses/[/url] or [url="Mandrill"]https://www.mandrill.com/[/url]. Amazon SES likely needs the non-bundled [tt]aws[/tt] and [tt]better_mail[/tt] addons installing. Mandrill may require the "Enable Blind CC (BCC)" configuration option (Admin Zone > Setup > Configuration > Messages > E-mail addresses for staff) to be turned off, as we have had a report of it not working on Mandrill, but that they provide an account setting to make CC behave like BCC.
 [*] You can [b]send out newsletters using a totally different e-mail address and third-party newsletter tool[/b] such as MailChimp. This is extreme unless you want to benefit from the features of such a tool, but it will mean that if your newsletter activities get marked as spammy it won't affect your important day-to-day website e-mailing functionality.
 [*] If you have a lot of cash then you can [b]get your server onto a [url="whitelist"]https://returnpath.com/[/url][/b].
 [/list]
@@ -142,7 +142,7 @@ There are a few caveats with Composr's implementation:
 a) The PHP [tt]openssl[/tt] extension is required.
 b) It only works with the PHP mailer, not the SMTP mailer (for overhead control the SMTP mailer will send e-mails going to multiple users within a single packet, which prevents use of DKIM).
 c) It is not recommended on Windows due to severe performance problems with openssl on Windows.
-d) Composr will only apply DKIM on your mail e-mail domain (as defined in your [tt]_config.php[/tt] file). It is incompatible with the "E-mail 'from' address method" configuration option (Admin Zone > Setup > Configuration > Messages > E-mail) being set to anything but "Sending user" (which is the default).
+d) Composr will only apply DKIM on your mail e-mail domain (as defined in your [tt]_config.php[/tt] file). It is incompatible with the "E-mail 'from' address method" configuration option, found at Admin Zone > Setup > Configuration > Messages > E-mail send settings (advanced), being set to anything but "Sending user" (which is the default).
 
 Your DKIM public key is to be stored in DNS as per standard DKIM set up.
 

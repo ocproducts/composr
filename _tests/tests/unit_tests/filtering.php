@@ -609,7 +609,7 @@ class filtering_test_set extends cms_test_case
         $this->assertTrue($results == $this->expected);
     }
 
-    public function cleanup_db()
+    protected function cleanup_db()
     {
         $GLOBALS['SITE_DB']->drop_table_if_exists('temp_test_categories');
         $GLOBALS['SITE_DB']->drop_table_if_exists('temp_test_entries');

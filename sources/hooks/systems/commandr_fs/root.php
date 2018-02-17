@@ -51,6 +51,7 @@ class Hook_commandr_fs_root
                         );
                     }
                 }
+                closedir($dh);
                 $ok = true;
             }
         }

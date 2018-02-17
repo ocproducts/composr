@@ -20,18 +20,19 @@ require_code('crud_module');
  */
 class Module_cms_iotds extends Standard_crud_module
 {
-    public $lang_type = 'IOTD';
-    public $special_edit_frontend = true;
-    public $archive_entry_point = '_SEARCH:iotds:browse';
-    public $view_entry_point = '_SEARCH:iotds:view:_ID';
-    public $user_facing = true;
-    public $send_validation_request = false;
-    public $upload = 'image';
-    public $permissions_require = 'mid';
-    public $menu_label = 'IOTDS';
-    public $table = 'iotd';
-    public $donext_entry_content_type = 'iotd';
-    public $donext_category_content_type = null;
+    protected $lang_type = 'IOTD';
+    protected $special_edit_frontend = true;
+    protected $archive_entry_point = '_SEARCH:iotds:browse';
+    protected $view_entry_point = '_SEARCH:iotds:view:_ID';
+    protected $user_facing = true;
+    protected $send_validation_request = false;
+    protected $upload = 'image';
+    protected $permissions_require = 'mid';
+    protected $menu_label = 'IOTDS';
+    protected $table = 'iotd';
+
+    protected $donext_entry_content_type = 'iotd';
+    protected $donext_category_content_type = null;
 
     public $title;
 

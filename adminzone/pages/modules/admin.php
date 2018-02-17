@@ -1043,6 +1043,7 @@ class Module_admin
                                 }
                             }
                         }
+                        closedir($dh);
                     }
                 }
 
@@ -1120,6 +1121,7 @@ class Module_admin
                         }
                     }
                 }
+                closedir($dh);
             }
         }
         cms_profile_end_for('admin search: ' . $current_results_type);
@@ -1148,6 +1150,7 @@ class Module_admin
                     }
                 }
             }
+            closedir($dh);
         }
         cms_profile_end_for('admin search: ' . $current_results_type);
 

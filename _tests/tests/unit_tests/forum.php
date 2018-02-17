@@ -18,8 +18,8 @@
  */
 class forum_test_set extends cms_test_case
 {
-    public $forum_id;
-    public $access_mapping;
+    protected $forum_id;
+    protected $access_mapping;
 
     public function setUp()
     {

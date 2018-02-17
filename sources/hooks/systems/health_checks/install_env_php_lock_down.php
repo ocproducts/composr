@@ -23,7 +23,7 @@
  */
 class Hook_health_check_install_env_php_lock_down extends Hook_Health_Check
 {
-    protected $category_label = 'Installation environment';
+    protected $category_label = 'Installation environment (PHP)';
 
     /**
      * Standard hook run function to run this category of health checks.
@@ -287,6 +287,7 @@ END;
         $this->assertTrue(ini_get('file_uploads') != '0', do_lang('NO_UPLOAD'));
 
         foreach (array('post_max_size', 'upload_max_filesize') as $setting) {
+            require_code('files');
             $bytes = php_return_bytes(ini_get($setting));
             $this->assertTrue(
                 $bytes >= 8000000,
@@ -307,9 +308,9 @@ END;
     {
         require_code('files2');
         if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
-            $files = get_directory_contents('/home');
+            $files = get_directory_contents('/home', '', null);
         } else {
-            $files = get_directory_contents('C:\\');
+            $files = get_directory_contents('C:\\', '', null);
         }
         $this->assertTrue(count($files) == 0, do_lang('WARNING_OPEN_BASEDIR'));
     }

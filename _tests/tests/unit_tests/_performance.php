@@ -13,23 +13,25 @@
  * @package    testing_platform
  */
 
+// php _tests/index.php _performance
+
 /**
  * Composr test case class (unit testing).
  */
 class _performance_test_set extends cms_test_case
 {
-    private $log_file;
-    private $log_warnings_file;
+    protected $log_file;
+    protected $log_warnings_file;
 
-    private $page_links = array();
-    private $page_links_warnings = array();
+    protected $page_links = array();
+    protected $page_links_warnings = array();
 
     // Config
-    private $quick = true; // Times will be less accurate if they're fast enough, focus on finding slow pages only
-    private $threshold = 0.50; // If loading times exceed this a page is considered slow
-    private $start_page_link = '';
-    private $whitelist = null;
-    private $blacklist = array(
+    protected $quick = true; // Times will be less accurate if they're fast enough, focus on finding slow pages only
+    protected $threshold = 0.50; // If loading times exceed this a page is considered slow
+    protected $start_page_link = '';
+    protected $whitelist = null;
+    protected $blacklist = array(
         // These are non-bundled tooling screens that are irrevocably slow
         'adminzone:string_scan',
         'adminzone:sql_dump',
@@ -44,7 +46,7 @@ class _performance_test_set extends cms_test_case
         // Irrevocably slow for some other reason
         'adminzone:admin_addons:addon_export', // Does full file-system scan, particularly slow on a full git clone
     );
-    private $whitelist_zone = null;
+    protected $whitelist_zone = null;
 
     public function setUp()
     {

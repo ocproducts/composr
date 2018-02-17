@@ -73,7 +73,7 @@ function actionlog_linkage($type, $a, $b, $_a, $_b)
         return array($_a, $_b);
     }
     if ($type == 'ADD_DOWNLOAD' || $type == 'EDIT_DOWNLOAD') {
-        $tmp_url = build_url(array('page' => 'downloads', 'type' => 'view', 'id' => $a), get_module_zone('downloads'));
+        $tmp_url = build_url(array('page' => 'downloads', 'type' => 'entry', 'id' => $a), get_module_zone('downloads'));
         $_b = hyperlink($tmp_url, ($b == '') ? $_a : $_b, false, false, $type_str);
         return array($_a, $_b);
     }

@@ -38,6 +38,7 @@ class Hook_config_show_empty_galleries
             'explanation' => 'CONFIG_OPTION_show_empty_galleries',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 3,
             'required' => true,
 
             'public' => false,

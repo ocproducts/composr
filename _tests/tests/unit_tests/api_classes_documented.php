@@ -28,12 +28,12 @@ class api_classes_documented_test_set extends cms_test_case
             $path = get_file_base() . '/' . $d;
             $dh = @opendir($path);
             if ($dh !== false) {
-                while (($f = readdir($dh)) !== false) {
-                    if (substr($f, -4) != '.php') {
+                while (($file = readdir($dh)) !== false) {
+                    if (substr($file, -4) != '.php') {
                         continue;
                     }
 
-                    $c = file_get_contents($path . '/' . $f);
+                    $c = file_get_contents($path . '/' . $file);
 
                     if (strpos($c, 'CQC: No check') !== false) {
                         continue;
@@ -47,7 +47,7 @@ class api_classes_documented_test_set extends cms_test_case
                     for ($i = 0; $i < $num_matches; $i++) {
                         $this->assertTrue(
                             preg_match('# +\* @package\s+\w+\n\t* +\*/\n\t*(abstract\s+)?class ' . preg_quote($matches[2][$i], '#') . '#', $c) != 0,
-                            'Undefined package for PHPDocumentor-exposed class: ' . $d . '/' . $f . ' (' . $matches[2][$i] . ')'
+                            'Undefined package for PHPDocumentor-exposed class: ' . $d . '/' . $file . ' (' . $matches[2][$i] . ')'
                         );
                     }
                 }

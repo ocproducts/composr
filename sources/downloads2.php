@@ -353,6 +353,7 @@ function add_download_category($category, $parent_id, $description, $notes = '',
     require_code('member_mentions');
     dispatch_member_mention_notifications('download_category', strval($id));
 
+    require_code('downloads');
     require_code('sitemap_xml');
     notify_sitemap_node_add('_SEARCH:downloads:browse:' . strval($id), $add_time, null, SITEMAP_IMPORTANCE_MEDIUM, 'weekly', may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $id));
 
@@ -422,6 +423,7 @@ function edit_download_category($category_id, $category, $parent_id, $descriptio
         generate_resource_fs_moniker('download_category', strval($category_id));
     }
 
+    require_code('downloads');
     require_code('sitemap_xml');
     notify_sitemap_node_edit('SEARCH:downloads:browse:' . strval($category_id), may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $category_id));
 }
@@ -980,6 +982,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
     require_code('member_mentions');
     dispatch_member_mention_notifications('download', strval($id), $submitter);
 
+    require_code('downloads');
     require_code('sitemap_xml');
     notify_sitemap_node_add('_SEARCH:downloads:entry:' . strval($id), $add_date, $edit_date, SITEMAP_IMPORTANCE_HIGH, 'monthly', may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $category_id));
 
@@ -1188,6 +1191,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         process_overridden_comment_forum('downloads', strval($id), strval($category_id), strval($myrow['category_id']))
     );
 
+    require_code('downloads');
     require_code('sitemap_xml');
     notify_sitemap_node_edit('SEARCH:downloads:entry:' . strval($id), may_enter_download_category($GLOBALS['FORUM_DRIVER']->get_guest_id(), $category_id));
 }

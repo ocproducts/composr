@@ -20,18 +20,18 @@ require_code('crud_module');
  */
 class Module_cms_tutorials extends Standard_crud_module
 {
-    public $lang_type = 'TUTORIAL';
-    public $special_edit_frontend = true;
-    public $archive_entry_point = '_SEARCH:tutorials';
-    public $user_facing = true;
-    public $check_validation = false;
-    public $permissions_require = 'low';
-    public $menu_label = 'TUTORIALS';
-    public $select_name = 'TUTORIALS';
-    public $orderer = 't_title';
-    public $orderer_is_multi_lang = false;
-    public $table = 'tutorials_external';
-    public $do_preview = null;
+    protected $lang_type = 'TUTORIAL';
+    protected $special_edit_frontend = true;
+    protected $archive_entry_point = '_SEARCH:tutorials';
+    protected $user_facing = true;
+    protected $check_validation = false;
+    protected $permissions_require = 'low';
+    protected $menu_label = 'TUTORIALS';
+    protected $select_name = 'TUTORIALS';
+    protected $orderer = 't_title';
+    protected $orderer_is_multi_lang = false;
+    protected $table = 'tutorials_external';
+    protected $do_preview = null;
 
     /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.

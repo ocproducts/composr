@@ -31,14 +31,14 @@ class Hook_payment_gateway_ccbill
     //  your encryption key is the Composr "Gateway VPN password".
     //  create a form with dynamic pricing from the form admin and enter its code name as the "Gateway digest code". You can optionally enter two values separated by a comma; the first one will be used for simple transactions and the second for subscriptions.
 
-    private $length_unit_to_days = array(
+    protected $length_unit_to_days = array(
         'd' => 1,
         'w' => 7,
         'm' => 30,
         'y' => 365,
     );
 
-    private $currency_numeric_to_alphabetic_code = array(
+    protected $currency_numeric_to_alphabetic_code = array(
         // Currencies supported by CCBill
         840 => 'USD',
         978 => 'EUR',
@@ -48,7 +48,7 @@ class Hook_payment_gateway_ccbill
         392 => 'JPY',
     );
 
-    private $currency_alphabetic_to_numeric_code = array(
+    protected $currency_alphabetic_to_numeric_code = array(
         // Currencies supported by CCBill
         'USD' => 840,
         'EUR' => 978,
@@ -86,7 +86,7 @@ class Hook_payment_gateway_ccbill
      *
      * @return string The answer
      */
-    private function get_account_id()
+    protected function get_account_id()
     {
         return ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
     }

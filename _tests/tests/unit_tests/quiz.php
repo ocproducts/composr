@@ -18,7 +18,7 @@
  */
 class quiz_test_set extends cms_test_case
 {
-    public $quiz_id;
+    protected $quiz_id;
 
     public function setUp()
     {

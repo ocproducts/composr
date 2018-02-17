@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2016
+ Copyright (c) ocProducts, 2004-2018
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,7 +20,7 @@ class seo_test_set extends cms_test_case
 {
     public function testKeywordGeneration()
     {
-        require_code('seo2');
+        require_code('content2');
 
         // Test coverage for many cases:
         //  words differing only in case

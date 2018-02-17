@@ -89,6 +89,7 @@ while (($f = readdir($dh)) !== false) {
         }
     }
 }
+closedir($dh);
 
 // Output it all...
 

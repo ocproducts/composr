@@ -18,7 +18,7 @@
  */
 class lang_descriptions_test_set extends cms_test_case
 {
-    private $lang_files;
+    protected $lang_files;
 
     public function setUp()
     {

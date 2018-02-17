@@ -287,7 +287,7 @@ class Module_tickets
      *
      * @return ?AUTO_LINK The ticket type ID (null: none specified)
      */
-    private function get_ticket_type_id()
+    protected function get_ticket_type_id()
     {
         $default_ticket_type_id = either_param_integer('ticket_type_id', null);
         if ($default_ticket_type_id === null) {
@@ -384,7 +384,7 @@ class Module_tickets
      * @param  array $topic Ticket details (from forum API)
      * @return array A tuple: Ticket row (Tempcode), Ticket type (ID), Ticket type (String)
      */
-    private function render_ticket_row($topic)
+    protected function render_ticket_row($topic)
     {
         $ticket_id = extract_topic_identifier($topic['description']);
 

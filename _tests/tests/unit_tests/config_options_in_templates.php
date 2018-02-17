@@ -27,9 +27,9 @@ class config_options_in_templates_test_set extends cms_test_case
         foreach ($hooks as $hook => $ob) {
             $files = $ob->get_file_list();
 
-            foreach ($files as $file) {
-                if (preg_match('#^themes/default/.*/.*\.(tpl|txt|css|xml|js)$#', $file) != 0) {
-                    if (in_array($file, array(
+            foreach ($files as $path) {
+                if (preg_match('#^themes/default/.*/.*\.(tpl|txt|css|xml|js)$#', $path) != 0) {
+                    if (in_array($path, array(
                         'themes/default/templates_custom/BOOKING_START_SCREEN.tpl',
                         'themes/default/templates_custom/LOGIN_SCREEN.tpl',
                         'themes/default/templates_custom/BLOCK_MAIN_GOOGLE_MAP_USERS.tpl',
@@ -44,7 +44,7 @@ class config_options_in_templates_test_set extends cms_test_case
                         continue;
                     }
 
-                    $path = get_file_base() . '/' . $file;
+                    $path = get_file_base() . '/' . $path;
                     $c = file_get_contents($path);
 
                     $matches = array();
@@ -55,7 +55,7 @@ class config_options_in_templates_test_set extends cms_test_case
                         $ob = object_factory('Hook_config_' . filter_naughty_harsh($option, true));
                         $details = $ob->get_details();
                         $ok = (($details['addon'] == $hook) || ($details['addon'] == 'core') || (substr($details['addon'], 0, 5) == 'core_'));
-                        $this->assertTrue($ok, 'Template ' . $file . ' is using a config option ' . $option . ' from ' . $details['addon'] . ' without a guard');
+                        $this->assertTrue($ok, 'Template ' . $path . ' is using a config option ' . $option . ' from ' . $details['addon'] . ' without a guard');
                     }
                 }
             }

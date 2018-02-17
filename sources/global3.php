@@ -281,7 +281,7 @@ function handle_string_bom($contents)
         'GB-18030' => chr(hexdec('84')) . chr(hexdec('31')) . chr(hexdec('95')) . chr(hexdec('33')),
     );
 
-    $magic_data = substr($orig_file, 0, 4);
+    $magic_data = substr($contents, 0, 4);
 
     foreach ($boms as $charset => $bom) {
         if (substr($magic_data, strlen($bom)) == $bom) {
@@ -3493,7 +3493,7 @@ function send_http_output_ping()
     global $DOING_OUTPUT_PINGS;
     $DOING_OUTPUT_PINGS = true;
 
-    if (running_script('index')) {
+    if ((running_script('index')) && (is_cli())) {
         echo ' ';
     }
 }

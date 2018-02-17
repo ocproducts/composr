@@ -18,11 +18,11 @@
  */
 class galleries_test_set extends cms_test_case
 {
-    public $category_id;
-    public $access_mapping;
-    public $cms_gal;
-    public $cms_gal_alt;
-    public $cms_gal_category;
+    protected $category_id;
+    protected $access_mapping;
+    protected $cms_gal;
+    protected $cms_gal_alt;
+    protected $cms_gal_category;
 
     public function setUp()
     {

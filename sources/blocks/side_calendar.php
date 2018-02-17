@@ -315,7 +315,7 @@ class Block_side_calendar
      * @param  ?BINARY $private_events Whether to show private events (1) or public events (0) (null: both public and private)
      * @return array The filter
      */
-    public function get_filter($filter_map, $private_events)
+    protected function get_filter($filter_map, $private_events)
     {
         $filter = array();
 

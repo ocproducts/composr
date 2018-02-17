@@ -13,6 +13,8 @@
  * @package    testing_platform
  */
 
+// php _tests/index.php _resource_fs
+
 /*
 These tests test all var hooks. Some general Resource-FS tests are in the commandr_fs test set.
 */
@@ -22,12 +24,16 @@ These tests test all var hooks. Some general Resource-FS tests are in the comman
  */
 class _resource_fs_test_set extends cms_test_case
 {
-    public $resource_fs_obs;
-    public $paths = null;
+    protected $resource_fs_obs;
+    protected $paths = null;
 
     public function setUp()
     {
         parent::setUp();
+
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(0);
+        }
 
         push_query_limiting(false);
 
@@ -51,8 +57,8 @@ class _resource_fs_test_set extends cms_test_case
             }
 
             $path = get_file_base() . '/' . $dir . '/hooks/systems/commandr_fs/' . $commandr_fs_hook . '.php';
-            $contents = file_get_contents($path);
-            if (strpos($contents, ' extends Resource_fs_base') !== false) {
+            $c = file_get_contents($path);
+            if (strpos($c, ' extends Resource_fs_base') !== false) {
                 require_code('hooks/systems/commandr_fs/' . filter_naughty_harsh($commandr_fs_hook));
                 $ob = object_factory('Hook_commandr_fs_' . filter_naughty_harsh($commandr_fs_hook));
                 $this->resource_fs_obs[$commandr_fs_hook] = $ob;

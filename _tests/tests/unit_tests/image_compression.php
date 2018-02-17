@@ -65,30 +65,32 @@ class image_compression_test_set extends cms_test_case
             foreach (array('images', 'images_custom') as $dir) {
                 $base = get_file_base() . '/themes/' . $theme . '/' . $dir;
                 require_code('files2');
-                $files = get_directory_contents($base);
-                foreach ($files as $file) {
-                    if ((is_image($file, IMAGE_CRITERIA_WEBSAFE | IMAGE_CRITERIA_GD_READ)) && (substr($file, -8) != '.gif.png')) {
-                        $filesize = filesize($base . '/' . $file);
-
-                        // Approximate base size
-                        if (substr($file, -4) == '.gif') {
-                            $filesize -= 800; // For the palette (not in all gifs, but needed for non-trivial ones)
-                            $min_ratio = 0.8;
-                            if (is_ani($base . '/' . $file)) {
-                                continue; // Can't do animated gifs
-                            }
-                        } else {
-                            $filesize -= 73;
-                            $min_ratio = 0.28;
-                        }
-                        if ($filesize < 1) {
-                            $filesize = 1;
-                        }
-
-                        list($width, $height) = cms_getimagesize($base . '/' . $file);
-                        $area = $width * $height;
-                        $this->assertTrue(floatval($area) / floatval($filesize) > $min_ratio, 'Rubbish compression density on ' . $file . ' theme image');
+                $files = get_directory_contents($base, '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS);
+                foreach ($files as $path) {
+                    if ((!is_image($path, IMAGE_CRITERIA_WEBSAFE | IMAGE_CRITERIA_GD_READ)) || (substr($path, -8) == '.gif.png')) {
+                        continue;
                     }
+
+                    $filesize = filesize($base . '/' . $path);
+
+                    // Approximate base size
+                    if (substr($path, -4) == '.gif') {
+                        $filesize -= 800; // For the palette (not in all gifs, but needed for non-trivial ones)
+                        $min_ratio = 0.8;
+                        if (is_ani($base . '/' . $path)) {
+                            continue; // Can't do animated gifs
+                        }
+                    } else {
+                        $filesize -= 73;
+                        $min_ratio = 0.28;
+                    }
+                    if ($filesize < 1) {
+                        $filesize = 1;
+                    }
+
+                    list($width, $height) = cms_getimagesize($base . '/' . $path);
+                    $area = $width * $height;
+                    $this->assertTrue(floatval($area) / floatval($filesize) > $min_ratio, 'Rubbish compression density on ' . $path . ' theme image');
                 }
             }
         }

@@ -25,23 +25,23 @@ require_code('crud_module');
  */
 class Module_cms_news extends Standard_crud_module
 {
-    public $lang_type = 'NEWS';
-    public $select_name = 'TITLE';
-    public $code_require = 'news';
-    public $permissions_require = 'high';
-    public $permissions_cat_require = 'news';
-    public $permissions_cat_name = 'main_news_category';
-    public $user_facing = true;
-    public $seo_type = 'news';
-    public $content_type = 'news';
-    public $possibly_some_kind_of_upload = true;
-    public $upload = 'image';
-    public $menu_label = 'NEWS';
-    public $table = 'news';
-    public $orderer = 'title';
-    public $title_is_multi_lang = true;
+    protected $lang_type = 'NEWS';
+    protected $select_name = 'TITLE';
+    protected $code_require = 'news';
+    protected $permissions_require = 'high';
+    protected $permissions_cat_require = 'news';
+    protected $permissions_cat_name = 'main_news_category';
+    protected $user_facing = true;
+    protected $seo_type = 'news';
+    protected $content_type = 'news';
+    protected $possibly_some_kind_of_upload = true;
+    protected $upload = 'image';
+    protected $menu_label = 'NEWS';
+    protected $table = 'news';
+    protected $orderer = 'title';
+    protected $title_is_multi_lang = true;
 
-    public $donext_type = null;
+    protected $donext_type = null;
 
     /**
      * Find entry-points available within this module.
@@ -857,16 +857,16 @@ class Module_cms_news extends Standard_crud_module
  */
 class Module_cms_news_cat extends Standard_crud_module
 {
-    public $lang_type = 'NEWS_CATEGORY';
-    public $select_name = 'TITLE';
-    public $permissions_require = 'cat_high';
-    public $permission_module = 'news';
-    public $menu_label = 'NEWS';
-    public $table = 'news_categories';
-    public $orderer = 'nc_title';
-    public $title_is_multi_lang = true;
-    public $is_chained_with_parent_browse = true;
-    public $do_preview = null;
+    protected $lang_type = 'NEWS_CATEGORY';
+    protected $select_name = 'TITLE';
+    protected $permissions_require = 'cat_high';
+    protected $permission_module = 'news';
+    protected $menu_label = 'NEWS';
+    protected $table = 'news_categories';
+    protected $orderer = 'nc_title';
+    protected $title_is_multi_lang = true;
+    protected $is_chained_with_parent_browse = true;
+    protected $do_preview = null;
 
     /**
      * Standard crud_module table function.

@@ -236,10 +236,10 @@ abbr {
 }
 
 /* Give all browsers a 'q' tag with smart quotes */
-q:before {
+q::before {
 	content: "\201c";
 }
-q:after {
+q::after {
 	content: "\201d";
 }
 
@@ -823,13 +823,13 @@ header h1 {
 	font-weight: bold;
 }
 
-.breadcrumbs .sep:after, .associated-breadcrumbs .sep:after {
+.breadcrumbs .sep:::after, .associated-breadcrumbs .sep:::after {
 	content: " \00A0\00BB " !important;
 	display: inline-block;
 	font-size: 0.9em;
 	opacity: 0.5;
 }
-.breadcrumbs .sep:last-child:after, .associated-breadcrumbs .sep:last-child:after {
+.breadcrumbs .sep:last-child::after, .associated-breadcrumbs .sep:last-child::after {
 	content: "" !important;
 }
 
@@ -1184,12 +1184,12 @@ footer .global-minilinks .footer-links {
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.footer-links>li:before {
+	.footer-links>li::before {
 		vertical-align: -20%;
 		padding: 0 0.5em 0 0.1em;
 		content: "\00b7" !important; /* a &middot; */
 	}
-	.footer-links li:first-child:before {
+	.footer-links li:first-child::before {
 		/* Undoes the middot/comma separator */
 		content: "" !important;
 		padding-left: 0 !important;
@@ -1264,12 +1264,12 @@ body .accessibility-hidden { /* Contents should be made visible (or interpreted)
 	overflow: hidden;
 }
 
-.clearfix:before,
-.clearfix:after {
+.clearfix::before,
+.clearfix::after {
 	content: " ";
 	display: table;
 }
-.clearfix:after {
+.clearfix::after {
 	clear: both;
 }
 
@@ -1490,10 +1490,10 @@ body input.button-hyperlink, body input.button-hyperlink:hover {
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.trinav-mid.text>span:before {
+	.trinav-mid.text>span::before {
 		content: "(";
 	}
-	.trinav-mid.text>span:after {
+	.trinav-mid.text>span::after {
 		content: ")";
 	}
 /*{+END}*/
@@ -1814,7 +1814,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .global-side-panel .boxless-space .box .box + .box {
 	padding-top: 0;
 }
-.global-middle .boxless-space .box .box + .box:before {
+.global-middle .boxless-space .box .box + .box::before {
 	content: "";
 	width: 60%;
 	display: block;
@@ -1822,7 +1822,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	border-top: 2px dotted {$GET,pale_border} !important;
 	padding-top: 0.4em;
 }
-.comments-wrapper .boxless-space .box + .box:before {
+.comments-wrapper .boxless-space .box + .box::before {
 	content: "";
 	width: 60%;
 	display: block;
@@ -2374,7 +2374,7 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 		border-bottom: 1px solid {$GET,standard_border};
 		margin-bottom: 1em;
 	}
-	.responsive-table>tbody>tr>th[data-th]:before, .responsive-table>tbody>tr>td[data-th]:before, .responsive-table>tfoot>tr>th[data-th]:before, .responsive-table>tfoot>tr>td[data-th]:before, .responsive-table>tr>th[data-th]:before, .responsive-table>tr>td[data-th]:before {
+	.responsive-table>tbody>tr>th[data-th]::before, .responsive-table>tbody>tr>td[data-th]::before, .responsive-table>tfoot>tr>th[data-th]::before, .responsive-table>tfoot>tr>td[data-th]::before, .responsive-table>tr>th[data-th]::before, .responsive-table>tr>td[data-th]::before {
 		content: attr(data-th) ":";
 		font-weight: bold;
 		width: 7em;
@@ -2408,11 +2408,11 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	.responsive-table-bolded-first-column>tbody>tr>th:first-child, .responsive-table-bolded-first-column>tbody>tr>td:first-child, .responsive-table-bolded-first-column>tfoot>tr>th:first-child, .responsive-table-bolded-first-column>tfoot>tr>td:first-child, .responsive-table-bolded-first-column>tr>th:first-child, .responsive-table-bolded-first-column>tr>td:first-child {
 		font-weight: bold;
 	}
-	.responsive-table-bolded-first-column>tbody>tr>th[data-th]:before, .responsive-table-bolded-first-column>tbody>tr>td[data-th]:before, .responsive-table-bolded-first-column>tfoot>tr>th[data-th]:before, .responsive-table-bolded-first-column>tfoot>tr>td[data-th]:before, .responsive-table-bolded-first-column>tr>th[data-th]:before, .responsive-table-bolded-first-column>tr>td[data-th]:before {
+	.responsive-table-bolded-first-column>tbody>tr>th[data-th]::before, .responsive-table-bolded-first-column>tbody>tr>td[data-th]::before, .responsive-table-bolded-first-column>tfoot>tr>th[data-th]::before, .responsive-table-bolded-first-column>tfoot>tr>td[data-th]::before, .responsive-table-bolded-first-column>tr>th[data-th]::before, .responsive-table-bolded-first-column>tr>td[data-th]::before {
 		font-weight: normal; /* Overridden from above */
 	}
 
-	.responsive-table-separate-lines>tbody>tr>th[data-th]:before, .responsive-table-separate-lines>tbody>tr>td[data-th]:before, .responsive-table-separate-lines>tfoot>tr>th[data-th]:before, .responsive-table-separate-lines>tfoot>tr>td[data-th]:before, .responsive-table-separate-lines>tr>th[data-th]:before, .responsive-table-separate-lines>tr>td[data-th]:before {
+	.responsive-table-separate-lines>tbody>tr>th[data-th]::before, .responsive-table-separate-lines>tbody>tr>td[data-th]::before, .responsive-table-separate-lines>tfoot>tr>th[data-th]::before, .responsive-table-separate-lines>tfoot>tr>td[data-th]::before, .responsive-table-separate-lines>tr>th[data-th]::before, .responsive-table-separate-lines>tr>td[data-th]::before {
 		width: auto;
 		display: block;
 		margin-bottom: 0.5em;
@@ -3246,7 +3246,7 @@ dl.compact-list>dt {
 .global-side-panel .box dl.compact-list>dt {
 	margin-left: 0;
 }
-dl.compact-list>dt:after {
+dl.compact-list>dt::after {
 	content: ":";
 }
 dl.compact-list>dd {
@@ -3447,84 +3447,84 @@ ul.horizontal-links / ul.horizontal-links-comma - a group of associated links di
 There is 'actions-list' too (defined elsewhere). These are for links that are given more focus as key navigation mechanisms in a task-based UI.
 */
 
-ul.associated-links-block-group.horizontal-links>li:first-child:before, p.associated-link:before, div.associated-link:before {
+ul.associated-links-block-group.horizontal-links>li:first-child::before, p.associated-link::before, div.associated-link::before {
 	opacity: 0.7;
 	font-size: 0.8em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group.horizontal-links>li:first-child:before, p.associated-link:before, div.associated-link:before {
+	ul.associated-links-block-group.horizontal-links>li:first-child::before, p.associated-link::before, div.associated-link::before {
 		content: "( " !important;
 	}
 /*{+END}*/
-ul.associated-links-block-group.horizontal-links>li:last-child:after, p.associated-link:after, div.associated-link:after {
+ul.associated-links-block-group.horizontal-links>li:last-child::after, p.associated-link::after, div.associated-link::after {
 	opacity: 0.7;
 	font-size: 0.8em;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group.horizontal-links>li:last-child:after, p.associated-link:after, div.associated-link:after {
+	ul.associated-links-block-group.horizontal-links>li:last-child::after, p.associated-link::after, div.associated-link::after {
 		content: " )" !important;
 	}
 /*{+END}*/
 span.associated-link, a.associated-link, form.associated-link {
 	white-space: nowrap;
 }
-ul.associated-links-block-group>li:before, span.associated-link:before, a.associated-link:before, form.associated-link:before {
+ul.associated-links-block-group>li::before, span.associated-link::before, a.associated-link::before, form.associated-link::before {
 	opacity: 0.7;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group>li:before, span.associated-link:before, a.associated-link:before, form.associated-link:before {
+	ul.associated-links-block-group>li::before, span.associated-link::before, a.associated-link::before, form.associated-link::before {
 		content: "(" !important;
 	}
 /*{+END}*/
-ul.associated-links-block-group>li:first-child:before, span.associated-link:first-child:before, a.associated-link:first-child:before, form.associated-link:first-child:before {
+ul.associated-links-block-group>li:first-child::before, span.associated-link:first-child::before, a.associated-link:first-child::before, form.associated-link:first-child::before {
 	vertical-align: baseline !important;
 }
-ul.associated-links-block-group.horizontal-links>li:after { /* Undoes the above rules for if 'horizontal-links' is set (the rule further up will run instead and the middot one below) */
+ul.associated-links-block-group.horizontal-links>li::after { /* Undoes the above rules for if 'horizontal-links' is set (the rule further up will run instead and the middot one below) */
 	content: "" !important;
 }
-ul.associated-links-block-group>li:after, span.associated-link:after, a.associated-link:after, form.associated-link:after {
+ul.associated-links-block-group>li::after, span.associated-link::after, a.associated-link::after, form.associated-link::after {
 	opacity: 0.7;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group>li:after, span.associated-link:after, a.associated-link:after, form.associated-link:after {
+	ul.associated-links-block-group>li::after, span.associated-link::after, a.associated-link::after, form.associated-link::after {
 		content: ")" !important;
 	}
 /*{+END}*/
 
-ul.associated-links-block-group.horizontal-links>li:before,
-.horizontal-meta-details li:before,
-.horizontal-links>li:before,
-.horizontal-ticker li:before {
+ul.associated-links-block-group.horizontal-links>li::before,
+.horizontal-meta-details li::before,
+.horizontal-links>li::before,
+.horizontal-ticker li::before {
 	vertical-align: -20%;
 }
 /*{+START,CSS_MODE,desktop}*/
-	ul.associated-links-block-group.horizontal-links>li:before,
-	.horizontal-meta-details li:before,
-	.horizontal-links>li:before,
-	.horizontal-ticker li:before {
+	ul.associated-links-block-group.horizontal-links>li::before,
+	.horizontal-meta-details li::before,
+	.horizontal-links>li::before,
+	.horizontal-ticker li::before {
 		padding: 0 0.5em 0 0.1em;
 		content: "\00b7" !important; /* a &middot; */
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	ul.associated-links-block-group.horizontal-links>li:before,
-	.horizontal-meta-details li:before,
-	.horizontal-links>li:before,
-	.horizontal-ticker li:before {
+	ul.associated-links-block-group.horizontal-links>li::before,
+	.horizontal-meta-details li::before,
+	.horizontal-links>li::before,
+	.horizontal-ticker li::before {
 		padding: 0 0.2em 0 0;
 		margin-left: -0.2em;
 		content: "|" !important;
 		font-size: 0.8em;
 	}
-	.with-images ul.associated-links-block-group.horizontal-links>li:before,
-	.with-images .horizontal-meta-details li:before,
-	.with-images .horizontal-links>li:before,
-	.with-images .horizontal-ticker li:before {
+	.with-images ul.associated-links-block-group.horizontal-links>li::before,
+	.with-images .horizontal-meta-details li::before,
+	.with-images .horizontal-links>li::before,
+	.with-images .horizontal-ticker li::before {
 		margin-left: 0.5em;
 		content: "" !important;
 	}
 /*{+END}*/
-.horizontal-meta-details li:before {
+.horizontal-meta-details li::before {
 	vertical-align: middle;
 }
 .horizontal-buttons li {
@@ -3534,14 +3534,14 @@ ul.associated-links-block-group.horizontal-links>li:before,
 	/* Undoes the li padding defined above */
 	padding-left: 0 !important;
 }
-.horizontal-links-comma li:before {
+.horizontal-links-comma li::before {
 	content: ", \A";
 }
-.horizontal-meta-details li:first-child:before,
-.horizontal-links li:first-child:before,
-.horizontal-buttons li:first-child:before,
-.horizontal-ticker li:first-child:before,
-.horizontal-links-comma li:first-child:before {
+.horizontal-meta-details li:first-child::before,
+.horizontal-links li:first-child::before,
+.horizontal-buttons li:first-child::before,
+.horizontal-ticker li:first-child::before,
+.horizontal-links-comma li:first-child::before {
 	/* Undoes the middot/comma separator */
 	content: "" !important;
 	padding-left: 0 !important;
@@ -3624,7 +3624,7 @@ ul.buttons-group, ul.associated-links-block-group {
 	font-weight: bold;
 }
 
-.alt-field:before {
+.alt-field::before {
 	content: "\00bb"; /* raquo */
 	padding-left: 1em;
 	padding-right: 0.2em;
@@ -3633,7 +3633,7 @@ ul.buttons-group, ul.associated-links-block-group {
 	font-style: italic;
 	font-weight: normal;
 }
-.related-field:before {
+.related-field::before {
 	font-style: normal;
 	content: "\203a"; /* rsaquo */
 	padding-bottom: 5px;
@@ -3660,7 +3660,7 @@ ul.buttons-group, ul.associated-links-block-group {
 ::-moz-placeholder { /* Firefox */
 	color: {$GET,unfilled_input_text} !important;
 }
-:-ms-input-placeholder { /* IE */
+::-ms-input-placeholder { /* IE */
 	color: {$GET,unfilled_input_text} !important;
 }
 
@@ -4992,7 +4992,7 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 	margin: 0.5em 0;
 }
 
-span:not(:empty)+#lightbox-position-in-set:before, span:not(:empty)+#lightbox-full-link:before {
+span:not(:empty)+#lightbox-position-in-set::before, span:not(:empty)+#lightbox-full-link::before {
 	margin-left: 0.25em;
 	content: "\00b7" !important;
 	padding-right: 0.5em;

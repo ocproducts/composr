@@ -18,7 +18,7 @@
  */
 class usergroup_subscriptions_test_set extends cms_test_case
 {
-    public $usergroup_subscription_id;
+    protected $usergroup_subscription_id;
 
     public function setUp()
     {

@@ -23,25 +23,25 @@ class standard_dir_files_test_set extends cms_test_case
         parent::setUp();
 
         if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
+            @set_time_limit(300);
         }
     }
 
     public function testStandardDirFiles()
     {
-        $this->do_dir(get_file_base());
+        $this->do_dir(get_file_base(), '');
     }
 
-    private function do_dir($dir)
+    protected function do_dir($dir, $dir_stub)
     {
-        $contents = 0;
+        $contents_count = 0;
 
         require_code('files');
 
         $dh = opendir($dir);
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
-                if (should_ignore_file(preg_replace('#^' . preg_quote(get_file_base() . '/', '#') . '#', '', $dir . '/') . $file, IGNORE_NONBUNDLED_VERY_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_THEMES, 0)) {
+                if (should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_NONBUNDLED_VERY_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_THEMES)) {
                     continue;
                 }
 
@@ -50,15 +50,15 @@ class standard_dir_files_test_set extends cms_test_case
                 }
 
                 if (is_dir($dir . '/' . $file)) {
-                    $this->do_dir($dir . '/' . $file);
+                    $this->do_dir($dir . '/' . $file, (($dir_stub == '') ? '' : ($dir_stub . '/')) . $file);
                 } else {
-                    $contents++;
+                    $contents_count++;
                 }
             }
             closedir($dh);
         }
 
-        if ($contents > 0) {
+        if ($contents_count > 0) {
             if (
                 (!file_exists($dir . '/index.php')) &&
                 (strpos($dir, 'ckeditor') === false) &&
@@ -89,13 +89,13 @@ class standard_dir_files_test_set extends cms_test_case
             $a = array();
             $_dir = get_file_base() . '/sources/hooks/' . $dir;
             $dh = opendir($_dir);
-            while (($f = readdir($dh)) !== false) {
-                if ($f == '.DS_Store') {
+            while (($file = readdir($dh)) !== false) {
+                if ($file == '.DS_Store') {
                     continue;
                 }
 
-                if (is_file($_dir . '/' . $f . 'index.html')) {
-                    $a[] = $f;
+                if (is_file($_dir . '/' . $file . 'index.html')) {
+                    $a[] = $file;
                 }
             }
             closedir($dh);
@@ -104,13 +104,13 @@ class standard_dir_files_test_set extends cms_test_case
             $b = array();
             $_dir = get_file_base() . '/sources_custom/hooks/' . $dir;
             $dh = opendir($_dir);
-            while (($f = readdir($dh)) !== false) {
-                if ($f == '.DS_Store') {
+            while (($file = readdir($dh)) !== false) {
+                if ($file == '.DS_Store') {
                     continue;
                 }
 
-                if (is_file($_dir . '/' . $f . 'index.html')) {
-                    $b[] = $f;
+                if (is_file($_dir . '/' . $file . 'index.html')) {
+                    $b[] = $file;
                 }
             }
             closedir($dh);

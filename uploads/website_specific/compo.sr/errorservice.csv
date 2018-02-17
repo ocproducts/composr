@@ -3,7 +3,7 @@ Table 'xxx' is marked as crashed and should be repaired,MySQL could not serve a 
 
 This will only happen with some languages, on some versions/configurations of MySQL.","[b]This is a particularly technical problem. You may prefer to seek help to resolve it.[/b]
 
-Your webhost will almost certainly provide a hosting control panel with a tool called 'phpMyAdmin' (it may be called something else, such as 'Database management').
+Your webhost will almost certainly provide a webhosting control panel with a tool called 'phpMyAdmin' (it may be called something else, such as 'Database management').
 1) Access / Log in to this tool
 2) Make sure you are in the database that Composr uses
 3) Take a backup just in case: Click 'Export', make sure 'Structure' and 'Data' are both ticked (checked), click 'Go' and make sure it properly saves to your computer
@@ -107,7 +107,7 @@ The requested resource (xxx) does not exist,"A resource (usually an entry or a c
 It is also possible that there is some form of corruption in the database. For example, an entry says it is in a category that doesn't actually exist.","Fix any invalid links.
 
 If you believe you have found a bug in the software, report it."
-Table 'xxx' is marked as crashed and should be repaired,There is a corrupt MySQL database table. Composr needs this table to function.,"Something outside the control of Composr caused this error, such as a hard disk fault, a power surge, a power cut, or a forced computer reset.","Your webhost will almost certainly provide a hosting control panel with a tool called 'phpMyAdmin' (it may be called something else, such as 'Database management').
+Table 'xxx' is marked as crashed and should be repaired,There is a corrupt MySQL database table. Composr needs this table to function.,"Something outside the control of Composr caused this error, such as a hard disk fault, a power surge, a power cut, or a forced computer reset.","Your webhost will almost certainly provide a webhosting control panel with a tool called 'phpMyAdmin' (it may be called something else, such as 'Database management').
 1) Access / Log in to this tool
 2) Make sure you are in the database that Composr uses
 3) Tick (check) the table referenced in the error message.

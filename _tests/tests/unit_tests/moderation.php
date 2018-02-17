@@ -18,7 +18,7 @@
  */
 class moderation_test_set extends cms_test_case
 {
-    public $mod_id;
+    protected $mod_id;
 
     public function setUp()
     {

@@ -18,8 +18,8 @@
  */
 class user_test_set extends cms_test_case
 {
-    public $member_id;
-    public $access_mapping;
+    protected $member_id;
+    protected $access_mapping;
 
     public function setUp()
     {

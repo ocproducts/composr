@@ -13,6 +13,8 @@
  * @package    testing_platform
  */
 
+// php _tests/index.php _installer
+
 /**
  * Composr test case class (unit testing).
  */
@@ -91,7 +93,7 @@ class _installer_test_set extends cms_test_case
         }
     }
 
-    private function doHeadlessInstall($safe_mode)
+    protected function doHeadlessInstall($safe_mode)
     {
         if (strpos(get_db_type(), 'mysql') === false) {
             return;

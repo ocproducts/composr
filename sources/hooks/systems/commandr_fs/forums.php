@@ -357,7 +357,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
      * @param  array $properties Properties
      * @param  AUTO_LINK $topic_id The topic ID
      */
-    private function save_ticket_associations($properties, $topic_id)
+    protected function save_ticket_associations($properties, $topic_id)
     {
         if (addon_installed('tickets')) {
             if (isset($properties['ticket_associations'])) {

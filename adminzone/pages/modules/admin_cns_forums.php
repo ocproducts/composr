@@ -26,21 +26,21 @@ require_javascript('cns_forum');
  */
 class Module_admin_cns_forums extends Standard_crud_module
 {
-    public $lang_type = 'FORUM';
-    public $select_name = 'NAME';
-    public $protect_first = 1;
-    public $archive_entry_point = '_SEARCH:forumview';
-    public $archive_label = 'SECTION_FORUMS';
-    public $view_entry_point = '_SEARCH:forumview:id=_ID';
-    public $special_edit_frontend = true;
-    public $privilege_page = 'topics';
-    public $permission_module = 'forums';
-    public $content_type = 'forum';
-    public $functions = 'moduleAdminCnsForums';
-    public $menu_label = 'SECTION_FORUMS';
-    public $do_preview = null;
-    public $donext_entry_content_type = 'forum';
-    public $donext_category_content_type = null;
+    protected $lang_type = 'FORUM';
+    protected $select_name = 'NAME';
+    protected $protect_first = 1;
+    protected $archive_entry_point = '_SEARCH:forumview';
+    protected $archive_label = 'SECTION_FORUMS';
+    protected $view_entry_point = '_SEARCH:forumview:id=_ID';
+    protected $special_edit_frontend = true;
+    protected $privilege_page = 'topics';
+    protected $permission_module = 'forums';
+    protected $content_type = 'forum';
+    protected $functions = 'moduleAdminCnsForums';
+    protected $menu_label = 'SECTION_FORUMS';
+    protected $do_preview = null;
+    protected $donext_entry_content_type = 'forum';
+    protected $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.

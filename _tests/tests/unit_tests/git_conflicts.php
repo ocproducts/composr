@@ -21,15 +21,19 @@ class git_conflicts_test_set extends cms_test_case
     public function testValidCode()
     {
         if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
+            @set_time_limit(300);
         }
 
         require_code('files2');
-        $contents = get_directory_contents(get_file_base());
-        foreach ($contents as $c) {
-            if ((substr($c, -4) == '.php') && (basename($c) != 'MessageFormatter.php') && (basename($c) != 'errorlog.php') && (basename($c) != 'phpstub.php')) {
-                $this->assertTrue(strpos(file_get_contents($c), '<<<' . '<') === false, $c);
+
+        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_BUNDLED_VOLATILE, true, true, array('php'));
+        $files[] = 'install.php';
+        foreach ($files as $path) {
+            if ((basename($path) == 'MessageFormatter.php') || (basename($path) == 'phpstub.php')) {
+                continue;
             }
+
+            $this->assertTrue(strpos(file_get_contents(get_file_base() . '/' . $path), '<<<' . '<') === false, $path);
         }
     }
 }

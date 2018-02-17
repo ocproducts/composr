@@ -145,8 +145,6 @@ There are some extra features in the upgrader that aren't a part of the normal f
 
  - [page="_SEARCH:sup_professional_upgrading"]Professional upgrading[/page]
  - [page="_SEARCH:sup_site_cloning"]Cloning your site[/page]
- - [page="_SEARCH:tut_install"]Basic Installation[/page]
- - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
  - [page="_SEARCH:tut_backup"]Backing up your site[/page]
  - [page="_SEARCH:tut_software_feedback"]Problem and feedback reports, and development policies[/page]
  - [page="_SEARCH:tut_theme_lifecycle"]Theme Lifecycle[/page]

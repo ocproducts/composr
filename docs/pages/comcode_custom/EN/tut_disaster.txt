@@ -4,7 +4,7 @@
 
 This tutorial will go through some solutions to 'disastrous' scenarios that could happen on an unstable web server configuration. It does not cover all that could go wrong by any means, as there are literally an infinite number of things that could go wrong if Composr is running in an unreliable environment.
 
-I am going to assume that you have access to phpMyAdmin for the purposes of this tutorial. phpMyAdmin is a user-friendly web-based frontend to MySQL, and is available from most hosting control panels. For more information, see the [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page] tutorial.
+I am going to assume that you have access to phpMyAdmin for the purposes of this tutorial. phpMyAdmin is a user-friendly web-based frontend to MySQL, and is available from most webhosting control panels. For more information, see the [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page] tutorial.
 
 If you need a quick data rescue, consider [page=":support"]using ocProducts support[/page] (it will be handled more quickly if you already have support credits in your account). Or, your preferred third-party developer.
 

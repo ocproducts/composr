@@ -39,7 +39,6 @@ class Hook_stats_filedump
 
         require_lang('filedump');
 
-        require_code('files');
         require_code('files2');
 
         $bits = new Tempcode();

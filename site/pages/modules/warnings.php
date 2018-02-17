@@ -671,7 +671,7 @@ class Module_warnings extends Standard_crud_module
      * @param  MEMBER $member_id Member ID
      * @return array List of content rows
      */
-    private function find_member_content($member_id)
+    protected function find_member_content($member_id)
     {
         if (!has_privilege(get_member(), 'delete_highrange_content')) {
             return array();

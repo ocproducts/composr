@@ -108,7 +108,7 @@ function init__site()
         exit();
     }
 
-    if (running_script('index')) {
+    if ((running_script('index')) && (!is_cli())) {
         $access_host = preg_replace('#:.*#', '', get_local_hostname());
 
         // Detect bad access domain

@@ -162,6 +162,7 @@ class Hook_health_check_security extends Hook_Health_Check
             $full_path = get_custom_file_base() . '/' . $c;
             $exists = is_file($full_path);
             if (!$exists) {
+                require_code('files');
                 cms_file_put_contents_safe($full_path, '');
             }
             $http_result = cms_http_request(get_custom_base_url() . '/' . $c, array('trigger_error' => false));
@@ -189,6 +190,7 @@ class Hook_health_check_security extends Hook_Health_Check
         $path = 'uploads/website_specific/orphaned-test.txt';
         require_code('crypt');
         $data = get_secure_random_string();
+        require_code('files');
         cms_file_put_contents_safe(get_custom_file_base() . '/' . $path, $data);
         $result = http_get_contents(get_custom_base_url() . '/' . $path, array('trigger_error' => false));
         $this->assertTrue($result === $data, 'Website does not seem to be running on the base URL that is configured');

@@ -62,7 +62,8 @@ class Hook_addon_registry_linux_helper_scripts
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_adv_install',
+            'tut_install_permissions',
+            'tut_install_linux',
         );
     }
 

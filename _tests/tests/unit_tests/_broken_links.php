@@ -13,6 +13,8 @@
  * @package    testing_platform
  */
 
+// php _tests/index.php _broken_links
+
 /**
  * Composr test case class (unit testing).
  */
@@ -45,15 +47,16 @@ class _broken_links_test_set extends cms_test_case
     {
         set_option('is_on_comcode_page_cache', '1');
 
-        @set_time_limit(10000);
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(10000);
+        }
+        disable_php_memory_limit();
 
         $path = get_file_base() . '/docs/pages/comcode_custom/' . fallback_lang();
-        $files = get_directory_contents($path, $path);
+        $files = get_directory_contents($path, $path, 0, true, true, array('txt'));
         foreach ($files as $file) {
-            if (substr($file, -4) == '.txt') {
-                $tempcode = request_page(basename($file, '.txt'), true, 'docs');
-                $this->scanHTML($tempcode->evaluate());
-            }
+            $tempcode = request_page(basename($file, '.txt'), true, 'docs');
+            $this->scanHTML($tempcode->evaluate());
         }
     }
 
@@ -94,12 +97,10 @@ class _broken_links_test_set extends cms_test_case
     {
         foreach (array('templates', 'templates_custom') as $subdir) {
             $path = get_file_base() . '/themes/default/' . $subdir;
-            $files = get_directory_contents($path);
+            $files = get_directory_contents($path, '', 0, true, true, array('tpl'));
             foreach ($files as $file) {
-                if (substr($file, -4) == '.tpl') {
-                    $contents = file_get_contents($path . '/' . $file);
-                    $this->scanHTML($contents);
-                }
+                $c = file_get_contents($path . '/' . $file);
+                $this->scanHTML($c);
             }
         }
     }

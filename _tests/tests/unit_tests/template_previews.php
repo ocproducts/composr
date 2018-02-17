@@ -20,7 +20,7 @@
  */
 class template_previews_test_set extends cms_test_case
 {
-    public $template_id;
+    protected $template_id;
 
     public function setUp()
     {
@@ -49,9 +49,9 @@ class template_previews_test_set extends cms_test_case
     {
         $templates = array();
         $dh = opendir(get_file_base() . '/themes/default/templates');
-        while (($f = readdir($dh)) !== false) {
-            if ((strtolower(substr($f, -4)) == '.tpl') && ($f[0] != '.')) {
-                $templates[] = 'templates/' . $f;
+        while (($file = readdir($dh)) !== false) {
+            if ((strtolower(substr($file, -4)) == '.tpl') && ($file[0] != '.')) {
+                $templates[] = 'templates/' . $file;
             }
         }
         closedir($dh);

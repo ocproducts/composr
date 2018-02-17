@@ -616,7 +616,7 @@ function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mod
             $delete_where = $extra_field_data;
         }
         elseif ($replace_mode == TABLE_REPLACE_MODE_SEVERE) {
-            $delete_where = null;
+            $delete_where = array();
         }
 
         if (count($lang_fields) != 0 || count($upload_fields) != 0) {

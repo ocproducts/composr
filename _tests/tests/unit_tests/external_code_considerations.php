@@ -137,32 +137,32 @@ class external_code_considerations_test_set extends cms_test_case
             );
             foreach ($dirs as $dir => $subdirs_only) {
                 $dh = opendir(get_file_base() . '/' . $dir);
-                while (($f = readdir($dh)) !== false) {
-                    if ($f[0] == '.') {
+                while (($file = readdir($dh)) !== false) {
+                    if ($file[0] == '.') {
                         continue;
                     }
 
-                    if (is_numeric(get_file_extension($f))) {
+                    if (is_numeric(get_file_extension($file))) {
                         continue; // Backup file
                     }
 
-                    if (in_array($dir . '/' . $f, $skip)) {
+                    if (in_array($dir . '/' . $file, $skip)) {
                         continue;
                     }
 
-                    if ($subdirs_only && !is_dir(get_file_base() . '/' . $dir . '/' . $f)) {
+                    if ($subdirs_only && !is_dir(get_file_base() . '/' . $dir . '/' . $file)) {
                         continue;
                     }
 
-                    if (is_dir(get_file_base() . '/' . $dir . '/' . $f)) {
-                        $contents = scandir(get_file_base() . '/' . $dir . '/' . $f);
-                        if (($contents == array('.', '..')) || ($contents == array('.', '..', '.DS_Store'))) {
+                    if (is_dir(get_file_base() . '/' . $dir . '/' . $file)) {
+                        $files = scandir(get_file_base() . '/' . $dir . '/' . $file);
+                        if (($files == array('.', '..')) || ($files == array('.', '..', '.DS_Store'))) {
                             // Empty directory
                             continue;
                         }
                     }
 
-                    $this->assertTrue(in_array($dir . '/' . $f, $all_parts), 'Should be included in line_count.sh/.editorconfig or set as a skip exception in this test: ' . $dir . '/' . $f);
+                    $this->assertTrue(in_array($dir . '/' . $file, $all_parts), 'Should be included in line_count.sh/.editorconfig or set as a skip exception in this test: ' . $dir . '/' . $file);
                 }
                 closedir($dh);
             }

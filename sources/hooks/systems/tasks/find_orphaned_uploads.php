@@ -81,7 +81,7 @@ class Hook_task_find_orphaned_uploads
      * @param  PATH $dir Path to search
      * @return array List of files
      */
-    private function do_dir($dir)
+    protected function do_dir($dir)
     {
         task_log($this, 'Processing ' . $dir . ' directory for uploads');
 
@@ -90,11 +90,13 @@ class Hook_task_find_orphaned_uploads
         $dh = @opendir($_dir);
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
-                if (in_array($file, array('filedump', 'auto_thumbs', 'website_specific', 'index.html', '.htaccess'))) {
-                    continue;
-                }
-
                 if ($file[0] != '.') {
+                    if ($dir == 'uploads') {
+                        if (in_array($file, array('filedump', 'auto_thumbs', 'website_specific', 'index.html', '.htaccess'))) {
+                            continue;
+                        }
+                    }
+
                     if (is_file($_dir . '/' . $file)) {
                         $out[] = $dir . '/' . $file;
                     } elseif (is_dir($_dir . '/' . $file)) {

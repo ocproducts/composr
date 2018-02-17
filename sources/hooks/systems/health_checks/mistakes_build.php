@@ -279,6 +279,10 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             $pages += find_all_pages($zone, 'comcode/' . $lang, 'txt', false, null, FIND_ALL_PAGES__ALL);
 
             foreach ($pages as $page => $page_dir) {
+                if (!is_string($page)) {
+                    $page = strval($page);
+                }
+
                 $_path = (($zone == '') ? '' : ($zone . '/')) . 'pages/' . $page_dir . '/' . $page . '.txt';
                 $file_path = get_custom_file_base() . '/' . $_path;
                 if (!is_file($file_path)) {

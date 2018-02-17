@@ -20,19 +20,19 @@ require_code('crud_module');
  */
 class Module_cms_booking extends Standard_crud_module
 {
-    public $lang_type = 'BOOKABLE';
-    public $select_name = 'TITLE';
-    public $code_require = 'booking';
-    public $permissions_require = 'cat_high';
-    public $user_facing = false;
-    public $menu_label = 'BOOKINGS';
-    public $orderer = 'sort_order';
-    public $orderer_is_multi_lang = false;
-    public $title_is_multi_lang = true;
-    public $table = 'bookable';
-    public $bookings_crud_module;
+    protected $lang_type = 'BOOKABLE';
+    protected $select_name = 'TITLE';
+    protected $code_require = 'booking';
+    protected $permissions_require = 'cat_high';
+    protected $user_facing = false;
+    protected $menu_label = 'BOOKINGS';
+    protected $orderer = 'sort_order';
+    protected $orderer_is_multi_lang = false;
+    protected $title_is_multi_lang = true;
+    protected $table = 'bookable';
+    protected $bookings_crud_module;
 
-    public $donext_type = null;
+    protected $donext_type = null;
 
     /**
      * Find entry-points available within this module.
@@ -394,18 +394,18 @@ class Module_cms_booking extends Standard_crud_module
  */
 class Module_cms_booking_supplements extends Standard_crud_module
 {
-    public $lang_type = 'BOOKABLE_SUPPLEMENT';
-    public $select_name = 'EXPLANATION';
-    public $code_require = 'booking';
-    public $permissions_require = 'cat_high';
-    public $user_facing = false;
-    public $menu_label = 'BOOKINGS';
-    public $orderer = 'sort_order';
-    public $orderer_is_multi_lang = false;
-    public $title_is_multi_lang = true;
-    public $table = 'bookable_supplement';
+    protected $lang_type = 'BOOKABLE_SUPPLEMENT';
+    protected $select_name = 'EXPLANATION';
+    protected $code_require = 'booking';
+    protected $permissions_require = 'cat_high';
+    protected $user_facing = false;
+    protected $menu_label = 'BOOKINGS';
+    protected $orderer = 'sort_order';
+    protected $orderer_is_multi_lang = false;
+    protected $title_is_multi_lang = true;
+    protected $table = 'bookable_supplement';
 
-    public $donext_type = null;
+    protected $donext_type = null;
 
     /**
      * Standard crud_module table function.
@@ -589,18 +589,18 @@ class Module_cms_booking_supplements extends Standard_crud_module
  */
 class Module_cms_booking_blacks extends Standard_crud_module
 {
-    public $lang_type = 'BOOKABLE_BLACKED';
-    public $select_name = 'EXPLANATION';
-    public $code_require = 'booking';
-    public $permissions_require = 'cat_high';
-    public $user_facing = false;
-    public $menu_label = 'BOOKINGS';
-    public $orderer = 'id';
-    public $orderer_is_multi_lang = false;
-    public $title_is_multi_lang = true;
-    public $table = 'bookable_blacked';
+    protected $lang_type = 'BOOKABLE_BLACKED';
+    protected $select_name = 'EXPLANATION';
+    protected $code_require = 'booking';
+    protected $permissions_require = 'cat_high';
+    protected $user_facing = false;
+    protected $menu_label = 'BOOKINGS';
+    protected $orderer = 'id';
+    protected $orderer_is_multi_lang = false;
+    protected $title_is_multi_lang = true;
+    protected $table = 'bookable_blacked';
 
-    public $donext_type = null;
+    protected $donext_type = null;
 
     /**
      * Standard crud_module table function.
@@ -772,19 +772,19 @@ class Module_cms_booking_blacks extends Standard_crud_module
  */
 class Module_cms_booking_bookings extends Standard_crud_module
 {
-    public $lang_type = 'BOOKING';
-    public $select_name = 'MEMBER_ID';
-    public $code_require = 'booking';
-    public $permissions_require = 'high';
-    public $user_facing = false;
-    public $menu_label = 'BOOKINGS';
-    public $orderer = 'id';
-    public $title_is_multi_lang = true;
-    public $table = 'booking';
-    public $type_code = 'booking';
-    public $non_integer_id = true;
+    protected $lang_type = 'BOOKING';
+    protected $select_name = 'MEMBER_ID';
+    protected $code_require = 'booking';
+    protected $permissions_require = 'high';
+    protected $user_facing = false;
+    protected $menu_label = 'BOOKINGS';
+    protected $orderer = 'id';
+    protected $title_is_multi_lang = true;
+    protected $table = 'booking';
+    protected $type_code = 'booking';
+    protected $non_integer_id = true;
 
-    public $donext_type = null;
+    protected $donext_type = null;
 
     /**
      * Standard CRUD-module entry function to get rows for selection from.

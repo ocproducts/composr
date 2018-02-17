@@ -13,6 +13,8 @@
  * @package    testing_platform
  */
 
+// php _tests/index.php _commandr_fs
+
 /**
  * Composr test case class (unit testing).
  */
@@ -21,6 +23,10 @@ class _commandr_fs_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(0);
+        }
 
         push_query_limiting(false);
 
@@ -39,8 +45,8 @@ class _commandr_fs_test_set extends cms_test_case
         $commandr_fs_hooks = find_all_hooks('systems', 'commandr_fs');
         foreach ($commandr_fs_hooks as $commandr_fs_hook => $dir) {
             $_path = get_file_base() . '/' . $dir . '/hooks/systems/commandr_fs/' . $commandr_fs_hook . '.php';
-            $contents = file_get_contents($_path);
-            if (strpos($contents, ' extends Resource_fs_base') !== false) {
+            $c = file_get_contents($_path);
+            if (strpos($c, ' extends Resource_fs_base') !== false) {
                 $cnt++;
             }
         }
@@ -119,8 +125,8 @@ class _commandr_fs_test_set extends cms_test_case
 
         foreach ($commandr_fs_hooks as $commandr_fs_hook => $dir) {
             $path = get_file_base() . '/' . $dir . '/hooks/systems/commandr_fs/' . $commandr_fs_hook . '.php';
-            $contents = file_get_contents($path);
-            if (strpos($contents, ' extends Resource_fs_base') !== false) {
+            $c = file_get_contents($path);
+            if (strpos($c, ' extends Resource_fs_base') !== false) {
                 $this->assertTrue(array_key_exists($commandr_fs_hook, $referenced_in_cma), 'Resource-FS hook not referenced: ' . $commandr_fs_hook);
             }
         }

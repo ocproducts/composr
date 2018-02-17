@@ -174,7 +174,7 @@ class Hook_notification_types_extended_composr_mobile_sdk
      * @param  LONG_TEXT $message Message body (in Comcode) (returned by reference)
      * @return array Custom properties to add to outbound message
      */
-    private function improve_message_for_mobile(&$message)
+    protected function improve_message_for_mobile(&$message)
     {
         $properties = array();
 

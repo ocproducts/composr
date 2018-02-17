@@ -36,7 +36,7 @@ class lang_html_safe_test_set extends cms_test_case
         require_code('files');
 
         if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
+            @set_time_limit(300);
         }
 
         global $LANGUAGE_STRINGS, $LANGUAGE_HTML, $LANGUAGE_LITERAL, $LANGUAGE_CURRENT, $FILE, $FIND_NO_GO_HTML_SPOTS;
@@ -136,37 +136,38 @@ class lang_html_safe_test_set extends cms_test_case
 
             $cnt++;
         }
-        //if ($cnt == 0) echo '<p><em>None</em></p>';
     }
 
-    private function do_dir($dir, $dir_stub, $exp, $ext)
+    protected function do_dir($dir, $dir_stub, $exp, $ext)
     {
         global $FILE2;
         if (($dh = opendir($dir)) !== false) {
             while (($file = readdir($dh)) !== false) {
-                if (($file[0] != '.') && (!should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
-                    if (is_file($dir . '/' . $file)) {
-                        if (substr($file, -4, 4) == '.' . $ext) {
-                            $FILE2 = $dir . '/' . $file;
-                            //echo htmlentities($file).', ';
-                            $this->do_file($exp);
-                        }
-                    } elseif (is_dir($dir . '/' . $file)) {
-                        $this->do_dir($dir . '/' . $file, (($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, $exp, $ext);
+                $path = (($dir_stub == '') ? '' : ($dir_stub . '/')) . $file;
+                if ((should_ignore_file($path, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS)) && ($path != 'install.php')) {
+                    continue;
+                }
+
+                if (is_file($dir . '/' . $file)) {
+                    if (substr($file, -4, 4) == '.' . $ext) {
+                        $FILE2 = $dir . '/' . $file;
+                        $this->do_file($exp);
                     }
+                } elseif (is_dir($dir . '/' . $file)) {
+                    $this->do_dir($dir . '/' . $file, (($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, $exp, $ext);
                 }
             }
             closedir($dh);
         }
     }
 
-    private function do_file($exp)
+    protected function do_file($exp)
     {
         global $FILE2;
         preg_replace_callback($exp, array($this, 'find_php_use_match'), file_get_contents($FILE2));
     }
 
-    public function find_php_use_match($matches)
+    protected function find_php_use_match($matches)
     {
         global $LANGUAGE_CURRENT, $FILE2, $LANGUAGE_STRINGS, $FIND_NO_GO_HTML_SPOTS;
         if ((!$FIND_NO_GO_HTML_SPOTS) && (!isset($LANGUAGE_STRINGS[$matches[1]]))) {

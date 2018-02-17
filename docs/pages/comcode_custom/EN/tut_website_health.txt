@@ -70,6 +70,19 @@ At the time of writing the list of check sections is:
  - Installation environment \ Needed functions
  - Installation environment \ open_basedir
  - Installation environment \ Suhosin
+ - Installation environment (PHP) \ File uploads
+ - Installation environment (PHP) \ max_ececution_time
+ - Installation environment (PHP) \ max_input_vars
+ - Installation environment (PHP) \ mbstring overload
+ - Installation environment (PHP) \ Memory limit
+ - Installation environment (PHP) \ Needed functions
+ - Installation environment (PHP) \ open_basedir
+ - Installation environment (PHP) \ Suhosin
+ - Installation environment (PHP Extensions) \ cURL
+ - Installation environment (PHP Extensions) \ GD
+ - Installation environment (PHP Extensions) \ Unicode
+ - Installation environment (PHP Extensions) \ Unzip
+ - Installation environment (PHP Extensions) \ XML
  - Marketing \ Analytics
  - Marketing \ Google Analytics
  - Marketing \ Social media
@@ -237,7 +250,6 @@ We have the following kinds of broken URL checking across composr:
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page] (including Composr minimum requirements)
- - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
  - [page="_SEARCH:tut_performance"]Optimising Performance[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
  - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]

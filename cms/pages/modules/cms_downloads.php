@@ -25,21 +25,21 @@ require_code('crud_module');
  */
 class Module_cms_downloads extends Standard_crud_module
 {
-    public $lang_type = 'DOWNLOAD';
-    public $select_name = 'NAME';
-    public $permissions_require = 'mid';
-    public $permissions_cat_require = 'downloads';
-    public $permissions_cat_name = 'category_id';
-    public $user_facing = true;
-    public $seo_type = 'downloads_download';
-    public $upload = 'file';
-    public $functions = 'moduleCmsDownloads';
-    public $content_type = 'download';
-    public $menu_label = 'SECTION_DOWNLOADS';
-    public $table = 'download_downloads';
-    public $supports_mass_delete = true;
+    protected $lang_type = 'DOWNLOAD';
+    protected $select_name = 'NAME';
+    protected $permissions_require = 'mid';
+    protected $permissions_cat_require = 'downloads';
+    protected $permissions_cat_name = 'category_id';
+    protected $user_facing = true;
+    protected $seo_type = 'downloads_download';
+    protected $upload = 'file';
+    protected $functions = 'moduleCmsDownloads';
+    protected $content_type = 'download';
+    protected $menu_label = 'SECTION_DOWNLOADS';
+    protected $table = 'download_downloads';
+    protected $supports_mass_delete = true;
 
-    public $donext_type = null;
+    protected $donext_type = null;
 
     /**
      * Find entry-points available within this module.
@@ -763,13 +763,13 @@ class Module_cms_downloads extends Standard_crud_module
  */
 class Module_cms_downloads_alt extends Standard_crud_module
 {
-    public $lang_type = 'DOWNLOAD_LICENCE';
-    public $select_name = 'TITLE';
-    public $permissions_require = 'cat_high';
-    public $user_facing = false;
-    public $menu_label = 'SECTION_DOWNLOADS';
+    protected $lang_type = 'DOWNLOAD_LICENCE';
+    protected $select_name = 'TITLE';
+    protected $permissions_require = 'cat_high';
+    protected $user_facing = false;
+    protected $menu_label = 'SECTION_DOWNLOADS';
 
-    public $donext_type = null;
+    protected $donext_type = null;
 
     /**
      * Standard CRUD-module entry list fetcher.
@@ -871,16 +871,16 @@ class Module_cms_downloads_alt extends Standard_crud_module
  */
 class Module_cms_downloads_cat extends Standard_crud_module
 {
-    public $lang_type = 'DOWNLOAD_CATEGORY';
-    public $select_name = 'NAME';
-    public $permissions_require = 'cat_mid';
-    public $permission_module = 'downloads';
-    public $seo_type = 'downloads_category';
-    public $upload = 'image';
-    public $content_type = 'download_category';
-    public $protect_first = 1;
-    public $menu_label = 'SECTION_DOWNLOADS';
-    public $is_chained_with_parent_browse = true;
+    protected $lang_type = 'DOWNLOAD_CATEGORY';
+    protected $select_name = 'NAME';
+    protected $permissions_require = 'cat_mid';
+    protected $permission_module = 'downloads';
+    protected $seo_type = 'downloads_category';
+    protected $upload = 'image';
+    protected $content_type = 'download_category';
+    protected $protect_first = 1;
+    protected $menu_label = 'SECTION_DOWNLOADS';
+    protected $is_chained_with_parent_browse = true;
 
     /**
      * Standard crud_module list function.

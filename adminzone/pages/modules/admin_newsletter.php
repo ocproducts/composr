@@ -25,14 +25,14 @@ require_code('crud_module');
  */
 class Module_admin_newsletter extends Standard_crud_module
 {
-    public $lang_type = 'NEWSLETTER';
-    public $select_name = 'TITLE';
-    public $do_preview = null;
-    public $menu_label = 'NEWSLETTER';
-    public $table = 'newsletters';
-    public $title_is_multi_lang = true;
-    public $donext_entry_content_type = 'newsletter';
-    public $donext_category_content_type = null;
+    protected $lang_type = 'NEWSLETTER';
+    protected $select_name = 'TITLE';
+    protected $do_preview = null;
+    protected $menu_label = 'NEWSLETTER';
+    protected $table = 'newsletters';
+    protected $title_is_multi_lang = true;
+    protected $donext_entry_content_type = 'newsletter';
+    protected $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.

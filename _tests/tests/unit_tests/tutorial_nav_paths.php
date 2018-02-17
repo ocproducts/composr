@@ -44,15 +44,15 @@ class tutorial_nav_paths_test_set extends cms_test_case
 
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.txt') {
-                $c = file_get_contents($path . '/' . $f);
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, -4) == '.txt') {
+                $c = file_get_contents($path . '/' . $file);
 
                 $matches = array();
                 $num_matches = preg_match_all('#"([^"]*)" configuration option[^s]#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $option = trim($matches[1][$i], '\\');
-                    $this->assertTrue(isset($config_options[$option]), 'Missing configuration option, ' . $option . ' in ' . $f);
+                    $this->assertTrue(isset($config_options[$option]), 'Missing configuration option, ' . $option . ' in ' . $file);
                 }
 
                 $matches = array();
@@ -61,7 +61,7 @@ class tutorial_nav_paths_test_set extends cms_test_case
                     $option = trim($matches[1][$i], '\\');
                     if (isset($config_options[$option])) {
                         $config_path = $matches[2][$i];
-                        $this->assertTrue($config_options[$option] == $config_path, 'Wrong config option path for ' . $option . ' in ' . $f . '; got  ' . $config_path . ' expected ' . $config_options[$option]);
+                        $this->assertTrue($config_options[$option] == $config_path, 'Wrong config option path for ' . $option . ' in ' . $file . '; got  ' . $config_path . ' expected ' . $config_options[$option]);
                     }
                 }
             }
@@ -77,9 +77,9 @@ class tutorial_nav_paths_test_set extends cms_test_case
 
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.txt') {
-                $c = file_get_contents($path . '/' . $f);
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, -4) == '.txt') {
+                $c = file_get_contents($path . '/' . $file);
 
                 $matches = array();
                 $num_matches = preg_match_all('#Admin Zone > Setup > Configuration > (\w[\w /]+\w)( > (\w[\w /]+\w))?#', $c, $matches);

@@ -37,7 +37,7 @@ class Hook_commandr_fs_filedump
      * @param  array $meta_dir The current meta-directory path
      * @return array A pair: Complete path, Relative path
      */
-    private function get_complete_path($meta_dir)
+    protected function get_complete_path($meta_dir)
     {
         $path = get_custom_file_base() . '/uploads/filedump';
         $subpath = '';
@@ -78,6 +78,7 @@ class Hook_commandr_fs_filedump
                     );
                 }
             }
+            closedir($dh);
 
             // Folder meta
             $listing[] = array(

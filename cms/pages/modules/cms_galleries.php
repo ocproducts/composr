@@ -25,21 +25,21 @@ require_code('crud_module');
  */
 class Module_cms_galleries extends Standard_crud_module
 {
-    public $lang_type = 'IMAGE';
-    public $select_name_description = 'DESCRIPTION_IMAGE';
-    public $select_name = 'IMAGE';
-    public $permissions_require = 'mid';
-    public $permissions_cat_require = 'galleries';
-    public $permissions_cat_name = 'cat';
-    public $user_facing = true;
-    public $seo_type = 'image';
-    public $upload = 'image';
-    public $content_type = 'image';
-    public $menu_label = 'GALLERIES';
-    public $table = 'images';
-    public $supports_mass_delete = true;
+    protected $lang_type = 'IMAGE';
+    protected $select_name_description = 'DESCRIPTION_IMAGE';
+    protected $select_name = 'IMAGE';
+    protected $permissions_require = 'mid';
+    protected $permissions_cat_require = 'galleries';
+    protected $permissions_cat_name = 'cat';
+    protected $user_facing = true;
+    protected $seo_type = 'image';
+    protected $upload = 'image';
+    protected $content_type = 'image';
+    protected $menu_label = 'GALLERIES';
+    protected $table = 'images';
+    protected $supports_mass_delete = true;
 
-    public $donext_type = null;
+    protected $donext_type = null;
 
     /**
      * Find entry-points available within this module.
@@ -1303,22 +1303,22 @@ class Module_cms_galleries extends Standard_crud_module
  */
 class Module_cms_galleries_alt extends Standard_crud_module
 {
-    public $lang_type = 'VIDEO';
-    public $select_name = 'NAME';
-    public $permissions_require = 'mid';
-    public $permissions_cat_require = 'galleries';
-    public $permissions_cat_name = 'cat';
-    public $user_facing = true;
-    public $seo_type = 'video';
-    public $upload = 'file';
-    public $javascript = '';
-    public $content_type = 'video';
-    public $menu_label = 'GALLERIES';
-    public $table = 'videos';
-    public $supports_mass_delete = true;
-    public $is_chained_with_parent_browse = true;
+    protected $lang_type = 'VIDEO';
+    protected $select_name = 'NAME';
+    protected $permissions_require = 'mid';
+    protected $permissions_cat_require = 'galleries';
+    protected $permissions_cat_name = 'cat';
+    protected $user_facing = true;
+    protected $seo_type = 'video';
+    protected $upload = 'file';
+    protected $javascript = '';
+    protected $content_type = 'video';
+    protected $menu_label = 'GALLERIES';
+    protected $table = 'videos';
+    protected $supports_mass_delete = true;
+    protected $is_chained_with_parent_browse = true;
 
-    public $donext_type = null;
+    protected $donext_type = null;
 
     /**
      * Kills Composr if someone is trying to add a video to a gallery that does not support videos.
@@ -1924,18 +1924,18 @@ class Module_cms_galleries_alt extends Standard_crud_module
  */
 class Module_cms_galleries_cat extends Standard_crud_module
 {
-    public $lang_type = 'GALLERY';
-    public $select_name = 'NAME';
-    public $permissions_require = 'cat_mid';
-    public $permission_module = 'galleries';
-    public $seo_type = 'gallery';
-    public $upload = 'image';
-    public $non_integer_id = true;
-    public $content_type = 'gallery';
-    public $menu_label = 'GALLERIES';
-    public $table = 'galleries';
-    public $functions = 'moduleCmsGalleriesCat';
-    public $is_chained_with_parent_browse = true;
+    protected $lang_type = 'GALLERY';
+    protected $select_name = 'NAME';
+    protected $permissions_require = 'cat_mid';
+    protected $permission_module = 'galleries';
+    protected $seo_type = 'gallery';
+    protected $upload = 'image';
+    protected $non_integer_id = true;
+    protected $content_type = 'gallery';
+    protected $menu_label = 'GALLERIES';
+    protected $table = 'galleries';
+    protected $functions = 'moduleCmsGalleriesCat';
+    protected $is_chained_with_parent_browse = true;
 
     /**
      * Standard crud_module list function.

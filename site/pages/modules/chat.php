@@ -1185,6 +1185,7 @@ class Module_chat
                     );
                 }
             }
+            closedir($dh);
         }
         $dh = @opendir(get_file_base() . '/data_custom/sounds');
         if ($dh !== false) {
@@ -1196,6 +1197,7 @@ class Module_chat
                     );
                 }
             }
+            closedir($dh);
         }
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_set_effects'), '_SELF');

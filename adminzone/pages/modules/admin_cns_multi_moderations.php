@@ -25,16 +25,16 @@ require_code('crud_module');
  */
 class Module_admin_cns_multi_moderations extends Standard_crud_module
 {
-    public $lang_type = 'MULTI_MODERATION';
-    public $select_name = 'NAME';
-    public $archive_entry_point = '_SEARCH:forumview';
-    public $archive_label = 'SECTION_FORUMS';
-    public $menu_label = 'MULTI_MODERATIONS';
-    public $table = 'f_multi_moderations';
-    public $orderer = 'mm_name';
-    public $title_is_multi_lang = true;
-    public $donext_entry_content_type = 'multi_moderation';
-    public $donext_category_content_type = null;
+    protected $lang_type = 'MULTI_MODERATION';
+    protected $select_name = 'NAME';
+    protected $archive_entry_point = '_SEARCH:forumview';
+    protected $archive_label = 'SECTION_FORUMS';
+    protected $menu_label = 'MULTI_MODERATIONS';
+    protected $table = 'f_multi_moderations';
+    protected $orderer = 'mm_name';
+    protected $title_is_multi_lang = true;
+    protected $donext_entry_content_type = 'multi_moderation';
+    protected $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.

@@ -139,7 +139,7 @@ if (get_param_integer('export_themes', 0) == 1) {
     require_code('files2');
     $themes = find_all_themes();
 
-    $page_files = get_directory_contents(get_custom_file_base() . '/', '');
+    $page_files = get_directory_contents(get_custom_file_base() . '/', '', 0, true, true, array('txt'));
     foreach (array_keys($themes) as $theme) {
         if (($only !== null) && ($only !== $theme)) {
             continue;
@@ -165,11 +165,9 @@ if (get_param_integer('export_themes', 0) == 1) {
         $file = 'theme-' . preg_replace('#^[_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $theme)) . '-' . get_version_branch() . '.tar';
 
         $files2 = array();
-        $theme_files = get_directory_contents(get_custom_file_base() . '/themes/' . $theme, 'themes/' . $theme);
+        $theme_files = get_directory_contents(get_custom_file_base() . '/themes/' . $theme, 'themes/' . $theme, IGNORE_EDITFROM_FILES);
         foreach ($theme_files as $file2) {
-            if ((substr($file2, -4) != '.tcp') && (substr($file2, -4) != '.tcd') && (substr($file2, -9) != '.editfrom')) {
-                $files2[] = $file2;
-            }
+            $files2[] = $file2;
         }
         foreach ($page_files as $file2) {
             $matches = array();

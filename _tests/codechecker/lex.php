@@ -242,7 +242,6 @@ function lex($text = null)
     if ((trim($BETWEEN_ALL) != '') && (isset($GLOBALS['FILENAME']))) {
         global $WITHIN_PHP;
         $WITHIN_PHP = true;
-        //require('xhtml.php');     We don't want to do this anymore, too messy
     }
 
     // So that we don't have to consider end-of-file states as much.

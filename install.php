@@ -411,7 +411,7 @@ function step_1()
         }
     }
     if ((file_exists(get_file_base() . '/_config.php')) && (!cms_is_writable(get_file_base() . '/_config.php')) && (!php_function_allowed('posix_getuid')) && ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN'))) {
-        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('TROUBLESOME_WINDOWS_SERVER', escape_html(get_tutorial_url('tut_adv_install'))))));
+        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('TROUBLESOME_WINDOWS_SERVER', escape_html(get_tutorial_url('tut_install_permissions'))))));
     }
 
     // Some sanity checks
@@ -1897,6 +1897,10 @@ if (appengine_is_live()) {
         cms_file_put_contents_safe(get_file_base() . '/app.yaml', $app_yaml | FILE_WRITE_FIX_PERMISSIONS);
     }
 
+    if (is_suexec_like()) {
+        fix_permissions(get_custom_file_base() . '/_config.php', 0600); // Don't allow other accounts to read
+    }
+
     $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '261a1eb80baed15cbbce1a684d4a354d', 'SOMETHING' => do_lang_tempcode('WROTE_CONFIGURATION'))));
     return $log;
 }
@@ -3002,7 +3006,7 @@ php_flag suhosin.sql.multiselect off
 php_flag suhosin.upload.remove_binary off
 
 # Sandbox Composr to its own directory
-# php_value open_basedir "/tmp:/home/blah/public_html/composr/"		But needs customising for your server and only works outside php.ini in PHP6+
+# php_value open_basedir "/tmp:/home/blah/public_html/composr/"    But needs customising for your server and only works outside php.ini in PHP6+
 </IfModule>
 END;
 

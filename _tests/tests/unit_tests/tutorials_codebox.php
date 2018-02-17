@@ -22,16 +22,16 @@ class tutorials_codebox_test_set extends cms_test_case
     {
         $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if ($f[0] == '.') {
+        while (($file = readdir($dh)) !== false) {
+            if ($file[0] == '.') {
                 continue;
             }
 
-            if (substr($f, -4) == '.txt') {
-                $contents = file_get_contents($path . '/' . $f);
+            if (substr($file, -4) == '.txt') {
+                $c = file_get_contents($path . '/' . $file);
 
-                $this->assertTrue(strpos($contents, '[code]') === false, 'Has non-specified [code]-tag language in ' . $f);
-                $this->assertTrue(strpos($contents, '[codebox]') === false, 'Has non-specified [codebox]-tag language in ' . $f);
+                $this->assertTrue(strpos($c, '[code]') === false, 'Has non-specified [code]-tag language in ' . $file);
+                $this->assertTrue(strpos($c, '[codebox]') === false, 'Has non-specified [codebox]-tag language in ' . $file);
             }
         }
         closedir($dh);
@@ -70,20 +70,20 @@ class tutorials_codebox_test_set extends cms_test_case
 
         $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if ($f[0] == '.') {
+        while (($file = readdir($dh)) !== false) {
+            if ($file[0] == '.') {
                 continue;
             }
 
-            if (substr($f, -4) == '.txt') {
-                $contents = file_get_contents($path . '/' . $f);
+            if (substr($file, -4) == '.txt') {
+                $c = file_get_contents($path . '/' . $file);
 
                 $matches = array();
-                $num_matches = preg_match_all('#\[(code|codebox)="([^"]*)"\]#', $contents, $matches);
+                $num_matches = preg_match_all('#\[(code|codebox)="([^"]*)"\]#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $lang = $matches[2][$i];
 
-                    $this->assertTrue(in_array($lang, $allowed_langs), 'Non-recognised [code]-tag language (' . $lang . ') in ' . $f);
+                    $this->assertTrue(in_array($lang, $allowed_langs), 'Non-recognised [code]-tag language (' . $lang . ') in ' . $file);
                 }
             }
         }

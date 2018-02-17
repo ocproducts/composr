@@ -107,6 +107,7 @@ while (($sheet = readdir($dh)) !== false) {
         }
     }
 }
+closedir($dh);
 
 echo '</ul><p>Finished CSS.</p>';
 

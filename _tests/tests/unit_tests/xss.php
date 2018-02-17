@@ -92,9 +92,9 @@ class xss_test_set extends cms_test_case
         $this->assertTrue(strpos(post_param_string('foo'), 'http://example.com/') === false);
     }
 
-    private $found_error = null;
+    protected $found_error = null;
 
-    public function _temp_handler($errornum, $errormsg)
+    protected function _temp_handler($errornum, $errormsg)
     {
         $this->found_error = $errormsg;
         return false;

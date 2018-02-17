@@ -160,31 +160,34 @@ and tell Cron to execute [tt]/home/examplesite/htdocs/data/cron_bridge.sh[/tt].
 
 [title="3"]Specific advice for Windows[/title]
 
-On Windows the following command might work for a Composr installation in the [tt]c:\sites\examplesite\www[/tt] directory:
+On Windows the following command might work for a Composr installation in the [tt]c:\sites\examplesite\www[/tt] directory where PHP is in [tt]c:\php[/tt]:
 [code="BAT"]
 c:\php\php.exe c:\sites\examplesite\www\data\cron_bridge.php
 [/code]
-On Windows, either the hosting control panel will provide a similar scheduler to Cron, or you can use the Windows' 'Scheduled Tasks' feature as described below (assuming you have access).
+On Windows, either the webhosting control panel will provide a similar scheduler to Cron, or you can use the Windows 'Scheduled Tasks' feature as described below (assuming you have access).
 
-The following is a Windows Vista scheduler step by step process for scheduling the running of [tt]cron_bridge.php[/tt] every 5 minutes to enable the system scheduler:
-1) Open up Windows Task scheduler
+The following is a step by step process for scheduling the running of [tt]cron_bridge.php[/tt] every 5 minutes:
+1) Open up 'Task scheduler'
 2) Click 'Create Basic Task'
-3) Give it a name and a description
-4) Click 'Daily'
-5) Set the Time and to re-occur every 1 Day
-6) Click 'Start a Program'
-7) Under program/script add the location of [tt]php.exe[/tt] on your system something like [tt]"C:\php\php.exe"[/tt] -- also include the double Quote Marks ("") surrounding the file location
-8) Under 'Arguments' add the location to the [tt]cron_bridge.php[/tt] file which for the example above would be [tt]"c:\sites\examplesite\www"[/tt] (note how the PHP command is split across two parameters -- step 7 having the [tt]php.exe[/tt] path and step 8 having the PHP file path) -- again surround in quote marks.
+3) Give it a name and a description, then click 'Next'
+4) Click 'Daily', then click 'Next'
+5) Set the Time and to re-occur every 1 Day, then click 'Next'
+6) Click 'Start a Program', then click 'Next'
+7) Under program/script add the location of [tt]php.exe[/tt] on your system something like [tt]"C:\php\php.exe"[/tt] -- also include the double Quote Marks ([tt]""[/tt]) surrounding the file location
+8) Under 'Add arguments' add the location to the [tt]cron_bridge.php[/tt] file which for the example above would be [tt]"c:\sites\examplesite\www"[/tt] (note how the PHP command is split across two parameters -- step 7 having the [tt]php.exe[/tt] path and step 8 having the PHP file path) -- again surround in quote marks.
 9) Click 'Next'
-10) Tick (check) "Open the properties dialog for this task when I finish"
-11) Click 'Finish'
-12) Click 'Triggers' (top of window)
-13) Double click the trigger from the list
-14) Tick (check) 'repeat task every' box
-15) Change the "1 Hour to 5 Minutes" for the duration of "Indefinitely"
-16) Click 'OK'
-17) Click 'OK'
-This should have now added a schedule within Windows scheduler to run the [tt]cron_bridge.php[/tt] file every 5 minutes. This step by step was created using Windows Vista, the process may change slightly in other versions of Windows.
+10) Tick (check) "Open the properties dialog for this task when I finish", then click 'Finish'
+11) Change "Run only when user is logged on" to "Run whether user is logged on or not"
+12) Tick (check) "Hidden"
+13) Click 'Change User or Group'
+14) Set to [tt]IIS_IUSRS[/tt] (or whatever the user your website is configured to use, if you customised that)
+15) Click 'OK'
+16) Click the 'Triggers' tab
+17) Double click the trigger from the list
+18) Tick (check) 'repeat task every' box and change the "1 Hour" to "5 Minutes"
+19) Click 'OK'
+20) Click 'OK'
+This should have now added a schedule within Windows scheduler to run the [tt]cron_bridge.php[/tt] file every 5 minutes. This step by step was created using Windows 10, the process may change slightly in other versions of Windows.
 
 [title="3"]Help -- my webhost does not support Cron![/title]
 
@@ -218,7 +221,7 @@ It's not advertised in the interface, but it is possible for a user to join a cl
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_install"]Basic Installation[/page]
+ - [page="_SEARCH:tut_install"]Installation[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
  - [page="_SEARCH:tut_themes"]Themeing your site[/page]
  - [page="_SEARCH:tut_staff_advice"]Advice for choosing and managing staff[/page]

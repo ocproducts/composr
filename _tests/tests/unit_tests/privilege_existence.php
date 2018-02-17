@@ -20,7 +20,7 @@ class privilege_existence_test_set extends cms_test_case
 {
     public function testCode()
     {
-        require_code('files');
+        require_code('files2');
 
         $matches = array();
         $done_privileges = array();
@@ -34,14 +34,13 @@ class privilege_existence_test_set extends cms_test_case
             $pages += find_all_pages_wrap($zone);
         }
 
-        require_code('files2');
-        $contents = get_directory_contents(get_file_base());
-
-        foreach ($contents as $f) {
-            $file_type = get_file_extension($f);
+        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS);
+        $files[] = 'install.php';
+        foreach ($files as $path) {
+            $file_type = get_file_extension($path);
 
             if ($file_type == 'php') {
-                $c = file_get_contents(get_file_base() . '/' . $f);
+                $c = file_get_contents(get_file_base() . '/' . $path);
 
                 $num_matches = preg_match_all('#add_privilege\(\'[^\']+\', \'([^\']+)\'#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
@@ -52,15 +51,11 @@ class privilege_existence_test_set extends cms_test_case
             }
         }
 
-        foreach ($contents as $f) {
-            if (should_ignore_file($f, IGNORE_CUSTOM_DIR_GROWN_CONTENTS)) {
-                continue;
-            }
-
-            $file_type = get_file_extension($f);
+        foreach ($files as $path) {
+            $file_type = get_file_extension($path);
 
             if ($file_type == 'php') {
-                $c = file_get_contents(get_file_base() . '/' . $f);
+                $c = file_get_contents(get_file_base() . '/' . $path);
 
                 $num_matches = preg_match_all('#has_privilege\((get_member\(\)|\$\w+), \'([^\']+)\'\)#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
@@ -103,7 +98,7 @@ class privilege_existence_test_set extends cms_test_case
             }
 
             if ($file_type == 'tpl' || $file_type == 'txt') {
-                $c = file_get_contents(get_file_base() . '/' . $f);
+                $c = file_get_contents(get_file_base() . '/' . $path);
 
                 $num_matches = preg_match_all('#\{\$HAS_PRIVILEGE,(\w+)\}#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {

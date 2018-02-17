@@ -326,6 +326,7 @@ class Module_admin_errorlog
                 );
             }
         }
+        closedir($dh);
 
         // Other logs that may be create-able...
         $logs_available = array( // FUDGE Ideally we'd use hooks, but it is so trivial (and non-bundled addons can document how to create their log, no problem)

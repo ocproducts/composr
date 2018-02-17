@@ -18,166 +18,187 @@
  */
 class broken_includes_test_set extends cms_test_case
 {
+    protected $files;
+
     public function setUp()
     {
         parent::setUp();
 
         disable_php_memory_limit();
 
-        require_code('files');
         require_code('files2');
-        $this->contents = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS);
+
+        $this->files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('php'));
+        $this->files[] = 'install.php';
     }
 
     public function testRequireCode()
     {
-        foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.php') {
-                $_c = file_get_contents(get_file_base() . '/' . $c);
-                $matches = array();
-                $num_matches = preg_match_all('#require_code\(\'([^\']+)\'\)#', $_c, $matches);
-                for ($i = 0; $i < $num_matches; $i++) {
-                    $dependency = $matches[1][$i];
+        foreach ($this->files as $path) {
+            if (substr($path, -4) != '.php') {
+                continue;
+            }
 
-                    if (substr($dependency, -4) == '.php') {
-                        continue;
-                    }
+            $c = file_get_contents(get_file_base() . '/' . $path);
+            $matches = array();
+            $num_matches = preg_match_all('#require_code\(\'([^\']+)\'\)#', $c, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $dependency = $matches[1][$i];
 
-                    if (in_array($dependency, array('user_sync__customise'))) { // Exceptions
-                        continue;
-                    }
-
-                    $okay = file_exists(get_file_base() . '/sources/' . $dependency . '.php') || file_exists(get_file_base() . '/sources_custom/' . $dependency . '.php');
-                    $this->assertTrue($okay, 'Could not find target of require_code, ' . $dependency);
+                if (substr($dependency, -4) == '.php') {
+                    continue;
                 }
+
+                if (in_array($dependency, array('user_sync__customise'))) { // Exceptions
+                    continue;
+                }
+
+                $okay = file_exists(get_file_base() . '/sources/' . $dependency . '.php') || file_exists(get_file_base() . '/sources_custom/' . $dependency . '.php');
+                $this->assertTrue($okay, 'Could not find target of require_code, ' . $dependency);
             }
         }
     }
 
     public function testRequireLang()
     {
-        foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.php') {
-                $_c = file_get_contents(get_file_base() . '/' . $c);
-                $matches = array();
-                $num_matches = preg_match_all('#require_lang\(\'([^\']+)\'\)#', $_c, $matches);
-                for ($i = 0; $i < $num_matches; $i++) {
-                    $dependency = $matches[1][$i];
-                    $okay = file_exists(get_file_base() . '/lang/' . fallback_lang() . '/' . $dependency . '.ini') || file_exists(get_file_base() . '/lang_custom/' . fallback_lang() . '/' . $dependency . '.ini');
-                    $this->assertTrue($okay, 'Could not find target of require_lang, ' . $dependency);
-                }
+        foreach ($this->files as $path) {
+            if (substr($path, -4) != '.php') {
+                continue;
+            }
+
+            $c = file_get_contents(get_file_base() . '/' . $path);
+            $matches = array();
+            $num_matches = preg_match_all('#require_lang\(\'([^\']+)\'\)#', $c, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $dependency = $matches[1][$i];
+                $okay = file_exists(get_file_base() . '/lang/' . fallback_lang() . '/' . $dependency . '.ini') || file_exists(get_file_base() . '/lang_custom/' . fallback_lang() . '/' . $dependency . '.ini');
+                $this->assertTrue($okay, 'Could not find target of require_lang, ' . $dependency);
             }
         }
     }
 
     public function testRequireLangB()
     {
-        foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.php') {
-                $_c = file_get_contents(get_file_base() . '/' . $c);
-                $matches = array();
-                $num_matches = preg_match_all('#do_lang(_tempcode)?\(\'([^\']+):([^\']+)\'\)#', $_c, $matches);
-                for ($i = 0; $i < $num_matches; $i++) {
-                    $dependency = $matches[2][$i];
-                    $okay = file_exists(get_file_base() . '/lang/' . fallback_lang() . '/' . $dependency . '.ini') || file_exists(get_file_base() . '/lang_custom/' . fallback_lang() . '/' . $dependency . '.ini');
-                    $this->assertTrue($okay, 'Could not find target of PHP implicit lang include, ' . $dependency);
-                }
+        foreach ($this->files as $path) {
+            if (substr($path, -4) != '.php') {
+                continue;
+            }
+
+            $c = file_get_contents(get_file_base() . '/' . $path);
+            $matches = array();
+            $num_matches = preg_match_all('#do_lang(_tempcode)?\(\'([^\']+):([^\']+)\'\)#', $c, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $dependency = $matches[2][$i];
+                $okay = file_exists(get_file_base() . '/lang/' . fallback_lang() . '/' . $dependency . '.ini') || file_exists(get_file_base() . '/lang_custom/' . fallback_lang() . '/' . $dependency . '.ini');
+                $this->assertTrue($okay, 'Could not find target of PHP implicit lang include, ' . $dependency);
             }
         }
     }
 
     public function testRequireLangC()
     {
-        foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.tpl') {
-                $_c = file_get_contents(get_file_base() . '/' . $c);
-                $matches = array();
-                $num_matches = preg_match_all('#\{\!(\w+):(\w+)\}#', $_c, $matches);
-                for ($i = 0; $i < $num_matches; $i++) {
-                    $dependency = $matches[1][$i];
-                    $okay = file_exists(get_file_base() . '/lang/' . fallback_lang() . '/' . $dependency . '.ini') || file_exists(get_file_base() . '/lang_custom/' . fallback_lang() . '/' . $dependency . '.ini');
-                    $this->assertTrue($okay, 'Could not find target of Tempcode implicit lang include, ' . $dependency);
-                }
+        foreach ($this->files as $path) {
+            if (substr($path, -4) != '.tpl') {
+                continue;
+            }
+
+            $c = file_get_contents(get_file_base() . '/' . $path);
+            $matches = array();
+            $num_matches = preg_match_all('#\{\!(\w+):(\w+)\}#', $c, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $dependency = $matches[1][$i];
+                $okay = file_exists(get_file_base() . '/lang/' . fallback_lang() . '/' . $dependency . '.ini') || file_exists(get_file_base() . '/lang_custom/' . fallback_lang() . '/' . $dependency . '.ini');
+                $this->assertTrue($okay, 'Could not find target of Tempcode implicit lang include, ' . $dependency);
             }
         }
     }
 
     public function testRequireCSS()
     {
-        foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.php') {
-                $_c = file_get_contents(get_file_base() . '/' . $c);
-                $matches = array();
-                $num_matches = preg_match_all('#require_css\(\'([^\']+)\'\)#', $_c, $matches);
-                for ($i = 0; $i < $num_matches; $i++) {
-                    $dependency = $matches[1][$i];
-                    $okay = file_exists(get_file_base() . '/themes/default/css/' . $dependency . '.css') || file_exists(get_file_base() . '/themes/default/css_custom/' . $dependency . '.css');
-                    $this->assertTrue($okay, 'Could not find target of require_css, ' . $dependency);
-                }
+        foreach ($this->files as $path) {
+            if (substr($path, -4) != '.php') {
+                continue;
+            }
+
+            $c = file_get_contents(get_file_base() . '/' . $path);
+            $matches = array();
+            $num_matches = preg_match_all('#require_css\(\'([^\']+)\'\)#', $c, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $dependency = $matches[1][$i];
+                $okay = file_exists(get_file_base() . '/themes/default/css/' . $dependency . '.css') || file_exists(get_file_base() . '/themes/default/css_custom/' . $dependency . '.css');
+                $this->assertTrue($okay, 'Could not find target of require_css, ' . $dependency);
             }
         }
     }
 
     public function testRequireCSSB()
     {
-        foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.tpl') {
-                $_c = file_get_contents(get_file_base() . '/' . $c);
-                $matches = array();
-                $num_matches = preg_match_all('#\{\$REQUIRE_CSS,(\w+)\}#', $_c, $matches);
-                for ($i = 0; $i < $num_matches; $i++) {
-                    $dependency = $matches[1][$i];
-                    $okay = file_exists(get_file_base() . '/themes/default/css/' . $dependency . '.css') || file_exists(get_file_base() . '/themes/default/css_custom/' . $dependency . '.css');
-                    $this->assertTrue($okay, 'Could not find target of Tempcode CSS include, ' . $dependency);
-                }
+        foreach ($this->files as $path) {
+            if (substr($path, -4) != '.tpl') {
+                continue;
+            }
+
+            $c = file_get_contents(get_file_base() . '/' . $path);
+            $matches = array();
+            $num_matches = preg_match_all('#\{\$REQUIRE_CSS,(\w+)\}#', $c, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $dependency = $matches[1][$i];
+                $okay = file_exists(get_file_base() . '/themes/default/css/' . $dependency . '.css') || file_exists(get_file_base() . '/themes/default/css_custom/' . $dependency . '.css');
+                $this->assertTrue($okay, 'Could not find target of Tempcode CSS include, ' . $dependency);
             }
         }
     }
 
     public function testRequireJavascript()
     {
-        foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.php') {
-                $_c = file_get_contents(get_file_base() . '/' . $c);
-                $matches = array();
-                $num_matches = preg_match_all('#require_javascript\(\'([^\']+)\'\)#', $_c, $matches);
-                for ($i = 0; $i < $num_matches; $i++) {
-                    $dependency = $matches[1][$i];
-                    $okay = file_exists(get_file_base() . '/themes/default/javascript/' . $dependency . '.js') || file_exists(get_file_base() . '/themes/default/javascript_custom/' . $dependency . '.js');
-                    $this->assertTrue($okay, 'Could not find target of require_javascript, ' . $dependency);
-                }
+        foreach ($this->files as $path) {
+            if (substr($path, -4) != '.php') {
+                continue;
+            }
+
+            $c = file_get_contents(get_file_base() . '/' . $path);
+            $matches = array();
+            $num_matches = preg_match_all('#require_javascript\(\'([^\']+)\'\)#', $c, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $dependency = $matches[1][$i];
+                $okay = file_exists(get_file_base() . '/themes/default/javascript/' . $dependency . '.js') || file_exists(get_file_base() . '/themes/default/javascript_custom/' . $dependency . '.js');
+                $this->assertTrue($okay, 'Could not find target of require_javascript, ' . $dependency);
             }
         }
     }
 
     public function testRequireJavascriptB()
     {
-        foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.tpl') {
-                $_c = file_get_contents(get_file_base() . '/' . $c);
-                $matches = array();
-                $num_matches = preg_match_all('#\{\$REQUIRE_JAVASCRIPT,(\w+)\}#', $_c, $matches);
-                for ($i = 0; $i < $num_matches; $i++) {
-                    $dependency = $matches[1][$i];
-                    $okay = file_exists(get_file_base() . '/themes/default/javascript/' . $dependency . '.js') || file_exists(get_file_base() . '/themes/admin/javascript/' . $dependency . '.js') || file_exists(get_file_base() . '/themes/default/javascript_custom/' . $dependency . '.js');
-                    $this->assertTrue($okay, 'Could not find target of require_javascript, ' . $dependency);
-                }
+        foreach ($this->files as $path) {
+            if (substr($path, -4) != '.tpl') {
+                continue;
+            }
+
+            $c = file_get_contents(get_file_base() . '/' . $path);
+            $matches = array();
+            $num_matches = preg_match_all('#\{\$REQUIRE_JAVASCRIPT,(\w+)\}#', $c, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $dependency = $matches[1][$i];
+                $okay = file_exists(get_file_base() . '/themes/default/javascript/' . $dependency . '.js') || file_exists(get_file_base() . '/themes/admin/javascript/' . $dependency . '.js') || file_exists(get_file_base() . '/themes/default/javascript_custom/' . $dependency . '.js');
+                $this->assertTrue($okay, 'Could not find target of require_javascript, ' . $dependency);
             }
         }
     }
 
     public function testRequireJavascriptC()
     {
-        foreach ($this->contents as $c) {
-            if (substr($c, -4) == '.tpl') {
-                $_c = file_get_contents(get_file_base() . '/' . $c);
-                $matches = array();
-                $num_matches = preg_match_all('#\sdata-require-javascript="(\w+)"#', $_c, $matches);
-                for ($i = 0; $i < $num_matches; $i++) {
-                    $dependency = $matches[1][$i];
-                    $okay = file_exists(get_file_base() . '/themes/default/javascript/' . $dependency . '.js') || file_exists(get_file_base() . '/themes/admin/javascript/' . $dependency . '.js') || file_exists(get_file_base() . '/themes/default/javascript_custom/' . $dependency . '.js');
-                    $this->assertTrue($okay, 'Could not find target of data-require-javascript, ' . $dependency);
-                }
+        foreach ($this->files as $path) {
+            if (substr($path, -4) != '.tpl') {
+                continue;
+            }
+
+            $c = file_get_contents(get_file_base() . '/' . $path);
+            $matches = array();
+            $num_matches = preg_match_all('#\sdata-require-javascript="(\w+)"#', $c, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $dependency = $matches[1][$i];
+                $okay = file_exists(get_file_base() . '/themes/default/javascript/' . $dependency . '.js') || file_exists(get_file_base() . '/themes/admin/javascript/' . $dependency . '.js') || file_exists(get_file_base() . '/themes/default/javascript_custom/' . $dependency . '.js');
+                $this->assertTrue($okay, 'Could not find target of data-require-javascript, ' . $dependency);
             }
         }
     }

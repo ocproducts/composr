@@ -47,7 +47,7 @@ class chmod_consistency_test_set extends cms_test_case
             ),
 
             array(
-                'docs/pages/comcode_custom/EN/tut_adv_install.txt',
+                'docs/pages/comcode_custom/EN/tut_install_permissions.txt',
                 false, // Windows-slashes
                 true, // Wildcard-support
                 true, // Existing run-time files also

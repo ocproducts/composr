@@ -19,7 +19,7 @@ This file contains compatibility code to be able to load parts of Composr, as we
 
 ini_set('memory_limit', '-1');
 error_reporting(E_ALL);
-if (function_exists('set_time_limit')) {
+if (php_function_allowed('set_time_limit')) {
     @set_time_limit(1000);
 }
 global $COMPOSR_PATH;
@@ -197,6 +197,8 @@ function do_dir($dir, $enable_custom = true, $orig_priority = false, $avoid = ar
             }
         }
     }
+    closedir($dh);
+ 
     return $out;
 }
 

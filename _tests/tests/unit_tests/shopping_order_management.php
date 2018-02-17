@@ -18,11 +18,11 @@
  */
 class shopping_order_management_test_set extends cms_test_case
 {
-    public $admin_ecom;
-    public $item_id;
-    public $order_id;
-    public $access_mapping;
-    public $admin_shopping;
+    protected $admin_ecom;
+    protected $item_id;
+    protected $order_id;
+    protected $access_mapping;
+    protected $admin_shopping;
 
     public function setUp()
     {

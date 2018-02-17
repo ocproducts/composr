@@ -21,10 +21,10 @@ class addon_screenshots_test_set extends cms_test_case
     public function testNoUnmatchedScreenshots()
     {
         $dh = opendir(get_file_base() . '/data_custom/images/addon_screenshots');
-        while (($f = readdir($dh)) !== false) {
-            if ((substr($f, -5) != '.html') && ($f[0] != '.')) {
-                $hook = preg_replace('#\..*$#', '', $f);
-                $this->assertTrue(is_file(get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . $hook . '.php'), 'Unrecognised addon screenshot: ' . $f);
+        while (($file = readdir($dh)) !== false) {
+            if ((substr($file, -5) != '.html') && ($file[0] != '.')) {
+                $hook = preg_replace('#\..*$#', '', $file);
+                $this->assertTrue(is_file(get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . $hook . '.php'), 'Unrecognised addon screenshot: ' . $file);
             }
         }
         closedir($dh);

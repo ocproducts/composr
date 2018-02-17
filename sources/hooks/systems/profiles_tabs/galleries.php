@@ -49,7 +49,7 @@ class Hook_profiles_tabs_galleries
      * @param  MEMBER $member_id_of The ID of the member
      * @return integer Number of personal galleries
      */
-    private function find_num_personal_galleries($member_id_of)
+    protected function find_num_personal_galleries($member_id_of)
     {
         static $result = array();
         if (!isset($result[$member_id_of])) {

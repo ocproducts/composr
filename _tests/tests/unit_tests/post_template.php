@@ -18,7 +18,7 @@
  */
 class post_template_test_set extends cms_test_case
 {
-    public $post_id;
+    protected $post_id;
 
     public function setUp()
     {

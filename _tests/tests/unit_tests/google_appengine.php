@@ -20,25 +20,23 @@ class google_appengine_test_set extends cms_test_case
 {
     public function testPregConstraint()
     {
-        require_code('files');
         require_code('files2');
-        $files = get_directory_contents(get_file_base(), '', null);
+
+        $files = get_directory_contents(get_file_base(), '', IGNORE_BUNDLED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('php'));
         $files[] = 'install.php';
-        foreach ($files as $file) {
-            if ((substr($file, -4) == '.php') && (!should_ignore_file($file, IGNORE_BUNDLED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
-                $contents = file_get_contents(get_file_base() . '/' . $file);
+        foreach ($files as $path) {
+            $c = file_get_contents(get_file_base() . '/' . $path);
 
-                if (preg_match('#preg_(replace|replace_callback|match|match_all|grep|split)\(\'(.)[^\']*(?<!\\\\)\\2[^\']*e#', $contents) != 0) {
-                    $this->assertTrue(false, 'regexp /e not allowed (in ' . $file . ')');
-                }
-
-                /*
-                Think Google AppEngine was since fixed, and we use this for symlink resolution
-                if ((strpos($contents, '\'SCRIPT_FILENAME\'') !== false) && (basename($file) != 'minikernel.php') && (basename($file) != 'global.php') && (basename($file) != 'global2.php') && (basename($file) != 'phpstub.php')) {
-                    $this->assertTrue(false, 'SCRIPT_FILENAME does not work stably across platforms (in ' . $file . ')');
-                }
-                */
+            if (preg_match('#preg_(replace|replace_callback|match|match_all|grep|split)\(\'(.)[^\']*(?<!\\\\)\\2[^\']*e#', $c) != 0) {
+                $this->assertTrue(false, 'regexp /e not allowed (in ' . $path . ')');
             }
+
+            /*
+            Think Google AppEngine was since fixed, and we use this for symlink resolution
+            if ((strpos($c, '\'SCRIPT_FILENAME\'') !== false) && ($path != 'sources/minikernel.php') && ($path != 'sources/global.php') && ($path != 'sources/global2.php') && ($path != 'sources/phpstub.php')) {
+                $this->assertTrue(false, 'SCRIPT_FILENAME does not work stably across platforms (in ' . $path . ')');
+            }
+            */
         }
     }
 }

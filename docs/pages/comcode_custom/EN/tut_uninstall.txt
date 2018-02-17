@@ -24,8 +24,7 @@ It is very important to us that we work to improve our offerings, and we need yo
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_install"]Basic Installation[/page]
- - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
+ - [page="_SEARCH:tut_install"]Installation[/page]
  - [page="_SEARCH:tut_moving"]Moving sites[/page]
  - [page="_SEARCH:tut_upgrade"]Performing an upgrade[/page]
 

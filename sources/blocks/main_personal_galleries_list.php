@@ -150,7 +150,7 @@ class Block_main_personal_galleries_list
      * @param  MEMBER $member_id The ID of the member who is being viewed
      * @param  MEMBER $member_id_viewing The ID of the member who is doing the viewing
      */
-    public function attach_gallery_subgalleries($gallery_name, &$galleries, $member_id, $member_id_viewing)
+    protected function attach_gallery_subgalleries($gallery_name, &$galleries, $member_id, $member_id_viewing)
     {
         // Not done via main_multi_content block due to need to custom query
         $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('*'), array('parent_id' => $gallery_name), 'ORDER BY add_date DESC');

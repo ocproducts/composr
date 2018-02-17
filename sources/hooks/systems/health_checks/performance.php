@@ -147,6 +147,10 @@ class Hook_health_check_performance extends Hook_Health_Check
 
         $found_has_cookies_cookie = false;
         foreach ($headers as $key => $vals) {
+            if (!is_string($key)) {
+                continue;
+            }
+
             if (strtolower($key) == strtolower('Set-Cookie')) {
                 if (is_string($vals)) {
                     $vals = array($vals);
@@ -216,6 +220,10 @@ class Hook_health_check_performance extends Hook_Health_Check
             $is_gzip = false;
             $is_cached = null;
             foreach ($headers as $key => $vals) {
+                if (!is_string($key)) {
+                    continue;
+                }
+
                 if (is_string($vals)) {
                     $vals = array($vals);
                 }

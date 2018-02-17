@@ -18,9 +18,9 @@
  */
 class tutorial_image_consistency_test_set extends cms_test_case
 {
-    private $images;
-    private $images_referenced;
-    private $images_referenced_by_tutorial;
+    protected $images;
+    protected $images_referenced;
+    protected $images_referenced_by_tutorial;
 
     public function setUp()
     {
@@ -30,22 +30,22 @@ class tutorial_image_consistency_test_set extends cms_test_case
         $this->images = array();
         $path = get_file_base() . '/data_custom/images/docs';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if ($f[0] == '.') {
+        while (($file = readdir($dh)) !== false) {
+            if ($file[0] == '.') {
                 continue;
             }
 
-            if (is_dir($path . '/' . $f)) {
-                $dh2 = opendir($path . '/' . $f);
-                while (($f2 = readdir($dh2)) !== false) {
-                    if (is_image($f2, IMAGE_CRITERIA_WEBSAFE)) {
-                        $this->images[$f . '/' . $f2] = true;
+            if (is_dir($path . '/' . $file)) {
+                $dh2 = opendir($path . '/' . $file);
+                while (($file2 = readdir($dh2)) !== false) {
+                    if (is_image($file2, IMAGE_CRITERIA_WEBSAFE)) {
+                        $this->images[$file . '/' . $file2] = true;
                     }
                 }
                 closedir($dh2);
             } else {
-                if (is_image($f, IMAGE_CRITERIA_WEBSAFE)) {
-                    $this->images[$f] = true;
+                if (is_image($file, IMAGE_CRITERIA_WEBSAFE)) {
+                    $this->images[$file] = true;
                 }
             }
         }
@@ -55,20 +55,20 @@ class tutorial_image_consistency_test_set extends cms_test_case
         $this->images_referenced_by_tutorial = array();
         $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.txt') {
-                $tutorial = basename($f, '.txt');
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, -4) == '.txt') {
+                $tutorial = basename($file, '.txt');
 
-                $contents = remove_code_block_contents(file_get_contents($path . '/' . $f));
+                $c = remove_code_block_contents(file_get_contents($path . '/' . $file));
 
                 $matches = array();
-                $num_matches = preg_match_all('#data_custom/images/docs/([^"\'\s]*\.(gif|jpg|jpeg|png))#', $contents, $matches);
+                $num_matches = preg_match_all('#data_custom/images/docs/([^"\'\s]*\.(gif|jpg|jpeg|png))#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
-                    $this->images_referenced[$matches[1][$i]] = $path . '/' . $f;
+                    $this->images_referenced[$matches[1][$i]] = $path . '/' . $file;
                 }
 
                 $matches = array();
-                $num_matches = preg_match_all('#\[media[^\[\]]*]data_custom/images/docs/([^\[\]]*)\[/media\]#', $contents, $matches);
+                $num_matches = preg_match_all('#\[media[^\[\]]*]data_custom/images/docs/([^\[\]]*)\[/media\]#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $dir = dirname($matches[1][$i]);
                     if (!isset($this->images_referenced_by_tutorial[$tutorial])) {
@@ -76,7 +76,7 @@ class tutorial_image_consistency_test_set extends cms_test_case
                     }
                     $this->images_referenced_by_tutorial[$tutorial][] = $dir;
 
-                    $this->images_referenced[$matches[1][$i]] = $path . '/' . $f;
+                    $this->images_referenced[$matches[1][$i]] = $path . '/' . $file;
                 }
             }
         }

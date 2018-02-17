@@ -1,13 +1,16 @@
-[title sub="Written by Jean Gosselin, and Chris Graham (ocProducts)"]Composr Tutorial: Installing Composr on a Windows desktop[/title]
+[title sub="Written by Jean Gosselin, and Chris Graham (ocProducts)"]Composr Tutorial: Installation on a Windows desktop[/title]
 
 This tutorial will explain how to get a Composr installation running on your own Windows computer. Linux is easier as it usually comes with everything Composr requires pre-installed.
 
+We will assume you want to run MySQL, and prefer to suggest you use Apache (rather than Microsoft's IIS). i.e. the normal Linux server software, installed on Windows. If you are looking to set up a fully Microsoft server environment then you may want to instead read the [page="_SEARCH:tut_install_windows_server]Installation on a Windows server[/page] and [page="_SEARCH:tut_sqlserver]Using SQL Server with Composr[/page] tutorials.
+
 This tutorial will give basic instructions for installation of the various pieces of system software that Composr requires, instructing to read the products' own documentation when necessary.
+
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Software mass-packaging[/title]
 
-[media float="right" framed="0" width="300"]data_custom/images/docs/tut_windows/bitnami.png[/media]
+[media float="right" framed="0" width="300"]data_custom/images/docs/tut_install_windows_desktop/bitnami.png[/media]
 It is well worth pointing out that there are a number of 'all in one' packages that may be used to install AMP ([concept]Apache[/concept], [concept]MySQL[/concept] and [concept]PHP[/concept]) without any special configuration for them to appropriately bind to each other. This may be preferable and we will cover it first. However, by doing so you inevitably will not know as much about the environment that was created for you.
 
 [title="3"]Bitnami[/title]
@@ -24,13 +27,13 @@ The stack bypasses the Setup Wizard, with a default set of addons installed. You
 
 [hide="Detailed graphic instructions for installing on WampServer"]
 Detailed WampServer installation instructions:
-[img]data_custom/images/docs/tut_windows/wampserver.png[/img]
+[img]data_custom/images/docs/tut_install_windows_desktop/wampserver.png[/img]
 
 Setting up a database in WampServer:
-[img]data_custom/images/docs/tut_windows/wampserver_mysql.jpg[/img]
+[img]data_custom/images/docs/tut_install_windows_desktop/wampserver_mysql.jpg[/img]
 
 Installing Composr on WampServer:
-[img]data_custom/images/docs/tut_windows/wampserver_composr.jpg[/img]
+[img]data_custom/images/docs/tut_install_windows_desktop/wampserver_composr.jpg[/img]
 [/hide]
 
 [title="3"]Further WAMP-style packages[/title]
@@ -43,15 +46,13 @@ Here are a few more:
 
 We aren't in a position to tell you which is best at this time, we're just listing some options for you.
 
-[title="3"]Microsoft Web Platform[/title]
+[title="3"]Microsoft Web Platform Installer (advanced)[/title]
 
-This tutorial is primarily about how to install an Apache set up on Windows. However, we actually have a {$IS_MAINTAINED,install_microsoft,Microsoft Web Platform installer} for Composr. If you download the Microsoft Web Platform Installer, you'll find Composr is in there. This uses IIS, not Apache.
-
-This should work well, however we aren't able to regularly test it as it is very different from our normal development environment and workflow. Let us know if you have any issues.
+This tutorial is primarily about how to install an Apache set up on Windows. However, we actually have a {$IS_MAINTAINED,install_microsoft,Microsoft Web Platform installer} for Composr. If you download the Microsoft Web Platform Installer, you'll find Composr is in there. This uses {$IS_MAINTAINED,platform_iis,IIS}, not Apache.
 
 If you'd like to use Microsoft Web Platform, proceed to the [url="Web Platform website"]http://www.microsoft.com/web/downloads/platform.aspx[/url].
 
-You may want to set full permissions on the install directory, at least initially, as this will be required for addon management (which the Setup Wizard does). Assign full write permissions to 'IIS_IUSRS' and 'IUSR'.
+[title="4"]WebMatrix[/title]
 
 One small note -- if you are developing locally, then choose to use WebMatrix to push a local site live, make sure you adjust the base URL setting in your [tt]_config.php[/tt] file to reflect your live URL.
 
@@ -66,15 +67,17 @@ You may find it is buggy, e.g. complaining about a MySQL Connector not being ins
 
 [title="3"]Web server[/title]
 
-[media float="right" framed="0"]data_custom/images/docs/tut_windows/apache.png[/media]
-The first thing you will need is a web server. Depending on your version of Windows, you may have the Windows web server available to you (Internet Information Server).
+[media float="right" framed="0"]data_custom/images/docs/tut_install_windows_desktop/apache.png[/media]
+The first thing you will need is a web server.
 
-If not, the best course of action is to install Apache. Go to http://httpd.apache.org and download and install whichever Windows release you are comfortable with. The PHP folk recommend to avoid version 2, but if you are only running Composr locally for yourself, it doesn't matter. You may wish to enable [tt]mod_rewrite[/tt] in Apache.
+Depending on your version of Windows, you may have the Windows web server available to you (Internet Information Server).
+
+However we recommend that you just install Apache. Go to http://httpd.apache.org and download and install whichever Windows release you are comfortable with. The PHP folk recommend to avoid version 2, but if you are only running Composr locally for yourself, it doesn't matter. You may wish to enable [tt]mod_rewrite[/tt] in Apache.
 
 [title="3"]PHP[/title]
 
 [surround]
-[media float="right" framed="0"]data_custom/images/docs/tut_windows/php.png[/media]
+[media float="right" framed="0"]data_custom/images/docs/tut_install_windows_desktop/php.png[/media]
 Next you will need a copy of PHP installed. Go to http://php.net and download and install the latest stable Windows release.
 
 Follow the instructions to get it integrated with your web server: these may be rather complex, but it would be self-defeating for us to try and re-write them for you.
@@ -82,7 +85,7 @@ Follow the instructions to get it integrated with your web server: these may be 
 
 [title="3"]MySQL[/title]
 
-[media float="right" framed="0"]data_custom/images/docs/tut_windows/mysql.png[/media]
+[media float="right" framed="0"]data_custom/images/docs/tut_install_windows_desktop/mysql.png[/media]
 Go to http://mysql.com and download and install the latest stable Windows release. MySQL comes with a powerful Windows installer, so configuring MySQL itself should be a walk in the park.
 
 Depending on your PHP installation, you may need to enable the [tt]mysql[/tt] PHP extension in the [tt]php.ini[/tt] file, and then to restart your web server. Also enable GD2 if it is not already enabled.
@@ -111,20 +114,19 @@ If you want to install a supported third-party forum on your computer, follow th
 [title="4"]Setting file permissions, Extracting files[/title]
 
 [surround]
-[media width="150" description="Setting permissions (2)" float="right"]data_custom/images/docs/tut_windows/windows_perm2.png[/media]
-[media width="150" description="Setting permissions (1)" float="right"]data_custom/images/docs/tut_windows/windows_perm1.png[/media]
+[media width="150" description="Setting permissions (2)" float="right"]data_custom/images/docs/tut_install_windows_desktop/windows_perm2.png[/media]
+[media width="150" description="Setting permissions (1)" float="right"]data_custom/images/docs/tut_install_windows_desktop/windows_perm1.png[/media]
 Because you are unlikely to have an account based FTP/HTTP setup like webhosts provide, using the quick installer is probably not the truly quickest option. Fortunately due to the (wonderful!) inheritable Windows permissions system, and the fact you are at your own computer, you can just extract the manual installer files and run through the installation without having to set any file permissions or do any uploading.
 
 Before you extract the files, you must make sure that the web directory, or sub-directory thereof, has been configured to have the right file permissions:
 
 [indent="50"]
-[b]If you are running [concept]IIS[/concept][/b]: Give 'Full control' to 'IIS_WPG' and 'IUSR_<computer-name>', as demonstrated in the screen-shot.
-On Windows Server 2008+ these may be called 'IIS_IUSRS' and 'IUSR'.
+[b]If you are running [concept]IIS[/concept][/b]: Give 'Full control' to 'IIS_IUSRS' and 'IUSR', as demonstrated in the screen-shot.
 
 [b]If you are running Apache[/b]: Apache is probably running with the credentials of your own user account, and hence special permissions are not required.
 [/indent]
 
-[media width="150" description="Setting permission inheriting for a file (perhaps one copied into the web directory from somewhere that did not have it)" float="left"]data_custom/images/docs/tut_windows/windows_perm_reset.png[/media]
+[media width="150" description="Setting permission inheriting for a file (perhaps one copied into the web directory from somewhere that did not have it)" float="left"]data_custom/images/docs/tut_install_windows_desktop/windows_perm_reset.png[/media]
 By default when you extract files, they are set to inherit permissions of the parent directory: hence by setting the permissions of this directory you have allowed the files extracted into it to all have web server write permission. This would be a potential security risk on a shared hosting environment, and it is advisable to make sure that your web server is not accessible from outside your computer/local-network.
 
 If you find that some files underneath your install directory, often ones moved in, have the wrong permissions, you can manually set them to inherit permissions (from the security tab of the file, click the advanced button, and set inheriting). Or you can tell Windows to reset permissions on all the files underneath the install directory (from the security tab of the install directory, click the advanced button, and select as demonstrated in the screen-shot).
@@ -143,11 +145,13 @@ Just run through the installer normally, and by the end you should have a workin
 [title="2"]See also[/title]
 
  - [url="WAMP-Server"]http://www.wampserver.com/en/[/url]
- - [url="MySQL homesite"]http://mysql.com/[/url]
  - [url="Apache homesite"]http://httpd.apache.org/[/url]
  - [url="PHP homesite"]http://php.net/[/url]
+ - [url="MySQL homesite"]http://mysql.com/[/url]
  - [url="phpMyAdmin"]http://www.phpmyadmin.net/[/url]
- - [page="_SEARCH:tut_install"]Basic Installation[/page]
- - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
+ - [page="_SEARCH:tut_install"]Installation[/page]
+ - [page="_SEARCH:tut_install_windows_server]Installation on a Windows server[/page]
+ - [page="_SEARCH:tut_sqlserver]Using SQL Server with Composr[/page]
+ - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
 
-{$SET,tutorial_tags,windows_helper_scripts,Installation,Webhosting,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to get a Composr installation running on your own Windows computer, if you choose to use that as your server.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,windows_helper_scripts,installer,Installation,Webhosting,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to get a Composr installation running on your own Windows computer, if you choose to use that as your server.}[block]main_tutorial_rating[/block]

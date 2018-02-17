@@ -25,99 +25,99 @@
  */
 abstract class Standard_crud_module
 {
-    public $module_type;
-    public $redirect_type = null;
-    public $code_require = null;
-    public $javascript_require = null;
-    public $skip_webstandards = false;
-    public $default_type = null;
-    public $author = 'Chris Graham';
-    public $organisation = 'ocProducts';
-    public $user_facing = false;
-    public $send_validation_request = true; // Only applies if $user_facing
-    public $check_validation = true; // Only applies if $user_facing
-    public $archive_entry_point = null;
-    public $archive_label = null;
-    public $view_entry_point = null;
-    public $view_label = null;
-    public $protect_first = 0;
-    public $privilege_page = null; // Usually just get_page_name()
-    public $permission_module = null; // E.g. 'catalogues_catalogue' if we are CRUDing a catalogue
-    public $permissions_require = null;  // E.g. 'mid'
-    public $permissions_cat_require = null; // E.g. 'catalogues_catalogue' if we are CRUDing a catalogue entry
-    public $permissions_cat_name = null; // E.g. 'catalogue_name' if we are CRUDing a catalogue entry
-    public $permissions_cat_require_b = null; // E.g. 'catalogues_category' if we are CRUDing a catalogue entry
-    public $permissions_cat_name_b = null; // E.g. 'cat'
-    public $add_text = '';
-    public $edit_text = '';
-    public $extra_donext_entries = array();
-    public $extra_donext_categories = array();
-    public $extra_donext_whatever = array();
-    public $extra_donext_whatever_title = null;
-    public $do_next_editing_categories = false;
-    public $special_edit_frontend = false;
-    public $upload = null;
-    public $possibly_some_kind_of_upload = false;
-    public $cat_crud_module = null; // Allows chaining of a secondary CRUD module on, to listen for cat CRUD (c)
-    public $alt_crud_module = null; // Allows chaining of a secondary CRUD module on, to listen for some other CRUD (v)
-    public $content_type = null;
-    public $posting_form_title = null;
-    public $posting_form_text = '';
-    public $posting_form_description = '';
-    public $posting_form_text_parsed = null;
-    public $posting_form_tabindex = null;
-    public $support_wysiwyg = true;
-    public $javascript = null;
-    public $js_function_calls = array();
-    public $functions = null;
-    public $javascript_for_choose = null;
-    public $js_function_calls_for_choose = array();
-    public $functions_for_choose = null;
-    public $form_id = 'selection_table';
-    public $type_code = '';
-    public $catalogue = false;
-    public $non_integer_id = false;
-    public $output_of_action_is_confirmation = false;
-    public $second_stage_preview = false;
-    public $add_submit_name = null;
-    public $edit_submit_name = null;
-    public $do_preview = true; // true or null (null means false here)
-    public $add_one_label = null;
-    public $add_one_cat_label = null;
-    public $edit_this_label = null;
-    public $edit_one_label = null;
-    public $edit_this_cat_label = null;
-    public $edit_one_cat_label = null;
-    public $entries_title = null;
-    public $categories_title = null;
-    public $do_next_description = null;
-    public $appended_actions_already = false;
-    public $select_name_description = null;
-    public $select_name = null;
-    public $menu_label = null;
-    public $care_please = true;
-    public $new_id = null;
-    public $no_blank_ids = true;
-    public $posting_field_required = true;
-    public $donext_type = null;
-    public $donext_category_id = null;
-    public $donext_entry_content_type = null;
-    public $donext_category_content_type = null;
-    public $cached_entry_rows = null;
-    public $cached_max_rows = null;
-    public $lang_type = null;
-    public $privilege_page_name = null;
-    public $edit_keep_validation = false;
-    public $supports_mass_delete = false;
-    public $title;
+    protected $module_type;
+    protected $redirect_type = null;
+    protected $code_require = null;
+    protected $javascript_require = null;
+    protected $skip_webstandards = false;
+    protected $default_type = null;
+    protected $author = 'Chris Graham';
+    protected $organisation = 'ocProducts';
+    protected $user_facing = false;
+    protected $send_validation_request = true; // Only applies if $user_facing
+    protected $check_validation = true; // Only applies if $user_facing
+    protected $archive_entry_point = null;
+    protected $archive_label = null;
+    protected $view_entry_point = null;
+    protected $view_label = null;
+    protected $protect_first = 0;
+    protected $privilege_page = null; // Usually just get_page_name()
+    protected $permission_module = null; // E.g. 'catalogues_catalogue' if we are CRUDing a catalogue
+    protected $permissions_require = null;  // E.g. 'mid'
+    protected $permissions_cat_require = null; // E.g. 'catalogues_catalogue' if we are CRUDing a catalogue entry
+    protected $permissions_cat_name = null; // E.g. 'catalogue_name' if we are CRUDing a catalogue entry
+    protected $permissions_cat_require_b = null; // E.g. 'catalogues_category' if we are CRUDing a catalogue entry
+    protected $permissions_cat_name_b = null; // E.g. 'cat'
+    protected $add_text = '';
+    protected $edit_text = '';
+    protected $extra_donext_entries = array();
+    protected $extra_donext_categories = array();
+    protected $extra_donext_whatever = array();
+    protected $extra_donext_whatever_title = null;
+    protected $do_next_editing_categories = false;
+    protected $special_edit_frontend = false;
+    protected $upload = null;
+    protected $possibly_some_kind_of_upload = false;
+    protected $cat_crud_module = null; // Allows chaining of a secondary CRUD module on, to listen for cat CRUD (c)
+    protected $alt_crud_module = null; // Allows chaining of a secondary CRUD module on, to listen for some other CRUD (v)
+    protected $content_type = null;
+    protected $posting_form_title = null;
+    protected $posting_form_text = '';
+    protected $posting_form_description = '';
+    protected $posting_form_text_parsed = null;
+    protected $posting_form_tabindex = null;
+    protected $support_wysiwyg = true;
+    protected $javascript = null;
+    protected $js_function_calls = array();
+    protected $functions = null;
+    protected $javascript_for_choose = null;
+    protected $js_function_calls_for_choose = array();
+    protected $functions_for_choose = null;
+    protected $form_id = 'selection_table';
+    protected $type_code = '';
+    protected $catalogue = false;
+    protected $non_integer_id = false;
+    protected $output_of_action_is_confirmation = false;
+    protected $second_stage_preview = false;
+    protected $add_submit_name = null;
+    protected $edit_submit_name = null;
+    protected $do_preview = true; // true or null (null means false here)
+    protected $add_one_label = null;
+    protected $add_one_cat_label = null;
+    protected $edit_this_label = null;
+    protected $edit_one_label = null;
+    protected $edit_this_cat_label = null;
+    protected $edit_one_cat_label = null;
+    protected $entries_title = null;
+    protected $categories_title = null;
+    protected $do_next_description = null;
+    protected $appended_actions_already = false;
+    protected $select_name_description = null;
+    protected $select_name = null;
+    protected $menu_label = null;
+    protected $care_please = true;
+    protected $new_id = null;
+    protected $no_blank_ids = true;
+    protected $posting_field_required = true;
+    protected $donext_type = null;
+    protected $donext_category_id = null;
+    protected $donext_entry_content_type = null;
+    protected $donext_category_content_type = null;
+    protected $cached_entry_rows = null;
+    protected $cached_max_rows = null;
+    protected $lang_type = null;
+    protected $privilege_page_name = null;
+    protected $edit_keep_validation = false;
+    protected $supports_mass_delete = false;
+    protected $title;
 
     // These only needed if we are generate create_selection_list_entries automatically
-    public $table_prefix = '';
-    public $array_key = 'id';
-    public $title_is_multi_lang = true;
-    public $orderer_is_multi_lang = null;
-    public $orderer = null;
-    public $table = null; // Actually, this is used by choose_feedback_fields_statistically also
+    protected $table_prefix = '';
+    protected $array_key = 'id';
+    protected $title_is_multi_lang = true;
+    protected $orderer_is_multi_lang = null;
+    protected $orderer = null;
+    protected $table = null; // Actually, this is used by choose_feedback_fields_statistically also
 
     /**
      * Find details of the module.
@@ -561,7 +561,7 @@ abstract class Standard_crud_module
      * @param  string $stub Type code for current flow (e.g. '' or 'category')
      * @return string Complete screen type code
      */
-    private function get_screen_type_for($type_code, $stub)
+    protected function get_screen_type_for($type_code, $stub)
     {
         if ($stub != '') {
             return $type_code . '_' . $stub;

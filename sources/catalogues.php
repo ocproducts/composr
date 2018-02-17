@@ -722,7 +722,7 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $sel
             $ob = object_factory('Hook_content_meta_aware_catalogue_entry');
             $info = $ob->info();
             $order_by_field_id = $fields[intval($order_by)]['id'];
-            $bits = _catalogues_filtercode($GLOBALS['SITE_DB'], $info, $catalogue_name, $extra_join, $extra_select, 'field_' . $order_by_field_id, '', array(), 'r'); // Used to get JOIN for ordering
+            $bits = _catalogues_filtercode($GLOBALS['SITE_DB'], $info, $catalogue_name, $extra_join, $extra_select, 'field_' . strval($order_by_field_id), '', array(), 'r'); // Used to get JOIN for ordering
             if ($bits !== null) {
                 list($new_key,) = $bits;
                 if ((strpos($new_key, '.text_original') !== false) && (multi_lang_content())) {

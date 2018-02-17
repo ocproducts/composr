@@ -54,11 +54,8 @@ class Hook_commandr_command_themewizard_find_color
             $results = array();
 
             require_code('files2');
-            $d = get_directory_contents(get_file_base() . '/themes/' . filter_naughty($theme) . '/css');
+            $d = get_directory_contents(get_file_base() . '/themes/' . filter_naughty($theme) . '/css', '', 0, true, true, array('css'));
             foreach ($d as $f) {
-                if (substr($f, -4) != '.css') {
-                    continue;
-                }
                 $c = unixify_line_format(file_get_contents(get_file_base() . '/themes/' . filter_naughty($theme) . '/css/' . $f));
                 $matches = array();
                 $num_matches = preg_match_all('/#([A-Za-f\d]{6}).*\{\$,(.*)\}/', $c, $matches);

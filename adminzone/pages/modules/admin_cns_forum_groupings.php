@@ -26,20 +26,20 @@ require_javascript('cns_forum');
  */
 class Module_admin_cns_forum_groupings extends Standard_crud_module
 {
-    public $lang_type = 'FORUM_GROUPING';
-    public $select_name = 'TITLE';
-    public $archive_entry_point = '_SEARCH:forumview';
-    public $archive_label = 'SECTION_FORUMS';
-    public $extra_donext_whatever = null;
-    public $extra_donext_whatever_title = '';
-    public $do_next_editing_categories = true;
-    public $menu_label = 'SECTION_FORUMS';
-    public $functions = 'moduleAdminCnsForumGroupings';
-    public $orderer = 'c_title';
-    public $title_is_multi_lang = false;
-    public $donext_entry_content_type = 'forum_grouping';
-    public $donext_category_content_type = null;
-    public $do_preview = null;
+    protected $lang_type = 'FORUM_GROUPING';
+    protected $select_name = 'TITLE';
+    protected $archive_entry_point = '_SEARCH:forumview';
+    protected $archive_label = 'SECTION_FORUMS';
+    protected $extra_donext_whatever = null;
+    protected $extra_donext_whatever_title = '';
+    protected $do_next_editing_categories = true;
+    protected $menu_label = 'SECTION_FORUMS';
+    protected $functions = 'moduleAdminCnsForumGroupings';
+    protected $orderer = 'c_title';
+    protected $title_is_multi_lang = false;
+    protected $donext_entry_content_type = 'forum_grouping';
+    protected $donext_category_content_type = null;
+    protected $do_preview = null;
 
     /**
      * Find entry-points available within this module.

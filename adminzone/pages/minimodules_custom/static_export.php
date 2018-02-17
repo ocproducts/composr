@@ -117,10 +117,8 @@ if (get_param_integer('save__uploads', 1) == 1) {
     }
     foreach ($subpaths as $subpath) {
         if (substr($subpath, -strlen('/templates_cached')) == '/templates_cached') {
-            foreach (get_directory_contents(get_custom_file_base() . '/' . $subpath, '') as $file) {
-                if ((substr($file, -4) == '.css') || (substr($file, -3) == '.js')) {
-                    tar_add_file($STATIC_EXPORT_TAR, $subpath . '/' . $file, get_custom_file_base() . '/' . $subpath . '/' . $file, 0644, time(), true);
-                }
+            foreach (get_directory_contents(get_custom_file_base() . '/' . $subpath, '', 0, false, true, array('css', 'js')) as $file) {
+                tar_add_file($STATIC_EXPORT_TAR, $subpath . '/' . $file, get_custom_file_base() . '/' . $subpath . '/' . $file, 0644, time(), true);
             }
         } else {
             tar_add_folder($STATIC_EXPORT_TAR, null, get_file_base(), null, $subpath);

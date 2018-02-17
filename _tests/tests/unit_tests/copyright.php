@@ -21,14 +21,14 @@ class copyright_test_set extends cms_test_case
     public function testCodeCopyrightDates()
     {
         require_code('files2');
-        $files = get_directory_contents(get_file_base());
-        foreach ($files as $file) {
-            if (((substr($file, -4) == '.php') || (substr($file, -4) == '.css')) && (substr($file, 0, 8) != 'exports/') && (strpos($file, '/_unnamed_/') === false)) {
-                $code = file_get_contents(get_file_base() . '/' . $file);
-                $matches = array();
-                if (preg_match('#Copyright \(c\) ocProducts, 2004-(\d+)#', $code, $matches) != 0) {
-                    $this->assertTrue(intval($matches[1]) >= intval(date('Y')), 'Old copyright date for ' . $file . ' (replace the whole PHP header, to ensure consistency)');
-                }
+
+        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_CUSTOM_THEMES, true, true, array('php', 'css'));
+        $files[] = 'install.php';
+        foreach ($files as $path) {
+            $code = file_get_contents(get_file_base() . '/' . $path);
+            $matches = array();
+            if (preg_match('#Copyright \(c\) ocProducts, 2004-(\d+)#', $code, $matches) != 0) {
+                $this->assertTrue(intval($matches[1]) >= intval(date('Y')), 'Old copyright date for ' . $path . ' (replace the whole PHP header, to ensure consistency)');
             }
         }
     }

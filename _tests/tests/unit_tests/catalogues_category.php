@@ -18,7 +18,7 @@
  */
 class catalogues_category_test_set extends cms_test_case
 {
-    public $cat_id;
+    protected $cat_id;
 
     public function setUp()
     {

@@ -25,15 +25,15 @@ require_code('crud_module');
  */
 class Module_cms_cns_groups extends Standard_crud_module
 {
-    public $lang_type = 'CLUB';
-    public $select_name = 'NAME';
-    public $content_type = 'group';
-    public $possibly_some_kind_of_upload = true;
-    public $output_of_action_is_confirmation = true;
-    public $menu_label = 'CLUBS';
-    public $do_preview = null;
-    public $view_entry_point = '_SEARCH:groups:view:_ID';
-    public $orderer = 'g_name';
+    protected $lang_type = 'CLUB';
+    protected $select_name = 'NAME';
+    protected $content_type = 'group';
+    protected $possibly_some_kind_of_upload = true;
+    protected $output_of_action_is_confirmation = true;
+    protected $menu_label = 'CLUBS';
+    protected $do_preview = null;
+    protected $view_entry_point = '_SEARCH:groups:view:_ID';
+    protected $orderer = 'g_name';
 
     /**
      * Find entry-points available within this module.

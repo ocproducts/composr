@@ -20,34 +20,35 @@ class lang_no_unused_test_set extends cms_test_case
 {
     public function testNothingUnused()
     {
-        require_code('files');
+        require_code('files2');
         require_code('lang_compile');
 
         disable_php_memory_limit();
 
         $all_code = '';
-        $files = $this->do_dir(get_file_base(), '', 'php');
-        foreach ($files as $file) {
-            $all_code .= file_get_contents($file);
+        $files = get_directory_contents(get_file_base(), '', IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('php'));
+        $files[] = 'install.php';
+        foreach ($files as $path) {
+            $all_code .= file_get_contents(get_file_base() . '/' . $path);
         }
-        $files = $this->do_dir(get_file_base(), '', 'tpl');
-        foreach ($files as $file) {
-            $all_code .= file_get_contents($file);
+        $files = get_directory_contents(get_file_base(), '', IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('tpl'));
+        foreach ($files as $path) {
+            $all_code .= file_get_contents(get_file_base() . '/' . $path);
         }
-        $files = $this->do_dir(get_file_base() . '/themes', 'themes', 'js');
-        foreach ($files as $file) {
-            $c = file_get_contents($file);
+        $files = get_directory_contents(get_file_base(), '', IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('js'));
+        foreach ($files as $path) {
+            $c = file_get_contents(get_file_base() . '/' . $path);
             if (strpos($c, '/*{$,parser hint: pure}*/') === false) {
                 $all_code .= $c;
             }
         }
-        $files = $this->do_dir(get_file_base(), '', 'txt');
-        foreach ($files as $file) {
-            $all_code .= file_get_contents($file);
+        $files = get_directory_contents(get_file_base(), '', IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('txt'));
+        foreach ($files as $path) {
+            $all_code .= file_get_contents(get_file_base() . '/' . $path);
         }
-        $files = $this->do_dir(get_file_base(), '', 'xml');
-        foreach ($files as $file) {
-            $all_code .= file_get_contents($file);
+        $files = get_directory_contents(get_file_base(), '', IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('xml'));
+        foreach ($files as $path) {
+            $all_code .= file_get_contents(get_file_base() . '/' . $path);
         }
         $all_code .= file_get_contents(get_file_base() . '/install.php');
 
@@ -233,29 +234,5 @@ class lang_no_unused_test_set extends cms_test_case
             }
         }
         closedir($dh);
-    }
-
-    private function do_dir($dir, $dir_stub, $ext)
-    {
-        $files = array();
-
-        $dh = @opendir($dir);
-        if ($dh !== false) {
-            while (($file = readdir($dh)) !== false) {
-                if (($file[0] != '.') && (!should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
-                    if (is_file($dir . '/' . $file)) {
-                        if (substr($file, -strlen($ext) - 1, strlen($ext) + 1) == '.' . $ext) {
-                            $files[] = $dir . '/' . $file;
-                        }
-                    } elseif (is_dir($dir . '/' . $file)) {
-                        $_files = $this->do_dir($dir . '/' . $file, (($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, $ext);
-                        $files = array_merge($_files, $files);
-                    }
-                }
-            }
-            closedir($dh);
-        }
-
-        return $files;
     }
 }

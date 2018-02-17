@@ -534,8 +534,8 @@ function push_bugfix_do_dir($dir, $git_found, $seconds_since)
 
     $out = array();
     $_dir = ($dir == '') ? '.' : $dir;
-    $dh = opendir($_dir);
-    if ($dh) {
+    $dh = @opendir($_dir);
+    if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
             if (($file != 'push_bugfix.php') && (!should_ignore_file(str_replace(get_file_base() . '/', '', $_dir . '/' . $file), IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_HIDDEN_FILES | IGNORE_NONBUNDLED_SCATTERED | IGNORE_USER_CUSTOMISE | IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE))) {
                 $path = $dir . ((substr($dir, -1) != '/') ? '/' : '') . $file;
@@ -549,6 +549,7 @@ function push_bugfix_do_dir($dir, $git_found, $seconds_since)
                 }
             }
         }
+        closedir($dh);
     }
     return $out;
 }

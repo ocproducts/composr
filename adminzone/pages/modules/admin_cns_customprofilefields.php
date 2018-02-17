@@ -25,14 +25,14 @@ require_code('crud_module');
  */
 class Module_admin_cns_customprofilefields extends Standard_crud_module
 {
-    public $lang_type = 'CUSTOM_PROFILE_FIELD';
-    public $select_name = 'NAME';
-    public $menu_label = 'CUSTOM_PROFILE_FIELDS';
-    public $orderer = 'cf_name';
-    public $table = 'f_custom_fields';
-    public $title_is_multi_lang = true;
-    public $donext_entry_content_type = 'cpf';
-    public $donext_category_content_type = null;
+    protected $lang_type = 'CUSTOM_PROFILE_FIELD';
+    protected $select_name = 'NAME';
+    protected $menu_label = 'CUSTOM_PROFILE_FIELDS';
+    protected $orderer = 'cf_name';
+    protected $table = 'f_custom_fields';
+    protected $title_is_multi_lang = true;
+    protected $donext_entry_content_type = 'cpf';
+    protected $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.

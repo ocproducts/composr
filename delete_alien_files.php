@@ -199,4 +199,5 @@ function do_dir($dir = '')
             $GFILE_ARRAY[$dir . $file] = true;
         }
     }
+    closedir($dh);
 }

@@ -42,16 +42,16 @@ class ssl_test_set extends cms_test_case
         $HTTPS_PAGES_CACHE = null;
         erase_persistent_cache();
         $url = build_url(array('page' => 'forumview'), get_module_zone('forumview'));
-        $contents = http_get_contents($url->evaluate());
-        $this->assertTrue(strpos($contents, 'src="http://') === false);
+        $c = http_get_contents($url->evaluate());
+        $this->assertTrue(strpos($c, 'src="http://') === false);
 
         // HTTP version
         $GLOBALS['SITE_DB']->query_delete('https_pages', array('https_page_name' => 'forum:forumview'));
         $HTTPS_PAGES_CACHE = null;
         erase_persistent_cache();
         $url = build_url(array('page' => 'forumview'), get_module_zone('forumview'));
-        $contents = http_get_contents($url->evaluate());
-        $this->assertTrue(strpos($contents, 'src="https://') === false);
+        $c = http_get_contents($url->evaluate());
+        $this->assertTrue(strpos($c, 'src="https://') === false);
     }
 
     public function tearDown()

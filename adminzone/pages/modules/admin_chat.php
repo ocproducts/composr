@@ -25,14 +25,14 @@ require_code('crud_module');
  */
 class Module_admin_chat extends Standard_crud_module
 {
-    public $lang_type = 'CHATROOM';
-    public $select_name = 'NAME';
-    public $author = 'Philip Withnall';
-    public $archive_entry_point = '_SEARCH:chat';
-    public $archive_label = 'CHAT_LOBBY';
-    public $view_entry_point = '_SEARCH:chat:room:_ID';
-    public $permission_module = 'chat';
-    public $menu_label = 'SECTION_CHAT';
+    protected $lang_type = 'CHATROOM';
+    protected $select_name = 'NAME';
+    protected $author = 'Philip Withnall';
+    protected $archive_entry_point = '_SEARCH:chat';
+    protected $archive_label = 'CHAT_LOBBY';
+    protected $view_entry_point = '_SEARCH:chat:room:_ID';
+    protected $permission_module = 'chat';
+    protected $menu_label = 'SECTION_CHAT';
 
     /**
      * Find entry-points available within this module.

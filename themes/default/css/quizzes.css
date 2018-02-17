@@ -54,7 +54,7 @@
 	min-height: 2.5em;
 }
 
-.quiz-form th:before {
+.quiz-form th::before {
 	content: counter(quiz_num);
 	counter-increment: quiz_num;
 	z-index: 5;
@@ -65,11 +65,11 @@
 	line-height: 0.8em;
 }
 
-.quiz-form .filledin th:before {
+.quiz-form .filledin th::before {
 	font-size: 1.5em;
 }
 
-.quiz-form .filledin td:before {
+.quiz-form .filledin td::before {
 	float: right;
 	width: 30px;
 	height: 30px;
@@ -80,31 +80,31 @@
 	background: url('{$IMG;,cns_emoticons/thumbs}') top right no-repeat;
 }
 
-.quiz-form .filledin:nth-child(7n+1) td:before {
+.quiz-form .filledin:nth-child(7n+1) td::before {
 	background: url('{$IMG;,cns_emoticons/thumbs}') top right no-repeat;
 }
 
-.quiz-form .filledin:nth-child(7n+2) td:before {
+.quiz-form .filledin:nth-child(7n+2) td::before {
 	background: url('{$IMG;,cns_emoticons/hippie}') top right no-repeat;
 }
 
-.quiz-form .filledin:nth-child(7n+3) td:before {
+.quiz-form .filledin:nth-child(7n+3) td::before {
 	background: url('{$IMG;,cns_emoticons/guitar}') top right no-repeat;
 }
 
-.quiz-form .filledin:nth-child(7n+4) td:before {
+.quiz-form .filledin:nth-child(7n+4) td::before {
 	background: url('{$IMG;,cns_emoticons/cool}') top right no-repeat;
 }
 
-.quiz-form .filledin:nth-child(7n+5) td:before {
+.quiz-form .filledin:nth-child(7n+5) td::before {
 	background: url('{$IMG;,cns_emoticons/glee}') top right no-repeat;
 }
 
-.quiz-form .filledin:nth-child(7n+6) td:before {
+.quiz-form .filledin:nth-child(7n+6) td::before {
 	background: url('{$IMG;,cns_emoticons/nod}') top right no-repeat;
 }
 
-.quiz-form .filledin:nth-child(7n+7) td:before {
+.quiz-form .filledin:nth-child(7n+7) td::before {
 	background: url('{$IMG;,cns_emoticons/party}') top right no-repeat;
 }
 

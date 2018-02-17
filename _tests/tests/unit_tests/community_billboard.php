@@ -18,7 +18,7 @@
  */
 class community_billboard_test_set extends cms_test_case
 {
-    public $flag_id;
+    protected $flag_id;
 
     public function setUp()
     {

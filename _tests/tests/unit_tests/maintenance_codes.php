@@ -56,22 +56,21 @@ class maintenance_codes_test_set extends cms_test_case
 
         // Test PHP code
         require_code('files2');
-        $contents = get_directory_contents(get_file_base());
-        foreach ($contents as $c) {
-            if (substr($c, -4) == '.php') {
-                $_c = file_get_contents(get_file_base() . '/' . $c);
-                $matches = array();
-                $num_matches = preg_match_all('#is_maintained\(\'([^\']*)\'\)#', $_c, $matches);
-                for ($i = 0; $i < $num_matches; $i++) {
-                    $codename = $matches[1][$i];
-                    $this->assertTrue(isset($codenames[$codename]), 'Broken maintenance code referenced in PHP code, ' . $codename);
-                }
+        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('php'));
+        $files[] = 'install.php';
+        foreach ($files as $path) {
+            $_c = file_get_contents(get_file_base() . '/' . $path);
+            $matches = array();
+            $num_matches = preg_match_all('#is_maintained\(\'([^\']*)\'\)#', $_c, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $codename = $matches[1][$i];
+                $this->assertTrue(isset($codenames[$codename]), 'Broken maintenance code referenced in PHP code, ' . $codename);
             }
         }
 
         // Test config options
         $config_hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
-        foreach ($config_hooks as $file => $ob) {
+        foreach ($config_hooks as $ob) {
             $details = $ob->get_details();
             if (isset($details['maintenance_code'])) {
                 $codename = $details['maintenance_code'];
@@ -82,13 +81,13 @@ class maintenance_codes_test_set extends cms_test_case
         // Test tutorials
         $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if ($f[0] == '.') {
+        while (($file = readdir($dh)) !== false) {
+            if ($file[0] == '.') {
                 continue;
             }
 
-            if (substr($f, -4) == '.txt') {
-                $c = file_get_contents($path . '/' . $f);
+            if (substr($file, -4) == '.txt') {
+                $c = file_get_contents($path . '/' . $file);
 
                 $matches = array();
                 $num_matches = preg_match_all('#\{\$IS_MAINTAINED,(\w+),#', $c, $matches);
@@ -125,10 +124,10 @@ class maintenance_codes_test_set extends cms_test_case
 
         // Test coding standards tutorial...
 
-        $contents = file_get_contents(get_file_base() . '/docs/pages/comcode_custom/EN/codebook_standards.txt');
+        $c = file_get_contents(get_file_base() . '/docs/pages/comcode_custom/EN/codebook_standards.txt');
 
         $matches = array();
-        $num_matches = preg_match_all('#Automated test \(\[tt\](\w+)\[/tt\]\)#i', $contents, $matches);
+        $num_matches = preg_match_all('#Automated test \(\[tt\](\w+)\[/tt\]\)#i', $c, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
             $test = $matches[1][$i];
             $this->assertTrue(is_file(get_file_base() . '/_tests/tests/unit_tests/' . $test . '.php'), 'Could not find referenced test, ' . $test);

@@ -89,6 +89,7 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
                 }
             }
         }
+        closedir($dh);
 
         if ($theme != 'default') {
             $myfile = fopen(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini', 'ab');
@@ -538,6 +539,7 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
                 }
             }
         }
+        closedir($dh);
     }
 
     // Use it, if requested
@@ -845,6 +847,8 @@ function calculate_dynamic_css_colours($colours, $source_theme)
             }
         }
     }
+
+    closedir($dh);
 
     // Then we resolve our expressions
     $resolved_landscaped = array();

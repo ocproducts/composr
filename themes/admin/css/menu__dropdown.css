@@ -61,7 +61,7 @@ For example:
 		vertical-align: middle;
 	}
 
-	.dropdown-menu-toggle-btn:after {
+	.dropdown-menu-toggle-btn::after {
 		padding-left: 0.25em;
 		content: "\25bc"; /* Downward triangle arrow */
 		vertical-align: middle;
@@ -163,7 +163,7 @@ For example:
 		display: block;
 	}
 
-	.dropdown-menu li.nlevel.has-children > a.nlevel-link:after {
+	.dropdown-menu li.nlevel.has-children > a.nlevel-link::after {
 		display: inline-block;
 		vertical-align: middle;
 		content: '→'; /* Right arrow */

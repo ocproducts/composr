@@ -1058,7 +1058,7 @@ class Module_admin_addons
      * @param  PATH $dir The directory to search
      * @return array A map, path=>true (inverted list)
      */
-    private function do_dir($dir)
+    protected function do_dir($dir)
     {
         $full = get_file_base() . '/' . (($dir == '') ? '' : ($dir . '/'));
         $temp = array();

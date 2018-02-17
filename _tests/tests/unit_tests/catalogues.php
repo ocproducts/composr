@@ -18,9 +18,9 @@
  */
 class catalogues_test_set extends cms_test_case
 {
-    public $cms_catalogues;
-    public $cms_catalogues_cat;
-    public $cms_catalogues_alt;
+    protected $cms_catalogues;
+    protected $cms_catalogues_cat;
+    protected $cms_catalogues_alt;
 
     public function setUp()
     {

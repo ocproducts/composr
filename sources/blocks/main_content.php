@@ -333,7 +333,7 @@ class Block_main_content
      * @param  boolean $category_is_string Whether the category is a string
      * @return string SQL fragment
      */
-    public function build_select($select, $info, $category_field_select, $category_is_string)
+    protected function build_select($select, $info, $category_field_select, $category_is_string)
     {
         $parent_spec__table_name = array_key_exists('parent_spec__table_name', $info) ? $info['parent_spec__table_name'] : $info['table'];
         $parent_field_name = array_key_exists('parent_category_field', $info) ? ('r' . $info['parent_category_field']) : null;

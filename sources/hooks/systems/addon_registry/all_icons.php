@@ -55,6 +55,17 @@ class Hook_addon_registry_all_icons
     }
 
     /**
+     * Get a list of tutorials that apply to this addon.
+     *
+     * @return array List of tutorials
+     */
+    public function get_applicable_tutorials()
+    {
+        return array(
+        );
+    }
+
+    /**
      * Get a mapping of dependency types.
      *
      * @return array File permissions to set

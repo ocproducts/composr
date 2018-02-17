@@ -13,6 +13,8 @@
  * @package    testing_platform
  */
 
+// php _tests/index.php _installer_forum_drivers
+
 /**
  * Composr test case class (unit testing).
  */
@@ -60,7 +62,7 @@ class _installer_forum_drivers_test_set extends cms_test_case
         $this->doHeadlessInstall(false, 'none', $username, $password);
     }
 
-    private function doHeadlessInstall($safe_mode = false, $forum_driver = 'cns', $username = null, $password = null, $board_path = null, $forum_base_url = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = array())
+    protected function doHeadlessInstall($safe_mode = false, $forum_driver = 'cns', $username = null, $password = null, $board_path = null, $forum_base_url = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = array())
     {
         $database = 'test';
         $table_prefix = 'cms_forumdriver_test_';

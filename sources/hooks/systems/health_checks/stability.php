@@ -170,6 +170,9 @@ class Hook_health_check_stability extends Hook_Health_Check
             $dates = array();
             while (!feof($myfile)) {
                 $line = fgets($myfile);
+                if ($line === false) {
+                    break;
+                }
 
                 $matches = array();
                 if (preg_match('#^\[([^\[\]]*)\] #', $line, $matches) != 0) {

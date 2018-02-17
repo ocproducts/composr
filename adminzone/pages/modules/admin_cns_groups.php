@@ -26,21 +26,21 @@ require_javascript('core_cns');
  */
 class Module_admin_cns_groups extends Standard_crud_module
 {
-    public $lang_type = 'GROUP';
-    public $select_name = 'NAME';
-    public $functions = 'moduleAdminCnsGroups';
-    public $content_type = 'group';
-    public $possibly_some_kind_of_upload = true;
-    public $output_of_action_is_confirmation = true;
-    public $do_preview = null;
-    public $archive_entry_point = '_SEARCH:groups';
-    public $archive_label = 'USERGROUPS';
-    public $view_entry_point = '_SEARCH:groups:view:_ID';
-    public $menu_label = 'USERGROUPS';
-    public $orderer = 'g_name';
-    public $title_is_multi_lang = true;
-    public $donext_entry_content_type = 'group';
-    public $donext_category_content_type = null;
+    protected $lang_type = 'GROUP';
+    protected $select_name = 'NAME';
+    protected $functions = 'moduleAdminCnsGroups';
+    protected $content_type = 'group';
+    protected $possibly_some_kind_of_upload = true;
+    protected $output_of_action_is_confirmation = true;
+    protected $do_preview = null;
+    protected $archive_entry_point = '_SEARCH:groups';
+    protected $archive_label = 'USERGROUPS';
+    protected $view_entry_point = '_SEARCH:groups:view:_ID';
+    protected $menu_label = 'USERGROUPS';
+    protected $orderer = 'g_name';
+    protected $title_is_multi_lang = true;
+    protected $donext_entry_content_type = 'group';
+    protected $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.

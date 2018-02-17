@@ -577,7 +577,7 @@ If you find the system scheduler is running slowly, you can find out which indiv
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_moving"]Moving sites[/page]
- - [page="_SEARCH:tut_google_appengine"]Installing on Google App Engine[/page]
+ - [page="_SEARCH:tut_google_appengine"]Installation on Google App Engine[/page]
  - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
  - [page="_SEARCH:tut_website_health"]Website Health[/page]
  - https://developers.google.com/speed/pagespeed/insights/

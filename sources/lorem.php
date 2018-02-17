@@ -631,7 +631,7 @@ function placeholder_img_code($type = '')
         if ($ext == 'svg') {
             return basename($f, '.svg');
         }
-        if ($ext== 'png') {
+        if ($ext == 'png') {
             return basename($f, '.png');
         }
         if ($ext == 'jpg') {
@@ -644,6 +644,7 @@ function placeholder_img_code($type = '')
             return basename($f, '.gif');
         }
     }
+    closedir($dh);
     return '';
 }
 

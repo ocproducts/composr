@@ -12,27 +12,53 @@ This tutorial goes into great detail of all the low-level requirements (much of 
 [title="2"]Different hosting options[/title]
 
 [media width="400" float="right" framed="0"]data_custom/images/docs/tut_webhosting/pick_webhost.png[/media]
-You have the following options for hosting Composr (roughly):
- - Traditional shared webhosting (with a control panel)
- - Traditional VPS webhosting (with a control panel)
- - Traditional VPS webhosting (without a control panel)
- - Dedicated Linux server (with a control panel)
- - Dedicated Linux server (without a control panel)
- - Hosting on your own Windows desktop (for development purposes)
- - Hosting on a Windows server
- - Hosting on your own Mac desktop (for development purposes)
- - [concept]IaaS[/concept] cloud hosting (e.g. Amazon EC2, Azure, Rackspace)
- - [concept]PaaS[/concept] cloud hosting (e.g. AppFog, Heroku, Rackspace Cloud, Engine Yard, OpenShift)
- - Google App Engine, which is a special case of PaaS due to the high-level of organisation you need to work within. It is covered in [page="_SEARCH:tut_google_appengine"]its own[/page] tutorial.
-
-The vast majority of users will choose traditional shared webhosting, or traditional VPS webhosting with a control panel.
-
-Users with high requirements for CPU, memory, security, privacy, autonomy or disk space, may opt to get a [concept]dedicated server[/concept]. This is more expensive, and usually requires additional maintenance by the user, but for some users, is highly advisable.
-
-Programmers will often prefer IaaS and PaaS hosting in order to get scalability. However scalability is not automatic with any system, so programmers need to put serious consideration into infrastructure. This is discussed more in the [page="_SEARCH:tut_performance"]Optimising Performance[/page] tutorial.
+You have a number of different choices to make regarding your hosting platform.
 
 Regardless of your choice, you'll always be running the same underlying software (PHP etc). For the purpose of this tutorial the differences don't really matter, except where we provide specific advice on configuring platforms.
+
 We have various different installation tutorials that go into details on how to install on the different hosting options.
+
+[title="3"]Operating system[/title]
+
+Choices:
+ - Linux (the default)
+ - Mac (if you're developing on your own machine; equivalent to Linux)
+ - Windows (if you're developing on your own machine or on a Windows server)
+
+[title="3"]Hosting control panel[/title]
+
+When you are provided webhosting, you are usually allocated a webhosting control panel that runs software such as:
+ - Plesk
+ - cPanel
+ - Ensim
+ - DirectAdmin
+This allows you to manage your account on the server, and create databases, FTP accounts (additional to your primary account that already would exist), and e-mail addresses.
+
+Most users will want a webhosting control panel as otherwise you'll require some expertise in server configuration.
+
+Without a webhosting control panel you'll need to know how to use SSH (Linux) or Remote Desktop (Windows), and then expertise in all the features of the operating system that you need to work with.
+
+[title="3"]Type of hosting[/title]
+
+Choices:
+ - Shared hosting (the default)
+ - VPS hosting / [concept]IaaS[/concept] (e.g. Amazon EC2, Azure, Rackspace)
+ - Dedicated server
+ - [concept]PaaS[/concept]:
+  - PaaS cloud hosting (e.g. AppFog, Heroku, Rackspace Cloud, Engine Yard, OpenShift)
+  - Google App Engine, which is a special case of PaaS due to the high-level of organisation you need to work within. It is covered in 
+
+Shared hosting is cheaper by a long way, but may have poor performance, depending on the nature of the webhost, your hosting neighbours, and the hosting plan.
+
+A VPS may have anything from terrible performance to great performance, depending on how much resource the VPS has been granted.
+
+IaaS is very common among professionals due to the ability to quickly provision a machine. However management is not really any different than a dedicated server or VPS without a control panel.
+
+Users with high requirements for CPU, memory, security, privacy, autonomy or disk space, may opt to get a [concept]dedicated server[/concept]. This is more expensive.
+
+PaaS is highly specialised and not recommended unless you are a developer. Programmers will often prefer IaaS and PaaS hosting in order to get scalability. However scalability is not automatic with any system, so programmers need to put serious consideration into infrastructure. This is discussed more in the [page="_SEARCH:tut_performance"]Optimising Performance[/page] tutorial and outside the scope of any direct instructions we can give.
+
+On shared hosting the webhost will take responsibility for the daily maintenance of the server. For example, keeping the server software up to date with security and stability [concept]patches[/concept]. However few webhosts will take serious responsibility for the maintenance (including backups) of your space on the server. If you are running a VPS or a dedicated server then you probably are responsible for absolutely everything, so make sure you are comfortable with that. It is important to understand the responsibilities for the various aspects of creating, maintaining and operating your website, before you launch your endeavour.
 
 [title="2"]Recommended shared webhost[/title]
 
@@ -49,130 +75,114 @@ Webhosts generally fit into 3 categories:
 
 Keep making sure you have your own backups so that you are able to always make a swift move if it becomes necessary.
 
-[title="2"]Requirements and recommendations[/title]
+[title="2"]Requirements[/title]
 
 [media width="480" thumb="1" framed="1" description="Easy-reference summary of the key hosting recommendations." float="right"]data_custom/images/docs/tut_webhosting/image.png[/media]
 When choosing a webhost, you need to make sure that they meet all the requirements of Composr. Composr is intentionally designed to have very low requirements, so most [concept]PHP[/concept]/[concept]MySQL[/concept]-supporting webhosts should be compatible.
 
-The remainder of this section details Composr's requirements. If you have trouble ascertaining a webhosts compliance, you may wish to contact them with this information. These requirements only apply to bundled functionality; non-bundled addons may have their own requirements.
+The remainder of this section details Composr's requirements. If you have trouble ascertaining a webhosts compliance, you may wish to contact them with this information. These requirements only apply to bundled functionality; non-bundled addons may have their own requirements.[staff_note]Also update download.txt in composr_homesite branch[/staff_note]
 
-[staff_note]Also update download.txt in composr_homesite branch[/staff_note]Composr requires:
- - A web server that runs PHP. PHP is software which provides the environment that Composr is written for;
-  - version 5.6 or higher; we have tested up to and including PHP 7.0, although newer versions usually do work or are quickly fixed to work
-  - GD2 extension (including PNG and JPEG support). GD is used by PHP for image generation, e.g. to generate thumbnails
-  - file uploads with at least 5MB (or higher, depending on your particular needs)
-  - MySQL extension ([tt]mysql[/tt] or [tt]mysqli[/tt])
-  - XML extension
-  - a maximum execution time of at least 30 seconds
-  - key functions may not be disabled with [tt]disable_functions[/tt] (PHP can be stripped down heavily by disreputable webhosts) -- the installer will warn if any critical functions have been
-  - no other explicit disabling of standard functionality that we require. Commonly webhosts do this using ModSecurity, Suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
-  - memory limit of at least 128MB (as this is PHP's default memory limit since 2009).
- - At least 50MB of disk space, plus your needs for space for downloads, images, etc. No maximum file size limit under 25MB or file type whitelists (some free webhosts will impose these limits -- which explains why [tt]data.cms[/tt] might disappear when you try to upload it)
- - A database server that runs MySQL (*);
-  - MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data. Often webhosts will quote a number of databases that webhosting comes with: Composr only requires a single MySQL database to function.
-  - version 5.5.3 (&dagger;) or higher
-  - at least 10MB of database storage space is required, which should be available on any reputable webhost
+[title="3"]General[/title]
+
+We require:
+ - At least 50MB of disk space (plus your needs for space for downloads, images, etc).
+ - No maximum file size limit under 25MB (some free webhosts will impose such a limit).
+ - No file type whitelists (some free webhosts will impose such a limit -- which explains why [tt]data.cms[/tt] might disappear when you try to upload it).
+ - Certain file permissions are required as described in the [page="_SEARCH:tut_install_permissions"]File permissions[/page] tutorial.
+ - That the server does not have a Firewall that stops outgoing connections or internal connections to itself (sometimes referred to 'HTTP loopback').
+ - Connectivity to a mail server (SMTP) so that outgoing e-mail can be sent out to the staff e-mail address or the addresses of individual members.
+ - That the Composr install path does not contain the text "_custom" in it.
+ - That you not use ad-sponsored free webhost. The banners and tracking they inject will interfere with the mechanisms of Composr.
+
+If running Windows:
+ - You should use an NTFS partition not a FAT32 partition, as FAT32 cannot support file locking.
+
+[title="3"]Web Server[/title]
+
+We require:
  - A web server running Apache (the common Linux web server), {$IS_MAINTAINED,platform_litespeed,LiteSpeed} [an Apache drop-in replacement], or {$IS_MAINTAINED,platform_iis,IIS7+} [the Microsoft web server]. It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported (for example nginx should work, but you would need significant expertise to get the URL schemes functionality working);
-  - If running Windows, you should use an NTFS partition not a FAT32 partition, as FAT32 cannot support file locking
-  - If running Apache the server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security)
- - The CGI timeout on the server must not be lower than 60 seconds (which is the default on Apache)
- - That the web server is not overloaded with too many users, or has very poor performance
- - That the web server does not have a Firewall that stops outgoing connections or internal connections to itself (sometimes referred to 'HTTP loopback')
- - Connectivity to a mail server (SMTP) so that outgoing e-mail can be sent out to the staff e-mail address or the addresses of individual members
- - The install path does not contain the text "_custom" in it
- - Either a suEXEC-style server or a working FTP connection from PHP back to the hosting
-(*) Other database software may work, but is not supported. MariaDB should work as a drop-in MySQL replacement but we do not proactively test against it. Certain permissions are required as described in the [page="_SEARCH:tut_install"]Basic Installation[/page] tutorial.
-(&dagger;) MySQL 5.5.3 introduces the utf8mb4 character set, which is required to store emojis. The installer assumes you will install with this support available, but upgrades from older versions may work in anything from MySQL 4.1+ if the database is kept in latin1 via having [tt]$SITE_INFO['database_charset'] = 'latin1';[/tt] in [tt]_config.php[/tt]. This compatibility will not be guaranteed, but as webhosts have been very slow to upgrade MySQL installations we will informally try and maintain it.
+ - The CGI timeout on the server must not be lower than 60 seconds (which is the default on Apache).
+ - That the web server is not overloaded with too many users, or has very poor performance.
+ - Either a suEXEC-style web server (strongly recommended) &dagger;, or a working FTP connection from PHP back to the hosting (so the server has to be running FTP, and PHP has to be running the PHP [tt]ftp[/tt] extension).
 
-[media float="right" thumb="0" framed="0"]data_custom/images/docs/tip.png[/media]
-Composr recommends:
- - PHP versions:
-  - PHP 7 is better than PHP 5.6 due to very significant performance and security improvements
-  - Don't accept EOL ("end of life"). If a webhost or Linux distribution has a PHP version that is EOL, it is not just out-dated, but also insecure do (at the time of writing, anything less than PHP 5.6 is unsupported by the PHP developers)
-  - Make sure your PHP version is updated with security fixes, even if you haven't updated to the latest major version[media width="480" thumb="1" framed="1" description="Easy-reference summary of the key hosting recommendations." float="right"]data_custom/images/docs/tut_webhosting/image.png[/media]
- - A PHP environment with the following PHP extensions/build-options and matching system software:
-  - FTP &dagger;
-  - pSpell or Enchant, with matching aspell/hunspell installs and dictionaries (spellchecking)
-  - iconv or mbstring (Unicode support)
-  - intl (Strong transliteration of non-European languages for quality URL moniker generation)
-  - FreeType (with the build-option for GD). FreeType allows us to draw text onto graphics using TrueType fonts.
-  - Zip
-  - cURL
-  - An opcode cache: Zend OpCache (bundled by default), APC (available for PHP 5.6 or lower only), APCu, XCache, Nusphere PhpExpress, or Wincache
- - A PHP environment with [tt]open_basedir[/tt] enabled
- - A suEXEC/IIS server (explained further down)
- - At least 100MB of disk space
+If running Apache:
+ - The server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security).
 
-&dagger; If you do not have the PHP FTP extension, then you will need either:
+&dagger; By suEXEC-style web server we mean either:
 [list="a"]
 [*] an environment where the web server user has recursive write access over the web directories (most Windows servers)
 [*] an environment where the web server user is the same as the virtual hosting login user (suEXEC)
 [/list]
 
+[title="3"]PHP[/title]
+
+PHP is software which provides the environment that Composr is written for.
+
+We require:
+ - A minimum of PHP version 5.6.
+ - A maximum of PHP 7.2 (this is what we have tested up to, although newer versions usually do work or are quickly fixed to work).
+ - The following PHP extensions:
+  - GD2 ([tt]gd[/tt]), including PNG and JPEG support (GD is used by PHP for image generation, e.g. to generate thumbnails).
+  - MySQL extension ([tt]mysqli[/tt]) (other databases are semi-supported, in which case you need the appropriate extension referenced in the tutorial written specifically for that database).
+  - XML extension ([tt]xml[/tt]).
+  - The iconv ([tt]iconv[/tt]) or Multibyte String ([tt]mbstring[/tt]) PHP extension (for reliable Unicode support).
+  - cURL extension ([tt]curl[/tt]) (for reliable file downloading).
+ - The file upload settings set to allow at least 5MB (or higher, depending on your particular needs).
+ - A maximum execution time of at least 30 seconds.
+ - Key functions may not be disabled with [tt]disable_functions[/tt] (PHP can be stripped down heavily by disreputable webhosts) -- the installer will warn if any critical functions have been.
+ - No other explicit disabling of standard functionality that we require via third-party PHP modification. Commonly webhosts do this using ModSecurity, Suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
+ - Memory limit of at least 128MB (as this is PHP's default memory limit since 2009).
+
+[title="3"]Database[/title]
+
+MySQL is the database software which Composr uses to store the majority of its data. {$IS_MAINTAINED,mariadb,MariaDB} may work as a drop-in MySQL replacement. Certain other database software may work, but is not fully supported; the requirements for other database software is discussed in tutorials specifically for that software.
+
+We require:
+ - MySQL database software (if you want it to be fully supported).
+ - MySQL version 5.5.3 (&dagger;) or higher.
+ - At least 10MB of database storage space (which should be available on any reputable webhost).
+
+(&dagger;) MySQL 5.5.3 introduces the utf8mb4 character set, which is required to store emojis. The installer assumes you will install with this support available, but upgrades from older versions may work in anything from MySQL 4.1+ if the database is kept in [tt]latin1[/tt] via having [tt]$SITE_INFO['database_charset'] = 'latin1';[/tt] in [tt]_config.php[/tt]. This compatibility will not be guaranteed, but as webhosts have been very slow to upgrade MySQL installations we will informally try and maintain it.
+
+Often webhosts will quote a number of databases that webhosting comes with: Composr only requires a single MySQL database to function.
+
 [title="3"]Requirements for specific features[/title]
 
-If you want automatic thumbnail generation you need a server with FFMPEG on it. It must be accessible via PHP either via the PHP extension, or the ability for [tt]shell_exec[/tt] to run from PHP.
+[title="4"]Highly recommended[/title]
 
-Do not try and install Composr on an ad-sponsored free webhost. The banners and tracking they inject will interfere with the mechanisms of Composr.
+If you want to be able to generate custom graphics with quality TrueType text on, such as in the Logo Wizard, you'll need PHP to have been built with FreeType support.
 
-If LDAP integration is required (for corporate network authentication integration), the PHP LDAP extension is required.
+If you need to be able to easily remove 'bounce' e-mails from newsletter subscriber lists, you will need the PHP IMAP extension ([tt]imap[/tt]). If your IMAP server requires SSL (like gmail) then you will need to have IMAP-SSL support inside PHP (or you will get "invalid remote specification" errors).
 
-If Tornevall integration is required, the PHP SOAP extension is required.
+For the most reliable unzipping support, you want the PHP [tt]zip[/tt] extension.
 
-If you need to be able to easily remove 'bounce' e-mails from newsletter subscriber lists, you will need the PHP IMAP extension. If your IMAP server requires SSL (like gmail) then you will need to have IMAP-SSL support inside PHP (or you will get "invalid remote specification" errors).
+[title="4"]Very specific features[/title]
 
-If encrypted CPFs (custom profile fields) are needed (see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page] tutorial), or Composr-fed DKIM, the PHP OpenSSL extension is required.
+If you want automatic thumbnail generation you need a server with FFMPEG on it. It must be accessible via PHP either via the unofficial PHP FFMPEG extension, or the ability for [tt]shell_exec[/tt] to run from PHP.
 
-[title="3"]Package installation (advanced)[/title]
+If LDAP integration is required (for corporate network authentication integration), the PHP LDAP extension ([tt]ldap[/tt]) is required.
 
-This section contains some suggestions for which packages to install on different Linux distributions to get a good PHP environment. It is only applicable to people who aren't on traditional hosting with a control panel to manage things from.
+If Tornevall integration is required, the PHP SOAP extension ([tt]soap[/tt]) is required.
 
-This section is not actively maintained. Package names may change, but it is designed to give a leg-up to people configuring new Linux servers.
+If encrypted CPFs (custom profile fields) are needed (see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page] tutorial) the PHP OpenSSL extension ([tt]openssl[/tt]) is required.
 
-[title="4"]Ubuntu/Debian[/title]
+If Composr-fed DKIM is needed the PHP OpenSSL extension ([tt]openssl[/tt]) is required.
 
-[code="Bash"]
-apt-get install apache2 libapache2-mod-php5 php5 php5-common php5-cli php5-apcu php5-curl php5-enchant php5-ffmpeg php5-gd php5-imap php5-mysqlnd php5-pspell openssl mysql-server mysql-client postfix nano wget lynx hunspell git openssh-server nano wget
-[/code]
+If spell checking is needed, the Pspell ([tt]pspell[/tt]) or Enchant ([tt]enchant[/tt]) PHP extensions must be installed with matching aspell/hunspell installs and dictionaries on the server.
 
-Some lines in the default PHP ini ([tt]/etc/php5/apache2/php.ini[/tt]) file need changing:
-[tt]upload_max_filesize = 2M[/tt] --> [tt]upload_max_filesize = 500M[/tt]
-[tt]post_max_size = 8M[/tt] --> [tt]post_max_size = 500M[/tt]
-[tt];date.timezone = [/tt] --> [tt]date.timezone = "UTC"[/tt] (to avoid errors on PHP startup)
-[tt]; extension_dir = "./"[/tt] --> [tt]extension_dir = "usr/lib/php5/20121212"[/tt]
-[tt];opcache.enable=0[/tt] --> [tt]opcache.enable=1[/tt]
+If transliteration of non-European languages is desired (for quality URL moniker generation), the PHP intl extension ([tt]intl[/tt]) is required.
 
-(the extension_dir may actually be different on different versions, so check that)
+[title="2"]Further recommendations[/title]
 
-[title="4"]Fedora/RHEL/CentOS[/title]
-
-[code="Bash"]
-yum install httpd php php-common php-cli php-pecl-apc php-pdo curl enchant freetype gd php-gd php-imap php-mysql php-mbstring php-pspell php-xml openssl mysql-server mysql sendmail nano wget lynx hunspell git openssh-server aspell aspell-en nano wget
-[/code]
-
-You may have selinux installed, you can see if you do with [tt]sestatus[/tt]:
-[quote]
-[root@localhost html]# sestatus
-SELinux status:                 enabled
-SELinuxfs mount:                /sys/fs/selinux
-SELinux root directory:         /etc/selinux
-Loaded policy name:             targeted
-Current mode:                   enforcing
-Mode from config file:          enforcing
-Policy MLS status:              enabled
-Policy deny_unknown status:     allowed
-Max kernel policy version:      28
-[/quote]
-
-If so, you need to set additional write permissions with something like:
-[tt]chcon -R -t httpd_sys_rw_content_t /var/www[/tt]
-
-You may also want to include [tt]yum-cron[/tt] (or [url="whatever it is now"]https://fedoraproject.org/wiki/AutoUpdates[/url]) in there, for automatic system updates (who has time to stay on top of all server software for urgent security patches?).
-
-Some lines in the default PHP ini ([tt]/etc/php.ini[/tt]) file need changing:
-[tt]upload_max_filesize = 2M[/tt] --> [tt]upload_max_filesize = 500M[/tt]
-[tt]post_max_size = 8M[/tt] --> [tt]post_max_size = 500M[/tt]
-[tt];date.timezone = [/tt] --> [tt]date.timezone = "UTC"[/tt] (to avoid errors on PHP startup)
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/tip.png[/media]
+Composr recommends:
+ - PHP versions:
+  - PHP 7 is better than PHP 5.6 due to very significant performance and security improvements.
+  - Don't accept EOL ("end of life"). If a webhost or Linux distribution has a PHP version that is EOL, it is not just out-dated, but also insecure do (at the time of writing, anything less than PHP 5.6 is unsupported by the PHP developers).
+  - Make sure your PHP version is updated with security fixes, even if you haven't updated to the latest major version.[media width="480" thumb="1" framed="1" description="Easy-reference summary of the key hosting recommendations." float="right"]data_custom/images/docs/tut_webhosting/image.png[/media]
+ - A PHP opcode cache: Zend OpCache (bundled by default), APC (available for PHP 5.6 or lower only), APCu, XCache, Nusphere PhpExpress, or Wincache.
+ - A PHP environment with [tt]open_basedir[/tt] enabled.
+ - At least 100MB of disk space.
 
 [title="2"]Forum drivers (advanced)[/title]
 
@@ -204,22 +214,7 @@ Most websites prefer to have a short and memorable Internet address, direct to t
 
 It is important to note that domain names are licenced on a temporary basis, and therefore you will need to renew your domain names. The length of the licence varies, but is typically between 1 and 5 years.
 
-[title="2"]Ongoing maintenance responsibilities[/title]
-
-Usually the webhost will take responsibility for the daily maintenance of the server. For example, keeping the server software, usually [concept]Linux[/concept] and common Linux software, up to date with security and stability [concept]patches[/concept]. However few webhosts will take serious responsibility for the maintenance (including backups) of your space on the server. If you are not using a traditional webhost then you probably are responsible for absolutely everything, so make sure you are comfortable with that.
-
-It is important to understand the responsibilities for the various aspects of creating, maintaining and operating your website, before you launch your endeavour.
-
 [title="2"]Basic server and site infrastructure[/title]
-
-When you are provided webhosting, you are usually allocated a 'hosting control panel' that runs software such as:
- - Plesk
- - cPanel
- - Ensim
- - DirectAdmin
-This allows you to manage your account on the server, and create databases, FTP accounts (additional to your primary account that already would exist), and e-mail addresses.
-
-[b]Note:[/b] the next few paragraphs detail the complexities of a typical Linux file system, and is not necessary reading for most users.
 
 The server itself, has a file system, much like a desktop computer, and is usually laid out something like as follows (this example is for a Linux server):
 
@@ -234,8 +229,8 @@ The server itself, has a file system, much like a desktop computer, and is usual
 
 Of course this is only a partial detailing of the directory structure, but the intent is to provide you with an overview of what is really happening on your server. Usually you will not be able to, using your control panel or SFTP/FTP, see outside of '/home/your-account-name/'. When you install Composr, you usually would place the quick installer or manual installer files inside '/home/your-account-name/httpdocs/'; this is the directory that becomes accessible at the base URL of your website.
 
-For instance, if your account on the server was associated with a domain name, 'mywebsite.com', then [tt]http://mywebsite.com/index.php[/tt] would be tied to the file system file, '/home/your-account-name/httpdocs/index.php' (often the 'www.' is removable, but not on all servers).
-In addition, from your main FTP account, the same file would likely be '/httpdocs/index.php'.
+For instance, if your account on the server was associated with a domain name, [tt]mywebsite.com[/tt], then [tt]http://mywebsite.com/index.php[/tt] would be tied to the file system file, [tt]/home/your-account-name/httpdocs/index.php[/tt] (often the [tt]www.[/tt] is removable, but not on all servers).
+In addition, from your main FTP account, the same file would likely be [tt]/httpdocs/index.php[/tt].
 
 In other words, three views of the file system exist, according to context:
 [list="1"]
@@ -248,7 +243,7 @@ As previously mentioned, this file system is merely illustrative. Different serv
 
 [title="2"]Server security[/title]
 
-(Optimal configuration advice is provided in the [page="_SEARCH:tut_security"]Security[/page] tutorial -- we just cover some practical implications of configuration here)
+(Optimal configuration advice is provided in the [page="_SEARCH:tut_security"]Security[/page] tutorial -- we just cover some practical implications of the configuration a webhost provides you here)
 
 There are two ways that webhosts may use to manage web application on the server:
 1) Shared user
@@ -294,12 +289,14 @@ So, the main take-away is:
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_install"]Basic Installation[/page]
- - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
- - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
+ - [page="_SEARCH:tut_install"]Installation[/page]
+ - [page="_SEARCH:tut_install_permissions"]File permissions[/page]
+ - [page="_SEARCH:tut_install_linux"]Installation on Linux[/page]
+ - [page="_SEARCH:tut_install_windows_desktop"]Installation on a Windows desktop[/page]
+ - [page="_SEARCH:tut_install_windows_server"]Installation on a Windows server[/page]
  - [page="_SEARCH:tut_browsers"]Browser version requirements[/page]
  - [page="_SEARCH:tut_performance"]Optimising Performance[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
  - [page="_SEARCH:tut_website_health"]Website Health[/page]
 
-{$SET,tutorial_tags,Webhosting,core_database_drivers,Installation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,An overview of how the webhosting industry works, and the general requirements and compatibility for Composr.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Webhosting,core_database_drivers,installer,Installation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,An overview of how the webhosting industry works, and the general requirements and compatibility for Composr.}[block]main_tutorial_rating[/block]

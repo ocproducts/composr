@@ -22,9 +22,9 @@ class upload_directory_test_set extends cms_test_case
     {
         $path = get_file_base() . '/uploads';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (is_dir($path . '/' . $f)) {
-                $this->assertTrue(strlen($f) <= 23, '23 character maximum upload directory length (due to database filename length limitation), ' . $f);
+        while (($file = readdir($dh)) !== false) {
+            if (is_dir($path . '/' . $file)) {
+                $this->assertTrue(strlen($file) <= 23, '23 character maximum upload directory length (due to database filename length limitation), ' . $file);
             }
         }
         closedir($dh);

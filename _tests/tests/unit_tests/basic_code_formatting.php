@@ -18,12 +18,16 @@
  */
 class basic_code_formatting_test_set extends cms_test_case
 {
+    protected $files;
+
     public function setUp()
     {
         parent::setUp();
 
         require_code('files2');
-        $this->contents = get_directory_contents(get_file_base());
+
+        $this->files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_BUNDLED_VOLATILE, true, true, array('php'));
+        $this->files[] = 'install.php';
     }
 
     // TODO: #3467 Make sure no core text files contain non-ASCII characters; with some exceptions like maintenance_status.csv
@@ -37,9 +41,10 @@ class basic_code_formatting_test_set extends cms_test_case
             'GB-18030' => chr(hexdec('84')) . chr(hexdec('31')) . chr(hexdec('95')) . chr(hexdec('33')),
         );
 
-        foreach ($this->contents as $path) {
-            $myfile = fopen($path, 'rb');
+        foreach ($this->files as $path) {
+            $myfile = fopen(get_file_base() . '/' . $path, 'rb');
             $magic_data = fread($myfile, 4);
+            fclose($myfile);
 
             foreach ($boms as $charset => $bom) {
                 $this->assertTrue(substr($magic_data, strlen($bom)) != $bom, $charset . ' byte-order mark found in ' . $path . ': we do not want them');
@@ -92,16 +97,16 @@ class basic_code_formatting_test_set extends cms_test_case
             'themes/default/javascript_custom/unslider.js',
         );
 
-        foreach ($this->contents as $path) {
+        foreach ($this->files as $path) {
             if (in_array($path, $exceptions)) {
                 continue;
             }
 
-            if (preg_match('#^(data_custom/sitemap|sources_custom/sabredav|docs/pages/comcode_custom/EN|data_custom/modules/admin_stats|data/polyfills|exports/builds|aps|_tests/codechecker/netbeans|data/ace|data/ckeditor|sources_custom/composr_mobile_sdk|tracker|sources_custom/ILess|sources_custom/spout|sources_custom/getid3|sources_custom/programe|_tests/simpletest)/#', $path) != 0) {
+            if (preg_match('#^(data_custom/sitemap|sources_custom/sabredav|docs/pages/comcode_custom/EN|data_custom/modules/admin_stats|data/polyfills|aps|_tests/codechecker/netbeans|data/ace|data/ckeditor|sources_custom/composr_mobile_sdk|tracker|sources_custom/ILess|sources_custom/spout|sources_custom/getid3|sources_custom/programe|_tests/simpletest)/#', $path) != 0) {
                 continue;
             }
 
-            $ext = get_file_extension($path);
+            $ext = get_file_extension(get_file_base() . '/' . $path);
 
             if ((in_array($ext, $file_types_spaces)) || (in_array($ext, $file_types_tabs))) {
                 $c = file_get_contents($path);
@@ -121,7 +126,7 @@ class basic_code_formatting_test_set extends cms_test_case
     public function testCorrectLineTerminationAndLineFormat()
     {
         if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
+            @set_time_limit(300);
         }
 
         $file_types = array_flip(array(
@@ -141,16 +146,8 @@ class basic_code_formatting_test_set extends cms_test_case
             'svg',
         ));
 
-        foreach ($this->contents as $path) {
+        foreach ($this->files as $path) {
             if (filesize($path) == 0) {
-                continue;
-            }
-
-            if ($path == '_config.php') {
-                continue;
-            }
-
-            if (should_ignore_file($path, IGNORE_CUSTOM_DIR_GROWN_CONTENTS)) {
                 continue;
             }
 
@@ -158,7 +155,7 @@ class basic_code_formatting_test_set extends cms_test_case
                 continue;
             }
 
-            $ext = get_file_extension($path);
+            $ext = get_file_extension(get_file_base() . '/' . $path);
 
             if (isset($file_types[$ext])) {
                 $c = file_get_contents($path);

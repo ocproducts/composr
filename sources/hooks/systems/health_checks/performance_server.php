@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: tempnam*/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -148,7 +150,7 @@ class Hook_health_check_performance_server extends Hook_Health_Check
 
         require_code('global4');
         $performance = find_normative_performance();
-        $this->assertTrue($performance > $threshold, 'Server\'s normative performance score seems low, at ' . integer_format($performance) . ' (at least ' . integer_format($threshold) . ' expected); 1.0 was set at the level of a 2014 iMac');
+        $this->assertTrue($performance > floatval($threshold), 'Server\'s normative performance score seems low, at ' . float_format($performance) . ' (at least ' . integer_format($threshold) . ' expected); 1.0 was set at the level of a 2014 iMac');
     }
 
     /**

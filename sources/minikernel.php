@@ -663,7 +663,7 @@ function warn_exit($text)
             'ERROR' => true,
         ));
     } else {
-        $global_js = do_template('global', null, null, false, null, '.js', 'javascript');
+        $global_js = do_template('global', array(), null, false, null, '.js', 'javascript');
         $out_final = do_template('INSTALLER_HTML_WRAP', array(
             '_GUID' => '710e7ea5c186b4c42bb3a5453dd915ed',
             'CSS_NOCACHE' => $css_nocache,

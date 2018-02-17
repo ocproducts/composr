@@ -126,7 +126,7 @@ He makes 3 points:
 
 Regarding point 1, that's true, but only if there's a vulnerability found in Apache. Lots of things already run under a server with root privileges, so could have vulnerabilities also. i.e. this doesn't change the state of affairs that much. If there's a vulnerability, Apache will be patched and hosts will update.
 
-Regarding point 2, I disagree. Hosting control panels come with a whole configuration for the services on the server. This isn't a case of every host manually configuring suEXEC, it's a case of the control panels knowing how to do it right and automatically rolling it out correctly for all users of those hosting control panels.
+Regarding point 2, I disagree. Hosting control panels come with a whole configuration for the services on the server. This isn't a case of every host manually configuring suEXEC, it's a case of the control panels knowing how to do it right and automatically rolling it out correctly for all users of those webhosting control panels.
 
 Regarding point 3, I agree and disagree. He is correct to say there's a risk, but it's one of these "you can't avoid crossing the street" kind of scenarios. Modern web systems should be able to have deep control over their own files. For example, if you're installing or uninstalling addons in Composr, you don't want to have to manually handle everything, you want Composr to be able to self manage itself. Sometimes we just have to accept that to have good progressive functionality, we need to take certain risks, and then mitigate those risks.
 

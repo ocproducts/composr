@@ -62,10 +62,10 @@ class css_beta_test_set extends cms_test_case
                 if ($d !== false) {
                     while (($e = readdir($d)) !== false) {
                         if (substr($e, -4) == '.css') {
-                            $contents = file_get_contents($dir . '/' . $e);
+                            $c = file_get_contents($dir . '/' . $e);
 
                             $matches = array();
-                            $found = preg_match_all('#\{\$BETA_CSS_PROPERTY,(.*)\}#i', $contents, $matches);
+                            $found = preg_match_all('#\{\$BETA_CSS_PROPERTY,(.*)\}#i', $c, $matches);
                             for ($i = 0; $i < $found; $i++) {
                                 $property_line = $matches[1][$i];
 
@@ -84,7 +84,7 @@ class css_beta_test_set extends cms_test_case
                                     continue;
                                 }
 
-                                $is_as_beta = (strpos($contents, "\t" . $property) === false) || (strpos($contents, ' ' . $property) === false);
+                                $is_as_beta = (strpos($c, "\t" . $property) === false) || (strpos($c, ' ' . $property) === false);
                                 $this->assertTrue($is_as_beta, 'Property ' . $property . ' should be defined as beta in ' . $e . ' for theme ' . $theme);
                             }
                         }

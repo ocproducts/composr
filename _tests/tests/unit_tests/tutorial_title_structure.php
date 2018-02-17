@@ -24,9 +24,9 @@ class tutorial_title_structure_test_set extends cms_test_case
 
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.txt') {
-                $c = file_get_contents($path . '/' . $f);
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, -4) == '.txt') {
+                $c = file_get_contents($path . '/' . $file);
 
                 $last_level = 1;
 
@@ -48,9 +48,9 @@ class tutorial_title_structure_test_set extends cms_test_case
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.txt') {
-                $c = file_get_contents($path . '/' . $f);
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, -4) == '.txt') {
+                $c = file_get_contents($path . '/' . $file);
 
                 $last_level = 1;
 
@@ -60,7 +60,7 @@ class tutorial_title_structure_test_set extends cms_test_case
                     $title_level = intval($matches[1][$i]);
                     $title = $matches[2][$i];
 
-                    $this->assertTrue($title_level - $last_level <= 1, 'Incorrect levels for ' . $title . ' (' . integer_format($last_level) . ' to ' . integer_format($title_level) . ') in ' . $f);
+                    $this->assertTrue($title_level - $last_level <= 1, 'Incorrect levels for ' . $title . ' (' . integer_format($last_level) . ' to ' . integer_format($title_level) . ') in ' . $file);
 
                     $last_level = $title_level;
                 }
@@ -73,13 +73,13 @@ class tutorial_title_structure_test_set extends cms_test_case
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.txt') {
-                $c = file_get_contents($path . '/' . $f);
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, -4) == '.txt') {
+                $c = file_get_contents($path . '/' . $file);
 
                 $matches = array();
                 $test = (preg_match('#\[title="(\d+)"\](.*)(?![/title])\[/title\]\s*\[title="\\1"\](.*)(?![/title])\[/title\]#', $c, $matches) == 0);
-                $this->assertTrue($test, 'There seems to be an empty title section; likely it\'s misnumering, ' . $f . ', ' . @$matches[2]);
+                $this->assertTrue($test, 'There seems to be an empty title section; likely it\'s misnumering, ' . $file . ', ' . @$matches[2]);
             }
         }
         closedir($dh);

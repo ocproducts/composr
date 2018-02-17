@@ -26,17 +26,17 @@ require_javascript('ecommerce');
  */
 class Module_admin_ecommerce extends Standard_crud_module
 {
-    public $lang_type = 'USERGROUP_SUBSCRIPTION';
-    public $select_name = 'TITLE';
-    public $select_name_description = 'DESCRIPTION_TITLE';
-    public $menu_label = 'USERGROUP_SUBSCRIPTIONS';
-    public $table = 'f_usergroup_subs';
-    public $orderer = 's_title';
-    public $title_is_multi_lang = true;
-    public $donext_entry_content_type = 'usergroup_subscription';
-    public $donext_category_content_type = null;
+    protected $lang_type = 'USERGROUP_SUBSCRIPTION';
+    protected $select_name = 'TITLE';
+    protected $select_name_description = 'DESCRIPTION_TITLE';
+    protected $menu_label = 'USERGROUP_SUBSCRIPTIONS';
+    protected $table = 'f_usergroup_subs';
+    protected $orderer = 's_title';
+    protected $title_is_multi_lang = true;
+    protected $donext_entry_content_type = 'usergroup_subscription';
+    protected $donext_category_content_type = null;
 
-    public $functions = 'moduleAdminEcommerce';
+    protected $functions = 'moduleAdminEcommerce';
 
     /**
      * Find details of the module.

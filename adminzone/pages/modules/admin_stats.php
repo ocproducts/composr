@@ -1587,6 +1587,8 @@ class Module_admin_stats
                 $GLOBALS['SITE_DB']->query_delete('stats');
                 $GLOBALS['SITE_DB']->query_delete('usersonline_track');
             }
+
+            closedir($handle);
         }
 
         return inform_screen(get_screen_title('CLEAR_STATISTICS'), do_lang_tempcode('SUCCESS'));

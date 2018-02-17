@@ -20,7 +20,6 @@ class file_naming_test_set extends cms_test_case
 {
     public function testFileNamingConvention()
     {
-        require_code('files');
         require_code('files2');
 
         $ignore_stubs = array(
@@ -69,27 +68,23 @@ class file_naming_test_set extends cms_test_case
             '/-logo.png',
         );
 
-        $files = get_directory_contents(get_file_base());
-        foreach ($files as $file) {
-            if (should_ignore_file($file, IGNORE_USER_CUSTOMISE | IGNORE_UPLOADS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_REVISION_FILES | IGNORE_EDITFROM_FILES)) {
-                continue;
-            }
-
+        $files = get_directory_contents(get_file_base(), '', IGNORE_USER_CUSTOMISE | IGNORE_UPLOADS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_REVISION_FILES | IGNORE_EDITFROM_FILES);
+        foreach ($files as $path) {
             foreach ($ignore_substrings as $substring) {
-                if (strpos($file, $substring) !== false) {
+                if (strpos($path, $substring) !== false) {
                     continue 2;
                 }
             }
 
             foreach ($ignore_stubs as $stub) {
-                if (substr($file, 0, strlen($stub)) == $stub) {
+                if (substr($path, 0, strlen($stub)) == $stub) {
                     continue 2;
                 }
             }
 
-            $ok = preg_match('#^[\w/]*(\.\w+)?$#', $file);
+            $ok = preg_match('#^[\w/]*(\.\w+)?$#', $path);
 
-            $this->assertTrue($ok, 'File naming not matching convention for: ' . $file);
+            $this->assertTrue($ok, 'File naming not matching convention for: ' . $path);
         }
     }
 }

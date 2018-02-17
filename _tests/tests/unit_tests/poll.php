@@ -18,8 +18,8 @@
  */
 class poll_test_set extends cms_test_case
 {
-    public $poll_id;
-    public $topic_id;
+    protected $poll_id;
+    protected $topic_id;
 
     public function setUp()
     {

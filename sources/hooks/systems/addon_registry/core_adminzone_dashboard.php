@@ -147,8 +147,8 @@ class Hook_addon_registry_core_adminzone_dashboard
             'sources/hooks/systems/config/dashboard_tips.php',
             'sources/hooks/systems/config/dashboard_db_notes.php',
             'sources/hooks/systems/config/dashboard_forum_topics.php',
-            'sources/hooks/systems/config/dashboard_staff_links.php',
-            'sources/hooks/systems/config/dashboard_staff_website_monitoring.php',
+            'sources/hooks/systems/config/dashboard_links.php',
+            'sources/hooks/systems/config/dashboard_website_monitoring.php',
         );
     }
 

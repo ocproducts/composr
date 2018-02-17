@@ -25,20 +25,20 @@ require_code('crud_module');
  */
 class Module_cms_banners extends Standard_crud_module
 {
-    public $lang_type = 'BANNER';
-    public $view_entry_point = '_SEARCH:banners:view:source=_ID';
-    public $user_facing = true;
-    public $permissions_require = 'mid';
-    public $select_name = 'NAME';
-    public $select_name_description = 'DESCRIPTION_BANNER_NAME';
-    public $upload = 'image';
-    public $non_integer_id = true;
-    public $permission_module = 'banners';
-    public $menu_label = 'BANNERS';
-    public $array_key = 'name';
-    public $title_is_multi_lang = false;
+    protected $lang_type = 'BANNER';
+    protected $view_entry_point = '_SEARCH:banners:view:source=_ID';
+    protected $user_facing = true;
+    protected $permissions_require = 'mid';
+    protected $select_name = 'NAME';
+    protected $select_name_description = 'DESCRIPTION_BANNER_NAME';
+    protected $upload = 'image';
+    protected $non_integer_id = true;
+    protected $permission_module = 'banners';
+    protected $menu_label = 'BANNERS';
+    protected $array_key = 'name';
+    protected $title_is_multi_lang = false;
 
-    public $do_next_type = null;
+    protected $do_next_type = null;
 
     public $title;
 
@@ -619,20 +619,20 @@ class Module_cms_banners extends Standard_crud_module
  */
 class Module_cms_banners_cat extends Standard_crud_module
 {
-    public $lang_type = 'BANNER_TYPE';
-    public $select_name = 'BANNER_TYPE';
-    public $select_name_description = '_DESCRIPTION_BANNER_TYPE';
-    public $orderer = 'id';
-    public $array_key = 'id';
-    public $title_is_multi_lang = false;
-    public $non_integer_id = true;
-    public $protect_first = 1;
-    public $table = 'banner_types';
-    public $permissions_require = 'cat_high';
-    public $menu_label = 'BANNERS';
-    public $no_blank_ids = false;
-    public $is_chained_with_parent_browse = true;
-    public $do_preview = null;
+    protected $lang_type = 'BANNER_TYPE';
+    protected $select_name = 'BANNER_TYPE';
+    protected $select_name_description = '_DESCRIPTION_BANNER_TYPE';
+    protected $orderer = 'id';
+    protected $array_key = 'id';
+    protected $title_is_multi_lang = false;
+    protected $non_integer_id = true;
+    protected $protect_first = 1;
+    protected $table = 'banner_types';
+    protected $permissions_require = 'cat_high';
+    protected $menu_label = 'BANNERS';
+    protected $no_blank_ids = false;
+    protected $is_chained_with_parent_browse = true;
+    protected $do_preview = null;
 
     /**
      * Standard crud_module table function.

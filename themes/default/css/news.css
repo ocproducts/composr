@@ -32,7 +32,7 @@
 	margin: 0;
 }
 
-.global-middle .boxless-space .box .box.box---news-brief + .box.box---news-brief:before {
+.global-middle .boxless-space .box .box.box---news-brief + .box.box---news-brief::before {
 	border-top: 0 !important;
 	padding-top: 0 !important;
 }

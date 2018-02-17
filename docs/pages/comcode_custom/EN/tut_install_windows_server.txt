@@ -1,0 +1,111 @@
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Installation on a Windows server[/title]
+
+[media framed="0" width="150" float="right"]data_custom/images/docs/tut_install_windows_server/iis_logo.png[/media]
+This tutorial will show you how to get a Composr installation running on a Windows server, using {$IS_MAINTAINED,platform_iis,IIS}. It is written for readers with a higher expertise than the [page="_SEARCH:tut_install_windows_desktop]Installation on a Windows desktop[/page] tutorial is. If you want to see Composr installation steps, or information about Composr's own Web Platform Installer, see that tutorial.
+
+If you are running a Windows desktop machine that you want to behave like a proper IIS server, this tutorial will cater for that too.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Remote desktop[/title]
+
+[media framed="0" width="150" float="right"]data_custom/images/docs/tut_install_windows_server/remote_desktop.png[/media]
+[i]This step does not apply if working from a webhosting control panel[/i]
+
+You'll want to connect to and manage a remote server using Remote Desktop. Remote Desktop clients are available for all the main operating systems and Windows Server comes with a Remote Desktop server built in.
+
+[title="2"]Pre-setup[/title]
+
+[i]This step does not apply if working from a webhosting control panel -- and presumably this is already handled[/i]
+
+If you are on a new server remember to install any system updates. This may actually be necessary to get some of your server software installed.
+
+[title="2"]Microsoft Web Platform Installer[/title]
+
+[media framed="0" width="150" float="right"]data_custom/images/docs/tut_install_windows_server/webpi.png[/media]
+[i]This step does not apply if working from a webhosting control panel -- you likely have everything you need pre-installed anyway[/i]
+
+The easiest way to install your server software is with the Microsoft [url="Web Platform Installer"]https://www.microsoft.com/web/downloads/platform.aspx[/url]. Follow the link and install it.
+
+When Web Platform Installer installs PHP it will make sure file permissions to PHP are correct as well as automatically configuring FastCGI. These are quite hard to do manually.
+
+You also need to install Microsoft .net 3.5 via "server roles", if it is not already installed. You can also try installing [url=".net 3.5 manually"]https://www.microsoft.com/net/[/url] if needed.
+
+From the Web Platform Installer you need to install:
+ - IIS Express [i]if you are not running on a real Windows Server[/i]
+ - IIS: CGI
+ - (IIS) URL Rewrite
+ - PHP
+ - (PHP) Windows Cache Extension
+ - SQL Server Express [i]if you will be using SQL Server[/i] rather than MySQL and [i]if you don't have a full SQL Server installation already[/i]
+ - "Microsoft Drivers (...) for PHP (...) for SQL Server in IIS" [i]if you will be using SQL Server[/i] rather than MySQL
+ - MySQL Windows [i]if you will be MySQL[/i]
+Make sure you install things with consistent IIS/PHP versions, and the correct 32bit/64bit for what Windows is using, things are not always sorted well.
+ - PHP Manager for IIS
+
+[title="2"]Configuring PHP[/title]
+
+[i]This step either does not apply if working from a webhosting control panel, or would be handled in a different way by the particular control panel[/i]
+
+From IIS Manager, go to the PHP Manager and enable the following PHP extensions:
+ - [tt]wincache[/tt] (for faster PHP)
+ - [tt]opcache[/tt] (for faster PHP)
+ - [i]and [page="_SEARCH:tut_webhosting"]potentially other extensions[/page] you want[/i]
+
+[title="2"]Configuring IIS[/title]
+
+[media framed="0" width="150" float="right"]data_custom/images/docs/tut_install_windows_server/iis_manager.png[/media]
+[i]This step either does not apply if working from a webhosting control panel, or would be handled in a different way by the particular control panel[/i]
+
+You will want to turn off IIS's own error messages so that you can properly debug PHP/Composr. Go to the site node, the Error Pages icon, and Feature Settings (on the right), then enable Detailed Errors.
+
+[title="2"]Configuring file permissions[/title]
+
+Assign 'IUSR' 'Full control' permissions to your Composr base directory. If there's a 'IIS_IUSRS' user then give this user the same permissions. Permissions should recurse through (inherit), which is the default behaviour.
+
+[b]Caveat[/b]: If IIS is configured to use a different user then set permissions for [i]that[/i] user. Sometimes webhosts configure IIS differently to the defaults, especially for shared hosting (they almost certainly should for shared hosting).
+
+If you prefer atomic permissions you can use the [tt]fixperms.bat[/tt] script to do this, or you can also do it [page="_SEARCH:tut_install_permissions"]by hand[/page]. It will make things very awkward when managing addons so I don't recommend it!
+
+[title="3"]Shared hosting[/title]
+
+Things can get tricky on Windows shared hosting. Let's assume you have found what user your hosting is running under, you still need to set permissions. It's not clearly defined how to do this, but should be one of the following:
+1) Using Windows Explorer, using Remote Desktop. This is assuming you have Remote Desktop access.
+2) Using a webhosting control panel interface.
+If you can't do either of these things, then my best advice is to find new hosting! You don't want to have to ask the webhost to do it for you everytime you change something, that's going to be a PITA.
+
+It's outside the scope of this tutorial to discuss how to ensure file permissions are secure on shared hosting, but we do touch on it in the [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page] tutorial. Really this is up to the webhost to get right.
+
+[title="2"]File extraction[/title]
+
+[i]This step does not apply if working from a webhosting control panel[/i]
+
+You can download Composr's manual installer direct to the server, and extract it. For your situation this will be a little more intuitive and direct than using the quick installer.
+
+[title="2"]Create databases[/title]
+
+Create databases in MySQL / SQL Server. How to do this is outside the scope of this tutorial.
+
+[title="2"]Composr Installation[/title]
+
+Now proceed with installing Composr, via launching [tt]install.php[/tt] in your web browser.
+
+[title="2"]Shell scripts (advanced)[/title]
+
+[i]This step does not apply if working from a webhosting control panel[/i]
+
+You may want to install [url="git"]https://git-scm.com/[/url] or [url="Cygwin"]http://www.cygwin.com/[/url], so you can make use of some of the [tt]linux_helper_scripts[/tt] (e.g. [tt]decache.sh[/tt]).
+
+[title="2"]See also[/title]
+
+ - [url="Web Platform Installer"]https://www.microsoft.com/web/downloads/platform.aspx[/url]
+ - [url="IIS Express"]https://www.microsoft.com/en-us/download/details.aspx?id=48264[/url]
+ - [url="PHP homesite"]http://php.net/[/url]
+ - [url="MySQL homesite"]http://mysql.com/[/url]
+ - [url="phpMyAdmin"]http://www.phpmyadmin.net/[/url]
+ - [page="_SEARCH:tut_install"]Installation[/page]
+ - [page="_SEARCH:tut_install_windows_desktop]Installation on a Windows desktop[/page]
+ - [page="_SEARCH:tut_sqlserver]Using SQL Server with Composr[/page]
+ - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
+
+{$SET,tutorial_tags,windows_helper_scripts,installer,Installation,Webhosting,regular}{$SET,tutorial_add_date,Feb 2018}{$SET,tutorial_summary,How to get a Composr installation running on a Windows server.}[block]main_tutorial_rating[/block]

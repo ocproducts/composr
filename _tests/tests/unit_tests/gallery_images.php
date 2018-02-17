@@ -18,7 +18,7 @@
  */
 class gallery_images_test_set extends cms_test_case
 {
-    public $image_id;
+    protected $image_id;
 
     public function setUp()
     {

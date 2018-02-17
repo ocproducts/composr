@@ -25,7 +25,7 @@ class web_resources_test_set extends cms_test_case
         parent::setUp();
 
         if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
+            @set_time_limit(1000);
         }
 
         $_GET['keep_minify'] = '0';
@@ -37,14 +37,13 @@ class web_resources_test_set extends cms_test_case
         require_lang('webstandards');
         require_code('themes2');
 
-        global $WEBSTANDARDS_JAVASCRIPT, $WEBSTANDARDS_CSS, $WEBSTANDARDS_WCAG, $WEBSTANDARDS_COMPAT, $WEBSTANDARDS_EXT_FILES, $WEBSTANDARDS_MANUAL, $MAIL_MODE;
+        global $WEBSTANDARDS_JAVASCRIPT, $WEBSTANDARDS_CSS, $WEBSTANDARDS_WCAG, $WEBSTANDARDS_COMPAT, $WEBSTANDARDS_EXT_FILES, $WEBSTANDARDS_MANUAL;
         $WEBSTANDARDS_JAVASCRIPT = true;
         $WEBSTANDARDS_CSS = true;
         $WEBSTANDARDS_WCAG = true;
         $WEBSTANDARDS_COMPAT = false;
         $WEBSTANDARDS_EXT_FILES = true;
         $WEBSTANDARDS_MANUAL = false;
-        $MAIL_MODE = false;
     }
 
     public function testJavaScript()
@@ -95,29 +94,29 @@ class web_resources_test_set extends cms_test_case
 
         $dh = @opendir(get_file_base() . '/themes/' . $theme . '/' . $dir);
         if ($dh !== false) {
-            while (($f = readdir($dh)) !== false) {
-                if (substr($f, -3) == '.js') {
-                    if (in_array($f, $exceptions)) {
+            while (($file = readdir($dh)) !== false) {
+                if (substr($file, -3) == '.js') {
+                    if (in_array($file, $exceptions)) {
                         continue;
                     }
 
                     if ($only !== null) {
-                        if ($f != $only) {
+                        if ($file != $only) {
                             continue;
                         }
                     }
 
-                    if (!is_file(get_file_base() . '/themes/' . $theme . '/' . $dir . '/' . $f)) {
+                    if (!is_file(get_file_base() . '/themes/' . $theme . '/' . $dir . '/' . $file)) {
                         continue;
                     }
 
-                    $path = javascript_enforce(basename($f, '.js'), $theme);
+                    $path = javascript_enforce(basename($file, '.js'), $theme);
                     if ($path == '') {
                         continue; // Empty file, so skipped
                     }
 
-                    $contents = file_get_contents($path);
-                    $errors = check_js($contents);
+                    $c = file_get_contents($path);
+                    $errors = check_js($c);
                     if ($errors !== null) {
                         foreach ($errors['errors'] as $i => $e) {
                             $e['line'] += 3;
@@ -127,7 +126,7 @@ class web_resources_test_set extends cms_test_case
                     if (($errors !== null) && ($errors['errors'] == array())) {
                         $errors = null; // Normalise
                     }
-                    $this->assertTrue(($errors === null), 'Bad JS in ' . $f);
+                    $this->assertTrue(($errors === null), 'Bad JS in ' . $file);
                     if ($errors !== null) {
                         if (get_param_integer('debug', 0) == 1) {
                             unset($errors['tag_ranges']);
@@ -163,6 +162,7 @@ class web_resources_test_set extends cms_test_case
         $exceptions = array(
             // Third-party code not confirming to Composr standards
             'widget_color.css',
+            'widget_date.css',
             'widget_select2.css',
             'unslider.css',
             'skitter.css',
@@ -178,29 +178,29 @@ class web_resources_test_set extends cms_test_case
 
         $dh = @opendir(get_file_base() . '/themes/' . $theme . '/' . $dir);
         if ($dh !== false) {
-            while (($f = readdir($dh)) !== false) {
-                if ((substr($f, -4) == '.css') && ($f != 'svg.css'/*SVG-CSS*/) && ($f != 'no_cache.css')) {
-                    if (in_array($f, $exceptions)) {
+            while (($file = readdir($dh)) !== false) {
+                if ((substr($file, -4) == '.css') && ($file != 'svg.css'/*SVG-CSS*/) && ($file != 'no_cache.css')) {
+                    if (in_array($file, $exceptions)) {
                         continue;
                     }
 
-                    $path = css_enforce(basename($f, '.css'), $theme);
+                    $path = css_enforce(basename($file, '.css'), $theme);
                     if ($path == '') {
                         continue; // Nothing in file after minimisation
                     }
 
                     if ($only !== null) {
-                        if ($f != $only) {
+                        if ($file != $only) {
                             continue;
                         }
                     }
 
-                    $contents = file_get_contents($path);
-                    $errors = check_css($contents);
+                    $c = file_get_contents($path);
+                    $errors = check_css($c);
                     if (($errors !== null) && ($errors['errors'] == array())) {
                         $errors = null; // Normalise
                     }
-                    $this->assertTrue(($errors === null), 'Bad CSS in ' . $f);
+                    $this->assertTrue(($errors === null), 'Bad CSS in ' . $file . (($only === null) ? (' (run with &only=' . $file . '&debug=1 to see errors)') : ''));
                     if ($errors !== null) {
                         if (get_param_integer('debug', 0) == 1) {
                             echo '<pre>';
@@ -210,6 +210,7 @@ class web_resources_test_set extends cms_test_case
                     }
                 }
             }
+            closedir($dh);
         }
     }
 }

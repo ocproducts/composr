@@ -52,10 +52,10 @@ class Hook_cron_notification_digests
 
         require_code('notifications');
         foreach (array(
-                A_DAILY_EMAIL_DIGEST => 60 * 60 * 24,
-                A_WEEKLY_EMAIL_DIGEST => 60 * 60 * 24 * 7,
-                A_MONTHLY_EMAIL_DIGEST => 60 * 60 * 24 * 31,
-            ) as $frequency => $time_span) {
+            A_DAILY_EMAIL_DIGEST => 60 * 60 * 24,
+            A_WEEKLY_EMAIL_DIGEST => 60 * 60 * 24 * 7,
+            A_MONTHLY_EMAIL_DIGEST => 60 * 60 * 24 * 31,
+        ) as $frequency => $time_span) {
             $start = 0;
             do {
                 // Find where not tint-in-tin

@@ -23,7 +23,7 @@
  */
 class Hook_health_check_install_env_php_ext extends Hook_Health_Check
 {
-    protected $category_label = 'Installation environment';
+    protected $category_label = 'Installation environment (PHP extensions)';
 
     /**
      * Standard hook run function to run this category of health checks.
@@ -37,6 +37,7 @@ class Hook_health_check_install_env_php_ext extends Hook_Health_Check
      */
     public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
+        $this->process_checks_section('testCurl', 'cURL', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testGD', 'GD', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testUnicode', 'Unicode', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testXML', 'XML', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
@@ -71,7 +72,7 @@ class Hook_health_check_install_env_php_ext extends Hook_Health_Check
      *
      * @return float The version of GD installed
      */
-    private function get_gd_version()
+    protected function get_gd_version()
     {
         $info = gd_info();
         $matches = array();
@@ -94,6 +95,19 @@ class Hook_health_check_install_env_php_ext extends Hook_Health_Check
     public function testUnicode($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
         $this->assertTrue((function_exists('mb_strlen')) || (function_exists('iconv_strlen')), do_lang('MISSING_UTF_SUPPORT'));
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testCurl($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        $this->assertTrue(function_exists('curl_init'), do_lang('NO_CURL_ON_SERVER'));
     }
 
     /**

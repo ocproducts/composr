@@ -96,9 +96,9 @@ class css_file_test_set extends cms_test_case
                             continue;
                         }
 
-                        $contents = file_get_contents($dir . '/' . $e);
+                        $c = file_get_contents($dir . '/' . $e);
                         $matches = array();
-                        $found = preg_match_all('#\.([a-z][\w\-]*)[ ,:]#i', $contents, $matches);
+                        $found = preg_match_all('#\.([a-z][\w\-]*)[ ,:]#i', $c, $matches);
                         for ($i = 0; $i < $found; $i++) {
                             if ($matches[1][$i] != 'txt') {
                                 $out[] = $matches[1][$i];
@@ -129,9 +129,9 @@ class css_file_test_set extends cms_test_case
             if ($d !== false) {
                 while (($e = readdir($d)) !== false) {
                     if (substr($e, -4) == '.tpl' || substr($e, -3) == '.js') {
-                        $contents = file_get_contents($dir . '/' . $e);
+                        $c = file_get_contents($dir . '/' . $e);
                         $matches = array();
-                        $found = preg_match_all('#class="([\w\- ]+)"#', $contents, $matches);
+                        $found = preg_match_all('#class="([\w\- ]+)"#', $c, $matches);
                         for ($i = 0; $i < $found; $i++) {
                             $out = array_merge($out, explode(' ', $matches[1][$i]));
                         }
@@ -183,7 +183,7 @@ class css_file_test_set extends cms_test_case
             foreach ($directories as $dir => $to_use) {
                 $dh = @opendir($dir);
                 if ($dh !== false) {
-                    while (($f = readdir($dh)) !== false) {
+                    while (($file = readdir($dh)) !== false) {
                         // Exceptions
                         $exceptions = array(
                             'columns.css',
@@ -197,13 +197,13 @@ class css_file_test_set extends cms_test_case
                             'widget_select2.css',
                             'confluence.css',
                         );
-                        if (in_array($f, $exceptions)) {
+                        if (in_array($file, $exceptions)) {
                             continue;
                         }
 
-                        $contents = file_get_contents($dir . '/' . $f);
+                        $c = file_get_contents($dir . '/' . $file);
 
-                        $is_css_file = (substr($f, -4) == '.css');
+                        $is_css_file = (substr($file, -4) == '.css');
 
                         if ($is_css_file) {
                             if (!$to_use) {
@@ -211,21 +211,21 @@ class css_file_test_set extends cms_test_case
                             }
 
                             // Let's do a few simple CSS checks, less than a proper validator would do
-                            if (($is_css_file) && (strpos($contents, '{$,parser hint: pure}') === false)) {
+                            if (($is_css_file) && (strpos($c, '{$,parser hint: pure}') === false)) {
                                 // Test comment/brace balancing
-                                $a = substr_count($contents, '{');
-                                $b = substr_count($contents, '}');
-                                $this->assertTrue($a == $b, 'Mismatched braces in ' . $f . ' in ' . $theme . ', ' . integer_format($a) . ' vs ' . integer_format($b));
-                                $a = substr_count($contents, '/*');
-                                $b = substr_count($contents, '*/');
-                                $this->assertTrue($a == $b, 'Mismatched comments in ' . $f . ' in ' . $theme . ', ' . integer_format($a) . ' vs ' . integer_format($b));
+                                $a = substr_count($c, '{');
+                                $b = substr_count($c, '}');
+                                $this->assertTrue($a == $b, 'Mismatched braces in ' . $file . ' in ' . $theme . ', ' . integer_format($a) . ' vs ' . integer_format($b));
+                                $a = substr_count($c, '/*');
+                                $b = substr_count($c, '*/');
+                                $this->assertTrue($a == $b, 'Mismatched comments in ' . $file . ' in ' . $theme . ', ' . integer_format($a) . ' vs ' . integer_format($b));
 
                                 // Strip comments
-                                $contents = preg_replace('#/\*.*\*/#s', '', $contents);
+                                $c = preg_replace('#/\*.*\*/#s', '', $c);
 
                                 // Test selectors
                                 $matches = array();
-                                $num_matches = preg_match_all('#^\s*[^@\s].*[^%\s]\s*\{$#m', $contents, $matches); // Finds selectors. However NB: @ is media rules, % is keyframe rules, neither are selectors.
+                                $num_matches = preg_match_all('#^\s*[^@\s].*[^%\s]\s*\{$#m', $c, $matches); // Finds selectors. However NB: @ is media rules, % is keyframe rules, neither are selectors.
                                 for ($i = 0; $i < $num_matches; $i++) {
                                     $matches2 = array();
                                     $current = $matches[0][$i];
@@ -234,15 +234,15 @@ class css_file_test_set extends cms_test_case
                                     $current = /*strip bracketed section*/preg_replace('#\([^\(\)]*\)#', '', $current);
                                     $num_matches2 = /*find class/ID words*/preg_match_all('#[\w\-]+#', $current, $matches2);
                                     for ($j = 0; $j < $num_matches2; $j++) {
-                                        if (!isset($selector_files[$f])) {
-                                            $selector_files[$f] = array();
+                                        if (!isset($selector_files[$file])) {
+                                            $selector_files[$file] = array();
                                         }
-                                        $selector_files[$f][$matches2[0][$j]] = true;
+                                        $selector_files[$file][$matches2[0][$j]] = true;
                                     }
                                 }
                             }
                         } else {
-                            $non_css_contents .= $contents;
+                            $non_css_contents .= $c;
                         }
                     }
                     closedir($dh);
@@ -287,6 +287,12 @@ class css_file_test_set extends cms_test_case
         if (preg_match('#^' . implode('|', $prefix_exceptions) . '#', $class) != 0) {
             return true;
         }
+        $suffix_exceptions = array(
+            '-link',
+        );
+        if (preg_match('#' . implode('|', $suffix_exceptions) . '$#', $class) != 0) {
+            return true;
+        }
 
         $exceptions = array(
             'help',
@@ -304,7 +310,6 @@ class css_file_test_set extends cms_test_case
             'ajax-tree-magic-button',
             'alert',
             'alt-field',
-            'archive-link',
             'fake-table-cell',
             'docked',
             'non-docked',
@@ -381,14 +386,12 @@ class css_file_test_set extends cms_test_case
             'delete-cross-button',
             'dh',
             'divider',
-            'doc-link',
             'e',
             'has-children',
             'faded-tooltip-img',
             'feature-background-image',
             'feature-image',
             'feature-video',
-            'feed-link',
             'fieldset',
             'filledin',
             'footer-button-loading',
@@ -440,7 +443,6 @@ class css_file_test_set extends cms_test_case
             'link-exempt2',
             'loading-overlay',
             'magic-image-edit-link',
-            'media-link',
             'media-set',
             'menu-editor-selected-field',
             'menu-type--top',
@@ -456,23 +458,18 @@ class css_file_test_set extends cms_test_case
             'notification',
             'notification-code',
             'notification-has-read',
-            'odp-link',
-            'ods-link',
-            'odt-link',
             'opens-below',
             'overlay',
             'overlay-close-button',
             'p',
             'pagination-load-more',
             'paused',
-            'pdf-link',
             'people-list',
             'pic',
             'play_button',
             'plupload',
             'popup-spacer',
             'post',
-            'ppt-link',
             'preview-box',
             'previous_button',
             'proceed-button-left-2',
@@ -514,14 +511,12 @@ class css_file_test_set extends cms_test_case
             'topic-list-topic',
             'toplevel',
             'toplevel-link',
-            'torrent-link',
             'touch-enabled',
             'tpl',
             'tpl-dropdown-row-a',
             'tpl-dropdown-row-b',
             'tree-list-highlighted',
             'tree-list-nonhighlighted',
-            'txt-link',
             'unclosed-ticket',
             'unslider',
             'up-alert',
@@ -576,7 +571,6 @@ class css_file_test_set extends cms_test_case
             'date-closed',
             'date-datepicker-button',
             'date-open',
-            'external-link',
             'file-changed',
             'file-unchanged',
             'glowing-node',

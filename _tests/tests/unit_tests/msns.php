@@ -21,10 +21,13 @@ class msns_test_set extends cms_test_case
     public function testNoBadTablePrefixing()
     {
         require_code('files2');
+
         $php_path = find_php_path();
-        $contents = get_directory_contents(get_file_base());
-        foreach ($contents as $f) {
-            if (in_array($f, array(
+
+        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_BUNDLED_VOLATILE, true, true, array('php'));
+        $files[] = 'install.php';
+        foreach ($files as $path) {
+            if (in_array($path, array(
                 '_tests/tests/unit_tests/msns.php',
                 'adminzone/pages/modules/admin_version.php',
                 'sources/blocks/main_friends_list.php',
@@ -35,11 +38,9 @@ class msns_test_set extends cms_test_case
                 continue;
             }
 
-            if ((substr($f, -4) == '.php') && (basename($f) != 'errorlog.php')) {
-                $c = file_get_contents($f);
+            $c = file_get_contents(get_file_base() . '/' . $path);
 
-                $this->assertTrue(strpos($c, ". get_table_prefix() . 'f_") === false, 'Wrong forum table prefix in ' . $f);
-            }
+            $this->assertTrue(strpos($c, ". get_table_prefix() . 'f_") === false, 'Wrong forum table prefix in ' . $path);
         }
     }
 }

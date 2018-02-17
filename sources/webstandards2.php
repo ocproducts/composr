@@ -121,23 +121,6 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
     }
 
     if (!$close) {
-        if ($GLOBALS['MAIL_MODE']) {
-            if (in_array($tag, array('style', 'object', 'applet', 'embed', 'form', 'map'))) {
-                $errors[] = array('MAIL_BAD_TAG', $tag);
-            }
-            if ($tag == 'script') {
-                $errors[] = array('MAIL_JAVASCRIPT');
-            }
-            foreach (array_keys($attributes) as $atr) {
-                if (substr(strtolower($atr), 0, 2) == 'on') {
-                    $errors[] = array('MAIL_JAVASCRIPT');
-                }
-            }
-            if (($tag == 'body') && (count($attributes) != 0) && ($attributes != array('style' => 'margin: 0'))) {
-                $errors[] = array('MAIL_BODY');
-            }
-        }
-
         // Check all required attributes are here
         global $TAG_ATTRIBUTES_REQUIRED;
         if ((isset($TAG_ATTRIBUTES_REQUIRED[$tag])) && (($tag != 'html') || ($XML_CONSTRAIN))) {
@@ -833,9 +816,6 @@ function _check_labelling($tag, $attributes, $self_close, $close)
  */
 function check_css($data)
 {
-    if (!isset($GLOBALS['MAIL_MODE'])) {
-        $GLOBALS['MAIL_MODE'] = false;
-    }
     $_errors = _webstandards_css_sheet($data);
     if ($_errors === null) {
         $_errors = array();
@@ -969,14 +949,8 @@ function _webstandards_css_sheet($data)
                 if ($whitespace) {
                     // Continuing
                 } elseif (($next == '.') || ($next == ':') || ($next == '#') || ($alpha_numeric)) {
-                    if ($data[$i + 1] == ':') { // e.g. "::selection"
-                        if (!empty($GLOBALS['PEDANTIC'])) {
-                            $errors[] = array(0 => 'CSS_UNEXPECTED_CHARACTER', 1 => $next, 2 => integer_format($line), 'pos' => $i);
-                        }
-                        $i++;
-                    }
                     $status = CSS_IN_IDENTIFIER;
-                    $class_name = '';
+                    $class_name = $next;
                 } elseif ($next == '@') {
                     $status = CSS_AT_RULE;
                     $at_rule = '';
@@ -1001,7 +975,7 @@ function _webstandards_css_sheet($data)
                     $status = CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS;
                 } elseif (($next == '.') || ($next == ':') || ($next == '#') || ($alpha_numeric)) {
                     $status = CSS_IN_IDENTIFIER;
-                    $class_name = $alpha_numeric ? $next : '';
+                    $class_name = $next;
                 } else {
                     $errors[] = array(0 => 'CSS_UNEXPECTED_CHARACTER', 1 => $next, 2 => integer_format($line), 'pos' => $i);
                 }
@@ -1035,6 +1009,7 @@ function _webstandards_css_sheet($data)
                     $cnt = substr_count($class_name, ':');
                     if ($cnt > 0) {
                         $matches = array();
+                        $pseudo = '';
                         $num_matches = preg_match_all('#:(:?[\w\-]+)(\([^()]*\))?#', $class_name, $matches);
                         for ($j = 0; $j < $num_matches; $j++) {
                             $pseudo = $matches[1][$j];
@@ -1046,6 +1021,16 @@ function _webstandards_css_sheet($data)
                             ':before',
                             ':after',
                             ':selection',
+                            ':-moz-selection',
+                            ':-moz-focus-inner',
+                            ':-webkit-scrollbar',
+                            ':-webkit-scrollbar-track',
+                            ':-webkit-scrollbar-thumb',
+                            ':-webkit-calendar-picker-indicator',
+                            ':placeholder',
+                            ':-webkit-input-placeholder',
+                            ':-moz-placeholder',
+                            ':-ms-input-placeholder',
                             'active',
                             'checked',
                             'disabled',
@@ -1100,7 +1085,7 @@ function _webstandards_css_sheet($data)
                     $class_before_comment = CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS;
                 } elseif (($next == '.') || ($next == ':') || ($next == '#') || ($alpha_numeric)) {
                     $status = CSS_IN_IDENTIFIER;
-                    $class_name = '';
+                    $class_name = $next;
                 } else {
                     $errors[] = array(0 => 'CSS_UNEXPECTED_CHARACTER', 1 => $next, 2 => integer_format($line), 'pos' => $i);
                 }
@@ -1310,18 +1295,9 @@ function _check_css_value($key, $value, $_i)
         return array(0 => 'CSS_BAD_PROPERTY_VALUE', 1 => $key, 2 => $value, 3 => $reg_exp, 'pos' => $_i);
     }
 
-    if ($GLOBALS['MAIL_MODE']) {
-        if ($key == 'position') {
-            return array(0 => 'MAIL_POSITIONING', 'pos' => $_i);
-        }
-        if (($key == 'width') && (substr($value, -2) == 'px') && (intval(substr($value, 0, strlen($value) - 2)) > 530)) {
-            return array(0 => 'MAIL_WIDTH', 'pos' => $_i);
-        }
-    } else {
-        if (!empty($GLOBALS['PEDANTIC'])) {
-            if (($key == 'font-size') && (substr($value, -2) == 'px')) {
-                return array(0 => 'CSS_PX_FONT', 'pos' => $_i);
-            }
+    if (!empty($GLOBALS['PEDANTIC'])) {
+        if (($key == 'font-size') && (substr($value, -2) == 'px')) {
+            return array(0 => 'CSS_PX_FONT', 'pos' => $_i);
         }
     }
 

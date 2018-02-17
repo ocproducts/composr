@@ -206,7 +206,7 @@ class Hook_fields_time
      * @param  boolean $get Use GET parameter instead of POST parameter
      * @return string String representation
      */
-    private function input_from($stub, $get = false)
+    protected function input_from($stub, $get = false)
     {
         if ($get) {
             $time = get_param_string($stub, null);

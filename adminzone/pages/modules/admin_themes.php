@@ -792,7 +792,7 @@ class Module_admin_themes
      *
      * @param  ID_TEXT $theme The name of the theme
      */
-    private function save_theme_changes($theme)
+    protected function save_theme_changes($theme)
     {
         // Make live if requested
         if (post_param_integer('use_on_all', 0) == 1) {
@@ -1275,6 +1275,7 @@ class Module_admin_themes
                 $templates[] = 'templates/' . $f;
             }
         }
+        closedir($dh);
         sort($templates);
 
         // Find all previews (map of templates to previews)

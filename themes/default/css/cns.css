@@ -556,7 +556,7 @@ hr.cns-sig-barrier {
 	margin-top: 4em;
 }
 
-.comments-wrapper .boxless-space .box + .box---post-map:before {
+.comments-wrapper .boxless-space .box + .box---post-map::before {
 	border-top: 0 !important;
 }
 

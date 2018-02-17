@@ -21,22 +21,27 @@ class notifications_all_coded_test_set extends cms_test_case
     public function testAllNotificationsCoded()
     {
         if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
+            @set_time_limit(300);
         }
 
         // Ensure all notification types used
         $hooks = find_all_hooks('systems', 'notifications');
 
         require_code('files2');
+
         $php_path = find_php_path();
-        $contents = get_directory_contents(get_file_base());
-        foreach ($contents as $c) {
-            if ((substr($c, -4) == '.php') && (basename($c) != 'errorlog.php') && (basename($c) != 'phpstub.php')) {
-                foreach (array_keys($hooks) as $hook) {
-                    $file = file_get_contents($c);
-                    if (preg_match('#dispatch_notification\(\s*\'' . $hook . '\'#', $file) != 0) {
-                        unset($hooks[$hook]);
-                    }
+
+        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('php'));
+        $files[] = 'install.php';
+        foreach ($files as $path) {
+            if (basename($path) == 'phpstub.php') {
+                continue;
+            }
+
+            foreach (array_keys($hooks) as $hook) {
+                $c = file_get_contents(get_file_base() . '/' . $path);
+                if (preg_match('#dispatch_notification\(\s*\'' . $hook . '\'#', $c) != 0) {
+                    unset($hooks[$hook]);
                 }
             }
         }

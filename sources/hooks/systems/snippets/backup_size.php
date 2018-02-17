@@ -34,7 +34,6 @@ class Hook_snippet_backup_size
             @set_time_limit(0);
         }
 
-        require_code('files');
         require_code('files2');
         require_code('backup');
 
@@ -42,15 +41,11 @@ class Hook_snippet_backup_size
 
         $size = 0;
         $max_size = get_param_integer('max_size') * 1024 * 1024;
-        $files = get_directory_contents(get_custom_file_base());
+        $files = get_directory_contents(get_custom_file_base(), '', IGNORE_REBUILDABLE_OR_TEMP_FILES_FOR_BACKUP);
         foreach ($files as $file) {
             $first_dir = preg_replace('#/.*#', '', $file);
 
             if (!isset($directories_to_backup[$first_dir])) {
-                continue;
-            }
-
-            if (should_ignore_file($file, IGNORE_REBUILDABLE_OR_TEMP_FILES_FOR_BACKUP)) {
                 continue;
             }
 

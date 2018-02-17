@@ -531,7 +531,7 @@ class Meta_tree_builder
      * @param  ?string $filter_level_b The second level of filter (null: no filter)
      * @param  ?mixed $callback Callback to run on each iteration (null: none)
      */
-    private function put_in_screens($path, $theme, $filter_level_b = null, $callback = null)
+    protected function put_in_screens($path, $theme, $filter_level_b = null, $callback = null)
     {
         if ($filter_level_b === null) {
             $where = array();
@@ -599,7 +599,7 @@ class Meta_tree_builder
      * @param  array $node The tree node
      * @param  ID_TEXT $theme The theme
      */
-    private function put_in_screen($path, $node, $theme)
+    protected function put_in_screen($path, $node, $theme)
     {
         // Create directory for this level
         $_path = $path . '/' . urlencode($node['name']);
@@ -666,7 +666,7 @@ class Meta_tree_builder
      * @param  boolean $relationships_mode Whether we have an extra level, the relationships mode
      * @param  ?mixed $callback Callback to run on each iteration (null: none)
      */
-    private function put_in_addon_tree($path, $subdir, $theme, $filter_level_b = null, $relationships_mode = false, $callback = null)
+    protected function put_in_addon_tree($path, $subdir, $theme, $filter_level_b = null, $relationships_mode = false, $callback = null)
     {
         $_all_path = $path . '/_all';
         if (is_dir($_all_path)) {
@@ -753,7 +753,7 @@ class Meta_tree_builder
      * @param  ID_TEXT $theme The theme
      * @return array The files
      */
-    private function find_theme_files_from_addon($addon, $subdir, $theme)
+    protected function find_theme_files_from_addon($addon, $subdir, $theme)
     {
         static $cache = array();
         if (isset($cache[$addon][$subdir])) {
@@ -795,7 +795,7 @@ class Meta_tree_builder
      *
      * @param  PATH $path The path
      */
-    private function put_in_standard_dir_files($path)
+    protected function put_in_standard_dir_files($path)
     {
         copy(get_custom_file_base() . '/themes/default/templates/index.html', $path . '/index.html');
         fix_permissions($path . '/index.html');

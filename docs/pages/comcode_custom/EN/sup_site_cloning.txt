@@ -4,7 +4,7 @@ Have you ever wanted to know exactly what impact a specific upgrade, patch, addo
 
 With the following instructions you can now find out exactly by creating a clone of your site and applying the changes to the clone.
 
-This tutorial assumes your hosting control panel is cPanel. Other hosting control panels typically have similar features.
+This tutorial assumes your webhosting control panel is cPanel. Other webhosting control panels typically have similar features.
 
 [contents]decimal,lower-alpha[/contents]
 

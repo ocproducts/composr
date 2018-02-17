@@ -21,27 +21,20 @@ class clean_reinstall_test_set extends cms_test_case
     public function testOptions()
     {
         require_code('files2');
-        $files = get_directory_contents(get_file_base());
 
         safe_ini_set('memory_limit', '-1');
 
-        foreach ($files as $i => $file) {
-            if (substr($file, -4) == '.php') {
-                $file_contents = file_get_contents($file);
-                $files[$i] = $file_contents;
-            } else {
-                $file_contents = null;
-            }
+        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('php'));
+        $files[] = 'install.php';
+        foreach ($files as $i => $path) {
+            $c = file_get_contents(get_file_base() . '/' . $path);
+            $files[$i] = $c;
         }
 
         $privileges = $GLOBALS['SITE_DB']->query_select('privilege_list', array('the_name'));
         foreach ($privileges as $privilege) {
-            foreach ($files as $file_contents) {
-                if ($file_contents === null) {
-                    continue;
-                }
-
-                if (strpos($file_contents, 'delete_privilege(\'' . $privilege['the_name'] . '\');') !== false) {
+            foreach ($files as $c) {
+                if (strpos($c, 'delete_privilege(\'' . $privilege['the_name'] . '\');') !== false) {
                     continue 2;
                 }
             }
@@ -55,12 +48,8 @@ class clean_reinstall_test_set extends cms_test_case
 
         $tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table'));
         foreach ($tables as $table) {
-            foreach ($files as $file_contents) {
-                if ($file_contents === null) {
-                    continue;
-                }
-
-                if (strpos($file_contents, 'drop_table_if_exists(\'' . $table['m_table'] . '\');') !== false) {
+            foreach ($files as $c) {
+                if (strpos($c, 'drop_table_if_exists(\'' . $table['m_table'] . '\');') !== false) {
                     continue 2;
                 }
             }

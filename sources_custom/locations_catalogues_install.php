@@ -58,6 +58,7 @@ function install_location_data()
 
         $locations[] = $newline;
     }
+    fclose($myfile);
 
     // Load US locations using CivicSpace-zipcodes.csv
     require_code('locations/us');
@@ -74,6 +75,7 @@ function install_location_data()
         $state_name = state_code_to_state_name($newline['state']);
         $us_locations[$state_name][$newline['city']] = $newline;
     }
+    fclose($myfile);
 
     // Load World locations using World_Cities_Location_table.csv
     require_code('locations/us');
@@ -94,6 +96,7 @@ function install_location_data()
 
         $world_locations[$newline['Country']][$newline['City']] = $newline;
     }
+    fclose($myfile);
 
     // Delete current data
     $GLOBALS['SITE_DB']->query_delete('locations');
@@ -271,6 +274,7 @@ function _worldcities_remaining_locations()
         $many_locations[$country_name][strtolower($line[2])] = $line[5] . ',' . $line[6];
         $many_locations[$country_name][strtolower(remove_accents($line[2]))] = $line[5] . ',' . $line[6];
     }
+    fclose($myfile);
 
     $from = 0;
     do {

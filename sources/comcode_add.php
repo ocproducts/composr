@@ -889,6 +889,7 @@ function _try_for_special_comcode_tag_specific_param_ui($tag, $actual_tag, $para
                     $languages[] = basename($f, '.php');
                 }
             }
+            closedir($dh);
         } else {
             $languages[] = 'php';
         }

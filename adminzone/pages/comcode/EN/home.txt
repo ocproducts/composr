@@ -10,7 +10,7 @@
 	{+START,IF,{$CONFIG_OPTION,dashboard_actions}}
 		[block]main_staff_actions[/block]<br />
 	{+END}
-	{+START,IF,{$CONFIG_OPTION,dashboard_staff_website_monitoring}}
+	{+START,IF,{$CONFIG_OPTION,dashboard_website_monitoring}}
 		[block defer="1"]main_staff_website_monitoring[/block]
 	{+END}
 |
@@ -33,7 +33,7 @@
 	{+START,IF,{$CONFIG_OPTION,dashboard_db_notes}}
 		[block]main_db_notes[/block]<br />
 	{+END}
-	{+START,IF,{$CONFIG_OPTION,dashboard_staff_links}}
+	{+START,IF,{$CONFIG_OPTION,dashboard_links}}
 		[block]main_staff_links[/block]
 	{+END}
 |}

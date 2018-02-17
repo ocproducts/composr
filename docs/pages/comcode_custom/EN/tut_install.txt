@@ -1,6 +1,6 @@
-[title sub="Written by Allen Ellis (ocProducts)"]Composr Tutorial: Basic Installation[/title]
+[title sub="Written by Allen Ellis (ocProducts)"]Composr Tutorial: Installation[/title]
 
-Before you begin using Composr, you will need to install it. Installing Composr is easy with our installation utility, which will be explained in detail in this tutorial.
+Before you begin using Composr, you will need to install it. Installing Composr is easy with our installation utility, which will be explained in detail in this tutorial -- or various third-party systems can install Composr for you automatically.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -9,46 +9,50 @@ Before you begin using Composr, you will need to install it. Installing Composr 
 Before we dive into instructions, we should lay out the different options you have for installation.
 
 Your options are:
- - Install on traditional hosting (shared hosting/VPS)
-  - [b]Use a supported integration[/b]. You can install with just a few clicks if your webhost has a supported integration such as Softaculous, {$IS_MAINTAINED,install_aps,APS}, or {$IS_MAINTAINED,install_installatron,Installatron} installed. If this is the case then you don't need to read this tutorial.
-  - [b]Use the quick installer[/b]. This tutorial covers this case.
-  - [b]Use the manual installer[/b]. You are unlikely to need to use the manual installer. If you do, the [page="_SEARCH:tut_adv_install"]Advanced Installation[/page] tutorial provides supplementary information to the installation fundamentals described in this tutorial.
-  - [b]Get a professional developer to install for you[/b].
- - [b]Install on dedicated server or cloud machine (IaaS)[/b]. If a control panel is provided then installation may be identical to traditional hosting. Otherwise you will need to have a more advanced understanding of server management. Many details are described in the [page="_SEARCH:tut_adv_install"]Advanced Installation[/page] and [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page] tutorials.
- - [b]Install on a PaaS service[/b]. PaaS services are typically managed directly by programmers and specific instructions would vary greatly between service.
- - Install on a Windows machine
-  - [b]Use a WAMP system[/b]. Covered in the [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page] tutorial.
-  - [b]Use Bitnami[/b]. Covered in the [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page] tutorial.
-  - [b]Use Microsoft Web Platform[/b]. Covered in the [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page] tutorial.
+ - [b]Use a supported integration[/b]. You can install with just a few clicks (and skip this tutorial) if your webhost/server has a supported integration such as:
+  - Linux:
+   - Softaculous
+   - {$IS_MAINTAINED,install_aps,APS}
+   - {$IS_MAINTAINED,install_installatron,Installatron}
+  - Windows:
+   - {$IS_MAINTAINED,install_microsoft,Microsoft Web Platform} installed
+   - Bitnami
+ - [b]Use the quick installer[/b]. This tutorial covers this case.
+ - [b]Use the manual installer[/b]. You are unlikely to need to use the manual installer. If you do, the [page="_SEARCH:tut_install_permissions"]File permissions[/page] tutorial provides supplementary information to the installation fundamentals described in this tutorial.
+ - [b]Get a professional developer to install for you[/b].
+
+We don't cover anything about choosing webhosting or configuring servers in this tutorial. If you need this material then see the links under "See also".
+
+To some degree the instructions assume you are running under a webhosting control panel (or just 'control panel'), rather than installing onto a server/VPS/PaaS you are managing directly. That said, if you are managing a server directly the process isn't that different, you just create the database and deploy the files differently (using standard techniques you already would know), and we have included a few references to that in this tutorial. Specific techniques are covered in other tutorials, see the links under "See also".
+
+Apart from the above caveat, this tutorial should be valid for Windows, Linux, and Mac.
 
 [title="2"]Prerequisites[/title]
 
 Before you install Composr:
 [list="1"]
-[*] Ensure that your host covers our [page="_SEARCH:tut_webhosting"]minimum requirements[/page].
-[*] Consider getting a general knowledge of [page="_SEARCH:tut_webapp"]web applications[/page]. This is not required but it will give you some overall understanding of what kind of web systems there are and how they work.
-[*] Make yourself familiar with the 'Webhosting control panel' your webhost has provided. Common ones include Plesk and cPanel. Your host may not name the control panel, but they will have provided you to the details to log in to it. You will typically use the control panel to set many things up, including: databases, possibly subdomains, possibly SFTP/FTP accounts, e-mail accounts.
+[*] Ensure that your webhost covers our [page="_SEARCH:tut_webhosting"]minimum requirements[/page].
+[*] Make yourself familiar with the control panel your webhost has provided. Common ones include Plesk and cPanel. Your webhost may not name the control panel, but they will have provided you to the details to log in to it. You will typically use the control panel to set many things up, including: databases, subdomains, SFTP/FTP accounts, e-mail accounts. As mentioned in the previous section, if you don't have a control panel you will need to configure things by hand.
 [*] You also need the following information from your webhost:
  - SFTP/FTP hostname
  - SFTP/FTP username
  - SFTP/FTP password
-Usually SFTP/FTP details are instead e-mailed to you when you sign up for hosting. Sometimes you need to set themselves up yourself in the control panel, particularly if you are installing to a subdomain.
+Usually SFTP/FTP details are instead e-mailed to you when you sign up for webhosting. Sometimes you need to set themselves up yourself in the control panel, particularly if you are installing to a subdomain.
 [/*]
-[*] You need to set up a database, and note down these details:
+[*] You need to set up a database &dagger;, and note down these details:
  - MySQL hostname
  - MySQL username
  - MySQL password
  - MySQL database name
-Typically you can set the database up yourself in the control panel. It can be a bit fiddly, so here are instructions for [url="cPanel"]https://www.cpanel.com/media/tutorials/addmysql.htm[/url] and [url="Plesk"]https://www.youtube.com/watch?v=F6bL78AlZKc[/url]. You typically need to create the MySQL user first, then the database, then provide access for the user to the database. The hostname is usually either just 'localhost', or something specific that the control panel will tell you. Be careful that often you don't get the exact username and database name you specify: often prefixes are added for you, and you'll be shown this if you look carefully. Composr will need to know the full names when you install. Make the MySQL password random and unique, as it will be stored in plain-text in your site configuration.
+Typically you can set the database up yourself in the control panel. It can be a bit fiddly, so here are instructions for [url="cPanel"]https://www.cpanel.com/media/tutorials/addmysql.htm[/url] and [url="Plesk"]https://www.youtube.com/watch?v=F6bL78AlZKc[/url]. You typically need to create the MySQL user first, then the database, then provide access for the user to the database. The hostname is usually either just 'localhost', or something specific that the control panel will tell you. If you don't have a control panel you'll need to do this by hand via the MySQL console. Be careful that often you don't get the exact username and database name you specify: often prefixes are added for you, and you'll be shown this if you look carefully. Composr will need to know the full names when you install. Make the MySQL password random and unique, as it will be stored in plain-text in your on-disk configuration.
 [/*]
 [/list]
 
-Composr does not need its own database (i.e. it can share one), but if you are able to create a new one it is often preferable for reasons of tidiness. The database user needs full read/write/administer access over the database Composr will be installed in. Sometimes you set this access by ticking (checking) to have all permissions on your user. Sometimes you do it by setting the 'User role' to something such as 'dba' (e.g. h-sphere on Windows).
+&dagger; Composr does not need its own database (i.e. it can share one), but if you are able to create a new one it is often preferable for reasons of tidiness. The database user needs full read/write/administer access over the database Composr will be installed in. Sometimes you set this access by ticking (checking) to have all permissions on your user. Sometimes you do it by setting the 'User role' to something such as 'dba' (e.g. h-sphere on Windows).
 Specifically for MySQL the low-level permissions needed are:
  - Read: [tt]SELECT[/tt]
  - Write: [tt]INSERT[/tt], [tt]UPDATE[/tt], [tt]DELETE[/tt]
  - Administer: [tt]CREATE[/tt], [tt]DROP[/tt], [tt]ALTER[/tt], [tt]INDEX[/tt]
-
 Similar products require the same information.
 
 If you would like to use a 3rd party forum system for your website, we require that you install that before installing Composr. We recommend you use the inbuilt forum though (Conversr).
@@ -58,7 +62,7 @@ At some point you'll need to decide which method you'd like to use to install Co
 
 We highly recommend choosing the quick installer. This is a simple process, where you upload two files to your web server, then launch our installation utility from there. It works on most servers.
 
-The second option is the manual installer. This option requires you to manually upload all of Composr's files using something like FTP and apply permissions to them -- the typical method for most CMSs. This method takes much longer -- as there is a pause for "handshaking" between each file. We maintain this version in case the quick installer fails on your host (e.g. if the host does not support PHP-accessible [abbr="File Transfer Protocol"]FTP[/abbr] or suEXEC in the way the quick installer needs).
+The second option is the manual installer. This option requires you to manually upload all of Composr's files using something like FTP and apply [page="_SEARCH:tut_install_permissions"]permissions[/page] to them -- the typical method for most CMSs. This method takes much longer -- as there is a pause for "handshaking" as you upload each file. We maintain this version in case the quick installer fails on your webhost (e.g. if the webhost does not support PHP-accessible [abbr="File Transfer Protocol"]FTP[/abbr] or suEXEC in the way the quick installer needs).
 
 [title="2"]Preparing files[/title]
 
@@ -73,7 +77,9 @@ After it downloads, you'll need to extract the files. The exact methods for doin
 
 [title="3"]Using SFTP/FTP[/title]
 
-[i]An alternative to uploading via SFTP/FTP is using the File Manager within the webhosting control panel. However it is worth trying to get it working using SFTP/FTP, as it is a valuable basic tool.[/i]
+[i]An alternative to uploading via SFTP/FTP is using the File Manager within the control panel. However it is worth trying to get it working using SFTP/FTP, as it is a valuable basic tool.[/i]
+
+[i]If you don't have a control panel then you may also not have SFTP/FTP, depending on the server configuration. You may have to use something like [tt]scp[/tt], or Windows Remote Desktop, to get the files onto your server.[/i]
 
 [media width="150" description="File upload demonstration" float="right" thumb_url="data_custom/images/docs/tut_install/install_upload_ftp_thumb.png"]data_custom/images/docs/tut_install/install_upload_ftp.gif[/media]
 [media width="150" description="Internet Explorer FTP login" float="right"]data_custom/images/docs/tut_install/install_login_ftp.png[/media]
@@ -129,18 +135,19 @@ The Setup Wizard ("Configure my Composr first") will guide you through some basi
 [center][img]data_custom/images/docs/tut_install/congratulations.jpg[/img][/center]
 
 [concepts
- 1_key="Administrative password"       1_value="The administrative password is a special password that will help you restore settings if something makes the traditional Composr interface unusable."
- 2_key="Multi-site networks (M.S.N.)"  2_value="Multi-site networks allow you to have more than one Composr installation (multiple websites), all running on the same network. If you choose this, members who join one website will also have registrations at other sites."
+ 1_key="Master password"       1_value="The master password is a special password that will help you restore settings if something makes the traditional Composr interface unusable."
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
 
+ - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page] (including Composr minimum requirements)
+ - [page="_SEARCH:tut_install_permissions"]File permissions[/page]
+ - [page="_SEARCH:tut_install_linux"]Installation on Linux[/page]
+ - [page="_SEARCH:tut_install_windows_desktop"]Installation on a Windows desktop[/page]
+ - [page="_SEARCH:tut_install_windows_server"]Installation on a Windows server[/page]
  - [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/page]
  - The user-focused help page within Composr (linked from the menus)
- - [page="_SEARCH:tut_webapp"]Web-applications, Composr, and PHP[/page]
- - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page] (including Composr minimum requirements)
- - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
- - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
  - [page="_SEARCH:tut_uninstall"]Uninstalling Composr from a server[/page]
+ - [page="_SEARCH:tut_google_appengine"]Installation on Google App Engine[/page]
 
 {$SET,tutorial_tags,installer,core_database_drivers,Installation,novice,pinned}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,We explain what you need to do to install Composr. This tutorial is particularly important if you use the manual installer.}[block]main_tutorial_rating[/block]

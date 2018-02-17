@@ -30,22 +30,20 @@ class theme_images_test_set extends cms_test_case
     public function testNoHiddenSVGRaster()
     {
         require_code('files2');
-        $contents = get_directory_contents(get_file_base() . '/themes/default/', get_file_base() . '/themes/default/');
+        $files = get_directory_contents(get_file_base() . '/themes/default/', get_file_base() . '/themes/default/', 0, true, true, array('svg'));
 
-        foreach ($contents as $file) {
-            if (substr($file, -4) == '.svg') {
-                $c = file_get_contents($file);
+        foreach ($files as $path) {
+            $c = file_get_contents($path);
 
-                $this->assertTrue(strpos($c, '<image') === false, 'Raster data in ' . $file);
+            $this->assertTrue(strpos($c, '<image') === false, 'Raster data in ' . $path);
 
-                $this->assertTrue(strpos($c, '<!-- Generator') === false, 'Wasteful generator comment in ' . $file);
+            $this->assertTrue(strpos($c, '<!-- Generator') === false, 'Wasteful generator comment in ' . $path);
 
-                $this->assertTrue(strpos($c, 'xml:space="preserve"') === false, 'xml:space deprecated, used in ' . $file);
+            $this->assertTrue(strpos($c, 'xml:space="preserve"') === false, 'xml:space deprecated, used in ' . $path);
 
-                $this->assertTrue(strpos($c, 'enable-background') === false, 'enable-background not needed, used in ' . $file);
+            $this->assertTrue(strpos($c, 'enable-background') === false, 'enable-background not needed, used in ' . $path);
 
-                $this->assertTrue(strpos($c, 'xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"') === false, 'Adobe extensions not wanted, used in ' . $file);
-            }
+            $this->assertTrue(strpos($c, 'xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"') === false, 'Adobe extensions not wanted, used in ' . $path);
         }
     }
 
@@ -69,18 +67,18 @@ class theme_images_test_set extends cms_test_case
             }
 
             $files2 = array();
-            foreach ($files as $file) {
-                if (substr($file, -4) == '.svg') {
-                    $c = file_get_contents($file);
+            foreach ($files as $path) {
+                if (substr($path, -4) == '.svg') {
+                    $c = file_get_contents($path);
                     $matches = array();
                     preg_match('#width="(\d+)px" height="(\d+)px"#', $c, $matches);
                     $width = intval($matches[1]);
                     $height = intval($matches[2]);
-                } elseif (is_image($file, IMAGE_CRITERIA_GD_READ, true)) {
-                    list($width, $height) = cms_getimagesize($file);
+                } elseif (is_image($path, IMAGE_CRITERIA_GD_READ, true)) {
+                    list($width, $height) = cms_getimagesize($path);
                 }
 
-                $this->assertTrue($width == $height, 'Non-square icon, ' . $file);
+                $this->assertTrue($width == $height, 'Non-square icon, ' . $path);
             }
         }
     }
@@ -103,8 +101,8 @@ class theme_images_test_set extends cms_test_case
             }
 
             $files2 = array();
-            foreach ($files as $file) {
-                $trimmed = preg_replace('#\.\w+$#', '', $file);
+            foreach ($files as $path) {
+                $trimmed = preg_replace('#\.\w+$#', '', $path);
                 $this->assertTrue(!isset($files2[$trimmed]), 'Duplicate theme image ' . $trimmed . ' in theme ' . $theme);
                 $files2[$trimmed] = true;
             }
@@ -176,17 +174,17 @@ class theme_images_test_set extends cms_test_case
             foreach ($directories as $dir) {
                 $dh = @opendir($dir);
                 if ($dh !== false) {
-                    while (($f = readdir($dh)) !== false) {
-                        $is_css_file = (substr($f, -4) == '.css');
-                        $is_tpl_file = (substr($f, -4) == '.tpl') || (substr($f, -3) == '.js');
-                        $is_comcode_page = ((substr($f, -4) == '.txt') && ((count($themes) < 5) || (substr($f, 0, strlen($theme . '__')) == $theme . '__')));
+                    while (($file = readdir($dh)) !== false) {
+                        $is_css_file = (substr($file, -4) == '.css');
+                        $is_tpl_file = (substr($file, -4) == '.tpl') || (substr($file, -3) == '.js');
+                        $is_comcode_page = ((substr($file, -4) == '.txt') && ((count($themes) < 5) || (substr($file, 0, strlen($theme . '__')) == $theme . '__')));
 
                         if ($is_css_file || $is_tpl_file || $is_comcode_page) {
-                            $contents = file_get_contents($dir . '/' . $f);
+                            $c = file_get_contents($dir . '/' . $file);
 
                             // Find referenced images
                             $matches = array();
-                            $num_matches = preg_match_all('#\{\$(IMG|IMG_INLINE)[^\w,]*,([^{},]+)\}#', $contents, $matches);
+                            $num_matches = preg_match_all('#\{\$(IMG|IMG_INLINE)[^\w,]*,([^{},]+)\}#', $c, $matches);
                             for ($i = 0; $i < $num_matches; $i++) {
                                 $images_referenced[$matches[2][$i]] = isset($images_there[$matches[2][$i]]);
                             }
@@ -194,7 +192,7 @@ class theme_images_test_set extends cms_test_case
                             // See if any of the theme images were used
                             foreach ($images_there as $image => $is_there) {
                                 if (!$is_there) {
-                                    if (preg_match('#\{\$(IMG|IMG_INLINE)[^\w,]*,' . preg_quote($image, '#') . '\}#', $contents) != 0) {
+                                    if (preg_match('#\{\$(IMG|IMG_INLINE)[^\w,]*,' . preg_quote($image, '#') . '\}#', $c) != 0) {
                                         $images_there[$image] = true;
                                     }
                                 }
@@ -245,13 +243,13 @@ class theme_images_test_set extends cms_test_case
         $images = array();
         foreach ($dirs as $dir) {
             $files = get_directory_contents($dir);
-            foreach ($files as $f) {
-                if (substr($f, -8) == '.gif.png') {
+            foreach ($files as $path) {
+                if (substr($path, -8) == '.gif.png') {
                     continue; // This is an APNG version of a gif, not a separate theme image
                 }
 
-                if (is_image($f, IMAGE_CRITERIA_WEBSAFE, true)) {
-                    $img_code = substr($f, 0, strlen($f) - strlen('.' . get_file_extension($f)));
+                if (is_image($path, IMAGE_CRITERIA_WEBSAFE, true)) {
+                    $img_code = substr($path, 0, strlen($path) - strlen('.' . get_file_extension($path)));
                     $images[$img_code] = false; // false means not yet found as used
                 }
             }

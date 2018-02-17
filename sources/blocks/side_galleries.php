@@ -132,7 +132,7 @@ class Block_side_galleries
      * @param  boolean $show_empty Whether to show empty galleries
      * @return Tempcode The shown galleries
      */
-    public function inside($zone, $galleries, $tpl, $show_empty)
+    protected function inside($zone, $galleries, $tpl, $show_empty)
     {
         $content = new Tempcode();
 

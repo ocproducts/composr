@@ -501,11 +501,11 @@ function get_directory_contents($path, $rel_path = '', $bitmask = IGNORE_ACCESS_
 
     require_code('files');
 
-    $d = @opendir($path);
-    if ($d === false) {
+    $dh = @opendir($path);
+    if ($dh === false) {
         return array();
     }
-    while (($file = readdir($d)) !== false) {
+    while (($file = readdir($dh)) !== false) {
         if ($file == '_meta_tree') { // Very special case, directory can get huge
             continue;
         }
@@ -531,7 +531,7 @@ function get_directory_contents($path, $rel_path = '', $bitmask = IGNORE_ACCESS_
             }
         }
     }
-    closedir($d);
+    closedir($dh);
 
     return $out;
 }
@@ -547,11 +547,11 @@ function get_directory_size($path, $recurse = true)
 {
     $size = 0;
 
-    $d = @opendir($path);
-    if ($d === false) {
+    $dh = @opendir($path);
+    if ($dh === false) {
         return 0;
     }
-    while (($e = readdir($d)) !== false) {
+    while (($e = readdir($dh)) !== false) {
         if (($e == '.') || ($e == '..')) {
             continue;
         }
@@ -564,6 +564,7 @@ function get_directory_size($path, $recurse = true)
             }
         }
     }
+    closedir($dh);
 
     return $size;
 }

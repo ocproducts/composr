@@ -18,7 +18,7 @@
  */
 class downloads_category_test_set extends cms_test_case
 {
-    public $dwn_cat_id;
+    protected $dwn_cat_id;
 
     public function setUp()
     {

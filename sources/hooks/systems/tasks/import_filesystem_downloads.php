@@ -128,6 +128,8 @@ class Hook_task_import_filesystem_downloads
                     }
                 }
             }
+
+            closedir($dh);
         }
 
         return $num_added;

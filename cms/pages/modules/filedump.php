@@ -227,7 +227,6 @@ class Module_filedump
         require_lang('filedump');
         require_css('filedump');
         require_code('filedump');
-        require_code('files');
         require_code('files2');
 
         $type = get_param_string('type', 'browse');
@@ -578,7 +577,7 @@ class Module_filedump
             $text = new Tempcode();
             if ($max_filesize < 30.0) {
                 require_code('files2');
-                $text->attach(get_maximum_upload_message($max));
+                $text->attach(get_maximum_upload_message($max_filesize));
             }
 
             $fields = new Tempcode();

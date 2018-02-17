@@ -25,17 +25,17 @@ require_code('crud_module');
  */
 class Module_admin_cns_emoticons extends Standard_crud_module
 {
-    public $lang_type = 'EMOTICON';
-    public $select_name = 'EMOTICON';
-    public $orderer = 'e_code';
-    public $array_key = 'e_code';
-    public $title_is_multi_lang = false;
-    public $non_integer_id = true;
-    public $possibly_some_kind_of_upload = true;
-    public $do_preview = null;
-    public $menu_label = 'EMOTICONS';
-    public $donext_entry_content_type = 'emoticon';
-    public $donext_category_content_type = null;
+    protected $lang_type = 'EMOTICON';
+    protected $select_name = 'EMOTICON';
+    protected $orderer = 'e_code';
+    protected $array_key = 'e_code';
+    protected $title_is_multi_lang = false;
+    protected $non_integer_id = true;
+    protected $possibly_some_kind_of_upload = true;
+    protected $do_preview = null;
+    protected $menu_label = 'EMOTICONS';
+    protected $donext_entry_content_type = 'emoticon';
+    protected $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.

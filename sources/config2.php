@@ -80,6 +80,7 @@ function _multi_lang()
                     break;
                 }
             }
+            closedir($_dir2);
         }
     }
 

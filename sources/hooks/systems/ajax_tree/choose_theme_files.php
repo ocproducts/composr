@@ -289,7 +289,7 @@ class Hook_ajax_tree_choose_theme_files
      * @param  ?ID_TEXT $filter_addon Just for this addon (null: all)
      * @return array Map of template file to addon
      */
-    private function templates_for_addons($filter_addon = null)
+    protected function templates_for_addons($filter_addon = null)
     {
         static $templates_for_addons = array();
         if (isset($templates_for_addons[$filter_addon])) {
@@ -334,7 +334,7 @@ class Hook_ajax_tree_choose_theme_files
      * @param  ?ID_TEXT $filter The template file to get this for (null: all)
      * @return array Action-log details
      */
-    private function load_actionlog_times_templates($theme, $filter = null)
+    protected function load_actionlog_times_templates($theme, $filter = null)
     {
         $where = array('the_type' => 'EDIT_TEMPLATE', 'param_b' => $theme);
         if ($filter !== null) {
@@ -352,7 +352,7 @@ class Hook_ajax_tree_choose_theme_files
      * @param  ?ID_TEXT $filter The page file to get this for (null: all)
      * @return array Action-log details
      */
-    private function load_actionlog_times_pages($zone, $filter = null)
+    protected function load_actionlog_times_pages($zone, $filter = null)
     {
         $where = array('the_type' => 'COMCODE_PAGE_EDIT', 'param_b' => $zone);
         if ($filter !== null) {
@@ -372,7 +372,7 @@ class Hook_ajax_tree_choose_theme_files
      * @param  ?array $action_log_times Combined map of action-log details (null: look-up)
      * @return Tempcode Details
      */
-    private function get_template_details_table($theme, $template_file, $template_file_path, $action_log_times = null)
+    protected function get_template_details_table($theme, $template_file, $template_file_path, $action_log_times = null)
     {
         $templates_for_addons = $this->templates_for_addons();
 
@@ -399,7 +399,7 @@ class Hook_ajax_tree_choose_theme_files
      * @param  ?array $action_log_times Combined map of action-log details (null: look-up)
      * @return Tempcode Details
      */
-    private function get_comcode_page_details_table($page, $zone, $path, $action_log_times = null)
+    protected function get_comcode_page_details_table($page, $zone, $path, $action_log_times = null)
     {
         if ($action_log_times === null) {
             $action_log_times = $this->load_actionlog_times_pages($zone, $page);
@@ -422,7 +422,7 @@ class Hook_ajax_tree_choose_theme_files
      * @param  array $node Node
      * @return string XML
      */
-    private function build_screen_tree($theme, $node)
+    protected function build_screen_tree($theme, $node)
     {
         $children = '';
         $num_children = 0;
@@ -495,7 +495,7 @@ class Hook_ajax_tree_choose_theme_files
      * @param  ID_TEXT $file File
      * @return array A triple: icon, label
      */
-    private function get_template_file_icons($file)
+    protected function get_template_file_icons($file)
     {
         $ext = get_file_extension(basename($file));
 
@@ -526,7 +526,7 @@ class Hook_ajax_tree_choose_theme_files
      *
      * @return string ID
      */
-    private function get_next_id()
+    protected function get_next_id()
     {
         static $counter = 0;
         $counter++;

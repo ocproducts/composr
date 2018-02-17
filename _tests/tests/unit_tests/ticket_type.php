@@ -18,7 +18,7 @@
  */
 class ticket_type_test_set extends cms_test_case
 {
-    public $ticket_type_id;
+    protected $ticket_type_id;
 
     public function setUp()
     {

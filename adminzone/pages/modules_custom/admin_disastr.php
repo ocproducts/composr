@@ -20,13 +20,13 @@ require_code('crud_module');
  */
 class Module_admin_disastr extends Standard_crud_module
 {
-    public $lang_type = 'DISEASE';
-    public $select_name = 'NAME';
-    public $possibly_some_kind_of_upload = true;
-    public $output_of_action_is_confirmation = true;
-    public $menu_label = 'DISASTR_TITLE';
-    public $do_preview = null;
-    public $view_entry_point = '_SEARCH:admin_disastr:view:_ID';
+    protected $lang_type = 'DISEASE';
+    protected $select_name = 'NAME';
+    protected $possibly_some_kind_of_upload = true;
+    protected $output_of_action_is_confirmation = true;
+    protected $menu_label = 'DISASTR_TITLE';
+    protected $do_preview = null;
+    protected $view_entry_point = '_SEARCH:admin_disastr:view:_ID';
 
     /**
      * Find details of the module.

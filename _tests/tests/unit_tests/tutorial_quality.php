@@ -18,14 +18,14 @@
  */
 class tutorial_quality_test_set extends cms_test_case
 {
-    public $tutorials;
+    protected $tutorials;
 
     public function setUp()
     {
         parent::setUp();
 
         if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
+            @set_time_limit(300);
         }
 
         require_code('tutorials');
@@ -41,9 +41,9 @@ class tutorial_quality_test_set extends cms_test_case
 
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.txt') {
-                $c = file_get_contents($path . '/' . $f);
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, -4) == '.txt') {
+                $c = file_get_contents($path . '/' . $file);
                 check_comcode($c);
             }
         }
@@ -70,13 +70,13 @@ class tutorial_quality_test_set extends cms_test_case
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, 0, 4) == 'sup_') {
-                $this->assertTrue(strpos(file_get_contents($path . '/' . $f), 'Composr Supplementary: ') !== false, $f . ' has wrong title stub');
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, 0, 4) == 'sup_') {
+                $this->assertTrue(strpos(file_get_contents($path . '/' . $file), 'Composr Supplementary: ') !== false, $file . ' has wrong title stub');
             }
 
-            elseif (substr($f, 0, 4) == 'tut_') {
-                $this->assertTrue(strpos(file_get_contents($path . '/' . $f), 'Composr Tutorial: ') !== false, $f . ' has wrong title stub');
+            elseif (substr($file, 0, 4) == 'tut_') {
+                $this->assertTrue(strpos(file_get_contents($path . '/' . $file), 'Composr Tutorial: ') !== false, $file . ' has wrong title stub');
             }
         }
         closedir($dh);
@@ -86,22 +86,22 @@ class tutorial_quality_test_set extends cms_test_case
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            $c = file_get_contents($path . '/' . $f);
+        while (($file = readdir($dh)) !== false) {
+            $c = file_get_contents($path . '/' . $file);
 
             $c = str_replace('[page="docs:"]', '', $c);
             $c = str_replace('[page="docs:tutorials"]', '', $c);
 
-            $this->assertTrue(strpos($c, '[page="_SELF:') === false, $f . ' uses _SELF linking, should use _SEARCH linking');
-            $this->assertTrue(strpos($c, '[page="docs:') === false, $f . ' uses docs-zone linking, should use _SEARCH linking');
+            $this->assertTrue(strpos($c, '[page="_SELF:') === false, $file . ' uses _SELF linking, should use _SEARCH linking');
+            $this->assertTrue(strpos($c, '[page="docs:') === false, $file . ' uses docs-zone linking, should use _SEARCH linking');
         }
         closedir($dh);
     }
 
-    public function skip_tutorial($f)
+    protected function skip_tutorial($file)
     {
         // Not subject to ocProducts coding standards
-        if (in_array(basename($f, '.txt'), array('sup_youtube_channel_integration_block_addon_documentation'))) {
+        if (in_array(basename($file, '.txt'), array('sup_youtube_channel_integration_block_addon_documentation'))) {
             return true;
         }
 
@@ -112,25 +112,25 @@ class tutorial_quality_test_set extends cms_test_case
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.txt') {
-                if ($f == 'panel_top.txt') {
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, -4) == '.txt') {
+                if ($file == 'panel_top.txt') {
                     continue;
                 }
 
-                if (in_array(basename($f, '.txt'), array('sup_glossary', 'tut_addon_index'))) {
+                if (in_array(basename($file, '.txt'), array('sup_glossary', 'tut_addon_index'))) {
                     continue;
                 }
 
-                if ($this->skip_tutorial($f)) {
+                if ($this->skip_tutorial($file)) {
                     continue;
                 }
 
-                $c = file_get_contents($path . '/' . $f);
+                $c = file_get_contents($path . '/' . $file);
 
                 $has_image = (strpos($c, '[media') !== false) || (strpos($c, '[img') !== false) || (strpos($c, '[code') !== false);
 
-                $this->assertTrue($has_image, $f . ' has no images or code samples (pixabay.com has public domain no-attribution images)');
+                $this->assertTrue($has_image, $file . ' has no images or code samples (pixabay.com has public domain no-attribution images)');
             }
         }
         closedir($dh);
@@ -142,23 +142,23 @@ class tutorial_quality_test_set extends cms_test_case
 
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.txt') {
-                if ($f == 'panel_top.txt') {
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, -4) == '.txt') {
+                if ($file == 'panel_top.txt') {
                     continue;
                 }
 
-                if ($this->skip_tutorial($f)) {
+                if ($this->skip_tutorial($file)) {
                     continue;
                 }
 
-                $c = file_get_contents($path . '/' . $f);
+                $c = file_get_contents($path . '/' . $file);
 
                 $image_count = (substr_count($c, '[media')) + (substr_count($c, '[img')) + (substr_count($c, '[concepts')) + (substr_count($c, '[code')) + (substr_count($c, '[box')) + (substr_count($c, '{|')) + (substr_count($c, '<table'));
                 $size = strlen($c);
 
                 $data[] = array(
-                    'file' => $f,
+                    'file' => $file,
                     'image_count' => $image_count,
                     'size' => $size,
                     'ratio' => 100.0 * floatval($image_count) / floatval($size), // % of bytes that are images
@@ -168,14 +168,14 @@ class tutorial_quality_test_set extends cms_test_case
         closedir($dh);
 
         foreach ($data as $d) {
-            $f = $d['file'];
+            $file = $d['file'];
 
             // We'll make exceptions for a few wordy ones
-            if (in_array(basename($f, '.txt'), array('sup_glossary', 'tut_addon_index', 'faq', 'atag'))) {
+            if (in_array(basename($file, '.txt'), array('sup_glossary', 'tut_addon_index', 'faq', 'atag'))) {
                 continue;
             }
 
-            $this->assertTrue($d['ratio'] > 0.014 || $d['image_count'] >= 4, $f . ': media to byte ratio too low, not good for visual-orientated readers');
+            $this->assertTrue($d['ratio'] > 0.014 || $d['image_count'] >= 4, $file . ': media to byte ratio too low, not good for visual-orientated readers');
         }
 
         /*sort_maps_by($data, 'ratio');
@@ -188,18 +188,18 @@ class tutorial_quality_test_set extends cms_test_case
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.txt') {
-                if ($f == 'panel_top.txt') {
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file, -4) == '.txt') {
+                if ($file == 'panel_top.txt') {
                     continue;
                 }
 
-                $c = remove_code_block_contents(file_get_contents($path . '/' . $f));
+                $c = remove_code_block_contents(file_get_contents($path . '/' . $file));
 
-                $this->assertTrue(strpos($c, '{$SET,tutorial_add_date,') !== false, $f . ' has no defined add date');
-                $this->assertTrue(strpos($c, '[block]main_tutorial_rating[/block]') !== false, $f . ' has no rating block');
-                if (preg_match('#^sup_#', $f) == 0 && substr_count($c, '[title="2"') > 1 && strpos($f, 'codebook') === false) {
-                    $this->assertTrue(strpos($c, '[contents]decimal,lower-alpha[/contents]') !== false, $f . ' has no TOC');
+                $this->assertTrue(strpos($c, '{$SET,tutorial_add_date,') !== false, $file . ' has no defined add date');
+                $this->assertTrue(strpos($c, '[block]main_tutorial_rating[/block]') !== false, $file . ' has no rating block');
+                if (preg_match('#^sup_#', $file) == 0 && substr_count($c, '[title="2"') > 1 && strpos($file, 'codebook') === false) {
+                    $this->assertTrue(strpos($c, '[contents]decimal,lower-alpha[/contents]') !== false, $file . ' has no TOC');
                 }
             }
         }

@@ -264,6 +264,7 @@ function rd_do_dir($dir)
                 }
             }
         }
+        closedir($dh);
     }
     return $out;
 }

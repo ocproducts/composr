@@ -18,7 +18,7 @@
  */
 class welcome_emails_test_set extends cms_test_case
 {
-    public $email_id;
+    protected $email_id;
 
     public function setUp()
     {

@@ -457,7 +457,7 @@ class Module_groups
      * @param  boolean $has_rank Whether there are rank promotions
      * @return array A pair: column widths, table headings
      */
-    private function _find_table_headings($has_images, $has_rank)
+    protected function _find_table_headings($has_images, $has_rank)
     {
         if ($has_images) {
             if ($has_rank) {

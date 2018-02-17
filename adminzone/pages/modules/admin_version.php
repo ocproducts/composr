@@ -88,7 +88,7 @@ class Module_admin_version
         $GLOBALS['SITE_DB']->drop_table_if_exists('urls_checked');
         $GLOBALS['SITE_DB']->drop_table_if_exists('content_regions');
         $GLOBALS['SITE_DB']->drop_table_if_exists('post_tokens');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('cron');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('cron_progression');
 
         /* We don't want to get rid of on-disk data when reinstalling
         $zones = find_all_zones(true);

@@ -20,15 +20,16 @@ class template_no_unused_test_set extends cms_test_case
 {
     public function testNothingUnused()
     {
-        require_code('files');
         require_code('themes2');
+        require_code('files2');
 
         disable_php_memory_limit();
 
         $all_code = '';
-        $files = $this->do_dir(get_file_base(), '', 'php');
-        foreach ($files as $file) {
-            $all_code .= file_get_contents($file);
+        $files = get_directory_contents(get_file_base(), '', IGNORE_BUNDLED_VOLATILE, true, true, array('php'));
+        $files[] = 'install.php';
+        foreach ($files as $path) {
+            $all_code .= file_get_contents(get_file_base() . '/' . $path);
         }
 
         $exceptions = array(
@@ -198,44 +199,20 @@ class template_no_unused_test_set extends cms_test_case
             foreach ($paths as $path) {
                 $dh = @opendir($path);
                 if ($dh !== false) {
-                    while (($f = readdir($dh)) !== false) {
-                        if (strtolower(substr($f, -4)) == '.tpl') {
-                            $f = basename($f, '.tpl');
+                    while (($file = readdir($dh)) !== false) {
+                        if (strtolower(substr($file, -4)) == '.tpl') {
+                            $file = basename($file, '.tpl');
 
-                            if (in_array($f, $exceptions)) {
+                            if (in_array($file, $exceptions)) {
                                 continue;
                             }
 
-                            $this->assertTrue(strpos($all_code, 'do_template(\'' . $f . '\'') !== false, 'Cannot find use of ' . $f . ' template');
+                            $this->assertTrue(strpos($all_code, 'do_template(\'' . $file . '\'') !== false, 'Cannot find use of ' . $file . ' template');
                         }
                     }
                     closedir($dh);
                 }
             }
         }
-    }
-
-    private function do_dir($dir, $dir_stub, $ext)
-    {
-        $files = array();
-
-        $dh = @opendir($dir);
-        if ($dh !== false) {
-            while (($file = readdir($dh)) !== false) {
-                if (($file[0] != '.') && (($file == 'install.php') || (!should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_BUNDLED_VOLATILE)))) {
-                    if (is_file($dir . '/' . $file)) {
-                        if (substr($file, -strlen($ext) - 1, strlen($ext) + 1) == '.' . $ext) {
-                            $files[] = $dir . '/' . $file;
-                        }
-                    } elseif (is_dir($dir . '/' . $file)) {
-                        $_files = $this->do_dir($dir . '/' . $file, (($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, $ext);
-                        $files = array_merge($_files, $files);
-                    }
-                }
-            }
-            closedir($dh);
-        }
-
-        return $files;
     }
 }

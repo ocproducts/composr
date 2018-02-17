@@ -26,27 +26,27 @@ require_javascript('catalogues');
  */
 class Module_cms_catalogues extends Standard_crud_module
 {
-    public $lang_type = 'CATALOGUE_ENTRY';
-    public $select_name = 'ENTRY';
-    public $permissions_require = 'mid';
-    public $permissions_cat_require = 'catalogues_catalogue';
-    public $permissions_cat_name = 'catalogue_name';
-    public $permissions_cat_require_b = 'catalogues_category';
-    public $permissions_cat_name_b = 'category_id';
-    public $user_facing = true;
-    public $seo_type = 'catalogue_entry';
-    public $catalogue = true;
-    public $content_type = 'catalogue_entry';
-    public $possibly_some_kind_of_upload = true;
-    public $do_preview = null;
-    public $menu_label = 'CATALOGUES';
-    public $orderer = 'ce_add_date';
-    public $table = 'catalogue_entries';
-    public $title_is_multi_lang = false;
-    public $supports_mass_delete = true;
+    protected $lang_type = 'CATALOGUE_ENTRY';
+    protected $select_name = 'ENTRY';
+    protected $permissions_require = 'mid';
+    protected $permissions_cat_require = 'catalogues_catalogue';
+    protected $permissions_cat_name = 'catalogue_name';
+    protected $permissions_cat_require_b = 'catalogues_category';
+    protected $permissions_cat_name_b = 'category_id';
+    protected $user_facing = true;
+    protected $seo_type = 'catalogue_entry';
+    protected $catalogue = true;
+    protected $content_type = 'catalogue_entry';
+    protected $possibly_some_kind_of_upload = true;
+    protected $do_preview = null;
+    protected $menu_label = 'CATALOGUES';
+    protected $orderer = 'ce_add_date';
+    protected $table = 'catalogue_entries';
+    protected $title_is_multi_lang = false;
+    protected $supports_mass_delete = true;
 
-    public $donext_category_id;
-    public $donext_catalogue_name;
+    protected $donext_category_id;
+    protected $donext_catalogue_name;
 
     /**
      * Find entry-points available within this module.
@@ -272,7 +272,7 @@ class Module_cms_catalogues extends Standard_crud_module
                 has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array_merge($extra_map_2, array('type' => ($catalogue_name == '') ? 'edit_catalogue' : '_edit_catalogue')), '_SELF'), do_lang(($catalogue_name == '') ? 'EDIT_CATALOGUE' : 'NEXT_ITEM_edit_this_catalogue')) : null,
                 has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_catalogues') ? array('admin/add_one_category', array('_SELF', array_merge($extra_map, array('type' => 'add_category')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_add_one_category') : do_lang('ADD_CATALOGUE_CATEGORY')) : null,
                 has_privilege(get_member(), 'edit_cat_midrange_content', 'cms_catalogues') ? array('admin/edit_one_category', array('_SELF', array_merge($extra_map, array('type' => 'edit_category')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_edit_one_category') : do_lang('EDIT_CATALOGUE_CATEGORY')) : null,
-                (!$has_categories) ? null : (has_privilege(get_member(), 'submit_midrange_content', 'cms_catalogues') ? array('admin/add', array('_SELF', array_merge($extra_map, array('type' => 'add_entry')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_add_one') : do_lang('ADD_CATALOGUE_ENTRY')) : null),
+                (!$has_categories) ? null : (has_privilege(get_member(), 'submit_midrange_content', 'cms_catalogues') ? array('admin/add', array('_SELF', array_merge($extra_map, array('type' => 'add_entry')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_add') : do_lang('ADD_CATALOGUE_ENTRY')) : null),
                 (!$has_categories) ? null : (has_privilege(get_member(), 'edit_midrange_content', 'cms_catalogues') ? array('admin/edit', array('_SELF', array_merge($extra_map, array('type' => 'edit_entry')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_edit') : do_lang('EDIT_CATALOGUE_ENTRY')) : null),
                 (!$has_categories) ? null : (has_privilege(get_member(), 'mass_import', 'cms_catalogues') ? array('admin/import', array('_SELF', array_merge($extra_map, array('type' => 'import')), '_SELF'), do_lang('IMPORT_CATALOGUE_ENTRIES')) : null),
                 (!$has_categories) ? null : ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? array('admin/export', array('_SELF', array_merge($extra_map, array('type' => 'export')), '_SELF'), do_lang('EXPORT_CATALOGUE_ENTRIES')) : null),
@@ -1121,24 +1121,24 @@ class Module_cms_catalogues extends Standard_crud_module
  */
 class Module_cms_catalogues_cat extends Standard_crud_module
 {
-    public $lang_type = 'CATALOGUE_CATEGORY';
-    public $select_name = 'NAME';
-    public $permissions_require = 'cat_mid';
-    public $permission_module = 'catalogues_category';
-    public $permissions_cat_require = 'catalogues_catalogue';
-    public $permissions_cat_name = 'catalogue_name';
-    public $seo_type = 'catalogue_category';
-    public $catalogue = true;
-    public $content_type = 'catalogue_category';
-    public $upload = 'image';
-    public $functions = 'moduleCmsCataloguesCat';
-    public $menu_label = 'CATALOGUES';
-    public $table = 'catalogue_categories';
-    public $title_is_multi_lang = false;
-    public $orderer = 'cc_title';
-    public $is_chained_with_parent_browse = true;
+    protected $lang_type = 'CATALOGUE_CATEGORY';
+    protected $select_name = 'NAME';
+    protected $permissions_require = 'cat_mid';
+    protected $permission_module = 'catalogues_category';
+    protected $permissions_cat_require = 'catalogues_catalogue';
+    protected $permissions_cat_name = 'catalogue_name';
+    protected $seo_type = 'catalogue_category';
+    protected $catalogue = true;
+    protected $content_type = 'catalogue_category';
+    protected $upload = 'image';
+    protected $functions = 'moduleCmsCataloguesCat';
+    protected $menu_label = 'CATALOGUES';
+    protected $table = 'catalogue_categories';
+    protected $title_is_multi_lang = false;
+    protected $orderer = 'cc_title';
+    protected $is_chained_with_parent_browse = true;
 
-    public $donext_catalogue_name;
+    protected $donext_catalogue_name;
 
     /**
      * Standard crud_module table function.
@@ -1533,18 +1533,18 @@ class Module_cms_catalogues_cat extends Standard_crud_module
  */
 class Module_cms_catalogues_alt extends Standard_crud_module
 {
-    public $lang_type = 'CATALOGUE';
-    public $select_name = 'CATALOGUE';
-    public $select_name_description = 'DESCRIPTION_CATALOGUE';
-    public $permissions_require = 'cat_high';
-    public $permission_module = 'catalogues_catalogue';
-    public $non_integer_id = true;
-    public $content_type = 'catalogue';
-    public $is_tree_catalogue = false; // Set for usage by do-next-manager
-    public $menu_label = 'CATALOGUES';
-    public $table = 'catalogues';
-    public $functions = 'moduleCmsCataloguesAlt';
-    public $is_chained_with_parent_browse = true;
+    protected $lang_type = 'CATALOGUE';
+    protected $select_name = 'CATALOGUE';
+    protected $select_name_description = 'DESCRIPTION_CATALOGUE';
+    protected $permissions_require = 'cat_high';
+    protected $permission_module = 'catalogues_catalogue';
+    protected $non_integer_id = true;
+    protected $content_type = 'catalogue';
+    protected $is_tree_catalogue = false; // Set for usage by do-next-manager
+    protected $menu_label = 'CATALOGUES';
+    protected $table = 'catalogues';
+    protected $functions = 'moduleCmsCataloguesAlt';
+    protected $is_chained_with_parent_browse = true;
 
     /**
      * Standard crud_module list function.

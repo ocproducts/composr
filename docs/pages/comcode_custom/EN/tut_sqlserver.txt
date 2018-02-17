@@ -8,6 +8,10 @@ SQL Server has been tested for Composr v10.0.x under a commercial relationship (
 
 SQL Server is a very high quality database backend developed over decades by Microsoft (and formerly, Sybase). It is much more sophisticated than MySQL, although it also tends to be stricter in a number of ways. Usage is likely of most interest to organisations that are standardising on Microsoft technology.
 
+This tutorial broadly assumes you are responsible for configuring and managing the Windows Server that is running SQL Server. It is not written for shared hosting customers, who would typically configure a database using a proprietary control panel of some kind.
+
+[contents]decimal,lower-alpha[/contents]
+
 [title="2"]What is and is not supported[/title]
 
 The same functionality is supported as is supported on [page="_SEARCH:tut_postgresql"]Postgres[/page].
@@ -182,6 +186,10 @@ The main complexities of SQL Server support, for MySQL developers are:
 5) [tt](N)VARCHAR(MAX)[/tt] fields are used rather than [tt](N)TEXT[/tt] fields, as SQL Server cannot index [tt](N)TEXT[/tt] fields.
 6) Full-text search indexes requires a unique index on a single column, which restricts what kind of tables you can run it on.
 7) You cannot insert into an identity column explicitly, unless you turn an option off. The database driver handles this automatically though.
+
+[concepts
+ 1_key="SQL Server" 1_value="Microsoft's database server"
+]Concepts[/concepts]
 
 [title="2"]See also[/title]
 

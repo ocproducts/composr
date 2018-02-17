@@ -30,7 +30,7 @@ function handle_active_logout()
         $GLOBALS['FACEBOOK_LOGOUT'] = true;
         cms_ob_end_clean();
         echo ' ';
-        flush(); // Force headers to be sent so it's not an HTTP header request so Facebook can do it's JS magic
+        flush(); // FUDGE: Force headers to be sent so it's not an HTTP header request so Facebook can do it's JS magic
     }
     $GLOBALS['MEMBER_CACHED'] = $GLOBALS['FORUM_DRIVER']->get_guest_id();
 }

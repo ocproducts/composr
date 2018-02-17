@@ -132,7 +132,7 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
      * @param  array $properties The properties
      * @param  AUTO_LINK $quiz_id The quiz
      */
-    private function add_quiz_entries($properties, $quiz_id)
+    protected function add_quiz_entries($properties, $quiz_id)
     {
         if (isset($properties['entries'])) {
             $GLOBALS['SITE_DB']->query_delete('quiz_entries', array('q_quiz' => $quiz_id));

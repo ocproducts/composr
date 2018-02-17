@@ -18,8 +18,8 @@
  */
 class sitemap_test_set extends cms_test_case
 {
-    public $sitemap;
-    public $flattened;
+    protected $sitemap;
+    protected $flattened;
 
     public function setUp()
     {
@@ -42,7 +42,7 @@ class sitemap_test_set extends cms_test_case
         $this->flattened = $this->flatten_sitemap($this->sitemap);
     }
 
-    public function flatten_sitemap($sitemap)
+    protected function flatten_sitemap($sitemap)
     {
         if ($sitemap['page_link'] == 'forum:' || $sitemap['page_link'] == 'buildr:') {
             return array();

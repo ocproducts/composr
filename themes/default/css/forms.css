@@ -22,8 +22,8 @@
 		border-right: 0;
 	}
 
-	.form-table>tbody>tr>th label:after, .form-table>thead>tr>th label:after, .form-table>tr>th label:after,
-	.form-table>tbody>tr>th .faux-label:after, .form-table>thead>tr>th .faux-label:after, .form-table>tr>th .faux-label:after {
+	.form-table>tbody>tr>th label::after, .form-table>thead>tr>th label::after, .form-table>tr>th label::after,
+	.form-table>tbody>tr>th .faux-label::after, .form-table>thead>tr>th .faux-label::after, .form-table>tr>th .faux-label::after {
 		content: ":";
 	}
 /*{+END}*/

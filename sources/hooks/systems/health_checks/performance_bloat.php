@@ -101,7 +101,6 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
             return;
         }
 
-        require_code('files');
         require_code('files2');
 
         $mb = 1024 * 1024;

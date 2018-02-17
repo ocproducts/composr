@@ -28,9 +28,9 @@ class hyperlink_targets_test_set extends cms_test_case
             'lang_custom/' . fallback_lang(),
         );
         foreach ($dirs as $path) {
-            $files = get_directory_contents(get_file_base() . '/' . $path, get_file_base() . '/' . $path);
-            foreach ($files as $file) {
-                $c = file_get_contents($file);
+            $files = get_directory_contents(get_file_base() . '/' . $path, get_file_base() . '/' . $path, IGNORE_CUSTOM_DIR_GROWN_CONTENTS);
+            foreach ($files as $_path) {
+                $c = file_get_contents($_path);
                 $this->assertTrue(strpos($c, ' target="blank"') === false, 'Uses a "blank" target rather than a "_blank" target');
             }
         }

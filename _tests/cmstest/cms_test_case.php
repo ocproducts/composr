@@ -26,10 +26,6 @@ class cms_test_case extends WebTestCase
         $this->site_closed = get_option('site_closed');
         require_code('config2');
         set_option('site_closed', '0', 0);
-
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
     }
 
     public function tearDown()

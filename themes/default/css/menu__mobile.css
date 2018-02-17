@@ -21,7 +21,7 @@
 	vertical-align: middle;
 }
 
-.mobile-menu-button:after {
+.mobile-menu-button::after {
 	padding-left: 0.25em;
 	content: "\25bc"; /* Downward triangle arrow */
 	vertical-align: middle;

@@ -2,7 +2,9 @@
 
 Most Composr sites are hosted on Linux web servers. Linux uses the traditional file permission scheme from Unix, which is actually a very simple scheme in terms of what can be done, but technically complex to understand. Composr requires special file permissions for any uploaded file or directory that it needs to write to.
 
-This tutorial is intended to cover the theory behind the permissions Composr needs on most webhosts, and give practical explanations on how to work with them. It is not intended as a discussion on the relative merits of different server configurations, which is covered in the [page="_SEARCH:tut_security"]Security[/page] tutorial. The [page="_SEARCH:tut_adv_install"]Advanced installation[/page] tutorial covers the permissions Composr needs.
+This tutorial is intended to cover the theory behind the permissions Composr needs on most webhosts, and give practical explanations on how to work with them. It is not intended as a discussion on the relative merits of different server configurations, which is covered in the [page="_SEARCH:tut_security"]Security[/page] tutorial. The [page="_SEARCH:tut_install_permissions"]File permissions[/page] tutorial covers the permissions Composr needs.
+
+When configuring Windows permissions via FTP/SFTP, Linux file permissions are emulated for you.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -71,8 +73,7 @@ The screen-shots show how to set file permissions for:
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_install"]Basic Installation[/page]
- - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
+ - [page="_SEARCH:tut_install_permissions"]File permissions[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
 
 {$SET,tutorial_tags,installer,Installation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The theory behind the permissions Composr needs on most webhosts, and practical guidance on setting them.}[block]main_tutorial_rating[/block]

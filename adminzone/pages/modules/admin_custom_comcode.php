@@ -26,17 +26,17 @@ require_javascript('custom_comcode');
  */
 class Module_admin_custom_comcode extends Standard_crud_module
 {
-    public $table_prefix = 'tag_';
-    public $array_key = 'tag_tag';
-    public $lang_type = 'CUSTOM_COMCODE_TAG';
-    public $select_name = 'TITLE';
-    public $non_integer_id = true;
-    public $menu_label = 'CUSTOM_COMCODE';
-    public $functions = 'moduleAdminCustomComcode';
-    public $orderer = 'tag_title';
-    public $title_is_multi_lang = true;
-    public $donext_entry_content_type = 'custom_comcode_tag';
-    public $donext_category_content_type = null;
+    protected $table_prefix = 'tag_';
+    protected $array_key = 'tag_tag';
+    protected $lang_type = 'CUSTOM_COMCODE_TAG';
+    protected $select_name = 'TITLE';
+    protected $non_integer_id = true;
+    protected $menu_label = 'CUSTOM_COMCODE';
+    protected $functions = 'moduleAdminCustomComcode';
+    protected $orderer = 'tag_title';
+    protected $title_is_multi_lang = true;
+    protected $donext_entry_content_type = 'custom_comcode_tag';
+    protected $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.
@@ -349,7 +349,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
      * @param  array $_parameters Parameters configured
      * @param  string $replace Text to replace within
      */
-    private function check_parameters_all_there($_parameters, $replace)
+    protected function check_parameters_all_there($_parameters, $replace)
     {
         $parameters = array();
         foreach ($_parameters as $param) {

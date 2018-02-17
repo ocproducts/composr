@@ -57,56 +57,60 @@ function get_nested_csv_structure()
     $csv_files = array();
     if (file_exists(get_custom_file_base() . '/private_data')) {
         $dh = @opendir(get_custom_file_base() . '/private_data');
-        while (($csv_filename = readdir($dh)) !== false) {
-            if (substr($csv_filename, -4) != '.csv') {
-                continue;
-            }
-
-            $myfile = @fopen(get_file_base() . '/private_data/' . $csv_filename, 'rb');
-            // TODO: #3032
-            if ($myfile === false) {
-                warn_exit('The CSV file "' . $csv_filename . '" could not be opened.', false, true);
-            }
-
-            $header_row = fgetcsv($myfile, 10000);
-
-            if ($header_row !== false) {
-                // Initialise data for this forthcoming $csv_files entry
-                $csv_file = array();
-                $csv_file['headings'] = array();    // Unordered headings                               ?=>heading
-                $csv_file['data'] = array();        // Array of rows                                    ?=>array(cols,col2,col3,...)
-
-                // Fill out 'headings'
-                $csv_file['headings'] = $header_row;
-
-                // Fill out 'data' and 'lists'
-                $vl_temp = fgetcsv($myfile, 10000);
-                if ($vl_temp !== false) {
-                    $vl_temp = array_map('trim', $vl_temp);
+        if ($dh !== false) {
+            while (($csv_filename = readdir($dh)) !== false) {
+                if (substr($csv_filename, -4) != '.csv') {
+                    continue;
                 }
-                while ($vl_temp !== false) { // If there's nothing past the headings this loop never executes
-                    while (count($vl_temp) < count($header_row)) {
-                        $vl_temp[] = ''; // Pad out row to be complete
-                    }
 
-                    $new_entry = array();
-                    foreach ($header_row as $j => $heading) {
-                        $new_entry[$heading] = $vl_temp[$j];
-                    }
-                    $csv_file['data'][] = $new_entry;
+                $myfile = @fopen(get_file_base() . '/private_data/' . $csv_filename, 'rb');
+                // TODO: #3032
+                if ($myfile === false) {
+                    warn_exit('The CSV file "' . $csv_filename . '" could not be opened.', false, true);
+                }
 
+                $header_row = fgetcsv($myfile, 10000);
+
+                if ($header_row !== false) {
+                    // Initialise data for this forthcoming $csv_files entry
+                    $csv_file = array();
+                    $csv_file['headings'] = array();    // Unordered headings                               ?=>heading
+                    $csv_file['data'] = array();        // Array of rows                                    ?=>array(cols,col2,col3,...)
+
+                    // Fill out 'headings'
+                    $csv_file['headings'] = $header_row;
+
+                    // Fill out 'data' and 'lists'
                     $vl_temp = fgetcsv($myfile, 10000);
                     if ($vl_temp !== false) {
                         $vl_temp = array_map('trim', $vl_temp);
                     }
+                    while ($vl_temp !== false) { // If there's nothing past the headings this loop never executes
+                        while (count($vl_temp) < count($header_row)) {
+                            $vl_temp[] = ''; // Pad out row to be complete
+                        }
+
+                        $new_entry = array();
+                        foreach ($header_row as $j => $heading) {
+                            $new_entry[$heading] = $vl_temp[$j];
+                        }
+                        $csv_file['data'][] = $new_entry;
+
+                        $vl_temp = fgetcsv($myfile, 10000);
+                        if ($vl_temp !== false) {
+                            $vl_temp = array_map('trim', $vl_temp);
+                        }
+                    }
+
+                    $csv_files[$csv_filename] = $csv_file;
+                } else {
+                    warn_exit('No header row found for "' . $csv_filename . '".', false, true);
                 }
 
-                $csv_files[$csv_filename] = $csv_file;
-            } else {
-                warn_exit('No header row found for "' . $csv_filename . '".', false, true);
+                fclose($myfile);
             }
 
-            fclose($myfile);
+            closedir($dh);
         }
     }
     $csv_structure['csv_files'] = $csv_files;

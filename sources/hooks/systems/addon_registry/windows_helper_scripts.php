@@ -62,8 +62,9 @@ class Hook_addon_registry_windows_helper_scripts
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_adv_install',
-            'tut_windows',
+            'tut_install_permissions',
+            'tut_install_windows_desktop',
+            'tut_install_windows_server',
         );
     }
 

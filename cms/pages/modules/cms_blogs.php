@@ -25,24 +25,24 @@ require_code('crud_module');
  */
 class Module_cms_blogs extends Standard_crud_module
 {
-    public $lang_type = 'NEWS_BLOG';
-    public $select_name = 'TITLE';
-    public $code_require = 'news';
-    public $permissions_require = 'mid';
-    public $permissions_cat_require = 'news';
-    public $permissions_cat_name = 'main_news_category';
-    public $user_facing = true;
-    public $seo_type = 'news';
-    public $content_type = 'news';
-    public $possibly_some_kind_of_upload = true;
-    public $upload = 'image';
-    public $menu_label = 'BLOGS';
-    public $table = 'news';
-    public $orderer = 'title';
-    public $title_is_multi_lang = true;
-    public $privilege_page_name = 'cms_news';
+    protected $lang_type = 'NEWS_BLOG';
+    protected $select_name = 'TITLE';
+    protected $code_require = 'news';
+    protected $permissions_require = 'mid';
+    protected $permissions_cat_require = 'news';
+    protected $permissions_cat_name = 'main_news_category';
+    protected $user_facing = true;
+    protected $seo_type = 'news';
+    protected $content_type = 'news';
+    protected $possibly_some_kind_of_upload = true;
+    protected $upload = 'image';
+    protected $menu_label = 'BLOGS';
+    protected $table = 'news';
+    protected $orderer = 'title';
+    protected $title_is_multi_lang = true;
+    protected $privilege_page_name = 'cms_news';
 
-    public $donext_type = null;
+    protected $donext_type = null;
 
     /**
      * Find entry-points available within this module.

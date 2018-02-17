@@ -84,13 +84,13 @@ class lang_spelling_test_set extends cms_test_case
         $files = array(
             'uploads/website_specific/compo.sr/errorservice.csv',
         );
-        foreach ($files as $file) {
+        foreach ($files as $_path) {
             $path = get_file_base() . '/';
-            $this->check($file, null, file_get_contents($path . '/' . $file), $verbose);
+            $this->check($file, null, file_get_contents($path . '/' . $_path), $verbose);
         }
     }
 
-    private function check($file, $key, $string, $verbose)
+    protected function check($file, $key, $string, $verbose)
     {
         $string = preg_replace('#https?://[^ ]*#', '', $string);
         $string = preg_replace('#\{\$[^\{\}]*\}#', '', $string);
@@ -122,6 +122,9 @@ class lang_spelling_test_set extends cms_test_case
                 $key != 'CONFIG_OPTION_network_links' &&
                 $key != 'WARNING_MBSTRING_FUNC_OVERLOAD' &&
                 $key != 'DISABLED_FUNCTION' &&
+                $key != 'DASHBOARD_COMPOSR_NEWS' &&
+                $key != 'CONFIG_OPTION_dashboard_composr_news' &&
+                $key != 'CONFIG_OPTION_dashboard_tips' &&
                 $file != 'lang.ini' &&
                 $file != 'version.ini' &&
                 $file != 'debrand.ini' &&

@@ -18,7 +18,7 @@
  */
 class menu_test_set extends cms_test_case
 {
-    public $menu_id;
+    protected $menu_id;
 
     public function setUp()
     {

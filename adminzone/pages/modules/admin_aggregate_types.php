@@ -25,19 +25,19 @@ require_code('crud_module');
  */
 class Module_admin_aggregate_types extends Standard_crud_module
 {
-    public $lang_type = 'AGGREGATE_TYPE_INSTANCE';
-    public $select_name = 'LABEL';
-    public $menu_label = 'AGGREGATE_TYPES';
-    public $orderer = 'aggregate_label';
-    public $title_is_multi_lang = false;
-    public $table = 'aggregate_type_instances';
-    public $do_preview = null;
+    protected $lang_type = 'AGGREGATE_TYPE_INSTANCE';
+    protected $select_name = 'LABEL';
+    protected $menu_label = 'AGGREGATE_TYPES';
+    protected $orderer = 'aggregate_label';
+    protected $title_is_multi_lang = false;
+    protected $table = 'aggregate_type_instances';
+    protected $do_preview = null;
 
-    public $add_one_label = null;
-    public $edit_this_label = null;
-    public $edit_one_label = null;
-    public $donext_entry_content_type = 'aggregate_type_instance';
-    public $donext_category_content_type = null;
+    protected $add_one_label = null;
+    protected $edit_this_label = null;
+    protected $edit_one_label = null;
+    protected $donext_entry_content_type = 'aggregate_type_instance';
+    protected $donext_category_content_type = null;
 
     /**
      * Find details of the module.

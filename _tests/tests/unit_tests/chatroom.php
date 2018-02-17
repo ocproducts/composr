@@ -18,7 +18,7 @@
  */
 class chatroom_test_set extends cms_test_case
 {
-    public $chatroom_id;
+    protected $chatroom_id;
 
     public function setUp()
     {

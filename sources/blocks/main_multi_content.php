@@ -707,7 +707,7 @@ class Block_main_multi_content
      * @param  string $category_field_select The field name of the category to select against
      * @return string SQL fragment
      */
-    public function build_select($select, $info, $category_field_select)
+    protected function build_select($select, $info, $category_field_select)
     {
         $parent_spec__table_name = array_key_exists('parent_spec__table_name', $info) ? $info['parent_spec__table_name'] : $info['table'];
         $parent_field_name = $info['is_category'] ? (is_array($info['id_field']) ? implode(',', $info['id_field']) : $info['id_field']) : $category_field_select;

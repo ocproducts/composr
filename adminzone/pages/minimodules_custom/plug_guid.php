@@ -36,15 +36,12 @@ require_code('files2');
 
 $limit_file = isset($_GET['file']) ? $_GET['file'] : '';
 if ($limit_file == '') {
-    $files = get_directory_contents(get_file_base());
+    $files = get_directory_contents(get_file_base(), '', 0, true, true, array('php'));
 } else {
     $files = array($limit_file);
 }
 foreach ($files as $i => $file) {
     if (preg_match('#^exports/#', $file) != 0) {
-        continue;
-    }
-    if (substr($file, -4) != '.php') {
         continue;
     }
     if (strpos($file, 'plug_guid') !== false) {

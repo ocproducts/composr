@@ -1,0 +1,185 @@
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: File permissions[/title]
+
+This tutorial lists the file permissions Composr needs. It is useful when:
+ - Installing with the manual installer
+ - Moving Composr between servers and manually resetting permissions
+ - Fixing permissions if something has broken them (e.g. a webhost making a mistake)
+
+For an explanation of how Linux file permissions work, see the [page="_SEARCH:sup_chmod"]Linux file permissions[/page] tutorial. When configuring Windows permissions via FTP/SFTP, Linux file permissions are emulated for you.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Quick installer[/title]
+
+If installing with the quick installer you should not need to manually set any of the file permissions in this tutorial. The quick installer will handle it for you.
+
+[title="2"]suEXEC is strongly recommended[/title]
+
+In the ideal world you'd be on a suEXEC-style server, which is described in the [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/tt] tutorial. But basically it's where the PHP script is run as your own user.
+
+However, in the real world there are still webhosts that do not use suEXEC, and self-installs of Apache are often configured without it.
+
+If you do have an Apache self install it is best to use suEXEC if you possibly can, or to assign all the file ownerships to the same owner as the Apache user (e.g. [tt]nobody[/tt] or [tt]apache[/tt], depending on the server).
+
+suEXEC will save you a lot of headaches doing things like addon management, because such an operation potentially needs write access to everything. We do pipe through FTP in this scenario, but it's complicated, slow, and more prone to error if something goes wrong.
+
+[title="2"]Automating permission setting[/title]
+
+If you have access to a shell (ask your webhost if you don't know) then you can avoid manually setting permissions, making use of our helper scripts.
+
+[title="3"]On Linux[/title]
+
+The [tt]linux_helper_scripts[/tt] addon will be required, which is kept by default.
+
+On Linux a typical shell is brought up using SSH. Set up of SSH is beyond the scope of this tutorial. That said, on a Windows desktop you can use [url="PuTTY"]http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html[/url] to access SSH, and on Linux and Mac an [tt]ssh[/tt] command is built in.
+
+From the shell, [tt]cd[/tt] to the Composr base directory and run this command:
+[code="Bash"]
+sh fixperms.sh
+[/code]
+
+[title="3"]On Windows[/title]
+
+The [tt]windows_helper_scripts[/tt] addon will be required, which is kept by default.
+
+Run [tt]fixperms.bat[/tt] from the Composr base directory.
+
+[title="2"]Permissions required without suEXEC[/title]
+
+[media width="150" description="Tick (check) the highlighted boxes for all the files/folders listed to the left. This screenshot was taken on a Mac using Cyberduck, but the process is similar for other software. Usually to get to a screen like this you right-click on a file/folder and choose something like 'Properties'." float="right"]data_custom/images/docs/tut_install_permissions/install_chmod.png[/media]
+Set the following to [b]777[/b] (full directory permissions):
+ - [tt]adminzone/pages/comcode_custom/<for-each-language>[/tt]
+ - [tt]adminzone/pages/html_custom/<for-each-language>[/tt]
+ - [tt]caches/guest_pages[/tt]
+ - [tt]caches/lang/<for-each-language>[/tt]
+ - [tt]caches/lang[/tt]
+ - [tt]caches/persistent[/tt]
+ - [tt]caches/self_learning[/tt]
+ - [tt]caches/http[/tt]
+ - [tt]cms/pages/comcode_custom/<for-each-language>[/tt]
+ - [tt]cms/pages/html_custom/<for-each-language>[/tt]
+ - [tt]data_custom/modules/admin_backup[/tt]
+ - [tt]data_custom/modules/admin_stats[/tt]
+ - [tt]data_custom/modules/chat[/tt]
+ - [tt]data_custom/modules/web_notifications[/tt]
+ - [tt]data_custom/sitemaps[/tt]
+ - [tt]data_custom/spelling/personal_dicts[/tt]
+ - [tt]data_custom/xml_config[/tt]
+ - [tt]data_custom[/tt]
+ - [tt]exports/*[/tt]
+ - [tt]forum/pages/comcode_custom/<for-each-language>[/tt]
+ - [tt]forum/pages/html_custom/<for-each-language>[/tt]
+ - [tt]imports/*[/tt]
+ - [tt]lang_custom/<for-each-language>[/tt]
+ - [tt]lang_custom[/tt]
+ - [tt]pages/comcode_custom/<for-each-language>[/tt]
+ - [tt]pages/html_custom/<for-each-language>[/tt]
+ - [tt]temp[/tt]
+ - [tt]site/pages/comcode_custom/<for-each-language>[/tt]
+ - [tt]site/pages/html_custom/<for-each-language>[/tt]
+ - [tt]text_custom/<for-each-language>[/tt]
+ - [tt]text_custom[/tt]
+ - [tt]themes/<for-each-theme>/css_custom[/tt]
+ - [tt]themes/<for-each-theme>/images_custom[/tt]
+ - [tt]themes/<for-each-theme>/javascript_custom[/tt]
+ - [tt]themes/<for-each-theme>/templates_cached/<for-each-language>[/tt]
+ - [tt]themes/<for-each-theme>/templates_custom[/tt]
+ - [tt]themes/<for-each-theme>/text_custom[/tt]
+ - [tt]themes/<for-each-theme>/xml_custom[/tt]
+ - [tt]themes[/tt]
+ - [tt]tmp[/tt] ([i]this is a folder needed only by the quick installer -- and you will need to make it and set permissions immediately or wait until the quick installer makes it and then fails due to lack of permissions on it[/i])
+ - [tt]uploads/attachments[/tt]
+ - [tt]uploads/attachments_thumbs[/tt]
+ - [tt]uploads/auto_thumbs[/tt]
+ - [tt]uploads/banners[/tt]
+ - [tt]uploads/catalogues[/tt]
+ - [tt]uploads/cns_avatars[/tt]
+ - [tt]uploads/cns_cpf_upload[/tt]
+ - [tt]uploads/cns_photos[/tt]
+ - [tt]uploads/cns_photos_thumbs[/tt]
+ - [tt]uploads/downloads[/tt]
+ - [tt]uploads/filedump[/tt]
+ - [tt]uploads/galleries[/tt]
+ - [tt]uploads/galleries_thumbs[/tt]
+ - [tt]uploads/incoming[/tt]
+ - [tt]uploads/personal_sound_effects[/tt]
+ - [tt]uploads/repimages[/tt]
+ - [tt]uploads/watermarks[/tt]
+ - [tt]uploads/website_specific[/tt]
+
+Set the following to [b]666[/b] (full read/write permissions):
+ - [tt]adminzone/pages/comcode_custom/<for-each-language>/*.txt[/tt]
+ - [tt]adminzone/pages/html_custom/<for-each-language>/*.htm[/tt]
+ - [tt]cms/pages/comcode_custom/<for-each-language>/*.txt[/tt]
+ - [tt]cms/pages/html_custom/<for-each-language>/*.htm[/tt]
+ - [tt]data_custom/errorlog.php[/tt]
+ - [tt]data_custom/firewall_rules.txt[/tt]
+ - [tt]data_custom/modules/admin_backup/*[/tt]
+ - [tt]data_custom/modules/admin_stats/*[/tt]
+ - [tt]data_custom/modules/chat/*[/tt]
+ - [tt]data_custom/modules/web_notifications/*[/tt]
+ - [tt]data_custom/sitemaps/*[/tt]
+ - [tt]data_custom/spelling/personal_dicts/*[/tt]
+ - [tt]data_custom/xml_config/*.xml[/tt]
+ - [tt]exports/*/*[/tt]
+ - [tt]forum/pages/comcode_custom/<for-each-language>/*.txt[/tt]
+ - [tt]forum/pages/html_custom/<for-each-language>/*.htm[/tt]
+ - [tt]imports/*/*[/tt]
+ - [tt]lang_custom/<for-each-language>/*.ini[/tt]
+ - [tt]pages/comcode_custom/<for-each-language>/*.txt[/tt]
+ - [tt]pages/html_custom/<for-each-language>/*.htm[/tt]
+ - [tt]site/pages/comcode_custom/<for-each-language>/*.txt[/tt]
+ - [tt]site/pages/html_custom/<for-each-language>/*.htm[/tt]
+ - [tt]text_custom/*.txt[/tt]
+ - [tt]text_custom/<for-each-language>/*.txt[/tt]
+ - [tt]themes/<for-each-theme>/css_custom/*[/tt]
+ - [tt]themes/<for-each-theme>/images_custom/*[/tt]
+ - [tt]themes/<for-each-theme>/javascript_custom/*[/tt]
+ - [tt]themes/<for-each-theme>/templates_custom/*[/tt]
+ - [tt]themes/<for-each-theme>/text_custom/*[/tt]
+ - [tt]themes/<for-each-theme>/theme.ini[/tt]
+ - [tt]themes/<for-each-theme>/xml_custom/*[/tt]
+ - [tt]themes/map.ini[/tt]
+ - [tt]uploads/attachments/*[/tt]
+ - [tt]uploads/attachments_thumbs/*[/tt]
+ - [tt]uploads/auto_thumbs/*[/tt]
+ - [tt]uploads/banners/*[/tt]
+ - [tt]uploads/catalogues/*[/tt]
+ - [tt]uploads/cns_avatars/*[/tt]
+ - [tt]uploads/cns_cpf_upload/*[/tt]
+ - [tt]uploads/cns_photos/*[/tt]
+ - [tt]uploads/cns_photos_thumbs/*[/tt]
+ - [tt]uploads/downloads/*[/tt]
+ - [tt]uploads/filedump/*[/tt]
+ - [tt]uploads/galleries/*[/tt]
+ - [tt]uploads/galleries_thumbs/*[/tt]
+ - [tt]uploads/personal_sound_effects/*[/tt]
+ - [tt]uploads/repimages/*[/tt]
+ - [tt]uploads/watermarks/*[/tt]
+ - [tt]uploads/website_specific/*[/tt]
+ - [tt]_config.php[/tt]
+
+[title="2"]Permissions with suEXEC[/title]
+
+The default 744 (directory) and 644 (file) permissions should be suitable. This grants read access to everyone, and write access just to the hosting account. There's no need to block read access for your files to other users.
+
+The exception is [tt]_config.php[/tt], which should be 600 for additional security (because it contains passwords). The installer will set this for you automatically, so you shouldn't need to worry.
+
+[title="2"]CGI servers[/title]
+
+It has been reported to us that some Linux CGI-based PHP installations (as opposed to module-based PHP installations) require PHP scripts to be given 'execute' permission. This is a very rare (and insecure) configuration, but if there is this requirement, the following files need to be given execute permission...
+ - Any [tt]index.php[/tt] file
+ - All PHP files in the root directory, except [tt]_config.php[/tt]
+ - All PHP files in the data directory
+ - All PHP files in the main directory for a zone (e.g. [tt]/[/tt], and [tt]/adminzone[/tt]) directories)
+
+The quick installer handles this automatically.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_install"]Installation[/page]
+ - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
+ - [page="_SEARCH:tut_security"]Security[/page]
+ - [page="_SEARCH:sup_chmod"]Linux file permissions[/page]
+
+{$SET,tutorial_tags,windows_helper_scripts,linux_helper_scripts,installer,Installation,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial covers the file permissions Composr needs.}[block]main_tutorial_rating[/block]

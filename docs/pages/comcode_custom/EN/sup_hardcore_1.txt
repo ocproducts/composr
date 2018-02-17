@@ -128,7 +128,6 @@ The race is on.
 
  - [page="_SEARCH:sup_hardcore_2"]Making an addon (part 2)[/page]
  - [page="_SEARCH:sup_hardcore_3"]Making an addon (part 3)[/page]
- - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
  - [page="_SEARCH:tut_framework"]The Composr programming framework[/page]
  - [page="_SEARCH:tut_programming"]Introduction to programming[/page]

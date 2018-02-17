@@ -20,36 +20,28 @@ class override_notes_consistency_test_set extends cms_test_case
 {
     public function testOverrideNotesConsistency()
     {
-        require_code('files');
         require_code('files2');
-        $files = get_directory_contents(get_file_base(), '', null);
+
+        $files = get_directory_contents(get_file_base(), '', IGNORE_NONBUNDLED_VERY_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('php'));
         $files[] = 'install.php';
-        foreach ($files as $file) {
-            if (substr($file, -4) != '.php') {
-                continue;
-            }
-
-            if (should_ignore_file($file, IGNORE_NONBUNDLED_VERY_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS)) {
-                continue;
-            }
-
-            if (file_exists(dirname($file) . '/index.php')) {
+        foreach ($files as $path) {
+            if (file_exists(dirname($path) . '/index.php')) {
                 continue; // Zone directory, no override support
             }
 
-            $contents = file_get_contents(get_file_base() . '/' . $file);
+            $c = file_get_contents(get_file_base() . '/' . $path);
 
-            if (strpos($contents, 'CQC: No check') !== false) {
+            if (strpos($c, 'CQC: No check') !== false) {
                 continue;
             }
-            if (strpos($contents, 'CQC: No API check') !== false) {
+            if (strpos($c, 'CQC: No API check') !== false) {
                 continue;
             }
 
-            if (strpos($file, '_custom/') === false) {
-                $this->assertTrue(strpos($contents, 'NOTE TO PROGRAMMERS:') !== false, 'Missing "NOTE TO PROGRAMMERS:" in ' . $file);
+            if (strpos($path, '_custom/') === false) {
+                $this->assertTrue(strpos($c, 'NOTE TO PROGRAMMERS:') !== false, 'Missing "NOTE TO PROGRAMMERS:" in ' . $path);
             } else {
-                $this->assertFalse(strpos($contents, 'NOTE TO PROGRAMMERS:') !== false, 'Undesirable "NOTE TO PROGRAMMERS:" in ' . $file);
+                $this->assertFalse(strpos($c, 'NOTE TO PROGRAMMERS:') !== false, 'Undesirable "NOTE TO PROGRAMMERS:" in ' . $path);
             }
         }
     }

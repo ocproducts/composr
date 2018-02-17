@@ -13,6 +13,8 @@
  * @package    testing_platform
  */
 
+// php _tests/index.php _health_check
+
 /**
  * Composr test case class (unit testing).
  */

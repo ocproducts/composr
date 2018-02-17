@@ -25,17 +25,17 @@ require_code('crud_module');
  */
 class Module_admin_awards extends Standard_crud_module
 {
-    public $lang_type = 'AWARD_TYPE';
-    public $select_name = 'TITLE';
-    public $archive_entry_point = '_SEARCH:awards';
-    public $archive_label = 'VIEW_PAST_WINNERS';
-    public $permission_module = 'award';
-    public $menu_label = 'AWARDS';
-    public $table = 'award_types';
-    public $orderer = 'a_title';
-    public $title_is_multi_lang = true;
-    public $donext_entry_content_type = 'award_type';
-    public $donext_category_content_type = null;
+    protected $lang_type = 'AWARD_TYPE';
+    protected $select_name = 'TITLE';
+    protected $archive_entry_point = '_SEARCH:awards';
+    protected $archive_label = 'VIEW_PAST_WINNERS';
+    protected $permission_module = 'award';
+    protected $menu_label = 'AWARDS';
+    protected $table = 'award_types';
+    protected $orderer = 'a_title';
+    protected $title_is_multi_lang = true;
+    protected $donext_entry_content_type = 'award_type';
+    protected $donext_category_content_type = null;
 
     /**
      * Find details of the module.

@@ -38,7 +38,6 @@ class Hook_snippet_template_editor_load
         require_code('themes2');
         require_code('themes3');
         require_lang('themes');
-        require_code('files');
         require_code('files2');
 
         $file = get_param_string('file', false, INPUT_FILTER_GET_COMPLEX);
@@ -236,7 +235,7 @@ class Hook_snippet_template_editor_load
      * @param  string $file_id The ID of the actual template editor we are working with
      * @return array Tuple of dropdowns
      */
-    private function get_tempcode_editing_toolbar_dropdowns($file, $file_id)
+    protected function get_tempcode_editing_toolbar_dropdowns($file, $file_id)
     {
         $parameters = new Tempcode();
         if ($file !== null) {
@@ -377,7 +376,7 @@ class Hook_snippet_template_editor_load
      * @param  string $file_id The ID of the actual template editor we are working with
      * @return Tempcode The Tempcode
      */
-    private function generate_dropdown_from($array, $stub, $file_id)
+    protected function generate_dropdown_from($array, $stub, $file_id)
     {
         $out = new Tempcode();
         foreach ($array as $x) {

@@ -18,7 +18,7 @@
  */
 class calendar_event_type_test_set extends cms_test_case
 {
-    public $eventtype_id;
+    protected $eventtype_id;
 
     public function setUp()
     {

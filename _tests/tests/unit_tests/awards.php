@@ -18,7 +18,7 @@
  */
 class awards_test_set extends cms_test_case
 {
-    public $award_id;
+    protected $award_id;
 
     public function setUp()
     {

@@ -18,8 +18,8 @@
  */
 class cma_hooks_test_set extends cms_test_case
 {
-    public $all_cma_info = array();
-    public $all_keys = array();
+    protected $all_cma_info = array();
+    protected $all_keys = array();
 
     public function setUp()
     {
