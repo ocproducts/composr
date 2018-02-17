@@ -834,7 +834,7 @@ abstract class ListFieldHook
      */
     protected function get_input_list_map($field, $dynamic_choices = null)
     {
-        $default = $field['cf_default'];
+        $default = option_value_from_field_array($field, 'default', $field['cf_default']);
 
         switch ($default) {
             case 'CURRENCY':

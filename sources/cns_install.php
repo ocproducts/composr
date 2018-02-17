@@ -277,13 +277,13 @@ function install_cns($upgrade_from = null)
 
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'member'), array('cf_type' => 'user'));
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'member_multi'), array('cf_type' => 'user_multi'));
-        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'codename', 'cf_default' => 'RANDOM'), array('cf_type' => 'random'));
+        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'codename', 'cf_options' => 'default=RANDOM'), array('cf_type' => 'random'));
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'list_multi', 'cf_options' => 'widget=vertical_checkboxes,custom_values=yes'), array('cf_type' => 'combo_multi'));
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'list_multi'), array('cf_type' => 'multilist'));
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'list_multi', 'cf_options' => 'widget=horizontal_checkboxes'), array('cf_type' => 'tick_multi'));
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio,custom_values=yes'), array('cf_type' => 'combo'));
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio'), array('cf_type' => 'radiolist'));
-        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'integer', 'cf_default' => 'AUTO_INCREMENT'), array('cf_type' => 'auto_increment'));
+        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'integer', 'cf_options' => 'default=AUTO_INCREMENT'), array('cf_type' => 'auto_increment'));
 
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_allows_anonymous_posts', 'BINARY', intval(get_option('is_on_anonymous_posts')));
 

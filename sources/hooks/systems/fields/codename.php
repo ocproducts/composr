@@ -102,7 +102,8 @@ class Hook_fields_codename
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
-        if ($new && strtoupper($field['cf_default']) == 'RANDOM') {
+        $default = option_value_from_field_array($field, 'default', $field['cf_default']);
+        if ($new && strtoupper($default) == 'RANDOM') {
             return null;
         }
 
@@ -127,7 +128,8 @@ class Hook_fields_codename
         $id = $field['id'];
         $tmp_name = 'field_' . strval($id);
 
-        if (!$editing && strtoupper($field['cf_default']) == 'RANDOM') {
+        $default = option_value_from_field_array($field, 'default', $field['cf_default']);
+        if (!$editing && strtoupper($default) == 'RANDOM') {
             return $this->get_field_random($id, $field['cf_default']);
         }
 

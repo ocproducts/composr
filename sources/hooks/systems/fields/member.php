@@ -128,7 +128,8 @@ class Hook_fields_member
             $actual_value = null;
         }
         if ($actual_value == '' || $actual_value == '!') {
-            if ($field['cf_default'] == '!') {
+            $default = option_value_from_field_array($field, 'default', $field['cf_default']);
+            if ($default == '!') {
                 $actual_value = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
             }
         } else {

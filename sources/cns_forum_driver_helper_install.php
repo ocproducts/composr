@@ -34,11 +34,12 @@
  * @param  string $type The field type
  * @param  BINARY $encrypted Whether the field is encrypted
  * @param  ?string $default Default field value (null: standard for field type)
+ * @param  SHORT_TEXT $options Field options
  * @return boolean Whether the custom field was created successfully
  *
  * @ignore
  */
-function _helper_install_create_custom_field($this_ref, $name, $length, $locked = 1, $viewable = 0, $settable = 0, $required = 0, $description = '', $type = 'long_text', $encrypted = 0, $default = null)
+function _helper_install_create_custom_field($this_ref, $name, $length, $locked = 1, $viewable = 0, $settable = 0, $required = 0, $description = '', $type = 'long_text', $encrypted = 0, $default = null, $options = '')
 {
     cns_require_all_forum_stuff();
     require_code('cns_members_action');
@@ -49,7 +50,7 @@ function _helper_install_create_custom_field($this_ref, $name, $length, $locked 
         if ($default === null) {
             $default = (strpos($name, 'points') !== false) ? '0' : '';
         }
-        $id = cns_make_custom_field($name, $locked, $description, $default, $viewable, $viewable, $settable, $encrypted, $type, $required, 0, 0, null, '', 0, '', true);
+        $id = cns_make_custom_field($name, $locked, $description, $default, $viewable, $viewable, $settable, $encrypted, $type, $required, 0, 0, null, '', 0, $options, true);
     }
     return $id !== null;
 }

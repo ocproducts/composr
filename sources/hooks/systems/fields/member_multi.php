@@ -136,7 +136,8 @@ class Hook_fields_member_multi
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
         if ($actual_value == '') {
-            if ($field['cf_default'] == '!') {
+            $default = option_value_from_field_array($field, 'default', $field['cf_default']);
+            if ($default == '!') {
                 $actual_value = strval(get_member());
             }
         }

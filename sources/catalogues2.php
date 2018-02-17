@@ -32,7 +32,7 @@ function create_ecommerce_catalogue($catalogue_name)
     $fields = array(
         //     Name     Description     Type        Defines order   Required    Visible/Categorised/Searchable  Default     Field options
         array('ECOM_CAT_product_title', 'DESCRIPTION_TITLE', 'short_trans', 1, 1, 1, 1, '', 'ecommerce_tag=product_title'),
-        array('ECOM_CAT_sku', 'ECOM_CATD_sku', 'codename', 0, 0, 1, 1, 'RANDOM', 'ecommerce_tag=sku'),
+        array('ECOM_CAT_sku', 'ECOM_CATD_sku', 'codename', 0, 0, 1, 1, '', 'default=RANDOM,ecommerce_tag=sku'),
         array('ECOM_CAT_price', 'ECOM_CATD_price', 'float', 0, 1, 1, 1, '', 'ecommerce_tag=price,decimal_points_behaviour=price'),
         array('ECOM_CAT_stock_level', 'ECOM_CATD_stock_level', 'integer', 0, 0, 1, 0, '', 'ecommerce_tag=stock_level'),
         array('ECOM_CAT_stock_level_warn_at', 'ECOM_CATD_stock_level_warn_at', 'integer', 0, 0, 0, 0, '', 'ecommerce_tag=stock_level_warn_at'),

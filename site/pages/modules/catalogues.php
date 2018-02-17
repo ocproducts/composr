@@ -303,7 +303,7 @@ class Module_catalogues
             $fields = array(
                 array('QUESTION', 'DESCRIPTON_QUESTION', 'short_trans', 0, 1, 1, ''),
                 array('ANSWER', '_DESCRIPTION_ANSWER', 'long_trans', 0, 1, 1, ''),
-                array('ORDER', 'DESCRIPTION_ORDER', 'integer', 1, 0, 0, 'AUTO_INCREMENT'),
+                array('ORDER', 'DESCRIPTION_ORDER', 'integer', 1, 0, 0, 'default=AUTO_INCREMENT'),
             );
             foreach ($fields as $i => $field) {
                 actual_add_catalogue_field(
@@ -442,13 +442,13 @@ class Module_catalogues
 
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'member'), array('cf_type' => 'user'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'member_multi'), array('cf_type' => 'user_multi'));
-            $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'codename', 'cf_default' => 'RANDOM'), array('cf_type' => 'random'));
+            $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'codename', 'cf_options' => 'default=RANDOM'), array('cf_type' => 'random'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'list_multi', 'cf_options' => 'widget=vertical_checkboxes,custom_values=yes'), array('cf_type' => 'combo_multi'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'list_multi'), array('cf_type' => 'multilist'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'list_multi', 'cf_options' => 'widget=horizontal_checkboxes'), array('cf_type' => 'tick_multi'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio,custom_values=yes'), array('cf_type' => 'combo'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio'), array('cf_type' => 'radiolist'));
-            $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'integer', 'cf_default' => 'AUTO_INCREMENT'), array('cf_type' => 'auto_increment'));
+            $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'integer', 'cf_options' => 'default=AUTO_INCREMENT'), array('cf_type' => 'auto_increment'));
         }
 
         if (($upgrade_from === null) || ($upgrade_from < 8)) {

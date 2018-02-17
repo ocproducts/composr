@@ -136,7 +136,9 @@ class Hook_fields_integer
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
-        if ($new && strtoupper($field['cf_default']) == 'AUTO_INCREMENT') {
+        $default = option_value_from_field_array($field, 'default', $field['cf_default']);
+
+        if ($new && strtoupper($default) == 'AUTO_INCREMENT') {
             return null;
         }
 
@@ -161,7 +163,8 @@ class Hook_fields_integer
     {
         $id = $field['id'];
         $tmp_name = 'field_' . strval($id);
-        if (!$editing && strtoupper($field['cf_default']) == 'AUTO_INCREMENT') {
+        $default = option_value_from_field_array($field, 'default', $field['cf_default']);
+        if (!$editing && strtoupper($default) == 'AUTO_INCREMENT') {
             return $this->get_field_auto_increment($id, $field['cf_default']);
         }
         $ret = post_param_string($tmp_name, $editing ? STRING_MAGIC_NULL : '');

@@ -3,6 +3,9 @@
 When building catalogues, custom fields for inbuilt content types, and Custom Profile Fields, you have a unified set of fields to choose from.
 This tutorial describes all the different fields and their options.
 
+"Special default values" are taken from a special field option named [tt]default[/tt]. E.g. [tt]default=![/tt] for the [tt]email[/tt] fields's defaulting to the current member's e-mail address.
+The special defaults apply only to add/edit forms, they don't populate automatically for hidden fields or update into existing records if a field is added after records already exist.
+
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Text[/title]

@@ -172,12 +172,13 @@ class Forum_driver_cns extends Forum_driver_base
      * @param  string $type The field type
      * @param  BINARY $encrypted Whether the field is encrypted
      * @param  ?string $default Default field value (null: standard for field type)
+     * @param  SHORT_TEXT $options Field options
      * @return boolean Whether the custom field was created successfully
      */
-    public function install_create_custom_field($name, $length, $locked = 1, $viewable = 0, $settable = 0, $required = 0, $description = '', $type = 'long_text', $encrypted = 0, $default = null)
+    public function install_create_custom_field($name, $length, $locked = 1, $viewable = 0, $settable = 0, $required = 0, $description = '', $type = 'long_text', $encrypted = 0, $default = null, $options = '')
     {
         require_code('cns_forum_driver_helper_install');
-        return _helper_install_create_custom_field($this, $name, $length, $locked, $viewable, $settable, $required, $description, $type, $encrypted, $default);
+        return _helper_install_create_custom_field($this, $name, $length, $locked, $viewable, $settable, $required, $description, $type, $encrypted, $default, $options);
     }
 
     /**

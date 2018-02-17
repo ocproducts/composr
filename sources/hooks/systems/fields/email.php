@@ -106,7 +106,8 @@ class Hook_fields_email
         if ($actual_value === null) {
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
-        if (($field['cf_default'] == '!') && ($actual_value == '')) {
+        $default = option_value_from_field_array($field, 'default', $field['cf_default']);
+        if (($default == '!') && ($actual_value == '')) {
             $actual_value = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
         }
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];

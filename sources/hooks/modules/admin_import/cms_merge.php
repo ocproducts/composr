@@ -2129,40 +2129,6 @@ class Hook_import_cms_merge
                         continue;
                     }
 
-                    if ($row2['cf_type'] == 'user') {
-                        $row2['cf_type'] = 'member';
-                    }
-                    if ($row2['cf_type'] == 'user_multi') {
-                        $row2['cf_type'] = 'member_multi';
-                    }
-                    if ($row2['cf_type'] == 'random') {
-                        $row2['cf_type'] = 'codename';
-                        $row2['cf_default'] = 'RANDOM';
-                    }
-                    if ($row2['cf_type'] == 'combo_multi') {
-                        $row2['cf_type'] = 'list_multi';
-                        $row2['cf_options'] = 'widget=vertical_checkboxes,custom_values=yes';
-                    }
-                    if ($row2['cf_type'] == 'multilist') {
-                        $row2['cf_type'] = 'list_multi';
-                    }
-                    if ($row2['cf_type'] == 'tick_multi') {
-                        $row2['cf_type'] = 'list_multi';
-                        $row2['cf_options'] = 'widget=horizontal_checkboxes';
-                    }
-                    if ($row2['cf_type'] == 'combo') {
-                        $row2['cf_type'] = 'list';
-                        $row2['cf_options'] = 'widget=radio,custom_values=yes';
-                    }
-                    if ($row2['cf_type'] == 'radiolist') {
-                        $row2['cf_type'] = 'list';
-                        $row2['cf_options'] = 'widget=radio';
-                    }
-                    if ($row2['cf_type'] == 'auto_increment') {
-                        $row2['cf_type'] = 'integer';
-                        $row2['cf_default'] = 'AUTO_INCREMENT';
-                    }
-
                     $row2 = insert_lang('cf_name', $this->get_lang_string($db, $row2['cf_name']), 2) + $row2;
                     $row2 = insert_lang('cf_description', $this->get_lang_string($db, $row2['cf_description']), 2) + $row2;
 

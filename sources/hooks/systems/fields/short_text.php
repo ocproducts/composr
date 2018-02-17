@@ -119,7 +119,8 @@ class Hook_fields_short_text
         if ($actual_value === null) {
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
-        if (($field['cf_default'] == 'NAME') && ($actual_value == '')) {
+        $default = option_value_from_field_array($field, 'default', $field['cf_default']);
+        if (($default == 'NAME') && ($actual_value == '')) {
             $actual_value = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
         }
 
