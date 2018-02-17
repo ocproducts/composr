@@ -60,8 +60,12 @@ class Hook_health_check_security_hackattack extends Hook_Health_Check
         }
 
         if (addon_installed('stats')) {
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
-            $ok = ($test !== null);
+            if (get_db_type() == 'xml') { // Too much data
+                $ok = false;
+            } else {
+                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
+                $ok = ($test !== null);
+            }
 
             if ($ok) {
                 require_code('locations');

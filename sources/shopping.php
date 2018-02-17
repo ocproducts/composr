@@ -178,7 +178,7 @@ function add_to_cart($type_code, $purchase_id = '', $quantity = 1)
 
     if ($product_object->is_available($type_code, get_member(), 1) != ECOMMERCE_PRODUCT_AVAILABLE) {
         require_lang('shopping');
-        warn_exit(do_lang_tempcode('PRODUCT_UNAVAILABLE_WARNING', escape_html($type_code['item_name'])));
+        warn_exit(do_lang_tempcode('PRODUCT_UNAVAILABLE_WARNING', escape_html($details['item_name'])));
     }
 
     $where = array('type_code' => $type_code);

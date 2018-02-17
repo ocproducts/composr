@@ -171,7 +171,7 @@ class Module_admin_oauth
 
         sort_maps_by($services, 'LABEL');
 
-        return do_template('OAUTH_SCREEN', array('TITLE' => $this->title, 'SERVICES' => $services));
+        return do_template('OAUTH_SCREEN', array('_GUID' => '100541492cfe6713c022c60ff71cb478', 'TITLE' => $this->title, 'SERVICES' => $services));
     }
 
     /**

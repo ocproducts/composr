@@ -38,7 +38,11 @@ class Hook_ajax_tree_choose_download_category
 
         $compound_list = array_key_exists('compound_list', $options) ? $options['compound_list'] : false;
         $addable_filter = array_key_exists('addable_filter', $options) ? ($options['addable_filter']) : false;
-        $stripped_id = ($compound_list ? preg_replace('#,.*$#', '', $id) : $id);
+        if ($id === null) {
+            $stripped_id = null;
+        } else {
+            $stripped_id = ($compound_list ? preg_replace('#,.*$#', '', $id) : $id);
+        }
 
         $tree = get_download_category_tree(($id === null) ? null : intval($id), null, null, false, $compound_list, ($id === null) ? 0 : 1, $addable_filter);
 

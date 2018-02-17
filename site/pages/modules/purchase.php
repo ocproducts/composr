@@ -1145,6 +1145,7 @@ class Module_purchase
 
             // No form
             $result = do_template('ECOM_PURCHASE_STAGE_TRANSACT', array(
+                '_GUID' => '76ecddb8d2429ed02412943e47dff5d9',
                 'TITLE' => $this->title,
                 'ITEM_NAME' => $item_name,
                 'TYPE_CODE' => $type_code,
@@ -1267,6 +1268,7 @@ class Module_purchase
 
             // Form with pay button on
             $result = do_template('ECOM_PURCHASE_STAGE_PAY', array(
+                '_GUID' => '1e7471ec76d3adbc0b38613edb815f3d',
                 'TITLE' => $this->title,
                 'TRANSACTION_BUTTON' => $transaction_button,
                 'CURRENCY' => $currency,

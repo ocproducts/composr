@@ -20,6 +20,10 @@ class geocoding_test_set extends cms_test_case
 {
     public function testIPGeocode()
     {
+        if (get_db_type() == 'xml') {
+            return;
+        }
+
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
         $has_geolocation_data = ($test !== null);
         if (!$has_geolocation_data) {

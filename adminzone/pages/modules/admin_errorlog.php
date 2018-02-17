@@ -432,6 +432,7 @@ class Module_admin_errorlog
             $actions = new Tempcode();
             if ($enabled) {
                 $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
+                    '_GUID' => '389946a7549670a785b404612ea456e3',
                     'URL' => build_url(array('page' => '_SELF', 'type' => 'disable_cron_hook', 'id' => $hook), '_SELF'),
                     'NAME' => $label,
                     'ACTION_TITLE' => do_lang_tempcode('DISABLE_CRON_HOOK'),
@@ -440,6 +441,7 @@ class Module_admin_errorlog
                 )));
             } else {
                 $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
+                    '_GUID' => '1ca6b538b04468743043532ff0bd0403',
                     'URL' => build_url(array('page' => '_SELF', 'type' => 'enable_cron_hook', 'id' => $hook), '_SELF'),
                     'NAME' => $label,
                     'ACTION_TITLE' => do_lang_tempcode('ENABLE_CRON_HOOK'),
@@ -450,6 +452,7 @@ class Module_admin_errorlog
             if ($available) {
                 $keep = symbol_tempcode('KEEP');
                 $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
+                    '_GUID' => 'b7dff48f5758ee05da8fe02beed935b6',
                     'URL' => find_script('cron_bridge') . '?limit_hook=' . urlencode($hook) . '&manual_run=1' . $keep->evaluate(),
                     'NAME' => $label,
                     'ACTION_TITLE' => do_lang_tempcode('EXECUTE_SCRIPT'),

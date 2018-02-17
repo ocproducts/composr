@@ -53,6 +53,10 @@ class Hook_config_notification_poll_frequency
      */
     public function get_default()
     {
+        if (get_db_type() == 'xml') {
+            return '1000';
+        }
+
         return '15';
     }
 }

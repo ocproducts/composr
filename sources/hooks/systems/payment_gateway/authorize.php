@@ -188,6 +188,7 @@ class Hook_payment_gateway_authorize
         $fingerprint = $this->_get_finger_print($login_id, $transaction_key, $price + $tax + $shipping_cost, $sequence, $timestamp, $currency);
 
         return do_template('ECOM_TRANSACTION_BUTTON_VIA_AUTHORIZE', array(
+            '_GUID' => 'a21d1d60969eea89a3d77037375221e6',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
             'PURCHASE_ID' => $purchase_id,

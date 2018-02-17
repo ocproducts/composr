@@ -2334,6 +2334,7 @@ function form_input_date_components($pretty_name, $description, $name, $want_yea
 
     $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_DATE_COMPONENTS', array(
+        '_GUID' => '8a75077992ed552dc9323183bb3c4e13',
         'REQUIRED' => $_required,
         'TABINDEX' => strval($tabindex),
         'NAME' => $name,

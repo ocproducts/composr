@@ -470,7 +470,7 @@ class Module_admin_addons
                         'ICON' => 'admin/install',
                         'GET' => true,
                     )));
-                    $actions->attach(do_template('COLUMNED_TABLE_ACTION', array(
+                    $actions->attach(do_template('COLUMNED_TABLE_ACTION', array('_GUID' => '657b47e4039d573b98417add3c3a3f11',
                         'NAME' => $addon['name'],
                         'URL' => build_url(array('page' => '_SELF', 'type' => 'addon_tar_delete', 'file' => $filename), '_SELF'),
                         'ACTION_TITLE' => do_lang_tempcode('DELETE'),
@@ -878,6 +878,7 @@ class Module_admin_addons
         $_description = comcode_to_tempcode($info['description'], $GLOBALS['FORUM_DRIVER']->get_guest_id());
 
         return do_template('CONFIRM_SCREEN', array(
+            '_GUID' => 'f081efb0c257d8f3e3c9cd93da06e7f4',
             'TITLE' => $this->title,
             'FIELDS' => '',
             'HIDDEN' => $hidden,

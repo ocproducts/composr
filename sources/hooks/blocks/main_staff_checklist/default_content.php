@@ -41,7 +41,7 @@ class Hook_checklist_default_content
 
         $_status = ($status == 0) ? do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0') : do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1');
 
-        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('URL' => '', 'STATUS' => $_status, 'TASK' => $task));
+        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => 'ffd7a39b9b4b9f8bb1cfbb6fca366d61', 'URL' => '', 'STATUS' => $_status, 'TASK' => $task));
 
         return array(array($tpl, ($status == 0) ? -1 : 0, 1, null));
     }

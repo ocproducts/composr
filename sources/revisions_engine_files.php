@@ -391,7 +391,7 @@ class RevisionEngineFiles
             }
 
             if (running_script('snippet') && get_param_string('snippet', '') == 'template_editor_load') {
-                $undo_link = do_template('THEME_TEMPLATE_EDITOR_RESTORE_REVISION', array('DATE' => $date, 'FILE' => get_param_string('file'), 'REVISION_ID' => strval($revision['id'])));
+                $undo_link = do_template('THEME_TEMPLATE_EDITOR_RESTORE_REVISION', array('_GUID' => '5a1466ae2d0df6804132ac63381a5f64', 'DATE' => $date, 'FILE' => get_param_string('file'), 'REVISION_ID' => strval($revision['id'])));
             } else {
                 $undo_url = get_self_url(false, false, array('undo_revision' => $revision['id']));
                 $undo_link = hyperlink($undo_url, do_lang_tempcode('UNDO'), false, false, $date);

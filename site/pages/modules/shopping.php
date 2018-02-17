@@ -463,13 +463,12 @@ class Module_shopping
         $tpl_set = 'cart';
 
         $edit_quantity_link = do_template('ECOM_SHOPPING_ITEM_QUANTITY_FIELD', array(
+            '_GUID' => '37201554b0a4d7d61cb52fee27d5f2be',
             'TYPE_CODE' => $item['type_code'],
             'QUANTITY' => strval($item['quantity']),
         ));
 
-        $delete_item_link = do_template('ECOM_SHOPPING_ITEM_REMOVE_FIELD', array(
-            'TYPE_CODE' => $item['type_code'],
-        ));
+        $delete_item_link = do_template('ECOM_SHOPPING_ITEM_REMOVE_FIELD', array('_GUID' => '82d08bf4cd3bf668f4109907e19d4fea', 'TYPE_CODE' => $item['type_code']));
 
         require_code('images');
         $product_image = do_image_thumb($details['item_image_url'], $details['item_name'], $details['item_name'], false, 50, 50);

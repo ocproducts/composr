@@ -504,7 +504,7 @@ function get_event_data_ical($event_nodes)
                         break;
 
                     case 'COUNT':
-                        $recurrences = end($matches);
+                        $recurrences = intval(end($matches));
                         break;
                 }
             }
@@ -536,7 +536,7 @@ function get_event_data_ical($event_nodes)
     }
 
     if (array_key_exists('PRIORITY', $event_nodes)) {
-        $priority = $event_nodes['PRIORITY'];
+        $priority = intval($event_nodes['PRIORITY']);
     }
 
     if (array_key_exists('TZID', $event_nodes)) {

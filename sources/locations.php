@@ -595,6 +595,10 @@ function geolocate_ip($ip = null)
         return null;
     }
 
+    if (get_db_type() == 'xml') { // Too much data
+        return null;
+    }
+
     $long_ip = ip2long($ip);
     if ($long_ip === false) {
         $result[$ip] = null;

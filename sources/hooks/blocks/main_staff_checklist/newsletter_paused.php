@@ -41,7 +41,7 @@ class Hook_checklist_newsletter_paused
 
         $_status = ($status == 0) ? do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0') : do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1');
 
-        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('URL' => '', 'STATUS' => $_status, 'TASK' => $task));
+        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => 'd0ab18b027fc4b8af2cea6b55ceb2f9b', 'URL' => '', 'STATUS' => $_status, 'TASK' => $task));
 
         return array(array($tpl, ($status == 0) ? -1 : 0, 1, null));
     }

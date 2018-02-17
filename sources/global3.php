@@ -237,11 +237,14 @@ function fix_permissions($path, $perms = null)
  * @param  boolean $locking Handle locking
  * @param  boolean $handle_file_bom Do character set conversions indicated by a BOM
  * @param  boolean $unixify_line_format Convert line endings to Unix-style
- * @return string File contents
+ * @return ~string File contents (false: error)
  */
 function cms_file_get_contents_safe($path, $locking = true, $handle_file_bom = false, $unixify_line_format = false)
 {
     $tmp = fopen($path, 'rb');
+    if ($tmp === false) {
+        return false;
+    }
     if ($locking) {
         flock($tmp, LOCK_SH);
     }

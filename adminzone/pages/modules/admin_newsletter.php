@@ -243,6 +243,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $queue_url = build_url(array('page' => '_SELF', 'type' => 'archive', 'queued' => 1), '_SELF');
 
         $newsletter_intro = do_template('NEWSLETTER_STATUS_OVERVIEW', array(
+            '_GUID' => '31ecf2e57dc441ec5f153bdbad7a2fd6',
             'UPDATE_URL' => build_url(array('page' => '_SELF'), '_SELF'),
             'NUM_IN_QUEUE' => integer_format($num_in_queue),
             '_NUM_IN_QUEUE' => strval($num_in_queue),
@@ -797,9 +798,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
-            'TITLE' => do_lang('AUTOMATIC_ISSUE_SETTINGS'),
-        )));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'fb0234e441fa7673769b34ccfcad0cf4', 'TITLE' => do_lang('AUTOMATIC_ISSUE_SETTINGS'))));
 
         $_cutoff_time = get_value('newsletter_whatsnew');
         $cutoff_time = ($_cutoff_time === null) ? null : intval($_cutoff_time);
@@ -1576,7 +1575,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $message = $rows[0]['newsletter'];
         list($html_version, $text_version) = newsletter_preview($message, $subject, $rows[0]['html_only'] == 1);
-        $display_map['HTML_VERSION'] = do_template('NEWSLETTER_PREVIEW', array('HTML_PREVIEW' => $html_version));
+        $display_map['HTML_VERSION'] = do_template('NEWSLETTER_PREVIEW', array('_GUID' => '5efb08a7867bd1cd90271568853fcbb9', 'HTML_PREVIEW' => $html_version));
         if ($text_version != '') {
             $display_map['TEXT_VERSION'] = $text_version;
         }
@@ -1614,7 +1613,7 @@ class Module_admin_newsletter extends Standard_crud_module
             $dequeue_url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF');
             $hidden = new Tempcode();
             $hidden->attach(form_input_hidden('flush_queue', '1'));
-            $buttons->attach(do_template('BUTTON_SCREEN', array('IMMEDIATE' => true, 'URL' => $dequeue_url, 'TITLE' => do_lang_tempcode('EMPTY_QUEUE'), 'IMG' => 'admin--delete3', 'HIDDEN' => $hidden)));
+            $buttons->attach(do_template('BUTTON_SCREEN', array('_GUID' => 'cda2585b0d58b1f15ba46a94e9ef9663', 'IMMEDIATE' => true, 'URL' => $dequeue_url, 'TITLE' => do_lang_tempcode('EMPTY_QUEUE'), 'IMG' => 'admin--delete3', 'HIDDEN' => $hidden)));
         }
 
         $copy_url = build_url(array('page' => '_SELF', 'type' => 'new'), '_SELF');
@@ -1627,7 +1626,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $hidden->attach(form_input_hidden('template', $rows[0]['template']));
         $hidden->attach(form_input_hidden('html_only', strval($rows[0]['html_only'])));
         $hidden->attach(form_input_hidden('message', $message));
-        $buttons->attach(do_template('BUTTON_SCREEN', array('IMMEDIATE' => true, 'URL' => $copy_url, 'TITLE' => do_lang_tempcode('RESEND_NEWSLETTER'), 'IMG' => 'buttons--send', 'HIDDEN' => $hidden)));
+        $buttons->attach(do_template('BUTTON_SCREEN', array('_GUID' => 'da69b2ee5495c9af670399dd080f662e', 'IMMEDIATE' => true, 'URL' => $copy_url, 'TITLE' => do_lang_tempcode('RESEND_NEWSLETTER'), 'IMG' => 'buttons--send', 'HIDDEN' => $hidden)));
 
         $text = do_lang_tempcode('NEWSLETTER_WITH_SAMPLE_NAME');
 

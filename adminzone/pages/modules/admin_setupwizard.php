@@ -273,6 +273,7 @@ class Module_admin_setupwizard
         ));
 
         $inner = do_template('FORM', array(
+            '_GUID' => '185da65845b3001cc152b15845b63b89',
             'SKIP_WEBSTANDARDS' => true,
             'SKIP_REQUIRED' => true,
             'FIELDS' => $fields,
@@ -1524,7 +1525,7 @@ class Module_admin_setupwizard
         if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             $post_url = build_url(array('page' => '_SELF', 'type' => 'install_test_content'), '_SELF');
 
-            return do_template('CONFIRM_SCREEN', array('TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE'), 'URL' => $post_url, 'HIDDEN' => '', 'FIELDS' => ''));
+            return do_template('CONFIRM_SCREEN', array('_GUID' => 'a91c415cb14fcc78f98c36e67229894c', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE'), 'URL' => $post_url, 'HIDDEN' => '', 'FIELDS' => ''));
         }
 
         require_code('setupwizard');
@@ -1543,7 +1544,7 @@ class Module_admin_setupwizard
         if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             $post_url = build_url(array('page' => '_SELF', 'type' => 'uninstall_test_content'), '_SELF');
 
-            return do_template('CONFIRM_SCREEN', array('TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE'), 'URL' => $post_url, 'HIDDEN' => '', 'FIELDS' => ''));
+            return do_template('CONFIRM_SCREEN', array('_GUID' => '1ae3e932b2fa1f32ffebb531c0278ab7', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE'), 'URL' => $post_url, 'HIDDEN' => '', 'FIELDS' => ''));
         }
 
         require_code('setupwizard');

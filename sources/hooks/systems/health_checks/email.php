@@ -577,6 +577,7 @@ class Hook_health_check_email extends Hook_Health_Check
         }
 
         $tpl = do_template('MAIL', array(
+            '_GUID' => '9c6fdd592f5ba06ad079bc69860981d0',
             'CSS' => '',
             'LOGOURL' => '',
             'LANG' => get_site_default_lang(),
@@ -588,6 +589,7 @@ class Hook_health_check_email extends Hook_Health_Check
         $html_version_stripped = trim(preg_replace('#[\s-]+#', ' ', $html_version_stripped));
 
         $tpl = do_template('MAIL', array(
+            '_GUID' => '5767b9123a0871fb11b0d9bb60e5b98e',
             'CSS' => '',
             'LOGOURL' => '',
             'LANG' => get_site_default_lang(),

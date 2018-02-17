@@ -203,6 +203,7 @@ class Hook_snippet_template_editor_load
         }
 
         return do_template('THEME_TEMPLATE_EDITOR_TAB', array(
+            '_GUID' => 'd4b022ce1d71666c1c7f5f5bd5a9dbb3',
             'THEME' => $theme,
             'FILE' => $file,
             'FILE_ID' => $file_id,

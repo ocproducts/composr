@@ -167,6 +167,7 @@ class Module_admin_broken_urls
         $url = build_url(array('page' => '_SELF', 'type' => 'choose'), '_SELF');
 
         return do_template('FORM_SCREEN', array(
+            '_GUID' => '2269926b89593b1f63b67c56974d911e',
             'TITLE' => $this->title,
             'SKIP_WEBSTANDARDS' => true,
             'HIDDEN' => '',
@@ -266,7 +267,7 @@ class Module_admin_broken_urls
             warn_exit(do_lang_tempcode('NO_ENTRIES'));
         }
 
-        $table = do_template('BROKEN_URLS', array('URLS' => $urls, 'DONE' => false));
+        $table = do_template('BROKEN_URLS', array('_GUID' => '98816b6ea5f175cb5d46550a5fbc37aa', 'URLS' => $urls, 'DONE' => false));
 
         $hidden = new Tempcode();
         $hidden->attach(form_input_hidden('urls', serialize($urls)));
@@ -280,6 +281,7 @@ class Module_admin_broken_urls
         $url = build_url(array('page' => '_SELF', 'type' => 'check'), '_SELF');
 
         $form = do_template('FORM', array(
+            '_GUID' => '7579230ca42b6023bbba8771cc67a5b4',
             'SKIP_WEBSTANDARDS' => true,
             'SKIP_REQUIRED' => true,
             'HIDDEN' => $hidden,
@@ -292,6 +294,7 @@ class Module_admin_broken_urls
         ));
 
         return do_template('RESULTS_TABLE_SCREEN', array(
+            '_GUID' => '1a9f8b65d4bc63110df08af255a37da8',
             'TITLE' => $this->title,
             'TEXT' => do_lang_tempcode('PENDING_LINK_CHECK'),
             'RESULTS_TABLE' => $table,

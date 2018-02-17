@@ -467,7 +467,7 @@ function create_selection_list_download_category_tree($it = null, $use_compound_
  *
  * @param  ?AUTO_LINK $category_id The category being at the root of our recursion (null: true root category)
  * @param  ?string $breadcrumbs The breadcrumbs up to this point in the recursion (null: blank, as we are starting the recursion)
- * @param  ?ID_TEXT $category_info The category row of the $category_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the childs details
+ * @param  ?array $category_info The category row of the $category_id we are currently going through (null: look it up). This is here for efficiency reasons, as finding children IDs to recurse to also reveals the childs details
  * @param  boolean $do_stats Whether to collect download counts with our tree information
  * @param  boolean $use_compound_list Whether to make a compound list (a pair of a comma-separated list of children, and the child array)
  * @param  ?integer $levels The number of recursive levels to search (null: all)

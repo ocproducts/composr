@@ -289,7 +289,7 @@ function get_needed_fields($type_code, $force_extended = false)
             $fields = new Tempcode();
         }
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode($details['needs_shipping_address'] ? 'SHIPPING_ADDRESS' : 'INVOICING_ADDRESS'))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '6d9d9d785a2f776aa10fa0a8a26fc405', 'TITLE' => do_lang_tempcode($details['needs_shipping_address'] ? 'SHIPPING_ADDRESS' : 'INVOICING_ADDRESS'))));
 
         $fields->attach(get_shipping_address_fields($shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $require_all_details));
 
@@ -481,9 +481,9 @@ function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row =
                 $_transaction_fields->attach(map_table_field(do_lang_tempcode($key), $val));
             }
         }
-        $map_table = do_template('MAP_TABLE', array('FIELDS' => $_transaction_fields));
+        $map_table = do_template('MAP_TABLE', array('_GUID' => '1fd78e5f75f9f838b468fc6151a2da02', 'FIELDS' => $_transaction_fields));
 
-        $transaction_linker = do_template('CROP_TEXT_MOUSE_OVER', array('TEXT_LARGE' => $map_table, 'TEXT_SMALL' => $transaction_link));
+        $transaction_linker = do_template('CROP_TEXT_MOUSE_OVER', array('_GUID' => '2f364d18dc8a4073f8d29d9c09cb46c1', 'TEXT_LARGE' => $map_table, 'TEXT_SMALL' => $transaction_link));
     } else {
         $transaction_linker = do_lang_tempcode('PAYMENT_STATE_new');
     }
@@ -819,7 +819,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
 
     // Card fields...
 
-    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('PAYMENT_DETAILS'))));
+    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '04537d33c50cda8aaee4029cbe05b023', 'TITLE' => do_lang_tempcode('PAYMENT_DETAILS'))));
 
     $fields->attach(form_input_line(do_lang_cpf('payment_cardholder_name'), do_lang_tempcode('DESCRIPTION_CARDHOLDER_NAME'), 'payment_cardholder_name', $cardholder_name, true));
     if (method_exists($payment_gateway_object, 'create_selection_list_card_types')) {
@@ -838,7 +838,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
     // Billing address fields...
 
     if (post_param_string('billing_firstname', null) === null) {
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('BILLING_ADDRESS'))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'e0771f0a6c479b01a4a29ae9aa7fef3a', 'TITLE' => do_lang_tempcode('BILLING_ADDRESS'))));
 
         $fields->attach(get_address_fields('billing_', $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country));
 
@@ -850,7 +850,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
     // Shipping address fields...
 
     if (($needs_shipping_address) && (post_param_string('shipping_firstname', null) === null)) {
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('SHIPPING_ADDRESS'))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '656bf860685c8f63434bca7423d5c52a', 'TITLE' => do_lang_tempcode('SHIPPING_ADDRESS'))));
 
         $fields->attach(get_shipping_address_fields($shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country));
 

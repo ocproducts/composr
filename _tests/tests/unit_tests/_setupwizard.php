@@ -85,14 +85,21 @@ class _setupwizard_test_set extends cms_test_case
             'closed' => 'This site is currently closed because it is still being created. The webmaster(s) will open it up when they are ready.',
             'pre_f_closed' => '1',
             'require__closed' => '0',
+            'security_level' => 'medium',
         );
         require_code('csrf_filter');
         $post_params['csrf_token'] = generate_csrf_token();
 
         $url = build_url(array('page' => 'admin_setupwizard', 'type' => 'step10'), 'adminzone');
 
-        $http = cms_http_request($url->evaluate(), array('post_params' => $post_params, 'cookies' => array(get_session_cookie() => get_session_id())));
+        $http = cms_http_request($url->evaluate(), array('ignore_http_status' => true, 'trigger_error' => false, 'post_params' => $post_params, 'cookies' => array(get_session_cookie() => get_session_id())));
 
-        $this->assertTrue($http->message == '200');
+        $ok = ($http->message == '200');
+
+        if ((!$ok) && (get_param_integer('debug', 0) == 1)) {
+            @var_dump($http->data);
+        }
+
+        $this->assertTrue($ok);
     }
 }

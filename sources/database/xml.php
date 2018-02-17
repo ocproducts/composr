@@ -244,6 +244,49 @@ class Database_Static_xml extends DatabaseDriver
     }
 
     /**
+     * Get SQL for creating a new table.
+     *
+     * @param  ID_TEXT $table_name The table name
+     * @param  array $fields A map of field names to Composr field types (with *#? encodings)
+     * @param  mixed $connection The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @return array List of SQL queries to run
+     */
+    public function create_table($table_name, $fields, $connection, $raw_table_name, $save_bytes = false)
+    {
+        $type_remap = $this->get_type_remap();
+
+        $_fields = '';
+        $keys = '';
+        foreach ($fields as $name => $type) {
+            if ($type[0] == '*') { // Is a key
+                $type = substr($type, 1);
+                if ($keys !== '') {
+                    $keys .= ', ';
+                }
+                $keys .= $name;
+            }
+
+            if ($type[0] == '?') { // Is perhaps null
+                $type = substr($type, 1);
+                $perhaps_null = '';
+            } else {
+                $perhaps_null = ' NOT NULL';
+            }
+
+            $type = isset($type_remap[$type]) ? $type_remap[$type] : $type;
+
+            $_fields .= '    ' . $name . ' ' . $type;
+            $_fields .= $perhaps_null . ',' . "\n";
+        }
+
+        $query = 'CREATE TABLE ' . $table_name . ' (' . "\n" . $_fields . '    PRIMARY KEY (' . $keys . ")\n)";
+
+        return array($query);
+    }
+
+    /**
      * Create a new table.
      *
      * @param  ID_TEXT $table_name The table name
@@ -251,7 +294,7 @@ class Database_Static_xml extends DatabaseDriver
      * @param  array $db The DB connection to make on
      * @param  boolean $if_not_exists Whether to only do it if it does not currently exist
      */
-    public function create_table($table_name, $fields, $db, $if_not_exists = false)
+    protected function _create_table($table_name, $fields, $db, $if_not_exists = false)
     {
         $path = $db[0] . '/' . $table_name;
 
@@ -281,7 +324,7 @@ class Database_Static_xml extends DatabaseDriver
      * @param  ID_TEXT $table_name The table name
      * @param  array $db The DB connection to delete on
      */
-    public function drop_table_if_exists($table_name, $db)
+    protected function _drop_table_if_exists($table_name, $db)
     {
         $file_path = $db[0] . '/' . $table_name;
         $dh = @opendir($file_path);
@@ -712,13 +755,14 @@ class Database_Static_xml extends DatabaseDriver
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @param  string $query Query that was executed
      * @param  boolean $include_unused_fields Whether to include fields that are present in the actual records but not in our schema
+     * @param  ?integer $max The maximum number of rows to read (null: no limit / there's a sort clause meaning we need to read all)
      * @return ?array The collected records (null: error)
      */
-    protected function _read_all_records($db, $table_name, $table_as, $schema, $where_expr, $bindings, $fail_ok, $query, $include_unused_fields = false)
+    protected function _read_all_records($db, $table_name, $table_as, $schema, $where_expr, $bindings, $fail_ok, $query, $include_unused_fields = false, $max = null)
     {
         $records = array();
         $key_fragments = ''; // We can do a filename substring search to stop us having to parse ALL
-        $must_contain = null;
+        $must_contain = array();
         if (($schema !== null) && ($where_expr !== null)) { // Try for an efficient filename-based lookup
             $keys = array();
             foreach ($schema as $key => $type) {
@@ -903,6 +947,10 @@ class Database_Static_xml extends DatabaseDriver
                         }
                     }
                 }
+
+                if (($max !== null) && (count($records) >= $max)) {
+                    break;
+                }
             }
         }
 
@@ -996,7 +1044,10 @@ class Database_Static_xml extends DatabaseDriver
             return null;
         }
 
-        $file_contents = cms_file_get_contents_safe($path);
+        $file_contents = @cms_file_get_contents_safe($path);
+        if ($file_contents === false) {
+            return null;
+        }
 
         foreach ($must_contain_strings as $match) {
             if (is_array($match)) {
@@ -1344,7 +1395,7 @@ class Database_Static_xml extends DatabaseDriver
                 }
             }
             $table_name = $this->_parsing_read($at, $tokens, $query);
-            $this->drop_table_if_exists($table_name, $db);
+            $this->_drop_table_if_exists($table_name, $db);
         } else {
             return $this->_bad_query($query, $fail_ok, 'Unrecognised DROP type, ' . $type);
         }
@@ -1632,10 +1683,7 @@ class Database_Static_xml extends DatabaseDriver
             return null;
         }
 
-        $queries = $this->create_table($table_name, $fields, $db, $if_not_exists);
-        foreach ($queries as $query) {
-            $this->query($query, $db);
-        }
+        $this->_create_table($table_name, $fields, $db, $if_not_exists);
 
         if (!$this->_parsing_check_ended($at, $tokens, $query)) {
             return null;
@@ -1971,7 +2019,7 @@ class Database_Static_xml extends DatabaseDriver
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
-                $expr = array($token, $expr1, $expr2);
+                $expr = array($token, $expr1, $expr2, $expr3);
                 break;
 
             case 'X_LENGTH':
@@ -2293,6 +2341,9 @@ class Database_Static_xml extends DatabaseDriver
 
             case '=':
                 $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                if ($a === null) {
+                    $a = '';
+                }
                 $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
                 if (($expr[1][0] == 'FIELD') && ($expr[1][0] == 'FIELD')) { // Joins between non-equiv-typed fields
                     if ((is_integer($a)) && (!is_integer($b))) {
@@ -2308,6 +2359,9 @@ class Database_Static_xml extends DatabaseDriver
 
             case 'LIKE':
                 $value = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                if ($value === null) {
+                    $value = '';
+                }
                 $expr_eval = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
                 return simulated_wildcard_match($value, $expr_eval, true);
 
@@ -2477,7 +2531,7 @@ class Database_Static_xml extends DatabaseDriver
         if ($schema === null) {
             return null;
         }
-        $records = $this->_read_all_records($db, $table_name, '', $schema, $where_expr, array(), $fail_ok, $query);
+        $records = $this->_read_all_records($db, $table_name, '', $schema, $where_expr, array(), $fail_ok, $query, false, $max);
         if ($records === null) {
             return null;
         }
@@ -2552,7 +2606,7 @@ class Database_Static_xml extends DatabaseDriver
         if ($schema === null) {
             return null;
         }
-        $records = $this->_read_all_records($db, $table_name, '', $schema, $where_expr, array(), $fail_ok, $query);
+        $records = $this->_read_all_records($db, $table_name, '', $schema, $where_expr, array(), $fail_ok, $query, false, $max);
         if ($records === null) {
             return null;
         }
@@ -2962,7 +3016,7 @@ class Database_Static_xml extends DatabaseDriver
                         if ($schema === null) {
                             return null;
                         }
-                        $records = $this->_read_all_records($db, $join[1], $joined_as, $schema, $where_expr, $bindings, $fail_ok, $query);
+                        $records = $this->_read_all_records($db, $join[1], $joined_as, $schema, $where_expr, $bindings, $fail_ok, $query, false, ((count($joins) == 1) && ($orders === null)) ? $max : null);
                         if ($records === null) {
                             return null;
                         }
@@ -2996,7 +3050,7 @@ class Database_Static_xml extends DatabaseDriver
         // Filter by WHERE
         $pre_filtered_records = array();
         foreach ($records as $record) {
-            $test = $this->_execute_expression($where_expr, $record, $query, $db, $fail_ok);
+            $test = $this->_execute_expression($where_expr, $record + $bindings, $query, $db, $fail_ok);
             if ($test) {
                 $pre_filtered_records[] = $record;
             }
@@ -3211,10 +3265,12 @@ class Database_Static_xml extends DatabaseDriver
         //  It's not perfect, only works if we actually have a non-zero result set.
         //  Can't dig into expressions because the XML driver doesn't support ordering by them.
         if (count($results) > 0) {
-            $matches = array();
-            if (preg_match('#^\!?(\w+)$#', $orders, $matches) != 0) {
-                if (!isset($records[0][$matches[1]])) {
-                    warn_exit('Cannot sort by ' . $matches[1] . ', it\'s not selected');
+            if ($orders !== null) {
+                $matches = array();
+                if (preg_match('#^\!?(\w+)$#', $orders, $matches) != 0) {
+                    if (!isset($records[0][$matches[1]])) {
+                        warn_exit('Cannot sort by ' . $matches[1] . ', it\'s not selected');
+                    }
                 }
             }
         }

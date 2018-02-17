@@ -519,15 +519,36 @@ class DatabaseDriver
      * When running this SQL you must suppress errors.
      *
      * @param  ID_TEXT $table The table name
+     * @param  mixed $connection The DB connection
      * @return array List of SQL queries to run
      */
-    public function drop_table_if_exists($table)
+    public function drop_table_if_exists($table, $connection)
     {
         if ($this->supports_drop_table_if_exists()) {
             return array('DROP TABLE IF EXISTS ' . $table);
         }
 
         return array('DROP TABLE ' . $table);
+    }
+
+    /**
+     * Find whether drop table "if exists" is present.
+     *
+     * @return boolean Whether it is
+     */
+    public function supports_drop_table_if_exists()
+    {
+        return false;
+    }
+
+    /**
+     * Find whether table truncation support is present.
+     *
+     * @return boolean Whether it is
+     */
+    public function supports_truncate_table()
+    {
+        return false;
     }
 
     /**

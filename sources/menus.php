@@ -537,7 +537,11 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
 
     // Work out the page-link
     if ($branch['page_link'] === null) { // Try and convert URL to a page-link, if we can
-        $page_link = ($branch['url'] == '') ? '' : url_to_page_link($branch['url']);
+        if (is_object($branch['url'])) {
+            $page_link = ($branch['url']->is_empty()) ? '' : url_to_page_link($branch['url']->evaluate());
+        } else {
+            $page_link = ($branch['url'] == '') ? '' : url_to_page_link($branch['url']);
+        }
     } else {
         $page_link = $branch['page_link'];
     }
@@ -624,14 +628,18 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
     } else { // URL
         // Carefully translate symbols in the URL
         $_url = $branch['url'];
-        $url = new Tempcode();
-        if ($_url !== null) {
-            $sym_pos = strpos($_url, '{$');
-            if ($sym_pos !== false) { // Specially encoded $ symbols
-                require_code('tempcode_compiler');
-                $url = template_to_tempcode($url->evaluate());
-            } else {
-                $url = make_string_tempcode($_url);
+        if (is_object($_url)) {
+            $url = $_url;
+        } else {
+            $url = new Tempcode();
+            if ($_url !== null) {
+                $sym_pos = strpos($_url, '{$');
+                if ($sym_pos !== false) { // Specially encoded $ symbols
+                    require_code('tempcode_compiler');
+                    $url = template_to_tempcode($url->evaluate());
+                } else {
+                    $url = make_string_tempcode($_url);
+                }
             }
         }
     }

@@ -47,7 +47,11 @@ class Hook_ajax_tree_choose_gallery
         $compound_list = array_key_exists('compound_list', $options) ? $options['compound_list'] : false;
         $addable_filter = array_key_exists('addable_filter', $options) ? $options['addable_filter'] : false;
         $editable_filter = array_key_exists('editable_filter', $options) ? ($options['editable_filter']) : false;
-        $stripped_id = ($compound_list ? preg_replace('#,.*$#', '', $id) : $id);
+        if ($id === null) {
+            $stripped_id = null;
+        } else {
+            $stripped_id = ($compound_list ? preg_replace('#,.*$#', '', $id) : $id);
+        }
         $tree = get_gallery_tree(($id === null) ? 'root' : $stripped_id, '', null, true, $filter, false, false, $purity, $compound_list, ($id === null) ? 0 : 1, $member_id, $addable_filter, $editable_filter);
 
         $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), null, true));

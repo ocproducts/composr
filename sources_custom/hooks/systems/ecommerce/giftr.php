@@ -62,7 +62,12 @@ class Hook_ecommerce_giftr
 
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('giftr', 'COUNT(*)', $map);
 
-        $rows = $GLOBALS['SITE_DB']->query_select('giftr g', array('*', '(SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'members_gifts m WHERE m.gift_id=g.id) AS popularity'), $map, 'ORDER BY popularity DESC');
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            $order_by = 'ORDER BY popularity DESC';
+        } else {
+            $order_by = '';
+        }
+        $rows = $GLOBALS['SITE_DB']->query_select('giftr g', array('*', '(SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'members_gifts m WHERE m.gift_id=g.id) AS popularity'), $map, $order_by);
         $gifts = array();
         foreach ($rows as $gift) {
             $image_url = $gift['image'];

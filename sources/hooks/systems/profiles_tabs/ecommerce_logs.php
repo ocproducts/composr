@@ -58,7 +58,7 @@ class Hook_profiles_tabs_ecommerce_logs
         require_code('ecommerce_logs');
         list($sales_table, $pagination) = build_sales_table($member_id_viewing);
 
-        $content = do_template('CNS_MEMBER_PROFILE_ECOMMERCE_LOGS', array('CONTENT' => $sales_table, 'PAGINATION' => $pagination));
+        $content = do_template('CNS_MEMBER_PROFILE_ECOMMERCE_LOGS', array('_GUID' => 'e490d230b9521415616be0c610434d93', 'CONTENT' => $sales_table, 'PAGINATION' => $pagination));
 
         return array($title, $content, $order, 'menu/rich_content/ecommerce/purchase');
     }

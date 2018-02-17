@@ -654,6 +654,7 @@ function generate_tax_invoice($txn_id)
     $status = get_transaction_status_string($transaction_row['t_status']);
 
     return do_template('ECOM_TAX_INVOICE', array(
+        '_GUID' => 'a94eac0dfa0be4a37edf7156cd28cce7',
         'TXN_ID' => $txn_id,
         '_DATE' => strval($transaction_row['t_time']),
         'DATE' => get_timezoned_date_time($transaction_row['t_time'], false),
@@ -700,6 +701,7 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
         $default_set = 'rate';
     }
     $input = do_template('FORM_SCREEN_INPUT_FLOAT', array(
+        '_GUID' => '8adbb6083389738a7332f8ec09ddfb77',
         'TABINDEX' => strval($tabindex),
         'REQUIRED' => $_required,
         'NAME' => $set_name . '_rate',
@@ -725,6 +727,7 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
         require_javascript('jquery');
         require_javascript('select2');
         $input = do_template('FORM_SCREEN_INPUT_LIST', array(
+            '_GUID' => '66e31c1b060b11caf570c36b09ac4a05',
             'TABINDEX' => strval($tabindex),
             'REQUIRED' => $_required,
             'NAME' => $set_name . '_tic',

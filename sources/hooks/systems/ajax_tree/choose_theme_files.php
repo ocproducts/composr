@@ -381,6 +381,7 @@ class Hook_ajax_tree_choose_theme_files
         }
 
         return do_template('THEME_TEMPLATE_EDITOR_TEMPLATE_DETAIL', array(
+            '_GUID' => '865a7f5fe9968dce772fa4be8145e5f7',
             'FILE' => $template_file,
             'FULL_PATH' => $template_file_path,
             'LAST_EDITING_USERNAME' => isset($action_log_times[$template_file]) ? $GLOBALS['FORUM_DRIVER']->get_username($action_log_times[$template_file]['member_id']) : null,
@@ -406,6 +407,7 @@ class Hook_ajax_tree_choose_theme_files
         }
 
         return do_template('THEME_TEMPLATE_EDITOR_TEMPLATE_DETAIL', array(
+            '_GUID' => '67be5f3d23e3c6ba4c56b10d412a8566',
             'FILE' => $zone . ':' . $page,
             'FULL_PATH' => $path,
             'LAST_EDITING_USERNAME' => isset($action_log_times[$page]) ? $GLOBALS['FORUM_DRIVER']->get_username($action_log_times[$page]['member_id']) : null,

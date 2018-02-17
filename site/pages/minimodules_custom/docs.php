@@ -49,7 +49,5 @@ $html = confluence_clean_page($html);
 
 $root_id = confluence_root_id();
 
-return do_template('CONFLUENCE_SCREEN', array(
-    'HTML' => $html,
-    'ROOT_ID' => strval($root_id),
+return do_template('CONFLUENCE_SCREEN', array('_GUID' => '33a65e7f6832fac49cbb1f8e77a9c7b0', 'HTML' => $html, 'ROOT_ID' => strval($root_id),
 ));

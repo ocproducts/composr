@@ -132,6 +132,7 @@ class Module_admin_health_check
         }
 
         return do_template('HEALTH_CHECK_SCREEN', array(
+            '_GUID' => 'cd2a0ec2477dcc6545cb0825b098cfc5',
             'TITLE' => $this->title,
             'SECTIONS' => $sections,
             'PASSES' => $passes,

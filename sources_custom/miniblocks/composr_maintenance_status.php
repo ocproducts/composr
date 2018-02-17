@@ -19,6 +19,7 @@ ksort($rows, SORT_NATURAL | SORT_FLAG_CASE);
 fclose($myfile);
 
 return do_template('BLOCK_COMPOSR_MAINTENANCE_STATUS', array(
+    '_GUID' => '8c7ba3e7a2c667e7eebf36b9fe067868',
     'HEADER_ROW' => array_values($header_row),
     'ROWS' => $rows,
 ));

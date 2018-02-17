@@ -1171,7 +1171,6 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_install/install_upload_ftp_thumb.png',
             'data_custom/images/docs/tut_install_permissions/install_chmod.png',
             'data_custom/images/docs/tut_install_linux/cloud_hosting.png',
-            'data_custom/images/docs/tut_install_windows_desktop/bitnami.png',
             'data_custom/images/docs/tut_install_windows_desktop/apache.png',
             'data_custom/images/docs/tut_install_windows_desktop/mysql.png',
             'data_custom/images/docs/tut_install_windows_desktop/php.png',

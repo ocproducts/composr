@@ -1708,7 +1708,7 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	letter-spacing: 0;
 
 	/* .box-inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
-	margin: -5px 0 5px -5px;
+	margin: -5px 0 0 -5px;
 	padding: 0.4em 0.8em 0.4em 0.3em;
 	width: calc(100% - 4px);
 }

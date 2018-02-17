@@ -757,6 +757,7 @@ class Module_cms_comcode_pages
              $url = get_self_url();
 
              return do_template('FORM_SCREEN', array(
+                 '_GUID' => '5f70abf8bfe4eb4469f8ccc13a7e6fbb',
                  'SKIP_WEBSTANDARDS' => true,
                  'GET' => true,
                  'HIDDEN' => $hidden,
@@ -1266,36 +1267,36 @@ class Module_cms_comcode_pages
             );
         }
         $_pages = array();
-        foreach ($__pages as $i => $_page) {
-            if (substr($_page['the_page'], 0, 6) == 'panel_') {
+        foreach ($__pages as $i => $__page) {
+            if (substr($__page['the_page'], 0, 6) == 'panel_') {
                 unset($__pages[$i]);
                 continue;
             }
-            if (substr($_page['the_page'], 0, 1) == '_') {
+            if (substr($__page['the_page'], 0, 1) == '_') {
                 unset($__pages[$i]);
                 continue;
             }
-            if (!is_alphanumeric($_page['the_page'])) { // e.g. 404 page
+            if (!is_alphanumeric($__page['the_page'])) { // e.g. 404 page
                 unset($__pages[$i]);
                 continue;
             }
-            if (!is_alphanumeric($_page['the_zone'])) {
+            if (!is_alphanumeric($__page['the_zone'])) {
                 unset($__pages[$i]);
                 continue;
             }
 
-            $_pages[] = $_page;
+            $_pages[] = $__page;
         }
         $pages = array();
-        foreach ($_pages as $_page) {
-            if (($zone !== null) && ($_page['the_zone'] != $zone)) {
+        foreach ($_pages as $__page) {
+            if (($zone !== null) && ($__page['the_zone'] != $zone)) {
                 continue;
             }
 
-            if (!isset($pages[$_page['p_parent_page']])) {
-                $pages[$_page['p_parent_page']] = array();
+            if (!isset($pages[$__page['p_parent_page']])) {
+                $pages[$__page['p_parent_page']] = array();
             }
-            $pages[$_page['p_parent_page']][] = $_page;
+            $pages[$__page['p_parent_page']][] = $__page;
         }
 
         $_zones = find_all_zones(false, true, true);
@@ -1307,8 +1308,8 @@ class Module_cms_comcode_pages
 
             // Check has something in the zone
             $ok = false;
-            foreach ($__pages as $_page) {
-                if ($_zone[0] == $_page['the_zone']) {
+            foreach ($__pages as $__page) {
+                if ($_zone[0] == $__page['the_zone']) {
                     $ok = true;
                     break;
                 }

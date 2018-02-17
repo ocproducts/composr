@@ -218,6 +218,7 @@ function currency_convert($amount, $from_currency = null, $to_currency = null, $
 
         case CURRENCY_DISPLAY_TEMPLATED:
             $temp_tpl = do_template('CURRENCY', array(
+                '_GUID' => '32f7e64b09569dd81c467ee4a369abed',
                 'AMOUNT' => float_format($amount),
                 'NEW_AMOUNT' => float_format($new_amount),
                 'FROM_CURRENCY' => $from_currency,

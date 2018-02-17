@@ -66,6 +66,6 @@ class Block_top_search
 
         $block_id = get_block_id($map);
 
-        return do_template('BLOCK_TOP_SEARCH', array('BLOCK_ID' => $block_id,) + do_search_block($map));
+        return do_template('BLOCK_TOP_SEARCH', array('_GUID' => 'f9efbcbc9c10573e6c1252004be4698c', 'BLOCK_ID' => $block_id,) + do_search_block($map));
     }
 }

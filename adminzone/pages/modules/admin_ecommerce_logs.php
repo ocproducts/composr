@@ -767,6 +767,7 @@ class Module_admin_ecommerce_logs
         $fields->attach(form_input_date(do_lang_tempcode('ST_END_PERIOD'), do_lang_tempcode('ST_END_PERIOD_DESCRIPTION'), 'end_date', true, false, true, array($end_minute, $end_hour, $end_month, $end_day, $end_year)));
 
         return do_template('FORM_SCREEN', array(
+            '_GUID' => '0d0e9f85a2e3d7b456b843ebaeb54c14',
             'SKIP_WEBSTANDARDS' => true,
             'TITLE' => $this->title,
             'SUBMIT_ICON' => 'admin--export',

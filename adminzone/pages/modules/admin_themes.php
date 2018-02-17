@@ -515,7 +515,7 @@ class Module_admin_themes
                 }
             }
         }
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => !$show_theme_option_overrides, 'TITLE' => do_lang_tempcode('THEME__OPTION_OVERRIDES'), 'HELP' => do_lang_tempcode('DESCRIPTION__THEME__OPTION_OVERRIDES'))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '2b82c955e92a4bddad2f57bfe23fc7b0', 'SECTION_HIDDEN' => !$show_theme_option_overrides, 'TITLE' => do_lang_tempcode('THEME__OPTION_OVERRIDES'), 'HELP' => do_lang_tempcode('DESCRIPTION__THEME__OPTION_OVERRIDES'))));
         require_all_lang();
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/systems/config/' . filter_naughty_harsh($hook));
@@ -554,7 +554,7 @@ class Module_admin_themes
                 'setupwizard__lock_single_public_zone',
             );
             require_lang('config');
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('THEME_SETTING_SECTION', do_lang_tempcode('SETUPWIZARD')))));
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'df2d04a52c38700e84dfb82e7c89cd36', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('THEME_SETTING_SECTION', do_lang_tempcode('SETUPWIZARD')))));
             foreach ($settings as $setting) {
                 $fields->attach(form_input_line(titleify(preg_replace('#^setupwizard__#', '', $setting)), '', $setting, get_theme_option($setting, null, $name), false));
             }
@@ -569,7 +569,7 @@ class Module_admin_themes
                 'themewizard_images',
                 'themewizard_images_no_wild',
             );
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('THEME_SETTING_SECTION', do_lang_tempcode('THEMEWIZARD')))));
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '020059c4c22d12788115a2810f277af5', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('THEME_SETTING_SECTION', do_lang_tempcode('THEMEWIZARD')))));
             foreach ($settings as $setting) {
                 $fields->attach(form_input_line(titleify(preg_replace('#^themewizard__#', '', $setting)), '', $setting, get_theme_option($setting, null, $name), false));
             }
@@ -592,7 +592,7 @@ class Module_admin_themes
                 'site_name_y_offset',
                 'site_name_y_offset_small',
             );
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('THEME_SETTING_SECTION', do_lang_tempcode('LOGOWIZARD')))));
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '63543b1e90b67557a440a193efef4ada', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('THEME_SETTING_SECTION', do_lang_tempcode('LOGOWIZARD')))));
             foreach ($settings as $setting) {
                 $fields->attach(form_input_line(titleify($setting), '', $setting, get_theme_option($setting, null, $name), false));
             }
@@ -915,6 +915,7 @@ class Module_admin_themes
         $default_theme_files_location = get_param_string('default_theme_files_location', null, INPUT_FILTER_GET_COMPLEX);
 
         return do_template('THEME_TEMPLATE_EDITOR_SCREEN', array(
+            '_GUID' => 'bd4284c92fd25e0f489f6f4add25340b',
             'TITLE' => $this->title,
             'FILES_TO_LOAD' => $files_to_load,
             'THEME' => $theme,
