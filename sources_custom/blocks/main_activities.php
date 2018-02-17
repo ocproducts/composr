@@ -189,7 +189,7 @@ class Block_main_activities
             'BLOCK_ID' => $block_id,
             'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'MODE' => $mode,
-            'MEMBER_IDS' => implode(',', $member_ids),
+            'MEMBER_IDS' => implode(',', array_map('strval', $member_ids)),
             'CONTENT' => $content,
             'GROW' => $grow,
             'PAGINATION' => $pagination,

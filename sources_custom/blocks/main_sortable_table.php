@@ -516,7 +516,7 @@ class Block_main_sortable_table
     public function apply_formatting($value, $sortable_type)
     {
         if (($sortable_type == 'integer') && (is_numeric($value))) {
-            $value = number_format(intval($value), 0, '.', ',');
+            $value = integer_format(intval($value));
         }
 
         if (($sortable_type == 'float') && (is_numeric($value))) {
@@ -524,7 +524,7 @@ class Block_main_sortable_table
             if (strpos($value, '.') !== false) {
                 $num_digits = strlen($value) - strpos($value, '.') - 1;
             }
-            $value = number_format(floatval($value), $num_digits, '.', ',');
+            $value = float_format(floatval($value), $num_digits);
         }
 
         return $value;

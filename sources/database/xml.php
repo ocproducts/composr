@@ -2406,7 +2406,7 @@ class Database_Static_xml extends DatabaseDriver
                 return implode('', $vals);
 
             case 'X_LENGTH':
-                return strlen($this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set));
+                return cms_mb_strlen($this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set));
 
             case 'SUBQUERY_VALUE':
                 list($subquery_select, $subquery_as, $subquery_joins, $subquery_where_expr, $subquery_group_by, $subquery_having, $subquery_orders, $subquery_unions, $subquery_start, $subquery_max) = $expr[1];

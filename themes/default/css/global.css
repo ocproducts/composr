@@ -1712,6 +1712,9 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	padding: 0.4em 0.8em 0.4em 0.3em;
 	width: calc(100% - 4px);
 }
+.box-inner>h1 + *, .box-inner>h2 + *, .box-inner>h3 + *, .box-inner>h4 + *, .box-inner>h5 + *, .box-inner>h6 + *, .toggleable-tray-title + * {
+	margin-top: 5px;
+}
 .box-inner>h2>.right .button-screen {
 	vertical-align: top;
 }

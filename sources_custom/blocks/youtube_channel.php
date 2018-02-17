@@ -69,19 +69,19 @@ class Block_youtube_channel
             $channel_tempstyle = '_' . $channel_tempstyle;
         }
         $channel_templatestyle = 'BLOCK_YOUTUBE_CHANNEL_STYLE' . $channel_tempstyle;
-        $channel_startvideo = array_key_exists('start_video', $map) ? $map['start_video'] : '1';
-        $channel_maxvideos = array_key_exists('max_videos', $map) ? $map['max_videos'] : '25';
-        $channel_showplayer = array_key_exists('show_player', $map) ? $map['show_player'] : '1';
-        $channel_embedallowed = array_key_exists('embed_allowed', $map) ? $map['embed_allowed'] : '1';
+        $channel_startvideo = array_key_exists('start_video', $map) ? intval($map['start_video']) : 1;
+        $channel_maxvideos = array_key_exists('max_videos', $map) ? intval($map['max_videos']) : 25;
+        $channel_showplayer = array_key_exists('show_player', $map) ? intval($map['show_player']) : 1;
+        $channel_embedallowed = array_key_exists('embed_allowed', $map) ? intval($map['embed_allowed']) : 1;
         $channel_playeralign = strtolower(array_key_exists('player_align', $map) ? $map['player_align'] : 'center');
-        $channel_playerwidth = array_key_exists('player_width', $map) ? $map['player_width'] : '480';
-        $channel_playerheight = array_key_exists('player_height', $map) ? $map['player_height'] : '270';
-        $channel_style = array_key_exists('style', $map) ? $map['style'] : '1';
-        $channel_nothumbplayer = array_key_exists('nothumbplayer', $map) ? $map['nothumbplayer'] : '0';
+        $channel_playerwidth = array_key_exists('player_width', $map) ? intval($map['player_width']) : 480;
+        $channel_playerheight = array_key_exists('player_height', $map) ? intval($map['player_height']) : 270;
+        $channel_style = array_key_exists('style', $map) ? intval($map['style']) : 1;
+        $channel_nothumbplayer = array_key_exists('nothumbplayer', $map) ? intval($map['nothumbplayer']) : 0;
         $channel_formorelead = array_key_exists('formorelead', $map) ? $map['formorelead'] : '';
         $channel_formoretext = array_key_exists('formoretext', $map) ? $map['formoretext'] : '';
         $channel_formoreurl = array_key_exists('formoreurl', $map) ? $map['formoreurl'] : '';
-        $channel_thumbnail = array_key_exists('thumbnail', $map) ? $map['thumbnail'] : '0';
+        $channel_thumbnail = array_key_exists('thumbnail', $map) ? intval($map['thumbnail']) : 0;
         $channel_descriptiontype = strtolower(array_key_exists('description_type', $map) ? $map['description_type'] : 'long');
         if ($channel_name == '') {
             $playlist_id = array_key_exists('playlist_id', $map) ? trim($map['playlist_id']) : '';
