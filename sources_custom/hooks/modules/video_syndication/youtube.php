@@ -255,7 +255,7 @@ class Hook_video_syndication_youtube
             }
 
             require_lang('gallery_syndication_youtube');
-            $error_msg = do_lang_tempcode('YOUTUBE_ERROR', escape_html(strval($e->getCode())), $e->getMessage(), escape_html(get_site_name()));
+            $error_msg = do_lang_tempcode('YOUTUBE_ERROR', escape_html(strval($e->getCode())), $e->getMessage());
             require_code('failure');
             relay_error_notification($error_msg->evaluate());
             attach_message($error_msg, 'warn', false, true);
@@ -307,7 +307,7 @@ class Hook_video_syndication_youtube
             }
         } catch (Exception $e) {
             require_lang('gallery_syndication_youtube');
-            $error_msg = do_lang_tempcode('YOUTUBE_ERROR', escape_html(strval($e->getCode())), $e->getMessage(), escape_html(get_site_name()));
+            $error_msg = do_lang_tempcode('YOUTUBE_ERROR', escape_html(strval($e->getCode())), $e->getMessage());
             require_code('failure');
             relay_error_notification($error_msg->evaluate());
             attach_message($error_msg, 'warn', false, true);
@@ -333,7 +333,7 @@ class Hook_video_syndication_youtube
             }
         } catch (Exception $e) {
             require_lang('gallery_syndication_youtube');
-            $error_msg = do_lang_tempcode('YOUTUBE_ERROR', escape_html(strval($e->getCode())), $e->getMessage(), escape_html(get_site_name()));
+            $error_msg = do_lang_tempcode('YOUTUBE_ERROR', escape_html(strval($e->getCode())), $e->getMessage());
             require_code('failure');
             relay_error_notification($error_msg->evaluate());
             attach_message($error_msg, 'warn', false, true);
@@ -361,7 +361,7 @@ class Hook_video_syndication_youtube
             }
         } catch (Exception $e) {
             require_lang('gallery_syndication_youtube');
-            $error_msg = do_lang_tempcode('YOUTUBE_ERROR', escape_html(strval($e->getCode())), $e->getMessage(), escape_html(get_site_name()));
+            $error_msg = do_lang_tempcode('YOUTUBE_ERROR', escape_html(strval($e->getCode())), $e->getMessage());
             require_code('failure');
             relay_error_notification($error_msg->evaluate());
             attach_message($error_msg, 'warn', false, true);

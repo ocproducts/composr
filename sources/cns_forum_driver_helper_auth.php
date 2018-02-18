@@ -81,7 +81,7 @@ function _forum_authorise_login($this_ref, $username, $user_id, $password_hashed
         // See if LDAP has it -- if so, we can add
         $test = cns_is_on_ldap($username);
         if (!$test) {
-            $out['error'] = ($username === null) ? do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_NO_EXISTS') : do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username));
+            $out['error'] = ($username === null) ? do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_NO_EXIST') : do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username));
             return $out;
         }
 

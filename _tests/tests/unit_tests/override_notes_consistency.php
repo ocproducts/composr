@@ -29,6 +29,10 @@ class override_notes_consistency_test_set extends cms_test_case
                 continue; // Zone directory, no override support
             }
 
+            if (preg_match('#(^sources|/modules|^data)(_custom)?/#', $path) == 0) {
+                continue;
+            }
+
             $c = file_get_contents(get_file_base() . '/' . $path);
 
             if (strpos($c, 'CQC: No check') !== false) {
@@ -38,10 +42,13 @@ class override_notes_consistency_test_set extends cms_test_case
                 continue;
             }
 
+            $pos = strpos($c, 'NOTE TO PROGRAMMERS:');
             if (strpos($path, '_custom/') === false) {
-                $this->assertTrue(strpos($c, 'NOTE TO PROGRAMMERS:') !== false, 'Missing "NOTE TO PROGRAMMERS:" in ' . $path);
+                $ok = ($pos !== false) && ($pos < 200);
+                $this->assertTrue($ok, 'Missing "NOTE TO PROGRAMMERS:" in ' . $path);
             } else {
-                $this->assertFalse(strpos($c, 'NOTE TO PROGRAMMERS:') !== false, 'Undesirable "NOTE TO PROGRAMMERS:" in ' . $path);
+                $ok = ($pos === false) || ($pos > 200);
+                $this->assertTrue($ok, 'Undesirable "NOTE TO PROGRAMMERS:" in ' . $path);
             }
         }
     }

@@ -96,16 +96,19 @@ class tasks_test_set extends cms_test_case
         delete_calendar_event($simple_event_id);
 
         $num_events_before = $GLOBALS['SITE_DB']->query_select_value('calendar_events', 'COUNT(*)');
-
         ical_import($temp_path);
-
         $num_events_after = $GLOBALS['SITE_DB']->query_select_value('calendar_events', 'COUNT(*)');
-        $this->assertTrue($num_events_after > $num_events_before);
+        $this->assertTrue($num_events_after > $num_events_before, 'Did not appear to import events (' . integer_format($num_events_after) . ' after, ' . integer_format($num_events_before) . ' before)');
 
-        $last_rows_after = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array(), 'ORDER BY id DESC', 2);
+        $_last_rows_after = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array(), 'ORDER BY id DESC', 2);
+        $last_rows_after = $_last_rows_after;
         $this->cleanEventRowsForComparison($last_rows_after);
 
-        $this->assertTrue($last_rows_before == $last_rows_after);
+        $this->assertTrue($last_rows_before == $last_rows_after, 'Our test events changed during the export/import cycle)');
+
+        foreach ($_last_rows_after as $row) {
+            delete_calendar_event($row['id']);
+        }
 
         unlink($temp_path);
     }

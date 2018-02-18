@@ -323,8 +323,9 @@ class Database_Static_xml extends DatabaseDriver
      *
      * @param  ID_TEXT $table_name The table name
      * @param  array $db The DB connection to delete on
+     * @return boolean Success status
      */
-    protected function _drop_table_if_exists($table_name, $db)
+    protected function _drop_table($table_name, $db)
     {
         $file_path = $db[0] . '/' . $table_name;
         $dh = @opendir($file_path);
@@ -338,11 +339,17 @@ class Database_Static_xml extends DatabaseDriver
             closedir($dh);
             @rmdir($file_path);
             sync_file($file_path);
+
+            $success = true;
+        } else {
+            $success = false;
         }
 
         global $SCHEMA_CACHE, $DIR_CONTENTS_CACHE;
         unset($SCHEMA_CACHE[$table_name]);
         unset($DIR_CONTENTS_CACHE[$table_name]);
+
+        return $success;
     }
 
     /**
@@ -429,6 +436,26 @@ class Database_Static_xml extends DatabaseDriver
     public function has_full_text_boolean()
     {
         return false;
+    }
+
+    /**
+     * Find whether drop table "if exists" is present.
+     *
+     * @return boolean Whether it is
+     */
+    public function supports_drop_table_if_exists()
+    {
+        return true;
+    }
+
+    /**
+     * Find whether table truncation support is present.
+     *
+     * @return boolean Whether it is
+     */
+    public function supports_truncate_table()
+    {
+        return true;
     }
 
     /**
@@ -571,6 +598,8 @@ class Database_Static_xml extends DatabaseDriver
 
             case 'DELETE':
                 return $this->_do_query_delete($tokens, $query, $db, $max, $start, $fail_ok);
+            case 'TRUNCATE':
+                return $this->_do_query_truncate($tokens, $query, $db, $fail_ok);
 
             case '(':
             case 'SELECT':
@@ -948,7 +977,7 @@ class Database_Static_xml extends DatabaseDriver
                     }
                 }
 
-                if (($max !== null) && (count($records) >= $max)) {
+                if (($max !== null) && (count($records) >= $max) && (($where_expr === null) || ($where_expr == array('LITERAL', true)))) {
                     break;
                 }
             }
@@ -1392,9 +1421,20 @@ class Database_Static_xml extends DatabaseDriver
                 if (!$this->_parsing_expects($at, $tokens, 'EXISTS', $query)) {
                     return null;
                 }
+
+                $_fail_ok = true;
+            } else {
+                $_fail_ok = false;
             }
+
             $table_name = $this->_parsing_read($at, $tokens, $query);
-            $this->_drop_table_if_exists($table_name, $db);
+            $success = $this->_drop_table($table_name, $db);
+
+            if ((!$fail_ok) && (!$_fail_ok)) {
+                if (!$success) {
+                    fatal_exit('The ' . $table_name . ' tables does not exist');
+                }
+            }
         } else {
             return $this->_bad_query($query, $fail_ok, 'Unrecognised DROP type, ' . $type);
         }
@@ -2636,6 +2676,44 @@ class Database_Static_xml extends DatabaseDriver
         if (!$this->_parsing_check_ended($at, $tokens, $query)) {
             return null;
         }
+    }
+
+    /**
+     * Execute a TRUNCATE query.
+     *
+     * @param  array $tokens Tokens
+     * @param  string $query Query that was executed
+     * @param  array $db Database connection
+     * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
+     * @return ?mixed The results (null: no results)
+     */
+    protected function _do_query_truncate($tokens, $query, $db, $fail_ok)
+    {
+        $at = 0;
+        if (!$this->_parsing_expects($at, $tokens, 'TRUNCATE', $query)) {
+            return null;
+        }
+
+        $table_name = $this->_parsing_read($at, $tokens, $query);
+
+        $_path = $db[0] . '/' . $table_name;
+        $dh = opendir($_path);
+        while (($file = readdir($dh)) !== false) {
+            $ext = get_file_extension($file);
+            if (($ext == 'xml') || ($ext == 'xml-volatile')) {
+                $path = $_path . '/' . $file;
+                $this->_delete_record($path, $db);
+            }
+        }
+        closedir($dh);
+
+        unset($GLOBALS['DIR_CONTENTS_CACHE'][$table_name]);
+
+        if (!$this->_parsing_check_ended($at, $tokens, $query)) {
+            return null;
+        }
+
+        return null;
     }
 
     /**

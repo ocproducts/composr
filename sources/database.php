@@ -661,7 +661,7 @@ class DatabaseDriver
      */
     public function is_flat_file_simple()
     {
-        return false;
+        return true;
     }
 
     /**

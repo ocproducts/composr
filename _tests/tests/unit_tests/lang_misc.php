@@ -67,6 +67,9 @@ class lang_misc_test_set extends cms_test_case
 
         disable_php_memory_limit();
         require_all_lang();
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(100);
+        }
 
         $lang_files = get_lang_files();
         foreach (array_keys($lang_files) as $lang_file) {
@@ -100,6 +103,18 @@ class lang_misc_test_set extends cms_test_case
         }
         $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES, true, true, array('txt'));
         foreach ($files as $path) {
+            // Exceptions
+            if (in_array($path, array(
+                'docs/pages/comcode_custom/EN/tut_designer_themes.txt',
+                'docs/pages/comcode_custom/EN/codebook_standards.txt',
+                'docs/pages/comcode_custom/EN/codebook_1.txt',
+                'docs/pages/comcode_custom/EN/codebook_1b.txt',
+                'docs/pages/comcode_custom/EN/codebook_2.txt',
+                'docs/pages/comcode_custom/EN/tut_tempcode.txt',
+            ))) {
+                continue;
+            }
+
             $c = file_get_contents(get_file_base() . '/' . $path);
             $this->process_file_for_references($c, $path);
         }
