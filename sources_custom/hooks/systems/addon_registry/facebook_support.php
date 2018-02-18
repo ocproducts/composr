@@ -205,6 +205,8 @@ For a demo, see this video tutorial: https://www.youtube.com/watch?v=HUZ_O5io0F0
             'sources_custom/hooks/systems/config/facebook_sync_username.php',
             'sources_custom/cns_field_editability.php',
             'sources_custom/facebook/.htaccess',
+            'sources_custom/facebook/jsonwrapper/.htaccess',
+            'sources_custom/facebook/jsonwrapper/JSON/.htaccess',
         );
     }
 }

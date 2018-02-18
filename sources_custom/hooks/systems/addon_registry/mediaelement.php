@@ -150,6 +150,7 @@ class Hook_addon_registry_mediaelement
             'themes/default/templates_custom/MEDIA_VIDEO_WEBSAFE.tpl',
             'themes/default/javascript_custom/core_rich_media.js',
             'data_custom/mediaelement/index.html',
+            'themes/default/images_custom/mediaelement/index.html',
         );
     }
 }

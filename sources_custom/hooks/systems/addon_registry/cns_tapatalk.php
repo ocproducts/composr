@@ -388,6 +388,22 @@ For a demo, see this video tutorial: https://www.youtube.com/watch?v=SAGuj2mgkRo
             'mobiquo/smartbanner/images/wrt-h-bg.jpg',
             'mobiquo/smartbanner/images/wrt-v-bg.jpg',
             'themes/default/text_custom/TAPATALK_POST_WRAPPER.txt',
+            'mobiquo/api/.htaccess',
+            'mobiquo/api/index.html',
+            'mobiquo/include/.htaccess',
+            'mobiquo/include/index.html',
+            'mobiquo/index.html',
+            'mobiquo/lib/index.html',
+            'mobiquo/mbqClass/acl/.htaccess',
+            'mobiquo/mbqClass/acl/index.html',
+            'mobiquo/mbqClass/read/.htaccess',
+            'mobiquo/mbqClass/read/index.html',
+            'mobiquo/mbqClass/write/.htaccess',
+            'mobiquo/mbqClass/write/index.html',
+            'mobiquo/smartbanner/images/index.html',
+            'mobiquo/smartbanner/index.html',
+            'mobiquo/tests/.htaccess',
+            'mobiquo/tests/index.html',
         );
     }
 }

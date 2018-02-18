@@ -47,7 +47,7 @@ class standard_dir_files_test_set extends cms_test_case
 
                 // Exceptions
                 if ($dir_stub == '') {
-                    if (in_array($file, array('test-a', 'tracker'))) {
+                    if (in_array($file, array('tracker'))) {
                         continue;
                     }
                 } elseif ($dir_stub == 'sources_custom') {
@@ -62,8 +62,8 @@ class standard_dir_files_test_set extends cms_test_case
                     if (in_array($file, array('ckeditor'))) {
                         continue;
                     }
-                } elseif ($dir_stub == 'uploads') {
-                    if (in_array($file, array('website_specific'))) {
+                } elseif ($dir_stub == 'uploads/website_specific') {
+                    if (in_array($file, array(get_db_site()))) {
                         continue;
                     }
                 } elseif ($dir_stub == '_tests/codechecker') {
@@ -97,7 +97,8 @@ class standard_dir_files_test_set extends cms_test_case
                 (strpos($dir, '/themes') === false) && // Not from themes (we need to download from)
                 (strpos($dir, '/exports') === false) && // Not in exports (we need to download from)
                 (!file_exists($dir . '/mobiquo.php')) && // Not in mobiquo (we need to call Tapatalk)
-                (!file_exists($dir . '/appbanner.js')) // Not in mobiquo (we need to call Tapatalk)
+                (!file_exists($dir . '/appbanner.js')) && // Not in mobiquo (we need to call Tapatalk)
+                (!file_exists($dir . '/tapatalk-banner-logo.png')) // Not in mobiquo (we need to call Tapatalk)
             ) {
                 $this->assertTrue(file_exists($dir . '/.htaccess'), 'cp "' . get_file_base() . '/sources/.htaccess" "' . $dir . '/.htaccess" ; git add "' . $dir . '/.htaccess"');
             }
