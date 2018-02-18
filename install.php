@@ -791,7 +791,7 @@ function step_4()
     $multi_lang_content = file_exists(get_file_base() . '/.git')/*randomise in dev mode*/ ? mt_rand(0, 1) : 0;
     $domain = preg_replace('#:.*#', '', get_local_hostname());
 
-    $specifics = $GLOBALS['FORUM_DRIVER']->install_specifics();
+    $forum_driver_specifics = $GLOBALS['FORUM_DRIVER']->install_specifics();
 
     // Now we've gone through all the work of detecting it, lets grab from _config.php to see what we had last time we installed
     global $SITE_INFO;
@@ -803,7 +803,7 @@ function step_4()
                 unset($SITE_INFO['user_cookie']);
                 unset($SITE_INFO['pass_cookie']);
             }
-            foreach ($specifics as $specific) {
+            foreach ($forum_driver_specifics as $specific) {
                 if (array_key_exists($specific['name'], $SITE_INFO)) {
                     unset($SITE_INFO[$specific['name']]);
                 }
@@ -979,11 +979,18 @@ function step_4()
             $forum_options->attach(make_option(do_lang_tempcode('BASE_URL'), example('FORUM_BASE_URL_EXAMPLE', 'BASE_URL_TEXT_FORUM'), 'forum_base_url', $forum_base_url, false, true));
         }
     }
-    foreach ($specifics as $specific) {
+    foreach ($forum_driver_specifics as $specific) {
         if ($specific['name'] == 'clear_existing_forums_on_install') {
             $hidden->attach(form_input_hidden('clear_existing_forums_on_install', 'yes'));
         } elseif (($specific['name'] != 'cns_table_prefix') || ($use_msn == 1)) {
-            $forum_options->attach(make_option(is_object($specific['title']) ? $specific['title'] : make_string_tempcode($specific['title']), is_object($specific['description']) ? $specific['description'] : make_string_tempcode($specific['description']), $specific['name'], array_key_exists($specific['name'], $SITE_INFO) ? $SITE_INFO[$specific['name']] : $specific['default'], strpos($specific['name'], 'password') !== false));
+            $forum_options->attach(make_option(
+                is_object($specific['title']) ? $specific['title'] : make_string_tempcode($specific['title']),
+                is_object($specific['description']) ? $specific['description'] : make_string_tempcode($specific['description']),
+                $specific['name'],
+                array_key_exists($specific['name'], $SITE_INFO) ? $SITE_INFO[$specific['name']] : $specific['default'],
+                strpos($specific['name'], 'password') !== false,
+                array_key_exists('required', $specific) ? $specific['required'] : false
+            ));
         }
     }
 
@@ -2766,12 +2773,13 @@ function make_option($nice_name, $description, $name, $value, $hidden = false, $
         }
         return $a;
     }
+
     $input = do_template('INSTALLER_INPUT_LINE', array('_GUID' => '31cdfb760d7c61de65656c5256bf2e88', 'REQUIRED' => $_required, 'NAME' => $name, 'VALUE' => $value));
     return do_template('INSTALLER_STEP_4_SECTION_OPTION', array('_GUID' => 'a13131994a22b6f646e517c54a7c41d5', 'NAME' => $name, 'INPUT' => $input, 'NICE_NAME' => $nice_name, 'DESCRIPTION' => $description));
 }
 
 /**
- * Make the UI for an installer tick option.
+ * Make the UI for an installer tick (check) option.
  *
  * @param  Tempcode $nice_name The human readable name for the option
  * @param  Tempcode $description A description of the option

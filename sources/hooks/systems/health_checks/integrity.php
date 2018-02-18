@@ -198,6 +198,10 @@ class Hook_health_check_integrity extends Hook_Health_Check
      */
     public function testChmod($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
         require_code('upgrade');
         require_lang('upgrade');
 

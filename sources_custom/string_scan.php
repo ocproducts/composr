@@ -5646,6 +5646,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MODULE_TRANS_NAME_admin_custom_comcode
         MODULE_TRANS_NAME_admin_debrand
         MODULE_TRANS_NAME_admin_ecommerce
+        MODULE_TRANS_NAME_admin_shopping
         MODULE_TRANS_NAME_admin_email_log
         MODULE_TRANS_NAME_admin_errorlog
         MODULE_TRANS_NAME_admin_import

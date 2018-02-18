@@ -37,6 +37,10 @@ function unit_testing_run()
         if (strpos($id, '/') === false) {
             $id = 'unit_tests/' . $id;
         }
+
+        if (in_array('debug', $_SERVER['argv'])) { // A convention
+            $_GET['debug'] = '1';
+        }
     } else {
         $cli = false;
     }
