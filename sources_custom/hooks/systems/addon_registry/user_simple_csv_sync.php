@@ -140,6 +140,7 @@ class Hook_addon_registry_user_simple_csv_sync
             'sources_custom/hooks/systems/upon_query/user_export.php',
             'sources_custom/user_export.php',
             'sources_custom/user_import.php',
+            'data_custom/modules/user_export/index.html',
         );
     }
 }

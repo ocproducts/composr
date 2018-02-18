@@ -209,6 +209,7 @@ class Hook_addon_registry_testing_platform
             '_tests/codechecker/java_src/codequalitychecker/ProcessingDialog.java',
             '_tests/codechecker/java_src/codequalitychecker/SearchFile.java',
             '_tests/codechecker/java_src/codequalitychecker/VerticalFlowLayout.java',
+            '_tests/codechecker/java_src/codequalitychecker/.htaccess',
             '_tests/codechecker/netbeans/test/.htaccess',
             '_tests/codechecker/netbeans/test/index.html',
             '_tests/codechecker/non_errors.txt',

@@ -167,6 +167,16 @@ class Hook_addon_registry_composr_release_build
             'aps/scripts/templates/_config.php.in',
             'aps/test/composrIDEtest.xml',
             'aps/test/TEST-META.xml',
+            'aps/.htaccess',
+            'aps/images/.htaccess',
+            'aps/images/index.html',
+            'aps/index.html',
+            'aps/scripts/.htaccess',
+            'aps/scripts/index.html',
+            'aps/scripts/templates/.htaccess',
+            'aps/scripts/templates/index.html',
+            'aps/test/.htaccess',
+            'aps/test/index.html',
         );
     }
 }

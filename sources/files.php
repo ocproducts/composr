@@ -666,7 +666,7 @@ function should_ignore_file($path, $bitmask = 0)
             '_critical_error.html' => '',
 
             // Non-bundled addons inside the git repository
-            'out.csv' => 'data_custom/modules/user_export', // user_sync
+            'out.csv' => 'data_custom/modules/user_export', // user_simple_csv_sync
             'request_helper.dat' => 'mobiquo/include', // tapatalk
             'server_certificates.pem' => 'data_custom/modules/composr_mobile_sdk/ios', // composr_mobile_sdk
             'if_hosted_service.txt' => 'text', // demonstratr

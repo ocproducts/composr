@@ -144,6 +144,8 @@ class Hook_addon_registry_image_source_files
             'data_custom/images/source_files/dark_emoticons/rolleyes.gif',
             'data_custom/images/source_files/dark_emoticons/shake.gif',
             'data_custom/images/source_files/dark_emoticons/shutup.gif',
+            'data_custom/images/source_files/dark_emoticons/index.html',
+            'data_custom/images/source_files/index.html',
         );
     }
 }

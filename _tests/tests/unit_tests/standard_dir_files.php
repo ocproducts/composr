@@ -41,7 +41,7 @@ class standard_dir_files_test_set extends cms_test_case
         $dh = opendir($dir);
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
-                if (should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_FLOATING | IGNORE_CUSTOM_THEMES)) {
+                if (should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_FLOATING | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_LANGS)) {
                     continue;
                 }
 
@@ -51,7 +51,7 @@ class standard_dir_files_test_set extends cms_test_case
                         continue;
                     }
                 } elseif ($dir_stub == 'sources_custom') {
-                    if (in_array($file, array('ILess', 'aws', 'sabredav', 'photobucket', 'spout'))) {
+                    if (in_array($file, array('ILess', 'aws', 'sabredav', 'photobucket', 'spout', 'Transliterator', 'swift_mailer'))) {
                         continue;
                     }
                 } elseif ($dir_stub == 'sources_custom/composr_mobile_sdk') {
@@ -95,7 +95,9 @@ class standard_dir_files_test_set extends cms_test_case
                 (strpos($dir, '/uploads') === false) && // Not from uploads (we need to download from)
                 (preg_match('#/data(/|$|_)#', $dir) == 0) && // Not from data (scripts need to run)
                 (strpos($dir, '/themes') === false) && // Not from themes (we need to download from)
-                (strpos($dir, '/exports') === false) // Not in exports (we need to download from)
+                (strpos($dir, '/exports') === false) && // Not in exports (we need to download from)
+                (!file_exists($dir . '/mobiquo.php')) && // Not in mobiquo (we need to call Tapatalk)
+                (!file_exists($dir . '/appbanner.js')) // Not in mobiquo (we need to call Tapatalk)
             ) {
                 $this->assertTrue(file_exists($dir . '/.htaccess'), 'cp "' . get_file_base() . '/sources/.htaccess" "' . $dir . '/.htaccess" ; git add "' . $dir . '/.htaccess"');
             }
