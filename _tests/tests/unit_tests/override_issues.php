@@ -25,7 +25,11 @@ class override_issues_test_set extends cms_test_case
         $files = get_directory_contents(get_file_base(), '', IGNORE_FLOATING | IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE, true, true, array('php'));
         $files[] = 'install.php';
         foreach ($files as $path) {
+            // Exceptions
             if ($path == '_tests/tests/unit_tests/override_issues.php') {
+                continue;
+            }
+            if (preg_match('#^tracker/#', $path) != 0) {
                 continue;
             }
 

@@ -637,7 +637,7 @@ class Module_shopping
                 'TOTAL_TAX' => float_format($row['total_tax']),
                 'TOTAL_SHIPPING_COST' => float_format($row['total_shipping_cost']),
                 'CURRENCY' => $row['order_currency'],
-                'TIME' => get_timezoned_date_time($row['add_date'], false),
+                'DATE' => get_timezoned_date_time($row['add_date'], false),
                 'STATUS' => do_lang_tempcode($row['order_status']),
                 'NOTE' => '',
                 'ORDER_DET_URL' => $order_details_url,

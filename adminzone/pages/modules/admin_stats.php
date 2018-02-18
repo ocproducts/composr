@@ -648,7 +648,7 @@ class Module_admin_stats
         $this->title = get_screen_title('LOAD_TIMES_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
 
         // We calculate MIN not AVG, because data can be made very dirty by slow clients or if the server is having trouble at one specfic point. It's a shame.
-        $rows = $GLOBALS['SITE_DB']->query('SELECT the_page,MIN(milliseconds) AS avg FROM ' . get_table_prefix() . 'stats WHERE date_and_time>' . strval($time_start) . ' AND date_and_time<' . strval($time_end) . ' GROUP BY the_page');
+        $rows = $GLOBALS['SITE_DB']->query('SELECT the_page,MIN(milliseconds) AS min_time FROM ' . get_table_prefix() . 'stats WHERE date_and_time>' . strval($time_start) . ' AND date_and_time<' . strval($time_end) . ' GROUP BY the_page');
         if (count($rows) < 1) {
             return warn_screen($this->title, do_lang_tempcode('NO_DATA'));
         }
@@ -661,9 +661,13 @@ class Module_admin_stats
                 $page2 = $page;
             }
 
-            $avg = $row['avg'] / 1000.0;
+            if ($row['min_time'] === null) {
+                $min_time = 0.0;
+            } else {
+                $min_time = $row['min_time'] / 1000.0;
+            }
 
-            $data[$page2] = array($avg, $page);
+            $data[$page2] = array($min_time, $page);
         }
 
         $sortables = array('AVG(milliseconds)' => do_lang_tempcode('LOAD_TIME'));
@@ -700,7 +704,7 @@ class Module_admin_stats
                 'Milliseconds' => $value,
             );
 
-            $fields->attach(results_entry(array(hyperlink(build_url(array('page' => '_SELF', 'type' => '_page', 'iscreen' => $page), '_SELF'), $url, false, true), float_format($value), false, true), true));
+            $fields->attach(results_entry(array(hyperlink(build_url(array('page' => '_SELF', 'type' => '_page', 'iscreen' => $page), '_SELF'), $url, false, true), float_format($value)), true));
 
             $i++;
         }

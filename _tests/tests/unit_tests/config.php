@@ -104,6 +104,11 @@ class config_test_set extends cms_test_case
                 for ($i = 0; $i < $num_matches; $i++) {
                     $hook = $matches[1][$i];
 
+                    // Exceptions
+                    if ($hook == 'optionname') { // Example in Code Book
+                        continue;
+                    }
+
                     if (isset($done[$hook])) {
                         continue;
                     }

@@ -199,6 +199,7 @@ class RevisionEngineDatabase
                 $combined_query .= ' UNION ';
             }
             $combined_query .= $query;
+            $combined_query .= ' ORDER BY l_date_and_time DESC';
         }
 
         if (!$this->is_log_mod || !is_on_multi_site_network()) {
@@ -220,9 +221,9 @@ class RevisionEngineDatabase
                 $combined_query .= ' UNION ';
             }
             $combined_query .= $query;
+            $combined_query .= ' ORDER BY date_and_time DESC';
         }
 
-        $combined_query .= ' ORDER BY log_time DESC';
         return $this->db->query($combined_query, $max, $start, false, true);
     }
 

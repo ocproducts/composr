@@ -587,6 +587,9 @@ function should_ignore_file($path, $bitmask = 0)
         if (preg_match('#^data_custom/ckeditor(/|$)#i', $path) != 0) {
             return true; // Development version of CKEditor
         }
+        if (preg_match('#^uploads/website_specific/' .preg_quote(get_db_site(), '#') . '(/|$)#i', $path) != 0) {
+            return true; // Development version of CKEditor
+        }
 
         $ignore_extensions = array_merge($ignore_extensions, array(
             'gz' => '(themes/[^/]*/templates_cached|imports|exports)/.*',
@@ -594,6 +597,12 @@ function should_ignore_file($path, $bitmask = 0)
             // Import/Export files
             'tar' => '(imports|exports)/.*',
             'txt' => '(imports|exports)/.*',
+        ));
+
+        $ignore_filename_and_dir_name_patterns = array_merge($ignore_filename_and_dir_name_patterns, array(
+            array('(?!index\.html$)(?!\.htaccess$).*', 'data_custom/modules/chat'), // Various chat data files
+            array('(?!index\.html$)(?!\.htaccess$).*', 'data_custom/modules/admin_stats'), // Various temporary XML files get created under here, for SVG graphs
+            array('(?!index\.html$)(?!\.htaccess$).*', 'data/spelling/aspell'), // We don't supply aspell outside git, too much space taken
         ));
 
         $ignore_filenames_and_dir_names = array_merge($ignore_filenames_and_dir_names, array(
@@ -641,9 +650,7 @@ function should_ignore_file($path, $bitmask = 0)
 
     if (($bitmask & IGNORE_UNSHIPPED_VOLATILE) != 0) {
         $ignore_filename_and_dir_name_patterns = array_merge($ignore_filename_and_dir_name_patterns, array(
-            array('(?!index\.html$)(?!\.htaccess$).*', 'data_custom/modules/admin_stats'), // Various temporary XML files get created under here, for SVG graphs
             array('(?!index\.html$)(?!\.htaccess$).*', 'data_custom/modules/chat'), // Various chat data files
-            array('(?!index\.html$)(?!\.htaccess$).*', 'data/spelling/aspell'), // We don't supply aspell outside git, too much space taken
         ));
 
         $ignore_filenames_and_dir_names = array_merge($ignore_filenames_and_dir_names, array(

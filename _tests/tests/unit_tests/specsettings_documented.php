@@ -25,6 +25,7 @@ class specsettings_documented_test_set extends cms_test_case
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(300);
         }
+        disable_php_memory_limit();
 
         require_code('files2');
     }
@@ -148,6 +149,10 @@ class specsettings_documented_test_set extends cms_test_case
 
         $config = '<' . '?php' . "\n" . 'global $SITE_INFO;' . "\n";
         foreach ($found as $key) {
+            if (in_array($key, array('dev_mode'))) { // Exceptions
+                continue;
+            }
+
             $config .= '$SITE_INFO[\'' . $key . '\'] = \'\';' . "\n";
         }
         $config .= '?' . '>';

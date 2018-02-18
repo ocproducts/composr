@@ -45,8 +45,31 @@ class standard_dir_files_test_set extends cms_test_case
                     continue;
                 }
 
-                if ($file == 'test-a') {
-                    continue;
+                // Exceptions
+                if ($dir_stub == '') {
+                    if (in_array($file, array('test-a', 'tracker'))) {
+                        continue;
+                    }
+                } elseif ($dir_stub == 'sources_custom') {
+                    if (in_array($file, array('ILess', 'aws', 'sabredav', 'photobucket', 'spout'))) {
+                        continue;
+                    }
+                } elseif ($dir_stub == 'sources_custom/composr_mobile_sdk') {
+                    if (in_array($file, array('ios', 'android'))) {
+                        continue;
+                    }
+                } elseif ($dir_stub == 'data') {
+                    if (in_array($file, array('ckeditor'))) {
+                        continue;
+                    }
+                } elseif ($dir_stub == 'uploads') {
+                    if (in_array($file, array('website_specific'))) {
+                        continue;
+                    }
+                } elseif ($dir_stub == '_tests/codechecker') {
+                    if (in_array($file, array('netbeans'))) {
+                        continue;
+                    }
                 }
 
                 if (is_dir($dir . '/' . $file)) {
@@ -60,11 +83,7 @@ class standard_dir_files_test_set extends cms_test_case
 
         if ($contents_count > 0) {
             if (
-                (!file_exists($dir . '/index.php')) && // Not in a zone (needs to run as default)
-                (strpos($dir, 'uploads/website_specific') === false) && // We have all kinds of stuff deep under here
-
-                // Not in certain 3rd-party code
-                (strpos($dir, 'ckeditor') === false)
+                (!file_exists($dir . '/index.php')) // Not in a zone (needs to run as default)
             ) {
                 $this->assertTrue(file_exists($dir . '/index.html'), 'touch "' . $dir . '/index.html" ; git add -f "' . $dir . '/index.html"');
             }
@@ -73,13 +92,10 @@ class standard_dir_files_test_set extends cms_test_case
                 (!file_exists($dir . '/index.php')) && // Not in a zone (needs to run)
                 (!file_exists($dir . '/html_custom')) && // Not in an HTML directory (want to be able to call by hand)
                 (!file_exists($dir . '/EN')) && // Not in a pages directory (as parent of HTML directory)
-                (strpos($dir, 'uploads') === false) && // Not from uploads (we need to download from)
+                (strpos($dir, '/uploads') === false) && // Not from uploads (we need to download from)
                 (preg_match('#/data(/|$|_)#', $dir) == 0) && // Not from data (scripts need to run)
-                (strpos($dir, 'themes') === false) && // Not from themes (we need to download from)
-                (strpos($dir, 'exports') === false) && // Not in exports (we need to download from)
-
-                // Not in certain 3rd-party code
-                (strpos($dir, 'ckeditor') === false)
+                (strpos($dir, '/themes') === false) && // Not from themes (we need to download from)
+                (strpos($dir, '/exports') === false) // Not in exports (we need to download from)
             ) {
                 $this->assertTrue(file_exists($dir . '/.htaccess'), 'cp "' . get_file_base() . '/sources/.htaccess" "' . $dir . '/.htaccess" ; git add "' . $dir . '/.htaccess"');
             }

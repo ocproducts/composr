@@ -18,8 +18,8 @@
  */
 class forum_poll_test_set extends cms_test_case
 {
-    protected $poll_id;
     protected $topic_id;
+    protected $poll_id;
 
     public function setUp()
     {
@@ -39,10 +39,7 @@ class forum_poll_test_set extends cms_test_case
         $this->poll_id = cns_make_poll($this->topic_id, 'Who are you ?', 0, 0, 2, 4, 0, array('a', 'b', 'c'), true);
 
         $this->assertTrue('Who are you ?' == $GLOBALS['FORUM_DB']->query_select_value('f_polls', 'po_question', array('id' => $this->poll_id)));
-    }
 
-    public function testEditPoll()
-    {
         cns_edit_poll($this->poll_id, 'Who am I?', 1, 1, 1, 4, 1, array('1', '2', '3'), 'nothing');
 
         $this->assertTrue('Who am I?' == $GLOBALS['FORUM_DB']->query_select_value('f_polls', 'po_question', array('id' => $this->poll_id)));
@@ -52,6 +49,7 @@ class forum_poll_test_set extends cms_test_case
     {
         cns_delete_poll($this->poll_id, 'Simple');
         cns_delete_topic($this->topic_id);
+
         parent::tearDown();
     }
 }

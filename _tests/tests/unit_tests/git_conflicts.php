@@ -26,14 +26,15 @@ class git_conflicts_test_set extends cms_test_case
 
         require_code('files2');
 
-        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING);
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING, true, true, array('php', 'tpl', 'css', 'js', 'xml', 'txt', 'sh'));
         $files[] = 'install.php';
         foreach ($files as $path) {
             if ((basename($path) == 'MessageFormatter.php') || (basename($path) == 'phpstub.php')) {
                 continue;
             }
 
-            $this->assertTrue(strpos(file_get_contents(get_file_base() . '/' . $path), '<<<' . '<') === false, $path);
+            $c = file_get_contents(get_file_base() . '/' . $path);
+            $this->assertTrue(strpos($c, '<<<' . '<') === false, $path);
         }
     }
 }

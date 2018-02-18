@@ -61,8 +61,8 @@ foreach ($files as $i => $file) {
 
     $IN = file_get_contents(get_custom_file_base() . '/' . $file);
 
-    $out = preg_replace_callback("#do_template\('([^']*)', array\(\s*'([^']+)' => ('[^\']+')#", 'callback', $IN); // Existing GUIDs
-    $out = preg_replace_callback("#do_template\('([^']*)', array\(\s*'([^']+)' => #", 'callback', $IN); // Potentially missing GUIDs
+    $out = preg_replace_callback("#do_template\('([^']*)', array\((\s*)'([^']+)' => ('[^\']+')#", 'callback', $IN);
+    $out = preg_replace_callback("#do_template\('([^']*)', array\((\s*)'([^']+)' => #", 'callback', $IN);
 
     if ($IN != $out) {
         echo '<span style="color: orange">Re-saved ' . escape_html($file) . '</span><br />';
@@ -78,30 +78,48 @@ if ($limit_file == '') {
 
 function callback($match)
 {
-    //echo $match[0].'<br />';
-    //return $match[0];
+    $full_match_line = $match[0];
+    $template_name = $match[1];
+    $whitespace = $match[2];
+    $first_param_name = $match[3];
+    $first_param_value = isset($match[4]) ? $match[4] : null;
+
+    /*
+    For debugging:
+    echo $full_match_line . '<br />';
+    return $full_match_line;
+    */
+
     global $GUID_LANDSCAPE, $FILENAME, $IN;
     $new_guid = md5(uniqid('', true));
-    if (!array_key_exists($match[1], $GUID_LANDSCAPE)) {
-        $GUID_LANDSCAPE[$match[1]] = array();
+    if (!array_key_exists($template_name, $GUID_LANDSCAPE)) {
+        $GUID_LANDSCAPE[$template_name] = array();
     }
-    $line = substr_count(substr($IN, 0, strpos($IN, $match[0])), "\n") + 1;
-    if ($match[2] != '_GUID') { // Potentially missing GUIDs
-        // Missing GUIDs
-        echo 'Insert needed for ' . escape_html($match[1]) . '<br />';
-        $GUID_LANDSCAPE[$match[1]][] = array($FILENAME, $line, $new_guid);
-        return "do_template('" . $match[1] . "', array('_GUID' => '" . $new_guid . "', '" . $match[2] . '\' => ' . (isset($match[3]) ? $match[3] : '');
+
+    $line = substr_count(substr($IN, 0, strpos($IN, $full_match_line)), "\n") + 1;
+
+    // Handle missing GUIDs
+    if ($first_param_name != '_GUID') {
+        echo 'Insert needed for ' . escape_html($template_name) . '<br />';
+        $GUID_LANDSCAPE[$template_name][] = array($FILENAME, $line, $new_guid);
+        return "do_template('" . $template_name . "', array('_GUID' => '" . $new_guid . "', '" . $first_param_name . "' => " . (($first_param_value === null) ? $first_param_value : '');
     }
-    if (isset($match[3])) { // Existing GUIDs
+
+    // Handle existing GUIDs
+    if ($first_param_value !== null) {
         global $FOUND_GUID;
-        $guid_value = str_replace('\'', '', $match[3]);
+        $guid_value = str_replace("'", '', $first_param_value);
+
+        // Handle duplicated GUIDs
         if (array_key_exists($guid_value, $FOUND_GUID)) {
-            echo 'Repair needed for ' . escape_html($match[1]) . '<br />';
-            $GUID_LANDSCAPE[$match[1]][] = array($FILENAME, $line, $new_guid);
-            return "do_template('" . $match[1] . "', array('_GUID' => '" . $new_guid . "'";
+            echo 'Repair needed for ' . escape_html($template_name) . '<br />';
+            $GUID_LANDSCAPE[$template_name][] = array($FILENAME, $line, $new_guid);
+            return "do_template('" . $template_name . "', array('_GUID' => '" . $new_guid . "'";
         }
+
         $FOUND_GUID[$guid_value] = true;
-        $GUID_LANDSCAPE[$match[1]][] = array($FILENAME, $line, $guid_value);
+        $GUID_LANDSCAPE[$template_name][] = array($FILENAME, $line, $guid_value);
     }
-    return $match[0];
+
+    return $full_match_line;
 }

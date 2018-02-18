@@ -24,18 +24,29 @@ class firephp_test_set extends cms_test_case
 
         $url = build_url(array('page' => '', 'keep_firephp' => 1, 'keep_su' => 'test'), 'adminzone');
 
+        $header = '';
+        $header .= 'Cookie: ' . get_session_cookie() . '=' . get_session_id() . "\r\n";
+        $header .= 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36 FirePHP/4Chrome' . "\r\n";
+        $header .= 'X-FirePHP-Version: 0.0.6';
+
         $default_opts = array(
             'http' => array(
-                'header' => 'Cookie: ' . get_session_cookie() . '=' . get_session_id() . "\r\n" . 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36 FirePHP/4Chrome' . "\r\n" . 'X-FirePHP-Version: 0.0.6',
+                'header' => $header,
             )
         );
         stream_context_set_default($default_opts);
         $headers = get_headers($url->evaluate());
 
+        if (get_param_integer('debug', 0) == 1) {
+            @var_dump($url->evaluate());
+            @var_dump($header);
+            @var_dump($headers);
+        }
+
         $found = false;
         foreach ($headers as $header) {
             $found = $found || (strpos($header, 'Permission check FAILED: has_zone_access: adminzone') !== false);
         }
-        $this->assertTrue($found);
+        $this->assertTrue($found, 'Could not find a firephp header');
     }
 }

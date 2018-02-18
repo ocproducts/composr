@@ -823,7 +823,7 @@ header h1 {
 	font-weight: bold;
 }
 
-.breadcrumbs .sep:::after, .associated-breadcrumbs .sep:::after {
+.breadcrumbs .sep::after, .associated-breadcrumbs .sep::after {
 	content: " \00A0\00BB " !important;
 	display: inline-block;
 	font-size: 0.9em;
