@@ -116,7 +116,7 @@ foreach ($special_file_types as $label => $_search) {
     $_files = get_directory_contents($deep_path);
     $files = array();
     foreach ($_files as $f) {
-        if (should_ignore_file((($search_path == '') ? '' : ($search_path . '/')) . $f, IGNORE_HIDDEN_FILES | IGNORE_ACCESS_CONTROLLERS | IGNORE_BUNDLED_VOLATILE)) {
+        if (should_ignore_file((($search_path == '') ? '' : ($search_path . '/')) . $f, IGNORE_HIDDEN_FILES | IGNORE_ACCESS_CONTROLLERS | IGNORE_SHIPPED_VOLATILE)) {
             continue;
         }
 

@@ -22,10 +22,10 @@ class should_ignore_file_test_set extends cms_test_case
     {
         require_code('files');
 
-        $this->assertTrue(should_ignore_file('data_custom/unit_test_positive_ignore_sampler.xxx', IGNORE_BUNDLED_VOLATILE), 'Failing positive ignore');
+        $this->assertTrue(should_ignore_file('data_custom/unit_test_positive_ignore_sampler.xxx', IGNORE_UNSHIPPED_VOLATILE), 'Failing positive ignore');
 
-        $this->assertTrue(!should_ignore_file('data_custom/unit_test_negative_ignore_sampler.xxx', IGNORE_BUNDLED_VOLATILE), 'Failing negative ignore');
+        $this->assertTrue(!should_ignore_file('data_custom/unit_test_negative_ignore_sampler.xxx', IGNORE_UNSHIPPED_VOLATILE), 'Failing negative ignore');
 
-        $this->assertTrue(!should_ignore_file('unit_test_positive_ignore_sampler.xxx', IGNORE_BUNDLED_VOLATILE), 'Failing negative ignore (root file)'); // should not fail in root, as ignore rule is scoped to data_custom
+        $this->assertTrue(!should_ignore_file('unit_test_positive_ignore_sampler.xxx', IGNORE_UNSHIPPED_VOLATILE), 'Failing negative ignore (root file)'); // should not fail in root, as ignore rule is scoped to data_custom
     }
 }

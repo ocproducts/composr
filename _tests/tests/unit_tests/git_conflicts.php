@@ -26,7 +26,7 @@ class git_conflicts_test_set extends cms_test_case
 
         require_code('files2');
 
-        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_BUNDLED_VOLATILE, true, true, array('php'));
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING);
         $files[] = 'install.php';
         foreach ($files as $path) {
             if ((basename($path) == 'MessageFormatter.php') || (basename($path) == 'phpstub.php')) {

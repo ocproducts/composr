@@ -55,8 +55,8 @@ class modularisation_test_set extends cms_test_case
 
         require_code('files2');
         $unput_files = array();
-        $ignore = IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_NONBUNDLED_EXTREMELY_SCATTERED | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_REVISION_FILES;
-        //$ignore = IGNORE_NONBUNDLED_EXTREMELY_SCATTERED | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE; Uncomment for more careful testing
+        $ignore = IGNORE_CUSTOM_DIR_FLOATING_CONTENTS | IGNORE_UPLOADS | IGNORE_FLOATING | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_LANGS | IGNORE_UNSHIPPED_VOLATILE | IGNORE_REVISION_FILES;
+        //$ignore = IGNORE_FLOATING | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_LANGS | IGNORE_UNSHIPPED_VOLATILE; Uncomment for more careful testing
         $files = get_directory_contents(get_file_base(), '', $ignore);
         foreach ($files as $path) {
             if (preg_match('#^docs#', $path) == 0) {
@@ -74,7 +74,7 @@ class modularisation_test_set extends cms_test_case
                         if (substr($_path, -4) == '.php') {
                             $data = file_get_contents(get_file_base() . '/' . $_path);
 
-                            if ((strpos($data, 'ocProducts') !== false || (!should_ignore_file($_path, IGNORE_NONBUNDLED_SCATTERED)) || ($_path == 'install.php')) && ($_path != '_config.php') && ($_path != 'data_custom/errorlog.php') && ($_path != 'tracker/config_inc.php')) {
+                            if ((strpos($data, 'ocProducts') !== false || (!should_ignore_file($_path, IGNORE_SHIPPED_VOLATILE)) || ($_path == 'install.php')) && ($_path != 'tracker/config_inc.php')) {
                                 $matches = array();
                                 $m_count = preg_match_all('#@package\s+(\w+)#', $data, $matches);
                                 $problem = ($m_count != 0) && ($matches[1][0] != $addon_name) && (@$matches[1][1] != $addon_name/*FUDGE: should ideally do a loop, but we'll assume max of 2 packages for now*/);

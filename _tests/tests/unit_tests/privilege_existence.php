@@ -34,7 +34,7 @@ class privilege_existence_test_set extends cms_test_case
             $pages += find_all_pages_wrap($zone);
         }
 
-        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS);
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES);
         $files[] = 'install.php';
         foreach ($files as $path) {
             $file_type = get_file_extension($path);

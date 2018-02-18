@@ -68,7 +68,7 @@ class file_naming_test_set extends cms_test_case
             '/-logo.png',
         );
 
-        $files = get_directory_contents(get_file_base(), '', IGNORE_USER_CUSTOMISE | IGNORE_UPLOADS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_REVISION_FILES | IGNORE_EDITFROM_FILES);
+        $files = get_directory_contents(get_file_base(), '', IGNORE_FLOATING | IGNORE_REVISION_FILES | IGNORE_EDITFROM_FILES | IGNORE_CUSTOM_THEMES);
         foreach ($files as $path) {
             foreach ($ignore_substrings as $substring) {
                 if (strpos($path, $substring) !== false) {

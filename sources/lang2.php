@@ -105,7 +105,7 @@ function get_lang_files($lang = null)
         $_dir = @opendir(get_file_base() . '/lang_custom/' . $lang);
         if ($_dir !== false) {
             while (false !== ($file = readdir($_dir))) {
-                if (($file != '.') && ($file != '..') && (substr($file, -4) == '.ini') && (!should_ignore_file(get_file_base() . '/lang_custom/' . $lang . '/' . $file, 0, 0))) {
+                if (($file != '.') && ($file != '..') && (substr($file, -4) == '.ini') && (!should_ignore_file(get_file_base() . '/lang_custom/' . $lang . '/' . $file))) {
                     $file = substr($file, 0, strlen($file) - 4);
                     $_lang_files[$file] = 'lang_custom';
                 }

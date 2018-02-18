@@ -75,7 +75,7 @@ class config_test_set extends cms_test_case
 
         $hooks = find_all_hooks('systems', 'config');
 
-        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_CUSTOM_THEMES);
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES);
         $files[] = 'install.php';
         foreach ($files as $path) {
             $file_type = get_file_extension($path);
@@ -175,7 +175,7 @@ class config_test_set extends cms_test_case
             $this->assertTrue($details['addon'] != 'core', 'Don\'t put config options in core, put them in core_configuration - ' . $hook);
         }
 
-        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_CUSTOM_THEMES);
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES);
         $files[] = 'install.php';
         foreach ($files as $path) {
             $file_type = get_file_extension($path);

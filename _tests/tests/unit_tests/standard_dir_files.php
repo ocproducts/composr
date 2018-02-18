@@ -41,7 +41,7 @@ class standard_dir_files_test_set extends cms_test_case
         $dh = opendir($dir);
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
-                if (should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_NONBUNDLED_VERY_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_THEMES)) {
+                if (should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_FLOATING | IGNORE_CUSTOM_THEMES)) {
                     continue;
                 }
 
@@ -60,23 +60,26 @@ class standard_dir_files_test_set extends cms_test_case
 
         if ($contents_count > 0) {
             if (
-                (!file_exists($dir . '/index.php')) &&
-                (strpos($dir, 'ckeditor') === false) &&
-                (strpos($dir, 'personal_dicts') === false) &&
-                (strpos($dir, 'uploads/website_specific') === false)
+                (!file_exists($dir . '/index.php')) && // Not in a zone (needs to run as default)
+                (strpos($dir, 'uploads/website_specific') === false) && // We have all kinds of stuff deep under here
+
+                // Not in certain 3rd-party code
+                (strpos($dir, 'ckeditor') === false)
             ) {
                 $this->assertTrue(file_exists($dir . '/index.html'), 'touch "' . $dir . '/index.html" ; git add -f "' . $dir . '/index.html"');
             }
 
             if (
-                (!file_exists($dir . '/index.php')) &&
-                (!file_exists($dir . '/html_custom')) &&
-                (!file_exists($dir . '/EN')) &&
-                (strpos($dir, 'ckeditor') === false) &&
-                (strpos($dir, 'uploads') === false) &&
-                (preg_match('#/data(/|$|_)#', $dir) == 0)
-                && (strpos($dir, 'themes') === false) &&
-                (strpos($dir, 'exports') === false)
+                (!file_exists($dir . '/index.php')) && // Not in a zone (needs to run)
+                (!file_exists($dir . '/html_custom')) && // Not in an HTML directory (want to be able to call by hand)
+                (!file_exists($dir . '/EN')) && // Not in a pages directory (as parent of HTML directory)
+                (strpos($dir, 'uploads') === false) && // Not from uploads (we need to download from)
+                (preg_match('#/data(/|$|_)#', $dir) == 0) && // Not from data (scripts need to run)
+                (strpos($dir, 'themes') === false) && // Not from themes (we need to download from)
+                (strpos($dir, 'exports') === false) && // Not in exports (we need to download from)
+
+                // Not in certain 3rd-party code
+                (strpos($dir, 'ckeditor') === false)
             ) {
                 $this->assertTrue(file_exists($dir . '/.htaccess'), 'cp "' . get_file_base() . '/sources/.htaccess" "' . $dir . '/.htaccess" ; git add "' . $dir . '/.htaccess"');
             }

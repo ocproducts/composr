@@ -90,7 +90,7 @@ class specsettings_documented_test_set extends cms_test_case
 
         $all_code = '';
 
-        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_BUNDLED_VOLATILE | IGNORE_NONBUNDLED_VERY_SCATTERED, true, true, array('php'));
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING, true, true, array('php'));
         foreach ($files as $path) {
             if (basename($path) == 'shared_installs.php') {
                 continue;
@@ -168,7 +168,7 @@ class specsettings_documented_test_set extends cms_test_case
 
         $all_code = '';
 
-        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_BUNDLED_VOLATILE | IGNORE_NONBUNDLED_VERY_SCATTERED, true, true, array('php', 'tpl', 'js'));
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_NONBUNDLED | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES, true, true, array('php', 'tpl', 'js'));
         $files[] = 'install.php';
         foreach ($files as $path) {
             if (($path == 'sources/upgrade.php') || (basename($path) == 'shared_installs.php') || (basename($path) == 'phpstub.php')) {
@@ -219,7 +219,7 @@ class specsettings_documented_test_set extends cms_test_case
 
         $all_code = '';
 
-        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_BUNDLED_VOLATILE | IGNORE_NONBUNDLED_VERY_SCATTERED, true, true, array('php', 'tpl'));
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_NONBUNDLED | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES, true, true, array('php', 'tpl'));
         $files[] = 'install.php';
         foreach ($files as $path) {
             if ((basename($path) == 'shared_installs.php') || (strpos($path, 'sources/forum/') !== false) || (basename($path) == 'phpstub.php')) {

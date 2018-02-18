@@ -511,7 +511,7 @@ function init__global2()
         }
     }
     $memory_tracking = get_value('memory_tracking');
-    if (!empty($memory_tracking)) {
+    if ((!empty($memory_tracking)) && ($memory_tracking != '0')) {
         register_shutdown_function('memory_tracking');
     }
 

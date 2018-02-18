@@ -24,7 +24,7 @@ class comment_encapsulation_test_set extends cms_test_case
 
         foreach (array('javascript' => 'js', 'javascript_custom' => 'js', 'css' => 'css', 'css_custom' => 'css') as $subdir => $suffix) {
             $path = get_file_base() . '/themes/default/' . $subdir;
-            $files = get_directory_contents($path, '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array($suffix));
+            $files = get_directory_contents($path, '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES, true, true, array($suffix));
             foreach ($files as $file) {
                 $c = file_get_contents($path . '/' . $file);
 

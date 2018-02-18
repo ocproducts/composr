@@ -77,7 +77,7 @@ function init__database__xml()
     $TABLE_BASES = array();
 
     global $INT_TYPES, $STRING_TYPES;
-    $INT_TYPES = array('REAL', 'AUTO', 'AUTO_LINK', 'INTEGER', 'UINTEGER', 'SHORT_INTEGER', 'BINARY', 'MEMBER', 'GROUP', 'TIME', 'integer');
+    $INT_TYPES = array('AUTO', 'AUTO_LINK', 'INTEGER', 'UINTEGER', 'SHORT_INTEGER', 'BINARY', 'MEMBER', 'GROUP', 'TIME', 'integer');
     if (multi_lang_content()) {
         $INT_TYPES[] = 'SHORT_TRANS';
         $INT_TYPES[] = 'LONG_TRANS';
@@ -1124,7 +1124,6 @@ class Database_Static_xml extends DatabaseDriver
                 }
                 $type = $schema[$key];
                 $schema_type = preg_replace('#[^\w]#', '', $type);
-
                 if (in_array($schema_type, $INT_TYPES)) {
                     if ((($val === null) || ($val === '')) && (substr($type, 0, 1) == '?')) {
                         $new_val = null;

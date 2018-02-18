@@ -695,12 +695,14 @@ class Meta_tree_builder
             $_path = $path . '/' . $addon;
             if (is_dir($_path)) {
                 deldir_contents($_path);
-                rmdir($_path);
+                @rmdir($_path);
             }
 
             if (count($files) > 0) {
-                mkdir($_path, 0777);
-                fix_permissions($_path);
+                if (!is_dir($_path)) {
+                    mkdir($_path, 0777);
+                    fix_permissions($_path);
+                }
             }
 
             foreach ($files as $file) {

@@ -962,7 +962,7 @@ function fix_perms()
                     $dh = @opendir(get_file_base() . '/' . $_chmod);
                     if ($dh !== false) {
                         while (($file = readdir($dh)) !== false) {
-                            if (!should_ignore_file($_chmod . '/' . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_NONBUNDLED_SCATTERED)) {
+                            if (!should_ignore_file($_chmod . '/' . $file, IGNORE_ACCESS_CONTROLLERS)) {
                                 $array[] = $_chmod . '/' . $file;
                             }
                         }
@@ -973,7 +973,7 @@ function fix_perms()
                 $dh = @opendir(get_file_base() . '/' . $chmod);
                 if ($dh !== false) {
                     while (($file = readdir($dh)) !== false) {
-                        if (!should_ignore_file($chmod . '/' . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_NONBUNDLED_SCATTERED)) {
+                        if (!should_ignore_file($chmod . '/' . $file, IGNORE_ACCESS_CONTROLLERS)) {
                             $array[] = $chmod . '/' . $file;
                         }
                     }
@@ -1078,7 +1078,7 @@ function check_excess_perms($array, $rel = '')
 
             $is_dir = @is_dir($dir . $file);
 
-            if ((should_ignore_file($dir . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_NONBUNDLED_SCATTERED)) && ($is_dir)) {
+            if ((should_ignore_file($dir . $file, IGNORE_ACCESS_CONTROLLERS)) && ($is_dir)) {
                 continue;
             }
 
@@ -1184,13 +1184,10 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
             return ''; // Taking too long
         }
 
-        if (should_ignore_file($file, IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED)) {
+        if (should_ignore_file($file, IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_NONBUNDLED | IGNORE_FLOATING | IGNORE_CUSTOM_DIRS | IGNORE_UPLOADS)) {
             continue;
         }
 
-        if ((!isset($master_data[$file])) && (strpos($file, '_custom') !== false)) {
-            continue; // These won't be in the manifest
-        }
         if ($file == 'data/files.dat') {
             continue; // Can't check integrity against self!
         }
@@ -1376,7 +1373,7 @@ function check_outdated__handle_overrides($dir, $rela, &$master_data, &$hook_fil
     $dh = @opendir($dir);
     if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
-            if (should_ignore_file($rela . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_CUSTOM_THEMES | IGNORE_USER_CUSTOMISE | IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED)) {
+            if (should_ignore_file($rela . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_DIRS | IGNORE_UPLOADS | IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_NONBUNDLED | IGNORE_FLOATING)) {
                 continue;
             }
 
@@ -1501,22 +1498,12 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
         }
         sort($dir_files);
         foreach ($dir_files as $file) {
-            if (should_ignore_file($rela . $file, IGNORE_USER_CUSTOMISE | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES |  IGNORE_NONBUNDLED_SCATTERED | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_REVISION_FILES)) {
+            if (should_ignore_file($rela . $file, IGNORE_CUSTOM_DIRS | IGNORE_UPLOADS | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES | IGNORE_NONBUNDLED | IGNORE_FLOATING | IGNORE_UNSHIPPED_VOLATILE | IGNORE_REVISION_FILES | IGNORE_EDITFROM_FILES)) {
                 continue;
             }
 
             $is_dir = @is_dir($dir . $file);
             if (!is_readable($dir . $file)) {
-                continue;
-            }
-
-            if ($rela == 'caches/') {
-                continue;
-            }
-            if ($rela == 'uploads/') {
-                continue;
-            }
-            if ($rela == 'data_custom/modules/') {
                 continue;
             }
 

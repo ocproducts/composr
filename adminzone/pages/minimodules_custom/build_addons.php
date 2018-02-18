@@ -172,7 +172,7 @@ if (get_param_integer('export_themes', 0) == 1) {
         $file = 'theme-' . preg_replace('#^[_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $theme)) . '-' . get_version_branch() . '.tar';
 
         $files2 = array();
-        $theme_files = get_directory_contents(get_custom_file_base() . '/themes/' . $theme, 'themes/' . $theme, IGNORE_EDITFROM_FILES);
+        $theme_files = get_directory_contents(get_custom_file_base() . '/themes/' . $theme, 'themes/' . $theme, IGNORE_EDITFROM_FILES | IGNORE_REVISION_FILES);
         foreach ($theme_files as $file2) {
             $files2[] = $file2;
         }

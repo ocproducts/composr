@@ -166,15 +166,13 @@ function do_dir($dir, $enable_custom = true, $orig_priority = false, $avoid = ar
                 continue;
             }
 
-            $bitmask = IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_BUNDLED_VOLATILE;
-            if (!$enable_custom) {
-                $bitmask = $bitmask | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_NONBUNDLED_SCATTERED;
-            }
             $stripped_path = preg_replace('#^' . preg_quote($COMPOSR_PATH . '/', '#') . '#', '', $dir . '/') . $file;
-            if ($stripped_path == 'exports') {
-                continue; // Would be covered by IGNORE_NONBUNDLED_SCATTERED, but we don't always have that
+
+            $bitmask = IGNORE_ACCESS_CONTROLLERS | IGNORE_HIDDEN_FILES | IGNORE_EDITFROM_FILES | IGNORE_REVISION_FILES | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_LANGS | IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING | IGNORE_UPLOADS;
+            if (!$enable_custom) {
+                $bitmask = $bitmask | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_DIRS | IGNORE_NONBUNDLED;
             }
-            if ((should_ignore_file($stripped_path, $bitmask, 0)) && (substr($stripped_path, 0, 8))) {
+            if (should_ignore_file($stripped_path, $bitmask)) {
                 continue;
             }
 

@@ -295,9 +295,6 @@ class Hook_ecommerce_catalogue_items
                 $query .= ' AND t1.member_id<>' . strval($member_id);
             }
             $locked_item_count = $GLOBALS['SITE_DB']->query_value_if_there($query);
-            if ($locked_item_count === null) {
-                $locked_item_count = 0;
-            }
 
             // Items in own cart (not locked, but tied to this purchase)
             if ($consider_own_cart_contents) {

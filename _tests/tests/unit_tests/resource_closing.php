@@ -30,7 +30,7 @@ class resource_closing_test_set extends cms_test_case
 
         require_code('files2');
 
-        $this->files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('php'));
+        $this->files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING, true, true, array('php'));
         $this->files[] = 'install.php';
 
         $exceptions = array(

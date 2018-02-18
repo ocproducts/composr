@@ -56,7 +56,7 @@ class maintenance_codes_test_set extends cms_test_case
 
         // Test PHP code
         require_code('files2');
-        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('php'));
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING, true, true, array('php'));
         $files[] = 'install.php';
         foreach ($files as $path) {
             $_c = file_get_contents(get_file_base() . '/' . $path);

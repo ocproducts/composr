@@ -22,7 +22,7 @@ class override_notes_consistency_test_set extends cms_test_case
     {
         require_code('files2');
 
-        $files = get_directory_contents(get_file_base(), '', IGNORE_NONBUNDLED_VERY_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('php'));
+        $files = get_directory_contents(get_file_base(), '', IGNORE_FLOATING, true, true, array('php'));
         $files[] = 'install.php';
         foreach ($files as $path) {
             if (file_exists(dirname($path) . '/index.php')) {

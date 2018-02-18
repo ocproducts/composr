@@ -94,7 +94,7 @@ class xss_test_set extends cms_test_case
 
     protected $found_error = null;
 
-    protected function _temp_handler($errornum, $errormsg)
+    public function _temp_handler($errornum, $errormsg)
     {
         $this->found_error = $errormsg;
         return false;

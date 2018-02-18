@@ -54,6 +54,6 @@ class Hook_config_error_handling_notices
      */
     public function get_default()
     {
-        return $GLOBALS['DEV_MODE'] ? 'FATAL' : 'ATTACH';
+        return $GLOBALS['SEMI_DEV_MODE'] ? 'FATAL' : 'ATTACH';
     }
 }

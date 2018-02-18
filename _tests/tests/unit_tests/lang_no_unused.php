@@ -26,27 +26,27 @@ class lang_no_unused_test_set extends cms_test_case
         disable_php_memory_limit();
 
         $all_code = '';
-        $files = get_directory_contents(get_file_base(), '', IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('php'));
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING, true, true, array('php'));
         $files[] = 'install.php';
         foreach ($files as $path) {
             $all_code .= file_get_contents(get_file_base() . '/' . $path);
         }
-        $files = get_directory_contents(get_file_base(), '', IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('tpl'));
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES, true, true, array('tpl'));
         foreach ($files as $path) {
             $all_code .= file_get_contents(get_file_base() . '/' . $path);
         }
-        $files = get_directory_contents(get_file_base(), '', IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('js'));
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES, true, true, array('js'));
         foreach ($files as $path) {
             $c = file_get_contents(get_file_base() . '/' . $path);
             if (strpos($c, '/*{$,parser hint: pure}*/') === false) {
                 $all_code .= $c;
             }
         }
-        $files = get_directory_contents(get_file_base(), '', IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('txt'));
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES, true, true, array('txt'));
         foreach ($files as $path) {
             $all_code .= file_get_contents(get_file_base() . '/' . $path);
         }
-        $files = get_directory_contents(get_file_base(), '', IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('xml'));
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING | IGNORE_CUSTOM_THEMES, true, true, array('xml'));
         foreach ($files as $path) {
             $all_code .= file_get_contents(get_file_base() . '/' . $path);
         }

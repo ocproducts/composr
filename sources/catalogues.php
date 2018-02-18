@@ -1209,7 +1209,7 @@ function _resolve_catalogue_entry_field($field, $entry_id, $only_field_ids, &$ta
                 $target['effective_value_pure'] = do_lang('NA');
                 break;
             } else {
-                $target['effective_value'] = float_to_raw_string($temp['cv_value'], 30, true);
+                $target['effective_value'] = float_format($temp['cv_value'], 30, true);
                 $target['effective_value_pure'] = $target['effective_value'];
             }
             break;

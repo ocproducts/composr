@@ -26,7 +26,7 @@ class template_no_unused_test_set extends cms_test_case
         disable_php_memory_limit();
 
         $all_code = '';
-        $files = get_directory_contents(get_file_base(), '', IGNORE_BUNDLED_VOLATILE, true, true, array('php'));
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING, true, true, array('php'));
         $files[] = 'install.php';
         foreach ($files as $path) {
             $all_code .= file_get_contents(get_file_base() . '/' . $path);

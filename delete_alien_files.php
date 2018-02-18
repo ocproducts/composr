@@ -186,8 +186,8 @@ function do_dir($dir = '')
     $full_dir = get_file_base() . '/' . $dir;
     $dh = opendir($full_dir);
     while (($file = readdir($dh)) !== false) {
-        $ignore = IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_NONBUNDLED_EXTREMELY_SCATTERED | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_USER_CUSTOMISE;
-        if (should_ignore_file($dir . $file, $ignore, 0)) {
+        $ignore = IGNORE_CUSTOM_DIRS | IGNORE_UPLOADS | IGNORE_NONBUNDLED | IGNORE_FLOATING | IGNORE_CUSTOM_ZONES | IGNORE_UNSHIPPED_VOLATILE | IGNORE_EDITFROM_FILES | IGNORE_REVISION_FILES;
+        if (should_ignore_file($dir . $file, $ignore)) {
             continue;
         }
 

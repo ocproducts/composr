@@ -24,7 +24,7 @@ class clean_reinstall_test_set extends cms_test_case
 
         safe_ini_set('memory_limit', '-1');
 
-        $files = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS, true, true, array('php'));
+        $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING, true, true, array('php'));
         $files[] = 'install.php';
         foreach ($files as $i => $path) {
             $c = file_get_contents(get_file_base() . '/' . $path);

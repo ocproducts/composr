@@ -285,7 +285,7 @@ if (@is_resource($DATADOTCMS_FILE)) {
 /**
  * Propagate certain keep_ parameters to a URL.
  *
- * @param  URLPATH The URL
+ * @param  URLPATH $url The URL
  * @return URLPATH Corrected URL
  */
 function prepare_installer_url($url)
@@ -332,9 +332,10 @@ function step_1()
 
                 foreach ($files as $file => $file_info) {
                     // Volatile files (see also list in make_release.php)
-                    if (should_ignore_file($file, IGNORE_BUNDLED_VOLATILE)) {
+                    if (should_ignore_file($file, IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE)) {
                         continue;
                     }
+                    // These files are volatile when developing, really not worth checking
                     if ($file == 'sources/version.php') {
                         continue;
                     }

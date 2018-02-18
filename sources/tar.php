@@ -327,16 +327,6 @@ function tar_add_folder(&$resource, $log_file, $path, $max_size = null, $subpath
 
             $_subpath = ($subpath == '') ? $entry : ($subpath . '/' . $entry);
 
-            // Also see code in backup_size.php, and repeated in this file
-            if ($GLOBALS['DEV_MODE']) {
-                if ($_subpath == 'exports/builds' || $_subpath == 'exports/addons') {
-                    continue;
-                }
-            }
-            if ($_subpath == 'uploads/incoming' || $_subpath == 'uploads/auto_thumbs') {
-                continue;
-            }
-
             if (($ignore_bitmask === null) || (!should_ignore_file($_subpath, $ignore_bitmask))) {
                 $full = ($path == '') ? $_subpath : ($path . '/' . $_subpath);
                 if (!is_readable($full)) {

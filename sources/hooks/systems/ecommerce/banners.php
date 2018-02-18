@@ -90,8 +90,8 @@ class Hook_ecommerce_banners
             $sql .= ' AND ' . db_string_not_equal_to('name', $banner_name);
         }
         $total_importance = $GLOBALS['SITE_DB']->query_value_if_there($sql);
-        if ($total_importance === null) {
-            $total_importance = 0;
+        if ($total_importance == 0) {
+            $total_importance = 1;
         }
         $current_importance = 0;
         $current_hits = 0;
