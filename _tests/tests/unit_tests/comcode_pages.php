@@ -23,6 +23,33 @@ class comcode_pages_test_set extends cms_test_case
         require_code('zones2');
     }
 
+    public function testParsing()
+    {
+        require_code('files2');
+        require_code('comcode_check');
+        require_code('failure');
+
+        set_throw_errors(true);
+
+        $files = get_directory_contents(get_file_base(), '', 0, true, true, array('txt'));
+        foreach ($files as $file) {
+            if (preg_match('#^(adminzone/pages|buildr/pages|docs/pages|site/pages|pages|themes/default/text|themes/default/text_custom|data/modules/cms_comcode_pages)/#', $file) == 0) {
+                continue;
+            }
+
+            $c = file_get_contents(get_file_base() . '/' . $file);
+
+            try {
+                check_comcode($c);
+            }
+            catch (Exception $e) {
+                $this->assertTrue(false, 'Failed to parse ' . $file);
+            }
+        }
+
+        set_throw_errors(false);
+    }
+
     public function testPageTitleDetection()
     {
         $pages = array(

@@ -1,7 +1,7 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Installation on a Windows server[/title]
 
 [media framed="0" width="150" float="right"]data_custom/images/docs/tut_install_windows_server/iis_logo.png[/media]
-This tutorial will show you how to get a Composr installation running on a Windows server, using {$IS_MAINTAINED,platform_iis,IIS}. It is written for readers with a higher expertise than the [page="_SEARCH:tut_install_windows_desktop]Installation on a Windows desktop[/page] tutorial is. If you want to see Composr installation steps, or information about Composr's own Web Platform Installer, see that tutorial.
+This tutorial will show you how to get a Composr installation running on a Windows server, using {$IS_MAINTAINED,platform_iis,IIS}. It is written for readers with a higher expertise than the [page="_SEARCH:tut_install_windows_desktop"]Installation on a Windows desktop[/page] tutorial is. If you want to see Composr installation steps, or information about Composr's own Web Platform Installer, see that tutorial.
 
 If you are running a Windows desktop machine that you want to behave like a proper IIS server, this tutorial will cater for that too.
 

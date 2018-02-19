@@ -495,9 +495,15 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
 
     // Our state
     $status = CCP_NO_MANS_LAND;
-    $lax = (get_param_integer('lax_comcode', 0) === 1) || peek_lax_comcode() || (function_exists('get_member')) && ($source_member != get_member()) || (!has_interesting_post_fields()); // if we don't want to produce errors for technically invalid Comcode
-    if ((!$lax) && (substr($comcode, 0, 10) === '[semihtml]')) {
+    if (($flags & COMCODE_FORCE_LAX_MODE_ON) != 0) {
         $lax = true;
+    } elseif (($flags & COMCODE_FORCE_LAX_MODE_OFF) != 0) {
+        $lax = false;
+    } else {
+        $lax = (get_param_integer('lax_comcode', 0) === 1) || peek_lax_comcode() || (function_exists('get_member')) && ($source_member != get_member()) || (!has_interesting_post_fields()); // if we don't want to produce errors for technically invalid Comcode
+        if ((!$lax) && (substr($comcode, 0, 10) === '[semihtml]')) {
+            $lax = true;
+        }
     }
     $tag_stack = array(); // Contains tuples of our parser state. Does NOT purely represent the most recent tag, it's a combination of the most recent tag and the characteristics of the second most recent tag
     $pos = 0;

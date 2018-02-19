@@ -45,6 +45,8 @@ function init__comcode()
         define('COMCODE_STRUCTURE_SWEEP', 8); // Whether we are only doing this parse to find the title structure.
         define('COMCODE_CHECK_ONLY', 16); // Whether to only check the Comcode. It's best to use the check_comcode function which will in turn use this parameter.
         define('COMCODE_IN_CODE_TAG', 32); // Whether the parse context is already in a code tag.
+        define('COMCODE_FORCE_LAX_MODE_ON', 64); // Whether to force lax mode on, regardless of state.
+        define('COMCODE_FORCE_LAX_MODE_OFF', 128); // Whether to force lax mode off, regardless of state.
     }
 }
 

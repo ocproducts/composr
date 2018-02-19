@@ -348,7 +348,7 @@ function handle_file_bom($path, $handle_charset_conversion_automatically = true)
     if ($handle_charset_conversion_automatically) {
         // Automatic conversion, we simply read in the file, strip the BOM, convert, and re-save...
 
-        $contents = file_get_contents($path);
+        $contents = file_get_contents($path); // TODO: #3467 We can actually do this line-by-line, will be memory-conservative then
         $contents = substr($contents, strlen($bom));
         require_code('character_sets');
         $contents = convert_to_internal_encoding($contents, $file_charset);

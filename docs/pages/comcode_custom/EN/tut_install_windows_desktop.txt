@@ -114,19 +114,19 @@ If you want to install a supported third-party forum on your computer, follow th
 [title="4"]Setting file permissions, Extracting files[/title]
 
 [surround]
+[media width="150" description="Setting permission inheriting for a file (perhaps one copied into the web directory from somewhere that did not have it)" float="right"]data_custom/images/docs/tut_install_windows_desktop/windows_perm_reset.png[/media]
 [media width="150" description="Setting permissions (2)" float="right"]data_custom/images/docs/tut_install_windows_desktop/windows_perm2.png[/media]
 [media width="150" description="Setting permissions (1)" float="right"]data_custom/images/docs/tut_install_windows_desktop/windows_perm1.png[/media]
 Because you are unlikely to have an account based FTP/HTTP setup like webhosts provide, using the quick installer is probably not the truly quickest option. Fortunately due to the (wonderful!) inheritable Windows permissions system, and the fact you are at your own computer, you can just extract the manual installer files and run through the installation without having to set any file permissions or do any uploading.
 
 Before you extract the files, you must make sure that the web directory, or sub-directory thereof, has been configured to have the right file permissions:
 
-[indent="50"]
+[indent="20"]
 [b]If you are running [concept]IIS[/concept][/b]: Give 'Full control' to 'IIS_IUSRS' and 'IUSR', as demonstrated in the screen-shot.
 
 [b]If you are running Apache[/b]: Apache is probably running with the credentials of your own user account, and hence special permissions are not required.
 [/indent]
 
-[media width="150" description="Setting permission inheriting for a file (perhaps one copied into the web directory from somewhere that did not have it)" float="left"]data_custom/images/docs/tut_install_windows_desktop/windows_perm_reset.png[/media]
 By default when you extract files, they are set to inherit permissions of the parent directory: hence by setting the permissions of this directory you have allowed the files extracted into it to all have web server write permission. This would be a potential security risk on a shared hosting environment, and it is advisable to make sure that your web server is not accessible from outside your computer/local-network.
 
 If you find that some files underneath your install directory, often ones moved in, have the wrong permissions, you can manually set them to inherit permissions (from the security tab of the file, click the advanced button, and set inheriting). Or you can tell Windows to reset permissions on all the files underneath the install directory (from the security tab of the install directory, click the advanced button, and select as demonstrated in the screen-shot).

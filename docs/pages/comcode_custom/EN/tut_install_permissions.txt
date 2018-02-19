@@ -15,7 +15,7 @@ If installing with the quick installer you should not need to manually set any o
 
 [title="2"]suEXEC is strongly recommended[/title]
 
-In the ideal world you'd be on a suEXEC-style server, which is described in the [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/tt] tutorial. But basically it's where the PHP script is run as your own user.
+In the ideal world you'd be on a suEXEC-style server, which is described in the [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page] tutorial. But basically it's where the PHP script is run as your own user.
 
 However, in the real world there are still webhosts that do not use suEXEC, and self-installs of Apache are often configured without it.
 

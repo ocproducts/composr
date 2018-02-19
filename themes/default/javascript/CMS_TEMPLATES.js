@@ -222,7 +222,7 @@
             }
 
             for (var i = 0; i < step4Form.elements.length; i++) {
-                if ((step4Form.elements[i].classList.contains('-required')) && (step4Form.elements[i].value === '')) {
+                if ((step4Form.elements[i].className.indexOf('-required') != -1) && (step4Form.elements[i].value === '')) {
                     window.alert('{!IMPROPERLY_FILLED_IN;^}');
                     return;
                 }
