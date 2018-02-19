@@ -117,7 +117,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 		</tr>
 		<tr>
 			<td>[url="http://www.w3.org/TR/WAI-WEBCONTENT/"]WCAG 1.0[/url] and [url="http://www.w3.org/TR/WCAG20/"]2.0[/url] and [url="http://www.w3.org/WAI/intro/aria"]WAI-ARIA[/url]</td>
-			<td>{$IS_MAINTAINED,standard_accessibility,Accessibility standards, particularly for blind users.</td>
+			<td>{$IS_MAINTAINED,standard_accessibility,Accessibility standards}, particularly for blind users.</td>
 			<td>We support the highest levels of compliance (AAA).</td>
 		</tr>
 		<tr>

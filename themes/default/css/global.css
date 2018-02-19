@@ -227,6 +227,7 @@ body, .email-body, textarea, input, td, th {
 tt, kbd, samp {
 	font-weight: bold;
 	font-size: 1.15em;
+	word-wrap: break-word;
 }
 
 abbr {
@@ -928,6 +929,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 		box-sizing: border-box;
 		{$BETA_CSS_PROPERTY,order: 1;}
 		{$BETA_CSS_PROPERTY,flex-grow: 1;}
+		min-width: 0; /* This stops it stretching beyond available space if containing something white-space:pre, which it will do in Firefox [unrelated to flex-grow] https://bugzilla.mozilla.org/show_bug.cgi?id=1136818 */
 	}
 
 	#panel-left {
@@ -4427,6 +4429,9 @@ td>.comcode-code-wrap>.comcode-quote, td>.comcode-code-wrap>.comcode-code {
 	border-top: 0;
 	white-space: nowrap;
 	overflow: auto;
+}
+.comcode-code-inner>div { /* Indicates syntax-highlighted, white-space already prepared nicely */
+	white-space: normal;
 }
 
 /* Allow pre tags to work when mixed in, as people do this when pasting */

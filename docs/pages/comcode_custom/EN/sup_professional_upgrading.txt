@@ -350,7 +350,7 @@ git commit -a -m "Finished code rebuild"
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Do one of 3 things to get the database back in sync:[list="1"]
-| [*] Identify that nothing needs synching. If you are using MyISAM then Commandr can tell when tables were recently changed with [tt]ls /database[/tt].
+[*] Identify that nothing needs synching. If you are using MyISAM then Commandr can tell when tables were recently changed with [tt]ls /database[/tt].
 [*] Take a new database backup and use a diff against your very first database backup, then manually copy those changes through. This is only a good idea if you expect a tiny number of simple changes. Of course in most cases you can ignore changes to logging tables.
 [*] Install MySQL utilities and Connector/Python, put your [tt]_temp/stage1.sql[/tt] file into [tt]client_<codename>_old[/tt] then run something like:
 [code="Bash"]

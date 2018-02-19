@@ -349,10 +349,10 @@ For the server configuration side of things you need to configure Apache to acce
 Composr does not contain a way for individual sites to be set up automatically out-of-the-box, but developers have in the past set up code for clients to do this; for example, via an eCommerce product. In these scenarios it is common to create the new sites automatically be extracting a TAR file to create the [tt]sites/whateveruser[/tt] directory automatically, and also importing an SQL file into the new correctly-named database; together the TAR and SQL would form a template for each new site.
 
 [concepts
- 1_key="M.S.N."        1_value="A multi-site-network. Multi-site networks allow you to have more than one Composr installation (multiple websites), all running on the same network. If you choose this, members who join one website will also have an account at other sites. Composr provides additional special features that are designed for such a situation."
- 2_key="Central site"  2_value="Every M.S.N. should have a central site which hosts the community and the netlink system; it often makes sense to also structure things so this site is seen to be the central site in the network, but this is optional"
- 3_key="Satellite site"  2_value="A site on an M.S.N. that is not a central site"
- 4_key="Netlink"       3_value="The site-jump system intended for multi-site-networks"
+ 1_key="M.S.N."          1_value="A multi-site-network. Multi-site networks allow you to have more than one Composr installation (multiple websites), all running on the same network. If you choose this, members who join one website will also have an account at other sites. Composr provides additional special features that are designed for such a situation."
+ 2_key="Central site"    2_value="Every M.S.N. should have a central site which hosts the community and the netlink system; it often makes sense to also structure things so this site is seen to be the central site in the network, but this is optional"
+ 3_key="Satellite site"  3_value="A site on an M.S.N. that is not a central site"
+ 4_key="Netlink"         4_value="The site-jump system intended for multi-site-networks"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

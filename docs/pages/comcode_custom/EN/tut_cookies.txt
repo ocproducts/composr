@@ -47,7 +47,7 @@ Note that IP addresses could never be used instead of sessions because they are 
 JavaScript is built into web browsers directly. It is used to provide an interactive element to the user's experience in their web browser.
 
 Composr detects JavaScript by making the web browser write a cookie using JavaScript -- if such a cookie exists, Composr knows that JavaScript is enabled. Likewise, if the cookie does not get set, Composr knows JavaScript is probably not enabled.
-[i]Nowadays we have this detection disabled by default and assume JavaScript is available.[/tt]
+[i]Nowadays we have this detection disabled by default and assume JavaScript is available.[/i]
 
 While this is indirect, and requires one page view before detection is accurate, it is the best way to detect JavaScript because web browsers do not announce its presence to web servers directly.
 

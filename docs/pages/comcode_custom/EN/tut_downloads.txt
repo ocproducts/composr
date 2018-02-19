@@ -48,6 +48,7 @@ For an uploaded file, you will see upon edit that the filename of the actual on-
 [title="3"]Images[/title]
 
 When you add a download, Composr automatically adds a specially-named gallery for it (if the galleries addon is installed). You will actually see a convenient 'add image' icon directly after adding the download, and you will also find an equivalent link on the download-view screen itself. The download gallery is displayed in-line, within the actual download-view screen. The Composr gallery system is used for adding and storage of the images. If you have no images added for the download yet there is a shortcut on the main download add/edit form for that; otherwise you can choose which of the images should also serve as the thumbnail for the download on the download add/edit form.
+[/surround]
 
 [title="2"]Accessing downloads[/title]
 

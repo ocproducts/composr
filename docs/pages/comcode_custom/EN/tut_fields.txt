@@ -163,7 +163,7 @@ Note that text fields will sort using a text sort algorithm. For example, "10" c
 [media description="Huge widget" framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__long_text__huge.png[/media]
 |-
 ! Front-end UI
-| [media description="Textdescription="Huge widget"  widget" framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__long_text.png[/media]
+| [media description="Text widget" framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__long_text.png[/media]
 [media description="Huge widget" framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__long_text__huge.png[/media]
 |}
 

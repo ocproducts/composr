@@ -93,7 +93,7 @@ To send a test e-mail to a few services at once using Commandr:
 When previewing an outgoing newsletter (if you have the [tt]newsletters[/tt] addon installed), it automatically runs a spam check.
 Some specific things to look out for when writing your content:[list="a"]
 [*] Don't have an [b]unreasonable image to text ratio[/b].
-[*] Don't use a [b]broken reply-to address[/tt] that nobody can reply on such as a [tt]noreply[/tt].
+[*] Don't use a [b]broken reply-to address[/b] that nobody can reply on such as a [tt]noreply[/tt].
 [/list]
 [*] Something subtle is triggering spam analysers:[list="a"]
 [*] The PHP [b][tt]mail.add_x_header[/tt] option is on[/b] (it flags up on SpamAssassin, a common spam analysers that companies use). You can check this from Admin Zone > Tools > PHP-Info.

@@ -205,10 +205,10 @@ This code assumes the staging site is at [tt]staging.example.com[/tt].
 
 [concepts
  1_key="Staging server"       1_value="A server that mirrors the live server, used for final testing. Others might also use the following terms: sandbox, testing."
- 1_key="Staging site"         1_value="The site on the staging server."
- 1_key="git"                  1_value="A revision control system for files, very popular with programmers. Keeps track of changes made in a code-base."
- 2_key="Deploy key"           2_value="A key for SSH that provides read-only access to a git repository."
- 3_key="Portability"          3_value="Something is portable if it is easily transferable between sites or systems."
+ 2_key="Staging site"         2_value="The site on the staging server."
+ 3_key="git"                  3_value="A revision control system for files, very popular with programmers. Keeps track of changes made in a code-base."
+ 4_key="Deploy key"           4_value="A key for SSH that provides read-only access to a git repository."
+ 5_key="Portability"          5_value="Something is portable if it is easily transferable between sites or systems."
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

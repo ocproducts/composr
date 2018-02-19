@@ -295,7 +295,6 @@ For example:
 
 In areas where serious risks are identified, significant extra testing must be done, with an audit trail of test results.
 These steps should all be completed before costings are made, with the results then factored into the costings. This should include the time taken writing/reviewing the report and the extra testing.
-[/quote]
 
 [title="2"]Overall project checklist[/title]
 

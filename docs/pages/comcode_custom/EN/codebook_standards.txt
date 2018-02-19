@@ -1470,7 +1470,7 @@ Reinstalls must be handled correctly
 | Don't hard-code English text into your code, unless it is only designed for programmers to ever see.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Don't spell things [i]rong[/i][/color] or use incorrect grammar[/color]
+[color="red"]Don't spell things [i]rong[/i] or use incorrect grammar[/color]
 | Usability
 | Composr development +
 | Use the [tt].ini[/tt] files with Microsoft Word's checking tools, Automated test ([tt]lang_spelling.php[/tt]), Automated test ([tt]lang_grammar.php[/tt])

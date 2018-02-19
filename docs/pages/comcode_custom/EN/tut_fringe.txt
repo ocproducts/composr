@@ -6,8 +6,8 @@ This tutorial will explain and detail some of the fringe features of web technol
 
 [title="2"]Favicons[/title]
 
-[media width="150" description="The default webclipicon, viewing the multiple sizes within" float="right" width="179"]data_custom/images/docs/tut_fringe/webclipicon.png[/media]
-[media width="150" description="The default favicon, viewing the multiple sizes within" float="right" width="71"]data_custom/images/docs/tut_fringe/favicon.png[/media]
+[media width="179" description="The default webclipicon, viewing the multiple sizes within" float="right"]data_custom/images/docs/tut_fringe/webclipicon.png[/media]
+[media width="71" description="The default favicon, viewing the multiple sizes within" float="right"]data_custom/images/docs/tut_fringe/favicon.png[/media]
 Microsoft created a technology that allows websites to have their own little icons, that has since been adopted by all major web browsers. These icons often show up (depending on the web browser):
  - in the favorites/bookmarks menu
  - as the web browser window icon

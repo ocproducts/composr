@@ -31,7 +31,13 @@ class comcode_pages_test_set extends cms_test_case
 
         set_throw_errors(true);
 
-        $files = get_directory_contents(get_file_base(), '', 0, true, true, array('txt'));
+        $only_tutorial = get_param_string('only_tutorial', '') ;
+        if ($only_tutorial == '') {
+            $files = get_directory_contents(get_file_base(), '', 0, true, true, array('txt'));
+        } else {
+            $files = array('docs/pages/comcode_custom/EN/' . $only_tutorial . '.txt');
+        }
+
         foreach ($files as $file) {
             if (preg_match('#^(adminzone/pages|buildr/pages|docs/pages|site/pages|pages|themes/default/text|themes/default/text_custom|data/modules/cms_comcode_pages)/#', $file) == 0) {
                 continue;
@@ -43,7 +49,7 @@ class comcode_pages_test_set extends cms_test_case
                 check_comcode($c);
             }
             catch (Exception $e) {
-                $this->assertTrue(false, 'Failed to parse ' . $file);
+                $this->assertTrue(false, 'Failed to parse ' . $file . ', ' . $e->getMessage());
             }
         }
 
@@ -52,6 +58,10 @@ class comcode_pages_test_set extends cms_test_case
 
     public function testPageTitleDetection()
     {
+        if (get_param_string('only_tutorial', '') != '') {
+            return;
+        }
+
         $pages = array(
             '[title]Test[/title]' => 'Test',
             '[title="1"]Test[/title]' => 'Test',
