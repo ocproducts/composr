@@ -217,7 +217,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $notes = $this->_default_property_str($properties, 'notes');
         $submit_points = $this->_default_property_int($properties, 'submit_points');
         $ecommerce = $this->_default_property_int($properties, 'ecommerce');
-        $send_view_reports = $this->_default_property_int($properties, 'send_view_reports');
+        $send_view_reports = $this->_default_property_str($properties, 'send_view_reports');
         $default_review_freq = $this->_default_property_int_null($properties, 'default_review_freq');
         $add_time = $this->_default_property_time($properties, 'add_date');
 
@@ -256,6 +256,9 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $move_days_lower = $this->_default_property_int($properties, 'move_days_lower');
         $move_days_higher = $this->_default_property_int($properties, 'move_days_higher');
         $move_target = $this->_default_property_resource_id_null('catalogue_category', $properties, 'move_target');
+        if (is_string($move_target)) {
+            $move_target = intval($move_target);
+        }
         $order = $this->_default_property_int($properties, 'order');
         $add_date = $this->_default_property_time($properties, 'add_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');

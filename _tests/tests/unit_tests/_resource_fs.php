@@ -107,12 +107,18 @@ class _resource_fs_test_set extends cms_test_case
             }
 
             $listing = $this->_recursive_listing($ob, array(), array('var', $commandr_fs_hook), $commandr_fs);
+
             $count = $count_folders + $count_files;
+
+            $ok = ($count == count($listing));
+            if (get_param_integer('debug', 0) == 1) {
+                @var_dump($listing);
+            }
+
             $this->assertTrue(
-                $count == count($listing),
+                $ok,
                 'File/folder count mismatch for ' . $commandr_fs_hook . ' (' . integer_format($count_folders) . ' folders + ' . integer_format($count_files) . ' files -vs- ' . integer_format(count($listing)) . ' in Commandr-fs listing)'
             );
-            //if ($count != count($listing)) { @var_dump($listing); @exit('!' . $count . '!' . $commandr_fs_hook); } // Useful for debugging
         }
     }
 
@@ -230,7 +236,7 @@ class _resource_fs_test_set extends cms_test_case
 
                 if (strpos($path, '/') !== false) {
                     $_path = dirname($path);
-                    $result = $ob->folder_delete(basename($_path), (strpos($_path, '/') === false) ? '' : dirname($_path));
+                    $result = $ob->folder_delete(basename($_path), dirname($_path));
                     $this->assertTrue($result !== false, 'Failed to folder_delete ' . $commandr_fs_hook);
                 }
             }

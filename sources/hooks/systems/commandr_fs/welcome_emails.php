@@ -73,6 +73,9 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
         $text = $this->_default_property_str($properties, 'text');
         $send_time = $this->_default_property_int($properties, 'send_time');
         $newsletter = $this->_default_property_resource_id_null('newsletter', $properties, 'newsletter');
+        if (is_string($newsletter)) {
+            $newsletter = intval($newsletter);
+        }
         $usergroup = $this->_default_property_group_null($properties, 'usergroup');
         $usergroup_type = $this->_default_property_str($properties, 'usergroup_type');
 
@@ -133,6 +136,9 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
         $text = $this->_default_property_str($properties, 'text');
         $send_time = $this->_default_property_int($properties, 'send_time');
         $newsletter = $this->_default_property_resource_id_null('newsletter', $properties, 'newsletter');
+        if (is_string($newsletter)) {
+            $newsletter = intval($newsletter);
+        }
         $usergroup = $this->_default_property_group_null($properties, 'usergroup');
         $usergroup_type = $this->_default_property_str($properties, 'usergroup_type');
 

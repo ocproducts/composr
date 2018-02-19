@@ -74,7 +74,7 @@ class shopping_test_set extends cms_test_case
 
         $category_id = create_ecommerce_catalogue($catalogue_name);
 
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY id');
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order');
 
         $fields_map = find_shopping_catalogue_fields($catalogue_name);
         foreach ($fields_map as $key => $i) {

@@ -93,7 +93,7 @@ class Hook_commandr_fs_cpfs extends Resource_fs_base
 
         $description = $this->_default_property_str($properties, 'description');
         $locked = $this->_default_property_int($properties, 'locked');
-        $default = $this->_default_property_int($properties, 'default');
+        $default = $this->_default_property_str($properties, 'default');
         $public_view = $this->_default_property_int($properties, 'public_view');
         $owner_view = $this->_default_property_int($properties, 'owner_view');
         $owner_set = $this->_default_property_int($properties, 'owner_set');
@@ -185,7 +185,7 @@ class Hook_commandr_fs_cpfs extends Resource_fs_base
         $label = $this->_default_property_str($properties, 'label');
         $description = $this->_default_property_str($properties, 'description');
         $locked = $this->_default_property_int($properties, 'locked');
-        $default = $this->_default_property_int($properties, 'default');
+        $default = $this->_default_property_str($properties, 'default');
         $public_view = $this->_default_property_int($properties, 'public_view');
         $owner_view = $this->_default_property_int($properties, 'owner_view');
         $owner_set = $this->_default_property_int($properties, 'owner_set');

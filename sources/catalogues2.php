@@ -30,7 +30,7 @@ function create_ecommerce_catalogue($catalogue_name)
     $category_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'id', array('c_name' => $catalogue_name));
 
     $fields = array(
-        //     Name     Description     Type        Defines order   Required    Visible/Categorised/Searchable  Default     Field options
+        // Name, Description, Type, Defines order, Required, Visible, Categorised, Searchable, Default, Field options
         array('ECOM_CAT_product_title', 'DESCRIPTION_TITLE', 'short_trans', 1, 1, 1, 1, '', 'ecommerce_tag=product_title'),
         array('ECOM_CAT_sku', 'ECOM_CATD_sku', 'codename', 0, 0, 1, 1, '', 'default=RANDOM,ecommerce_tag=sku'),
         array('ECOM_CAT_price', 'ECOM_CATD_price', 'float', 0, 1, 1, 1, '', 'ecommerce_tag=price,decimal_points_behaviour=price'),

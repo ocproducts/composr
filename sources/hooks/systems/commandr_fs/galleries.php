@@ -111,6 +111,9 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
         $parent_id = $category;
+        if (empty($parent_id)) {
+            $parent_id = 'root';
+        }
         $accept_images = $this->_default_property_int_modeavg($properties, 'accept_images', 'galleries', 1);
         $accept_videos = $this->_default_property_int_modeavg($properties, 'accept_videos', 'galleries', 1);
         $is_member_synched = $this->_default_property_int($properties, 'is_member_synched');
@@ -201,6 +204,9 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
         $parent_id = $category;
+        if (($resource_id != 'root') && (empty($parent_id))) {
+            $parent_id = 'root';
+        }
         $accept_images = $this->_default_property_int_modeavg($properties, 'accept_images', 'galleries', 1);
         $accept_videos = $this->_default_property_int_modeavg($properties, 'accept_videos', 'galleries', 1);
         $is_member_synched = $this->_default_property_int($properties, 'is_member_synched');

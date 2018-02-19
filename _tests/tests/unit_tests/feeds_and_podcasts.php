@@ -95,6 +95,7 @@ class feeds_and_podcasts_test_set extends cms_test_case
 
         $url = find_script('backend') . '?type=RSS2&mode=galleries&days=30&max=0';
         $data = http_get_contents($url, array('cookies' => array(get_session_cookie() => get_session_id())));
+        @var_dump($data);
         $this->assertTrue(strpos($data, '<item>') === false, 'Failed on ' . $url);
     }
 

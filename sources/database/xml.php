@@ -1513,7 +1513,7 @@ class Database_Static_xml extends DatabaseDriver
                 if ($default === false) {
                     if ($allow_null) {
                         $default = null;
-                    } else {
+                    } elseif ($op == 'ADD') {
                         return $this->_bad_query($query, false, 'No DEFAULT given and NULL not allowed');
                     }
                 }
@@ -3212,11 +3212,12 @@ class Database_Static_xml extends DatabaseDriver
         $filtered_records = array();
         foreach ($records as $record) {
             if ($i >= $start) {
-                $filtered_records[] = $record;
-                $done++;
                 if (($max !== null) && ($done >= $max)) {
                     break;
                 }
+
+                $filtered_records[] = $record;
+                $done++;
             }
             $i++;
         }

@@ -70,6 +70,9 @@ class Hook_commandr_fs_emoticons extends Resource_fs_base
         require_code('cns_general_action');
 
         $theme_img_code = $this->_default_property_str($properties, 'theme_img_code');
+        if ($theme_img_code == '') {
+            $theme_img_code = 'cms_emoticons/smile';
+        }
         $relevance_level = $this->_default_property_int($properties, 'relevance_level');
         $use_topics = $this->_default_property_int($properties, 'use_topics');
         $is_special = $this->_default_property_int($properties, 'is_special');

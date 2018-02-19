@@ -150,7 +150,7 @@ function get_resource_fs_record($resource_type, $resource_id)
 
     $resource_fs_data = $resource_fs_ob->resource_load($resource_type, basename($resource_fs_path), dirname($resource_fs_path));
 
-    return array(json_encode($resource_fs_data), $resource_fs_path);
+    return array(json_encode($resource_fs_data, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0), $resource_fs_path);
 }
 
 /**
@@ -547,7 +547,30 @@ function table_to_portable_rows($table, $fields_to_skip = array(), $where_map = 
 
     $db_fields = collapse_2d_complexity('m_name', 'm_type', $db->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table)));
 
-    $rows = $db->query_select($table, array('*'), $where_map);
+    $key_field = null;
+    if ($table == 'wordfilter') {
+        $key_field = 'word'; // FUDGE: To get _commandr_fs automated test passing on XML database driver
+    }
+    if ($key_field === null) {
+        foreach ($db_fields as $field => $type) { // Try and get sorting consistent
+            $type = trim($type, '*');
+            if (($type == 'SHORT_TEXT') || ($type == 'SHORT_TRANS') || ($type == 'SHORT_TRANS__COMCODE')) {
+                $key_field = $field;
+                break;
+            }
+        }
+    }
+    if ($key_field === null) {
+        foreach ($db_fields as $field => $type) { // Try and get sorting consistent
+            $type = trim($type, '*');
+            if (($type == 'LONG_TEXT') || ($type == 'LONG_TRANS') || ($type == 'LONG_TRANS__COMCODE')) {
+                $key_field = $field;
+                break;
+            }
+        }
+    }
+
+    $rows = $db->query_select($table, array('*'), $where_map, ($key_field === null) ? '' : ('ORDER BY ' . $key_field));
 
     $relation_map = get_relation_map_for_table($table);
 
@@ -769,6 +792,8 @@ function table_row_from_portable_row($row, $db_fields, $relation_map, $db = null
             continue;
         }
 
+        $to_int = false;
+
         $db_field_type = trim($db_field_type, '*?');
 
         if (strpos($db_field_type, '_TRANS') !== false) {
@@ -777,14 +802,17 @@ function table_row_from_portable_row($row, $db_fields, $relation_map, $db = null
 
         elseif ($db_field_type == 'MEMBER') {
             $row[$db_field_name] = remap_portable_as_resource_id('member', $row[$db_field_name]);
+            $to_int = true;
         }
 
         elseif ($db_field_type == 'GROUP') {
             $row[$db_field_name] = remap_portable_as_resource_id('group', $row[$db_field_name]);
+            $to_int = true;
         }
 
         elseif ($db_field_type == 'TIME') {
             $row[$db_field_name] = remap_portable_as_time($row[$db_field_name]);
+            $to_int = true;
         }
 
         elseif ($db_field_type == 'URLPATH') {
@@ -793,14 +821,26 @@ function table_row_from_portable_row($row, $db_fields, $relation_map, $db = null
 
         elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == array('f_topics', 'id'))) {
             $row[$db_field_name] = remap_portable_as_resource_id('topic', $row[$db_field_name]);
+            $to_int = true;
         }
 
         elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == array('f_posts', 'id'))) {
             $row[$db_field_name] = remap_portable_as_resource_id('post', $row[$db_field_name]);
+            $to_int = true;
         }
 
         elseif (isset($relation_map[$db_field_name])) {
             $row[$db_field_name] = remap_portable_as_foreign_key($relation_map[$db_field_name], $row[$db_field_name]);
+        }
+
+        if ($db_field_type == 'AUTO_LINK' || $db_field_type == 'INTEGER') {
+            $to_int = true;
+        }
+
+        if ($to_int) {
+            if (is_string($row[$db_field_name])) {
+                $row[$db_field_name] = ($row[$db_field_name] == '') ? null : intval($row[$db_field_name]);
+            }
         }
     }
 

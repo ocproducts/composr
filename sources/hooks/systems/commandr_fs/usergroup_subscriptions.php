@@ -93,7 +93,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
 
         $description = $this->_default_property_str($properties, 'description');
         $price = $this->_default_property_float($properties, 'price');
-        $tax_code = $this->_default_property_float($properties, 'tax_code');
+        $tax_code = $this->_default_property_str($properties, 'tax_code');
         $length = $this->_default_property_int($properties, 'length');
         $length_units = $this->_default_property_str($properties, 'length_units');
         $auto_recur = $this->_default_property_int($properties, 'auto_recur');
@@ -170,7 +170,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         $label = $this->_default_property_str($properties, 'label');
         $description = $this->_default_property_str($properties, 'description');
         $price = $this->_default_property_float($properties, 'price');
-        $tax_code = $this->_default_property_float($properties, 'tax_code');
+        $tax_code = $this->_default_property_str($properties, 'tax_code');
         $length = $this->_default_property_int($properties, 'length');
         $length_units = $this->_default_property_str($properties, 'length_units');
         $auto_recur = $this->_default_property_int($properties, 'auto_recur');

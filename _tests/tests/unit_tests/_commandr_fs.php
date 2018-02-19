@@ -13,8 +13,6 @@
  * @package    testing_platform
  */
 
-// php _tests/index.php _commandr_fs
-
 /**
  * Composr test case class (unit testing).
  */
@@ -71,33 +69,34 @@ class _commandr_fs_test_set extends cms_test_case
         $data1 = $ob->read_file($path);
         $ob->write_file($path, $data1);
         $data2 = $ob->read_file($path);
-        $this->assertTrue($data1 == $data2, 'Inconsist banner type read/write');
+        $this->assertTrue($data1 == $data2, 'Inconsistent banner type read/write');
     }
 
     public function testVarPorting()
     {
         // Test exporting something
-        $out = remap_resource_id_as_portable('group', '1');
-        $this->assertTrue($out['label'] == 'Guests', 'Failed reading guest usergroup label');
-        $this->assertTrue($out['subpath'] == '', 'Failed reading guest usergroup subpath');
-        $this->assertTrue($out['id'] == db_get_first_id(), 'Failed reading guest usergroup ID');
+        $resource_id_in = strval(db_get_first_id());
+        $port_out = remap_resource_id_as_portable('group', $resource_id_in);
+        $this->assertTrue($port_out['label'] == 'Guests', 'Failed reading guest usergroup label');
+        $this->assertTrue($port_out['subpath'] == '', 'Failed reading guest usergroup subpath');
+        $this->assertTrue($port_out['id'] == db_get_first_id(), 'Failed reading guest usergroup ID');
 
         // Test importing to something - binding to something that exists
-        $in = remap_portable_as_resource_id('group', $out);
-        $this->assertTrue(intval($in) == db_get_first_id(), 'Portable ID remapping cycle broken');
+        $resource_id_out = remap_portable_as_resource_id('group', $port_out);
+        $this->assertTrue($resource_id_out == $resource_id_in, 'Portable ID remapping cycle broken');
 
         // Test importing to something - something that does not exist
         $ob = get_resource_commandr_fs_object('download');
-        $port = array(
+        $port_in = array(
             'guid' => 'a-b-c-d-e-f',
             'label' => 'My Test Download',
-            'subpath' => 'Downloads home/Some Deep/Path',
+            'subpath' => 'downloads-home/some-deep/path',
         );
-        $in = remap_portable_as_resource_id('download', $port);
-        $guid = find_guid_via_id('download', $in);
-        $filename = $ob->convert_id_to_filename('download', $in);
-        $this->assertTrue($guid == $port['guid'], 'Download GUID not holding'); // Tests it imported with the same GUID
-        $subpath = $ob->search('download', $in, true);
+        $resource_id_out = remap_portable_as_resource_id('download', $port_in); // Will create a new empty resource as it is missing
+        $guid = find_guid_via_id('download', $resource_id_out);
+        $filename = $ob->convert_id_to_filename('download', $resource_id_out);
+        $this->assertTrue($guid == $port_in['guid'], 'Download GUID not holding'); // Tests it imported with the same GUID
+        $subpath = $ob->search('download', $resource_id_out, true);
         $this->assertTrue(strpos($subpath, '/') !== false, 'Download subpath lost'); // Test it imported with a deep path
 
         // Tidy up, delete it
@@ -143,7 +142,17 @@ class _commandr_fs_test_set extends cms_test_case
                 $data1 = $ob->read_file($path);
                 $ob->write_file($path, $data1);
                 $data2 = $ob->read_file($path);
-                $this->assertTrue($data1 == $data2, 'Failed writing to /etc/' . $file[0]);
+
+                $ok = ($data1 == $data2);
+
+                if (get_param_integer('debug', 0) == 1) {
+                    if (!$ok) {
+                        @var_dump($data1);
+                        @var_dump($data2);
+                    }
+                }
+
+                $this->assertTrue($ok, 'Failed writing to /etc/' . $file[0]);
             }
         }
     }
