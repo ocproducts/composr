@@ -81,7 +81,8 @@ class _installer_forum_drivers_test_set extends cms_test_case
             $database_forums,
             $username_forums,
             $password_forums,
-            $extra_settings
+            $extra_settings,
+            'mysqli'
         );
         $this->assertTrue($success);
     }

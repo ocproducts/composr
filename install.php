@@ -2805,6 +2805,9 @@ function example($example, $description = '')
     if ($example == '') {
         return do_lang_tempcode($description);
     }
+    if ($description == '') {
+        return do_lang_tempcode($example);
+    }
     $it = new Tempcode();
     if ($description != '') {
         $it->attach(do_lang_tempcode($description));
