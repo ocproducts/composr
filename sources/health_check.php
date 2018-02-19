@@ -434,7 +434,7 @@ abstract class Hook_Health_Check
 
         if ($remap_www) {
             foreach ($domains as &$domain) {
-                $domain = preg_replace('#^www\.#', '', $domain);
+                $domain = preg_replace('#^www\d*\.#', '', $domain);
             }
         }
 

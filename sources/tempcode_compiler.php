@@ -432,9 +432,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                     $_opener_params .= implode('.', $oparam);
                 }
 
-                $escaping_symbols_from = array('`', '%', '*', '=', ';', '#', '-', '~', '^', '|', '\'', '!', '&', '.', '/', '@', '+');
-                $escaping_symbols_to = array('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-                $first_param = str_replace($escaping_symbols_from, $escaping_symbols_to, $_first_param);
+                $first_param = preg_replace('#[`%*=;\#\-~\^|\'!&./@+]+(")?$#', '$1', $_first_param);
                 switch ($past_level_mode) {
                     case PARSE_SYMBOL:
                         // Pre-processing

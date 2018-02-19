@@ -265,7 +265,7 @@ Otherwise, you may need to look at your raw web server logs, or contact your web
 If you're not getting actual errors but things just aren't applying, it's probably because either:
 [list="a"]
 [*] [tt].htaccess[/tt] has been disabled on the server (you'll need to consult your webhost)
-[*] The PHP options you're trying to override with php_value or php_flag have been locked down in the main Apache configuration (via php_admin_value or php_admin_flag)
+[*] The PHP options you're trying to override with [tt]php_value[/tt] or [tt]php_flag[/tt] have been locked down in the main Apache configuration (via [tt]php_admin_value[/tt] or [tt]php_admin_flag[/tt])
 [*] or, you're using Windows IIS which does not have this feature. You'll need to:[list]
 [*] change settings through the IIS Administrative Tools or your webhosting control panel)
 [*] or, if the settings you want to change are for PHP, and PHP is configured as CGI, see "How do I set PHP settings on a CGI server?").[/list]

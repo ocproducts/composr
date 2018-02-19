@@ -166,7 +166,7 @@ class Hook_health_check_security extends Hook_Health_Check
                 cms_file_put_contents_safe($full_path, '');
             }
             $http_result = cms_http_request(get_custom_base_url() . '/' . $c, array('trigger_error' => false));
-            $this->assertTrue($http_result->message == '403', 'Should not be able to download [tt]' . $c . '[/tt], should be secured by some kind of server configuration');
+            $this->assertTrue($http_result->message == '403' || $http_result->message == '404', 'Should not be able to download [tt]' . $c . '[/tt], should be secured by some kind of server configuration');
             if (!$exists) {
                 @unlink($full_path);
             }

@@ -16,6 +16,8 @@ This tutorial broadly assumes you are responsible for configuring and managing t
 
 The same functionality is supported as is supported on [page="_SEARCH:tut_postgresql"]Postgres[/page].
 
+Additionally, you must use [tt]utf-8[/tt], because the PHP SQL Server extension doesn't allow much configurability.
+
 [title="2"]Installing SQL Server[/title]
 
 SQL Server only runs on Windows. You can download SQL Server Express for free, which will work fine. You should install full-text searching (included by default), and when asked select mixed authentication and set a password.
@@ -165,6 +167,25 @@ sqlcmd -S <server> -d <databasename> -i <filepath>
 [/code]
 [*] You then edit Composr's [tt]_config.php[/tt] to have the correct database details.
 [/list]
+
+[title="2"]Setting up a custom user for the database[/title]
+
+To set up a custom user using SQL Management Studio:
+1) Add a Login from Security > Logins
+2) Add a User to the database from Databases > Security > Users
+3) Make sure to grant the following roles in the "Membership" tab of the user setup: [tt]db_datareader[/tt], [tt]db_datawriter[/tt], [tt]db_ddladmin[/tt], [tt]db_owner[/tt]
+
+Also make sure that in the main server properties, under the Security tab, "SQL Server and Windows Authentication mode" is set. Otherwise the login won't be able to log in!
+
+[title="2"]Migrating between servers[/title]
+
+There are 2 ways to migrate SQL Server databases between servers:
+1) Backups (Tasks --> Back Up)
+2) SQL dumps (Tasks --> Generate Scripts)
+
+Backups are the easiest way, but beware that you can not export to an older SQL Server version.
+
+SQL Dumps can be a bit tricky. You need to set export options to include data, and there's an option for the compatible version you are porting to. You'll run with [tt]sqlcmd[/tt]. It is a good idea to edit the SQL to make it [tt]USE[/tt] the database you want to import to and not do the [tt]CREATE DATABASE[/tt], otherwise permissions may trip up and things may end up going into the system [tt]master[/tt] database after failing to create the database automatically.
 
 [title="2"]Full-text search (advanced)[/title]
 

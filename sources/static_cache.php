@@ -138,6 +138,11 @@ function static_cache($mode)
         $file_extension = '.htm';
     }
 
+    $support_compressed = (isset($_SERVER['HTTP_ACCEPT_ENCODING'])) && (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false);
+    if ($support_compressed) {
+        $file_extension = '.gz';
+    }
+
     if (($mode & STATIC_CACHE__FAILOVER_MODE) == 0) {
         if (!can_static_cache()) {
             return;
@@ -229,7 +234,7 @@ function static_cache($mode)
 
     // Is cached
     if (is_file($fast_cache_path)) {
-        if ($file_extension == '.htm') {
+        if (($file_extension == '.htm') || ($file_extension == '.htm.gz')) {
             header('Content-type: text/html; charset=utf-8');
         } else {
             header('Content-type: text/xml; charset=utf-8');
@@ -255,7 +260,7 @@ function static_cache($mode)
             }
 
             // Output
-            if ((($mode & STATIC_CACHE__FAILOVER_MODE) == 0) && (function_exists('gzencode')) && (function_exists('php_function_allowed')) && (php_function_allowed('ini_set'))) {
+            if ((($mode & STATIC_CACHE__FAILOVER_MODE) == 0) && ($support_compressed) && (function_exists('gzencode')) && (function_exists('php_function_allowed')) && (php_function_allowed('ini_set'))) {
                 ini_set('zlib.output_compression', 'Off');
                 header('Content-Encoding: gzip');
             }

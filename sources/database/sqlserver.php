@@ -14,6 +14,8 @@
 
 /*EXTRA FUNCTIONS: sqlsrv\_.+*/
 
+// See sup_sqlserver tutorial for documentation on using SQL Server.
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -65,9 +67,10 @@ class Database_Static_sqlserver extends Database_super_sqlserver
         if ($db_host == '127.0.0.1' || $db_host == 'localhost') {
             $db_host = '(local)';
         }
-        $connection = @sqlsrv_connect($db_host, ($db_user == '') ? array('Database' => $db_name) : array('UID' => $db_user, 'PWD' => $db_password, 'Database' => $db_name));
+        $connection = @sqlsrv_connect($db_host, ($db_user == '') ? array('Database' => $db_name) : array('UID' => $db_user, 'PWD' => $db_password, 'Database' => $db_name, 'CharacterSet' => 'UTF-8'));
         if ($connection === false) {
-            $error = 'Could not connect to database-server (' . @strval($php_errormsg) . ')';
+            $err = serialize(sqlsrv_errors());
+            $error = 'Could not connect to database-server (' . $err . ')';
             if ($fail_ok) {
                 echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
@@ -75,7 +78,7 @@ class Database_Static_sqlserver extends Database_super_sqlserver
             critical_error('PASSON', $error);
         }
 
-        sqlsrv_query($connection, 'SET TEXTSIZE 300000');
+        sqlsrv_query($connection, 'SET TEXTSIZE 20000000');
 
         $this->cache_db[$db_name][$db_host] = $connection;
         return $connection;

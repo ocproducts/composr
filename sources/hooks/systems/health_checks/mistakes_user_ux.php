@@ -86,7 +86,7 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
 
             $parts = explode('.', $domain);
 
-            if ($parts[0] == 'www') {
+            if (substr($parts[0], 0, 3) == 'www') {
                 array_shift($parts);
                 $wrong_domain = implode('.', $parts);
             } else {

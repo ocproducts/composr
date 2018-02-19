@@ -7,5 +7,5 @@
 {$SET,RAND_FLIP,{$RAND}}
 
 <div class="flipbox" id="flipbox-{$GET%,RAND_FLIP}" data-tpl="comcodeFlip" data-tpl-params="{+START,PARAMS_JSON,RAND_FLIP,FINAL_COLOR,SPEED,CONTENT}{_*}{+END}">
-	{$COMCODE,{PARAM}}
+	{$COMCODE,{PARAM},0}
 </div>

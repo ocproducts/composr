@@ -240,7 +240,10 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
             continue; // Don't count non-marked questions
         }
 
-        $question_text = get_translated_text($question['q_question_text']);
+        $has_an_answer = false;
+
+        $just_question_row = db_map_restrict($question, array('id', 'q_question_text'));
+        $question_text = get_translated_tempcode('quiz_questions', $just_question_row, 'q_question_text');
 
         if ($question['q_type'] == 'SHORT' || $question['q_type'] == 'SHORT_STRICT' || $question['q_type'] == 'LONG') { // Text box ("free question"). May be an actual answer, or may not be
             $given_answer = $_given_answers[$question['id']][0];
@@ -255,6 +258,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
                 $was_correct = false;
                 foreach ($question['answers'] as $a) {
                     if ($a['q_is_correct'] == 1) {
+                        $has_an_answer = true;
                         $correct_answer = make_string_tempcode(get_translated_text($a['q_answer_text']));
                     }
                     if (get_translated_text($a['q_answer_text']) == $given_answer) {
@@ -286,6 +290,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
                 'CORRECT_ANSWER' => $correct_answer,
                 'CORRECT_EXPLANATION' => $correct_explanation,
             );
+
         } elseif ($question['q_type'] == 'MULTIMULTIPLE') { // Check boxes
             // Vector distance
             $wrongness = 0.0;
@@ -301,6 +306,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
                 }
 
                 if ($should_be_this) {
+                    $has_an_answer = true;
                     if (!$correct_answer->is_empty()) {
                         $correct_answer->attach(do_lang_tempcode('LIST_SEP'));
                     }
@@ -340,6 +346,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
                 'CORRECT_ANSWER' => $correct_answer,
                 'CORRECT_EXPLANATION' => $correct_explanation,
             );
+
         } elseif ($question['q_type'] == 'MULTIPLECHOICE') { // Radio buttons
             $was_correct = false;
             $correct_answer = new Tempcode();
@@ -347,6 +354,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
             $given_answer = '';
             foreach ($question['answers'] as $a) {
                 if ($a['q_is_correct'] == 1) {
+                    $has_an_answer = true;
                     $correct_answer = make_string_tempcode(get_translated_text($a['q_answer_text']));
                 }
 
@@ -386,7 +394,9 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
             );
         }
 
-        $out_of++;
+        if ($has_an_answer) {
+            $out_of++;
+        }
     }
     if ($out_of == 0) {
         $out_of = 1;
@@ -401,42 +411,49 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
     $corrections_to_member = new Tempcode();
     $affirmations_to_member = new Tempcode();
     foreach ($corrections as $correction) {
+        // For member
         if ((array_key_exists(4, $correction)) || ($quiz['q_reveal_answers'] == 1) || ($reveal_all)) {
             $__correction = do_lang_tempcode(
                 array_key_exists(4, $correction) ? 'QUIZ_MISTAKE_EXPLAINED_HTML' : 'QUIZ_MISTAKE_HTML',
-                escape_html(is_object($correction[1]) ? $correction[1]->evaluate() : $correction[1]),
-                escape_html(is_object($correction[3]) ? $correction[3]->evaluate() : $correction[3]),
+                $correction[1],
+                comcode_to_tempcode(is_object($correction[3]) ? $correction[3]->evaluate() : $correction[3]),
                 array(
-                    escape_html(is_object($correction[2]) ? $correction[2]->evaluate() : $correction[2]),
-                    escape_html(array_key_exists(4, $correction) ? $correction[4] : ''),
+                    comcode_to_tempcode(is_object($correction[2]) ? $correction[2]->evaluate() : $correction[2]),
+                    comcode_to_tempcode(array_key_exists(4, $correction) ? $correction[4] : ''),
                 )
             );
             $corrections_to_member->attach($__correction);
         }
+
+        // For staff
         $_correction = do_lang(
             array_key_exists(4, $correction) ? 'QUIZ_MISTAKE_EXPLAINED_COMCODE' : 'QUIZ_MISTAKE_COMCODE',
-            comcode_escape(is_object($correction[1]) ? $correction[1]->evaluate() : $correction[1]),
-            comcode_escape(is_object($correction[3]) ? $correction[3]->evaluate() : $correction[3]),
+            $correction[1],
+            comcode_to_tempcode(is_object($correction[3]) ? $correction[3]->evaluate() : $correction[3]),
             array(
-                comcode_escape(is_object($correction[2]) ? $correction[2]->evaluate() : $correction[2]),
-                comcode_escape(array_key_exists(4, $correction) ? $correction[4] : ''),
+                comcode_to_tempcode(is_object($correction[2]) ? $correction[2]->evaluate() : $correction[2]),
+                comcode_to_tempcode(array_key_exists(4, $correction) ? $correction[4] : ''),
             )
         );
         $corrections_to_staff->attach($_correction);
     }
     foreach ($affirmations as $affirmation) {
+        // For member
         if (array_key_exists(4, $affirmation)) {
             $__affirmation = do_lang_tempcode(
-                'QUIZ_AFFIRMATION_HTML',
-                escape_html(is_object($affirmation[1]) ? $affirmation[1]->evaluate() : $affirmation[1]),
-                escape_html(is_object($affirmation[3]) ? $affirmation[3]->evaluate() : $affirmation[3]),
+                'QUIZ_AFFIRMATION_HTML', // You could imagine this named as QUIZ_AFFIRMATION_EXPLAINED_HTML if you prefer
+                $affirmation[1],
+                comcode_to_tempcode(is_object($affirmation[3]) ? $affirmation[3]->evaluate() : $affirmation[3]),
                 array(
-                    escape_html(is_object($affirmation[2]) ? $affirmation[2]->evaluate() : $affirmation[2]),
-                    escape_html(array_key_exists(4, $affirmation) ? $affirmation[4] : ''),
+                    comcode_to_tempcode(is_object($affirmation[2]) ? $affirmation[2]->evaluate() : $affirmation[2]),
+                    comcode_to_tempcode(array_key_exists(4, $affirmation) ? $affirmation[4] : ''),
                 )
             );
             $affirmations_to_member->attach($__affirmation);
         }
+
+        // For staff
+        //  Nothing - they do not need to see what was correct
     }
     $unknowns_to_staff = new Tempcode();
     foreach ($unknowns as $unknown) {

@@ -1,3 +1,5 @@
+{$,This is shown to the quiz member if reveal answers is on. Otherwise it is just shown to staff and the member just sees an explanation list instead.}
+
 <div class="wide-table-wrap"><table class="columned-table results-table wide-table autosized-table responsive-table">
 	<colgroup>
 		<col class="quiz-done-results-col-was-correct" />
@@ -34,16 +36,16 @@
 				</td>
 
 				<td class="quiz-result-question">
-					{$COMCODE,{QUESTION}}
+					{QUESTION}
 				</td>
 
 				<td class="quiz-result-given-answer">
-					{$COMCODE,{GIVEN_ANSWER},1}
+					{$COMCODE,{GIVEN_ANSWER},0}
 				</td>
 
 				<td class="quiz-result-answer">
 					{+START,IF_NON_EMPTY,{CORRECT_ANSWER}}
-						{$COMCODE,{CORRECT_ANSWER}}
+						{$COMCODE,{CORRECT_ANSWER},0}
 					{+END}
 
 					{+START,IF_EMPTY,{CORRECT_ANSWER}}
@@ -55,7 +57,7 @@
 			{+START,IF_PASSED,CORRECT_EXPLANATION}{+START,IF_NON_EMPTY,{CORRECT_EXPLANATION}}
 				<tr class="{$GET,cycle}">
 					<td class="responsive-table-no-prefix" colspan="4">
-						<span class="field-name">{!EXPLANATION}:</span> {$COMCODE,{CORRECT_EXPLANATION}}
+						<span class="field-name">{!EXPLANATION}:</span> {$COMCODE,{CORRECT_EXPLANATION},0}
 					</td>
 				</tr>
 			{+END}{+END}

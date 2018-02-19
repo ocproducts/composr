@@ -326,7 +326,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$REQUIRE_JAVASCRIPT,example}</td>
-			<td>Include a JavaScript file in the output stream. If you set the second parameter to '1', then loading will be deferred until the end of the page</td>
+			<td>Include a JavaScript file in the output stream. If you set the second parameter to '1', then loading will be deferred until the end of the page. If you include a template into itself, then it will actually include the original version at the point of your include. This is useful for extending the default templates without duplicating them.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$REQUIRE_CSS,css_example}</td>
@@ -1706,8 +1706,8 @@ Understanding of these symbols requires an understanding of basic boolean operat
 			<td>Evaluates the given parameter as Tempcode (takes a string). This is useful for <strong>very</strong> rare situations where you want to write in symbols as parameters to Comcode tags where the parameter is treated as a plain-string. This is only useful in Comcode, when typing Tempcode you can nest Tempcode constructs almost however you like.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$COMCODE,[b]Comcode[/b]}</td>
-			<td>Evaluates the given parameter as Comcode (takes a string). This is useful in conjunction with the above (<kbd>TEMPCODE</kbd>), as anything passed into a symbol won't be evaluated as Comcode.</td>
+			<td>{$COMCODE,[b]Comcode[/b],0}</td>
+			<td>Evaluates the given parameter as Comcode (takes a string). This is useful in conjunction with the above (<kbd>TEMPCODE</kbd>), as anything passed into a symbol won't be evaluated as Comcode. If the second parameter is omitted or set to 1, then Comcode will be parsed with administrative permissions &ndash; be careful about that, as you don't want to process user content like that.</td>
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$URLDECODE,a%20b}</td>

@@ -82,7 +82,7 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
             critical_error('PASSON', $error);
         }
 
-        odbc_exec($connection, 'SET TEXTSIZE 300000');
+        odbc_exec($connection, 'SET TEXTSIZE 20000000');
 
         $this->cache_db[$db_name][$db_host] = $connection;
         return $connection;

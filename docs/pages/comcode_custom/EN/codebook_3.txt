@@ -676,6 +676,8 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]allow_admin_in_other_zones[/tt] -- set this to '1' if you want to allow admin and CMS modules to run in other zones (small performance cost)
  - Easter eggs:
   - [tt]stupidity_mode[/tt] -- set to [tt]leet[/tt] or [tt]bork[/tt], for a fun April Fools-style Comcode joke (clear the Comcode cache after you're done though)
+ - Experimental functionality
+  - [tt]access_protocol_redirect[/tt] -- set this to '1' if you want to redirect if the wrong access protocol (e.g. HTTP instead of HTTPS) is used to access the site. Note that this option won't apply when pages are served from the static cache, so it is still a good idea to configure the web server to do this directly. Sample code is in the [page="_SEARCH:tut_security"]Security tutorial[/page] (Migrating HTTP websites).
 
 [title="4"]Hidden 'keep' parameters[/title]
 

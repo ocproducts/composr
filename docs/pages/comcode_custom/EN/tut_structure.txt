@@ -368,7 +368,7 @@ Information about redirects and virtual roots is covered in the [page="_SEARCH:t
  3_key="Page"           3_value="A Composr site consists of pages, and some pages (mainly modules) consist of multiple screens"
  4_key="Screen"         4_value="An actual screen that could be roughly categorised distinctly from all other screens (e.g. the backup system has a screen to start a backup, and a screen to view the results)"
  5_key="Module"         5_value="A Composr page that is written in PHP to a very strict structure"
- 6_key="Mini-module"    6_value="A module that is easier to write, but less powerful (it has no installation support, for example)"
+ 6_key="Mini-module"    6_value="A module that is easier to write, but less powerful (it has no installation support, for example); it has full access to Composr's API but not having to follow any particular structure (to output just [tt]echo[/tt] or [tt]return[/tt]); the block equivalent of a mini-module is a mini-block"
  7_key="Zone editor"    7_value="A unified zone and panel editor"
  8_key="Sitemap editor" 8_value="A frontend for viewing and manipulating all content on the website"
 ]Concepts[/concepts]

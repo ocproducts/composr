@@ -20,6 +20,7 @@ test_a
 *.gcd
 /caches/*/*.htm
 /caches/*/*.xml
+/caches/*/*.gz
 /themes/*/templates_cached/*/*.js
 /themes/*/templates_cached/*/*.css
 /themes/*/templates_cached/*/*.tcp

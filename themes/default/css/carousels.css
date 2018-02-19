@@ -5,7 +5,7 @@
 
 .carousel {
 	overflow: hidden;
-	white-space: nowrap;
+	white-space: nowrap !important;
 	position: relative;
 }
 
@@ -49,6 +49,11 @@
 
 .carousel .main {
 	overflow: hidden;
+	white-space: nowrap !important;
+}
+
+.carousel_temp {
+	white-space: nowrap !important;
 }
 
 .carousel .box, .carousel-temp>* {

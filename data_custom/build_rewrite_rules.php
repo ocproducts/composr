@@ -27,6 +27,10 @@ if (!$cli) {
     exit('Must run this script on command line, for security reasons');
 }
 
+if (basename(getcwd()) != 'data_custom') {
+    chdir('data_custom');
+}
+
 header('Content-type: text/plain; charset=utf-8');
 
 $zones = array('', 'site', 'forum', 'adminzone', 'cms');
@@ -139,7 +143,7 @@ $rewrite_rules = array(
 
 // Write rules to google_appengine.php and app.yaml (Google App Engine)
 write_to('sources/google_appengine.php', 'GAE1', "\t" . '// RULES START', "\t// RULES END", 1, $rewrite_rules);
-write_to('data/modules/google_appengine/app.yaml', 'GAE2', 'handlers:' . "\n", "- url: ^.*\.(css", 0, $rewrite_rules);
+write_to('app.yaml', 'GAE2', 'handlers:' . "\n", "- url: ^.*\.(css", 0, $rewrite_rules);
 
 // Write rules to recommended.htaccess (Apache)
 write_to('recommended.htaccess', 'ApacheRecommended', '<IfModule mod_rewrite.c>', '</IfModule>', 0, $rewrite_rules);
@@ -203,7 +207,7 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
             $rules_txt .= '
             # Anything that would point to a real file should actually be allowed to do so. If you have a "RewriteBase /subdir" command, you may need to change to "%{DOCUMENT_ROOT}/subdir/$1".
             RewriteCond $1 ^\d+.shtml [OR]
-            RewriteCond $1 \.(css|js|png|jpg|jpeg|gif) [OR]
+            RewriteCond $1 \.(css|js|json|gz|swf|xml|png|jpg|jpeg|gif|svg|ico|php) [OR]
             RewriteCond %{DOCUMENT_ROOT}/$1 -f [OR]
             RewriteCond %{DOCUMENT_ROOT}/$1 -l [OR]
             RewriteCond %{DOCUMENT_ROOT}/$1 -d [OR]
@@ -263,6 +267,12 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
 
                     $type_str = in_array('R', $flags) ? 'type="Redirect" redirectType="Found"' : 'type="Rewrite"';
 
+                    $to = str_replace('$1', '{R:1}', $to);
+                    $to = str_replace('$2', '{R:2}', $to);
+                    $to = str_replace('$3', '{R:3}', $to);
+                    $to = str_replace('$4', '{R:4}', $to);
+                    $to = str_replace('$5', '{R:5}', $to);
+
                     if ($y != 0) {
                         $rules_txt .= "\n\n";
                     }
@@ -272,7 +282,7 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
                     }
                     $rules_txt .= '<rule name="Imported Rule ' . strval($i + 1) . '" stopProcessing="' . (in_array('L', $flags) ? 'true' : 'false') . '">
                                <match url="' . htmlentities($rule) . '" ignoreCase="false" />
-                               <action ' . $type_str . ' url="' . htmlentities($rule) . '" appendQueryString="' . (in_array('QSA', $flags) ? 'true' : 'false') . '" />
+                               <action ' . $type_str . ' url="' . htmlentities($to) . '" appendQueryString="' . (in_array('QSA', $flags) ? 'true' : 'false') . '" />
                             </rule>';
                     if (!$enabled) {
                         $rules_txt .= '-->';

@@ -155,7 +155,7 @@ function render_comcode_page_box($row, $give_context = true, $include_breadcrumb
         }
 
         if ($summary == '') {
-            $summary = get_translated_tempcode('zones', $row2[0], 'string_index');
+            $summary = get_translated_tempcode('cached_comcode_pages', $row2[0], 'string_index');
         }
     } else {
         $cc_page_title = '';
