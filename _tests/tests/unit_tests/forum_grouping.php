@@ -25,6 +25,11 @@ class forum_grouping_test_set extends cms_test_case
     {
         parent::setUp();
 
+        if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Test only works with Conversr');
+            return;
+        }
+
         require_code('cns_forums_action');
         require_code('cns_forums_action2');
         require_lang('cns');
@@ -36,6 +41,10 @@ class forum_grouping_test_set extends cms_test_case
 
     public function testEditForumGrouping()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         cns_edit_forum_grouping($this->forum_cat_id, 'New_title', 'somthing', 1);
 
         $this->assertTrue('New_title' == $GLOBALS['FORUM_DB']->query_select_value('f_forum_groupings', 'c_title', array('id' => $this->forum_cat_id)));
@@ -43,6 +52,10 @@ class forum_grouping_test_set extends cms_test_case
 
     public function tearDown()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         cns_delete_forum_grouping($this->forum_cat_id, 0);
 
         parent::tearDown();

@@ -335,9 +335,9 @@ Be advised that Google cannot provide automated "sharding" of data. This means t
  3_key="Google Cloud Storage"      3_value="Google's cloud filesystem service (built on top of their no-SQL infrastructure)"
  4_key="Bucket"                    4_value="A configured cloud filesystem on Google Cloud Storage"
  5_key="Google Cloud SQL"          5_value="Google's cloud version of MySQL, automatically set up to replicate across multiple machines, for redundancy/performance"
- 5_key="Google Cloud SQL instance" 5_value="A particular instance on Google Cloud SQL; within this instance you have one or more databases"
- 6_key="GAE"                       6_value="An abbreviation of Google App Engine"
- 7_key="Google Cloud Console"      7_value="The tool for managing Google Cloud services, apart from GAE itself (which has its own separate management site)"
+ 6_key="Google Cloud SQL instance" 6_value="A particular instance on Google Cloud SQL; within this instance you have one or more databases"
+ 7_key="GAE"                       7_value="An abbreviation of Google App Engine"
+ 8_key="Google Cloud Console"      8_value="The tool for managing Google Cloud services, apart from GAE itself (which has its own separate management site)"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

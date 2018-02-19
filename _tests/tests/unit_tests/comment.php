@@ -24,6 +24,11 @@ class comment_test_set extends cms_test_case
     {
         parent::setUp();
 
+        if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Test only works with Conversr');
+            return;
+        }
+
         require_code('calendar2');
         require_code('feedback');
         require_code('cns_posts_action');
@@ -35,6 +40,10 @@ class comment_test_set extends cms_test_case
 
     public function testComment()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         if ('test_event' == get_translated_text($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'e_title', array('id' => $this->event_id)))) {
             $map = array(
                 'p_title' => 'test_comment1',
@@ -64,6 +73,10 @@ class comment_test_set extends cms_test_case
 
     public function tearDown()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         delete_calendar_event($this->event_id);
         $GLOBALS['FORUM_DB']->query_delete('f_posts', array('id' => $this->post_id));
 

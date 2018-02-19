@@ -156,7 +156,7 @@ This includes:
 [title="3"]Tips[/title]
 
 Make sure that your system scheduler (Cron call) is running the same PHP options as normal web requests, otherwise you may get spurious errors caused by differences in configuration.
-System scheduler configuration is documented in the [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/url] tutorial, and this includes sample commands that will share your [tt].user.ini[/tt] PHP configuration.
+System scheduler configuration is documented in the [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/page] tutorial, and this includes sample commands that will share your [tt].user.ini[/tt] PHP configuration.
 
 [title="3"]What if things break too badly for the Health Check to run?[/title]
 
@@ -230,7 +230,7 @@ There are a number of optimisers:
 Frankly most of these optimisers are not useful. We provide them for very rare situations, or for helping programmers manage complicated operations.
 [/surround]
 
-[title="2"]Broken URL scanning[/url]
+[title="2"]Broken URL scanning[/title]
 
 There is a powerful broken link scanner at Admin Zone > Tools > Broken URL scanning.
 This can check:

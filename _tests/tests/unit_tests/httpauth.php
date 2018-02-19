@@ -20,6 +20,11 @@ class httpauth_test_set extends cms_test_case
 {
     public function testHttpAuth()
     {
+        if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Test only works with Conversr');
+            return;
+        }
+
         $pwd = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'm_pass_hash_salted', array('m_username' => 'admin'));
         if ($pwd !== '') {
             return; // Test only works with blank admin password

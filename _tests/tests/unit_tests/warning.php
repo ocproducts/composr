@@ -24,6 +24,11 @@ class warning_test_set extends cms_test_case
     {
         parent::setUp();
 
+        if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Test only works with Conversr');
+            return;
+        }
+
         require_code('cns_moderation');
         require_code('cns_moderation_action');
         require_code('cns_moderation_action2');
@@ -37,6 +42,10 @@ class warning_test_set extends cms_test_case
 
     public function testEditWarning()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         cns_edit_warning($this->warn_id, 'something', 1);
 
         $this->assertTrue('something' == $GLOBALS['FORUM_DB']->query_select_value('f_warnings', 'w_explanation', array('id' => $this->warn_id)));
@@ -44,6 +53,10 @@ class warning_test_set extends cms_test_case
 
     public function tearDown()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         cns_delete_warning($this->warn_id);
 
         parent::tearDown();

@@ -112,7 +112,7 @@ class file_whitelisting_test_set extends cms_test_case
 
         $file_types = array();
         $matches = array();
-        preg_match('#\.\*\\\\\.\((.*)\)\\\\\?\?\'\);\[\/code\]#', $c, $matches);
+        preg_match('#\.\*\\\\\.\((.*)\)\\\\\?\?\'\);\[\/tt\]#', $c, $matches);
         $file_types = explode('|', $matches[1]);
         sort($file_types);
 

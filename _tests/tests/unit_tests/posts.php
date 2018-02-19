@@ -25,6 +25,11 @@ class posts_test_set extends cms_test_case
     {
         parent::setUp();
 
+        if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Test only works with Conversr');
+            return;
+        }
+
         require_code('cns_topics');
         require_code('cns_posts');
         require_code('cns_forums');
@@ -45,6 +50,10 @@ class posts_test_set extends cms_test_case
 
     public function testEditPosts()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         $this->establish_admin_session();
 
         cns_edit_post($this->post_id, 1, 'take care', 'the post editing', 0, 0, null, true, false, 'Nothing');
@@ -54,6 +63,10 @@ class posts_test_set extends cms_test_case
 
     public function tearDown()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         if (!cns_delete_posts_topic($this->topic_id, array($this->post_id), 'Nothing')) {
             cns_delete_topic($this->topic_id);
         }

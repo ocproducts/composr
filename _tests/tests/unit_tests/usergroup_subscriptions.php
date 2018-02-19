@@ -24,6 +24,11 @@ class usergroup_subscriptions_test_set extends cms_test_case
     {
         parent::setUp();
 
+        if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Test only works with Conversr');
+            return;
+        }
+
         require_code('ecommerce');
         require_code('ecommerce2');
 
@@ -34,6 +39,10 @@ class usergroup_subscriptions_test_set extends cms_test_case
 
     public function testUsergroupPurchaseWorks()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         $this->establish_admin_session();
 
         set_option('payment_gateway', 'paypal');
@@ -131,6 +140,10 @@ class usergroup_subscriptions_test_set extends cms_test_case
 
     public function testEditUsergroupSubscription()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         edit_usergroup_subscription($this->usergroup_subscription_id, 'Edit usergroup subscription', 'new edit', 122.00, '10.00', 3, 'y', 1, 0, 1, 1, ' ', ' ', ' ', array());
 
         $this->assertTrue(3 == $GLOBALS['FORUM_DB']->query_select_value('f_usergroup_subs', 's_length', array('id' => $this->usergroup_subscription_id)));
@@ -138,6 +151,10 @@ class usergroup_subscriptions_test_set extends cms_test_case
 
     public function tearDown()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         delete_usergroup_subscription($this->usergroup_subscription_id, 'test@example.com');
 
         parent::tearDown();

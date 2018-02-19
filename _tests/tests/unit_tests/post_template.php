@@ -24,6 +24,11 @@ class post_template_test_set extends cms_test_case
     {
         parent::setUp();
 
+        if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Test only works with Conversr');
+            return;
+        }
+
         require_code('cns_general_action');
         require_code('cns_general_action2');
 
@@ -34,6 +39,10 @@ class post_template_test_set extends cms_test_case
 
     public function testEditpost_template()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         cns_edit_post_template($this->post_id, 'Tested Post', 'Hello', 'Nothing', 1);
 
         $this->assertTrue('Tested Post' == $GLOBALS['FORUM_DB']->query_select_value('f_post_templates', 't_title', array('id' => $this->post_id)));
@@ -41,6 +50,10 @@ class post_template_test_set extends cms_test_case
 
     public function tearDown()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         cns_delete_post_template($this->post_id);
 
         parent::tearDown();

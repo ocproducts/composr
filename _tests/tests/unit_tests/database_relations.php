@@ -87,6 +87,10 @@ class database_relations_test_set extends cms_test_case
 
                 if (substr($from_table, 0, 2) == 'f_') {
                     $db = $GLOBALS['FORUM_DB'];
+
+                    if (get_forum_type() != 'cns') {
+                        continue;
+                    }
                 } else {
                     $db = $GLOBALS['SITE_DB'];
                 }
@@ -99,6 +103,10 @@ class database_relations_test_set extends cms_test_case
 
                 if (substr($to_table, 0, 2) == 'f_') {
                     $db = $GLOBALS['FORUM_DB'];
+
+                    if (get_forum_type() != 'cns') {
+                        continue;
+                    }
                 } else {
                     $db = $GLOBALS['SITE_DB'];
                 }
@@ -131,6 +139,12 @@ class database_relations_test_set extends cms_test_case
 
             if (in_array($table, array('testy_test_test', 'testy_test_test_2', 'temp_test', 'temp_test_linked'))) {
                 continue;
+            }
+
+            if (get_forum_type() != 'cns') {
+                if (substr($table, 0, 2) == 'f_') {
+                    continue;
+                }
             }
 
             if (!table_has_purpose_flag($table, $skip_flags)) {

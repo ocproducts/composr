@@ -25,6 +25,11 @@ class forum_test_set extends cms_test_case
     {
         parent::setUp();
 
+        if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Test only works with Conversr');
+            return;
+        }
+
         require_code('cns_forums_action');
         require_code('cns_forums_action2');
         require_lang('cns');
@@ -37,6 +42,10 @@ class forum_test_set extends cms_test_case
 
     public function testViewForum()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         // Test the <title> contains "Test" which wil be in our forum name
         $this->get('forum:forumview:browse:' . strval($this->forum_id));
         $this->assertTitle(new PatternExpectation('/Test/'));
@@ -44,12 +53,20 @@ class forum_test_set extends cms_test_case
 
     public function testEditForum()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         cns_edit_forum($this->forum_id, 'TestEdit', 'Test', db_get_first_id(), db_get_first_id(), 1, 1, 0, '', '', '', 'last_post', 0, 0, false);
         $this->assertTrue('TestEdit' == $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_name', array('id' => $this->forum_id)));
     }
 
     public function tearDown()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         cns_delete_forum($this->forum_id, $this->forum_id);
 
         parent::tearDown();

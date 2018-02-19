@@ -20,6 +20,11 @@ class password_censor_test_set extends cms_test_case
 {
     public function testCensorWorks()
     {
+        if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Test only works with Conversr');
+            return;
+        }
+
         require_code('cns_topics');
         require_code('cns_posts');
         require_code('cns_forums');

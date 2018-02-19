@@ -73,10 +73,6 @@ class Tempcode_test_set extends cms_test_case
 		<th>$MOBILE</th>
 		<td>0</td>
 	</tr>
-	<tr>
-		<th>$CNS</th>
-		<td>1</td>
-	</tr>
 </tbody></table>
 
 <h2>Computational variables</h2>

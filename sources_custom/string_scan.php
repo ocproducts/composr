@@ -879,7 +879,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_TAG
         BLOCK_THEM
         TRANSCODING_IN_PROGRESS
-        YOUTUBE_ERROR
         BLOCK_TRANS_NAME_bottom_forum_news
         BLOCK_TRANS_NAME_bottom_news
         BLOCK_TRANS_NAME_bottom_rss

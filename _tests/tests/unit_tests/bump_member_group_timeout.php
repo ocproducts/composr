@@ -22,6 +22,11 @@ class bump_member_group_timeout_test_set extends cms_test_case
     {
         parent::setUp();
 
+        if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Test only works with Conversr');
+            return;
+        }
+
         push_query_limiting(false);
 
         $GLOBALS['FORUM_DB']->query_delete('f_group_member_timeouts');
@@ -32,6 +37,10 @@ class bump_member_group_timeout_test_set extends cms_test_case
 
     public function testMemberGroupTimeoutSecondary()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         $member_id = 3;
         $group_id = 4;
 
@@ -46,6 +55,10 @@ class bump_member_group_timeout_test_set extends cms_test_case
 
     public function testMemberGroupTimeoutPrimary()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         $member_id = 3;
         $group_id = 4;
 
@@ -60,6 +73,10 @@ class bump_member_group_timeout_test_set extends cms_test_case
 
     public function testMemberGroupTimeoutKickout()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         $member_id = 3;
         $group_id = 4;
 
@@ -75,6 +92,10 @@ class bump_member_group_timeout_test_set extends cms_test_case
 
     public function testMemberGroupTimeoutTimeAddition()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         $member_id = 3;
         $group_id = 4;
 
@@ -90,6 +111,10 @@ class bump_member_group_timeout_test_set extends cms_test_case
 
     public function testMemberGroupTimeoutTimeSubtraction()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         $member_id = 3;
         $group_id = 4;
 
@@ -101,6 +126,10 @@ class bump_member_group_timeout_test_set extends cms_test_case
 
     public function testMemberGroupTimeoutDouble()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         $group_id = 4;
 
         $member_id = 3;

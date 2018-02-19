@@ -63,7 +63,7 @@ class standard_dir_files_test_set extends cms_test_case
                         continue;
                     }
                 } elseif ($dir_stub == 'uploads/website_specific') {
-                    if (in_array($file, array(get_db_site()))) {
+                    if (in_array($file, array(get_db_site(), 'test'))) {
                         continue;
                     }
                 } elseif ($dir_stub == '_tests/codechecker') {

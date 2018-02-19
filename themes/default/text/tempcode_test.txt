@@ -34,10 +34,6 @@
 		<th>$MOBILE</th>
 		<td>{$MOBILE}</td>
 	</tr>
-	<tr>
-		<th>$CNS</th>
-		<td>{$CNS}</td>
-	</tr>
 </tbody></table>
 
 <h2>Computational variables</h2>

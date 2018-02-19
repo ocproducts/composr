@@ -587,7 +587,7 @@ function should_ignore_file($path, $bitmask = 0)
         if (preg_match('#^data_custom/ckeditor(/|$)#i', $path) != 0) {
             return true; // Development version of CKEditor
         }
-        if ((function_exists('get_db_site')) && (preg_match('#^uploads/website_specific/' .preg_quote(get_db_site(), '#') . '(/|$)#i', $path) != 0)) {
+        if ((function_exists('get_db_site')) && (preg_match('#^uploads/website_specific/' . preg_quote(get_db_site(), '#') . '(/|$)#i', $path) != 0)) {
             return true; // Development version of CKEditor
         }
 

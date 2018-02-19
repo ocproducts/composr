@@ -214,6 +214,11 @@ class comcode_test_set extends cms_test_case
 
     public function testMentions()
     {
+        if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Test only works with Conversr');
+            return;
+        }
+
         global $MEMBER_MENTIONS_IN_COMCODE;
 
         $tests = array(

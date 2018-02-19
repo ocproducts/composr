@@ -123,6 +123,10 @@ class config_test_set extends cms_test_case
 
     public function testConfigHookCompletenessAndConsistency()
     {
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(100);
+        }
+
         require_code('files2');
 
         $settings_needed = array(

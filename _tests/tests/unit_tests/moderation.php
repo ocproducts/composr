@@ -24,6 +24,11 @@ class moderation_test_set extends cms_test_case
     {
         parent::setUp();
 
+        if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Test only works with Conversr');
+            return;
+        }
+
         require_code('cns_moderation_action');
         require_code('cns_moderation_action2');
 
@@ -34,6 +39,10 @@ class moderation_test_set extends cms_test_case
 
     public function testEditModeration()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         cns_edit_multi_moderation($this->mod_id, 'Tested', 'Something', null, 0, 0, '*', 'Hello');
 
         $this->assertTrue('Tested' == get_translated_text($GLOBALS['FORUM_DB']->query_select_value('f_multi_moderations', 'mm_name', array('id' => $this->mod_id)), $GLOBALS['FORUM_DB']));
@@ -41,6 +50,10 @@ class moderation_test_set extends cms_test_case
 
     public function tearDown()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         cns_delete_multi_moderation($this->mod_id);
 
         parent::tearDown();
