@@ -3346,7 +3346,7 @@ class Database_Static_xml extends DatabaseDriver
             if ($orders !== null) {
                 $matches = array();
                 if (preg_match('#^\!?(\w+)$#', $orders, $matches) != 0) {
-                    if (!isset($records[0][$matches[1]])) {
+                    if (!array_key_exists($matches[1], $records[0])) {
                         warn_exit('Cannot sort by ' . $matches[1] . ', it\'s not selected');
                     }
                 }

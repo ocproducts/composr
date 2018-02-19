@@ -22,6 +22,11 @@ class _setupwizard_test_set extends cms_test_case
 {
     public function testFinalStep()
     {
+        if (get_db_type() == 'xml') {
+            $this->assertTrue(false, 'Test cannot run on XML database driver, too slow');
+            return;
+        }
+
         $this->establish_admin_session();
 
         $post_params = array(

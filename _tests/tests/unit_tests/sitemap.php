@@ -27,6 +27,10 @@ class sitemap_test_set extends cms_test_case
     {
         parent::setUp();
 
+        if (get_db_type() == 'xml') {
+            return;
+        }
+
         $this->establish_admin_session();
 
         require_code('sitemap');
@@ -71,6 +75,11 @@ class sitemap_test_set extends cms_test_case
 
     public function testIsConclusive()
     {
+        if (get_db_type() == 'xml') {
+            $this->assertTrue(false, 'Cannot run this test on XML database driver, too slow');
+            return;
+        }
+
         // Test we have an arbitrary entry-point, just to ensure things are still generating deeply
         $this->assertTrue(isset($this->flattened['adminzone:admin_config:base']));
 
@@ -80,6 +89,11 @@ class sitemap_test_set extends cms_test_case
 
     public function testPageGroupingHelpDocsDefined()
     {
+        if (get_db_type() == 'xml') {
+            $this->assertTrue(false, 'Cannot run this test on XML database driver, too slow');
+            return;
+        }
+
         $applicable_page_groupings = array(
             'audit',
             'security',
@@ -127,6 +141,11 @@ class sitemap_test_set extends cms_test_case
 
     public function testHasIcons()
     {
+        if (get_db_type() == 'xml') {
+            $this->assertTrue(false, 'Cannot run this test on XML database driver, too slow');
+            return;
+        }
+
         foreach ($this->flattened as $k => $c) {
             if (preg_match('#^\w*:(\w*(:\w*)?)?$#', $k) != 0) {
                 if (in_array($k, array( // Exceptions
@@ -158,6 +177,11 @@ class sitemap_test_set extends cms_test_case
 
     public function testNoOrphans()
     {
+        if (get_db_type() == 'xml') {
+            $this->assertTrue(false, 'Cannot run this test on XML database driver, too slow');
+            return;
+        }
+
         foreach ($this->flattened as $c) {
             $this->assertTrue(!isset($c['is_unexpected_orphan']), 'Not tied in via page grouping ' . $c['title']->evaluate());
         }
@@ -165,6 +189,11 @@ class sitemap_test_set extends cms_test_case
 
     public function testNoIncompleteNodes()
     {
+        if (get_db_type() == 'xml') {
+            $this->assertTrue(false, 'Cannot run this test on XML database driver, too slow');
+            return;
+        }
+
         $props = array(
             'title',
             'content_type',
