@@ -29,19 +29,27 @@ class _broken_links_test_set extends cms_test_case
         require_code('global4');
     }
 
-    /*TODOpublic function testStaffLinks()
+    public function testStaffLinks()
     {
+        if (get_param_string('only_tutorial', '') != '') {
+            return;
+        }
+
         $urls = $GLOBALS['SITE_DB']->query_select('staff_links', array('link'));
         foreach ($urls as $url) {
-            $this->check_link($url['link']);
+            $this->check_link($url['link'], 'staff_links');
         }
     }
 
     public function testStaffChecklist()
     {
+        if (get_param_string('only_tutorial', '') != '') {
+            return;
+        }
+
         $tempcode = do_block('main_staff_checklist');
-        $this->scan_html($tempcode->evaluate());
-    }*/
+        $this->scan_html($tempcode->evaluate(), 'main_staff_checklist');
+    }
 
     public function testTutorials()
     {
@@ -52,30 +60,50 @@ class _broken_links_test_set extends cms_test_case
         }
         disable_php_memory_limit();
 
+        $only_tutorial = get_param_string('only_tutorial', '');
+
         $path = get_file_base() . '/docs/pages/comcode_custom/' . fallback_lang();
         $files = get_directory_contents($path, $path, 0, true, true, array('txt'));
         foreach ($files as $file) {
-            $tempcode = request_page(basename($file, '.txt'), true, 'docs');
-            $this->scan_html($tempcode->evaluate());
+            $tutorial = basename($file, '.txt');
+
+            if (($only_tutorial != '') && ($only_tutorial != $tutorial)) {
+                continue;
+            }
+
+            $tempcode = request_page($tutorial, true, 'docs');
+            $this->scan_html($tempcode->evaluate(), $tutorial);
         }
     }
 
-    /*TODOpublic function testTutorialDatabase()
+    public function testTutorialDatabase()
     {
+        if (get_param_string('only_tutorial', '') != '') {
+            return;
+        }
+
         $urls = $GLOBALS['SITE_DB']->query_select('tutorials_external', array('t_url'));
         foreach ($urls as $url) {
-            $this->check_link($url['t_url']);
+            $this->check_link($url['t_url'], 'tutorials_external');
         }
     }
 
     public function testFeatureTray()
     {
+        if (get_param_string('only_tutorial', '') != '') {
+            return;
+        }
+
         $tempcode = do_block('composr_homesite_featuretray');
-        $this->scan_html($tempcode->evaluate());
+        $this->scan_html($tempcode->evaluate(), 'composr_homesite_featuretray');
     }
 
     public function testLangFiles()
     {
+        if (get_param_string('only_tutorial', '') != '') {
+            return;
+        }
+
         require_code('lang2');
         require_code('lang_compile');
 
@@ -88,33 +116,37 @@ class _broken_links_test_set extends cms_test_case
                     $value = $tempcode->evaluate();
                 }
 
-                $this->scan_html($value);
+                $this->scan_html($value, $lang_file);
             }
         }
     }
 
     public function testTemplates()
     {
+        if (get_param_string('only_tutorial', '') != '') {
+            return;
+        }
+
         foreach (array('templates', 'templates_custom') as $subdir) {
             $path = get_file_base() . '/themes/default/' . $subdir;
             $files = get_directory_contents($path, '', 0, true, true, array('tpl'));
             foreach ($files as $file) {
                 $c = file_get_contents($path . '/' . $file);
-                $this->scan_html($c);
+                $this->scan_html($c, $file);
             }
         }
-    }*/
+    }
 
-    protected function scan_html($html)
+    protected function scan_html($html, $context)
     {
         $matches = array();
         $num_matches = preg_match_all('#\shref=["\']([^"\']+)["\']#', $html, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
-            $this->check_link(html_entity_decode($matches[1][$i], ENT_QUOTES));
+            $this->check_link(html_entity_decode($matches[1][$i], ENT_QUOTES), $context);
         }
     }
 
-    protected function check_link($url)
+    protected function check_link($url, $context)
     {
         if (strpos($url, '{') !== false) {
             return;
@@ -143,7 +175,13 @@ class _broken_links_test_set extends cms_test_case
         if (preg_match('#^http://compo\.sr/docs\d+/#', $url) != 0) {
             return;
         }
-        if (in_array($url, array('https://cloud.google.com/console', 'https://console.developers.google.com/project', 'https://itouchmap.com/latlong.html', 'https://www.techsmith.com/jing-tool.html'))) { // These just won't check from a bot guest user
+        if (in_array($url, array( // These just won't check from a bot guest user
+            'https://cloud.google.com/console',
+            'https://www.google.com/webmasters/tools/home',
+            'https://console.developers.google.com/project',
+            'https://itouchmap.com/latlong.html',
+            'https://www.techsmith.com/jing-tool.html',
+        ))) {
             return;
         }
 
@@ -151,6 +189,6 @@ class _broken_links_test_set extends cms_test_case
         if (!$exists) {
             $exists = check_url_exists($url, 0); // Re-try without caching, maybe we fixed a scanner bug or it's erratic
         }
-        $this->assertTrue($exists, 'Broken URL: ' . str_replace('%', '%%', $url));
+        $this->assertTrue($exists, 'Broken URL: ' . str_replace('%', '%%', $url) . ' in ' . $context);
     }
 }

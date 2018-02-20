@@ -410,7 +410,7 @@ class Notification_dispatcher
         } else {
             $use_real_from = false;
         }
-        $join_time = get_member_join_timestamp($to_member_id);
+        $join_time = $GLOBALS['FORUM_DRIVER']->get_member_join_timestamp($to_member_id);
 
         $db = (substr($notification_code, 0, 4) == 'cns_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
 
