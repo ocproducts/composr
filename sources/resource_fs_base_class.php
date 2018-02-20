@@ -81,7 +81,7 @@ abstract class Resource_fs_base
      *
      * @return boolean Whether it is
      */
-    protected function _is_active()
+    public function is_active()
     {
         return true;
     }
@@ -2341,7 +2341,7 @@ abstract class Resource_fs_base
      */
     public function listing($meta_dir, $meta_root_node, &$commandr_fs)
     {
-        if (!$this->_is_active()) {
+        if (!$this->is_active()) {
             return false;
         }
 

@@ -45,6 +45,12 @@ class _commandr_fs_test_set extends cms_test_case
             $_path = get_file_base() . '/' . $dir . '/hooks/systems/commandr_fs/' . $commandr_fs_hook . '.php';
             $c = file_get_contents($_path);
             if (strpos($c, ' extends Resource_fs_base') !== false) {
+                if (get_forum_type() != 'cns') {
+                    if (in_array($commandr_fs_hook, array('forums', 'groups'))) {
+                        continue;
+                    }
+                }
+
                 $cnt++;
             }
         }
@@ -76,13 +82,13 @@ class _commandr_fs_test_set extends cms_test_case
     {
         // Test exporting something
         $resource_id_in = strval(db_get_first_id());
-        $port_out = remap_resource_id_as_portable('group', $resource_id_in);
-        $this->assertTrue($port_out['label'] == 'Guests', 'Failed reading guest usergroup label');
-        $this->assertTrue($port_out['subpath'] == '', 'Failed reading guest usergroup subpath');
-        $this->assertTrue($port_out['id'] == db_get_first_id(), 'Failed reading guest usergroup ID');
+        $port_out = remap_resource_id_as_portable('ticket_type', $resource_id_in);
+        $this->assertTrue($port_out['label'] == 'Other', 'Failed reading Other ticket type label');
+        $this->assertTrue($port_out['subpath'] == '', 'Failed reading Other ticket type subpath');
+        $this->assertTrue($port_out['id'] == db_get_first_id(), 'Failed reading Other ticket type ID');
 
         // Test importing to something - binding to something that exists
-        $resource_id_out = remap_portable_as_resource_id('group', $port_out);
+        $resource_id_out = remap_portable_as_resource_id('ticket_type', $port_out);
         $this->assertTrue($resource_id_out == $resource_id_in, 'Portable ID remapping cycle broken');
 
         // Test importing to something - something that does not exist
@@ -123,6 +129,12 @@ class _commandr_fs_test_set extends cms_test_case
         }
 
         foreach ($commandr_fs_hooks as $commandr_fs_hook => $dir) {
+            if (get_forum_type() != 'cns') {
+                if (in_array($commandr_fs_hook, array('forums', 'groups'))) {
+                    continue;
+                }
+            }
+
             $path = get_file_base() . '/' . $dir . '/hooks/systems/commandr_fs/' . $commandr_fs_hook . '.php';
             $c = file_get_contents($path);
             if (strpos($c, ' extends Resource_fs_base') !== false) {

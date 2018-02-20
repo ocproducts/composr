@@ -56,12 +56,21 @@ class _resource_fs_test_set extends cms_test_case
                 continue;
             }
 
+            if (get_forum_type() != 'cns') {
+                if ($commandr_fs_hook == 'aggregate_type_instances') { // Contains usergroup creation and referencing by default
+                    continue;
+                }
+            }
+
             $path = get_file_base() . '/' . $dir . '/hooks/systems/commandr_fs/' . $commandr_fs_hook . '.php';
             $c = file_get_contents($path);
             if (strpos($c, ' extends Resource_fs_base') !== false) {
                 require_code('hooks/systems/commandr_fs/' . filter_naughty_harsh($commandr_fs_hook));
                 $ob = object_factory('Hook_commandr_fs_' . filter_naughty_harsh($commandr_fs_hook));
-                $this->resource_fs_obs[$commandr_fs_hook] = $ob;
+
+                if ($ob->is_active()) {
+                    $this->resource_fs_obs[$commandr_fs_hook] = $ob;
+                }
             }
         }
     }

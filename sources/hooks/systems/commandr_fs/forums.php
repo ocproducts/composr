@@ -91,7 +91,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
      *
      * @return boolean Whether it is
      */
-    protected function _is_active()
+    public function is_active()
     {
         return (get_forum_type() == 'cns') && (!is_cns_satellite_site());
     }

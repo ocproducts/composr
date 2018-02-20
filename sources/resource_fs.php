@@ -740,11 +740,11 @@ function table_row_to_portable_row($row, $db_fields, $relation_map, $db = null)
             $row[$db_field_name] = remap_trans_as_portable($row, $db_field_name, $db);
         }
 
-        elseif ($db_field_type == 'MEMBER') {
+        elseif (($db_field_type == 'MEMBER') && (get_forum_type() == 'cns')) {
             $row[$db_field_name] = remap_resource_id_as_portable('member', $row[$db_field_name]);
         }
 
-        elseif ($db_field_type == 'GROUP') {
+        elseif (($db_field_type == 'GROUP') && (get_forum_type() == 'cns')) {
             $row[$db_field_name] = remap_resource_id_as_portable('group', $row[$db_field_name]);
         }
 
@@ -800,12 +800,12 @@ function table_row_from_portable_row($row, $db_fields, $relation_map, $db = null
             $row += remap_portable_as_trans($row[$db_field_name], $db_field_name, $db);
         }
 
-        elseif ($db_field_type == 'MEMBER') {
+        elseif (($db_field_type == 'MEMBER') && (get_forum_type() == 'cns')) {
             $row[$db_field_name] = remap_portable_as_resource_id('member', $row[$db_field_name]);
             $to_int = true;
         }
 
-        elseif ($db_field_type == 'GROUP') {
+        elseif (($db_field_type == 'GROUP') && (get_forum_type() == 'cns')) {
             $row[$db_field_name] = remap_portable_as_resource_id('group', $row[$db_field_name]);
             $to_int = true;
         }
@@ -1049,9 +1049,16 @@ function remap_portable_as_resource_id($resource_type, $portable_data)
     }
 
     // Otherwise, use the label
-    $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
     $subpath = array_key_exists('subpath', $portable_data) ? $portable_data['subpath'] : '';
-    $resource_id = $resource_fs_ob->convert_label_to_id($portable_data['label'], $subpath, $resource_type, false, array_key_exists('guid', $portable_data) ? $portable_data['guid'] : null);
+    $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
+    if ($resource_fs_ob === null) { // Maybe a 'group' (e.g.) and not running on Conversr
+        $resource_id = $GLOBALS['SITE_DB']->query_select_value_if_there('alternative_ids', 'resource_id', array(
+            'resource_type' => $resource_type,
+            'resource_label' => $portable_data['label'],
+        ));
+    } else {
+        $resource_id = $resource_fs_ob->convert_label_to_id($portable_data['label'], $subpath, $resource_type, false, array_key_exists('guid', $portable_data) ? $portable_data['guid'] : null);
+    }
 
     return $resource_id;
 }
