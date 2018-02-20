@@ -28,7 +28,7 @@ class env_vars_test_set extends cms_test_case
         $this->bak = $_SERVER;
     }
 
-    protected function wipeData($blankify)
+    protected function wipe_data($blankify)
     {
         foreach (array('DOCUMENT_ROOT', 'PHP_SELF', /*Derived in front controller 'SCRIPT_FILENAME', */'SCRIPT_NAME', 'REQUEST_URI', 'QUERY_STRING') as $var) {
             if ($blankify) {
@@ -41,73 +41,73 @@ class env_vars_test_set extends cms_test_case
         }
     }
 
-    protected function defaultDocNormalise($url)
+    protected function default_doc_normalise($url)
     {
         return str_replace('index.php', '', $url);
     }
 
     public function testMissing_DOCUMENT_ROOT()
     {
-        $this->wipeData(true);
+        $this->wipe_data(true);
         fixup_bad_php_env_vars();
         $this->assertTrue($_SERVER['DOCUMENT_ROOT'] == $this->bak['DOCUMENT_ROOT']);
 
-        $this->wipeData(false);
+        $this->wipe_data(false);
         fixup_bad_php_env_vars();
         $this->assertTrue($_SERVER['DOCUMENT_ROOT'] == $this->bak['DOCUMENT_ROOT']);
     }
 
     public function testMissing_PHP_SELF()
     {
-        $this->wipeData(true);
+        $this->wipe_data(true);
         fixup_bad_php_env_vars();
         $this->assertTrue($_SERVER['PHP_SELF'] == $this->bak['PHP_SELF']);
 
-        $this->wipeData(false);
+        $this->wipe_data(false);
         fixup_bad_php_env_vars();
         $this->assertTrue($_SERVER['PHP_SELF'] == $this->bak['PHP_SELF']);
     }
 
     public function testMissing_SCRIPT_FILENAME()
     {
-        $this->wipeData(true);
+        $this->wipe_data(true);
         fixup_bad_php_env_vars();
         $this->assertTrue($_SERVER['SCRIPT_FILENAME'] == $this->bak['SCRIPT_FILENAME']);
 
-        $this->wipeData(false);
+        $this->wipe_data(false);
         fixup_bad_php_env_vars();
         $this->assertTrue($_SERVER['SCRIPT_FILENAME'] == $this->bak['SCRIPT_FILENAME']);
     }
 
     public function testMissing_SCRIPT_NAME()
     {
-        $this->wipeData(true);
+        $this->wipe_data(true);
         fixup_bad_php_env_vars();
         $this->assertTrue($_SERVER['SCRIPT_NAME'] == $this->bak['SCRIPT_NAME']);
 
-        $this->wipeData(false);
+        $this->wipe_data(false);
         fixup_bad_php_env_vars();
         $this->assertTrue($_SERVER['SCRIPT_NAME'] == $this->bak['SCRIPT_NAME']);
     }
 
     public function testMissing_REQUEST_URI()
     {
-        $this->wipeData(true);
+        $this->wipe_data(true);
         fixup_bad_php_env_vars();
-        $this->assertTrue($this->defaultDocNormalise($_SERVER['REQUEST_URI']) == $this->defaultDocNormalise($this->bak['REQUEST_URI']));
+        $this->assertTrue($this->default_doc_normalise($_SERVER['REQUEST_URI']) == $this->default_doc_normalise($this->bak['REQUEST_URI']));
 
-        $this->wipeData(false);
+        $this->wipe_data(false);
         fixup_bad_php_env_vars();
-        $this->assertTrue($this->defaultDocNormalise($_SERVER['REQUEST_URI']) == $this->defaultDocNormalise($this->bak['REQUEST_URI']));
+        $this->assertTrue($this->default_doc_normalise($_SERVER['REQUEST_URI']) == $this->default_doc_normalise($this->bak['REQUEST_URI']));
     }
 
     public function testMissing_QUERY_STRING()
     {
-        $this->wipeData(true);
+        $this->wipe_data(true);
         fixup_bad_php_env_vars();
         $this->assertTrue($_SERVER['QUERY_STRING'] == $this->bak['QUERY_STRING']);
 
-        $this->wipeData(false);
+        $this->wipe_data(false);
         fixup_bad_php_env_vars();
         $this->assertTrue($_SERVER['QUERY_STRING'] == $this->bak['QUERY_STRING']);
     }

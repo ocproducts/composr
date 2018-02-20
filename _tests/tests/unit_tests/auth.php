@@ -69,8 +69,8 @@ class auth_test_set extends cms_test_case
 
     public function testCategoryAccessDoesFail()
     {
-        $this->assertTrue(has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', '1'));
-        $this->assertTrue(!has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', '6'));
+        $this->assertTrue(has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'calendar', '2'));
+        $this->assertTrue(!has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'calendar', '1')); // System-command category
     }
 
     public function testPrivilegeDoesFail()

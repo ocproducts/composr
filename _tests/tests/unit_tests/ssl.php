@@ -41,8 +41,8 @@ class ssl_test_set extends cms_test_case
             $page_link = 'forum:forumview';
             $page = 'forumview';
         } else {
-            $page_link = 'site:polls';
-            $page = 'polls';
+            $page_link = ':recommend';
+            $page = 'recommend';
         }
 
         // HTTPS (SSL) version

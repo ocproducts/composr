@@ -50,7 +50,7 @@ class _installer_forum_drivers_test_set extends cms_test_case
         $cmd .= ' ' . $database_forums . ' < ' . $board_path . '/db.sql';
         shell_exec($cmd);
 
-        $this->doHeadlessInstall(false, 'phpbb3', $username, $password, $board_path, $forum_base_url, $database_forums, null, null, $extra_settings);
+        $this->do_headless_install(false, 'phpbb3', $username, $password, $board_path, $forum_base_url, $database_forums, null, null, $extra_settings);
     }
 
     public function testNoneInstall()
@@ -59,10 +59,10 @@ class _installer_forum_drivers_test_set extends cms_test_case
         $username = 'root';
         $password = isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '';
 
-        $this->doHeadlessInstall(false, 'none', $username, $password);
+        $this->do_headless_install(false, 'none', $username, $password);
     }
 
-    protected function doHeadlessInstall($safe_mode = false, $forum_driver = 'cns', $username = null, $password = null, $board_path = null, $forum_base_url = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = array())
+    protected function do_headless_install($safe_mode = false, $forum_driver = 'cns', $username = null, $password = null, $board_path = null, $forum_base_url = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = array())
     {
         $database = 'test';
         $table_prefix = 'cms_forumdriver_test_';

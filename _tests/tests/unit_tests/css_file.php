@@ -44,11 +44,11 @@ class css_file_test_set extends cms_test_case
                 continue;
             }
 
-            $_classes_defined = array_merge($this->findClassesDefined('default'), $this->findClassesDefined($theme));
+            $_classes_defined = array_merge($this->find_classes_defined('default'), $this->find_classes_defined($theme));
             sort($_classes_defined);
             $classes_defined = array_flip($_classes_defined);
 
-            $_classes_used = array_merge($this->findClassesUsed('default'), $this->findClassesUsed($theme));
+            $_classes_used = array_merge($this->find_classes_used('default'), $this->find_classes_used($theme));
             sort($_classes_used);
             $classes_used = array_flip($_classes_used);
 
@@ -64,7 +64,7 @@ class css_file_test_set extends cms_test_case
             }
 
             foreach (array_keys($classes_defined) as $class) {
-                if ($this->isClassDefinedAndIntentionallyNotExplicitlyUsed($class)) {
+                if ($this->is_class_defined_and_intentionally_not_explicitly_used($class)) {
                     continue;
                 }
 
@@ -73,7 +73,7 @@ class css_file_test_set extends cms_test_case
         }
     }
 
-    protected function findClassesDefined($theme)
+    protected function find_classes_defined($theme)
     {
         $out = array();
 
@@ -113,7 +113,7 @@ class css_file_test_set extends cms_test_case
         return array_unique($out);
     }
 
-    protected function findClassesUsed($theme)
+    protected function find_classes_used($theme)
     {
         $out = array();
 
@@ -253,10 +253,10 @@ class css_file_test_set extends cms_test_case
                 ksort($selectors);
                 foreach (array_keys($selectors) as $selector) {
                     // Exceptions
-                    if ($this->isClassDefinedAndIntentionallyNotExplicitlyUsed($selector)) {
+                    if ($this->is_class_defined_and_intentionally_not_explicitly_used($selector)) {
                         continue;
                     }
-                    if ($this->isIDDefinedAndIntentionallyNotExplicitlyUsed($selector)) {
+                    if ($this->is_id_defined_and_intentionally_not_explicitly_used($selector)) {
                         continue;
                     }
 
@@ -266,7 +266,7 @@ class css_file_test_set extends cms_test_case
         }
     }
 
-    protected function isClassDefinedAndIntentionallyNotExplicitlyUsed($class)
+    protected function is_class_defined_and_intentionally_not_explicitly_used($class)
     {
         $prefix_exceptions = array(
             'zone-running-',
@@ -1036,7 +1036,7 @@ class css_file_test_set extends cms_test_case
         return false;
     }
 
-    protected function isIDDefinedAndIntentionallyNotExplicitlyUsed($id)
+    protected function is_id_defined_and_intentionally_not_explicitly_used($id)
     {
         $prefix_exceptions = array(
             't_1_',

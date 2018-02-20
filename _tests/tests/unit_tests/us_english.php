@@ -22,16 +22,16 @@ class us_english_test_set extends cms_test_case
     {
         // Test British English
         set_option('yeehaw', '0');
-        $this->clearCaches();
+        $this->clear_caches();
         $this->assertTrue(do_lang('COLOUR') == 'Colour', 'Failed with ' . do_lang('COLOUR') . ', expected British English');
 
         // Test US English
         set_option('yeehaw', '1');
-        $this->clearCaches();
+        $this->clear_caches();
         $this->assertTrue(do_lang('COLOUR') == 'Color', 'Failed with ' . do_lang('COLOUR') . ', expected US English');
     }
 
-    protected function clearCaches()
+    protected function clear_caches()
     {
         global $ALLOW_DOUBLE_DECACHE;
         $ALLOW_DOUBLE_DECACHE = true;

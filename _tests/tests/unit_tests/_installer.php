@@ -82,18 +82,18 @@ class _installer_test_set extends cms_test_case
             return;
         }
 
-        $result = $this->doHeadlessInstall(true);
+        $result = $this->do_headless_install(true);
         if (!$result) {
             return;
         }
 
-        $result = $this->doHeadlessInstall(false);
+        $result = $this->do_headless_install(false);
         if (!$result) {
             return;
         }
     }
 
-    protected function doHeadlessInstall($safe_mode)
+    protected function do_headless_install($safe_mode)
     {
         if (strpos(get_db_type(), 'mysql') === false) {
             return;

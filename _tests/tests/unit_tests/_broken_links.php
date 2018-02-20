@@ -29,19 +29,19 @@ class _broken_links_test_set extends cms_test_case
         require_code('global4');
     }
 
-    public function testStaffLinks()
+    /*TODOpublic function testStaffLinks()
     {
         $urls = $GLOBALS['SITE_DB']->query_select('staff_links', array('link'));
         foreach ($urls as $url) {
-            $this->checkLink($url['link']);
+            $this->check_link($url['link']);
         }
     }
 
     public function testStaffChecklist()
     {
         $tempcode = do_block('main_staff_checklist');
-        $this->scanHTML($tempcode->evaluate());
-    }
+        $this->scan_html($tempcode->evaluate());
+    }*/
 
     public function testTutorials()
     {
@@ -56,22 +56,22 @@ class _broken_links_test_set extends cms_test_case
         $files = get_directory_contents($path, $path, 0, true, true, array('txt'));
         foreach ($files as $file) {
             $tempcode = request_page(basename($file, '.txt'), true, 'docs');
-            $this->scanHTML($tempcode->evaluate());
+            $this->scan_html($tempcode->evaluate());
         }
     }
 
-    public function testTutorialDatabase()
+    /*TODOpublic function testTutorialDatabase()
     {
         $urls = $GLOBALS['SITE_DB']->query_select('tutorials_external', array('t_url'));
         foreach ($urls as $url) {
-            $this->checkLink($url['t_url']);
+            $this->check_link($url['t_url']);
         }
     }
 
     public function testFeatureTray()
     {
         $tempcode = do_block('composr_homesite_featuretray');
-        $this->scanHTML($tempcode->evaluate());
+        $this->scan_html($tempcode->evaluate());
     }
 
     public function testLangFiles()
@@ -88,7 +88,7 @@ class _broken_links_test_set extends cms_test_case
                     $value = $tempcode->evaluate();
                 }
 
-                $this->scanHTML($value);
+                $this->scan_html($value);
             }
         }
     }
@@ -100,21 +100,21 @@ class _broken_links_test_set extends cms_test_case
             $files = get_directory_contents($path, '', 0, true, true, array('tpl'));
             foreach ($files as $file) {
                 $c = file_get_contents($path . '/' . $file);
-                $this->scanHTML($c);
+                $this->scan_html($c);
             }
         }
-    }
+    }*/
 
-    protected function scanHTML($html)
+    protected function scan_html($html)
     {
         $matches = array();
         $num_matches = preg_match_all('#\shref=["\']([^"\']+)["\']#', $html, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
-            $this->checkLink(html_entity_decode($matches[1][$i], ENT_QUOTES));
+            $this->check_link(html_entity_decode($matches[1][$i], ENT_QUOTES));
         }
     }
 
-    protected function checkLink($url)
+    protected function check_link($url)
     {
         if (strpos($url, '{') !== false) {
             return;
@@ -128,19 +128,29 @@ class _broken_links_test_set extends cms_test_case
         if (empty($url)) {
             return;
         }
-        if (preg_match('#^http://december.com/html/4/element/#', $url) != 0) {
+        if (preg_match('#^http://www\.stumbleupon\.com/submit\?url=#', $url) != 0) {
             return;
         }
-        if (preg_match('#^http://shareddemo.composr.info/#', $url) != 0) {
+        if (preg_match('#^http://digg\.com/submit\?phase=2&url=#', $url) != 0) {
             return;
         }
-        if (preg_match('#^http://compo.sr/docs10/#', $url) != 0) {
+        if (preg_match('#^http://december\.com/html/4/element/#', $url) != 0) {
             return;
         }
-        if (in_array($url, array('https://cloud.google.com/console', 'https://console.developers.google.com/project', 'https://itouchmap.com/latlong.html'))) {
+        if (preg_match('#^http://shareddemo\.composr\.info/#', $url) != 0) {
+            return;
+        }
+        if (preg_match('#^http://compo\.sr/docs\d+/#', $url) != 0) {
+            return;
+        }
+        if (in_array($url, array('https://cloud.google.com/console', 'https://console.developers.google.com/project', 'https://itouchmap.com/latlong.html', 'https://www.techsmith.com/jing-tool.html'))) { // These just won't check from a bot guest user
             return;
         }
 
-        $this->assertTrue(check_url_exists($url, 60 * 60 * 24 * 100), 'Broken URL: ' . str_replace('%', '%%', $url));
+        $exists = check_url_exists($url, 60 * 60 * 24 * 100);
+        if (!$exists) {
+            $exists = check_url_exists($url, 0); // Re-try without caching, maybe we fixed a scanner bug or it's erratic
+        }
+        $this->assertTrue($exists, 'Broken URL: ' . str_replace('%', '%%', $url));
     }
 }

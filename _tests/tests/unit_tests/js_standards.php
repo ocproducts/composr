@@ -36,20 +36,20 @@ class js_standards_test_set extends cms_test_case
                     $c2 = preg_replace('#\{\$PAGE_LINK[;*]?,[^,]*,[01],1#', '', $c); // This case is without keep_* params, so is okay. Strip out from data
                     $this->assertTrue(strpos($c2, '{$PAGE_LINK') === false, 'Should not encode page-links directly in JavaScript on ' . $file);
 
-                    $this->checkForScriptOverrideIssue($file, $c);
+                    $this->check_for_script_override_issue($file, $c);
                 }
 
                 if (strtolower(substr($file, -4)) == '.tpl') {
                     $c = file_get_contents($path . '/' . $file);
 
-                    $this->checkForScriptOverrideIssue($file, $c);
+                    $this->check_for_script_override_issue($file, $c);
                 }
             }
             closedir($dh);
         }
     }
 
-    protected function checkForScriptOverrideIssue($file, $c)
+    protected function check_for_script_override_issue($file, $c)
     {
         $c2 = str_replace('/index.php', '', $c);
         $this->assertTrue(preg_match('#/(data|adminzone|cms|site|forum)/\w+\.php#', $c2) == 0, $file . ' is directly referencing a script, bypassing override system');

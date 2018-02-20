@@ -86,7 +86,7 @@ class tasks_test_set extends cms_test_case
         $simple_event_id = add_calendar_event(8, 'none', null, 0, 'simple event', '', 3, 2010, 1, 10, 'day_of_month', 10, 15, null, null, null, 'day_of_month', null, null, null, 1, null, 1, 1, 1, 1, '', null, 0, null, null, null);
 
         $last_rows_before = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array(), 'ORDER BY id DESC', 2);
-        $this->cleanEventRowsForComparison($last_rows_before);
+        $this->clean_event_rows_for_comparison($last_rows_before);
 
         require_code('calendar_ical');
         ob_start();
@@ -114,7 +114,7 @@ class tasks_test_set extends cms_test_case
 
         $_last_rows_after = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array(), 'ORDER BY id DESC', 2);
         $last_rows_after = $_last_rows_after;
-        $this->cleanEventRowsForComparison($last_rows_after);
+        $this->clean_event_rows_for_comparison($last_rows_after);
 
         $this->assertTrue($last_rows_before == $last_rows_after, 'Our test events changed during the export/import cycle)');
 
@@ -125,7 +125,7 @@ class tasks_test_set extends cms_test_case
         unlink($temp_path);
     }
 
-    protected function cleanEventRowsForComparison(&$rows)
+    protected function clean_event_rows_for_comparison(&$rows)
     {
         foreach ($rows as &$row) {
             unset($row['id']);

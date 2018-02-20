@@ -112,7 +112,7 @@ class theme_images_test_set extends cms_test_case
     public function testBrokenReferences()
     {
         // Find default images
-        $default_images = $this->getThemeImages('default');
+        $default_images = $this->get_theme_images('default');
 
         // Go through each theme
         $themes = find_all_themes();
@@ -146,7 +146,7 @@ class theme_images_test_set extends cms_test_case
                 ));
             }
 
-            $images_there = array_merge($default_images, $this->getThemeImages($theme));
+            $images_there = array_merge($default_images, $this->get_theme_images($theme));
             $images_referenced = array(); // true means referenced and exists, false means referenced and is not yet known to exist
             $non_css_contents = '';
 
@@ -229,7 +229,7 @@ class theme_images_test_set extends cms_test_case
         }
     }
 
-    protected function getThemeImages($theme)
+    protected function get_theme_images($theme)
     {
         $dirs = array(
             get_file_base() . '/themes/' . $theme . '/images',

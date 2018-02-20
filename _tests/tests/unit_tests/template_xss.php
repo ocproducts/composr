@@ -54,7 +54,7 @@ class template_xss_test_set extends cms_test_case
                         $c = file_get_contents($path . '/' . $file);
                         $c_orig = $c;
 
-                        $c = $this->stripDownTemplate($c);
+                        $c = $this->strip_down_template($c);
 
                         // Search
                         $matches = array();
@@ -83,7 +83,7 @@ class template_xss_test_set extends cms_test_case
         }
     }
 
-    protected function stripDownTemplate($c)
+    protected function strip_down_template($c)
     {
         // Strip parameters inside symbols, language strings and Tempcode portions
         do {
@@ -139,7 +139,7 @@ class template_xss_test_set extends cms_test_case
                         $c = file_get_contents($path . '/' . $file);
                         $c_orig = $c;
 
-                        $c = $this->stripDownTemplate($c);
+                        $c = $this->strip_down_template($c);
 
                         // Search
                         $matches = array();

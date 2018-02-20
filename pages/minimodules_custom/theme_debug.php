@@ -53,13 +53,13 @@ foreach (array_keys($themes) as $theme) {
 
         echo '<li>';
         echo '<a href="' . static_evaluate_tempcode(build_url(array('page' => '', 'keep_theme_test' => '1', 'keep_theme' => $theme), '')) . '">' . escape_html($theme) . '</a><br />
-                    <span class="associated-details">(Other useful views:
-                        <a href="' . static_evaluate_tempcode(build_url(array('page' => '', 'keep_theme_test' => '1', 'keep_theme' => $theme, 'keep_theme_seed' => '664422', 'keep_theme_algorithm' => 'hsv', 'keep_theme_source' => $theme), '')) . '">with brown seed</a> /
-                        <a href="' . static_evaluate_tempcode(build_url(array('page' => '', 'keep_theme_test' => '1', 'keep_theme' => $theme, 'keep_su' => 'Guest'), '')) . '">as Guest</a> /
-                        <a href="' . static_evaluate_tempcode(build_url(array('page' => 'cms_news', 'type' => 'ad', 'keep_theme_test' => '1', 'keep_theme' => $theme), 'cms')) . '">Add News Form</a> /
-                        <a href="' . static_evaluate_tempcode(build_url(array('page' => 'news', 'keep_theme_test' => '1', 'type' => 'view', 'id' => 1, 'keep_theme' => $theme), 'site')) . '">News screen</a> /
-                        <a href="' . static_evaluate_tempcode(build_url(array('page' => '', 'keep_theme_test' => '1', 'keep_theme' => $theme), 'forum')) . '">forumview</a>)
-                    </span>';
+            <span class="associated-details">(Other useful views:
+                <a href="' . static_evaluate_tempcode(build_url(array('page' => '', 'keep_theme_test' => '1', 'keep_theme' => $theme, 'keep_theme_seed' => '664422', 'keep_theme_algorithm' => 'hsv', 'keep_theme_source' => $theme), '')) . '">with brown seed</a> /
+                <a href="' . static_evaluate_tempcode(build_url(array('page' => '', 'keep_theme_test' => '1', 'keep_theme' => $theme, 'keep_su' => 'Guest'), '')) . '">as Guest</a> /
+                <a href="' . static_evaluate_tempcode(build_url(array('page' => 'cms_news', 'type' => 'add', 'keep_theme_test' => '1', 'keep_theme' => $theme), 'cms')) . '">Add News Form</a> /
+                <a href="' . static_evaluate_tempcode(build_url(array('page' => 'news', 'keep_theme_test' => '1', 'type' => 'view', 'id' => 1, 'keep_theme' => $theme), 'site')) . '">News screen</a> /
+                <a href="' . static_evaluate_tempcode(build_url(array('page' => '', 'keep_theme_test' => '1', 'keep_theme' => $theme), 'forum')) . '">forumview</a>)
+            </span>';
 
         // Find unreferenced images
         $images = array();

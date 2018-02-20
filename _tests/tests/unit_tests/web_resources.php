@@ -57,12 +57,12 @@ class web_resources_test_set extends cms_test_case
             }
 
             foreach (array('javascript', 'javascript_custom') as $dir) {
-                $this->javaScriptTestForTheme($theme, $dir);
+                $this->javascript_test_for_theme($theme, $dir);
             }
         }
     }
 
-    protected function javaScriptTestForTheme($theme, $dir)
+    protected function javascript_test_for_theme($theme, $dir)
     {
         $exceptions = array(
             // Won't parse
@@ -152,12 +152,12 @@ class web_resources_test_set extends cms_test_case
             }
 
             foreach (array('css', 'css_custom') as $dir) {
-                $this->cssTestForTheme($theme, $dir);
+                $this->css_test_for_theme($theme, $dir);
             }
         }
     }
 
-    protected function cssTestForTheme($theme, $dir)
+    protected function css_test_for_theme($theme, $dir)
     {
         $exceptions = array(
             // Third-party code not confirming to Composr standards

@@ -50,7 +50,7 @@ We aren't in a position to tell you which is best at this time, we're just listi
 
 This tutorial is primarily about how to install an Apache set up on Windows. However, we actually have a {$IS_MAINTAINED,install_microsoft,Microsoft Web Platform installer} for Composr. If you download the Microsoft Web Platform Installer, you'll find Composr is in there. This uses {$IS_MAINTAINED,platform_iis,IIS}, not Apache.
 
-If you'd like to use Microsoft Web Platform, proceed to the [url="Web Platform website"]http://www.microsoft.com/web/downloads/platform.aspx[/url].
+If you'd like to use Microsoft Web Platform, proceed to the [url="Web Platform website"]https://www.iis.net/downloads/microsoft/web-platform-installer[/url].
 
 [title="4"]WebMatrix[/title]
 

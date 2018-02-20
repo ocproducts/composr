@@ -49,6 +49,8 @@ function list_tutorial_tags($skip_addons_and_specials = false)
         }
     }
 
+    $tags = array_unique($tags);
+
     // We can't store mixed case in the database, let's just have one set of tags
     foreach ($tags as $tag) {
         if (preg_match('#^[A-Z]#', $tag) != 0) {

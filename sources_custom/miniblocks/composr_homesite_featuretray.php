@@ -31,7 +31,7 @@ $feature_tree = array(
                 array('Facebook', 'Become a fan of Composr [url="https://www.facebook.com/composrcms"]on Facebook[/url].'),
                 array('Stack Overflow', 'Answer CMS questions on [url="Stack Overflow"]http://stackoverflow.com/search?q=cms[/url].'),
                 array('YouTube', 'Rate and comment on [url="http://youtube.com/c/ComposrCMSvideo"]our video tutorials[/url] on YouTube.'),
-                array('Post about Composr', 'If you see other CMSs compared on other websites, {$COMCODE,[page="forum:topicview:browse:{$FIND_ID_VIA_LABEL,topic,Composr evangelism}"]let us know about it[/page]}!'),
+                (get_forum_type() != 'cns') ? null : array('Post about Composr', 'If you see other CMSs compared on other websites, {$COMCODE,[page="forum:topicview:browse:{$FIND_ID_VIA_LABEL,topic,Composr evangelism}"]let us know about it[/page]}!'),
                 array('Tell a friend about Composr', '[page=":recommend"]Recommend Composr[/page] if a friend or your company is looking to make a website.'),
                 array('Recommend ocProducts', 'Mention the ocProducts developers to help them bring in an income.'),
                 array('Show our ad', 'You can advertise Composr via the [url="banner ad"]{$BRAND_BASE_URL}/uploads/website_specific/compo.sr/banners.zip[/url] we have created.'),
@@ -55,7 +55,7 @@ $feature_tree = array(
         'our_site' => array(
             'On compo.sr',
             array(
-                array('Reach out to other users', '{$COMCODE,[page="forum:forumview:browse:{$FIND_ID_VIA_LABEL,forum,Introduce yourself}"]Welcome new users[/page]} and help make sure people don\'t get lost.[html]<br />[/html]Also {$COMCODE,[page="forum:topicview:browse:{$FIND_ID_VIA_LABEL,topic,Post your location}"]put yourself on the map[/page]} so people near you can get in contact.'),
+                (get_forum_type() != 'cns') ? null : array('Reach out to other users', '{$COMCODE,[page="forum:forumview:browse:{$FIND_ID_VIA_LABEL,forum,Introduce yourself}"]Welcome new users[/page]} and help make sure people don\'t get lost.[html]<br />[/html]Also {$COMCODE,[page="forum:topicview:browse:{$FIND_ID_VIA_LABEL,topic,Post your location}"]put yourself on the map[/page]} so people near you can get in contact.'),
                 array('Help others on the forum', 'Where you can, answer other user\'s questions.'),
                 array('Hang out in the chat', 'If we have users in the [page="site:chat"]chatroom[/page] 24&times;7 then users (including yourself) are less likely to feel stuck or isolated.'),
                 array('Give gift points', 'If you see other members doing good things, give them some gift points.'),

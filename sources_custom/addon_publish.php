@@ -189,6 +189,11 @@ function get_addons_list_under_category($category_name, $version_branch)
                     $path = get_custom_file_base() . '/' . $dir . '/' . $file;
                     $tar = tar_open($path, 'rb');
                     $info_file = tar_get_file($tar, 'addon.inf', true);
+                    if ($info_file === null) {
+                        continue;
+                        tar_close($tar);
+                    }
+
                     $ini_info = better_parse_ini_file(null, $info_file['data']);
                     tar_close($tar);
                     $_category_name = $ini_info['category'];

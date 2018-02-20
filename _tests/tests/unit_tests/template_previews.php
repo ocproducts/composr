@@ -78,14 +78,14 @@ class template_previews_test_set extends cms_test_case
                 continue;
             }
 
-            $this->screenPreviewTestForTheme($theme);
+            $this->screen_preview_test_for_theme($theme);
         }
 
         safe_ini_set('ocproducts.type_strictness', '0');
         safe_ini_set('ocproducts.xss_detect', '0');
     }
 
-    protected function screenPreviewTestForTheme($theme)
+    protected function screen_preview_test_for_theme($theme)
     {
         global $THEME_BEING_TESTED;
         $THEME_BEING_TESTED = $theme;
@@ -235,7 +235,7 @@ class template_previews_test_set extends cms_test_case
             $BLOCKS_CACHE = array();
             $PANELS_CACHE = array();
             $out1 = render_screen_preview($template, $hook, $function);
-            $_out1 = $this->cleanupVaryingCode($out1->evaluate());
+            $_out1 = $this->cleanup_varying_code($out1->evaluate());
             restore_output_state();
 
             init__lorem();
@@ -244,7 +244,7 @@ class template_previews_test_set extends cms_test_case
             $BLOCKS_CACHE = array();
             $PANELS_CACHE = array();
             $out2 = render_screen_preview($template, $hook, $function);
-            $_out2 = $this->cleanupVaryingCode($out2->evaluate());
+            $_out2 = $this->cleanup_varying_code($out2->evaluate());
             restore_output_state();
 
             $different = ($_out1 != $_out2);
@@ -268,7 +268,7 @@ class template_previews_test_set extends cms_test_case
         safe_ini_set('ocproducts.xss_detect', '0');
     }
 
-    protected function cleanupVaryingCode($_out)
+    protected function cleanup_varying_code($_out)
     {
         $_out = preg_replace('#\s*<script[^<>]*>.*</script>\s*#Us', '', $_out); // We need to replace CSS/JS as load order/merging is not guaranteed consistent
         $_out = preg_replace('#\s*<style[^<>]*>.*</style>\s*#Us', '', $_out);
