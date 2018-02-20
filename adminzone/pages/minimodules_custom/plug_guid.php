@@ -41,7 +41,7 @@ global $FILENAME, $IN;
 require_code('files');
 require_code('files2');
 
-$limit_file = isset($_GET['file']) ? $_GET['file'] : '';
+$limit_file = get_param_string('file', '');
 if ($limit_file == '') {
     $files = get_directory_contents(get_file_base(), '', 0, true, true, array('php'));
 } else {
@@ -65,12 +65,18 @@ foreach ($files as $i => $file) {
     $out = preg_replace_callback("#do_template\('([^']*)', array\((\s*)'([^']+)' => #", 'callback', $IN);
 
     if ($IN != $out) {
-        echo '<span style="color: orange">Re-saved ' . escape_html($file) . '</span><br />';
+        if (get_param_integer('debug', 0) == 1) {
+            echo '<pre>';
+            echo(escape_html($out));
+            echo '</pre>';
+        } else {
+            echo '<span style="color: orange">Re-saved ' . escape_html($file) . '</span><br />';
 
-        cms_file_put_contents_safe(get_file_base() . '/' . $file, $out, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+            cms_file_put_contents_safe(get_file_base() . '/' . $file, $out, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+        }
     }
 }
-echo 'Finished! You will want to check that any changed do_template arrays are not now ugly, because there\'s no autoformatter here.';
+echo 'Finished!';
 
 if ($limit_file == '') {
     cms_file_put_contents_safe(get_file_base() . '/data/guids.dat', serialize($GUID_LANDSCAPE), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
@@ -102,7 +108,7 @@ function callback($match)
     if ($first_param_name != '_GUID') {
         echo 'Insert needed for ' . escape_html($template_name) . '<br />';
         $GUID_LANDSCAPE[$template_name][] = array($FILENAME, $line, $new_guid);
-        return "do_template('" . $template_name . "', array('_GUID' => '" . $new_guid . "', '" . $first_param_name . "' => " . (($first_param_value === null) ? $first_param_value : '');
+        return "do_template('" . $template_name . "', array(" .$whitespace . "'_GUID' => '" . $new_guid . "'," .$whitespace . "'" . $first_param_name . "' => " . (($first_param_value === null) ? $first_param_value : '');
     }
 
     // Handle existing GUIDs
@@ -114,7 +120,7 @@ function callback($match)
         if (array_key_exists($guid_value, $FOUND_GUID)) {
             echo 'Repair needed for ' . escape_html($template_name) . '<br />';
             $GUID_LANDSCAPE[$template_name][] = array($FILENAME, $line, $new_guid);
-            return "do_template('" . $template_name . "', array('_GUID' => '" . $new_guid . "'";
+            return "do_template('" . $template_name . "', array(" .$whitespace . "'_GUID' => '" . $new_guid . "'";
         }
 
         $FOUND_GUID[$guid_value] = true;
