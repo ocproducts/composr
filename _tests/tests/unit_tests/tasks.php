@@ -61,14 +61,14 @@ class tasks_test_set extends cms_test_case
 
         require_code('hooks/systems/tasks/import_catalogue');
         $ob_import = new Hook_task_import_catalogue();
-        $ob_import->run('links', 'Title', 'add', 'leave', 'skip', '', '', '', 1, 1, 1, $tmp_path);
+        $ob_import->run('links', 'Title', 'add', 'leave', 'skip', '', '', '', true, true, true, $tmp_path);
 
         require_code('hooks/systems/tasks/export_catalogue');
         $ob_export = new Hook_task_export_catalogue();
         $results = $ob_export->run('links');
         $this->assertTrue(strpos(cms_file_get_contents_safe($results[1][1]), 'TestingABC') !== false);
 
-        $ob_import->run('links', 'Title', 'add', 'leave', 'skip', '', '', '', 1, 1, 1, $results[1][1]);
+        $ob_import->run('links', 'Title', 'add', 'leave', 'skip', '', '', '', true, true, true, $results[1][1]);
     }
 
     public function testCalendarICal()

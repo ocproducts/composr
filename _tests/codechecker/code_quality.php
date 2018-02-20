@@ -619,7 +619,8 @@ if (isset($_GET['test'])) {
     if (isset($_GET['avoid'])) {
         $avoid = explode(',', $_GET['avoid']);
     }
-    $files = do_dir($COMPOSR_PATH . (isset($_GET['subdir']) ? ('/' . $_GET['subdir']) : ''), false, true, $avoid);
+    $enable_custom = isset($_GET['enable_custom']) && ($_GET['enable_custom'] == '1');
+    $files = do_dir($COMPOSR_PATH . (isset($_GET['subdir']) ? ('/' . $_GET['subdir']) : ''), $enable_custom, true, $avoid);
     $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
     foreach ($files as $i => $to_use) {
         if ($i < $start) {
@@ -803,7 +804,7 @@ function check_function($function, $is_closure = false, $inside_class = false)
             log_warning('Function \'' . $function['name'] . '\' is missing a return statement.', $function['offset']);
         }
         if ((!$ret) && (isset($LOCAL_VARIABLES['__return'])) && (array_unique($LOCAL_VARIABLES['__return']['types']) != array('null'))) {
-            log_warning('Function \'' . $function['name'] . '\' has a return with a value, and the function doesn\'t return a value.', $LOCAL_VARIABLES['__return']['first_mention']);
+            log_warning('Function \'' . $function['name'] . '\' has a return with a value, and the function doesn\'t return a value', $LOCAL_VARIABLES['__return']['first_mention']);
         }
 
         // Check return types
@@ -1418,7 +1419,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
         return $ret['type'];
     }
     if (!$found) {
-        if (count($FUNCTION_SIGNATURES['__global']['functions']) == 0) {
+        if ((isset($FUNCTION_SIGNATURES['__global'])) && (count($FUNCTION_SIGNATURES['__global']['functions']) == 0)) {
             static $warned_missing_api_once = false;
             if (!$warned_missing_api_once) {
                 log_warning('No API function metabase available', $c_pos);
@@ -1912,7 +1913,7 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
                 if ((($GLOBALS['OK_EXTRA_FUNCTIONS'] === null) || (preg_match('#^' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . '#', $class) == 0))) {
                     if (!isset($GLOBALS['KNOWN_EXTRA_CLASSES'][$class]) && $class != '') {
                         if ($class !== null) {
-                            log_warning('Unknown class, ' . $class, $c_pos);
+                            log_warning('Could not find class, ' . $class, $c_pos);
                         }
                     }
                 }

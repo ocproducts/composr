@@ -410,23 +410,23 @@ class Block_youtube_channel
 
                     // If show player parameter is greater than 0, pass SHOWPLAYER set to 1 to template.
                     if ($temp_showplayer > 0 && $i <= $temp_showplayer) {
-                        $channel_showplayer = '1';
+                        $channel_showplayer = 1;
                     } else {
-                        $channel_showplayer = '0';
+                        $channel_showplayer = 0;
                     }
 
                     // Disable thumbnail when player is enabled, enable thumbnail when player is disabled.
                     if ($temp_nothumbplayer == 0 && $channel_showplayer == 1) {
-                        $channel_nothumbplayer = '0';
+                        $channel_nothumbplayer = 0;
                     }
                     if ($temp_nothumbplayer == 0 && $channel_showplayer == 0) {
-                        $channel_nothumbplayer = '1';
+                        $channel_nothumbplayer = 1;
                     }
 
                     // Style all of the meta info using the Style template and store it all in the content variable which is passed to the main template
                     $content->attach(do_template("$channel_templatestyle", array(
-                        'EMBED_ALLOWED' => $channel_embedallowed,
-                        'EMBEDPLAYER_ALLOWED' => $embeddable,
+                        'EMBED_ALLOWED' => strval($channel_embedallowed),
+                        'EMBEDPLAYER_ALLOWED' => strval($embeddable),
                         'VIDEO_ID' => $video_id,
                         'MAX_VIDEOS' => strval($channel_maxvideos),
                         'COUNT' => strval($i),
@@ -447,7 +447,7 @@ class Block_youtube_channel
                         'DESCRIPTION' => $description_long,
                         'DESCRIPTION_SHORT' => $description_short,
                         'DESCRIPTION_SHORTENED' => strval($description_shortened),
-                        'VIEWS' => $views,
+                        'VIEWS' => strval($views),
                         'DURATION_TEXT' => $duration_text,
                         'DURATION_NUMERIC' => $duration_numeric,
                         'THUMBNAIL' => $thumb_img['url'],
@@ -487,13 +487,13 @@ class Block_youtube_channel
                         'THUMBHEIGHT_7' => strval($thumbimg[7]['height']),
                         'THUMBALT_7' => $thumbalt[7],
                         'PLAYERALIGN' => $channel_playeralign,
-                        'PLAYERHEIGHT' => $channel_playerheight,
-                        'PLAYERWIDTH' => $channel_playerwidth,
+                        'PLAYERHEIGHT' => strval($channel_playerheight),
+                        'PLAYERWIDTH' => strval($channel_playerwidth),
                         'EMBEDVIDEO' => $embedvideo,
                         'VIDEO_PLAYER' => $videoplayer,
-                        'SHOWPLAYER' => $channel_showplayer,
+                        'SHOWPLAYER' => strval($channel_showplayer),
                         'STYLE' => strval($channel_style),
-                        'NOTHUMBPLAYER' => $channel_nothumbplayer,
+                        'NOTHUMBPLAYER' => strval($channel_nothumbplayer),
                         'FOR_MORE_LEAD' => $channel_formorelead,
                         'FOR_MORE_TEXT' => $channel_formoretext,
                         'FOR_MORE_URL' => $channel_formoreurl,

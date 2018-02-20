@@ -53,7 +53,7 @@ class Hook_ecommerce_disastr
 
         $products = array();
 
-        $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), null, 'ORDER BY name');
+        $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), array(), 'ORDER BY name');
         foreach ($rows as $disease) {
             $image_url = $disease['image'];
             if ($image_url != '') {

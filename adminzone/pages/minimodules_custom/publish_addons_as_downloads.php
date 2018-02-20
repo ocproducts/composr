@@ -17,7 +17,7 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 
 if (post_param_integer('confirm', 0) == 0) {
     $preview = 'Publish addons';
-    $title = get_screen_title($preview, array(), false);
+    $title = get_screen_title($preview, false);
     $url = get_self_url(false, false);
     return do_template('CONFIRM_SCREEN', array('TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
 }

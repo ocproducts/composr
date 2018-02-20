@@ -613,6 +613,7 @@ function reset_aliases()
 {
     return; // Needs customising for each deployment; Demonstratr personal demos currently not supporting email hosting
 
+    /*
     require_code('files');
 
     // Rebuild virtualdomains
@@ -669,6 +670,7 @@ function reset_aliases()
     }
 
     shell_exec(special_demonstratr_dir() . '/reset_aliases');
+    */
 }
 
 /**
@@ -681,6 +683,7 @@ function find_server_load($server)
 {
     return 1; // Not currently supported, needs customising per-server
 
+    /*
     //$stats = http_get_contents('http://' . $server . '/data_custom/stats.php?html=1');
     $stats = shell_exec('php /home/demonstratr/public_html/data_custom/stats.php 1');
     $matches = array();
@@ -691,6 +694,7 @@ function find_server_load($server)
     }
     $av_load = (floatval($load_15) + floatval($load_5) + floatval($load_1)) / 3.0;
     return $av_load;
+    */
 }
 
 /**

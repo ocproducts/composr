@@ -46,7 +46,8 @@ class downloads_http_cycle_test_set extends cms_test_case
         $debug = (get_param_integer('debug', 0) == 1);
         $data = http_get_contents($url->evaluate(), array('ignore_http_status' => $debug, 'trigger_error' => false, 'post_params' => $post_params, 'cookies' => array(get_session_cookie() => get_session_id()), 'files' => $files, 'timeout' => 100));
         if ($debug) {
-            @var_dump($data);exit();
+            @var_dump($data);
+            exit();
         }
         $this->assertTrue(is_string($data));
     }

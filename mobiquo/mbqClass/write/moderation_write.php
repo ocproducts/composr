@@ -393,7 +393,7 @@ class CMSModerationWrite
             access_denied('I_ERROR');
         }
 
-        $user_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username, false, USERNAME_DEFAULT_ERROR);
+        $user_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
 
         require_lang('cns_warnings');
 
