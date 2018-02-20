@@ -24,7 +24,7 @@ class lang_inline_editing_test_set extends cms_test_case
             return; // Only works in semi-dev mode
         }
 
-        $result = comcode_to_tempcode('{!testy_test:FOOBAR=Test}');
+        $result = comcode_to_tempcode('{!testy_test:FOOBAR=Test}', null, true);
         $this->assertTrue($result->evaluate() == 'Test');
 
         $expected_path = get_custom_file_base() . '/lang_custom/EN/testy_test.ini';

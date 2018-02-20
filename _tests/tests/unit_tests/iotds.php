@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class iotd_test_set extends cms_test_case
+class iotds_test_set extends cms_test_case
 {
     protected $iotd_id;
 
@@ -36,7 +36,7 @@ class iotd_test_set extends cms_test_case
         require_code('iotds');
         require_code('iotds2');
 
-        $this->iotd_id = add_iotd('http://google.com', 'welcome', 'Google', 'images/google.jpg', 0, 0, 0, 0, 'Notes ?', null, null, 0, null, 0, null);
+        $this->iotd_id = add_iotd('http://google.com', 'Welcome', 'Google', 'images/google.jpg', 0, 0, 0, 0, 'Notes ?', null, null, 0, null, 0, null);
 
         $this->assertTrue('http://google.com' == $GLOBALS['SITE_DB']->query_select_value('iotd', 'url', array('id' => $this->iotd_id)));
     }
@@ -69,6 +69,7 @@ class iotd_test_set extends cms_test_case
         }
 
         delete_iotd($this->iotd_id);
+
         parent::tearDown();
     }
 }

@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class post_template_test_set extends cms_test_case
+class post_templates_test_set extends cms_test_case
 {
     protected $post_id;
 

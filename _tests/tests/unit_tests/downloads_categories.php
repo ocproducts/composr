@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class downloads_category_test_set extends cms_test_case
+class downloads_categories_test_set extends cms_test_case
 {
     protected $dwn_cat_id;
 
@@ -42,6 +42,7 @@ class downloads_category_test_set extends cms_test_case
     public function tearDown()
     {
         delete_download_category($this->dwn_cat_id);
+
         parent::tearDown();
     }
 }

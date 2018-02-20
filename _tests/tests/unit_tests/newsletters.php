@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class newsletter_test_set extends cms_test_case
+class newsletters_test_set extends cms_test_case
 {
     protected $news_id;
 

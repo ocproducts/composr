@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class catalogues_category_test_set extends cms_test_case
+class catalogues_categories_test_set extends cms_test_case
 {
     protected $cat_id;
 
@@ -42,6 +42,7 @@ class catalogues_category_test_set extends cms_test_case
     public function tearDown()
     {
         actual_delete_catalogue_category($this->cat_id, false);
+
         parent::tearDown();
     }
 }

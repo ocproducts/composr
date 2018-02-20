@@ -512,7 +512,7 @@ function has_category_access($member_id, $module, $category)
     $where .= ')';
     $run_once = true;
 
-    $db = $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB'];
+    $db = $GLOBALS[(($module == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
     $sql = 'SELECT DISTINCT category_name,module_the_name FROM ' . $db->get_table_prefix() . 'group_category_access WHERE (' . $groups . ') ' . $where;
     $sql .= ' UNION ALL ';
     $sql .= 'SELECT DISTINCT category_name,module_the_name FROM ' . $db->get_table_prefix() . 'member_category_access WHERE member_id=' . strval($member_id) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where;

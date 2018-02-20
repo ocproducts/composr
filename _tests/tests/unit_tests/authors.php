@@ -24,9 +24,9 @@ class authors_test_set extends cms_test_case
 
         require_code('authors');
 
-        add_author('author1', 'www.google.com', 3, 'happy', 'play', '', '');
+        add_author('author1', 'http://www.google.com', 3, 'Happy', 'Play', '', '');
 
-        add_author('author2', 'www.yahoo.com', 3, 'welcome', 'drama', '', '');
+        add_author('author2', 'http://www.yahoo.com', 3, 'Welcome', 'Drama', '', '');
 
         $this->assertTrue('author1' == $GLOBALS['SITE_DB']->query_select_value('authors', 'author', array('author' => 'author1')));
     }
@@ -39,6 +39,7 @@ class authors_test_set extends cms_test_case
     public function tearDown()
     {
         delete_author('author2');
+
         parent::tearDown();
     }
 }

@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class quiz_test_set extends cms_test_case
+class quizzes_test_set extends cms_test_case
 {
     protected $quiz_id;
 
@@ -41,6 +41,7 @@ class quiz_test_set extends cms_test_case
     public function tearDown()
     {
         delete_quiz($this->quiz_id);
+
         parent::tearDown();
     }
 }

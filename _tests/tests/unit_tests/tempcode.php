@@ -56,7 +56,7 @@ class Tempcode_test_set extends cms_test_case
 	Hello\n World
 </p>
 <p>
-	\[html]
+	\[html]\[/html]
 </p>
 <p>
 	foo%3Dbar

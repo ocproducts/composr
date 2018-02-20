@@ -44,6 +44,7 @@ class downloads_test_set extends cms_test_case
     public function tearDown()
     {
         delete_download($this->dwn_id, false);
+
         parent::tearDown();
     }
 }

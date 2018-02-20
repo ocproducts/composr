@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class poll_test_set extends cms_test_case
+class polls_test_set extends cms_test_case
 {
     protected $poll_id;
     protected $topic_id;
@@ -53,6 +53,7 @@ class poll_test_set extends cms_test_case
     public function tearDown()
     {
         delete_poll($this->poll_id);
+
         parent::tearDown();
     }
 }

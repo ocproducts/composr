@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class chatroom_test_set extends cms_test_case
+class chatrooms_test_set extends cms_test_case
 {
     protected $chatroom_id;
 

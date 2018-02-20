@@ -41,6 +41,7 @@ class awards_test_set extends cms_test_case
     public function tearDown()
     {
         delete_award_type($this->award_id);
+
         parent::tearDown();
     }
 }

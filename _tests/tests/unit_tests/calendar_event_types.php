@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class calendar_event_type_test_set extends cms_test_case
+class calendar_event_types_test_set extends cms_test_case
 {
     protected $eventtype_id;
 

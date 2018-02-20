@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class ticket_type_test_set extends cms_test_case
+class ticket_types_test_set extends cms_test_case
 {
     protected $ticket_type_id;
 

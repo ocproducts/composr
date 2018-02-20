@@ -17,7 +17,7 @@
  World,NL2_ESCAPED}
 </p>
 <p>
-	{$ESCAPE,[html],CC_ESCAPED}
+	{$ESCAPE,[html][/html],CC_ESCAPED}
 </p>
 <p>
 	{$ESCAPE,foo=bar,UL_ESCAPED}

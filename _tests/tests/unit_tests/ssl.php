@@ -37,21 +37,29 @@ class ssl_test_set extends cms_test_case
 
         set_value('disable_ssl_for__' . $_SERVER['HTTP_HOST'], '1');
 
+        if (get_forum_type() == 'cns') {
+            $page_link = 'forum:forumview';
+            $page = 'forumview';
+        } else {
+            $page_link = 'site:polls';
+            $page = 'polls';
+        }
+
         // HTTPS (SSL) version
-        $GLOBALS['SITE_DB']->query_insert('https_pages', array('https_page_name' => 'forum:forumview'), false, true/*in case previous test didn't finish*/);
+        $GLOBALS['SITE_DB']->query_insert('https_pages', array('https_page_name' => $page_link), false, true/*in case previous test didn't finish*/);
         $HTTPS_PAGES_CACHE = null;
         erase_persistent_cache();
-        $url = build_url(array('page' => 'forumview'), get_module_zone('forumview'));
+        $url = build_url(array('page' => $page), get_module_zone($page));
         $c = http_get_contents($url->evaluate());
-        $this->assertTrue(strpos($c, 'src="http://') === false);
+        $this->assertTrue(strpos($c, 'src="http://') === false, 'HTTPS version failed (HTTP embed [e.g. image] found) on ' . $url->evaluate());
 
         // HTTP version
-        $GLOBALS['SITE_DB']->query_delete('https_pages', array('https_page_name' => 'forum:forumview'));
+        $GLOBALS['SITE_DB']->query_delete('https_pages', array('https_page_name' => $page_link));
         $HTTPS_PAGES_CACHE = null;
         erase_persistent_cache();
-        $url = build_url(array('page' => 'forumview'), get_module_zone('forumview'));
+        $url = build_url(array('page' => $page), get_module_zone($page));
         $c = http_get_contents($url->evaluate());
-        $this->assertTrue(strpos($c, 'src="https://') === false);
+        $this->assertTrue(strpos($c, 'src="https://') === false, 'HTTP version failed (HTTPS embed [e.g. image] found) on ' . $url->evaluate());
     }
 
     public function tearDown()

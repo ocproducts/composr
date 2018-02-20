@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class emoticon_test_set extends cms_test_case
+class emoticons_test_set extends cms_test_case
 {
     public function setUp()
     {

@@ -185,6 +185,7 @@ class shopping_test_set extends cms_test_case
     {
         $catalogue_name = 'storetesting' . strval(get_member());
         actual_delete_catalogue($catalogue_name);
+
         parent::tearDown();
     }
 }

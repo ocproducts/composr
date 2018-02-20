@@ -68,6 +68,7 @@ class community_billboard_test_set extends cms_test_case
         }
 
         delete_community_billboard_message($this->flag_id);
+
         parent::tearDown();
     }
 }

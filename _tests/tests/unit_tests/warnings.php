@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class warning_test_set extends cms_test_case
+class warnings_test_set extends cms_test_case
 {
     protected $warn_id;
 

@@ -164,6 +164,7 @@ class shopping_order_management_test_set extends cms_test_case
     public function tearDown()
     {
         $GLOBALS['SITE_DB']->query_delete('shopping_orders', array('id' => $this->order_id), '', 1);
+
         parent::tearDown();
     }
 }

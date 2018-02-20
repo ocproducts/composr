@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class moderation_test_set extends cms_test_case
+class multi_moderations_test_set extends cms_test_case
 {
     protected $mod_id;
 

@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class forum_poll_test_set extends cms_test_case
+class forum_polls_test_set extends cms_test_case
 {
     protected $topic_id;
     protected $poll_id;

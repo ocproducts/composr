@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class forum_grouping_test_set extends cms_test_case
+class forum_groupings_test_set extends cms_test_case
 {
     protected $forum_cat_id;
     protected $access_mapping;

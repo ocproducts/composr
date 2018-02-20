@@ -107,7 +107,7 @@ class Hook_addon_registry_show_group_avatars
     public function get_dependencies()
     {
         return array(
-            'requires' => array(),
+            'requires' => array('cns'),
             'recommends' => array(),
             'conflicts_with' => array(),
         );

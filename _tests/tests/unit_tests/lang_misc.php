@@ -82,6 +82,13 @@ class lang_misc_test_set extends cms_test_case
         $files = get_directory_contents(get_file_base(), '', IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_FLOATING, true, true, array('php'));
         $files[] = 'install.php';
         foreach ($files as $path) {
+            // Exceptions
+            if (in_array($path, array(
+                '_tests/tests/unit_tests/lang_inline_editing.php',
+            ))) {
+                continue;
+            }
+
             $c = file_get_contents(get_file_base() . '/' . $path);
             $this->process_file_for_references($c, $path);
         }

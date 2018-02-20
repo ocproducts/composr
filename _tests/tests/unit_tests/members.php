@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class user_test_set extends cms_test_case
+class members_test_set extends cms_test_case
 {
     protected $member_id;
     protected $access_mapping;
@@ -24,6 +24,11 @@ class user_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
+        if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Test only works with Conversr');
+            return;
+        }
 
         require_code('cns_members_action');
         require_code('cns_members_action2');
@@ -39,8 +44,12 @@ class user_test_set extends cms_test_case
         $this->assertTrue('testmember' == $GLOBALS['FORUM_DB']->query_select_value('f_members', 'm_username', array('id' => $this->member_id)));
     }
 
-    public function testEdituser()
+    public function testEditMember()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         cns_edit_member(
             $this->member_id,
             'testing@test.com',
@@ -82,7 +91,12 @@ class user_test_set extends cms_test_case
 
     public function tearDown()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         cns_delete_member($this->member_id);
+
         parent::tearDown();
     }
 }

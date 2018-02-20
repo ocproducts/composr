@@ -42,6 +42,7 @@ class gallery_images_test_set extends cms_test_case
     public function tearDown()
     {
         delete_image($this->image_id, false);
+
         parent::tearDown();
     }
 }
