@@ -20,9 +20,9 @@ class url_monikers_test_set extends cms_test_case
 {
     public function setUp()
     {
-        require_code('urls2');
-
         parent::setUp();
+
+        require_code('urls2');
     }
 
     public function testMonikerGeneration()

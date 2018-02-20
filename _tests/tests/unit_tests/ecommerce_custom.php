@@ -54,10 +54,16 @@ class ecommerce_custom_test_set extends cms_test_case
         set_option('payment_gateway_test_username', 'test@example.com');
         set_option('currency', 'USD');
 
-        $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username('test');
+        if (get_forum_type() == 'cns') {
+            $test_username = 'test';
+        } else {
+            $test_username = 'admin';
+        }
+
+        $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($test_username);
 
         // Test custom product is there
-        $url = build_url(array('page' => 'purchase', 'type' => 'browse', 'keep_su' => 'test'));
+        $url = build_url(array('page' => 'purchase', 'type' => 'browse', 'keep_su' => $test_username));
         $purchase_screen = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($purchase_screen, 'TestCustomItem') !== false);
 
@@ -70,7 +76,7 @@ class ecommerce_custom_test_set extends cms_test_case
         $trans_expecting_id = $matches[1];
 
         // Clear out sales
-        $GLOBALS['FORUM_DB']->query_delete('ecom_sales', array('member_id' => $member_id));
+        $GLOBALS['SITE_DB']->query_delete('ecom_sales', array('member_id' => $member_id));
 
         // Put through fake IPN response
         $ipn_data = array(
@@ -110,7 +116,7 @@ class ecommerce_custom_test_set extends cms_test_case
         handle_ipn_transaction_script(true, false);
 
         // Test was actioned
-        $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('ecom_sales', 'member_id', array('member_id' => $member_id));
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales', 'member_id', array('member_id' => $member_id));
         $this->assertTrue($test !== null);
     }
 

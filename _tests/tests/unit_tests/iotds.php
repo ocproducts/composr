@@ -22,11 +22,11 @@ class iotds_test_set extends cms_test_case
 
     public function setUp()
     {
+        parent::setUp();
+
         if (!addon_installed('iotds')) {
             return;
         }
-
-        parent::setUp();
 
         if (in_safe_mode()) {
             $this->assertTrue(false, 'Cannot work in safe mode');

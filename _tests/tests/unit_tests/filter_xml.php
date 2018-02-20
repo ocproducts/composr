@@ -20,12 +20,12 @@ class filter_xml_test_set extends cms_test_case
 {
     public function setUp()
     {
+        parent::setUp();
+
         $this->establish_admin_session();
 
         require_code('files');
         require_code('csrf_filter');
-
-        parent::setUp();
     }
 
     public function testNonFilter()

@@ -104,7 +104,7 @@ class Forum_driver_base
     public function member_profile_hyperlink($id, $_username = '', $use_displayname = true)
     {
         if (is_guest($id)) {
-            return ($_username == '') ? do_lang_tempcode('GUEST') : make_string_tempcode(escape_html($_username));
+            return ($_username == '') ? make_string_tempcode($this->get_username($this->get_guest_id())) : make_string_tempcode(escape_html($_username));
         }
         if ($_username == '') {
             $_username = $this->get_username($id, $use_displayname);
@@ -195,15 +195,9 @@ class Forum_driver_base
         } else {
             // Special case: Guest
             if ($id == $guest_id) {
-                require_code('lang');
                 if (!function_exists('do_lang')) {
                     return 'Guest';
                 }
-                $ret = do_lang('GUEST', null, null, null, null, false);
-                if ($ret === null) {
-                    $ret = 'Guest';
-                }
-                return $ret;
             }
 
             // Special case: Cache

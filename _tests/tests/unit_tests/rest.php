@@ -22,6 +22,8 @@ class rest_test_set extends cms_test_case
 
     public function setUp()
     {
+        parent::setUp();
+
         $this->establish_admin_session();
 
         $this->path = '/var/news/general/Hello.cms';
@@ -33,8 +35,6 @@ class rest_test_set extends cms_test_case
         require_code('commandr_fs');
         $fs = new Commandr_fs();
         $fs->listing(array('var', 'news'));
-
-        parent::setUp();
     }
 
     public function testCreate()

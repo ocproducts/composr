@@ -81,6 +81,9 @@ function get_currency()
                 $currency = get_option('currency');
             } else {
                 $currency = country_to_currency($country);
+                if ($currency === null) {
+                    $currency = get_option('currency');
+                }
             }
         }
     }

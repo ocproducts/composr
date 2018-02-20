@@ -487,7 +487,7 @@ function _report_content($content_type, $content_id, $report_title, $report_post
     if ($count >= intval(get_option('reported_times'))) {
         // Mark as unvalidated
         if (($cma_info['validated_field'] !== null) && (strpos($cma_info['table'], '(') === false)) {
-            $db = $GLOBALS[(substr($cma_info['table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
+            $db = $GLOBALS[((substr($cma_info['table'], 0, 2) == 'f_') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
             $db->query_update($cma_info['table'], array($cma_info['validated_field'] => 0), get_content_where_for_str_id($content_id, $cma_info));
         }
 

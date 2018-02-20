@@ -33,7 +33,7 @@ class extra_logging_test_set extends cms_test_case
         $before = glob($glob_cmd);
 
         set_value('enable_profiler', '1');
-        $url = build_url(array('page' => ''), 'forum');
+        $url = build_url(array('page' => ''), '');
         $data = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
         set_value('enable_profiler', '0');
 

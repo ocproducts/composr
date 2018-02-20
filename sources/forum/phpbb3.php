@@ -494,11 +494,11 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         $filename = $this->get_member_row_field($member, 'user_avatar');
 
         switch ($type) {
-            case '1': // Upload
+            case 1: // Upload
                 return get_forum_base_url() . '/' . $avatar_path . '/' . $filename;
-            case '2': // Remote
+            case 2: // Remote
                 return $filename;
-            case '3': // Gallery
+            case 3: // Gallery
                 return get_forum_base_url() . '/' . $avatar_gallery_path . '/' . $filename;
         }
         return '';
@@ -962,9 +962,6 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _get_username($member)
     {
-        if ($member == $this->get_guest_id()) {
-            return do_lang('GUEST');
-        }
         return $this->get_member_row_field($member, 'username');
     }
 

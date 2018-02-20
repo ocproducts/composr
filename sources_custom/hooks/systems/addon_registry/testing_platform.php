@@ -510,7 +510,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/form_to_email.php',
             '_tests/tests/unit_tests/filtering.php',
             '_tests/tests/unit_tests/comcode_pages.php',
-            '_tests/tests/unit_tests/user_banunban.php',
+            '_tests/tests/unit_tests/member_banning.php',
             '_tests/tests/unit_tests/usergroup_subscriptions.php',
             '_tests/tests/unit_tests/warnings.php',
             '_tests/tests/unit_tests/welcome_emails.php',

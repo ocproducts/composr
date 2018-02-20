@@ -805,24 +805,17 @@ class Module_cms_booking_bookings extends Standard_crud_module
             }
         }
 
-        $select_field = ($this->orderer !== null) ? $this->orderer : ($this->table_prefix . strtolower($this->select_name));
-
         if ($orderer === null) {
-            $orderer = $select_field;
-        }
-        $table = ($this->table === null) ? $this->module_type : $this->table;
-        $db = ((substr($table, 0, 2) == 'f_') && (!$force_site_db) && (get_forum_type() != 'none')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
-        if ($force_site_db) {
-            push_db_scope_check(false);
+            $orderer = 'id';
         }
         $request = array();
         if (get_param_integer('id', null) !== null) {
             $where = array('member_id' => get_param_integer('id'));
         }
         if (get_option('member_booking_only') == '1') {
-            $_rows = $db->query_select($table . ' r ' . $join, array('DISTINCT member_id', $orderer), $where, 'ORDER BY ' . $orderer);
+            $_rows = $GLOBALS['SITE_DB']->query_select('booking r ' . $join, array('DISTINCT member_id', $orderer), $where, 'ORDER BY ' . $orderer);
         } else {
-            $_rows = $db->query_select($table . ' r ' . $join, array('id'), $where, 'ORDER BY ' . $orderer);
+            $_rows = $GLOBALS['SITE_DB']->query_select('booking r ' . $join, array('id'), $where, 'ORDER BY ' . $orderer);
         }
         foreach ($_rows as $row) {
             if (get_option('member_booking_only') == '1') {
@@ -846,9 +839,6 @@ class Module_cms_booking_bookings extends Standard_crud_module
         }
         $start = get_param_integer('start', 0);
 
-        if ($force_site_db) {
-            pop_db_scope_check();
-        }
         $_entries = array();
         foreach ($request as $i => $row) {
             if ($i < $start) {

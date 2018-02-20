@@ -165,7 +165,7 @@ class Hook_fields_content_link_multi
         if ($info === null) {
             return new Tempcode();
         }
-        $db = $GLOBALS[(substr($info['table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
+        $db = $GLOBALS[((substr($info['table'], 0, 2) == 'f_') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
         $select = array();
         append_content_select_for_id($select, $info);
         if ($type == 'comcode_page') {

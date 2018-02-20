@@ -20,11 +20,11 @@ class microformats_test_set extends cms_test_case
 {
     public function setUp()
     {
+        parent::setUp();
+
         require_code('lorem');
 
         $this->establish_admin_session();
-
-        parent::setUp();
     }
 
     public function testHCalendar()

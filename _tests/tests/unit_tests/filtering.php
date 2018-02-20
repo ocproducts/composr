@@ -394,6 +394,13 @@ class filtering_test_set extends cms_test_case
             '{t_linker=temp_test_linked.id},temp_test_linked.l_something=123' => array(1),
         );
 
+        $guest_username = $GLOBALS['FORUM_DRIVER']->get_username($GLOBALS['FORUM_DRIVER']->get_guest_id());
+        foreach ($filter_tests as $filter => $filter_expected) {
+            unset($filter_tests[$filter]);
+            $filter = str_replace('Guest', $guest_username, $filter);
+            $filter_tests[$filter] = $filter_expected;
+        }
+
         foreach ($filter_tests as $filter => $filter_expected) {
             list($extra_select, $extra_join, $extra_where) = filtercode_to_sql($GLOBALS['SITE_DB'], parse_filtercode($filter), 'temp_test');
             $sql = 'SELECT r.id' . implode('', $extra_select) . ' FROM ' . get_table_prefix() . 'temp_test r' . implode('', $extra_join) . ' WHERE 1=1' . $extra_where;
@@ -406,7 +413,7 @@ class filtering_test_set extends cms_test_case
             array('id<id_op><id>', 'id', '<', '2', array(1)),
             array('id<id_op><id>', 'id', '@', '1-2', array(1, 2)),
             array('t_short_text<t_short_text_op><t_short_text>', 't_short_text', '=', 'axxxxx', array(1)),
-            array('t_member<t_member_op><t_member>', 't_member', '=', 'Guest', array(1)),
+            array('t_member<t_member_op><t_member>', 't_member', '=', $guest_username, array(1)),
             array('t_real<t_real_op><t_real>', 't_real', '>=', '1.1', array(2, 3)),
             array('t_real<t_real_op><t_real>', 't_real', '@', '1.1-2.0', array(2)),
             array('t_time<t_time_op><t_time>', 't_time', '=', '2000000', array(2)),

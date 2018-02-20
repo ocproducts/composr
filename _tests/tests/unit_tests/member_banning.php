@@ -16,25 +16,32 @@
 /**
  * Composr test case class (unit testing).
  */
-class user_banunban_test_set extends cms_test_case
+class member_banning_test_set extends cms_test_case
 {
     public function setUp()
     {
         parent::setUp();
 
+        if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Test only works with Conversr');
+            return;
+        }
+
         require_code('cns_members_action');
         require_code('cns_members_action2');
         require_lang('cns');
-
-        cns_ban_member(3);
-
-        $this->assertTrue(1 == $GLOBALS['FORUM_DB']->query_select_value('f_members', 'm_is_perm_banned', array('id' => 3)));
     }
 
-    public function testEdituser_banunban()
+    public function testBanUnban()
     {
-        cns_unban_member(3);
+        if (get_forum_type() != 'cns') {
+            return;
+        }
 
+        cns_ban_member(3);
+        $this->assertTrue(1 == $GLOBALS['FORUM_DB']->query_select_value('f_members', 'm_is_perm_banned', array('id' => 3)));
+
+        cns_unban_member(3);
         $this->assertTrue(0 == $GLOBALS['FORUM_DB']->query_select_value('f_members', 'm_is_perm_banned', array('id' => 3)));
     }
 }

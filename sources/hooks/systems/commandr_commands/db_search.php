@@ -93,7 +93,7 @@ class Hook_commandr_command_db_search
             $out = '';
 
             foreach ($fields as $field) {
-                $db = ((substr($field['m_table'], 0, 2) == 'f_') && ($GLOBALS['FORUM_DB'] !== null)) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+                $db = ((substr($field['m_table'], 0, 2) == 'f_') && (get_forum_type() == 'cns')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
                 $ofs = $db->query_select($field['m_table'], array('*'), array($field['m_name'] => $search));
 
                 if (count($ofs) > 0) {

@@ -303,6 +303,14 @@ class Notification_dispatcher
         require_code('mail');
 
         if (($this->create_ticket) && (addon_installed('tickets'))) {
+            $ticket_forum = get_option('ticket_forum_name');
+            $fid = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($ticket_forum);
+            if ($fid === null) {
+                $this->create_ticket = false;
+            }
+        }
+
+        if (($this->create_ticket) && (addon_installed('tickets'))) {
             list($ticket_type_name, $id) = explode('_', $this->code_category, 2);
 
             $ticket_member_id = ($this->from_member_id >= 0) ? $this->from_member_id : $GLOBALS['FORUM_DRIVER']->get_guest_id();

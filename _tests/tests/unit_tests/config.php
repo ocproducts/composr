@@ -232,7 +232,13 @@ class config_test_set extends cms_test_case
             $details = $ob->get_details();
             if ($details['type'] == 'list') {
                 $list = explode('|', $details['list_options']);
-                $this->assertTrue(in_array($ob->get_default(), $list));
+                $default = $ob->get_default();
+
+                if ($default === null) {
+                    continue;
+                }
+
+                $this->assertTrue(in_array($default, $list));
             }
         }
     }

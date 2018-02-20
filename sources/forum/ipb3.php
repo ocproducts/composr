@@ -565,9 +565,6 @@ class Forum_driver_ipb3 extends Forum_driver_base
      */
     protected function _get_username($member)
     {
-        if ($member == $this->get_guest_id()) {
-            return do_lang('GUEST');
-        }
         return $this->ipb_unescape($this->get_member_row_field($member, 'name'));
     }
 

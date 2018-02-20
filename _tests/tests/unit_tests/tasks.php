@@ -28,6 +28,10 @@ class tasks_test_set extends cms_test_case
 
     public function testNewsletterCSV()
     {
+        if (!addon_installed('newsletter')) {
+            return;
+        }
+
         $tmp_path = cms_tempnam();
 
         cms_file_put_contents_safe($tmp_path, "Email,Name\ntest@example.com,Test");
@@ -47,6 +51,10 @@ class tasks_test_set extends cms_test_case
 
     public function testCatalogueCSV()
     {
+        if (!addon_installed('catalogues')) {
+            return;
+        }
+
         $tmp_path = cms_tempnam();
 
         cms_file_put_contents_safe($tmp_path, "Title,URL,Description\nTestingABC,http://example.com,Test");
@@ -65,6 +73,10 @@ class tasks_test_set extends cms_test_case
 
     public function testCalendarICal()
     {
+        if (!addon_installed('calendar')) {
+            return;
+        }
+
         require_code('calendar2');
 
         // Add complex event with start and recurrence
@@ -127,6 +139,10 @@ class tasks_test_set extends cms_test_case
 
     public function testMemberCSV()
     {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         $tmp_path = cms_tempnam();
 
         cms_file_put_contents_safe($tmp_path, "Username,E-mail\nTestingABC,test@example.com");

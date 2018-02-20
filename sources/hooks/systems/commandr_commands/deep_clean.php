@@ -53,7 +53,7 @@ class Hook_deep_clean
             $is_title_trans = ((isset($TABLE_LANG_FIELDS[$table])) && (in_array($title_field, $TABLE_LANG_FIELDS[$table])));
 
             $db = $GLOBALS['SITE_DB'];
-            if (substr($table, 0, 2) == 'f_') {
+            if ((substr($table, 0, 2) == 'f_') && (get_forum_type() == 'cns')) {
                 $db = $GLOBALS['FORUM_DB'];
             }
 
