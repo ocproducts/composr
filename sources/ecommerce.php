@@ -1890,7 +1890,7 @@ function paid_amount_matches($amount, $tax, $expected_amount, $expected_tax)
  */
 function fatal_ipn_exit($error, $dont_trigger = false)
 {
-    if (get_param_integer('keep_fatalistic', 0) == 1) {
+    if (get_param_integer('keep_fatalistic', 0) != 0) {
         fatal_exit($error);
     }
 

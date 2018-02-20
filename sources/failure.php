@@ -32,7 +32,7 @@ function init__failure()
     $THROWING_ERRORS = false;
 
     if (!defined('MAX_STACK_TRACE_VALUE_LENGTH')) {
-        define('MAX_STACK_TRACE_VALUE_LENGTH', 300);
+        define('MAX_STACK_TRACE_VALUE_LENGTH', (get_param_integer('keep_fatalistic', 0) == 2) ? 10000 : 300);
     }
 
     /** Whether we want errors to result in simple text responses. Useful for AJAX scripts.
@@ -339,7 +339,7 @@ function _warn_screen($title, $text, $provide_back = true, $support_match_key_me
         }
     }
 
-    if (get_param_integer('keep_fatalistic', 0) == 1) {
+    if (get_param_integer('keep_fatalistic', 0) != 0) {
         _generic_exit($text, 'FATAL_SCREEN', false, false);
     }
 
@@ -378,7 +378,7 @@ function _sanitise_error_msg($text)
  */
 function _generic_exit($text, $template, $support_match_key_messages = false, $log_error = false)
 {
-    if (($template != 'FATAL_SCREEN') && ((get_param_integer('keep_fatalistic', 0) == 1) || (running_script('commandr')))) {
+    if (($template != 'FATAL_SCREEN') && ((get_param_integer('keep_fatalistic', 0) != 0) || (running_script('commandr')))) {
         _generic_exit($text, 'FATAL_SCREEN', false, $log_error);
     }
 
@@ -1390,7 +1390,7 @@ function _access_denied($class, $param, $force_login)
     require_code('site');
     log_stats('/access_denied', 0);
 
-    if (($GLOBALS['IS_ACTUALLY_ADMIN']) && (get_param_integer('keep_fatalistic', 0) == 1)) {
+    if (($GLOBALS['IS_ACTUALLY_ADMIN']) && (get_param_integer('keep_fatalistic', 0) != 0)) {
         fatal_exit($message);
     }
 

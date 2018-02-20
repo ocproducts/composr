@@ -46,7 +46,7 @@ function cloudinary_transfer_upload($path, $upload_folder, $filename, $obfuscate
             $path,
             $options
         );
-        if (get_param_integer('keep_fatalistic', 0) == 1) {
+        if (get_param_integer('keep_fatalistic', 0) != 0) {
             attach_message(serialize($result), 'inform');
         }
     } catch (Exception $e) {

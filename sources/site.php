@@ -432,7 +432,7 @@ function attach_message($message, $type = 'inform', $put_in_helper_panel = false
         }
     }
 
-    if ((get_param_integer('keep_fatalistic', 0) == 1) && ($type == 'warn')) {
+    if ((get_param_integer('keep_fatalistic', 0) != 0) && ($type == 'warn')) {
         fatal_exit($message);
     }
 
@@ -1027,7 +1027,7 @@ function do_site()
         $disable_safe_mode_url = get_self_url(true, true, array('keep_safe_mode' => $safe_mode_via_config ? 0 : null));
         attach_message(do_lang_tempcode('CURRENTLY_HAS_KEEP_SAFE_MODE', escape_html($disable_safe_mode_url)), 'notice');
     }
-    if (get_param_integer('keep_fatalistic', 0) == 1) {
+    if (get_param_integer('keep_fatalistic', 0) != 0) {
         $disable_fatalistic_url = get_self_url(true, true, array('keep_fatalistic' => null));
         attach_message(do_lang_tempcode('CURRENTLY_HAS_KEEP_FATALISTIC', escape_html($disable_fatalistic_url)), 'notice');
     }

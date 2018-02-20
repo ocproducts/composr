@@ -121,7 +121,7 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
             if (function_exists('ocp_mark_as_escaped')) {
                 ocp_mark_as_escaped($err);
             }
-            if ((!running_script('upgrader')) && ((!get_mass_import_mode()) || (get_param_integer('keep_fatalistic', 0) == 1))) {
+            if ((!running_script('upgrader')) && ((!get_mass_import_mode()) || (get_param_integer('keep_fatalistic', 0) != 0))) {
                 if (!function_exists('do_lang') || (do_lang('QUERY_FAILED', null, null, null, null, false) === null)) {
                     fatal_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
                 }
