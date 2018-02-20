@@ -34,6 +34,10 @@ class Hook_cron_cns_birthdays
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         if ($calculate_num_queued) {
             $this->this_birthday_day = date('d/m/Y', tz_time(time(), get_site_timezone()));
             if (get_value('last_birthday_day', null, true) !== $this->this_birthday_day) {

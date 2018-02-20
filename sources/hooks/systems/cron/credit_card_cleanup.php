@@ -35,6 +35,10 @@ class Hook_cron_credit_card_cleanup
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         if ($calculate_num_queued) {
             $credit_card_cleanup_days = get_option('credit_card_cleanup_days');
 

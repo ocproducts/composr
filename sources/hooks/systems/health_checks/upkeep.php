@@ -187,7 +187,7 @@ class Hook_health_check_upkeep extends Hook_Health_Check
 
                 if ($seconds_due_in !== null) {
                     $ok = ($seconds_due_in >= 0);
-                    $this->assertTrue($ok, 'Staff checklist items for [tt]' . $hook . '[/tt] due ' . display_time_period($seconds_due_in) . ' ago');
+                    $this->assertTrue($ok, 'Staff checklist items for [tt]' . $hook . '[/tt] due ' . (($seconds_due_in == -1) ? '(ASAP)' : display_time_period($seconds_due_in)) . ' ago');
                     break;
                 }
 

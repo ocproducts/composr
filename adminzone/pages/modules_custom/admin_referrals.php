@@ -95,6 +95,10 @@ class Module_admin_referrals
      */
     public function run()
     {
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
         require_code('referrals');
 
         $type = get_param_string('type', 'browse');

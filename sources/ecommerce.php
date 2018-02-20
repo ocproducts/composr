@@ -1929,7 +1929,7 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
         if ((available_points($member_id) >= $details['price_points']) || ($details['price'] === null/*has to be points as no monetary-price*/) || (has_privilege($member_id, 'give_points_self'))) {
             return array(
                 0.00,
-                0.00,
+                '0.00',
                 $details['price_points'],
                 false,
             );

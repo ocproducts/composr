@@ -33,7 +33,7 @@ class Hook_symbol_CPF_LIST
     {
         $value = '';
 
-        if (isset($param[0])) {
+        if ((isset($param[0])) && (get_forum_type() == 'cns')) {
             $delimiter = isset($param[1]) ? $param[1] : ',';
             $include_label_syntax = isset($param[2]) ? ($param[2] === '1') : true;
 

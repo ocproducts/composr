@@ -83,6 +83,10 @@ function xhtmlise_html($html, $definitely_want = false, $snippet = false)
             }
         }
 
+        if ($token === null) {
+            break;
+        }
+
         $basis_token = _get_tag_basis($token);
 
         if ($basis_token != '') {

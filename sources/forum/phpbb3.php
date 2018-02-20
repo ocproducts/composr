@@ -589,6 +589,13 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _un_phpbb_ip($ip)
     {
+        if (strpos($ip, '.') === false) {
+            return $ip;
+        }
+        if (strpos($ip, ':') === false) {
+            return $ip;
+        }
+
         $_ip = strval(hexdec($ip[0] . $ip[1])) . '.' . strval(hexdec($ip[2] . $ip[3])) . '.' . strval(hexdec($ip[4] . $ip[5])) . '.' . strval(hexdec($ip[6] . $ip[7]));
         return $_ip;
     }

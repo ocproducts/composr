@@ -53,6 +53,10 @@ class Block_main_cns_involved_topics
      */
     public function run($map)
     {
+        if (get_forum_type() != 'cns') {
+            return new Tempcode();
+        }
+
         $block_id = get_block_id($map);
 
         $check_perms = array_key_exists('check', $map) ? ($map['check'] == '1') : true;

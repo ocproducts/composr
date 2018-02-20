@@ -202,7 +202,6 @@
 }
 #pre-but {
 	float: left;
-	padding: 5px 5px 0 0;
 }
 #time-line {
 	float: left;
@@ -219,7 +218,6 @@
 /*{+END}*/
 #next-but {
 	float: left;
-	padding: 5px 0 0 5px;
 }
 #pause-but, #pre-but, #next-but, #time-line {
 	cursor: pointer;

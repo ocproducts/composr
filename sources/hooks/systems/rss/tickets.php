@@ -48,6 +48,12 @@ class Hook_rss_tickets
             return null;
         }
 
+        $ticket_forum = get_option('ticket_forum_name');
+        $fid = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($ticket_forum);
+        if ($fid === null) {
+            return null;
+        }
+
         require_code('tickets');
         require_lang('tickets');
 

@@ -13,6 +13,10 @@
  * @package    composr_homesite_support_credits
  */
 
+if (get_forum_type() != 'cns') {
+    warn_exit(do_lang_tempcode('NO_CNS'));
+}
+
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 $start = get_param_integer('start', 0);

@@ -675,6 +675,10 @@ class Module_admin_customers
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (get_forum_type() != 'cns') {
+            return array();
+        }
+
         return array(
             'browse' => array('CHARGE_CUSTOMER', 'admin/tool'),
         );
@@ -730,6 +734,10 @@ class Module_admin_customers
      */
     public function charge()
     {
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
         require_code('form_templates');
         require_code('mantis');
 

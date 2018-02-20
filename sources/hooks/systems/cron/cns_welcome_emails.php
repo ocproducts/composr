@@ -37,6 +37,10 @@ class Hook_cron_cns_welcome_emails
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         if ($calculate_num_queued) {
             $num_queued = 0;
 

@@ -56,9 +56,14 @@ class Module_admin_lang
         );
         if (!$be_deferential) {
             $ret += array(
-                'content' => array('TRANSLATE_CONTENT', 'menu/adminzone/style/language/language_content'),
                 'criticise' => array('CRITICISE_LANGUAGE_PACK', 'menu/adminzone/style/language/criticise_language'),
             );
+
+            if ((multi_lang()) && (multi_lang_content())) {
+                $ret += array(
+                    'content' => array('TRANSLATE_CONTENT', 'menu/adminzone/style/language/language_content'),
+                );
+            }
         }
         return $ret;
     }

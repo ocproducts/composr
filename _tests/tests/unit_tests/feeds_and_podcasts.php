@@ -57,12 +57,19 @@ class feeds_and_podcasts_test_set extends cms_test_case
         $this->assertTrue(strpos($data, '</xsl:stylesheet>') !== false, 'Failed on ' . $url);
         $parsed = new CMS_simple_xml_reader($data);
     }
-    
+
     public function testFeeds()
     {
         $_feeds = find_all_hooks('systems', 'rss');
         $feeds = array();
         foreach (array_keys($_feeds) as $feed) {
+            if ((substr($feed, 0, 4) == 'cns_') && (get_forum_type() != 'cns')) {
+                continue;
+            }
+            if (($feed == 'tickets') && (get_forum_type() != 'cns')) {
+                continue; // Maybe forum has
+            }
+
             foreach (array('RSS2', 'Atom') as $type) {
                 $url = find_script('backend') . '?type=' . $type . '&mode=' . $feed . '&days=30&max=100';
                 $data = http_get_contents($url, array('cookies' => array(get_session_cookie() => get_session_id())));
@@ -95,7 +102,6 @@ class feeds_and_podcasts_test_set extends cms_test_case
 
         $url = find_script('backend') . '?type=RSS2&mode=galleries&days=30&max=0';
         $data = http_get_contents($url, array('cookies' => array(get_session_cookie() => get_session_id())));
-        @var_dump($data);
         $this->assertTrue(strpos($data, '<item>') === false, 'Failed on ' . $url);
     }
 

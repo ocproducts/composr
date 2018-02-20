@@ -29,6 +29,10 @@ class Hook_cron_newsletter_no_members
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         if ($calculate_num_queued) {
             $query = 'SELECT m_email_address FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . db_string_equal_to('m_validated_email_confirm_code', '');
             if (addon_installed('unvalidated')) {

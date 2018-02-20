@@ -22,7 +22,9 @@ class firephp_test_set extends cms_test_case
     {
         $this->establish_admin_session();
 
-        $url = build_url(array('page' => '', 'keep_firephp' => 1, 'keep_su' => 'test'), 'adminzone');
+        $guest_username = $GLOBALS['FORUM_DRIVER']->get_username($GLOBALS['FORUM_DRIVER']->get_guest_id());
+
+        $url = build_url(array('page' => '', 'keep_firephp' => 1, 'keep_su' => $guest_username), 'adminzone');
 
         $header = '';
         $header .= 'Cookie: ' . get_session_cookie() . '=' . get_session_id() . "\r\n";
