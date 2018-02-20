@@ -106,7 +106,7 @@ country_codes,ISO countries (internal list) and flag images,ocProducts,,Could po
 currency,Currency conversion,ocProducts,,Could potentially break due to third-party changes.,No,
 stop_forum_spam,Stop Forum Spam integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,antispam automated test.
 tornevall,Tornevall integration,ocProducts,,Could potentially break due to third-party changes.,No,antispam automated test.
-newsletter_spam_check,Postmark spam-check integration,ocProducts,,Could potentially break due to third-party changes.,No,newsletter automated test.
+newsletter_spam_check,Postmark spam-check integration,ocProducts,,Could potentially break due to third-party changes.,No,newsletters automated test.
 geocoding_google,Google Geocoding,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,geocoding automated test.
 reverse_geocoding_google,Google Geocoding (reverse),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,geocoding automated test.
 ip_geocoding,IP address geocoding (internal list),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,Part of release process / geocoding automated test.

@@ -62,6 +62,7 @@ class file_naming_test_set extends cms_test_case
             '_config.php.template',
             '_tests/codechecker/codechecker.app/',
             '_tests/codechecker/netbeans/',
+            'test-a',
         );
 
         $ignore_substrings = array(

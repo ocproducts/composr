@@ -136,7 +136,6 @@ class Hook_addon_registry_confluence
             'lang_custom/EN/confluence.ini',
             'sources_custom/confluence.php',
             'sources_custom/confluence2.php',
-            'sources_custom/hooks/systems/addon_registry/confluence.php',
             'sources_custom/hooks/systems/config/confluence_cache_time.php',
             'sources_custom/hooks/systems/config/confluence_password.php',
             'sources_custom/hooks/systems/config/confluence_space.php',

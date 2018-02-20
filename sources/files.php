@@ -456,7 +456,7 @@ function should_ignore_file($path, $bitmask = 0)
         'tcp' => 'themes/[^/]*/templates_cached/.*',
         'css' => 'themes/[^/]*/templates_cached/.*',
         'js' => 'themes/[^/]*/templates_cached/.*',
-        'gz' => 'themes/[^/]*/templates_cached/.*',
+        'gz' => '(themes/[^/]*/templates_cached/.*|caches/guest_pages)',
 
         // Log files
         'log' => '.*',
@@ -592,7 +592,7 @@ function should_ignore_file($path, $bitmask = 0)
         }
 
         $ignore_extensions = array_merge($ignore_extensions, array(
-            'gz' => '(themes/[^/]*/templates_cached|imports|exports)/.*',
+            'gz' => '(themes/[^/]*/templates_cached/.*|caches/guest_pages|imports/.*|exports/.*)',
 
             // Import/Export files
             'tar' => '(imports|exports)/.*',

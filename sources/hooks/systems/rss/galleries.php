@@ -138,6 +138,7 @@ class Hook_rss_galleries
                     'VIEW_URL' => $view_url,
                     'SUMMARY' => $summary,
                     'EDIT_DATE' => $edit_date,
+                    'CONTENT_TYPE' => $row['type'],
                     'IF_COMMENTS' => $if_comments,
                     'TITLE' => $news_title,
                     'CATEGORY_RAW' => $category_raw,

@@ -71,9 +71,9 @@ if (get_param_integer('import_addons', 1) == 1) {
     }
 
     if ($addon_count == 0) {
-        echo '<p>No addons to import</p>';
+        echo '<p>No addons to import.</p>';
     } else {
-        echo '<p>All addons have been imported as downloads</p>';
+        echo '<p>All addons have been imported as downloads.</p>';
     }
 }
 
@@ -95,9 +95,9 @@ if (get_param_integer('import_themes', 1) == 1) {
     closedir($dh);
 
     if ($theme_count == 0) {
-        echo '<p>No themes to import</p>';
+        echo '<p>No themes to import.</p>';
     } else {
-        echo '<p>All themes have been imported as downloads</p>';
+        echo '<p>All themes have been imported as downloads.</p>';
     }
 }
 

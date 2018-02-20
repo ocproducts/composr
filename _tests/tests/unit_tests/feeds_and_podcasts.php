@@ -37,6 +37,10 @@ class feeds_and_podcasts_test_set extends cms_test_case
 
     public function testXML()
     {
+        if (get_param_string('only_feed', '') != '') {
+            return;
+        }
+
         $url = find_script('backend');
         $data = http_get_contents($url, array('cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($data, '</opml>') !== false, 'Failed on ' . $url);
@@ -60,6 +64,8 @@ class feeds_and_podcasts_test_set extends cms_test_case
 
     public function testFeeds()
     {
+        $only_feed = get_param_string('only_feed', '');
+
         $_feeds = find_all_hooks('systems', 'rss');
         $feeds = array();
         foreach (array_keys($_feeds) as $feed) {
@@ -70,6 +76,10 @@ class feeds_and_podcasts_test_set extends cms_test_case
                 continue; // Maybe forum has
             }
 
+            if (($only_feed != '') && ($only_feed != $feed)) {
+                continue;
+            }
+
             foreach (array('RSS2', 'Atom') as $type) {
                 $url = find_script('backend') . '?type=' . $type . '&mode=' . $feed . '&days=30&max=100';
                 $data = http_get_contents($url, array('cookies' => array(get_session_cookie() => get_session_id())));
@@ -78,13 +88,24 @@ class feeds_and_podcasts_test_set extends cms_test_case
 
                 $result = http_get_contents('https://validator.w3.org/feed/check.cgi', array('post_params' => array('rawdata' => $data)));
 
-                $this->assertTrue(strpos($result, 'Congratulations!') !== false, 'Failed on ' . $url);
+                $ok = (strpos($result, 'Congratulations!') !== false);
+                if (!$ok) {
+                    if (get_param_integer('debug', 0) == 1) {
+                        @var_dump($data);
+                        @var_dump($result);
+                    }
+                }
+                $this->assertTrue($ok, 'Failed W3C validation on ' . $url);
             }
         }
     }
 
     public function testDayFilter()
     {
+        if (get_param_string('only_feed', '') != '') {
+            return;
+        }
+
         $url = find_script('backend') . '?type=RSS2&mode=galleries&days=30&max=100&select=podcast';
         $data = http_get_contents($url, array('cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($data, '<item>') !== false, 'Failed on ' . $url);
@@ -96,6 +117,10 @@ class feeds_and_podcasts_test_set extends cms_test_case
 
     public function testMaxFilter()
     {
+        if (get_param_string('only_feed', '') != '') {
+            return;
+        }
+
         $url = find_script('backend') . '?type=RSS2&mode=galleries&days=30&max=1';
         $data = http_get_contents($url, array('cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($data, '<item>') !== false, 'Failed on ' . $url);
@@ -107,6 +132,10 @@ class feeds_and_podcasts_test_set extends cms_test_case
 
     public function testDaysFilter()
     {
+        if (get_param_string('only_feed', '') != '') {
+            return;
+        }
+
         $url = find_script('backend') . '?type=RSS2&mode=galleries&days=1';
         $data = http_get_contents($url, array('cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($data, '<item>') !== false, 'Failed on ' . $url);
@@ -118,6 +147,10 @@ class feeds_and_podcasts_test_set extends cms_test_case
 
     public function testPodcast()
     {
+        if (get_param_string('only_feed', '') != '') {
+            return;
+        }
+
         $url = find_script('backend') . '?type=RSS2&mode=galleries&days=30&max=100&select=podcast';
         $data = http_get_contents($url, array('cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($data, 'itunes:') === false);

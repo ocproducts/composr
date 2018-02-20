@@ -23,7 +23,8 @@ Our implementation of different parts of CSP...
 
 CONSIDERING:
 default-src                 (default)                                   base on list of trusted sites, and 'self'
-child-src                   (frames and webworkers)                     base on list of trusted sites, and 'self', and extra configuration ["csp_allowed_iframe_descendants"]
+frame-src                   (frames)                                    base on list of trusted sites, and 'self', and extra configuration ["csp_allowed_iframe_descendants"]
+worker-src                  (webworkers)                                base on list of trusted sites, and 'self'
 connect-src                 (outbound connections from JavaScript)      base on list of trusted sites, and 'self'
 script-src                  (JavaScript files)                          base on list of trusted sites, and 'self' (if not strict nonces), and 'unsafe-inline' if configured otherwise nonce
 -
@@ -46,8 +47,7 @@ CONSIDERING TO HAVE FULL RESTRICTION:
 manifest-src                (application manifests)                     [we do not package as an application]
 
 NOT CONSIDERING:
-frame-src                   (frames)                                    [included in child-src, and worker-src not available yet in browsers - plus deprecated in CSP 2 although back in CSP 3]
-worker-src                  (webworkers)                                [only in CSP 3 and included in child-src]
+child-src                   (frames)                                    [deprecated, frame-src, and worker-src now used instead]
 -
 sandbox                     (heavy blanket restrictions)                [we are already doing fine-grained control]
 disown-opener               (no target windows link back by DOM)        [we are using rel="noopener" already, only in CSP 3 and not properly specced out yet]
@@ -60,7 +60,7 @@ ALLOWABLE:
 'strict-dynamic'            (allow dynamic script insertion in JS)      configurable ["csp_allow_dyn_js"] but allowed by default because common third-party libraries like GA may need this; adds to script-src
 
 PARTIALLY ALLOWABLE:
-'unsafe-inline'             (allow inline JavaScript and CSS)           disallowed by default; some PHP code may unable explicitly; adds to script-src, for style-src we always enable 'unsafe-inline'
+'unsafe-inline'             (allow inline JavaScript and CSS)           disallowed by default for script-src; some PHP code may unable explicitly; adds to script-src, for style-src we always enable 'unsafe-inline'
 
 Any of the configurability may be overridden by PHP code calling load_csp with overridden options.
 
@@ -212,7 +212,7 @@ function load_csp($options = null, $enable_more_open_html_for = null)
     $clauses[] = 'style-src ' . implode(' ', $_sources_list);
 
     // script-src
-    $_sources_list = _csp_extract_sources_list(2);
+    $_sources_list = _csp_extract_sources_list(2, '', !$csp_allow_dyn_js);
     if ($csp_allow_inline_js) {
         $_sources_list[] = "'unsafe-inline'"; // Not usually configurable but may be forced
     } else {
@@ -226,14 +226,18 @@ function load_csp($options = null, $enable_more_open_html_for = null)
     }
     $clauses[] = 'script-src ' . implode(' ', $_sources_list);
 
-    // child-src
+    // frame-src
     $_sources_list = _csp_extract_sources_list(2, $csp_allowed_iframe_descendants);
     if ($_sources_list === null) {
         $_sources_list = array();
         $_sources_list[] = '*';
     }
     $_sources_list[] = "'nonce-{$CSP_NONCE}'"; // In case W3C start supporting it for iframe elements
-    $clauses[] = 'child-src ' . implode(' ', $_sources_list);
+    $clauses[] = 'frame-src ' . implode(' ', $_sources_list);
+
+    // worker-src
+    $_sources_list = _csp_extract_sources_list(2);
+    $clauses[] = 'worker-src ' . implode(' ', $_sources_list);
 
     // connect-src
     $_sources_list = _csp_extract_sources_list(2);
@@ -349,7 +353,7 @@ function _csp_extract_sources_list($level, $sources_csv = '', $include_self = tr
     }
 
     require_code('input_filter');
-    $_trusted_sites = get_trusted_sites($level);
+    $_trusted_sites = get_trusted_sites($level, $include_self);
     if ($_trusted_sites == array()) {
         foreach ($_trusted_sites as $partner) {
             $sources_list[] = $partner;

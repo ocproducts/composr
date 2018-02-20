@@ -175,9 +175,10 @@ function strip_url_to_representative_domain($url)
  *
  * @param  integer $level Trusted sites level
  * @set 1 2
+ * @param  boolean $include_self Include a self reference
  * @return array Trusted domain names
  */
-function get_trusted_sites($level)
+function get_trusted_sites($level, $include_self = true)
 {
     global $SITE_INFO;
 
@@ -211,13 +212,15 @@ function get_trusted_sites($level)
         }
     }
 
-    if (isset($SITE_INFO['base_url'])) {
-        $base_url = $SITE_INFO['base_url'];
-        $trusted_sites[] = parse_url($base_url, PHP_URL_HOST);
-    } else {
-        $host = get_local_hostname();
-        if ($host != '') {
-            $trusted_sites[] = $host;
+    if ($include_self) {
+        if (isset($SITE_INFO['base_url'])) {
+            $base_url = $SITE_INFO['base_url'];
+            $trusted_sites[] = parse_url($base_url, PHP_URL_HOST);
+        } else {
+            $host = get_local_hostname();
+            if ($host != '') {
+                $trusted_sites[] = $host;
+            }
         }
     }
 

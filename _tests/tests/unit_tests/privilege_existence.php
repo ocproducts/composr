@@ -78,6 +78,17 @@ class privilege_existence_test_set extends cms_test_case
                         continue;
                     }
 
+                    if (get_forum_type() != 'cns') {
+                        if (in_array($page, array(
+                            'topicview',
+                            'forumview',
+                            'topics',
+                            'vforums',
+                        ))) {
+                            continue;
+                        }
+                    }
+
                     $this->assertTrue(isset($pages[$page]), 'Missing referenced page (.php): ' . $page);
 
                     $done_pages[$page] = true;
@@ -89,6 +100,17 @@ class privilege_existence_test_set extends cms_test_case
 
                     if (isset($done_pages[$page])) {
                         continue;
+                    }
+
+                    if (get_forum_type() != 'cns') {
+                        if (in_array($page, array(
+                            'topicview',
+                            'forumview',
+                            'topics',
+                            'vforums',
+                        ))) {
+                            continue;
+                        }
                     }
 
                     $this->assertTrue(isset($pages[$page]), 'Missing referenced page (.php): ' . $page);

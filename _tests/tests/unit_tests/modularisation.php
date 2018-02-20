@@ -32,7 +32,14 @@ class modularisation_test_set extends cms_test_case
         $addon_data = array();
         $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
         foreach ($hooks as $hook => $ob) {
-            $addon_data[$hook] = $ob->get_file_list();
+            $files = $ob->get_file_list();
+
+            $counts = array_count_values($files);
+            foreach ($counts as $file => $count) {
+                $this->assertTrue($count == 1, 'Double referenced within ' . $hook . ': ' . $file);
+            }
+
+            $addon_data[$hook] = $files;
         }
 
         $seen = array();

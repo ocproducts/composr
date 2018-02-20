@@ -59,12 +59,59 @@ function unit_testing_run()
     testset_do_header('Choose a test set');
 
     $sets = find_testsets();
-    echo '(The ones starting <kbd>_</kbd> should be run individually [no concurrency], and also only occasionally except for <kbd>_cqc__function_sigs</kbd> and <kbd>_installer</kbd> which are crucial and to be run first)';
-    echo '<ul>';
+
+    echo "
+    <div>
+        <p class=\"lonely-label\">Notes:</p>
+        <ul>
+            <li>The ones starting <kbd>_</kbd> should be run individually, and also only occasionally except for <kbd>_cqc__function_sigs</kbd> and <kbd>_installer</kbd> which are crucial and to be run first; this may be due to slowness, unreliability, lack of concurrency support, or some expectation of false-positives</li>
+            <li>Some need running on the command line, in which case a note will be included in the test's code</li>
+            <li>Some support a 'debug' GET/CLI parameter, to dump out debug information</li>
+            <li>Many support GET parameters for limiting the scope of the test (look in the test's code); this is useful for tests that are really complex to get to pass, or really slow</li>
+        </ul>
+    </div>";
+    echo '<div style="float: left; width: 40%">
+        <p class="lonely-label">Tests:</p>
+        <ul>';
+
     foreach ($sets as $set) {
-        echo '<li><a href="?id=' . escape_html(urlencode($set)) . '&amp;close_if_passed=1">' . escape_html($set) . '</a></li>' . "\n";
+        echo '<li><a href="index.php?id=' . escape_html(urlencode($set)) . '">' . escape_html($set) . '</a></li>' . "\n";
     }
-    echo '</ul>';
+    echo '
+        </ul>
+    </div>';
+
+    $cnt = 0;
+    foreach ($sets as $set) {
+        if (strpos($set, '/_') === false) {
+            $cnt++;
+        }
+    }
+    echo '
+    <div>
+        <p class="lonely-label">Running tests concurrently:</p>
+        <select id="select-list" multiple="multiple" size="' . escape_html(integer_format($cnt)) . '">';
+    foreach ($sets as $set) {
+        if (strpos($set, '/_') === false) {
+            echo '<option>' . escape_html($set) . '</option>' . "\n";
+        }
+    }
+    echo "
+        </select>
+        <p><input class=\"button-screen buttons--proceed\" type=\"button\" value=\"Call selection\" id=\"select-button\" /></p>
+        <script nonce=\"" . $GLOBALS['CSP_NONCE'] . "\" id=\"select-list\">
+            var list = document.getElementById('select-list');
+            var button = document.getElementById('select-button');
+            button.onclick = function() {
+                for (var i = 0; i < list.options.length; i++) {
+                    if (list.options[i].selected) {
+                        window.open('index.php?id=' + list.options[i].value + '&close_if_passed=1');
+                    }
+                }
+            };
+        </script>
+    </div>
+    <br style=\"clear: both\" />";
 
     testset_do_footer();
 }
