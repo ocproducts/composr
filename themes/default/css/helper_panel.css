@@ -37,6 +37,8 @@
 	}
 	.helper-panel-hidden {
 		width: 30px !important;
+		min-width: 30px !important;
+		max-width: 30px !important;
 	}
 
 	.page-running-admin-phpinfo .helper-panel {
