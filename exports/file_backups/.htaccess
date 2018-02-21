@@ -14,4 +14,3 @@ php_value engine off
 <IfModule mod_php6.c>
 php_value engine off
 </IfModule>
-

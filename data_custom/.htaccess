@@ -17,4 +17,3 @@ Deny from all
 Order Allow,Deny
 Deny from all
 </Files>
-

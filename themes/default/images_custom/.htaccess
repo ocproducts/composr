@@ -8,7 +8,6 @@ php_value engine off
 php_value engine off
 </IfModule>
 
-
 <IfModule mod_expires.c>
 ExpiresActive On
 ExpiresByType image/gif "access plus 1 months"

@@ -26,7 +26,7 @@ class basic_code_formatting_test_set extends cms_test_case
 
         require_code('files2');
 
-        $this->files = get_directory_contents(get_file_base(), '', IGNORE_FLOATING | IGNORE_CUSTOM_DIR_FLOATING_CONTENTS | IGNORE_UPLOADS | IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_CUSTOM_THEMES, true, true, array('php'));
+        $this->files = get_directory_contents(get_file_base(), '', IGNORE_FLOATING | IGNORE_CUSTOM_DIR_FLOATING_CONTENTS | IGNORE_UPLOADS | IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_CUSTOM_THEMES);
         $this->files[] = 'install.php';
     }
 
@@ -130,28 +130,62 @@ class basic_code_formatting_test_set extends cms_test_case
         }
 
         $file_types = array_flip(array(
-            'config',
+            // Text formats we allow web access to
+            '1st',
+            'atom',
             'css',
             'csv',
-            'hdf',
-            'htaccess',
+            'diff',
+            'html',
+            'ics',
             'ini',
-            'java',
             'js',
+            'json',
+            'log',
+            'patch',
             'php',
-            'sh',
+            'rss',
+            'sql',
+            'svg',
             'tpl',
             'txt',
             'xml',
-            'svg',
+            'xsd',
+            'xsl',
+
+            // Other text formats
+            'bat',
+            'config',
+            'crt',
+            'editfrom',
+            'htaccess',
+            'htm',
+            'plist',
+            'pre',
+            'properties',
+            'java',
+            'sh',
         ));
 
         foreach ($this->files as $path) {
-            if (filesize($path) == 0) {
+            if (filesize(get_file_base() . '/' . $path) == 0) {
                 continue;
             }
 
-            if (preg_match('#^(tracker|data/ace|data/ckeditor|sources_custom/composr_mobile_sdk/ios/ApnsPHP|sources_custom/sabredav|sources_custom/spout|sources_custom/photobucket|sources_custom/ILess|sources_custom/facebook|sources_custom/aws/Aws|docs/jsdoc)/#', $path) != 0) {
+            $exceptions = array(
+                'tracker',
+                'data/ace',
+                'data/ckeditor',
+                'sources_custom/composr_mobile_sdk/ios/ApnsPHP',
+                'sources_custom/sabredav',
+                'sources_custom/spout',
+                'sources_custom/photobucket',
+                'sources_custom/ILess',
+                'sources_custom/facebook',
+                'sources_custom/aws/Aws',
+                'docs/jsdoc',
+            );
+            if (preg_match('#^(' . implode('|', $exceptions) . ')/#', $path) != 0) {
                 continue;
             }
 

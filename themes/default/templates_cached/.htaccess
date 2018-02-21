@@ -16,4 +16,3 @@ ExpiresByType application/javascript "now plus 1 months"
 ExpiresByType text/css "now plus 1 months"
 </FilesMatch>
 </IfModule>
-

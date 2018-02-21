@@ -7,4 +7,3 @@ php_value engine off
 <IfModule mod_php7.c>
 php_value engine off
 </IfModule>
-

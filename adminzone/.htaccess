@@ -6,4 +6,3 @@ ErrorDocument 403 /adminzone/index.php?page=_modsecurity
 ErrorDocument 406 /adminzone/index.php?page=_modsecurity
 #ErrorDocument 500 /adminzone/index.php?page=_modsecurity	May be triggered by PHP on a fatal error
 </FilesMatch>
-

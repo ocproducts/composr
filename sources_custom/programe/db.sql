@@ -165,6 +165,3 @@ CREATE TABLE thatstack (
   enteredtime timestamp(14) NOT NULL,
   PRIMARY KEY  (id)
 ) TYPE=MyISAM;
-
-    
-
