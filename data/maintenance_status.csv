@@ -1,22 +1,22 @@
 Codename,Title,Bug-fix sponsor,Current active sponsor,Notes,Non-bundled addon,Testing automation
-multi_lang_content,Content translations,ocProducts,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,Randomised mode at dev install.
+multi_lang_content,Content translations,ocProducts,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,Randomised mode at dev install. Partly tested by running of full test set.
 character_sets,Character sets,,,Not regularly tested.,No,
 db_connection_pooling_with_replication,Configuration of multiple database servers (with only one taking write queries),ocProducts,,Not regularly tested,No,
 readonly_db,Stability when the database is read-only (if a webhost has locked out write access due to quota issues),ocProducts,,Not regularly tested,No,
-forum_ipb,Invision Board forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,
-forum_mybb,MyBB forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,
-forum_none,No forums or members forum driver,,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,
-forum_phpbb,phpBB forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,
-forum_smf,Simple Machine Forum forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,
-forum_vb,vBulletin forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,
-forum_wbb,Burning Board forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,
-msn,Multi-site-networks,,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,Basic. msns automated test and run-time driver use detection.
-demonstratr,Shared-installs,ocProducts,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,Manual. Rebuilt when new major releases come out.
-database_ibm,IBM DB2 database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
-database_oracle,Oracle database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
-database_postgresql,PostgreSQL database driver,ocProducts,,Not automatically regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
-database_sqlserver,Microsoft SQL server database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
-database_xml,XML database driver,,,For developers only.,No,Partly tested by _installer_xml_db automated test.
+forum_ipb,Invision Board forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,Partly tested by running of full test set
+forum_mybb,MyBB forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,Partly tested by running of full test set
+forum_none,No forums or members forum driver,,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,Partly tested by running of full test set
+forum_phpbb,phpBB forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,Partly tested by running of full test set
+forum_smf,Simple Machine Forum forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,Partly tested by running of full test set
+forum_vb,vBulletin forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,Partly tested by running of full test set
+forum_wbb,Burning Board forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,Partly tested by running of full test set
+msn,Multi-site-networks,,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,Basic. msns automated test and run-time driver use detection. Partly tested by running of full test set.
+demonstratr,Shared-installs,ocProducts,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,Manual. Rebuilt when new major releases come out. Partly tested by running of full test set.
+database_ibm,IBM DB2 database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,Partly tested by database_misc automated test. Partly tested by running of full test set.
+database_oracle,Oracle database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,Partly tested by database_misc automated test. Partly tested by running of full test set.
+database_postgresql,PostgreSQL database driver,ocProducts,,Not automatically regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,Partly tested by database_misc automated test. Partly tested by running of full test set.
+database_sqlserver,Microsoft SQL server database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,Partly tested by database_misc automated test. Partly tested by running of full test set.
+database_xml,XML database driver,,,For developers only.,No,Partly tested by _installer_xml_db automated test. Partly tested by running of full test set.
 platform_gae,Google App Engine platform support,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
 platform_phalanger,Phalanger platform support,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,
 platform_chmod,Non-suEXEC platform support,ocProducts,,"Not regularly tested. Likely to be very un-friendly to the admin, so should be discouraged.",No,
