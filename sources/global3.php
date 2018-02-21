@@ -386,7 +386,7 @@ function handle_file_bom($path, $handle_charset_conversion_automatically = true)
 
     return $file_charset;
 
-    // TODO: #3032 define some unit tests
+    // TODO: #3032 define some automated tests
 }
 
 // TODO: #3467 Assess calls and apply BOM and unixify_line_format cleanup as required

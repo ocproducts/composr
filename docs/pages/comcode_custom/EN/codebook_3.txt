@@ -168,7 +168,7 @@ Regarding '3', OOP-heavy architectures try to abstract away details to make thin
 As you can see, simpler designs solve the most important concerns best, and then remaining concerns are well served by OOP-heavy designs. However, our Composr design is not actually a naive simple design at all -- it's actually very carefully structured, and has a high degree of strictness/discipline in many areas. Composr is definitely not anti-OOP by any means, it is only anti-over-engineering -- we actually rely on the strengths of OOP in many key areas of the system. Here's how our approach works to achieve the commonly-cited OOP-heavy advantages (flexibility, maintainability, clarity, and stability) without slowing development, complicating code, or hurting performance:
  - We can achieve the equivalence to dependency injection as our output and execution context states support a stack-based switching mechanism, allowing us to create sandboxes very effectively for those few cases where it is useful. The critical difference is we achieve it in far less code, with better performance, in a way that is easier to understand, and where the burden for it is only felt when you actually need this advanced functionality, rather every time you use any component of the system.
  - We can achieve inheritance via our code overrides system, which also provides the ability for users to override components without having to get down and dirty with coding. Different versions of code can be placed and tested as overrides, and new functionality can be placed using overrides. This does not suffer from the same problems as copy and paste coding, as overrides are designed to work on the function level, via some clever code we have in place, and we can even make line-by-line changes should we need to, or extend individual functions.
- - We do have unit tests to test critical functionality. Admittedly these are more prone to break if we start redesigning stuff without confirming the interfaces used by the unit tests are still appropriate, but the difference is really not that much.
+ - We do have automated tests to test critical functionality. Admittedly these are more prone to break if we start redesigning stuff without confirming the interfaces used by the automated tests are still appropriate, but the difference is really not that much.
  - We keep a very tight rein on global variables that we define. There is a formal naming scheme, and we have an automated test that scans the codebase and verifies that we don't start accessing any of them all over the place. Generally a global belongs in the file it is defined in, and from this point of view the source code files are like classes -- the globals in them are their private properties. In essence, rather than enforcing this through verbose code plumbing and memory consumption, we automatically enforce it through automated testing for compliance to our coding standards. If a global is allowed for multiple access in different places (usually for performance), then we have a rule that it has to be given a formal annotation to what it does.
  - We have the ability (via APIs and simple glue objects) to 'reflect' on content types within Composr in a really abstract way, even though the content types aren't defined by "fat objects". This provides the same power that rigid conformability allows, but without hurting performance or actually requiring rigid conformability.
 
@@ -420,7 +420,7 @@ Here is a good workflow for writing high-quality code for Composr:
 4) Document the solution using pseudo-code comments throughout the structure. Put a "TODO" comment under each of the pseudo-code comments.
 5) Fill in the TODOs with real code. Make sure you are writing quality code and matching appropriate coding standards.
 6) Run the ocProducts Code Quality checker on the code. Specifically: recalculate function signatures, then check the files you've added/changed. Fix any errors found, it should be possible to have zero reported errors with the default settings (all of Composr passes).
-7) Write unit tests to prove to yourself it works well, if appropriate. This makes most sense if your code implements algorithms or APIs. User-interfacing testing is a lot harder, more subtle, and the tests more fragile, so frankly this is usually left to human testers.
+7) Write automated tests to prove to yourself it works well, if appropriate. This makes most sense if your code implements algorithms or APIs. User-interfacing testing is a lot harder, more subtle, and the tests more fragile, so frankly this is usually left to human testers.
 8) Test manually / debug.
 9) Add new files to git, and Commit/push (actually you may do this a few times throughout the work, depending on task length).
 10) Come back the next day and check over your work. A fresh look often reveals some things you missed before. Also fix any issues that you already realised in the interim (often you will think of things later).
@@ -430,9 +430,9 @@ Here are some general tips:
  - It's sometimes a good idea to program algorithms in complete isolation. Separate the complexities of integration from the complexities of implementation. This also leads to better quality code because you will have been forced to abstract the problem already.
  - If working with other remote developers, [url="Cloud9 IDE"]https://aws.amazon.com/cloud9/[/url] is absolutely excellent. You can watch each other code and see the results of running your code.It is very useful for teaching programming technique, team debugging, and pair programming.
 
-[title="3"]Writing unit tests[/title]
+[title="3"]Writing automated tests[/title]
 
-Unit tests allow you to initially verify code works according to your expectations, but also provides enormous long term value. If you have to change code structure around later, or need to test on different environments, a library of unit tests greatly reduce the time-cost of re-testing your work.
+Automated tests allow you to initially verify code works according to your expectations, but also provides enormous long term value. If you have to change code structure around later, or need to test on different environments, a library of automated tests greatly reduce the time-cost of re-testing your work.
 
 Composr's git repository contains the [tt]testing_platform[/tt] addon, which is based on SimpleTest. It is located under the [tt]_tests[/tt] directory.
 
@@ -1149,7 +1149,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]template_xss[/tt]
 | Look to see if templates may have XSS holes. Can be given a parameter to write "fixes" back in (which should be verified by hand).
 | [tt]testing_platform[/tt]
-| Unit test
+| Automated test
 |-
 | [tt]adminzone:string_scan[/tt]
 | Tool to work out whether language strings are administrative or not.
@@ -1243,11 +1243,6 @@ This section is not designed as primary documentation for the tools. Those tools
 | Push a bug fix to compo.sr.
 | [tt]composr_release_build[/tt]
 | Composr module
-|-
-| [tt]installsql[/tt]
-| Check the [tt]install.sql[/tt] file is valid, and if requested will build the split up versions of it.
-| [tt]testing_platform[/tt]
-| Unit test
 |}
 
 [title="3"]API services[/title]

@@ -71,7 +71,7 @@ Using git works as follows:
 
 More sophisticated users may:
 1) Use multiple git branches so you can parallel-develop new functionality while functionality is going through testing.
-2) Also run a continuous integration server, where changes made in git (or multiple git branches) have unit tests run against them every time a new push is made. 
+2) Also run a continuous integration server, where changes made in git (or multiple git branches) have automated tests run against them every time a new push is made. 
 
 The level of sophistication you have will typically depend on the size of your development team.
 

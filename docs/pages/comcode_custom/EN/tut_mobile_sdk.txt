@@ -77,7 +77,7 @@ If you are using Android Studio then the process would be similar. CMS SDK is im
 
 The SDK is very consistent between Android and iOS. Our documentation will be written in terms of iOS, but you should not have a problem writing for Android also.
 
-We haven't provided code examples for everything, but the API has extensive unit test coverage. These tests show you expected behaviours clearly.
+We haven't provided code examples for everything, but the API has extensive automated test coverage. These tests show you expected behaviours clearly.
 
 CMS SDK is fully Open Source, so all code can be inspected and contributions are welcome.
 

@@ -89,7 +89,7 @@ function phase_0()
     <p>Here are some things you should do if you have not already:</p>
     <ul>
         <li>Go through the auto-reported error emails, to make sure they are handled (for each: fix if relevant, delete if not).</li>
-        <li>Run the <a href="' . escape_html(get_base_url() . '/_tests') . '">unit tests</a><!--, with dev mode on, on the custom Composr PHP version-->.</li>
+        <li>Run the <a href="' . escape_html(get_base_url() . '/_tests') . '">automated tests</a><!--, with dev mode on, on the custom Composr PHP version-->.</li>
     </ul>';
 
     echo '
@@ -320,7 +320,7 @@ function phase_2()
 
     if ($is_substantial && !$is_bleeding_edge) {
         echo '
-            <li><strong>Tracker</strong>: <a target="_blank" href="http://compo.sr/tracker/manage_proj_edit_page.php?project_id=1">Add to tracker configuration</a> (under "Versions") and also define any new addons in tracker (although a unit test should have told you already if they are missing)</li>
+            <li><strong>Tracker</strong>: <a target="_blank" href="http://compo.sr/tracker/manage_proj_edit_page.php?project_id=1">Add to tracker configuration</a> (under "Versions") and also define any new addons in tracker (although an automated test should have told you already if they are missing)</li>
 
             <li><strong>Documentation</strong>:<ul>
                 <li>Build new addon tutorial index (<a target="_blank" href="' . get_base_url() . '/adminzone/index.php?page=doc-index-build&amp;keep_devtest=1">doc_index_build minimodule</a>)</li>

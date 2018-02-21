@@ -318,7 +318,8 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/testatom.cms',
             '_tests/tests/testrss.cms',
 
-            // It is worth noting that most of these are not true unit tests, but integration tests, or other kinds of test
+            // It is worth noting that most of these are not true unit tests, but integration tests, or other kinds of test.
+            // We use the broad term 'automated test'.
             //  Pedantry aside - we just want to test as effectively and efficiently and broadly as we can ;-).
             //   Whatever we can quickly achieve as a testing win for our total platform stability/coherence, we go with.
             //   Contributions for deeper, detailed, testing, are very welcome.

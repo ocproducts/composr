@@ -1,4 +1,4 @@
-Welcome to the Composr unit testing framework.
+Welcome to the Composr automated testing framework.
 
 This framework is designed to allow auto-runnable tests to easily be written for Composr. The advantage to this testing technique is once a test is written it can be re-run very easily -- being able to re-run a whole test set before each release will dramatically reduce the chance of new bugs creeping into releases, as tests would not pass in this circumstance. New bugs in new releases is always a problem for complex software like Composr, as it is a huge package and it's very easy to accidentally cause (and not notice) a new problem when fixing an old one.
 
@@ -19,8 +19,8 @@ From there you can choose to run tests that have been written.
 Writing tests
 -------------
 
-Tests are stored under the '_tests/tests' directory, and are classed as either "regression tests" (tests written to illustrate a bug, that fail before we fix the bug, but pass after we fix the bug) or "unit tests" (a test designed to test some part of Composr).
-At the time of writing there is only one test, unit_tests/forum.php, which serves as an example. Tests are PHP scripts, so a good understand if PHP is required to write them.
+Tests are stored under the '_tests/tests' directory, and are classed as either "regression tests" (tests written to illustrate a bug, that fail before we fix the bug, but pass after we fix the bug) or "unit tests" (a test designed to test some part of Composr, we usually actually refer to these as 'automated tests').
+Tests are PHP scripts, so a good understand if PHP is required to write them.
 
 The testing framework is built around SimpleTest (http://www.simpletest.org/), so all their API can be used. We have extended it a little bit, so:
  - you can call up page-links

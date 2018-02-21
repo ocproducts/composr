@@ -47,7 +47,7 @@ function init__database_relations()
 
 /**
  * Find how tables might be ignored for backups etc.
- * This is mainly used for building unit tests that make sure things are consistently implemented.
+ * This is mainly used for building automated tests that make sure things are consistently implemented.
  *
  * @return array List of tables and their status regarding being ignored for backups etc
  */

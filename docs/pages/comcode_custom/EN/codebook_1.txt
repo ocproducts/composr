@@ -993,22 +993,21 @@ When developing you'll probably want to start your development site afresh a few
 
 [title="3"]Programming/programmatic-interface Coding Standard Testing[/title]
 
-Composr has a multi-faceted testing strategy as there is no perfect solution for testing (we have thought very long and hard to find one!). Our overall strategy currently involves 15 different approaches (update: most of these are now implemented via unit tests):
+Composr has a multi-faceted testing strategy as there is no perfect solution for testing (we have thought very long and hard to find one!). Our overall strategy currently involves 15 different approaches (update: most of these are now implemented via automated tests):
 1) Code Quality Checker, a lint (henceforth 'CQC')
-2) Web standards Validation (partly built into CQC, partly built into Composr -- now also implemented as a unit test)
-3) Standalone testing scripts for testing very specific coding standards are applied (inferred to by the CQC, but separate; stored on our company filing system -- now also implemented as unit tests)
+2) Web standards Validation (partly built into CQC, partly built into Composr -- now also implemented as an automated test)
+3) Standalone testing scripts for testing very specific coding standards are applied (inferred to by the CQC, but separate; stored on our company filing system -- now also implemented as automated tests)
 4) Manual functional test set we always grow when we add new features (stored on {$BRAND_BASE_URL}, via our tester module)
-5) Some other manual test sets, stored on our company filing system (e.g. Comcode test set) -- now also mostly implemented as unit tests
-6) Unit test framework (incorporates regression testing, as long as we write regression tests whenever we find bugs; incorporates UI testing in a sense as we can program a web bot to do things plus dump all the XHTML)
+5) Some other manual test sets, stored on our company filing system (e.g. Comcode test set) -- now also mostly implemented as automated tests
+6) Automated test framework (incorporates regression testing, as long as we write regression tests whenever we find bugs; incorporates UI testing in a sense as we can program a web bot to do things plus dump all the XHTML)
 7) Custom version of PHP, with type strictness, and XSS detection, among other things
 8) Manual testing at core-team meet-ups, especially Usability testing / Blackbox testing
 9) Public beta testing and bug reporting
 10) Composr development mode, which applies lots of tricksy things, checking various things are done at run-time, and turning features on and off randomly, and doing some performance testing
-11) Test spider (longer term this will be integrated with unit test framework/Composr, as another menu option) -- now also implemented as a unit test
-12) For very quick tests, we use a bash script to run the PHP parser over all the Composr PHP files
-13) Other things we use: MySQL strict mode, Strict JavaScript errors, Firefox HTML Validator extension, Word's grammar/spelling checker
-14) Manual code reviews (via our aforementioned standards spreadsheet)
-15) Composr error mails
+11) For very quick tests, we use a bash script to run the PHP parser over all the Composr PHP files
+12) Other things we use: MySQL strict mode, Strict JavaScript errors, Firefox HTML Validator extension, Word's grammar/spelling checker
+13) Manual code reviews (via our aforementioned standards spreadsheet)
+14) Composr error mails
 
 As mentioned above, the developers maintain an internally developed code quality checker tool (a lint, static code analysis) to scan code for violations of many coding standards, and find bugs. We also may use other tools internally, and our custom version of PHP designed to be very strict.
 

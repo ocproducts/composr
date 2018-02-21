@@ -874,12 +874,12 @@ We should ideally be able to handle any of these scenarios, using a clean API:
 4) User uploads a CSV with old-Mac-style line endings (this should not happen in 2016 but some ageing codebases export bizarre stuff; the PHP enable auto_detect_line_endings setting may help)
 5) User uploads a spreadsheet with a different character set, esp UTF-16 or ANSI (to solve this we'll probably need to have a character-set selector box and also support BOM markers)
 
-Define some unit tests
+Define some automated tests
 */
 
 /*
 TODO: #3467
-Document assumptions in unit test / documentation
+Document assumptions in automated test / documentation
  Composr is all using ASCII
  User content may be in any character set, and must be dealt with; although cms_file_get_contents_safe will always do conversions automatically if given a parameter to
  If user content has no BOM then it will be assumed to be in the site's default character set. User's should save with BOMs to make it clear!

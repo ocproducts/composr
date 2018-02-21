@@ -99,7 +99,7 @@ It is a good idea to use an editor/IDE with support for the [tt].editorconfig[/t
 | Technical debt
 | All development
 | Code Quality Checker can check function length (pedantic mode)
-| Divide into functions into appropriate units (sensible modules interacting over reasonable interfaces). Where possible create functions and classes that are isolated from specific screens, as these can then have unit tests written for them. Try and make your code flow from top to bottom roughly represent execution order.
+| Divide into functions into appropriate units (sensible modules interacting over reasonable interfaces). Where possible create functions and classes that are isolated from specific screens, as these can then have automated tests written for them. Try and make your code flow from top to bottom roughly represent execution order.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Keep your code tidy[/color]
@@ -561,7 +561,14 @@ Don't add more than a few lines of code to an "entry script"
 | Compatibility: So bookmarking works and web accelerators don't break things
 | Composr development +
 | Manually
-| HTTP [tt]GET[/tt] requests should not change database state in any major way (it can cause problems with web spiders, problems with web accelerator systems, and XSS vulnerabilities). [tt]POST[/tt] requests should not be used for screens that might be reasonably bookmarked (e.g. search result screens, or result filtering screens). Composr has specific features in its API to allow you to choose whether forms use [tt]GET[/tt] or [tt]POST[/tt] requests.
+| HTTP [tt]GET[/tt] requests should not change database state in any major way (it can cause problems with web spiders, problems with web accelerator systems, and XSS vulnerabilities). [tt]POST[/tt] requests should not be used for screens that might be reasonably bookmarked (e.g. search result screens, or result filtering screens). Composr has specific features in its API to allow you to choose whether forms use [tt]GET[/tt] or [tt]POST[/tt] requests. You absolutely must not make anything that will show up directly on the Sitemap change state in a major way.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Set appropriate class visibility.
+| Technical debt
+| Composr development +
+| Manually
+| Class variables and functions that are not accessed from outside the class should generally be declared as [tt]protected[/tt]. This allows subclasses to access them, but not external code. Note a major exception: almost all functions in a module will be [tt]public[/tt] because we want deep external control of module code flow (e.g. by automated tests).
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Code as if PHP was "strict typed".
@@ -2357,7 +2364,7 @@ Compress PNG images and strip gamma
 ! Notes
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Design tests first or write automated unit tests after[/color]
+[color="red"]Design tests first or write automated tests after[/color]
 | Testability, technical debt
 | Composr development +
 | Manually
