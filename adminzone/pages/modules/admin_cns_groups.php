@@ -644,7 +644,7 @@ class Module_admin_cns_groups extends Standard_crud_module
             $this->extra_donext_whatever = array(
                 array('menu/adminzone/audit/ecommerce/ecommerce', array('admin_ecommerce', array('type' => 'add', 'group_id' => $id), '_SELF'), do_lang_tempcode('ADD_USERGROUP_SUBSCRIPTION')),
             );
-            $this->extra_donext_whatever_title = do_lang_tempcode('MODULE_TRANS_NAME_subscriptions');
+            $this->extra_donext_whatever_title = do_lang_tempcode('USERGROUP_SUBSCRIPTIONS');
         }
 
         if (addon_installed('content_reviews')) {
@@ -716,7 +716,7 @@ class Module_admin_cns_groups extends Standard_crud_module
             $this->extra_donext_whatever = array(
                 array('menu/adminzone/audit/ecommerce/ecommerce', array('admin_ecommerce', array('type' => 'add', 'group_id' => $id), '_SELF'), do_lang_tempcode('ADD_USERGROUP_SUBSCRIPTION')),
             );
-            $this->extra_donext_whatever_title = do_lang_tempcode('MODULE_TRANS_NAME_subscriptions');
+            $this->extra_donext_whatever_title = do_lang_tempcode('USERGROUP_SUBSCRIPTIONS');
         }
 
         if (($group_leader !== null) && ($group_leader != INTEGER_MAGIC_NULL) && (!in_array(intval($id), $GLOBALS['FORUM_DRIVER']->get_members_groups($group_leader)))) {

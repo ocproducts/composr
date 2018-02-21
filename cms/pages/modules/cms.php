@@ -71,7 +71,7 @@ class Module_cms
 
         breadcrumb_set_self(do_lang_tempcode('menus:CMS_ZONE'));
 
-        $this->title = get_screen_title('menus:MODULE_TRANS_NAME_cms');
+        $this->title = get_screen_title('CMS');
 
         return null;
     }
@@ -85,6 +85,6 @@ class Module_cms
     {
         require_code('templates_donext');
 
-        return do_next_manager_hooked('menus:CMS_ZONE', 'menus:DOC_CMS', 'cms', 'menus:MODULE_TRANS_NAME_cms');
+        return do_next_manager_hooked('menus:CMS_ZONE', 'menus:DOC_CMS', 'cms', 'CMS');
     }
 }

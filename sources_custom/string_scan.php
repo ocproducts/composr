@@ -879,6 +879,19 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_TAG
         BLOCK_THEM
         TRANSCODING_IN_PROGRESS
+        MODULE_TRANS_NAME_admin_aggregate_types
+        MODULE_TRANS_NAME_admin_banners
+        MODULE_TRANS_NAME_admin_broken_urls
+        MODULE_TRANS_NAME_admin_content_reviews
+        MODULE_TRANS_NAME_admin_ecommerce_logs
+        MODULE_TRANS_NAME_admin_group_member_timeouts
+        MODULE_TRANS_NAME_admin_health_check
+        MODULE_TRANS_NAME_admin_notifications
+        MODULE_TRANS_NAME_admin_oauth
+        MODULE_TRANS_NAME_admin_realtime_rain
+        MODULE_TRANS_NAME_admin_revisions
+        MODULE_TRANS_NAME_admin_trackbacks
+        MODULE_TRANS_NAME_cms_blogs
         BLOCK_TRANS_NAME_bottom_forum_news
         BLOCK_TRANS_NAME_bottom_news
         BLOCK_TRANS_NAME_bottom_rss
@@ -9056,6 +9069,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MODULE_TRANS_NAME_vforums
         MODULE_TRANS_NAME_warnings
         MODULE_TRANS_NAME_wiki
+        MODULE_TRANS_NAME_notifications
+        MODULE_TRANS_NAME_report_content
+        MODULE_TRANS_NAME_shopping
         MONTH
         MONTHLY
         MORE

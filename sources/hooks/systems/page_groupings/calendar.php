@@ -37,7 +37,7 @@ class Hook_page_groupings_calendar
         }
 
         return array(
-            array('cms', 'menu/rich_content/calendar', array('cms_calendar', array('type' => 'browse'), get_module_zone('cms_calendar')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('calendar:CALENDAR'), make_string_tempcode(escape_html(integer_format($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'COUNT(*)', array(), '', true))))), 'calendar:DOC_CALENDAR'),
+            array('cms', 'menu/rich_content/calendar', array('cms_calendar', array('type' => 'browse'), get_module_zone('cms_calendar')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('calendar:CALENDAR'), make_string_tempcode(escape_html(integer_format(@intval($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'COUNT(*)', array(), '', true)))))), 'calendar:DOC_CALENDAR'),
             array('social', 'menu/rich_content/calendar', array('calendar', array(), get_module_zone('calendar')), do_lang_tempcode('calendar:CALENDAR')),
         );
     }

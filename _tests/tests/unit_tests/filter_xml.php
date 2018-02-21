@@ -26,6 +26,10 @@ class filter_xml_test_set extends cms_test_case
 
         require_code('files');
         require_code('csrf_filter');
+
+        if (get_db_type() == 'xml') {
+            $this->assertTrue(false, 'Cannot run with XML database driver, too slow');
+        }
     }
 
     public function testNonFilter()

@@ -57,12 +57,14 @@ class Module_buildr
             deldir_contents(get_custom_file_base() . '/uploads/buildr_addon', true);
         }
 
-        require_code('buildr');
+        if ($GLOBALS['SITE_DB']->table_exists('ecom_prods_prices')) {
+            require_code('buildr');
 
-        if (addon_installed('ecommerce')) { // If eCommerce not removed yet
-            $prices = get_buildr_prices_default();
-            foreach (array_keys($prices) as $name) {
-                $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $name), '', 1);
+            if (addon_installed('ecommerce')) { // If eCommerce not removed yet
+                $prices = get_buildr_prices_default();
+                foreach (array_keys($prices) as $name) {
+                    $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $name), '', 1);
+                }
             }
         }
 
@@ -263,11 +265,6 @@ class Module_buildr
 
             require_code('buildr');
 
-            $prices = get_buildr_prices_default();
-            foreach ($prices as $name => $price) {
-                $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => $name, 'price' => null, 'tax_code' => '', 'price_points' => $price));
-            }
-
             require_code('buildr_action');
             add_realm_wrap(null, do_lang('W_DEFAULT_REALM'), do_lang('W_DEFAULT_TROLL'), do_lang('W_DEFAULT_JAIL'), do_lang('W_DEFAULT_IN_JAIL'), '', do_lang('W_DEFAULT_JAIL_HOUSE'), do_lang('W_DEFAULT_IN_JAIL_HOUSE'), '', do_lang('W_DEFAULT_LOBBY'), do_lang('W_DEFAULT_LOBBY_TEXT'), '', array(), 0, false);
         }
@@ -370,6 +367,17 @@ class Module_buildr
     {
         require_code('buildr');
         require_code('buildr_screens');
+
+        if (get_value('buildr_prices_installed', '0', true) !== '1') {
+            if ($GLOBALS['SITE_DB']->table_exists('ecom_prods_prices')) {
+                $prices = get_buildr_prices_default();
+                foreach ($prices as $name => $price) {
+                    $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => $name, 'price' => null, 'tax_code' => '', 'price_points' => $price));
+                }
+
+                set_value('buildr_prices_installed', '1', true);
+            }
+        }
 
         // Decide what functions to execute for this command
         $type = either_param_string('type', 'room');

@@ -21,6 +21,7 @@ class geocoding_test_set extends cms_test_case
     public function testIPGeocode()
     {
         if (get_db_type() == 'xml') {
+            $this->assertTrue(false, 'Cannot run with XML database driver, too slow');
             return;
         }
 

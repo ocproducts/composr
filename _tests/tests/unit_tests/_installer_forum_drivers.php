@@ -22,6 +22,11 @@ class _installer_forum_drivers_test_set extends cms_test_case
 {
     public function testPhpBBInstall()
     {
+        $limit_to = get_param_string('limit_to', '');
+        if (($limit_to != '') && ($limit_to != 'testPhpBBInstall')) {
+            return;
+        }
+
         global $SITE_INFO;
         $username = 'root';
         $password = isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '';
@@ -55,6 +60,11 @@ class _installer_forum_drivers_test_set extends cms_test_case
 
     public function testNoneInstall()
     {
+        $limit_to = get_param_string('limit_to', '');
+        if (($limit_to != '') && ($limit_to != 'testNoneInstall')) {
+            return;
+        }
+
         global $SITE_INFO;
         $username = 'root';
         $password = isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '';
@@ -82,6 +92,7 @@ class _installer_forum_drivers_test_set extends cms_test_case
             $username_forums,
             $password_forums,
             $extra_settings,
+            true,
             'mysqli'
         );
         $this->assertTrue($success);

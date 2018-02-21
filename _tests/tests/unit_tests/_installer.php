@@ -20,14 +20,15 @@
  */
 class _installer_test_set extends cms_test_case
 {
-    public function testIsMySQL()
+    /*TODOpublic function testQuickInstallerBuildsAndDoesNotFullyCrash()
     {
-        $this->assertTrue(strpos(get_db_type(), 'mysql') !== false, 'Test can only run with MySQL');
-    }
+        $limit_to = get_param_string('limit_to', '');
+        if (($limit_to != '') && ($limit_to != 'testQuickInstallerBuildsAndDoesNotFullyCrash')) {
+            return;
+        }
 
-    public function testQuickInstaller()
-    {
         if (strpos(get_db_type(), 'mysql') === false) {
+            $this->assertTrue(false, 'Cannot run test without MySQL');
             return;
         }
 
@@ -60,7 +61,13 @@ class _installer_test_set extends cms_test_case
 
     public function testDoesNotFullyCrash()
     {
+        $limit_to = get_param_string('limit_to', '');
+        if (($limit_to != '') && ($limit_to != 'testDoesNotFullyCrash')) {
+            return;
+        }
+
         if (strpos(get_db_type(), 'mysql') === false) {
+            $this->assertTrue(false, 'Cannot run test without MySQL');
             return;
         }
 
@@ -74,11 +81,17 @@ class _installer_test_set extends cms_test_case
             exit();
         }
         $this->assertTrue($success, 'No submit button found'); // Has start button: meaning something worked
-    }
+    }*/
 
     public function testFullInstallSafeMode()
     {
+        $limit_to = get_param_string('limit_to', '');
+        if (($limit_to != '') && ($limit_to != 'testFullInstallSafeMode')) {
+            return;
+        }
+
         if (strpos(get_db_type(), 'mysql') === false) {
+            $this->assertTrue(false, 'Cannot run test without MySQL');
             return;
         }
 
@@ -86,16 +99,30 @@ class _installer_test_set extends cms_test_case
         if (!$result) {
             return;
         }
+    }
+
+    /*TODOpublic function testFullInstallNormalMode()
+    {
+        $limit_to = get_param_string('limit_to', '');
+        if (($limit_to != '') && ($limit_to != 'testFullInstallNormalMode')) {
+            return;
+        }
+
+        if (strpos(get_db_type(), 'mysql') === false) {
+            $this->assertTrue(false, 'Cannot run test without MySQL');
+            return;
+        }
 
         $result = $this->do_headless_install(false);
         if (!$result) {
             return;
         }
-    }
+    }*/
 
     protected function do_headless_install($safe_mode)
     {
         if (strpos(get_db_type(), 'mysql') === false) {
+            $this->assertTrue(false, 'Cannot run test without MySQL');
             return;
         }
 
@@ -109,7 +136,7 @@ class _installer_test_set extends cms_test_case
         }
         foreach ($tables as $table) {
             if (substr($table['Tables_in_' . $database], 0, strlen($table_prefix)) == $table_prefix) {
-                $GLOBALS['SITE_DB']->query('DROP TABLE ' . $database . '.' . $table['Tables_in_' . $database]);
+                $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS ' . $database . '.' . $table['Tables_in_' . $database]);
             }
         }
 
@@ -117,7 +144,22 @@ class _installer_test_set extends cms_test_case
         global $SITE_INFO;
         require_code('install_headless');
         for ($i = 0; $i < 2; $i++) { // 1st trial is clean DB, 2nd trial is dirty DB
-            $success = do_install_to($database, (strpos(get_db_site(), 'mysql') === false) ? get_db_site_user() : 'root', isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '', $table_prefix, $safe_mode);
+            $success = do_install_to(
+                $database,
+                (strpos(get_db_site(), 'mysql') === false) ? get_db_site_user() : 'root',
+                isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '',
+                $table_prefix,
+                $safe_mode,
+                'cns',
+                null,
+                null,
+                null,
+                null,
+                null,
+                array(),
+                true,
+                'mysqli'
+            );
             $fail_message = 'Failed on trial #' . strval($i + 1);
             $fail_message .= ($safe_mode ? '(safe mode)' : '(no safe mode)');
             if (!isset($_GET['debug'])) {

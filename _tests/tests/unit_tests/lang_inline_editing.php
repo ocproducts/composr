@@ -21,7 +21,8 @@ class lang_inline_editing_test_set extends cms_test_case
     public function testInlineLanguageEditingWorks()
     {
         if (!$GLOBALS['SEMI_DEV_MODE']) {
-            return; // Only works in semi-dev mode
+            $this->assertTrue(false, 'Cannot run unless in semi-dev-mode');
+            return;
         }
 
         $result = comcode_to_tempcode('{!testy_test:FOOBAR=Test}', null, true);

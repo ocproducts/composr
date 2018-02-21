@@ -46,7 +46,7 @@ class Hook_profiles_tabs_warnings
     public function render_tab($member_id_of, $member_id_viewing, $leave_to_ajax_if_possible = false)
     {
         require_lang('cns_warnings');
-        $title = do_lang_tempcode('MODULE_TRANS_NAME_warnings');
+        $title = do_lang_tempcode('WARNINGS');
 
         $order = 80;
 

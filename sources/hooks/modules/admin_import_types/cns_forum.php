@@ -33,7 +33,7 @@ class Hook_admin_import_types_cns_forum
         return array(
             'cns_post_templates' => 'POST_TEMPLATES',
             'cns_announcements' => 'ANNOUNCEMENTS',
-            'cns_forum_groupings' => 'MODULE_TRANS_NAME_admin_cns_forum_groupings',
+            'cns_forum_groupings' => 'FORUM_GROUPINGS',
             'cns_forums' => 'SECTION_FORUMS',
             'cns_topics' => 'FORUM_TOPICS',
             'cns_polls_and_votes' => 'TOPIC_POLLS',

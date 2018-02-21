@@ -479,6 +479,8 @@ function _helper_drop_table_if_exists($this_ref, $table)
     if (function_exists('persistent_cache_delete')) {
         persistent_cache_delete('TABLE_LANG_FIELDS_CACHE');
     }
+
+    unset($this_ref->table_exists_cache[$table]);
 }
  
 /**

@@ -24,11 +24,10 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
         $http_result = cms_http_request($url, array('trigger_error' => false, 'timeout' => 20.0));
         $success = ($http_result->message == '200');
 
-        if ((!$success) && (isset($_GET['debug']))) {
+        if (/*(!$success) && */(isset($_GET['debug']))) {
+            @var_dump($url);
             @var_dump($http_result->message);
-            @var_dump(escape_html($http_result->data));
-
-            $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags($http_result->data));
+            $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags(preg_replace('#<script.*</script>#Us', '', $http_result->data)));
             @print(escape_html($error));
             @ob_end_flush();
         }
@@ -178,15 +177,11 @@ function _do_install_to($database, $username, $password, $table_prefix, $safe_mo
         $data = $http_result->data;
         $success = ($http_result->message == '200');
 
-        if ((!$success) && (isset($_GET['debug']))) {
+        if (/*(!$success) && */(isset($_GET['debug']))) {
             @var_dump($url);
             @var_dump($http_result->message);
-
-            @var_dump(escape_html($data));
-
-            $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags($data));
+            $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags(preg_replace('#<script.*</script>#Us', '', $data)));
             @print(escape_html($error));
-
             @ob_end_flush();
         }
 

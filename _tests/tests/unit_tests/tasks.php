@@ -29,6 +29,7 @@ class tasks_test_set extends cms_test_case
     public function testNewsletterCSV()
     {
         if (!addon_installed('newsletter')) {
+            $this->assertTrue(false, 'Cannot run test without newsletter addon');
             return;
         }
 
@@ -52,6 +53,7 @@ class tasks_test_set extends cms_test_case
     public function testCatalogueCSV()
     {
         if (!addon_installed('catalogues')) {
+            $this->assertTrue(false, 'Cannot run test without catalogues addon');
             return;
         }
 
@@ -74,6 +76,7 @@ class tasks_test_set extends cms_test_case
     public function testCalendarICal()
     {
         if (!addon_installed('calendar')) {
+            $this->assertTrue(false, 'Cannot run test without calendar addon');
             return;
         }
 
@@ -140,6 +143,7 @@ class tasks_test_set extends cms_test_case
     public function testMemberCSV()
     {
         if (get_forum_type() != 'cns') {
+            $this->assertTrue(false, 'Cannot run test when not running Conversr');
             return;
         }
 

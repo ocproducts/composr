@@ -224,7 +224,7 @@ class Forum_driver_base
 
         // Make a display name?
         if ($ret !== null) {
-            if ($use_displayname) {
+            if (($use_displayname) && (function_exists('get_displayname'))) {
                 $ret = get_displayname($ret);
             }
         }

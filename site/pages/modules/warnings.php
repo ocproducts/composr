@@ -29,7 +29,7 @@ class Module_warnings extends Standard_crud_module
     public $select_name = 'SUBMITTER';
     public $select_name_description = '';
     public $redirect_type = '!';
-    public $menu_label = 'MODULE_TRANS_NAME_warnings';
+    public $menu_label = 'WARNINGS';
     public $table = 'f_warnings';
     public $orderer = 'w_time';
     public $orderer_is_multi_lang = false;
@@ -428,7 +428,7 @@ class Module_warnings extends Standard_crud_module
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
             '_GUID' => 'cb4511a58a4c78eb75346a468e6e6fdf',
-            'TITLE' => do_lang_tempcode('MODULE_TRANS_NAME_warnings'),
+            'TITLE' => do_lang_tempcode('WARNINGS'),
             'HELP' => do_lang_tempcode('HAS_ALREADY_X_WARNINGS', escape_html($username), escape_html(integer_format($num_warnings)), array(escape_html(get_site_name()), escape_html($rules_url), escape_html($history_url), escape_html($profile_url))),
         )));
 
