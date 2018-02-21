@@ -178,7 +178,15 @@ class Hook_search_calendar extends FieldsSearchHook
      */
     public function render($row)
     {
+        global $SEARCH__CONTENT_BITS, $LAX_COMCODE;
+        $highlight_bits = ($SEARCH__CONTENT_BITS === null) ? array() : $SEARCH__CONTENT_BITS;
+        $LAX_COMCODE = true; // TODO: Fix in v11
+        $summary = get_translated_text($row['e_content']);
+        $text_summary_h = comcode_to_tempcode($summary, null, false, null, null, null, false, false, false, false, false, $highlight_bits);
+        $LAX_COMCODE = false;
+        $text_summary = generate_text_summary($text_summary_h->evaluate(), $highlight_bits);
+
         require_code('calendar');
-        return render_event_box($row);
+        return render_event_box($row, '_SEARCH', true, '', protect_from_escaping($text_summary));
     }
 }

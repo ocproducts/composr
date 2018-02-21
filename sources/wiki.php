@@ -31,17 +31,16 @@ The concept of a chain is crucial to proper understanding of the Wiki+ system. P
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
+ * @param  ?Tempcode $text_summary Text summary for result (e.g. highlighted portion of actual file from search result) (null: none)
  * @return Tempcode A box for it, linking to the full page
  */
-function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
+function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '', $text_summary = null)
 {
     if (is_null($row)) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
     require_lang('wiki');
-
-    $just_wiki_post_row = db_map_restrict($row, array('id', 'the_message'));
 
     $map = array('page' => 'wiki', 'type' => 'browse', 'id' => $row['page_id']);
     if (!is_null($root)) {
@@ -60,12 +59,19 @@ function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $in
         $title = do_lang_tempcode('WIKI_POST');
     }
 
+    if ($text_summary === null) {
+        $just_wiki_post_row = db_map_restrict($row, array('id', 'the_message'));
+        $summary = get_translated_tempcode('wiki_posts', $just_wiki_post_row, 'the_message');
+    } else {
+        $summary = $text_summary;
+    }
+
     return do_template('SIMPLE_PREVIEW_BOX', array(
         '_GUID' => ($guid != '') ? $guid : 'f271c035af57eb45b7f3b37e437baf3c',
         'ID' => strval($row['id']),
         'TITLE' => $title,
         'BREADCRUMBS' => $breadcrumbs,
-        'SUMMARY' => get_translated_tempcode('wiki_posts', $just_wiki_post_row, 'the_message'),
+        'SUMMARY' => $summary,
         'URL' => $url,
         'RESOURCE_TYPE' => 'wiki_post',
     ));
@@ -80,19 +86,16 @@ function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $in
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
+ * @param  ?Tempcode $text_summary Text summary for result (e.g. highlighted portion of actual file from search result) (null: none)
  * @return Tempcode A box for it, linking to the full page
  */
-function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
+function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '', $text_summary = null)
 {
     if (is_null($row)) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
     require_lang('wiki');
-
-    $just_wiki_page_row = db_map_restrict($row, array('id', 'description'));
-
-    $content = get_translated_tempcode('wiki_pages', $just_wiki_page_row, 'description');
 
     $map = array('page' => 'wiki', 'type' => 'browse', 'id' => $row['id']);
     if (!is_null($root)) {
@@ -112,12 +115,19 @@ function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $in
         }
     }
 
+    if ($text_summary === null) {
+        $just_wiki_page_row = db_map_restrict($row, array('id', 'description'));
+        $summary = get_translated_tempcode('wiki_pages', $just_wiki_page_row, 'description');
+    } else {
+        $summary = $text_summary;
+    }
+
     return do_template('SIMPLE_PREVIEW_BOX', array(
         '_GUID' => ($guid != '') ? $guid : 'd2c37a1f68e684dc4ac85e3d4e4bf959',
         'ID' => strval($row['id']),
         'TITLE' => $title,
         'BREADCRUMBS' => $breadcrumbs,
-        'SUMMARY' => $content,
+        'SUMMARY' => $summary,
         'URL' => $url,
         'RESOURCE_TYPE' => 'wiki_page',
     ));
