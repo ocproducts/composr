@@ -1661,7 +1661,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                         if (!$semiparse_mode) {
                                             $tag_output->attach($embed_output);
                                         } else {
-                                            $tag_output->attach(escape_html($auto_link));
+                                            $tag_output->attach($in_semihtml ? $auto_link : escape_html($auto_link));
                                         }
                                         $pos += $link_end_pos - $pos;
                                         $differented = true;
