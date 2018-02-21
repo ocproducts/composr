@@ -24,6 +24,11 @@ class tutorial_quality_test_set extends cms_test_case
     {
         parent::setUp();
 
+        if (in_safe_mode()) {
+            $this->assertTrue(false, 'Cannot work in safe mode');
+            return;
+        }
+
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(300);
         }
@@ -37,6 +42,10 @@ class tutorial_quality_test_set extends cms_test_case
 
     public function testValidComcode()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         require_code('comcode_check');
 
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
@@ -52,6 +61,10 @@ class tutorial_quality_test_set extends cms_test_case
 
     public function testHaveFullMetaData()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         foreach ($this->tutorials as $tutorial_name => $tutorial) {
             if (is_numeric($tutorial_name)) {
                 continue;
@@ -68,6 +81,10 @@ class tutorial_quality_test_set extends cms_test_case
 
     public function testHasCorrectTitle()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
@@ -84,6 +101,10 @@ class tutorial_quality_test_set extends cms_test_case
 
     public function testHasNoIncorrectLinking()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
@@ -110,6 +131,10 @@ class tutorial_quality_test_set extends cms_test_case
 
     public function testHasImage()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
@@ -138,6 +163,10 @@ class tutorial_quality_test_set extends cms_test_case
 
     public function testImageDensity()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         $data = array();
 
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
@@ -186,6 +215,10 @@ class tutorial_quality_test_set extends cms_test_case
 
     public function testHasStandardParts()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {

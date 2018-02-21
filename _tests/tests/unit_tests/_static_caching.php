@@ -33,10 +33,6 @@ class _static_caching_test_set extends cms_test_case
         $data = http_get_contents($url->evaluate());
         $time_after = microtime(true);
 
-        if (function_exists('gzencode')) {
-            $data = gzdecode($data);
-        }
-
         $time = $time_after - $time_before;
 
         $this->assertTrue($time < 0.1, 'Took too long, ' . float_format($time) . ' seconds');

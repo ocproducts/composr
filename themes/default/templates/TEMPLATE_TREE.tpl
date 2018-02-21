@@ -2,7 +2,7 @@
 	{$HIDDENS_FOR_GET_FORM,{EDIT_URL}}
 
 	<div>
-		{TREE}
+		{TREE`}
 
 		{HIDDEN}
 	</div>

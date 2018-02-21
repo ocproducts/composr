@@ -24,6 +24,11 @@ class tutorials_all_linked_test_set extends cms_test_case
     {
         parent::setUp();
 
+        if (in_safe_mode()) {
+            $this->assertTrue(false, 'Cannot work in safe mode');
+            return;
+        }
+
         require_code('tutorials');
 
         $_GET['keep_tutorial_test'] = '1';
@@ -33,6 +38,10 @@ class tutorials_all_linked_test_set extends cms_test_case
 
     public function testAddonLinkage()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         foreach ($this->tutorials as $tutorial_name => $tutorial) {
             if (is_numeric($tutorial_name)) {
                 continue;
@@ -68,6 +77,10 @@ class tutorials_all_linked_test_set extends cms_test_case
 
     public function testNotSelfLinking()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
@@ -84,6 +97,10 @@ class tutorials_all_linked_test_set extends cms_test_case
 
     public function testHasSomePinned()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         $count = 0;
         foreach ($this->tutorials as $tutorial_name => $tutorial) {
             if ($tutorial['pinned']) {
@@ -97,6 +114,10 @@ class tutorials_all_linked_test_set extends cms_test_case
 
     public function testTagSet()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         $tags = list_tutorial_tags(true);
         foreach ($tags as $tag) {
             $this->assertTrue(find_theme_image(_find_tutorial_image_for_tag($tag), true) != '', 'Tag ' . $tag . ' has no defined image');
@@ -105,6 +126,10 @@ class tutorials_all_linked_test_set extends cms_test_case
 
     public function testCorrectSeeAlsoTitling()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {

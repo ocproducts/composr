@@ -39,6 +39,11 @@ class geocoding_test_set extends cms_test_case
 
     public function testGeocodeGoogle()
     {
+        if (in_safe_mode()) {
+            $this->assertTrue(false, 'Cannot work in safe mode');
+            return;
+        }
+
         require_code('locations_geocoding');
 
         $result = geocode('Berlin, DE');
@@ -49,6 +54,11 @@ class geocoding_test_set extends cms_test_case
 
     public function testReverseGeocodeGoogle()
     {
+        if (in_safe_mode()) {
+            $this->assertTrue(false, 'Cannot work in safe mode');
+            return;
+        }
+
         require_code('locations_geocoding');
 
         $address = reverse_geocode(52.516667, 13.388889);

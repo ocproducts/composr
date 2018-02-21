@@ -2462,7 +2462,7 @@ class Database_Static_xml extends DatabaseDriver
                 $string = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
                 $start = min(0, $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set) - 1);
                 $length = $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok, $full_set);
-                return mb_substr($string, $start, $length);
+                return cms_mb_substr($string, $start, $length);
 
             case 'X_LEAST':
                 $vals = array();

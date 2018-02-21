@@ -1394,7 +1394,16 @@ function in_safe_mode()
     if ($url_says === null) {
         $url_says = (get_param_integer('keep_safe_mode', 0) == 1);
     }
-    $ret = (($url_says) && ($backdoor_ip || (isset($GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['IS_ACTUALLY_ADMIN'])) || (!array_key_exists('FORUM_DRIVER', $GLOBALS)) || ($GLOBALS['FORUM_DRIVER'] === null) || (!function_exists('get_member')) || (empty($GLOBALS['MEMBER_CACHED'])) || ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))));
+    $ret = (($url_says) && (
+        $backdoor_ip ||
+        (isset($GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['IS_ACTUALLY_ADMIN'])) ||
+        (strpos($_SERVER['SCRIPT_NAME'], '/_tests/') !== false) ||
+        (!array_key_exists('FORUM_DRIVER', $GLOBALS)) ||
+        ($GLOBALS['FORUM_DRIVER'] === null) ||
+        (!function_exists('get_member')) ||
+        (empty($GLOBALS['MEMBER_CACHED'])) ||
+        ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())))
+    );
     $CHECKING_SAFEMODE = false;
     return $ret;
 }

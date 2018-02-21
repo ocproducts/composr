@@ -89,16 +89,16 @@
 
 <table class="map-table"><tbody>
 	<tr>
-		<th>+COUNT,SIMPLE_ARRAY</th>
-		<td>{+COUNT,SIMPLE_ARRAY}</td>
+		<th>+START,COUNT,SIMPLE_ARRAY+END</th>
+		<td>{+START,COUNT,SIMPLE_ARRAY}{+END}</td>
 	</tr>
 	<tr>
-		<th>+IMPLODE, ,SIMPLE_ARRAY</th>
-		<td>{+IMPLODE, ,SIMPLE_ARRAY}</td>
+		<th>+START,IMPLODE, ,SIMPLE_ARRAY+END</th>
+		<td>{+START,IMPLODE, ,SIMPLE_ARRAY}{+END}</td>
 	</tr>
 	<tr>
-		<th>+OF,SIMPLE_ARRAY,1</th>
-		<td>{+OF,SIMPLE_ARRAY,1}</td>
+		<th>+START,OF,SIMPLE_ARRAY,1+END</th>
+		<td>{+START,OF,SIMPLE_ARRAY,1}{+END}</td>
 	</tr>
 </tbody></table>
 

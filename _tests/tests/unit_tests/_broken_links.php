@@ -82,6 +82,11 @@ class _broken_links_test_set extends cms_test_case
             return;
         }
 
+        if (in_safe_mode()) {
+            $this->assertTrue(false, 'Cannot work in safe mode');
+            return;
+        }
+
         $urls = $GLOBALS['SITE_DB']->query_select('tutorials_external', array('t_url'));
         foreach ($urls as $url) {
             $this->check_link($url['t_url'], 'tutorials_external');
@@ -91,6 +96,11 @@ class _broken_links_test_set extends cms_test_case
     public function testFeatureTray()
     {
         if (get_param_string('only_tutorial', '') != '') {
+            return;
+        }
+
+        if (in_safe_mode()) {
+            $this->assertTrue(false, 'Cannot work in safe mode');
             return;
         }
 

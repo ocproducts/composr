@@ -75,7 +75,11 @@ function unit_testing_run()
         <ul>';
 
     foreach ($sets as $set) {
-        echo '<li><a href="index.php?id=' . escape_html(urlencode($set)) . '">' . escape_html($set) . '</a></li>' . "\n";
+        $url = 'index.php?id=' . urlencode($set);
+        if (get_param_integer('keep_safe_mode', 0) == 1) {
+            $url .= '&keep_safe_mode=1';
+        }
+        echo '<li><a href="' . escape_html($url) . '">' . escape_html($set) . '</a></li>' . "\n";
     }
     echo '
         </ul>
@@ -105,7 +109,8 @@ function unit_testing_run()
             button.onclick = function() {
                 for (var i = 0; i < list.options.length; i++) {
                     if (list.options[i].selected) {
-                        window.open('index.php?id=' + list.options[i].value + '&close_if_passed=1');
+                        var url = 'index.php?id=' + list.options[i].value + '&close_if_passed=1" . ((get_param_integer('keep_safe_mode', 0) == 1) ? '&keep_safe_mode=1' : '') . "';
+                        window.open(url);
                     }
                 }
             };

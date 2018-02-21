@@ -128,15 +128,15 @@ class Tempcode_test_set extends cms_test_case
 
 <table class="map-table"><tbody>
 	<tr>
-		<th>+COUNT,SIMPLE_ARRAY</th>
+		<th>+START,COUNT,SIMPLE_ARRAY+END</th>
 		<td>3</td>
 	</tr>
 	<tr>
-		<th>+IMPLODE, ,SIMPLE_ARRAY</th>
+		<th>+START,IMPLODE, ,SIMPLE_ARRAY+END</th>
 		<td>1 2 3</td>
 	</tr>
 	<tr>
-		<th>+OF,SIMPLE_ARRAY,1</th>
+		<th>+START,OF,SIMPLE_ARRAY,1+END</th>
 		<td>2</td>
 	</tr>
 </tbody></table>

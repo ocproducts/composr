@@ -51,6 +51,11 @@ class extra_logging_test_set extends cms_test_case
 
     public function testMemoryMonitorSlowURLs()
     {
+        if (in_safe_mode()) {
+            $this->assertTrue(false, 'Cannot work in safe mode');
+            return;
+        }
+
         set_value('monitor_slow_urls', '1');
 
         $log_path = get_file_base() . '/data_custom/errorlog.php';

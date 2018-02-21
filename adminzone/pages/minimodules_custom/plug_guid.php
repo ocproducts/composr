@@ -108,7 +108,7 @@ function callback($match)
     if ($first_param_name != '_GUID') {
         echo 'Insert needed for ' . escape_html($template_name) . '<br />';
         $GUID_LANDSCAPE[$template_name][] = array($FILENAME, $line, $new_guid);
-        return "do_template('" . $template_name . "', array(" .$whitespace . "'_GUID' => '" . $new_guid . "'," .$whitespace . "'" . $first_param_name . "' => " . (($first_param_value === null) ? $first_param_value : '');
+        return "do_template('" . $template_name . "', array(" . $whitespace . "'_GUID' => '" . $new_guid . "'," . $whitespace . "'" . $first_param_name . "' => " . (($first_param_value === null) ? $first_param_value : '');
     }
 
     // Handle existing GUIDs
@@ -120,7 +120,7 @@ function callback($match)
         if (array_key_exists($guid_value, $FOUND_GUID)) {
             echo 'Repair needed for ' . escape_html($template_name) . '<br />';
             $GUID_LANDSCAPE[$template_name][] = array($FILENAME, $line, $new_guid);
-            return "do_template('" . $template_name . "', array(" .$whitespace . "'_GUID' => '" . $new_guid . "'";
+            return "do_template('" . $template_name . "', array(" . $whitespace . "'_GUID' => '" . $new_guid . "'";
         }
 
         $FOUND_GUID[$guid_value] = true;

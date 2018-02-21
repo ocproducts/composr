@@ -24,6 +24,11 @@ class rest_test_set extends cms_test_case
     {
         parent::setUp();
 
+        if (in_safe_mode()) {
+            $this->assertTrue(false, 'Cannot work in safe mode');
+            return;
+        }
+
         $this->establish_admin_session();
 
         $this->path = '/var/news/general/Hello.cms';
@@ -39,6 +44,10 @@ class rest_test_set extends cms_test_case
 
     public function testCreate()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         $url = get_base_url() . '/data/endpoint.php/content/commandr_fs' . $this->path;
         $post_params = array(json_encode(array('summary' => 'test')));
         $cookies = array(get_session_cookie() => get_session_id());
@@ -52,6 +61,10 @@ class rest_test_set extends cms_test_case
 
     public function testUpdate()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         $url = get_base_url() . '/data/endpoint.php/content/commandr_fs' . $this->path;
         $post_params = array(json_encode(array('summary' => 'test')));
         $cookies = array(get_session_cookie() => get_session_id());
@@ -65,6 +78,10 @@ class rest_test_set extends cms_test_case
 
     public function testDelete()
     {
+        if (in_safe_mode()) {
+            return;
+        }
+
         $url = get_base_url() . '/data/endpoint.php/content/commandr_fs' . $this->path;
         $post_params = array(json_encode(array('summary' => 'test')));
         $cookies = array(get_session_cookie() => get_session_id());

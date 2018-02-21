@@ -36,16 +36,20 @@ class get_translated_tempcode_test_set extends cms_test_case
             $fields[$table][] = $name;
         }
 
-        foreach ($files as $file) {
-            if (substr($file, -4) == '.php') {
-                $c = file_get_contents($file);
+        foreach ($files as $path) {
+            if ((in_safe_mode()) && (should_ignore_file($path, IGNORE_NONBUNDLED))) {
+                continue;
+            }
+
+            if (substr($path, -4) == '.php') {
+                $c = file_get_contents($path);
 
                 $matches = array();
                 $num_matches = preg_match_all('#get_translated_tempcode\(\'(\w+)\', [^,]*, \'(\w+)\'\)#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $table = $matches[1][$i];
                     $name = $matches[2][$i];
-                    $this->assertTrue((isset($fields[$table])) && (in_array($name, $fields[$table])), 'Could not find ' . $table . ':' . $name . ', ' . $file);
+                    $this->assertTrue((isset($fields[$table])) && (in_array($name, $fields[$table])), 'Could not find ' . $table . ':' . $name . ', ' . $path);
                 }
             }
         }
