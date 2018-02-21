@@ -1075,7 +1075,7 @@ abstract class Standard_crud_module
      */
     public function get_entry_rows($recache = false, $orderer = null, $where = array(), $force_site_db = false, $join = '', $max = null)
     {
-        if ((!$recache) && ($orderer !== null) && ($where !== null)) {
+        if ((!$recache) && ($orderer === null) && ($where === null)) {
             if (isset($this->cached_entry_rows)) {
                 return array($this->cached_entry_rows, $this->cached_max_rows);
             }
@@ -1132,7 +1132,7 @@ abstract class Standard_crud_module
             $_entries[$key] = $row;
         }
 
-        if (($orderer !== null) && ($where !== null)) {
+        if (($orderer === null) && ($where === null)) {
             $this->cached_entry_rows = $_entries;
             $this->cached_max_rows = $max_rows;
         }

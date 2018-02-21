@@ -482,9 +482,9 @@ class Module_admin_ecommerce_logs
                     's_state' => 'new',
                     's_amount' => $details['price'],
                     's_tax_code' => $tax_code,
-                    's_tax_derivation' => json_encode($tax_derivation),
+                    's_tax_derivation' => json_encode($tax_derivation, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
                     's_tax' => $tax,
-                    's_tax_tracking' => json_encode($tax_tracking),
+                    's_tax_tracking' => json_encode($tax_tracking, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
                     's_currency' => $currency,
                     's_purchase_id' => $purchase_id,
                     's_time' => time(),
@@ -538,9 +538,9 @@ class Module_admin_ecommerce_logs
             'e_purchase_id' => $purchase_id,
             'e_item_name' => $item_name,
             'e_price' => $amount,
-            'e_tax_derivation' => json_encode($tax_derivation),
+            'e_tax_derivation' => json_encode($tax_derivation, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
             'e_tax' => $tax,
-            'e_tax_tracking' => json_encode($tax_tracking),
+            'e_tax_tracking' => json_encode($tax_tracking, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
             'e_currency' => $currency,
             'e_price_points' => 0,
             'e_member_id' => get_member(),
@@ -550,7 +550,7 @@ class Module_admin_ecommerce_logs
             'e_length' => $s_length,
             'e_length_units' => $s_length_units,
             'e_memo' => post_param_string('memo', ''),
-            'e_invoicing_breakdown' => json_encode($invoicing_breakdown),
+            'e_invoicing_breakdown' => json_encode($invoicing_breakdown, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         ));
         store_shipping_address($txn_id);
 

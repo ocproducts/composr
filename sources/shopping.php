@@ -465,7 +465,7 @@ function copy_shopping_cart_to_order()
         'member_id' => get_member(),
         'session_id' => get_session_id(),
         'total_price' => $total_price,
-        'total_tax_derivation' => json_encode($total_tax_derivation),
+        'total_tax_derivation' => json_encode($total_tax_derivation, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         'total_tax' => $total_tax,
         'total_tax_tracking' => $total_tax_tracking,
         'total_shipping_cost' => $total_shipping_cost,
@@ -606,9 +606,9 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
         'e_member_id' => get_member(),
         'e_session_id' => get_session_id(),
         'e_price' => $price + $shipping_cost,
-        'e_tax_derivation' => json_encode($tax_derivation),
+        'e_tax_derivation' => json_encode($tax_derivation, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         'e_tax' => $tax,
-        'e_tax_tracking' => json_encode($tax_tracking),
+        'e_tax_tracking' => json_encode($tax_tracking, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_ip_address' => get_ip_address(),
@@ -616,7 +616,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
         'e_length' => null,
         'e_length_units' => '',
         'e_memo' => post_param_string('memo', ''),
-        'e_invoicing_breakdown' => json_encode($invoicing_breakdown),
+        'e_invoicing_breakdown' => json_encode($invoicing_breakdown, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
     ));
 
     return $payment_gateway_object->make_cart_transaction_button($trans_expecting_id, $items, $shipping_cost, $currency, $order_id);
@@ -694,7 +694,7 @@ function recalculate_order_costs($order_id)
 
     $GLOBALS['SITE_DB']->query_update('shopping_orders', array(
         'total_price' => $total_price,
-        'total_tax_derivation' => json_encode($total_tax_derivation),
+        'total_tax_derivation' => json_encode($total_tax_derivation, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         'total_tax' => $total_tax,
         'total_tax_tracking' => $total_tax_tracking,
         'total_shipping_cost' => $total_shipping_cost,

@@ -556,7 +556,7 @@
         var temp = permissionsImgFunc1b(node, id);
         var url = temp[0];
         var title = temp[1];
-        return '<img class="vertical-alignment perm-icon" width="29" height="17" src="' + url + '" alt="' + title + '" title="' + title + '" />&nbsp;';
+        return '<img class="vertical-alignment perm-icon" width="29" height="17" style="width: 29px; height: 17px;" src="' + url + '" alt="' + title + '" title="' + title + '" />&nbsp;';
 
 
         function permissionsImgFunc1b(node, id) {

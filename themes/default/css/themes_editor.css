@@ -50,14 +50,14 @@
 	font-size: 0.9em;
 }
 
-.theme-details {
+.manage-theme-details {
 	min-width: 7em;
 }
 
-.theme-details .seed {
+.manage-theme-details .seed {
 	background-color: white;
 }
-.theme-details .seed strong {
+.manage-theme-details .seed strong {
 	white-space: nowrap !important;
 }
 
@@ -67,6 +67,10 @@
 
 .manage-theme-export * {
 	vertical-align: middle;
+}
+
+.manage-theme-icons {
+	width: 300px;
 }
 
 /* Template editor */

@@ -945,6 +945,10 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	.global-side-panel {
 		margin-top: -1em;
 		width: 13em;
+
+		/* Force the issue, as flex box can flex too much! */
+		min-width: 13em;
+		max-width: 13em;
 	}
 
 	#panel-bottom {
@@ -3192,7 +3196,7 @@ div .post-buttons>*, div .buttons-group-faded>* {
 .comments-posting-form-end .proceed-button.contains-preview-button {
 	text-align: left;
 }
-.comments-posting-form-end .proceed-button.contains-preview-button, .comments-captcha {
+.comments-captcha {
 	margin-left: 14.5em !important;
 }
 .comments-posting-form-end #submit-button.near-preview-button {

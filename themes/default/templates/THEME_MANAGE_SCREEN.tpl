@@ -16,16 +16,16 @@
 		<table class="columned-table wide-table">
 			<thead>
 				<tr>
-					<th>{!THEME}</th>
-					<th>{!TOOLS}</th>
-					<th>{!EDIT}</th>
+					<th class="manage-theme-details">{!THEME}</th>
+					<th class="manage-theme-export">{!TOOLS}</th>
+					<th class="manage-theme-icons">{!EDIT}</th>
 				</tr>
 			</thead>
 			<tbody>
 				{$SET,done_one_theme,0}
 				{+START,LOOP,THEMES}
 					<tr class="{+START,IF,{$GET,done_one_theme}}thick-border{+END}{+START,IF,{IS_MAIN_THEME}} active-item{+END}">
-						<td role="note" class="theme-details">
+						<td role="note" class="manage-theme-details">
 							{+START,IF,{$DESKTOP}}
 								<div class="block-desktop">
 									{+START,SET,TOOLTIP}
@@ -62,7 +62,7 @@
 							<p><img alt="" width="24" height="24" src="{$IMG*,icons/buttons/preview}" /> <a href="{SCREEN_PREVIEW_URL*}">{!_SCREEN_PREVIEWS}</a></p>
 						</td>
 
-						<td>
+						<td class="manage-theme-icons">
 							<div class="do-theme-items">
 								<div>
 									<div><a rel="edit" title="{!EDIT_THEME}: {NAME*}" href="{EDIT_URL*}"><img alt="" width="48" height="48" src="{$IMG*,icons/admin/edit_this}" /></a></div>

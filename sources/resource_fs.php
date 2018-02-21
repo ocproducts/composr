@@ -527,7 +527,7 @@ TABLE LEVEL
  */
 function table_to_json($table, $fields_to_skip = array(), $where_map = array())
 {
-    return json_encode(table_to_portable_rows($table, $fields_to_skip, $where_map));
+    return json_encode(table_to_portable_rows($table, $fields_to_skip, $where_map), defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0);
 }
 
 /**
