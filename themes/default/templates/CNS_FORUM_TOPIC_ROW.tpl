@@ -25,7 +25,7 @@
 						{+END}
 					</span>
 
-					<a class="vertical-alignment {+START,IF_NON_EMPTY,{TOPIC_ROW_MODIFIERS}{TOPIC_ROW_LINKS}} cns-forum-topic-indent{+END}" href="{URL*}" title="{$ALTERNATOR_TRUNCATED,{TITLE},60,{!TOPIC_STARTED_DATE_TIME,{HOVER;^}},,1}">{+START,IF,{UNREAD}}<span class="cns-unread-topic-title">{+END}{$TRUNCATE_LEFT,{TITLE},46,1}{+START,IF,{UNREAD}}</span>{+END}</a>
+					<a class="vertical-alignment{+START,IF,{UNREAD}} cns-unread-topic-title{+END}{+START,IF_NON_EMPTY,{TOPIC_ROW_MODIFIERS}{TOPIC_ROW_LINKS}} cns-forum-topic-indent{+END}" href="{URL*}" title="{$ALTERNATOR_TRUNCATED,{TITLE},60,{!TOPIC_STARTED_DATE_TIME,{HOVER;^}},,1}">{$TRUNCATE_LEFT,{TITLE},46,1}</a>
 
 					{PAGES}
 
@@ -41,7 +41,7 @@
 
 		<div class="cell-mobile">
 			<div class="cns-forum-topic-title-bits">
-				<a class="vertical-alignment {+START,IF_NON_EMPTY,{TOPIC_ROW_MODIFIERS}{TOPIC_ROW_LINKS}} cns-forum-topic-indent{+END}" href="{URL*}" title="{$ALTERNATOR_TRUNCATED,{TITLE},60,{!TOPIC_STARTED_DATE_TIME,{HOVER}},,1}">{+START,IF,{UNREAD}}<span class="cns-unread-topic-title">{+END}{$TRUNCATE_LEFT,{TITLE},46,1}{+START,IF,{UNREAD}}</span>{+END}</a>
+				<a class="vertical-alignment{+START,IF,{UNREAD}} cns-unread-topic-title{+END}{+START,IF_NON_EMPTY,{TOPIC_ROW_MODIFIERS}{TOPIC_ROW_LINKS}} cns-forum-topic-indent{+END}" href="{URL*}" title="{$ALTERNATOR_TRUNCATED,{TITLE},60,{!TOPIC_STARTED_DATE_TIME,{HOVER}},,1}">{$TRUNCATE_LEFT,{TITLE},46,1}</a>
 
 				{PAGES}
 

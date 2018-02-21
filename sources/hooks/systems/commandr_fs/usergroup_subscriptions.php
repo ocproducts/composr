@@ -96,6 +96,9 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         $tax_code = $this->_default_property_str($properties, 'tax_code');
         $length = $this->_default_property_int($properties, 'length');
         $length_units = $this->_default_property_str($properties, 'length_units');
+        if ($length_units == '') {
+            $length_units = 'm';
+        }
         $auto_recur = $this->_default_property_int($properties, 'auto_recur');
         $group_id = $this->_default_property_group($properties, 'group_id');
         $uses_primary = $this->_default_property_int($properties, 'uses_primary');
@@ -173,6 +176,9 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         $tax_code = $this->_default_property_str($properties, 'tax_code');
         $length = $this->_default_property_int($properties, 'length');
         $length_units = $this->_default_property_str($properties, 'length_units');
+        if ($length_units == '') {
+            $length_units = 'm';
+        }
         $auto_recur = $this->_default_property_int($properties, 'auto_recur');
         $group_id = $this->_default_property_group($properties, 'group_id');
         $uses_primary = $this->_default_property_int($properties, 'uses_primary');

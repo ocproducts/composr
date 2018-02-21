@@ -35,6 +35,8 @@ function do_next_manager_hooked($title, $text, $type, $main_title = null)
         $main_title = $title;
     }
 
+    require_lang('menus');
+
     $hooks = find_all_hook_obs('systems', 'page_groupings', 'Hook_page_groupings_');
     foreach ($hooks as $object) {
         $_links = $object->run(null, true);

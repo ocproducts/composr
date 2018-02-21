@@ -479,7 +479,7 @@ function wiki_edit_page($page_id, $title, $description, $notes, $show_posts, $me
     $_description = $page['description'];
     $_title = $page['title'];
 
-    $log_id = log_it('WIKI_EDIT_PAGE', strval($page_id), $_title);
+    $log_id = log_it('WIKI_EDIT_PAGE', strval($page_id), get_translated_text($_title));
     if (addon_installed('actionlog')) {
         require_code('revisions_engine_database');
         $revision_engine = new RevisionEngineDatabase();

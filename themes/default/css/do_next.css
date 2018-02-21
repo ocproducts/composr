@@ -53,7 +53,6 @@
 	font-size: 0.9em;
 	transition: background-color 0.5s linear;
 	box-sizing: border-box;
-	max-width: 100px;
 }
 
 .active-item td, td.active-item {

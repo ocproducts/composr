@@ -108,7 +108,7 @@ class Hook_commandr_fs_members
                 $listing[] = array(
                     $prop,
                     COMMANDR_FS_FILE,
-                    strlen($member_data[$field]),
+                    strlen(@strval($member_data[$field])),
                     $member_data['m_join_time'],
                 );
             }
@@ -300,7 +300,11 @@ class Hook_commandr_fs_members
         if (count($meta_dir) == 1) {
             // We're in a member's directory, and reading one of their profile fields
             if (array_key_exists($file_name, $this->field_mapping)) {
-                return $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', $this->field_mapping[$file_name], array('id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0])));
+                $ret = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', $this->field_mapping[$file_name], array('id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0])));
+                if ($ret !== null) {
+                    $ret = @strval($ret);
+                }
+                return $ret;
             }
 
             require_code('cns_members');
@@ -348,7 +352,32 @@ class Hook_commandr_fs_members
         if (count($meta_dir) == 1) {
             // We're in a member's directory, and writing one of their profile fields
             if (array_key_exists($file_name, $this->field_mapping)) {
-                $GLOBALS['FORUM_DB']->query_update('f_members', array($this->field_mapping[$file_name] => $contents), array('id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0])), '', 1);
+                $val = $contents;
+                if (in_array($filename, array(
+                    'id',
+                    'validated',
+                    'primary_group',
+                    'banned',
+                    'preview_posts',
+                    'dob_day',
+                    'dob_month',
+                    'dob_year',
+                    'reveal_age',
+                    'views_signatures',
+                    'auto_monitor_contrib_content',
+                    'allow_emails',
+                    'allow_emails_from_staff',
+                    'max_email_attach_size_mb',
+                    'last_visit_time',
+                    'last_submit_time',
+                    'highlighted_name',
+                    'on_probation_until',
+                    'auto_mark_read',
+                ))) {
+                    $val = strval($val);
+                }
+
+                $GLOBALS['FORUM_DB']->query_update('f_members', array($this->field_mapping[$file_name] => $val), array('id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0])), '', 1);
                 return true;
             }
 
