@@ -86,7 +86,41 @@ class Hook_addon_registry_testing_platform
      */
     public function get_description()
     {
-        return 'The Composr testing platform. Do not run this on a production system as it will interfere with installs and may contain security holes. It may have dependencies on any non-bundled Composr addon as it is designed to run directly out of a github clone of Composr (it is only available in the addon directory due to auto-packaging).';
+        return 'The Composr testing platform.
+
+This framework is designed to allow auto-runnable tests to easily be written for Composr. The advantage to this testing technique is once a test is written it can be re-run very easily -- being able to re-run a whole test set before each release will dramatically reduce the chance of new bugs creeping into releases, as tests would not pass in this circumstance. New bugs in new releases is always a problem for complex software like Composr, as it is a huge package and it\'s very easy to accidentally cause (and not notice) a new problem when fixing an old one.
+
+[b]Do not run this on a production system as it will interfere with installs and may contain security holes.[/b]
+
+This addon may have dependencies on any non-bundled Composr addon as it is designed to run directly out of a github clone of Composr (it is only available in the addon directory due to auto-packaging).
+
+Make sure html_dump and anything in it has 777 permissions (full write permissions).
+
+[title="2"]Running[/title]
+
+Simply call up [tt]http://yourbaseurl/_tests/index.php[/tt].
+
+From there you can choose to run tests that have been written.
+
+[title="2"]Writing tests[/title]
+
+Tests are stored under the [tt]_tests/tests[/tt] directory, and are classed as either "regression tests" (tests written to illustrate a bug, that fail before we fix the bug, but pass after we fix the bug) or "unit tests" (a test designed to test some part of Composr, we usually actually refer to these as \'automated tests\').
+Tests are PHP scripts, so a good understand if PHP is required to write them.
+
+The testing framework is built around SimpleTest (http://www.simpletest.org/), so all their API can be used. We have extended it a little bit, so:
+- you can call up page-links
+- any pages loaded up are saved as HTML so you can check them via other means also (e.g. passing through an HTML validator, or checking them manually for aesthetic issues).
+- you can make Composr think you are a logged in administrator
+- there is some standard setUp/tearDown code should use for any test, to make sure Composr starts in a good state for testing (currently it just makes sure the site is not closed)
+Read about the SimpleTest API on their website to understand what things like assertTrue mean, and what tools you have at your disposal.
+
+[title="2"]Contributing[/title]
+
+We welcome any new tests you might want to write for us. We only have one at the moment and ideally we would have thousands, so there\'s a lot of work to do! The more tests we have, the more stable Composr will be.
+Test writing can be fun, and doesn\'t take long if you already know programming. It\'s a great way to contribute in your free time without getting stuck in large projects.
+
+If you\'ve written some tests please make a pull request.
+We hope other users will appreciate your efforts and give you some gift points to reward your work.';
     }
 
     /**
