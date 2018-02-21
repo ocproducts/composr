@@ -113,8 +113,7 @@ Unfortunately YouTube support is currently not functional (https://compo.sr/trac
         return array(
             'requires' => array(
                 'PHP5.2',
-                'PHP mhash extension',
-                'PHP cURL extension',
+                'PHP curl extension',
                 'galleries',
             ),
             'recommends' => array(),

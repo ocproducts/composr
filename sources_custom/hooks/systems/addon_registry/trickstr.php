@@ -109,7 +109,7 @@ class Hook_addon_registry_trickstr
         return array(
             'requires' => array(
                 'chat',
-                'mysql',
+                'MySQL',
             ),
             'recommends' => array(
             ),

@@ -120,7 +120,7 @@ This addon does not contain the compo.sr install code and the overall site and t
                 'downloads',
                 'ecommerce',
                 'news',
-                'mysql',
+                'MySQL',
                 'all_icons',
             ),
             'recommends' => array(

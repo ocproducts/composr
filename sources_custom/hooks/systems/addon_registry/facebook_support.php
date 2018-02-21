@@ -127,8 +127,8 @@ For a demo, see this video tutorial: https://www.youtube.com/watch?v=HUZ_O5io0F0
     {
         return array(
             'requires' => array(
-                'PHP sessions',
-                'PHP CuRL extension',
+                'PHP sessions extension',
+                'PHP curl extension',
             ),
             'recommends' => array('activity_feed'),
             'conflicts_with' => array(),

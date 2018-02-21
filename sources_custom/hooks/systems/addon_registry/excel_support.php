@@ -110,9 +110,9 @@ class Hook_addon_registry_excel_support
     {
         return array(
             'requires' => array(
-                'GD',
-                'Zip',
-                'XML',
+                'PHP gd extension',
+                'PHP zip extension',
+                'PHP xml extension',
                 'PHP5.3',
             ),
             'recommends' => array(),

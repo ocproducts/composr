@@ -128,7 +128,7 @@ You need to:
     public function get_dependencies()
     {
         return array(
-            'requires' => array('PHP5.5', 'curl'),
+            'requires' => array('PHP5.5', 'PHP curl extension'),
             'recommends' => array('better_mail'),
             'conflicts_with' => array(),
         );

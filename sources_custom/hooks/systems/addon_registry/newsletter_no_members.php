@@ -108,8 +108,8 @@ class Hook_addon_registry_newsletter_no_members
     {
         return array(
             'requires' => array(
-                'cns',
-                'newsletters',
+                'Conversr',
+                'newsletter',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),

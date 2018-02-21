@@ -114,7 +114,7 @@ First set up an app on Twitter, then use Comcode like:
         return array(
             'requires' => array(
                 'twitter_support',
-                'PHP CuRL Extension',
+                'PHP curl extension',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),

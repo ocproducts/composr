@@ -332,6 +332,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/module_names_defined.php',
             '_tests/tests/unit_tests/notifications_all_coded.php',
             '_tests/tests/unit_tests/password_censor.php',
+            '_tests/tests/unit_tests/addon_dependency_naming.php',
             '_tests/tests/unit_tests/specsettings_documented.php',
             '_tests/tests/unit_tests/overused_globals.php',
             '_tests/tests/unit_tests/firephp.php',

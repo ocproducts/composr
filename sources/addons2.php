@@ -591,7 +591,7 @@ function has_feature($dependency)
         return true;
     }
 
-    // Some other features
+    // Some other features (referenced in automated test, addon_dependency_naming.php)
     if (($dependency == 'mysql') && (strpos(get_db_type(), 'mysql') !== false)) {
         return true;
     }
@@ -601,10 +601,19 @@ function has_feature($dependency)
     if ((($dependency == 'cns') || ($dependency == 'conversr')) && (get_forum_type() == 'cns')) {
         return true;
     }
-    if ((strtolower($dependency) == 'gd') && (function_exists('imagetypes'))) {
+    if ((strtolower($dependency) == 'php gd extension') && (function_exists('imagetypes'))) {
         return true;
     }
-    if ((strtolower($dependency) == 'curl') && (function_exists('curl_init'))) {
+    if ((strtolower($dependency) == 'php curl extension') && (function_exists('curl_init'))) {
+        return true;
+    }
+    if ((strtolower($dependency) == 'php sessions extension') && (function_exists('session_start'))) {
+        return true;
+    }
+    if ((strtolower($dependency) == 'php xml extension') && (function_exists('xml_parser_create'))) {
+        return true;
+    }
+    if ((strtolower($dependency) == 'php zip extension') && (function_exists('zip_open'))) {
         return true;
     }
     if (substr($dependency, 0, 3) == 'php') {

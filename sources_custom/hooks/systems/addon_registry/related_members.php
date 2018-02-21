@@ -111,9 +111,7 @@ The particular CPF used is defined by the [tt]RELATED_CPF[/tt] language string (
     public function get_dependencies()
     {
         return array(
-            'requires' => array(
-                'member_directory_boxes',
-            ),
+            'requires' => array(),
             'recommends' => array(),
             'conflicts_with' => array(),
         );

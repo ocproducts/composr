@@ -110,7 +110,7 @@ class Hook_addon_registry_image_syndication
     {
         return array(
             'requires' => array(
-                'PHP cURL extension',
+                'PHP curl extension',
                 'PHP5.2',
             ),
             'recommends' => array(),

@@ -110,7 +110,7 @@ class Hook_addon_registry_thumbnail_editor
     {
         return array(
             'requires' => array(
-                'GD',
+                'PHP gd extension',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),
