@@ -54,7 +54,7 @@ If you want to check an HTML email (which requires additional rules), name the f
 Accessibility
 -------------
 
-WCAG cannot be met by scanning alone. In particular, some manual checks are required.
+WCAG cannot be met by scanning alone. In particular, some manual checks are required:
  - Alternatives given to multimedia content
  - Use the clearest and simplest language appropriate for a site's content.
  - Divide large blocks of information into more manageable groups where natural and appropriate.
