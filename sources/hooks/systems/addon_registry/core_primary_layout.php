@@ -133,6 +133,7 @@ class Hook_addon_registry_core_primary_layout
             'text/MAIL_SUBJECT.txt' => 'mail_subject',
             'templates/MAIL.tpl' => 'mail',
             'templates/GLOBAL_HTML_WRAP.tpl' => 'global_html_wrap',
+            'templates/FONT_SIZER.tpl' => 'global_html_wrap',
             'templates/GLOBAL_HTML_WRAP_mobile.tpl' => 'global_html_wrap',
             'templates/GLOBAL_HELPER_PANEL.tpl' => 'global_html_wrap',
             'templates/SCREEN_TITLE.tpl' => 'screen_title',

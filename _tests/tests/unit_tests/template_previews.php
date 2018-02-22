@@ -139,7 +139,28 @@ class template_previews_test_set extends cms_test_case
                 }
                 if ($list_2[1] == $function) {
                     // Ignore templates designed for indirect inclusion
-                    if ($template_2 == 'templates/GLOBAL_HELPER_PANEL.tpl' || $template_2 == 'templates/GLOBAL_HTML_WRAP_mobile.tpl' || $template_2 == 'templates/HTML_HEAD.tpl' || $template_2 == 'templates/MEMBER_TOOLTIP.tpl' || $template_2 == 'templates/FORM_STANDARD_END.tpl' || $template_2 == 'templates/MEMBER_BAR_SEARCH.tpl' || $template_2 == 'templates/MENU_LINK_PROPERTIES.tpl') {
+                    if (in_array($template_2, array(
+                        'templates/GLOBAL_HELPER_PANEL.tpl',
+                        'templates/GLOBAL_HTML_WRAP_mobile.tpl',
+                        'templates/HTML_HEAD.tpl',
+                        'templates/MEMBER_TOOLTIP.tpl',
+                        'templates/FORM_STANDARD_END.tpl',
+                        'templates/MEMBER_BAR_SEARCH.tpl',
+                        'templates/MENU_LINK_PROPERTIES.tpl',
+                        'templates/CNS_MEMBER_DIRECTORY_SCREEN_FILTER.tpl',
+                        'templates/CNS_MEMBER_DIRECTORY_SCREEN_FILTERS.tpl',
+                        'templates/ADMIN_ZONE_SEARCH.tpl',
+                        'templates/FILEDUMP_FOOTER.tpl',
+                        'templates/FILEDUMP_SEARCH.tpl',
+                        'templates/FONT_SIZER.tpl',
+                        'templates/FORM_SCREEN_ARE_REQUIRED.tpl',
+                        'templates/FORM_SCREEN_FIELD_DESCRIPTION.tpl',
+                        'templates/FORM_STANDARD_END.tpl',
+                        'templates/MEDIA__DOWNLOAD_LINK.tpl',
+                        'templates/MEMBER_BAR_SEARCH.tpl',
+                        'templates/NOTIFICATION_BUTTONS.tpl',
+                        'templates/NOTIFICATION_TYPES.tpl',
+                    ))) {
                         continue;
                     }
 

@@ -1487,7 +1487,6 @@ class Hook_addon_registry_core
             'templates/BLOCK_MAIN_CONTENT_FILTERING.tpl' => 'block_main_content_filtering',
             'templates/BLOCK_MAIN_CONTENT.tpl' => 'block_main_content',
             'templates/BLOCK_MAIN_MULTI_CONTENT.tpl' => 'block_main_multi_content',
-            'templates/FONT_SIZER.tpl' => 'font_sizer',
             'templates/MASS_SELECT_FORM_BUTTONS.tpl' => 'mass_select_form_buttons',
             'templates/MASS_SELECT_MARKER.tpl' => 'mass_select_marker',
             'templates/MASS_SELECT_DELETE_FORM.tpl' => 'mass_select_delete_form',
@@ -2268,20 +2267,6 @@ class Hook_addon_registry_core
                     )
                 )
             ), null, false, null, '.txt', 'text'), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__font_sizer()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('FONT_SIZER', array()), null, '', true)
         );
     }
 
