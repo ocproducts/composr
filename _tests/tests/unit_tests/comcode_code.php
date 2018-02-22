@@ -26,97 +26,111 @@ class comcode_code_test_set extends cms_test_case
 
         $cases = array();
 
-        // 0
-        $from = '[code]Food & Drink[/code]'; // Vanilla non-WYSIWYG
+        // Vanilla non-WYSIWYG
+        $from = '[code]Food & Drink[/code]';
         $to = '<div class="comcode_code_wrap"><div class="comcode_code"><h4>Code</h4><div class="webstandards_checker_off"><code class="comcode_code_inner">Food &amp; Drink</code></div></div></div>';
         $forced_html_to_comcode = false;
         $do_for_admin_too = true;
-        $cases[] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+        $cases[0] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
 
-        // 1
-        $from = '[code]Food &amp; Drink[/code]'; // This is INCORRECT, and we therefore expect it to not parse correctly
+        // This is INCORRECT, and we therefore expect it to not parse correctly
+        $from = '[code]Food &amp; Drink[/code]';
         $to = '<div class="comcode_code_wrap"><div class="comcode_code"><h4>Code</h4><div class="webstandards_checker_off"><code class="comcode_code_inner">Food &amp;amp; Drink</code></div></div></div>';
         $forced_html_to_comcode = false;
         $do_for_admin_too = true;
-        $cases[] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+        $cases[1] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
 
-        // 2
-        $from = '[semihtml][code]Food &amp; Drink[/code][/semihtml]'; // Vanilla WYSIWYG
+        // Vanilla WYSIWYG
+        $from = '[semihtml][code]Food &amp; Drink[/code][/semihtml]';
         $to = '<div class="comcode_code_wrap"><div class="comcode_code"><h4>Code</h4><div class="webstandards_checker_off"><code class="comcode_code_inner">Food &amp; Drink</code></div></div></div>';
         $forced_html_to_comcode = false;
         $do_for_admin_too = true;
-        $cases[] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+        $cases[2] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
 
-        // 3
-        $from = '[semihtml][code]Food & Drink[/code][/semihtml]'; // The entity error will be auto-fixed within parser behaviours
+        // The entity error will be auto-fixed within parser behaviours
+        $from = '[semihtml][code]Food & Drink[/code][/semihtml]';
         $to = '<div class="comcode_code_wrap"><div class="comcode_code"><h4>Code</h4><div class="webstandards_checker_off"><code class="comcode_code_inner">Food &amp; Drink</code></div></div></div>';
         $forced_html_to_comcode = false;
         $do_for_admin_too = true;
-        $cases[] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+        $cases[3] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
 
-        // 4
-        $from = '[html][code]Food &amp; Drink[/code][/html]'; // This is INCORRECT, and we therefore expect it to not parse correctly
+        // This is INCORRECT, and we therefore expect it to not parse correctly
+        $from = '[html][code]Food &amp; Drink[/code][/html]';
         $to = '[code]Food &amp; Drink[/code]';
         $forced_html_to_comcode = false;
         $do_for_admin_too = true;
-        $cases[] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+        $cases[4] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
 
-        // 5
-        $from = '[semihtml][code]<div>Food &amp; Drink</div><br /><div>On the house</div>[/code][/semihtml]'; // Complex WYSIWYG (HTML within code tag adjusted to Comcode-Textcode-formatting)
+        // Complex WYSIWYG (HTML within code tag adjusted to Comcode-Textcode-formatting)
+        $from = '[semihtml][code]<div>Food &amp; Drink</div><br /><div>On the house</div>[/code][/semihtml]';
         $to = '<div class="comcode_code_wrap"><div class="comcode_code"><h4>Code</h4><div class="webstandards_checker_off"><code class="comcode_code_inner">Food &amp; Drink<br /><br />On the house<br /></code></div></div></div>';
         $forced_html_to_comcode = false;
         $do_for_admin_too = true;
-        $cases[] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+        $cases[5] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
 
-        // 6
-        $from = '[semihtml][code]<composr-test>Food &amp; Drink</composr-test><br /><composr-test>On the house</composr-test>[/code][/semihtml]'; // Complex WYSIWYG (exotic HTML within code tag carries through)
+        // Complex WYSIWYG (exotic HTML within code tag carries through)
+        $from = '[semihtml][code]<composr-test>Food &amp; Drink</composr-test><br /><composr-test>On the house</composr-test>[/code][/semihtml]';
         $to = '<div class="comcode_code_wrap"><div class="comcode_code"><h4>Code</h4><div class="webstandards_checker_off"><code class="comcode_code_inner"><composr-test>Food &amp; Drink</composr-test><br /><composr-test>On the house</composr-test></code></div></div></div>';
         $forced_html_to_comcode = false;
         $do_for_admin_too = true;
-        $cases[] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+        $cases[6] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
 
-        // 7
-        $from = '[semihtml][code]Food &amp; Drink<script>window.alert("!");</script>[/code][/semihtml]'; // Security: It's essential that unsafe code is stripped, as it would be easy to accidentally let it leak through within code tag parsing (we read it in verbatim where we normally apply the security and have to filter it later, depending on the output transformations required by the particular code type)
+        // Security: It's essential that unsafe code is stripped, as it would be easy to accidentally let it leak through within code tag parsing (we read it in verbatim where we normally apply the security and have to filter it later, depending on the output transformations required by the particular code type)
+        $from = '[semihtml][code]Food &amp; Drink<script>window.alert("!");</script>[/code][/semihtml]';
         $to = '<div class="comcode_code_wrap"><div class="comcode_code"><h4>Code</h4><div class="webstandards_checker_off"><code class="comcode_code_inner">Food &amp; Drinkwindow.alert(&quot;!&quot;);</code></div></div></div>';
         $forced_html_to_comcode = false;
         $do_for_admin_too = false;
-        $cases[] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+        $cases[7] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
 
-        // 8
-        $from = "[code] x  y\nz[/code]"; // White-space preservation for non-WYSIWYG
+        // White-space preservation for non-WYSIWYG
+        $from = "[code] x  y\nz[/code]";
         $to = '<div class="comcode_code_wrap"><div class="comcode_code"><h4>Code</h4><div class="webstandards_checker_off"><code class="comcode_code_inner">&nbsp;x &nbsp;y<br />z</code></div></div></div>';
         $forced_html_to_comcode = false;
         $do_for_admin_too = true;
-        $cases[] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+        $cases[8] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
 
-        // 9
-        $from = "[semihtml][code]&nbsp;x &nbsp;y<br />z[/code][/semihtml]"; // White-space preservation for WYSIWYG
+        // White-space preservation for WYSIWYG
+        $from = "[semihtml][code]&nbsp;x &nbsp;y<br />z[/code][/semihtml]";
         $to = '<div class="comcode_code_wrap"><div class="comcode_code"><h4>Code</h4><div class="webstandards_checker_off"><code class="comcode_code_inner">&nbsp;x &nbsp;y<br />z</code></div></div></div>';
         $forced_html_to_comcode = false;
         $do_for_admin_too = true;
-        $cases[] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+        $cases[9] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
 
-        // 10
-        $from = "[semihtml]<code>&nbsp;x &nbsp;y<br />z</code>[/semihtml]"; // HTML Code tags for WYSIWYG, without forcing to Comcode
+        // HTML Code tags for WYSIWYG, without forcing to Comcode
+        $from = "[semihtml]<code>&nbsp;x &nbsp;y<br />z</code>[/semihtml]";
         $to = '<code>&nbsp;x &nbsp;y<br />z</code>';
         $forced_html_to_comcode = false;
         $do_for_admin_too = true;
-        $cases[] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+        $cases[10] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
 
-        // 11
-        $from = "[semihtml]<code>&nbsp;x &nbsp;y<br />z</code>[/semihtml]"; // HTML Code tags for WYSIWYG, with forcing to Comcode
+        // HTML Code tags for WYSIWYG, with forcing to Comcode
+        $from = "[semihtml]<code>&nbsp;x &nbsp;y<br />z</code>[/semihtml]";
         $to = '<div class="comcode_code_wrap"><div class="comcode_code"><h4>Code</h4><div class="webstandards_checker_off"><code class="comcode_code_inner">&nbsp;x &nbsp;y<br />z</code></div></div></div>';
         $forced_html_to_comcode = true;
         $do_for_admin_too = true;
-        $cases[] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+        $cases[11] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
 
-        // 12
+        // Nested tags for non-WYSIWYG
+        $from = '[code][html]a[/html][semihtml]b[/semihtml][code]c[/code][codebox]d[/codebox][/code]';
+        $to = '<div class="comcode_code_wrap"><div class="comcode_code"><h4>Code</h4><div class="webstandards_checker_off"><code class="comcode_code_inner">[html]a[/html][semihtml]b[/semihtml][code]c[/code][codebox]d[/codebox]</code></div></div></div>';
+        $forced_html_to_comcode = false;
+        $do_for_admin_too = true;
+        $cases[12] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+
+        // Nested tags for WYSIWYG
+        $from = '[semihtml][code][html]a[/html][semihtml]b[/semihtml][code]c[/code][codebox]d[/codebox][/code][/semihtml]';
+        $to = '<div class="comcode_code_wrap"><div class="comcode_code"><h4>Code</h4><div class="webstandards_checker_off"><code class="comcode_code_inner">&#091;html]a&#091;/html]&#091;semihtml]b&#091;/semihtml]&#091;code]c&#091;/code]&#091;codebox]d&#091;/codebox]</code></div></div></div>';
+        $forced_html_to_comcode = false;
+        $do_for_admin_too = true;
+        $cases[13] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+
         if (file_exists(get_file_base() . '/sources_custom/geshi/')) {
-            $from = '[code="PHP"]echo "food & drink";[/code]'; // Vanilla non-WYSIWYG via GeSHI
+            // Vanilla non-WYSIWYG via GeSHI
+            $from = '[code="PHP"]echo "food & drink";[/code]';
             $to = '<div class="comcode_code_wrap"><div class="comcode_code"><h4>Code (<kbd>PHP</kbd>)</h4><div class="webstandards_checker_off"><div class="comcode_code_inner"><div class="php" style="font-family:monospace;"><span style="color: #b1b100;">echo</span><span style="color: #0000ff;">&quot;food &amp; drink&quot;</span><span style="color: #339933;">;</span></div></div></div></div></div>';
             $forced_html_to_comcode = false;
             $do_for_admin_too = true;
-            $cases[] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
+            $cases[14] = array($from, $to, $forced_html_to_comcode, $do_for_admin_too);
         }
 
         $only = get_param_integer('only', null);

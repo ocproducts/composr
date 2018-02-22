@@ -487,7 +487,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     }
 
     $decoded = html_entity_decode($semihtml, ENT_QUOTES, get_charset());
-    if (strpos($semihtml, '<') === false && strpos($semihtml, '[') === false && strpos($semihtml, '{') === false && strpos($decoded, '&') === false) {
+    if ((strpos($decoded, '<') === false) && (strpos($decoded, '[') === false) && (strpos($decoded, '{') === false) && (strpos($decoded, '&') === false)) {
         return $decoded;
     }
 
@@ -1072,7 +1072,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     }
 
     // Then, if there is no HTML left, we can avoid the 'semihtml' tag
-    if ((strpos($semihtml2, '<') === false) && (strpos($semihtml2, '&nbsp;') === false)) {
+    if ((strpos($semihtml2, '<') === false) && (strpos($semihtml2, '&nbsp;') === false) && (strpos($semihtml2, '&#091;') === false)) {
         //$semihtml2 = str_replace(array('&lt;', '&gt;', '&amp;'), array('___lt___', '___gt___', '___amp___'), $semihtml2);
         $semihtml2 = @html_entity_decode($semihtml2, ENT_QUOTES, get_charset());
         //$semihtml2 = str_replace(array('___lt___', '___gt___', '___amp___'), array('&lt;', '&gt;', '&amp;'), $semihtml2);

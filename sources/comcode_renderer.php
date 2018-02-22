@@ -720,14 +720,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             if ($temp_tpl->is_empty()) {
                 if (($in_semihtml) || ($is_all_semihtml)) { // HACKHACK. Yuck. We've allowed unfiltered HTML through (as code tags have no internal filtering and the whole thing is HTML so no escaping was done): we need to pass it through proper HTML security.
                     require_code('comcode_from_html');
-                    $back_to_comcode = semihtml_to_comcode($embed->evaluate(), true); // Undo what's happened already
-                    if (strpos($back_to_comcode, '[semihtml') !== false) {
-                        $back_to_comcode = preg_replace('#^\[(semi)?html\]#', '', $back_to_comcode);
-                        $back_to_comcode = preg_replace('#\[/(semi)?html\]$#', '', $back_to_comcode);
-                        $_is_all_semihtml = true;
-                    } else {
-                        $_is_all_semihtml = false;
-                    }
+                    $_embed = $embed->evaluate();
+                    $back_to_comcode = html_to_comcode($_embed);
+                    $_is_all_semihtml = false;
                     $embed = __comcode_to_tempcode($back_to_comcode, $source_member, $as_admin, 80, $pass_id, $connection, false, false, $_is_all_semihtml, false, false, null, null, false); // Re-parse (with full security)
                 }
 
