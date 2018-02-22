@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48">
+<defs>
+</defs>
+<rect opacity="0" fill="#FFFFFF" width="48" height="48"/>
+<path fill="#0696B8" d="M18.684,39.856c-1.278,0-1.072-0.487-1.505-1.7L13.41,25.757L42.4,8.548L18.684,39.856z"/>
+<path fill="#027593" d="M18.684,39.856c0.997,0,1.43-0.443,1.971-0.996l5.274-5.122l-6.573-3.975L18.684,39.856z"/>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="-279.5864" y1="274.2217" x2="-279.5612" y2="274.1736" gradientTransform="matrix(326.2318 0 0 -273.624 91238.7031 75056.3516)">
+	<stop  offset="0" style="stop-color:#EFF8FD"/>
+	<stop  offset="1" style="stop-color:#FFFFFF"/>
+</linearGradient>
+<path fill="url(#SVGID_1_)" d="M19.356,29.764l15.93,11.771c1.819,1.008,3.141,0.487,3.584-1.689l6.488-30.562
+	c0.648-2.664-1.02-3.877-2.762-3.086L4.508,20.883c-2.599,1.051-2.588,2.491-0.477,3.141l9.779,3.043l22.634-14.273
+	c1.072-0.65,2.037-0.303,1.235,0.412L19.356,29.764z"/>
+<path fill="#2AAAE2" d="M42.597,6.209L4.508,20.894c-2.599,1.04-2.588,2.48-0.477,3.129l9.779,3.043l22.634-14.273
+	c1.072-0.65,2.037-0.303,1.235,0.412L19.356,29.773l15.93,11.773c1.819,1.007,3.141,0.486,3.584-1.69l6.488-30.561
+	C46.007,6.631,44.339,5.418,42.597,6.209z"/>
+</svg>
