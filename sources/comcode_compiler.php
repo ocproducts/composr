@@ -439,6 +439,12 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
         '<span style="font-family:\s*[\w\-\s,]+;?">',
         '<span style="font-size:\s*[\d\.]+(em|px|pt)?;?">',
         '</span>',
+        '<code>',
+        '</code>',
+
+        // Used for testing the Comcode parser
+        '<composr-test>',
+        '</composr-test>',
     );
 
     $link_terminator_strs = array(' ', "\n", ']', '[', ')', '"', '>', '<', '}', '{', ".\n", ', ', '. ', "'", '&nbsp;');
@@ -1669,6 +1675,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 }
                             }
 
+                            // Output next character but with a lot of special HTML entity consideration
                             if (!$differented) {
                                 if (($stupidity_mode != '') && ($textual_area)) {
                                     if (($stupidity_mode === 'leet') && (mt_rand(0, 1) === 1)) {
@@ -1686,9 +1693,11 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                                         if (($entity) && (!$in_code_tag)) {
                                             if (($matches[1] === '') && (($in_semihtml) || (isset($ALLOWED_COMCODE_ENTITIES[$matches[2]])))) {
+                                                // Explicitly white-listed
                                                 $pos += strlen($matches[2]) + 1;
                                                 $continuation .= '&' . $matches[2] . ';';
                                             } elseif ((is_numeric($matches[2])) && ($matches[1] === '#')) {
+                                                // Implicitly white-listed
                                                 $matched_entity = intval(base_convert($matches[2], 16, 10));
                                                 if (($matched_entity < 127) && (array_key_exists(chr($matched_entity), $POTENTIAL_JS_NAUGHTY_ARRAY))) {
                                                     $continuation .= '&amp;';
@@ -1697,15 +1706,19 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                     $continuation .= '&#' . $matches[2] . ';';
                                                 }
                                             } else {
+                                                // Security
                                                 $continuation .= '&amp;';
                                             }
                                         } else {
-                                            $continuation .= '&amp;';
+                                            // Security
+                                            $continuation .= ($in_code_tag && $in_semihtml/*Will be filtered later so don't apply security now*/) ? $next : '&amp;';
                                         }
                                     } else {
-                                        $continuation .= isset($html_escape_1_strrep_inv[$next]) ? escape_html($next) : $next;
+                                        // Escaping only for character preservation
+                                        $continuation .= (isset($html_escape_1_strrep_inv[$next]) && !($in_code_tag && $in_semihtml)) ? escape_html($next) : $next;
                                     }
                                 } else {
+                                    // Simple flow through
                                     $continuation .= $next;
                                 }
                             }
