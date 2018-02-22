@@ -208,11 +208,24 @@ You may also wish to create a non-public forum called 'Website support tickets' 
 
 Server variables may be set in the MySQL config -- either the main config file (e.g. [tt]/etc/my.cnf[/tt]), or included files (e.g. from [tt]/etc/my.cnf.d[/tt]) -- or in the startup parameters -- or via setting the server variable at run-time. If they are not set anywhere then MySQL will use hard-coded defaults.
 
-To find if it is set in startup parameters (Linux and MacOS) run:
+To find which config file(s) MySQL uses, run this command (Linux and MacOS):
+[code="Bash"]
+mysql --help | grep "Default options" -A 1
+[/code]
+
+In the config file it will look something like this (example for setting [tt]max_allowed_packet[/tt], which is probably what you want):
+[code="Bash"]
+[mysqld]
+...
+max_allowed_packet = 16M
+...
+[/code]
+
+To find if a setting is set in startup parameters (Linux and MacOS) run:
 [code="Bash"]
 ps -Af | grep mysqld
 [/code]
-This may be set in an init file such as [tt]/etc/init.d/mysqld[/tt], but it variables considerably by Linux distribution.
+If it is, you'll see it in the command. This may be set in an init file such as [tt]/etc/init.d/mysqld[/tt], but it varies considerably by Linux distribution.
 
 If you are changing a config file, or a startup parameter, you naturally need to reset MySQL for it to take effect, e.g. with:
 [code="Bash"]
@@ -224,7 +237,7 @@ service mysqld restart
 [/code]
 Again it varies a lot by distribution. On Windows you'd use the Services application to restart the service.
 
-When a MySQL session is started, certain server variables are cloned into the session (e.g. [tt]max_allowed_packet[/tt]). These variables may then be read and written as either server or session variables (actually [tt]max_allowed_packet[/tt] is read-only as a session variable -- an exception described further below). If you set a global variable then the current session is not affected, but new sessions will be. Sessions are thrown out when connections are closed.
+When a MySQL session is started, certain server variables are cloned into the session (e.g. [tt]max_allowed_packet[/tt]). These variables may then be read and written as either server or session variables (actually [tt]max_allowed_packet[/tt] is read-only as a session variable -- an exception described further below). If you set a global variable then the current session is not affected, but new sessions will be. Sessions are thrown out when connections are closed, e.g. when a Composr page is fully served.
 
 To find the values of a variable you can use these MySQL queries (example for [tt]max_allowed_packet[/tt]):
 [code="MySQL"]
@@ -236,7 +249,7 @@ There are lots of equivalent terms and syntaxes in MySQL which can make it confu
  - Types of variable:
   - "Server" = "Global"
   - "Session" = "Local" = "Connection"
- - Setting variables:
+ - Commands for setting variables:
   - Server variables, all equivalent:
    - [tt]SET @@global.whatever=something[/tt]
    - [tt]SET GLOBAL whatever=something[/tt]
@@ -251,7 +264,7 @@ There are lots of equivalent terms and syntaxes in MySQL which can make it confu
   - [tt]SHOW VARIABLES[/tt] = [tt]SHOW LOCAL VARIABLES[/tt] = [tt]SHOW SESSION VARIABLES[/tt]
   - ([tt]SHOW GLOBAL VARIABLES[/tt] has no equivalencies [[tt]SHOW SERVER VARIABLES[/tt] doesn't exist -- which is inconsistent])
 
-The rest of this section will deal with [tt]max_allowed_packet[/tt], which is the only variable that a server administrator usually needs to set.
+The rest of this section will deal with the specifics of the [tt]max_allowed_packet[/tt] setting, which is the only variable that a server administrator usually needs to set.
 
 [tt]max_allowed_packet[/tt] exists as separate server-side and client-side settings; this is totally different from the concept of server and session variables (which are both server-side) and should not be confused.
 
@@ -270,7 +283,7 @@ The absolute maximum [tt]max_allowed_packet[/tt] setting (both server-side and c
 
 Most websites prefer to have a short and memorable Internet address, direct to their front page. In order to achieve this, you will need to pay for control of a domain name. A very large number of companies will provide these domains, and the facility to bind these names to your web-server, for a very low fee.
 
-It is important to note that domain names are licenced on a temporary basis, and therefore you will need to renew your domain names. The length of the licence varies, but is typically between 1 and 5 years.
+It is important to note that domain names are licensed on a temporary basis, and therefore you will need to renew your domain names. The length of the licence varies, but is typically between 1 and 5 years.
 
 [title="2"]Ongoing maintenance responsibilities[/title]
 
