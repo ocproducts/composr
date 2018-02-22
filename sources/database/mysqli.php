@@ -114,7 +114,6 @@ class Database_Static_mysqli extends Database_super_mysql
         }
         @mysqli_query($db, 'SET wait_timeout=28800');
         @mysqli_query($db, 'SET sql_big_selects=1');
-        @mysqli_query($db, 'SET max_allowed_packet=104857600');
         if ((get_forum_type() == 'cns') && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
             @mysqli_query($db, 'SET sql_mode=\'STRICT_ALL_TABLES\'');
         } else {

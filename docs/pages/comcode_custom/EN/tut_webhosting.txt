@@ -72,7 +72,10 @@ The remainder of this section details Composr's requirements. If you have troubl
   - no other explicit disabling of standard functionality that we require. Commonly webhosts do this using ModSecurity, Suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
   - memory limit of at least 32MB (bare minimum -- you may see errors if caches are disabled, while caches fill, if you are doing imports, if you are doing Admin Zone searches, or if you are a programmer with dev mode on).
  - At least 50MB of disk space, plus your needs for space for downloads, images, etc. No maximum file size limit under 25MB or file type whitelists (some free webhosts will impose these limits -- which explains why [tt]data.cms[/tt] might disappear when you try to upload it)
- - A web server that runs MySQL (*), version 5.5.3 (&dagger;) or higher. MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data. Often webhosts will quote a number of databases that webhosting comes with: Composr only requires a single MySQL database to function. At least 5MB of database storage space is required, which should be available on any reputable webhost
+ - A web server that runs MySQL (*), version 5.5.3 (&dagger;) or higher:
+   - MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data.
+   - Often webhosts will quote a number of databases that webhosting comes with: Composr only requires a single MySQL database to function. At least 5MB of database storage space is required, which should be available on any reputable webhost.
+   - The [tt]max_allowed_packet[/tt] server system setting must be at least [tt]16M[/tt].
  - A web server running Apache (the common Linux web server) or IIS7+ (the Microsoft web server). It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported (for example nginx should work, but you would need significant expertise to get the URL schemes functionality working)
   - If running Windows, you should use an NTFS partition not a FAT32 partition, as FAT32 cannot support file locking
   - If running Apache using a [tt]mod_php[/tt] (as opposed to a CGI version of PHP), the server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security)
@@ -200,6 +203,68 @@ This is in the "Support Tickets" and "User interaction" groups of the "Feature O
 If you have installed forums, you will likely wish to create a comments forum. To do this, create a non-public forum called 'Website comment topics'. This forum will be used to store topics relating to comments for content in your portal.
 
 You may also wish to create a non-public forum called 'Website support tickets' if you wish to enable the support ticket feature.
+
+[title="2"]Configuring MySQL (advanced)[/title]
+
+Server variables may be set in the MySQL config -- either the main config file (e.g. [tt]/etc/my.cnf[/tt]), or included files (e.g. from [tt]/etc/my.cnf.d[/tt]) -- or in the startup parameters -- or via setting the server variable at run-time. If they are not set anywhere then MySQL will use hard-coded defaults.
+
+To find if it is set in startup parameters (Linux and MacOS) run:
+[code="Bash"]
+ps -Af | grep mysqld
+[/code]
+This may be set in an init file such as [tt]/etc/init.d/mysqld[/tt], but it variables considerably by Linux distribution.
+
+If you are changing a config file, or a startup parameter, you naturally need to reset MySQL for it to take effect, e.g. with:
+[code="Bash"]
+/etc/init.d/mysqld restart
+[/code]
+or:
+[code="Bash"]
+service mysqld restart
+[/code]
+Again it varies a lot by distribution. On Windows you'd use the Services application to restart the service.
+
+When a MySQL session is started, certain server variables are cloned into the session (e.g. [tt]max_allowed_packet[/tt]). These variables may then be read and written as either server or session variables (actually [tt]max_allowed_packet[/tt] is read-only as a session variable -- an exception described further below). If you set a global variable then the current session is not affected, but new sessions will be. Sessions are thrown out when connections are closed.
+
+To find the values of a variable you can use these MySQL queries (example for [tt]max_allowed_packet[/tt]):
+[code="MySQL"]
+SHOW GLOBAL VARIABLES LIKE 'max_allowed_packet';
+SHOW SESSION VARIABLES LIKE 'max_allowed_packet';
+[/code]
+
+There are lots of equivalent terms and syntaxes in MySQL which can make it confusing when trying to understand the documentation and third party solutions. Here is a guide:
+ - Types of variable:
+  - "Server" = "Global"
+  - "Session" = "Local" = "Connection"
+ - Setting variables:
+  - Server variables, all equivalent:
+   - [tt]SET @@global.whatever=something[/tt]
+   - [tt]SET GLOBAL whatever=something[/tt]
+  - Session variables, all equivalent:
+   - [tt]SET whatever=something[/tt]
+   - [tt]SET @@whatever=something[/tt]
+   - [tt]SET @@session.whatever=something[/tt]
+   - [tt]SET SESSION whatever=something[/tt]
+   - [tt]SET @@local.whatever=something[/tt]
+   - [tt]SET LOCAL whatever=something[/tt]
+ - Getting variables:
+  - [tt]SHOW VARIABLES[/tt] = [tt]SHOW LOCAL VARIABLES[/tt] = [tt]SHOW SESSION VARIABLES[/tt]
+  - ([tt]SHOW GLOBAL VARIABLES[/tt] has no equivalencies [[tt]SHOW SERVER VARIABLES[/tt] doesn't exist -- which is inconsistent])
+
+The rest of this section will deal with [tt]max_allowed_packet[/tt], which is the only variable that a server administrator usually needs to set.
+
+[tt]max_allowed_packet[/tt] exists as separate server-side and client-side settings; this is totally different from the concept of server and session variables (which are both server-side) and should not be confused.
+
+[tt]max_allowed_packet[/tt] defaults to 1MB server-side if not configured at all (i.e. this is the hard-coded default). Most web hosts will have a higher default value and Composr defines a minimum requirement of 16MB (Tempcode for dense blocks such as [tt]main_members[/tt] may use a couple of MB, but we define an even higher limit in case of producing very long Comcode pages).
+[tt]max_allowed_packet[/tt]'s session variable exists but is read-only. Attempts to change it will give an error message. You therefore must configure the server variable correctly.
+Only MySQL users with the [tt]SUPER[/tt] privilege may set the server variable. Typically only the [tt]root[/tt] user has this.
+
+[tt]max_allowed_packet[/tt] defaults to 1GB client-side (e.g. PHP), except in official client applications like [tt]mysql[/tt] (16MB) and [tt]mysqldump[/tt] (24MB) (which may be configured in the MySQL configuration, the client configuration sections).
+Therefore for the Composr application the client-side setting is irrelevant, but you may come up with it when doing MySQL dumps for example.
+
+[tt]max_allowed_packet[/tt] can be set with "M" syntax, not just with exact bytes. So you can set it to [tt]16M[/tt] or [tt]16777216[/tt], that's your choice. Once parsed MySQL will show it in bytes.
+
+The absolute maximum [tt]max_allowed_packet[/tt] setting (both server-side and client-side, as it relates to the protocol implementation) is 1GB.
 
 [title="2"]Domain names[/title]
 

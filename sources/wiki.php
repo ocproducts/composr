@@ -680,7 +680,11 @@ function wiki_breadcrumbs($chain, $current_title = null, $final_link = false, $l
             $id = intval($token);
         } else {
             $url_moniker_where = array('m_resource_page' => 'wiki', 'm_moniker' => $token);
-            $id = intval($GLOBALS['SITE_DB']->query_select_value('url_id_monikers', 'm_resource_id', $url_moniker_where));
+            $_id = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', $url_moniker_where);
+            if ($_id === null) {
+                return array();
+            }
+            $id = intval($_id);
         }
 
         $page_link = build_page_link(array('page' => 'wiki', 'type' => 'browse', 'id' => $link_id) + (($this_link_virtual_root && ($next_token === false)) ? array('keep_wiki_root' => $id) : array()), get_module_zone('wiki'));
