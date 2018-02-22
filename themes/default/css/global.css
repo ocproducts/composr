@@ -199,6 +199,9 @@ abbr {
 	text-decoration: none;
 	cursor: help;
 }
+a abbr {
+	cursor: pointer;
+}
 
 /* Give all browsers a 'q' tag with smart quotes */
 q:before {
