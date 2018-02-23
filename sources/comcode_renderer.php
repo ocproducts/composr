@@ -2309,12 +2309,18 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     $attributes[$parameter] = $default;
                 }
                 $binding[strtoupper($parameter)] = $attributes[$parameter];
-                $replace = str_replace('{' . $parameter . '}', '{' . strtoupper($parameter) . '*}', $replace);
+                if (is_string($replace)) {
+                    $replace = str_replace('{' . $parameter . '}', '{' . strtoupper($parameter) . '*}', $replace);
+                }
             }
-            $replace = str_replace('{content}', array_key_exists($tag, $GLOBALS['TEXTUAL_TAGS']) ? '{CONTENT}' : '{CONTENT*}', $replace);
-            require_code('tempcode_compiler');
-            $temp_tpl = template_to_tempcode($replace);
-            $temp_tpl = $temp_tpl->bind($binding, '(custom comcode: ' . $tag . ')');
+            if (is_string($replace)) {
+                $replace = str_replace('{content}', array_key_exists($tag, $GLOBALS['TEXTUAL_TAGS']) ? '{CONTENT}' : '{CONTENT*}', $replace);
+                require_code('tempcode_compiler');
+                $temp_tpl = template_to_tempcode($replace);
+                $temp_tpl = $temp_tpl->bind($binding, '(custom comcode: ' . $tag . ')');
+            } else {
+                $temp_tpl = call_user_func($replace, $embed, $attributes);
+            }
         }
     }
 
