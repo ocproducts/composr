@@ -451,6 +451,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/config.php',
             '_tests/tests/unit_tests/downloads.php',
             '_tests/tests/unit_tests/downloads_categories.php',
+            '_tests/tests/unit_tests/addon_hook_quality.php',
             '_tests/tests/unit_tests/shopping_order_management.php',
             '_tests/tests/unit_tests/antispam.php',
             '_tests/tests/unit_tests/_critical_error_display.php',
