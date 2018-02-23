@@ -808,6 +808,8 @@ class Hook_addon_registry_core_cns
      */
     public function tpl_preview__block_main_members()
     {
+        $out = array();
+
         foreach (array('BLOCK_MAIN_MEMBERS', 'BLOCK_MAIN_MEMBERS_COMPLEX') as $tpl) {
             $custom_fields = do_lorem_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array(
                 'NAME' => lorem_phrase(),
