@@ -50,6 +50,9 @@ function render_iotd_box($myrow, $zone = '_SEARCH', $include_manage_links = fals
 
     $submitter = $myrow['submitter'];
     $username = $GLOBALS['FORUM_DRIVER']->get_username($submitter);
+    if ($username === null) {
+        $username = do_lang('UNKNOWN');
+    }
 
     $thumb_url = ensure_thumbnail($myrow['url'], $myrow['thumb_url'], 'iotds', 'iotd', $myrow['id']);
     $image_url = url_is_local($myrow['url']) ? (get_custom_base_url() . '/' . $myrow['url']) : $myrow['url'];

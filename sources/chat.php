@@ -337,7 +337,11 @@ function chat_room_prune($room_id)
                     require_code('lang');
                     require_code('tempcode');
                     require_lang('chat');
-                    $left_room_msg = do_lang('LEFT_CHATROOM', $GLOBALS['FORUM_DRIVER']->get_username($p['member_id']));
+                    $left_username = $GLOBALS['FORUM_DRIVER']->get_username($p['member_id']);
+                    if ($left_username === null) {
+                        $left_username = do_lang('UNKNOWN');
+                    }
+                    $left_room_msg = do_lang('LEFT_CHATROOM', $left_username);
                     if ($left_room_msg != '') {
                         require_code('comcode');
                         $map = array(

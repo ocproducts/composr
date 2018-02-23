@@ -634,7 +634,11 @@ class Module_cms_banners extends Standard_crud_module
 
             // Meta details...
 
-            $csv_row[do_lang('SUBMITTER')] = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter']);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter']);
+            if ($username === null) {
+                $username = do_lang('UNKNOWN');
+            }
+            $csv_row[do_lang('SUBMITTER')] = $username;
 
             $csv_row[do_lang('ADDED')] = get_timezoned_date($row['add_date']);
             $csv_row[do_lang('EDITED')] = is_null($row['edit_date']) ? '' : date('Y-m-d', $row['edit_date']);

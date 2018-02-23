@@ -143,12 +143,15 @@ function output_ical($headers_and_exit = true)
             echo "PRIORITY:" . strval($event['e_priority']) . "\r\n";
 
             if (!is_guest($event['e_submitter'])) {
-                echo "ORGANIZER;CN=" . ical_escape($GLOBALS['FORUM_DRIVER']->get_username($event['e_submitter'], true)) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($event['e_submitter']));
-                $addr = $GLOBALS['FORUM_DRIVER']->get_member_email_address($event['e_submitter']);
-                if ($addr != '') {
-                    echo ":MAILTO:" . ical_escape($addr);
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($event['e_submitter'], true);
+                if ($username !== null) {
+                    echo "ORGANIZER;CN=" . ical_escape($username) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($event['e_submitter']));
+                    $addr = $GLOBALS['FORUM_DRIVER']->get_member_email_address($event['e_submitter']);
+                    if ($addr != '') {
+                        echo ":MAILTO:" . ical_escape($addr);
+                    }
+                    echo "\r\n";
                 }
-                echo "\r\n";
             }
             echo "CATEGORIES:" . ical_escape($categories[$event['e_type']]) . "\r\n";
             echo "CLASS:" . ($public ? 'PUBLIC' : 'PRIVATE') . "\r\n";
@@ -172,7 +175,11 @@ function output_ical($headers_and_exit = true)
                         if ($comment['title'] != '') {
                             $comment['message'] = $comment['title'] . ': ' . $comment['message'];
                         }
-                        echo "COMMENT:" . ical_escape(strip_comcode(is_object($comment['message']) ? $comment['message'] : $comment['message']) . ' - ' . $GLOBALS['FORUM_DRIVER']->get_username($comment['member'], true) . ' (' . get_timezoned_date($comment['date']) . ')') . "\r\n";
+                        $username = $GLOBALS['FORUM_DRIVER']->get_username($comment['member'], true);
+                        if ($username === null) {
+                            $username = do_lang('UNKNOWN');
+                        }
+                        echo "COMMENT:" . ical_escape(strip_comcode(is_object($comment['message']) ? $comment['message'] : $comment['message']) . ' - ' . $username . ' (' . get_timezoned_date($comment['date']) . ')') . "\r\n";
                     }
                 } else {
                     break;
@@ -292,7 +299,10 @@ function output_ical($headers_and_exit = true)
             foreach ($attendees as $attendee) {
                 if ($attendee['n_member_id'] != get_member()) {
                     if (!is_guest($event['n_member_id'])) {
-                        echo "ATTENDEE;CN=" . ical_escape($GLOBALS['FORUM_DRIVER']->get_username($attendee['n_member_id'], true)) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($attendee['n_member_id']));
+                        $username = $GLOBALS['FORUM_DRIVER']->get_username($attendee['n_member_id'], true);
+                        if ($username !== null) {
+                            echo "ATTENDEE;CN=" . ical_escape($username) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($attendee['n_member_id']));
+                        }
                     }
                     $addr = $GLOBALS['FORUM_DRIVER']->get_member_email_address($attendee['n_member_id']);
                     if ($addr != '') {

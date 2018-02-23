@@ -937,7 +937,12 @@ class Module_cms_booking_bookings extends Standard_crud_module
             $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['start_month'], $row['start_day'], $row['start_year']), false, true, true);
             $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['end_month'], $row['end_day'], $row['end_year']), false, true, false, true);
             if (get_option('member_booking_only') == '1') {
-                $fr[] = $GLOBALS['FORUM_DRIVER']->get_username($row['_rows'][0]['member_id'], true);
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($row['_rows'][0]['member_id'], true);
+                if ($username === null) {
+                    $fr[] = $row['_rows'][0]['customer_name'];
+                } else {
+                    $fr[] = $username;
+                }
             } else {
                 $fr[] = $row['_rows'][0]['customer_name'];
             }

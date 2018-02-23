@@ -171,10 +171,13 @@ function get_chatroom_fields($id = null, $is_made_by_me = false, $room_name = ''
                         $group_members = cns_get_group_members_raw($key);
                         $group_member_usernames = '';
                         foreach ($group_members as $group_member) {
-                            if ($group_member_usernames != '') {
-                                $group_member_usernames = do_lang('LIST_SEP');
+                            $username = $GLOBALS['FORUM_DRIVER']->get_username($group_member);
+                            if ($username !== null) {
+                                if ($group_member_usernames != '') {
+                                    $group_member_usernames = do_lang('LIST_SEP');
+                                }
+                                $group_member_usernames .= $username;
                             }
-                            $group_member_usernames .= $GLOBALS['FORUM_DRIVER']->get_username($group_member);
                         }
                         $val = do_lang('GROUP_MEMBERS_SPECIFIC', $val, $group_member_usernames);
                     } else {
@@ -201,10 +204,13 @@ function get_chatroom_fields($id = null, $is_made_by_me = false, $room_name = ''
                         $group_members = cns_get_group_members_raw($key);
                         $group_member_usernames = '';
                         foreach ($group_members as $group_member) {
-                            if ($group_member_usernames != '') {
-                                $group_member_usernames = do_lang('LIST_SEP');
+                            $username = $GLOBALS['FORUM_DRIVER']->get_username($group_member);
+                            if ($username !== null) {
+                                if ($group_member_usernames != '') {
+                                    $group_member_usernames = do_lang('LIST_SEP');
+                                }
+                                $group_member_usernames .= $username;
                             }
-                            $group_member_usernames .= $GLOBALS['FORUM_DRIVER']->get_username($group_member);
                         }
                         $val = do_lang('GROUP_MEMBERS_SPECIFIC', $val, $group_member_usernames);
                     } else {

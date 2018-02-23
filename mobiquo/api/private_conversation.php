@@ -123,6 +123,9 @@ function get_conversations_func($raw_params)
                 'is_online' => mobiquo_val($participant['is_online'], 'boolean'),
             );
             $display_text = $GLOBALS['FORUM_DRIVER']->get_username($participant['user_id'], true);
+            if ($display_text === null) {
+                $display_text = do_lang('UNKNOWN');
+            }
             if ($display_text != $participant['username']) {
                 $arr += array(
                     'display_text' => mobiquo_val($display_text, 'base64'),
@@ -193,6 +196,9 @@ function get_conversation_func($raw_params)
             'is_online' => mobiquo_val($participant['is_online'], 'boolean'),
         );
         $display_text = $GLOBALS['FORUM_DRIVER']->get_username($participant['user_id'], true);
+        if ($display_text === null) {
+            $display_text = do_lang('UNKNOWN');
+        }
         if ($display_text != $participant['username']) {
             $arr += array(
                 'display_text' => mobiquo_val($display_text, 'base64'),

@@ -100,6 +100,9 @@ function get_quiz_data_for_csv($quiz_id)
     foreach ($member_answers as $member_bits => $_member_answers) {
         list($member, , $result) = explode('_', $member_bits, 3);
         $username = $GLOBALS['FORUM_DRIVER']->get_username(intval($member));
+        if ($username === null) {
+            $username = do_lang('UNKNOWN');
+        }
         $member_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address(intval($member));
 
         $member_answers_csv = array();

@@ -142,8 +142,13 @@ class Module_admin_group_member_timeouts
                 continue;
             }
 
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
+            if ($username === null) {
+                $username = do_lang('UNKNOWN');
+            }
+
             $timeouts[] = array(
-                'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']),
+                'USERNAME' => $username,
                 'MEMBER_ID' => strval($row['member_id']),
                 'GROUP_ID' => strval($row['group_id']),
                 'DATE_INPUT' => form_input_date(do_lang_tempcode('DATE'), new Tempcode(), 'gmt_time_' . strval($i), true, false, true, $row['timeout'], 10, null, null),

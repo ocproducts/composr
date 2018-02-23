@@ -208,6 +208,9 @@ function get_follower_func($raw_params)
             'is_online' => mobiquo_val($f['is_online'], 'boolean'),
         );
         $display_text = $GLOBALS['FORUM_DRIVER']->get_username($f['user_id'], true);
+        if ($display_text === null) {
+            $display_text = do_lang('UNKNOWN');
+        }
         if ($display_text != $f['username']) {
             $arr += array(
                 'display_text' => mobiquo_val($display_text, 'base64'),
@@ -267,6 +270,9 @@ function get_alert_func($raw_params)
             'unread' => mobiquo_val($item['unread'], 'boolean'),
         );
         $display_text = $GLOBALS['FORUM_DRIVER']->get_username($item['user_id'], true);
+        if ($display_text === null) {
+            $display_text = do_lang('UNKNOWN');
+        }
         if ($display_text != $item['username']) {
             $arr += array(
                 'display_text' => mobiquo_val($display_text, 'base64'),
@@ -321,6 +327,9 @@ function get_activity_func($raw_params)
             'content_id' => mobiquo_val($item['content_id'], 'string'),
         );
         $display_text = $GLOBALS['FORUM_DRIVER']->get_username($item['user_id'], true);
+        if ($display_text === null) {
+            $display_text = do_lang('UNKNOWN');
+        }
         if ($display_text != $item['username']) {
             $arr += array(
                 'display_text' => mobiquo_val($display_text, 'base64'),

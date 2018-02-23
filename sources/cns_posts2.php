@@ -85,7 +85,11 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
             $group_name = cns_get_group_name($group);
             $rank_image_pri_only = cns_get_group_property($group, 'rank_image_pri_only');
             if (($rank_image != '') && (($rank_image_pri_only == 0) || ($group == $primary_group))) {
-                $rank_images->attach(do_template('CNS_RANK_IMAGE', array('_GUID' => 'ad383e495f77445ddb4d9107a9ebf269', 'GROUP_NAME' => $group_name, 'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($row['p_poster']), 'IMG' => $rank_image, 'IS_LEADER' => $group_leader == $row['p_poster'])));
+                $rank_username = $GLOBALS['FORUM_DRIVER']->get_username($row['p_poster']);
+                if ($rank_username === null) {
+                    $rank_username = do_lang('UNKNOWN');
+                }
+                $rank_images->attach(do_template('CNS_RANK_IMAGE', array('_GUID' => 'ad383e495f77445ddb4d9107a9ebf269', 'GROUP_NAME' => $group_name, 'USERNAME' => $rank_username, 'IMG' => $rank_image, 'IS_LEADER' => $group_leader == $row['p_poster'])));
             }
         }
 
@@ -101,13 +105,18 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
             if ((!is_guest($row['p_poster'])) && (!is_null($primary_group))) {
                 require_code('users2');
                 if ((!is_guest($row['p_poster'])) && (!is_null($primary_group))) {
+                    $poster_username = $GLOBALS['FORUM_DRIVER']->get_username($row['p_poster']);
+                    if ($poster_username === null) {
+                        $poster_username = do_lang('UNKNOWN');
+                    }
+
                     $poster = do_template('CNS_POSTER_MEMBER', array(
                         '_GUID' => ($guid != '') ? $guid : 'ab1724a9d97f93e097cf49b50eeafa66',
                         'ONLINE' => member_is_online($row['p_poster']),
                         'ID' => strval($row['p_poster']),
                         'POSTER_DETAILS' => $poster_details,
                         'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($row['p_poster'], false, true),
-                        'POSTER_USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($row['p_poster']),
+                        'POSTER_USERNAME' => $poster_username,
                         'HIGHLIGHT_NAME' => null,
                     ));
                 } else {
@@ -125,12 +134,16 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
 
     // Last edited
     if (!is_null($row['p_last_edit_time'])) {
+        $last_edit_username = $GLOBALS['FORUM_DRIVER']->get_username($row['p_last_edit_by']);
+        if ($last_edit_username === null) {
+            $last_edit_username = do_lang('UNKNOWN');
+        }
         $last_edited = do_template('CNS_TOPIC_POST_LAST_EDITED', array(
             '_GUID' => ($guid != '') ? $guid : 'cb1724a9d97f93e097cf49b50eeafa66',
             'LAST_EDIT_DATE_RAW' => is_null($row['p_last_edit_time']) ? '' : strval($row['p_last_edit_time']),
             'LAST_EDIT_DATE' => get_timezoned_date_tempcode($row['p_last_edit_time']),
             'LAST_EDIT_PROFILE_URL' => is_null($row['p_last_edit_by']) ? '' : $GLOBALS['FORUM_DRIVER']->member_profile_url($row['p_last_edit_by'], false, true),
-            'LAST_EDIT_USERNAME' => is_null($row['p_last_edit_by']) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($row['p_last_edit_by']),
+            'LAST_EDIT_USERNAME' => is_null($row['p_last_edit_by']) ? '' : $last_edit_username,
         ));
     } else {
         $last_edited = new Tempcode();

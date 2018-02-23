@@ -397,7 +397,11 @@ class Module_topicview
                             $group_name = cns_get_group_name($group);
                             $rank_image_pri_only = cns_get_group_property($group, 'rank_image_pri_only');
                             if (($rank_image != '') && (($rank_image_pri_only == 0) || ($group == $GLOBALS['FORUM_DRIVER']->get_member_row_field($_postdetails['poster'], 'm_primary_group')))) {
-                                $rank_images->attach(do_template('CNS_RANK_IMAGE', array('_GUID' => '0ff7855482b901be95591964d4212c44', 'GROUP_NAME' => $group_name, 'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($_postdetails['poster']), 'IMG' => $rank_image, 'IS_LEADER' => $group_leader == $_postdetails['poster'])));
+                                $rank_username = $GLOBALS['FORUM_DRIVER']->get_username($_postdetails['poster']);
+                                if ($rank_username === null) {
+                                    $rank_username = do_lang('UNKNOWN');
+                                }
+                                $rank_images->attach(do_template('CNS_RANK_IMAGE', array('_GUID' => '0ff7855482b901be95591964d4212c44', 'GROUP_NAME' => $group_name, 'USERNAME' => $rank_username, 'IMG' => $rank_image, 'IS_LEADER' => $group_leader == $_postdetails['poster'])));
                             }
                         }
                     }

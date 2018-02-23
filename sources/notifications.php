@@ -553,16 +553,19 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
 {
     // Fish out some general details of the sender
     $to_name = $GLOBALS['FORUM_DRIVER']->get_username($to_member_id, true);
+    if ($to_name === null) {
+        return $no_cc;
+    }
     $from_email = '';
     $from_name = '';
     $from_member_id_shown = db_get_first_id();
     if ((!is_null($from_member_id)) && ($from_member_id >= 0)) {
         if ($use_real_from) {
             $from_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($from_member_id);
-            if ($from_email == '') {
-                $from_email = '';
-            }
             $from_name = $GLOBALS['FORUM_DRIVER']->get_username($from_member_id, true);
+            if ($from_name === null) {
+                $from_name = '';
+            }
             $from_member_id_shown = $from_member_id;
         }
     } else {

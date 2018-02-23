@@ -80,8 +80,12 @@ function calculate_latest_leader_board($retrieve = true)
     $i = 0;
     $time = time();
     foreach ($points as $id => $num_points) {
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($id);
+        if ($username === null) {
+            continue;
+        }
+
         if ($i == 0) {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($id);
             set_value('site_bestmember', $username);
         }
 

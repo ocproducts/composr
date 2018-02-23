@@ -350,7 +350,10 @@ function attachment_popup_script()
     if (has_privilege(get_member(), 'reuse_others_attachments')) {
         $_members = $connection->query_select('attachments', array('DISTINCT a_member_id'));
         foreach ($_members as $_member) {
-            $members[$_member['a_member_id']] = $GLOBALS['FORUM_DRIVER']->get_username($_member['a_member_id']);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($_member['a_member_id']);
+            if ($username !== null) {
+                $members[$_member['a_member_id']] = $username;
+            }
         }
     }
     asort($members);

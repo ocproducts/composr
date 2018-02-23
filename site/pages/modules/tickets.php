@@ -471,6 +471,11 @@ class Module_tickets
             $ticket_id = $_temp[1];
 
             check_ticket_access($id);
+
+            $test_username = $GLOBALS['FORUM_DRIVER']->get_username($ticket_owner);
+            if ($test_username === null) {
+                $ticket_owner = get_member();
+            }
         } else { // New ticket, generate an ID
             if (has_privilege(get_member(), 'support_operator')) {
                 $ticket_owner = get_param_integer('post_as', get_member());
@@ -993,7 +998,10 @@ class Module_tickets
         $access = array();
         $_access = $GLOBALS['SITE_DB']->query_select('ticket_extra_access', array('member_id'), array('ticket_id' => $id));
         foreach ($_access as $a) {
-            $access[] = $GLOBALS['FORUM_DRIVER']->get_username($a['member_id']);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($a['member_id']);
+            if ($username !== null) {
+                $access[] = $username;
+            }
         }
         $fields->attach(form_input_username_multi(do_lang_tempcode('USERNAME'), '', 'access', $access, 0, true));
 

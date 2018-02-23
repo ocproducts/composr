@@ -2168,6 +2168,9 @@ class Module_topics
         $name = $poster;
         if (!is_guest($post_info[0]['p_poster'])) {
             $name = $GLOBALS['FORUM_DRIVER']->get_username($post_info[0]['p_poster'], true);
+            if ($name === null) {
+                $name = $poster;
+            }
         }
 
         $_postdetails = post_param_string('post', null);

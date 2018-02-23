@@ -462,6 +462,9 @@ class Module_admin_orders
         // Order actions
         $ordered_by_member_id = $data['c_member'];
         $ordered_by_username = $GLOBALS['FORUM_DRIVER']->get_username($data['c_member']);
+        if ($ordered_by_username === null) {
+            $ordered_by_username = do_lang('UNKNOWN');
+        }
         $self_url = get_self_url(true, true);
         $order_actualise_url = build_url(array('page' => '_SELF', 'type' => 'order_act', 'id' => $id, 'redirect' => $self_url), '_SELF');
         $order_actions = do_template('ECOM_ADMIN_ORDER_ACTIONS', array(
@@ -570,6 +573,9 @@ class Module_admin_orders
             $order_det = $res[0];
 
             $member_name = $GLOBALS['FORUM_DRIVER']->get_username($order_det['c_member']);
+            if ($member_name === null) {
+                $member_name = do_lang('UNKNOWN');
+            }
 
             $message = do_lang('ORDER_DISPATCHED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($member_name), array(strval($id)), get_lang($order_det['c_member']));
 
@@ -778,7 +784,11 @@ class Module_admin_orders
             $orders[do_lang('ORDER_TAX_OPT_OUT')] = ($order['tax_opted_out']) ? do_lang('YES') : do_lang('NO');
             $orders[do_lang('TOTAL_TAX_PAID')] = is_null($order['tax_amt']) ? float_format(0.0, 2) : float_format($order['tax_amt'], 2);
             $orders[do_lang('ORDERED_PRODUCTS')] = get_ordered_product_list_string($order['id']);
-            $orders[do_lang('ORDERED_BY')] = $GLOBALS['FORUM_DRIVER']->get_username($order['c_member']);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($order['c_member']);
+            if ($username === null) {
+                $username = do_lang('UNKNOWN');
+            }
+            $orders[do_lang('ORDERED_BY')] = $username;
 
             // Put address together
             $address = array();

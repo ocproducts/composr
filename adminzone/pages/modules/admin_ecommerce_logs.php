@@ -777,6 +777,9 @@ class Module_admin_ecommerce_logs
         $products = $product_obj->get_products(true);
         $item_name = $products[$subscription[0]['s_type_code']][4];
         $username = $GLOBALS['FORUM_DRIVER']->get_username($subscription[0]['s_member_id']);
+        if ($username === null) {
+            $username = do_lang('UNKNOWN');
+        }
 
         $repost_id = post_param_integer('id', null);
         if (($repost_id !== null) && ($repost_id == $id)) {
