@@ -1070,6 +1070,16 @@ class Module_cms_comcode_pages
             }
         }
 
+        // Look for conflicting page names
+        $existing_page = __request_page($new_file, $zone);
+        if (($existing_page !== false) && (strpos($existing_page[0], 'COMCODE') === false)) {
+            if ($existing_page[0] == 'REDIRECT') {
+                attach_message(do_lang_tempcode('CONFLICTING_PAGE_NAME_REDIRECT'), 'warn');
+            } else {
+                attach_message(do_lang_tempcode('CONFLICTING_PAGE_NAME_MODULE', escape_html($existing_page[count($existing_page) - 1])), 'warn');
+            }
+        }
+
         // Messaging to user
         if ($validated == 0) {
             require_code('submit');
