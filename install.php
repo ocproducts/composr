@@ -1016,9 +1016,10 @@ function step_4()
         $options->attach(make_tick(do_lang_tempcode('USE_PERSISTENT'), example('', 'USE_PERSISTENT_TEXT'), 'use_persistent', $use_persistent ? 1 : 0));
     }*/
 
+    $title = do_lang_tempcode((($forum_type == 'cns' || $forum_type == 'none') && $use_msn == 0) ? 'DATABASE_SETTINGS' : 'COMPOSR_SETTINGS');
     if (($use_msn == 0) && ($forum_type != 'cns')) { // Merge into one set of options
         $forum_options->attach($options);
-        $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => '48a122b54d68d9893533ece7237ea5e0', 'HIDDEN' => $hidden, 'TITLE' => $forum_title, 'TEXT' => $forum_text, 'OPTIONS' => $forum_options)));
+        $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => '48a122b54d68d9893533ece7237ea5e0', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $forum_text, 'OPTIONS' => $forum_options)));
     } else {
         if (GOOGLE_APPENGINE) {
             $title = do_lang_tempcode('DEV_DATABASE_SETTINGS');
@@ -1034,7 +1035,6 @@ function step_4()
             $options->attach(make_option(do_lang_tempcode('DATABASE_PASSWORD'), new Tempcode(), 'gae_live_db_site_password', '', true));
             $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('HIDDEN' => '', 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
         } else {
-            $title = do_lang_tempcode((($forum_type == 'cns' || $forum_type == 'none') && $use_msn == 0) ? 'DATABASE_SETTINGS' : 'COMPOSR_SETTINGS');
             if (!$forum_options->is_empty()) {
                 $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => '232b69a995f384275c1cd9269a42c3b8', 'HIDDEN' => '', 'TITLE' => $forum_title, 'TEXT' => $forum_text, 'OPTIONS' => $forum_options)));
             }
