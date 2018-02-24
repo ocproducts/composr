@@ -86,6 +86,10 @@ class Commandr_fs
             }
         }
         foreach (array_keys($commandr_fs_hooks) as $hook) { // Other filesystems go directly under the root (not 'root', which is different)
+            if (($hook == 'members') && (get_forum_type() != 'cns')) {
+                continue;
+            }
+
             $this->commandr_fs[$hook] = $hook;
         }
         $this->commandr_fs['var'] = $var;

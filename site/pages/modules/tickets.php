@@ -143,6 +143,10 @@ class Module_tickets
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (get_forum_type() == 'none') {
+            return null;
+        }
+
         return array(
             'browse' => array('SUPPORT_TICKETS', 'menu/site_meta/tickets'),
         );
