@@ -268,7 +268,7 @@ abstract class HttpDownloader
     protected $auth = null; // ?array. A pair: authentication username and password (null: none)
     protected $timeout = 6.0; // float. The timeout
     protected $raw_post = false; // boolean. Whether to treat the POST parameters as a raw POST (rather than using MIME)
-    protected $files = array(); // array. Files to send. Map between field to file path
+    protected $files = array(); // array. Files to send. Map between field name to file path
     protected $extra_headers = array(); // array. Extra headers to send
     protected $http_verb = null; // ?string. HTTP verb (null: auto-decide based on other parameters)
     protected $raw_content_type = 'application/xml'; // string. The content type to use if a raw HTTP post
@@ -343,7 +343,7 @@ abstract class HttpDownloader
         if ($DOWNLOAD_LEVEL == 8) {
             $this->data = null;
             return;
-        }//critical_error('FILE_DOS', $url);
+        }
 
         // Normalise the URL...
 
@@ -493,8 +493,12 @@ abstract class HttpDownloader
                         $raw_payload2 .= '----cms' . $this->divider . "\r\n";
                         if (strpos($upload_field, '/') === false) {
                             $raw_payload2 .= 'Content-Disposition: form-data; name="' . str_replace('"', '\"', $upload_field) . '"; filename="' . urlencode(basename($file_path)) . '"' . "\r\n";
-                            $raw_payload2 .= 'Content-Type: application/octet-stream' . "\r\n\r\n";
+
+                            require_code('mime_types');
+                            require_code('files');
+                            $raw_payload2 .= 'Content-Type: ' . get_mime_type(get_file_extension($file_path), true) . "; charset=" . get_charset() . "\r\n\r\n";
                         } else {
+                            // mime-type given rather than file-name
                             $raw_payload2 .= 'Content-Type: ' . $upload_field . "\r\n\r\n";
                         }
                     } else {
@@ -962,7 +966,6 @@ class HttpDownloaderCurl extends HttpDownloader
             }
         }
         if ($this->post_params !== null) {
-            $curl_headers[] = 'Expect:';
             if ($this->put !== null) {
                 fclose($this->put);
                 $this->put = fopen($this->put_path, 'rb');
@@ -1863,6 +1866,7 @@ class HttpDownloaderFilesystem extends HttpDownloader
             }
 
             require_code('mime_types');
+            require_code('files');
             $this->download_mime_type = get_mime_type(get_file_extension($file_path), true);
             $this->download_size = filesize($file_path);
             $this->download_mtime = filemtime($file_path);
