@@ -103,9 +103,12 @@ class tasks_test_set extends cms_test_case
         $post_params = array(
             'snip' => $ical,
         );
-        $result = http_get_contents('http://severinghaus.org/projects/icv/', array('post_params' => $post_params));
-
-        $this->assertTrue(strpos($result, 'Congratulations; your calendar validated!') !== false);
+        $result = http_get_contents('http://severinghaus.org/projects/icv/', array('trigger_error' => false, 'post_params' => $post_params));
+        if ($result === null) {
+            $this->assertTrue(false, 'ical validator is down?');
+        } else {
+            $this->assertTrue(strpos($result, 'Congratulations; your calendar validated!') !== false);
+        }
 
         delete_calendar_event($complex_event_id);
         delete_calendar_event($simple_event_id);

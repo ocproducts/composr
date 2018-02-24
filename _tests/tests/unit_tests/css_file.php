@@ -311,6 +311,7 @@ class css_file_test_set extends cms_test_case
             'alert',
             'alt-field',
             'fake-table-cell',
+            'cns-unread-topic-title',
             'docked',
             'non-docked',
             'menu-editor-page',

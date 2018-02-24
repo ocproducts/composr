@@ -74,9 +74,12 @@ class filter_xml_test_set extends cms_test_case
             return; // Too slow
         }
 
+        $guest_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+        $admin_id = $GLOBALS['FORUM_DRIVER']->get_guest_id() + 1;
+
         $test_xml = '
             <fieldRestrictions>
-                <filter members="2">
+                <filter members="' . strval($admin_id) . '">
                     <qualify pages="cms_news" types="add,_add,_edit,__edit" fields="title">
                         <shun>test</shun>
                     </qualify>

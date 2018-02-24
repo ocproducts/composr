@@ -429,7 +429,7 @@ class Forum_driver_none extends Forum_driver_base
      */
     public function forum_id_from_name($forum_name)
     {
-        return 0;
+        return null;
     }
 
     /**

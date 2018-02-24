@@ -166,7 +166,7 @@ function erase_comcode_cache()
     reload_lang_fields(true);
 
     if (multi_lang_content()) {
-        $sql = 'UPDATE ' . get_table_prefix() . 'translate' . $GLOBALS['FORUM_DB']->prefer_index('translate', 'decache');
+        $sql = 'UPDATE ' . get_table_prefix() . 'translate' . $GLOBALS['SITE_DB']->prefer_index('translate', 'decache');
         $sql .= ' SET text_parsed=\'\' WHERE ' . db_string_not_equal_to('text_parsed', '')/*this WHERE is so indexing helps*/;
         $GLOBALS['SITE_DB']->query($sql);
     } else {

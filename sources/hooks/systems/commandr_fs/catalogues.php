@@ -388,7 +388,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $row = $rows[0];
 
         $fields = array();
-        $_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $resource_id), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+        $_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $resource_id), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         foreach ($_fields as $_field) {
             $fields[] = array(
                 'field_title' => get_translated_text($_field['cf_name']),

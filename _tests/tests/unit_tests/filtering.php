@@ -27,6 +27,11 @@ class filtering_test_set extends cms_test_case
     {
         $this->cleanup_db();
 
+        $guest_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+        $admin_id = $GLOBALS['FORUM_DRIVER']->get_guest_id() + 1;
+        $test_id = $GLOBALS['FORUM_DRIVER']->get_guest_id() + 2;
+        $guest_username = $GLOBALS['FORUM_DRIVER']->get_username($guest_id);
+
         $hook_contents = "
             <" . "?php
 
@@ -136,7 +141,7 @@ class filtering_test_set extends cms_test_case
         $GLOBALS['SITE_DB']->query_insert('temp_test', array(
             'id' => 1,
             't_short_text' => 'axxxxx',
-            't_member' => 1,
+            't_member' => $guest_id,
             't_real' => 1.0,
             't_time' => 1000000,
             't_language_name' => 'EN',
@@ -149,7 +154,7 @@ class filtering_test_set extends cms_test_case
         $GLOBALS['SITE_DB']->query_insert('temp_test', array(
             'id' => 2,
             't_short_text' => 'bxxxxx',
-            't_member' => 2,
+            't_member' => $admin_id,
             't_real' => 2.0,
             't_time' => 2000000,
             't_language_name' => 'ES',
@@ -162,7 +167,7 @@ class filtering_test_set extends cms_test_case
         $GLOBALS['SITE_DB']->query_insert('temp_test', array(
             'id' => 3,
             't_short_text' => 'cxxxxx',
-            't_member' => 3,
+            't_member' => $test_id,
             't_real' => 3.0,
             't_time' => 3000000,
             't_language_name' => 'TA',
@@ -203,7 +208,9 @@ class filtering_test_set extends cms_test_case
 
         require_code('filtercode');
 
-        $filter_tests = array(
+        $filter_tests = array();
+
+        $filter_tests = array_merge(array(
             // Filtering on 'id'
             'id<2' => array(1),
             'id<=2' => array(1, 2),
@@ -237,32 +244,34 @@ class filtering_test_set extends cms_test_case
             't_short_text!=' => array(1, 2, 3), // because nothing matches and negative
             't_short_text!=axxxxx' => array(2, 3),
             // No @ for strings
+        ));
 
-            // Filtering on 't_member' using IDs
-            't_member<2' => array(1),
-            't_member<=2' => array(1, 2),
-            't_member>2' => array(3),
-            't_member>=1' => array(1, 2, 3),
-            't_member=' => array(1, 2, 3), // because no filter
-            't_member=1' => array(1),
-            //Depends on DB 't_member==' => array(), // because nothing matches 0 after string coercion
-            't_member==1' => array(1),
-            // No ~= for integers
-            // No ~ for integers
-            't_member<>' => array(1, 2, 3), // because no filter
-            't_member<>1' => array(2, 3),
-            //Depends on DB 't_member!=' => array(1, 2, 3), // because nothing matches 0 after string coercion and negative
-            't_member!=1' => array(2, 3),
-            't_member@1-2' => array(1, 2),
+        // Filtering on 't_member' using IDs
+        $filter_tests['t_member<' . strval($admin_id)] = array($guest_id);
+        $filter_tests['t_member<=' . strval($admin_id)] = array($guest_id, $admin_id);
+        $filter_tests['t_member>' . strval($admin_id)] = array($test_id);
+        $filter_tests['t_member>=' . strval($guest_id)] = array($guest_id, $admin_id, $test_id);
+        $filter_tests['t_member='] = array($guest_id, $admin_id, $test_id); // because no filter
+        $filter_tests['t_member=' . strval($guest_id)] = array($guest_id);
+        //Depends on DB 't_member=='] = array(); // because nothing matches 0 after string coercion
+        $filter_tests['t_member==' . strval($guest_id)] = array($guest_id);
+        // No ~= for integers
+        // No ~ for integers
+        $filter_tests['t_member<>'] = array($guest_id, $admin_id, $test_id); // because no filter
+        $filter_tests['t_member<>' . strval($guest_id)] = array($admin_id, $test_id);
+        //Depends on DB 't_member!='] = array($guest_id, $admin_id, $test_id); // because nothing matches 0 after string coercion and negative
+        $filter_tests['t_member!=' . strval($guest_id)] = array($admin_id, $test_id);
+        $filter_tests['t_member@' . strval($guest_id) . '-' . strval($admin_id)] = array($guest_id, $admin_id);
 
-            // Filtering on 't_member' using usernames
-            't_member=Guest' => array(1),
-            't_member==Guest' => array(1),
-            't_member~=Guest' => array(1),
-            't_member~Guest' => array(1),
-            't_member<>Guest' => array(2, 3),
-            't_member!=Guest' => array(2, 3),
+        // Filtering on 't_member' using usernames
+        $filter_tests['t_member=' . $guest_username] = array($guest_id);
+        $filter_tests['t_member==' . $guest_username] = array($guest_id);
+        $filter_tests['t_member~=' . $guest_username] = array($guest_id);
+        $filter_tests['t_member~' . $guest_username] = array($guest_id);
+        $filter_tests['t_member<>' . $guest_username] = array($admin_id, $test_id);
+        $filter_tests['t_member!=' . $guest_username] = array($admin_id, $test_id);
 
+        $filter_tests = array_merge(array(
             // Filtering on 't_real'
             't_real<2.0' => array(1),
             't_real<=2.0' => array(1, 2),
@@ -392,9 +401,8 @@ class filtering_test_set extends cms_test_case
 
             // Linking tables
             '{t_linker=temp_test_linked.id},temp_test_linked.l_something=123' => array(1),
-        );
+        ));
 
-        $guest_username = $GLOBALS['FORUM_DRIVER']->get_username($GLOBALS['FORUM_DRIVER']->get_guest_id());
         foreach ($filter_tests as $filter => $filter_expected) {
             unset($filter_tests[$filter]);
             $filter = str_replace('Guest', $guest_username, $filter);

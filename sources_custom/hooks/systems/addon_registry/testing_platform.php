@@ -260,7 +260,6 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/cmstest/bootstrap.php',
             '_tests/cmstest/index.html',
             '_tests/cmstest/cms_test_case.php',
-            '_tests/readme.txt',
             '_tests/screens_tested/.htaccess',
             '_tests/screens_tested/index.html',
             '_tests/simpletest/.htaccess',

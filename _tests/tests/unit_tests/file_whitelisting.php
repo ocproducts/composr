@@ -85,7 +85,7 @@ class file_whitelisting_test_set extends cms_test_case
         sort($file_types);
 
         $file_types_expected = $this->file_types;
-        $file_types_expected = array_diff($file_types_expected, array('php', 'htm')); // No files which may be web-processed/web-generated
+        $file_types_expected = array_diff($file_types_expected, array('php', 'htm', 'swf')); // No files which may be web-processed/web-generated
         sort($file_types_expected);
 
         $this->assertTrue($file_types == $file_types_expected);
@@ -99,7 +99,7 @@ class file_whitelisting_test_set extends cms_test_case
         sort($file_types);
 
         $file_types_expected = $this->file_types;
-        $file_types_expected = array_diff($file_types_expected, array('php', 'htm')); // No files which may be web-processed/web-generated
+        $file_types_expected = array_diff($file_types_expected, array('php', 'htm', 'swf')); // No files which may be web-processed/web-generated
         sort($file_types_expected);
 
         $this->assertTrue($file_types == $file_types_expected);

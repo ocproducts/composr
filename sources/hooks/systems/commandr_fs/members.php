@@ -353,7 +353,7 @@ class Hook_commandr_fs_members
             // We're in a member's directory, and writing one of their profile fields
             if (array_key_exists($file_name, $this->field_mapping)) {
                 $val = $contents;
-                if (in_array($filename, array(
+                if (in_array($file_name, array(
                     'id',
                     'validated',
                     'primary_group',
