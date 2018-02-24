@@ -1968,8 +1968,8 @@ function update_member_username_caching($member_id, $username)
     );
     foreach ($to_fix as $fix) {
         list($table, $field, $updating_field) = explode('/', $fix, 3);
-        $con = $GLOBALS[(substr($table, 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
-        $con->query_update($table, array($field => $username), array($updating_field => $member_id));
+        $db = get_db_for($table);
+        $db->query_update($table, array($field => $username), array($updating_field => $member_id));
     }
 }
 

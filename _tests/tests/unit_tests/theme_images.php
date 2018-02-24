@@ -157,7 +157,7 @@ class theme_images_test_set extends cms_test_case
                 'news_categories' => 'nc_img',
             );
             foreach ($db_reference_sources as $table => $field) {
-                $db = ((substr($table, 0, 2) == 'f_') && (get_forum_type() == 'cns')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+                $db = get_db_for($table);
                 $_images_referenced = $db->query_select($table, array('DISTINCT ' . $field));
                 foreach ($_images_referenced as $_image_referenced) {
                     if (isset($images_there[$_image_referenced[$field]])) {

@@ -189,7 +189,7 @@ class Module_admin_cns_merge_members
         // Reassign submitter field values
         $meta = $GLOBALS['SITE_DB']->query('SELECT m_table,m_name FROM ' . get_table_prefix() . 'db_meta WHERE ' . db_string_equal_to('m_type', 'MEMBER') . ' OR ' . db_string_equal_to('m_type', '?MEMBER') . ' OR ' . db_string_equal_to('m_type', '*MEMBER'));
         foreach ($meta as $m) {
-            $db = (substr($m['m_table'], 0, 2) == 'f_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+            $db = get_db_for($m['m_table']);
             $db->query_update($m['m_table'], array($m['m_name'] => $to_id), array($m['m_name'] => $from_id), '', null, 0, false, true);
         }
 

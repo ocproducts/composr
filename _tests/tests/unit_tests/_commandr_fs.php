@@ -29,6 +29,7 @@ class _commandr_fs_test_set extends cms_test_case
         push_query_limiting(false);
 
         require_code('commandr_fs');
+        require_code('resource_fs');
 
         disable_php_memory_limit();
     }

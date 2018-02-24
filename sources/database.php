@@ -376,6 +376,24 @@ function get_db_type()
 }
 
 /**
+ * Find the correct database connection for a particular table. i.e. site connection or forum connection.
+ * This only works with Composr/Conversr tables, not third-party forums.
+ * If modifying this function, search for other cases in the code for 'f_welcome_emails', as similar logic is used elsewhere.
+ *
+ * @param  ID_TEXT $table Database table
+ * @param  boolean $force_site_db Whether to force use of the site connection
+ * @return object Database connection
+ */
+function get_db_for($table, $force_site_db = false)
+{
+    $table = preg_replace('# .*$#', '', $table); // Strip alias
+
+    $use_forum_db = ((substr($table, 0, 2) == 'f_') && ($table != 'f_welcome_emails') && (!$force_site_db) && (get_forum_type() == 'cns') && ($GLOBALS['FORUM_DB'] !== null));
+    $db = $GLOBALS[$use_forum_db ? 'FORUM_DB' : 'SITE_DB'];
+    return $db;
+}
+
+/**
  * Find Composr was installed to use persistent database connections or not.
  *
  * @return boolean Whether to use persistent database connections
@@ -661,7 +679,7 @@ class DatabaseDriver
      */
     public function is_flat_file_simple()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -2348,10 +2366,10 @@ class DatabaseConnector
 
         $tries = 0;
         do {
-            if (substr($table, 0, 2) != 'f_') {
-                $db_name = get_db_site();
-            } else {
+            if ((substr($table, 0, 2) == 'f_') && ($table != 'f_welcome_emails')) {
                 $db_name = get_db_forums();
+            } else {
+                $db_name = get_db_site();
             }
             $locks = $this->query('SHOW OPEN TABLES FROM ' . $db_name . ' WHERE `Table`=\'' . db_escape_string($this->get_table_prefix() . $table) . '\' AND In_use>=1', null, 0, true);
             if ($locks === null) {

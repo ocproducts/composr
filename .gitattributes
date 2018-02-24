@@ -101,7 +101,6 @@
 *.otf binary
 *.pages binary
 *.pdf binary
-*.php binary
 *.png binary
 *.ppt binary
 *.pptx binary

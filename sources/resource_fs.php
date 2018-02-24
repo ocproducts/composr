@@ -542,7 +542,7 @@ function table_to_json($table, $fields_to_skip = array(), $where_map = array())
 function table_to_portable_rows($table, $fields_to_skip = array(), $where_map = array(), $db = null)
 {
     if ($db === null) {
-        $db = ((substr($table, 0, 2) == 'f_') && (get_forum_type() == 'cns')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+        $db = get_db_for($table);
     }
 
     $db_fields = collapse_2d_complexity('m_name', 'm_type', $db->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table)));
@@ -616,7 +616,7 @@ function table_from_json($table, $json, $extra_field_data, $replace_mode)
 function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mode, $db = null)
 {
     if ($db === null) {
-        $db = ((substr($table, 0, 2) == 'f_') && (get_forum_type() == 'cns')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+        $db = get_db_for($table);
     }
 
     $db_fields = collapse_2d_complexity('m_name', 'm_type', $db->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table)));

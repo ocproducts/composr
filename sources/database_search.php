@@ -981,7 +981,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         }
     }
 
-    $db = (substr($table, 0, 2) != 'f_') ? $GLOBALS['SITE_DB'] : $GLOBALS['FORUM_DB'];
+    $db = get_db_for($table);
 
     $db->set_query_time_limit(30);
 
