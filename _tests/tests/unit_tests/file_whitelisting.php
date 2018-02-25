@@ -82,10 +82,11 @@ class file_whitelisting_test_set extends cms_test_case
         $matches = array();
         preg_match('#- url: \/\(\.\*\\\.\((.*)\)\)#m', $c, $matches);
         $file_types = explode('|', $matches[1]);
+        $file_types = array_diff($file_types, array('swf')); // We don't do mime-typing but do allow download
         sort($file_types);
 
         $file_types_expected = $this->file_types;
-        $file_types_expected = array_diff($file_types_expected, array('php', 'htm', 'swf')); // No files which may be web-processed/web-generated
+        $file_types_expected = array_diff($file_types_expected, array('php', 'htm')); // No files which may be web-processed/web-generated
         sort($file_types_expected);
 
         $this->assertTrue($file_types == $file_types_expected);
@@ -96,10 +97,11 @@ class file_whitelisting_test_set extends cms_test_case
         $matches = array();
         preg_match('#  upload: \.\*\\\.\((.*)\)#m', $c, $matches);
         $file_types = explode('|', $matches[1]);
+        $file_types = array_diff($file_types, array('swf')); // We don't do mime-typing but do allow download
         sort($file_types);
 
         $file_types_expected = $this->file_types;
-        $file_types_expected = array_diff($file_types_expected, array('php', 'htm', 'swf')); // No files which may be web-processed/web-generated
+        $file_types_expected = array_diff($file_types_expected, array('php', 'htm')); // No files which may be web-processed/web-generated
         sort($file_types_expected);
 
         $this->assertTrue($file_types == $file_types_expected);
@@ -114,6 +116,7 @@ class file_whitelisting_test_set extends cms_test_case
         $matches = array();
         preg_match('#\.\*\\\\\.\((.*)\)\\\\\?\?\'\);\[\/tt\]#', $c, $matches);
         $file_types = explode('|', $matches[1]);
+        $file_types = array_diff($file_types, array('swf')); // We don't do mime-typing but do allow download
         sort($file_types);
 
         $file_types_expected = $this->file_types;
@@ -132,6 +135,7 @@ class file_whitelisting_test_set extends cms_test_case
         $matches = array();
         preg_match('#RewriteCond \$1 \\\\\.\((.*)\) \[OR\]#', $c, $matches);
         $file_types = explode('|', $matches[1]);
+        $file_types = array_diff($file_types, array('swf')); // We don't do mime-typing but do allow download
         sort($file_types);
 
         $file_types_expected = $this->file_types;
@@ -161,6 +165,16 @@ class file_whitelisting_test_set extends cms_test_case
                     $this->assertTrue(is_image('example.' . $file_type, IMAGE_CRITERIA_WEBSAFE, true), $file_type . ' not websafe?');
                 }
             }
+        }
+    }
+
+    public function testGitAttributes()
+    {
+        $path = get_file_base() . '/.gitattributes';
+        $c = file_get_contents($path);
+
+        foreach ($this->file_types as $file_type) {
+            $this->assertTrue(strpos($c, '*.' . $file_type . ' ') !== false, 'File type missing from .gitattributes, ' . $file_type);
         }
     }
 }

@@ -271,7 +271,7 @@ class Hook_ecommerce_usergroup
                         $GLOBALS['FORUM_DRIVER']->remove_member_from_group($member_id, $new_group);
                     } else {
                         if ($myrow['s_uses_primary'] == 1) {
-                            $GLOBALS[$db->query_update('f_members', array('m_primary_group' => get_first_default_group()), array('id' => $member_id), '', 1);
+                            $db->query_update('f_members', array('m_primary_group' => get_first_default_group()), array('id' => $member_id), '', 1);
 
                             $GLOBALS['FORUM_DB']->query_insert('f_group_join_log', array(
                                 'member_id' => $member_id,
@@ -375,7 +375,7 @@ class Hook_ecommerce_usergroup
         $db = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'];
 
         $usergroup_subscription_id = intval(substr($type_code, 9));
-        $rows = $GLOBALS[$db->query_select('f_usergroup_subs', array('*'), array('id' => $usergroup_subscription_id), '', 1);
+        $rows = $db->query_select('f_usergroup_subs', array('*'), array('id' => $usergroup_subscription_id), '', 1);
         if (array_key_exists(0, $rows)) {
             $myrow = $rows[0];
         } else {
