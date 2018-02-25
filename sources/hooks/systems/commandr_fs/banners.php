@@ -233,13 +233,11 @@ class Hook_commandr_fs_banners extends Resource_fs_base
      */
     public function folder_convert_filename_to_id($filename, $resource_type = null)
     {
-        $filename = preg_replace('#^.*/#', '', $filename); // Paths not needed, as filenames are globally unique; paths would not be in alternative_ids table
-
         if ($filename == 'untitled') {
-            return '';
+            return array('banner_type', '');
         }
 
-        return parent::folder_convert_filename_to_id($filename, 'topic');
+        return parent::folder_convert_filename_to_id($filename, $resource_type);
     }
 
     /**

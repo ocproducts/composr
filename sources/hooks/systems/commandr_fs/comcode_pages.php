@@ -228,7 +228,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
 
-        require_code('zones2');
+        require_code('zones3');
 
         actual_delete_zone($resource_id, true, true);
 

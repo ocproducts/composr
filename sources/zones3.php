@@ -286,6 +286,10 @@ function actual_rename_zone_lite($zone, $new_zone, $dont_bother_with_main_row = 
  */
 function actual_delete_zone($zone, $force = false, $skip_afm = false)
 {
+    if ($zone == '') {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
         warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
     }

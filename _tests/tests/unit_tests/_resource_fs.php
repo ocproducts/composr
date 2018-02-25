@@ -39,13 +39,18 @@ class _resource_fs_test_set extends cms_test_case
 
         require_code('content');
         require_code('resource_fs');
+        require_code('failure');
 
         if ($this->paths === null) {
             $this->paths = array();
         }
 
-        $GLOBALS['SITE_DB']->query_delete('alternative_ids');
-        $GLOBALS['SITE_DB']->query_delete('url_id_monikers');
+        static $done_once = false;
+        if (!$done_once) {
+            $GLOBALS['SITE_DB']->query_delete('alternative_ids');
+            $GLOBALS['SITE_DB']->query_delete('url_id_monikers');
+            $done_once = true;
+        }
 
         $limit_to = get_param_string('limit_to', null); // Useful for breaking down testing into more manageable isolated pieces
 
@@ -80,9 +85,20 @@ class _resource_fs_test_set extends cms_test_case
         foreach ($this->resource_fs_obs as $commandr_fs_hook => $ob) {
             $path = '';
             if ($ob->folder_resource_type !== null) {
+                $folder_resource_type_1 = is_array($ob->folder_resource_type) ? $ob->folder_resource_type[0] : $ob->folder_resource_type;
+
+                // Cleanup if run this before. Probably will product errors, but string-based IDs stick around on crashing and a new add would use a variant ID, so we need to try this.
+                set_throw_errors(true);
+                try {
+                    $_path = $ob->folder_convert_id_to_filename($folder_resource_type_1, 'test-a');
+                    $ob->folder_delete('test-a', $_path);
+                }
+                catch (Exception $e) {
+                }
+                set_throw_errors(false);
+
                 $result = $ob->folder_add('test-a', $path, array());
                 $this->assertTrue($result !== false, 'Failed to folder_add ' . $commandr_fs_hook);
-                $folder_resource_type_1 = is_array($ob->folder_resource_type) ? $ob->folder_resource_type[0] : $ob->folder_resource_type;
                 $path = $ob->folder_convert_id_to_filename($folder_resource_type_1, $result);
                 $result = $ob->folder_add('test-b', $path, array());
                 if ($result !== false) {
@@ -90,6 +106,16 @@ class _resource_fs_test_set extends cms_test_case
                     $path .= '/' . $ob->folder_convert_id_to_filename($folder_resource_type_2, $result);
                 }
             }
+
+            // Cleanup if run this before. Probably will product errors, but string-based IDs stick around on crashing and a new add would use a variant ID, so we need to try this.
+            set_throw_errors(true);
+            try {
+                $ob->file_delete('test_content.' . RESOURCE_FS_DEFAULT_EXTENSION, $path);
+            }
+            catch (Exception $e) {
+            }
+            set_throw_errors(false);
+
             $result = $ob->file_add('test_content.' . RESOURCE_FS_DEFAULT_EXTENSION, $path, array());
             destrictify();
             $this->assertTrue($result !== false, 'Failed to file_add ' . $commandr_fs_hook);
@@ -156,13 +182,13 @@ class _resource_fs_test_set extends cms_test_case
                 $folder_resource_type = is_array($ob->folder_resource_type) ? $ob->folder_resource_type[0] : $ob->folder_resource_type;
                 list(, $folder_resource_id) = $ob->folder_convert_filename_to_id('test-a', $folder_resource_type);
                 $test = $ob->search($folder_resource_type, $folder_resource_id, true);
-                $this->assertTrue($test !== null, 'Could not search for ' . $folder_resource_type . ' test-a');
+                $this->assertTrue($test !== null, 'Could not search for ' . $folder_resource_type . ' ' . $folder_resource_id);
             }
 
             $file_resource_type = is_array($ob->file_resource_type) ? $ob->file_resource_type[0] : $ob->file_resource_type;
             list(, $file_resource_id) = $ob->file_convert_filename_to_id('test_content', $file_resource_type);
             $test = $ob->search($file_resource_type, $file_resource_id, true);
-            $this->assertTrue($test !== null, 'Could not search for ' . $file_resource_type . ' test_content');
+            $this->assertTrue($test !== null, 'Could not search for ' . $file_resource_type . ' ' . $file_resource_id);
             if ($test !== null) {
                 if ($ob->folder_resource_type === null) {
                     $this->assertTrue($test == '', 'Should have found in root, ' . $file_resource_type);
