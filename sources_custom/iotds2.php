@@ -97,12 +97,18 @@ function add_iotd($url, $title, $caption, $thumb_url, $current, $allow_rating, $
  */
 function edit_iotd($id, $title, $caption, $thumb_url, $url, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time = null, $add_time = null, $views = null, $submitter = null, $null_is_literal = false)
 {
+    $rows = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), array('id' => $id), '', 1);
+
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }
 
-    $_caption = $GLOBALS['SITE_DB']->query_select_value('iotd', 'caption', array('id' => $id));
-    $_title = $GLOBALS['SITE_DB']->query_select_value('iotd', 'i_title', array('id' => $id));
+    $_caption = $rows[0]['caption'];
+    $_title = $rows[0]['i_title'];
 
     if (addon_installed('catalogues')) {
         update_catalogue_content_ref('iotd', strval($id), '');
@@ -169,8 +175,14 @@ function edit_iotd($id, $title, $caption, $thumb_url, $url, $allow_rating, $allo
  */
 function delete_iotd($id)
 {
-    $caption = $GLOBALS['SITE_DB']->query_select_value('iotd', 'caption', array('id' => $id));
-    $title = $GLOBALS['SITE_DB']->query_select_value('iotd', 'i_title', array('id' => $id));
+    $rows = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), array('id' => $id), '', 1);
+
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
+    $caption = $rows[0]['caption'];
+    $title = $rows[0]['i_title'];
 
     delete_lang($caption);
     delete_lang($title);

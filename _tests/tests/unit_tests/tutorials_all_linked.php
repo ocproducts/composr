@@ -81,7 +81,7 @@ class tutorials_all_linked_test_set extends cms_test_case
             return;
         }
 
-        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
             if (substr($file, -4) == '.txt') {
@@ -130,7 +130,7 @@ class tutorials_all_linked_test_set extends cms_test_case
             return;
         }
 
-        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
             if (substr($file, -4) == '.txt') {

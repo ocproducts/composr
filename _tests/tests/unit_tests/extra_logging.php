@@ -125,28 +125,28 @@ class extra_logging_test_set extends cms_test_case
     public function testSpecialPageTypeTemplates()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'templates'), '');
-        $data = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
+        $data = http_get_contents($url->evaluate(), array('timeout' => 100, 'cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($data, 'Edit templates') !== false);
     }
 
     public function testSpecialPageTypeTree()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'tree'), '');
-        $data = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
+        $data = http_get_contents($url->evaluate(), array('timeout' => 100, 'cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($data, 'Template tree') !== false);
     }
 
     public function testSpecialPageTypeShowMarkers()
     {
         $url = build_url(array('page' => '', 'keep_markers' => 1), '');
-        $data = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
+        $data = http_get_contents($url->evaluate(), array('timeout' => 100, 'cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($data, '<!-- START-TEMPLATE=CSS_NEED -->') !== false);
     }
 
     public function testSpecialPageTypeShowEditLinks()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'show_edit_links'), '');
-        $data = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
+        $data = http_get_contents($url->evaluate(), array('timeout' => 100, 'cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($data, 'admin-themes') !== false);
     }
 

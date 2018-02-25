@@ -48,7 +48,7 @@ class tutorial_quality_test_set extends cms_test_case
 
         require_code('comcode_check');
 
-        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
             if (substr($file, -4) == '.txt') {
@@ -85,7 +85,7 @@ class tutorial_quality_test_set extends cms_test_case
             return;
         }
 
-        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
             if (substr($file, 0, 4) == 'sup_') {
@@ -105,7 +105,7 @@ class tutorial_quality_test_set extends cms_test_case
             return;
         }
 
-        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
             $c = file_get_contents($path . '/' . $file);
@@ -135,7 +135,7 @@ class tutorial_quality_test_set extends cms_test_case
             return;
         }
 
-        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
             if (substr($file, -4) == '.txt') {
@@ -169,7 +169,7 @@ class tutorial_quality_test_set extends cms_test_case
 
         $data = array();
 
-        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
             if (substr($file, -4) == '.txt') {
@@ -219,7 +219,7 @@ class tutorial_quality_test_set extends cms_test_case
             return;
         }
 
-        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
             if (substr($file, -4) == '.txt') {

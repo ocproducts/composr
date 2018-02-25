@@ -50,7 +50,7 @@ class Block_main_bottom_bar
     public function run($map)
     {
         if (get_forum_type() != 'cns') {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('NO_CNS'), 'red-alert');
         }
 
         if (!isset($GLOBALS['FORUM_DRIVER'])) {

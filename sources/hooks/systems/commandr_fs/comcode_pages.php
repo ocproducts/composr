@@ -432,6 +432,10 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
 
+        if (strpos($resource_id, ':') === false) {
+            return false;
+        }
+
         require_code('zones3');
         list($zone, $page) = explode(':', $resource_id, 2);
         delete_cms_page($zone, $page);

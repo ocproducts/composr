@@ -73,13 +73,13 @@ class Block_main_personal_galleries_list
         $extra_join_sql = '';
         $where_sup = '';
         if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && ($check_perms)) {
-            $extra_join_sql .= get_permission_join_clause('gallery', 'cat');
+            $extra_join_sql .= get_permission_join_clause('gallery', 'name');
             $where_sup .= get_permission_where_clause(get_member(), get_permission_where_clause_groups(get_member()));
         }
 
         // Find galleries
         $galleries = new Tempcode();
-        $query = ' FROM ' . get_table_prefix() . 'galleries' . $extra_join_sql;
+        $query = ' FROM ' . get_table_prefix() . 'galleries r' . $extra_join_sql;
         $query .= ' WHERE name LIKE \'' . db_encode_like('member\_' . strval($member_id) . '\_%') . '\'' . $where_sup; // . ' OR g_owner=' . strval($member_id); g_owner may be set for boring stuff, so don't use for now
         $rows = $GLOBALS['SITE_DB']->query('SELECT *' . $query, $max, $start, false, true);
         $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*)' . $query, false, true);

@@ -1444,11 +1444,11 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         seo_meta_set_for_explicit('gallery', $name, $meta_keywords, $meta_description);
     }
 
-    $myrows = $GLOBALS['SITE_DB']->query_select('galleries', array('fullname', 'description'), array('name' => $old_name), '', 1);
-    if (!array_key_exists(0, $myrows)) {
+    $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('fullname', 'description'), array('name' => $old_name), '', 1);
+    if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
     }
-    $myrow = $myrows[0];
+    $myrow = $rows[0];
 
     $update_map = array(
         'name' => $name,

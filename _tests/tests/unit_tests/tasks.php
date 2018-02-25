@@ -152,7 +152,8 @@ class tasks_test_set extends cms_test_case
             $result = http_get_contents($url, array('ignore_http_status' => $debugging, 'trigger_error' => false, 'post_params' => $post_params));
             if ($debugging) {
                 @var_dump($url);
-                @var_dump($result);exit();
+                @var_dump($result);
+                exit();
             }
         }
         if ($result === null) {

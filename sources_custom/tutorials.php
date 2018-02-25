@@ -165,7 +165,7 @@ function list_tutorials()
     }
 
     $internal = list_to_map('t_page_name', $GLOBALS['SITE_DB']->query_select('tutorials_internal t', array('t.*', tutorial_sql_rating(TUTORIAL_VIRTUAL_FIELD_page_name), tutorial_sql_rating_recent(TUTORIAL_VIRTUAL_FIELD_page_name), tutorial_sql_likes(TUTORIAL_VIRTUAL_FIELD_page_name), tutorial_sql_likes_recent(TUTORIAL_VIRTUAL_FIELD_page_name))));
-    $dh = opendir(get_custom_file_base() . '/docs/pages/comcode_custom/EN');
+    $dh = opendir(get_file_base() . '/docs/pages/comcode_custom/EN');
     while (($f = readdir($dh)) !== false) {
         if (substr($f, -4) == '.txt' && $f != 'panel_top.txt') {
             $page_name = basename($f, '.txt');
@@ -301,7 +301,7 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
             ));
         }
 
-        $tutorial_path = get_custom_file_base() . '/docs/pages/comcode_custom/EN/' . $tutorial_name . '.txt';
+        $tutorial_path = get_file_base() . '/docs/pages/comcode_custom/EN/' . $tutorial_name . '.txt';
         $c = remove_code_block_contents(file_get_contents($tutorial_path));
         $matches = array();
 

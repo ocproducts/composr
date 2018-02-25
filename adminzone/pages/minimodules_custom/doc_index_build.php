@@ -159,7 +159,7 @@ foreach ($unreferenced_tutorials as $tutorial) {
 $out .= '</ul>';
 
 // Write out
-$path = get_custom_file_base() . '/docs/pages/comcode_custom/EN/tut_addon_index.txt';
+$path = get_file_base() . '/docs/pages/comcode_custom/EN/tut_addon_index.txt';
 $addon_index_file = file_get_contents($path);
 $marker = '[staff_note]Automatic code inserts after this[/staff_note]';
 $pos = strpos($addon_index_file, $marker);
@@ -172,7 +172,7 @@ echo static_evaluate_tempcode(comcode_to_tempcode($addon_index_file));
 
 function get_tutorial_title($tutorial)
 {
-    $contents = file_get_contents(get_custom_file_base() . '/docs/pages/comcode_custom/EN/' . $tutorial . '.txt');
+    $contents = file_get_contents(get_file_base() . '/docs/pages/comcode_custom/EN/' . $tutorial . '.txt');
     $matches = array();
     preg_match('#\[title[^\[\]]*\](?-U)(Composr (Tutorial|Supplementary): )?(?U)(.*)\[/title\]#Us', $contents, $matches);
     return $matches[3];

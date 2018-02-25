@@ -49,13 +49,18 @@ function inline_language_editing(&$codename, $lang)
         $lang_file = $best_for;
     }
 
-    // Where to save to
+    // Where to save to (preference to saving to original files)
     $save_path = get_file_base() . '/lang/' . fallback_lang() . '/' . $lang_file . '.ini';
     if (!is_file($save_path)) {
         $save_path = get_file_base() . '/lang_custom/' . fallback_lang() . '/' . $lang_file . '.ini';
     }
     if (!is_file($save_path)) {
         $save_path = get_custom_file_base() . '/lang_custom/' . fallback_lang() . '/' . $lang_file . '.ini';
+    }
+
+    if (!file_exists(dirname($save_path))) {
+        require_code('files2');
+        make_missing_directory(dirname($save_path));
     }
 
     // Tack language strings onto this file

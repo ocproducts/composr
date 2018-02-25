@@ -68,7 +68,7 @@ class Block_side_cns_private_topics
     public function run($map)
     {
         if (get_forum_type() != 'cns') {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('NO_CNS'), 'red-alert');
         }
 
         if (is_guest()) {

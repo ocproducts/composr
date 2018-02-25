@@ -160,7 +160,7 @@ function dload_script()
     }
     require_code('mime_types');
     $mime_type = get_mime_type(get_file_extension($myrow['original_filename']), false);
-    if (get_option('immediate_downloads') == '1' && $mime_type != 'application/octet-stream') {
+    if ((get_option('immediate_downloads') == '1') && ($mime_type != 'application/octet-stream')) {
         header('Content-Type: ' . $mime_type);
         header('Content-Disposition: inline; filename="' . escape_header($myrow['original_filename'], true) . '"');
     } else {
@@ -171,7 +171,7 @@ function dload_script()
     safe_ini_set('ocproducts.xss_detect', '0');
 
     // Is it non-local? If so, redirect
-    if ((!url_is_local($full)) || (!file_exists(get_file_base() . '/' . rawurldecode(filter_naughty($full))))) {
+    if ((!url_is_local($full)) || (!file_exists(get_custom_file_base() . '/' . rawurldecode(filter_naughty($full))))) {
         if (url_is_local($full)) {
             $full = get_custom_base_url() . '/' . $full;
         }
@@ -1080,11 +1080,11 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         }
     }
 
-    $myrows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'description', 'additional_details', 'category_id'), array('id' => $id), '', 1);
-    if (!array_key_exists(0, $myrows)) {
+    $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'description', 'additional_details', 'category_id'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download'));
     }
-    $myrow = $myrows[0];
+    $myrow = $rows[0];
 
     require_code('content2');
     seo_meta_set_for_explicit('downloads_download', strval($id), $meta_keywords, $meta_description);
@@ -1204,11 +1204,11 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
  */
 function delete_download($id, $leave = false)
 {
-    $myrows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'description', 'additional_details'), array('id' => $id), '', 1);
-    if (!array_key_exists(0, $myrows)) {
+    $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'description', 'additional_details'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download'));
     }
-    $myrow = $myrows[0];
+    $myrow = $rows[0];
 
     if (addon_installed('catalogues')) {
         update_catalogue_content_ref('download', strval($id), '');
@@ -1307,11 +1307,11 @@ function edit_download_licence($id, $title, $text)
  */
 function delete_download_licence($id)
 {
-    $myrows = $GLOBALS['SITE_DB']->query_select('download_licences', array('l_title'), array('id' => $id), '', 1);
-    if (!array_key_exists(0, $myrows)) {
+    $rows = $GLOBALS['SITE_DB']->query_select('download_licences', array('l_title'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_licence'));
     }
-    $myrow = $myrows[0];
+    $myrow = $rows[0];
 
     $GLOBALS['SITE_DB']->query_delete('download_licences', array('id' => $id), '', 1);
 

@@ -3835,7 +3835,7 @@ function is_maintained($code)
 {
     static $cache = array();
     if ($cache === array()) {
-        $myfile = fopen(get_custom_file_base() . '/data/maintenance_status.csv', 'rb');
+        $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
         // TODO: #3032 (must default charset to utf-8 if no BOM though)
         fgetcsv($myfile); // Skip header row
         while (($row = fgetcsv($myfile)) !== false) {

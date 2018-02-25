@@ -10,7 +10,7 @@ forum_phpbb,phpBB forum driver,,,Not regularly tested. Already out-dated. Needs 
 forum_smf,Simple Machine Forum forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,Partly tested by running of full test set
 forum_vb,vBulletin forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,Partly tested by running of full test set
 forum_wbb,Burning Board forum driver,,,Not regularly tested. Already out-dated. Needs ongoing maintenance.,No,Partly tested by running of full test set
-msn,Multi-site-networks,,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,Partly tested by db_correctness automated test, and run-time driver use detection. Partly tested by running of full test set.
+msn,Multi-site-networks,,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,"Partly tested by db_correctness automated test, and run-time driver use detection. Partly tested by running of full test set."
 demonstratr,Shared-installs,ocProducts,,Not regularly tested. Liable to break due to cross-cutting complexity.,No,Manual. Rebuilt when new major releases come out. Partly tested by running of full test set.
 database_ibm,IBM DB2 database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,Partly tested by database_misc automated test. Partly tested by running of full test set.
 database_oracle,Oracle database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No,Partly tested by database_misc automated test. Partly tested by running of full test set.

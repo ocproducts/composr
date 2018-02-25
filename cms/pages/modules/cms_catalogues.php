@@ -651,11 +651,11 @@ class Module_cms_catalogues extends Standard_crud_module
     {
         $id = intval($_id);
 
-        $myrows = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => $id), '', 1);
-        if (!array_key_exists(0, $myrows)) {
+        $rows = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => $id), '', 1);
+        if (!array_key_exists(0, $rows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
-        $myrow = $myrows[0];
+        $myrow = $rows[0];
 
         $catalogue_name = $myrow['c_name'];
         if ($catalogue_name === null) {

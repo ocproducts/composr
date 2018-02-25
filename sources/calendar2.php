@@ -243,11 +243,11 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
         $edit_time = $null_is_literal ? null : time();
     }
 
-    $myrows = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array('id' => $id), '', 1);
-    if (!array_key_exists(0, $myrows)) {
+    $rows = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'event'));
     }
-    $myrow = $myrows[0];
+    $myrow = $rows[0];
 
     require_code('urls2');
     suggest_new_idmoniker_for('calendar', 'view', strval($id), '', $title);
@@ -396,8 +396,13 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
  */
 function delete_calendar_event($id)
 {
-    $myrows = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array('id' => $id), '', 1);
-    $myrow = $myrows[0];
+    $rows = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array('id' => $id), '', 1);
+
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
+    $myrow = $rows[0];
     $e_title = get_translated_text($myrow['e_title']);
 
     $GLOBALS['SITE_DB']->query_delete('calendar_events', array('id' => $id), '', 1);
@@ -520,11 +525,11 @@ function add_event_type($title, $logo, $external_feed = '')
  */
 function edit_event_type($id, $title, $logo, $external_feed)
 {
-    $myrows = $GLOBALS['SITE_DB']->query_select('calendar_types', array('*'), array('id' => $id), '', 1);
-    if (!array_key_exists(0, $myrows)) {
+    $rows = $GLOBALS['SITE_DB']->query_select('calendar_types', array('*'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'calendar_type'));
     }
-    $myrow = $myrows[0];
+    $myrow = $rows[0];
 
     require_code('urls2');
     suggest_new_idmoniker_for('calendar', 'browse', strval($id), '', $title);
@@ -558,11 +563,11 @@ function edit_event_type($id, $title, $logo, $external_feed)
  */
 function delete_event_type($id)
 {
-    $myrows = $GLOBALS['SITE_DB']->query_select('calendar_types', array('t_title', 't_logo'), array('id' => $id), '', 1);
-    if (!array_key_exists(0, $myrows)) {
+    $rows = $GLOBALS['SITE_DB']->query_select('calendar_types', array('t_title', 't_logo'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'calendar_type'));
     }
-    $myrow = $myrows[0];
+    $myrow = $rows[0];
 
     $lowest = $GLOBALS['SITE_DB']->query_value_if_there('SELECT MIN(id) FROM ' . get_table_prefix() . 'calendar_types WHERE id<>' . strval($id) . ' AND id<>' . strval(db_get_first_id()));
     if ($lowest === null) {

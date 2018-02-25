@@ -455,7 +455,7 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
  */
 function special_demonstratr_dir()
 {
-    return get_custom_file_base() . '/uploads/website_specific/compo.sr/demonstratr';
+    return get_file_base() . '/uploads/website_specific/compo.sr/demonstratr';
 }
 
 /**
