@@ -46,23 +46,23 @@ class Hook_realtime_rain_recommend
                 $invited_member = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $row['i_email_address']));
 
                 $drops[] = rain_get_special_icons(null, $timestamp) + array(
-                        'TYPE' => 'recommend',
-                        'FROM_MEMBER_ID' => strval($member_id),
-                        'TO_MEMBER_ID' => ($invited_member === null) ? '' : strval($invited_member),
-                        'TITLE' => do_lang('RECOMMEND_SITE'),
-                        'IMAGE' => is_guest($member_id) ? find_theme_image('recommend') : $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
-                        'TIMESTAMP' => strval($timestamp),
-                        'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
-                        'TICKER_TEXT' => null,
-                        'URL' => build_url(array('page' => 'points', 'type' => 'member', 'id' => $member_id), get_module_zone('points')),
-                        'IS_POSITIVE' => true,
-                        'IS_NEGATIVE' => false,
+                    'TYPE' => 'recommend',
+                    'FROM_MEMBER_ID' => strval($member_id),
+                    'TO_MEMBER_ID' => ($invited_member === null) ? '' : strval($invited_member),
+                    'TITLE' => do_lang('RECOMMEND_SITE'),
+                    'IMAGE' => is_guest($member_id) ? find_theme_image('recommend') : $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
+                    'TIMESTAMP' => strval($timestamp),
+                    'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
+                    'TICKER_TEXT' => null,
+                    'URL' => build_url(array('page' => 'points', 'type' => 'member', 'id' => $member_id), get_module_zone('points')),
+                    'IS_POSITIVE' => true,
+                    'IS_NEGATIVE' => false,
 
-                        // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
-                        'FROM_ID' => 'member_' . strval($member_id),
-                        'TO_ID' => ($invited_member === null) ? '' : ('member_' . strval($invited_member)),
-                        'GROUP_ID' => null,
-                    );
+                    // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
+                    'FROM_ID' => 'member_' . strval($member_id),
+                    'TO_ID' => ($invited_member === null) ? '' : ('member_' . strval($invited_member)),
+                    'GROUP_ID' => null,
+                );
             }
         }
 

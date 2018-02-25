@@ -216,7 +216,7 @@ function strip_attachments_from_comcode($comcode, $inline_image_substitutions = 
         $matches = array();
         $num_matches = preg_match_all('#\[attachment(_safe)?( description="([^"]*)")?[^\]]*\](\d+)\[/attachment(_safe)?\]#', $comcode, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
-            $attachment_details = $GLOBALS['SITE_DB']->query_select('attachments', array('*'), array('id' => intval($matches[4][$i])), '', 1);
+            $attachment_details = $GLOBALS['FORUM_DB']->query_select('attachments', array('*'), array('id' => intval($matches[4][$i])), '', 1);
             require_code('images');
             if ((isset($attachment_details[0])) && (is_image($attachment_details[0]['a_original_filename'], IMAGE_CRITERIA_WEBSAFE, has_privilege($attachment_details[0]['a_member_id'], 'comcode_dangerous')))) {
                 $comcode = str_replace($matches[0][$i], '[img="' . $matches[3][$i] . '"]' . find_script('attachment') . '?id=' . urlencode($matches[4][$i]) . '[/img]', $comcode);

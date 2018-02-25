@@ -482,7 +482,7 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
     $can_like = ($post_author_id != $member_id);
     $is_liked = false;
     if (get_option('is_on_rating') == '1') {
-        $likes = $GLOBALS['FORUM_DB']->query_select('rating', array('rating_member'), array('rating' => 10, 'rating_for_type' => 'post', 'rating_for_id' => strval($post_id)), '', 100);
+        $likes = $GLOBALS['SITE_DB']->query_select('rating', array('rating_member'), array('rating' => 10, 'rating_for_type' => 'post', 'rating_for_id' => strval($post_id)), '', 100);
         foreach ($likes as $like) {
             $lusername = $GLOBALS['FORUM_DRIVER']->get_username($like['rating_member']);
 
@@ -751,9 +751,9 @@ function get_post_attachments($post_id, $attachment_id = null, $non_image_only =
 
     $attachments = array();
     if ($post_id !== null) {
-        $attachment_id_rows = $GLOBALS['SITE_DB']->query_select('attachment_refs', array('a_id'), array('r_referer_id' => $post_id, 'r_referer_type' => 'cns_post'));
+        $attachment_id_rows = $GLOBALS['FORUM_DB']->query_select('attachment_refs', array('a_id'), array('r_referer_id' => $post_id, 'r_referer_type' => 'cns_post'));
         foreach ($attachment_id_rows as $att) {
-            $attachment_row = $GLOBALS['SITE_DB']->query_select('attachments', array('*'), array('id' => $att['a_id']), '', 1);
+            $attachment_row = $GLOBALS['FORUM_DB']->query_select('attachments', array('*'), array('id' => $att['a_id']), '', 1);
             if (!isset($attachment_row[0])) {
                 continue;
             }
@@ -776,7 +776,7 @@ function get_post_attachments($post_id, $attachment_id = null, $non_image_only =
             $attachments[] = _get_attachment($attachment_row[0]);
         }
     } elseif ($attachment_id !== null) {
-        $attachment_row = $GLOBALS['SITE_DB']->query_select('attachments', array('a_url', 'a_thumb_url', 'a_original_filename', 'a_file_size'), array('id' => $attachment_id));
+        $attachment_row = $GLOBALS['FORUM_DB']->query_select('attachments', array('a_url', 'a_thumb_url', 'a_original_filename', 'a_file_size'), array('id' => $attachment_id));
         if (!isset($attachment_row[0])) {
             return array();
         }

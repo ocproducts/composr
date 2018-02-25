@@ -40,15 +40,17 @@ class Hook_cron_cns_confirm_reminder
             return null;
         }
 
+        if (is_on_multi_site_network()) {
+            return null;
+        }
+
         if ($calculate_num_queued) {
             if ($last_run === null) {
                 $last_run = time() - self::SECS_REMIND_AFTER;
             }
 
-            push_db_scope_check(false);
-            $query = 'SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'f_members WHERE ' . db_string_not_equal_to('m_validated_email_confirm_code', '') . ' AND m_join_time>' . strval($last_run - self::SECS_REMIND_AFTER) . ' AND m_join_time<=' . strval($last_run);
-            $this->rows = $GLOBALS['SITE_DB']->query($query);
-            pop_db_scope_check();
+            $query = 'SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . db_string_not_equal_to('m_validated_email_confirm_code', '') . ' AND m_join_time>' . strval($last_run - self::SECS_REMIND_AFTER) . ' AND m_join_time<=' . strval($last_run);
+            $this->rows = $GLOBALS['FORUM_DB']->query($query);
 
             foreach ($this->rows as $i => $row) {
                 $coppa = (get_option('is_on_coppa') == '1') && (utctime_to_usertime(time() - mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $row['m_dob_year'])) / 31536000.0 < 13.0);

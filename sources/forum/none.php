@@ -159,7 +159,9 @@ class Forum_driver_none extends Forum_driver_base
     public function get_emoticon_chooser($field_name = 'post')
     {
         require_code('comcode_compiler');
+        push_db_scope_check(false);
         $emoticons = $GLOBALS['SITE_DB']->query_select('f_emoticons', array('*'), array('e_relevance_level' => 0), 'ORDER BY e_code');
+        pop_db_scope_check();
         $em = new Tempcode();
         foreach ($emoticons as $emo) {
             $code = $emo['e_code'];
@@ -198,7 +200,9 @@ class Forum_driver_none extends Forum_driver_base
         }
         $this->EMOTICON_CACHE = array();
         $EMOTICON_LEVELS = array();
+        push_db_scope_check(false);
         $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'f_emoticons WHERE e_relevance_level<4');
+        pop_db_scope_check();
         foreach ($rows as $myrow) {
             $this->EMOTICON_CACHE[$myrow['e_code']] = array('EMOTICON_IMG_CODE_THEMED', $myrow['e_theme_img_code'], $myrow['e_code']);
             $EMOTICON_LEVELS[$myrow['e_code']] = $myrow['e_relevance_level'];

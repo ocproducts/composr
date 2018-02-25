@@ -150,33 +150,6 @@ function _general_db_init()
 }
 
 /**
- * Find whether we are on a multi-site-network.
- * We will check to see that the specification for the forum database and site database differ.
- *
- * @return boolean Whether we are
- */
-function is_on_multi_site_network()
-{
-    static $cache = null;
-    if ($cache !== null) {
-        return $cache;
-    }
-
-    if (get_forum_type() == 'none') {
-        $cache = false;
-        return false;
-    }
-
-    $cache = (
-        (get_db_site_host() != get_db_forums_host()) ||
-        (get_db_site() != get_db_forums()) ||
-        (isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix())
-    );
-
-    return $cache;
-}
-
-/**
  * Find whether to run in multi-lang mode for content translations.
  *
  * @return boolean Whether to run in multi-lang mode for content translations
@@ -354,6 +327,35 @@ function db_cast($field, $type)
 }
 
 /**
+ * Find whether we are on a multi-site-network.
+ * We will check to see that the specification for the forum database and site database differ.
+ * Also see: get_db_for, is_forum_db
+ *
+ * @return boolean Whether we are
+ */
+function is_on_multi_site_network()
+{
+    static $cache = null;
+    if ($cache !== null) {
+        return $cache;
+    }
+
+    if (get_forum_type() == 'none') {
+        $cache = false;
+        return false;
+    }
+
+    $cache = (
+        (get_db_site_host() != get_db_forums_host()) ||
+        (get_db_site() != get_db_forums()) ||
+        (get_db_site_user() != get_db_forums_user()) ||
+        (isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix())
+    );
+
+    return $cache;
+}
+
+/**
  * Get the type of database installed, such as MySQL, or Oracle.
  *
  * @return string The database type
@@ -379,6 +381,7 @@ function get_db_type()
  * Find the correct database connection for a particular table. i.e. site connection or forum connection.
  * This only works with Composr/Conversr tables, not third-party forums.
  * If modifying this function, search for other cases in the code for 'f_welcome_emails', as similar logic is used elsewhere.
+ * Also see: is_forum_db, is_on_multi_site_network
  *
  * @param  ID_TEXT $table Database table
  * @param  boolean $force_site_db Whether to force use of the site connection
@@ -388,7 +391,13 @@ function get_db_for($table, $force_site_db = false)
 {
     $table = preg_replace('# .*$#', '', $table); // Strip alias
 
-    $use_forum_db = ((substr($table, 0, 2) == 'f_') && ($table != 'f_welcome_emails') && (!$force_site_db) && (get_forum_type() == 'cns') && ($GLOBALS['FORUM_DB'] !== null));
+    $use_forum_db = (
+        (substr($table, 0, 2) == 'f_') &&
+        ($table != 'f_welcome_emails') &&
+        (!$force_site_db) &&
+        (get_forum_type() == 'cns') &&
+        ($GLOBALS['FORUM_DB'] !== null)
+    );
     $db = $GLOBALS[$use_forum_db ? 'FORUM_DB' : 'SITE_DB'];
     return $db;
 }
@@ -1134,18 +1143,6 @@ class DatabaseConnector
     }
 
     /**
-     * Initialise a filesystem DB that we can use for caching.
-     */
-    public function initialise_filesystem_db()
-    {
-        global $FILECACHE_OBJECT;
-        require_code('database/xml');
-        $chain_db = new DatabaseConnector(get_custom_file_base() . '/caches/persistent', '', '', '', get_table_prefix(), false, object_factory('Database_Static_xml'));
-        $chain_db->ensure_connected();
-        $FILECACHE_OBJECT = $chain_db;
-    }
-
-    /**
      * Create a SELECT query from some abstract data.
      *
      * @param  string $table The table to select from
@@ -1543,7 +1540,7 @@ class DatabaseConnector
                     fatal_exit('Assumption of multi-lang-content being on, and it\'s not');
                 }
 
-                if ((get_forum_type() != 'none') && (strpos($query, get_table_prefix() . 'f_') !== false) && (strpos($query, get_table_prefix() . 'f_') < 100) && (strpos($query, 'f_welcome_emails') === false) && (!$this->is_forum_db()) && (is_cns_satellite_site())) {
+                if ((get_forum_type() == 'cns') && (strpos($query, get_table_prefix() . 'f_') !== false) && (strpos($query, get_table_prefix() . 'f_') < 100) && (strpos($query, 'f_welcome_emails') === false) && (!$this->is_forum_db()) && (is_on_multi_site_network())) {
                     fatal_exit('Using Conversr queries on the wrong driver');
                 }
             }
@@ -1775,6 +1772,7 @@ class DatabaseConnector
     /**
      * Find whether this database connector is to the forum database.
      * If we are not on a multi-site-network then the answer is always 'No', because really we're checking to see if we are the forum database and also not the site database.
+     * Also see: get_db_for, is_on_multi_site_network
      *
      * @return boolean Whether we are
      */

@@ -59,6 +59,10 @@ function send_recommendation_email($name, $email_address, $message, $is_invite =
  */
 function get_num_invites($member_id)
 {
+    if (get_forum_type() != 'cns') {
+        return 0;
+    }
+
     if ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
         return 1; // Admin can always have another invite
     }

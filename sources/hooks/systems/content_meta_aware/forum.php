@@ -48,7 +48,7 @@ class Hook_content_meta_aware_forum
             'content_type_label' => 'cns:FORUM',
             'content_type_universal_label' => 'Forum',
 
-            'db' => $GLOBALS['FORUM_DB'],
+            'db' => get_db_for('f_forums'),
             'table' => 'f_forums',
             'id_field' => 'id',
             'id_field_numeric' => true,

@@ -541,7 +541,7 @@ class Module_admin_cns_groups extends Standard_crud_module
                     if ($i != 0) {
                         $subs->attach(do_lang_tempcode('LIST_SEP'));
                     }
-                    $subs->attach(hyperlink(build_url(array('page' => 'admin_ecommerce', 'type' => '_edit', 'id' => $sub['id']), get_module_zone('admin_ecommerce')), get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']), false, true));
+                    $subs->attach(hyperlink(build_url(array('page' => 'admin_ecommerce', 'type' => '_edit', 'id' => $sub['id']), get_module_zone('admin_ecommerce')), get_translated_text($sub['s_title'], $GLOBALS['FORUM_DB']), false, true));
                 }
                 require_lang('ecommerce');
                 $text->attach(paragraph(do_lang_tempcode('HAS_THESE_SUBS', $subs)));
@@ -677,7 +677,7 @@ class Module_admin_cns_groups extends Standard_crud_module
         $metadata = actual_metadata_get_fields('group', $id, array('submitter'));
 
         $is_super_admin = post_param_integer('is_super_admin', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
-        if (($is_super_admin == 0) && ($GLOBALS['FORUM_DB']->query_select_value('f_groups', 'g_is_super_admin', array('id' => intval($id))) == 1) && ($GLOBALS['SITE_DB']->query_select_value('f_groups', 'COUNT(*)', array('g_is_super_admin' => 1)) == 1)) {
+        if (($is_super_admin == 0) && ($GLOBALS['FORUM_DB']->query_select_value('f_groups', 'g_is_super_admin', array('id' => intval($id))) == 1) && ($GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)', array('g_is_super_admin' => 1)) == 1)) {
             warn_exit(do_lang_tempcode('NO_SUICIDAL_SUPER_ADMIN_REMOVAL'));
         }
 

@@ -229,24 +229,6 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     */
-    public function import_cns_remove_old_groups()
-    {
-        $delete_groups = array('Local hero', 'Regular', 'Local', 'Old timer');
-        $rows = $GLOBALS['SITE_DB']->query_select('f_groups', array('id', 'g_name'));
-        if ($rows !== null) {
-            foreach ($rows as $row) {
-                if (!in_array(get_translated_text($row['g_name'], $GLOBALS['SITE_DB']), $delete_groups)) {
-                    continue;
-                }
-                cns_delete_group($row['id']);
-            }
-        }
-    }
-
-    /**
-     * Standard import function.
-     *
      * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      */
@@ -720,9 +702,9 @@ class Hook_import_smf2
 
                 if (!empty($uid) && ($uid != 1 && $uid != 2)) {
                     if (empty($ban_till)) {
-                        $GLOBALS['SITE_DB']->query_update('f_members', array('m_is_perm_banned' => 1), array('id' => $uid));
+                        $GLOBALS['FORUM_DB']->query_update('f_members', array('m_is_perm_banned' => 1), array('id' => $uid));
                     } else {
-                        $GLOBALS['SITE_DB']->query_update('f_members', array('m_on_probation_until' => $ban_till), array('id' => $uid));
+                        $GLOBALS['FORUM_DB']->query_update('f_members', array('m_on_probation_until' => $ban_till), array('id' => $uid));
                     }
 
                     if ($row['ip_low1'] >= 127 && empty($ban_till)) {
@@ -902,13 +884,13 @@ class Hook_import_smf2
         // Admins always have access so no need to do and we skip Guests cause this is for Regular Members in SMF not guests
         $ignore_groups = array('Guests', 'Administrators');
         // Get the query
-        $rows = $GLOBALS['SITE_DB']->query_select('f_groups', array('id', 'g_name'));
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'));
         // Added this in cause of import issues in the past.
         if ($rows !== null) {
             // Loop it
             foreach ($rows as $row) {
                 // K Skip Admins and guests
-                if (in_array(get_translated_text($row['g_name'], $GLOBALS['SITE_DB']), $ignore_groups)) {
+                if (in_array(get_translated_text($row['g_name']), $ignore_groups)) {
                     continue;
                 }
                 $gid = (integer)$row['id'];
@@ -1164,15 +1146,15 @@ class Hook_import_smf2
                     import_id_remap_put('post_files', strval($row['id_attach']), 1);
                     continue; // Orphaned post
                 }
-                $post = get_translated_text($post_row[0]['p_post'], $GLOBALS['SITE_DB']);
+                $post = get_translated_text($post_row[0]['p_post']);
                 $member_id = $post_row[0]['p_poster'];
                 $ext = '.' . $row['fileext'];
                 $filename = $row['id_attach'] . '_' . $row['file_hash'];
 
                 $url = $this->data_to_disk('', $filename, 'attachments', $db, $table_prefix, $row['filename'], $file_base, $row['id_attach'], $ext);
-                $a_id = $GLOBALS['SITE_DB']->query_insert('attachments', array('a_member_id' => $member_id, 'a_file_size' => $row['size'], 'a_url' => $url, 'a_thumb_url' => $url, 'a_original_filename' => $row['filename'], 'a_num_downloads' => $row['downloads'], 'a_last_downloaded_time' => null, 'a_add_time' => $row['poster_time'], 'a_description' => ''), true);
+                $a_id = $GLOBALS['FORUM_DB']->query_insert('attachments', array('a_member_id' => $member_id, 'a_file_size' => $row['size'], 'a_url' => $url, 'a_thumb_url' => $url, 'a_original_filename' => $row['filename'], 'a_num_downloads' => $row['downloads'], 'a_last_downloaded_time' => null, 'a_add_time' => $row['poster_time'], 'a_description' => ''), true);
 
-                $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => 'cns_post', 'r_referer_id' => strval($post_id), 'a_id' => $a_id));
+                $GLOBALS['FORUM_DB']->query_insert('attachment_refs', array('r_referer_type' => 'cns_post', 'r_referer_id' => strval($post_id), 'a_id' => $a_id));
                 $post .= "\n\n" . '[attachment]' . strval($a_id) . '[/attachment]';
 
                 $GLOBALS['FORUM_DB']->query_update('f_posts', update_lang_comcode_attachments('p_post', $post_row[0]['p_post'], $post, 'cns_post', strval($post_id)), array('id' => $post_id), '', 1);
@@ -1671,7 +1653,7 @@ class Hook_import_smf2
 
             $id_new = add_calendar_event(db_get_first_id() + 1, $recurrence, $recurrences, 0, $row['title'], $description, 3, $start_year, $start_month, $start_day, 'day_of_month', $start_hour, $start_minute, $end_year, $end_month, $end_day, 'day_of_month', $end_hour, $end_minute, null, 1, null, 1, 1, 1, 1, '', $submitter);
             if ($att_imported) {
-                $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => 'calendar', 'r_referer_id' => strval($id_new), 'a_id' => $attid_new));
+                $GLOBALS['FORUM_DB']->query_insert('attachment_refs', array('r_referer_type' => 'calendar', 'r_referer_id' => strval($id_new), 'a_id' => $attid_new));
             }
             import_id_remap_put('event', strval($row['id_event']), $id_new);
         }

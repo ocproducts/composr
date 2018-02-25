@@ -41,7 +41,7 @@ class Hook_content_meta_aware_member
             'content_type_label' => 'global:MEMBER',
             'content_type_universal_label' => 'Profile',
 
-            'db' => $GLOBALS['FORUM_DB'],
+            'db' => get_db_for('f_members'),
             'table' => 'f_members',
             'id_field' => 'id',
             'id_field_numeric' => true,

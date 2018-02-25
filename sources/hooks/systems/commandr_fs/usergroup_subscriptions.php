@@ -62,7 +62,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
      */
     public function is_active()
     {
-        return (get_forum_type() == 'cns') && (!is_cns_satellite_site());
+        return (get_forum_type() == 'cns') && (!is_on_multi_site_network());
     }
 
     /**

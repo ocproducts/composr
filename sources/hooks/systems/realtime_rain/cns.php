@@ -47,23 +47,23 @@ class Hook_realtime_rain_cns
                     }
 
                     $drops[] = rain_get_special_icons($row['m_ip_address'], $timestamp) + array(
-                            'TYPE' => 'join',
-                            'FROM_MEMBER_ID' => strval($member_id),
-                            'TO_MEMBER_ID' => null,
-                            'TITLE' => do_lang('JOINED') . ': ' . $GLOBALS['FORUM_DRIVER']->get_username($member_id),
-                            'IMAGE' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
-                            'TIMESTAMP' => strval($timestamp),
-                            'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
-                            'TICKER_TEXT' => null,
-                            'URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true),
-                            'IS_POSITIVE' => true,
-                            'IS_NEGATIVE' => false,
+                        'TYPE' => 'join',
+                        'FROM_MEMBER_ID' => strval($member_id),
+                        'TO_MEMBER_ID' => null,
+                        'TITLE' => do_lang('JOINED') . ': ' . $GLOBALS['FORUM_DRIVER']->get_username($member_id),
+                        'IMAGE' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
+                        'TIMESTAMP' => strval($timestamp),
+                        'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
+                        'TICKER_TEXT' => null,
+                        'URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true),
+                        'IS_POSITIVE' => true,
+                        'IS_NEGATIVE' => false,
 
-                            // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
-                            'FROM_ID' => 'member_' . strval($member_id),
-                            'TO_ID' => null,
-                            'GROUP_ID' => null,
-                        );
+                        // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
+                        'FROM_ID' => 'member_' . strval($member_id),
+                        'TO_ID' => null,
+                        'GROUP_ID' => null,
+                    );
                 }
             }
 
@@ -88,23 +88,23 @@ class Hook_realtime_rain_cns
                     $ticker_text = strip_comcode(get_translated_text($row['p_post'], $GLOBALS['FORUM_DB']));
 
                     $drops[] = rain_get_special_icons($row['p_ip_address'], $timestamp, null, $ticker_text) + array(
-                            'TYPE' => 'post',
-                            'FROM_MEMBER_ID' => strval($member_id),
-                            'TO_MEMBER_ID' => null,
-                            'TITLE' => ($row['p_title'] == '') ? rain_truncate_for_title(strip_comcode(get_translated_text($row['p_post'], $GLOBALS['FORUM_DB']))) : $row['p_title'],
-                            'IMAGE' => is_guest($member_id) ? rain_get_country_image($row['p_ip_address']) : $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
-                            'TIMESTAMP' => strval($timestamp),
-                            'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
-                            'TICKER_TEXT' => $ticker_text,
-                            'URL' => $GLOBALS['FORUM_DRIVER']->post_url($row['id'], $row['p_cache_forum_id'], true),
-                            'IS_POSITIVE' => false,
-                            'IS_NEGATIVE' => false,
+                        'TYPE' => 'post',
+                        'FROM_MEMBER_ID' => strval($member_id),
+                        'TO_MEMBER_ID' => null,
+                        'TITLE' => ($row['p_title'] == '') ? rain_truncate_for_title(strip_comcode(get_translated_text($row['p_post'], $GLOBALS['FORUM_DB']))) : $row['p_title'],
+                        'IMAGE' => is_guest($member_id) ? rain_get_country_image($row['p_ip_address']) : $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
+                        'TIMESTAMP' => strval($timestamp),
+                        'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
+                        'TICKER_TEXT' => $ticker_text,
+                        'URL' => $GLOBALS['FORUM_DRIVER']->post_url($row['id'], $row['p_cache_forum_id'], true),
+                        'IS_POSITIVE' => false,
+                        'IS_NEGATIVE' => false,
 
-                            // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
-                            'FROM_ID' => 'member_' . strval($member_id),
-                            'TO_ID' => null,
-                            'GROUP_ID' => 'post_' . strval($row['id']),
-                        );
+                        // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
+                        'FROM_ID' => 'member_' . strval($member_id),
+                        'TO_ID' => null,
+                        'GROUP_ID' => 'post_' . strval($row['id']),
+                    );
                 }
             }
         }

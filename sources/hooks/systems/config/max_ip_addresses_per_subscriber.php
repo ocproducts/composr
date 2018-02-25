@@ -59,7 +59,7 @@ class Hook_config_max_ip_addresses_per_subscriber
         if (!addon_installed('stats')) {
             return null;
         }
-        if (is_cns_satellite_site()) {
+        if (is_on_multi_site_network()) {
             return null;
         }
 

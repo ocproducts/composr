@@ -222,8 +222,14 @@ function cns_delete_group($group_id, $target_group = null)
     $GLOBALS['FORUM_DB']->query_delete('f_groups', array('id' => $group_id), '', 1);
     // No need to delete Composr permission stuff, as it could be on any MSN site, and Composr is coded with a tolerance due to the forum driver system. However, to be tidy...
     $GLOBALS['SITE_DB']->query_delete('group_privileges', array('group_id' => $group_id));
+    if (is_on_multi_site_network() && (get_forum_type() == 'cns')) {
+        $GLOBALS['FORUM_DB']->query_delete('group_privileges', array('group_id' => $group_id));
+    }
     $GLOBALS['SITE_DB']->query_delete('group_zone_access', array('group_id' => $group_id));
     $GLOBALS['SITE_DB']->query_delete('group_category_access', array('group_id' => $group_id));
+    if (is_on_multi_site_network() && (get_forum_type() == 'cns')) {
+        $GLOBALS['SITE_DB']->query_delete('group_category_access', array('group_id' => $group_id));
+    }
     $GLOBALS['SITE_DB']->query_delete('group_page_access', array('group_id' => $group_id));
     if (addon_installed('ecommerce')) {
         $GLOBALS['FORUM_DB']->query_delete('f_usergroup_subs', array('s_group_id' => $group_id));

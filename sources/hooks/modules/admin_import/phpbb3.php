@@ -1265,7 +1265,7 @@ class Hook_import_phpbb3
             );
             $map += insert_lang('tag_title', $row['bbcode_tag'], 3);
             $map += insert_lang('tag_description', $row['bbcode_helpline'], 3);
-            $GLOBALS['FORUM_DB']->query_insert('custom_comcode', $map);
+            $GLOBALS['SITE_DB']->query_insert('custom_comcode', $map);
         }
     }
 

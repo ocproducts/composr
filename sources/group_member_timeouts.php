@@ -28,8 +28,10 @@
  */
 function bump_member_group_timeout($member_id, $group_id, $num_minutes, $prefer_for_primary_group = false)
 {
+    $db = get_db_for('f_group_member_timeouts');
+
     // Extend or add, depending on whether they're in it yet
-    $existing_timeout = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select_value_if_there('f_group_member_timeouts', 'timeout', array('member_id' => $member_id, 'group_id' => $group_id));
+    $existing_timeout = $db->query_select_value_if_there('f_group_member_timeouts', 'timeout', array('member_id' => $member_id, 'group_id' => $group_id));
     if ($existing_timeout === null) {
         $timestamp = time() + 60 * $num_minutes;
     } else {
@@ -54,6 +56,8 @@ function set_member_group_timeout($member_id, $group_id, $timestamp, $prefer_for
         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
+    $db = get_db_for('f_group_member_timeouts');
+
     require_code('cns_groups_action');
     require_code('cns_groups_action2');
     require_code('cns_members');
@@ -62,11 +66,11 @@ function set_member_group_timeout($member_id, $group_id, $timestamp, $prefer_for
     $test = in_array($group_id, $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id));
     if (!$test) {
         // Add them to the group
-        if ((method_exists($GLOBALS['FORUM_DB'], 'add_member_to_group')) && (get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {
-            $GLOBALS['FORUM_DB']->add_member_to_group($member_id, $group_id);
+        if ((method_exists($GLOBALS['FORUM_DRIVER'], 'add_member_to_group')) && (get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {
+            $GLOBALS['FORUM_DRIVER']->add_member_to_group($member_id, $group_id);
         } else {
             if ($prefer_for_primary_group) {
-                $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_update('f_members', array('m_primary_group' => $group_id), array('id' => $member_id), '', 1);
+                $db->query_update('f_members', array('m_primary_group' => $group_id), array('id' => $member_id), '', 1);
                 $GLOBALS['FORUM_DRIVER']->MEMBER_ROWS_CACHED = array();
 
                 $GLOBALS['FORUM_DB']->query_insert('f_group_join_log', array(
@@ -81,11 +85,11 @@ function set_member_group_timeout($member_id, $group_id, $timestamp, $prefer_for
     }
 
     // Set
-    $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_delete('f_group_member_timeouts', array(
+    $db->query_delete('f_group_member_timeouts', array(
         'member_id' => $member_id,
         'group_id' => $group_id,
     ), '', 1);
-    $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_insert('f_group_member_timeouts', array(
+    $db->query_insert('f_group_member_timeouts', array(
         'member_id' => $member_id,
         'group_id' => $group_id,
         'timeout' => $timestamp,
@@ -105,11 +109,13 @@ function cleanup_member_timeouts()
         @set_time_limit(0);
     }
 
+    $db = get_db_for('f_group_member_timeouts');
+
     require_code('cns_groups_action');
     require_code('cns_groups_action2');
     require_code('cns_members');
 
-    $db = (get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+    $db = get_db_for('f_group_member_timeouts');
     $start = 0;
     $time_now = time();
     do {
@@ -120,14 +126,14 @@ function cleanup_member_timeouts()
 
             $test = in_array($group_id, $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id));
             if ($test) { // If they're still in it
-                if ((method_exists($GLOBALS['FORUM_DB'], 'remove_member_from_group')) && (get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {
-                    $GLOBALS['FORUM_DB']->remove_member_from_group($member_id, $group_id);
+                if ((method_exists($GLOBALS['FORUM_DRIVER'], 'remove_member_from_group')) && (get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {
+                    $GLOBALS['FORUM_DRIVER']->remove_member_from_group($member_id, $group_id);
                 } else {
                     if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_primary_group') == $group_id) {
-                        $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_update('f_members', array('m_primary_group' => get_first_default_group()), array('id' => $member_id), '', 1);
+                        $db->query_update('f_members', array('m_primary_group' => get_first_default_group()), array('id' => $member_id), '', 1);
                         $GLOBALS['FORUM_DRIVER']->MEMBER_ROWS_CACHED = array();
                     }
-                    $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_delete('f_group_members', array('gm_group_id' => $group_id, 'gm_member_id' => $member_id), '', 1);
+                    $db->query_delete('f_group_members', array('gm_group_id' => $group_id, 'gm_member_id' => $member_id), '', 1);
                 }
 
                 global $USERS_GROUPS_CACHE, $GROUP_MEMBERS_CACHE;
@@ -138,7 +144,7 @@ function cleanup_member_timeouts()
         $start += 100;
     } while (count($timeouts) == 100);
 
-    if (!$GLOBALS['SITE_DB']->table_is_locked('f_group_member_timeouts')) {
+    if (!$db->table_is_locked('f_group_member_timeouts')) {
         $timeouts = $db->query('DELETE FROM ' . $db->get_table_prefix() . 'f_group_member_timeouts WHERE timeout<' . strval($time_now));
     }
 }

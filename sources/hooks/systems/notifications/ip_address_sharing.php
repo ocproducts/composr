@@ -54,7 +54,7 @@ class Hook_notification_ip_address_sharing extends Hook_notification__Staff
         if (!addon_installed('stats')) {
             return array();
         }
-        if (is_cns_satellite_site()) {
+        if (is_on_multi_site_network()) {
             return array();
         }
 

@@ -57,23 +57,23 @@ class Hook_realtime_rain_chat
                 }
 
                 $drops[] = rain_get_special_icons($row['ip_address'], $timestamp, null, $message) + array(
-                        'TYPE' => 'chat',
-                        'FROM_MEMBER_ID' => strval($member_id),
-                        'TO_MEMBER_ID' => null,
-                        'TITLE' => rain_truncate_for_title($message),
-                        'IMAGE' => is_guest($member_id) ? rain_get_country_image($row['ip_address']) : $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
-                        'TIMESTAMP' => strval($timestamp),
-                        'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
-                        'TICKER_TEXT' => $message,
-                        'URL' => build_url(array('page' => 'points', 'type' => 'member', 'id' => $member_id), get_module_zone('points')),
-                        'IS_POSITIVE' => false,
-                        'IS_NEGATIVE' => false,
+                    'TYPE' => 'chat',
+                    'FROM_MEMBER_ID' => strval($member_id),
+                    'TO_MEMBER_ID' => null,
+                    'TITLE' => rain_truncate_for_title($message),
+                    'IMAGE' => is_guest($member_id) ? rain_get_country_image($row['ip_address']) : $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
+                    'TIMESTAMP' => strval($timestamp),
+                    'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
+                    'TICKER_TEXT' => $message,
+                    'URL' => build_url(array('page' => 'points', 'type' => 'member', 'id' => $member_id), get_module_zone('points')),
+                    'IS_POSITIVE' => false,
+                    'IS_NEGATIVE' => false,
 
-                        // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
-                        'FROM_ID' => 'member_' . strval($member_id),
-                        'TO_ID' => null,
-                        'GROUP_ID' => 'room_' . strval($row['room_id']),
-                    );
+                    // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
+                    'FROM_ID' => 'member_' . strval($member_id),
+                    'TO_ID' => null,
+                    'GROUP_ID' => 'room_' . strval($row['room_id']),
+                );
             }
         }
 

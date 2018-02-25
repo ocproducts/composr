@@ -876,14 +876,14 @@ class Hook_import_mybb
                     import_id_remap_put('post_files', strval($row['aid']), 1);
                     continue; // Orphaned post
                 }
-                $post = get_translated_text($post_row[0]['p_post'], $GLOBALS['SITE_DB']);
+                $post = get_translated_text($post_row[0]['p_post']);
                 $member_id = $post_row[0]['p_poster'];
 
                 $url = $this->data_to_disk('', $row['attachname'], 'attachments', $db, $table_prefix, $row['filename']);
                 $thumb_url = $this->data_to_disk('', $row['thumbnail'], 'attachments_thumbs', $db, $table_prefix, $row['filename']);
                 $attachment_map = array('a_member_id' => $member_id, 'a_file_size' => $row['filesize'], 'a_url' => $url, 'a_thumb_url' => $thumb_url, 'a_original_filename' => $row['filename'], 'a_num_downloads' => $row['downloads'], 'a_last_downloaded_time' => null, 'a_add_time' => $row['dateuploaded'], 'a_description' => '');
-                $a_id = $GLOBALS['SITE_DB']->query_insert('attachments', $attachment_map, true);
-                $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => 'cns_post', 'r_referer_id' => strval($post_id), 'a_id' => $a_id));
+                $a_id = $GLOBALS['FORUM_DB']->query_insert('attachments', $attachment_map, true);
+                $GLOBALS['FORUM_DB']->query_insert('attachment_refs', array('r_referer_type' => 'cns_post', 'r_referer_id' => strval($post_id), 'a_id' => $a_id));
                 $post .= "\n\n" . '[attachment]' . strval($a_id) . '[/attachment]';
 
                 cns_over_msn();
@@ -1344,8 +1344,8 @@ class Hook_import_mybb
                 'mm_title_suffix' => $mm_title_suffix,
                 'mm_post_text' => $mm_post_text,
             );
-            $map += insert_lang('mm_name', $mm_name, 3);
-            $GLOBALS['SITE_DB']->query_insert('f_multi_moderations', $map);
+            $map += insert_lang('mm_name', $mm_name, 3, $GLOBALS['FORUM_DB']);
+            $GLOBALS['FORUM_DB']->query_insert('f_multi_moderations', $map);
         }
     }
 }

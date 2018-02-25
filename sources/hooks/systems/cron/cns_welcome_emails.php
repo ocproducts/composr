@@ -52,9 +52,7 @@ class Hook_cron_cns_welcome_emails
 
             $this->member_sets_to_send_to = array();
 
-            push_db_scope_check(false);
             $mails = $GLOBALS['SITE_DB']->query_select('f_welcome_emails', array('*'));
-            pop_db_scope_check();
             foreach ($mails as $mail) {
                 $send_seconds_after_joining = $mail['w_send_time'] * 60 * 60;
 

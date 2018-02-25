@@ -44,23 +44,23 @@ class Hook_realtime_rain_points
                 $member_id = $row['member_id'];
 
                 $drops[] = rain_get_special_icons(null, $timestamp) + array(
-                        'TYPE' => 'point_charges',
-                        'FROM_MEMBER_ID' => strval($member_id),
-                        'TO_MEMBER_ID' => null,
-                        'TITLE' => do_lang('MEMBER_CHARGED_POINTS', integer_format($row['amount']), get_translated_text($row['reason'])),
-                        'IMAGE' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
-                        'TIMESTAMP' => strval($timestamp),
-                        'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
-                        'TICKER_TEXT' => null,
-                        'URL' => build_url(array('page' => 'points', 'type' => 'member', 'id' => $member_id), get_module_zone('points')),
-                        'IS_POSITIVE' => false,
-                        'IS_NEGATIVE' => true,
+                    'TYPE' => 'point_charges',
+                    'FROM_MEMBER_ID' => strval($member_id),
+                    'TO_MEMBER_ID' => null,
+                    'TITLE' => do_lang('MEMBER_CHARGED_POINTS', integer_format($row['amount']), get_translated_text($row['reason'])),
+                    'IMAGE' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
+                    'TIMESTAMP' => strval($timestamp),
+                    'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
+                    'TICKER_TEXT' => null,
+                    'URL' => build_url(array('page' => 'points', 'type' => 'member', 'id' => $member_id), get_module_zone('points')),
+                    'IS_POSITIVE' => false,
+                    'IS_NEGATIVE' => true,
 
-                        // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
-                        'FROM_ID' => 'member_' . strval($member_id),
-                        'TO_ID' => false,
-                        'GROUP_ID' => false,
-                    );
+                    // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
+                    'FROM_ID' => 'member_' . strval($member_id),
+                    'TO_ID' => false,
+                    'GROUP_ID' => false,
+                );
             }
 
             $rows = $GLOBALS['SITE_DB']->query('SELECT reason,amount,gift_from AS member_id,gift_to,date_and_time AS timestamp,anonymous FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'gifts WHERE date_and_time BETWEEN ' . strval($from) . ' AND ' . strval($to));
@@ -70,23 +70,23 @@ class Hook_realtime_rain_points
                 $member_id = $row['member_id'];
 
                 $drops[] = rain_get_special_icons(null, $timestamp) + array(
-                        'TYPE' => 'point_gifts',
-                        'FROM_MEMBER_ID' => ($row['anonymous'] == 1) ? null : strval($member_id),
-                        'TO_MEMBER_ID' => strval($row['gift_to']),
-                        'TITLE' => do_lang('MEMBER_GIVEN_POINTS', integer_format($row['amount']), get_translated_text($row['reason'])),
-                        'IMAGE' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($row['gift_to']),
-                        'TIMESTAMP' => strval($timestamp),
-                        'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
-                        'TICKER_TEXT' => null,
-                        'URL' => build_url(array('page' => 'points', 'type' => 'member', 'id' => $row['gift_to']), get_module_zone('points')),
-                        'IS_POSITIVE' => false,
-                        'IS_NEGATIVE' => false,
+                    'TYPE' => 'point_gifts',
+                    'FROM_MEMBER_ID' => ($row['anonymous'] == 1) ? null : strval($member_id),
+                    'TO_MEMBER_ID' => strval($row['gift_to']),
+                    'TITLE' => do_lang('MEMBER_GIVEN_POINTS', integer_format($row['amount']), get_translated_text($row['reason'])),
+                    'IMAGE' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($row['gift_to']),
+                    'TIMESTAMP' => strval($timestamp),
+                    'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
+                    'TICKER_TEXT' => null,
+                    'URL' => build_url(array('page' => 'points', 'type' => 'member', 'id' => $row['gift_to']), get_module_zone('points')),
+                    'IS_POSITIVE' => false,
+                    'IS_NEGATIVE' => false,
 
-                        // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
-                        'FROM_ID' => ($row['anonymous'] == 1) ? null : ('member_' . strval($member_id)),
-                        'TO_ID' => 'member_' . strval($row['gift_to']),
-                        'GROUP_ID' => null,
-                    );
+                    // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
+                    'FROM_ID' => ($row['anonymous'] == 1) ? null : ('member_' . strval($member_id)),
+                    'TO_ID' => 'member_' . strval($row['gift_to']),
+                    'GROUP_ID' => null,
+                );
             }
         }
 

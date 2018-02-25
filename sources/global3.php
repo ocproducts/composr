@@ -3336,19 +3336,6 @@ function brand_name()
 }
 
 /**
- * Find if we're on an Conversr satellite site.
- *
- * @return boolean If we are
- */
-function is_cns_satellite_site()
-{
-    if (get_forum_type() != 'cns') {
-        return false;
-    }
-    return (isset($GLOBALS['FORUM_DB'])) && ((get_db_site() != get_db_forums()) || (get_db_site_host() != get_db_forums_host()) || (get_db_site_user() != get_db_forums_user()));
-}
-
-/**
  * Convert GUIDs to IDs in some text.
  *
  * @param  string $text Input text

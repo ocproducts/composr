@@ -832,13 +832,13 @@ class Hook_import_vb3
                     import_id_remap_put('post_files', strval($row['attachmentid']), 1);
                     continue; // Orphaned post
                 }
-                $post = get_translated_text($post_row[0]['p_post'], $GLOBALS['SITE_DB']);
+                $post = get_translated_text($post_row[0]['p_post']);
                 $member_id = $post_row[0]['p_poster'];
 
                 list($url, $thumb_url) = $this->data_to_disk($row['filedata'], $row['filename'], 'attachments', false, $row['thumbnail'], true);
-                $a_id = $GLOBALS['SITE_DB']->query_insert('attachments', array('a_member_id' => $member_id, 'a_file_size' => $row['filesize'], 'a_url' => $url, 'a_thumb_url' => $thumb_url, 'a_original_filename' => $row['filename'], 'a_num_downloads' => $row['counter'], 'a_last_downloaded_time' => null, 'a_add_time' => $row['dateline'], 'a_description' => ''), true);
+                $a_id = $GLOBALS['FORUM_DB']->query_insert('attachments', array('a_member_id' => $member_id, 'a_file_size' => $row['filesize'], 'a_url' => $url, 'a_thumb_url' => $thumb_url, 'a_original_filename' => $row['filename'], 'a_num_downloads' => $row['counter'], 'a_last_downloaded_time' => null, 'a_add_time' => $row['dateline'], 'a_description' => ''), true);
 
-                $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => 'cns_post', 'r_referer_id' => strval($post_id), 'a_id' => $a_id));
+                $GLOBALS['FORUM_DB']->query_insert('attachment_refs', array('r_referer_type' => 'cns_post', 'r_referer_id' => strval($post_id), 'a_id' => $a_id));
                 $post .= "\n\n" . '[attachment]' . strval($a_id) . '[/attachment]';
 
                 cns_over_msn();

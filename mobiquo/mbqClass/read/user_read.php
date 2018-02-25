@@ -212,7 +212,7 @@ class CMSUserRead
                 );
             }
 
-            $guest_count = $GLOBALS['FORUM_DB']->query_select_value('sessions', 'COUNT(*)', array('member_id' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
+            $guest_count = $GLOBALS['SITE_DB']->query_select_value('sessions', 'COUNT(*)', array('member_id' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
         } else {
             switch ($area) {
                 case 'forum':
@@ -413,9 +413,9 @@ class CMSUserRead
         }
 
         if ($i_follow) {
-            return $GLOBALS['FORUM_DB']->query_select_value('chat_friends', 'COUNT(*)', array('member_likes' => $user_id));
+            return $GLOBALS['SITE_DB']->query_select_value('chat_friends', 'COUNT(*)', array('member_likes' => $user_id));
         }
-        return $GLOBALS['FORUM_DB']->query_select_value('chat_friends', 'COUNT(*)', array('member_liked' => $user_id));
+        return $GLOBALS['SITE_DB']->query_select_value('chat_friends', 'COUNT(*)', array('member_liked' => $user_id));
     }
 
     /**

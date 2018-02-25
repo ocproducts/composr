@@ -247,8 +247,6 @@ class Module_admin_shopping
         }
 
         if (($search !== null) && ($search != '')) {
-            push_db_scope_check(false);
-
             $where .= ' AND (';
             if (is_numeric($filter)) {
                 $where .= 'id=' . strval(intval($filter));
@@ -295,8 +293,6 @@ class Module_admin_shopping
             do_lang_tempcode('STATUS'),
             do_lang_tempcode('ACTIONS'),
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
-
-        push_db_scope_check(false);
 
         $sql = 'SELECT * FROM ' . get_table_prefix() . 'shopping_orders WHERE ' . $where . ' ORDER BY order_status=\'' . /*Not using db_string_equal_to because LIKE must not be used here*/db_escape_string('ORDER_STATUS_cancelled')/*cancelled always last*/ . '\',' . $sortable . ' ' . $sort_order;
         $rows = $GLOBALS['SITE_DB']->query($sql, $max, $start, false, true);
@@ -366,8 +362,6 @@ class Module_admin_shopping
             'SEARCH_VAL' => $search,
             'HIDDEN' => $hidden,
         ));
-
-        pop_db_scope_check();
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);

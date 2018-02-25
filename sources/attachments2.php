@@ -223,7 +223,8 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $db)
                             $new_url = $test;
                         }
 
-                        $attachment_id = $GLOBALS['SITE_DB']->query_insert('attachments', array(
+                        $db = $GLOBALS[((substr($type, 0, 4) == 'cns_') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+                        $attachment_id = $db->query_insert('attachments', array(
                             'a_member_id' => get_member(),
                             'a_file_size' => strlen($data),
                             'a_url' => $new_url,
@@ -234,7 +235,7 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $db)
                             'a_description' => '',
                             'a_add_time' => time(),
                         ), true);
-                        $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment_id));
+                        $db->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment_id));
 
                         $comcode = str_replace($matches[0][$i], '[attachment framed="0" thumb="0"]' . strval($attachment_id) . '[/attachment]', $comcode);
                     }

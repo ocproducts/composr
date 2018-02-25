@@ -482,13 +482,15 @@ function _notifications_build_category_tree($_notification_types, $notification_
  */
 function copy_notifications_to_new_child($notification_code, $id, $child_id)
 {
+    $db = $GLOBALS[((substr($notification_code, 0, 4) == 'cns_') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+
     // Copy notifications over to new children
     $_start = 0;
     do {
-        $notifications_to = $GLOBALS['SITE_DB']->query_select('notifications_enabled', array('l_member_id', 'l_setting'), array('l_notification_code' => substr($notification_code, 0, 80), 'l_code_category' => $id), '', 100, $_start);
+        $notifications_to = $db->query_select('notifications_enabled', array('l_member_id', 'l_setting'), array('l_notification_code' => substr($notification_code, 0, 80), 'l_code_category' => $id), '', 100, $_start);
 
         foreach ($notifications_to as $notification_to) {
-            $GLOBALS['SITE_DB']->query_insert('notifications_enabled', array(
+            $db->query_insert('notifications_enabled', array(
                 'l_member_id' => $notification_to['l_member_id'],
                 'l_notification_code' => substr($notification_code, 0, 80),
                 'l_code_category' => $child_id,

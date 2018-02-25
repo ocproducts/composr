@@ -33,14 +33,16 @@ function set_global_category_access($module, $category)
     $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
     $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true, true);
 
-    $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category));
+    $db = $GLOBALS[(($module == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+
+    $db->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category));
 
     foreach (array_keys($groups) as $group_id) {
         if (in_array($group_id, $admin_groups)) {
             continue;
         }
 
-        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id));
+        $db->query_insert('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id));
     }
 }
 
@@ -224,6 +226,8 @@ function get_category_permissions_for_environment($module, $category, $page = nu
 
     $server_id = get_module_zone($page, 'modules', null, 'php', true, false) . ':' . $page; // $category is not of interest to us because we use this to find our inheritance settings
 
+    $db = $GLOBALS[(($module == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+
     $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
     $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, true);
 
@@ -233,7 +237,7 @@ function get_category_permissions_for_environment($module, $category, $page = nu
         $access[$id] = $new_category ? 1 : 0;
     }
     if (!$new_category) {
-        $access_rows = $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_select('group_category_access', array('group_id'), array('module_the_name' => $module, 'category_name' => $category));
+        $access_rows = $db->query_select('group_category_access', array('group_id'), array('module_the_name' => $module, 'category_name' => $category));
         foreach ($access_rows as $row) {
             $access[$row['group_id']] = 1;
         }
@@ -241,7 +245,7 @@ function get_category_permissions_for_environment($module, $category, $page = nu
 
     // Privileges
     $privileges = array();
-    $access_rows = $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_select('group_privileges', array('group_id', 'privilege', 'the_value'), array('module_the_name' => $module, 'category_name' => $category));
+    $access_rows = $db->query_select('group_privileges', array('group_id', 'privilege', 'the_value'), array('module_the_name' => $module, 'category_name' => $category));
     foreach ($access_rows as $row) {
         $privileges[$row['privilege']][$row['group_id']] = strval($row['the_value']);
     }
@@ -468,9 +472,11 @@ function set_category_permissions_from_environment($module, $category, $page = n
     $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
     $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
 
+    $db = $GLOBALS[(($module == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+
     // Based on old access settings, we may need to look at additional groups (clubs) that have permissions here
     $access = array();
-    $access_rows = $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_select('group_category_access', array('group_id'), array('module_the_name' => $module, 'category_name' => $category));
+    $access_rows = $db->query_select('group_category_access', array('group_id'), array('module_the_name' => $module, 'category_name' => $category));
     foreach ($access_rows as $row) {
         $access[$row['group_id']] = 1;
     }
@@ -486,7 +492,7 @@ function set_category_permissions_from_environment($module, $category, $page = n
             continue;
         }
 
-        $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id));
+        $db->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id));
     }
 
     $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
@@ -500,7 +506,7 @@ function set_category_permissions_from_environment($module, $category, $page = n
         if (is_array($cat_support)) {
             $cat_support = $cat_support[0];
         }
-        $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_delete('group_privileges', array('privilege' => $override, 'module_the_name' => $module, 'category_name' => $category));
+        $db->query_delete('group_privileges', array('privilege' => $override, 'module_the_name' => $module, 'category_name' => $category));
     }
     foreach (array_keys($groups) as $group_id) {
         if (in_array($group_id, $admin_groups)) {
@@ -509,7 +515,7 @@ function set_category_permissions_from_environment($module, $category, $page = n
 
         $value = post_param_integer('access_' . strval($group_id), 0);
         if ($value == 1) {
-            $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_insert('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id), false, true); // Race/corruption condition
+            $db->query_insert('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id), false, true); // Race/corruption condition
         }
         foreach ($overridables as $override => $cat_support) {
             if (is_array($cat_support)) {
@@ -521,7 +527,7 @@ function set_category_permissions_from_environment($module, $category, $page = n
 
             $value = post_param_integer('access_' . strval($group_id) . '_privilege_' . $override, -1);
             if ($value != -1) {
-                $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_insert('group_privileges', array('privilege' => $override, 'group_id' => $group_id, 'module_the_name' => $module, 'category_name' => $category, 'the_page' => '', 'the_value' => $value));
+                $db->query_insert('group_privileges', array('privilege' => $override, 'group_id' => $group_id, 'module_the_name' => $module, 'category_name' => $category, 'the_page' => '', 'the_value' => $value));
             }
         }
     }

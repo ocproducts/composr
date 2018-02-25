@@ -37,7 +37,7 @@ class Hook_resource_meta_aware_cpf
             'content_type_label' => 'cns:CUSTOM_PROFILE_FIELD',
             'content_type_universal_label' => 'Custom profile field',
 
-            'db' => $GLOBALS['FORUM_DB'],
+            'db' => get_db_for('f_custom_fields'),
             'table' => 'f_custom_fields',
             'id_field' => 'id',
             'id_field_numeric' => true,

@@ -595,8 +595,6 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
     require_code('global4');
     prevent_double_submit('ADD_CUSTOM_PROFILE_FIELD', null, $name);
 
-    push_db_scope_check(false);
-
     if ($only_group == '-1') {
         $only_group = '';
     }
@@ -678,8 +676,6 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
         persistent_cache_delete('CUSTOM_FIELD_CACHE');
         persistent_cache_delete('LIST_CPFS');
     }
-
-    pop_db_scope_check();
 
     return $id;
 }

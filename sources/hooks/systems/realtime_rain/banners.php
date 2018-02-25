@@ -53,23 +53,23 @@ class Hook_realtime_rain_banners
                 }
 
                 $drops[] = rain_get_special_icons($row['c_ip_address'], $timestamp) + array(
-                        'TYPE' => 'banners',
-                        'FROM_MEMBER_ID' => strval($member_id),
-                        'TO_MEMBER_ID' => null,
-                        'TITLE' => do_lang('BANNER_CLICKED'),
-                        'IMAGE' => $image,
-                        'TIMESTAMP' => strval($timestamp),
-                        'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
-                        'TICKER_TEXT' => null,
-                        'URL' => null,
-                        'IS_POSITIVE' => true,
-                        'IS_NEGATIVE' => false,
+                    'TYPE' => 'banners',
+                    'FROM_MEMBER_ID' => strval($member_id),
+                    'TO_MEMBER_ID' => null,
+                    'TITLE' => do_lang('BANNER_CLICKED'),
+                    'IMAGE' => $image,
+                    'TIMESTAMP' => strval($timestamp),
+                    'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
+                    'TICKER_TEXT' => null,
+                    'URL' => null,
+                    'IS_POSITIVE' => true,
+                    'IS_NEGATIVE' => false,
 
-                        // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
-                        'FROM_ID' => 'member_' . strval($member_id),
-                        'TO_ID' => null,
-                        'GROUP_ID' => 'banner_' . $row['name'],
-                    );
+                    // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
+                    'FROM_ID' => 'member_' . strval($member_id),
+                    'TO_ID' => null,
+                    'GROUP_ID' => 'banner_' . $row['name'],
+                );
             }
         }
 

@@ -52,15 +52,13 @@ class Hook_ecommerce_usergroup
             return array();
         }
 
-        push_db_scope_check(false);
-
         $images = array('bronze', 'silver', 'gold', 'platinum');
 
         $db = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'];
         $usergroup_subs = $db->query_select('f_usergroup_subs', array('*'), array('s_enabled' => 1), 'ORDER BY s_length_units, s_price');
         $products = array();
         foreach ($usergroup_subs as $i => $sub) {
-            $item_name = get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
+            $item_name = get_translated_text($sub['s_title'], $db);
 
             $image_url = '';
             if (get_forum_type() == 'cns') {
@@ -101,8 +99,6 @@ class Hook_ecommerce_usergroup
             );
         }
 
-        pop_db_scope_check();
-
         return $products;
     }
 
@@ -124,10 +120,10 @@ class Hook_ecommerce_usergroup
             return ECOMMERCE_PRODUCT_AVAILABLE;
         }
 
+        $db = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'];
+
         $usergroup_subscription_id = intval(substr($type_code, 9));
-        push_db_scope_check(false);
-        $rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'), array('id' => $usergroup_subscription_id));
-        pop_db_scope_check();
+        $rows = $db->query_select('f_usergroup_subs', array('*'), array('id' => $usergroup_subscription_id));
         if (!isset($rows[0])) {
             return ECOMMERCE_PRODUCT_MISSING;
         }
@@ -153,19 +149,16 @@ class Hook_ecommerce_usergroup
      */
     public function get_message($type_code)
     {
-        push_db_scope_check(false);
-
         $usergroup_subscription_id = intval(preg_replace('#^USERGROUP#', '', $type_code));
 
         $db = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'];
+
         $sub = $db->query_select('f_usergroup_subs', array('*'), array('id' => $usergroup_subscription_id), '', 1);
         if (!array_key_exists(0, $sub)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('CUSTOM_PRODUCT_USERGROUP')));
         }
 
         $ret = get_translated_tempcode('f_usergroup_subs', $sub[0], 's_description', $db);
-
-        pop_db_scope_check();
 
         return $ret;
     }
@@ -245,9 +238,9 @@ class Hook_ecommerce_usergroup
 
         $usergroup_subscription_id = intval(preg_replace('#^USERGROUP#', '', $type_code));
 
-        push_db_scope_check(false);
-        $rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'), array('id' => $usergroup_subscription_id), '', 1);
-        pop_db_scope_check();
+        $db = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'];
+
+        $rows = $db->query_select('f_usergroup_subs', array('*'), array('id' => $usergroup_subscription_id), '', 1);
         if (!array_key_exists(0, $rows)) {
             return false; // The usergroup subscription has been deleted, and this was to remove the payment for it
         }
@@ -273,12 +266,12 @@ class Hook_ecommerce_usergroup
             if ($test) {
                 // Remove them from the group
 
-                if ($GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select_value_if_there('f_group_member_timeouts', 'member_id', array('member_id' => $member_id, 'group_id' => $new_group)) === null) {
+                if ($db->query_select_value_if_there('f_group_member_timeouts', 'member_id', array('member_id' => $member_id, 'group_id' => $new_group)) === null) {
                     if ((method_exists($GLOBALS['FORUM_DRIVER'], 'remove_member_from_group')) && (get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {
                         $GLOBALS['FORUM_DRIVER']->remove_member_from_group($member_id, $new_group);
                     } else {
                         if ($myrow['s_uses_primary'] == 1) {
-                            $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_update('f_members', array('m_primary_group' => get_first_default_group()), array('id' => $member_id), '', 1);
+                            $GLOBALS[$db->query_update('f_members', array('m_primary_group' => get_first_default_group()), array('id' => $member_id), '', 1);
 
                             $GLOBALS['FORUM_DB']->query_insert('f_group_join_log', array(
                                 'member_id' => $member_id,
@@ -286,13 +279,13 @@ class Hook_ecommerce_usergroup
                                 'join_time' => time(),
                             ));
                         } else {
-                            $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_delete('f_group_members', array('gm_group_id' => $new_group, 'gm_member_id' => $member_id));// , '', 1
+                            $db->query_delete('f_group_members', array('gm_group_id' => $new_group, 'gm_member_id' => $member_id));// , '', 1
                         }
                     }
 
                     // Notification to user
                     $subject = do_lang('PAID_SUBSCRIPTION_ENDED', null, null, null, get_lang($member_id));
-                    $body = get_translated_text($myrow['s_mail_end'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'], get_lang($member_id));
+                    $body = get_translated_text($myrow['s_mail_end'], $db, get_lang($member_id));
                     dispatch_notification('paid_subscription_messages', null/*Not currently per-sub settable strval($usergroup_subscription_id)*/, $subject, $body, array($member_id), A_FROM_SYSTEM_PRIVILEGED);
 
                     // Notification to staff
@@ -310,7 +303,7 @@ class Hook_ecommerce_usergroup
                     $GLOBALS['FORUM_DRIVER']->add_member_to_group($member_id, $new_group);
                 } else {
                     if ($myrow['s_uses_primary'] == 1) {
-                        $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_update('f_members', array('m_primary_group' => $new_group), array('id' => $member_id), '', 1);
+                        $db->query_update('f_members', array('m_primary_group' => $new_group), array('id' => $member_id), '', 1);
 
                         $GLOBALS['FORUM_DB']->query_insert('f_group_join_log', array(
                             'member_id' => $member_id,
@@ -328,18 +321,18 @@ class Hook_ecommerce_usergroup
                 global $USERS_GROUPS_CACHE;
                 $USERS_GROUPS_CACHE = array();
 
-                $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_delete('f_group_member_timeouts', array('member_id' => $member_id, 'group_id' => $new_group));
+                $db->query_delete('f_group_member_timeouts', array('member_id' => $member_id, 'group_id' => $new_group));
             }
 
             if ($myrow['s_auto_recur'] == 0) { // Purchasing module, so need to maintain group-member-timeout
-                $start_time = $GLOBALS['SITE_DB']->query_select_value_if_there('f_group_member_timeouts', 'MAX(timeout)', array(
+                $start_time = $db->query_select_value_if_there('f_group_member_timeouts', 'MAX(timeout)', array(
                     'member_id' => $member_id,
                     'group_id' => $new_group,
                 ));
                 if (($start_time === null) || ($start_time < time())) {
                     $start_time = time();
                 }
-                $GLOBALS['SITE_DB']->query_delete('f_group_member_timeouts', array(
+                $db->query_delete('f_group_member_timeouts', array(
                     'member_id' => $member_id,
                     'group_id' => $new_group,
                 ));
@@ -347,7 +340,7 @@ class Hook_ecommerce_usergroup
                 $time_period_units = array('y' => 'year', 'm' => 'month', 'w' => 'week', 'd' => 'day');
                 $term_end_time = strtotime('+' . strval($myrow['s_length']) . ' ' . $time_period_units[$myrow['s_length_units']], $start_time);
 
-                $GLOBALS['SITE_DB']->query_insert('f_group_member_timeouts', array(
+                $db->query_insert('f_group_member_timeouts', array(
                     'member_id' => $member_id,
                     'group_id' => $new_group,
                     'timeout' => $term_end_time,
@@ -356,7 +349,7 @@ class Hook_ecommerce_usergroup
 
             // Notification to user
             $subject = do_lang('PAID_SUBSCRIPTION_STARTED', null, null, null, get_lang($member_id));
-            $body = get_translated_text($myrow['s_mail_start'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'], get_lang($member_id));
+            $body = get_translated_text($myrow['s_mail_start'], $db, get_lang($member_id));
             dispatch_notification('paid_subscription_messages', null/*Not currently per-sub settable strval($usergroup_subscription_id)*/, $subject, $body, array($member_id), A_FROM_SYSTEM_PRIVILEGED);
 
             // Notification to staff
@@ -379,10 +372,10 @@ class Hook_ecommerce_usergroup
      */
     public function member_for($type_code, $purchase_id)
     {
+        $db = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'];
+
         $usergroup_subscription_id = intval(substr($type_code, 9));
-        push_db_scope_check(false);
-        $rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'), array('id' => $usergroup_subscription_id), '', 1);
-        pop_db_scope_check();
+        $rows = $GLOBALS[$db->query_select('f_usergroup_subs', array('*'), array('id' => $usergroup_subscription_id), '', 1);
         if (array_key_exists(0, $rows)) {
             $myrow = $rows[0];
         } else {

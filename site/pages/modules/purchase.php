@@ -172,7 +172,7 @@ class Module_purchase
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 6)) { // LEGACY
-            $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
+            $GLOBALS['SITE_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
 
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'purchase_id', 'ID_TEXT', 't_purchase_id');
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'status', 'SHORT_TEXT', 't_status');
@@ -223,14 +223,16 @@ class Module_purchase
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 7)) { // LEGACY
-            require_code('cns_members');
-            $cf_id = find_cms_cpf_field_id('cms_payment_card_issue_number');
-            if ($cf_id !== null) {
-                $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'integer'), array('id' => $cf_id));
-                $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf_ft_' . strval($cf_id));
-                $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => '0'), array('field_' . strval($cf_id) => ''));
-                $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($cf_id), '?INTEGER');
-                $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => null), array('field_' . strval($cf_id) => 0));
+            if (get_forum_type() == 'cns') {
+                require_code('cns_members');
+                $cf_id = find_cms_cpf_field_id('cms_payment_card_issue_number');
+                if ($cf_id !== null) {
+                    $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'integer'), array('id' => $cf_id));
+                    $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf_ft_' . strval($cf_id));
+                    $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => '0'), array('field_' . strval($cf_id) => ''));
+                    $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($cf_id), '?INTEGER');
+                    $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => null), array('field_' . strval($cf_id) => 0));
+                }
             }
 
             rename_config_option('ipn', 'payment_gateway_username');

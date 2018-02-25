@@ -42,23 +42,23 @@ class Hook_realtime_rain_search
                 $member_id = $row['member_id'];
 
                 $drops[] = rain_get_special_icons(null, $timestamp) + array(
-                        'TYPE' => 'search',
-                        'FROM_MEMBER_ID' => strval($member_id),
-                        'TO_MEMBER_ID' => null,
-                        'TITLE' => rain_truncate_for_title($row['s_primary']),
-                        'IMAGE' => find_theme_image('icons/admin/site_meta/search'),
-                        'TIMESTAMP' => strval($timestamp),
-                        'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
-                        'TICKER_TEXT' => null,
-                        'URL' => build_url(array('page' => 'search', 'type' => 'results', 'content' => $row['s_primary']), get_module_zone('search')),
-                        'IS_POSITIVE' => false,
-                        'IS_NEGATIVE' => false,
+                    'TYPE' => 'search',
+                    'FROM_MEMBER_ID' => strval($member_id),
+                    'TO_MEMBER_ID' => null,
+                    'TITLE' => rain_truncate_for_title($row['s_primary']),
+                    'IMAGE' => find_theme_image('icons/admin/site_meta/search'),
+                    'TIMESTAMP' => strval($timestamp),
+                    'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
+                    'TICKER_TEXT' => null,
+                    'URL' => build_url(array('page' => 'search', 'type' => 'results', 'content' => $row['s_primary']), get_module_zone('search')),
+                    'IS_POSITIVE' => false,
+                    'IS_NEGATIVE' => false,
 
-                        // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
-                        'FROM_ID' => 'member_' . strval($member_id),
-                        'TO_ID' => null,
-                        'GROUP_ID' => 'search_' . $row['s_primary'],
-                    );
+                    // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
+                    'FROM_ID' => 'member_' . strval($member_id),
+                    'TO_ID' => null,
+                    'GROUP_ID' => 'search_' . $row['s_primary'],
+                );
             }
         }
 

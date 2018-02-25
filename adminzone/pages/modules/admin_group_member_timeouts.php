@@ -111,9 +111,11 @@ class Module_admin_group_member_timeouts
         require_code('form_templates');
         require_code('templates_pagination');
 
+        $db = get_db_for('f_group_member_timeouts');
+
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 100);
-        $max_rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select_value('f_group_member_timeouts', 'COUNT(*)');
+        $max_rows = $db->query_select_value('f_group_member_timeouts', 'COUNT(*)');
 
         if (get_forum_type() == 'cns') {
             $num_usergroups = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
@@ -133,12 +135,12 @@ class Module_admin_group_member_timeouts
 
         single_field__start();
 
-        $rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_group_member_timeouts', array('member_id', 'group_id', 'timeout'), array(), '', $max, $start);
+        $rows = $db->query_select('f_group_member_timeouts', array('member_id', 'group_id', 'timeout'), array(), '', $max, $start);
         $timeouts = array();
         foreach ($rows as $i => $row) {
             // Cleanup disassociated data
             if (!isset($usergroups[$row['group_id']])) {
-                $GLOBALS['FORUM_DB']->query_delete('f_group_member_timeouts', array('group_id' => $row['group_id']));
+                $db->query_delete('f_group_member_timeouts', array('group_id' => $row['group_id']));
                 continue;
             }
 
@@ -241,7 +243,9 @@ class Module_admin_group_member_timeouts
             attach_message(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)), 'warn');
         } else {
             if ($old_group_id !== null) {
-                $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_delete('f_group_member_timeouts', array(
+                $db = get_db_for('f_group_member_timeouts');
+
+                $db->query_delete('f_group_member_timeouts', array(
                     'member_id' => $member_id,
                     'group_id' => $old_group_id,
                 ), '', 1);

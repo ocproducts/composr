@@ -59,9 +59,7 @@ class Hook_cron_subscription_mails
             $subscribers[$subscriber] = find_member_subscriptions($subscriber, true);
         }
 
-        push_db_scope_check(false);
-
-        $mails = $GLOBALS['SITE_DB']->query_select('f_usergroup_sub_mails m JOIN ' . get_table_prefix() . 'f_usergroup_subs s ON s.id=m.m_usergroup_sub_id', array('m.*'));
+        $mails = $GLOBALS['FORUM_DB']->query_select('f_usergroup_sub_mails m JOIN ' . get_table_prefix() . 'f_usergroup_subs s ON s.id=m.m_usergroup_sub_id', array('m.*'));
         foreach ($mails as $mail) {
             $offset = $mail['m_ref_point_offset'] * 60 * 60; // Convert from hours to seconds
             foreach ($subscribers as $subscriber => $subs) {
@@ -94,7 +92,5 @@ class Hook_cron_subscription_mails
                 }
             }
         }
-
-        pop_db_scope_check();
     }
 }
