@@ -202,7 +202,11 @@ Allows people to specify who referred them when they join your site or other con
                 foreach ($rows as $row) {
                     $member_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $row['i_email_address']));
                     if ($member_id !== null) {
-                        $ini_file = parse_ini_file(get_custom_file_base() . '/text_custom/referrals.txt', true);
+                        $path = get_custom_file_base() . '/text_custom/referrals.txt';
+                        if (!is_file($path)) {
+                            $path = get_file_base() . '/text_custom/referrals.txt';
+                        }
+                        $ini_file = parse_ini_file($path, true);
 
                         foreach (array_keys($ini_file) as $scheme_name) {
                             $GLOBALS['SITE_DB']->query_insert('referees_qualified_for', array(

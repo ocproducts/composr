@@ -1613,7 +1613,7 @@ th.metadata-title {
 
 .help-jumpout {
 	padding: 0.5em 0;
-	padding-left: 50px;
+	padding-left: 55px;
 	background: url('{$IMG;,help_jumpout}') no-repeat left center;
 	background-size: 48px 48px;
 }

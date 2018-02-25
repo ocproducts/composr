@@ -353,12 +353,6 @@ function step_1()
                     if ($file == 'data/modules/admin_stats/IP_Country.txt') {
                         continue;
                     }
-                    if ($file == 'data/spelling/aspell/bin/aspell-15.dll') {
-                        continue;
-                    }
-                    if ($file == 'data/spelling/aspell/bin/en-only.rws') {
-                        continue;
-                    }
                     if (substr($file, -4) == '.ttf') {
                         continue;
                     }

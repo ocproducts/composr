@@ -41,7 +41,11 @@ class Hook_members_referrals
 
         $ret = array();
 
-        $ini_file = parse_ini_file(get_custom_file_base() . '/text_custom/referrals.txt', true);
+        $path = get_custom_file_base() . '/text_custom/referrals.txt';
+        if (!is_file($path)) {
+            $path = get_file_base() . '/text_custom/referrals.txt';
+        }
+        $ini_file = parse_ini_file($path, true);
 
         foreach ($ini_file as $ini_file_section_name => $ini_file_section) {
             if ($ini_file_section_name != 'global') {
@@ -99,7 +103,11 @@ class Hook_members_referrals
 
         $ret = array();
 
-        $ini_file = parse_ini_file(get_custom_file_base() . '/text_custom/referrals.txt', true);
+        $path = get_custom_file_base() . '/text_custom/referrals.txt';
+        if (!is_file($path)) {
+            $path = get_file_base() . '/text_custom/referrals.txt';
+        }
+        $ini_file = parse_ini_file($path, true);
 
         foreach ($ini_file as $ini_file_section_name => $ini_file_section) {
             if ($ini_file_section_name != 'global') {

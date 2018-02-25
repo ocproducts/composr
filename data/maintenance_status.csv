@@ -127,3 +127,4 @@ google_analytics,Google Analytics integration.,ocProducts,,Not regularly Tested.
 cors,Running across multiple domains and Cross-Origin Resource Sharing (CORS),ocProducts,,Not regularly Tested.,No,
 mixed_https,Having a combination of HTTPS and HTTP pages,ocProducts,,Not regularly Tested.,No,
 inline_editing,Inline Editing,ocProducts,,"Not regularly Tested, and themes are not typically expected to support it out-of-the-box.",No,
+download_pdf_indexing,Download PDF search indexing,ocProducts,,Not regularly Tested.,No,

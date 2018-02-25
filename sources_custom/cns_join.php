@@ -16,7 +16,11 @@
 function init__cns_join($in)
 {
     // More referral fields in form
-    $ini_file = parse_ini_file(get_custom_file_base() . '/text_custom/referrals.txt', true);
+    $path = get_custom_file_base() . '/text_custom/referrals.txt';
+    if (!is_file($path)) {
+        $path = get_file_base() . '/text_custom/referrals.txt';
+    }
+    $ini_file = parse_ini_file($path, true);
     if ((!isset($ini_file['visible_referrer_field'])) || ($ini_file['visible_referrer_field'] == '1')) {
         $extra_code = "
             if ((!isset(\$adjusted_config_options['referrals'])) || (\$adjusted_config_options['referrals'] == '1')) {

@@ -30,6 +30,10 @@ class Hook_page_groupings_referrals
         $ret = array();
 
         $path = get_custom_file_base() . '/text_custom/referrals.txt';
+        if (!is_file($path)) {
+            $path = get_file_base() . '/text_custom/referrals.txt';
+        }
+
         if (is_file($path)) {
             $ini_file = parse_ini_file($path, true);
 
