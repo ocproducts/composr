@@ -122,7 +122,7 @@ function handle_facebook_connection_login($current_logged_in_member)
     }
 
     // See if they have logged in before - i.e. have a synched account
-    $member_row = $GLOBALS['FORUM_DB']->query_select('f_members', array('*'), array('m_password_compat_scheme' => 'facebook', 'm_pass_hash_salted' => $facebook_uid), 'ORDER BY id DESC', 1);
+    $member_row = $GLOBALS['FORUM_DB']->query_select('f_members', array('*'), array('m_password_compat_scheme' => 'facebook', 'm_pass_hash_salted' => $facebook_uid), 'ORDER BY m_join_time DESC,id DESC', 1);
     $member_id = array_key_exists(0, $member_row) ? $member_row[0]['id'] : null;
     if (is_guest($member_id)) {
         $member_id = null;

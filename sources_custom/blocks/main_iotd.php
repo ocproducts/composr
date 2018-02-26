@@ -74,7 +74,7 @@ class Block_main_iotd
         }
 
         if ($mode == 'current') {
-            $iotd = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), array('is_current' => 1), 'ORDER BY id DESC', 1);
+            $iotd = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), array('is_current' => 1), 'ORDER BY add_date DESC', 1);
         } elseif (is_numeric($mode)) {
             $iotd = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), array('id' => intval($mode)), '', 1);
             if (!array_key_exists(0, $iotd)) {

@@ -575,7 +575,7 @@ class Module_quiz
         ), true);
         $questions = $GLOBALS['SITE_DB']->query_select('quiz_questions', array('*'), array('q_quiz' => $quiz_id), 'ORDER BY q_order');
         foreach ($questions as $i => $question) {
-            $answers = $GLOBALS['SITE_DB']->query_select('quiz_question_answers', array('*'), array('q_question' => $question['id']), 'ORDER BY id');
+            $answers = $GLOBALS['SITE_DB']->query_select('quiz_question_answers', array('*'), array('q_question' => $question['id']), 'ORDER BY q_order');
             $questions[$i]['answers'] = $answers;
         }
         foreach ($questions as $i => $question) {

@@ -122,7 +122,7 @@ function cns_poll_get_results($poll_id, $request_results = true)
         return null;
     }
 
-    $_answers = $GLOBALS['FORUM_DB']->query_select('f_poll_answers', array('*'), array('pa_poll_id' => $poll_id), 'ORDER BY id');
+    $_answers = $GLOBALS['FORUM_DB']->query_select('f_poll_answers', array('*'), array('pa_poll_id' => $poll_id), (get_db_type() == 'xml') ? 'ORDER BY pa_answer' : 'ORDER BY id');
     $answers = array();
     foreach ($_answers as $_answer) {
         $answer = array();

@@ -65,7 +65,7 @@ function _forum_authorise_login($this_ref, $username, $user_id, $password_hashed
             $rows = $this_ref->db->query_select('f_members', array('*'), array('m_username' => $username), '', 1);
         }
         if ((!array_key_exists(0, $rows)) && (get_option('one_per_email_address') != '0')) {
-            $rows = $this_ref->db->query_select('f_members', array('*'), array('m_email_address' => $username), 'ORDER BY id ASC', 1);
+            $rows = $this_ref->db->query_select('f_members', array('*'), array('m_email_address' => $username), 'ORDER BY m_join_time ASC', 1);
         }
         if (array_key_exists(0, $rows)) {
             $this_ref->MEMBER_ROWS_CACHED[$rows[0]['id']] = $rows[0];

@@ -103,10 +103,14 @@ class tasks_test_set extends cms_test_case
         // Add complex event with start and recurrence
         $complex_event_id = add_calendar_event(8, 'daily', 3, 0, 'complex event', '', 3, 2010, 1, 10, 'day_of_month', 10, 15, 2010, 1, 10, 'day_of_month', 11, 15, null, 1, null, 1, 1, 1, 1, '', null, 0, null, null, null);
 
+        if (get_db_type() == 'xml') {
+            sleep(1);
+        }
+
         // Add event with start only
         $simple_event_id = add_calendar_event(8, 'none', null, 0, 'simple event', '', 3, 2010, 1, 10, 'day_of_month', 10, 15, null, null, null, 'day_of_month', null, null, null, 1, null, 1, 1, 1, 1, '', null, 0, null, null, null);
 
-        $last_rows_before = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array(), 'ORDER BY id DESC', 2);
+        $last_rows_before = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array(), 'ORDER BY e_add_date DESC,id DESC', 2);
         $this->clean_event_rows_for_comparison($last_rows_before);
 
         require_code('calendar_ical');
@@ -172,7 +176,7 @@ class tasks_test_set extends cms_test_case
         $num_events_after = $GLOBALS['SITE_DB']->query_select_value('calendar_events', 'COUNT(*)');
         $this->assertTrue($num_events_after > $num_events_before, 'Did not appear to import events (' . integer_format($num_events_after) . ' after, ' . integer_format($num_events_before) . ' before)');
 
-        $_last_rows_after = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array(), 'ORDER BY id DESC', 2);
+        $_last_rows_after = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array(), 'ORDER BY e_add_date DESC,id DESC', 2);
         $last_rows_after = $_last_rows_after;
         $this->clean_event_rows_for_comparison($last_rows_after);
 

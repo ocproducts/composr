@@ -347,7 +347,7 @@ class Module_downloads
                 if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
                     $map['validated'] = 1;
                 }
-                $rows = $GLOBALS['SITE_DB']->query_select('images', array('*'), $map, 'ORDER BY id', 200/*Stop sillyness, could be a DOS attack*/);
+                $rows = $GLOBALS['SITE_DB']->query_select('images', array('*'), $map, 'ORDER BY add_date,id', 200/*Stop sillyness, could be a DOS attack*/);
                 $div = 2;
                 $_out = new Tempcode();
                 $_row = new Tempcode();

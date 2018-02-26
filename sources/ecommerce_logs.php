@@ -246,7 +246,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
         do_lang_tempcode('DISPATCH_STATUS'),
     ));
 
-    $product_rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $id), 'ORDER BY id');
+    $product_rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $id), 'ORDER BY p_name');
     $product_entries = new Tempcode();
     foreach ($product_rows as $product_row) {
         $product_info_url = get_product_details_url($product_row['p_type_code'], false, $ordered_by_member_id);

@@ -2471,7 +2471,13 @@ class Database_Static_xml extends DatabaseDriver
             case 'OR':
                 $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
                 $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
-                if (($a === null) || ($b === null)) {
+                if (($a === null) && ($b === null)) {
+                    return null;
+                }
+                if (($a === false) && ($b === null)) {
+                    return null;
+                }
+                if (($a === null) && ($b === false)) {
                     return null;
                 }
                 return @($a || $b);

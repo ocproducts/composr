@@ -149,7 +149,7 @@ class Hook_task_export_member_csv
         $limit = get_param_integer('max', 200); // Set 'max' if you don't want all records
         $start = 0;
         do {
-            $members = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields ON id=mf_member_id WHERE ' . $group_filter_2 . ' ORDER BY id', $limit, $start);
+            $members = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields ON id=mf_member_id WHERE ' . $group_filter_2 . ' ORDER BY m_join_time,id', $limit, $start);
 
             foreach ($members as $iteration => $m) {
                 task_log($this, 'Exporting member row', $iteration + $start, $member_count);

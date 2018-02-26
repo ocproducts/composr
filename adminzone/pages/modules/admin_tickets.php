@@ -143,7 +143,7 @@ class Module_admin_tickets
 
         $list = new Tempcode();
         require_code('form_templates');
-        $ticket_types = collapse_2d_complexity('id', 'ticket_type_name', $GLOBALS['SITE_DB']->query_select('ticket_types', array('*'), array(), 'ORDER BY id'));
+        $ticket_types = collapse_2d_complexity('id', 'ticket_type_name', $GLOBALS['SITE_DB']->query_select('ticket_types', array('*'), array(), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name')));
         foreach ($ticket_types as $ticket_type_id => $ticket_type_name) {
             $list->attach(form_input_list_entry(strval($ticket_type_id), false, get_translated_text($ticket_type_name)));
         }

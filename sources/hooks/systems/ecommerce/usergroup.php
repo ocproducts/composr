@@ -178,7 +178,7 @@ class Hook_ecommerce_usergroup
             $fields = new Tempcode();
 
             $list = new Tempcode();
-            $rows = $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('*'), array('s_type_code' => $type_code, 's_state' => 'new'), 'ORDER BY id DESC');
+            $rows = $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('*'), array('s_type_code' => $type_code, 's_state' => 'new'), 'ORDER BY s_time DESC,id DESC');
             foreach ($rows as $row) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($row['s_member_id'], false, USERNAME_DEFAULT_BLANK);
                 $list->attach(form_input_list_entry(strval($row['id']), false, do_lang('SUBSCRIPTION_OF', strval($row['id']), $username, get_timezoned_date_time($row['s_time']))));

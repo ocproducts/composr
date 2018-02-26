@@ -254,10 +254,7 @@ class Module_cms_iotds extends Standard_crud_module
         if ($submitter !== null) {
             $where['submitter'] = $submitter;
         }
-        $rows = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), $where, 'ORDER BY id DESC', 100);
-        if (count($rows) == 100) { // Ah, too much, then we should pick a better set
-            $rows = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), $where, 'ORDER BY add_date DESC', 100);
-        }
+        $rows = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), $where, 'ORDER BY add_date DESC', 100);
         $previews = new Tempcode();
         foreach ($rows as $myrow) {
             require_code('iotds');

@@ -194,14 +194,14 @@ function get_thread_by_unread_func($raw_params)
     $last_read_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => get_member(), 'l_topic_id' => $topic_id));
     if ($last_read_time === null) {
         // Assumes that everything made in the last two weeks has not been read
-        $unread_details = $GLOBALS['FORUM_DB']->query('SELECT id,p_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($topic_id) . ' AND p_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) . ' ORDER BY id', 1);
+        $unread_details = $GLOBALS['FORUM_DB']->query('SELECT id,p_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($topic_id) . ' AND p_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) . ' ORDER BY p_time', 1);
         if (array_key_exists(0, $unread_details)) {
             $last_read_time = $unread_details[0]['p_time'] - 1;
         } else {
             $last_read_time = 0;
         }
     }
-    $first_unread_id = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($topic_id) . ' AND p_time>' . strval($last_read_time) . ' ORDER BY id');
+    $first_unread_id = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($topic_id) . ' AND p_time>' . strval($last_read_time) . ' ORDER BY p_time');
     if ($first_unread_id !== null) {
         // What page is it on?
         $before = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE id<' . strval($first_unread_id) . ' AND ' . tapatalk_get_topic_where($topic_id));

@@ -461,12 +461,12 @@ class Module_admin_quiz
 
         // Show summary
         if ($id !== null) {
-            $question_rows = $GLOBALS['SITE_DB']->query_select('quiz_questions', array('*'), array('q_quiz' => $id), 'ORDER BY id');
+            $question_rows = $GLOBALS['SITE_DB']->query_select('quiz_questions', array('*'), array('q_quiz' => $id), 'ORDER BY q_order,id');
             foreach ($question_rows as $q) {
                 $question = get_translated_text($q['q_question_text']);
 
                 $answers = new Tempcode();
-                $answer_rows = $GLOBALS['SITE_DB']->query_select('quiz_question_answers', array('*'), array('q_question' => $q['id']), 'ORDER BY id');
+                $answer_rows = $GLOBALS['SITE_DB']->query_select('quiz_question_answers', array('*'), array('q_question' => $q['id']), 'ORDER BY q_order,id');
                 $all_answers = array();
                 foreach ($answer_rows as $i => $a) {
                     $answer = get_translated_text($a['q_answer_text']);

@@ -268,9 +268,9 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
     if (($pic == '') && ($is_member)) {
         $pic = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
     }
-    $thumb_order = 'ORDER BY id ASC';
+    $thumb_order = 'ORDER BY add_date ASC,id ASC';
     if (get_option('reverse_thumb_order') == '1') {
-        $thumb_order = 'ORDER BY id DESC';
+        $thumb_order = 'ORDER BY add_date DESC,id DESC';
     }
     if ($pic == '') {
         $pic = $GLOBALS['SITE_DB']->query_select_value_if_there('images', 'thumb_url', array('cat' => $myrow['name'], 'validated' => 1), $thumb_order);

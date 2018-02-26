@@ -114,7 +114,7 @@ class Module_admin_trackbacks
      */
     public function choose()
     {
-        $trackback_rows = $GLOBALS['SITE_DB']->query_select('trackbacks', array('*'), array(), 'ORDER BY id DESC', 1000);
+        $trackback_rows = $GLOBALS['SITE_DB']->query_select('trackbacks', array('*'), array(), 'ORDER BY trackback_time DESC,id DESC', 1000);
 
         $trackbacks = '';
         foreach ($trackback_rows as $value) {

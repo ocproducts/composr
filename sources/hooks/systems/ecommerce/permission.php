@@ -31,7 +31,7 @@ class Hook_ecommerce_permission
     public function config()
     {
         $fields = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array(), 'ORDER BY id');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array(), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('p_title'));
         $hidden = new Tempcode();
         $out = array();
         foreach ($rows as $i => $row) {

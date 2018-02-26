@@ -2907,7 +2907,7 @@ END;
         // Find polls we can grab
         require_code('cns_forums');
         $or_list = get_forum_access_sql('t.t_forum_id');
-        $polls = $GLOBALS['FORUM_DB']->query('SELECT p.*,t_cache_first_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls p ON p.id=t.t_poll_id WHERE (' . $or_list . ') AND p.id IS NOT NULL ORDER BY id DESC',
+        $polls = $GLOBALS['FORUM_DB']->query('SELECT p.*,t_cache_first_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls p ON p.id=t.t_poll_id WHERE (' . $or_list . ') AND p.id IS NOT NULL ORDER BY p_time DESC',
             30);
         $js_function_calls = array();
         if (count($polls) !== 0) {
@@ -2975,7 +2975,7 @@ END;
                 access_denied('CATEGORY_ACCESS_LEVEL');
             }
 
-            $answer_rows = $GLOBALS['FORUM_DB']->query_select('f_poll_answers', array('pa_answer'), array('pa_poll_id' => $existing), 'ORDER BY id');
+            $answer_rows = $GLOBALS['FORUM_DB']->query_select('f_poll_answers', array('pa_answer'), array('pa_poll_id' => $existing), (get_db_type() == 'xml') ? 'ORDER BY pa_answer' : 'ORDER BY id');
             $answers = array();
             foreach ($answer_rows as $trow) {
                 $answers[] = $trow['pa_answer'];

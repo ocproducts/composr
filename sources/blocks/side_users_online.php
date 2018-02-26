@@ -117,7 +117,7 @@ class Block_side_users_online
 
             // Show newest member
             if (get_option('usersonline_show_newest_member') == '1') {
-                $newest_member = $GLOBALS['FORUM_DB']->query_select('f_members', array('m_username', 'id'), array('m_validated' => 1), 'ORDER BY id DESC', 1);
+                $newest_member = $GLOBALS['FORUM_DB']->query_select('f_members', array('m_username', 'id'), array('m_validated' => 1), 'ORDER BY m_join_time DESC', 1);
                 $username_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($newest_member[0]['id'], $newest_member[0]['m_username']);
                 $newest->attach(paragraph(do_lang_tempcode('NEWEST_MEMBER_WELCOME', $username_link), 'gdgdfhrug'));
             }

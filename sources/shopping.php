@@ -526,7 +526,7 @@ function copy_shopping_cart_to_order()
 
     $orders = $GLOBALS['SITE_DB']->query_select('shopping_orders', array('id'), $shopping_order);
     foreach ($orders as $order) {
-        $_shopping_order_details = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order['id']), 'ORDER BY id');
+        $_shopping_order_details = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order['id']), 'ORDER BY p_name');
         foreach ($_shopping_order_details as &$_map) {
             unset($_map['id']);
             unset($_map['p_order_id']);

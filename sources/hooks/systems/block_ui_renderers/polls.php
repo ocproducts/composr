@@ -37,7 +37,7 @@ class Hook_block_ui_renderers_polls
     {
         if ($block . ':' . $parameter == 'main_poll:param') { // special case for polls
             $list = new Tempcode();
-            $rows = $GLOBALS['SITE_DB']->query_select('poll', array('id', 'question'), array(), 'ORDER BY id DESC', 100/*In case insane number*/);
+            $rows = $GLOBALS['SITE_DB']->query_select('poll', array('id', 'question'), array(), 'ORDER BY add_time DESC,id DESC', 100/*In case insane number*/);
             $list->attach(form_input_list_entry('', false, do_lang('NA')));
             foreach ($rows as $row) {
                 $list->attach(form_input_list_entry(strval($row['id']), $has_default && strval($row['id']) == $default, get_translated_text($row['question'])));

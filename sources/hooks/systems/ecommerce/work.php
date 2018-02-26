@@ -78,7 +78,7 @@ class Hook_ecommerce_work
         }
 
         $list = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), $where, 'ORDER BY id DESC');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), $where, 'ORDER BY i_time,id DESC');
         foreach ($rows as $row) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['i_member_id']);
             $list->attach(form_input_list_entry(strval($row['id']), false, do_lang('INVOICE_OF', strval($row['id']), $username)));

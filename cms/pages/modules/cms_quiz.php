@@ -322,7 +322,7 @@ class Module_cms_quiz extends Standard_crud_module
         if (addon_installed('newsletter')) {
             $newsletters = new Tempcode();
             $newsletters->attach(form_input_list_entry('', false, do_lang_tempcode('NONE_EM')));
-            $_newsletters = $GLOBALS['SITE_DB']->query_select('newsletters', array('*'), array(), 'ORDER BY id');
+            $_newsletters = $GLOBALS['SITE_DB']->query_select('newsletters', array('*'), array(), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('title'));
             foreach ($_newsletters as $n) {
                 $newsletters->attach(form_input_list_entry(strval($n['id']), $tied_newsletter == $n['id'], get_translated_text($n['title'])));
             }

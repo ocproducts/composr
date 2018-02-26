@@ -94,7 +94,7 @@ function get_quiz_data_for_csv($quiz_id)
     }
 
     // Proper answers, for non-free-form questions
-    $answer_rows = $GLOBALS['SITE_DB']->query_select('quiz_question_answers a JOIN ' . get_table_prefix() . 'quiz_questions q ON q.id=a.q_question', array('q_answer_text', 'q_question', 'a.id'), array('q_quiz' => $quiz_id), 'ORDER BY id');
+    $answer_rows = $GLOBALS['SITE_DB']->query_select('quiz_question_answers a JOIN ' . get_table_prefix() . 'quiz_questions q ON q.id=a.q_question', array('q_answer_text', 'q_question', 'a.id'), array('q_quiz' => $quiz_id), 'ORDER BY q.q_order,a.q_order');
 
     // Loop over it all
     foreach ($member_answers as $member_bits => $_member_answers) {
@@ -220,7 +220,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
     if ($questions === null) {
         $questions = $GLOBALS['SITE_DB']->query_select('quiz_questions', array('*'), array('q_quiz' => $quiz_id), 'ORDER BY q_order');
         foreach ($questions as $i => $question) {
-            $answers = $GLOBALS['SITE_DB']->query_select('quiz_question_answers', array('*'), array('q_question' => $question['id']), 'ORDER BY id');
+            $answers = $GLOBALS['SITE_DB']->query_select('quiz_question_answers', array('*'), array('q_question' => $question['id']), 'ORDER BY q_order');
             $questions[$i]['answers'] = $answers;
         }
     }

@@ -380,7 +380,7 @@ class Module_admin_ecommerce extends Standard_crud_module
         }
         $r = $m[0];
 
-        $_mails = $db->query_select('f_usergroup_sub_mails', array('*'), array('m_usergroup_sub_id' => intval($id)), 'ORDER BY id');
+        $_mails = $db->query_select('f_usergroup_sub_mails', array('*'), array('m_usergroup_sub_id' => intval($id)), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('m_subject'));
         $mails = array();
         foreach ($_mails as $_mail) {
             $mails[] = array(
