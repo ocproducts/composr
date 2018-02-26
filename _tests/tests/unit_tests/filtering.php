@@ -25,6 +25,11 @@ class filtering_test_set extends cms_test_case
 
     public function testFiltercode()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only !== 'testFiltercode')) {
+            return;
+        }
+
         $this->cleanup_db();
 
         $guest_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
@@ -463,13 +468,20 @@ class filtering_test_set extends cms_test_case
     protected $expected_lazy;
     protected $expected_full;
 
-    public function getIdsAndParents()
+    public function get_ids_and_parents()
     {
         return $this->ids_and_parents;
     }
 
     public function testSelectcode()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only !== 'testSelectcode')) {
+            return;
+        }
+
+        $this->cleanup_db();
+
         $GLOBALS['SITE_DB']->create_table('temp_test_categories', array(
             'id' => '*INTEGER',
             'parent_id_of_cat' => 'INTEGER',
@@ -517,16 +529,20 @@ class filtering_test_set extends cms_test_case
 
         $sql = selectcode_to_sqlfragment($this->selectcode, 'id', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
         $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('temp_test_entries', array('id'), array(), 'WHERE ' . $sql));
-        $this->assertTrue($results == $this->expected_full);
+        sort($results);
+        $this->assertTrue($results == $this->expected_full, 'Failed on this Selectcode: '. $this->selectcode . ' / ' . $sql);
 
         $results = selectcode_to_idlist_using_db($this->selectcode, 'id', 'temp_test_entries', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected_lazy);
+        sort($results);
+        $this->assertTrue($results == $this->expected_lazy, 'Failed on this Selectcode: '. $this->selectcode);
 
         $results = selectcode_to_idlist_using_memory($this->selectcode, $this->ids_and_parents, 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected_full);
+        sort($results);
+        $this->assertTrue($results == $this->expected_full, 'Failed on this Selectcode: '. $this->selectcode);
 
-        $results = selectcode_to_idlist_using_callback($this->selectcode, array(array($this, 'getIdsAndParents'), array()), 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected_lazy);
+        $results = selectcode_to_idlist_using_callback($this->selectcode, array(array($this, 'get_ids_and_parents'), array()), 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
+        sort($results);
+        $this->assertTrue($results == $this->expected_lazy, 'Failed on this Selectcode: '. $this->selectcode);
 
         // Test scenario 2
         // ---------------
@@ -536,16 +552,20 @@ class filtering_test_set extends cms_test_case
 
         $sql = selectcode_to_sqlfragment($this->selectcode, 'id', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
         $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('temp_test_entries', array('id'), array(), 'WHERE ' . $sql));
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode . ' / ' . $sql);
 
         $results = selectcode_to_idlist_using_db($this->selectcode, 'id', 'temp_test_entries', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
 
         $results = selectcode_to_idlist_using_memory($this->selectcode, $this->ids_and_parents, 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
 
-        $results = selectcode_to_idlist_using_callback($this->selectcode, array(array($this, 'getIdsAndParents'), array()), 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        $results = selectcode_to_idlist_using_callback($this->selectcode, array(array($this, 'get_ids_and_parents'), array()), 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
 
         // Test scenario 3
         // ---------------
@@ -555,16 +575,20 @@ class filtering_test_set extends cms_test_case
 
         $sql = selectcode_to_sqlfragment($this->selectcode, 'id', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
         $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('temp_test_entries', array('id'), array(), 'WHERE ' . $sql));
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode . ' / ' . $sql);
 
         $results = selectcode_to_idlist_using_db($this->selectcode, 'id', 'temp_test_entries', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
 
         $results = selectcode_to_idlist_using_memory($this->selectcode, $this->ids_and_parents, 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
 
-        $results = selectcode_to_idlist_using_callback($this->selectcode, array(array($this, 'getIdsAndParents'), array()), 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        $results = selectcode_to_idlist_using_callback($this->selectcode, array(array($this, 'get_ids_and_parents'), array()), 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
 
         // Test scenario 4
         // ---------------
@@ -574,16 +598,20 @@ class filtering_test_set extends cms_test_case
 
         $sql = selectcode_to_sqlfragment($this->selectcode, 'id', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
         $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('temp_test_entries', array('id'), array(), 'WHERE ' . $sql));
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode . ' / ' . $sql);
 
         $results = selectcode_to_idlist_using_db($this->selectcode, 'id', 'temp_test_entries', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
 
         $results = selectcode_to_idlist_using_memory($this->selectcode, $this->ids_and_parents, 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
 
-        $results = selectcode_to_idlist_using_callback($this->selectcode, array(array($this, 'getIdsAndParents'), array()), 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        $results = selectcode_to_idlist_using_callback($this->selectcode, array(array($this, 'get_ids_and_parents'), array()), 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
 
         // Test scenario 5
         // ---------------
@@ -593,16 +621,20 @@ class filtering_test_set extends cms_test_case
 
         $sql = selectcode_to_sqlfragment($this->selectcode, 'id', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
         $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('temp_test_entries', array('id'), array(), 'WHERE ' . $sql));
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode . ' / ' . $sql);
 
         $results = selectcode_to_idlist_using_db($this->selectcode, 'id', 'temp_test_entries', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
 
         $results = selectcode_to_idlist_using_memory($this->selectcode, $this->ids_and_parents, 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
 
-        $results = selectcode_to_idlist_using_callback($this->selectcode, array(array($this, 'getIdsAndParents'), array()), 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        $results = selectcode_to_idlist_using_callback($this->selectcode, array(array($this, 'get_ids_and_parents'), array()), 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
 
         // Test scenario 6
         // ---------------
@@ -612,16 +644,20 @@ class filtering_test_set extends cms_test_case
 
         $sql = selectcode_to_sqlfragment($this->selectcode, 'id', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
         $results = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('temp_test_entries', array('id'), array(), 'WHERE ' . $sql));
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode . ' / ' . $sql);
 
         $results = selectcode_to_idlist_using_db($this->selectcode, 'id', 'temp_test_entries', 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
 
         $results = selectcode_to_idlist_using_memory($this->selectcode, $this->ids_and_parents, 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
 
-        $results = selectcode_to_idlist_using_callback($this->selectcode, array(array($this, 'getIdsAndParents'), array()), 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
-        $this->assertTrue($results == $this->expected);
+        $results = selectcode_to_idlist_using_callback($this->selectcode, array(array($this, 'get_ids_and_parents'), array()), 'temp_test_categories', 'parent_id_of_cat', 'parent_id', 'id');
+        sort($results);
+        $this->assertTrue($results == $this->expected, 'Failed on this Selectcode: '. $this->selectcode);
     }
 
     protected function cleanup_db()
@@ -640,7 +676,9 @@ class filtering_test_set extends cms_test_case
 
     public function tearDown()
     {
-        $this->cleanup_db();
+        if (get_param_integer('debug', 0) == 0) {
+            $this->cleanup_db();
+        }
 
         @unlink(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/temp_test.php');
         fix_permissions(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/temp_test.php');
