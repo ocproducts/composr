@@ -526,7 +526,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/standard_dir_files.php',
             '_tests/tests/unit_tests/tempcode.php',
             '_tests/tests/unit_tests/_tracker_categories.php',
-            '_tests/tests/unit_tests/file_whitelisting.php',
+            '_tests/tests/unit_tests/file_type_whitelisting.php',
             '_tests/tests/unit_tests/js_strict_mode.php',
             '_tests/tests/unit_tests/lang_stemmer.php',
             '_tests/tests/unit_tests/us_english.php',

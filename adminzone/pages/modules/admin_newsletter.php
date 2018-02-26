@@ -1165,17 +1165,24 @@ class Module_admin_newsletter extends Standard_crud_module
 
         // Which newsletter template?
         $_template_choices = array();
-        $dh = opendir(get_custom_file_base() . '/themes/default/templates_custom');
-        while (($f = readdir($dh)) !== false) {
-            if (preg_match('#^MAIL.*\.tpl$#', $f) != 0) {
-                $tpl = basename($f, '.tpl');
-                $_template_choices[] = $tpl;
+        $tpl_paths = array(
+            get_custom_file_base() . '/themes/default/templates_custom',
+            get_file_base() . '/themes/default/templates_custom',
+            get_file_base() . '/themes/default/templates',
+        );
+        foreach ($tpl_paths as $tpl_path) {
+            $dh = @opendir($tpl_path);
+            if ($dh !== false) {
+                while (($f = readdir($dh)) !== false) {
+                    if (preg_match('#^MAIL.*\.tpl$#', $f) != 0) {
+                        $tpl = basename($f, '.tpl');
+                        $_template_choices[] = $tpl;
+                    }
+                }
+                closedir($dh);
             }
         }
-        if (!file_exists(get_custom_file_base() . '/themes/default/templates_custom/MAIL.tpl')) {
-            $_template_choices[] = 'MAIL';
-        }
-        closedir($dh);
+        $_template_choices = array_unique($_template_choices);
         if ($_template_choices == array('MAIL')) {
             $hidden->attach(form_input_hidden('template', 'MAIL'));
         } else {

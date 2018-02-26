@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class file_whitelisting_test_set extends cms_test_case
+class file_type_whitelisting_test_set extends cms_test_case
 {
     protected $file_types = array();
 
@@ -165,6 +165,9 @@ class file_whitelisting_test_set extends cms_test_case
                     $this->assertTrue(is_image('example.' . $file_type, IMAGE_CRITERIA_WEBSAFE, true), $file_type . ' not websafe?');
                 }
             }
+
+            $exts = explode(',', get_option($f));
+            $this->assertTrue(count($exts) == count(array_unique($exts)));
         }
     }
 
@@ -175,6 +178,15 @@ class file_whitelisting_test_set extends cms_test_case
 
         foreach ($this->file_types as $file_type) {
             $this->assertTrue(strpos($c, '*.' . $file_type . ' ') !== false, 'File type missing from .gitattributes, ' . $file_type);
+        }
+
+        $matches = array();
+        $num_matches = preg_match_all('#^\*\.(\w+) (text|binary)#m', $c, $matches);
+        $found = array();
+        for ($i = 0; $i < $num_matches; $i++) {
+            $ext = $matches[1][$i];
+            $this->assertTrue(!array_key_exists($ext, $found), 'Double referenced ' . $ext);
+            $found[$ext] = true;
         }
     }
 }

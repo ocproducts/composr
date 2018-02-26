@@ -329,7 +329,7 @@ function db_cast($field, $type)
 /**
  * Find whether we are on a multi-site-network.
  * We will check to see that the specification for the forum database and site database differ.
- * Also see: get_db_for, is_forum_db
+ * Also see: get_db_for, is_forum_db.
  *
  * @return boolean Whether we are
  */
@@ -381,7 +381,7 @@ function get_db_type()
  * Find the correct database connection for a particular table. i.e. site connection or forum connection.
  * This only works with Composr/Conversr tables, not third-party forums.
  * If modifying this function, search for other cases in the code for 'f_welcome_emails', as similar logic is used elsewhere.
- * Also see: is_forum_db, is_on_multi_site_network
+ * Also see: is_forum_db, is_on_multi_site_network.
  *
  * @param  ID_TEXT $table Database table
  * @param  boolean $force_site_db Whether to force use of the site connection
@@ -1772,7 +1772,7 @@ class DatabaseConnector
     /**
      * Find whether this database connector is to the forum database.
      * If we are not on a multi-site-network then the answer is always 'No', because really we're checking to see if we are the forum database and also not the site database.
-     * Also see: get_db_for, is_on_multi_site_network
+     * Also see: get_db_for, is_on_multi_site_network.
      *
      * @return boolean Whether we are
      */

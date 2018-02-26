@@ -34,16 +34,27 @@ class theme_images_test_set extends cms_test_case
 
         foreach ($files as $path) {
             $c = file_get_contents($path);
+            $_c = $c;
 
-            $this->assertTrue(strpos($c, '<image') === false, 'Raster data in ' . $path);
+            $this->assertTrue(strpos($c, '<image') === false, 'Raster data in ' . $path . '; fix with &auto_fix=1');
 
-            $this->assertTrue(strpos($c, '<!-- Generator') === false, 'Wasteful generator comment in ' . $path);
-
-            $this->assertTrue(strpos($c, 'xml:space="preserve"') === false, 'xml:space deprecated, used in ' . $path);
-
-            $this->assertTrue(strpos($c, 'enable-background') === false, 'enable-background not needed, used in ' . $path);
-
-            $this->assertTrue(strpos($c, 'xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"') === false, 'Adobe extensions not wanted, used in ' . $path);
+            $bad_patterns = array(
+                '<!-- Generator.*-->',
+                '\s+xml:space="preserve"',
+                '\s+enable-background="[^"]*"',
+                '\s+xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"',
+            );
+            foreach ($bad_patterns as $bad_pattern) {
+                if (preg_match('#' . $bad_pattern . '#', $c) != 0) {
+                    $this->assertTrue(false, 'Found: ' . $bad_pattern);
+                    $c = preg_replace('#' . $bad_pattern . '#', '', $c);
+                }
+            }
+            if ($c != $_c) {
+                if (get_param_integer('auto_fix', 0) == 1) {
+                    cms_file_put_contents_safe($path, $c);
+                }
+            }
         }
     }
 

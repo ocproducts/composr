@@ -517,6 +517,13 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
         return new Tempcode();
     }
 
+    // Exceptions that we don't want to check (typically things we use by default)
+    if (in_array($url_full, array(
+        'https://www.google.com/webmasters/tools/home',
+    ))) {
+        return new Tempcode();
+    }
+
     global $COMCODE_PARSE_URLS_CHECKED, $COMCODE_URLS, $DONT_CARE_MISSING_PAGES;
 
     if (isset($COMCODE_URLS)) {
