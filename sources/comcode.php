@@ -150,11 +150,12 @@ function comcode_escape($in)
  */
 function html_to_comcode($html, $force = true)
 {
-    // First we don't allow this to be semi-html
+    // As this is not semi-html, but will be converted as if it is, we need to fiddle any Comcode trigger characters into neutered entities
     $html = str_replace('[', '&#091;', $html);
+    $html = str_replace('{', '&#123;', $html);
 
+    // Do it
     require_code('comcode_from_html');
-
     return semihtml_to_comcode($html, $force);
 }
 

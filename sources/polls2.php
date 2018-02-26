@@ -199,6 +199,11 @@ function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, 
         $edit_time = $null_is_literal ? null : time();
     }
 
+    $rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'poll'));
+    }
+
     log_it('EDIT_POLL', strval($id), $question);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -208,7 +213,6 @@ function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, 
 
     persistent_cache_delete('POLL');
 
-    $rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('id' => $id), '', 1);
     $_question = $rows[0]['question'];
     $_a1 = $rows[0]['option1'];
     $_a2 = $rows[0]['option2'];
@@ -280,9 +284,8 @@ function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, 
 function delete_poll($id)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('id' => $id), '', 1);
-
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'poll'));
     }
 
     persistent_cache_delete('POLL');

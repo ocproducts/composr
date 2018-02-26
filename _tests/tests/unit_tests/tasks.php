@@ -96,6 +96,8 @@ class tasks_test_set extends cms_test_case
             return;
         }
 
+        $this->establish_admin_session();
+
         require_code('calendar2');
 
         // Add complex event with start and recurrence

@@ -100,7 +100,15 @@ function cns_delete_poll($poll_id, $reason = '', $check_perms = true)
 {
     require_code('cns_polls');
 
+    $info = $GLOBALS['FORUM_DB']->query_select('f_polls', array('id'), array('id' => $poll_id), '', 1);
+    if (!array_key_exists(0, $info)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
+
     $topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('t_poll_id' => $poll_id), '', 1);
+    if (!array_key_exists(0, $topic_info)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
+    }
     if ($check_perms) {
         if (!cns_may_delete_poll_by($topic_info[0]['t_forum_id'], $topic_info[0]['t_cache_first_member_id'])) {
             access_denied('I_ERROR');

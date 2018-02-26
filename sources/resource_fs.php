@@ -842,6 +842,11 @@ function table_row_from_portable_row($row, $db_fields, $relation_map, $db = null
                 $row[$db_field_name] = ($row[$db_field_name] == '') ? null : intval($row[$db_field_name]);
             }
         }
+
+        // Weird corruption which would mess up our queries
+        if (is_array($row[$db_field_name])) {
+            $row[$db_field_name] = current($row[$db_field_name]);
+        }
     }
 
     return $row;

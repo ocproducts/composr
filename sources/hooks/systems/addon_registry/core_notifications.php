@@ -408,7 +408,6 @@ class Hook_addon_registry_core_notifications
             'NOTIFICATION_TYPES' => $notification_types,
             'SUPPORTS_CATEGORIES' => true,
         );
-        do_lorem_template('NOTIFICATION_TYPES', $notification_code_map); // To make coverage test pass (is actually INCLUDE'd)
         $notification_sections = array();
         $notification_sections[lorem_phrase()] = array(
             'NOTIFICATION_SECTION' => lorem_phrase(),

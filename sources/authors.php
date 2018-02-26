@@ -193,17 +193,17 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
 function delete_author($author)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('authors', array('description', 'skills'), array('author' => $author), '', 1);
-    if (array_key_exists(0, $rows)) {
-        require_code('attachments2');
-        require_code('attachments3');
-        delete_lang_comcode_attachments($rows[0]['description'], 'author', $author);
-
-        delete_lang($rows[0]['skills']);
-
-        $GLOBALS['SITE_DB']->query_delete('authors', array('author' => $author), '', 1);
-    } else {
+    if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'author'));
     }
+
+    require_code('attachments2');
+    require_code('attachments3');
+    delete_lang_comcode_attachments($rows[0]['description'], 'author', $author);
+
+    delete_lang($rows[0]['skills']);
+
+    $GLOBALS['SITE_DB']->query_delete('authors', array('author' => $author), '', 1);
 
     if (addon_installed('catalogues')) {
         update_catalogue_content_ref('author', $author, '');

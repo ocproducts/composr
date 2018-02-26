@@ -804,7 +804,7 @@ function edit_newsletter($id, $title, $description)
     $rows = $GLOBALS['SITE_DB']->query_select('newsletters', array('*'), array('id' => $id), '', 1);
 
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'newsletter'));
     }
 
     $myrow = $rows[0];
@@ -938,7 +938,7 @@ function edit_periodic_newsletter($id, $subject, $message, $lang, $send_details,
     $rows = $GLOBALS['SITE_DB']->query_select('newsletter_periodic', array('*'), array('id' => $id), '', 1);
 
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
 
     $map = array(

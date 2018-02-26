@@ -59,7 +59,11 @@ function add_community_billboard_message($message, $days, $notes, $validated)
  */
 function edit_community_billboard_message($id, $message, $notes, $validated)
 {
-    $_message = $GLOBALS['SITE_DB']->query_select_value('community_billboard', 'the_message', array('id' => $id));
+    $_message = $GLOBALS['SITE_DB']->query_select_value_if_there('community_billboard', 'the_message', array('id' => $id));
+    if ($_message === null) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
+
     log_it('EDIT_COMMUNITY_BILLBOARD', strval($id), $message);
     $map = array(
         'notes' => $notes,
@@ -81,7 +85,11 @@ function edit_community_billboard_message($id, $message, $notes, $validated)
  */
 function delete_community_billboard_message($id)
 {
-    $message = $GLOBALS['SITE_DB']->query_select_value('community_billboard', 'the_message', array('id' => $id));
+    $message = $GLOBALS['SITE_DB']->query_select_value_if_there('community_billboard', 'the_message', array('id' => $id));
+    if ($message === null) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
+
     $_message = get_translated_text($message);
     log_it('DELETE_COMMUNITY_BILLBOARD', strval($id), $_message);
     $GLOBALS['SITE_DB']->query_delete('community_billboard', array('id' => $id), '', 1);

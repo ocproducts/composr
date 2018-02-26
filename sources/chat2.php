@@ -172,10 +172,13 @@ function get_chatroom_fields($id = null, $is_made_by_me = false, $room_name = ''
                         $group_members = cns_get_group_members_raw($key);
                         $group_member_usernames = '';
                         foreach ($group_members as $group_member) {
-                            if ($group_member_usernames != '') {
-                                $group_member_usernames = do_lang('LIST_SEP');
+                            $username = $GLOBALS['FORUM_DRIVER']->get_username($group_member, false, USERNAME_DEFAULT_NULL);
+                            if ($username !== null) {
+                                if ($group_member_usernames != '') {
+                                    $group_member_usernames = do_lang('LIST_SEP');
+                                }
+                                $group_member_usernames .= $username;
                             }
-                            $group_member_usernames .= $GLOBALS['FORUM_DRIVER']->get_username($group_member);
                         }
                         $val = do_lang('GROUP_MEMBERS_SPECIFIC', $val, $group_member_usernames);
                     } else {
@@ -202,10 +205,13 @@ function get_chatroom_fields($id = null, $is_made_by_me = false, $room_name = ''
                         $group_members = cns_get_group_members_raw($key);
                         $group_member_usernames = '';
                         foreach ($group_members as $group_member) {
-                            if ($group_member_usernames != '') {
-                                $group_member_usernames = do_lang('LIST_SEP');
+                            $username = $GLOBALS['FORUM_DRIVER']->get_username($group_member, false, USERNAME_DEFAULT_NULL);
+                            if ($username !== null) {
+                                if ($group_member_usernames != '') {
+                                    $group_member_usernames = do_lang('LIST_SEP');
+                                }
+                                $group_member_usernames .= $username;
                             }
-                            $group_member_usernames .= $GLOBALS['FORUM_DRIVER']->get_username($group_member);
                         }
                         $val = do_lang('GROUP_MEMBERS_SPECIFIC', $val, $group_member_usernames);
                     } else {
@@ -363,7 +369,12 @@ function add_chatroom($welcome, $room_name, $room_owner, $allow2, $allow2_groups
  */
 function edit_chatroom($id, $welcome, $room_name, $room_owner, $allow2, $allow2_groups, $disallow2, $disallow2_groups, $room_language)
 {
-    $c_welcome = $GLOBALS['SITE_DB']->query_select_value('chat_rooms', 'c_welcome', array('id' => $id));
+    $rows = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('c_welcome', 'room_name', 'is_im'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
+    }
+
+    $c_welcome = $rows[0]['c_welcome'];
 
     $map = array(
         'room_name' => $room_name,

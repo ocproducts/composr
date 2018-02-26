@@ -68,7 +68,10 @@ function cns_delete_multi_moderation($id)
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
-    $_name = $GLOBALS['FORUM_DB']->query_select_value('f_multi_moderations', 'mm_name', array('id' => $id));
+    $_name = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_multi_moderations', 'mm_name', array('id' => $id));
+    if ($_name === null) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
     $name = get_translated_text($_name, $GLOBALS['FORUM_DB']);
     $GLOBALS['FORUM_DB']->query_delete('f_multi_moderations', array('id' => $id), '', 1);
     delete_lang($_name, $GLOBALS['FORUM_DB']);

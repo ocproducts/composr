@@ -145,7 +145,7 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null, $
 
     if (isset($CODE_TAGS[$tag])) {
         if (!$html_errors) {
-            if ($tag == 'staff_note') {
+            if ($tag == 'staff_note' || $tag == 'code' || $tag == 'codebox') {
                 return WYSIWYG_COMCODE__XML_BLOCK_ESCAPED;
             } else {
                 return WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED;
@@ -442,6 +442,12 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
         '<span style="font-family:\s*[\w\-\s,]+;?">',
         '<span style="font-size:\s*[\d\.]+(em|px|pt)?;?">',
         '</span>',
+        '<code>',
+        '</code>',
+
+        // Used for testing the Comcode parser
+        '<composr-test>',
+        '</composr-test>',
     );
     foreach ($comcode_parsing_hooks as $comcode_parsing_ob) {
         if (method_exists($comcode_parsing_ob, 'get_allowed_html_seqs')) {
@@ -1666,7 +1672,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                         if (!$semiparse_mode) {
                                             $tag_output->attach($embed_output);
                                         } else {
-                                            $tag_output->attach(escape_html($auto_link));
+                                            $tag_output->attach($in_semihtml ? $auto_link : escape_html($auto_link));
                                         }
                                         $pos += $link_end_pos - $pos;
                                         $differented = true;
@@ -1674,6 +1680,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                 }
                             }
 
+                            // Output next character but with a lot of special HTML entity consideration
                             if (!$differented) {
                                 if (($stupidity_mode != '') && ($textual_area)) {
                                     if (($stupidity_mode === 'leet') && (mt_rand(0, 1) === 1)) {
@@ -1691,9 +1698,11 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
 
                                         if (($entity) && (!$in_code_tag)) {
                                             if (($matches[1] === '') && (($in_semihtml) || (isset($ALLOWED_COMCODE_ENTITIES[$matches[2]])))) {
+                                                // Explicitly white-listed
                                                 $pos += strlen($matches[2]) + 1;
                                                 $continuation .= '&' . $matches[2] . ';';
                                             } elseif ((is_numeric($matches[2])) && ($matches[1] === '#')) {
+                                                // Implicitly white-listed
                                                 $matched_entity = intval(base_convert($matches[2], 16, 10));
                                                 if (($matched_entity < 127) && (array_key_exists(chr($matched_entity), $POTENTIAL_JS_NAUGHTY_ARRAY))) {
                                                     $continuation .= '&amp;';
@@ -1702,15 +1711,19 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                     $continuation .= '&#' . $matches[2] . ';';
                                                 }
                                             } else {
+                                                // Security
                                                 $continuation .= '&amp;';
                                             }
                                         } else {
-                                            $continuation .= '&amp;';
+                                            // Security
+                                            $continuation .= ($in_code_tag && $in_semihtml/*Will be filtered later so don't apply security now*/) ? $next : '&amp;';
                                         }
                                     } else {
-                                        $continuation .= isset($html_escape_1_strrep_inv[$next]) ? escape_html($next) : $next;
+                                        // Escaping only for character preservation
+                                        $continuation .= (isset($html_escape_1_strrep_inv[$next]) && !($in_code_tag && $in_semihtml)) ? escape_html($next) : $next;
                                     }
                                 } else {
+                                    // Simple flow through
                                     $continuation .= $next;
                                 }
                             }
@@ -2276,6 +2289,11 @@ function filter_html($as_admin, $source_member, $pos, &$len, &$comcode, $in_html
 
         require_code('input_filter');
         hard_filter_input_data__html($ahead);
+
+        global $OBSCURE_REPLACEMENTS;
+        foreach ($OBSCURE_REPLACEMENTS as $temp => $kept) {
+            $ahead = str_replace($temp, $kept, $ahead);
+        }
 
         // Tidy up
         $comcode = substr($comcode, 0, $pos) . $ahead . substr($comcode, $ahead_end);

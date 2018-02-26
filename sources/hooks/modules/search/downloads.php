@@ -192,21 +192,19 @@ class Hook_search_downloads extends FieldsSearchHook
         global $SEARCH__CONTENT_BITS;
         $highlight_bits = ($SEARCH__CONTENT_BITS === null) ? array() : $SEARCH__CONTENT_BITS;
 
-        if (array_key_exists(0, $highlight_bits)) {
+        if ((array_key_exists(0, $highlight_bits)) && ($row['download_data_mash'] != '')) {
             $pos = strpos($row['download_data_mash'], $highlight_bits[0]) - 1000;
+            $mash_portion = substr($row['download_data_mash'], $pos, 10000);
+            $_text_summary = trim(preg_replace('#\s+#', ' ', $mash_portion));
+            $text_summary = generate_text_summary($_text_summary, $highlight_bits);
         } else {
-            $pos = 0;
+            $_text_summary = get_translated_text($row['description']);
+            push_lax_comcode(true);
+            $text_summary_h = comcode_to_tempcode($_text_summary, null, false, null, null, COMCODE_NORMAL, $highlight_bits);
+            pop_lax_comcode();
+            $text_summary = generate_text_summary($text_summary_h->evaluate(), $highlight_bits);
         }
-        $mash_portion = substr($row['download_data_mash'], $pos, 10000);
-        $_text_summary = trim(preg_replace('#\s+#', ' ', $mash_portion));
-        if ($_text_summary === false) {
-            $_text_summary = '';
-        }
-        push_lax_comcode(true);
-        $text_summary_h = comcode_to_tempcode($_text_summary, null, false, null, null, COMCODE_NORMAL, $highlight_bits);
-        pop_lax_comcode();
-        $text_summary = generate_text_summary($text_summary_h->evaluate(), $highlight_bits);
 
-        return render_download_box($row, true, true, null, $text_summary);
+        return render_download_box($row, true, true, null, protect_from_escaping($text_summary));
     }
 }

@@ -3414,6 +3414,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFLICTING_PAGE_NAME
         CONFLICTING_ZONE_NAME
         CONFLICTING_ZONE_NAME__PAGE
+        CONFLICTING_PAGE_NAME_MODULE
+        CONFLICTING_PAGE_NAME_REDIRECT
         CONNECT_ERROR
         CONTENT_DATE_TIME
         CONTENT_NEEDING_REVIEWING

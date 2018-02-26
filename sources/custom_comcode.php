@@ -106,6 +106,13 @@ function add_custom_comcode_tag($tag, $title, $description, $replace, $example, 
  */
 function edit_custom_comcode_tag($old_tag, $tag, $title, $description, $replace, $example, $parameters, $enabled, $dangerous_tag, $block_tag, $textual_tag, $uniqify = false)
 {
+    $old = $GLOBALS['SITE_DB']->query_select('custom_comcode', array('tag_title', 'tag_description'), array('tag_tag' => $old_tag), '', 1);
+    if (!array_key_exists(0, $old)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'custom_comcode_tag'));
+    }
+    $_title = $old[0]['tag_title'];
+    $_description = $old[0]['tag_description'];
+
     require_code('type_sanitisation');
     if (!is_alphanumeric($tag, true)) {
         warn_exit(do_lang_tempcode('BAD_CODENAME'));
@@ -127,13 +134,6 @@ function edit_custom_comcode_tag($old_tag, $tag, $title, $description, $replace,
             warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($tag)));
         }
     }
-
-    $old = $GLOBALS['SITE_DB']->query_select('custom_comcode', array('tag_title', 'tag_description'), array('tag_tag' => $old_tag), '', 1);
-    if (!array_key_exists(0, $old)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'custom_comcode_tag'));
-    }
-    $_title = $old[0]['tag_title'];
-    $_description = $old[0]['tag_description'];
 
     $map = array(
         'tag_tag' => $tag,

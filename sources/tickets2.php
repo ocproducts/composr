@@ -60,9 +60,8 @@ function add_ticket_type($ticket_type_name, $guest_emails_mandatory = 0, $search
 function edit_ticket_type($ticket_type_id, $ticket_type_name, $guest_emails_mandatory, $search_faq)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('ticket_types', array('*'), array('id' => $ticket_type_id), '', 1);
-
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket_type'));
     }
 
     $old_ticket_type_name = $rows[0]['ticket_type_name'];
@@ -90,9 +89,8 @@ function edit_ticket_type($ticket_type_id, $ticket_type_name, $guest_emails_mand
 function delete_ticket_type($ticket_type_id)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('ticket_types', array('*'), array('id' => $ticket_type_id), '', 1);
-
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket_type'));
     }
 
     $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'tickets', 'category_name' => strval($ticket_type_id)));
@@ -577,7 +575,10 @@ function find_ticket_assigned_to($ticket_id)
     $where = array('l_notification_code' => 'ticket_assigned_staff', 'l_code_category' => $ticket_id);
     $_assigned = $GLOBALS['SITE_DB']->query_select('notifications_enabled', array('l_member_id'), $where, 'ORDER BY id DESC', 200/*reasonable limit*/);
     foreach ($_assigned as $__assigned) {
-        $assigned[$__assigned['l_member_id']] = $GLOBALS['FORUM_DRIVER']->get_username($__assigned['l_member_id'], true);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($__assigned['l_member_id'], true, USERNAME_DEFAULT_NULL);
+        if ($username !== null) {
+            $assigned[$__assigned['l_member_id']] = $username;
+        }
     }
     return $assigned;
 }

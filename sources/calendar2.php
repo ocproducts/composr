@@ -399,7 +399,7 @@ function delete_calendar_event($id)
     $rows = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array('id' => $id), '', 1);
 
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'event'));
     }
 
     $myrow = $rows[0];

@@ -25,7 +25,7 @@
  */
 function init__forum_stub()
 {
-    if (!defined('USERNAME_DEFAULT_UNKNOWN')) {
+    if (!defined('USERNAME_GUEST_AS_DEFAULT')) {
         define('USERNAME_GUEST_AS_DEFAULT', 1);
         define('USERNAME_DEFAULT_DELETED', 2);
         define('USERNAME_DEFAULT_NULL', 4);

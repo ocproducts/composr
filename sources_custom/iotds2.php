@@ -98,9 +98,8 @@ function add_iotd($url, $title, $caption, $thumb_url, $current, $allow_rating, $
 function edit_iotd($id, $title, $caption, $thumb_url, $url, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time = null, $add_time = null, $views = null, $submitter = null, $null_is_literal = false)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), array('id' => $id), '', 1);
-
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'iotd'));
     }
 
     if ($edit_time === null) {
@@ -176,9 +175,8 @@ function edit_iotd($id, $title, $caption, $thumb_url, $url, $allow_rating, $allo
 function delete_iotd($id)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), array('id' => $id), '', 1);
-
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'iotd'));
     }
 
     $caption = $rows[0]['caption'];

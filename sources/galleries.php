@@ -417,9 +417,19 @@ function get_member_id_from_gallery_name($gallery_name, $row = null, $only_if_pe
             $row = $rows[0];
         }
 
-        return $row['g_owner'];
+        $ret = $row['g_owner'];
+    } else {
+        $ret = intval(substr($gallery_name, 7, strpos($gallery_name, '_', 7) - 7));
     }
-    return intval(substr($gallery_name, 7, strpos($gallery_name, '_', 7) - 7));
+
+    if ($ret !== null) {
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($ret, true, USERNAME_DEFAULT_NULL);
+        if ($username === null) {
+            $ret = null;
+        }
+    }
+
+    return $ret;
 }
 
 /**

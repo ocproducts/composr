@@ -1209,9 +1209,12 @@
         }
     };
 
+    $cms.templates.formScreenInputDate = function formScreenInputDate(params) {
+        window.jQuery('#' + params.name).inputDate({});
+    };
+
     $cms.templates.formScreenInputTime = function formScreenInputTime(params) {
-        // Uncomment if you want to force jQuery-UI inputs even when there is native browser input support
-        //window.jQuery('#' + params.name).inputTime({});
+        window.jQuery('#' + params.name).inputTime({});
     };
 
     /**

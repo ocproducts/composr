@@ -789,10 +789,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             if ($temp_tpl->is_empty()) {
                 if (($in_semihtml) || ($is_all_semihtml)) { // FUDGE. Yuck. We've allowed unfiltered HTML through (as code tags have no internal filtering and the whole thing is HTML so no escaping was done): we need to pass it through proper HTML security.
                     require_code('comcode_from_html');
-                    $back_to_comcode = semihtml_to_comcode($embed->evaluate()); // Undo what's happened already
-                    $back_to_comcode = preg_replace('#^\[(semi)?html\]#', '', $back_to_comcode);
-                    $back_to_comcode = preg_replace('#\[/(semi)?html\]$#', '', $back_to_comcode);
-                    $embed = __comcode_to_tempcode($back_to_comcode, $source_member, $as_admin, $pass_id, $db, COMCODE_SEMIPARSE_MODE | COMCODE_IN_CODE_TAG); // Re-parse (with full security)
+                    $_embed = $embed->evaluate();
+                    $back_to_comcode = html_to_comcode($_embed);
+                    $embed = __comcode_to_tempcode($back_to_comcode, $source_member, $as_admin, $pass_id, $db); // Re-parse (with full security)
                 }
 
                 $_embed = $embed->evaluate();
@@ -2361,12 +2360,18 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     $attributes[$parameter] = $default;
                 }
                 $binding[strtoupper($parameter)] = $attributes[$parameter];
-                $replace = str_replace('{' . $parameter . '}', '{' . strtoupper($parameter) . '*}', $replace);
+                if (is_string($replace)) {
+                    $replace = str_replace('{' . $parameter . '}', '{' . strtoupper($parameter) . '*}', $replace);
+                }
             }
-            $replace = str_replace('{content}', array_key_exists($tag, $GLOBALS['TEXTUAL_TAGS']) ? '{CONTENT}' : '{CONTENT*}', $replace);
-            require_code('tempcode_compiler');
-            $temp_tpl = template_to_tempcode($replace);
-            $temp_tpl = $temp_tpl->bind($binding, '(custom comcode: ' . $tag . ')');
+            if (is_string($replace)) {
+                $replace = str_replace('{content}', array_key_exists($tag, $GLOBALS['TEXTUAL_TAGS']) ? '{CONTENT}' : '{CONTENT*}', $replace);
+                require_code('tempcode_compiler');
+                $temp_tpl = template_to_tempcode($replace);
+                $temp_tpl = $temp_tpl->bind($binding, '(custom comcode: ' . $tag . ')');
+            } else {
+                $temp_tpl = call_user_func($replace, $embed, $attributes);
+            }
         }
     }
 

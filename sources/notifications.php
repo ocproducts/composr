@@ -401,9 +401,6 @@ class Notification_dispatcher
         if (($from_member_id !== null) && ($from_member_id >= 0)) {
             if ($use_real_from) {
                 $from_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($from_member_id);
-                if ($from_email == '') {
-                    $from_email = '';
-                }
                 $from_name = $GLOBALS['FORUM_DRIVER']->get_username($from_member_id, true);
                 $from_member_id_shown = $from_member_id;
             }

@@ -511,6 +511,11 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
  */
 function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_code, $campaign_remaining, $site_url, $display_likelihood, $notes, $deployment_agreement, $expiry_date, $submitter, $validated, $b_type, $b_types = array(), $regions = array(), $edit_time = null, $add_time = null, $null_is_literal = false, $uniqify = false)
 {
+    $_caption = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'caption', array('name' => $old_name));
+    if ($_caption === null) {
+        $_caption(do_lang_tempcode('MISSING_RESOURCE', 'banner'));
+    }
+
     if ($old_name != $name) {
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'name', array('name' => $name));
         if ($test !== null) {
@@ -533,8 +538,6 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
     if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }
-
-    $_caption = $GLOBALS['SITE_DB']->query_select_value('banners', 'caption', array('name' => $old_name));
 
     require_code('files2');
     delete_upload('uploads/banners', 'banners', 'img_url', 'name', $old_name, $imgurl);
@@ -696,6 +699,11 @@ function add_banner_type($id, $is_textual, $image_width, $image_height, $max_fil
  */
 function edit_banner_type($old_id, $id, $is_textual, $image_width, $image_height, $max_file_size, $comcode_inline, $uniqify = false)
 {
+    $rows = $GLOBALS['SITE_DB']->query_select('banner_types', array('id'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'banner_type'));
+    }
+
     if ($old_id != $id) {
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banner_types', 'id', array('id' => $id));
         if ($test !== null) {
@@ -738,6 +746,11 @@ function edit_banner_type($old_id, $id, $is_textual, $image_width, $image_height
  */
 function delete_banner_type($id)
 {
+    $rows = $GLOBALS['SITE_DB']->query_select('banner_types', array('id'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'banner_type'));
+    }
+
     $GLOBALS['SITE_DB']->query_update('banners', array('b_type' => ''), array('b_type' => $id));
 
     $GLOBALS['SITE_DB']->query_delete('banner_types', array('id' => $id), '', 1);

@@ -489,12 +489,17 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
         $edit_time = $null_is_literal ? null : time();
     }
 
+    $rows = $GLOBALS['SITE_DB']->query_select('images', array('title', 'description', 'cat'), array('id' => $id));
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'image'));
+    }
+
+    $_title = $rows[0]['title'];
+    $_description = $rows[0]['description'];
+    $old_cat = $rows[0]['cat'];
+
     require_code('urls2');
     suggest_new_idmoniker_for('galleries', 'image', strval($id), '', ($title == '') ? $description : $title);
-
-    $_description = $GLOBALS['SITE_DB']->query_select_value('images', 'description', array('id' => $id));
-    $_title = $GLOBALS['SITE_DB']->query_select_value('images', 'title', array('id' => $id));
-    $old_cat = $GLOBALS['SITE_DB']->query_select_value('images', 'cat', array('id' => $id));
 
     delete_cache_entry('main_gallery_embed');
 
@@ -600,6 +605,7 @@ function delete_image($id, $delete_full = true)
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'image'));
     }
+
     $title = $rows[0]['title'];
     $description = $rows[0]['description'];
     $cat = $rows[0]['cat'];
@@ -965,13 +971,18 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
         $edit_time = $null_is_literal ? null : time();
     }
 
+    $rows = $GLOBALS['SITE_DB']->query_select('images', array('title', 'description', 'cat'), array('id' => $id));
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'video'));
+    }
+
+    $_title = $rows[0]['title'];
+    $_description = $rows[0]['description'];
+    $old_cat = $rows[0]['cat'];
+    $orig_url = $rows[0]['url'];
+
     require_code('urls2');
     suggest_new_idmoniker_for('galleries', 'video', strval($id), '', ($title == '') ? $description : $title);
-
-    $_title = $GLOBALS['SITE_DB']->query_select_value('videos', 'title', array('id' => $id));
-    $_description = $GLOBALS['SITE_DB']->query_select_value('videos', 'description', array('id' => $id));
-    $orig_url = $GLOBALS['SITE_DB']->query_select_value('videos', 'url', array('id' => $id));
-    $old_cat = $GLOBALS['SITE_DB']->query_select_value('videos', 'cat', array('id' => $id));
 
     require_code('files2');
     delete_upload('uploads/galleries', 'videos', 'url', 'id', $id, $url);
@@ -1082,6 +1093,9 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
 function delete_video($id, $delete_full = true)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('videos', array('title', 'description', 'cat'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'video'));
+    }
     $title = $rows[0]['title'];
     $description = $rows[0]['description'];
     $cat = $rows[0]['cat'];
@@ -1385,6 +1399,11 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
  */
 function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent_id = null, $accept_images = 1, $accept_videos = 1, $is_member_synched = 0, $flow_mode_interface = 0, $rep_image = '', $watermark_top_left = '', $watermark_top_right = '', $watermark_bottom_left = '', $watermark_bottom_right = '', $meta_keywords = null, $meta_description = null, $allow_rating = 1, $allow_comments = 1, $g_owner = null, $add_time = null, $null_is_literal = false, $uniqify = false)
 {
+    $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('*'), array('name' => $name), '', 1);
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
+    }
+
     require_code('urls2');
     suggest_new_idmoniker_for('galleries', 'browse', $name, '', $name);
 

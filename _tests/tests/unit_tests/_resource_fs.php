@@ -60,7 +60,7 @@ class _resource_fs_test_set extends cms_test_case
             if (($limit_to !== null) && ($commandr_fs_hook != $limit_to)) {
                 continue;
             }
-
+            if (strpos($dir,'_custom')!==false) continue;//TODO
             if (get_forum_type() != 'cns') {
                 if ($commandr_fs_hook == 'aggregate_type_instances') { // Contains usergroup creation and referencing by default
                     continue;

@@ -80,7 +80,7 @@ function download_licence_script()
  * @param  boolean $pic Whether to show a picture
  * @param  boolean $include_breadcrumbs Whether to show breadcrumbs
  * @param  ?ID_TEXT $zone The zone the download module we're using is in (null: find it)
- * @param  ?string $text_summary Text summary for result (e.g. highlighted portion of actual file from search result) (null: none)
+ * @param  ?Tempcode $text_summary Text summary for result (e.g. highlighted portion of actual file from search result) (null: none)
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ?AUTO_LINK $root The virtual root (null: read from environment)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
@@ -184,7 +184,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
     } else {
         $download_url = new Tempcode();
     }
-    
+
     // Final template
     if (($full_img_url != '') && (url_is_local($full_img_url))) {
         $full_img_url = get_custom_base_url() . '/' . $full_img_url;

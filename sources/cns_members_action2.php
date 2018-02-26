@@ -1147,6 +1147,11 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
  */
 function cns_delete_member($member_id)
 {
+    $info = $GLOBALS['FORUM_DB']->query_select('f_members', array('id'), array('id' => $member_id), '', 1);
+    if (!array_key_exists(0, $info)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'member'));
+    }
+
     $username = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_username');
     $signature = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_signature');
     require_code('attachments2');

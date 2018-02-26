@@ -51,6 +51,11 @@ function cns_edit_post_template($id, $title, $text, $forum_multi_code, $use_defa
  */
 function cns_delete_post_template($id)
 {
+    $info = $GLOBALS['FORUM_DB']->query_select('f_post_templates', array('id'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $info)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
+
     $GLOBALS['FORUM_DB']->query_delete('f_post_templates', array('id' => $id), '', 1);
 
     log_it('DELETE_POST_TEMPLATE', strval($id));

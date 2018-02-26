@@ -141,6 +141,7 @@ We require:
  - MySQL database software (if you want it to be fully supported).
  - MySQL version 5.5.3 (&dagger;) or higher.
  - At least 10MB of database storage space (which should be available on any reputable webhost).
+ - The [tt]max_allowed_packet[/tt] server system setting must be at least [tt]16M[/tt].
 
 (&dagger;) MySQL 5.5.3 introduces the utf8mb4 character set, which is required to store emojis. The installer assumes you will install with this support available, but upgrades from older versions may work in anything from MySQL 4.1+ if the database is kept in [tt]latin1[/tt] via having [tt]$SITE_INFO['database_charset'] = 'latin1';[/tt] in [tt]_config.php[/tt]. This compatibility will not be guaranteed, but as webhosts have been very slow to upgrade MySQL installations we will informally try and maintain it.
 
@@ -208,11 +209,93 @@ If you have installed forums, you will likely wish to create a comments forum. T
 
 You may also wish to create a non-public forum called 'Website support tickets' if you wish to enable the support ticket feature.
 
+[title="2"]Configuring MySQL (advanced)[/title]
+
+Server variables may be set in the MySQL config -- either the main config file (e.g. [tt]/etc/my.cnf[/tt]), or included files (e.g. from [tt]/etc/my.cnf.d[/tt]) -- or in the startup parameters -- or via setting the server variable at run-time. If they are not set anywhere then MySQL will use hard-coded defaults.
+
+To find which config file(s) MySQL uses, run this command (Linux and MacOS):
+[code="Bash"]
+mysql --help | grep "Default options" -A 1
+[/code]
+
+In the config file it will look something like this (example for setting [tt]max_allowed_packet[/tt], which is probably what you want):
+[code="Bash"]
+[mysqld]
+...
+max_allowed_packet = 16M
+...
+[/code]
+
+To find if a setting is set in startup parameters (Linux and MacOS) run:
+[code="Bash"]
+ps -Af | grep mysqld
+[/code]
+If it is, you'll see it in the command. This may be set in an init file such as [tt]/etc/init.d/mysqld[/tt], but it varies considerably by Linux distribution.
+
+If you are changing a config file, or a startup parameter, you naturally need to reset MySQL for it to take effect, e.g. with:
+[code="Bash"]
+/etc/init.d/mysqld restart
+[/code]
+or:
+[code="Bash"]
+service mysqld restart
+[/code]
+Again it varies a lot by distribution. On Windows you'd use the Services application to restart the service.
+
+When a MySQL session is started, certain server variables are cloned into the session (e.g. [tt]max_allowed_packet[/tt]). These variables may then be read and written as either server or session variables (actually [tt]max_allowed_packet[/tt] is read-only as a session variable -- an exception described further below). If you set a global variable then the current session is not affected, but new sessions will be. Sessions are thrown out when connections are closed, e.g. when a Composr page is fully served.
+
+To find the values of a variable you can use these MySQL queries (example for [tt]max_allowed_packet[/tt]):
+[code="MySQL"]
+SHOW GLOBAL VARIABLES LIKE 'max_allowed_packet';
+SHOW SESSION VARIABLES LIKE 'max_allowed_packet';
+[/code]
+
+There are lots of equivalent terms and syntaxes in MySQL which can make it confusing when trying to understand the documentation and third party solutions. Here is a guide:
+ - Types of variable:
+  - "Server" = "Global"
+  - "Session" = "Local" = "Connection"
+ - Commands for setting variables:
+  - Server variables, all equivalent:
+   - [tt]SET @@global.whatever=something[/tt]
+   - [tt]SET GLOBAL whatever=something[/tt]
+  - Session variables, all equivalent:
+   - [tt]SET whatever=something[/tt]
+   - [tt]SET @@whatever=something[/tt]
+   - [tt]SET @@session.whatever=something[/tt]
+   - [tt]SET SESSION whatever=something[/tt]
+   - [tt]SET @@local.whatever=something[/tt]
+   - [tt]SET LOCAL whatever=something[/tt]
+ - Commands for getting variables:
+  - Server variables, all equivalent:
+   - [tt]SHOW GLOBAL VARIABLES LIKE 'whatever'[/tt]
+   - [tt]SELECT @@global.whatever[/tt]
+  - Session variables, all equivalent:
+   - [tt]SHOW VARIABLES LIKE 'whatever'[/tt]
+   - [tt]SHOW LOCAL VARIABLES LIKE 'whatever'[/tt]
+   - [tt]SHOW SESSION VARIABLES LIKE 'whatever'[/tt]
+   - [tt]SELECT @@local.whatever[/tt]
+   - [tt]SELECT @@session.whatever[/tt]
+
+The rest of this section will deal with the specifics of the [tt]max_allowed_packet[/tt] setting, which is the only variable that a server administrator usually needs to set.
+
+[tt]max_allowed_packet[/tt] exists as separate server-side and client-side settings; this is totally different from the concept of server and session variables (which are both server-side) and should not be confused.
+
+[tt]max_allowed_packet[/tt] defaults to 1MB server-side if not configured at all (i.e. this is the hard-coded default). Most web hosts will have a higher default value and Composr defines a minimum requirement of 16MB (we define a higher limit in case large Comcode pages are being cached).
+[tt]max_allowed_packet[/tt]'s session variable exists but is read-only. Attempts to change it will give an error message. You therefore must configure the server variable correctly.
+Only MySQL users with the [tt]SUPER[/tt] privilege may set the server variable. Typically only the [tt]root[/tt] user has this.
+
+[tt]max_allowed_packet[/tt] defaults to 1GB client-side (e.g. PHP), except in official client applications like [tt]mysql[/tt] (16MB) and [tt]mysqldump[/tt] (24MB) (which may be configured in the MySQL configuration, the client configuration sections).
+Therefore for the Composr application the client-side setting is irrelevant, but you may come up with it when doing MySQL dumps for example.
+
+[tt]max_allowed_packet[/tt] can be set with "M" syntax, not just with exact bytes. So you can set it to [tt]16M[/tt] or [tt]16777216[/tt], that's your choice. Once parsed MySQL will show it in bytes.
+
+The absolute maximum [tt]max_allowed_packet[/tt] setting (both server-side and client-side, as it relates to the protocol implementation) is 1GB.
+
 [title="2"]Domain names[/title]
 
 Most websites prefer to have a short and memorable Internet address, direct to their front page. In order to achieve this, you will need to pay for control of a domain name. A very large number of companies will provide these domains, and the facility to bind these names to your web-server, for a very low fee.
 
-It is important to note that domain names are licenced on a temporary basis, and therefore you will need to renew your domain names. The length of the licence varies, but is typically between 1 and 5 years.
+It is important to note that domain names are licensed on a temporary basis, and therefore you will need to renew your domain names. The length of the licence varies, but is typically between 1 and 5 years.
 
 [title="2"]Basic server and site infrastructure[/title]
 

@@ -484,6 +484,10 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
     }
 
     $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'news'));
+    }
+
     $_title = $rows[0]['title'];
     $_news = $rows[0]['news'];
     $_news_article = $rows[0]['news_article'];

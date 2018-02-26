@@ -237,7 +237,6 @@ function render_activity($row, $use_inside_cms = true)
         $_username = $GLOBALS['FORUM_DRIVER']->get_username($row['a_also_involving'], true);
         $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['a_also_involving'], $use_inside_cms);
         $hyperlink = hyperlink($url, $_username, false, true);
-
         $extra_lang_string_params[] = $hyperlink;
     } else {
         $extra_lang_string_params[] = do_lang_tempcode('GUEST');

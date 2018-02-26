@@ -1061,6 +1061,12 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         $edit_time = $null_is_literal ? null : time();
     }
 
+    $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'description', 'additional_details', 'category_id'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download'));
+    }
+    $myrow = $rows[0];
+
     require_code('urls2');
     suggest_new_idmoniker_for('downloads', 'view', strval($id), '', $name);
 
@@ -1079,12 +1085,6 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
             }
         }
     }
-
-    $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'description', 'additional_details', 'category_id'), array('id' => $id), '', 1);
-    if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download'));
-    }
-    $myrow = $rows[0];
 
     require_code('content2');
     seo_meta_set_for_explicit('downloads_download', strval($id), $meta_keywords, $meta_description);
@@ -1290,6 +1290,11 @@ function add_download_licence($title, $text)
  */
 function edit_download_licence($id, $title, $text)
 {
+    $rows = $GLOBALS['SITE_DB']->query_select('download_licences', array('l_title'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_licence'));
+    }
+
     $GLOBALS['SITE_DB']->query_update('download_licences', array('l_title' => $title, 'l_text' => $text), array('id' => $id), '', 1);
 
     log_it('EDIT_DOWNLOAD_LICENCE', strval($id), $title);

@@ -347,15 +347,24 @@ function get_pts($max = null, $start = 0)
         $last_post_by_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($topic['t_cache_last_member_id'], true);
 
         $with_poster_id = ($topic['t_pt_from'] == get_member()) ? $topic['t_pt_to'] : $topic['t_pt_from'];
-        $with_username = $GLOBALS['FORUM_DRIVER']->get_username($with_poster_id);
+        $with_username = $GLOBALS['FORUM_DRIVER']->get_username($with_poster_id, false, USERNAME_DEFAULT_NULL);
+        if ($with_username === null) {
+            $with_username = do_lang('UNKNOWN');
+        }
         $with_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($with_poster_id, true);
 
         $by_poster_id = $topic['t_pt_from'];
-        $by_username = $GLOBALS['FORUM_DRIVER']->get_username($by_poster_id);
+        $by_username = $GLOBALS['FORUM_DRIVER']->get_username($by_poster_id, false, USERNAME_DEFAULT_NULL);
+        if ($by_username === null) {
+            $by_username = do_lang('UNKNOWN');
+        }
         $by_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($by_poster_id, true);
 
         $to_poster_id = $topic['t_pt_to'];
-        $to_username = $GLOBALS['FORUM_DRIVER']->get_username($to_poster_id);
+        $to_username = $GLOBALS['FORUM_DRIVER']->get_username($to_poster_id, false, USERNAME_DEFAULT_NULL);
+        if ($to_username === null) {
+            $to_username = do_lang('UNKNOWN');
+        }
         $to_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($to_poster_id, true);
 
         $is_unread = ($topic['t_cache_last_time'] > time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) && (($topic['l_time'] === null) || ($topic['l_time'] < $topic['p_time']));

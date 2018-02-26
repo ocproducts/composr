@@ -27,9 +27,10 @@
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
+ * @param  ?Tempcode $text_summary Text summary for result (e.g. highlighted portion of actual file from search result) (null: none)
  * @return Tempcode The isolated post
  */
-function render_post_box($row, $use_post_title = false, $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
+function render_post_box($row, $use_post_title = false, $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '', $text_summary = null)
 {
     if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
@@ -37,8 +38,6 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
 
     require_lang('cns');
     require_css('cns');
-
-    $just_post_row = db_map_restrict($row, array('id', 'p_post'));
 
     require_code('cns_groups');
     require_code('cns_forums');
@@ -161,7 +160,12 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
     }
     $post_url = build_url($map, get_module_zone('topicview'));
     $post_url->attach('#post_' . strval($row['id']));
-    $post = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['FORUM_DB']);
+    if ($text_summary === null) {
+        $just_post_row = db_map_restrict($row, array('id', 'p_post'));
+        $post = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['FORUM_DB']);
+    } else {
+        $post = $text_summary;
+    }
     $post_date = get_timezoned_date_time_tempcode($row['p_time']);
     $post_date_raw = $row['p_time'];
     if ($use_post_title) {

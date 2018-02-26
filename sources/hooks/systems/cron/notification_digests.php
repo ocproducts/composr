@@ -65,7 +65,10 @@ class Hook_cron_notification_digests
                     require_lang('notifications');
 
                     $to_member_id = $member['d_to_member_id'];
-                    $to_name = $GLOBALS['FORUM_DRIVER']->get_username($to_member_id, true);
+                    $to_name = $GLOBALS['FORUM_DRIVER']->get_username($to_member_id, true, USERNAME_DEFAULT_NULL);
+                    if ($to_name === null) {
+                        continue;
+                    }
                     $to_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($to_member_id);
                     $join_time = $GLOBALS['FORUM_DRIVER']->get_member_join_timestamp($to_member_id);
 

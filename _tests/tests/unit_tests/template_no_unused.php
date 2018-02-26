@@ -33,6 +33,8 @@ class template_no_unused_test_set extends cms_test_case
         }
 
         $exceptions = array(
+            'BLOCK_MAIN_MEMBERS',
+            'BLOCK_MAIN_MEMBERS_COMPLEX',
             'CAPTCHA_LOOSE',
             'COMMENTS_POSTING_FORM_CAPTCHA',
             'PASSWORD_CHECK_JS',
@@ -66,6 +68,7 @@ class template_no_unused_test_set extends cms_test_case
             'CATALOGUE_products_GRID_ENTRY_FIELD',
             'CATALOGUE_products_GRID_ENTRY_WRAP',
             'CHATCODE_EDITOR_MICRO_BUTTON',
+            'CNS_MEMBER_DIRECTORY_SCREEN_FILTERS',
             'CNS_MEMBER_DIRECTORY_SCREEN_FILTER',
             'CNS_TOPIC_POLL_ANSWER_RADIO',
             'CNS_TOPIC_POLL_VIEW_RESULTS',

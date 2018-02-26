@@ -96,9 +96,11 @@ class Hook_cron_downloads_followup_email
         foreach ($member_ids as $id) {
             // Create template object to hold download list
             $download_list = new Tempcode();
-            $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             $member_id = $id['member_id'];
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, false, USERNAME_DEFAULT_NULL);
+            if ($username === null) {
+                continue;
+            }
             $lang = get_lang($member_id);
             $zone = get_module_zone('downloads');
             $count = 0;

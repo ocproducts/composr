@@ -142,7 +142,11 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
         }
 
         if (($mark_as_unread)/* && (cns_may_moderate_forum($forum_id))*/) {
-            $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_cache_last_time' => time(), 't_cache_last_post_id' => $post_id, 't_cache_last_title' => $title, 't_cache_last_username' => $GLOBALS['FORUM_DRIVER']->get_username($post_owner, true), 't_cache_last_member_id' => $post_owner), array('id' => $topic_id), '', 1);
+            $cache_last_username = $GLOBALS['FORUM_DRIVER']->get_username($post_owner, true);
+            if ($cache_last_username === null) {
+                $cache_last_username = do_lang('UNKNOWN');
+            }
+            $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_cache_last_time' => time(), 't_cache_last_post_id' => $post_id, 't_cache_last_title' => $title, 't_cache_last_username' => $cache_last_username, 't_cache_last_member_id' => $post_owner), array('id' => $topic_id), '', 1);
 
             $GLOBALS['FORUM_DB']->query_delete('f_read_logs', array('l_topic_id' => $topic_id));
         }
@@ -365,6 +369,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
         cns_force_update_forum_caching($forum_id, 0, -$num_posts_counted);
     }
 
+    require_code('cns_posts_action');
     if ($forum_id !== null) {
         cns_decache_cms_blocks($forum_id);
     } else {

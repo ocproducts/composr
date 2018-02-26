@@ -165,6 +165,19 @@ class template_previews_test_set extends cms_test_case
                         'templates/FORM_STANDARD_END.tpl',
                         'templates/MEMBER_BAR_SEARCH.tpl',
                         'templates/MENU_LINK_PROPERTIES.tpl',
+                        'templates/CNS_MEMBER_DIRECTORY_SCREEN_FILTER.tpl',
+                        'templates/CNS_MEMBER_DIRECTORY_SCREEN_FILTERS.tpl',
+                        'templates/ADMIN_ZONE_SEARCH.tpl',
+                        'templates/FILEDUMP_FOOTER.tpl',
+                        'templates/FILEDUMP_SEARCH.tpl',
+                        'templates/FONT_SIZER.tpl',
+                        'templates/FORM_SCREEN_ARE_REQUIRED.tpl',
+                        'templates/FORM_SCREEN_FIELD_DESCRIPTION.tpl',
+                        'templates/FORM_STANDARD_END.tpl',
+                        'templates/MEDIA__DOWNLOAD_LINK.tpl',
+                        'templates/MEMBER_BAR_SEARCH.tpl',
+                        'templates/NOTIFICATION_BUTTONS.tpl',
+                        'templates/NOTIFICATION_TYPES.tpl',
                     ))) {
                         continue;
                     }

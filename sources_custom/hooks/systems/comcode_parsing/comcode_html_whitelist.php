@@ -39,7 +39,6 @@ class Hook_comcode_parsing_comcode_html_whitelist
                 $allowed_html_seqs[] = $w;
             }
         }
-
         return $allowed_html_seqs;
     }
 

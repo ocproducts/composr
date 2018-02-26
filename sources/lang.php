@@ -110,6 +110,10 @@ function init__lang()
     require_lang('critical_error');
     require_lang('global');
 
+    /** Keywords parsed from an active search.
+     *
+     * @global boolean $SEARCH__CONTENT_BITS
+     */
     global $SEARCH__CONTENT_BITS;
     $SEARCH__CONTENT_BITS = null;
 
