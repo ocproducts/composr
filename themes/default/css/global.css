@@ -2945,6 +2945,7 @@ div.ajax-loading, p.ajax-loading {
 }
 .rating-star-highlight {
 	opacity: 1.0;
+	padding-right: 3px;
 }
 
 .rating-likers a+a {

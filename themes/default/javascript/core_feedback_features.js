@@ -260,10 +260,10 @@
             return;
         }
 
-        for (var i = 0, len = params.allRatingCriteria; i < len; i++) {
-            rating = objVal(params.allRatingCriteria[i]);
+        for (var key in params.allRatingCriteria) {
+            rating = objVal(params.allRatingCriteria[key]);
 
-            applyRatingHighlightAndAjaxCode((rating.likes === 1), rating.rating, rating.contentType, rating.id, rating.type, rating.rating, rating.contentUrl, rating.contentTitle, true);
+            applyRatingHighlightAndAjaxCode((rating.likes === 1), rating.rating, params.contentType, params.id, rating.type, rating.rating, rating.contentUrl, rating.contentTitle, true);
         }
     };
 
@@ -444,11 +444,14 @@
     }
 
     function applyRatingHighlightAndAjaxCode(likes, initialRating, contentType, id, type, rating, contentUrl, contentTitle, initialisationPhase, visualOnly) {
+        contentType = strVal(contentType);
+        id = strVal(id);
+        type = strVal(type);
         rating = +rating || 0;
         visualOnly = !!visualOnly;
 
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(function (number) {
-            var bit = $dom.$id('rating-bar-' + number + '--' + contentType + '--' + type + '--' + id);
+            var bit = $dom.$('#rating-bar-' + number + '--' + contentType + '--' + type + '--' + id);
             if (!bit) {
                 return;
             }
@@ -474,24 +477,22 @@
 
                 // Find where the rating replacement will go
                 var template = '';
-                var replaceSpot = bit;
+                var replaceSpot = bit.parentElement;
                 while (replaceSpot !== null) {
-                    replaceSpot = replaceSpot.parentNode;
-
-                    if (replaceSpot && replaceSpot.className) {
-                        if (replaceSpot.classList.contains('rating-box')) {
-                            template = 'RATING_BOX';
-                            break;
-                        }
-                        if (replaceSpot.classList.contains('rating-inline-static')) {
-                            template = 'RATING_INLINE_STATIC';
-                            break;
-                        }
-                        if (replaceSpot.classList.contains('rating-inline-dynamic')) {
-                            template = 'RATING_INLINE_DYNAMIC';
-                            break;
-                        }
+                    if (replaceSpot.classList.contains('rating-box')) {
+                        template = 'RATING_BOX';
+                        break;
                     }
+                    if (replaceSpot.classList.contains('rating-inline-static')) {
+                        template = 'RATING_INLINE_STATIC';
+                        break;
+                    }
+                    if (replaceSpot.classList.contains('rating-inline-dynamic')) {
+                        template = 'RATING_INLINE_DYNAMIC';
+                        break;
+                    }
+
+                    replaceSpot = replaceSpot.parentElement;
                 }
                 var _replaceSpot = (template === '') ? bit.parentNode.parentNode.parentNode.parentNode : replaceSpot;
 

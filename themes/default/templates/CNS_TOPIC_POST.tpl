@@ -134,7 +134,7 @@
 							{+END}
 						{+END}
 
-						<a href="#!" rel="back_to_top"><img title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" width="24" height="24" src="{$IMG*,icons/tool_buttons/top}" /></a>
+						<a href="#" rel="back_to_top"><img title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" width="24" height="24" src="{$IMG*,icons/tool_buttons/top}" /></a>
 					</div>
 				{+END}{+END}
 			{+END}
