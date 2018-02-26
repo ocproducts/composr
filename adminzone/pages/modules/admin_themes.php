@@ -392,7 +392,7 @@ class Module_admin_themes
             // Where the theme is used
             $zone_list = new Tempcode();
             if ($theme == $site_default_theme) {
-                if ((count($zones) < 10) && (!is_cns_satellite_site()) && ($free_choices == 0)) {
+                if ((count($zones) < 10) && (!is_on_multi_site_network()) && ($free_choices == 0)) {
                     $zone_list->attach($zone_list_free_choices); // Actually will do nothing, as $free_choices == 0
                 } else {
                     $zone_list->attach(do_lang_tempcode('THEME_DEFAULT_FOR_SITE'));
@@ -459,7 +459,7 @@ class Module_admin_themes
         $zones = find_all_zones(false, true);
         require_lang('zones');
 
-        if ((count($zones) < 10) && (!is_cns_satellite_site()) && ($free_choices == 0)) {
+        if ((count($zones) < 10) && (!is_on_multi_site_network()) && ($free_choices == 0)) {
             $theme_default_reason = new Tempcode(); // We don't need to know the reason really; don't over-complicate simple sites
         }
 

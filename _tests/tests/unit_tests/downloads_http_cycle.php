@@ -54,6 +54,8 @@ class downloads_http_cycle_test_set extends cms_test_case
 
     public function testDownload()
     {
+        set_option('immediate_downloads', '0');
+
         $max_download_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'MAX(id)');
         if ($max_download_id === null) {
             return;
@@ -61,7 +63,7 @@ class downloads_http_cycle_test_set extends cms_test_case
         $url = find_script('dload') . '?id=' . strval($max_download_id);
         $result = cms_http_request($url, array('cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue($result->data == file_get_contents(get_file_base() . '/data/images/donate.png'));
-        $this->assertTrue($result->download_mime_type == 'application/octet-stream');
-        $this->assertTrue($result->filename == 'donate.png');
+        $this->assertTrue($result->download_mime_type == 'application/octet-stream', 'Wrong mime type, ' . $result->download_mime_type);
+        $this->assertTrue($result->filename == 'donate.png', 'Wrong filename, ' . $result->filename);
     }
 }

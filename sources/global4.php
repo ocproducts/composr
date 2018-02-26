@@ -267,8 +267,9 @@ function member_personal_links_and_details($member_id)
         if (!$in_one) {
             sort_maps_by($usergroup_subs, 's_price');
             foreach ($usergroup_subs as $sub) {
+                $db = get_db_for('f_usergroup_subs');
                 $url = build_url(array('page' => 'purchase', 'type' => 'message', 'type_code' => 'USERGROUP' . strval($sub['id'])), get_module_zone('purchase'));
-                $links_ecommerce->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => '5c4a1f300b37722e587fe2f608f1ee3a', 'NAME' => do_lang_tempcode('UPGRADE_TO', escape_html(get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']))), 'URL' => $url)));
+                $links_ecommerce->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => '5c4a1f300b37722e587fe2f608f1ee3a', 'NAME' => do_lang_tempcode('UPGRADE_TO', escape_html(get_translated_text($sub['s_title'], $db))), 'URL' => $url)));
             }
         }
     }

@@ -53,7 +53,6 @@
 *.aifc binary
 *.aiff binary
 *.asf binary
-*.atom binary
 *.avi binary
 *.bmp binary
 *.bz2 binary
@@ -101,7 +100,6 @@
 *.otf binary
 *.pages binary
 *.pdf binary
-*.php binary
 *.png binary
 *.ppt binary
 *.pptx binary
@@ -113,10 +111,7 @@
 *.ram binary
 *.rar binary
 *.rm binary
-*.rss binary
 *.rtf binary
-*.sql binary
-*.svg binary
 *.swf binary
 *.tar binary
 *.tga binary

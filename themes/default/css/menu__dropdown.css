@@ -236,7 +236,7 @@ For example:
 		text-decoration: none;
 	}
 
-	.dropdown-menu .nlevel a:hover {
+	.dropdown-menu .nlevel a:hover span {
 		text-decoration: underline;
 	}
 

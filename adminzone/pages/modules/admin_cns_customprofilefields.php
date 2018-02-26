@@ -112,8 +112,6 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
      */
     public function run_start($type)
     {
-        push_db_scope_check(false);
-
         if (get_forum_type() != 'cns') {
             warn_exit(do_lang_tempcode('NO_CNS'));
         } else {

@@ -61,7 +61,7 @@ class CMSAttachmentWrite
             $filesize = $_FILES[$filekey_orig]['size'];
         }
 
-        $attachment_id = $GLOBALS['SITE_DB']->query_insert('attachments', array(
+        $attachment_id = $GLOBALS['FORUM_DB']->query_insert('attachments', array(
             'a_member_id' => $member_id,
             'a_file_size' => $filesize,
             'a_url' => $urls[0],
@@ -170,7 +170,7 @@ class CMSAttachmentWrite
 
         require_code('attachments3');
 
-        $_attachment_info = $GLOBALS['SITE_DB']->query_select('attachments', array('a_url', 'a_thumb_url', 'a_member_id'), array('id' => $attachment_id), '', 1);
+        $_attachment_info = $GLOBALS['FORUM_DB']->query_select('attachments', array('a_url', 'a_thumb_url', 'a_member_id'), array('id' => $attachment_id), '', 1);
         if (!array_key_exists(0, $_attachment_info)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('_ATTACHMENT')));
         }
@@ -179,10 +179,10 @@ class CMSAttachmentWrite
         if ($post_id !== null) {
             $ref_where['r_referer_id'] = strval($post_id);
         }
-        $GLOBALS['SITE_DB']->query_delete('attachment_refs', $ref_where);
+        $GLOBALS['FORUM_DB']->query_delete('attachment_refs', $ref_where);
 
         // Was that the last reference to this attachment? (if so -- delete attachment)
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $attachment_id));
+        $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $attachment_id));
         if ($test === null) {
             _delete_attachment($attachment_id, $GLOBALS['FORUM_DB']);
         }

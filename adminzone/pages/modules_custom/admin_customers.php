@@ -104,7 +104,7 @@ class Module_admin_customers
         require_code('mantis');
         $cur_id = get_credits_profile_field_id('cms_currency');
         if ($cur_id !== null) {
-            $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_owner_view' => 1, 'cf_owner_set' => 1), array('id' => $cur_id), '', 1);
+            $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_owner_view' => 1, 'cf_owner_set' => 1), array('id' => $cur_id), '', 1);
         }
         cns_make_custom_field('cms_support_credits', 1, '', '', 0, 1, 0, 0, 'integer');
         cns_make_custom_field('cms_ftp_host', 0, do_lang('ENCRYPTED_TO_WEBSITE'), '', 0, 1, 1, 1, 'short_text', 0, 0, 0, null, '', 0, '', true);

@@ -32,7 +32,10 @@ class xss_test_set extends cms_test_case
 
         require_code('permissions3');
 
-        set_privilege(1, 'allow_html', true);
+        $guest_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+        $guest_group_id = $guest_id; // Assumption
+
+        set_privilege($guest_group_id, 'allow_html', true);
 
         $parsed = strtolower(static_evaluate_tempcode(comcode_to_tempcode($comcode, $GLOBALS['FORUM_DRIVER']->get_guest_id())));
 
@@ -56,7 +59,7 @@ class xss_test_set extends cms_test_case
 
         $this->assertTrue(strpos($parsed, '<test') !== false); // So it does work, in general, not just stripping all HTML/XML tags
 
-        set_privilege(1, 'allow_html', false);
+        set_privilege($guest_group_id, 'allow_html', false);
 
         $parsed = strtolower(static_evaluate_tempcode(comcode_to_tempcode($comcode, $GLOBALS['FORUM_DRIVER']->get_guest_id())));
 
@@ -64,7 +67,7 @@ class xss_test_set extends cms_test_case
 
         // Some more hard-core stuff, where no white-list check needed
 
-        set_privilege(1, 'allow_html', true);
+        set_privilege($guest_group_id, 'allow_html', true);
 
         $comcode = '<scr<script>';
 
@@ -72,13 +75,13 @@ class xss_test_set extends cms_test_case
 
         $this->assertTrue(strpos($parsed, '<script') === false);
 
-        set_privilege(1, 'allow_html', false);
+        set_privilege($guest_group_id, 'allow_html', false);
     }
 
     public function testInputFilter()
     {
         global $MEMBER_CACHED;
-        $MEMBER_CACHED = 1;
+        $MEMBER_CACHED = $GLOBALS['FORUM_DRIVER']->get_guest_id();
         global $PRIVILEGE_CACHE;
         $PRIVILEGE_CACHE[get_member()]['unfiltered_input'][''][''][''] = false;
 

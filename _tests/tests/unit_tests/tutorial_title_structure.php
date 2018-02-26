@@ -22,7 +22,7 @@ class tutorial_title_structure_test_set extends cms_test_case
     {
         $titles = array();
 
-        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
             if (substr($file, -4) == '.txt') {
@@ -46,7 +46,7 @@ class tutorial_title_structure_test_set extends cms_test_case
 
     public function testTitlesAscendence()
     {
-        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
             if (substr($file, -4) == '.txt') {
@@ -71,7 +71,7 @@ class tutorial_title_structure_test_set extends cms_test_case
 
     public function testTitlesNoEmptySections()
     {
-        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
             if (substr($file, -4) == '.txt') {

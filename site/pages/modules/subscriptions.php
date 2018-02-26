@@ -126,8 +126,10 @@ class Module_subscriptions
                     continue;
                 }
 
+                $db = get_db_for('f_usergroup_subs');
+
                 $usergroup_subscription_id = intval(substr($sub['s_type_code'], 9));
-                $usergroup_subscription_rows = $GLOBALS['FORUM_DB']->query_select('f_usergroup_subs', array('*'), array('id' => $usergroup_subscription_id), '', 1);
+                $usergroup_subscription_rows = $db->query_select('f_usergroup_subs', array('*'), array('id' => $usergroup_subscription_id), '', 1);
                 if (!array_key_exists(0, $usergroup_subscription_rows)) {
                     continue;
                 }

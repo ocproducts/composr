@@ -373,11 +373,11 @@ class Module_cms_quiz extends Standard_crud_module
     {
         $id = intval($_id);
 
-        $myrows = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('id' => $id), '', 1);
-        if (!array_key_exists(0, $myrows)) {
+        $rows = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('id' => $id), '', 1);
+        if (!array_key_exists(0, $rows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'quiz'));
         }
-        $myrow = $myrows[0];
+        $myrow = $rows[0];
 
         $text = load_quiz_questions_to_string($id);
 

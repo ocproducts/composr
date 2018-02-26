@@ -152,6 +152,7 @@ class Hook_commandr_fs_custom_comcode_tags extends Resource_fs_base
         $block_tag = $this->_default_property_int($properties, 'block_tag');
         $textual_tag = $this->_default_property_int($properties, 'textual_tag');
 
+        require_code('custom_comcode');
         $tag = edit_custom_comcode_tag($resource_id, $tag, $title, $description, $replace, $example, $parameters, $enabled, $dangerous_tag, $block_tag, $textual_tag, true);
 
         $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
@@ -170,6 +171,7 @@ class Hook_commandr_fs_custom_comcode_tags extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
 
+        require_code('custom_comcode');
         delete_custom_comcode_tag($resource_id);
 
         return true;

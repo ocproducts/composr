@@ -75,7 +75,11 @@ class Module_admin_referrals
 
         if ($type == 'adjust' || $type == '_adjust') {
             $scheme = get_param_string('scheme');
-            $ini_file = parse_ini_file(get_custom_file_base() . '/text_custom/referrals.txt', true);
+            $path = get_custom_file_base() . '/text_custom/referrals.txt';
+            if (!is_file($path)) {
+                $path = get_file_base() . '/text_custom/referrals.txt';
+            }
+            $ini_file = parse_ini_file($path, true);
             $scheme_title = $ini_file[$scheme]['title'];
 
             $this->title = get_screen_title('MANUALLY_ADJUST_SCHEME_SETTINGS', true, array(escape_html($scheme_title)));

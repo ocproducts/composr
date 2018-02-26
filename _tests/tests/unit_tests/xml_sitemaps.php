@@ -38,7 +38,7 @@ class xml_sitemaps_test_set extends cms_test_case
     {
         sitemap_xml_build();
 
-        $this->assertTrue(is_file(get_file_base() . '/data_custom/sitemaps/index.xml'));
+        $this->assertTrue(is_file(get_custom_file_base() . '/data_custom/sitemaps/index.xml'));
     }
 
     public function testSitemapValidate()
@@ -52,7 +52,7 @@ class xml_sitemaps_test_set extends cms_test_case
             );
 
             $tmp_file = get_file_base() . '/temp.xml';
-            $c = file_get_contents(get_file_base() . '/data_custom/sitemaps/' . $file);
+            $c = file_get_contents(get_custom_file_base() . '/data_custom/sitemaps/' . $file);
             $cleaned_c = preg_replace('#https?://[^<>"]*#', 'http://example.com/', $c); // It checks URLs, which we don't want
             $cleaned_c = preg_replace('#(?U)(</url>.*</url>)(?-U).*</url>#s', '$1', $cleaned_c); // Strip down to speed up. Have 2 URLs else the validator is buggy
             file_put_contents($tmp_file, $cleaned_c);

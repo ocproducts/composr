@@ -38,7 +38,7 @@ class RevisionEngineDatabase
         $this->is_log_mod = $is_log_mod;
 
         if ($db === null) {
-            $this->db = $is_log_mod ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+            $this->db = $is_log_mod ? get_db_for('f_moderator_logs') : $GLOBALS['SITE_DB'];
         } else {
             $this->db = $db;
         }

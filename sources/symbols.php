@@ -938,7 +938,7 @@ function ecv_IMG($lang, $escaped, $param)
 
     if (isset($param[0])) {
         if ((isset($GLOBALS['SITE_DB'])) && (function_exists('find_theme_image')) && (!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($GLOBALS['FORUM_DRIVER'] !== null)) {
-            $value = find_theme_image($param[0], ((isset($param[3])) && ($param[3] === '1')), false, (isset($param[2]) && $param[2] !== '') ? $param[2] : null, null, ((isset($param[1])) && ($param[1] === '1')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB']);
+            $value = find_theme_image($param[0], ((isset($param[3])) && ($param[3] === '1')), false, (isset($param[2]) && $param[2] !== '') ? $param[2] : null, null, ((isset($param[1])) && ($param[1] === '1') && (get_forum_type() == 'cns')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB']);
         } else {
             $value = 'themes/default/images/' . $param[0] . '.png';
             if (!is_file(get_file_base() . '/' . $value)) {
@@ -975,7 +975,7 @@ function ecv_IMG_INLINE($lang, $escaped, $param)
 
     if (isset($param[0])) {
         if ((isset($GLOBALS['SITE_DB'])) && (function_exists('find_theme_image')) && (!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($GLOBALS['FORUM_DRIVER'] !== null)) {
-            $value = find_theme_image($param[0], true, true, empty($param[2]) ? null : $param[2], null, ((isset($param[1])) && ($param[1] == '1')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB']);
+            $value = find_theme_image($param[0], true, true, empty($param[2]) ? null : $param[2], null, ((isset($param[1])) && ($param[1] == '1') && (get_forum_type() == 'cns')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB']);
         } else {
             $value = 'themes/default/images/' . $param[0] . '.png';
             if (!is_file(get_file_base() . '/' . $value)) {

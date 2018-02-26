@@ -25,7 +25,7 @@ class maintenance_codes_test_set extends cms_test_case
 
         $line = 1;
         while (($row = fgetcsv($myfile)) !== false) {
-            $this->assertTrue(count($row) == 7, 'Wrong number of columns on line ' . integer_format($line) . ', got ' . integer_format(count($row)) . 'expected 7');
+            $this->assertTrue(count($row) == 7, 'Wrong number of columns on line ' . integer_format($line) . ', got ' . integer_format(count($row)) . ' expected 7');
 
             if ($line != 1) {
                 $this->assertTrue(preg_match('#^\w+$#', $row[0]) != 0, 'Invalid codename ' . $row[0]);

@@ -1129,7 +1129,7 @@ class Forum_driver_cns extends Forum_driver_base
         if (!addon_installed('chat')) {
             $friends = false;
         }
-        if (is_cns_satellite_site()) {
+        if (is_on_multi_site_network()) {
             $friends = false;
         }
         if (is_guest()) {
@@ -1706,7 +1706,7 @@ class Forum_driver_cns extends Forum_driver_base
 
                 if (get_page_name() != 'lost_password') {
                     if (get_db_type() != 'xml') {
-                        if (!$GLOBALS['SITE_DB']->table_is_locked('f_members')) {
+                        if (!$GLOBALS['FORUM_DB']->table_is_locked('f_members')) {
                             $this->db->query_update('f_members', $change_map, array('id' => $id), '', 1, 0, false, true);
                         }
                     }

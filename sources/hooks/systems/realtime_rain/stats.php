@@ -75,23 +75,23 @@ class Hook_realtime_rain_stats
                 }
 
                 $drops[] = rain_get_special_icons($row['ip'], $timestamp, $row['browser']) + array(
-                        'TYPE' => 'stats',
-                        'FROM_MEMBER_ID' => strval($member_id),
-                        'TO_MEMBER_ID' => null,
-                        'TITLE' => $title,
-                        'IMAGE' => is_guest($member_id) ? rain_get_country_image($row['ip']) : $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
-                        'TIMESTAMP' => strval($timestamp),
-                        'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
-                        'TICKER_TEXT' => null,
-                        'URL' => (addon_installed('securitylogging')) ? build_url(array('page' => 'admin_lookup', 'id' => $row['ip']), get_module_zone('admin_lookup')) : null,
-                        'IS_POSITIVE' => false,
-                        'IS_NEGATIVE' => false,
+                    'TYPE' => 'stats',
+                    'FROM_MEMBER_ID' => strval($member_id),
+                    'TO_MEMBER_ID' => null,
+                    'TITLE' => $title,
+                    'IMAGE' => is_guest($member_id) ? rain_get_country_image($row['ip']) : $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
+                    'TIMESTAMP' => strval($timestamp),
+                    'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
+                    'TICKER_TEXT' => null,
+                    'URL' => (addon_installed('securitylogging')) ? build_url(array('page' => 'admin_lookup', 'id' => $row['ip']), get_module_zone('admin_lookup')) : null,
+                    'IS_POSITIVE' => false,
+                    'IS_NEGATIVE' => false,
 
-                        // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
-                        'FROM_ID' => 'member_' . strval($member_id),
-                        'TO_ID' => null,
-                        'GROUP_ID' => 'page_' . $page_link,
-                    );
+                    // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
+                    'FROM_ID' => 'member_' . strval($member_id),
+                    'TO_ID' => null,
+                    'GROUP_ID' => 'page_' . $page_link,
+                );
             }
         }
 

@@ -48,7 +48,7 @@ class _backups_test_set extends cms_test_case
         $temp_test_dir = 'exports/backups/test';
         $temp_test_dir_full = get_custom_file_base() . '/' . $temp_test_dir;
         deldir_contents($temp_test_dir);
-        @mkdir($temp_test_dir, 0777);
+        @mkdir($temp_test_dir_full, 0777);
         tar_extract_to_folder($resource, $temp_test_dir);
         tar_close($resource);
         $success = is_file($temp_test_dir_full . '/restore.php');
@@ -59,6 +59,11 @@ class _backups_test_set extends cms_test_case
         $success = is_file($temp_test_dir_full . '/restore_data.php');
         $this->assertTrue($success, 'Backup did not extract as expected (2)');
         if (!$success) {
+            return;
+        }
+
+        if (get_file_base() != get_custom_file_base()) {
+            $this->assertTrue(false, 'Test cannot run further, as a backup would only contain custom data and thus not run standalone');
             return;
         }
 
@@ -78,7 +83,7 @@ $SITE_INFO[\'multi_lang_content\'] = \'' . addslashes($SITE_INFO['multi_lang_con
         $GLOBALS['SITE_DB']->query('CREATE DATABASE cms_backup_test', null, 0, true);
 
         for ($i = 0; $i < 2; $i++) {
-            $test = cms_http_request(get_base_url() . '/exports/backups/test/restore.php?time_limit=1000', array('trigger_error' => false, 'post_params' => array(), 'timeout' => 100.0));
+            $test = cms_http_request(get_custom_base_url() . '/exports/backups/test/restore.php?time_limit=1000', array('trigger_error' => false, 'post_params' => array(), 'timeout' => 100.0));
             $success = (strpos($test->data, do_lang('backups:BACKUP_RESTORE_SUCCESS')) !== false);
             $message = 'Failed to run restorer script on iteration ' . strval($i + 1) . ' [' . $test->data . ']; to debug manually run exports/backups/test/restore.php?time_limit=1000';
             if (strpos(get_db_type(), 'odbc') !== false) {

@@ -106,7 +106,7 @@ class chmod_consistency_test_set extends cms_test_case
         $place_files_stripped = array();
         foreach ($places as $place_parts) {
             list($place) = $place_parts;
-            $place_path = get_custom_file_base() . '/' . $place;
+            $place_path = get_file_base() . '/' . $place;
             $place_path_exists = file_exists($place_path);
             $this->assertTrue($place_path_exists, $place . ' is missing, cannot check it');
 
@@ -133,7 +133,7 @@ class chmod_consistency_test_set extends cms_test_case
         require_code('inst_special');
         $chmod_array = get_chmod_array(fallback_lang(), true);
         foreach ($chmod_array as $item) {
-            $path = get_custom_file_base() . '/' . $item;
+            $path = get_file_base() . '/' . $item;
 
             $is_runtime = (strpos($path, '*') !== false);
 
@@ -171,7 +171,7 @@ class chmod_consistency_test_set extends cms_test_case
                         continue;
                     }
 
-                    $place_path = get_custom_file_base() . '/' . $place;
+                    $place_path = get_file_base() . '/' . $place;
 
                     if (file_exists($place_path)) {
                         $c = $place_files[$place_path];

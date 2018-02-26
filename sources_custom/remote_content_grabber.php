@@ -74,7 +74,7 @@ class RemoteContentGrabber
                 return preg_replace('#\?.*$#', '', basename($url));
             },
 
-            'db' => $GLOBALS['FORUM_DB'],
+            'db' => get_db_for('f_posts'),
             'table' => 'f_posts',
             'id_field' => 'id',
             'content_field' => 'p_post',

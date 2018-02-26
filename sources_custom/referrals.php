@@ -30,7 +30,11 @@ function get_referral_scheme_stats_for($referrer, $scheme_name, $raw = false)
 
 function assign_referral_awards($referee, $trigger)
 {
-    $ini_file = parse_ini_file(get_custom_file_base() . '/text_custom/referrals.txt', true);
+    $path = get_custom_file_base() . '/text_custom/referrals.txt';
+    if (!is_file($path)) {
+        $path = get_file_base() . '/text_custom/referrals.txt';
+    }
+    $ini_file = parse_ini_file($path, true);
 
     $referee_username = $GLOBALS['FORUM_DRIVER']->get_username($referee);
     $referee_displayname = $GLOBALS['FORUM_DRIVER']->get_username($referee, true);
@@ -443,8 +447,13 @@ function referrer_is_qualified($scheme, $member_id)
 
 function referrer_report_script($ret = false)
 {
+    $path = get_custom_file_base() . '/text_custom/referrals.txt';
+    if (!is_file($path)) {
+        $path = get_file_base() . '/text_custom/referrals.txt';
+    }
+    $ini_file = parse_ini_file($path, true);
+
     $scheme_name = get_param_string('scheme', 'standard_scheme');
-    $ini_file = parse_ini_file(get_custom_file_base() . '/text_custom/referrals.txt', true);
     if (!isset($ini_file[$scheme_name])) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
@@ -494,7 +503,7 @@ function referrer_report_script($ret = false)
         $max,
         $start
     );
-    $max_rows = $GLOBALS['FORUM_DB']->query_select_value('referees_qualified_for', 'COUNT(*)', ($member_id !== null) ? array('q_referrer' => $member_id) : array()) * 2;
+    $max_rows = $GLOBALS['SITE_DB']->query_select_value('referees_qualified_for', 'COUNT(*)', ($member_id !== null) ? array('q_referrer' => $member_id) : array()) * 2;
     if ((count($referrals) == 0) && ($dif === null)) {
         inform_exit(do_lang_tempcode('NO_ENTRIES'), true);
     }

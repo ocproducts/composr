@@ -54,7 +54,7 @@ class Block_main_cns_involved_topics
     public function run($map)
     {
         if (get_forum_type() != 'cns') {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('NO_CNS'), 'red-alert');
         }
 
         $block_id = get_block_id($map);
@@ -106,7 +106,7 @@ class Block_main_cns_involved_topics
             $extra_join_sql = '';
             $where_sup = '';
             if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && ($check_perms)) {
-                $extra_join_sql .= get_permission_join_clause('forum', 't_forum_id');
+                $extra_join_sql .= get_permission_join_clause('forum', 't_forum_id', 'a', 'ma', 't');
                 $where_sup .= get_permission_where_clause(get_member(), get_permission_where_clause_groups(get_member()));
             }
 

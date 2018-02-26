@@ -172,7 +172,7 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
             'group_id' => $cat_ins_group_id,
         ));
 
-        $GLOBALS['SITE_DB']->query_insert('group_privileges', array(
+        $GLOBALS['FORUM_DB']->query_insert('group_privileges', array(
             'privilege' => $ins_privilege,
             'group_id' => $ins_group_id,
             'the_page' => $ins_the_page,

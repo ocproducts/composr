@@ -247,11 +247,7 @@
 
         function beginImChatting() {
             window.loadFromRoomId = -1;
-            if ((window.chatCheck)) {
-                chatCheck(true, 0);
-            } else {
-                setTimeout(beginImChatting, 100);
-            }
+            chatCheck(true, 0);
         }
     };
 
@@ -379,11 +375,7 @@
 
         function beginImChatting() {
             window.loadFromRoomId = -1;
-            if ((window.chatCheck)) {
-                chatCheck(true, 0);
-            } else {
-                setTimeout(beginImChatting, 100);
-            }
+            chatCheck(true, 0);
         }
     };
 
@@ -646,6 +638,7 @@
 
         return null;
     }
+    window.chatCheck = chatCheck;
 
     // Check to see if there's been a packet loss
     function chatCheckTimeout(backlog, messageId, eventId) {

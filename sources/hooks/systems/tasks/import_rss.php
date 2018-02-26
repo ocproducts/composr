@@ -389,9 +389,13 @@ class Hook_task_import_rss
                             $comment_content .= "[staff_note]\n\n" . do_lang('EMAIL') . ': [email]' . $comment_author_email . "[/email][/staff_note]";
                         }
 
-                        $submitter = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $comment_author));
-                        if ($submitter === null) {
-                            $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id(); // If comment is made by a non-member, assign comment to guest account
+                        if (get_forum_type() == 'cns') {
+                            $submitter = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $comment_author));
+                            if ($submitter === null) {
+                                $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id(); // If comment is made by a non-member, assign comment to guest account
+                            }
+                        } else {
+                            $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
                         }
 
                         require_code('feedback');

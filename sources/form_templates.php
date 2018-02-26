@@ -180,7 +180,7 @@ function take_param_int_modeavg($setting, $db_property, $table, $default)
         return $default;
     }
 
-    $db = $GLOBALS[((substr($table, 0, 2) == 'f_') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+    $db = get_db_for($table);
     $val = $db->query_value_if_there('SELECT ' . $db_property . ',count(' . $db_property . ') AS qty FROM ' . $db->get_table_prefix() . $table . ' GROUP BY ' . $db_property . ' ORDER BY qty DESC', false, true); // We need the mode here, not the mean
     if ($val !== null) {
         return $val;
@@ -1538,6 +1538,41 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 }
 
 /**
+ * Make a preview URL absolute and return if it is an image.
+ *
+ * @param  URLPATH $url URL
+ * @return array A pair: Modified URL, whether it is an image
+ */
+function make_previewable_url_absolute($url)
+{
+    $_url = $url;
+    $is_image = false;
+
+    if (($_url !== null) && ($_url != '')) {
+        if (url_is_local($_url)) {
+            $image_path = get_custom_file_base() . '/' . dirname(rawurldecode($_url));
+            if (!is_file($image_path)) {
+                $image_path = get_file_base() . '/' . dirname(rawurldecode($_url));
+                $custom = false;
+            } else {
+                $custom = true;
+            }
+
+            $htaccess_path = $image_path . '/.htaccess';
+            if ((is_file($htaccess_path)) && (strpos(file_get_contents($htaccess_path), 'deny from all') !== false)) {
+                return array($_url, $is_image);
+            }
+
+            require_code('images');
+            $is_image = is_image($_url, IMAGE_CRITERIA_WEBSAFE, true);
+            $_url = ($custom ? get_custom_base_url() : get_base_url()) . '/' . $_url;
+        }
+    }
+
+    return array($_url, $is_image);
+}
+
+/**
  * Get the Tempcode for a file upload input.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
@@ -1565,21 +1600,9 @@ function form_input_upload($pretty_name, $description, $name, $required, $defaul
     $tabindex = get_form_field_tabindex($tabindex);
 
     $_required = ($required) ? '-required' : '';
-    $is_image = false;
-    $existing_url = '';
-    if ($default !== null) {
-        require_code('images');
-        $is_image = is_image($default, IMAGE_CRITERIA_WEBSAFE, true);
-        $existing_url = $default;
-        if (url_is_local($existing_url)) {
-            $htaccess_path = get_custom_file_base() . '/' . dirname(rawurldecode($existing_url)) . '/.htaccess';
-            if ((is_file($htaccess_path)) && (strpos(file_get_contents($htaccess_path), 'deny from all') !== false)) {
-                $existing_url = '';
-            } else {
-                $existing_url = get_custom_base_url() . '/' . $existing_url;
-            }
-        }
-    }
+
+    list($existing_url, $is_image) = make_previewable_url_absolute($default);
+
     $input = do_template('FORM_SCREEN_INPUT_UPLOAD', array(
         '_GUID' => 'f493edcc5298bb32fff8635f2d316d21',
         'FILTER' => $filter,
@@ -1620,16 +1643,10 @@ function form_input_upload_multi($pretty_name, $description, $name, $required, $
     $tabindex = get_form_field_tabindex($tabindex);
 
     $_required = ($required) ? '-required' : '';
-    $is_image = false;
-    $existing_url = '';
+
+    $edit = mixed();
     if (($default !== null) && (count($default) > 0)) {
-        require_code('images');
-        $is_image = is_image($default[0], IMAGE_CRITERIA_WEBSAFE, true);
-        $existing_url = $default[0];
-        if (url_is_local($existing_url)) {
-            $existing_url = get_custom_base_url() . '/' . $existing_url;
-        }
-        $edit = $default;
+        list($edit, $is_image) = make_previewable_url_absolute($default[0]);
     } else {
         $edit = array();
     }
@@ -2040,8 +2057,9 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
             $cat = do_lang($avatars ? 'GENERAL' : 'UNNAMED');
         }
 
+        $image_maps = array('without_widths' => array(), 'with_widths' => array());
+
         $_category = new Tempcode();
-        $i = 0;
         $category_expanded = false;
         foreach ($ids as $id) {
             if ($selected_url !== null) {
@@ -2090,21 +2108,34 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 $height = null;
             }
 
-            $temp = do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', array(
-                '_GUID' => '10005e2f08b44bfe17fce68685b4c884',
-                'LINEAR' => $linear,
-                'CHECKED' => $selected,
-                'PRETTY' => $pretty,
-                'NAME' => $name,
-                'CODE' => $id,
-                'URL' => $url,
-                'WIDTH' => ($width === null) ? '' : strval($width),
-                'HEIGHT' => ($height === null) ? '' : strval($height),
-                'VECTOR' => (substr($url, -4) == '.svg'),
-            ));
-            $_category->attach($temp);
+            $image_maps[($width === null) ? 'without_widths' : 'with_widths'][] = array(
+                'width' => $width,
+                'tpl_map' => array(
+                    '_GUID' => '10005e2f08b44bfe17fce68685b4c884',
+                    'LINEAR' => $linear,
+                    'CHECKED' => $selected,
+                    'PRETTY' => $pretty,
+                    'NAME' => $name,
+                    'CODE' => $id,
+                    'URL' => $url,
+                    'WIDTH' => ($width === null) ? null : strval($width),
+                    'HEIGHT' => ($height === null) ? null : strval($height),
+                    'VECTOR' => (substr($url, -4) == '.svg'),
+                ),
+            );
+        }
 
-            $i++;
+        sort_maps_by($image_maps['with_widths'], 'width');
+
+        foreach ($image_maps['without_widths'] as $image_map) {
+            $tpl_map = $image_map['tpl_map'];
+            if (count($image_maps['with_widths']) > 0) {
+                $tpl_map = array('HEIGHT' => $image_maps['with_widths'][0]['tpl_map']['HEIGHT']) + $tpl_map;
+            }
+            $_category->attach(do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', $tpl_map));
+        }
+        foreach ($image_maps['with_widths'] as $image_map) {
+            $_category->attach(do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', $image_map['tpl_map']));
         }
 
         $_category = do_template('FORM_SCREEN_INPUT_THEME_IMAGE_CATEGORY', array(
@@ -2488,11 +2519,7 @@ function alternate_fields_set__end($set_name, $pretty_name, $description, $field
         return $fields; // Didn't actually start set, probably because some logic said not to - so just flow to append as normal
     }
 
-    if (($existing_image_preview_url !== null) && ($existing_image_preview_url != '')) {
-        if (url_is_local($existing_image_preview_url)) {
-            $existing_image_preview_url = get_custom_base_url() . '/' . $existing_image_preview_url;
-        }
-    }
+    list($existing_image_preview_url, $is_image) = make_previewable_url_absolute($existing_image_preview_url);
 
     $set = do_template('FORM_SCREEN_FIELDS_SET', array(
         '_GUID' => 'ae81cf68280aef067de1e8e71b2919a7',

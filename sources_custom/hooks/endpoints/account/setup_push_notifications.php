@@ -33,7 +33,7 @@ class Hook_endpoint_account_setup_push_notifications
         $member_id = either_param_integer('member', get_member());
         $token = either_param_string('token');
 
-        $member_details = $GLOBALS['SITE_DB']->query_select('f_members', array('id'), array('id' => $member_id), '', 1);
+        $member_details = $GLOBALS['FORUM_DB']->query_select('f_members', array('id'), array('id' => $member_id), '', 1);
         if (!isset($member_details[0])) {
             warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
         }

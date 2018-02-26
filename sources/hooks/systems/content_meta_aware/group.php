@@ -41,7 +41,7 @@ class Hook_content_meta_aware_group
             'content_type_label' => 'global:USERGROUP',
             'content_type_universal_label' => 'Usergroup',
 
-            'db' => $GLOBALS['FORUM_DB'],
+            'db' => get_db_for('f_groups'),
             'table' => 'f_groups',
             'id_field' => 'id',
             'id_field_numeric' => true,

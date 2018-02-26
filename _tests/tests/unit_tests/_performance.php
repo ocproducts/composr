@@ -54,9 +54,9 @@ class _performance_test_set extends cms_test_case
 
         $this->establish_admin_session();
 
-        $this->log_file = fopen(get_file_base() . '/data_custom/performance.log', 'wb');
+        $this->log_file = fopen(get_custom_file_base() . '/data_custom/performance.log', 'wb');
         flock($this->log_file, LOCK_EX);
-        $this->log_warnings_file = fopen(get_file_base() . '/data_custom/performance_warnings.log', 'wb');
+        $this->log_warnings_file = fopen(get_custom_file_base() . '/data_custom/performance_warnings.log', 'wb');
         flock($this->log_warnings_file, LOCK_EX);
     }
 

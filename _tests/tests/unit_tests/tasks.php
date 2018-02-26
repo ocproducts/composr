@@ -28,6 +28,11 @@ class tasks_test_set extends cms_test_case
 
     public function testNewsletterCSV()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testNewsletterCSV')) {
+            return;
+        }
+
         if (!addon_installed('newsletter')) {
             $this->assertTrue(false, 'Cannot run test without newsletter addon');
             return;
@@ -52,6 +57,11 @@ class tasks_test_set extends cms_test_case
 
     public function testCatalogueCSV()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testCatalogueCSV')) {
+            return;
+        }
+
         if (!addon_installed('catalogues')) {
             $this->assertTrue(false, 'Cannot run test without catalogues addon');
             return;
@@ -75,6 +85,12 @@ class tasks_test_set extends cms_test_case
 
     public function testCalendarICal()
     {
+        $only = get_param_string('only', null);
+        $debugging = (get_param_integer('debug', 0) == 1);
+        if (($only !== null) && ($only != 'testCalendarICal')) {
+            return;
+        }
+
         if (!addon_installed('calendar')) {
             $this->assertTrue(false, 'Cannot run test without calendar addon');
             return;
@@ -98,14 +114,53 @@ class tasks_test_set extends cms_test_case
         ob_end_clean();
 
         $temp_path = cms_tempnam();
+        rename($temp_path, $temp_path . '.ics');
+        $temp_path .= '.ics';
         file_put_contents($temp_path, $ical);
 
-        $post_params = array(
-            'snip' => $ical,
-        );
-        $result = http_get_contents('http://severinghaus.org/projects/icv/', array('post_params' => $post_params));
+        /*
+        This seems to be down now
+        $post_params = array('snip' => $ical);
+        $url = 'http://severinghaus.org/projects/icv/';
+        if ($result === null) {
+            $this->assertTrue(false, 'ical validator is down?');
+        } else {
+            $this->assertTrue(strpos($result, 'Congratulations; your calendar validated!') !== false);
+        }
+        */
+        $result = http_get_contents('https://ical-validator.herokuapp.com/validate/', array('trigger_error' => false));
+        if ($result !== null) {
+            /* Could not get this working with upload method
+            $matches = array();
+            preg_match('#<form id="id2" method="post" action="([^"]*)"#', $result, $matches);
+            $rel_url = $matches[1];
+            preg_match('#jsessionid=(\w+)#', $result, $matches);
+            $session_id = $matches[1];
+            $files = array('file' => $temp_path);
+            $post_params = array('id2_hf_0' => '', 'Validate' => '');
+            $cookies = array('JSESSIONID' => $session_id);
+            $extra_headers = array();
+            $url = qualify_url(html_entity_decode($rel_url, ENT_QUOTES), 'https://ical-validator.herokuapp.com/validate/');
+            $result = http_get_contents($url, array('ignore_http_status' => $debugging, 'trigger_error' => false, 'files' => $files, 'post_params' => $post_params, 'cookies' => $cookies, 'extra_headers' => $extra_headers));
+            */
 
-        $this->assertTrue(strpos($result, 'Congratulations; your calendar validated!') !== false);
+            $matches = array();
+            preg_match('#<form id="id3" method="post" action="([^"]*)"#', $result, $matches);
+            $rel_url = $matches[1];
+            $post_params = array('snippet' => $ical);
+            $url = qualify_url(html_entity_decode($rel_url, ENT_QUOTES), 'https://ical-validator.herokuapp.com/validate/');
+            $result = http_get_contents($url, array('ignore_http_status' => $debugging, 'trigger_error' => false, 'post_params' => $post_params));
+            if ($debugging) {
+                @var_dump($url);
+                @var_dump($result);
+                exit();
+            }
+        }
+        if ($result === null) {
+            $this->assertTrue(false, 'ical validator is down?');
+        } else {
+            $this->assertTrue((strpos($result, '1 results in 1 components') !== false) && (strpos($result, 'CRLF should be used for newlines')/*bug in validator*/ !== false));
+        }
 
         delete_calendar_event($complex_event_id);
         delete_calendar_event($simple_event_id);
@@ -142,6 +197,11 @@ class tasks_test_set extends cms_test_case
 
     public function testMemberCSV()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testMemberCSV')) {
+            return;
+        }
+
         if (get_forum_type() != 'cns') {
             $this->assertTrue(false, 'Cannot run test when not running Conversr');
             return;

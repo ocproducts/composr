@@ -75,8 +75,10 @@ function form_for_filtercode($filter, $labels = array(), $content_type = null, $
         $info = $ob->info();
 
         $table = $info['table'];
-        if (($content_type == 'post') || ($content_type == 'topic') || ($content_type == 'member') || ($content_type == 'group') || ($content_type == 'forum')) {
-            $db = $GLOBALS['FORUM_DB'];
+        if (get_forum_type() == 'cns') {
+            if (($content_type == 'post') || ($content_type == 'topic') || ($content_type == 'member') || ($content_type == 'group') || ($content_type == 'forum')) {
+                $db = $GLOBALS['FORUM_DB'];
+            }
         }
     }
 

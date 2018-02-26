@@ -2305,7 +2305,7 @@ class Database_Static_xml extends DatabaseDriver
                     return $this->_bad_query($query, $fail_ok, 'Cannot use aggregate function (' . $expr[0] . ') outside SELECT/HAVING scope');
                 }
 
-                $temp = $this->_function_set_scoping($full_set, $expr, $bindings, $query, $db, $fail_ok);
+                $temp = $this->_function_set_scoping($full_set, array($expr), $bindings, $query, $db, $fail_ok);
                 if ($temp === null) {
                     return null;
                 }
@@ -2337,6 +2337,10 @@ class Database_Static_xml extends DatabaseDriver
                         $result = intval($result);
                         break;
 
+                    case 'FLOAT':
+                        $result = floatval($result);
+                        break;
+
                     default:
                         return $this->_bad_query($query, $fail_ok, 'Unrecognised CAST type' . $expr[2]);
                 }
@@ -2355,51 +2359,89 @@ class Database_Static_xml extends DatabaseDriver
                 return $bindings[$expr[1]];
 
             case '+':
-                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) + $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                if (($a === null) || ($b === null)) {
+                    return null;
+                }
+                return @($a + $b);
 
             case '-':
-                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) - $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                if (($a === null) || ($b === null)) {
+                    return null;
+                }
+                return @($a - $b);
 
             case 'MULTI':
-                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) * $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                if (($a === null) || ($b === null)) {
+                    return null;
+                }
+                return @($a * $b);
 
             case '/':
-                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) / $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                if (($a === null) || ($b === null)) {
+                    return null;
+                }
+                return @($a / $b);
 
             case '>':
-                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) > $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                if (($a === null) || ($b === null)) {
+                    return null;
+                }
+                return @($a > $b);
 
             case '<':
-                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) < $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                if (($a === null) || ($b === null)) {
+                    return null;
+                }
+                return @($a < $b);
 
             case '>=':
-                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) >= $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                if (($a === null) || ($b === null)) {
+                    return null;
+                }
+                return @($a >= $b);
 
             case '<=':
-                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) <= $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                if (($a === null) || ($b === null)) {
+                    return null;
+                }
+                return @($a <= $b);
 
             case '=':
                 $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
-                if ($a === null) {
-                    $a = '';
-                }
                 $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
-                if (($expr[1][0] == 'FIELD') && ($expr[1][0] == 'FIELD')) { // Joins between non-equiv-typed fields
-                    if ((is_integer($a)) && (!is_integer($b))) {
-                        $a = strval($a);
-                    } elseif ((!is_integer($a)) && (is_integer($b))) {
-                        $b = strval($b);
-                    }
+                if (($a === null) || ($b === null)) {
+                    return null;
                 }
-                return $a == $b;
+                return @($a == $b);
 
             case '<>':
-                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) != $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                if (($a === null) || ($b === null)) {
+                    return null;
+                }
+                return @($a != $b);
 
             case 'LIKE':
                 $value = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
                 if ($value === null) {
-                    $value = '';
+                    return null;
                 }
                 $expr_eval = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
                 return simulated_wildcard_match($value, $expr_eval, true);
@@ -2413,13 +2455,27 @@ class Database_Static_xml extends DatabaseDriver
                 return count($exists_results) != 0;
 
             case 'NOT':
-                return !$this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                $value = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                if ($value === null) {
+                    return null;
+                }
+                return @!$a;
 
             case 'AND':
-                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) && $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                if (($a === null) || ($b === null)) {
+                    return null;
+                }
+                return @($a && $b);
 
             case 'OR':
-                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) || $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                if (($a === null) || ($b === null)) {
+                    return null;
+                }
+                return @($a || $b);
 
             case 'IS_NULL':
                 return ($this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) === null);
@@ -2429,23 +2485,39 @@ class Database_Static_xml extends DatabaseDriver
 
             case 'BETWEEN':
                 $comp = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
-                return $comp >= $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set) && $comp <= $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok, $full_set);
+                $a = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                $b = $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok, $full_set);
+                if (($a === null) || ($b === null)) {
+                    return null;
+                }
+                return @(($comp >= $a) && ($comp <= $b));
 
             case 'X_REPLACE':
                 $search = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
                 $replace = $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok);
                 $subject = $this->_execute_expression($expr[1], $bindings, $query, $fail_ok, $full_set);
+                if (($search === null) || ($replace === null) || ($subject === null)) {
+                    return null;
+                }
                 return str_replace($search, $replace, $subject);
 
             case 'X_CONCAT':
                 $vals = array();
                 foreach ($expr[1] as $_expr) {
-                    $vals[] = $this->_execute_expression($_expr, $bindings, $query, $db, $fail_ok, $full_set);
+                    $value = $this->_execute_expression($_expr, $bindings, $query, $db, $fail_ok, $full_set);
+                    if ($value === null) {
+                        return null;
+                    }
+                    $vals[] = $value;
                 }
                 return implode('', $vals);
 
             case 'X_LENGTH':
-                return cms_mb_strlen($this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set));
+                $value = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                if ($value === null) {
+                    return null;
+                }
+                return cms_mb_strlen($value);
 
             case 'SUBQUERY_VALUE':
                 list($subquery_select, $subquery_as, $subquery_joins, $subquery_where_expr, $subquery_group_by, $subquery_having, $subquery_orders, $subquery_unions, $subquery_start, $subquery_max) = $expr[1];
@@ -2462,24 +2534,40 @@ class Database_Static_xml extends DatabaseDriver
                 $string = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
                 $start = min(0, $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set) - 1);
                 $length = $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok, $full_set);
+                if (($string === null) || ($start === null) || ($length === null)) {
+                    return null;
+                }
                 return cms_mb_substr($string, $start, $length);
 
             case 'X_LEAST':
                 $vals = array();
                 foreach ($expr[1] as $_expr) {
-                    $vals[] = $this->_execute_expression($_expr, $bindings, $query, $db, $fail_ok, $full_set);
+                    $value = $this->_execute_expression($_expr, $bindings, $query, $db, $fail_ok, $full_set);
+                    if ($value === null) {
+                        return null;
+                    }
+                    $vals[] = $value;
                 }
                 return call_user_func_array('min', $vals);
 
             case 'X_GREATEST':
                 $vals = array();
                 foreach ($expr[1] as $_expr) {
-                    $vals[] = $this->_execute_expression($_expr, $bindings, $query, $db, $fail_ok, $full_set);
+                    $value = $this->_execute_expression($_expr, $bindings, $query, $db, $fail_ok, $full_set);
+                    if ($value === null) {
+                        return null;
+                    }
+                    $vals[] = $value;
                 }
                 return call_user_func_array('max', $vals);
 
             case 'X_MOD':
-                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) % $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                if (($a === null) || ($b === null)) {
+                    return null;
+                }
+                return @($a % $b);
 
             case 'IN':
                 $val = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
@@ -3194,7 +3282,7 @@ class Database_Static_xml extends DatabaseDriver
                 }
             }
             foreach ($records as $i => $record) {
-                $records[$i] = $this->_function_set_scoping($records, $select, $record, $query, $db, $fail_ok);
+                $records[$i] = $this->_function_set_scoping($records, $select, $record, $query, $db, $fail_ok); // (*MARKER*)
                 if ($single_result) {
                     $records = array($i => $records[$i]);
                     break;
@@ -3204,6 +3292,36 @@ class Database_Static_xml extends DatabaseDriver
 
         // Sort by ORDER BY
         if ($orders !== null) {
+            // Putting in aliases early, as may be used in ORDER BY (not in WHERE though)
+            foreach ($records as $h => $record) {
+                foreach ($select as $i => $want) {
+                    switch ($want[0]) {
+                        case 'AS':
+                            switch ($want[1][0]) {
+                                case 'DISTINCT':
+                                case 'MAX':
+                                case 'MIN':
+                                case 'COUNT':
+                                case 'SUM':
+                                case 'X_GROUP_CONCAT':
+                                case 'AVG':
+                                    // Was already specially processed (at *MARKER*), compound function - just copy through
+                                    $as = $want[2];
+                                    $records[$h][preg_replace('#^.*\.#', '', $as)] = $record[$as];
+                                    break 2;
+                                default:
+                                    $as = $want[2];
+                                    $want = $want[1];
+                                    $records[$h][preg_replace('#^.*\.#', '', $as)] = $this->_execute_expression($want, $record, $query, $db, $fail_ok);
+                                    break;
+                            }
+
+                            break;
+                    }
+                }
+            }
+
+            // Do sorting
             sort_maps_by($records, $orders);
         }
 
@@ -3237,7 +3355,7 @@ class Database_Static_xml extends DatabaseDriver
                     case 'SUM':
                     case 'X_GROUP_CONCAT':
                     case 'AVG':
-                        // Was already specially process, compound function - just copy through
+                        // Was already specially processed (at *MARKER*), compound function - just copy through
                         $as = $this->_param_name_for($want[1], $i);
                         $_record[preg_replace('#^.*\.#', '', $as)] = $record[$as];
                         break;
@@ -3282,7 +3400,7 @@ class Database_Static_xml extends DatabaseDriver
                             case 'SUM':
                             case 'X_GROUP_CONCAT':
                             case 'AVG':
-                                // Was already specially process, compound function - just copy through
+                                // Was already specially processed (at *MARKER*), compound function - just copy through
                                 $as = $want[2];
                                 $_record[preg_replace('#^.*\.#', '', $as)] = $record[$as];
                                 $want = $want[1];
@@ -3297,7 +3415,7 @@ class Database_Static_xml extends DatabaseDriver
                         if ($as === null) {
                             $as = $this->_param_name_for(((isset($want[1])) && ($want[0] == 'FIELD')) ? $want[1] : ('arb' . strval($i)), $i);
                         }
-                        $_record[preg_replace('#^.*\.#', '', $as)] = $this->_execute_expression($want, $record, $query, $db, $fail_ok);
+                        $_record[preg_replace('#^.*\.#', '', $as)] = $this->_execute_expression($want, $record, $query, $db, $fail_ok, $records);
                         break;
                 }
             }
@@ -3479,15 +3597,19 @@ class Database_Static_xml extends DatabaseDriver
                     break;
 
                 case 'X_GROUP_CONCAT':
-                    $temp_str = '';
-                    foreach ($set as $set_item) {
-                        $val = $this->_execute_expression($s_term[1], $set_item, $query, $db, $fail_ok);
-                        if ($temp_str != '') {
-                            $temp_str .= ',';
+                    if (count($set) == 0) {
+                        $rep[$as] = null;
+                    } else {
+                        $temp_str = '';
+                        foreach ($set as $set_item) {
+                            $val = $this->_execute_expression($s_term[1], $set_item, $query, $db, $fail_ok);
+                            if ($temp_str != '') {
+                                $temp_str .= ',';
+                            }
+                            $temp_str .= $val;
                         }
-                        $temp_str .= $val;
+                        $rep[$as] = $temp_str;
                     }
-                    $rep[$as] = $temp_str;
                     break;
 
                 case 'AVG':

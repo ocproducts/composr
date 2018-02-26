@@ -1155,7 +1155,7 @@ function cns_delete_member($member_id)
     $GLOBALS['FORUM_DB']->query_delete('f_members', array('id' => $member_id), '', 1);
     $GLOBALS['FORUM_DB']->query_delete('f_group_members', array('gm_member_id' => $member_id));
     $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_group_leader' => get_member()), array('g_group_leader' => $member_id));
-    $GLOBALS['FORUM_DB']->query_delete('sessions', array('member_id' => $member_id));
+    $GLOBALS['SITE_DB']->query_delete('sessions', array('member_id' => $member_id));
 
     require_code('fields');
 
@@ -1302,8 +1302,6 @@ function cns_unban_member($member_id)
  */
 function cns_edit_custom_field($id, $name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options)
 {
-    push_db_scope_check(false);
-
     if ($only_group == '-1') {
         $only_group = '';
     }
@@ -1355,8 +1353,6 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
         generate_resource_fs_moniker('cpf', strval($id));
     }
 
-    pop_db_scope_check();
-
     if (function_exists('persistent_cache_delete')) {
         persistent_cache_delete('CUSTOM_FIELD_CACHE');
         persistent_cache_delete('LIST_CPFS');
@@ -1372,8 +1368,6 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
  */
 function cns_delete_custom_field($id)
 {
-    push_db_scope_check(false);
-
     $info = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('cf_name', 'cf_description'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $info)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'cpf'));
@@ -1386,8 +1380,6 @@ function cns_delete_custom_field($id)
     $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', '#mcf' . strval($id));
     $GLOBALS['FORUM_DB']->delete_table_field('f_member_custom_fields', 'field_' . strval($id));
     $GLOBALS['FORUM_DB']->query_delete('f_custom_fields', array('id' => $id), '', 1);
-
-    pop_db_scope_check();
 
     global $TABLE_LANG_FIELDS_CACHE;
     unset($TABLE_LANG_FIELDS_CACHE['f_member_custom_fields']);
@@ -1968,8 +1960,8 @@ function update_member_username_caching($member_id, $username)
     );
     foreach ($to_fix as $fix) {
         list($table, $field, $updating_field) = explode('/', $fix, 3);
-        $con = $GLOBALS[(substr($table, 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
-        $con->query_update($table, array($field => $username), array($updating_field => $member_id));
+        $db = get_db_for($table);
+        $db->query_update($table, array($field => $username), array($updating_field => $member_id));
     }
 }
 
@@ -1982,7 +1974,7 @@ function cns_delete_boiler_custom_field($field)
 {
     require_lang('cns_special_cpf');
 
-    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
+    $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
     if ($test !== null) {
         require_code('cns_members_action');
         cns_delete_custom_field($test);

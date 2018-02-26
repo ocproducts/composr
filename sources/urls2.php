@@ -582,7 +582,7 @@ function autogenerate_new_url_moniker($ob_info, $url_parts, $zone)
     if ($ob_info['parent_category_field'] !== null) {
         $select[] = $ob_info['parent_category_field'];
     }
-    $db = ((substr($ob_info['table'], 0, 2) != 'f_') || (get_forum_type() == 'none')) ? $GLOBALS['SITE_DB'] : $GLOBALS['FORUM_DB'];
+    $db = get_db_for($ob_info['table']);
     $where = get_content_where_for_str_id($effective_id, $ob_info);
     if (isset($where['the_zone'])) {
         $where['the_zone'] = $zone;

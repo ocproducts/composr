@@ -34,9 +34,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
         $query = 'SELECT * FROM ' . get_table_prefix() . 'ecom_subscriptions WHERE s_member_id=' . strval($member_id) . ' AND (' . db_string_equal_to('s_state', 'active') . ' OR ' . db_string_equal_to('s_state', 'cancelled') . ') ORDER BY s_time';
         $_subscriptions = $GLOBALS['SITE_DB']->query($query);
         require_code('ecommerce');
-        push_db_scope_check(false);
-        $_subscriptions_non_recurring = $GLOBALS['SITE_DB']->query_select('f_group_member_timeouts', array('*'), array('member_id' => $member_id));
-        pop_db_scope_check();
+        $_subscriptions_non_recurring = $GLOBALS['FORUM_DB']->query_select('f_group_member_timeouts', array('*'), array('member_id' => $member_id));
         foreach ($_subscriptions_non_recurring as $sub) {
             $found_transaction = false;
             $subs_trans = $GLOBALS['SITE_DB']->query_select('ecom_transactions', array('*'), array('t_purchase_id' => $member_id, 't_status' => 'Completed'), 'ORDER BY t_time DESC');

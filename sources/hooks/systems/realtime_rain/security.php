@@ -44,23 +44,23 @@ class Hook_realtime_rain_security
                 $member_id = $row['member_id'];
 
                 $drops[] = rain_get_special_icons($row['ip'], $timestamp) + array(
-                        'TYPE' => 'security',
-                        'FROM_MEMBER_ID' => strval($member_id),
-                        'TO_MEMBER_ID' => null,
-                        'TITLE' => rain_truncate_for_title(do_lang('HACKER_DETECTED', do_lang($row['reason']))),
-                        'IMAGE' => is_guest($member_id) ? rain_get_country_image($row['ip']) : $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
-                        'TIMESTAMP' => strval($timestamp),
-                        'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
-                        'TICKER_TEXT' => null,
-                        'URL' => build_url(array('page' => 'admin_security', 'type' => 'view', 'id' => $row['id']), get_module_zone('admin_security')),
-                        'IS_POSITIVE' => false,
-                        'IS_NEGATIVE' => true,
+                    'TYPE' => 'security',
+                    'FROM_MEMBER_ID' => strval($member_id),
+                    'TO_MEMBER_ID' => null,
+                    'TITLE' => rain_truncate_for_title(do_lang('HACKER_DETECTED', do_lang($row['reason']))),
+                    'IMAGE' => is_guest($member_id) ? rain_get_country_image($row['ip']) : $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
+                    'TIMESTAMP' => strval($timestamp),
+                    'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
+                    'TICKER_TEXT' => null,
+                    'URL' => build_url(array('page' => 'admin_security', 'type' => 'view', 'id' => $row['id']), get_module_zone('admin_security')),
+                    'IS_POSITIVE' => false,
+                    'IS_NEGATIVE' => true,
 
-                        // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
-                        'FROM_ID' => 'member_' . strval($member_id),
-                        'TO_ID' => null,
-                        'GROUP_ID' => 'hack_type_' . $row['reason'],
-                    );
+                    // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
+                    'FROM_ID' => 'member_' . strval($member_id),
+                    'TO_ID' => null,
+                    'GROUP_ID' => 'hack_type_' . $row['reason'],
+                );
             }
         }
 

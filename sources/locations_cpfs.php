@@ -26,6 +26,10 @@
  */
 function autofill_geo_cpfs($member_id = null)
 {
+    if (get_forum_type() != 'cns') {
+        return;
+    }
+
     $where = null;
     if ($member_id !== null) {
         $where['mf_member_id'] = $member_id;

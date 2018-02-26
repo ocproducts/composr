@@ -33,7 +33,7 @@ class Hook_cron_group_member_timeouts
     public function info($last_run, $calculate_num_queued)
     {
         if ($calculate_num_queued) {
-            $db = (get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+            $db = get_db_for('f_group_member_timeouts');
             $num_queued = $db->query_value_if_there('SELECT COUNT(*) FROM ' . $db->get_table_prefix() . 'f_group_member_timeouts WHERE timeout<' . strval(time()));
         } else {
             $num_queued = null;

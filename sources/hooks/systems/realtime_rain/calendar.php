@@ -48,23 +48,23 @@ class Hook_realtime_rain_calendar
                 }
 
                 $drops[] = rain_get_special_icons(null, $timestamp) + array(
-                        'TYPE' => 'calendar',
-                        'FROM_MEMBER_ID' => strval($member_id),
-                        'TO_MEMBER_ID' => null,
-                        'TITLE' => rain_truncate_for_title(get_translated_text($row[1]['e_title'])),
-                        'IMAGE' => $row[1]['t_logo'],
-                        'TIMESTAMP' => strval($timestamp),
-                        'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
-                        'TICKER_TEXT' => null,
-                        'URL' => build_url(array('page' => 'calendar', 'type' => 'event', 'id' => $row[1]['id']), get_module_zone('calendar')),
-                        'IS_POSITIVE' => false,
-                        'IS_NEGATIVE' => false,
+                    'TYPE' => 'calendar',
+                    'FROM_MEMBER_ID' => strval($member_id),
+                    'TO_MEMBER_ID' => null,
+                    'TITLE' => rain_truncate_for_title(get_translated_text($row[1]['e_title'])),
+                    'IMAGE' => $row[1]['t_logo'],
+                    'TIMESTAMP' => strval($timestamp),
+                    'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
+                    'TICKER_TEXT' => null,
+                    'URL' => build_url(array('page' => 'calendar', 'type' => 'event', 'id' => $row[1]['id']), get_module_zone('calendar')),
+                    'IS_POSITIVE' => false,
+                    'IS_NEGATIVE' => false,
 
-                        // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
-                        'FROM_ID' => 'member_' . strval($member_id),
-                        'TO_ID' => null,
-                        'GROUP_ID' => 'event_' . strval($row[1]['id']),
-                    );
+                    // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
+                    'FROM_ID' => 'member_' . strval($member_id),
+                    'TO_ID' => null,
+                    'GROUP_ID' => 'event_' . strval($row[1]['id']),
+                );
             }
         }
 

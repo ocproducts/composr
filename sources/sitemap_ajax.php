@@ -318,8 +318,10 @@ function _get_view_access_for_node($admin_groups, $groups, $node)
         default:
             foreach ($node['permissions'] as $p) {
                 if (isset($p['permission_module'])) {
+                    $db = $GLOBALS[(($p['permission_module'] == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+
                     $where = array('module_the_name' => $p['permission_module'], 'category_name' => $id);
-                    $access = $GLOBALS['SITE_DB']->query_select('group_category_access', array('group_id'), $where);
+                    $access = $db->query_select('group_category_access', array('group_id'), $where);
                     $access = array_flip(collapse_1d_complexity('group_id', $access));
                 }
             }
@@ -373,7 +375,8 @@ function _get_privileges_for_node($admin_groups, $groups, $node)
         default:
             foreach ($node['permissions'] as $p) {
                 if (isset($p['permission_module'])) {
-                    $_privilege_access = $GLOBALS['SITE_DB']->query_select('group_privileges', array('*'), array('module_the_name' => $p['permission_module'], 'category_name' => $id));
+                    $db = $GLOBALS[(($p['permission_module'] == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+                    $_privilege_access = $db->query_select('group_privileges', array('*'), array('module_the_name' => $p['permission_module'], 'category_name' => $id));
                     $privilege_access = _organise_loaded_privileges($admin_groups, $groups, $_privilege_access);
                 }
             }
@@ -617,9 +620,11 @@ function sitemap_script_saving()
                         // View access
                         $view = post_param_integer(strval($i) . 'g_view_' . strval($group), -1);
                         if ($view != -1) { // -1 means unchanged
-                            $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group));
+                            $db = $GLOBALS[(($module == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+
+                            $db->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group));
                             if ($view == 1) {
-                                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group));
+                                $db->query_insert('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group));
                             }
 
                             $changed_view_access = true;
@@ -636,10 +641,12 @@ function sitemap_script_saving()
 
                             $val = post_param_integer(strval($i) . 'group_privileges_' . $override . '_' . strval($group), -2);
                             if ($val != -2) {
-                                $GLOBALS['SITE_DB']->query_delete('group_privileges', array('privilege' => $override, 'group_id' => $group, 'module_the_name' => $module, 'category_name' => $category, 'the_page' => ''));
+                                $db = $GLOBALS[(($module == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+
+                                $db->query_delete('group_privileges', array('privilege' => $override, 'group_id' => $group, 'module_the_name' => $module, 'category_name' => $category, 'the_page' => ''));
                                 if ($val != -1) {
                                     $new_settings = array('privilege' => $override, 'group_id' => $group, 'module_the_name' => $module, 'category_name' => $category, 'the_page' => '', 'the_value' => $val);
-                                    $GLOBALS['SITE_DB']->query_insert('group_privileges', $new_settings);
+                                    $db->query_insert('group_privileges', $new_settings);
                                 }
 
                                 $changed_privileges = true;

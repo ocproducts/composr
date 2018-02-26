@@ -52,23 +52,23 @@ class Hook_realtime_rain_ecommerce
                 $ticker_text = do_lang('KA_CHING', ecommerce_get_currency_symbol($row['t_currency']), $row['t_amount'], $row['t_currency']);
 
                 $drops[] = rain_get_special_icons(null, $timestamp, null, $ticker_text) + array(
-                        'TYPE' => 'ecommerce',
-                        'FROM_MEMBER_ID' => null,
-                        'TO_MEMBER_ID' => null,
-                        'TITLE' => $title,
-                        'IMAGE' => find_theme_image('icons/menu/rich_content/ecommerce/purchase'),
-                        'TIMESTAMP' => strval($timestamp),
-                        'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
-                        'TICKER_TEXT' => $ticker_text,
-                        'URL' => null,
-                        'IS_POSITIVE' => true,
-                        'IS_NEGATIVE' => false,
+                    'TYPE' => 'ecommerce',
+                    'FROM_MEMBER_ID' => null,
+                    'TO_MEMBER_ID' => null,
+                    'TITLE' => $title,
+                    'IMAGE' => find_theme_image('icons/menu/rich_content/ecommerce/purchase'),
+                    'TIMESTAMP' => strval($timestamp),
+                    'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
+                    'TICKER_TEXT' => $ticker_text,
+                    'URL' => null,
+                    'IS_POSITIVE' => true,
+                    'IS_NEGATIVE' => false,
 
-                        // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
-                        'FROM_ID' => null,
-                        'TO_ID' => null,
-                        'GROUP_ID' => 'product_' . $row['t_type_code'],
-                    );
+                    // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
+                    'FROM_ID' => null,
+                    'TO_ID' => null,
+                    'GROUP_ID' => 'product_' . $row['t_type_code'],
+                );
             }
         }
 

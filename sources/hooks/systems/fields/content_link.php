@@ -158,7 +158,7 @@ class Hook_fields_content_link
         if ($info === null) {
             return new Tempcode();
         }
-        $db = $GLOBALS[((substr($info['table'], 0, 2) == 'f_') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+        $db = get_db_for($info['table']);
         $select = array();
         append_content_select_for_id($select, $info);
         if ($info['title_field'] !== null) {

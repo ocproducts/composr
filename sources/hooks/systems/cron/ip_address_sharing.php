@@ -42,7 +42,7 @@ class Hook_cron_ip_address_sharing
         if ($limit == '') {
             return null;
         }
-        if (is_cns_satellite_site()) {
+        if (is_on_multi_site_network()) {
             return null;
         }
 

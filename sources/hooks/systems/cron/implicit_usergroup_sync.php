@@ -36,6 +36,10 @@ class Hook_cron_implicit_usergroup_sync
             return null;
         }
 
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         return array(
             'label' => 'Sync implicit usergroups',
             'num_queued' => null,

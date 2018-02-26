@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class file_whitelisting_test_set extends cms_test_case
+class file_type_whitelisting_test_set extends cms_test_case
 {
     protected $file_types = array();
 
@@ -82,6 +82,7 @@ class file_whitelisting_test_set extends cms_test_case
         $matches = array();
         preg_match('#- url: \/\(\.\*\\\.\((.*)\)\)#m', $c, $matches);
         $file_types = explode('|', $matches[1]);
+        $file_types = array_diff($file_types, array('swf')); // We don't do mime-typing but do allow download
         sort($file_types);
 
         $file_types_expected = $this->file_types;
@@ -96,6 +97,7 @@ class file_whitelisting_test_set extends cms_test_case
         $matches = array();
         preg_match('#  upload: \.\*\\\.\((.*)\)#m', $c, $matches);
         $file_types = explode('|', $matches[1]);
+        $file_types = array_diff($file_types, array('swf')); // We don't do mime-typing but do allow download
         sort($file_types);
 
         $file_types_expected = $this->file_types;
@@ -114,6 +116,7 @@ class file_whitelisting_test_set extends cms_test_case
         $matches = array();
         preg_match('#\.\*\\\\\.\((.*)\)\\\\\?\?\'\);\[\/tt\]#', $c, $matches);
         $file_types = explode('|', $matches[1]);
+        $file_types = array_diff($file_types, array('swf')); // We don't do mime-typing but do allow download
         sort($file_types);
 
         $file_types_expected = $this->file_types;
@@ -132,6 +135,7 @@ class file_whitelisting_test_set extends cms_test_case
         $matches = array();
         preg_match('#RewriteCond \$1 \\\\\.\((.*)\) \[OR\]#', $c, $matches);
         $file_types = explode('|', $matches[1]);
+        $file_types = array_diff($file_types, array('swf')); // We don't do mime-typing but do allow download
         sort($file_types);
 
         $file_types_expected = $this->file_types;
@@ -161,6 +165,28 @@ class file_whitelisting_test_set extends cms_test_case
                     $this->assertTrue(is_image('example.' . $file_type, IMAGE_CRITERIA_WEBSAFE, true), $file_type . ' not websafe?');
                 }
             }
+
+            $exts = explode(',', get_option($f));
+            $this->assertTrue(count($exts) == count(array_unique($exts)));
+        }
+    }
+
+    public function testGitAttributes()
+    {
+        $path = get_file_base() . '/.gitattributes';
+        $c = file_get_contents($path);
+
+        foreach ($this->file_types as $file_type) {
+            $this->assertTrue(strpos($c, '*.' . $file_type . ' ') !== false, 'File type missing from .gitattributes, ' . $file_type);
+        }
+
+        $matches = array();
+        $num_matches = preg_match_all('#^\*\.(\w+) (text|binary)#m', $c, $matches);
+        $found = array();
+        for ($i = 0; $i < $num_matches; $i++) {
+            $ext = $matches[1][$i];
+            $this->assertTrue(!array_key_exists($ext, $found), 'Double referenced ' . $ext);
+            $found[$ext] = true;
         }
     }
 }

@@ -130,11 +130,7 @@ function find_filedump_links($focus = '')
                 } else {
                     $query .= ' AND ' . $_field_name . ' LIKE \'' . db_encode_like('%uploads/filedump' . $_focus . '%') . '\'';
                 }
-                if ((substr($table, 0, 2) == 'f_') && (get_forum_type() == 'cns')) {
-                    $db = $GLOBALS['FORUM_DB'];
-                } else {
-                    $db = $GLOBALS['SITE_DB'];
-                }
+                $db = get_db_for($table);
                 $results = $db->query($query, null, 0, false, false, array($field_name => $field_type));
                 foreach ($results as $r) {
                     extract_filedump_links(get_translated_text($r[$field_name]), array($r, $field_name), $focus, $paths_used);

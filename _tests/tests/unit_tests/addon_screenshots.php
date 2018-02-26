@@ -38,6 +38,10 @@ class addon_screenshots_test_set extends cms_test_case
                 require_code('hooks/systems/addon_registry/' . filter_naughty_harsh($hook));
                 $ob = object_factory('Hook_addon_registry_' . filter_naughty_harsh($hook));
 
+                if ($ob === null) {
+                    fatal_exit('Could not initiate ' . $hook);
+                }
+
                 $exists = false;
                 foreach (array('png', 'gif', 'jpg', 'jpeg') as $ext) {
                     if (is_file(get_file_base() . '/data_custom/images/addon_screenshots/' . $hook . '.' . $ext)) {

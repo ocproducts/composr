@@ -434,7 +434,7 @@ function load_up_all_module_category_permissions($member_id, $module = null)
         $catclause = '';
         $select = 'category_name,module_the_name';
     }
-    $db = $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB'];
+    $db = $GLOBALS[(($module == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
     if ($db->query_value_if_there('SELECT COUNT(*) FROM ' . $db->get_table_prefix() . 'group_category_access WHERE ' . $catclause . '(' . $groups . ')') > 1000) {
         return; // Performance issue
     }

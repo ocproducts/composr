@@ -33,7 +33,7 @@ class Hook_commandr_fs_bin
      */
     public function listing($meta_dir, $meta_root_node, &$commandr_fs)
     {
-        $path = get_custom_file_base() . '/data/modules/admin_commandr';
+        $path = get_file_base() . '/data/modules/admin_commandr';
         foreach ($meta_dir as $meta_dir_section) {
             $path .= '/' . filter_naughty($meta_dir_section);
         }
@@ -70,7 +70,7 @@ class Hook_commandr_fs_bin
     public function make_directory($meta_dir, $meta_root_node, $new_dir_name, &$commandr_fs)
     {
         $new_dir_name = filter_naughty($new_dir_name);
-        $path = get_custom_file_base() . '/data/modules/admin_commandr';
+        $path = get_file_base() . '/data/modules/admin_commandr';
         foreach ($meta_dir as $meta_dir_section) {
             $path .= '/' . filter_naughty($meta_dir_section);
         }
@@ -97,7 +97,7 @@ class Hook_commandr_fs_bin
     public function remove_directory($meta_dir, $meta_root_node, $dir_name, &$commandr_fs)
     {
         $dir_name = filter_naughty($dir_name);
-        $path = get_custom_file_base() . '/data/modules/admin_commandr';
+        $path = get_file_base() . '/data/modules/admin_commandr';
         foreach ($meta_dir as $meta_dir_section) {
             $path .= '/' . filter_naughty($meta_dir_section);
         }
@@ -125,7 +125,7 @@ class Hook_commandr_fs_bin
     public function remove_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
         $file_name = filter_naughty($file_name);
-        $path = get_custom_file_base() . '/data/modules/admin_commandr';
+        $path = get_file_base() . '/data/modules/admin_commandr';
         foreach ($meta_dir as $meta_dir_section) {
             $path .= '/' . filter_naughty($meta_dir_section);
         }
@@ -151,7 +151,7 @@ class Hook_commandr_fs_bin
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
         $file_name = filter_naughty($file_name);
-        $path = get_custom_file_base() . '/data/modules/admin_commandr';
+        $path = get_file_base() . '/data/modules/admin_commandr';
         foreach ($meta_dir as $meta_dir_section) {
             $path .= '/' . filter_naughty($meta_dir_section);
         }
@@ -176,7 +176,7 @@ class Hook_commandr_fs_bin
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
         $file_name = filter_naughty($file_name);
-        $path = get_custom_file_base() . '/data/modules/admin_commandr';
+        $path = get_file_base() . '/data/modules/admin_commandr';
         foreach ($meta_dir as $meta_dir_section) {
             $path .= '/' . filter_naughty($meta_dir_section);
         }

@@ -27,7 +27,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testProfiler()
     {
-        $glob_cmd = get_file_base() . '/data_custom/profiling--*.log';
+        $glob_cmd = get_custom_file_base() . '/data_custom/profiling--*.log';
 
         clearstatcache();
         $before = glob($glob_cmd);
@@ -58,7 +58,7 @@ class extra_logging_test_set extends cms_test_case
 
         set_value('monitor_slow_urls', '1');
 
-        $log_path = get_file_base() . '/data_custom/errorlog.php';
+        $log_path = get_custom_file_base() . '/data_custom/errorlog.php';
         cms_file_put_contents_safe($log_path, '');
         $url = build_url(array('page' => 'faq', 'cache' => 0), 'docs');
         $data = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
@@ -71,7 +71,7 @@ class extra_logging_test_set extends cms_test_case
     {
         set_value('memory_tracking', '1');
 
-        $log_path = get_file_base() . '/data_custom/errorlog.php';
+        $log_path = get_custom_file_base() . '/data_custom/errorlog.php';
         cms_file_put_contents_safe($log_path, '');
         $url = build_url(array('page' => ''), '');
         $data = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
@@ -125,34 +125,34 @@ class extra_logging_test_set extends cms_test_case
     public function testSpecialPageTypeTemplates()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'templates'), '');
-        $data = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
+        $data = http_get_contents($url->evaluate(), array('timeout' => 100, 'cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($data, 'Edit templates') !== false);
     }
 
     public function testSpecialPageTypeTree()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'tree'), '');
-        $data = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
+        $data = http_get_contents($url->evaluate(), array('timeout' => 100, 'cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($data, 'Template tree') !== false);
     }
 
     public function testSpecialPageTypeShowMarkers()
     {
         $url = build_url(array('page' => '', 'keep_markers' => 1), '');
-        $data = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
+        $data = http_get_contents($url->evaluate(), array('timeout' => 100, 'cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($data, '<!-- START-TEMPLATE=CSS_NEED -->') !== false);
     }
 
     public function testSpecialPageTypeShowEditLinks()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'show_edit_links'), '');
-        $data = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
+        $data = http_get_contents($url->evaluate(), array('timeout' => 100, 'cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($data, 'admin-themes') !== false);
     }
 
     public function testErrorLog()
     {
-        $path = get_file_base() . '/data_custom/errorlog.php';
+        $path = get_custom_file_base() . '/data_custom/errorlog.php';
         clearstatcache();
         $size_before = filesize($path);
         error_log('Testing');
@@ -163,7 +163,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testPermissionChecksLog()
     {
-        $path = get_file_base() . '/data_custom/permission_checks.log';
+        $path = get_custom_file_base() . '/data_custom/permission_checks.log';
         cms_file_put_contents_safe($path, '');
 
         clearstatcache();
@@ -179,7 +179,7 @@ class extra_logging_test_set extends cms_test_case
 
     public function testQueryLog()
     {
-        $path = get_file_base() . '/data_custom/queries.log';
+        $path = get_custom_file_base() . '/data_custom/queries.log';
         cms_file_put_contents_safe($path, '');
 
         clearstatcache();

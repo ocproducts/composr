@@ -1267,7 +1267,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
 
         require_code('themes2');
-        $ids = get_all_image_ids_type('calendar');
+        $ids = get_all_image_ids_type('icons/calendar');
 
         $set_name = 'image';
         $required = true;

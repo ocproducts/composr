@@ -28,7 +28,7 @@ require_code('images');
 
 // Find default images
 $default_images = array();
-foreach (array(get_custom_file_base() . '/themes/default/images', get_custom_file_base() . '/themes/default/images_custom', get_custom_file_base() . '/themes/default/images/EN') as $dir) {
+foreach (array(get_file_base() . '/themes/default/images', get_file_base() . '/themes/default/images_custom', get_file_base() . '/themes/default/images/EN') as $dir) {
     $dh = opendir($dir);
     while (($f = readdir($dh)) !== false) {
         if (is_image($f, IMAGE_CRITERIA_NONE)) {
@@ -78,15 +78,15 @@ foreach (array_keys($themes) as $theme) {
         $selectors = array();
         $non_css_contents = '';
         foreach (array(
-                     get_custom_file_base() . '/themes/default/css_custom' => false,
-                     get_custom_file_base() . '/themes/default/templates_custom' => false,
-                     get_custom_file_base() . '/themes/default/css' => false,
-                     get_custom_file_base() . '/themes/default/templates' => false,
-                     get_custom_file_base() . '/themes/' . $theme . '/css_custom' => true,
-                     get_custom_file_base() . '/themes/' . $theme . '/templates_custom' => true,
-                     get_custom_file_base() . '/site/pages/comcode_custom/EN' => true,
-                     get_custom_file_base() . '/pages/comcode_custom/EN' => true,
-                 ) as $dir => $do_checks) {
+            get_file_base() . '/themes/default/css_custom' => false,
+            get_file_base() . '/themes/default/templates_custom' => false,
+            get_file_base() . '/themes/default/css' => false,
+            get_file_base() . '/themes/default/templates' => false,
+            get_file_base() . '/themes/' . $theme . '/css_custom' => true,
+            get_file_base() . '/themes/' . $theme . '/templates_custom' => true,
+            get_file_base() . '/site/pages/comcode_custom/EN' => true,
+            get_file_base() . '/pages/comcode_custom/EN' => true,
+        ) as $dir => $do_checks) {
             $dh = opendir($dir);
             while (($f = readdir($dh)) !== false) {
                 if (

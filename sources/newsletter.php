@@ -801,8 +801,15 @@ function add_newsletter($title, $description)
  */
 function edit_newsletter($id, $title, $description)
 {
-    $_title = $GLOBALS['SITE_DB']->query_select_value('newsletters', 'title', array('id' => $id));
-    $_description = $GLOBALS['SITE_DB']->query_select_value('newsletters', 'description', array('id' => $id));
+    $rows = $GLOBALS['SITE_DB']->query_select('newsletters', array('*'), array('id' => $id), '', 1);
+
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
+    $myrow = $rows[0];
+    $_title = $myrow['title'];
+    $_description = $myrow['description'];
     $map = array();
     $map += lang_remap('title', $_title, $title);
     $map += lang_remap('description', $_description, $description);
@@ -825,8 +832,15 @@ function edit_newsletter($id, $title, $description)
  */
 function delete_newsletter($id)
 {
-    $_title = $GLOBALS['SITE_DB']->query_select_value('newsletters', 'title', array('id' => $id));
-    $_description = $GLOBALS['SITE_DB']->query_select_value('newsletters', 'description', array('id' => $id));
+    $rows = $GLOBALS['SITE_DB']->query_select('newsletters', array('*'), array('id' => $id), '', 1);
+
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
+    $myrow = $rows[0];
+    $_title = $myrow['title'];
+    $_description = $myrow['description'];
 
     $GLOBALS['SITE_DB']->query_delete('newsletters', array('id' => $id), '', 1);
     $GLOBALS['SITE_DB']->query_delete('newsletter_subscribe', array('newsletter_id' => $id));
@@ -921,6 +935,12 @@ function add_periodic_newsletter($subject, $message, $lang, $send_details, $html
  */
 function edit_periodic_newsletter($id, $subject, $message, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $frequency, $day, $in_full, $template, $last_sent = null)
 {
+    $rows = $GLOBALS['SITE_DB']->query_select('newsletter_periodic', array('*'), array('id' => $id), '', 1);
+
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     $map = array(
         'np_subject' => $subject,
         'np_message' => $message,
@@ -956,7 +976,13 @@ function edit_periodic_newsletter($id, $subject, $message, $lang, $send_details,
  */
 function delete_periodic_newsletter($id)
 {
-    $subject = $GLOBALS['SITE_DB']->query_select_value('newsletter_periodic', 'np_subject', array('id' => $id));
+    $rows = $GLOBALS['SITE_DB']->query_select('newsletter_periodic', array('*'), array('id' => $id), '', 1);
+
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
+    $subject = $rows[0]['np_subject'];
 
     $GLOBALS['SITE_DB']->query_delete('newsletter_periodic', array('id' => $id));
 

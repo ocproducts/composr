@@ -208,7 +208,7 @@ function get_lang_file_map($lang, $file, $non_custom = false, $apply_filter = tr
     }
 
     if ((!is_file($a)) || ($non_custom)) {
-        $b = get_custom_file_base() . '/lang/' . $lang . '/' . $file . '.ini';
+        $b = get_file_base() . '/lang/' . $lang . '/' . $file . '.ini';
 
         if (is_file($b)) {
             $a = $b;

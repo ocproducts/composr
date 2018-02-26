@@ -42,7 +42,7 @@ class _setupwizard_test_set extends cms_test_case
             'description' => '',
             'site_scope' => 'defaultness',
             'header_text' => '',
-            'copyright' => 'Copyright &copy; $CURRENT_YEAR=2016 (unnamed)',
+            'copyright' => 'Copyright &copy; $CURRENT_YEAR=' . date('Y') . ' (unnamed)',
             'staff_address' => 'staff@localhost',
             'keywords' => 'default, defaultness, celebration, community',
             'google_analytics' => '',

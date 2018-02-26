@@ -454,7 +454,7 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
                 }
             }
             $ticket_id = ticket_generate_new_id($member_id);
-            $ticket_type = $GLOBALS['FORUM_DB']->query_select_value('tickets', 'ticket_type', array('topic_id' => $from_topic_id));
+            $ticket_type = $GLOBALS['SITE_DB']->query_select_value('tickets', 'ticket_type', array('topic_id' => $from_topic_id));
             if ($title === null) {
                 $title = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_title', array('id' => $posts[0]));
             }

@@ -37,7 +37,7 @@ class Hook_resource_meta_aware_forum_grouping
             'content_type_label' => 'cns:FORUM_GROUPING',
             'content_type_universal_label' => 'Forum grouping',
 
-            'db' => $GLOBALS['FORUM_DB'],
+            'db' => get_db_for('f_forum_groupings'),
             'table' => 'f_forum_groupings',
             'id_field' => 'id',
             'id_field_numeric' => true,

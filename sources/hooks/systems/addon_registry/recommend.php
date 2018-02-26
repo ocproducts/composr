@@ -99,9 +99,6 @@ class Hook_addon_registry_recommend
     {
         return array(
             'themes/default/images/icons/menu/site_meta/recommend.svg',
-            'themes/default/images/icons/links/digg.svg',
-            'themes/default/images/icons/links/stumbleupon.svg',
-            'themes/default/images/icons/links/favorites.svg',
             'sources/hooks/systems/config/points_RECOMMEND_SITE.php',
             'sources/hooks/systems/realtime_rain/recommend.php',
             'sources/hooks/systems/addon_registry/recommend.php',

@@ -61,6 +61,9 @@ class Hook_commandr_fs_banners extends Resource_fs_base
                 return collapse_1d_complexity('name', $ret);
 
             case 'banner_type':
+                if ($label == 'untitled') {
+                    $label = '';
+                }
                 $ret = $GLOBALS['SITE_DB']->query_select('banner_types', array('id'), array('id' => $label));
                 return collapse_1d_complexity('id', $ret);
         }
@@ -203,6 +206,38 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         delete_banner_type($resource_id);
 
         return true;
+    }
+
+    /**
+     * Get the filename for a resource ID. Note that filenames are unique across all folders in a filesystem.
+     *
+     * @param  ID_TEXT $resource_type The resource type
+     * @param  ID_TEXT $resource_id The resource ID
+     * @return ?ID_TEXT The filename (null: could not find)
+     */
+    public function folder_convert_id_to_filename($resource_type, $resource_id)
+    {
+        if ($resource_id == '') {
+            return 'untitled';
+        }
+
+        return parent::folder_convert_id_to_filename($resource_type, $resource_id);
+    }
+
+    /**
+     * Get the resource ID for a filename. Note that filenames are unique across all folders in a filesystem.
+     *
+     * @param  ID_TEXT $filename The filename, or filepath
+     * @param  ?ID_TEXT $resource_type The resource type (null: assumption of only one folder resource type for this hook; only passed as non-null from overridden functions within hooks that are calling this as a helper function)
+     * @return array A pair: The resource type, the resource ID
+     */
+    public function folder_convert_filename_to_id($filename, $resource_type = null)
+    {
+        if ($filename == 'untitled') {
+            return array('banner_type', '');
+        }
+
+        return parent::folder_convert_filename_to_id($filename, $resource_type);
     }
 
     /**

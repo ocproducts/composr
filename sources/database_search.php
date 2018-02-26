@@ -972,7 +972,8 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         $where_clause .= ' AND ';
         $where_clause .= 'z.category_name IS NOT NULL';*/
 
-        $cat_access = list_to_map('category_name', $GLOBALS['FORUM_DB']->query('SELECT DISTINCT category_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'group_category_access WHERE (' . $g_or . ') AND ' . db_string_equal_to('module_the_name', $permissions_module) . ' UNION ALL SELECT DISTINCT category_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'member_category_access WHERE (member_id=' . strval(get_member()) . ' AND active_until>' . strval(time()) . ') AND ' . db_string_equal_to('module_the_name', $permissions_module), null, 0, false, true));
+        $db = get_db_for($table);
+        $cat_access = list_to_map('category_name', $db->query('SELECT DISTINCT category_name FROM ' . $db->get_table_prefix() . 'group_category_access WHERE (' . $g_or . ') AND ' . db_string_equal_to('module_the_name', $permissions_module) . ' UNION ALL SELECT DISTINCT category_name FROM ' . $db->get_table_prefix() . 'member_category_access WHERE (member_id=' . strval(get_member()) . ' AND active_until>' . strval(time()) . ') AND ' . db_string_equal_to('module_the_name', $permissions_module), null, 0, false, true));
     }
 
     if (key($fields) == '') {
@@ -981,7 +982,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         }
     }
 
-    $db = (substr($table, 0, 2) != 'f_') ? $GLOBALS['SITE_DB'] : $GLOBALS['FORUM_DB'];
+    $db = get_db_for($table);
 
     $db->set_query_time_limit(30);
 

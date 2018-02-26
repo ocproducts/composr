@@ -517,6 +517,13 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
         return new Tempcode();
     }
 
+    // Exceptions that we don't want to check (typically things we use by default)
+    if (in_array($url_full, array(
+        'https://www.google.com/webmasters/tools/home',
+    ))) {
+        return new Tempcode();
+    }
+
     global $COMCODE_PARSE_URLS_CHECKED, $COMCODE_URLS, $DONT_CARE_MISSING_PAGES;
 
     if (isset($COMCODE_URLS)) {
@@ -1899,7 +1906,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 }
                 $ptest = _request_page($page, $zone);
                 if ($ptest !== false) {
-                    if (($page == 'topicview') && (array_key_exists('id', $_attributes))) {
+                    if (($page == 'topicview') && (get_forum_type() == 'cns') && (array_key_exists('id', $_attributes))) {
                         if (!is_numeric($_attributes['id'])) {
                             $_attributes['id'] = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => $page, 'm_moniker' => $_attributes['id']));
                         }

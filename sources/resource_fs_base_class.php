@@ -507,7 +507,7 @@ abstract class Resource_fs_base
             return $cache[$property][$table][$default][$db_property];
         }
 
-        $db = $GLOBALS[((substr($table, 0, 2) == 'f_') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+        $db = get_db_for($table);
         $val = $db->query_value_if_there('SELECT ' . $db_property . ',count(' . $db_property . ') AS qty FROM ' . get_table_prefix() . $table . ' GROUP BY ' . $db_property . ' ORDER BY qty DESC', false, true); // We need the mode here, not the mean
         $ret = $default;
         if ($val !== null) {
@@ -2251,7 +2251,7 @@ abstract class Resource_fs_base
         if ($catalogue_entry_id !== null) {
             $special_fields = get_catalogue_entry_field_values('_' . $type, $catalogue_entry_id);
         } else {
-            $special_fields = $db->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+            $special_fields = $db->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         }
 
         $prop_names = array_keys($this->_custom_fields_enumerate_properties($type));
@@ -2298,7 +2298,7 @@ abstract class Resource_fs_base
         require_code('catalogues');
 
         // Get field values
-        $fields = $db->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+        $fields = $db->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         $map = array();
         require_code('fields');
         $prop_names = array_keys($this->_custom_fields_enumerate_properties($type));

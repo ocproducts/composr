@@ -142,12 +142,26 @@ function cns_make_group($name, $is_default = 0, $is_super_admin = 0, $is_super_m
             $access['group_id'] = $group_id;
         }
         $GLOBALS['SITE_DB']->query_insert('group_privileges', $GLOBALS['SITE_DB']->bulk_insert_flip($member_access), false, true); // failsafe, in case we have put in some permissions for a group since deleted (can happen during install)
+        if (is_on_multi_site_network() && (get_forum_type() == 'cns')) {
+            $member_access = $GLOBALS['FORUM_DB']->query_select('group_privileges', array('*'), array('group_id' => $group_members, 'module_the_name' => 'forums'));
+            foreach ($member_access as &$access) {
+                $access['group_id'] = $group_id;
+            }
+            $GLOBALS['FORUM_DB']->query_insert('group_privileges', $GLOBALS['SITE_DB']->bulk_insert_flip($member_access), false, true); // failsafe, in case we have put in some permissions for a group since deleted (can happen during install)
+        }
 
         $member_access = $GLOBALS['SITE_DB']->query_select('group_category_access', array('*'), array('group_id' => $group_members));
         foreach ($member_access as &$access) {
             $access['group_id'] = $group_id;
         }
         $GLOBALS['SITE_DB']->query_insert('group_category_access', $GLOBALS['SITE_DB']->bulk_insert_flip($member_access), false, true); // failsafe, in case we have put in some permissions for a group since deleted (can happen during install)
+        if (is_on_multi_site_network() && (get_forum_type() == 'cns')) {
+            $member_access = $GLOBALS['FORUM_DB']->query_select('group_category_access', array('*'), array('group_id' => $group_members, 'module_the_name' => 'forums'));
+            foreach ($member_access as &$access) {
+                $access['group_id'] = $group_id;
+            }
+            $GLOBALS['FORUM_DB']->query_insert('group_category_access', $GLOBALS['SITE_DB']->bulk_insert_flip($member_access), false, true); // failsafe, in case we have put in some permissions for a group since deleted (can happen during install)
+        }
 
         $member_access = $GLOBALS['SITE_DB']->query_select('group_zone_access', array('*'), array('group_id' => $group_members));
         foreach ($member_access as &$access) {

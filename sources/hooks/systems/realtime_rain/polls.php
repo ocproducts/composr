@@ -59,23 +59,23 @@ class Hook_realtime_rain_polls
                 $ticker_text = do_lang('VOTES_ARE_IN', strip_comcode(get_translated_text($row['question'])), strip_comcode(get_translated_text($best)));
 
                 $drops[] = rain_get_special_icons(null, $timestamp, null, $ticker_text) + array(
-                        'TYPE' => 'polls',
-                        'FROM_MEMBER_ID' => strval($member_id),
-                        'TO_MEMBER_ID' => null,
-                        'TITLE' => rain_truncate_for_title(get_translated_text($row['question'])),
-                        'IMAGE' => find_theme_image('icons/menu/social/polls'),
-                        'TIMESTAMP' => strval($timestamp),
-                        'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
-                        'TICKER_TEXT' => $ticker_text,
-                        'URL' => build_url(array('page' => 'polls', 'type' => 'view', 'id' => $row[1]['id']), get_module_zone('polls')),
-                        'IS_POSITIVE' => false,
-                        'IS_NEGATIVE' => false,
+                    'TYPE' => 'polls',
+                    'FROM_MEMBER_ID' => strval($member_id),
+                    'TO_MEMBER_ID' => null,
+                    'TITLE' => rain_truncate_for_title(get_translated_text($row['question'])),
+                    'IMAGE' => find_theme_image('icons/menu/social/polls'),
+                    'TIMESTAMP' => strval($timestamp),
+                    'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
+                    'TICKER_TEXT' => $ticker_text,
+                    'URL' => build_url(array('page' => 'polls', 'type' => 'view', 'id' => $row[1]['id']), get_module_zone('polls')),
+                    'IS_POSITIVE' => false,
+                    'IS_NEGATIVE' => false,
 
-                        // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
-                        'FROM_ID' => 'member_' . strval($member_id),
-                        'TO_ID' => null,
-                        'GROUP_ID' => 'poll_' . strval($row['id']),
-                    );
+                    // These are for showing connections between drops. They are not discriminated, it's just three slots to give an ID code that may be seen as a commonality with other drops.
+                    'FROM_ID' => 'member_' . strval($member_id),
+                    'TO_ID' => null,
+                    'GROUP_ID' => 'poll_' . strval($row['id']),
+                );
             }
         }
 

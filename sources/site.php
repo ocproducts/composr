@@ -805,7 +805,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                         }
                     } else {
                         // See if it is deprecated
-                        $table = 'url_id_monikers' . $GLOBALS['FORUM_DB']->prefer_index('url_id_monikers', 'uim_moniker');
+                        $table = 'url_id_monikers' . $GLOBALS['SITE_DB']->prefer_index('url_id_monikers', 'uim_moniker');
                         $monikers = $GLOBALS['SITE_DB']->query_select($table, array('m_resource_id', 'm_deprecated'), array('m_resource_page' => $page, 'm_resource_type' => get_param_string('type', 'browse'), 'm_moniker' => $url_id));
                         if (!array_key_exists(0, $monikers)) { // hmm, deleted?
                             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
@@ -1155,9 +1155,9 @@ function save_static_caching($out, $mime_type = 'text/html')
                         $url_stem = str_replace(get_base_url(false) . '/', '', $url_stem);
                         if (preg_match('#^' . $SITE_INFO['failover_apache_rewritemap_file'] . '$#', $url_stem) != 0) {
                             if (is_mobile()) {
-                                $rewritemap_file = get_file_base() . '/data_custom/failover_rewritemap__mobile.txt';
+                                $rewritemap_file = get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt';
                             } else {
-                                $rewritemap_file = get_file_base() . '/data_custom/failover_rewritemap.txt';
+                                $rewritemap_file = get_custom_file_base() . '/data_custom/failover_rewritemap.txt';
                             }
                             $rewritemap_file_contents = cms_file_get_contents_safe($rewritemap_file);
                             if (strpos($rewritemap_file_contents, "\n" . $url_stem . ' ') === false) {

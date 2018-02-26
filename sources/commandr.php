@@ -938,8 +938,8 @@ class Virtual_shell
                 $this->output[STREAM_STDERR] = array_key_exists(2, $hook_return) ? $hook_return[3] : '';
             } else {
                 // It's not a lone command; see if it's a script - check first in the main script dir
-                if (file_exists(get_custom_file_base() . '/data/modules/admin_commandr/' . filter_naughty_harsh($this->parsed_input[SECTION_COMMAND], true))) {
-                    $script_file = get_custom_file_base() . '/data/modules/admin_commandr/' . filter_naughty_harsh($this->parsed_input[SECTION_COMMAND], true); // It's in the main script dir
+                if (file_exists(get_file_base() . '/data/modules/admin_commandr/' . filter_naughty_harsh($this->parsed_input[SECTION_COMMAND], true))) {
+                    $script_file = get_file_base() . '/data/modules/admin_commandr/' . filter_naughty_harsh($this->parsed_input[SECTION_COMMAND], true); // It's in the main script dir
                 } else {
                     $script_file = $this->_find_script_file($this->parsed_input[SECTION_COMMAND]); // Exhaustive search
                 }
@@ -1323,7 +1323,7 @@ class Virtual_shell
         require_code('files');
 
         if ($dir === null) {
-            $dir = get_custom_file_base() . '/data/modules/admin_commandr/';
+            $dir = get_file_base() . '/data/modules/admin_commandr/';
         }
         $dh = @opendir($dir);
         if ($dh !== false) {

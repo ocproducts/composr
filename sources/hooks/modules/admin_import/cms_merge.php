@@ -544,12 +544,12 @@ class Hook_import_cms_merge
                     's_group_id' => $group_id,
                     's_enabled' => $row['s_enabled'],
                 );
-                $map += insert_lang('s_title', $this->get_lang_string($db, $row['s_title']), 2);
-                $map += insert_lang('s_description', $this->get_lang_string($db, $row['s_description']), 2);
-                $map += insert_lang('s_mail_start', $this->get_lang_string($db, $row['s_mail_start']), 2);
-                $map += insert_lang('s_mail_end', $this->get_lang_string($db, $row['s_mail_end']), 2);
-                $map += insert_lang('s_mail_uhoh', $this->get_lang_string($db, $row['s_mail_uhoh']), 2);
-                $id_new = $GLOBALS['SITE_DB']->query_insert('f_usergroup_subs', $map, true);
+                $map += insert_lang('s_title', $this->get_lang_string($db, $row['s_title']), 2, $GLOBALS['FORUM_DB']);
+                $map += insert_lang('s_description', $this->get_lang_string($db, $row['s_description']), 2, $GLOBALS['FORUM_DB']);
+                $map += insert_lang('s_mail_start', $this->get_lang_string($db, $row['s_mail_start']), 2, $GLOBALS['FORUM_DB']);
+                $map += insert_lang('s_mail_end', $this->get_lang_string($db, $row['s_mail_end']), 2, $GLOBALS['FORUM_DB']);
+                $map += insert_lang('s_mail_uhoh', $this->get_lang_string($db, $row['s_mail_uhoh']), 2, $GLOBALS['FORUM_DB']);
+                $id_new = $GLOBALS['FORUM_DB']->query_insert('f_usergroup_subs', $map, true);
 
                 $mails = $db->query_select('f_usergroup_sub_mails', array('*'), array('m_usergroup_sub_id' => $row['id']));
                 $this->_fix_comcode_ownership($mails);
@@ -559,9 +559,9 @@ class Hook_import_cms_merge
                         'm_ref_point' => $mail['m_ref_point'],
                         'm_ref_point_offset' => $mail['m_ref_point_offset'],
                     );
-                    $map += insert_lang('m_subject', $this->get_lang_string($db, $mail['m_subject']), 2);
-                    $map += insert_lang('m_body', $this->get_lang_string($db, $mail['m_body']), 2);
-                    $GLOBALS['SITE_DB']->query_insert('f_usergroup_sub_mails', $map);
+                    $map += insert_lang('m_subject', $this->get_lang_string($db, $mail['m_subject']), 2, $GLOBALS['FORUM_DB']);
+                    $map += insert_lang('m_body', $this->get_lang_string($db, $mail['m_body']), 2, $GLOBALS['FORUM_DB']);
+                    $GLOBALS['FORUM_DB']->query_insert('f_usergroup_sub_mails', $map);
                 }
 
                 import_id_remap_put('usergroup_sub', strval($row['id']), $id_new);
@@ -2492,7 +2492,9 @@ class Hook_import_cms_merge
 
             $row_temp = $row;
 
-            $GLOBALS['SITE_DB']->query_delete('group_privileges', $row_temp, '', 1);
+            $_db = $GLOBALS[(($row['module_the_name'] == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+
+            $_db->query_delete('group_privileges', $row_temp, '', 1);
 
             if ($row['category_name'] != '') {
                 if ($row['module_the_name'] == 'seedy_page') {
@@ -2546,7 +2548,7 @@ class Hook_import_cms_merge
                     $row['category_name'] = strval($id_new);
                 }
             }
-            $GLOBALS['SITE_DB']->query_insert('group_privileges', $row);
+            $_db->query_insert('group_privileges', $row);
         }
 
         $rows = $db->query_select('group_page_access', array('*'));
@@ -2640,8 +2642,11 @@ class Hook_import_cms_merge
                     $row['category_name'] = strval($id_new);
                 }
             }
-            $GLOBALS['SITE_DB']->query_delete('group_category_access', $row, '', 1);
-            $GLOBALS['SITE_DB']->query_insert('group_category_access', $row);
+
+            $_db = $GLOBALS[(($row['module_the_name'] == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+
+            $_db->query_delete('group_category_access', $row, '', 1);
+            $_db->query_insert('group_category_access', $row);
         }
 
         $rows = $db->query_select('member_zone_access', array('*'), array(), '', null, 0, true);
@@ -2667,12 +2672,15 @@ class Hook_import_cms_merge
                 if ($member_id === null) {
                     continue;
                 }
-                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('member_category_access', 'module_the_name', array('member_id' => $member_id, 'category_name' => $row['category_name']));
+
+                $_db = $GLOBALS[(($row['module_the_name'] == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+
+                $test = $_db->query_select_value_if_there('member_category_access', 'module_the_name', array('member_id' => $member_id, 'module_the_name' => $row['module_the_name'], 'category_name' => $row['category_name']));
                 if ($test !== null) {
                     continue;
                 }
 
-                $GLOBALS['SITE_DB']->query_insert('member_category_access', array('module_the_name' => $row['module_the_name'], 'category_name' => $row['category_name'], 'member_id' => $member_id, 'active_until' => $row['active_until']));
+                $_db->query_insert('member_category_access', array('module_the_name' => $row['module_the_name'], 'category_name' => $row['category_name'], 'member_id' => $member_id, 'active_until' => $row['active_until']));
             }
         }
 
@@ -2747,9 +2755,12 @@ class Hook_import_cms_merge
                         $row['category_name'] = strval($id_new);
                     }
                 }
+
+                $_db = $GLOBALS[(($row['module_the_name'] == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+
                 $row['member_id'] = $member_id;
-                $GLOBALS['SITE_DB']->query_delete('member_privileges', $row);
-                $GLOBALS['SITE_DB']->query_insert('member_privileges', $row);
+                $_db->query_delete('member_privileges', $row);
+                $_db->query_insert('member_privileges', $row);
             }
         }
     }
@@ -2775,7 +2786,9 @@ class Hook_import_cms_merge
                     $row['l_notification_code'] = 'wiki';
                 }
 
-                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('notifications_enabled', 'id', array('l_member_id' => $member_id, 'l_notification_code' => $row['l_notification_code']));
+                $_db = $GLOBALS[((substr($row['l_notification_code'], 0, 4) == 'cns_') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+
+                $test = $_db->query_select_value_if_there('notifications_enabled', 'id', array('l_member_id' => $member_id, 'l_notification_code' => $row['l_notification_code']));
                 if ($test !== null) {
                     continue;
                 }
@@ -2784,7 +2797,7 @@ class Hook_import_cms_merge
 
                 $row['l_member_id'] = $member_id;
 
-                $GLOBALS['SITE_DB']->query_insert('notifications_enabled', $row);
+                $_db->query_insert('notifications_enabled', $row);
             }
         }
 
@@ -2927,7 +2940,7 @@ class Hook_import_cms_merge
                                 }
                             }
                         }
-                        $GLOBALS['SITE_DB']->query_update('f_member_custom_fields', $row2, array('mf_member_id' => $id_new), '', 1);
+                        $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', $row2, array('mf_member_id' => $id_new), '', 1);
                     }
 
                     // Fix some tricky dependences that we shoved to one side
@@ -2954,7 +2967,7 @@ class Hook_import_cms_merge
             if ($row['gm_member_id'] === null) {
                 continue;
             }
-            $GLOBALS['SITE_DB']->query_insert('f_group_members', $row, false, true);
+            $GLOBALS['FORUM_DB']->query_insert('f_group_members', $row, false, true);
         }
 
         // Known login IPs
@@ -2964,7 +2977,7 @@ class Hook_import_cms_merge
             if ($row['i_member_id'] === null) {
                 continue;
             }
-            $GLOBALS['SITE_DB']->query_insert('f_member_known_login_ips', $row);
+            $GLOBALS['FORUM_DB']->query_insert('f_member_known_login_ips', $row);
         }
 
         // Group member timeouts
@@ -2979,7 +2992,7 @@ class Hook_import_cms_merge
                 if ($group_id === null) {
                     continue;
                 }
-                $GLOBALS['SITE_DB']->query_insert('f_group_member_timeouts', array('member_id' => $member_id, 'group_id' => $group_id, 'timeout' => $row['timeout']));
+                $GLOBALS['FORUM_DB']->query_insert('f_group_member_timeouts', array('member_id' => $member_id, 'group_id' => $group_id, 'timeout' => $row['timeout']));
             }
         }
 
@@ -2992,7 +3005,7 @@ class Hook_import_cms_merge
                     continue;
                 }
 
-                $GLOBALS['SITE_DB']->query_insert('f_invites', array('i_inviter' => $i_inviter, 'i_email_address' => $row['i_email_address'], 'i_time' => $row['i_time'], 'i_taken' => $row['i_taken']), false, true);
+                $GLOBALS['FORUM_DB']->query_insert('f_invites', array('i_inviter' => $i_inviter, 'i_email_address' => $row['i_email_address'], 'i_time' => $row['i_time'], 'i_taken' => $row['i_taken']), false, true);
             }
         }
     }
@@ -3076,11 +3089,11 @@ class Hook_import_cms_merge
             if ($field_id === null) {
                 continue;
             }
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('f_member_cpf_perms', 'member_id', array('member_id' => $member_id, 'field_id' => $field_id));
+            $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_member_cpf_perms', 'member_id', array('member_id' => $member_id, 'field_id' => $field_id));
             if ($test === null) {
                 continue;
             }
-            $GLOBALS['SITE_DB']->query_insert('f_member_cpf_perms', array('member_id' => $member_id, 'field_id' => $field_id, 'guest_view' => $row['guest_view'], 'member_view' => $row['member_view'], 'friend_view' => $row['friend_view'], 'group_view' => $row['group_view']));
+            $GLOBALS['FORUM_DB']->query_insert('f_member_cpf_perms', array('member_id' => $member_id, 'field_id' => $field_id, 'guest_view' => $row['guest_view'], 'member_view' => $row['member_view'], 'friend_view' => $row['friend_view'], 'group_view' => $row['group_view']));
         }
     }
 
@@ -3680,12 +3693,12 @@ class Hook_import_cms_merge
         }
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('f_saved_warnings', 's_title', array('s_title' => $row['s_title']));
+            $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_saved_warnings', 's_title', array('s_title' => $row['s_title']));
             if ($test !== null) {
                 continue;
             }
 
-            $GLOBALS['SITE_DB']->query_insert('f_saved_warnings', array('s_title' => $row['s_title'], 's_explanation' => $row['s_explanation'], 's_message' => $row['s_message']));
+            $GLOBALS['FORUM_DB']->query_insert('f_saved_warnings', array('s_title' => $row['s_title'], 's_explanation' => $row['s_explanation'], 's_message' => $row['s_message']));
         }
     }
 

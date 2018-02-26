@@ -77,11 +77,11 @@ function add_news_category($title, $img = 'icons/news/general', $notes = '', $ow
  */
 function edit_news_category($id, $title, $img, $notes, $owner)
 {
-    $myrows = $GLOBALS['SITE_DB']->query_select('news_categories', array('nc_title', 'nc_img', 'notes'), array('id' => $id), '', 1);
-    if (!array_key_exists(0, $myrows)) {
+    $rows = $GLOBALS['SITE_DB']->query_select('news_categories', array('nc_title', 'nc_img', 'notes'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'news_category'));
     }
-    $myrow = $myrows[0];
+    $myrow = $rows[0];
 
     $old_title = get_translated_text($myrow['nc_title']);
 

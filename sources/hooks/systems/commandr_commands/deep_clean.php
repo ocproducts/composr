@@ -52,10 +52,7 @@ class Hook_deep_clean
             $is_trans = ((isset($TABLE_LANG_FIELDS[$table])) && (in_array($field, $TABLE_LANG_FIELDS[$table])));
             $is_title_trans = ((isset($TABLE_LANG_FIELDS[$table])) && (in_array($title_field, $TABLE_LANG_FIELDS[$table])));
 
-            $db = $GLOBALS['SITE_DB'];
-            if ((substr($table, 0, 2) == 'f_') && (get_forum_type() == 'cns')) {
-                $db = $GLOBALS['FORUM_DB'];
-            }
+            $db = get_db_for($table);
 
             $total_changed = 0;
             $total = 0;
@@ -105,7 +102,7 @@ class Hook_deep_clean
                     $new_value = deep_clean($old_value, $title);
                     if ($new_value != $old_value) {
                         if ($is_trans) {
-                            lang_remap($_old_value, $new_value, $db);
+                            lang_remap($field, $_old_value, $new_value, $db);
                         } else {
                             $db->query_update($table, array($field => $new_value), $where, '', 1);
                         }

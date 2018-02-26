@@ -82,12 +82,12 @@ class Block_side_galleries
         $extra_join_sql = '';
         $where_sup = '';
         if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && ($check_perms)) {
-            $extra_join_sql .= get_permission_join_clause('gallery', 'cat');
+            $extra_join_sql .= get_permission_join_clause('gallery', 'name');
             $where_sup .= get_permission_where_clause(get_member(), get_permission_where_clause_groups(get_member()));
         }
 
         // For all galleries off the root gallery
-        $query = 'SELECT name,fullname FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'galleries' . $extra_join_sql;
+        $query = 'SELECT name,fullname FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'galleries r' . $extra_join_sql;
         $query .= ' WHERE ' . db_string_equal_to('parent_id', $parent_id) . ' AND name NOT LIKE \'' . db_encode_like('download\_%') . '\'' . $where_sup;
         $query .= ' ORDER BY add_date';
         $galleries = $GLOBALS['SITE_DB']->query($query, 300 /*reasonable limit*/);

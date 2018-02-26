@@ -3336,19 +3336,6 @@ function brand_name()
 }
 
 /**
- * Find if we're on an Conversr satellite site.
- *
- * @return boolean If we are
- */
-function is_cns_satellite_site()
-{
-    if (get_forum_type() != 'cns') {
-        return false;
-    }
-    return (isset($GLOBALS['FORUM_DB'])) && ((get_db_site() != get_db_forums()) || (get_db_site_host() != get_db_forums_host()) || (get_db_site_user() != get_db_forums_user()));
-}
-
-/**
  * Convert GUIDs to IDs in some text.
  *
  * @param  string $text Input text
@@ -3848,7 +3835,7 @@ function is_maintained($code)
 {
     static $cache = array();
     if ($cache === array()) {
-        $myfile = fopen(get_custom_file_base() . '/data/maintenance_status.csv', 'rb');
+        $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
         // TODO: #3032 (must default charset to utf-8 if no BOM though)
         fgetcsv($myfile); // Skip header row
         while (($row = fgetcsv($myfile)) !== false) {

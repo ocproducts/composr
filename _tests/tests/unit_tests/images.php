@@ -69,11 +69,11 @@ class images_test_set extends cms_test_case
 
     public function testImageSizing()
     {
-        $this->assertTrue(is_array(cms_getimagesize(get_custom_file_base() . '/themes/default/images/button1.png')));
-        $this->assertTrue(is_array(cms_getimagesize(get_custom_base_url() . '/themes/default/images/button1.png')));
+        $this->assertTrue(is_array(cms_getimagesize(get_file_base() . '/themes/default/images/button1.png')));
+        $this->assertTrue(is_array(cms_getimagesize(get_base_url() . '/themes/default/images/button1.png')));
         $this->assertTrue(!isset($GLOBALS['REQUIRED_CODE']['http'])); // Should have been able to do the above using the filesystem, via a URL->path conversion
         $this->assertTrue(is_array(cms_getimagesize('http://compo.sr/themes/composr_homesite/images_custom/composr_homesite/composr_full_logo.png')));
-        $this->assertTrue(cms_getimagesize(get_custom_file_base() . '/themes/default/images/not_here.png') === false);
+        $this->assertTrue(cms_getimagesize(get_file_base() . '/themes/default/images/not_here.png') === false);
     }
 
     public function testBasicThumbnailing()

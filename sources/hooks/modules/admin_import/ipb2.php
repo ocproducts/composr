@@ -1034,7 +1034,7 @@ class Hook_import_ipb2
                     import_id_remap_put('post_files', strval($row['pid']), 1);
                     continue; // Orphaned post
                 }
-                $post = get_translated_text($post_row[0]['p_post'], $GLOBALS['SITE_DB']);
+                $post = get_translated_text($post_row[0]['p_post']);
                 $lang_id = $post_row[0]['p_post'];
                 $member_id = import_id_remap_get('member', $post_row[0]['p_poster']);
                 $post_date = $post_row[0]['p_time'];
@@ -1048,7 +1048,7 @@ class Hook_import_ipb2
                         $url = 'uploads/attachments/' . $attachment['attach_location'];
                         sync_file($url);
                         $thumb_url = '';
-                        $a_id[$i] = $GLOBALS['SITE_DB']->query_insert('attachments', array('a_member_id' => $member_id, 'a_file_size' => $attachment['attach_filesize'], 'a_url' => $url, 'a_thumb_url' => $thumb_url, 'a_original_filename' => $attachment['attach_file'], 'a_num_downloads' => $attachment['attach_hits'], 'a_last_downloaded_time' => null, 'a_add_time' => $post_date, 'a_description' => ''), true);
+                        $a_id[$i] = $GLOBALS['FORUM_DB']->query_insert('attachments', array('a_member_id' => $member_id, 'a_file_size' => $attachment['attach_filesize'], 'a_url' => $url, 'a_thumb_url' => $thumb_url, 'a_original_filename' => $attachment['attach_file'], 'a_num_downloads' => $attachment['attach_hits'], 'a_last_downloaded_time' => null, 'a_add_time' => $post_date, 'a_description' => ''), true);
                         $has_attachment = true;
                     } else {
                         if ($STRICT_FILE) {
@@ -1062,7 +1062,7 @@ class Hook_import_ipb2
                     $i = 0;
                     foreach ($attachments as $attachment) {
                         if (array_key_exists($i, $a_id)) {
-                            $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => 'cns_post', 'r_referer_id' => strval($post_id), 'a_id' => $a_id[$i]));
+                            $GLOBALS['FORUM_DB']->query_insert('attachment_refs', array('r_referer_type' => 'cns_post', 'r_referer_id' => strval($post_id), 'a_id' => $a_id[$i]));
                             $post .= "\n\n" . '[attachment]' . $a_id[$i] . '[/attachment]';
                         }
                         $i++;

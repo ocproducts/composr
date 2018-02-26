@@ -250,7 +250,7 @@ function ecv2_ATTACHMENT_DOWNLOADS($lang, $escaped, $param)
 
     if (isset($param[0])) {
         $db = $GLOBALS['SITE_DB'];
-        if ((isset($param[1])) && ($param[1] == '1')) {
+        if ((isset($param[1])) && ($param[1] == '1') && (get_forum_type() == 'cns')) {
             $db = $GLOBALS['FORUM_DB'];
         }
         $_value = $db->query_select_value_if_there('attachments', 'a_num_downloads', array('id' => intval($param[0])));

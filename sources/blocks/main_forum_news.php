@@ -151,9 +151,9 @@ class Block_main_forum_news
                 if ($optimise) {
                     $news = make_string_tempcode($news->evaluate());
                     if (multi_lang_content()) {
-                        $GLOBALS['SITE_DB']->query_update('translate', array('text_parsed' => $news->to_assembly()), array('id' => $myrow['firstpost_language_string'], 'language' => user_lang()), '', 1);
+                        $GLOBALS['FORUM_DB']->query_update('translate', array('text_parsed' => $news->to_assembly()), array('id' => $myrow['firstpost_language_string'], 'language' => user_lang()), '', 1);
                     } else {
-                        $GLOBALS['SITE_DB']->query_update('f_posts', array('p_post__text_parsed' => $news->to_assembly()), array('id' => $myrow['id']), '', 1);
+                        $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_post__text_parsed' => $news->to_assembly()), array('id' => $myrow['id']), '', 1);
                     }
                 }
             } else {

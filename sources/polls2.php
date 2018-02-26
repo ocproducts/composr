@@ -281,6 +281,10 @@ function delete_poll($id)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('id' => $id), '', 1);
 
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     persistent_cache_delete('POLL');
 
     if (addon_installed('catalogues')) {

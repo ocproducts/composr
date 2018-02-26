@@ -522,11 +522,11 @@ class Module_cms_downloads extends Standard_crud_module
     {
         $id = intval($_id);
 
-        $myrows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('*'), array('id' => $id), '', 1);
-        if (!array_key_exists(0, $myrows)) {
+        $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('*'), array('id' => $id), '', 1);
+        if (!array_key_exists(0, $rows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download'));
         }
-        $myrow = $myrows[0];
+        $myrow = $rows[0];
 
         $cat = $myrow['category_id'];
 
@@ -807,11 +807,11 @@ class Module_cms_downloads_alt extends Standard_crud_module
     {
         $id = intval($_id);
 
-        $myrows = $GLOBALS['SITE_DB']->query_select('download_licences', array('*'), array('id' => $id), '', 1);
-        if (!array_key_exists(0, $myrows)) {
+        $rows = $GLOBALS['SITE_DB']->query_select('download_licences', array('*'), array('id' => $id), '', 1);
+        if (!array_key_exists(0, $rows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_licence'));
         }
-        $myrow = $myrows[0];
+        $myrow = $rows[0];
 
         return $this->get_form_fields($myrow['l_title'], $myrow['l_text']);
     }
