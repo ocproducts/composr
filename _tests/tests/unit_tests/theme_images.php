@@ -36,7 +36,7 @@ class theme_images_test_set extends cms_test_case
             $c = file_get_contents($path);
             $_c = $c;
 
-            $this->assertTrue(strpos($c, '<image') === false, 'Raster data in ' . $path . '; fix with &auto_fix=1');
+            $this->assertTrue(strpos($c, '<image') === false, 'Raster data in ' . $path);
 
             $bad_patterns = array(
                 '<!-- Generator.*-->',
@@ -46,7 +46,7 @@ class theme_images_test_set extends cms_test_case
             );
             foreach ($bad_patterns as $bad_pattern) {
                 if (preg_match('#' . $bad_pattern . '#', $c) != 0) {
-                    $this->assertTrue(false, 'Found: ' . $bad_pattern);
+                    $this->assertTrue(false, 'Found: ' . $bad_pattern . '; fix with &auto_fix=1');
                     $c = preg_replace('#' . $bad_pattern . '#', '', $c);
                 }
             }
