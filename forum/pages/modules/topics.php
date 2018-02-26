@@ -2785,6 +2785,7 @@ END;
         if ($_topic_info[0]['t_cache_first_post_id'] == $post_id) { // See if we need to copy title
             $_topic_info2 = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_cache_first_title', 't_cache_first_post_id'), array('id' => $topic_id), '', 1);
             if (array_key_exists(0, $_topic_info2)) {
+                require_lang('cns');
                 if ($_topic_info2[0]['t_cache_first_title'] == do_lang('NO_TOPIC_TITLE', strval($topic_id))) {
                     $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_title' => $current_title), array('id' => $_topic_info2[0]['t_cache_first_post_id']), '', 1);
                 }
