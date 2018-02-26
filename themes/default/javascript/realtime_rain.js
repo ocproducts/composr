@@ -67,7 +67,7 @@
         window.pendingEvalFunction = function (el) { // In webkit you can't get a node until it's been closed, so we need to set our code into a function and THEN run it
             if (params.tickerText !== undefined) {
                 setTimeout(function () {
-                    $dom.html(document.getElementById('news-go-here'), params.tickerText);
+                    $dom.html('#news-go-here', params.tickerText);
                 }, params.relativeTimestamp * 1000);
             }
             // Set up extra attributes
