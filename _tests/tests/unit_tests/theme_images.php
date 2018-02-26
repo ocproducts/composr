@@ -43,6 +43,7 @@ class theme_images_test_set extends cms_test_case
                 '\s+xml:space="preserve"',
                 '\s+enable-background="[^"]*"',
                 '\s+xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"',
+                '<[^<>]* display="none"[^<>]*/>\n',
             );
             foreach ($bad_patterns as $bad_pattern) {
                 if (preg_match('#' . $bad_pattern . '#', $c) != 0) {

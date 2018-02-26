@@ -7,8 +7,6 @@
 	 x="0px" y="0px" width="53px" height="33px" viewBox="0 0 53 33">
 <defs>
 </defs>
-<rect display="none" fill="#FFF200" width="2" height="33"/>
-<rect x="50.846" display="none" fill="#FFF200" width="2" height="33"/>
 <rect x="1.937" fill="#C8691C" width="48.901" height="33"/>
 <rect x="1.937" fill="#F79523" width="48.901" height="16.7"/>
 <rect x="22.05" y="19.263" transform="matrix(0.966 -0.2586 0.2586 0.966 -5.6604 7.6784)" fill="#BCBEC0" width="8.609" height="12.181"/>

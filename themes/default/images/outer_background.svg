@@ -141,11 +141,4 @@
 <polygon opacity="0.4" fill="#C8691C" points="0.168,296.646 6.767,303.245 13.032,303.245 0.168,290.382 "/>
 <polygon opacity="0.4" fill="#F79523" points="0.351,282.107 21.659,303.415 29.945,303.415 0.351,273.821 "/>
 <polygon opacity="0.4" fill="#FCB51E" points="0.351,263.956 39.81,303.415 49.674,303.415 0.351,254.093 "/>
-<rect x="0.153" y="1.661" display="none" fill="#E6E7E8" width="300" height="300"/>
-<polygon display="none" opacity="0.3" fill="#BCBEC0" points="219.921,103.573 212.714,74.109 181.766,86.827 192.789,92.126 
-	159.153,154.661 104.153,127.661 53.153,213.661 72.153,220.661 114.153,152.661 166.153,179.661 209.859,99.047 "/>
-<polygon display="none" opacity="0.3" fill="#D1D3D4" points="72.153,220.661 159.153,215.661 141.153,202.661 78.757,210.111 "/>
-<line display="none" opacity="0.3" fill="none" stroke="#939598" stroke-miterlimit="10" x1="214.153" y1="106.661" x2="174.153" y2="181.661"/>
-<line display="none" opacity="0.3" fill="none" stroke="#939598" stroke-miterlimit="10" x1="122.153" y1="158.661" x2="89.153" y2="207.661"/>
-<line display="none" opacity="0.3" fill="none" stroke="#939598" stroke-miterlimit="10" x1="221.67" y1="75.375" x2="229.254" y2="101.126"/>
 </svg>

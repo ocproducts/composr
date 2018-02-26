@@ -7,8 +7,6 @@
 	 x="0px" y="0px" width="53px" height="33px" viewBox="0 0 53 33">
 <defs>
 </defs>
-<rect display="none" fill="#FFF200" width="2" height="33"/>
-<rect x="50.927" display="none" fill="#FFF200" width="2" height="33"/>
 <rect x="2.01" y="0.025" fill="#C8691C" width="48.901" height="33"/>
 <rect x="2.01" y="0.025" fill="#F79523" width="48.901" height="16.7"/>
 <path fill="#FCB51E" d="M5.879,28.49l4.34,0.838c0.219,0.045,0.373,0.094,0.458,0.159c0.089,0.061,0.152,0.153,0.193,0.279
