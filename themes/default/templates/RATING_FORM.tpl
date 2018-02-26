@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,core_feedback_features}
 {$,If may rate}
 {+START,IF_EMPTY,{ERROR}}
-	<div data-tpl="ratingForm" data-tpl-params="{+START,PARAMS_JSON,ERROR,ALL_RATING_CRITERIA}{_*}{+END}">
+	<div data-tpl="ratingForm" data-tpl-params="{+START,PARAMS_JSON,ERROR,ALL_RATING_CRITERIA,CONTENT_TYPE,ID}{_*}{+END}">
 		{+START,LOOP,ALL_RATING_CRITERIA}
 			{$SET,identifier,{CONTENT_TYPE*}--{TYPE*}--{ID*}}
 
@@ -16,7 +16,7 @@
 					{$,Like/dislike}
 					{+START,IF,{LIKES}}
 						<img id="rating-bar-1--{$GET,identifier}" alt="" width="18" height="18" src="{$IMG*,icons/feedback/dislike}" />
-					<img id="rating-bar-10--{$GET,identifier}" alt="" width="18" height="18" src="{$IMG*,icons/feedback/like}" />
+						<img id="rating-bar-10--{$GET,identifier}" alt="" width="18" height="18" src="{$IMG*,icons/feedback/like}" />
 					{+END}
 
 					{$,Star ratings}

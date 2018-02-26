@@ -142,7 +142,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				<div class="global-footer-left block-desktop">
 					{+START,SET,FOOTER_BUTTONS}
 						{+START,IF,{$CONFIG_OPTION,bottom_show_top_button}}
-							<li><a rel="back_to_top" accesskey="g" href="#!"><img title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" width="24" height="24" src="{$IMG*,icons/tool_buttons/top}" /></a></li>
+							<li><a rel="back_to_top" accesskey="g" href="#"><img title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" width="24" height="24" src="{$IMG*,icons/tool_buttons/top}" /></a></li>
 						{+END}
 						{+START,IF,{$ADDON_INSTALLED,realtime_rain}}{+START,IF,{$CONFIG_OPTION,bottom_show_realtime_rain_button,1}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_realtime_rain}}{+START,IF,{$NEQ,{$ZONE}:{$PAGE},adminzone:admin_realtime_rain}}
 							<li><a id="realtime-rain-button" data-btn-load-realtime-rain="{}" href="{$PAGE_LINK*,adminzone:admin_realtime_rain}"><img id="realtime-rain-img" title="{!realtime_rain:REALTIME_RAIN}" alt="{!realtime_rain:REALTIME_RAIN}" width="24" height="24" src="{$IMG*,icons/tool_buttons/realtime_rain_on}" /></a></li>

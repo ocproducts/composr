@@ -402,7 +402,7 @@
             }
 
             $cms.ui.repositionTooltip(el, eventCopy, bottom, true, tooltipEl, forceWidth, win);
-        }, noDelay ? 0 : 666);
+        }, noDelay ? 0 : 600);
     };
 
     /**
