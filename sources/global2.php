@@ -725,7 +725,7 @@ function monitor_slow_urls()
     if ($time > intval(get_value('monitor_slow_urls'))) {
         require_code('urls');
         if (php_function_allowed('error_log')) {
-            error_log('Profiling: Over time limit @ ' . get_self_url_easy(true) . "\t" . strval($time) . 'secs' . "\t" . date('Y-m-d H:i:s', time()), 0);
+            error_log('Profiling: Over time limit @ ' . get_self_url_easy(true) . "\t" . strval($time) . ' secs' . "\t" . date('Y-m-d H:i:s', time()), 0);
         }
     }
 }

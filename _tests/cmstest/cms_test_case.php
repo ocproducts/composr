@@ -22,17 +22,26 @@ class cms_test_case extends WebTestCase
 
     public function setUp()
     {
-        // Make sure the site is open
-        $this->site_closed = get_option('site_closed');
-        require_code('config2');
-        set_option('site_closed', '0', 0);
+        static $done_once = false;
+        if (!$done_once) {
+            // Make sure the site is open
+            $this->site_closed = get_option('site_closed');
+            require_code('config2');
+            set_option('site_closed', '0', 0);
+            $done_once = true;
+            register_shutdown_function(array($this, 'reopen_site'));
+        }
     }
 
-    public function tearDown()
+    public function reopen_site()
     {
         if ($this->site_closed !== null) {
             set_option('site_closed', $this->site_closed, 0);
         }
+    }
+
+    public function tearDown()
+    {
     }
 
     public function should_filter_cqc_line($line)
@@ -89,6 +98,12 @@ class cms_test_case extends WebTestCase
 
     public function establish_admin_session()
     {
+        static $done_once = false;
+        if ($done_once) {
+            return;
+        }
+        $done_once = true;
+
         if (get_ip_address() == '') { // Running from CLI
             $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         }

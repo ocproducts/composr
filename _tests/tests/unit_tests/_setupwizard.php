@@ -22,8 +22,8 @@ class _setupwizard_test_set extends cms_test_case
 {
     public function testFinalStep()
     {
-        if (get_db_type() == 'xml') {
-            $this->assertTrue(false, 'Test cannot run on XML database driver, too slow');
+        if ((get_db_type() == 'xml') && (multi_lang_content())) {
+            $this->assertTrue(false, 'Test cannot run on XML database driver with multi-lang-content, too slow');
             return;
         }
 

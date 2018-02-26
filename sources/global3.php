@@ -1553,6 +1553,7 @@ function _multi_sort($a, $b)
         $first_key = substr($first_key, 1);
     }
 
+    // String version
     if ((is_string($a[$first_key])) || (is_object($a[$first_key]))) {
         $ret = 0;
         do {
@@ -1573,33 +1574,37 @@ function _multi_sort($a, $b)
                 $bv = $bv->evaluate();
             }
 
-            if ($backwards) { // Flip around
-                $key = substr($key, 1);
-                if ((is_numeric($av)) && (is_numeric($bv))) {
-                    $ret = -strnatcasecmp($av, $bv);
-                } else {
-                    $ret = -strcasecmp($av, $bv);
-                }
+            if ((is_numeric($av)) && (is_numeric($bv))) {
+                $ret = strnatcasecmp($av, $bv);
             } else {
-                if ((is_numeric($av)) && (is_numeric($bv))) {
-                    $ret = strnatcasecmp($av, $bv);
-                } else {
-                    $ret = strcasecmp($av, $bv);
-                }
+                $ret = strcasecmp($av, $bv);
+            }
+
+            if ($backwards) {
+                $ret *= -1;
             }
         } while ((count($keys) !== 0) && ($ret === 0));
         return $ret;
     }
 
+    // Non-string version
     do {
         $key = array_shift($keys);
-        if ($key[0] === '!') { // Flip around
+
+        $backwards = ($key[0] === '!');
+        if ($backwards) {
             $key = substr($key, 1);
-            $ret = ($a[$key] > $b[$key]) ? -1 : (($a[$key] == $b[$key]) ? 0 : 1);
-        } else {
-            $ret = ($a[$key] > $b[$key]) ? 1 : (($a[$key] == $b[$key]) ? 0 : -1);
         }
-    } while ((count($keys) !== 0) && ($ret == 0));
+
+        $av = $a[$key];
+        $bv = $b[$key];
+
+        $ret = ($av > $bv) ? 1 : (($av == $bv) ? 0 : -1);
+
+        if ($backwards) {
+            $ret *= -1;
+        }
+    } while ((count($keys) !== 0) && ($ret === 0));
     return $ret;
 }
 

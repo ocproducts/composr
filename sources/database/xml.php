@@ -345,9 +345,9 @@ class Database_Static_xml extends DatabaseDriver
             $success = false;
         }
 
-        global $SCHEMA_CACHE, $DIR_CONTENTS_CACHE;
+        global $SCHEMA_CACHE;
         unset($SCHEMA_CACHE[$table_name]);
-        unset($DIR_CONTENTS_CACHE[$table_name]);
+        $this->_clear_caching_for($table_name);
 
         return $success;
     }
@@ -922,7 +922,7 @@ class Database_Static_xml extends DatabaseDriver
         }
 
         global $DIR_CONTENTS_CACHE;
-        if (!isset($DIR_CONTENTS_CACHE[$table_name])) {
+        if (true/*We can't do this, the directory contents may change in another HTTP request*/ || !isset($DIR_CONTENTS_CACHE[$table_name])) {
             if (!file_exists($db[0] . '/' . $table_name)) {
                 mkdir($db[0] . '/' . $table_name, 0777);
                 require_code('files');
@@ -930,29 +930,29 @@ class Database_Static_xml extends DatabaseDriver
                 sync_file($db[0] . '/' . $table_name);
             }
             @chdir($db[0] . '/' . $table_name);
-            $dh = @glob('{,.}*.{xml,xml-volatile}', GLOB_NOSORT | GLOB_BRACE);
-            if ($dh === false) {
-                $dh = array();
+            $files = @glob('{,.}*.{xml,xml-volatile}', GLOB_NOSORT | GLOB_BRACE);
+            if ($files === false) {
+                $files = array();
             }
             @chdir(get_file_base());
             if (file_exists($db[0] . '/' . $table_name . '/.xml')) {
-                $dh[] = '.xml';
+                $files[] = '.xml';
             } elseif (file_exists($db[0] . '/' . $table_name . '/.xml-volatile')) {
-                $dh[] = '.xml-volatile';
+                $files[] = '.xml-volatile';
             }
-            $DIR_CONTENTS_CACHE[$table_name] = $dh;
+            $DIR_CONTENTS_CACHE[$table_name] = $files;
         } else {
-            $dh = $DIR_CONTENTS_CACHE[$table_name];
+            $files = $DIR_CONTENTS_CACHE[$table_name];
         }
-        if (($dh === false) && ($fail_ok)) {
+        if (($files === false) && ($fail_ok)) {
             return null;
         }
-        if ($dh === false) {
+        if ($files === false) {
             critical_error('PASSON', 'Failure to read table ' . $table_name);
         }
         $regexp = '#^' . $key_fragments . '(' . preg_quote('.xml') . '|' . preg_quote('.xml-volatile') . ')$#';
 
-        foreach ($dh as $file) {
+        foreach ($files as $file) {
             if ($key_fragments != '') {
                 if (preg_match($regexp, $file) == 0) {
                     continue;
@@ -1274,8 +1274,6 @@ class Database_Static_xml extends DatabaseDriver
         $contents .= "</composr>\n";
         cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
-        unset($GLOBALS['DIR_CONTENTS_CACHE'][$table_name]);
-
         $schema = $this->_read_schema($db, preg_replace('#/sup$#', '', $table_name), $fail_ok);
         if ($schema !== null) {
             $new_guid = $this->_guid($schema, $record);
@@ -1285,6 +1283,8 @@ class Database_Static_xml extends DatabaseDriver
                 sync_file_move($path, $new_path);
             }
         }
+
+        $this->_clear_caching_for($table_name);
     }
 
     /**
@@ -1385,9 +1385,8 @@ class Database_Static_xml extends DatabaseDriver
             sync_file($file_path);
         }
 
-        global $SCHEMA_CACHE, $DIR_CONTENTS_CACHE;
+        global $SCHEMA_CACHE;
         unset($SCHEMA_CACHE[$table_name]);
-        unset($DIR_CONTENTS_CACHE[$table_name]);
 
         return null;
     }
@@ -1473,7 +1472,7 @@ class Database_Static_xml extends DatabaseDriver
                 $new_table_name = $this->_parsing_read($at, $tokens, $query);
                 rename($db[0] . '/' . $table_name, $db[0] . '/' . $new_table_name);
                 sync_file_move($db[0] . '/' . $table_name, $db[0] . '/' . $new_table_name);
-                unset($GLOBALS['DIR_CONTENTS_CACHE'][$table_name]);
+                $this->_clear_caching_for($table_name);
                 break;
             case 'CHANGE':
             case 'ADD':
@@ -2751,7 +2750,6 @@ class Database_Static_xml extends DatabaseDriver
                         $path = $db[0] . '/' . $table_name . '/' . $guid . '.xml';
                     }
                     $this->_delete_record($path, $db);
-                    unset($GLOBALS['DIR_CONTENTS_CACHE'][$table_name]);
                     $done++;
                     if (($max !== null) && ($done > $max)) {
                         break;
@@ -2760,6 +2758,8 @@ class Database_Static_xml extends DatabaseDriver
                 $i++;
             }
         }
+
+        $this->_clear_caching_for($table_name);
 
         if (!$this->_parsing_check_ended($at, $tokens, $query)) {
             return null;
@@ -2795,7 +2795,7 @@ class Database_Static_xml extends DatabaseDriver
         }
         closedir($dh);
 
-        unset($GLOBALS['DIR_CONTENTS_CACHE'][$table_name]);
+        $this->_clear_caching_for($table_name);
 
         if (!$this->_parsing_check_ended($at, $tokens, $query)) {
             return null;
@@ -4030,12 +4030,12 @@ class Database_Static_xml extends DatabaseDriver
         $fuzz = strtoupper(md5(uniqid(strval(mt_rand(0, mt_getrandmax())), true)));
 
         return '{'
-               . substr($fuzz, 0, 8) . '-'
-               . substr($fuzz, 8, 4) . '-'
-               . substr($fuzz, 12, 4) . '-'
-               . substr($fuzz, 16, 4) . '-'
-               . substr($fuzz, 20, 12)
-               . '}';
+            . substr($fuzz, 0, 8) . '-'
+            . substr($fuzz, 8, 4) . '-'
+            . substr($fuzz, 12, 4) . '-'
+            . substr($fuzz, 16, 4) . '-'
+            . substr($fuzz, 20, 12)
+            . '}';
     }
 
     /**
@@ -4058,5 +4058,17 @@ class Database_Static_xml extends DatabaseDriver
     protected function _unescape_name($in)
     {
         return str_replace(array('!equals!', '!colon!', '!comma!', '!slash!', '!pipe!'), array('=', ':', ',', '/', '|'), $in);
+    }
+
+    /**
+     * Clear caching for a particular table, as it has changed.
+     *
+     * @param  string $table_name The table name
+     */
+    protected function _clear_caching_for($table_name)
+    {
+        global $DIR_CONTENTS_CACHE;
+        unset($DIR_CONTENTS_CACHE[$table_name]);
+        //clearstatcache(); Not needed, glob does not use this
     }
 }

@@ -26,16 +26,13 @@ class filter_xml_test_set extends cms_test_case
 
         require_code('files');
         require_code('csrf_filter');
-
-        if (get_db_type() == 'xml') {
-            $this->assertTrue(false, 'Cannot run with XML database driver, too slow');
-        }
     }
 
     public function testNonFilter()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testNonFilter')) {
+            return;
         }
 
         $test_xml = '
@@ -70,8 +67,9 @@ class filter_xml_test_set extends cms_test_case
 
     public function testFilter()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testFilter')) {
+            return;
         }
 
         $guest_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
@@ -109,8 +107,9 @@ class filter_xml_test_set extends cms_test_case
 
     public function testNonQualify()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testNonQualify')) {
+            return;
         }
 
         $test_xml = '
@@ -143,8 +142,9 @@ class filter_xml_test_set extends cms_test_case
 
     public function testQualify()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testQualify')) {
+            return;
         }
 
         $test_xml = '
@@ -177,8 +177,9 @@ class filter_xml_test_set extends cms_test_case
 
     public function testRemoveShout()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testRemoveShout')) {
+            return;
         }
 
         $test_xml = '
@@ -206,17 +207,22 @@ class filter_xml_test_set extends cms_test_case
 
         $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
 
+        if (get_db_type() == 'xml') {
+            sleep(1); // Need different timestamps because IDs are randomised
+        }
         $result = http_get_contents($url->evaluate(), array('post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
+        $this->assertTrue($result !== null);
 
-        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY id DESC', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY date_and_time DESC, id DESC', 1);
         $row = $rows[0];
         $this->assertTrue(get_translated_text($row['title']) == 'Example' . $rnd);
     }
 
     public function testSentenceCase()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testSentenceCase')) {
+            return;
         }
 
         $test_xml = '
@@ -243,17 +249,22 @@ class filter_xml_test_set extends cms_test_case
 
         $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
 
+        if (get_db_type() == 'xml') {
+            sleep(1); // Need different timestamps because IDs are randomised
+        }
         $result = http_get_contents($url->evaluate(), array('post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
+        $this->assertTrue($result !== null);
 
-        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY id DESC', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY date_and_time DESC, id DESC'/*, 1*/);
         $row = $rows[0];
         $this->assertTrue(get_translated_text($row['title']) == 'This is a test');
     }
 
     public function testTitleCase()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testTitleCase')) {
+            return;
         }
 
         $test_xml = '
@@ -280,17 +291,22 @@ class filter_xml_test_set extends cms_test_case
 
         $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
 
+        if (get_db_type() == 'xml') {
+            sleep(1); // Need different timestamps because IDs are randomised
+        }
         $result = http_get_contents($url->evaluate(), array('post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
+        $this->assertTrue($result !== null);
 
-        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY id DESC', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY date_and_time DESC, id DESC', 1);
         $row = $rows[0];
         $this->assertTrue(get_translated_text($row['title']) == 'This Is A Test');
     }
 
     public function testAppend()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testAppend')) {
+            return;
         }
 
         $test_xml = '
@@ -318,17 +334,22 @@ class filter_xml_test_set extends cms_test_case
 
         $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
 
+        if (get_db_type() == 'xml') {
+            sleep(1); // Need different timestamps because IDs are randomised
+        }
         $result = http_get_contents($url->evaluate(), array('post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
+        $this->assertTrue($result !== null);
 
-        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY id DESC', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY date_and_time DESC, id DESC', 1);
         $row = $rows[0];
         $this->assertTrue(get_translated_text($row['title']) == 'foobarEXAMPLEfoobar');
     }
 
     public function testReplace()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testReplace')) {
+            return;
         }
 
         $test_xml = '
@@ -355,17 +376,22 @@ class filter_xml_test_set extends cms_test_case
 
         $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
 
+        if (get_db_type() == 'xml') {
+            sleep(1); // Need different timestamps because IDs are randomised
+        }
         $result = http_get_contents($url->evaluate(), array('post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
+        $this->assertTrue($result !== null);
 
-        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY id DESC', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY date_and_time DESC, id DESC', 1);
         $row = $rows[0];
         $this->assertTrue(get_translated_text($row['title']) == 'foobar');
     }
 
     public function testDeepClean()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testDeepClean')) {
+            return;
         }
 
         $test_xml = '
@@ -392,17 +418,22 @@ class filter_xml_test_set extends cms_test_case
 
         $url = build_url(array('page' => 'cms_news', 'type' => '_add', 'keep_fatalistic' => 1), 'cms');
 
+        if (get_db_type() == 'xml') {
+            sleep(1); // Need different timestamps because IDs are randomised
+        }
         $result = http_get_contents($url->evaluate(), array('post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
+        $this->assertTrue($result !== null);
 
-        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY id DESC', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY date_and_time DESC, id DESC', 1);
         $row = $rows[0];
         $this->assertTrue(get_translated_text($row['title']) == 'blah');
     }
 
     public function testDefaultFields()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testDefaultFields')) {
+            return;
         }
 
         $test_xml = '
@@ -429,15 +460,20 @@ class filter_xml_test_set extends cms_test_case
 
         $url = build_url(array('page' => 'cms_news', 'type' => 'add', 'keep_fatalistic' => 1), 'cms');
 
+        if (get_db_type() == 'xml') {
+            sleep(1); // Need different timestamps because IDs are randomised
+        }
         $result = http_get_contents($url->evaluate(), array('post_params' => $post, 'cookies' => array(get_session_cookie() => get_session_id())));
+        $this->assertTrue($result !== null);
 
         $this->assertTrue(substr_count($result, ' value="foobar"') == 1);
     }
 
     public function testMinLength()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testMinLength')) {
+            return;
         }
 
         $test_xml = '
@@ -482,8 +518,9 @@ class filter_xml_test_set extends cms_test_case
 
     public function testPossibilitySet()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testPossibilitySet')) {
+            return;
         }
 
         $test_xml = '
@@ -525,8 +562,9 @@ class filter_xml_test_set extends cms_test_case
 
     public function testDisallowedWord()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testDisallowedWord')) {
+            return;
         }
 
         $test_xml = '
@@ -568,8 +606,9 @@ class filter_xml_test_set extends cms_test_case
 
     public function testDisallowedSubstring()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testDisallowedSubstring')) {
+            return;
         }
 
         $test_xml = '
@@ -612,8 +651,9 @@ class filter_xml_test_set extends cms_test_case
 
     public function testShun()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testShun')) {
+            return;
         }
 
         $test_xml = '
@@ -655,8 +695,9 @@ class filter_xml_test_set extends cms_test_case
 
     public function testPattern()
     {
-        if (get_db_type() == 'xml') {
-            return; // Too slow
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testPattern')) {
+            return;
         }
 
         $test_xml = '
