@@ -2112,24 +2112,24 @@
         cleanMenus();
 
         var left = 0,
-            top = 0,
-            parentEl = popupEl.parentElement;
-
+            top = 0;
+        
         // Our own position computation as we are positioning relatively, as things expand out
-        if ($dom.isCss(parentEl.parentElement, 'position', 'absolute')) {
-            left += parentEl.offsetLeft;
-            top += parentEl.offsetTop;
+        if ($dom.isCss(popupEl.parentElement.parentElement, 'position', 'absolute')) {
+            left += popupEl.parentElement.offsetLeft;
+            top += popupEl.parentElement.offsetTop;
         } else {
-            while (parentEl) {
-                if (parentEl && $dom.isCss(parentEl, 'position', 'relative')) {
+            var  offsetParent = popupEl.parentElement;
+            while (offsetParent) {
+                if (offsetParent && $dom.isCss(offsetParent, 'position', 'relative')) {
                     break;
                 }
 
-                left += parentEl.offsetLeft;
-                top += parentEl.offsetTop - (parseInt(parentEl.style.borderTop) || 0);
-                parentEl = parentEl.offsetParent;
+                left += offsetParent.offsetLeft;
+                top += offsetParent.offsetTop - (parseInt(offsetParent.style.borderTop) || 0);
+                offsetParent = offsetParent.offsetParent;
 
-                if (parentEl && $dom.isCss(parentEl, 'position', 'absolute')) {
+                if (offsetParent && $dom.isCss(offsetParent, 'position', 'absolute')) {
                     break;
                 }
             }
@@ -2155,9 +2155,20 @@
         }
 
         var eParentWidth = popupEl.parentElement.offsetWidth;
-        popupEl.style.minWidth = eParentWidth + 'px';
         var eParentHeight = popupEl.parentElement.offsetHeight;
         var eWidth = popupEl.offsetWidth;
+
+        popupEl.style.minWidth = eParentWidth + 'px';
+        
+        positionLeft();
+        setTimeout(positionLeft, 0);
+        positionTop();
+        setTimeout(positionTop, 0);
+        
+        popupEl.style.zIndex = 200;
+
+        recreateCleanTimeout();
+
         function positionLeft() {
             var posLeft = left;
             if (place === 'below') { // Top-level of drop-down
@@ -2165,14 +2176,13 @@
                     posLeft += eParentWidth - eWidth;
                 }
             } else { // NB: For non-below, we can't assume 'left' is absolute, as it is actually relative to parent node which is itself positioned
-                if ($dom.findPosX(popupEl.parentNode, true) + eWidth + eParentWidth + 10 > fullWidth) {
+                if (($dom.findPosX(popupEl.parentNode, true) + eWidth + eParentWidth + 10) > fullWidth) {
                     posLeft -= eWidth + eParentWidth;
                 }
             }
             popupEl.style.left = posLeft + 'px';
         }
-        positionLeft();
-        setTimeout(positionLeft, 0);
+        
         function positionTop() {
             var posTop = top;
             if (posTop + popupEl.offsetHeight + 10 > fullHeight) {
@@ -2183,11 +2193,6 @@
             }
             popupEl.style.top = posTop + 'px';
         }
-        positionTop();
-        setTimeout(positionTop, 0);
-        popupEl.style.zIndex = 200;
-
-        recreateCleanTimeout();
     }
 
     function cleanMenus() {
