@@ -66,7 +66,7 @@ Steps:
 [*] resolve file integrity issues
  - if you have made any Composr overrides in place you may need to change these overrides to be consistent with Composr's latest structure; or if the overrides came from addons, you may need to overwrite the addon(s) with a newer version
  - the above guidance applies to totally new code also, such as new modules from non-bundled addons
- - resolving any conflicts with templates, as necessary (for example, if there was a change in the verbatim version of a template, and the upgraded website had also changed that template, then changes might [depending on importance] need to be incorporated manually
+ - resolving any conflicts with templates, as necessary (for example, if there was a change in the verbatim version of a template, and the upgraded website had also changed that template, then changes might [depending on importance] need to be incorporated manually)
  - removing any files from previous versions of Composr that are no longer required
  - removing any files relating to bundled addons that you have previously uninstalled
 [*] upgrading your database; this is the most key step, which upgrades all modules and blocks, as well as doing some cross-system updates, and updating Conversr -- if any errors happen they'll be displayed and you should note them down and report them, but Composr will generally try and continue anyway if there are minor errors happening

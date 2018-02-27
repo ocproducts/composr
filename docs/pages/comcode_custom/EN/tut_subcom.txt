@@ -3,7 +3,7 @@
 Composr is designed to be able to support large websites, and a common features of the largest sites is to have subsites and/or subcommunities within the larger website. There are a number of features in Composr to support this, including:
  - [b]Zones[/b] (different zones may be created for each subsite, located under a URL beneath the main site, with their own set of pages)
  - [b]Redirects[/b] (using redirects, common modules, such as the download module, may be made to appear as if they are running from individual zones)
- - [b]Categories, and virtual roots[/b] (using a combination of separate categories [and sub-branches there-of] for different subsites, and the 'virtual root' system, it can be made to appear that each subsite has their own catalogue/download/gallery
+ - [b]Categories, and virtual roots[/b] (using a combination of separate categories [and sub-branches there-of] for different subsites, and the 'virtual root' system, it can be made to appear that each subsite has their own catalogue/download/gallery)
  - [b]Comcode pages, Chatrooms, Polls[/b] (all these support individual creating and referencing, such that different instances can be presented to different subcommunities)
  - [b]Banners, Calendar[/b] (all these support category based referencing such that a division between subcommunity interests can be created)
  - [b]Sub-forums[/b] (different communities can be given their own branch of the discussion forums, with the [concept]Conversr[/concept] 'Clubs' feature providing special support for this)
