@@ -224,7 +224,7 @@ class _resource_fs_test_set extends cms_test_case
 
                 if (strpos($path, '/') !== false) {
                     $_path = dirname($path);
-                    $result = $ob->folder_delete(basename($_path), (strpos($_path, '/') === false) ? '' : dirname($_path));
+                    $result = $ob->folder_delete(basename($_path), dirname($_path));
                     $this->assertTrue($result !== false, 'Failed to folder_delete ' . $commandr_fs_hook);
                 }
             }

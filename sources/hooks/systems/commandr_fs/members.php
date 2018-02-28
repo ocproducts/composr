@@ -74,15 +74,15 @@ class Hook_commandr_fs_members
         $listing = array();
         if (count($meta_dir) < 1) {
             // We're listing the users
-            $cnt = $GLOBALS['SITE_DB']->query_select_value('f_members', 'COUNT(*)');
+            $cnt = $GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)');
             if ($cnt > 1000) {
                 return false; // Too much to process
             }
 
-            $users = $GLOBALS['SITE_DB']->query_select('f_members', array('id', 'm_username', 'm_join_time'));
+            $users = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_username', 'm_join_time'));
             foreach ($users as $user) {
                 $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($user['id'])) . ' AND  (' . db_string_equal_to('the_type', 'EDIT_EDIT_MEMBER_PROFILE') . ')';
-                $modification_time = $GLOBALS['SITE_DB']->query_value_if_there($query);
+                $modification_time = $GLOBALS['FORUM_DB']->query_value_if_there($query);
                 if (is_null($modification_time)) {
                     $modification_time = $user['m_join_time'];
                 }
@@ -97,7 +97,7 @@ class Hook_commandr_fs_members
         } elseif (count($meta_dir) == 1) {
             // We're listing the profile fields and custom profile fields of the specified member
             $username = $meta_dir[0];
-            $_member_data = $GLOBALS['SITE_DB']->query_select('f_members', array('*'), array('m_username' => $username), '', 1);
+            $_member_data = $GLOBALS['FORUM_DB']->query_select('f_members', array('*'), array('m_username' => $username), '', 1);
             if (!array_key_exists(0, $_member_data)) {
                 return false;
             }
@@ -108,7 +108,7 @@ class Hook_commandr_fs_members
                 $listing[] = array(
                     $prop,
                     COMMANDR_FS_FILE,
-                    strlen($member_data[$field]),
+                    strlen(@strval($member_data[$field])),
                     $member_data['m_join_time'],
                 );
             }
@@ -120,7 +120,7 @@ class Hook_commandr_fs_members
             );
 
             // Custom profile fields
-            $_member_custom_fields = $GLOBALS['SITE_DB']->query_select('f_member_custom_fields', array('*'), array('mf_member_id' => $member_data['id']), '', 1);
+            $_member_custom_fields = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields', array('*'), array('mf_member_id' => $member_data['id']), '', 1);
             if (!array_key_exists(0, $_member_custom_fields)) {
                 return false;
             }
@@ -133,7 +133,7 @@ class Hook_commandr_fs_members
 
                 $i = intval(substr($_i, strlen('field_')));
 
-                $_cpf_name = $GLOBALS['SITE_DB']->query_select_value_if_there('f_custom_fields', 'cf_name', array('id' => $i));
+                $_cpf_name = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'cf_name', array('id' => $i));
                 if ($_cpf_name === null) {
                     continue; // Corrupt data
                 }
@@ -300,7 +300,7 @@ class Hook_commandr_fs_members
         if (count($meta_dir) == 1) {
             // We're in a member's directory, and reading one of their profile fields
             if (array_key_exists($file_name, $this->field_mapping)) {
-                return $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', $this->field_mapping[$file_name], array('id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0])));
+                return @strval($GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', $this->field_mapping[$file_name], array('id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0]))));
             }
 
             require_code('cns_members');

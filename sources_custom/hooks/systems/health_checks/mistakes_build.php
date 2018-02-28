@@ -59,8 +59,6 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             return;
         }
 
-        // TODO: Document in maintenance spreadsheet for v11 that we have these links here
-
         $this->state_check_manual('Check [url="HTML5 validation"]https://validator.w3.org/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
         $this->state_check_manual('Check [url="CSS validation"]https://jigsaw.w3.org/css-validator/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
         $this->state_check_manual('Check [url="WCAG validation"]https://achecker.ca/checker/index.php[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');

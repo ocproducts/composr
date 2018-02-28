@@ -75,8 +75,10 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
         $info = $ob->info();
 
         $table = $info['table'];
-        if (($content_type == 'post') || ($content_type == 'topic') || ($content_type == 'member') || ($content_type == 'group') || ($content_type == 'forum')) {
-            $db = $GLOBALS['FORUM_DB'];
+        if (get_forum_type() == 'cns') {
+            if (($content_type == 'post') || ($content_type == 'topic') || ($content_type == 'member') || ($content_type == 'group') || ($content_type == 'forum')) {
+                $db = $GLOBALS['FORUM_DB'];
+            }
         }
     }
 
@@ -953,7 +955,7 @@ function filtercode_to_sql($db, $filters, $content_type = null, $context = null,
 
                 case '~':
                     require_code('database_search');
-                    if (strlen($filter_val) > get_minimum_search_length()) {
+                    if ((db_has_full_text($GLOBALS['SITE_DB']->connection_read)) && (strlen($filter_val) > get_minimum_search_length())) {
                         if ($filter_val != '') {
                             if ($alt != '') {
                                 $alt .= ' OR ';

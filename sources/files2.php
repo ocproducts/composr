@@ -1312,7 +1312,6 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 }
                                             }
                                             if (!is_null($post_params)) {
-                                                $curl_headers[] = 'Expect:';
                                                 if ($put !== null) {
                                                     fclose($put);
                                                     $put = fopen($put_path, 'rb');

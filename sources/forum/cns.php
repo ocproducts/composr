@@ -1496,7 +1496,7 @@ class Forum_driver_cns extends Forum_driver_base
         $out = array();
         $members_groups = function_exists('get_member') ? $GLOBALS['CNS_DRIVER']->get_members_groups(get_member()) : array();
         foreach ($rows as $row) {
-            $name = get_translated_text($row['g_name'], $GLOBALS['FORUM_DB']);
+            $name = get_translated_text($row['g_name'], $this->connection);
 
             if (($hide_hidden) && ($row['g_hidden'] == 1) && (!in_array($row['id'], $members_groups))) {
                 if ($skip_hidden) {
@@ -1732,7 +1732,7 @@ class Forum_driver_cns extends Forum_driver_base
 
                 if (get_page_name() != 'lost_password') {
                     if (get_db_type() != 'xml') {
-                        if (!$GLOBALS['SITE_DB']->table_is_locked('f_members')) {
+                        if (!$this->connection->table_is_locked('f_members')) {
                             $this->connection->query_update('f_members', $change_map, array('id' => $id), '', 1, null, false, true);
                         }
                     }

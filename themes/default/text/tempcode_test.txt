@@ -17,7 +17,7 @@
  World,NL2_ESCAPED}
 </p>
 <p>
-	{$ESCAPE,[html],CC_ESCAPED}
+	{$ESCAPE,[html][/html],CC_ESCAPED}
 </p>
 <p>
 	{$ESCAPE,foo=bar,UL_ESCAPED}
@@ -93,16 +93,16 @@
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>+COUNT,SIMPLE_ARRAY</td>
-		<td>{+COUNT,SIMPLE_ARRAY}</td>
+		<td>+START,COUNT,SIMPLE_ARRAY+END</td>
+		<td>{+START,COUNT,SIMPLE_ARRAY}{+END}</td>
 	</tr>
 	<tr>
-		<td>+IMPLODE, ,SIMPLE_ARRAY</td>
-		<td>{+IMPLODE, ,SIMPLE_ARRAY}</td>
+		<td>+START,IMPLODE, ,SIMPLE_ARRAY+END</td>
+		<td>{+START,IMPLODE, ,SIMPLE_ARRAY}{+END}</td>
 	</tr>
 	<tr>
-		<td>+OF,SIMPLE_ARRAY,1</td>
-		<td>{+OF,SIMPLE_ARRAY,1}</td>
+		<td>+START,OF,SIMPLE_ARRAY,1+END</td>
+		<td>{+START,OF,SIMPLE_ARRAY,1}{+END}</td>
 	</tr>
 </tbody></table>
 

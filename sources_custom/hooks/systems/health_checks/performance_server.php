@@ -66,8 +66,6 @@ class Hook_health_check_performance_server extends Hook_Health_Check
         } else {
             $this->state_check_skipped('PHP disk_free_space function not available');
         }
-
-        // TODO: In v11 remove page-load request, "Little disk space check" and it's independent notification
     }
 
     /**

@@ -46,7 +46,7 @@ class _backups_test_set extends cms_test_case
         $temp_test_dir = 'exports/backups/test';
         $temp_test_dir_full = get_custom_file_base() . '/' . $temp_test_dir;
         deldir_contents($temp_test_dir);
-        @mkdir($temp_test_dir, 0777);
+        @mkdir($temp_test_dir_full, 0777);
         tar_extract_to_folder($resource, $temp_test_dir);
         tar_close($resource);
         $success = is_file($temp_test_dir_full . '/restore.php');

@@ -50,6 +50,9 @@ function chat_poller()
         chat_null_exit();
     }
 
+    if (!file_exists(get_custom_file_base() . '/data_custom/modules/chat')) {
+        return; // Directory missing, but we will have to create it elsewhere (not booted up fully enough)
+    }
     touch(get_custom_file_base() . '/data_custom/modules/chat/chat_last_full_check.dat');
 }
 

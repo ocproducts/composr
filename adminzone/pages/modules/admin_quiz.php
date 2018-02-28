@@ -224,6 +224,9 @@ class Module_admin_quiz
     {
         $fields = new Tempcode();
         $quiz_list = $this->create_selection_list_entries();
+        if ($quiz_list->is_empty()) {
+            warn_exit(do_lang_tempcode('NO_ENTRIES', 'quiz'));
+        }
 
         $fields->attach(form_input_list(do_lang_tempcode('QUIZ'), do_lang_tempcode('DESCRIPTION_QUIZZES_EXPORT'), 'quiz_id', $quiz_list));
 

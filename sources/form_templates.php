@@ -1482,6 +1482,41 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 }
 
 /**
+ * Make a preview URL absolute and return if it is an image.
+ *
+ * @param  URLPATH $url URL
+ * @return array A pair: Modified URL, whether it is an image
+ */
+function make_previewable_url_absolute($url)
+{
+    $_url = $url;
+    $is_image = false;
+
+    if (($_url !== null) && ($_url != '')) {
+        if (url_is_local($_url)) {
+            $image_path = get_custom_file_base() . '/' . dirname(rawurldecode($_url));
+            if (!is_file($image_path)) {
+                $image_path = get_file_base() . '/' . dirname(rawurldecode($_url));
+                $custom = false;
+            } else {
+                $custom = true;
+            }
+
+            $htaccess_path = $image_path . '/.htaccess';
+            if ((is_file($htaccess_path)) && (strpos(file_get_contents($htaccess_path), 'deny from all') !== false)) {
+                return array($_url, $is_image);
+            }
+
+            require_code('images');
+            $is_image = is_image($_url, true);
+            $_url = ($custom ? get_custom_base_url() : get_base_url()) . '/' . $_url;
+        }
+    }
+
+    return array($_url, $is_image);
+}
+
+/**
  * Get the Tempcode for a file upload input.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
@@ -1509,21 +1544,9 @@ function form_input_upload($pretty_name, $description, $name, $required, $defaul
     $tabindex = get_form_field_tabindex($tabindex);
 
     $_required = ($required) ? '_required' : '';
-    $is_image = false;
-    $existing_url = '';
-    if (!is_null($default)) {
-        require_code('images');
-        $is_image = is_image($default);
-        $existing_url = $default;
-        if (url_is_local($existing_url)) {
-            $htaccess_path = get_custom_file_base() . '/' . dirname(rawurldecode($existing_url)) . '/.htaccess';
-            if ((is_file($htaccess_path)) && (strpos(file_get_contents($htaccess_path), 'deny from all') !== false)) {
-                $existing_url = '';
-            } else {
-                $existing_url = get_custom_base_url() . '/' . $existing_url;
-            }
-        }
-    }
+
+    list($existing_url, $is_image) = make_previewable_url_absolute($default);
+
     $input = do_template('FORM_SCREEN_INPUT_UPLOAD', array(
         '_GUID' => 'f493edcc5298bb32fff8635f2d316d21',
         'FILTER' => $filter,
@@ -1564,20 +1587,15 @@ function form_input_upload_multi($pretty_name, $description, $name, $required, $
 
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $_required = ($required) ? '_required' : '';
-    $is_image = false;
+    $edit = mixed();
     $existing_url = '';
     if ((!is_null($default)) && (count($default) > 0)) {
-        require_code('images');
-        $is_image = is_image($default[0]);
-        $existing_url = $default[0];
-        if (url_is_local($existing_url)) {
-            $existing_url = get_custom_base_url() . '/' . $existing_url;
-        }
-        $edit = $default;
+        list($edit, $is_image) = make_previewable_url_absolute($default[0]);
     } else {
         $edit = array();
     }
+
+    $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_UPLOAD_MULTI', array(
         '_GUID' => 'e8712ede08591604738762ac03852ac1',
         'TABINDEX' => strval($tabindex),

@@ -265,7 +265,7 @@ class Hook_health_check_email extends Hook_Health_Check
             if (strpos($_part, '/') === false) {
                 return ($self_ip == $_part);
             } else {
-                require_code('failure'); // TODO: Remove in v11
+                require_code('failure');
                 return ip_cidr_check($self_ip, $_part);
             }
         }

@@ -1285,7 +1285,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                             // Table syntax
                             if (!$differented && !$in_code_tag) {
-                                if (($pos < $len) && ($comcode[$pos] === '|')) {
+                                if (($pos < $len) && ($next == '{') && ($comcode[$pos] === '|')) {
                                     $end_tbl = strpos($comcode, "\n" . '|}', $pos);
                                     if ($end_tbl !== false) {
                                         $end_fst_line_pos = strpos($comcode, "\n", $pos);

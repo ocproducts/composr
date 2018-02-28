@@ -95,6 +95,10 @@ class Module_forums
         $access_url = get_param_string('url', $base_url . '/');
 
         foreach ($_GET as $key => $val) {
+            if ($key == 'page') {
+                continue;
+            }
+
             if (is_array($val)) {
                 foreach ($val as $_key => $_val) { // We'll only support one level deep.
                     if (get_magic_quotes_gpc()) {

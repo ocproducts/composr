@@ -474,6 +474,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
 
                                              // Prep for v11
                                              '_meta_tree' => '.*',
+                                             'temp' => '',
     );
 
     $ignore_extensions = array( // Case insensitive, define in lower case
@@ -482,7 +483,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                 'txt' => '(safe_mode_temp|imports|exports)/.*',
 
                                 // Exports/Cache files
-                                'gz' => '(themes/[^/]*/templates_cached|imports|exports)/.*',
+                                'gz' => '(themes/[^/]*/templates_cached|imports|exports|caches)/.*',
 
                                 // Cache files
                                 'lcd' => '(caches|lang_cached)/.*', // LEGACY

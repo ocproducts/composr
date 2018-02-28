@@ -53,9 +53,9 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
             return;
         }
 
-        /*  TODO Enable in v11, currently can't work
+        /*  Currently can't work
         $url = get_base_url() . '/testing-for-404.html';
-        $data = http_download_file($url, null, false); // TODO: In v11 set the parameter to return output even for 404
+        $data = http_download_file($url, null, false); // In v11 set the parameter to return output even for 404
         $this->assert_true(($data === null) || (strpos($data, '<link') !== false) || (strpos($data, '<a ') !== false), '[tt]404[/tt] status page is too basic looking, probably not helpful, suggest to display a sitemap');
         */
     }

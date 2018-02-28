@@ -74,7 +74,7 @@ function find_health_check_categories_and_sections()
 
     $categories = array();
 
-    $hooks = find_all_hooks('systems', 'health_checks'); // TODO: Fix in v11
+    $hooks = find_all_hooks('systems', 'health_checks');
     foreach (array_keys($hooks) as $hook) {
         require_code('hooks/systems/health_checks/' . filter_naughty_harsh($hook));
         $ob = object_factory('Hook_health_check_' . filter_naughty_harsh($hook));
@@ -165,7 +165,7 @@ function run_health_check(&$has_fails, $sections_to_run = null, $passes = false,
 
     $categories = array();
 
-    $hooks = find_all_hooks('systems', 'health_checks'); // TODO: Fix in v11
+    $hooks = find_all_hooks('systems', 'health_checks');
     foreach (array_keys($hooks) as $hook) {
         require_code('hooks/systems/health_checks/' . filter_naughty_harsh($hook));
         $ob = object_factory('Hook_health_check_' . filter_naughty_harsh($hook));
@@ -581,7 +581,7 @@ abstract class Hook_Health_Check
      */
     protected function call_composr_homesite_api($type, $params)
     {
-        require_code('json'); // Fix in v11
+        require_code('json');
 
         $url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/api.php?type=' . urlencode($type);
         foreach ($params as $key => $_val) {

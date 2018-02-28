@@ -56,8 +56,6 @@ class Hook_health_check_security extends Hook_Health_Check
             return;
         }
 
-        // TODO: Document use of API in maintenance spreadsheet in v11
-
         if ($use_test_data_for_pass === null) {
             $key = get_option('hc_google_safe_browsing_api_key');
         } else {
@@ -68,7 +66,7 @@ class Hook_health_check_security extends Hook_Health_Check
             return;
         }
 
-        require_code('json'); // TODO: Change in v11
+        require_code('json');
 
         if ($use_test_data_for_pass === null) {
             if ($this->is_localhost_domain()) {

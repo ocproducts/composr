@@ -32,6 +32,10 @@ class Hook_pointstore_permission
         $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_category_access WHERE active_until IS NOT NULL AND active_until<' . strval(time()));
         $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_page_access WHERE active_until IS NOT NULL AND active_until<' . strval(time()));
         $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_zone_access WHERE active_until IS NOT NULL AND active_until<' . strval(time()));
+        if ((get_forum_type() == 'cns') && (is_on_multi_site_network())) {
+            $GLOBALS['FORUM_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_privileges WHERE active_until IS NOT NULL AND active_until<' . strval(time()));
+            $GLOBALS['FORUM_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_category_access WHERE active_until IS NOT NULL AND active_until<' . strval(time()));
+        }
     }
 
     /**

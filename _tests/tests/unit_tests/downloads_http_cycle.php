@@ -48,6 +48,8 @@ class downloads_http_cycle_test_set extends cms_test_case
 
     public function testDownload()
     {
+        set_option('immediate_downloads', '0');
+
         $max_download_id = $GLOBALS['SITE_DB']->query_select_value('download_downloads', 'MAX(id)');
         $url = find_script('dload') . '?id=' . strval($max_download_id);
         $result = http_download_file($url, null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));

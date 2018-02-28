@@ -192,6 +192,7 @@ body, .email_body, textarea, input, td, th {
 tt, kbd, samp {
 	font-weight: bold;
 	font-size: 1.15em;
+	word-wrap: break-word;
 }
 
 abbr {

@@ -100,7 +100,7 @@ class _installer_test_set extends cms_test_case
         }
         foreach ($tables as $table) {
             if (substr($table['Tables_in_' . $database], 0, strlen($table_prefix)) == $table_prefix) {
-                $GLOBALS['SITE_DB']->query('DROP TABLE ' . $database . '.' . $table['Tables_in_' . $database]);
+                $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS ' . $database . '.' . $table['Tables_in_' . $database]);
             }
         }
 

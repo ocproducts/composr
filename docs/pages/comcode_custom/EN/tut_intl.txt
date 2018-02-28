@@ -123,7 +123,6 @@ However, it is useful for us to document the strings involved, and an illustrati
 | [tt]%a %e%o[/tt] (e.g. Mon 14th)
 | [tt]%a %e%o[/tt] (e.g. Mon 14th)
 |}
-[staff_note]TODO: Update for v11; verbose gone, regular name shortened[/staff_note]
 
 Non-English speaking users may want to make other changes, e.g. remove [tt]%o[/tt] so that suffixes like [tt]th[/tt] and [tt]st[/tt] aren't used.
 
@@ -511,7 +510,6 @@ If you like you can just change it to:
 }
 [/code]
 and make sure your language strings don't overrun.
-{$,TODO: Fix wide_table in v11}
 
 [title="2"]Exporting language packs[/title]
 

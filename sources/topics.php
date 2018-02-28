@@ -104,6 +104,9 @@ class CMS_Topic
         if ((get_forum_type() == 'cns') && (!addon_installed('cns_forum'))) {
             return new Tempcode();
         }
+        if (get_forum_type() == 'none') {
+            return new Tempcode();
+        }
 
         $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum_name, $content_type . '_' . $content_id, do_lang('COMMENT'));
 
@@ -248,6 +251,9 @@ class CMS_Topic
     public function render_posts_from_topic($topic_id, $num_to_show_limit, $allow_comments, $invisible_if_no_comments, $forum_name, $preloaded_comments, $reverse, $may_reply, $highlight_by_member, $allow_reviews, $posts, $parent_id)
     {
         if ((get_forum_type() == 'cns') && (!addon_installed('cns_forum'))) {
+            return new Tempcode();
+        }
+        if (get_forum_type() == 'none') {
             return new Tempcode();
         }
 

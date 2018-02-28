@@ -242,11 +242,14 @@ function fix_permissions($path, $perms = null)
  * Get the contents of a file, with locking support.
  *
  * @param  PATH $path File path.
- * @return string File contents.
+ * @return ~string File contents (false: error)
  */
 function cms_file_get_contents_safe($path)
 {
     $tmp = fopen($path, 'rb');
+    if ($tmp === false) {
+        return false;
+    }
     flock($tmp, LOCK_SH);
     $contents = file_get_contents($path);
     flock($tmp, LOCK_UN);

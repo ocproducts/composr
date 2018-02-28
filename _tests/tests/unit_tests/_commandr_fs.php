@@ -23,6 +23,7 @@ class _commandr_fs_test_set extends cms_test_case
         $GLOBALS['NO_QUERY_LIMIT'] = true;
 
         require_code('commandr_fs');
+        require_code('resource_fs');
 
         disable_php_memory_limit();
 
@@ -65,7 +66,7 @@ class _commandr_fs_test_set extends cms_test_case
         $data1 = $ob->read_file($path);
         $ob->write_file($path, $data1);
         $data2 = $ob->read_file($path);
-        $this->assertTrue($data1 == $data2, 'Inconsist banner type read/write');
+        $this->assertTrue($data1 == $data2, 'Inconsistent banner type read/write');
     }
 
     public function testVarPorting()

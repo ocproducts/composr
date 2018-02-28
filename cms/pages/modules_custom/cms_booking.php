@@ -832,7 +832,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
             $orderer = $select_field;
         }
         $table = is_null($this->table) ? $this->module_type : $this->table;
-        $db = ((substr($table, 0, 2) == 'f_') && (!$force_site_db) && (get_forum_type() != 'none')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+        $db = ((substr($table, 0, 2) == 'f_') && (!$force_site_db) && (get_forum_type() == 'cns')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
         if ($force_site_db) {
             $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
             $GLOBALS['NO_DB_SCOPE_CHECK'] = true;

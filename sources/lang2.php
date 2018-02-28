@@ -182,7 +182,7 @@ function find_lang_content_names($ids)
     $ret = array();
 
     foreach ($langidfields as $field) {
-        $db = $GLOBALS[((substr($field['m_table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB')];
+        $db = $GLOBALS[(((substr($field['m_table'], 0, 2) == 'f_') && ($field['m_table'] != 'f_welcome_emails') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB')];
         if (is_null($db)) {
             continue; // None forum driver
         }

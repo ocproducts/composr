@@ -26,9 +26,9 @@ class closed_file_test_set extends cms_test_case
         sync_file($path);
 
         $url = static_evaluate_tempcode(build_url(array('page' =>''), ''));
-        $result = http_download_file($url); // TODO: Change in v11
+        $result = http_download_file($url);
 
-        global $HTTP_DOWNLOAD_URL; // TODO: Change in v11
+        global $HTTP_DOWNLOAD_URL;
         $this->assertTrue($HTTP_DOWNLOAD_URL == get_base_url() . '/closed.html');
 
         unlink($path);

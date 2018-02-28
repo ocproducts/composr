@@ -5218,6 +5218,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MODULES
         MODULE_MANAGEMENT
         MODULE_TRANS_NAME_admin
+        MODULE_TRANS_NAME_admin_shopping
         MODULE_TRANS_NAME_admin_actionlog
         MODULE_TRANS_NAME_admin_addons
         MODULE_TRANS_NAME_admin_awards

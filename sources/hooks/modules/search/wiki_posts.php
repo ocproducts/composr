@@ -179,7 +179,7 @@ class Hook_search_wiki_posts extends FieldsSearchHook
     {
         global $SEARCH__CONTENT_BITS, $LAX_COMCODE;
         $highlight_bits = ($SEARCH__CONTENT_BITS === null) ? array() : $SEARCH__CONTENT_BITS;
-        $LAX_COMCODE = true; // TODO: Fix in v11
+        $LAX_COMCODE = true;
         $summary = get_translated_text($row['the_message']);
         $text_summary_h = comcode_to_tempcode($summary, null, false, null, null, null, false, false, false, false, false, $highlight_bits);
         $LAX_COMCODE = false;

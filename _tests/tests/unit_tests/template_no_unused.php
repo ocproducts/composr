@@ -32,6 +32,8 @@ class template_no_unused_test_set extends cms_test_case
         }
 
         $exceptions = array(
+            'BLOCK_MAIN_MEMBERS',
+            'BLOCK_MAIN_MEMBERS_COMPLEX',
             'PASSWORD_CHECK_JS',
             'AJAX_PAGINATION',
             'BLOCK_SIDE_GALLERIES_LINE',

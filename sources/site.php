@@ -108,7 +108,8 @@ function init__site()
         exit();
     }
 
-    if (running_script('index')) {
+    $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
+    if ((running_script('index')) && (!$cli)) {
         $access_host = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
 
         // Detect bad access domain
@@ -1097,9 +1098,9 @@ function save_static_caching($out, $mime_type = 'text/html')
                         $url_stem = str_replace(get_base_url(false) . '/', '', $url_stem);
                         if (preg_match('#^' . $SITE_INFO['failover_apache_rewritemap_file'] . '$#', $url_stem) != 0) {
                             if (is_mobile()) {
-                                $rewritemap_file = get_file_base() . '/data_custom/failover_rewritemap__mobile.txt';
+                                $rewritemap_file = get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt';
                             } else {
-                                $rewritemap_file = get_file_base() . '/data_custom/failover_rewritemap.txt';
+                                $rewritemap_file = get_custom_file_base() . '/data_custom/failover_rewritemap.txt';
                             }
                             $rewritemap_file_contents = cms_file_get_contents_safe($rewritemap_file);
                             if (strpos($rewritemap_file_contents, "\n" . $url_stem . ' ') === false) {

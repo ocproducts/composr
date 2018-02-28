@@ -280,7 +280,6 @@ If the "Extended privacy option control" option is enabled then it can be set in
 [title="2"]Usergroups[/title]
 
 Usergroups (and clubs) are covered in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities tutorial[/page].
-[/surround]
 
 [title="2"]Last visit dates[/title]
 

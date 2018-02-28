@@ -39,7 +39,7 @@ Regardless of display mode, the user can choose any of the available entries (im
 
 Galleries are viewed from the [tt]galleries[/tt] module ([tt]site:galleries[/tt] page-link, Content > Galleries home on the default menus).
 
-[title="3"More about gallery display modes[/title]
+[title="3"]More about gallery display modes[/title]
 
 You can lock-down the gallery display mode choice for new galleries using the "Gallery display mode" config option. Existing galleries will only allow the display mode to be changed if it is not already matching the value of this option (i.e. you keep your pre-existing gallery settings, but if you then change a gallery to be the same as the locked-down value then it will then also lock-down).
 If the choice is not locked-down then the default will be whatever is the current most common display mode used on your site.

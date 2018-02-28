@@ -401,8 +401,8 @@ function dev__ipn_debug($ipn_target, $ipn_message)
  */
 function handle_transaction_script()
 {
-    if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (is_writable_wrap(get_file_base() . '/data_custom/ecommerce.log'))) {
-        $myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'at');
+    if ((file_exists(get_custom_file_base() . '/data_custom/ecommerce.log')) && (is_writable_wrap(get_custom_file_base() . '/data_custom/ecommerce.log'))) {
+        $myfile = fopen(get_custom_file_base() . '/data_custom/ecommerce.log', 'at');
         flock($myfile, LOCK_EX);
         fseek($myfile, 0, SEEK_END);
         fwrite($myfile, serialize($_POST) . "\n");

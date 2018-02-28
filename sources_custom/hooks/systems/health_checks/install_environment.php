@@ -13,8 +13,6 @@
  * @package    health_check
  */
 
-// TODO: This will be removed in v11 with the checks hooks directly absorbing into the Health Check system
-
 /**
  * Hook class.
  */

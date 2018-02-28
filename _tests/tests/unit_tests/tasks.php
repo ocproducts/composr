@@ -33,7 +33,7 @@ class tasks_test_set extends cms_test_case
 
         require_code('hooks/systems/tasks/import_newsletter_subscribers');
         $ob_import = new Hook_task_import_newsletter_subscribers();
-        $ob_import->run(fallback_lang(), db_get_first_id(), 1, $tmp_path); // TODO: Remove '1' in v11
+        $ob_import->run(fallback_lang(), db_get_first_id(), 1, $tmp_path);
 
         $this->establish_admin_session();
         $url = build_url(array('page' => 'admin_newsletter', 'type' => 'subscribers', 'id' => db_get_first_id(), 'lang' => fallback_lang(), 'csv' => 1), 'adminzone');
@@ -41,7 +41,7 @@ class tasks_test_set extends cms_test_case
         $this->assertTrue(strpos($data, 'test@example.com') !== false);
 
         file_put_contents($tmp_path, $data);
-        $ob_import->run(fallback_lang(), db_get_first_id(), 1, $tmp_path); // TODO: Remove '1' in v11
+        $ob_import->run(fallback_lang(), db_get_first_id(), 1, $tmp_path);
     }
 
     public function testCatalogueCSV()
@@ -52,14 +52,14 @@ class tasks_test_set extends cms_test_case
 
         require_code('hooks/systems/tasks/import_catalogue');
         $ob_import = new Hook_task_import_catalogue();
-        $ob_import->run('links', 'Title', 'add', 'leave', 'skip', '', '', '', 1, 1, 1, $tmp_path);
+        $ob_import->run('links', 'Title', 'add', 'leave', 'skip', '', '', '', true, true, true, $tmp_path);
 
         require_code('hooks/systems/tasks/export_catalogue');
         $ob_export = new Hook_task_export_catalogue();
         $results = $ob_export->run('links');
         $this->assertTrue(strpos(cms_file_get_contents_safe($results[1][1]), 'TestingABC') !== false);
 
-        $ob_import->run('links', 'Title', 'add', 'leave', 'skip', '', '', '', 1, 1, 1, $results[1][1]);
+        $ob_import->run('links', 'Title', 'add', 'leave', 'skip', '', '', '', true, true, true, $results[1][1]);
     }
 
     public function testCalendarICal()
@@ -84,12 +84,32 @@ class tasks_test_set extends cms_test_case
         $temp_path = cms_tempnam();
         file_put_contents($temp_path, $ical);
 
-        $post_params = array(
-            'snip' => $ical,
-        );
-        $result = http_download_file('http://severinghaus.org/projects/icv/', null, true, false, 'Composr', $post_params);
+        /* Not working, saying page expired :(
+        $result = http_download_file('https://ical-validator.herokuapp.com/validate/');
+        if ($result !== null) {
+            $post_params = array('snippet' => $ical, 'Validate' => '');
 
-        $this->assertTrue(strpos($result, 'Congratulations; your calendar validated!') !== false);
+            $matches = array();
+            preg_match('#<form [^<>]*method="post" action="([^"]*snippetForm[^"]*)"#', $result, $matches);
+            $rel_url = $matches[1];
+            $url = qualify_url(html_entity_decode($rel_url, ENT_QUOTES), 'https://ical-validator.herokuapp.com/validate/');
+
+            preg_match('#jsessionid=(\w+)#', $result, $matches);
+            $session_id = $matches[1];
+            $cookies = array('JSESSIONID' => $session_id);
+
+            $result = http_download_file($url, null, true, false, 'Composr', $post_params, $cookies);
+            if ($debugging) {
+                @var_dump($url);
+                @var_dump($result);
+                exit();
+            }
+        }
+        if ($result === null) {
+            $this->assertTrue(false, 'ical validator is down?');
+        } else {
+            $this->assertTrue((strpos($result, '1 results in 1 components') !== false) && (strpos($result, 'CRLF should be used for newlines') !== false));
+        }*/
 
         delete_calendar_event($complex_event_id);
         delete_calendar_event($simple_event_id);
@@ -105,6 +125,10 @@ class tasks_test_set extends cms_test_case
         $this->cleanEventRowsForComparison($last_rows_after);
 
         $this->assertTrue($last_rows_before == $last_rows_after);
+
+        foreach ($_last_rows_after as $row) {
+            delete_calendar_event($row['id']);
+        }
 
         unlink($temp_path);
     }

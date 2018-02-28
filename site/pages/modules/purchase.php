@@ -117,7 +117,7 @@ class Module_purchase
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'item', 'SHORT_TEXT', 't_type_code');
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'pending_reason', 'SHORT_TEXT', 't_pending_reason');
 
-            $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
+            $GLOBALS['SITE_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
 
             $GLOBALS['SITE_DB']->alter_table_field('trans_expecting', 'e_session_id', 'ID_TEXT');
         }

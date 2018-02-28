@@ -22,7 +22,7 @@ class addon_guards_test_set extends cms_test_case
     {
         $files_in_addons = array();
 
-        $addons = find_all_hooks('systems', 'addon_registry'); // TODO: Fix in v11
+        $addons = find_all_hooks('systems', 'addon_registry');
         foreach (array_keys($addons) as $addon) {
             require_code('hooks/systems/addon_registry/' . $addon);
             $ob = object_factory('Hook_addon_registry_' . $addon);

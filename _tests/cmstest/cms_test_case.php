@@ -79,6 +79,10 @@ class cms_test_case extends WebTestCase
 
     public function establish_admin_session()
     {
+        if (get_ip_address() == '') { // Running from CLI
+            $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+        }
+
         global $MEMBER_CACHED;
         require_code('users_active_actions');
         $MEMBER_CACHED = restricted_manually_enabled_backdoor();

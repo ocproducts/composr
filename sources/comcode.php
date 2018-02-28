@@ -117,7 +117,8 @@ function html_to_comcode($html, $force = true)
 
     // Do it
     require_code('comcode_from_html');
-    return semihtml_to_comcode($html, $force);
+    $ret = semihtml_to_comcode($html, $force);
+    return $ret;
 }
 
 /**

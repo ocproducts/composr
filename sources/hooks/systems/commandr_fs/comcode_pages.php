@@ -38,7 +38,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     {
         switch ($resource_type) {
             case 'comcode_page':
-                return $GLOBALS['SITE_DB']->query_select_value('comcode_pages p JOIN ' . get_table_prefix() . 'zones z ON p.the_zone=z.zone_name', 'COUNT(*)'); // Extra joining just because things are liable to accidentally become inconsistent for zones&pages (due to their partial on-disk nature)
+                 return $GLOBALS['SITE_DB']->query_select_value('comcode_pages p JOIN ' . get_table_prefix() . 'zones z ON (p.the_zone=z.zone_name OR ' . db_string_equal_to('p.the_zone', 'zone') . ' AND ' . db_string_equal_to('z.zone_name', '') . ')', 'COUNT(*)'); // Extra joining just because things are liable to accidentally become inconsistent for zones&pages (due to their partial on-disk nature)
 
             case 'zone':
                 return $GLOBALS['SITE_DB']->query_select_value('zones', 'COUNT(*)');
@@ -228,7 +228,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
 
-        require_code('zones2');
+        require_code('zones3');
 
         actual_delete_zone($resource_id, true, true);
 
@@ -432,6 +432,10 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     public function file_delete($filename, $path)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
+
+        if (strpos($resource_id, ':') === false) {
+            return false;
+        }
 
         require_code('zones3');
         list($zone, $page) = explode(':', $resource_id, 2);

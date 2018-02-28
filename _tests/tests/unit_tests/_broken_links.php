@@ -127,6 +127,12 @@ class _broken_links_test_set extends cms_test_case
         if (empty($url)) {
             return;
         }
+        if (preg_match('#^http://www\.stumbleupon\.com/submit\?url=#', $url) != 0) {
+            return;
+        }
+        if (preg_match('#^http://digg\.com/submit\?phase=2&url=#', $url) != 0) {
+            return;
+        }
         if (preg_match('#^http://december.com/html/4/element/#', $url) != 0) {
             return;
         }
@@ -136,10 +142,15 @@ class _broken_links_test_set extends cms_test_case
         if (preg_match('#^http://compo.sr/docs10/#', $url) != 0) {
             return;
         }
-        if (in_array($url, array('https://cloud.google.com/console', 'https://console.developers.google.com/project', 'https://itouchmap.com/latlong.html'))) {
+        if (in_array($url, array('https://cloud.google.com/console', 'https://www.google.com/webmasters/tools/home', 'https://console.developers.google.com/project', 'https://itouchmap.com/latlong.html', 'https://www.techsmith.com/jing-tool.html'))) {
             return;
         }
 
-        $this->assertTrue(check_url_exists($url, 60 * 60 * 24 * 100), 'Broken URL: ' . str_replace('%', '%%', $url));
+        $exists = check_url_exists($url, 60 * 60 * 24 * 100);
+        if (!$exists) {
+            $exists = check_url_exists($url, 0); // Re-try without caching, maybe we fixed a scanner bug or it's erratic
+        }
+
+        $this->assertTrue($exists, 'Broken URL: ' . str_replace('%', '%%', $url));
     }
 }

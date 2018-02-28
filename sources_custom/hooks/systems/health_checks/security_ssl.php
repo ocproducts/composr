@@ -58,8 +58,6 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
             return;
         }
 
-        // TODO: Document in maintenance spreadsheet for v11 that we have these links here
-
         $this->state_check_manual('Check for [url="SSL security issues"]https://www.ssllabs.com/ssltest/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
     }
 

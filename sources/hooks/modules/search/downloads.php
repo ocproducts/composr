@@ -199,7 +199,7 @@ class Hook_search_downloads extends FieldsSearchHook
             $text_summary = generate_text_summary($_text_summary, $highlight_bits);
         } else {
             $_text_summary = get_translated_text($row['description']);
-            $LAX_COMCODE = true; // TODO: Fix in v11
+            $LAX_COMCODE = true;
             $text_summary_h = comcode_to_tempcode($_text_summary, null, false, null, null, null, false, false, false, false, false, $highlight_bits);
             $LAX_COMCODE = false;
             $text_summary = generate_text_summary($text_summary_h->evaluate(), $highlight_bits);

@@ -53,8 +53,8 @@ function init__global2()
     }
 
     // Closed site message
-    if ((is_file('closed.html')) && (get_param_integer('keep_force_open', 0) == 0)) {
-        if ((strpos($_SERVER['SCRIPT_NAME'], 'upgrader.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], 'execute_temp.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], '_tests') === false) && ((!isset($SITE_INFO['no_extra_closed_file'])) || ($SITE_INFO['no_extra_closed_file'] == '0'))) {
+    if ((is_file(get_file_base() . '/closed.html')) && (get_param_integer('keep_force_open', 0) == 0)) {
+        if ((strpos($_SERVER['SCRIPT_NAME'], 'upgrader.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], 'execute_temp.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], '_tests') === false) && ((!isset($SITE_INFO['no_extra_closed_file'])) || ($SITE_INFO['no_extra_closed_file'] != '1'))) {
             if ((@strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false)) {
                 header('HTTP/1.0 503 Service Temporarily Unavailable');
             }
@@ -579,13 +579,13 @@ function fixup_bad_php_env_vars()
             $_SERVER['REQUEST_URI'] = $_SERVER['REDIRECT_URL'];
             if (strpos($_SERVER['REQUEST_URI'], '?') === false) {
                 if (count($_GET) != 0) {
-                    $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET); // Messy as rewrite URL-embedded parameters will be doubled, but if you've got a broken server don't push it to do rewrites
+                    $_SERVER['REQUEST_URI'] .= '?' . str_replace('/', '%2F', http_build_query($_GET)); // Messy as rewrite URL-embedded parameters will be doubled, but if you've got a broken server don't push it to do rewrites
                 }
             }
         } else {
             $_SERVER['REQUEST_URI'] = $php_self; // Same as PHP_SELF, but...
             if (count($_GET) != 0) { // add in query string data if we have it
-                $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET);
+                $_SERVER['REQUEST_URI'] .= '?' . str_replace('/', '%2F', http_build_query($_GET));
             }
 
             // ^ NB: May be slight deviation. Default directory index files not considered, i.e. index.php may have been omitted in URL
@@ -593,7 +593,7 @@ function fixup_bad_php_env_vars()
     }
 
     if ((empty($_SERVER['QUERY_STRING'])) && (empty($_ENV['QUERY_STRING']))) {
-        $_SERVER['QUERY_STRING'] = http_build_query($_GET);
+        $_SERVER['QUERY_STRING'] = str_replace('/', '%2F', http_build_query($_GET));
     }
 }
 
@@ -606,7 +606,7 @@ function monitor_slow_urls()
     if ($time > intval(get_value('monitor_slow_urls'))) {
         require_code('urls');
         if (php_function_allowed('error_log')) {
-            error_log('Over time limit @ ' . get_self_url_easy(true) . "\t" . strval($time) . 'secs' . "\t" . date('Y-m-d H:i:s', time()), 0);
+            error_log('Over time limit @ ' . get_self_url_easy(true) . "\t" . strval($time) . ' secs' . "\t" . date('Y-m-d H:i:s', time()), 0);
         }
     }
 }
