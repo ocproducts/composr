@@ -1887,7 +1887,10 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .box .toggleable-tray-button img {
 	margin-right: 0.5em;
 }
-.toggleable-tray-button img, .box .toggleable-tray-title .toggleable-tray-button img {
+.toggleable-tray-button img {
+	width: 24px;
+}
+.box .toggleable-tray-title .toggleable-tray-button img {
 	width: 20px;
 }
 h3 .toggleable-tray-button img {
@@ -3931,7 +3934,9 @@ NB: Form buttons are wrapped in either:
 .buttons-group .admin--wiki-edit-tree, 
 .buttons-group .admin--merge, 
 .buttons-group .admin--move {
-	background-color: {$GET,red_highlight_background};
+	background-color: {$GET,required_background};
+	color: {$GET,slightly_seeded_text} !important;
+	text-shadow: none !important;
 	border-color: {$GET,red_highlight_text};
 }
 

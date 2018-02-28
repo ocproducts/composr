@@ -1257,7 +1257,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                             }
 
                             // Shortcut lookahead
-                            if (!$differented && !$in_code_tag) {
+                            if (!$differented && !$in_code_tag && !$in_semihtml) {
                                 if (($in_semihtml) && ($next === '-') && (substr($comcode, $pos - 1, 3) === '-->')) { // To stop shortcut interpretation
                                     $continuation .= '-->';
                                     $pos += 2;

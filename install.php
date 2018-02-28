@@ -2652,23 +2652,15 @@ function handle_self_referencing_embedment()
                 exit();
 
             case 'contract':
-                header('Content-type: image/svg+xml');
-                if (!file_exists(get_file_base() . '/themes/default/images/icons/trays/contract.svg')) {
-                    $out = file_array_get('themes/default/images/icons/trays/contract.svg');
-                    echo $out;
-                } else {
-                    print(file_get_contents(get_file_base() . '/themes/default/images/icons/trays/contract.svg'));
-                    exit();
-                }
-                exit();
-
             case 'expand':
+            case 'contract2':
+            case 'expand2':
                 header('Content-type: image/svg+xml');
-                if (!file_exists(get_file_base() . '/themes/default/images/icons/trays/expand.svg')) {
-                    $out = file_array_get('themes/default/images/icons/trays/expand.svg');
+                if (!file_exists(get_file_base() . '/themes/default/images/icons/trays/' . $type . '.svg')) {
+                    $out = file_array_get('themes/default/images/icons/trays/' . $type . '.svg');
                     echo $out;
                 } else {
-                    print(file_get_contents(get_file_base() . '/themes/default/images/icons/trays/expand.svg'));
+                    print(file_get_contents(get_file_base() . '/themes/default/images/icons/trays/' . $type . '.svg'));
                     exit();
                 }
                 exit();

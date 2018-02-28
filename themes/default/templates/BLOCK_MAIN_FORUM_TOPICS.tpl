@@ -1,6 +1,6 @@
 <section id="tray-{TITLE|}" data-toggleable-tray="{ save: true }" class="box box---block-main-forum-topics">
 	<h3 class="toggleable-tray-title js-tray-header">
-		<a class="toggleable-tray-button" data-click-tray-toggle="#tray-{TITLE|}" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,icons/trays/contract2}" /></a>
+		<a class="toggleable-tray-button" data-click-tray-toggle="#tray-{TITLE|}" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,icons/trays/contract}" /></a>
 
 		{+START,IF_NON_EMPTY,{TITLE}}
 			<a class="toggleable-tray-button" data-click-tray-toggle="#tray-{TITLE|}" href="#!">{TITLE}</a>
