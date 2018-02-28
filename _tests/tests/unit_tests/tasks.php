@@ -151,7 +151,7 @@ class tasks_test_set extends cms_test_case
             */
 
             $matches = array();
-            preg_match('#<form id="id3" method="post" action="([^"]*)"#', $result, $matches);
+            preg_match('#<form [^<>]*method="post" action="([^"]*snippetForm[^"]*)"#', $result, $matches);
             $rel_url = $matches[1];
             $post_params = array('snippet' => $ical);
             $url = qualify_url(html_entity_decode($rel_url, ENT_QUOTES), 'https://ical-validator.herokuapp.com/validate/');

@@ -33,7 +33,7 @@ function set_global_category_access($module, $category)
     $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
     $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true, true);
 
-    $db = $GLOBALS[(($module == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+    $db = $GLOBALS[((($module == 'forums') || ($module == 'topics')) && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
 
     $db->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category));
 
@@ -226,7 +226,7 @@ function get_category_permissions_for_environment($module, $category, $page = nu
 
     $server_id = get_module_zone($page, 'modules', null, 'php', true, false) . ':' . $page; // $category is not of interest to us because we use this to find our inheritance settings
 
-    $db = $GLOBALS[(($module == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+    $db = $GLOBALS[((($module == 'forums') || ($module == 'topics')) && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
 
     $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
     $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, true);
@@ -472,7 +472,7 @@ function set_category_permissions_from_environment($module, $category, $page = n
     $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
     $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
 
-    $db = $GLOBALS[(($module == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+    $db = $GLOBALS[((($module == 'forums') || ($module == 'topics')) && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
 
     // Based on old access settings, we may need to look at additional groups (clubs) that have permissions here
     $access = array();

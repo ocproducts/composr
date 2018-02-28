@@ -184,7 +184,7 @@ function set_privilege($group_id, $permission, $value, $page = null, $category_t
         $category_name = '';
     }
 
-    $db = $GLOBALS[(($category_type == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+    $db = $GLOBALS[((($category_type == 'forums') || ($category_type == 'topics')) && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
 
     $db->query_delete('group_privileges', array('privilege' => $permission, 'group_id' => $group_id, 'the_page' => $page, 'module_the_name' => $category_type, 'category_name' => $category_name), '', 1);
     $db->query_insert('group_privileges', array('privilege' => $permission, 'group_id' => $group_id, 'the_page' => $page, 'module_the_name' => $category_type, 'category_name' => $category_name, 'the_value' => $value ? 1 : 0));

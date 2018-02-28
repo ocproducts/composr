@@ -981,7 +981,7 @@ function step_4()
                 is_object($specific['title']) ? $specific['title'] : make_string_tempcode($specific['title']),
                 is_object($specific['description']) ? $specific['description'] : make_string_tempcode($specific['description']),
                 $specific['name'],
-                !empty($SITE_INFO[$specific['name']]) ? $SITE_INFO[$specific['name']] : $specific['default'],
+                empty($SITE_INFO[$specific['name']]) ? $specific['default'] : $SITE_INFO[$specific['name']],
                 strpos($specific['name'], 'password') !== false,
                 array_key_exists('required', $specific) ? $specific['required'] : false
             ));
@@ -2802,11 +2802,10 @@ function example($example, $description = '')
     if ($description == '') {
         return do_lang_tempcode($example);
     }
+
     $it = new Tempcode();
-    if ($description != '') {
-        $it->attach(do_lang_tempcode($description));
-        $it->attach('<br />');
-    }
+    $it->attach(do_lang_tempcode($description));
+    $it->attach('<br />');
     $it->attach(do_lang_tempcode('FOR_EXAMPLE', do_lang_tempcode($example)));
     return $it;
 }

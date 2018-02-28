@@ -55,6 +55,11 @@ class _static_caching_test_set extends cms_test_case
         file_put_contents($config_file_path, $config_file . "\n\n\$SITE_INFO['fast_spider_cache'] = '1';\n\$SITE_INFO['any_guest_cached_too'] = '1';\n\$SITE_INFO['failover_mode'] = 'auto_off';\n\$SITE_INFO['failover_check_urls'] = '" . $test_url . "';\n\$SITE_INFO['failover_cache_miss_message'] = 'FAILOVER_CACHE_MISS';\n\$SITE_INFO['failover_email_contact'] = 'test@example.com';");
         fix_permissions($config_file_path);
 
+        // This will empty the static cache, meaning when it is re-primed it actually will do so for fail-over (now that's enabled) priming rather than just outputting from the cache made in testStaticCacheWorks
+        global $ALLOW_DOUBLE_DECACHE;
+        $ALLOW_DOUBLE_DECACHE = true;
+        erase_persistent_cache();
+
         $result = http_get_contents($url->evaluate(), array('trigger_error' => false)); // Prime cache
         $this->assertTrue($result !== null, 'Failed to prime cache');
 

@@ -318,7 +318,7 @@ function _get_view_access_for_node($admin_groups, $groups, $node)
         default:
             foreach ($node['permissions'] as $p) {
                 if (isset($p['permission_module'])) {
-                    $db = $GLOBALS[(($p['permission_module'] == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+                    $db = $GLOBALS[((($p['permission_module'] == 'forums') || ($p['permission_module'] == 'topics')) && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
 
                     $where = array('module_the_name' => $p['permission_module'], 'category_name' => $id);
                     $access = $db->query_select('group_category_access', array('group_id'), $where);
@@ -375,7 +375,7 @@ function _get_privileges_for_node($admin_groups, $groups, $node)
         default:
             foreach ($node['permissions'] as $p) {
                 if (isset($p['permission_module'])) {
-                    $db = $GLOBALS[(($p['permission_module'] == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+                    $db = $GLOBALS[((($p['permission_module'] == 'forums') || ($p['permission_module'] == 'topics')) && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
                     $_privilege_access = $db->query_select('group_privileges', array('*'), array('module_the_name' => $p['permission_module'], 'category_name' => $id));
                     $privilege_access = _organise_loaded_privileges($admin_groups, $groups, $_privilege_access);
                 }
@@ -620,7 +620,7 @@ function sitemap_script_saving()
                         // View access
                         $view = post_param_integer(strval($i) . 'g_view_' . strval($group), -1);
                         if ($view != -1) { // -1 means unchanged
-                            $db = $GLOBALS[(($module == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+                            $db = $GLOBALS[((($module == 'forums') || ($module == 'topics')) && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
 
                             $db->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group));
                             if ($view == 1) {
@@ -641,7 +641,7 @@ function sitemap_script_saving()
 
                             $val = post_param_integer(strval($i) . 'group_privileges_' . $override . '_' . strval($group), -2);
                             if ($val != -2) {
-                                $db = $GLOBALS[(($module == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+                                $db = $GLOBALS[((($module == 'forums') || ($module == 'topics')) && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
 
                                 $db->query_delete('group_privileges', array('privilege' => $override, 'group_id' => $group, 'module_the_name' => $module, 'category_name' => $category, 'the_page' => ''));
                                 if ($val != -1) {

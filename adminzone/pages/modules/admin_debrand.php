@@ -145,9 +145,7 @@ class Module_admin_debrand
         $fields->attach(form_input_text_comcode(do_lang_tempcode('ADMINGUIDE'), do_lang_tempcode('DESCRIPTION_ADMINGUIDE'), 'adminguide', $adminguide, true));
         $fields->attach(form_input_text_comcode(do_lang_tempcode('ADMIN_DASHBOARD'), do_lang_tempcode('DESCRIPTION_ADMIN_DASHBOARD'), 'dashboard', $dashboard, true));
         $fields->attach(form_input_text_comcode(do_lang_tempcode('KEYBOARD_MAP'), '', 'keyboard_map', $keyboard_map, true));
-        if (get_forum_type() == 'cns') {
-            $fields->attach(form_input_tick(do_lang_tempcode('DELETE_UN_PC'), do_lang_tempcode('DESCRIPTION_DELETE_UN_PC'), 'churchy', false));
-        }
+        $fields->attach(form_input_tick(do_lang_tempcode('DELETE_UN_PC'), do_lang_tempcode('DESCRIPTION_DELETE_UN_PC'), 'churchy', false));
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_DOCS'), do_lang_tempcode('DESCRIPTION_SHOW_DOCS'), 'show_docs', get_option('show_docs') == '1'));
         require_code('images');
         $fields->attach(form_input_upload(do_lang_tempcode('FAVICON'), do_lang_tempcode('DESCRIPTION_FAVICON'), 'favicon', false, find_theme_image('favicon'), null, true, get_allowed_image_file_types()));
@@ -226,7 +224,8 @@ class Module_admin_debrand
         cms_file_put_contents_safe($save_global_tpl_path, $global_tpl, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         if (post_param_integer('churchy', 0) == 1) {
-            $GLOBALS['FORUM_DB']->query_delete('f_emoticons', array('e_code' => ':devil:'), '', 1);
+            $db = get_db_for('f_emoticons');
+            $db->query_delete('f_emoticons', array('e_code' => ':devil:'), '', 1);
         }
 
         // Make sure some stuff is disabled for non-admin staff

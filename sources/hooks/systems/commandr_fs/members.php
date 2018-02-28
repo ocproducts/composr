@@ -301,9 +301,7 @@ class Hook_commandr_fs_members
             // We're in a member's directory, and reading one of their profile fields
             if (array_key_exists($file_name, $this->field_mapping)) {
                 $ret = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', $this->field_mapping[$file_name], array('id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0])));
-                if ($ret !== null) {
-                    $ret = @strval($ret);
-                }
+                $ret = @strval($ret);
                 return $ret;
             }
 
@@ -374,7 +372,7 @@ class Hook_commandr_fs_members
                     'on_probation_until',
                     'auto_mark_read',
                 ))) {
-                    $val = strval($val);
+                    $val = intval($val);
                 }
 
                 $GLOBALS['FORUM_DB']->query_update('f_members', array($this->field_mapping[$file_name] => $val), array('id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0])), '', 1);

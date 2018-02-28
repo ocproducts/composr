@@ -3488,7 +3488,7 @@ function send_http_output_ping()
     global $DOING_OUTPUT_PINGS;
     $DOING_OUTPUT_PINGS = true;
 
-    if ((running_script('index')) && (is_cli())) {
+    if ((running_script('index')) && (!is_cli())) {
         echo ' ';
     }
 }
