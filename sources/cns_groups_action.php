@@ -167,6 +167,7 @@ function cns_make_group($name, $is_default = 0, $is_super_admin = 0, $is_super_m
         foreach ($member_access as &$access) {
             $access['group_id'] = $group_id;
         }
+
         $GLOBALS['SITE_DB']->query_insert('group_zone_access', $GLOBALS['SITE_DB']->bulk_insert_flip($member_access), false, true); // failsafe, in case we have put in some permissions for a group since deleted (can happen during install)
     }
 

@@ -1254,14 +1254,14 @@ class Module_cms_comcode_pages
             $files_list = $this->get_comcode_files_list_disk_search(user_lang(), null, false);
             $__pages = array();
             foreach ($files_list as $page_link => $path_bits) {
-                list($_zone, $_page) = explode(':', $page_link, 2);
-                if (!is_string($_page)) {
-                    $_page = strval($_page);
+                list($_zone, $__page) = explode(':', $page_link, 2);
+                if (!is_string($__page)) {
+                    $__page = strval($__page);
                 }
 
                 $__pages[] = array(
                     'the_zone' => $_zone,
-                    'the_page' => $_page,
+                    'the_page' => $__page,
                     'p_parent_page' => '',
                     'p_validated' => 1,
                     'cc_page_title' => get_comcode_page_title_from_disk($path_bits[0]),
