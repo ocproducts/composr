@@ -1090,6 +1090,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'marked as crashed and should be repaired') === false) &&
         (strpos($text, 'connect to') === false) &&
         (strpos($text, 'Access denied for') === false) &&
+        (strpos($text, 'command denied for') === false) && // MySQL
         (strpos($text, 'Unknown database') === false) &&
         (strpos($text, 'headers already sent') === false) &&
         (strpos($text, 'Broken pipe') === false) &&
