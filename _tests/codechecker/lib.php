@@ -196,7 +196,7 @@ function do_dir($dir, $enable_custom = true, $orig_priority = false, $avoid = ar
         }
     }
     closedir($dh);
- 
+
     return $out;
 }
 

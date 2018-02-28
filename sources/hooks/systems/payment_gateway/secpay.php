@@ -28,7 +28,7 @@ class Hook_payment_gateway_secpay
     //  You have the SecPay Username set as the Composr "Testing mode gateway username" option
     //  You have the SecPay "Remote Password" option set as the Composr "Gateway password" option
     //  You have the SecPay "VPN password" option set as the Composr "Gateway VPN password" option
-    //  You have the SecPay "Hash key" option set as the Composr "Gateway digest code" option 
+    //  You have the SecPay "Hash key" option set as the Composr "Gateway digest code" option
 
     /**
      * Get a standardised config map.

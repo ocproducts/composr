@@ -197,7 +197,7 @@ function _convert_request_data_encodings($known_utf8 = false)
         $CONVERTED_ENCODING = true;
         return;
     }
-    
+
     if ((function_exists('mb_convert_encoding')) && (get_value('disable_mbstring') !== '1')) {
         // mbstring option
 

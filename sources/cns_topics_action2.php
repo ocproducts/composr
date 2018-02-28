@@ -163,7 +163,7 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
  * Delete a topic.
  *
  * @param  AUTO_LINK $topic_id The ID of the topic to delete
- * @param  LONG_TEXT $reason The reason for this action 
+ * @param  LONG_TEXT $reason The reason for this action
  * @param  ?AUTO_LINK $post_target_topic_id Where topic to move posts in this topic to (null: delete the posts)
  * @param  boolean $check_perms Whether to check permissions
  * @return AUTO_LINK The forum ID the topic is in (could be found without calling the function, but as we've looked it up, it is worth keeping)

@@ -2559,7 +2559,7 @@ function rtrim($str, $characters = " \t\n\r\0\x0B")
 /**
  * Generates a storable representation of a value.
  *
- * @param  mixed $value Whatever is to be serialised 
+ * @param  mixed $value Whatever is to be serialised
  * @return string The serialisation
  */
 function serialize($value)

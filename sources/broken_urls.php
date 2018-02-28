@@ -540,7 +540,7 @@ class BrokenURLScanner
             return false;
         }
 
-        // If a URL is only redirecting back to the home page, we can consider that broken too... 
+        // If a URL is only redirecting back to the home page, we can consider that broken too...
 
         static $undesirable_redirects = null;
         if ($undesirable_redirects === null) {

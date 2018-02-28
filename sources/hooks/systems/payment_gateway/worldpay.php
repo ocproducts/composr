@@ -270,7 +270,7 @@ class Hook_payment_gateway_worldpay
         list($street_address_1, $street_address_2, $street_address_3) = split_street_address($street_address, 3);
         $member_address['address1'] = $street_address_1;
         $member_address['address2'] = $street_address_2;
-        $member_address['address3'] = $street_address_3; 
+        $member_address['address3'] = $street_address_3;
         $member_address['town'] = $city;
         $member_address['region'] = $state;
         $member_address['postcode'] = $post_code;

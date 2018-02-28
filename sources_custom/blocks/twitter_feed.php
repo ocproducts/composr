@@ -10,7 +10,7 @@
  * This addon pulls and displays a user Twitter feed using the Twitter Class provided by Tijs Verkoyen which is included with the
  * Composr Twitter Support non-bundled addon.  PHP5 and PHP CuRL Extension are required.
  */
- 
+
  /**
  * Block class.
  */

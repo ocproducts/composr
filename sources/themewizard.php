@@ -123,7 +123,7 @@ function find_theme_seed($theme)
     }
 
     $seed = get_theme_option('seed', ($theme == 'default') ? null : '');
-  
+
     if ($seed == '') {
         $css_path = get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.css';
         if (!is_file($css_path)) {

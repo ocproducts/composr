@@ -482,7 +482,7 @@ function _helper_drop_table_if_exists($this_ref, $table)
 
     unset($this_ref->table_exists_cache[$table]);
 }
- 
+
 /**
  * Whether byte saving is needed for a particular table's fields.
  *

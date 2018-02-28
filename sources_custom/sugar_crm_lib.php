@@ -654,12 +654,12 @@ class SugarWrapper
 
         return $result;
     }
-    
+
     /**
       * Upload file to Sugar Document
-      * 
+      *
       * @param string $docID the document ID the file should be attached to
-      * @param string $filename the file name 
+      * @param string $filename the file name
       * @param string $path the full path of the file
       * @param string $revision the revision number of the file
       * @return array
@@ -680,7 +680,7 @@ class SugarWrapper
             $call_arguments,
             true
         );
-        
+
         return $result;
      }
 
@@ -809,7 +809,7 @@ class SugarWrapper
      /**
      * Retrieves Sugar Bean record based on ID. Essentially returns the result of a
      * SELECT SQL statement, given a base module, any number of related of modules,
-     * and respective fields for each module. 
+     * and respective fields for each module.
      *
      * @param string $id     the SugarCRM id to retreive
      *

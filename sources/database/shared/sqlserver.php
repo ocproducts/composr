@@ -275,7 +275,7 @@ class Database_super_sqlserver extends DatabaseDriver
                 // Create full-text index on table if needed
                 $ret[] = 'IF NOT EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id=OBJECT_ID(\'' . $table_name . '\')) CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name;
             }
-                
+
             return $ret;
         }
 

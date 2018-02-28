@@ -812,7 +812,7 @@ function has_privilege($member_id, $privilege, $page = null, $cats = null)
     } else {
         $all_privileges_needed = array();
     }
-    $all_privileges_needed[$privilege] = true; 
+    $all_privileges_needed[$privilege] = true;
     foreach ($all_privileges_needed as $privilege_needed => $_) {
         if (is_integer($privilege_needed)) {
             $privilege_needed = strval($privilege_needed);
