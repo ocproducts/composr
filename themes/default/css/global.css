@@ -3805,7 +3805,7 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 }
 
 .button-screen {
-	background-size: 24px 24px !important;
+	background-size: 22px 22px !important;
 	padding: 6px 39px 7px 7px;
 	border-width: 2px;
 	font-size: 13px;
