@@ -360,6 +360,7 @@ class lang_spelling_test_set extends cms_test_case
             'eratic' => 'erratic',
             'psuedo' => 'pseudo',
             'overidable' => 'overridable',
+            'stack dump' => 'stack trace',
         );
         if (strpos($file, 'calendar') !== false) {
             $common_spelling_mistakes['occurrence'] = 'recurrence';
