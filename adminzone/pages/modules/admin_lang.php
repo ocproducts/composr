@@ -382,8 +382,12 @@ class Module_admin_lang
      */
     public function interface_content()
     {
+        if (get_option('allow_international') === '0') {
+            warn_exit(do_lang_tempcode('MULTILANG_OFF_OPTION'));
+        }
+
         if (!multi_lang()) {
-            warn_exit(do_lang_tempcode('MULTILANG_OFF'));
+            warn_exit(do_lang_tempcode('MULTILANG_OFF_PRACTICAL'));
         }
 
         if (!multi_lang_content()) {
