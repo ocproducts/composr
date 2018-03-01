@@ -250,6 +250,12 @@ function closed_site()
         $middle = do_template('CLOSED_SITE', array('_GUID' => '4e753c50eca7c98344d2107fc18c4554', 'CLOSED' => comcode_to_tempcode(get_option('closed'), null, true), 'LOGIN_URL' => $login_url, 'JOIN_URL' => $join_url));
         $echo = globalise($middle, null, '', true);
         $echo->evaluate_echo();
+
+        $aaf = safe_ini_get('auto_append_file');
+        if (!empty($aaf)) {
+            @include($aff); // Because exit() avoids running this
+        }
+
         exit();
     }
 }

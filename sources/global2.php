@@ -59,6 +59,11 @@ function init__global2()
                 header('HTTP/1.0 503 Service Temporarily Unavailable');
             }
             header('Location: ' . (is_file($RELATIVE_PATH . 'closed.html') ? 'closed.html' : '../closed.html'));
+
+            $aaf = safe_ini_get('auto_append_file');
+            if (!empty($aaf)) {
+                @include($aff); // Because exit() avoids running this
+            }
             exit();
         }
     }
