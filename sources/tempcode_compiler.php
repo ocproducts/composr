@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -752,7 +752,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                             }
                         }
 
-                        // Code generation, with some smart PHP-equivalent subsitutions
+                        // Code generation, with some smart PHP-equivalent substitutions
                         switch ($directive_name) {
                             case 'COMMENT':
                                 break;
@@ -968,7 +968,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
     $merged = array();
     $just_done_string = false;
     foreach ($current_level_data as $c) {
-        // Try and replace some unnecesary string appending which may have happened when experiencing possible (but not) control characters
+        // Try and replace some unnecessary string appending which may have happened when experiencing possible (but not) control characters
         $c = preg_replace('#([^\\\\])' . preg_quote('"."', '#') . '#', '$1', $c);
 
         // Try and merge some strings that don't need to be in separate seq_parts

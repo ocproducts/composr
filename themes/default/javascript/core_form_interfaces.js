@@ -808,7 +808,7 @@
         });
     };
 
-    $cms.templates.postingField = function postingField(params/* NB: mutiple containers */) {
+    $cms.templates.postingField = function postingField(params/* NB: multiple containers */) {
         var id = strVal(params.id),
             name = strVal(params.name),
             initDragDrop = !!params.initDragDrop,
@@ -1510,7 +1510,7 @@
             return;
         }
 
-        while (next.classList.contains('field-input')) { // Sometimes divs or whatever may have errornously been put in a table by a programmer, skip past them
+        while (next.classList.contains('field-input')) { // Sometimes divs or whatever may have erroneously been put in a table by a programmer, skip past them
             next = next.nextElementSibling;
             if (!next || next.classList.contains('form-table-field-spacer')) { // End of section, so no need to keep going
                 next = null;

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -359,6 +359,7 @@ class lang_spelling_test_set extends cms_test_case
             'recieve'=> 'receive',
             'eratic' => 'erratic',
             'psuedo' => 'pseudo',
+            'overidable' => 'overridable',
         );
         if (strpos($file, 'calendar') !== false) {
             $common_spelling_mistakes['occurrence'] = 'recurrence';

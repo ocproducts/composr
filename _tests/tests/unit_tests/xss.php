@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -112,7 +112,7 @@ class xss_test_set extends cms_test_case
         safe_ini_set('ocproducts.xss_detect', '1');
 
         ob_start();
-        @print(get_param_string('id')); // Print an unverified input parameter, but surpress our XSS error
+        @print(get_param_string('id')); // Print an unverified input parameter, but suppress our XSS error
         ob_end_clean();
 
         safe_ini_set('ocproducts.xss_detect', '0');

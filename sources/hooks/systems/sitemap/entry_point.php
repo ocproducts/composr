@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -128,7 +128,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
         $path = end($details);
 
         if (($type == 'add_catalogue') && ($matches[5] != '') && ($matches[5][1] == '_')) {
-            // Needs to be re-mapped to custom field kind of language
+            // Needs to be remapped to custom field kind of language
             require_code('fields');
             $content_type = preg_replace('#:.*$#', '', substr($matches[5], 2));
             $entry_points = manage_custom_fields_entry_points($content_type);

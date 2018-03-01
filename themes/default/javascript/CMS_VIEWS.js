@@ -1539,7 +1539,7 @@
                     (((code === 0) || (code === '0')) && (msg.includes('Script error.'))) || // Too generic, can be caused by user's connection error
 
                     // Firefox false positives
-                    (msg.includes("attempt to run compile-and-go script on a cleared scope")) || // Intermittent buggyness
+                    (msg.includes("attempt to run compile-and-go script on a cleared scope")) || // Intermittent bugginess
                     (msg.includes('UnnamedClass.toString')) || // Weirdness
                     (msg.includes('ASSERT: ')) || // Something too generic
                     ((file) && (file.includes('TODO: FIXME'))) || // Something too generic / Can be caused by extensions

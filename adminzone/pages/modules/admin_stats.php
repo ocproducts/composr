@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -647,7 +647,7 @@ class Module_admin_stats
 
         $this->title = get_screen_title('LOAD_TIMES_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
 
-        // We calculate MIN not AVG, because data can be made very dirty by slow clients or if the server is having trouble at one specfic point. It's a shame.
+        // We calculate MIN not AVG, because data can be made very dirty by slow clients or if the server is having trouble at one specific point. It's a shame.
         $rows = $GLOBALS['SITE_DB']->query('SELECT the_page,MIN(milliseconds) AS min_time FROM ' . get_table_prefix() . 'stats WHERE date_and_time>' . strval($time_start) . ' AND date_and_time<' . strval($time_end) . ' GROUP BY the_page');
         if (count($rows) < 1) {
             return warn_screen($this->title, do_lang_tempcode('NO_DATA'));

@@ -572,7 +572,7 @@ To add an item to your room, (or another's room) simply click the "Add an item" 
 
 When choosing to add an item, the options to have it be brittle or healthy should be considered. Is it food? Check healthy. Is it something that is of value? Check bribable. Is it a "guide" or "map" which would help you gain health in real life? Check healthy. This way, you can again add a greater sense of realism to Buildr.
 
-People may make copies of certain items (additional item sources) in other rooms that the makers have been chosen to be allowed to make copies. When checking or unchecking this box, consider again what the purpose of your item is. If it's made for allowing access to a secret or special room, don't make it replaceable. But if it's something like food or a guide or map, then it would make sense to have it replicateable.
+People may make copies of certain items (additional item sources) in other rooms that the makers have been chosen to be allowed to make copies. When checking or unchecking this box, consider again what the purpose of your item is. If it's made for allowing access to a secret or special room, don't make it replaceable. But if it's something like food or a guide or map, then it would make sense to have it replicable.
 
 You can delete items as long as they are not in circulation yet. When dealing with item copies, the only way to delete it is to edit it to make it non-infinite, and then pick it up.
 

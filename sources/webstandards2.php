@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -61,7 +61,7 @@ function init__webstandards2()
  */
 function __check_tag($tag, $attributes, $self_close, $close, $errors)
 {
-    global $XML_CONSTRAIN, $TAG_STACK, $ATT_STACK, $TABS_SEEN, $KEYS_SEEN, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_RANGES, $WEBSTANDARDS_CSP;
+    global $XML_CONSTRAIN, $TAG_STACK, $ATT_STACK, $TABS_SEEN, $KEYS_SEEN, $IDS_SO_FAR, $ANCESTOR_BLOCK, $ANCESTOR_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_RANGES, $WEBSTANDARDS_CSP;
 
     // CSP violation
     if ($WEBSTANDARDS_CSP) {
@@ -437,7 +437,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
  */
 function _check_blockyness($tag, $attributes, $self_close, $close)
 {
-    global $THE_DOCTYPE, $BLOCK_CONSTRAIN, $XML_CONSTRAIN, $TAGS_DEPRECATE_ALLOW, $PARENT_TAG, $TAGS_INLINE, $TAGS_BLOCK, $TAGS_NORMAL, $TAGS_INLINE_DEPRECATED, $TAGS_BLOCK_DEPRECATED, $TAGS_NORMAL_DEPRECATED, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $UNDER_XMLNS;
+    global $THE_DOCTYPE, $BLOCK_CONSTRAIN, $XML_CONSTRAIN, $TAGS_DEPRECATE_ALLOW, $PARENT_TAG, $TAGS_INLINE, $TAGS_BLOCK, $TAGS_NORMAL, $TAGS_INLINE_DEPRECATED, $TAGS_BLOCK_DEPRECATED, $TAGS_NORMAL_DEPRECATED, $IDS_SO_FAR, $ANCESTOR_BLOCK, $ANCESTOR_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $UNDER_XMLNS;
 
     $errors = array();
 
@@ -446,24 +446,24 @@ function _check_blockyness($tag, $attributes, $self_close, $close)
         $dif = 0;
     }
     if ((isset($TAGS_BLOCK[$tag])) || (isset($TAGS_BLOCK_DEPRECATED[$tag]))) {
-        if (($ANCESTER_INLINE != 0) && ($BLOCK_CONSTRAIN)) {
-            $errors[] = array('XHTML_ANCESTER_BLOCK_INLINE', $tag);
+        if (($ANCESTOR_INLINE != 0) && ($BLOCK_CONSTRAIN)) {
+            $errors[] = array('XHTML_ANCESTOR_BLOCK_INLINE', $tag);
         }
-        $ANCESTER_BLOCK += $dif;
+        $ANCESTOR_BLOCK += $dif;
         if (isset($TAGS_BLOCK_DEPRECATED[$tag])) {
             $errors[] = array($TAGS_DEPRECATE_ALLOW ? 'XHTML_DEPRECATED_TAG' : 'XHTML_UNKNOWN_TAG', $tag);
         }
     } elseif ((isset($TAGS_INLINE[$tag])) || (isset($TAGS_INLINE_DEPRECATED[$tag]))) {
-        //if (($BLOCK_CONSTRAIN) && ($PARENT_TAG != 'span') && ((isset($TAGS_NORMAL[$PARENT_TAG])) || ((isset($TAGS_NORMAL_DEPRECATED[$PARENT_TAG]))))) $errors[] = array('XHTML_ANCESTER_INLINE_NORMAL', $tag); This restriction isn't really a proper one, some checkers seem to have it but it is not used anymore (XHTML5+) and pretty silly
+        //if (($BLOCK_CONSTRAIN) && ($PARENT_TAG != 'span') && ((isset($TAGS_NORMAL[$PARENT_TAG])) || ((isset($TAGS_NORMAL_DEPRECATED[$PARENT_TAG]))))) $errors[] = array('XHTML_ANCESTOR_INLINE_NORMAL', $tag); This restriction isn't really a proper one, some checkers seem to have it but it is not used anymore (XHTML5+) and pretty silly
         if ($tag != 'label') {
-            $ANCESTER_INLINE += $dif;
+            $ANCESTOR_INLINE += $dif;
         }
         if (isset($TAGS_INLINE_DEPRECATED[$tag])) {
             $errors[] = array($TAGS_DEPRECATE_ALLOW ? 'XHTML_DEPRECATED_TAG' : 'XHTML_UNKNOWN_TAG', $tag);
         }
     } elseif ((isset($TAGS_NORMAL[$tag])) || (isset($TAGS_NORMAL_DEPRECATED[$tag]))) {
         if ($tag == 'title') {
-            $ANCESTER_BLOCK += $dif;
+            $ANCESTOR_BLOCK += $dif;
         }
         if (($tag == 'iframe') && (($THE_DOCTYPE == DOCTYPE_XHTML_STRICT) || ($THE_DOCTYPE == DOCTYPE_XHTML_11))) {
             $errors[] = array('XHTML_UNKNOWN_TAG', $tag);
@@ -492,7 +492,7 @@ function _check_blockyness($tag, $attributes, $self_close, $close)
  */
 function _check_attributes($tag, $attributes, $self_close, $close)
 {
-    global $PSPELL_LINK, $THE_LANGUAGE, $XML_CONSTRAIN, $TAGS_DEPRECATE_ALLOW, $THE_DOCTYPE, $HYPERLINK_URLS, $CRAWLED_URLS, $EMBED_URLS, $TAGS_INLINE, $TAGS_BLOCK, $TAGS_NORMAL, $TAGS_INLINE_DEPRECATED, $TAGS_BLOCK_DEPRECATED, $TAGS_NORMAL_DEPRECATED, $TAG_ATTRIBUTES, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_ATTRIBUTES_REQUIRED;
+    global $PSPELL_LINK, $THE_LANGUAGE, $XML_CONSTRAIN, $TAGS_DEPRECATE_ALLOW, $THE_DOCTYPE, $HYPERLINK_URLS, $CRAWLED_URLS, $EMBED_URLS, $TAGS_INLINE, $TAGS_BLOCK, $TAGS_NORMAL, $TAGS_INLINE_DEPRECATED, $TAGS_BLOCK_DEPRECATED, $TAGS_NORMAL_DEPRECATED, $TAG_ATTRIBUTES, $IDS_SO_FAR, $ANCESTOR_BLOCK, $ANCESTOR_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_ATTRIBUTES_REQUIRED;
 
     $errors = array();
 
@@ -637,7 +637,7 @@ function _check_externals($tag, $attributes, $self_close, $close)
     unset($self_close);
     unset($close);
 
-    global $VALIDATED_ALREADY, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG;
+    global $VALIDATED_ALREADY, $IDS_SO_FAR, $ANCESTOR_BLOCK, $ANCESTOR_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG;
 
     $errors = array();
 
@@ -709,7 +709,7 @@ function _check_externals($tag, $attributes, $self_close, $close)
  */
 function _check_link_accessibility($tag, $attributes, $self_close, $close)
 {
-    global $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_RANGES, $WEBSTANDARDS_MANUAL;
+    global $IDS_SO_FAR, $ANCESTOR_BLOCK, $ANCESTOR_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_RANGES, $WEBSTANDARDS_MANUAL;
 
     $errors = array();
 
@@ -767,7 +767,7 @@ function _check_link_accessibility($tag, $attributes, $self_close, $close)
  */
 function _check_labelling($tag, $attributes, $self_close, $close)
 {
-    global $TAG_STACK, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG;
+    global $TAG_STACK, $IDS_SO_FAR, $ANCESTOR_BLOCK, $ANCESTOR_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG;
 
     $errors = array();
 

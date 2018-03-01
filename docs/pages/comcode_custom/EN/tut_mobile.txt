@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Mobile design[/title]
 
-[media width="150" description="Mobile mode for the forum. This site is the out-of-the-box default, the panels are shown underneath the main page. On real sites with strong mobile optimiation you'd likely want to turn these off on mobile mode and move them to their own pages." float="right"]data_custom/images/docs/tut_mobile/mobile.png[/media]
+[media width="150" description="Mobile mode for the forum. This site is the out-of-the-box default, the panels are shown underneath the main page. On real sites with strong mobile optimisation you'd likely want to turn these off on mobile mode and move them to their own pages." float="right"]data_custom/images/docs/tut_mobile/mobile.png[/media]
 [media width="150" description="Showing the default menu type in mobile mode" float="right"]data_custom/images/docs/tut_mobile/mobile_menu.png[/media]
 Composr has great support for mobile. You can design for mobile in two ways:
 1) {$IS_MAINTAINED,theme_mobile_mode,Mobile mode}
@@ -30,7 +30,7 @@ Pros of responsive design:
  - Optimise against a wider range of devices, including different sizes of tablet and phone
  - Show something mind-blowing for desktop users with huge browser windows
  - No complexity of there being a mode choice in the system
- - Some technies expect it for the site to be 'modern'
+ - Some techies expect it for the site to be 'modern'
 
 Pros of mobile mode:
  - Simpler to test: only two modes
@@ -124,7 +124,7 @@ You can also append [tt]{$,page hint: make_mobile}[/tt] to some Comcode for that
 
 [title="2"]Using responsive design techniques directly[/title]
 
-Responsive design is straight-forward to implement directly for anyone familar with CSS. Rules are coded into the CSS under media queries such as:
+Responsive design is straight-forward to implement directly for anyone familiar with CSS. Rules are coded into the CSS under media queries such as:
 [code="CSS"]
 @media screen and (max-width:999px) {
 	* {

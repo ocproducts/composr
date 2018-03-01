@@ -4,7 +4,7 @@
  Copyright (c) ocProducts, 2004-2018
 
  You may not distribute a modified version of this file, unless it is solely as a Composr modification.
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -175,7 +175,7 @@ function display_version_upgrade_path($higher_version)
         $note .= ' &ndash; <em>Note that the ' . get_version_branch($general_number) . ' version line is no longer supported</em>';
     }
 
-    $tooltip = comcode_to_tempcode('[title="2"]Inbetween versions[/title]' . $higher_version['download_description']);
+    $tooltip = comcode_to_tempcode('[title="2"]In-between versions[/title]' . $higher_version['download_description']);
 
     $upgrade_url = static_evaluate_tempcode(build_url(array('page' => 'news', 'type' => 'view', 'id' => $higher_version['news_id'], 'from_version' => $version_dotted, 'wide_high' => 1), 'site'));
 

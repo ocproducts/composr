@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -56,7 +56,7 @@ function set_coordinates()
     $_coords = get_param_string('coord', '');
     $member_id = get_param_integer('mid', get_member());
 
-    // Prevent hack attepts
+    // Prevent hack attempts
     if ($member_id != get_member()) {
         return;
     }

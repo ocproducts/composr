@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -138,7 +138,7 @@ function init__webstandards_js_lint()
         'intVal' => array('function', array()),
         'numVal' => array('function', array()),
 
-        /* Defacto-standard */
+        /* De facto-standard */
         'jQuery' => array('Object', array()),
 
         // Future things coming, but not currently here (may not be added, not strictly needed as we ignore missing properties/methods, and the API scope has mushroomed since 'HTML5'):

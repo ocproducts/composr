@@ -71,7 +71,7 @@ function personalise_paths(table) {
 [/html]
 |-
 !
-! [left][i]Downloading, assessing, re-configuring[/i][/left]
+! [left][i]Downloading, assessing, reconfiguring[/i][/left]
 !
 |-
 ! {$INC,step_num}{$GET,step_num}
@@ -375,7 +375,7 @@ Options 3 or 4 are the most likely you will want to use.
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
  Meta Script:
    Find files modified within the last days days
@@ -483,7 +483,7 @@ For a further level of professionalism you may choose to deploy using your git r
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 

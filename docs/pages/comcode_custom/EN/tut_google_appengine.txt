@@ -242,7 +242,7 @@ An appropriate PHP configuration has also been provided for you.
 
 [title="2"]Late structural changes[/title]
 
-If you forget to do something before you deploy, or if new development has happened, you can always re-deploy later.
+If you forget to do something before you deploy, or if new development has happened, you can always redeploy later.
 
 [title="3"]Any redeployment[/title]
 
@@ -288,7 +288,7 @@ Go through this process:
 1) Perform the upgrade on your development machine
 2) Close the live site temporarily
 3) Do a code deploy
-4) Go into the upgrader on live, and perform all the steps except the file transfer one (as you have just done that when you re-deployed)
+4) Go into the upgrader on live, and perform all the steps except the file transfer one (as you have just done that when you redeployed)
 5) Re-open the live site
 
 [title="2"]Configuration considerations[/title]
@@ -327,7 +327,7 @@ If you are developing and don't have Commandr working yet, the [url="PHP-minishe
 Be aware that filesystem latency may be considerably higher on GAE, as Cloud Storage may not be in the same machine as the actual running application. One hopes that the machine will be at least in the same data centre, with a fast non-congested link, but be mindful that there are reports of ~10ms latency. The same issue applies to Google Cloud SQL. Try and keep the number of filesystem and database queries you do down.
 It is also advisable to minimise the number of filesystem and database writes you make, as these have to replicate across each copy of your filesystem/database.
 
-Be advised that Google cannot provide automated "sharding" of data. This means that if you have a huge volume of data (many 100s of GB), you may come across limits. For smaller quantities of data, you may still find that scaling isn't as fast as one would like, while the data is cloned out. The moral of this isn't that there is a problem hosting regular sites on GAE, but that if you are successful in creating a huge new web property, don't expect data to automatically scale without having a proper development team to re-architect your data model into shards. At a huge scale you will probably also want to move away from Google Cloud SQL. All this is beyond the scope of Composr as a product.
+Be advised that Google cannot provide automated "sharding" of data. This means that if you have a huge volume of data (many 100s of GB), you may come across limits. For smaller quantities of data, you may still find that scaling isn't as fast as one would like, while the data is cloned out. The moral of this isn't that there is a problem hosting regular sites on GAE, but that if you are successful in creating a huge new web property, don't expect data to automatically scale without having a proper development team to rearchitect your data model into shards. At a huge scale you will probably also want to move away from Google Cloud SQL. All this is beyond the scope of Composr as a product.
 
 [concepts
  1_key="Google App Engine"         1_value="Google's auto-scaling application-hosting service"

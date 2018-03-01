@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -62,7 +62,7 @@ $special_file_types = array(
     'Language files' => array('lang/' . fallback_lang(), 'ini'),
     'CSS files' => array('themes/default/css', 'css'),
     'Templates' => array('themes/default/templates', 'tpl'),
-    //Excessive'XML files' => array('', 'xml'),
+    //Excessive 'XML files' => array('', 'xml'),
     'Text templates' => array('themes/default/text', 'txt'),
     'JavaScript' => array('themes/default/javascript', 'js'),
     'Other' => array('', null),

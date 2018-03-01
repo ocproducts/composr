@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -51,7 +51,7 @@ class Hook_addon_registry_themewizard
      */
     public function get_description()
     {
-        return 'Automatically generate your own colour schemes using the default theme as a base. Uses the sophisticated chromographic equations built into Composr.';
+        return 'Automatically generate your own colour schemes using the default theme as a base. Uses the sophisticated chromagraphic equations built into Composr.';
     }
 
     /**

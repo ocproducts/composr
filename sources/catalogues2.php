@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -647,7 +647,7 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
 }
 
 /**
- * Re-build the efficient catalogue category tree structure ancestry cache.
+ * Rebuild the efficient catalogue category tree structure ancestry cache.
  */
 function rebuild_catalogue_cat_treecache()
 {

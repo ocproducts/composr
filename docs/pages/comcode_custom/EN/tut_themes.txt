@@ -90,7 +90,7 @@ You can get to the template editor in two main ways:
 1) From Admin Zone > Style > Themes (for a particular theme). This will open up a default set of common files.
 2) From the "Page rendering tools" at the bottom of any screen (for the active theme, and assuming those tools were not removed in that theme). This will open up most of the files relating to the screen you are on.
 
-Opening via the "page rendering tools" is incredibly powerful, as it opens the editor in a new window and forms an "anchor" to the page you opened it from: you will see automatic live previews of changes to CSS, and dynamic highlighting of how the page relates to what you're editings.
+Opening via the "page rendering tools" is incredibly powerful, as it opens the editor in a new window and forms an "anchor" to the page you opened it from: you will see automatic live previews of changes to CSS, and dynamic highlighting of how the page relates to what you're editing.
 
 The template editor is very powerful. Features include:
  - Tabbed interface for editing multiple files at once
@@ -237,7 +237,7 @@ This is intentional -- the only templates that will be copied into your [tt]them
 
 The exact same thing applies for [tt]css[/tt], [tt]javascript[/tt], [tt]text[/tt] and [tt]xml[/tt].
 
-It is permissable to hand-copy files into your theme's [tt]templates_custom[/tt]) and hand-edit them outside Composr. Composr typically will automatically detect that you've changed them because the file modification dates will have changed (unless you've turned this feature off for performance reasons).
+It is permissible to hand-copy files into your theme's [tt]templates_custom[/tt]) and hand-edit them outside Composr. Composr typically will automatically detect that you've changed them because the file modification dates will have changed (unless you've turned this feature off for performance reasons).
 
 There's even a special dynamic "meta-tree" system of symbolic links that provide a file-system equivalent to the template browser within the template editor. For example, you can find symbolic links to all the templates that are used on a particular screen. This is very useful for developers who host on their own machines and like to edit within their standard text editor, alongside the PHP code they are editing.
 

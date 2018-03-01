@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -2886,7 +2886,7 @@ class Hook_import_cms_merge
                         $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', $row2, array('mf_member_id' => $id_new), '', 1);
                     }
 
-                    // Fix some tricky dependences that we shoved to one side
+                    // Fix some tricky dependencies that we shoved to one side
                     $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_group_leader' => $id_new), array('g_group_leader' => -$row['id']));
                     $GLOBALS['SITE_DB']->query_update('attachments', array('a_member_id' => $id_new), array('a_member_id' => -$row['id']));
                 }
@@ -3180,7 +3180,7 @@ class Hook_import_cms_merge
                     }
                 }
 
-                // Comment topic re-mapping
+                // Comment topic remapping
                 $matches = array();
                 if (preg_match('#: \#(\w+)s_(\d+)$#', $row['t_description'], $matches) != 0) {
                     $import_type = $matches[1];
@@ -3841,7 +3841,7 @@ class Hook_import_cms_merge
     }
 
     /**
-     * Re-map any Comcode ownership fields.
+     * Remap any Comcode ownership fields.
      *
      * @param  array $rows Rows with potential fields to fix
      */

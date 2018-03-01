@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -544,7 +544,7 @@ class Module_admin_setupwizard
             'news_shared',
             'filedump',
             'filebased_persistent_caching',
-            'getid3', // this will be downloaded as it is not bundled, for licencing reasons
+            'getid3', // this will be downloaded as it is not bundled, for licensing reasons
         ));
         // ... unless the install profile really is shunning them
         foreach ($addon_list_override_to_off_by_default as $_to_find) {

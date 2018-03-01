@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -412,7 +412,7 @@ function send_newsletter($message, $subject, $language, $send_details, $html_onl
  * @param  LANGUAGE_NAME $language The language
  * @param  integer $start Start position in result set (results are returned in parallel for each category of result)
  * @param  integer $max Maximum records to return from each category
- * @param  boolean $get_raw_rows Whether to get raw rows rather than mailer-ready correspondance lists
+ * @param  boolean $get_raw_rows Whether to get raw rows rather than mailer-ready correspondence lists
  * @param  string $csv_data JSON CSV data to also consider
  * @return array Returns a tuple of corresponding detail lists, emails,hashes,usernames,forenames,surnames,ids, and a record count for newsletters (depending on requests: csv, 1, <newsletterID>, g<groupID>) [record counts not returned if $start is not zero, for performance reasons]
  */

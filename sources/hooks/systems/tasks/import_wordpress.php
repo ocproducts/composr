@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -230,7 +230,7 @@ class Hook_task_import_wordpress
                         // Save articles as new comcode pages
                         $zone = 'site';
                         $lang = fallback_lang();
-                        $file = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $post['post_name']); // Filter non alphanumeric charactors
+                        $file = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $post['post_name']); // Filter non-alphanumeric characters
                         $full_path = zone_black_magic_filterer(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . $lang . '/' . $file . '.txt');
 
                         // Content

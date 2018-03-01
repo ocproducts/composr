@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -47,7 +47,7 @@ class Hook_cron_disastr
     {
         require_lang('disastr');
 
-        // Get just disease that should spead and are enabled
+        // Get just disease that should spread and are enabled
         $diseases_to_spread = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'diseases WHERE (last_spread_time<(' . strval(time()) . '-(spread_rate*60*60)) OR last_spread_time=0) AND enabled=1');
 
         foreach ($diseases_to_spread as $disease) {

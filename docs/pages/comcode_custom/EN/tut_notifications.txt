@@ -114,7 +114,7 @@ Actual digest content is queued up in the [tt]digestives_tin[/tt] table.
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_correspondance"]Correspondence between members[/page]
+ - [page="_SEARCH:tut_correspondence"]Correspondence between members[/page]
  - [page="_SEARCH:tut_email"]Understanding and configuring e-mail[/page]
  - [page="_SEARCH:tut_members"]Composr member system[/page]
  - [page="_SEARCH:tut_forum_tracking"]Keeping on track of busy forums[/page]

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -3725,7 +3725,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_moz_access_id
         CONFIG_OPTION_moz_paid
         CONFIG_OPTION_moz_secret_key
-        CONFIG_OPTION_recaptcha_servey_key
+        CONFIG_OPTION_recaptcha_server_key
         CONFIG_OPTION_recaptcha_site_key
         DESCRIPTION_LINK_TYPES
         DESCRIPTION_LIVE_BASE_URLS
@@ -7459,8 +7459,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         WRITE_ERROR_MISSING_DIRECTORY
         WRONG_RESET_SESSION
         WROTE_CONFIGURATION
-        XHTML_ANCESTER_BLOCK_INLINE
-        XHTML_ANCESTER_INLINE_NORMAL
+        XHTML_ANCESTOR_BLOCK_INLINE
+        XHTML_ANCESTOR_INLINE_NORMAL
         XHTML_A_NAME
         XHTML_A_SPACES
         XHTML_BAD_ATTRIBUTE_VALUE
@@ -7484,7 +7484,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         XHTML_FORM_TYPE
         XHTML_ID_UNBOUND
         XHTML_IE_ONCHANGE
-        XHTML_MISSING_ANCESTER
+        XHTML_MISSING_ANCESTOR
         XHTML_MISSING_ATTRIBUTE
         XHTML_MISSING_TAG
         XHTML_NAME_ID_DEPRECATED

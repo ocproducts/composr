@@ -103,7 +103,7 @@ If you're still stuck (i.e. you've determined [tt].htaccess[/tt] is being read, 
 [title="2"]Enabling a URL Scheme retroactively[/title]
 
 Enabling a URL Scheme on an existing site will not break old URLs, those URLs will just redirect, and the canonical URL will be specified in the HTML header under a meta tag regardless.
-So don't think that changing the URL Scheme is disasterous for your SEO.
+So don't think that changing the URL Scheme is disastrous for your SEO.
 
 [concepts
  1_key="URL Scheme"      1_value="A way to make URLs simpler than the default PHP URLs"

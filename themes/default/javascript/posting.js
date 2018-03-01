@@ -177,7 +177,7 @@
 
                 return $util.promiseSequence(promiseCalls).then(function () {
                     // Add field for next one
-                    var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened inbetween
+                    var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened in-between
                     if (addAnotherField) {
                         addAttachment(window.numAttachments + 1, fieldName);
                     }
@@ -244,7 +244,7 @@
 
                     promise.then(function () {
                         // Add field for next one
-                        var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened inbetween
+                        var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened in-between
                         if (addAnotherField) {
                             addAttachment(window.numAttachments + 1, fieldName);
                         }

@@ -36,13 +36,13 @@ The Permissions section allows you to give various usergroups different permissi
 
 Once this is complete you can click on the "Add forum" button.
 
-[title="2"]Re-ordering your forums[/title]
+[title="2"]Reordering your forums[/title]
 
-To re-order your forums, go to Admin Zone > Structure > Forums > Edit forum. From here you can access the edit screen for each forum and also re-order your forum groups and individual forums.
+To reorder your forums, go to Admin Zone > Structure > Forums > Edit forum. From here you can access the edit screen for each forum and also reorder your forum groups and individual forums.
 
-To re-order the grouping so a new grouping appears at the top, you can change the numbers which appear on the blue bar next to each forum grouping name. To re-order the forums within a grouping, simply change the numbers in the drop-downs as required next to each forum that you want to re-order.
+To reorder the grouping so a new grouping appears at the top, you can change the numbers which appear on the blue bar next to each forum grouping name. To reorder the forums within a grouping, simply change the numbers in the drop-downs as required next to each forum that you want to reorder.
 
-Once you have the forums ordered as you like click "Re-order forums".
+Once you have the forums ordered as you like click "Reorder forums".
 
 [title="2"]Performing basic moderation tasks[/title]
 

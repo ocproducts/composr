@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -331,7 +331,7 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
         $shipped_products[] = array($item, $quantity);
     }
     if ($total_quantity > 1) {
-        // We obviously can't actually tallery length/width/height, so we'll have to work out using volume
+        // We obviously can't actually gallery length/width/height, so we'll have to work out using volume
         $total_product_length = pow($total_product_weight, 1.0 / 3.0);
         $total_product_width = $total_product_length;
         $total_product_height = $total_product_length;

@@ -1,7 +1,7 @@
 {$,You may need to remove this or change it to an <a> as shown, if your banner gets placed inside a form, because nested forms are not allowed}
 {+START,IF,{$IS_ADMIN}}{+START,IF,{$NOT,{$MATCH_KEY_MATCH,cms:cms_banners,_WILD:purchase}}}{+START,IF,{$THEME_OPTION,enable_edit_banner_buttons}}
-	<form title="{!BANNER}: {!EDIT}{+START,IF_NON_EMPTY,{CAPTION}} ({$STRIP_TAGS,{CAPTION*}}){+END}" class="associated-minor-button-action associated-minor-button-overlayed" method="post" action="{$PAGE_LINK*,cms:cms_banners:_edit:{DEST}}" autocomplete="off"><input title="{!BANNER}: {!EDIT}{+START,IF_NON_EMPTY,{CAPTION}} ({$STRIP_TAGS,{CAPTION*}}){+END}" type="submit" value="{!EDIT}" /></form>
-	{$,<a title="{!BANNER}: {!EDIT} ({$STRIP_TAGS,{CAPTION*}})" class="associated-minor-button-action associated-minor-button-overlayed button" href="{$PAGE_LINK*,cms:cms_banners:_edit:{DEST}}">{!EDIT}</a>}
+	<form title="{!BANNER}: {!EDIT}{+START,IF_NON_EMPTY,{CAPTION}} ({$STRIP_TAGS,{CAPTION*}}){+END}" class="associated-minor-button-action associated-minor-button-overlaid" method="post" action="{$PAGE_LINK*,cms:cms_banners:_edit:{DEST}}" autocomplete="off"><input title="{!BANNER}: {!EDIT}{+START,IF_NON_EMPTY,{CAPTION}} ({$STRIP_TAGS,{CAPTION*}}){+END}" type="submit" value="{!EDIT}" /></form>
+	{$,<a title="{!BANNER}: {!EDIT} ({$STRIP_TAGS,{CAPTION*}})" class="associated-minor-button-action associated-minor-button-overlaid button" href="{$PAGE_LINK*,cms:cms_banners:_edit:{DEST}}">{!EDIT}</a>}
 {+END}{+END}{+END}
 
 {$,If you dont want most banners to go through the tracking script then this is useful for the href {$?,{$IN_STR,{DEST},_tracked},{$FIND_SCRIPT,banner}?source={SOURCE&}&amp;dest={DEST&}&amp;type=click{$KEEP,0,1},{URL}}}

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -946,7 +946,7 @@ function _parse_css_colour_expression($tokens)
         }
     }
 
-    // Either we have a sigle token
+    // Either we have a single token
     if (count($tokens) == 1) {
         return $tokens[0];
     }

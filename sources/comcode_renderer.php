@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -410,7 +410,7 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
         }
     }
     if ($name === null) {
-        if ($check_only) { // Maybe it has been appended with something else, so search deeper (we suspect this as we have been explictly asked to check the Comcode)
+        if ($check_only) { // Maybe it has been appended with something else, so search deeper (we suspect this as we have been explicitly asked to check the Comcode)
             foreach ($_POST as $key => $val) {
                 if (!is_string($val)) {
                     continue;

@@ -117,7 +117,7 @@ With this, you may reference any image that already exists on the web, via URL.
 
 The drawback with this is that the file must already exist, and be stored outside of the context of the Composr website that it is being referenced on.
 
-However, one handy convention for Composr website administrators, is to upload the file to the [tt]uploads/website_specific[/tt] directory using FTP, and then referencing the image from there. This pre-created directory is designed for storing this kind of file, and will help you keep things tidy. As long as you backup this directory with the rest of your website, the URLs should not break.
+However, one handy convention for Composr website administrators, is to upload the file to the [tt]uploads/website_specific[/tt] directory using FTP, and then referencing the image from there. This precreated directory is designed for storing this kind of file, and will help you keep things tidy. As long as you backup this directory with the rest of your website, the URLs should not break.
 
 We go to specific measures to make sure that URLs are defined relative to the website's base URL, regardless of where the editor is running from.
 This is really important for content portability. We then actually save using absolute URLs (i.e. we include the domain name etc).
@@ -126,7 +126,7 @@ This is really important for content portability. We then actually save using ab
 
 Toward the top-left of the editor is a button to toggle HTML source view in the editor. When in HTML source view, you may manually enter and edit the HTML that will be used. This is useful:
  - in circumstances where things have not pasted into the editor as you expected
- - when you have some specific HTML in mind that is hard to re-create visually, such as HTML involving JavaScript (note that only super-administrators may input JavaScript)
+ - when you have some specific HTML in mind that is hard to recreate visually, such as HTML involving JavaScript (note that only super-administrators may input JavaScript)
 
 [title="2"]HTML filtering[/title]
 

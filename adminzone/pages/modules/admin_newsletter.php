@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -1033,7 +1033,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $in_full = post_param_integer('in_full', 0);
         $chosen_categories = post_param_string('chosen_categories', '');
 
-        // Newsletter message (complex, as will depend if an automatic periodicial being made, meaning no message defined now)
+        // Newsletter message (complex, as will depend if an automatic periodical being made, meaning no message defined now)
         list($message, $message_is_html) = get_full_newsletter_code($_message, $lang, $default_subject);
         if ($periodic_action == 'make' || $periodic_action == 'replace') {
             // We are making a periodic newsletter. This means we need to pass through the chosen categories - add extra fields to the form - and there's no direct editing

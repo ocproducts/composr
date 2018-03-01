@@ -603,7 +603,7 @@ Allow initialisation functions to run twice
 | Stability
 | Product development only
 | Automated test ([tt]override_issues.php[/tt])
-| If a developer overrides a [tt].php[/tt] file then the initialisation function of the original will also run. The person doing the override doesn't usually understand this and accomodate for it, so make sure you check that you are not doing anything that can't run twice. Usually this just involves guarding [tt]define[/tt] calls.
+| If a developer overrides a [tt].php[/tt] file then the initialisation function of the original will also run. The person doing the override doesn't usually understand this and accommodate for it, so make sure you check that you are not doing anything that can't run twice. Usually this just involves guarding [tt]define[/tt] calls.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Don't assume about platforms[/color]
@@ -711,7 +711,7 @@ Avoid relative paths
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Don't assume where a module is located when you link[/color]
-| Flexability: webmasters may move modules around
+| Flexibility: webmasters may move modules around
 | Product development only
 | Manually
 | Don't assume which zone a module is located in, except in the case of admin modules. Use the [tt]get_module_zone[/tt] function or [tt]_SEARCH[/tt] token to break down such assumptions.
@@ -725,7 +725,7 @@ Avoid relative paths
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Don't assume where an entry-point is located when you link[/color]
-| Flexability: webmasters may move entry-point scripts around
+| Flexibility: webmasters may move entry-point scripts around
 | Product development only
 | Manually
 | Use the [tt]FIND_SCRIPT[/tt] symbol or [tt]find_script[/tt] function to find zone-based scripts. Put non zone-based scripts in [tt]data[/tt] (or [tt]data_custom[/tt] if for an unofficial addon).
@@ -1480,7 +1480,7 @@ Reinstalls must be handled correctly
 [color="red"]Don't spell things [i]rong[/i] or use incorrect grammar[/color]
 | Usability
 | Composr development +
-| Use the [tt].ini[/tt] files with Microsoft Word's checking tools, Automated test ([tt]lang_spelling.php[/tt]), Automated test ([tt]lang_grammar.php[/tt])
+| Automated test ([tt]lang_spelling.php[/tt]), Automated test ([tt]_lang_spelling.php[/tt]), Automated test ([tt]lang_grammar.php[/tt])
 | 
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -1491,17 +1491,10 @@ Reinstalls must be handled correctly
 | Capitalisation is for proper nouns (e.g. Charlie or Microsoft, but not box), for new sentences, or sometimes for sentence-like standalone phrases. We do not generally capitalise things for effect, e.g. "Add News".
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"][i]Wrong to miss out words[/i][/color]
-| Usability
-| Composr development +
-| Manually + use the .ini files with Microsoft Word's checking tools
-| In this example, "It is" is missing from the start of the sentence.
-|-
-| [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Be careful where you put your [i]apostrophe's[/i][/color]
 | Usability
 | Composr development +
-| Manually + use the .ini files with Microsoft Word's checking tools
+| Manually + use the [tt].ini[/tt] files with Microsoft Word's checking tools
 | Apostrophes are not used for plurals.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -1634,7 +1627,7 @@ Define administrative split
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Don't define binary options in negative terms
-| Usabiility
+| Usability
 | Composr development +
 | Manually
 | Do not create an option such as "Disable widgets". It is unnecessarily confusing because you can just make an option "Enable widgets" that defaults to on. This coding standard applies universally across the product, including configuration options, form fields, and code. The only exception is hidden configuration options, which are often set to '1' to disable something.
@@ -1801,7 +1794,7 @@ Write to XHTML5
 | Accessibility
 | Product development only
 | Firefox HTML validator extension / Automated test ([tt]template_previews.php[/tt])
-| We don't actually output XHTML mime-type, or write JavaScript as XHTML-compatible, but we do have the actual markup be XHTML-compatible for better readability and tooling-parsablity.
+| We don't actually output XHTML mime-type, or write JavaScript as XHTML-compatible, but we do have the actual markup be XHTML-compatible for better readability and tooling-parsability.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Don't make assumptions about word order by coding things like [tt]{!GO} {!HERE}[/tt][/color]

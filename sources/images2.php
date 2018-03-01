@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -208,7 +208,7 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
                     $will_modify_image = intval(round(floatval($source_x) / $scale_to)) != $exp_dimensions[0];
                 }
             } else {
-                // They're the same, within the tolerances of floating point arithmentic. Just scale it.
+                // They're the same, within the tolerances of floating point arithmetic. Just scale it.
                 $will_modify_image = false;
             }
 
@@ -693,7 +693,7 @@ function check_memory_limit_for($file_path, $exit_on_error = true)
 
         $details = @getimagesize($file_path);
         if ($details !== false) { // Check it is not corrupt. If it is corrupt, we will give an error later
-            $magic_factor = 3.0; /* factor of inefficency by experimentation */
+            $magic_factor = 3.0; /* factor of inefficiency by experimentation */
 
             $channels = 4;//array_key_exists('channels', $details) ? $details['channels'] : 3; it will be loaded with 4
             $bits_per_channel = 8;//array_key_exists('bits', $details) ? $details['bits'] : 8; it will be loaded with 8

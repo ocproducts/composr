@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -686,7 +686,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
         $semihtml = comcode_preg_replace($tag, '#^(\[' . $tag . '\])(.*)(\[/' . $tag . '\])$#si', array('comcode_strip_html_tags'), $semihtml);
     }
 
-    // Cleanup how blocks are converted into a line break model. We need to clean up the case where inline leads onto block, by adding a linebreak inbetween. Note that this kind of break does not go *between* blocks, which is the reason we can't arbitrarily place it later on.
+    // Cleanup how blocks are converted into a line break model. We need to clean up the case where inline leads onto block, by adding a linebreak in-between. Note that this kind of break does not go *between* blocks, which is the reason we can't arbitrarily place it later on.
     $semihtml = preg_replace('#([^\s<>]|</(' . implode('|', $inline_elements) . ')>)(<(div|p))#', '${1}<br />${3}', $semihtml);
 
     // Reorder XHTML attributes alphabetically, so our regexp's match better

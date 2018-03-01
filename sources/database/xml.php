@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -553,7 +553,7 @@ class Database_Static_xml extends DatabaseDriver
             } else {
                 $symbol_delimiter_coming = ((isset($SYMBOL_DELIMITER[$next])) && ((isset($DELIMITERS_FLIPPED[$next])) || (($i + 1 < $len) && (isset($DELIMITERS_FLIPPED[$next . $query[$i + 1]]))))); //  (NB: symbol delimiters are a maximum of two in length)
                 if ( /*When token ends, which is..*/
-                    ($symbol_delimiter_coming || $doing_symbol_delimiter) /*Case of toggling from symbol to text or vice-versa and we find a delimitor is coming. When symbol delimiter arrives or we are doing a symbol deliminator */
+                    ($symbol_delimiter_coming || $doing_symbol_delimiter) /*Case of toggling from symbol to text or vice-versa and we find a delimiter is coming. When symbol delimiter arrives or we are doing a symbol deliminator */
                     &&
                     (!$this->is_start_of_delimiter($current_token . $next)) /*And the next character does not fit onto the end of our current token*/
                 ) {

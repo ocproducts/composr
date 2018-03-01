@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -676,19 +676,19 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_configuration/menu_editor.png',
             'data_custom/images/docs/tut_configuration/reaching_adminzone.png',
             'data_custom/images/docs/tut_configuration/setupwizard.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_create_pt_page.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_create_pt_page1.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_forum_notification_message.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_hovering_over_pt_link.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_hovering_over_startpt_link.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_new_pt.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_pt_page.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_reply_to_pt.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_thunderbird_notification_e_mail.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_whisper.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_whisper_form.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_whisper_link.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_whisper_page.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_create_pt_page.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_create_pt_page1.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_forum_notification_message.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_hovering_over_pt_link.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_hovering_over_startpt_link.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_new_pt.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_pt_page.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_reply_to_pt.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_thunderbird_notification_e_mail.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_whisper.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_whisper_form.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_whisper_link.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_whisper_page.png',
             'data_custom/images/docs/tut_design/simple_box.png',
             'data_custom/images/docs/tut_design/image.png',
             'data_custom/images/docs/tut_disaster/disaster_ban_1.png',
@@ -1304,7 +1304,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_commandr/index.html',
             'data_custom/images/docs/tut_configuration/index.html',
             'data_custom/images/docs/tut_cookies/index.html',
-            'data_custom/images/docs/tut_correspondance/index.html',
+            'data_custom/images/docs/tut_correspondence/index.html',
             'data_custom/images/docs/tut_design/index.html',
             'data_custom/images/docs/tut_disaster/index.html',
             'data_custom/images/docs/tut_downloads/index.html',
@@ -1500,7 +1500,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'docs/pages/comcode_custom/EN/tut_commandr.txt',
             'docs/pages/comcode_custom/EN/tut_configuration.txt',
             'docs/pages/comcode_custom/EN/tut_cookies.txt',
-            'docs/pages/comcode_custom/EN/tut_correspondance.txt',
+            'docs/pages/comcode_custom/EN/tut_correspondence.txt',
             'docs/pages/comcode_custom/EN/tut_design.txt',
             'docs/pages/comcode_custom/EN/tut_designer_themes.txt',
             'docs/pages/comcode_custom/EN/tut_disaster.txt',

@@ -6,7 +6,7 @@ There are a number of Composr systems that provide featured content, rather than
 Benefits of providing featured content include:
  - Giving your site a 'fresh' feeling, and a feeling that it is an active site
  - Giving variety to your site, without much effort
- - Drawing users in, such that they regularly re-visit to see what new content is featured
+ - Drawing users in, such that they regularly revisit to see what new content is featured
  - Putting content in a prime position to draw attention to it, perhaps as a reward for the content creator, perhaps for its relevancy, or perhaps to recommend it
 
 Many of these systems work via blocks. The block construction assistant will help you add a block, accessible from the 'Add block' button on the Comcode page editing screen. This is covered in much more detail in the [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page] tutorial.
@@ -68,7 +68,7 @@ Admin Zone > Setup > Top content (Awards) > Add award type
 [*] Change the 'Yacht of the week' just by editing a yacht's catalogue entry (or when you add an entry, make it 'Yacht of the week' immediately)
 [/list]
 
-Composr has one award that is pre-created for you as an example: Download Of The Week.
+Composr has one award that is precreated for you as an example: Download Of The Week.
 
 Each award has its own archive, in the [tt]awards[/tt] module ([tt]site:awards[/tt] page-link, About > Top content (Awards) of the default menus). The archive is linked from the [tt]main_awards[/tt] block also.
 

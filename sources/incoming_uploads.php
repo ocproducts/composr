@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -139,7 +139,7 @@ function incoming_uploads_script()
  */
 function clear_old_uploads()
 {
-    // Get the unix timestamp corresonding to the two days ago condition
+    // Get the unix timestamp corresponding to the two days ago condition
     $two_days_ago = strtotime('-2 days');
     // Get the incoming uploads that are older than two days
     $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'incoming_uploads WHERE i_date_and_time<' . strval($two_days_ago));

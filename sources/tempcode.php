@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -529,7 +529,7 @@ function closure_params_json($param, $args, $main_function)
     $output = camel_case_array_keys($output);
     $_output = json_encode($output, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 
-    $ps = array('_' => $_output); // "{_}" paremeter inside the directive block represents the JSON output
+    $ps = array('_' => $_output); // "{_}" parameter inside the directive block represents the JSON output
     $args[0] = $ps + $args[0]; // Combine arrays
     $args[0]['vars'] = $args[0];
     $value = call_user_func_array($main_function, $args);

@@ -22,7 +22,7 @@ In the recurrence pattern you can specify more detailed recurrences such as repe
 
 If you wanted a pattern for every third month you would choose monthly and then choose a pattern 100 which would make the event appear the first month then miss the next 2. Choosing Daily and then a pattern of 10 would add the event every other day.
 
-Recurrences specify the number of times the event will re-occur. If you leave this section blank the event will continue to re-occur. The next option is a choice to separate each recurrence so each even has its own set of comments or choose to keep all of the comments as one comment topic.
+Recurrences specify the number of times the event will reoccur. If you leave this section blank the event will continue to reoccur. The next option is a choice to separate each recurrence so each even has its own set of comments or choose to keep all of the comments as one comment topic.
 
 The final option here is if you choose monthly you gain extra options which will be determined by the initial date you entered for the first event. You can for example set the recurrence to be a specific day of the month i.e. the 21[sup]st[/sup] of every month. The other options are the same number of days from the end of the month as the initial date and two more options which are the third day of the month i.e. the third Saturday or the second last Saturday of the month.
 

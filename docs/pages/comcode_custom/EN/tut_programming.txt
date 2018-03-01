@@ -295,7 +295,7 @@ define('<CONSTANT_NAME>', <value>);
 
 [title="2"]Functions[/title]
 
-Functions are used to split up your code and make it more manageable, easier to understand, and to make portions of it re-usable. Functions may return a value and accept parameters.
+Functions are used to split up your code and make it more manageable, easier to understand, and to make portions of it reusable. Functions may return a value and accept parameters.
 For example, here I will define a function that outputs text.
 [code="PHP"]
 function write($text)
@@ -426,7 +426,7 @@ In order to build complex computer systems it is necessary to wrap up problems t
 We do this exact same thing in real life: for instance, we have a concept of a 'vegetable' which allows us to talk about healthy diets in quick terms. The concept of a 'vegetable' is created because it is a concept we can re-use in different situations, but only need to learn once for us all to understand each other when we express it.
 The process of creating of concepts is called 'abstraction'.
 
-To return to our 'vegetable' example: people often refer to tomatoes as a vegetable, because they share many properties and generally fit into the usage pattern of the concept -- however by strict biological definitions, a tomato is actually a fruit. This is the ultimate problem with abstraction that we must live with -- while we can simplify the world (or a computer system), there are exceptions to every rule -- and it can become awkward when we need all the properties of one abstraction, but we need it to be 'slightly different' in some way. This isn't a huge problem in computing, because we can just workaround the problem by improving our abstractions to be more flexible (parametrised), but it is important that it is understood that the process is not perfect.
+To return to our 'vegetable' example: people often refer to tomatoes as a vegetable, because they share many properties and generally fit into the usage pattern of the concept -- however by strict biological definitions, a tomato is actually a fruit. This is the ultimate problem with abstraction that we must live with -- while we can simplify the world (or a computer system), there are exceptions to every rule -- and it can become awkward when we need all the properties of one abstraction, but we need it to be 'slightly different' in some way. This isn't a huge problem in computing, because we can just workaround the problem by improving our abstractions to be more flexible (parameterised), but it is important that it is understood that the process is not perfect.
 
 Methods of abstraction in programming include the usage of different code-files, functions, and objects. Abstracted concepts in Composr are all over the place; examples include the attachment system, the 'require CSS' system, the download system -- in fact, just about every form of modularity is an abstraction, although some simple processes would best not be described in those terms to avoid confusion with the more significant abstractions.
 

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -480,8 +480,8 @@ function init__webstandards()
         'track' => array('audio', 'video'),
     );
 
-    global $REQUIRE_ANCESTER;
-    $REQUIRE_ANCESTER = array(
+    global $REQUIRE_ANCESTOR;
+    $REQUIRE_ANCESTOR = array(
         'textarea' => 'form',
         //'input' => 'form',
         //'button' => 'form',
@@ -1111,7 +1111,7 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
 
     $content_start_stack = array();
 
-    global $BLOCK_CONSTRAIN, $XML_CONSTRAIN, $LAST_TAG_ATTRIBUTES, $FOUND_DOCTYPE, $FOUND_DESCRIPTION, $FOUND_KEYWORDS, $FOUND_CONTENTTYPE, $THE_DOCTYPE, $TAGS_DEPRECATE_ALLOW, $URL_BASE, $PARENT_TAG, $TABS_SEEN, $KEYS_SEEN, $ANCHORS_SEEN, $ATT_STACK, $TAG_STACK, $POS, $LINENO, $LINESTART, $OUT, $T_POS, $PROHIBITIONS, $ONLY_PARENT, $ONLY_CHILDREN, $REQUIRE_ANCESTER, $LEN, $ANCESTER_BLOCK, $ANCESTER_INLINE, $POSSIBLY_EMPTY_TAGS, $MUST_SELFCLOSE_TAGS, $FOR_LABEL_IDS, $FOR_LABEL_IDS_2, $INPUT_TAG_IDS;
+    global $BLOCK_CONSTRAIN, $XML_CONSTRAIN, $LAST_TAG_ATTRIBUTES, $FOUND_DOCTYPE, $FOUND_DESCRIPTION, $FOUND_KEYWORDS, $FOUND_CONTENTTYPE, $THE_DOCTYPE, $TAGS_DEPRECATE_ALLOW, $URL_BASE, $PARENT_TAG, $TABS_SEEN, $KEYS_SEEN, $ANCHORS_SEEN, $ATT_STACK, $TAG_STACK, $POS, $LINENO, $LINESTART, $OUT, $T_POS, $PROHIBITIONS, $ONLY_PARENT, $ONLY_CHILDREN, $REQUIRE_ANCESTOR, $LEN, $ANCESTOR_BLOCK, $ANCESTOR_INLINE, $POSSIBLY_EMPTY_TAGS, $MUST_SELFCLOSE_TAGS, $FOR_LABEL_IDS, $FOR_LABEL_IDS_2, $INPUT_TAG_IDS;
     global $TAG_RANGES, $VALUE_RANGES, $LAST_A_TAG, $A_LINKS, $XHTML_FORM_ENCODING;
     global $AREA_LINKS, $LAST_HEADING, $CRAWLED_URLS, $HYPERLINK_URLS, $EMBED_URLS, $THE_LANGUAGE, $PSPELL_LINK;
     global $TAGS_BLOCK, $TAGS_INLINE, $TAGS_NORMAL, $TAGS_BLOCK_DEPRECATED, $TAGS_INLINE_DEPRECATED, $TAGS_NORMAL_DEPRECATED;
@@ -1146,8 +1146,8 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
     $INPUT_TAG_IDS = array();
     $TAG_STACK = array();
     $ATT_STACK = array();
-    $ANCESTER_BLOCK = 0;
-    $ANCESTER_INLINE = 0;
+    $ANCESTOR_BLOCK = 0;
+    $ANCESTOR_INLINE = 0;
     $POS = 0;
     $OUT = $out;
     unset($out);
@@ -1232,9 +1232,9 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
                     }
                 }
 
-                if ((isset($REQUIRE_ANCESTER[$basis_token])) && (!$is_fragment)) {
-                    if (!in_array($REQUIRE_ANCESTER[$basis_token], $TAG_STACK)) {
-                        $errors[] = _xhtml_error('XHTML_MISSING_ANCESTER', $basis_token, $REQUIRE_ANCESTER[$basis_token]);
+                if ((isset($REQUIRE_ANCESTOR[$basis_token])) && (!$is_fragment)) {
+                    if (!in_array($REQUIRE_ANCESTOR[$basis_token], $TAG_STACK)) {
+                        $errors[] = _xhtml_error('XHTML_MISSING_ANCESTOR', $basis_token, $REQUIRE_ANCESTOR[$basis_token]);
                     }
                 }
                 if (isset($ONLY_PARENT[$basis_token])) {
@@ -1548,7 +1548,7 @@ function fix_entities($in)
  */
 function _get_next_tag()
 {
-    global $PARENT_TAG, $POS, $LINENO, $LINESTART, $OUT, $T_POS, $ENTITIES, $LEN, $ANCESTER_BLOCK, $TAG_STACK, $WEBSTANDARDS_CHECKER_OFF, $TEXT_NO_BLOCK, $INBETWEEN_TEXT;
+    global $PARENT_TAG, $POS, $LINENO, $LINESTART, $OUT, $T_POS, $ENTITIES, $LEN, $ANCESTOR_BLOCK, $TAG_STACK, $WEBSTANDARDS_CHECKER_OFF, $TEXT_NO_BLOCK, $INBETWEEN_TEXT;
     global $TAG_RANGES, $VALUE_RANGES;
 
     $status = ($PARENT_TAG == 'script' || $PARENT_TAG == 'style') ? IN_IMPLICIT_CDATA : NO_MANS_LAND;

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -305,9 +305,9 @@ class Hook_import_smf2
             // Here we get the Composr ID of the group
             $id_new = import_id_remap_get('group', $old_id, true);
             $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_promotion_target' => $promotion_target, 'g_promotion_threshold' => $promotion_threshold), array('id' => $id_new));
-            // On the next run the promotin target will be this last updated group
+            // On the next run the promotion target will be this last updated group
             $promotion_target = $id_new;
-            // On the next run the promotin threshold will be this last updated groups required posts
+            // On the next run the promotion threshold will be this last updated groups required posts
             $promotion_threshold = $row['min_posts'];
         }
         // Now we've done all the groups based on posts lets check whether to update the default group
@@ -550,7 +550,7 @@ class Hook_import_smf2
      * Used with cns_custom_profile_fields.
      *
      * @param  string $default Default value
-     * @param  string $options List of coma seperated options
+     * @param  string $options List of coma separated options
      * @return string Imploded with pipe
      */
     public function cpf_options_string($default, $options)
@@ -1436,7 +1436,7 @@ class Hook_import_smf2
         static $st = array();
         // Are we returning this run or not?
         if ($r) {
-            // Yes we are so lets move the static aray to a temp one so we can unset it
+            // Yes we are so lets move the static array to a temp one so we can unset it
             $rt = $st;
             // Ok Cleanup
             unset($st);
@@ -1471,7 +1471,7 @@ class Hook_import_smf2
      */
     public function set_forum_view_accesss($gid, $fid)
     {
-        // Make a Compounded Name ID for the immporter map
+        // Make a Compounded Name ID for the importer map
         $check_import_id = strval($gid) . '_' . strval($fid);
         // Now Check we didn't import this already?
         if (!import_check_if_imported('forum_view', $check_import_id)) {
@@ -1529,7 +1529,7 @@ class Hook_import_smf2
      */
     public function set_forums_perms($group_id, $forum_id, $role = 0)
     {
-        // Make a Compounded Name ID for the immporter map
+        // Make a Compounded Name ID for the importer map
         $check_import_id = strval($group_id) . '_' . strval($forum_id);
         // Now Check we didn't import this already?
         if (!import_check_if_imported('forum_perms', $check_import_id)) {

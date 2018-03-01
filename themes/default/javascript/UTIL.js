@@ -963,7 +963,7 @@
     };
 
     /**
-     * Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog inbetween their click)
+     * Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog in-between their click)
      * @param url
      * @param target
      */

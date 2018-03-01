@@ -247,7 +247,7 @@ q::after {
 	content: "\201d";
 }
 
-/* Re-apply default styles non-HTML5-aware browsers */
+/* Reapply default styles non-HTML5-aware browsers */
 details, aside, header, footer, nav, article, section, figure, figcaption {
 	display: block;
 }
@@ -3439,7 +3439,7 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 	font-size: 0.95em;
 }
 
-.associated-minor-button-overlayed {
+.associated-minor-button-overlaid {
 	position: absolute;
 }
 
