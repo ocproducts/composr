@@ -159,6 +159,9 @@ function init__global2()
 
         //  encoding="' . get_charset() . '" not needed due to no data in it
         $output = '<?xml version="1.0" ?' . '><response><result></result></response>';
+        echo $output;
+
+        exit(); // So auto_append_file cannot run and corrupt our output
     }
 
     // Initialise timezones

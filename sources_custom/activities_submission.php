@@ -165,6 +165,8 @@ function activities_ajax_submit_handler()
     $response .= '</content></response>';
 
     echo $response;
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -254,6 +256,8 @@ function activities_ajax_update_list_handler()
     }
 
     echo $response;
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -298,6 +302,8 @@ function activities_ajax_removal_handler()
     $response .= '</response>';
 
     echo $response;
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**

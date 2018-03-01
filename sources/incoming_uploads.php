@@ -138,6 +138,8 @@ function incoming_uploads_script()
         }
         $outstr .= '}';
         echo $outstr;
+
+        exit(); // So auto_append_file cannot run and corrupt our output
     } else {
         //header('Content-type: text/plain; charset=' . get_charset()); @print('No file (' . serialize($_FILES) . ')');
         header('HTTP/1.1 500 File Upload Error');

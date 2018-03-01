@@ -159,6 +159,8 @@ function commandr_script()
             http_download_file('http://compo.sr/data_custom/commandr.php?title=' . urlencode(get_site_name()) . '&url=' . urlencode(get_custom_base_url()), null, false, true);
         }
     }
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**

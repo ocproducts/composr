@@ -85,6 +85,8 @@ function realtime_rain_script()
     }
     $out->evaluate_echo();
     echo '</result></request>';
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
