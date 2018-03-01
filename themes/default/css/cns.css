@@ -45,12 +45,12 @@ This file defines styles for Conversr (abbreviated as CNS).
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.cns-forum-topic-wrapper-column-column1, 
-	.cns-forum-topic-wrapper-column-column2, 
-	.cns-forum-topic-wrapper-column-column3, 
-	.cns-forum-topic-wrapper-column-column4, 
-	.cns-forum-topic-wrapper-column-column5, 
-	.cns-forum-topic-wrapper-column-column6, 
+	.cns-forum-topic-wrapper-column-column1,
+	.cns-forum-topic-wrapper-column-column2,
+	.cns-forum-topic-wrapper-column-column3,
+	.cns-forum-topic-wrapper-column-column4,
+	.cns-forum-topic-wrapper-column-column5,
+	.cns-forum-topic-wrapper-column-column6,
 	.cns-forum-topic-wrapper-column-column7 {
 		width: auto;
 	}
@@ -515,9 +515,9 @@ hr.cns-sig-barrier {
 	max-width: 10.5em;
 }
 
-.cns-topic-control-functions label, 
-.cns-topic-control-functions span, 
-.cns-topic-control-functions input, 
+.cns-topic-control-functions label,
+.cns-topic-control-functions span,
+.cns-topic-control-functions input,
 .cns-topic-control-functions select {
 	vertical-align: middle;
 }

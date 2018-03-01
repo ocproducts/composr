@@ -513,7 +513,7 @@ function placeholder_breadcrumbs()
  * @param  ID_TEXT $codename The codename of the template being loaded
  * @param  array $parameters A map of parameters for the template (key to value)
  * @param  ?LANGUAGE_NAME $lang The language to load the template in (templates can embed language references) (null: users own language)
- * @param  boolean $light_error Whether to not produce a stack dump if the template is missing
+ * @param  boolean $light_error Whether to not produce a stack trace if the template is missing
  * @param  ?ID_TEXT $fallback Alternate template to use if the primary one does not exist (null: none)
  * @param  string $suffix File type suffix of template file (e.g. .tpl)
  * @param  string $directory Subdirectory type to look in

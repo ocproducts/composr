@@ -45,6 +45,8 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 
 global $FORCE_INVISIBLE_GUEST;
 $FORCE_INVISIBLE_GUEST = false;
+global $KNOWN_UTF8;
+$KNOWN_UTF8 = true;
 global $EXTERNAL_CALL;
 $EXTERNAL_CALL = false;
 if (!is_file($FILE_BASE . '/sources/global.php')) {

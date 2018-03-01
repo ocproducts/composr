@@ -1773,8 +1773,8 @@
 
             function _standardAlternateFieldIsFilledIn(field, secondRun, force) {
                 if (!field) { // N/A input is considered unset
-                    return false; 
-                } 
+                    return false;
+                }
 
                 var isSet = force || ((field.value !== '') && (field.value !== '-1'));
 

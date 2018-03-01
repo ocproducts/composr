@@ -22,7 +22,7 @@
 {+START,LOOP,NEWS}
 	<script type="text/html" id="image-fader-{$GET,RAND_FADER_NEWS}-news-item-{_loop_key}-html" {$CSP_NONCE_HTML}>
 		<h3><a href="{URL*`}">{TITLE`}</a></h3>
-	
+
 		<div class="meta-details" role="note">
 			<ul class="meta-details-list">
 				<li>{!POSTED_TIME_SIMPLE,{DATE*`}}</li>
@@ -31,7 +31,7 @@
 						{!BY_SIMPLE,<a href="{AUTHOR_URL*`}" title="{!AUTHOR`}: {AUTHOR*`}">{AUTHOR*`}</a>}
 						{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
 					{+END}
-	
+
 					{+START,IF,{$IS_EMPTY,{AUTHOR_URL}}}
 						{+START,IF_NON_EMPTY,{$USERNAME*,{SUBMITTER}}}
 							{!BY_SIMPLE,<a rel="author" href="{$MEMBER_PROFILE_URL*`,{SUBMITTER}}">{$USERNAME*`,{SUBMITTER}}</a>}
@@ -39,7 +39,7 @@
 						{+END}
 					{+END}
 				{+END}
-	
+
 				{+START,IF_NON_EMPTY,{$GET,author_details}}
 				<li>
 					{$GET`,author_details}

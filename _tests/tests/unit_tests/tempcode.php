@@ -422,7 +422,7 @@ bar
 	<td>
 		A1 B1 C1
 	</td>
-		
+
 	<th>Blah</th>
 	<td>
 		A2 B2 C2

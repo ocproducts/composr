@@ -1,4 +1,4 @@
-(function ($cms, $util, $dom) { 
+(function ($cms, $util, $dom) {
     'use strict';
 
     /**
@@ -1004,7 +1004,7 @@
      * */
     $cms.views.Global = function Global(params) {
         Global.base(this, 'constructor', arguments);
-        
+
         var pageLinkPrivacy = strVal(params.pageLinkPrivacy);
 
         /*START JS from HTML_HEAD.tpl*/
@@ -1426,7 +1426,7 @@
                 if ((target.src === undefined) && (!event.ctrlKey) && (!event.metaKey) && (!event.altKey)) {
                     return;  // Needs ctrl key for background images
                 }
-                if (!src.includes('/themes/') || ($cms.getPageName() === 'admin_themes')) { 
+                if (!src.includes('/themes/') || ($cms.getPageName() === 'admin_themes')) {
                     return;
                 }
 
@@ -2113,7 +2113,7 @@
 
         var left = 0,
             top = 0;
-        
+
         // Our own position computation as we are positioning relatively, as things expand out
         if ($dom.isCss(popupEl.parentElement.parentElement, 'position', 'absolute')) {
             left += popupEl.parentElement.offsetLeft;
@@ -2159,12 +2159,12 @@
         var eWidth = popupEl.offsetWidth;
 
         popupEl.style.minWidth = eParentWidth + 'px';
-        
+
         positionLeft();
         setTimeout(positionLeft, 0);
         positionTop();
         setTimeout(positionTop, 0);
-        
+
         popupEl.style.zIndex = 200;
 
         recreateCleanTimeout();
@@ -2182,7 +2182,7 @@
             }
             popupEl.style.left = posLeft + 'px';
         }
-        
+
         function positionTop() {
             var posTop = top;
             if (posTop + popupEl.offsetHeight + 10 > fullHeight) {

@@ -252,7 +252,7 @@ inspect($a, $b, $c);
 
 If output has already started then Composr will give you your details in an info box at the bottom of the displayed screen; otherwise you'll get a text dump.
 
-This is very useful when stepping through code. Often bugs are because you are using the wrong data types (e.g. Tempcode objects being treated as strings). Temporarily placing inspect calls in your code and moving them along as you analyse exactly what is happening is a good way to test exactly what is happening for the occasions when the automatic stack dumps are not available or do not reveal the real cause of the problem.
+This is very useful when stepping through code. Often bugs are because you are using the wrong data types (e.g. Tempcode objects being treated as strings). Temporarily placing inspect calls in your code and moving them along as you analyse exactly what is happening is a good way to test exactly what is happening for the occasions when the automatic stack traces are not available or do not reveal the real cause of the problem.
 
 If you have an IDE with a debugger then this is better, but we find most developers do not have one, and also PHP debuggers tend to be quite unreliable. This old fashioned manual technique of manually tracing through code works well if you are quick at making changes and refreshing the browser window.
 
@@ -1191,11 +1191,6 @@ This section is not designed as primary documentation for the tools. Those tools
 | Build the documentation index page.
 | [tt]composr_tutorials[/tt]
 | Composr module
-|-
-| [tt]data_custom/build_tutorials_addon_registry_parts.php[/tt]
-| Used for completing the [tt]addon_registry[/tt] hook to include all the latest tutorials and associated graphics.
-| [tt]composr_tutorials[/tt]
-| Command-line via PHP interpreter
 |}
 
 [title="3"]Release management[/title]

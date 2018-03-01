@@ -346,7 +346,7 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
     $semihtml = str_replace('&#8203;', '', $semihtml);
     $array_html_preg_replace = array();
     if (get_charset() == 'utf-8') {
-        $semihtml = str_replace(chr(hexdec('e2')) . chr(hexdec('80')) . chr(hexdec('8b')), '', $semihtml);
+        $semihtml = str_replace(build_hex_string('e2808b'), '', $semihtml);
     }
 
     if (stripos($semihtml, '<input') !== false) {
@@ -1076,7 +1076,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
         //$semihtml2 = str_replace(array('&lt;', '&gt;', '&amp;'), array('___lt___', '___gt___', '___amp___'), $semihtml2);
         $semihtml2 = @html_entity_decode($semihtml2, ENT_QUOTES);
         //$semihtml2 = str_replace(array('___lt___', '___gt___', '___amp___'), array('&lt;', '&gt;', '&amp;'), $semihtml2);
-        $semihtml2 = str_replace(chr(hexdec('C2')) . chr(hexdec('A0')), '&nbsp;', $semihtml2); // Make nbsp legible as an entity again, as otherwise we'll have portability issues with this very common non-ASCII entity
+        $semihtml2 = str_replace(build_hex_string('c2a0'), '&nbsp;', $semihtml2); // Make nbsp legible as an entity again, as otherwise we'll have portability issues with this very common non-ASCII entity
         return $semihtml2;
     }
 

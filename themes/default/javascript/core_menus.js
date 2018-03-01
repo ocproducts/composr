@@ -330,7 +330,7 @@
 
             // Backup form branches
             var form = $dom.$id('edit-form'),
-                _elementsBak = form.elements, 
+                _elementsBak = form.elements,
                 elementsBak = [], i;
 
             for (i = 0; i < _elementsBak.length; i++) {

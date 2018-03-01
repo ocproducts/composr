@@ -26,7 +26,7 @@
             return Math.round(ret);
         }
     };
-    
+
     $cms.behaviors.btnLoadCommandr = {
         attach: function (context) {
             $util.once($dom.$$$(context, '[data-btn-load-commandr]'), 'behavior.btnLoadCommandr').forEach(function (btn) {

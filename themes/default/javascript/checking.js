@@ -340,7 +340,7 @@
      * @returns {string}
      */
     $cms.form.cleverFindValue = function cleverFindValue(form, element) {
-        if ((element.nodeName === undefined) && $util.isArrayLike(element)) { 
+        if ((element.nodeName === undefined) && $util.isArrayLike(element)) {
             // A RadioNodeList? (returned by form.elements[<name of a radio input>])
             element = element[0];
         }
@@ -445,8 +445,8 @@
         }
 
         return  new Promise(function (resolveCheckFormPromise) {
-            var erroneous = false, 
-                totalFileSize = 0, alerted = false, 
+            var erroneous = false,
+                totalFileSize = 0, alerted = false,
                 errorElement = null,
                 theElements = arrVal(theForm.elements),
                 fieldCheckPromiseCalls = [];

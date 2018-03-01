@@ -115,7 +115,7 @@
                                 }
                             }
                         }
-                        
+
                         if (tabs[i] === tab) {
                             $dom.fadeIn(element);
                             elementh.classList.add('tab-active');

@@ -31,7 +31,7 @@ class js_lang_references_test_set extends cms_test_case
                 $core_ini_files_contents .= file_get_contents(get_file_base() . '/' . $path);
             }
         }
- 
+
         foreach (array('javascript', 'javascript_custom') as $subdir) {
             $path = get_file_base() . '/themes/default/' . $subdir;
             $dh = opendir($path);

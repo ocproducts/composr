@@ -77,6 +77,8 @@ function username_check_script()
     if ($error !== null) {
         $error->evaluate_echo();
     }
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -95,6 +97,8 @@ function username_exists_script()
     if ($member_id === null) {
         echo 'false';
     }
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -206,6 +210,8 @@ function namelike_script()
     }
 
     echo '</result></request>';
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -245,6 +251,8 @@ function find_permissions_script()
 
         echo has_privilege_group($group_id, $privilege, $privilege_page) ? do_lang('YES') : do_lang('NO');
     }
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -294,6 +302,8 @@ function fractional_edit_script()
     }
     safe_ini_set('ocproducts.xss_detect', '0');
     echo $edited;
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -315,6 +325,8 @@ function change_detection_script()
     $object = object_factory('Hook_change_detection_' . filter_naughty_harsh($page));
     $result = $object->run($refresh_if_changed);
     echo $result ? '1' : '0';
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -346,6 +358,8 @@ function edit_ping_script()
     ));
 
     echo '1';
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -396,6 +410,8 @@ function ajax_tree_script()
     $val = $object->run($id, $options, get_param_string('default', null, INPUT_FILTER_GET_COMPLEX));
     echo str_replace('</body>', '<br id="ended" /></body>', $val);
     echo($html_mask ? '</html>' : '</request>');
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -414,7 +430,8 @@ function confirm_session_script()
     if (!$SESSION_CONFIRMED_CACHE) {
         echo $GLOBALS['FORUM_DRIVER']->get_username(get_member());
     }
-    echo '';
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -450,6 +467,8 @@ function load_template_script()
     if (file_exists($x)) {
         echo cms_file_get_contents_safe($x);
     }
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -471,6 +490,8 @@ function sheet_script()
             echo str_replace('../../../', '', cms_file_get_contents_safe($path));
         }
     }
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -493,6 +514,8 @@ function script_script()
             echo str_replace('../../../', '', cms_file_get_contents_safe($path));
         }
     }
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -529,4 +552,6 @@ function snippet_script()
     }
 
     echo $out;
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }

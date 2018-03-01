@@ -228,12 +228,12 @@
                 if ((window.opener) && (window.opener.document)) {
                     if (editor.lastChange === undefined) { // No change made at all
                         return;
-                    } 
+                    }
 
                     var millisecondsAgo = (new Date()).getTime() - editor.lastChange;
                     if (millisecondsAgo > 3 * 1000) { // Not changed recently enough (within last 3 seconds)
                         return;
-                    } 
+                    }
 
                     if (window.opener.haveSetUpParentPageHighlighting === undefined) {
                         setUpParentPageHighlighting(file, fileId);
@@ -244,7 +244,7 @@
                     var newCss = editareaGetValue(textareaId);
                     if (newCss == lastCss) {// Not changed
                         return;
-                    } 
+                    }
 
                     var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=css_compile__text' + $cms.keep(),
                         post = 'css=' + encodeURIComponent(newCss);
@@ -411,7 +411,7 @@
                                 } while (elementRecurse);
                                 if (targetDistance > 10) { // Max range
                                     targetDistance = 10;
-                                } 
+                                }
 
                                 a.style.outline = '1px dotted green';
                                 a.style.background = '#00' + ($util.decToHex(255 - targetDistance * 25)) + '00';

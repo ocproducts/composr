@@ -179,7 +179,7 @@
 
     function receivedEvents(responseXml) {
         var ajaxResult = responseXml && responseXml.querySelector('result');
-        
+
         if (!ajaxResult) {
              return;
         }

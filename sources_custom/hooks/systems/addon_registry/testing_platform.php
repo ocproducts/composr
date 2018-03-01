@@ -487,6 +487,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/optimisations_fragile.php',
             '_tests/tests/unit_tests/sitemap_submit.php',
             '_tests/tests/unit_tests/_broken_links.php',
+            '_tests/tests/unit_tests/_lang_spelling.php',
             '_tests/tests/unit_tests/lang_spelling.php',
             '_tests/tests/unit_tests/lang_administrative_split.php',
             '_tests/tests/unit_tests/lang_no_unused.php',

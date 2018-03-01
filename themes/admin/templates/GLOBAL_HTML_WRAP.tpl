@@ -37,7 +37,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				{+START,IF,{$NOT,{$HAS_ZONE_ACCESS,adminzone}}}
 					{$SET,admin_menu_string,site:{$DEFAULT_ZONE_PAGE_NAME}\,include=node\,title={!HOME}\,icon=buttons/close + cms:\,include=node\,max_recurse_depth=3\,use_page_groupings=1,type={$?,{$MOBILE},mobile,dropdown}}
 				{+END}
-				
+
 				{$BLOCK-,block=menu,param={$GET,admin_menu_string},type=dropdown}
 
 				{+START,IF,{$MOBILE}}

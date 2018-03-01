@@ -646,9 +646,9 @@ jQuery(function ($) {
 
 (function ($cms, $util, $dom) {
     'use strict';
-    
+
     var $jqueryAutocomplete = window.$jqueryAutocomplete = {};
-    
+
     /**
      * @param {jQuery} element the target element (LI)
      * @param {*} e object containing the val and meta properties (from the input list)

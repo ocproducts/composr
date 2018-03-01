@@ -3,7 +3,7 @@
 		<a class="toggleable-tray-button js-click-toggle-title-section" href="#!">{!ADVANCED_BELOW}:</a>
 		<a class="toggleable-tray-button js-click-toggle-title-section" href="#!"><img id="img-{TITLE|*}" alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" width="24" height="24" src="{$BASE_URL*}/install.php?type=expand2" /></a>
 	</p>
-	
+
 	<div id="{TITLE|*}" style="display: none">
 		{CONTENT}
 	</div>

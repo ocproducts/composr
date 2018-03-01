@@ -98,8 +98,8 @@
 
         // Go through and set maximum permissions/override from those selected
         var values = setting.value.split(',');
-        var id, name, value, i, node, j, group, element, privilege, privilegeTitle, 
-            knownGroups = [], knownPrivileges = [], k, newOption, 
+        var id, name, value, i, node, j, group, element, privilege, privilegeTitle,
+            knownGroups = [], knownPrivileges = [], k, newOption,
             numPrivilegeDefault, numPrivilege, ths, tds, cells, newCell, row;
         var matrix = document.getElementById('enter-the-matrix').querySelector('table');
         var numPrivilegeTotal = 0;
@@ -250,7 +250,7 @@
                     element = document.getElementById('access_' + group + '_privilege_' + privilege);
                     if (element.selectedIndex < parseInt(value) + 1) { // -1 corresponds to 0.
                         element.selectedIndex = parseInt(value) + 1;
-                    } 
+                    }
                 }
             }
 
@@ -335,9 +335,9 @@
 
         // Go through and set maximum permissions/override from those selected
         var values = setting.value.split(',');
-        var id, i, node, j, group, element, privilege, 
-            knownGroups = [], serverid, 
-            setRequest = '', 
+        var id, i, node, j, group, element, privilege,
+            knownGroups = [], serverid,
+            setRequest = '',
             setRequestB, newValue;
 
         for (i = 0; i < values.length; i++) {

@@ -124,6 +124,8 @@ function commandr_script()
             exit($output);
         }
     }
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**

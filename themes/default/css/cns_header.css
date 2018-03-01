@@ -17,7 +17,7 @@
 .cns-information-bar-outer .toggleable-tray-title img {
 	opacity: 0.2;
 }
-.cns-information-bar-outer .toggleable-tray-title:hover img, 
+.cns-information-bar-outer .toggleable-tray-title:hover img,
 body.touch-enabled .cns-information-bar-outer body.touch-enabled .toggleable-tray-title img {
 	opacity: 1.0;
 }

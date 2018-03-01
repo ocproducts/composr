@@ -241,6 +241,8 @@ function messages_script()
         // Getting all new messages (i.e. up to our last refresh time)
         _chat_messages_script_ajax(either_param_integer('room_id'), false, either_param_integer('message_id'), either_param_integer('event_id'));
     }
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -704,8 +706,6 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
         ));
         $messages_output = '<div sender_id="' . strval($_message['member_id']) . '" room_id="' . strval($_message['room_id']) . '" id="123456789" timestamp="' . strval($_message['date_and_time']) . '">' . $template->evaluate() . '</div>';
 
-        prepare_for_known_ajax_response();
-
         header('Content-Type: application/xml');
         $output = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '" ?' . '>
 <!DOCTYPE xc:content [
@@ -801,8 +801,6 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
 
     /*if ($return == '0') Flood control creates error, but we'd rather see it shown inline
     {
-        prepare_for_known_ajax_response();
-
         header('Content-Type: application/xml');
         $output = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '" ?' . '>
 <!DOCTYPE xc:content [

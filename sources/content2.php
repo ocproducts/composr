@@ -969,7 +969,7 @@ function _seo_meta_find_data($keyword_sources, $description = '')
     if (cms_mb_strlen($description) > 160) {
         if (get_charset() == 'utf-8') {
             $description = cms_mb_substr($description, 0, 159);
-            $description .= '…';
+            $description .= build_hex_string('e280a6');
         } else {
             $description = cms_mb_substr($description, 0, 157);
             $description .= '...';

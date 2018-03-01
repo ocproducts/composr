@@ -19,7 +19,7 @@
         BlockMainImageFader.base(this, 'constructor', arguments);
 
         var data = {},
-            id = strVal(params.randFaderImage), 
+            id = strVal(params.randFaderImage),
             milliseconds = Number(params.mill), i;
 
         this.fpAnimationEl = document.getElementById('image-fader-' + id);

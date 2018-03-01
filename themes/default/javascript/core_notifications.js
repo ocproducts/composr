@@ -388,7 +388,7 @@
             var tooltip = document.querySelector('body > .tooltip');
             if (tooltip != null) { // Hide tooltip, to stop it being a mess
                 tooltip.style.display = 'none';
-            } 
+            }
 
             el.style.display = 'inline';
         } else {

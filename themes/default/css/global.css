@@ -335,7 +335,7 @@ th, .fake-th {
 .table-header-sorting {
 	float: right;
 }
-.columned-table[itemprop="significantLinks"] tbody tr th, 
+.columned-table[itemprop="significantLinks"] tbody tr th,
 .columned-table[itemprop="significantLinks"] tbody tr .fake-th { /* itemprop is for precedence */
 	background-color: {$GET,box_title_background_2} !important;
 	color: {$GET,box_title_text} !important;
@@ -3814,7 +3814,7 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 	font-size: 13px;
 	min-width: 8em;
 }
-.buttons--previous.button-screen, 
+.buttons--previous.button-screen,
 .buttons--previous-none.button-screen {
 	padding: 6px 7px 7px 39px !important;
 	background-position: 7px 3px !important;
@@ -3850,7 +3850,7 @@ div .button-micro {
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	display: inline-block;
 }
-.buttons--previous-none, 
+.buttons--previous-none,
 .buttons--next-none {
 	opacity: 0.85 !important;
 	cursor: not-allowed;
@@ -3929,10 +3929,10 @@ NB: Form buttons are wrapped in either:
 */
 
 
-.admin--delete3, 
-.buttons-group .admin--edit, 
-.buttons-group .admin--wiki-edit-tree, 
-.buttons-group .admin--merge, 
+.admin--delete3,
+.buttons-group .admin--edit,
+.buttons-group .admin--wiki-edit-tree,
+.buttons-group .admin--merge,
 .buttons-group .admin--move {
 	background-color: {$GET,required_background};
 	color: {$GET,slightly_seeded_text} !important;

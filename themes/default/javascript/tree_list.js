@@ -49,7 +49,7 @@
         $dom.html(this.el, '<div class="ajax-loading vertical-alignment"><img width="20" height="20" src="' + $util.srl('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
         // Initial rendering
-        var url = this.ajaxUrl, 
+        var url = this.ajaxUrl,
             that = this;
         if (params.rootId) {
             url += '&id=' + encodeURIComponent(params.rootId);
@@ -133,7 +133,7 @@
         },
 
         renderTree: function renderTree(xml, html, element) {
-            var that = this, colour, newHtml, escapedTitle, initiallyExpanded, 
+            var that = this, colour, newHtml, escapedTitle, initiallyExpanded,
                 selectable, extra, func, masterHtml;
 
             element || (element = $dom.$id(this.name));
@@ -634,12 +634,12 @@
                             this.makeElementLookSelected(anchors[i], false);
                         }
                         this.makeElementLookSelected($dom.$id(this.name + 'tsel_' + type + '_' + realSelectedId), true);
-                    } 
-                } 
+                    }
+                }
 
                 for (i = 0; i < selectedAfter.length; i++) {
                     this.makeElementLookSelected($dom.$id(this.name + 'tsel_' + type + '_' + selectedAfter[i]), true);
-                } 
+                }
 
                 var newVal = selectedAfter.join(',');
                 element.selectedTitle = (selectedAfter.length === 1) ? xmlNode.getAttribute('title') : newVal;

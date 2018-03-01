@@ -51,7 +51,7 @@
     }
 
     /**
-     * 
+     *
      * @param postValue
      * @param number
      * @return {*|boolean}
@@ -122,7 +122,7 @@
             }
 
             var tag = 'attachment', // [attachment]
-                showOverlay = false, 
+                showOverlay = false,
                 defaults = {};
 
             if (!filepath.includes('fakepath')) { // iPhone gives c:\fakepath\image.jpg, so don't use that
@@ -214,7 +214,7 @@
                     if (!comcodeAdded) {  // Cancelled
                         var clearButton = document.getElementById('fsClear_file' + number);
                         if (clearButton) {
-                            $dom.trigger(clearButton, 'click');    
+                            $dom.trigger(clearButton, 'click');
                         }
                         return;
                     }
@@ -631,7 +631,7 @@
             });
 
             return;
-        } 
+        }
 
         $cms.ui.prompt('{!javascript:ENTER_ZONE;^}', '', null, '{!comcode:INPUT_COMCODE_page;^}').then(function (va) {
             if (va !== null) {

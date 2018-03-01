@@ -19,6 +19,7 @@
 class basic_code_formatting_test_set extends cms_test_case
 {
     protected $files;
+    protected $text_formats;
 
     public function setUp()
     {
@@ -28,17 +29,31 @@ class basic_code_formatting_test_set extends cms_test_case
 
         $this->files = get_directory_contents(get_file_base(), '', IGNORE_FLOATING | IGNORE_CUSTOM_DIR_FLOATING_CONTENTS | IGNORE_UPLOADS | IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_CUSTOM_THEMES);
         $this->files[] = 'install.php';
-    }
 
-    // TODO: #3467 Make sure no core text files contain non-ASCII characters; with some exceptions like maintenance_status.csv
+        $this->text_formats = array();
+        $path = get_file_base() . '/.gitattributes';
+        $c = file_get_contents($path);
+        $matches = array();
+        $num_matches = preg_match_all('#^\*\.(\w+) text#m', $c, $matches);
+        $found = array();
+        for ($i = 0; $i < $num_matches; $i++) {
+            $ext = $matches[1][$i];
+            $this->text_formats[$ext] = true;
+        }
+    }
 
     public function testNoBomMarkers()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testNoBomMarkers')) {
+            return;
+        }
+
         $boms = array(
-            'utf-32' => chr(hexdec('FF')) . chr(hexdec('FE')) . chr(hexdec('00')) . chr(hexdec('00')),
-            'utf-16' => chr(hexdec('FF')) . chr(hexdec('FE')),
-            'utf-8' => chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF')) ,
-            'GB-18030' => chr(hexdec('84')) . chr(hexdec('31')) . chr(hexdec('95')) . chr(hexdec('33')),
+            'utf-32' => build_hex_string('fffe0000'),
+            'utf-16' => build_hex_string('fffe'),
+            'utf-8' => build_hex_string('efbbbf') ,
+            'GB-18030' => build_hex_string('84319533'),
         );
 
         foreach ($this->files as $path) {
@@ -54,6 +69,11 @@ class basic_code_formatting_test_set extends cms_test_case
 
     public function testTabbing()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testTabbing')) {
+            return;
+        }
+
         $file_types_spaces = array(
             'js',
             'php',
@@ -123,49 +143,128 @@ class basic_code_formatting_test_set extends cms_test_case
         }
     }
 
-    public function testCorrectLineTerminationAndLineFormat()
+    public function testNoTrailingWhitespace()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testNoTrailingWhitespace')) {
+            return;
+        }
+
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(300);
         }
 
-        $file_types = array_flip(array(
-            // Text formats we allow web access to
-            '1st',
-            'atom',
-            'css',
-            'csv',
-            'diff',
-            'html',
-            'ics',
-            'ini',
-            'js',
-            'json',
-            'log',
-            'patch',
-            'php',
-            'rss',
-            'sql',
-            'svg',
-            'tpl',
-            'txt',
-            'xml',
-            'xsd',
-            'xsl',
+        foreach ($this->files as $path) {
+            $exceptions = array(
+                '_tests/codechecker/netbeans',
+                '_tests/simpletest',
+                'data/ace',
+                'data/ckeditor/plugins/codemirror',
+                'data/polyfills',
+                'mobiquo/lib',
+                'mobiquo/smartbanner',
+                'sources_custom/aws',
+                'sources_custom/Cloudinary',
+                'sources_custom/composr_mobile_sdk/ios',
+                'sources_custom/photobucket',
+                'sources_custom/programe',
+                'sources_custom/sabredav',
+                'tracker',
+            );
+            if (preg_match('#^(' . implode('|', $exceptions) . ')/#', $path) != 0) {
+                continue;
+            }
 
-            // Other text formats
-            'bat',
-            'config',
-            'crt',
-            'editfrom',
-            'htaccess',
-            'htm',
-            'plist',
-            'pre',
-            'properties',
-            'java',
-            'sh',
-        ));
+            $exceptions = array(
+                'data/no_banning.txt',
+                'sources_custom/twitter.php',
+                'user.sql',
+                'themes/default/javascript_custom/mediaelement-and-player.js',
+                'themes/default/javascript_custom/skitter.js',
+                'themes/default/javascript_custom/sortable_tables.js',
+                'themes/default/javascript_custom/unslider.js',
+                'themes/default/templates/BREADCRUMB_SEPARATOR.tpl',
+            );
+            if (in_array($path, $exceptions)) {
+                continue;
+            }
+
+            $ext = get_file_extension(get_file_base() . '/' . $path);
+
+            if ((isset($this->text_formats[$ext])) && ($ext != 'svg') && ($ext != 'ini')) {
+                $c = file_get_contents($path);
+
+                $ok = (preg_match('#[ \t]$#m', $c) == 0);
+                $this->assertTrue($ok, 'Has trailing whitespace in ' . $path);
+            }
+        }
+    }
+
+    public function testNoNonAscii()
+    {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testNoNonAscii')) {
+            return;
+        }
+
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(300);
+        }
+
+        foreach ($this->files as $path) {
+            $exceptions = array(
+                '_tests/simpletest',
+                'data/ckeditor',
+                'sources_custom/aws',
+                'sources_custom/geshi',
+                'sources_custom/getid3',
+                'sources_custom/ILess',
+                'sources_custom/sabredav',
+                'sources_custom/spout',
+                'sources_custom/swift_mailer',
+                'tracker',
+            );
+            if (preg_match('#^(' . implode('|', $exceptions) . ')/#', $path) != 0) {
+                continue;
+            }
+
+            $exceptions = array(
+                'data/curl-ca-bundle.crt',
+                'lang/langs.ini',
+                'mobiquo/license_agreement.txt',
+                'themes/default/css_custom/confluence.css',
+            );
+            if (in_array($path, $exceptions)) {
+                continue;
+            }
+
+            $ext = get_file_extension(get_file_base() . '/' . $path);
+
+            if (isset($this->text_formats[$ext])) {
+                $c = file_get_contents($path);
+
+                if ($ext == 'php' || $ext == 'css' || $ext == 'js') {
+                    // Strip comments, which often contain people's non-English names
+                    $c = preg_replace('#/\*.*\*/#Us', '', $c);
+                    $c = preg_replace('#//.*#', '', $c);
+                }
+
+                $ok = (preg_match('#[^\x00-\x7f]#', $c) == 0);
+                $this->assertTrue($ok, 'Has non-ASCII data in ' . $path);
+            }
+        }
+    }
+
+    public function testCorrectLineTerminationAndLineFormat()
+    {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testCorrectLineTerminationAndLineFormat')) {
+            return;
+        }
+
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(300);
+        }
 
         foreach ($this->files as $path) {
             if (filesize(get_file_base() . '/' . $path) == 0) {
@@ -191,7 +290,7 @@ class basic_code_formatting_test_set extends cms_test_case
 
             $ext = get_file_extension(get_file_base() . '/' . $path);
 
-            if (isset($file_types[$ext])) {
+            if (isset($this->text_formats[$ext])) {
                 $c = file_get_contents($path);
 
                 $this->assertTrue(strpos($c, "\r") === false, 'Windows text format detected for ' . $path);

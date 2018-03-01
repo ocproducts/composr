@@ -202,7 +202,7 @@ function user_lang()
     }
 
     // Quick exit: No Internationalisation enabled
-    if ((function_exists('get_option')) && (get_option('enable_language_selection') != '1')) {
+    if ((function_exists('get_option')) && (get_option('enable_language_selection') !== '1')) {
         $USER_LANG_CACHED = get_site_default_lang();
         return $USER_LANG_CACHED;
     }

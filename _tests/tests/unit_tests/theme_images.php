@@ -27,7 +27,7 @@ class theme_images_test_set extends cms_test_case
         require_code('files2');
     }
 
-    public function testNoHiddenSVGRaster()
+    public function testSVGQuality()
     {
         require_code('files2');
         $files = get_directory_contents(get_file_base() . '/themes/default/', get_file_base() . '/themes/default/', 0, true, true, array('svg'));

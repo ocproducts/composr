@@ -146,7 +146,6 @@ The documentation is primarily maintained on our website, and this archive is on
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/composr_tutorials.php',
-            'data_custom/build_tutorials_addon_registry_parts.php',
             'sources_custom/tutorials.php',
             'sources_custom/blocks/main_tutorial_rating.php',
             'sources_custom/blocks/main_tutorials_carousel.php',

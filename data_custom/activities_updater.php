@@ -60,4 +60,4 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 require($FILE_BASE . '/sources/global.php');
 
 require_code('activities_submission');
-activities_ajax_update_list_handler();
+activities_updater_script();

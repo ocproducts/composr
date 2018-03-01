@@ -47,12 +47,12 @@ Content-Type: multipart/mixed;
 
 This is a multipart message in MIME format.
 
---XXXXboundary text 
+--XXXXboundary text
 Content-Type: text/plain
 
 this is the body text
 
---XXXXboundary text 
+--XXXXboundary text
 Content-Type: text/plain;
 Content-Disposition: attachment;
         filename="test.txt"

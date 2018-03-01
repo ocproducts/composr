@@ -2338,10 +2338,10 @@
                  @type Object
                  */
                 caps = Basic.extend({
-                    // Runtime can: 
+                    // Runtime can:
                     // provide access to raw binary data of the file
                     access_binary: false,
-                    // provide access to raw binary data of the image (image extension is optional) 
+                    // provide access to raw binary data of the image (image extension is optional)
                     access_image_binary: false,
                     // display binary data as thumbs for example
                     display_media: false,
@@ -2355,7 +2355,7 @@
                     resize_image: false,
                     // periodically report how many bytes of total in the file were uploaded (loaded)
                     report_upload_progress: false,
-                    // provide access to the headers of http response 
+                    // provide access to the headers of http response
                     return_response_headers: false,
                     // support response of specific type, which should be passed as an argument
                     // e.g. runtime.can('return_response_type', 'blob')
@@ -7762,7 +7762,7 @@
                                     case 2: // XMLHttpRequest.HEADERS_RECEIVED
                                         break;
 
-                                    case 3: // XMLHttpRequest.LOADING 
+                                    case 3: // XMLHttpRequest.LOADING
                                         // try to fire progress event for not XHR L2
                                         var total, loaded;
 
@@ -7860,7 +7860,7 @@
                                 case 'blob':
                                     var file = new File(I.uid, _xhr.response);
 
-                                    // try to extract file name from content-disposition if possible (might be - not, if CORS for example)	
+                                    // try to extract file name from content-disposition if possible (might be - not, if CORS for example)
                                     var disposition = _xhr.getResponseHeader('Content-Disposition');
                                     if (disposition) {
                                         // extract filename from response header if available
@@ -7990,7 +7990,7 @@
 
                     // append multipart parameters
                     fd.each(function(value, name) {
-                        // Firefox 3.6 failed to convert multibyte characters to UTF-8 in sendAsBinary(), 
+                        // Firefox 3.6 failed to convert multibyte characters to UTF-8 in sendAsBinary(),
                         // so we try it here ourselves with: unescape(encodeURIComponent(value))
                         if (value instanceof Blob) {
                             // Build RFC2388 blob
@@ -14252,14 +14252,14 @@
         }
 
         var multi = (pageType.includes('_multi') && (numFiles > 1)),
-            element = document.getElementById(name), 
+            element = document.getElementById(name),
             currentNum;
 
         if (element.determinedAttachmentProperties === undefined) {
             currentNum = name.replace('file', '');
             window.$posting.setAttachment(postingFieldName, currentNum, fileName, multi, $dom.data(element).pluploadObject.settings);
             if (!$dom.data(element).pluploadObject.settings.simplifiedAttachments) {
-                element.onchange = null;     
+                element.onchange = null;
             }
             if (multi) {
                 element.determinedAttachmentProperties = true;
@@ -14306,7 +14306,7 @@
     }
 
     /**
-     * 
+     *
      * @param name
      * @param value - '1' will start upload if it hasn't already and files are selected, '' clears the placeholder field value
      */
