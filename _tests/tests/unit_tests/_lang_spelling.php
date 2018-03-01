@@ -2144,7 +2144,6 @@ class _lang_spelling_test_set extends cms_test_case
             'pulvinar',
             'quis',
             'quisque',
-            'recieve',
             'rene',
             'rhoncus',
             'risus',
