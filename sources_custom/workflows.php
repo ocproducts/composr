@@ -720,7 +720,7 @@ function add_content_to_workflow($content_type = '', $content_id = '', $workflow
 
     // Now we have the information required to access the content.
     // However, we still don't know if the provided ID is valid, so we have to check that too!
-    // Need different paths based on ID type, to prevent breaking strict atabases
+    // Need different paths based on ID type, to prevent breaking strict databases
 
     // Query the database for content matching the found parameters
     if ($GLOBALS['SITE_DB']->query_select($content_table, array($content_field), array($content_field => $info['id_field_numeric'] ? $content_id : intval($content_id)), '', 1) == array()) {

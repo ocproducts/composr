@@ -59,7 +59,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 		</tr>
 		<tr>
 			<td>[abbr="Sender Policy Framework"][url="http://www.openspf.org/"]SPF[/url][/abbr]</td>
-			<td>This is the protocol for limiting what servers can send e-mail for a particula domain.</td>
+			<td>This is the protocol for limiting what servers can send e-mail for a particular domain.</td>
 			<td>It is advised to set this up to reduce spam and fraud.</td>
 		</tr>
 
@@ -282,7 +282,7 @@ They are constructed as follows:
  - [b]Protocol[/b]: For a web page, the protocol is always 'http' or 'https' (because the page is transferred via the HTTP(S) protocol).
  - [b]Port[/b]: The port is almost always '80' which is the default port. If the port is 80 then it is not written down (i.e. ":80" is actually not in the URL).
  - [b]Hostname[/b]: The server is either specified by a domain name or an IP address.
- - [b]Path[/b]: The path often relates to a file on the server, but does not have to: it is up to the web server how to treat it. For a Composr site the path usually points to a PHP file on the server (which the web server will recognise as being something it has to run, and relay the output), except if a URL Scheme is on then it might go through a level of indirection (e.g. it looks to the visitor like it refers to an [tt].htm[/tt] file but actually is invisibly redirectly to go through a complex path involving the [tt]index.php[/tt]).
+ - [b]Path[/b]: The path often relates to a file on the server, but does not have to: it is up to the web server how to treat it. For a Composr site the path usually points to a PHP file on the server (which the web server will recognise as being something it has to run, and relay the output), except if a URL Scheme is on then it might go through a level of indirection (e.g. it looks to the visitor like it refers to an [tt].htm[/tt] file but actually is invisibly redirected to go through a complex path involving the [tt]index.php[/tt]).
  - [b]Parameter(s)[/b]: There can be any number of parameters (including none). The first one has a "?" before it and subsequent ones have a "&" before it.
 
 Here is a real example:
@@ -299,7 +299,7 @@ This deconstructs as follows:
 
 [title="2"]XHTML[/title]
 
-XHTML5 (eXtensible HyperText Markup Language) is the language in which the Composr layout is written, and is what Composr is designed to output. A markup language is a text-based formatting system that allows an author to designate the structure and importance of pieces of a web page. You can't have a web page without markup; all web pages consist of markup. XHTML5 is the same as HTML5 except written to a higher standard of tidyness. It is designed with XML (eXtensible Markup Language) compatibility in mind.
+XHTML5 (eXtensible HyperText Markup Language) is the language in which the Composr layout is written, and is what Composr is designed to output. A markup language is a text-based formatting system that allows an author to designate the structure and importance of pieces of a web page. You can't have a web page without markup; all web pages consist of markup. XHTML5 is the same as HTML5 except written to a higher standard of tidiness. It is designed with XML (eXtensible Markup Language) compatibility in mind.
 
 As previously mentioned, all Composr pages are output as XHTML. To customise the appearance of your site, it is just about impossible to do anything major without editing the XHTML. In Composr, the XHTML is split up into various templates for ease-of-use and reusability. Composr also has an inbuilt XHTML webstandards checker, to help you in customising your site.
 
@@ -456,7 +456,7 @@ Now, some HTML elements...
 			</td>
 			<td>
 				<p>The metadata section of the document. Contains
-				information about the document which isn&rsquo;t displayed, but
+				information about the document which isn't displayed, but
 				used by the browser in other ways. <strong>Required</strong>.</p>
 			</td>
 		</tr>
@@ -474,7 +474,7 @@ Now, some HTML elements...
 				/&gt;</kbd></p>
 			</td>
 			<td>
-				<p>An in-page image. Note that this tag shouldn&rsquo;t
+				<p>An in-page image. Note that this tag shouldn't
 				be used to place layout images; only page-specific images. (See
 				CSS section below.) Required attributes: <kbd>src</kbd>
 				(the URL of the image), <kbd>alt</kbd>
@@ -667,7 +667,7 @@ Now, some HTML elements...
 			</td>
 			<td>
 				<p>The title of the page (to be displayed in the
-				browser&rsquo;s title bar, for example). <strong>Required</strong>.</p>
+				browser's title bar, for example). <strong>Required</strong>.</p>
 			</td>
 		</tr>
 		<tr class="zebra_0">
@@ -731,7 +731,7 @@ Although the above table doesn't list all of the XHTML elements (it lists approx
 				</td>
 				<td>
 					<p>Inline styling rules &ndash; used to apply
-					styling without using a separate CSS definition. Note that it&rsquo;s
+					styling without using a separate CSS definition. Note that it's
 					advisable to <em>separate</em> structure and styling, so use of
 					this attribute is deprecated for all intents and purposes. (See
 					CSS section below.)</p>
@@ -835,7 +835,7 @@ selector {
 	property: property-value;
 }
 [/code]
-The [i]selector[/i] defines which XHTML elements/classes/IDs the properties in the rule are applied to, the [i]property[/i] is the pre-defined name of the property, and the [i]property-value[/i] is the value assigned to the property (the allowed values vary from property to property). Note the spaces, colons and the semi-colon at the end of the property line.
+The [i]selector[/i] defines which XHTML elements/classes/IDs the properties in the rule are applied to, the [i]property[/i] is the predefined name of the property, and the [i]property-value[/i] is the value assigned to the property (the allowed values vary from property to property). Note the spaces, colons and the semi-colon at the end of the property line.
 
 There are several types of selector defined by the CSS 1 standard, which we will cover here. There are also several new selectors defined by both CSS 2 and CSS 3, but they are beyond the scope of this tutorial.
 
@@ -893,7 +893,7 @@ h3 a {
 [/code]
 This example applies the specified properties to any [tt]<a>[/tt] tag which is beneath a level-three heading ([tt]<h3>[/tt]).
 
-Now that the basic selectors have been covered, we move on to properties and property values. A property can only accept [b]one[/b] out of a list of pre-defined values. Some values are variable (such as widths, and other numeric values), but most are just text.
+Now that the basic selectors have been covered, we move on to properties and property values. A property can only accept [b]one[/b] out of a list of predefined values. Some values are variable (such as widths, and other numeric values), but most are just text.
 
 Some commonly used properties are listed below...
 
@@ -1003,7 +1003,7 @@ Some commonly used properties are listed below...
 			</td>
 			<td>
 				<p>The space below an element, and above the
-				element&rsquo;s parent&rsquo;s border.</p>
+				element's parent's border.</p>
 			</td>
 		</tr>
 		<tr class="zebra_1">
@@ -1012,7 +1012,7 @@ Some commonly used properties are listed below...
 			</td>
 			<td>
 				<p>The space to the left of an element, and to the
-				right of the element&rsquo;s parent&rsquo;s border.</p>
+				right of the element's parent's border.</p>
 			</td>
 		</tr>
 		<tr class="zebra_0">
@@ -1021,7 +1021,7 @@ Some commonly used properties are listed below...
 			</td>
 			<td>
 				<p>The space to the right of an element, and to
-				the left of the element&rsquo;s parent&rsquo;s border.</p>
+				the left of the element's parent's border.</p>
 			</td>
 		</tr>
 		<tr class="zebra_1">
@@ -1030,7 +1030,7 @@ Some commonly used properties are listed below...
 			</td>
 			<td>
 				<p>The space above an element, and below the
-				element&rsquo;s parent&rsquo;s border.</p>
+				element's parent's border.</p>
 			</td>
 		</tr>
 		<tr class="zebra_0">
@@ -1054,8 +1054,7 @@ Some commonly used properties are listed below...
 				<p><kbd>text-decoration</kbd></p>
 			</td>
 			<td>
-				<p>Decoration applied to text, such as underline
-				or overline.</p>
+				<p>Decoration applied to text, such as underline.</p>
 			</td>
 		</tr>
 		<tr class="zebra_1">
@@ -1073,7 +1072,7 @@ Some commonly used properties are listed below...
 
 Note that most of these properties can be split up into separate properties (i.e. [tt]margin[/tt] can be split up into [tt]margin-left[/tt], [tt]margin-right[/tt], [tt]margin-top[/tt] and [tt]margin-bottom[/tt]).
 
-All these properties are no use without property values. Although most elements only accept values from a property-specific pre-defined list, some elements accept more general values, such as pixel or percentage measurements.
+All these properties are no use without property values. Although most elements only accept values from a property-specific predefined list, some elements accept more general values, such as pixel or percentage measurements.
 
 Pixel measurements should generally be used for fixed-size objects, which are usually encountered when doing the basic layout of a page.
 [code="CSS"]

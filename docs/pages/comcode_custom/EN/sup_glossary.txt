@@ -225,7 +225,7 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 		</tr>
 		<tr>
 			<td>Lightbox</td>
-			<td>A graphics effect used when you click on a small image thumbnail and the full image overlays the current page in an attractive dismissable box. Lightboxes are a type of 'overlay'.</td>
+			<td>A graphics effect used when you click on a small image thumbnail and the full image overlays the current page in an attractive dismissible box. Lightboxes are a type of 'overlay'.</td>
 		</tr>
 		<tr>
 			<td>Linux</td>

@@ -97,7 +97,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
 
 [title="2"]Persistent cache[/title]
 
-The [b]persistent cache[/b] is a cache that aims to store regularly-accessed data in-memory between requests, so that it does not actually need to be loaded from the database or re-calculated on each page load. This cache removes about 30% of the page load time, but most importantly, takes load away from the database, allowing the database to become less of a limiting factor in high throughput situations.
+The [b]persistent cache[/b] is a cache that aims to store regularly-accessed data in-memory between requests, so that it does not actually need to be loaded from the database or recalculated on each page load. This cache removes about 30% of the page load time, but most importantly, takes load away from the database, allowing the database to become less of a limiting factor in high throughput situations.
 
 The cache is implemented to work with any one of:
  - [b]APC[/b] (or another opcode cache mentioned in the intro paragraph), which provides in-memory storage features as well as an opcode cache and is associated with core PHP development (hence why we recommend it as the opcode cache to use)
@@ -193,7 +193,7 @@ You may have some kind of script that does database backups. Follows is some adv
 [list="1"]
 [*] Call [tt]mysqldump[/tt] with the [tt]--skip-lock-tables --quick --lock-tables=false[/tt] parameters. In MySQL 5.7+ there is a [tt]mysqlpump[/tt] command, which is an alternative to [tt]mysqldump[/tt]. It is more efficient and doesn't need tuning as much.
 
-[*] Do not backup the contents of certain volatile/large/non-important tables. For [tt]mysqldump[/tt] use multiple [tt]--ignore-table=database.table[/tt] parameters (you cannot ommit the database name in this syntax). For [tt]mysqlpump[/tt] use a single [tt]--exclude-tables=table1,table2,table3[/tt] style parameter.
+[*] Do not backup the contents of certain volatile/large/non-important tables. For [tt]mysqldump[/tt] use multiple [tt]--ignore-table=database.table[/tt] parameters (you cannot omit the database name in this syntax). For [tt]mysqlpump[/tt] use a single [tt]--exclude-tables=table1,table2,table3[/tt] style parameter.
 The tables:
  - [tt]cache[/tt]
  - [tt]cached_comcode_pages[/tt]
@@ -383,7 +383,7 @@ If there is a lot of data then Composr will do a number of things to workaround 
 12) Selectcode will not work thoroughly when using category tree filters if there are more than 1000 subcategories
 All normal foreground processes are designed to be fast even with huge amounts of data, but some admin screens or backend processes may take a long time to complete if this is necessarily the case (for example, CSV export). Composr has been programmed (wherever possible) to not use excessive memory even if a task will take a long time to complete, and to not time-out. Composr implements a Composr task queue to be able to perform expensive tasks in a managed way.
 
-There is a risk that people could perform a [acronym="Distributed Denial Of Service"]DDOS[/acronym] attack. For example, someone might submit huge numbers of blog items, and then override default RSS query settings to download them all, from lots of computers simultaneously. Composr cannot protect against this (we don't put in limits that would break expected behaviour for cases when people explicitly ask for complex requests, and if we did it would just shift the hackers focus to a different target), but if you have this much exposure that hackers would attempt this you should be budgetting for a proper network security team to detect and prevent such attacks.
+There is a risk that people could perform a [acronym="Distributed Denial Of Service"]DDOS[/acronym] attack. For example, someone might submit huge numbers of blog items, and then override default RSS query settings to download them all, from lots of computers simultaneously. Composr cannot protect against this (we don't put in limits that would break expected behaviour for cases when people explicitly ask for complex requests, and if we did it would just shift the hackers focus to a different target), but if you have this much exposure that hackers would attempt this you should be budgeting for a proper network security team to detect and prevent such attacks.
 
 Be aware of these reasonable limits (unless you have dedicated programming resources to work around them):
 1) Don't create more than 60 Custom Profile Fields, as MySQL will run out of index room and things may get slow!
@@ -402,7 +402,7 @@ An alternative is to implement a No-SQL database driver into Composr. There is n
 [title="2"]Server farms (custom)[/title]
 
 Composr has special support for running on server farms (or custom cloud platforms):
- - Composr file changes are architectured so that any changes call up a synchronisation function which can be used to distribute filesystem changes across servers. As Composr requires no usage of FTP once installed, it presents the ideal managed solution for automated mirroring, once the initial network and synchronisation hook are created
+ - Composr file changes are architected so that any changes call up a synchronisation function which can be used to distribute filesystem changes across servers. As Composr requires no usage of FTP once installed, it presents the ideal managed solution for automated mirroring, once the initial network and synchronisation hook are created
  - the Composr database system supports replication
 
 In order to implement file change synchronisation, you need to create a simple PHP file in [tt]data_custom/sync_script.php[/tt] that defines these functions:

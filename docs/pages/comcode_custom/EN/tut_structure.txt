@@ -69,10 +69,10 @@ Composr comes with dozens of modules as standard. Most Composr pages are actuall
 
 [i]Information for programmers only...[/i]
 
-Modules/blocks that are not locked may be un-installed and re-installed from a module management page that is buried underneath the addon management page. We do not recommended working on a module level but if you are a programmer it is sometimes useful to be able to uninstall/reinstall your own modules during testing.
+Modules/blocks that are not locked may be uninstalled and reinstalled from a module management page that is buried underneath the addon management page. We do not recommended working on a module level but if you are a programmer it is sometimes useful to be able to uninstall/reinstall your own modules during testing.
 
 [box="Note" width="25em" float="right"]
-Re-installing or un-installing a module will generally delete all data associated with it, including uploads and entries.
+Reinstalling or uninstalling a module will generally delete all data associated with it, including uploads and entries.
 [/box]
 If a module has been upgraded (i.e. The on-disk file has been replaced with a newer version), you may upgrade it (to upgrade/create on-disk and on-database data) in 3 ways:
 1) Simply use the module, and it will upgrade itself

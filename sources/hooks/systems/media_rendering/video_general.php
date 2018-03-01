@@ -67,7 +67,7 @@ class Hook_media_rendering_video_general extends Media_renderer_with_fallback
             return MEDIA_RECOG_PRECEDENCE_MEDIUM;
         }
 
-        // Plugins may be able to play these formats, although they are preferrably handled in video_websafe
+        // Plugins may be able to play these formats, although they are preferably handled in video_websafe
         if ($mime_type == 'video/mp4') {
             return MEDIA_RECOG_PRECEDENCE_MEDIUM;
         }

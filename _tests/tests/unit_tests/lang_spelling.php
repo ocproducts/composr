@@ -139,6 +139,12 @@ class lang_spelling_test_set extends cms_test_case
         if (stripos($string, 'add-on') !== false) {
             $this->assertTrue(false, 'The word \'add-on\' was used in ' . $file . '. This should be changed to \'addon\'.');
         }
+        if (stripos($string, 'on-line') !== false) {
+            $this->assertTrue(false, 'The word \'on-line\' was used in ' . $file . '. This should be changed to \'online\'.');
+        }
+        if (stripos($string, 'off-line') !== false) {
+            $this->assertTrue(false, 'The word \'off-line\' was used in ' . $file . '. This should be changed to \'offline\'.');
+        }
 
         // No space or hyphen wanted (we want our canonical way)
         if (stripos($string, 'user[ -]group') !== false) {
@@ -243,6 +249,9 @@ class lang_spelling_test_set extends cms_test_case
 
         // Common spelling errors
         $common_spelling_mistakes = array(
+            'correspondance' => 'correspondence',
+            'existant' => 'existent',
+            'interpretor' => 'interpreter',
             'cacheing' => 'caching',
             'publically' => 'publicly',
             'seperate' => 'separate',
@@ -254,6 +263,8 @@ class lang_spelling_test_set extends cms_test_case
             'in-situe' => 'in-situ',
             'infact' => 'in fact',
             'in-fact' => 'in fact',
+            'desparate' => 'desperate',
+            'delimitor' => 'delimiter',
             'conveniant' => 'convenient',
             'conveniance' => 'convenience',
             'routeable' => 'routable',
@@ -266,6 +277,7 @@ class lang_spelling_test_set extends cms_test_case
             'recieve'=> 'receive',
             'eratic' => 'erratic',
             'psuedo' => 'pseudo',
+            'licencing' => 'licensing',
         );
         if (strpos($file, 'calendar') !== false) {
             $common_spelling_mistakes['occurrence'] = 'recurrence';

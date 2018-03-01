@@ -620,7 +620,7 @@ If we want to fix the above example, and attach one string to the end of another
 [code="PHP"]
 echo "C" . "A" . "R";
 [/code]
-This won't give a type error, and it won't corrupt our values, and it won't be forced to do an automatic conversion. The downside, of course, is that we can't freely mix strings and numbers, since they're different types. However, it's quite easy to convert numbers into strings (just write them out in decimal), and the strval function will do this for us. For example, if we want to write out the number of cars, which is stored in a variable called $car_num, then we should't say:
+This won't give a type error, and it won't corrupt our values, and it won't be forced to do an automatic conversion. The downside, of course, is that we can't freely mix strings and numbers, since they're different types. However, it's quite easy to convert numbers into strings (just write them out in decimal), and the strval function will do this for us. For example, if we want to write out the number of cars, which is stored in a variable called $car_num, then we shouldn't say:
 [code="PHP"]
 echo "There are " . $car_num . " cars";
 [/code]

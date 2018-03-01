@@ -1,6 +1,6 @@
 [title sub="Written by Jean Gosselin, and Chris Graham (ocProducts)"]Composr Tutorial: Installing Composr on a Windows desktop[/title]
 
-This tutorial will explain how to get a Composr installation running on your own Windows computer. Linux is easier as it usually comes with everything Composr requires pre-installed.
+This tutorial will explain how to get a Composr installation running on your own Windows computer. Linux is easier as it usually comes with everything Composr requires preinstalled.
 
 This tutorial will give basic instructions for installation of the various pieces of system software that Composr requires, instructing to read the products' own documentation when necessary.
 [contents]decimal,lower-alpha[/contents]
@@ -77,7 +77,7 @@ If not, the best course of action is to install Apache. Go to http://httpd.apach
 [media float="right" framed="0"]data_custom/images/docs/tut_windows/php.png[/media]
 Next you will need a copy of PHP installed. Go to http://php.net and download and install the latest stable Windows release.
 
-Follow the instructions to get it integrated with your web server: these may be rather complex, but it would be self-defeating for us to try and re-write them for you.
+Follow the instructions to get it integrated with your web server: these may be rather complex, but it would be self-defeating for us to try and rewrite them for you.
 [/surround]
 
 [title="3"]MySQL[/title]

@@ -28,7 +28,7 @@ Follows is an imaginery scenario, a brief provided by a client...
 
 [quote="Client"]There should be a set of pages where from each you can download one of our products. The user should get a choice between the version packaged for engineers, and the version packaged for managers. Files should be available in both zipped-pdf and pdf format.[/quote]
 
-On face value, this looks like it would not fit into Composr's pre-existing features in a clean way (i.e. without just putting a load of attachments on to a page and manually maintaining it). However, with some careful thought, this could be re-shaped to fit perfectly with features Composr provides...
+On face value, this looks like it would not fit into Composr's pre-existing features in a clean way (i.e. without just putting a load of attachments on to a page and manually maintaining it). However, with some careful thought, this could be reshaped to fit perfectly with features Composr provides...
 
 [quote="Composr-solution analyst"]
 A download category tree should be provided as follows...
@@ -160,7 +160,7 @@ Additionally, there are support features for content...
 |-
 ! Awards
 | awards
-| Content may be assigned awards, as a mechanism for drawing it out into pre-defined feature spots, and/or highlighting it within the awards archive, and/or to actually award the submitting member with Points.
+| Content may be assigned awards, as a mechanism for drawing it out into predefined feature spots, and/or highlighting it within the awards archive, and/or to actually award the submitting member with Points.
 |
 |-
 ! Content Translation

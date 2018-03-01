@@ -36,7 +36,7 @@ function get_activity_querying_sql($viewer_member, $mode, $member_ids)
         $viewer_member = $member_ids[0];*/
 
     $guest_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
-    $is_guest = is_guest($viewer_member); // Can't be doing with overcomplicated SQL breakages. Weed it out.
+    $is_guest = is_guest($viewer_member); // Can't be doing with over-complicated SQL breakages. Weed it out.
 
     // Find out your blocks, and who is blocking you - both must be respected
     $blocking = '';

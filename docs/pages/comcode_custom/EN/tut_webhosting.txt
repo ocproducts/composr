@@ -115,7 +115,7 @@ Composr recommends:
 [title="3"]Requirements for specific features[/title]
 
 If you want automatic thumbnail generation and transcoding you need a server with FFMPEG on it. It must be accessible via PHP either via the PHP extension (thumbnails only, not transcoding), or the ability for [tt]shell_exec[/tt] to run from PHP (both thumbnails and transcoding).
-It is best, however, to transcode manually off-line/off-server to avoid resource over-use.
+It is best, however, to transcode manually offline/off-server to avoid resource over-use.
 
 Do not try and install Composr on an ad-sponsored free webhost. The banners and tracking they inject will interfere with the mechanisms of Composr.
 

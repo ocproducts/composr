@@ -400,7 +400,7 @@ class Module_admin
 
         $content = array();
 
-        // Targetted tips
+        // Targeted tips
         $current_results_type = do_lang('TIPS');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {

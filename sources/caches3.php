@@ -83,7 +83,7 @@ function composr_cleanup($cleanup_tools = null)
     $messages = new Tempcode();
     $hooks = find_all_hooks('systems', 'cleanup');
     if ((array_key_exists('cns', $hooks)) && (array_key_exists('cns_topics', $hooks))) {
-        // A little re-ordering
+        // A little reordering
         $temp = $hooks['cns'];
         unset($hooks['cns']);
         $hooks['cns'] = $temp;

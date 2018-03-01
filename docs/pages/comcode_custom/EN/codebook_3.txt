@@ -132,7 +132,7 @@ We have established the following design goals (in no particular order):
  - [b]Consistency[/b] -- The whole system should have common ways of doing things. Everything should seem consistent to the user, and be so behind the scenes. Consistency is piece of mind, consistency is ease of use, consistency is simplicity, consistency is less code to test and fix. I can't stress how important it is to be consistent.
  - [b]Independence[/b] -- Composr should not have unnecessary dependencies, such as MySQL.
  - [b]Stability[/b] / [b]Error-trapping[/b] / [b]Input-sanitisation[/b] -- Composr should catch all errors, not let things like PHP notices slip through. This means that programmers have to get used to a new level of strictness, we are much less tolerant of errors slipping through because for complex software like Composr we can't afford weak foundations.
- - [b]Scaleability[/b] -- Composr must work on sites both small and huge. For example, it's wrong to put all downloads in a list on any single screen -- there could be 1000's.
+ - [b]Scalability[/b] -- Composr must work on sites both small and huge. For example, it's wrong to put all downloads in a list on any single screen -- there could be 1000's.
  - [b]Portability[/b] -- People should be able to move their websites between servers without much difficulty.
  - [b]Simplicity[/b] -- Features only needed by a minority should be "off-by-default"
 
@@ -860,7 +860,7 @@ These log files exist by default in [tt]data_custom[/tt]:
  - [tt]errorlog.php[/tt] -- Run-time error logging (using the PHP error logging system) [shown in Composr Error log page]
 
 The follow log files can be created in [tt]data_custom[/tt], and will then be appended to as Composr runs:
- - [tt]permissioncheckslog.php[/tt] -- Permisison checks (useful for debugging why accessing is failing) [shown in Composr Error log page]
+ - [tt]permissioncheckslog.php[/tt] -- Permission checks (useful for debugging why accessing is failing) [shown in Composr Error log page]
  - [tt]ecommerce.log[/tt] -- raw eCommerce transaction data (useful for debugging IPN)
  - [tt]queries.log[/tt] -- queries running (debugging)
  - [tt]big_query_screens.log[/tt] -- slow queries running (debugging performance)
@@ -969,7 +969,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data/failover_script.php[/tt]
 | Continually check system load, and initiate/deinitiate failover mode as required.
 | [tt]failover[/tt]
-| Command-line via PHP interpretor + 'screen'
+| Command-line via PHP interpreter + 'screen'
 |-
 | [tt]adminzone:static_export[/tt]
 | Export website as a static site, as far as is possible.
@@ -984,7 +984,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data/cron_bridge.php[/tt]
 | Run system scheduler tasks. Can also be used to probe for the likely CRON command to configure against.
 | [tt]core[/tt]
-| CRON (or equivalent) via PHP interpretor
+| CRON (or equivalent) via PHP interpreter
 |-
 | [tt]upgrader.php[/tt]
 | Performing upgrades, detecting alien files, missing files, corrupt files, missing permissions, clearing the caches (without having to run the full Composr), deleting files accidentally uploaded from non-installed addons.
@@ -994,7 +994,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data/commandr.php[/tt]
 | Command line tunnel into Commandr.
 | [tt]commandr[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |}
 
 [title="3"]DevOps[/title]
@@ -1006,9 +1006,9 @@ This section is not designed as primary documentation for the tools. Those tools
 ! Call method
 |-
 | [tt]delete_alien_files.php[/tt]
-| Provide pastable commands for deleting non-bundled addons, and alien files not related to installed addons. To be honest you probably are better off using the integrity checker from the upgrader, copy & pasting and changing into terminal commands via a regexp. Never-the-less this script may be useful for some people, especially ones wanting to take it as a starting point for something more custom.
+| Provide pasteable commands for deleting non-bundled addons, and alien files not related to installed addons. To be honest you probably are better off using the integrity checker from the upgrader, copy & pasting and changing into terminal commands via a regexp. Never-the-less this script may be useful for some people, especially ones wanting to take it as a starting point for something more custom.
 | [tt]meta_toolkit[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]db_export.sh[/tt]
 | Export the live database to an SQL dump.
@@ -1048,12 +1048,12 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]sources/critical_errors.php[/tt]
 | Monitors for logged critical errors, and e-mails them to site staff.
 | [tt]core[/tt]
-| Command-line via PHP interpretor + 'screen'
+| Command-line via PHP interpreter + 'screen'
 |-
 | [tt]data_custom/compile_in_includes.php[/tt]
 | Compile Composr overrides against originals, for a slight performance improvement
 | [tt]performance_compile[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |}
 
 [title="3"]Theme development[/title]
@@ -1125,22 +1125,22 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]_tests/codechecker/phpdoc_parser.php[/tt]
 | Build the function signature library used by the Code Quality Checker.
 | [tt]testing_platform[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]data_custom/build_rewrite_rules.php[/tt]
 | Rebuild all files containing rewrite rules.
 | [tt]composr_release_build[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]data_custom/transifex_pull.php[/tt]
 | Pull language packs down from transifex.
 | [tt]addon_publish[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]data_custom/transifex_push.php[/tt]
 | Push language packs up to transifex.
 | [tt]addon_publish[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]template_xss[/tt]
 | Look to see if templates may have XSS holes. Can be given a parameter to write "fixes" back in (which should be verified by hand).
@@ -1160,7 +1160,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data_custom/stress_test_loader.php[/tt]
 | Create a large amount of test content.
 | [tt]stress_test[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]data_custom/change_addon_bundling.php[/tt]
 | Move an addon between bundled and non-bundled.
@@ -1170,7 +1170,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data_custom/composr_mobile_sdk_build.php[/tt]
 | Bundle string and image assets from a Composr website for making a mobile app.
 | [tt]composr_mobile_sdk[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |}
 
 [title="3"]Documentation development[/title]
@@ -1204,7 +1204,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data_custom/build_tutorials_addon_registry_parts.php[/tt]
 | Used for completing the [tt]addon_registry[/tt] hook to include all the latest tutorials and associated graphics.
 | [tt]composr_tutorials[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |}
 
 [title="3"]Release management[/title]

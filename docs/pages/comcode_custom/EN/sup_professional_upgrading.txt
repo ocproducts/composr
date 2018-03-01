@@ -73,7 +73,7 @@ function personalise_paths(table) {
 [/html]
 |-
 !
-! [left][i]Downloading, assessing, re-configuring[/i][/left]
+! [left][i]Downloading, assessing, reconfiguring[/i][/left]
 !
 |-
 ! {$INC,step_num}{$GET,step_num}

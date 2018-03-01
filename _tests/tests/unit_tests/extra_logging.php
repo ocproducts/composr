@@ -100,7 +100,7 @@ class extra_logging_test_set extends cms_test_case
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'lang_EN'), '');
         $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
-        $this->assertTrue(strpos($data, 'Translate/re-phrase Composr into English') !== false);
+        $this->assertTrue(strpos($data, 'Translate/rephrase Composr into English') !== false);
     }
 
     public function testSpecialPageTypeValidate()

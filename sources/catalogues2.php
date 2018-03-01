@@ -601,7 +601,7 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
 }
 
 /**
- * Re-build the efficient catalogue category tree structure ancestry cache.
+ * Rebuild the efficient catalogue category tree structure ancestry cache.
  */
 function rebuild_catalogue_cat_treecache()
 {

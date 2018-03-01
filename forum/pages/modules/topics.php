@@ -3681,7 +3681,7 @@ END;
         return do_template('FORM_SCREEN', array(
             '_GUID' => '9f28869bd74262ae20ba79ace14b87ca',
             'SKIP_WEBSTANDARDS' => true,
-            'STAFF_HELP_URL' => get_tutorial_url('tut_correspondance'),
+            'STAFF_HELP_URL' => get_tutorial_url('tut_correspondence'),
             'HIDDEN' => '',
             'TITLE' => $title,
             'FIELDS' => $fields,
@@ -4216,7 +4216,7 @@ END;
 
         return do_template('FORM_SCREEN', array(
             '_GUID' => '9416df197ee157510e9d6be7458d510f',
-            'STAFF_HELP_URL' => get_tutorial_url('tut_correspondance'),
+            'STAFF_HELP_URL' => get_tutorial_url('tut_correspondence'),
             'HIDDEN' => $hidden,
             'TITLE' => $title,
             'TEXT' => $text,

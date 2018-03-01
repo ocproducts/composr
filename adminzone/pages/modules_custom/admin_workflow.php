@@ -600,7 +600,7 @@ class Module_admin_workflow extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        // Grab our data. We pass true so that it will create non-existant content for us (workflow and approval points)
+        // Grab our data. We pass true so that it will create non-existent content for us (workflow and approval points)
         list($workflow_id, $workflow_name, $approval_points, $is_default) = $this->read_in_data(true);
 
         return strval($workflow_id);

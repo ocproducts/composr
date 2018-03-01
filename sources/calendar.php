@@ -241,7 +241,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
         $end_monthly_spec_type = 'day_of_month';
     }
     $optimise_recurrence_via_zoom = true; // This code is easy to get wrong, so found bugs are more likely in here. When debugging set to 'false' to confirm the problem is in here
-    switch ($recurrence) { // Set dif period / If a long way out of range, accelerate forward before steadedly looping forward till we might find a match (doesn't jump fully forward, due to possibility of timezones complicating things)
+    switch ($recurrence) { // Set dif period / If a long way out of range, accelerate forward before steadily looping forward till we might find a match (doesn't jump fully forward, due to possibility of timezones complicating things)
         case 'daily':
             $dif_day = 1;
             if (($dif > 60 * 60 * 24 * 10) && ($mask_len == 0) && ($optimise_recurrence_via_zoom)) {
@@ -399,7 +399,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
             }
         }
 
-        // Crossing a DST in our reference timezone? (as we store in UTC, which is DST-less, we need to specially accomodate for this)
+        // Crossing a DST in our reference timezone? (as we store in UTC, which is DST-less, we need to specially accommodate for this)
         _compensate_for_dst_change($start_hour, $start_minute, $start_day, $start_month, $start_year, $timezone, $do_timezone_conv, $dif_day, $dif_month, $dif_year);
         if (!is_null($end_hour)) {
             _compensate_for_dst_change($end_hour, $end_minute, $end_day, $end_month, $end_year, $timezone, $do_timezone_conv, $dif_day, $dif_month, $dif_year);

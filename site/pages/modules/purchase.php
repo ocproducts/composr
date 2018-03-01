@@ -456,7 +456,7 @@ class Module_purchase
             $length = null;
             $length_units = '';
 
-            // Add cataloue item order to shopping_orders
+            // Add catalogue item order to shopping_orders
             if (method_exists($object, 'add_purchase_order')) {
                 $purchase_id = strval($object->add_purchase_order($type_code, $temp[$type_code]));
             }

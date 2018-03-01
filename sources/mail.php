@@ -774,7 +774,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         require_code('mail_dkim');
     }
 
-    // We use the boundary to seperate message parts
+    // We use the boundary to separate message parts
     $_boundary = uniqid('Composr', true);
     $boundary = $_boundary . '_1';
     $boundary2 = $_boundary . '_2';

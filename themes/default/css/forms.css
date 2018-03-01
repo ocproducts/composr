@@ -54,7 +54,7 @@ div.comcode_supported {
 }
 
 .input_erroneous.container_for_wysiwyg {
-	{$BETA_CSS_PROPERTY,border-radius: 6px;} /* WYSISWYG is curved so this stops it creating an ugly clash */
+	{$BETA_CSS_PROPERTY,border-radius: 6px;} /* WYSIWYG is curved so this stops it creating an ugly clash */
 }
 
 .input_error_here {

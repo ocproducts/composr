@@ -98,8 +98,8 @@ Sound and video formats are an area of extreme complexity unfortunately, as is t
 Unlike for most file types, video files cannot be identified fully be file extension. The file extensions identifies the 'container format' (such as MPEG or AVI) but not the 'codec' used for the video data and which codec was used for the sound data. Codecs are often proprietary, and tied to Windows, and they often aren't installed on user's computers. Some codecs and container formats require specific software, as vendors such as Microsoft, Apple and Real tend to lock each others formats out, as they battle for supremacy.
 
 You have a choice between six options:
-1) Use an old badly compressed format -- this is likely very in-feasible, due to high file size
-2) Use an alternative format, such as MIDI -- this is likely very in-feasible, as content is rarely made to it now, and users are more discerning than they once were
+1) Use an old badly compressed format -- this is likely very infeasible, due to high file size
+2) Use an alternative format, such as MIDI -- this is likely very infeasible, as content is rarely made to it now, and users are more discerning than they once were
 3) Use HTML5 / Macromedia flash to distribute videos and music in h264 format: HTML5 natively supports h264 video and Flash contains its own code to decompress this data (for old browsers). [b]Recommended[/b] (Composr includes an integrated HTML5/Flash file player)
 4) Put up with media only working where Windows Media Player / RealPlayer / Quicktime is installed (noting that the best support for this is on Internet Explorer on Windows, and getting it to work elsewhere can be tricky or impossible)
 5) Use standard MPEG technology other than h264 -- the drawback to this is that such MPEG standardisation is weak, with MPEG4 being more of a 'class of formats' that includes formats such as DivX and many others

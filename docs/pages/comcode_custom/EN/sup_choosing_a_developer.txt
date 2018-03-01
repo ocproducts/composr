@@ -34,7 +34,7 @@ At ocProducts we often find that prospective clients don't know how to evaluate 
 
 It becomes a problem in two particular scenarios:
 [list="1"]
-[*] when people think shopping for a software company is like shopping for a loaf of bread: find the cheapest thing that looks like it fits the bill (okay, I'm aware some of you like your fancy breads, full of garlic and strawberrys, but I'm going to ignore you lot)[/*]
+[*] when people think shopping for a software company is like shopping for a loaf of bread: find the cheapest thing that looks like it fits the bill (okay, I'm aware some of you like your fancy breads, full of garlic and strawberries, but I'm going to ignore you lot)[/*]
 [*] when people decide based on the fancy sales pitch that appeared to hit their needs and possibly also came with a low price. This can be very dangerous: it is very easy for a company to invest in sales rather than design or technology, and make strong claims that are actually true but are tied only to very superficial offerings. It is cheaper to sell well than to design and innovate well, and it leads to a wildly successful business model of dealing on volume with a false air of quality that undercuts the actual professionals in the market.[/*]
 [/list]
 As you can imagine, these scenarios are particular bug-bears for any development company focused around serious engineering -- hence why I feel the need to explain how to properly evaluate a software company.
@@ -43,7 +43,7 @@ The rest of this section consists of a number of points we believe you should ch
 
 Of course, not all projects are the same, so use some judgement to determine what particular points affect you.
 
-[title="3"]Evaluting the Requirements Analysis Process[/title]
+[title="3"]Evaluating the Requirements Analysis Process[/title]
 
 A provider should be able to describe the formal design documents that would be delivered prior to development. Whether these will be delivered as a paid phase, or as part of the bid phase, varies.
 
@@ -128,7 +128,7 @@ Here are 11 more things to consider:
 9) How much should the customer set aside for marketing the project, outside of development?
 9) Is the developer working full-time for you, or do they have other commitments and distractions?
 10) Is the developer committed for the long term and able to sustain their operation?
-11) Does the developer have professional or personal contacts with people working for Silicon Valley companies, or other top IT companies? The best developers will regularly network with people, rather than living in a local bubble. The networking isn't necessarily anything to do with career building: it is a natural by-product of being at the top of your industry that you will befriend and work with others who also are. This is especially true given the prevalant use of Twitter by developers.
+11) Does the developer have professional or personal contacts with people working for Silicon Valley companies, or other top IT companies? The best developers will regularly network with people, rather than living in a local bubble. The networking isn't necessarily anything to do with career building: it is a natural by-product of being at the top of your industry that you will befriend and work with others who also are. This is especially true given the prevalent use of Twitter by developers.
 
 [title="3"]Evaluating [i]yourself[/i][/title]
 

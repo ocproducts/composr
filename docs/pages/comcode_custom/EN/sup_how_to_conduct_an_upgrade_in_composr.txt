@@ -17,7 +17,7 @@ The first task you will need to do is make sure you conduct a backup of your sit
 [*] Close your site via the button with a message to say it will be back soon and is just closed for maintenance or something else suitable.
 [*] Click the Transfer across your files button.
 [*] Paste the URL you copied to notepad earlier in to the space provided and click Proceed.
-[*] [i]If this is a large update click the file integrity scan and remove any un-needed files. For minor updates you can skip this step.[/i]
+[*] [i]If this is a large update click the file integrity scan and remove any unneeded files. For minor updates you can skip this step.[/i]
 [*] If you are upgrading from one version to another i.e. version 10.0.X to 10.1 you will also need to upgrade your database which is option 5 in the upgrader.
 [*] Option 6 is a themes upgrader to help you upgrade your themes from one version to another where there have been changes between your original version and the newly upgraded version.
 [*] Once you have done all of this, make sure you clear the caches to remove any cached old files.

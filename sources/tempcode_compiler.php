@@ -779,7 +779,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
     $merged = array();
     $just_done_string = false;
     foreach ($current_level_data as $c) {
-        // Try and replace some unnecesary string appending which may have happened when experiencing possible (but not) control characters
+        // Try and replace some unnecessary string appending which may have happened when experiencing possible (but not) control characters
         $c = preg_replace('#([^\\\\])' . preg_quote('"."', '#') . '#', '$1', $c);
 
         // Try and merge some strings that don't need to be in separate seq_parts

@@ -82,7 +82,7 @@ The block shows as far back as the "Days back to display" parameter if possible:
  - Otherwise a static quantity of news will show, using the "Fallback Full" and "Fallback Archive" parameters.
 If you want to force static quantities you should therefore set the "Days back to display" parameter to [tt]0[/tt].
 
-When placing a block it is possible to filter it to particulary category(s) using the "Select" parameter. Leaving the parameter blank will mean all news will show. In the simplest case you would just select one of more news categories to display from, which the block construction assistant makes very easy for you. If you want to write your own arbitrary [page="_SEARCH:tut_selectcode"]Selectcode[/page] then you need to write the block Comcode manually.
+When placing a block it is possible to filter it to particular category(s) using the "Select" parameter. Leaving the parameter blank will mean all news will show. In the simplest case you would just select one of more news categories to display from, which the block construction assistant makes very easy for you. If you want to write your own arbitrary [page="_SEARCH:tut_selectcode"]Selectcode[/page] then you need to write the block Comcode manually.
 
 It is also possible to determine whether only blog posts should show, just regular news posts, or both.
 
@@ -119,7 +119,7 @@ Note that we can not import:
   - custom fields \[the postmeta table] (importing to news would probably be a bad idea for such content anyway -- it would be better to import to catalogues rather than continue Wordpress's shoe-horned custom-field implementation, although we don't currently have any code to do this -- unless you can get Wordpress's data into a CSV file)
   - full taxonomy for categories (description, and hierarchy, and groups)
   - child order (Composr doesn't have it, child pages are shown alphabetically, or page-linking is done manually)
-  - pinned (you should manually re-assign awards to stuff, and set up award layout via Comcode page layout or templating)
+  - pinned (you should manually reassign awards to stuff, and set up award layout via Comcode page layout or templating)
  - [i]for comments...[/i]
   - comment custom fields \[the commentmeta table] (we can't -- Composr doesn't have custom fields for comments)
   - comment karma (Composr points work differently)

@@ -40,7 +40,7 @@ Let's take a step back and focus on DIY users again, because they are important,
 
 In our opening paragraph we talked about your website being an investment. In many cases the investment users make in their website is just in time -- our users spending time learning the Composr software, and taking advantage of the great features it has to offer. These are the DIY users, suited to basic personal sites, or advanced sites when these users are very skilled and/or willing to learn and invest a lot of time.
 
-This way DIY users get a better website than if they had used a lesser tool, or save tens of thousands of pounds/dollars/euros that you'd need to pay for a ground-up development from a traditional web development company. Really passionate Composr users go further, and maybe learn XHTML, CSS, or even PHP -- and from this, push Composr as far as they want. The most advanced users are often the people who contribute directly to the Composr product (via the Open Source process) and/or come on to become web professioanls.
+This way DIY users get a better website than if they had used a lesser tool, or save tens of thousands of pounds/dollars/euros that you'd need to pay for a ground-up development from a traditional web development company. Really passionate Composr users go further, and maybe learn XHTML, CSS, or even PHP -- and from this, push Composr as far as they want. The most advanced users are often the people who contribute directly to the Composr product (via the Open Source process) and/or come on to become web professionals.
 
 Sometimes (often for businesses), the investment might be in money rather than time, and go to a web development company (such as ocProducts). Businesses and organisations can pay professional developers to make a whole website using Composr.
 
@@ -52,7 +52,7 @@ A consequence for this is that when we are providing services to people we are a
 This way of operating is called an Open Source business-model. Other companies do this, such as Zend (the maker's of PHP), Oracle (the maker's of MySQL and Open Office) and Redhat (one of the major sponsors of Linux).
 Open Source business-models are innovative. They allow companies to give out enormous value in software to communities, completely for free. We love that we can do this, even though in most cases we don't earn anything back.
 
-In summary, the Composr community involves DIYers, as well as businesses purchasing services. Additionally, ocProducts operates within the community and also commercially. The commercial and community worlds connect together, for everybodies mutual benefit. Sometimes it is messy and awkward, but the benefits are enormous.
+In summary, the Composr community involves DIYers, as well as businesses purchasing services. Additionally, ocProducts operates within the community and also commercially. The commercial and community worlds connect together, for everybody's mutual benefit. Sometimes it is messy and awkward, but the benefits are enormous.
 
 Further on in this tutorial we will provide some guidelines for you to identify whether you are a DIYer, or need to be thinking about purchasing professional services. This will be determinate based on your skill, time, quality requirements, complexity requirements, as well as your ability to find a budget.
 

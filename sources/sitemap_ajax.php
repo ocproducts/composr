@@ -223,7 +223,7 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
                     $lang_string = do_lang($cat_support[1]);
                 }
                 if ((strlen($lang_string) > 20) && (strpos($lang_string, '(') !== false)) {
-                    $lang_string = preg_replace('# \([^\)]*\)#', '', $lang_string); // Shortern long privilege describer
+                    $lang_string = preg_replace('# \([^\)]*\)#', '', $lang_string); // Shorten long privilege describer
                 }
                 $privilege_perms .= ' privilege_' . $overridable . '="' . xmlentities($lang_string) . '"';
                 foreach (array_keys($groups) as $group) {

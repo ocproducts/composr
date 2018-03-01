@@ -48,8 +48,8 @@ We try and automatically 'scramble' the more problematic pages via a special enc
 
 This occurs when using the code editor to edit php code. If you try and save code changes (by pressing the edit button at the bottom of the code editor) and you do not receive a confirmation pop-up message, then this is the most likely cause. Your browser development tools (network tab) will report this as a 403 or 500 error for [tt]http://yourbaseurl/code_editor.php?type=edit[/tt].
 
-[title="2"]340016 / 340149 / 350147 / 350148 / 390707 -- Translate/re-phrase Composr[/title]
-Using the [b]Translate/re-phrase Composr[/b] feature.
+[title="2"]340016 / 340149 / 350147 / 350148 / 390707 -- Translate/rephrase Composr[/title]
+Using the [b]Translate/rephrase Composr[/b] feature.
 
 We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this.
 

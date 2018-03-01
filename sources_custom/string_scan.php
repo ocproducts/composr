@@ -6879,8 +6879,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         WRITE_ERROR_MISSING_DIRECTORY
         WRONG_RESET_SESSION
         WROTE_CONFIGURATION
-        XHTML_ANCESTER_BLOCK_INLINE
-        XHTML_ANCESTER_INLINE_NORMAL
+        XHTML_ANCESTOR_BLOCK_INLINE
+        XHTML_ANCESTOR_INLINE_NORMAL
         XHTML_A_NAME
         XHTML_A_SPACES
         XHTML_BAD_ATTRIBUTE_VALUE
@@ -6909,7 +6909,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         XHTML_IE_ONCHANGE
         XHTML_KEYWORDS
         XHTML_LOCAL_BROKEN_URL
-        XHTML_MISSING_ANCESTER
+        XHTML_MISSING_ANCESTOR
         XHTML_MISSING_ATTRIBUTE
         XHTML_MISSING_TAG
         XHTML_NAME_ID_DEPRECATED

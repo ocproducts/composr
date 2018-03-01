@@ -300,7 +300,7 @@ Essentially member profiles contain a last request date (in the database), which
  - [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page]
  - [page="_SEARCH:tut_permissions"]Access control and privileges[/page]
  - [page="_SEARCH:tut_legal"]Legal and social issues[/page]
- - [page="_SEARCH:tut_correspondance"]Correspondence between users[/page]
+ - [page="_SEARCH:tut_correspondence"]Correspondence between users[/page]
  - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
  - [page="_SEARCH:tut_users"]People in their roles[/page]
  - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]

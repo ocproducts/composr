@@ -33,7 +33,7 @@ function inline_language_editing(&$codename, $lang)
         $lang_file = substr($codename, 0, $pos);
         $codename = substr($codename, $pos + 1);
     } else {
-        // Find loaded file with smallest levenstein distance to current page
+        // Find loaded file with smallest levenshtein distance to current page
         $best = null;
         $best_for = 'global';
         foreach (array_keys($LANGS_REQUESTED) as $possible) {

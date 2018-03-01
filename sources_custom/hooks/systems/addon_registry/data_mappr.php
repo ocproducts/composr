@@ -93,7 +93,7 @@ You should configure the "Google Map key" option in the configuration (Admin Zon
 The names of the fields to take longitude/latitude from are configured inside block parameters.
 
 Example:
-[code="Comcode"][block title="store locater" description="This is a Store Locater" latfield="Latitude" longfield="Longitude" catalogue="stores" width="100%" height="300px" zoom="6" latitude="24.2135" longitude="-1.4654"]main_google_map[/block][/code]
+[code="Comcode"][block title="store locator" description="This is a Store Locator" latfield="Latitude" longfield="Longitude" catalogue="stores" width="100%" height="300px" zoom="6" latitude="24.2135" longitude="-1.4654"]main_google_map[/block][/code]
 
 If you use the field names of exactly "Latitude" and "Longitude" then you\'ll get a visual location selector when adding entries. Otherwise you\'ll need to manually enter the coordinates. A tool like https://itouchmap.com/latlong.html can help you.
 
@@ -102,7 +102,7 @@ It is advisable to set the field options as [tt]decimal_points=6[/tt] for your l
 Add at least 1 entry to your catalogue with the latitude and longitude fields filled in to see the block work.
 
 When you add the block you see various block parameters to be filled in including:
- - title -- The Name of the block which will appear on screen (for example, Store Locater)
+ - title -- The Name of the block which will appear on screen (for example, Store Locator)
  - description -- a Description of the block
  - latfield -- This is the field you chose in the catalogue which has all the latitude coordinates in it
  - longfield -- This is the field you chose in the catalogue which has all the longitude coordinates in it

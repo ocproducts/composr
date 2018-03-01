@@ -9,7 +9,7 @@ One drawback with basing someone's rank solely on the number of forum posts is i
 
 Composr utilities a points system instead of a posts system. Where a forum might have 100 posts to ascend to rank 2, Composr might have 100 points to ascend to rank 2. The difference is because Composr allows you to set the number of points awarded for each type of interaction.
 
-For many sites the forum will be the main place someone will interact, but you might want to encourage your users to make use of the in-built chat facility. To do this you could increase the points reward for each message posted in the chatroom. A Photo sharing site could also offer more points for uploading photos and albums. You can even reward users for logging in each day.
+For many sites the forum will be the main place someone will interact, but you might want to encourage your users to make use of the inbuilt chat facility. To do this you could increase the points reward for each message posted in the chatroom. A Photo sharing site could also offer more points for uploading photos and albums. You can even reward users for logging in each day.
 
 The benefit of this system over the simple "more posts equal higher rank" system is that you can tailor how valuable each type of interaction is.
 

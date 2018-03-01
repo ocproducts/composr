@@ -45,7 +45,7 @@ We do not explicitly support the following browsers, but will generally accept b
  - Konqueror (an important browser on Linux, the originator of Webkit)
  - Waterfox, Iceweasel, Pale Moon, SeaMonkey (alternative Gecko browsers)
 
-We also provide support for high quality text-mode browsers such as 'Lynx' and browsers designed for people with disabilities. The inherent nature of this support is that it is partial support for an 'accessible' experience, rather than a 'wizz-bang' experience.
+We also provide support for high quality text-mode browsers such as 'Lynx' and browsers designed for people with disabilities. The inherent nature of this support is that it is partial support for an 'accessible' experience, rather than a 'whizz-bang' experience.
 
 [title="2"]Browser testing[/title]
 

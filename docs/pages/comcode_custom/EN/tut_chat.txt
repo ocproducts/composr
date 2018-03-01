@@ -245,6 +245,6 @@ This is one of the few cases where relying on a third party tool does not provid
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
- - [page="_SEARCH:tut_correspondance"]Correspondence between members[/page]
+ - [page="_SEARCH:tut_correspondence"]Correspondence between members[/page]
 
 {$SET,tutorial_tags,Chatrooms,chat,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr includes really cool AJAX-driven chat and instant messaging functionality. Read about the features, and see general advice.}[block]main_tutorial_rating[/block]

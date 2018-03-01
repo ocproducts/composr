@@ -433,7 +433,7 @@ function initialise_error_mechanism()
 				((code=='0') && (msg.indexOf('Script error.')!=-1)) || // Too generic, can be caused by user's connection error
 
 				// Firefox false positives
-				(msg.indexOf("attempt to run compile-and-go script on a cleared scope")!=-1) || // Intermittent buggyness
+				(msg.indexOf("attempt to run compile-and-go script on a cleared scope")!=-1) || // Intermittent bugginess
 				(msg.indexOf('UnnamedClass.toString')!=-1) || // Weirdness
 				(msg.indexOf('ASSERT: ')!=-1) || // Something too generic
 				((file) && (file.indexOf('TODO: FIXME')!=-1)) || // Something too generic / Can be caused by extensions
@@ -2023,7 +2023,7 @@ function key_pressed(event,key,no_error_if_bad)
 		}
 	}
 
-	// Where we have an ASCII correspondance or can automap to one
+	// Where we have an ASCII correspondence or can automap to one
 	if (key.constructor==String) // NB we are not case sensitive on letters. And we cannot otherwise pass in characters that need shift pressed.
 	{
 		if ((event.shiftKey) && (key.toUpperCase()==key.toLowerCase())) return false; // We are not case sensitive on letters but otherwise we have no way to map the shift key. As we have to assume shift is not pressed for any ASCII based symbol conversion (keycode is same whether shift pressed or not) we cannot handle shifted ones.
@@ -3443,7 +3443,7 @@ function ga_track(ob,category,action)
 	return null;
 }
 
-/* Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog inbetween their click) */
+/* Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog in-between their click) */
 function click_link(link)
 {
 	var cancelled=false;

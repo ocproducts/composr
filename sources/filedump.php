@@ -47,7 +47,7 @@ function find_broken_filedump_links()
 }
 
 /**
- * Re-map pre-existing filedump links from one path to another.
+ * Remap pre-existing filedump links from one path to another.
  *
  * @param  string $from Old path (give a path relative to uploads/filedump, with leading slash)
  * @param  string $to New path (give a path relative to uploads/filedump, with leading slash)

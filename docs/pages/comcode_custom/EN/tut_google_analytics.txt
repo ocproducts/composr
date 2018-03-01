@@ -52,7 +52,7 @@ We actually won't be using events in the main scenario of this tutorial, but we 
 
 [title="4"]Goals[/title]
 
-Google Analytics [i]Goals[/i] are pre-defined or user-defined conditions to measure data based on the actions visitors take. [i]Goals[/i] are defined within [i]Google Analytics[/i] to gather information such as how many visitors spend a minimum amount of time on a website, visit more than a minimum number of pages, sign up to a newsletter, download a file, or make an eCommerce transaction.
+Google Analytics [i]Goals[/i] are predefined or user-defined conditions to measure data based on the actions visitors take. [i]Goals[/i] are defined within [i]Google Analytics[/i] to gather information such as how many visitors spend a minimum amount of time on a website, visit more than a minimum number of pages, sign up to a newsletter, download a file, or make an eCommerce transaction.
 
 [i]Goals[/i] once created cannot be deleted but you can switch off any particular [i]goal[/i] that is not required.
 

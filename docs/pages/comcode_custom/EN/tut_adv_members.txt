@@ -144,7 +144,7 @@ By default the values of the CPFs are not publicly viewable.
 
 [title="3"]Why some CPFs are locked[/title]
 
-Some CPFS are only activated by certain addons. They are pre-installed as they may be shared between addons, yet may not be used by any. They show so you can know they are there, but are no made available for use to reduce feature-bloat. If no addons currently use them, they show in the list as unused and inaccessible. If you want them, you can install an addon that uses them, or simply add your own alternative CPF. The [tt]ecommerce[/tt] addon uses quite a few.
+Some CPFS are only activated by certain addons. They are preinstalled as they may be shared between addons, yet may not be used by any. They show so you can know they are there, but are no made available for use to reduce feature-bloat. If no addons currently use them, they show in the list as unused and inaccessible. If you want them, you can install an addon that uses them, or simply add your own alternative CPF. The [tt]ecommerce[/tt] addon uses quite a few.
 
 [title="3"]Encrypted CPFs (advanced)[/title]
 

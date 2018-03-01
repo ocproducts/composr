@@ -328,7 +328,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
     foreach ($fields_needed as $field) {
         list($field_type, $field_name, $field_label, $default_value, $extra) = $field;
 
-        switch ($field_type) { // NB: These type codes also vaguelly correspond to field hooks, just for convention (we don't use them)
+        switch ($field_type) { // NB: These type codes also vaguely correspond to field hooks, just for convention (we don't use them)
             case 'time':
                 $form_fields->attach(form_input_date($field_label, '', 'filter_' . $field_name, false, $default_value == '', true, ($default_value == '') ? null : intval($default_value)));
                 break;

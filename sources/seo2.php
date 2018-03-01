@@ -95,7 +95,7 @@ function seo_get_fields($type, $id = null, $show_header = true)
 }
 
 /**
- * Explictly sets the meta information for the specified resource.
+ * Explicitly sets the meta information for the specified resource.
  *
  * @param  ID_TEXT $type The type of resource (e.g. download)
  * @param  ID_TEXT $id The ID of the resource
