@@ -239,10 +239,16 @@ function _find_words($text, $unicode_accepted = true)
 
     $words = array();
 
+    $text = fix_bad_unicode($text);
+
     $_words = array();
     $is_unicode = ((get_charset() == 'utf-8') && ($unicode_accepted));
     $regexp = $is_unicode ? WORD_REGEXP_UNICODE : WORD_REGEXP;
     $num_matches = preg_match_all($regexp, $text, $_words);
+    if (($num_matches === false) && (preg_last_error() == PREG_BAD_UTF8_ERROR)) {
+        $regexp = WORD_REGEXP;
+        $num_matches = preg_match_all($regexp, $text, $_words);
+    }
 
     for ($i = 0; $i < $num_matches; $i++) {
         $word = $_words[1][$i];
