@@ -231,14 +231,7 @@ public class MainDialog extends JFrame {
         long last_m;
         File tmpFile;
         for (i = 0; i < theFiles.length; i++) {
-            if (theFiles[i].equals(".")) {
-                continue;
-            }
-            if (theFiles[i].equals("..")) {
-                continue;
-            }
-
-            if (theFiles[i].equals("_meta_tree")) { // Very special case, directory can get huge
+            if (theFiles[i].equals(".") || theFiles[i].equals("..")) {
                 continue;
             }
 
@@ -267,6 +260,7 @@ public class MainDialog extends JFrame {
                     continue;
                 }
 
+                // Recurse
                 ArrayList<SearchFile> next = initiateFileSearch(type, tmpFile.getAbsolutePath(), rec_subpath + ((rec_subpath.equals("")) ? "" : File.separator) + tmpFile.getName(), skip_custom);
                 finalFiles.addAll(next);
             } else if (tmpFile.isFile()) {
@@ -279,19 +273,22 @@ public class MainDialog extends JFrame {
                 if (tmpFile.length() == 0) {
                     continue;
                 }
-                
+
+                 // Filter by file type
                 if ((type.equals("PHP")) && (!theFiles[i].toLowerCase().endsWith(".php"))) {
                     continue;
                 }
                 if ((type.equals("HTML"))
+                        && (!theFiles[i].toLowerCase().endsWith(".css"))
+                        && (!theFiles[i].toLowerCase().endsWith(".js"))
                         && (!theFiles[i].toLowerCase().endsWith(".html"))
                         && (!theFiles[i].toLowerCase().endsWith(".htm"))
-                        && (!theFiles[i].toLowerCase().endsWith(".css"))
                         && (!theFiles[i].endsWith(".tpl"))
                         && (!theFiles[i].toLowerCase().endsWith(".ini"))) {
                     continue;
                 }
 
+                // Add to file list
                 SearchFile mySearchFile = new SearchFile(rec_subpath + ((rec_subpath.equals("")) ? "" : File.separator) + tmpFile.getName(), tmpFile.lastModified());
                 finalFiles.add(mySearchFile);
             }

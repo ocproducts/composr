@@ -178,7 +178,7 @@ $PCONTINUATIONS_SIMPLE = array(
 
 function lex($text = null)
 {
-    global $PCONTINUATIONS, $PCONTINUATIONS_SIMPLE, $PTOKENS, $TEXT;
+    global $PCONTINUATIONS, $PCONTINUATIONS_SIMPLE, $PTOKENS, $TEXT, $FILENAME;
 
     ini_set('pcre.backtrack_limit', '10000000');
 
@@ -192,8 +192,8 @@ function lex($text = null)
         log_warning('Use "<' . '?php" tagging for compatibility.');
     }
 
-    if (strpos($TEXT, '<?') === false) {
-        global $FILENAME;
+    if ((strpos($TEXT, '<?') === false) && (!empty($FILENAME))) {
+        // If it's not PHP, we parse as something differently, and will end up returning no tokens...
 
         require_code('webstandards');
         init__webstandards();
@@ -201,7 +201,7 @@ function lex($text = null)
         init__webstandards2();
 
         if (substr($FILENAME, -4) == '.css') {
-            $webstandards_parse = check_css($text);
+            $webstandards_parse = check_css($TEXT);
         }
 
         elseif (substr($FILENAME, -3) == '.js') {
@@ -212,7 +212,7 @@ function lex($text = null)
             require_code('webstandards_js_lex');
             init__webstandards_js_lex();
 
-            $webstandards_parse = check_js($text, true);
+            $webstandards_parse = check_js($TEXT);
         }
 
         else {
