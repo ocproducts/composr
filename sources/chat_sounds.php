@@ -22,7 +22,7 @@
  * Get the list of all available chat sound effects.
  *
  * @param  boolean $only_overridable Map to null if it is not overridable
- * @return map All available sound effects (mapping between base code, and actual code)
+ * @return array All available sound effects (mapping between base code, and actual code)
  */
 function get_effect_set($only_overridable = false)
 {

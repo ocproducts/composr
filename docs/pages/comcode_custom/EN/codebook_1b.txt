@@ -829,7 +829,7 @@ PRIVILEGE_may_foobar=May foobar
 
 [title="3"]SEO metadata[/title]
 
-To allow SEO (search engine optimization) metadata in your addon, the following is roughly required for different sections of the addon's page-module code. This example is for the download system:
+To allow SEO (search engine optimisation) metadata in your addon, the following is roughly required for different sections of the addon's page-module code. This example is for the download system:
 
 This function [tt]seo_meta_set_for_implicit()[/tt] implicitly (by virtue of extracting keywords from the strings it is passed) sets the meta information for the specified resource. Add it in the model [tt]add_download[/tt] function:
 [code="PHP"]

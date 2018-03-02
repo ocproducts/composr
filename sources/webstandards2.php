@@ -51,7 +51,7 @@ function init__webstandards2()
  * Checks an XHTML tag for conformance, including attributes. Return the results.
  *
  * @param  string $tag The name of the tag to check
- * @param  map $attributes A map of attributes (name=>value) the tag has
+ * @param  array $attributes A map of attributes (name=>value) the tag has
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
  * @param  array $errors Errors detected so far. We will add to these and return
@@ -429,7 +429,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
  * Checks a tag's inline/block/normal nesting situations.
  *
  * @param  string $tag The name of the tag to check
- * @param  map $attributes A map of attributes (name=>value) the tag has
+ * @param  array $attributes A map of attributes (name=>value) the tag has
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
  * @return ?list Array of errors (null: none)
@@ -484,7 +484,7 @@ function _check_blockyness($tag, $attributes, $self_close, $close)
  * Checks a tag's attributes.
  *
  * @param  string $tag The name of the tag to check
- * @param  map $attributes A map of attributes (name=>value) the tag has
+ * @param  array $attributes A map of attributes (name=>value) the tag has
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
  * @return ?list Array of errors (null: none)
@@ -545,8 +545,7 @@ function _check_attributes($tag, $attributes, $self_close, $close)
         }
 
         if ((($attribute == 'alt') || ($attribute == 'title') || (($attribute == 'content') && (array_key_exists('http-equiv', $attributes)) && ((strtolower($attributes['http-equiv']) == 'description') || (strtolower($attributes['http-equiv']) == 'keywords')))) && (function_exists('pspell_new')) && (!empty($GLOBALS['SPELLING'])) && ($value != '')) {
-            $_value = @html_entity_decode($value, ENT_QUOTES);
-            $errors = array_merge($errors, check_spelling($_value));
+            $errors = array_merge($errors, check_spelling(clean_simple_html_for_spellcheck($value)));
         }
 
         //if (($attribute == 'alt') && ($tag != 'input') && (strlen(strip_tags($value)) > 150)) $errors[] = array('WCAG_ATTRIBUTE_TOO_LONG', $attribute);
@@ -622,7 +621,7 @@ function check_spelling($value)
  * Checks the content under a tag's external references.
  *
  * @param  string $tag The name of the tag to check
- * @param  map $attributes A map of attributes (name=>value) the tag has
+ * @param  array $attributes A map of attributes (name=>value) the tag has
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
  * @return ?list Array of errors (null: none)
@@ -701,7 +700,7 @@ function _check_externals($tag, $attributes, $self_close, $close)
  * Checks link accessibility.
  *
  * @param  string $tag The name of the tag to check
- * @param  map $attributes A map of attributes (name=>value) the tag has
+ * @param  array $attributes A map of attributes (name=>value) the tag has
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
  * @return ?list Array of errors (null: none)
@@ -759,7 +758,7 @@ function _check_link_accessibility($tag, $attributes, $self_close, $close)
  * Checks form field labelling.
  *
  * @param  string $tag The name of the tag to check
- * @param  map $attributes A map of attributes (name=>value) the tag has
+ * @param  array $attributes A map of attributes (name=>value) the tag has
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
  * @return ?list Array of errors (null: none)

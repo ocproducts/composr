@@ -240,7 +240,7 @@ function check_js($data, $raw_errors = false)
 /**
  * Do the actual code check on the parse structure.
  *
- * @param  map $structure Parse structure
+ * @param  array $structure Parse structure
  *
  * @ignore
  */
@@ -280,7 +280,7 @@ function _check_js($structure)
 /**
  * Check a function declaration.
  *
- * @param  map $function The function details
+ * @param  array $function The function details
  */
 function js_check_function($function)
 {

@@ -192,6 +192,19 @@ function lex($text = null)
         log_warning('Use "<' . '?php" tagging for compatibility.');
     }
 
+    if (strpos($TEXT, '<?') === false) {
+        require_code('webstandards');
+        init__webstandards();
+        require_code('webstandards2');
+        init__webstandards2();
+        $is_fragment = (strpos($TEXT, '<!DOCTYPE') === false);
+        $webstandards_manual = !empty($GLOBALS['CHECKS']);
+        $xhtml_parse = check_xhtml($TEXT, false, $is_fragment, true, true, true, true, false, $webstandards_manual, false);
+        foreach ($xhtml_parse['errors'] as $error) {
+            log_warning($error['error'], $error['pos'], true);
+        }
+    }
+
     if ((strpos($TEXT, '?' . '>') !== false) && (trim(substr($TEXT, strrpos($TEXT, '?' . '>') + 2)) == '')) {
         log_warning('It is best to only have one PHP code block and not to terminate it. This stops problems with white-space at the end of files.');
     } else {

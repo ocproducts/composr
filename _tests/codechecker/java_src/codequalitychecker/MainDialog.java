@@ -119,8 +119,7 @@ public class MainDialog extends JFrame {
         scanSignaturesBtn.setBounds(new Rectangle(277, 538, 122, 37));
         scanSignaturesBtn.setMargin(new Insets(0, 0, 0, 0));
         scanSignaturesBtn.setActionCommand("scanSignaturesBtn");
-        scanSignaturesBtn.setText(
-                "<html>Compile function signatures (PHP)</html>");
+        scanSignaturesBtn.setText("<html>Compile function signatures (PHP)</html>");
         scanSignaturesBtn.setBackground(new Color(215, 245, 229));
         scanSignaturesBtn.addActionListener(new Dialog1_scanSignaturesBtn_actionAdapter(this));
         countBtn.setBounds(new Rectangle(122, 538, 67, 37));
@@ -189,7 +188,7 @@ public class MainDialog extends JFrame {
     public void initiateFileSearch(String type) {
         boolean sort_new = false, skip_custom = false;
 
-        String path = new String(Main.projectPath.replace("\"", ""));
+        String path = Main.projectPath.replace("\"", "");
         if ((path.equals(".")) || (path.equals("./")) || (path.equals(".\\"))) {
             path = "";
         }
@@ -259,7 +258,7 @@ public class MainDialog extends JFrame {
                     continue;
                 }
 
-                if ((skip_custom) && ((theFiles[i].equals("uploads")) || (theFiles[i].equals("_tests")) || (theFiles[i].equals("mobiquo")) || (theFiles[i].equals("ocproducts")) || (theFiles[i].equals("buildr")) || (theFiles[i].equals("tracker")) || (theFiles[i].equals("exports")) || (theFiles[i].equals("simpletest")) || (theFiles[i].indexOf("_custom") != -1))) {
+                if ((skip_custom) && ((theFiles[i].equals("uploads")) || (theFiles[i].equals("_tests")) || (theFiles[i].equals("mobiquo")) || (theFiles[i].equals("ocproducts")) || (theFiles[i].equals("buildr")) || (theFiles[i].equals("tracker")) || (theFiles[i].equals("exports")) || (theFiles[i].equals("simpletest")) || (theFiles[i].contains("_custom")))) {
                     continue;
                 }
 

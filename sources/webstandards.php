@@ -1075,7 +1075,7 @@ function init__webstandards()
  * @param  boolean $webstandards_ext_files Validate external files
  * @param  boolean $webstandards_manual Bring up messages about manual checks
  * @param  boolean $webstandards_csp Bring up messages about CSP
- * @return ?map Error information (null: no error)
+ * @return array Parse information
  */
 function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $webstandards_javascript = true, $webstandards_css = true, $webstandards_wcag = true, $webstandards_compat = true, $webstandards_ext_files = true, $webstandards_manual = false, $webstandards_csp = false)
 {
@@ -1413,7 +1413,7 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
  * @param  string $param_c The third parameter of the error
  * @param  boolean $raw Whether to not do a lang lookup
  * @param  integer $rel_pos Offset position
- * @return map A map of the error information
+ * @return array A map of the error information
  *
  * @ignore
  */
@@ -1986,7 +1986,7 @@ function _get_next_tag()
  * Checks an XHTML tag for conformance, including attributes. Return the results.
  *
  * @param  string $tag The name of the tag to check
- * @param  map $attributes A map of attributes (name=>value) the tag has
+ * @param  array $attributes A map of attributes (name=>value) the tag has
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
  * @param  array $errors Errors detected so far. We will add to these and return

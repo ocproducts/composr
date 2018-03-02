@@ -65,7 +65,7 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
     if ((strpos($text, '[code') === false) && (strpos($text, '[no_parse') === false) && (strpos($text, '[tt') === false)) {
         // Change username links to plain username namings
         if (stripos($text, '{{') !== false) {
-            $text = preg_replace('#\{\{([^\}\{]*)\}\}#', '\1', $text);
+            $text = preg_replace('#\{\{([^|\}\{]*)\}\}#', '\1', $text);
         }
 
         $text = str_replace('{$SITE_NAME}', get_site_name(), $text);
@@ -75,7 +75,7 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
             // Remove directives etc
             do {
                 $before = $text;
-                $text = preg_replace('#\{([^\}\{]*)\}#', '', $text);
+                $text = preg_replace('#\{([^\|\}\{]*)\}#', '', $text);
             } while ($text != $before);
         }
 

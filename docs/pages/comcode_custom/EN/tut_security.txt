@@ -287,7 +287,7 @@ We also have of internal checks that always run, many related to "Alert types" (
 
 We also have standard output escaping mechanisms so that attempts to inject bad data do not lead to bad outcomes.
 
-In summary, we have defense across a number of layers, and code without making poor assumptions. This is called "defense in depth" -- programmers are fallible, so it's best to have multiple lines of defense.
+In summary, we have defence across a number of layers, and code without making poor assumptions. This is called "defence in depth" -- programmers are fallible, so it's best to have multiple lines of defence.
 
 [title="3"]Content Security Policy (CSP)[/title]
 

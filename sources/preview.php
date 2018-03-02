@@ -255,7 +255,7 @@ function build_preview($multi_return = false)
         if (!$is_hidden) {
             if ($spellcheck) {
                 require_code('comcode_from_html');
-                $mispellings = run_spellcheck(strip_comcode(semihtml_to_comcode($val, true)), null, false);
+                $mispellings = run_spellcheck(clean_html_for_spellcheck($val), null, false);
                 $_misspellings = array();
                 foreach ($mispellings as $word_bad => $words_good) {
                     $_misspellings[] = array('WORD' => $word_bad, 'CORRECTIONS' => implode(', ', $words_good));

@@ -127,7 +127,7 @@ ocProducts is a business, founded by a group of people fanatic about enabling pe
 
 ocProducts maintains the Composr website and are sponsors of the project and community (the community being wider than any one organisation).
 
-ocProducts has a tendency towards innovative, open, and collaborative practices, including around how business is conducted. We try and make ourselves approachable, rather than filtering all contact, handing out robo-responses, funneling and segmenting everybody, and residing in an ivory tower.
+ocProducts has a tendency towards innovative, open, and collaborative practices, including around how business is conducted. We try and make ourselves approachable, rather than filtering all contact, handing out robo-responses, funnelling and segmenting everybody, and residing in an ivory tower.
 
 [title="3"]Can you write us a system that supports <insert-blank> specifications?[/title]
 
