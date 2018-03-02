@@ -608,7 +608,10 @@ function check_spelling($value)
     $lang = strtolower($THE_LANGUAGE);
 
     require_code('spelling');
-    $misspellings = run_spellcheck($value, $lang);
+    if (!defined('WORD_REGEXP')) {
+        init__spelling();
+    }
+    $misspellings = run_spellcheck($value, $lang, false, false, false);
 
     $errors = array();
     foreach (array_keys($misspellings) as $word) {

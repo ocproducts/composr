@@ -211,6 +211,14 @@ function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true, $pr
             }
             //enchant_broker_free($broker); Seems to crash on some PHP versions
             break;
+
+        case 'mock':
+            foreach ($words as $word) {
+                if (!in_array($word, $spell_link)) {
+                    $errors[$word] = $provide_corrections ? array() : null;
+                }
+            }
+            break;
     }
 
     return $errors;
@@ -355,9 +363,13 @@ function spellcheck_initialise($lang = null)
             $spell_link = array($broker, $dict, $personal_dict);
 
             break;
+
+        case 'mock':
+            $spell_link = array();
+            break;
     }
 
-    $spell_links[$lang] = $spell_link;
+    $spell_links[$lang] = &$spell_link;
 
     return $spell_link;
 }
@@ -382,6 +394,11 @@ function _find_spell_checker()
 
     if (function_exists('enchant_dict_check')) {
         return 'enchant';
+    }
+
+    if (strpos($_SERVER['PHP_SELF'], 'code_quality.php') !== false) {
+        // Allow testing even if pspell not working
+        return 'mock';
     }
 
     return null;
@@ -431,6 +448,10 @@ function add_spellchecker_words_temp($spell_link, $words)
             foreach ($words as $word) {
                 enchant_dict_add_to_session($dict, $word);
             }
+            break;
+
+        case 'mock':
+            $spell_link[] = strtolower($word);
             break;
     }
 }

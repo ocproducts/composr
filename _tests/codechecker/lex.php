@@ -201,7 +201,7 @@ function lex($text = null)
         $webstandards_manual = !empty($GLOBALS['CHECKS']);
         $xhtml_parse = check_xhtml($TEXT, false, $is_fragment, true, true, true, true, false, $webstandards_manual, false);
         foreach ($xhtml_parse['errors'] as $error) {
-            log_warning($error['error'], $error['pos'], true);
+            log_warning(html_entity_decode($error['error'], ENT_QUOTES), $error['global_pos'], true);
         }
     }
 
