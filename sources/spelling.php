@@ -239,7 +239,9 @@ function _find_words($text, $unicode_accepted = true)
 
     $words = array();
 
-    $text = fix_bad_unicode($text);
+    if (function_exists('fix_bad_unicode')) {
+        $text = fix_bad_unicode($text);
+    }
 
     $_words = array();
     $is_unicode = ((get_charset() == 'utf-8') && ($unicode_accepted));

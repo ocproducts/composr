@@ -193,14 +193,35 @@ function lex($text = null)
     }
 
     if (strpos($TEXT, '<?') === false) {
+        global $FILENAME;
+
         require_code('webstandards');
         init__webstandards();
         require_code('webstandards2');
         init__webstandards2();
-        $is_fragment = (strpos($TEXT, '<!DOCTYPE') === false);
-        $webstandards_manual = !empty($GLOBALS['CHECKS']);
-        $xhtml_parse = check_xhtml($TEXT, false, $is_fragment, true, true, true, true, false, $webstandards_manual, false);
-        foreach ($xhtml_parse['errors'] as $error) {
+
+        if (substr($FILENAME, -4) == '.css') {
+            $webstandards_parse = check_css($text);
+        }
+
+        elseif (substr($FILENAME, -3) == '.js') {
+            require_code('webstandards_js_lint');
+            init__webstandards_js_lint();
+            require_code('webstandards_js_parse');
+            init__webstandards_js_parse();
+            require_code('webstandards_js_lex');
+            init__webstandards_js_lex();
+
+            $webstandards_parse = check_js($text, true);
+        }
+
+        else {
+            $is_fragment = (strpos($TEXT, '<!DOCTYPE') === false);
+            $webstandards_manual = !empty($GLOBALS['CHECKS']);
+            $webstandards_parse = check_xhtml($TEXT, false, $is_fragment, true, true, true, true, false, $webstandards_manual, false);
+        }
+
+        foreach ($webstandards_parse['errors'] as $error) {
             log_warning(html_entity_decode($error['error'], ENT_QUOTES), $error['global_pos'], true);
         }
     }

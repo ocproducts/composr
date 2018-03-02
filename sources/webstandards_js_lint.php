@@ -198,7 +198,7 @@ function reset_js_global_variables()
  *
  * @param  string $data Code
  * @param  boolean $raw_errors Whether to return raw-errors
- * @return array Standard checker report output
+ * @return array Parse information
  */
 function check_js($data, $raw_errors = false)
 {

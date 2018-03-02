@@ -55,7 +55,7 @@ function init__webstandards2()
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
  * @param  array $errors Errors detected so far. We will add to these and return
- * @return array Array of error information
+ * @return array List of errors
  *
  * @ignore
  */
@@ -814,7 +814,7 @@ function _check_labelling($tag, $attributes, $self_close, $close)
  * Checks a CSS style sheet (high level).
  *
  * @param  string $data The data of the style sheet
- * @return ?map Error information (null: no error)
+ * @return array Parse information
  */
 function check_css($data)
 {
