@@ -53,7 +53,9 @@ Composr language packs are made up of [tt].ini[/tt] files (the language files), 
 [code="INI"]
 PROCEED=Proceed
 [/code]
-Composr is developed in (British) English, and this is technically known as the 'fall-back language', because English always has a complete set of language files and strings.
+We use multiple files so that you only need to translate what you actually use and to keep things cleanly separated by addon. For example if you are not using the galleries addon, you shouldn't need to translate the [tt]galleries.ini[/tt] strings.
+
+Composr is developed in (British) English, and this is technically known as the 'fall-back language', because English always has a complete set of language files and strings. If the active language defines all strings then the fall-back language is never even loaded -- which is different to the approach of other systems such as [tt]po[/tt].
 
 The [tt].ini[/tt] files for any translation are stored together in a directory that is named with the standard ISO two-letter code to denote that language; for example, English is 'EN'. A list of these codes is in [tt]lang/langs.ini[/tt]. We use upper-case for the names; often other software uses lower-case, but it varies.
 
@@ -288,9 +290,12 @@ If you want to find where a language string is defined then you can put it into 
 You can use [url="Transifex"]https://www.transifex.com/organization/ocproducts[/url] to translate Composr into your language with the help of others.
 
 Transifex is great because:
- - You do not need to feel that you are alone translating everything yourself anymore
- - It's very easy to work together. People can be translating the same language at the same time
- - Anyone can download the current translations at any time
+ - You do not need to feel that you are alone translating everything yourself anymore.
+ - It's very easy to work together. People can be translating the same language at the same time.
+ - Anyone can download the current translations at any time.
+ - Translations will be automatically upgraded to new major releases of Composr -- there's no risk of work being lost.
+ - Transifex has a high-quality user interface with word-wrapping, filtering options, comments, prioritisation, approval, and more
+ - We have separated out admin strings from user strings
 
 The process is as follows:
 1) Go to [url="Transifex"]https://www.transifex.com[/url].
