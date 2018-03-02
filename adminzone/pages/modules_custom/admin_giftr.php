@@ -70,7 +70,7 @@ class Module_admin_giftr extends Standard_crud_module
             $GLOBALS['SITE_DB']->create_table('giftr', array(
                 'id' => '*AUTO',
                 'name' => 'SHORT_TEXT',
-                'image' => 'SHORT_TEXT',
+                'image' => 'URLPATH',
                 'price' => 'INTEGER',
                 'enabled' => 'BINARY',
                 'category' => 'SHORT_TEXT',

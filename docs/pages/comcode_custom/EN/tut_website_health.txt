@@ -44,7 +44,8 @@ At the time of writing the list of check sections is:
  - Build mistakes \ Incomplete content
  - Build mistakes \ Local linking
  - Build mistakes \ Manual checks for web standards
- - Build mistakes \ Spelling
+ - Build mistakes \ Spellchecking of Comcode pages
+ - Build mistakes \ Spellchecking of miscellaneous content
  - Deployment mistakes \ Site open-status
  - Domains \ DNS resolution
  - Domains \ Domain expiry
