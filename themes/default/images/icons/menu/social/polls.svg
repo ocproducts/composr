@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
 	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
 ]>
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-	 x="0px" y="0px" width="48px" height="48px" viewBox="-5.767 -2.259 48 48">
+	 x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48">
 <defs>
 </defs>
-<path fill="none" stroke="#3588A6" stroke-width="2" stroke-miterlimit="10" d="M37.102,40.171c0,1.787-1.447,3.235-3.234,3.235
-	H4.235C2.449,43.407,1,41.958,1,40.171V4.235C1,2.449,2.449,1,4.235,1h29.632c1.787,0,3.234,1.449,3.234,3.235V40.171z"/>
-<rect x="5.609" y="6.52" fill="none" stroke="#F79523" stroke-width="2" stroke-miterlimit="10" width="11.402" height="11.403"/>
-<rect x="22.083" y="9.523" fill="#F79523" width="11.031" height="3.319"/>
-<polygon fill="#3588A6" points="7.418,11.285 5.818,12.779 9.436,17.339 16.8,9.975 16.8,7.124 9.553,14.06 "/>
-<rect x="5.609" y="26.297" fill="none" stroke="#F79523" stroke-width="2" stroke-miterlimit="10" width="11.402" height="11.401"/>
-<rect x="22.083" y="30.34" fill="#F79523" width="11.031" height="3.32"/>
+<rect opacity="0" fill="#FFFFFF" width="48" height="48"/>
+<path fill="#52CAF5" d="M38.346,45.536H9.656c-2.283,0-4.14-1.857-4.14-4.141V6.604c0-2.283,1.857-4.14,4.14-4.14h28.69
+	c2.281,0,4.139,1.857,4.139,4.14v34.792C42.484,43.679,40.627,45.536,38.346,45.536z M9.656,4.479c-1.171,0-2.124,0.953-2.124,2.124
+	v34.792c0,1.172,0.953,2.125,2.124,2.125h28.69c1.17,0,2.123-0.953,2.123-2.125V6.604c0-1.171-0.953-2.124-2.123-2.124H9.656z"/>
+<path fill="#F79523" d="M23.034,20.863H9.979V7.808h13.055V20.863z M11.994,18.847h9.024V9.823h-9.024V18.847z"/>
+<rect x="26.936" y="11.724" fill="#F79523" width="10.68" height="3.213"/>
+<polygon fill="#52CAF5" points="11.811,13.351 9.931,15.105 14.179,20.46 22.828,11.811 22.828,8.464 14.318,16.609 "/>
+<path fill="#F79523" d="M23.034,40.01H9.979V26.956h13.055V40.01z M11.994,37.995h9.024v-9.024h-9.024V37.995z"/>
+<rect x="26.936" y="31.878" fill="#F79523" width="10.68" height="3.215"/>
 </svg>

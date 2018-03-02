@@ -50,7 +50,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'new' => array('NEWSLETTER_SEND', 'menu/site_meta/newsletters'),
             'whatsnew' => array('WHATSNEW', 'menu/adminzone/tools/newsletter/newsletter_from_changes'),
             'subscribers' => array('VIEW_NEWSLETTER_SUBSCRIBERS', 'menu/adminzone/tools/newsletter/subscribers'),
-            'import_subscribers' => array('IMPORT_NEWSLETTER_SUBSCRIBERS', 'menu/adminzone/tools/newsletter/import_subscribers'),
+            'import_subscribers' => array('IMPORT_NEWSLETTER_SUBSCRIBERS', 'admin/import_csv'),
             'archive' => array('NEWSLETTER_ARCHIVE', 'admin/view_archive'),
         );
         if (!GOOGLE_APPENGINE) {
@@ -149,7 +149,7 @@ class Module_admin_newsletter extends Standard_crud_module
             array('menu/adminzone/tools/newsletter/newsletter_from_changes', array('_SELF', array('type' => 'whatsnew'), '_SELF'), do_lang('WHATSNEW'), 'DOC_WHATSNEW'),
             array('admin/view_archive', array('_SELF', array('type' => 'archive'), '_SELF'), do_lang('NEWSLETTER_ARCHIVE')),
             array('menu/adminzone/tools/newsletter/subscribers', array('_SELF', array('type' => 'subscribers'), '_SELF'), do_lang('VIEW_SUBSCRIBERS')),
-            array('menu/adminzone/tools/newsletter/import_subscribers', array('_SELF', array('type' => 'import_subscribers'), '_SELF'), do_lang('IMPORT_NEWSLETTER_SUBSCRIBERS')),
+            array('admin/import_csv', array('_SELF', array('type' => 'import_subscribers'), '_SELF'), do_lang('IMPORT_NEWSLETTER_SUBSCRIBERS')),
         );
 
         if (!GOOGLE_APPENGINE) {
@@ -340,7 +340,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 'TITLE' => $this->title,
                 'TEXT' => '',
                 'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'admin--import',
+                'SUBMIT_ICON' => 'admin--import-csv',
                 'SUBMIT_NAME' => $submit_name,
                 'URL' => $post_url,
             ));
@@ -600,7 +600,7 @@ class Module_admin_newsletter extends Standard_crud_module
             $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters, null, true));
 
             // CSV option
-            $fields->attach(form_input_tick(do_lang_tempcode('DOWNLOAD_AS_CSV'), do_lang_tempcode('DESCRIPTION_DOWNLOAD_AS_CSV'), 'csv', false));
+            $fields->attach(form_input_tick(do_lang_tempcode('EXPORT_AS_CSV'), do_lang_tempcode('DESCRIPTION_EXPORT_AS_CSV'), 'csv', false));
 
             $submit_name = do_lang_tempcode('VIEW_SUBSCRIBERS');
             $post_url = get_self_url();
@@ -617,7 +617,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 'TITLE' => $this->title,
                 'TEXT' => do_lang_tempcode('NEWSLETTER_SUBSCRIBERS_FORM', escape_html($prune_url->evaluate())),
                 'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'buttons--proceed',
+                'SUBMIT_ICON' => 'admin--export-csv',
                 'SUBMIT_NAME' => $submit_name,
                 'URL' => $post_url,
             ));

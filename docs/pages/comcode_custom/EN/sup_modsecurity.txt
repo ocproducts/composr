@@ -50,8 +50,8 @@ This occurs when using the code editor to edit php code. If you try and save cod
 
 We have no workaround due to the cut-down nature of the code editor, and it being designed for programmers who should be able to get the server configured properly (or edit code via some other method).
 
-[title="2"]340016 / 340149 / 350147 / 350148 / 390707 -- Translate/re-phrase Composr[/title]
-Using the [b]Translate/re-phrase Composr[/b] feature.
+[title="2"]340016 / 340149 / 350147 / 350148 / 390707 -- Translate/rephrase Composr[/title]
+Using the [b]Translate/rephrase Composr[/b] feature.
 
 We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this. If that is not working then report it as a bug.
 

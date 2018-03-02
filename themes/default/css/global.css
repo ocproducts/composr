@@ -4107,6 +4107,12 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .admin--import {
 	background-image: url('{$IMG,icons/admin/import}') !important;
 }
+.admin--export-csv {
+	background-image: url('{$IMG,icons/admin/export_csv}') !important;
+}
+.admin--import-csv {
+	background-image: url('{$IMG,icons/admin/import_csv}') !important;
+}
 .admin--merge {
 	background-image: url('{$IMG,icons/admin/merge}') !important;
 }

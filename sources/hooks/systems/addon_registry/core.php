@@ -186,7 +186,7 @@ class Hook_addon_registry_core
             'themes/default/images/icons/buttons/new_comment.svg',
             'themes/default/images/icons/menu/cms/cms.svg',
             'themes/default/images/icons/links/download_as_archive.svg',
-            'themes/default/images/icons/admin/download_csv.svg',
+            'themes/default/images/icons/admin/export_csv.svg',
             'themes/default/images/icons/admin/edit_this.svg',
             'themes/default/images/icons/admin/edit_this_category.svg',
             'themes/default/images/icons/menu/adminzone/audit/email_log.svg',

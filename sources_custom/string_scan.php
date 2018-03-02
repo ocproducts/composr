@@ -1997,7 +1997,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CATALOGUE_CSV_NEW_HANDLING
         CATALOGUE_CSV_UPDATE_HANDLING
         CATALOGUE_ENTRIES_PER_PAGE
-        CATALOGUE_EXPORT
         CATALOGUE_FIELD
         CATALOGUE_GENERIC_ADD
         CATALOGUE_GENERIC_ADD_CATEGORY
@@ -3892,7 +3891,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_DISPLAY_REVIEW_STATUS
         DESCRIPTION_DISPLAY_TYPE
         DESCRIPTION_DOWNLOADS_STATISTICS
-        DESCRIPTION_DOWNLOAD_AS_CSV
+        DESCRIPTION_EXPORT_AS_CSV
         DESCRIPTION_DOWNLOAD_COMPOSR_HOMESITE
         DESCRIPTION_DOWNLOAD_COST
         DESCRIPTION_DOWNLOAD_IMAGES
@@ -4336,7 +4335,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DOC_DASHBOARD
         DOC_DELETE_LURKERS
         DOC_DOWNLOADS
-        DOC_DOWNLOAD_MEMBER_CSV
+        DOC_EXPORT_MEMBERS
         DOC_ECOMMERCE
         DOC_EDIT_MEMBER
         DOC_EMAIL_LOG
@@ -4354,7 +4353,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DOC_GROUPS
         DOC_HELPER_PANEL
         DOC_IMPORT
-        DOC_IMPORT_MEMBER_CSV
+        DOC_IMPORT_MEMBERS
         DOC_INSTALL_GEOLOCATION_DATA
         DOC_INVESTIGATE_USER
         DOC_IP_BAN
@@ -4428,11 +4427,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DOWNLOADS_DEFAULT_SORT_ORDER
         DOWNLOADS_SUBCAT_NARROWIN
         DOWNLOAD_ADDED
-        DOWNLOAD_AS_CSV
+        EXPORT_AS_CSV
         DOWNLOAD_ENTRIES_PER_PAGE
         DOWNLOAD_GALLERY_ROOT
         DOWNLOAD_IMAGES
-        DOWNLOAD_MEMBER_CSV
+        EXPORT_MEMBERS
         DOWNLOAD_STATS_BACKUP
         DOWNLOAD_STATS_RANGE
         DOWNLOAD_SUBCATS_PER_PAGE
@@ -5180,7 +5179,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         IMPORT_ICAL
         IMPORT_ICAL_DONE
         IMPORT_ICAL_TEXT
-        IMPORT_MEMBER_CSV
+        IMPORT_MEMBERS
         IMPORT_NEWS
         IMPORT_NEWSLETTER_SUBSCRIBERS
         IMPORT_NEWS_DONE

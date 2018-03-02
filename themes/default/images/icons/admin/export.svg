@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
 	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
 ]>
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-	 x="0px" y="0px" width="48px" height="48px" viewBox="-3.862 -3.209 48 48">
+	 x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48">
 <defs>
 </defs>
-<rect x="0.304" y="0.371" fill="#F79523" width="35.762" height="41.001"/>
-<rect x="8.913" y="10.563" fill="#E6E7E8" width="19.172" height="2.996"/>
-<rect x="8.913" y="20.694" fill="#E6E7E8" width="19.172" height="2.995"/>
-<rect x="8.913" y="30.825" fill="#E6E7E8" width="19.172" height="2.997"/>
-<polygon fill="#C8691C" points="36.065,41.373 40.447,28.002 35.924,28.002 "/>
-<polygon fill="#FCB51E" points="40.447,28.002 40.729,34.221 38.468,34.221 "/>
-<polygon fill="#3588A6" points="32.63,16.823 32.574,0.371 14.439,0.371 18.959,4.458 0.365,24.372 0.365,41.022 27.647,12.317 "/>
-<polygon fill="#3588A6" points="32.63,16.823 32.574,0.371 0.365,33.539 0.365,41.022 27.647,12.317 "/>
-<polyline fill="none" stroke="#FFFFFF" stroke-miterlimit="10" points="14.439,0.371 18.959,4.458 0.365,24.372 "/>
-<polyline fill="none" stroke="#FFFFFF" stroke-miterlimit="10" points="0.365,41.022 27.647,12.317 32.63,16.823 32.574,0.371 "/>
+<rect opacity="0" fill="#FFFFFF" width="48" height="48"/>
+<rect x="2.949" y="2.636" fill="#F79523" width="37.244" height="42.701"/>
+<rect x="11.916" y="13.251" fill="#E6E7E8" width="19.967" height="3.12"/>
+<rect x="11.916" y="23.802" fill="#E6E7E8" width="19.967" height="3.119"/>
+<rect x="11.916" y="34.353" fill="#E6E7E8" width="19.967" height="3.121"/>
+<polygon fill="#C8691C" points="40.193,45.337 44.756,31.413 40.046,31.413 "/>
+<polygon fill="#FCB51E" points="44.756,31.413 45.051,37.891 42.696,37.891 "/>
+<polygon fill="#52CAF5" points="36.615,19.82 36.558,2.687 17.671,2.687 22.378,6.943 3.013,27.682 3.013,45.021 31.427,15.127 "/>
+<polygon fill="#52CAF5" points="36.615,19.82 36.558,2.687 3.013,37.23 3.013,45.021 31.427,15.127 "/>
+<polygon fill="#3588A6" points="16.787,2.699 21.539,6.979 3.022,26.859 3.022,28.535 23.217,6.907 18.519,2.659 "/>
+<polygon fill="#3588A6" points="37.146,2.696 35.969,2.7 36.022,18.501 31.395,14.316 2.968,44.241 2.968,45.363 3.483,45.363 
+	31.457,15.961 37.208,21.163 "/>
 </svg>

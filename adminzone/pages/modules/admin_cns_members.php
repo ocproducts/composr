@@ -58,13 +58,14 @@ class Module_admin_cns_members
         $ret = array(
             'browse' => array('MEMBERS', 'menu/social/members'),
             'step1' => array('ADD_MEMBER', 'menu/adminzone/tools/users/member_add'),
-            'download_csv' => array('DOWNLOAD_MEMBER_CSV', 'admin/download_csv'),
         );
 
         if (has_privilege(get_member(), 'mass_import')) {
             $ret['delurk'] = array('DELETE_LURKERS', 'menu/adminzone/tools/users/delete_lurkers');
-            $ret['import_csv'] = array('IMPORT_MEMBER_CSV', 'admin/import_csv');
+            $ret['import_csv'] = array('IMPORT_MEMBERS', 'admin/import_csv');
         }
+
+        $ret['export_csv'] = array('EXPORT_MEMBERS', 'admin/export_csv');
 
         if ($support_crosslinks) {
             if (has_privilege(get_member(), 'member_maintenance')) {
@@ -80,10 +81,13 @@ class Module_admin_cns_members
             if (addon_installed('securitylogging')) {
                 $ret['_SEARCH:admin_lookup:browse'] = array('INVESTIGATE_USER', 'menu/adminzone/tools/users/investigate_user');
             }
-            /*if (addon_installed('ecommerce')) {
+            /*
+            We'll link these from elsewhere instead
+            if (addon_installed('ecommerce')) {
                 $ret['_SEARCH:admin_ecommerce:browse'] = array('CUSTOM_PRODUCT_USERGROUP', 'menu/adminzone/audit/ecommerce/ecommerce');
             }
-            $ret['_SEARCH:admin_cns_groups:browse'] = array('USERGROUPS', 'menu/social/groups');*/
+            $ret['_SEARCH:admin_cns_groups:browse'] = array('USERGROUPS', 'menu/social/groups');
+            */
             if (addon_installed('cns_warnings')) {
                 $ret['_SEARCH:warnings:edit'] = array('WARNINGS', 'menu/social/warnings');
             }
@@ -140,16 +144,16 @@ class Module_admin_cns_members
         }
 
         if ($type == '_import_csv') {
-            breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS')), array('_SEARCH:admin_cns_members:import_csv', do_lang_tempcode('IMPORT_MEMBER_CSV'))));
+            breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS')), array('_SEARCH:admin_cns_members:import_csv', do_lang_tempcode('IMPORT_MEMBERS'))));
             breadcrumb_set_self(do_lang_tempcode('DONE'));
         }
 
-        if ($type == 'download_csv') {
+        if ($type == 'export_csv') {
             breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS'))));
         }
 
-        if ($type == '_download_csv') {
-            breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS')), array('_SEARCH:admin_cns_members:download_csv', do_lang_tempcode('DOWNLOAD_MEMBER_CSV'))));
+        if ($type == '_export_csv') {
+            breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS')), array('_SEARCH:admin_cns_members:export_csv', do_lang_tempcode('EXPORT_MEMBERS'))));
             breadcrumb_set_self(do_lang_tempcode('DONE'));
         }
 
@@ -162,13 +166,13 @@ class Module_admin_cns_members
         }
 
         if ($type == 'import_csv' || $type == '_import_csv') {
-            $this->title = get_screen_title('IMPORT_MEMBER_CSV');
+            $this->title = get_screen_title('IMPORT_MEMBERS');
         }
 
-        if ($type == 'download_csv' || $type == '_download_csv') {
-            $this->title = get_screen_title('DOWNLOAD_MEMBER_CSV');
+        if ($type == 'export_csv' || $type == '_export_csv') {
+            $this->title = get_screen_title('EXPORT_MEMBERS');
 
-            set_helper_panel_text(comcode_lang_string('DOC_DOWNLOAD_MEMBER_CSV'));
+            set_helper_panel_text(comcode_lang_string('DOC_EXPORT_MEMBERS'));
 
             $GLOBALS['OUTPUT_STREAMING'] = false; // Too complex to do a pre_run for this properly
         }
@@ -211,11 +215,11 @@ class Module_admin_cns_members
         if ($type == '__delurk') {
             return $this->__delurk();
         }
-        if ($type == 'download_csv') {
-            return $this->download_csv();
+        if ($type == 'export_csv') {
+            return $this->export_csv();
         }
-        if ($type == '_download_csv') {
-            return $this->_download_csv();
+        if ($type == '_export_csv') {
+            return $this->_export_csv();
         }
         if ($type == 'import_csv') {
             return $this->import_csv();
@@ -252,8 +256,8 @@ class Module_admin_cns_members
                 (!has_privilege(get_member(), 'member_maintenance')) ? null : array('menu/adminzone/tools/users/member_edit', array('members', array('type' => 'browse'), get_module_zone('members'), do_lang_tempcode('SWITCH_ZONE_WARNING')), do_lang_tempcode('EDIT_MEMBER'), 'DOC_EDIT_MEMBER'),
                 array('menu/adminzone/tools/users/merge_members', array('admin_cns_merge_members', array('type' => 'browse'), get_module_zone('admin_cns_merge_members')), do_lang_tempcode('MERGE_MEMBERS'), 'DOC_MERGE_MEMBERS'),
                 (!has_privilege(get_member(), 'mass_import')) ? null : array('menu/adminzone/tools/users/delete_lurkers', array('admin_cns_members', array('type' => 'delurk'), get_module_zone('admin_cns_members')), do_lang_tempcode('DELETE_LURKERS'), 'DOC_DELETE_LURKERS'),
-                array('admin/download_csv', array('admin_cns_members', array('type' => 'download_csv'), get_module_zone('admin_cns_members')), do_lang_tempcode('DOWNLOAD_MEMBER_CSV'), 'DOC_DOWNLOAD_MEMBER_CSV'),
-                (!has_privilege(get_member(), 'mass_import')) ? null : array('/admin/import_csv', array('admin_cns_members', array('type' => 'import_csv'), get_module_zone('admin_cns_members')), do_lang_tempcode('IMPORT_MEMBER_CSV'), 'DOC_IMPORT_MEMBER_CSV'),
+                (!has_privilege(get_member(), 'mass_import')) ? null : array('admin/import_csv', array('admin_cns_members', array('type' => 'import_csv'), get_module_zone('admin_cns_members')), do_lang_tempcode('IMPORT_MEMBERS'), 'DOC_IMPORT_MEMBERS'),
+                array('admin/export_csv', array('admin_cns_members', array('type' => 'export_csv'), get_module_zone('admin_cns_members')), do_lang_tempcode('EXPORT_MEMBERS'), 'DOC_EXPORT_MEMBERS'),
                 addon_installed('cns_cpfs') ? array('menu/adminzone/tools/users/custom_profile_fields', array('admin_cns_customprofilefields', array('type' => 'browse'), get_module_zone('admin_cns_customprofilefields')), do_lang_tempcode('CUSTOM_PROFILE_FIELDS'), 'DOC_CUSTOM_PROFILE_FIELDS') : null,
                 addon_installed('welcome_emails') ? array('menu/adminzone/setup/welcome_emails', array('admin_cns_welcome_emails', array('type' => 'browse'), get_module_zone('admin_cns_welcome_emails')), do_lang_tempcode('WELCOME_EMAILS'), 'DOC_WELCOME_EMAILS') : null,
                 addon_installed('securitylogging') ? array('menu/adminzone/tools/users/investigate_user', array('admin_lookup', array(), get_module_zone('admin_lookup')), do_lang_tempcode('INVESTIGATE_USER'), 'DOC_INVESTIGATE_USER') : null,
@@ -625,11 +629,11 @@ class Module_admin_cns_members
     }
 
     /**
-     * The UI to download a CSV file of members.
+     * The UI to export a CSV file of members.
      *
      * @return Tempcode The UI
      */
-    public function download_csv()
+    public function export_csv()
     {
         $hidden = new Tempcode();
         $fields = new Tempcode();
@@ -703,8 +707,8 @@ class Module_admin_cns_members
 
         // ...
 
-        $submit_name = do_lang_tempcode('DOWNLOAD_MEMBER_CSV');
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_download_csv'), '_SELF');
+        $submit_name = do_lang_tempcode('EXPORT_MEMBERS');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_export_csv'), '_SELF');
         $text = '';
 
         return do_template('FORM_SCREEN', array(
@@ -714,7 +718,7 @@ class Module_admin_cns_members
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'admin--export',
+            'SUBMIT_ICON' => 'admin--export-csv',
             'SUBMIT_NAME' => $submit_name,
             'TARGET' => '_blank',
             'JS_FUNCTION_CALLS' => $js_function_calls,
@@ -722,11 +726,11 @@ class Module_admin_cns_members
     }
 
     /**
-     * The actualiser to download a CSV of members.
+     * The actualiser to export a CSV of members.
      *
      * @return Tempcode The UI
      */
-    public function _download_csv()
+    public function _export_csv()
     {
         $filter_by_allow = post_param_integer('filter_by_allow', 0);
         $extension = post_param_string('extension');
@@ -736,7 +740,7 @@ class Module_admin_cns_members
         $order_by = post_param_string('order_by');
 
         require_code('tasks');
-        return call_user_func_array__long_task(do_lang('DOWNLOAD_MEMBER_CSV'), $this->title, 'export_member_csv', array($filter_by_allow == 1, $extension, $preset, $fields_to_use, $usergroups, $order_by));
+        return call_user_func_array__long_task(do_lang('EXPORT_MEMBERS'), $this->title, 'export_members', array($filter_by_allow == 1, $extension, $preset, $fields_to_use, $usergroups, $order_by));
     }
 
     /**
@@ -756,7 +760,7 @@ class Module_admin_cns_members
         $fields->attach(form_input_line(do_lang_tempcode('DEFAULT_PASSWORD'), do_lang_tempcode('DESCRIPTION_DEFAULT_PASSWORD'), 'default_password', '', false));
         $fields->attach(form_input_tick(do_lang_tempcode('FORCE_TEMPORARY_PASSWORD'), do_lang_tempcode('DESCRIPTION_FORCE_TEMPORARY_PASSWORD'), 'temporary_password', false));
 
-        $submit_name = do_lang_tempcode('IMPORT_MEMBER_CSV');
+        $submit_name = do_lang_tempcode('IMPORT_MEMBERS');
         $post_url = build_url(array('page' => '_SELF', 'type' => '_import_csv'), '_SELF');
         $text = '';
 
@@ -767,7 +771,7 @@ class Module_admin_cns_members
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'admin--import',
+            'SUBMIT_ICON' => 'admin--import-csv',
             'SUBMIT_NAME' => $submit_name,
         ));
     }
@@ -809,6 +813,6 @@ class Module_admin_cns_members
         }
 
         require_code('tasks');
-        return call_user_func_array__long_task(do_lang('IMPORT_MEMBER_CSV'), $this->title, 'import_member_csv', array($default_password, $use_temporary_passwords, $target_path));
+        return call_user_func_array__long_task(do_lang('IMPORT_MEMBERS'), $this->title, 'import_members', array($default_password, $use_temporary_passwords, $target_path));
     }
 }

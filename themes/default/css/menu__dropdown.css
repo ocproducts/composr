@@ -175,7 +175,7 @@ For example:
 	.dropdown-menu li.nlevel.has-children > a.nlevel-link::after {
 		display: inline-block;
 		vertical-align: middle;
-		content: '/2192'; /* Right arrow */
+		content: '\2192'; /* Right arrow */
 		margin-left: 0.3em;
 	}
 

@@ -76,7 +76,7 @@ class Module_cms_catalogues extends Standard_crud_module
 
         $ret += array(
             'import' => array('IMPORT_CATALOGUE_ENTRIES', 'admin/import_csv'),
-            'export' => array('CATALOGUE_EXPORT', 'admin/export'),
+            'export' => array('EXPORT_CATALOGUE_ENTRIES', 'admin/export_csv'),
         );
 
         $this->cat_crud_module = class_exists('Mx_cms_catalogues_cat') ? new Mx_cms_catalogues_cat() : new Module_cms_catalogues_cat();
@@ -150,7 +150,7 @@ class Module_cms_catalogues extends Standard_crud_module
         }
 
         if ($type == 'export') {
-            $this->title = get_screen_title('CATALOGUE_EXPORT');
+            $this->title = get_screen_title('EXPORT_CATALOGUE_ENTRIES');
 
             $GLOBALS['OUTPUT_STREAMING'] = false; // Too complex to do a pre_run for this properly
         }
@@ -274,8 +274,8 @@ class Module_cms_catalogues extends Standard_crud_module
                 has_privilege(get_member(), 'edit_cat_midrange_content', 'cms_catalogues') ? array('admin/edit_one_category', array('_SELF', array_merge($extra_map, array('type' => 'edit_category')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_edit_one_category') : do_lang('EDIT_CATALOGUE_CATEGORY')) : null,
                 (!$has_categories) ? null : (has_privilege(get_member(), 'submit_midrange_content', 'cms_catalogues') ? array('admin/add', array('_SELF', array_merge($extra_map, array('type' => 'add_entry')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_add') : do_lang('ADD_CATALOGUE_ENTRY')) : null),
                 (!$has_categories) ? null : (has_privilege(get_member(), 'edit_midrange_content', 'cms_catalogues') ? array('admin/edit', array('_SELF', array_merge($extra_map, array('type' => 'edit_entry')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_edit') : do_lang('EDIT_CATALOGUE_ENTRY')) : null),
-                (!$has_categories) ? null : (has_privilege(get_member(), 'mass_import', 'cms_catalogues') ? array('admin/import', array('_SELF', array_merge($extra_map, array('type' => 'import')), '_SELF'), do_lang('IMPORT_CATALOGUE_ENTRIES')) : null),
-                (!$has_categories) ? null : ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? array('admin/export', array('_SELF', array_merge($extra_map, array('type' => 'export')), '_SELF'), do_lang('EXPORT_CATALOGUE_ENTRIES')) : null),
+                (!$has_categories) ? null : (has_privilege(get_member(), 'mass_import', 'cms_catalogues') ? array('admin/import_csv', array('_SELF', array_merge($extra_map, array('type' => 'import')), '_SELF'), do_lang('IMPORT_CATALOGUE_ENTRIES')) : null),
+                (!$has_categories) ? null : ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? array('admin/export_csv', array('_SELF', array_merge($extra_map, array('type' => 'export')), '_SELF'), do_lang('EXPORT_CATALOGUE_ENTRIES')) : null),
             ), manage_custom_fields_donext_link('catalogue'), manage_custom_fields_donext_link('catalogue_category')),
             ($catalogue_name != '') ? escape_html(get_translated_text($cat_title)) : do_lang('MANAGE_CATALOGUES')
         );
@@ -967,7 +967,7 @@ class Module_cms_catalogues extends Standard_crud_module
     {
         check_privilege('mass_import');
 
-        $catalogue_select = $this->choose_catalogue($this->title);
+        $catalogue_select = $this->choose_catalogue($this->title, 'admin--import-csv');
 
         if ($catalogue_select !== null) {
             return $catalogue_select;
@@ -1022,7 +1022,7 @@ class Module_cms_catalogues extends Standard_crud_module
             'TEXT' => do_lang_tempcode('CATALOGUE_IMPORT_TEXT'),
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin--import',
+            'SUBMIT_ICON' => 'admin--import-csv',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -1092,7 +1092,7 @@ class Module_cms_catalogues extends Standard_crud_module
             access_denied('I_ERROR');
         }
 
-        $catalogue_select = $this->choose_catalogue($this->title);
+        $catalogue_select = $this->choose_catalogue($this->title, 'admin--export-csv');
 
         if ($catalogue_select !== null) {
             return $catalogue_select;
@@ -1112,7 +1112,7 @@ class Module_cms_catalogues extends Standard_crud_module
     public function _export_catalogue($catalogue_name)
     {
         require_code('tasks');
-        return call_user_func_array__long_task(do_lang('CATALOGUE_EXPORT'), $this->title, 'export_catalogue', array($catalogue_name));
+        return call_user_func_array__long_task(do_lang('EXPORT_CATALOGUE_ENTRIES'), $this->title, 'export_catalogue', array($catalogue_name));
     }
 }
 

@@ -156,7 +156,7 @@ class Module_cms_banners extends Standard_crud_module
                 has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_banners') ? array('admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_BANNER_TYPE')) : null,
                 has_privilege(get_member(), 'submit_midrange_content', 'cms_banners') ? array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_BANNER')) : null,
                 has_privilege(get_member(), 'edit_own_midrange_content', 'cms_banners') ? array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_BANNER')) : null,
-                array('admin/export', array('_SELF', array('type' => 'export_csv'), '_SELF'), do_lang('EXPORT_CSV_BANNERS')),
+                array('admin/export_csv', array('_SELF', array('type' => 'export_csv'), '_SELF'), do_lang('EXPORT_CSV_BANNERS')),
             ),
             do_lang('MANAGE_BANNERS')
         );

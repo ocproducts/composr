@@ -98,7 +98,6 @@ class Hook_addon_registry_newsletter
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/menu/adminzone/tools/newsletter/import_subscribers.svg',
             'themes/default/images/icons/menu/adminzone/tools/newsletter/newsletter_email_bounce.svg',
             'themes/default/images/icons/menu/adminzone/tools/newsletter/newsletter_from_changes.svg',
             'themes/default/images/icons/menu/adminzone/tools/newsletter/subscribers.svg',

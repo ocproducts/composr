@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_task_export_member_csv
+class Hook_task_export_members
 {
     /**
      * Run the task hook.
