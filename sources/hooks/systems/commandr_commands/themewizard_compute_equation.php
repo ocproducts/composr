@@ -33,6 +33,8 @@ class Hook_commandr_command_themewizard_compute_equation
      */
     public function run($options, $parameters, &$commandr_fs)
     {
+        require_lang('themes');
+
         if ((array_key_exists('h', $options)) || (array_key_exists('help', $options))) {
             return array('', do_command_help('themewizard_compute_equation', array('h'), array(true, true)), '', '');
         } else {

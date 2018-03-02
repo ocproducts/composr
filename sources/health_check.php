@@ -284,7 +284,7 @@ abstract class Hook_Health_Check
      */
     protected function process_checks_section($method, $section_label, $sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        if (($sections_to_run !== null) && (!in_array($this->category_label . ' \\ ' . $section_label, $sections_to_run))) {
+        if (($sections_to_run !== null) && (!in_array($this->category_label . ' \\ ' . $section_label, $sections_to_run)) && (!in_array($method, $sections_to_run))) {
             return;
         }
 

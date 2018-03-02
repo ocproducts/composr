@@ -208,6 +208,7 @@ class Hook_addon_registry_health_check
             'data/health_check.php',
             'adminzone/pages/modules/admin_health_check.php',
             'sources/hooks/systems/page_groupings/health_check.php',
+            'sources/hooks/systems/commandr_commands/health_check.php',
         );
     }
 
