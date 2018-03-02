@@ -303,7 +303,7 @@ function init__webstandards()
  * @param  boolean $webstandards_compat Validate for compatibility
  * @param  boolean $webstandards_ext_files Validate external files
  * @param  boolean $webstandards_manual Bring up messages about manual checks
- * @return ?map Error information (null: no error)
+ * @return array Parse information
  */
 function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $webstandards_javascript = true, $webstandards_css = true, $webstandards_wcag = true, $webstandards_compat = true, $webstandards_ext_files = true, $webstandards_manual = false)
 {

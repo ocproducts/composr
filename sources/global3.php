@@ -3189,6 +3189,7 @@ function strip_html($in)
     if (get_charset() != 'utf-8') {
         $in = str_replace(array('&ndash;', '&mdash;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '|', '"', '"', "'", "'"), $in);
     }
+    $in = str_replace('><', '> <', $in);
     $in = strip_tags($in);
     return @html_entity_decode($in, ENT_QUOTES, get_charset());
 }

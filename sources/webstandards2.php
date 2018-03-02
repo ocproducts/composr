@@ -1730,7 +1730,7 @@ function _check_labelling($tag, $attributes, $self_close, $close)
  * Checks a CSS style sheet (high level).
  *
  * @param  string $data The data of the style sheet
- * @return ?map Error information (null: no error)
+ * @return array Parse information
  */
 function check_css($data)
 {

@@ -260,7 +260,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     if ((strpos($message_plain, '[code') === false) && (strpos($message_plain, '[no_parse') === false) && (strpos($message_plain, '[tt') === false)) {
         // Change username links to plain username namings
         if (stripos($message_plain, '{{') !== false) {
-            $message_plain = preg_replace('#\{\{([^\}\{]*)\}\}#', '\1', $message_plain);
+            $message_plain = preg_replace('#\{\{([^|\}\{]*)\}\}#', '\1', $message_plain);
         }
 
         $message_plain = str_replace('{$SITE_NAME}', get_site_name(), $message_plain);
@@ -270,7 +270,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
             // Remove directives etc
             do {
                 $before = $message_plain;
-                $message_plain = preg_replace('#\{([^\}\{]*)\}#', '', $message_plain);
+                $message_plain = preg_replace('#\{([^|\}\{]*)\}#', '', $message_plain);
             } while ($message_plain != $before);
         }
 
