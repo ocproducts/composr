@@ -255,9 +255,9 @@ function static_cache($mode)
                     if (strtotime($since) < $mtime) {
                         header('HTTP/1.0 304 Not Modified');
 
-                        $aaf = safe_ini_get('auto_append_file');
+                        $aaf = ini_get('auto_append_file');
                         if (!empty($aaf)) {
-                            @include($aff); // Because exit() avoids running this
+                            @include($aaf); // Because exit() avoids running this
                         }
 
                         exit();

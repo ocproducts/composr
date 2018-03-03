@@ -45,7 +45,7 @@ function get_future_version_information()
 {
     require_lang('version');
 
-    $version_dotted = get_param_string('keep_test_version', get_version_dotted()); // E.g. ?keep_test_version=10%20RC29&keep_cache_blocks=0 to test
+    $version_dotted = get_param_string('keep_test_version', get_version_dotted()); // E.g. ?keep_test_version=10.RC29&keep_cache_blocks=0 to test
     $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/version.php?version=' . rawurlencode($version_dotted) . '&lang=' . rawurlencode(user_lang());
 
     static $http_result = null; // Cache
@@ -184,12 +184,12 @@ function get_version_components__from_dotted($dotted)
  * Get a pretty version number for a Composr version.
  * This pretty style is not used in Composr code per se, but is shown to users and hence Composr may need to recognise it when searching news posts, download databases, etc.
  *
- * @param  string $dotted Dotted version number
+ * @param  string $dotted Dotted version number (optionally in long-dotted format)
  * @return string Pretty version number
  */
 function get_version_pretty__from_dotted($dotted)
 {
-    return preg_replace('#\.(alpha|beta|RC)#', ' ${1}', $dotted);
+    return preg_replace('#(\.0)*\.(alpha|beta|RC)#', ' ${2}', $dotted);
 }
 
 /**

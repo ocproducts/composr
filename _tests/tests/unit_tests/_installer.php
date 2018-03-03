@@ -160,7 +160,7 @@ class _installer_test_set extends cms_test_case
                 true,
                 'mysqli'
             );
-            $fail_message = 'Failed on trial #' . strval($i + 1);
+            $fail_message = 'Failed on trial #' . strval($i + 1) . ' ';
             $fail_message .= ($safe_mode ? '(safe mode)' : '(no safe mode)');
             if (!isset($_GET['debug'])) {
                 $fail_message .= ' -- append &debug=1 to the URL to get debug output';
