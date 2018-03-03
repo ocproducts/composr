@@ -981,7 +981,7 @@ function _parse_css_colour_expression($tokens)
         }
     }
 
-    // Either we have a sigle token
+    // Either we have a single token
     if (count($tokens) == 1) {
         return $tokens[0];
     }

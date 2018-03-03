@@ -421,7 +421,7 @@ class Forum_driver_base
         }
 
         $ret = $this->_get_members_groups($id, $skip_secret, $handle_probation);
-        $USERS_GROUPS_CACHE[$id][$skip_secret][$handle_probation] = $ret;
+        $USERS_GROUPS_CACHE[$id][$skip_secret][$handle_probation] = array_unique($ret);
         return $ret;
     }
 

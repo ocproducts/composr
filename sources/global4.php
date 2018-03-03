@@ -287,7 +287,7 @@ function member_personal_links_and_details($member_id)
     }
 
     // Becomes-invisible link
-    if (get_option('is_on_invisibility') == '1') {
+    if ((get_forum_type() == 'cns') && (get_option('is_on_invisibility') == '1')) {
         if ((array_key_exists(get_session_id(), $GLOBALS['SESSION_CACHE'])) && ($GLOBALS['SESSION_CACHE'][get_session_id()]['session_invisible'] == 0)) {
             $visible = (array_key_exists(get_session_id(), $GLOBALS['SESSION_CACHE'])) && ($GLOBALS['SESSION_CACHE'][get_session_id()]['session_invisible'] == 0);
             $url = build_url(array('page' => 'login', 'type' => 'invisible', 'redirect' => (get_page_name() == 'login') ? null : SELF_REDIRECT), get_module_zone('login'));

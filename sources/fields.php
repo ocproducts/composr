@@ -72,7 +72,7 @@ function catalogue_file_script()
     if ($field_id_field !== null) {
         $where[$field_id_field] = $field_id;
     }
-    $ev_check = $GLOBALS['SITE_DB']->query_select_value($table, $url_field, $where); // Has to return a result, will give a fatal error if not -- i.e. it implicitly checks the schema variables given
+    $ev_check = $GLOBALS['SITE_DB']->query_select_value($table, $url_field, $where, '', true); // Has to return a result, will give a fatal error if not -- i.e. it implicitly checks the schema variables given
     if (!in_array($ev, explode("\n", preg_replace('#( |::).*$#m', '', $ev_check)))) {
         access_denied('I_ERROR'); // ID mismatch for the file requested, to give a security error
     }
@@ -258,7 +258,7 @@ function get_catalogue_fields($catalogue_name = null)
         if (!is_null($catalogue_name)) {
             $where += array('c_name' => $catalogue_name);
         }
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), $where, 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), $where, 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         $CAT_FIELDS_CACHE[$catalogue_name] = $fields;
     }
     return $fields;

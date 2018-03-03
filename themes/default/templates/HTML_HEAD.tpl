@@ -135,7 +135,7 @@
 {$,Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent}
 {+START,IF,{$AND,{$CONFIG_OPTION,cookie_notice},{$RUNNING_SCRIPT,index}}}
 	<script>
-		window.cookieconsent_options={'message':'{!COOKIE_NOTICE;,{$SITE_NAME}}','dismiss':'{!INPUTSYSTEM_OK;}','learnMore':'{!READ_MORE;}','link':'{$PAGE_LINK;,:privacy}','theme':'dark-top'};
+		window.cookieconsent_options={'message':'{!COOKIE_NOTICE;/,{$SITE_NAME}}','dismiss':'{!INPUTSYSTEM_OK;}','learnMore':'{!READ_MORE;}','link':'{$PAGE_LINK;/,:privacy}','theme':'dark-top'};
 	</script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
 {+END}

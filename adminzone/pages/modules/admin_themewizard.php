@@ -507,9 +507,9 @@ class Module_admin_themewizard
                     $path = 'themes/' . $logo_save_theme . '/images_custom/-logo.png';
                 }
 
-                if (!file_exists(dirname($path))) {
+                if (!file_exists(get_custom_file_base() . '/' . dirname($path))) {
                     require_code('files2');
-                    make_missing_directory(dirname($path));
+                    make_missing_directory(get_custom_file_base() . '/' . dirname($path));
                 }
 
                 @imagepng($img, get_custom_file_base() . '/' . $path, 9) or intelligent_write_error($path);

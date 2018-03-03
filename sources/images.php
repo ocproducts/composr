@@ -262,7 +262,7 @@ function _symbol_thumbnail($param)
                     }
                 } else {
                     // They're the same, within the tolerances of
-                    // floating point arithmentic. Just scale it.
+                    // floating point arithmetic. Just scale it.
                     $modify_image = false;
                 }
 

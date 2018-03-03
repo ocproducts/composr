@@ -154,7 +154,7 @@ function is_plupload($fake_prepopulation = false)
         }
 
         if ((preg_match('#^hidFileID\_#i', $key) != 0) && ($value != '-1')) {
-            // Get the incoming uploads appropiate database table row
+            // Get the incoming uploads appropriate database table row
             if (substr($value, -4) == '.dat') { // By .dat name
                 $filename = post_param_string(str_replace('hidFileID', 'hidFileName', $key), '');
                 if ($filename == '') {
@@ -289,7 +289,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
 
         // ID of the upload from the incoming uploads database table
         if (!is_null($row_id_file_value)) { // plupload was used
-            // Get the incoming upload's appropiate DB table row
+            // Get the incoming upload's appropriate DB table row
             if ((substr($row_id_file_value, -4) == '.dat') && (strpos($row_id_file_value, ':') === false)) {
                 $path = 'uploads/incoming/' . filter_naughty($row_id_file_value);
                 if (file_exists(get_custom_file_base() . '/' . $path)) {

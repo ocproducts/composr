@@ -83,9 +83,13 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         $_allow = array();
         if (!empty($properties['allow'])) {
             foreach ($properties['allow'] as $x) {
-                $_x = remap_portable_as_resource_id('member', $x);
-                if (!is_null($_x)) {
-                    $_allow[] = $_x;
+                if (get_forum_type() == 'cns') {
+                    $_x = remap_portable_as_resource_id('member', $x);
+                    if ($_x !== null) {
+                        $_allow[] = $_x;
+                    }
+                } else {
+                    $_allow[] = $x;
                 }
             }
         }
@@ -94,9 +98,13 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         $_allow_groups = array();
         if (!empty($properties['allow_groups'])) {
             foreach ($properties['allow_groups'] as $x) {
-                $_x = remap_portable_as_resource_id('group', $x);
-                if (!is_null($_x)) {
-                    $_allow_groups[] = $_x;
+                if (get_forum_type() == 'cns') {
+                    $_x = remap_portable_as_resource_id('group', $x);
+                    if ($_x !== null) {
+                        $_allow_groups[] = $_x;
+                    }
+                } else {
+                    $_allow_groups[] = $x;
                 }
             }
         }
@@ -105,9 +113,13 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         $_disallow = array();
         if (!empty($properties['disallow'])) {
             foreach ($properties['disallow'] as $x) {
-                $_x = remap_portable_as_resource_id('member', $x);
-                if (!is_null($_x)) {
-                    $_disallow[] = $_x;
+                if (get_forum_type() == 'cns') {
+                    $_x = remap_portable_as_resource_id('member', $x);
+                    if ($_x !== null) {
+                        $_disallow[] = $_x;
+                    }
+                } else {
+                    $_disallow[] = $x;
                 }
             }
         }
@@ -116,9 +128,13 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         $_disallow_groups = array();
         if (!empty($properties['disallow_groups'])) {
             foreach ($properties['disallow_groups'] as $x) {
-                $_x = remap_portable_as_resource_id('group', $x);
-                if (!is_null($_x)) {
-                    $_disallow_groups[] = $_x;
+                if (get_forum_type() == 'cns') {
+                    $_x = remap_portable_as_resource_id('group', $x);
+                    if ($_x !== null) {
+                        $_disallow_groups[] = $_x;
+                    }
+                } else {
+                    $_disallow_groups[] = $x;
                 }
             }
         }

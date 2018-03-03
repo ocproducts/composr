@@ -177,6 +177,14 @@ class Hook_search_wiki_posts extends FieldsSearchHook
      */
     public function render($row)
     {
-        return render_wiki_post_box($row);
+        global $SEARCH__CONTENT_BITS, $LAX_COMCODE;
+        $highlight_bits = ($SEARCH__CONTENT_BITS === null) ? array() : $SEARCH__CONTENT_BITS;
+        $LAX_COMCODE = true;
+        $summary = get_translated_text($row['the_message']);
+        $text_summary_h = comcode_to_tempcode($summary, null, false, null, null, null, false, false, false, false, false, $highlight_bits);
+        $LAX_COMCODE = false;
+        $text_summary = generate_text_summary($text_summary_h->evaluate(), $highlight_bits);
+
+        return render_wiki_post_box($row, '_SEARCH', true, true, null, '', protect_from_escaping($text_summary));
     }
 }

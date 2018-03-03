@@ -249,7 +249,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
      * Standard crud_module table function.
      *
      * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A pair: The choose table, Whether re-ordering is supported from this screen.
+     * @return array A pair: The choose table, Whether reordering is supported from this screen.
      */
     public function create_selection_list_choose_table($url_map)
     {

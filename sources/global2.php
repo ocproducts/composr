@@ -39,7 +39,7 @@ function init__global2()
         @file_put_contents($error_log_path, "<" . "?php return; ?" . ">\n", LOCK_EX);
     }
 
-    global $BOOTSTRAPPING, $CHECKING_SAFEMODE, $BROWSER_DECACHEING_CACHE, $CHARSET_CACHE, $TEMP_CHARSET_CACHE, $RELATIVE_PATH, $CURRENTLY_HTTPS_CACHE, $RUNNING_SCRIPT_CACHE, $SERVER_TIMEZONE_CACHE, $HAS_SET_ERROR_HANDLER, $DYING_BADLY, $XSS_DETECT, $SITE_INFO, $IN_MINIKERNEL_VERSION, $EXITING, $FILE_BASE, $CACHE_TEMPLATES, $BASE_URL_HTTP_CACHE, $BASE_URL_HTTPS_CACHE, $WORDS_TO_FILTER_CACHE, $FIELD_RESTRICTIONS, $VALID_ENCODING, $CONVERTED_ENCODING, $MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, $QUERY_LOG, $CURRENT_SHARE_USER, $FIND_SCRIPT_CACHE, $WHAT_IS_RUNNING_CACHE, $DEV_MODE, $SEMI_DEV_MODE, $IS_VIRTUALISED_REQUEST, $FILE_ARRAY, $DIR_ARRAY, $JAVASCRIPTS_DEFAULT, $JAVASCRIPTS, $JAVASCRIPT_BOTTOM, $KNOWN_AJAX, $KNOWN_UTF8, $CSRF_TOKENS, $STATIC_CACHE_ENABLED, $IN_SELF_ROUTING_SCRIPT, $SUPPRESS_ERROR_DEATH;
+    global $BOOTSTRAPPING, $CHECKING_SAFEMODE, $BROWSER_DECACHING_CACHE, $CHARSET_CACHE, $TEMP_CHARSET_CACHE, $RELATIVE_PATH, $CURRENTLY_HTTPS_CACHE, $RUNNING_SCRIPT_CACHE, $SERVER_TIMEZONE_CACHE, $HAS_SET_ERROR_HANDLER, $DYING_BADLY, $XSS_DETECT, $SITE_INFO, $IN_MINIKERNEL_VERSION, $EXITING, $FILE_BASE, $CACHE_TEMPLATES, $BASE_URL_HTTP_CACHE, $BASE_URL_HTTPS_CACHE, $WORDS_TO_FILTER_CACHE, $FIELD_RESTRICTIONS, $VALID_ENCODING, $CONVERTED_ENCODING, $MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, $QUERY_LOG, $CURRENT_SHARE_USER, $FIND_SCRIPT_CACHE, $WHAT_IS_RUNNING_CACHE, $DEV_MODE, $SEMI_DEV_MODE, $IS_VIRTUALISED_REQUEST, $FILE_ARRAY, $DIR_ARRAY, $JAVASCRIPTS_DEFAULT, $JAVASCRIPTS, $JAVASCRIPT_BOTTOM, $KNOWN_AJAX, $KNOWN_UTF8, $CSRF_TOKENS, $STATIC_CACHE_ENABLED, $IN_SELF_ROUTING_SCRIPT, $SUPPRESS_ERROR_DEATH;
 
     @ob_end_clean(); // Reset to have no output buffering by default (we'll use it internally, taking complete control)
 
@@ -53,12 +53,17 @@ function init__global2()
     }
 
     // Closed site message
-    if ((is_file('closed.html')) && (get_param_integer('keep_force_open', 0) == 0)) {
-        if ((strpos($_SERVER['SCRIPT_NAME'], 'upgrader.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], 'execute_temp.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], '_tests') === false) && ((!isset($SITE_INFO['no_extra_closed_file'])) || ($SITE_INFO['no_extra_closed_file'] == '0'))) {
+    if ((is_file(get_file_base() . '/closed.html')) && (get_param_integer('keep_force_open', 0) == 0)) {
+        if ((strpos($_SERVER['SCRIPT_NAME'], 'upgrader.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], 'execute_temp.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], '_tests') === false) && ((!isset($SITE_INFO['no_extra_closed_file'])) || ($SITE_INFO['no_extra_closed_file'] != '1'))) {
             if ((@strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false)) {
                 header('HTTP/1.0 503 Service Temporarily Unavailable');
             }
             header('Location: ' . (is_file($RELATIVE_PATH . 'closed.html') ? 'closed.html' : '../closed.html'));
+
+            $aaf = ini_get('auto_append_file');
+            if (!empty($aaf)) {
+                @include($aaf); // Because exit() avoids running this
+            }
             exit();
         }
     }
@@ -67,7 +72,7 @@ function init__global2()
     $JAVASCRIPTS_DEFAULT = array('global' => true, 'transitions' => true, 'modalwindow' => true, 'custom_globals' => true);
     $JAVASCRIPT_BOTTOM = array();
     $RUNNING_SCRIPT_CACHE = array();
-    $BROWSER_DECACHEING_CACHE = null;
+    $BROWSER_DECACHING_CACHE = null;
     $CHARSET_CACHE = null;
     $TEMP_CHARSET_CACHE = null;
     $CURRENTLY_HTTPS_CACHE = null;
@@ -159,6 +164,9 @@ function init__global2()
 
         //  encoding="' . get_charset() . '" not needed due to no data in it
         $output = '<?xml version="1.0" ?' . '><response><result></result></response>';
+        echo $output;
+
+        exit(); // So auto_append_file cannot run and corrupt our output
     }
 
     // Initialise timezones
@@ -252,7 +260,7 @@ function init__global2()
     // Most critical things
     require_code('global3'); // A lot of support code is present in this
     require_code('web_resources');
-    if (!running_script('webdav')) {
+    if ((!running_script('webdav')) && (!running_script('endpoint'))) {
         $http_method = cms_srv('REQUEST_METHOD');
         if ($http_method != 'GET' && $http_method != 'POST' && $http_method != 'HEAD' && $http_method != '') {
             header('HTTP/1.0 405 Method Not Allowed');
@@ -406,7 +414,7 @@ function init__global2()
 
     if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP)) {
         // Clear caching if needed
-        $changed_base_url = (get_value('last_base_url', null, true) !== get_base_url(false));
+        $changed_base_url = (get_value('last_base_url', null, true) !== get_base_url(false)) && (get_value('no_base_check') !== '1');
         if ((running_script('index')) && ((is_browser_decaching()) || ($changed_base_url))) {
             require_code('caches3');
             auto_decache($changed_base_url);
@@ -561,7 +569,7 @@ function fixup_bad_php_env_vars()
 
     $php_self = empty($_SERVER['PHP_SELF']) ? (empty($_ENV['PHP_SELF']) ? '' : $_ENV['PHP_SELF']) : $_SERVER['PHP_SELF'];
     if ((empty($php_self)) || (/*or corrupt*/strpos($php_self, '.php') === false)) {
-        // We're really desparate if we have to derive this, but here we go
+        // We're really desperate if we have to derive this, but here we go
         $_SERVER['PHP_SELF'] = '/' . preg_replace('#^' . preg_quote($document_root, '#') . '/#', '', $script_filename);
         $path_info = empty($_SERVER['PATH_INFO']) ? (empty($_ENV['PATH_INFO']) ? '' : $_ENV['PATH_INFO']) : $_SERVER['PATH_INFO'];
         if (!empty($path_info)) { // Add in path-info if we have it
@@ -579,13 +587,13 @@ function fixup_bad_php_env_vars()
             $_SERVER['REQUEST_URI'] = $_SERVER['REDIRECT_URL'];
             if (strpos($_SERVER['REQUEST_URI'], '?') === false) {
                 if (count($_GET) != 0) {
-                    $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET); // Messy as rewrite URL-embedded parameters will be doubled, but if you've got a broken server don't push it to do rewrites
+                    $_SERVER['REQUEST_URI'] .= '?' . str_replace('/', '%2F', http_build_query($_GET)); // Messy as rewrite URL-embedded parameters will be doubled, but if you've got a broken server don't push it to do rewrites
                 }
             }
         } else {
             $_SERVER['REQUEST_URI'] = $php_self; // Same as PHP_SELF, but...
             if (count($_GET) != 0) { // add in query string data if we have it
-                $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET);
+                $_SERVER['REQUEST_URI'] .= '?' . str_replace('/', '%2F', http_build_query($_GET));
             }
 
             // ^ NB: May be slight deviation. Default directory index files not considered, i.e. index.php may have been omitted in URL
@@ -593,7 +601,7 @@ function fixup_bad_php_env_vars()
     }
 
     if ((empty($_SERVER['QUERY_STRING'])) && (empty($_ENV['QUERY_STRING']))) {
-        $_SERVER['QUERY_STRING'] = http_build_query($_GET);
+        $_SERVER['QUERY_STRING'] = str_replace('/', '%2F', http_build_query($_GET));
     }
 }
 
@@ -606,7 +614,7 @@ function monitor_slow_urls()
     if ($time > intval(get_value('monitor_slow_urls'))) {
         require_code('urls');
         if (php_function_allowed('error_log')) {
-            error_log('Over time limit @ ' . get_self_url_easy(true) . "\t" . strval($time) . 'secs' . "\t" . date('Y-m-d H:i:s', time()), 0);
+            error_log('Over time limit @ ' . get_self_url_easy(true) . "\t" . strval($time) . ' secs' . "\t" . date('Y-m-d H:i:s', time()), 0);
         }
     }
 }
@@ -803,7 +811,7 @@ function catch_fatal_errors()
             case E_USER_ERROR:
                 $GLOBALS['SUPPRESS_ERROR_DEATH'] = false; // We can't recover as we've lost our execution track. Force a nice death rather than trying to display a recoverable error.
                 $GLOBALS['DYING_BADLY'] = true; // Tells composr_error_handler to roll through, definitely an error.
-                $GLOBALS['EXITING'] = 2; // Fudge to force a critical error, we're too desparate to show a Tempcode stack trace.
+                $GLOBALS['EXITING'] = 2; // Fudge to force a critical error, we're too desperate to show a Tempcode stack trace.
                 composr_error_handler($error['type'], $error['message'], $error['file'], $error['line']);
         }
     }
@@ -890,13 +898,13 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
  */
 function is_browser_decaching()
 {
-    global $BROWSER_DECACHEING_CACHE;
-    if ($BROWSER_DECACHEING_CACHE !== null) {
-        return $BROWSER_DECACHEING_CACHE;
+    global $BROWSER_DECACHING_CACHE;
+    if ($BROWSER_DECACHING_CACHE !== null) {
+        return $BROWSER_DECACHING_CACHE;
     }
 
     if (GOOGLE_APPENGINE) {
-        $BROWSER_DECACHEING_CACHE = false;
+        $BROWSER_DECACHING_CACHE = false;
         return false; // Decaching by mistake is real-bad when Google Cloud Storage is involved
     }
 
@@ -906,23 +914,23 @@ function is_browser_decaching()
         $config_file = rtrim(str_replace(array('if (!defined(\'DO_PLANNED_DECACHE\')) ', 'define(\'DO_PLANNED_DECACHE\', true);'), array('', ''), $config_file)) . "\n\n";
         require_code('files');
         cms_file_put_contents_safe(get_file_base() . '/_config.php', $config_file, FILE_WRITE_FIX_PERMISSIONS);
-        $BROWSER_DECACHEING_CACHE = true;
+        $BROWSER_DECACHING_CACHE = true;
         return true;
     }
 
     if (get_value('ran_once') === null) { // Track whether Composr has run at least once
         set_value('ran_once', '1');
-        $BROWSER_DECACHEING_CACHE = true;
+        $BROWSER_DECACHING_CACHE = true;
         return true;
     }
 
-    $BROWSER_DECACHEING_CACHE = false;
+    $BROWSER_DECACHING_CACHE = false;
     return false; // This technique stopped working well, Chrome sends cache-control too freely
 
     /*
     $header_method = (array_key_exists('HTTP_CACHE_CONTROL', $_SERVER)) && ($_SERVER['HTTP_CACHE_CONTROL'] == 'no-cache') && (cms_srv('REQUEST_METHOD') != 'POST') && ((!function_exists('browser_matches')));
-    $BROWSER_DECACHEING = (($header_method) && ((array_key_exists('FORUM_DRIVER', $GLOBALS)) && (has_actual_page_access(get_member(), 'admin_cleanup')) || ($GLOBALS['IS_ACTUALLY_ADMIN'])));
-    return $BROWSER_DECACHEING;
+    $BROWSER_DECACHING = (($header_method) && ((array_key_exists('FORUM_DRIVER', $GLOBALS)) && (has_actual_page_access(get_member(), 'admin_cleanup')) || ($GLOBALS['IS_ACTUALLY_ADMIN'])));
+    return $BROWSER_DECACHING;
     */
 }
 
@@ -1780,7 +1788,7 @@ function get_param_integer($name, $default = false, $not_string_ok = false)
 }
 
 /**
- * Make sure that lines are seperated by "\n", with no "\r"'s there at all. For Mac data, this will be a flip scenario. For Linux data this will be a null operation. For windows data this will be change from "\r\n" to just "\n". For a realistic scenario, data could have originated on all kinds of platforms, with some editors converting, some situations being inter-platform, and general confusion. Don't make blind assumptions - use this function to clean data, then write clean code that only considers "\n"'s.
+ * Make sure that lines are separated by "\n", with no "\r"'s there at all. For Mac data, this will be a flip scenario. For Linux data this will be a null operation. For windows data this will be change from "\r\n" to just "\n". For a realistic scenario, data could have originated on all kinds of platforms, with some editors converting, some situations being inter-platform, and general confusion. Don't make blind assumptions - use this function to clean data, then write clean code that only considers "\n"'s.
  *
  * @param  string $in The data to clean
  * @param  ?ID_TEXT $desired_charset The character set it should be in. We don't do any real conversions using this, only make sure that common problems with fed ISO-8859-1 data are resolved (null: output character set)

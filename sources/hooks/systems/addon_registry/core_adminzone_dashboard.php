@@ -184,7 +184,6 @@ class Hook_addon_registry_core_adminzone_dashboard
         foreach (placeholder_array() as $v) {
             $data[] = array(
                 'SITE_NAME' => lorem_phrase(),
-                'GOOGLE_RANKING' => placeholder_number(),
                 'ALEXA_RANKING' => placeholder_number(),
                 'ALEXA_TRAFFIC' => placeholder_number(),
                 'URL' => placeholder_url(),

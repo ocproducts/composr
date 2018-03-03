@@ -134,7 +134,7 @@ function set_attachment(field_name,number,filename,multi,uploader_settings)
 			if (suffix!='') insert_textbox(post,suffix);
 
 			// Add field for next one
-			var add_another_field=(number==window.num_attachments) && (window.num_attachments<window.max_attachments); // Needs running late, in case something happened inbetween
+			var add_another_field=(number==window.num_attachments) && (window.num_attachments<window.max_attachments); // Needs running late, in case something happened in-between
 			if (add_another_field)
 			{
 				add_attachment(window.num_attachments+1,field_name);
@@ -210,7 +210,7 @@ function set_attachment(field_name,number,filename,multi,uploader_settings)
 						}
 
 						// Add field for next one
-						var add_another_field=(number==window.num_attachments) && (window.num_attachments<window.max_attachments); // Needs running late, in case something happened inbetween
+						var add_another_field=(number==window.num_attachments) && (window.num_attachments<window.max_attachments); // Needs running late, in case something happened in-between
 						if (add_another_field)
 						{
 							add_attachment(window.num_attachments+1,field_name);

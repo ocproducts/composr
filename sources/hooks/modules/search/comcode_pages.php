@@ -298,6 +298,9 @@ class Hook_search_comcode_pages extends FieldsSearchHook
             }
             $_zone = $page_request[count($page_request) - 1];
             $comcode_file = get_custom_file_base() . (($_zone == '') ? '' : '/') . $_zone;
+            if (!is_file($comcode_file)) {
+                $comcode_file = get_file_base() . (($_zone == '') ? '' : '/') . $_zone;
+            }
 
             if (file_exists($comcode_file)) {
                 global $LAX_COMCODE;

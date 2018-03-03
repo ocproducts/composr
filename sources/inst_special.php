@@ -43,7 +43,7 @@ function get_chmod_array($lang, $runtime = false)
 
             // Save memory compared to above commented code...
 
-            $path = get_custom_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
+            $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
             if (!file_exists($path)) {
                 $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
             }

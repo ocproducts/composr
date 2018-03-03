@@ -170,12 +170,14 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
         }
     }
 
+    $is_banned = ($GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_is_perm_banned') == 1);
+
     // Find title
     $title = addon_installed('cns_member_titles') ? $GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_title') : '';
     if ($title == '') {
         $title = get_translated_text(cns_get_group_property($primary_group, 'title'), $GLOBALS['FORUM_DB']);
     }
-    if ($GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_is_perm_banned') == 1) {
+    if ($is_banned) {
         $title = do_lang('BANNED');
     }
     $post['poster_title'] = $title;
@@ -190,7 +192,7 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
         $post['poster_highlighted_name'] = $GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_highlighted_name');
 
         // Signature
-        if ((($GLOBALS['CNS_DRIVER']->get_member_row_field(get_member(), 'm_views_signatures') == 1) || (get_option('enable_views_sigs_option', true) === '0')) && ($_postdetails['p_skip_sig'] == 0) && (addon_installed('cns_signatures'))) {
+        if ((($GLOBALS['CNS_DRIVER']->get_member_row_field(get_member(), 'm_views_signatures') == 1) || (get_option('enable_views_sigs_option', true) === '0')) && ($_postdetails['p_skip_sig'] == 0) && (addon_installed('cns_signatures')) && (!$is_banned)) {
             global $SIGNATURES_CACHE;
             if (array_key_exists($_postdetails['p_poster'], $SIGNATURES_CACHE)) {
                 $sig = $SIGNATURES_CACHE[$_postdetails['p_poster']];

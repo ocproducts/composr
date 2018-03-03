@@ -217,7 +217,7 @@ class Hook_paypal
             // Cart
             case 'cart':
                 require_lang('shopping');
-                $item_name = do_lang('CART_ORDER', $purchase_id); // We will detect as the correct cart-order from the re-mapped item_name. This is a specially recognised item naming, reserved for cart products.
+                $item_name = do_lang('CART_ORDER', $purchase_id); // We will detect as the correct cart-order from the remapped item_name. This is a specially recognised item naming, reserved for cart products.
                 break;
 
             // (Non-supported)

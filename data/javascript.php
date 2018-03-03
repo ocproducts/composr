@@ -63,3 +63,5 @@ if ($script != '') {
         echo file_get_contents($path);
     }
 }
+
+exit(); // So auto_append_file cannot run and corrupt our output

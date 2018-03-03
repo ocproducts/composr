@@ -100,7 +100,7 @@ class Hook_choose_download
                         if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
                             $map['validated'] = 1;
                         }
-                        $rows = $GLOBALS['SITE_DB']->query_select('images', array('*'), $map, 'ORDER BY id', 200/*Stop sillyness, could be a DOS attack*/);
+                        $rows = $GLOBALS['SITE_DB']->query_select('images', array('*'), $map, 'ORDER BY id', 200/*Stop silliness, could be a DOS attack*/);
                         $counter = 0;
                         $div = 2;
                         $_out = new Tempcode();

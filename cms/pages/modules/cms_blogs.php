@@ -158,7 +158,7 @@ class Module_cms_blogs extends Standard_crud_module
      * Standard crud_module table function.
      *
      * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return ?array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL (null: nothing to select).
+     * @return ?array A quartet: The choose table, Whether reordering is supported from this screen, Search URL, Archive URL (null: nothing to select).
      */
     public function create_selection_list_choose_table($url_map)
     {
@@ -395,7 +395,7 @@ class Module_cms_blogs extends Standard_crud_module
             $schedule_code = ':$GLOBALS[\'SITE_DB\']->query_update(\'news\',array(\'date_and_time\'=>$GLOBALS[\'_EVENT_TIMESTAMP\'],\'validated\'=>1),array(\'id\'=>' . strval($id) . '),\'\',1);';
             $past_event = $GLOBALS['SITE_DB']->query_select('calendar_events', array('e_start_day', 'e_start_month', 'e_start_year', 'e_start_hour', 'e_start_minute'), array($GLOBALS['SITE_DB']->translate_field_ref('e_content') => $schedule_code), '', 1);
             $scheduled = array_key_exists(0, $past_event) ? array($past_event[0]['e_start_minute'], $past_event[0]['e_start_hour'], $past_event[0]['e_start_month'], $past_event[0]['e_start_day'], $past_event[0]['e_start_year']) : null;
-            if ((!is_null($scheduled)) && ($scheduled < time())) {
+            if ((!is_null($scheduled)) && (mktime($scheduled[1], $scheduled[0], 0, $scheduled[2], $scheduled[3], $scheduled[4]) < time())) {
                 $scheduled = null;
             }
         } else {

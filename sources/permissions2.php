@@ -198,7 +198,7 @@ function get_category_permissions_for_environment($module, $category, $page = nu
         $access[$id] = $new_category ? 1 : 0;
     }
     if (!$new_category) {
-        $access_rows = $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_select('group_category_access', array('group_id'), array('module_the_name' => $module, 'category_name' => $category));
+        $access_rows = $GLOBALS[($module == 'forums' || $module == 'topics') ? 'FORUM_DB' : 'SITE_DB']->query_select('group_category_access', array('group_id'), array('module_the_name' => $module, 'category_name' => $category));
         foreach ($access_rows as $row) {
             $access[$row['group_id']] = 1;
         }
@@ -206,7 +206,7 @@ function get_category_permissions_for_environment($module, $category, $page = nu
 
     // Privileges
     $privileges = array();
-    $access_rows = $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_select('group_privileges', array('group_id', 'privilege', 'the_value'), array('module_the_name' => $module, 'category_name' => $category));
+    $access_rows = $GLOBALS[($module == 'forums' || $module == 'topics') ? 'FORUM_DB' : 'SITE_DB']->query_select('group_privileges', array('group_id', 'privilege', 'the_value'), array('module_the_name' => $module, 'category_name' => $category));
     foreach ($access_rows as $row) {
         $privileges[$row['privilege']][$row['group_id']] = strval($row['the_value']);
     }
@@ -424,7 +424,7 @@ function set_category_permissions_from_environment($module, $category, $page = n
 
     // Based on old access settings, we may need to look at additional groups (clubs) that have permissions here
     $access = array();
-    $access_rows = $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_select('group_category_access', array('group_id'), array('module_the_name' => $module, 'category_name' => $category));
+    $access_rows = $GLOBALS[($module == 'forums' || $module == 'topics') ? 'FORUM_DB' : 'SITE_DB']->query_select('group_category_access', array('group_id'), array('module_the_name' => $module, 'category_name' => $category));
     foreach ($access_rows as $row) {
         $access[$row['group_id']] = 1;
     }
@@ -440,7 +440,7 @@ function set_category_permissions_from_environment($module, $category, $page = n
             continue;
         }
 
-        $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id));
+        $GLOBALS[($module == 'forums' || $module == 'topics') ? 'FORUM_DB' : 'SITE_DB']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id));
     }
 
     $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
@@ -454,7 +454,7 @@ function set_category_permissions_from_environment($module, $category, $page = n
         if (is_array($cat_support)) {
             $cat_support = $cat_support[0];
         }
-        $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_delete('group_privileges', array('privilege' => $override, 'module_the_name' => $module, 'category_name' => $category));
+        $GLOBALS[($module == 'forums' || $module == 'topics') ? 'FORUM_DB' : 'SITE_DB']->query_delete('group_privileges', array('privilege' => $override, 'module_the_name' => $module, 'category_name' => $category));
     }
     foreach (array_keys($groups) as $group_id) {
         if (in_array($group_id, $admin_groups)) {
@@ -463,7 +463,7 @@ function set_category_permissions_from_environment($module, $category, $page = n
 
         $value = post_param_integer('access_' . strval($group_id), 0);
         if ($value == 1) {
-            $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_insert('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id), false, true); // Race/corruption condition
+            $GLOBALS[($module == 'forums' || $module == 'topics') ? 'FORUM_DB' : 'SITE_DB']->query_insert('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id), false, true); // Race/corruption condition
         }
         foreach ($overridables as $override => $cat_support) {
             if (is_array($cat_support)) {
@@ -475,7 +475,7 @@ function set_category_permissions_from_environment($module, $category, $page = n
 
             $value = post_param_integer('access_' . strval($group_id) . '_privilege_' . $override, -1);
             if ($value != -1) {
-                $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_insert('group_privileges', array('privilege' => $override, 'group_id' => $group_id, 'module_the_name' => $module, 'category_name' => $category, 'the_page' => '', 'the_value' => $value));
+                $GLOBALS[($module == 'forums' || $module == 'topics') ? 'FORUM_DB' : 'SITE_DB']->query_insert('group_privileges', array('privilege' => $override, 'group_id' => $group_id, 'module_the_name' => $module, 'category_name' => $category, 'the_page' => '', 'the_value' => $value));
             }
         }
     }

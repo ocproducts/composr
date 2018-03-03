@@ -41,9 +41,14 @@ class Hook_symbol_SHOW_RATINGS
             $ratings = array();
             $_ratings = $GLOBALS['SITE_DB']->query_select('rating', array('rating_member', 'rating_ip', 'rating_time', 'rating'), array('rating_for_type' => $rating_type, 'rating_for_id' => $rating_id), 'ORDER BY rating_time DESC', $max);
             foreach ($_ratings as $rating) {
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($rating['rating_member']);
+                if ($username === null) {
+                    $username = do_lang('UNKNOWN');
+                }
+
                 $ratings[] = array(
                     'RATING_MEMBER' => strval($rating['rating_member']),
-                    'RATING_USERNAME' => is_guest($rating['rating_member']) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($rating['rating_member']),
+                    'RATING_USERNAME' => is_guest($rating['rating_member']) ? '' : $username,
                     'RATING_IP' => $rating['rating_ip'],
                     'RATING_TIME' => strval($rating['rating_time']),
                     'RATING_TIME_FORMATTED' => get_timezoned_date($rating['rating_time']),

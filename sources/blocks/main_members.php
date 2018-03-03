@@ -511,7 +511,9 @@ class Block_main_members
         // Optimisation, as the member structure is much heavier than you'd think, due to lots of nested templates, including a member box tooltip for each member row in the results table
         $results_table = apply_quick_caching($results_table);
 
-        return do_template('BLOCK_MAIN_MEMBERS', array(
+        $tpl = ($display_mode == 'listing') ? 'BLOCK_MAIN_MEMBERS' : 'BLOCK_MAIN_MEMBERS_COMPLEX';
+
+        return do_template($tpl, array(
             '_GUID' => $guid,
             'BLOCK_ID' => $block_id,
             'START' => strval($start),

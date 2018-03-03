@@ -256,7 +256,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
      * Standard crud_module table function.
      *
      * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL.
+     * @return array A quartet: The choose table, Whether reordering is supported from this screen, Search URL, Archive URL.
      */
     public function create_selection_list_choose_table($url_map)
     {
@@ -309,7 +309,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
     {
         $id = intval($_id);
 
-        $m = $GLOBALS['FORUM_DB']->query_select('aggregate_type_instances', array('*'), array('id' => $id), '', 1);
+        $m = $GLOBALS['SITE_DB']->query_select('aggregate_type_instances', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $m)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }

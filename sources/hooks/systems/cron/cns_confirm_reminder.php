@@ -32,6 +32,10 @@ class Hook_cron_cns_confirm_reminder
             return;
         }
 
+        if (is_on_multi_site_network()) {
+            return;
+        }
+
         $time = time();
         $last_time = intval(get_value('last_confirm_reminder_time', null, true));
         if ($last_time == 0) {

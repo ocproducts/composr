@@ -323,8 +323,10 @@ function is_page_https($zone, $page)
         if (isset($GLOBALS['SITE_DB'])) {
             $results = $GLOBALS['SITE_DB']->query_select('https_pages', array('*'), null, '', null, null, true);
             $HTTPS_PAGES_CACHE = array();
-            foreach ($results as $r) {
-                $HTTPS_PAGES_CACHE[$r['https_page_name']] = true;
+            if ($results !== null) {
+                foreach ($results as $r) {
+                    $HTTPS_PAGES_CACHE[$r['https_page_name']] = true;
+                }
             }
             if (function_exists('persistent_cache_set')) {
                 persistent_cache_set('HTTPS_PAGES_CACHE', $HTTPS_PAGES_CACHE);
@@ -1501,7 +1503,7 @@ function check_url_exists($url, $test_freq_secs)
 
     if ((!isset($test1[0])) || ($test1[0]['url_check_time'] < time() - $test_freq_secs)) {
         $test2 = http_download_file($url, 0, false);
-        if (($test2 === null) && ($GLOBALS['HTTP_MESSAGE'] == '403')) {
+        if (($test2 === null) && (($GLOBALS['HTTP_MESSAGE'] == '401') || ($GLOBALS['HTTP_MESSAGE'] == '403') || ($GLOBALS['HTTP_MESSAGE'] == '405') || ($GLOBALS['HTTP_MESSAGE'] == '416') || ($GLOBALS['HTTP_MESSAGE'] == '500') || ($GLOBALS['HTTP_MESSAGE'] == '503') || ($GLOBALS['HTTP_MESSAGE'] == '520'))) {
             $test2 = http_download_file($url, 1, false); // Try without HEAD, sometimes it's not liked
         }
         $exists = (($test2 === null) && ($GLOBALS['HTTP_MESSAGE'] != 401)) ? 0 : 1;

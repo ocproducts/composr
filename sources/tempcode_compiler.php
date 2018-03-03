@@ -323,9 +323,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                     $_opener_params .= implode('.', $oparam);
                 }
 
-                $escaping_symbols_from = array('`', '%', '*', '=', ';', '#', '-', '~', '^', '|', '\'', '&', '.', '/', '@', '+');
-                $escaping_symbols_to = array('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-                $first_param = str_replace($escaping_symbols_from, $escaping_symbols_to, $_first_param);
+                $first_param = preg_replace('#[`%*=;\#\-~\^|\'!&./@+]+(")?$#', '$1', $_first_param);
                 switch ($past_level_mode) {
                     case PARSE_SYMBOL:
                         $no_preprocess = in_array('-', $_escaped);
@@ -781,7 +779,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
     $merged = array();
     $just_done_string = false;
     foreach ($current_level_data as $c) {
-        // Try and replace some unnecesary string appending which may have happened when experiencing possible (but not) control characters
+        // Try and replace some unnecessary string appending which may have happened when experiencing possible (but not) control characters
         $c = preg_replace('#([^\\\\])' . preg_quote('"."', '#') . '#', '$1', $c);
 
         // Try and merge some strings that don't need to be in separate seq_parts

@@ -995,7 +995,7 @@ class Hook_wowbb
 
                 $string = str_pad('', strlen($recurrence_part) * intval($bits[0]));
                 for ($i = 0; $i < strlen($string); $i++) {
-                    $string[$i] = $recurrence_part[$i / intval($bits[0])];
+                    $string[$i] = $recurrence_part[intval($i / intval($bits[0]))];
                 }
                 $recurrence .= ' ' . $string;
             }

@@ -138,6 +138,8 @@ function incoming_uploads_script()
         }
         $outstr .= '}';
         echo $outstr;
+
+        exit(); // So auto_append_file cannot run and corrupt our output
     } else {
         //header('Content-type: text/plain; charset=' . get_charset()); @print('No file (' . serialize($_FILES) . ')');
         header('HTTP/1.1 500 File Upload Error');
@@ -158,7 +160,7 @@ function incoming_uploads_script()
  */
 function clear_old_uploads()
 {
-    // Get the unix timestamp corresonding to the two days ago condition
+    // Get the unix timestamp corresponding to the two days ago condition
     $two_days_ago = strtotime('-2 days');
     // Get the incoming uploads that are older than two days
     $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'incoming_uploads WHERE i_date_and_time<' . strval($two_days_ago));

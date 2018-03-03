@@ -260,7 +260,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     if ((strpos($message_plain, '[code') === false) && (strpos($message_plain, '[no_parse') === false) && (strpos($message_plain, '[tt') === false)) {
         // Change username links to plain username namings
         if (stripos($message_plain, '{{') !== false) {
-            $message_plain = preg_replace('#\{\{([^\}\{]*)\}\}#', '\1', $message_plain);
+            $message_plain = preg_replace('#\{\{([^|\}\{]*)\}\}#', '\1', $message_plain);
         }
 
         $message_plain = str_replace('{$SITE_NAME}', get_site_name(), $message_plain);
@@ -270,7 +270,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
             // Remove directives etc
             do {
                 $before = $message_plain;
-                $message_plain = preg_replace('#\{([^\}\{]*)\}#', '', $message_plain);
+                $message_plain = preg_replace('#\{([^|\}\{]*)\}#', '', $message_plain);
             } while ($message_plain != $before);
         }
 
@@ -600,14 +600,16 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         return false;
     }
 
-    if ($priority != 1 && $to_email !== null) {
-        foreach ($to_email as $key => $email) {
-            if ($GLOBALS['FORUM_DRIVER']->is_banned($GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email))) {
-                unset($to_email[$key]);
-            }
+    if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) {
+        if ($priority != 1 && $to_email !== null) {
+            foreach ($to_email as $key => $email) {
+                if ($GLOBALS['FORUM_DRIVER']->is_banned($GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email))) {
+                    unset($to_email[$key]);
+                }
 
-            if (count($to_email) == 0) {
-                return true;
+                if (count($to_email) == 0) {
+                    return true;
+                }
             }
         }
     }
@@ -772,7 +774,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         require_code('mail_dkim');
     }
 
-    // We use the boundary to seperate message parts
+    // We use the boundary to separate message parts
     $_boundary = uniqid('Composr', true);
     $boundary = $_boundary . '_1';
     $boundary2 = $_boundary . '_2';

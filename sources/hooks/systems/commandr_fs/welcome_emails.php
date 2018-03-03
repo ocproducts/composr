@@ -35,7 +35,7 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
      */
     public function get_resources_count($resource_type)
     {
-        return $GLOBALS['FORUM_DB']->query_select_value('f_welcome_emails', 'COUNT(*)');
+        return $GLOBALS['SITE_DB']->query_select_value('f_welcome_emails', 'COUNT(*)');
     }
 
     /**
@@ -47,7 +47,7 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
      */
     public function find_resource_by_label($resource_type, $label)
     {
-        $_ret = $GLOBALS['FORUM_DB']->query_select('f_welcome_emails', array('id'), array('w_name' => $label), 'ORDER BY id');
+        $_ret = $GLOBALS['SITE_DB']->query_select('f_welcome_emails', array('id'), array('w_name' => $label), 'ORDER BY id');
         $ret = array();
         foreach ($_ret as $r) {
             $ret[] = strval($r['id']);
@@ -73,6 +73,9 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
         $text = $this->_default_property_str($properties, 'text');
         $send_time = $this->_default_property_int($properties, 'send_time');
         $newsletter = $this->_default_property_resource_id_null('newsletter', $properties, 'newsletter');
+        if (is_string($newsletter)) {
+            $newsletter = intval($newsletter);
+        }
         $usergroup = $this->_default_property_group_null($properties, 'usergroup');
         $usergroup_type = $this->_default_property_str($properties, 'usergroup_type');
 
@@ -94,7 +97,7 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
 
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_welcome_emails', array('*'), array('id' => intval($resource_id)), '', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('f_welcome_emails', array('*'), array('id' => intval($resource_id)), '', 1);
         if (!array_key_exists(0, $rows)) {
             return false;
         }
@@ -102,8 +105,8 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
 
         $properties = array(
             'label' => $row['w_name'],
-            'subject' => get_translated_text($row['w_subject'], $GLOBALS['FORUM_DB']),
-            'text' => get_translated_text($row['w_text'], $GLOBALS['FORUM_DB']),
+            'subject' => get_translated_text($row['w_subject'], $GLOBALS['SITE_DB']),
+            'text' => get_translated_text($row['w_text'], $GLOBALS['SITE_DB']),
             'send_time' => $row['w_send_time'],
             'newsletter' => remap_resource_id_as_portable('newsletter', $row['w_newsletter']),
             'usergroup' => remap_resource_id_as_portable('group', $row['w_usergroup']),
@@ -133,6 +136,9 @@ class Hook_commandr_fs_welcome_emails extends Resource_fs_base
         $text = $this->_default_property_str($properties, 'text');
         $send_time = $this->_default_property_int($properties, 'send_time');
         $newsletter = $this->_default_property_resource_id_null('newsletter', $properties, 'newsletter');
+        if (is_string($newsletter)) {
+            $newsletter = intval($newsletter);
+        }
         $usergroup = $this->_default_property_group_null($properties, 'usergroup');
         $usergroup_type = $this->_default_property_str($properties, 'usergroup_type');
 

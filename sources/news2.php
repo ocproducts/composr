@@ -61,7 +61,7 @@ function add_news_category($title, $img = 'newscats/general', $notes = '', $owne
     dispatch_member_mention_notifications('news_category', strval($id));
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:news:browse:' . strval($id), null, null, SITEMAP_IMPORTANCE_HIGH, 'daily', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($id)));
+    notify_sitemap_node_add('_SEARCH:news:browse:' . strval($id), null, null, SITEMAP_IMPORTANCE_HIGH, 'daily', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($id)));
 
     return $id;
 }
@@ -421,7 +421,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
     dispatch_member_mention_notifications('news_category', strval($id));
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:news:view:' . strval($id), $time, $edit_date, SITEMAP_IMPORTANCE_HIGH, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($main_news_category_id)));
+    notify_sitemap_node_add('_SEARCH:news:view:' . strval($id), $time, $edit_date, SITEMAP_IMPORTANCE_HIGH, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($main_news_category_id)));
 
     return $id;
 }

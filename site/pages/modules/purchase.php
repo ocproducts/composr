@@ -117,7 +117,7 @@ class Module_purchase
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'item', 'SHORT_TEXT', 't_type_code');
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'pending_reason', 'SHORT_TEXT', 't_pending_reason');
 
-            $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
+            $GLOBALS['SITE_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
 
             $GLOBALS['SITE_DB']->alter_table_field('trans_expecting', 'e_session_id', 'ID_TEXT');
         }
@@ -456,7 +456,7 @@ class Module_purchase
             $length = null;
             $length_units = '';
 
-            // Add cataloue item order to shopping_orders
+            // Add catalogue item order to shopping_orders
             if (method_exists($object, 'add_purchase_order')) {
                 $purchase_id = strval($object->add_purchase_order($type_code, $temp[$type_code]));
             }

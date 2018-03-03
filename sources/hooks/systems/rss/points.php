@@ -44,7 +44,7 @@ class Hook_rss_points
             return null;
         }
 
-        $filters = selectcode_to_sqlfragment($_filters, 'gift_to', 'f_members', null, 'gift_to', 'id', true, true, $GLOBALS['FORUM_DB']); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        $filters = selectcode_to_sqlfragment($_filters, 'gift_to', 'f_members', null, 'gift_to', 'id', true, true, $GLOBALS['SITE_DB']); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
 
         require_lang('points');
 

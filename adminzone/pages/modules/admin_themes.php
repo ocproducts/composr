@@ -1179,6 +1179,12 @@ class Module_admin_themes
             if (!file_exists($existing_path)) {
                 $existing_path = get_custom_file_base() . '/themes/default/css/' . $file;
             }
+            if (!file_exists($existing_path)) {
+                $existing_path = get_file_base() . '/themes/default/css_custom/' . $file;
+            }
+            if (!file_exists($existing_path)) {
+                $existing_path = get_file_base() . '/themes/default/css/' . $file;
+            }
             $revision_engine->add_revision(dirname($custom_path), basename($custom_path, '.css'), 'css', file_get_contents($existing_path), filemtime($existing_path));
         }
 
@@ -1777,6 +1783,9 @@ class Module_admin_themes
                     $existing_path = $full_path;
                     if (!file_exists($existing_path)) {
                         $existing_path = get_custom_file_base() . '/themes/default/' . $_file;
+                    }
+                    if (!file_exists($existing_path)) {
+                        $existing_path = get_file_base() . '/themes/default/' . $_file;
                     }
                     $revision_engine->add_revision(dirname($full_path), basename($_file, '.' . get_file_extension($_file)), get_file_extension($_file), file_get_contents($existing_path), filemtime($existing_path));
                 }

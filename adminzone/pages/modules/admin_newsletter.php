@@ -1186,7 +1186,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $in_full = post_param_integer('in_full', 0);
         $chosen_categories = post_param_string('chosen_categories', '');
 
-        // Newsletter message (complex, as will depend if an automatic periodicial being made, meaning no message defined now)
+        // Newsletter message (complex, as will depend if an automatic periodical being made, meaning no message defined now)
         $comcode_given = ($_existing != '') && (strpos($_existing, '<html') !== false);
         $_existing = post_param_string('message', $_existing);
         if ($_existing == '') {
@@ -1754,7 +1754,7 @@ class Module_admin_newsletter extends Standard_crud_module
      * Standard crud_module table function.
      *
      * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A pair: The choose table, Whether re-ordering is supported from this screen.
+     * @return array A pair: The choose table, Whether reordering is supported from this screen.
      */
     public function create_selection_list_choose_table($url_map)
     {

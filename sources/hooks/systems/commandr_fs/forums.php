@@ -221,6 +221,9 @@ class Hook_commandr_fs_forums extends Resource_fs_base
     {
         $description = $this->_default_property_str($properties, 'description');
         $forum_grouping_id = $this->_default_property_resource_id_null('forum_grouping', $properties, 'forum_grouping_id');
+        if (is_string($forum_grouping_id)) {
+            $forum_grouping_id = intval($forum_grouping_id);
+        }
         if (is_null($forum_grouping_id)) {
             $forum_grouping_id = $GLOBALS['FORUM_DB']->query_select_value('f_forum_groupings', 'MIN(id)');
         }
@@ -620,6 +623,9 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         $last_edit_time = $this->_default_property_time_null($properties, 'edit_date');
         $last_edit_by = $this->_default_property_member_null($properties, 'last_edit_by');
         $parent_id = $this->_default_property_resource_id_null('post', $properties, 'parent_id');
+        if (is_string($parent_id)) {
+            $parent_id = intval($parent_id);
+        }
         $id = cns_make_post($topic_id, $label, $post, $skip_sig, null, $validated, $is_emphasised, $poster_name_if_guest, $ip_address, $time, $poster, $intended_solely_for, $last_edit_time, $last_edit_by, false, true, null, false, null, 0, null, false, true, null, false, $parent_id);
 
         $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
@@ -700,6 +706,9 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         $last_edit_time = $this->_default_property_time($properties, 'edit_date');
         $last_edit_by = $this->_default_property_member($properties, 'last_edit_by');
         $parent_id = $this->_default_property_resource_id_null('post', $properties, 'parent_id');
+        if (is_string($parent_id)) {
+            $parent_id = intval($parent_id);
+        }
 
         cns_edit_post(intval($resource_id), $validated, $label, $post, $skip_sig, $is_emphasised, $intended_solely_for, true, false, '', false, $last_edit_time, $add_time, $poster, true, false);
 

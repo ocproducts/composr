@@ -218,8 +218,15 @@ class Hook_search_cns_posts extends FieldsSearchHook
      */
     public function render($row)
     {
-        require_code('cns_posts2');
+        global $SEARCH__CONTENT_BITS, $LAX_COMCODE;
+        $highlight_bits = ($SEARCH__CONTENT_BITS === null) ? array() : $SEARCH__CONTENT_BITS;
+        $LAX_COMCODE = true;
+        $summary = get_translated_text($row['p_post']);
+        $text_summary_h = comcode_to_tempcode($summary, null, false, null, null, null, false, false, false, false, false, $highlight_bits);
+        $LAX_COMCODE = false;
+        $text_summary = generate_text_summary($text_summary_h->evaluate(), $highlight_bits);
 
-        return render_post_box($row, false);
+        require_code('cns_posts2');
+        return render_post_box($row, false, true, true, null, '', protect_from_escaping($text_summary));
     }
 }

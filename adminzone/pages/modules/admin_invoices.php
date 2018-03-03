@@ -276,6 +276,9 @@ class Module_admin_invoices
             $invoice_title = do_lang('CUSTOM_PRODUCT_' . $row['i_type_code']);
             $time = get_timezoned_date($row['i_time']);
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['i_member_id']);
+            if ($username === null) {
+                $username = do_lang('UNKNOWN');
+            }
             $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['i_member_id'], false, true);
             $invoices[] = array('INVOICE_TITLE' => $invoice_title, 'PROFILE_URL' => $profile_url, 'USERNAME' => $username, 'ID' => strval($row['id']), 'STATE' => $row['i_state'], 'AMOUNT' => float_format($row['i_amount']), 'TIME' => $time, 'NOTE' => $row['i_note'], 'TYPE_CODE' => $row['i_type_code']);
         }
@@ -299,6 +302,9 @@ class Module_admin_invoices
             $invoice_title = do_lang('CUSTOM_PRODUCT_' . $row['i_type_code']);
             $time = get_timezoned_date($row['i_time']);
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['i_member_id']);
+            if ($username === null) {
+                $username = do_lang('UNKNOWN');
+            }
             $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['i_member_id'], false, true);
             $invoices[] = array('INVOICE_TITLE' => $invoice_title, 'PROFILE_URL' => $profile_url, 'USERNAME' => $username, 'ID' => strval($row['id']), 'STATE' => $row['i_state'], 'AMOUNT' => float_format($row['i_amount']), 'TIME' => $time, 'NOTE' => $row['i_note'], 'TYPE_CODE' => $row['i_type_code']);
         }
