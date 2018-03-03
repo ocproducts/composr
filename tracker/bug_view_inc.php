@@ -644,6 +644,8 @@
 	$t_custom_fields_found = false;
 	$t_related_custom_field_ids = custom_field_get_linked_ids( $tpl_bug->project_id );
 
+	$hours=0;
+	$sponsorship_open=false;
 	foreach( $t_related_custom_field_ids as $t_id ) {
 		if ( !custom_field_has_read_access( $t_id, $f_bug_id ) ) {
 			continue;
@@ -659,6 +661,10 @@
 		if ($t_def['name']=='Time estimation (hours)')
 		{
 			$hours=string_custom_field_value( $t_def, $t_id, $f_bug_id );
+		}
+		if ($t_def['name']=='Sponsorship open')
+		{
+			$sponsorship_open=(string_custom_field_value( $t_def, $t_id, $f_bug_id ) == 'Open');
 		}
 		echo '</td></tr>';
 	}
