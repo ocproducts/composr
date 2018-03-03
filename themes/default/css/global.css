@@ -192,12 +192,16 @@ body, .email_body, textarea, input, td, th {
 tt, kbd, samp {
 	font-weight: bold;
 	font-size: 1.15em;
+	word-wrap: break-word;
 }
 
 abbr {
 	border-bottom: 1px dotted; /* For Safari, which does not have it by default */
 	text-decoration: none;
 	cursor: help;
+}
+a abbr {
+	cursor: pointer;
 }
 
 /* Give all browsers a 'q' tag with smart quotes */
@@ -208,7 +212,7 @@ q:after {
 	content: "\201d";
 }
 
-/* Re-apply default styles non-HTML5-aware browsers */
+/* Reapply default styles non-HTML5-aware browsers */
 details, aside, header, footer, nav, article, section, figure, figcaption {
 	display: block;
 }
@@ -850,11 +854,6 @@ body.popup_spacer h2 {
 		margin-{!en_right}: 13em;
 		padding-{!en_right}: 3.5em;
 	}
-	/*{+START,IF,{$CONFIG_OPTION,collapse_user_zones}}*/
-		.zone_running_ #panel_right:first-child ~ .global_middle { /* If no left panel on welcome zone, lets give some extra space */
-			margin-{!en_right}: 16em;
-		}
-	/*{+END}*/
 /*{+END}*/
 
 .global_side_panel h2 {

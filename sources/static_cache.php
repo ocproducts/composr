@@ -138,6 +138,11 @@ function static_cache($mode)
         $file_extension = '.htm';
     }
 
+    $support_compressed = (isset($_SERVER['HTTP_ACCEPT_ENCODING'])) && (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false);
+    if ($support_compressed) {
+        $file_extension = '.gz';
+    }
+
     if (($mode & STATIC_CACHE__FAILOVER_MODE) == 0) {
         if (!can_static_cache()) {
             return;
@@ -229,7 +234,7 @@ function static_cache($mode)
 
     // Is cached
     if (is_file($fast_cache_path)) {
-        if ($file_extension == '.htm') {
+        if (($file_extension == '.htm') || ($file_extension == '.htm.gz')) {
             header('Content-type: text/html');
         } else {
             header('Content-type: text/xml');
@@ -249,13 +254,19 @@ function static_cache($mode)
                 if ($since != '') {
                     if (strtotime($since) < $mtime) {
                         header('HTTP/1.0 304 Not Modified');
+
+                        $aaf = ini_get('auto_append_file');
+                        if (!empty($aaf)) {
+                            @include($aaf); // Because exit() avoids running this
+                        }
+
                         exit();
                     }
                 }
             }
 
             // Output
-            if ((($mode & STATIC_CACHE__FAILOVER_MODE) == 0) && (function_exists('gzencode')) && (function_exists('php_function_allowed')) && (php_function_allowed('ini_set'))) {
+            if ((($mode & STATIC_CACHE__FAILOVER_MODE) == 0) && ($support_compressed) && (function_exists('gzencode')) && (function_exists('php_function_allowed')) && (php_function_allowed('ini_set'))) {
                 ini_set('zlib.output_compression', 'Off');
                 header('Content-Encoding: gzip');
             }

@@ -66,7 +66,7 @@ How to link the SDK into your project, assuming you are using Eclipse:
 	[*] Click "Add" button under the "Library" section
 	[*] A dialog box opens up asking to select the library. Select [tt]CMS_SDK[/tt] from the list and click "OK"
 	[*] Click "OK" on the "Properties" dialog box
-	[*] Eclipse should automatically re-build your project (or) you can do a project cleanup from under Project --> Clean.
+	[*] Eclipse should automatically rebuild your project (or) you can do a project cleanup from under Project --> Clean.
 [/list]
 [*] Now you can access all the features of CMS_SDK in your project.
 [/list]
@@ -2146,7 +2146,7 @@ The toolkit will help you mirror some Composr website resources into a mobile ap
 
 This tool will generate iOS/Android string resources.
 
-It is approximate. For example, it does not handle the data types and pluralisation that [url="Android can support"]http://developer.android.com/guide/topics/resources/string-resource.html[/url] or data types that [url="iOS can support"]https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html[/url].
+It is approximate. For example, it does not handle the data types and pluralisation that [url="Android can support"]https://developer.android.com/guide/topics/resources/string-resource.html[/url] or data types that [url="iOS can support"]https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html[/url].
 
 [list="1"]
 [*] Open a command prompt to the Composr installation directory.
@@ -2187,7 +2187,7 @@ You may access the server-side API by making HTTP calls to [tt]http://yourbaseur
 
 The API is split into a number of endpoints, which are given a 'hook' name, and categorised by 'hook type'.
 
-Both REST-style and GET-parameter style requests can be made. At the time of writing, the API is still quite young and most calls are not really content-based, so REST isn't particularly relevant as a metaphor, so we recommend keeping it simple and just using the GET-parameter method.
+Both REST-style and GET-parameter style requests can be made. As most calls are not really content-based (they are functional-based), REST isn't necessarily relevant as a metaphor, so we recommend keeping it simple and just using the GET-parameter method in most cases.
 
 Here are 2 equivalent example API calls...
  - [tt]PUT http://yourbaseurl/data/endpoint.php/somehooktype/somehook/someid[/tt] (REST style)

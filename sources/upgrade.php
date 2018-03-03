@@ -2129,7 +2129,7 @@ function cns_upgrade()
         require_code('cns_install');
         install_cns($version_database_cns);
 
-        set_value('cns_version', float_to_raw_string($version_files));
+        set_value('cns_version', float_to_raw_string($version_files, 10, true));
 
         return true;
     }

@@ -25,6 +25,4 @@ In addition to Schema.org and Dublin Core which has been mentioned above, Compos
 
 On top of these standards listed above, more details of compliance standards can be found on the [page=":vision"]Composr website[/page]. Also, Composr Core which extends Dublin core to incorporate some social media functionality.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Web standards & Accessibility,Internationalisation,novice}{$SET,tutorial_add_date,Sep 2013}{$SET,tutorial_summary,We go over some of the web standards Composr supports.}[block]main_tutorial_rating[/block]

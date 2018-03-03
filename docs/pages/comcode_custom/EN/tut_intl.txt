@@ -53,7 +53,9 @@ Composr language packs are made up of [tt].ini[/tt] files (the language files), 
 [code="INI"]
 PROCEED=Proceed
 [/code]
-Composr is developed in (British) English, and this is technically known as the 'fall-back language', because English always has a complete set of language files and strings.
+We use multiple files so that you only need to translate what you actually use and to keep things cleanly separated by addon. For example if you are not using the galleries addon, you shouldn't need to translate the [tt]galleries.ini[/tt] strings.
+
+Composr is developed in (British) English, and this is technically known as the 'fall-back language', because English always has a complete set of language files and strings. If the active language defines all strings then the fall-back language is never even loaded -- which is different to the approach of other systems such as [tt]po[/tt].
 
 The [tt].ini[/tt] files for any translation are stored together in a directory that is named with the standard ISO two-letter code to denote that language; for example, English is 'EN'. A list of these codes is in [tt]lang/langs.ini[/tt]. We use upper-case for the names; often other software uses lower-case, but it varies.
 
@@ -123,7 +125,6 @@ However, it is useful for us to document the strings involved, and an illustrati
 | [tt]%a %e%o[/tt] (e.g. Mon 14th)
 | [tt]%a %e%o[/tt] (e.g. Mon 14th)
 |}
-[staff_note]TODO: Update for v11; verbose gone, regular name shortened[/staff_note]
 
 Non-English speaking users may want to make other changes, e.g. remove [tt]%o[/tt] so that suffixes like [tt]th[/tt] and [tt]st[/tt] aren't used.
 
@@ -265,7 +266,7 @@ utf-8 works on the principle that characters may use more than one byte. The ASC
 [media width="150" description="Choosing a language and language file to edit in the language editor" float="right"]data_custom/images/docs/tut_intl/intl_trans_choose.png[/media]
 {!lang:DOC_TRANSLATE}
 
-You can reach the language editor from Admin Zone > Style > Translate/re-phrase Composr.
+You can reach the language editor from Admin Zone > Style > Translate/rephrase Composr.
 
 [b]We recommend doing translations via Transifex instead[/b]. See the "Collaborative translations on Transifex" section.
 [/surround]
@@ -274,7 +275,7 @@ You can reach the language editor from Admin Zone > Style > Translate/re-phrase 
 
 Many users like to translate stuff just on the public part of their own website. There is an option to change the language strings that you see on a page from the page footer which really helps you speed translation up. Specifically:
 1) In the footer there is a drop down menu which is only visible to Admins. This is titled "Select page rendering tool" as standard, although it may not be visible on custom themes or could have been translated. If you are not using the default Composr theme then you can enable the default theme temporarily by adding [tt]&keep_theme=default[/tt] to the end of the website address (actually it's [tt]?keep_theme=default[/tt] if there's no [tt]?[/tt] already in the URL you're at).
-2) Choose "Translate/Re-Phrase Composr" from this menu and the language you want to translate to.
+2) Choose "Translate/Rephrase Composr" from this menu and the language you want to translate to.
 
 This will take you to the page which displays the language strings which are used on the current page.
 
@@ -289,9 +290,12 @@ If you want to find where a language string is defined then you can put it into 
 You can use [url="Transifex"]https://www.transifex.com/organization/ocproducts[/url] to translate Composr into your language with the help of others.
 
 Transifex is great because:
- - You do not need to feel that you are alone translating everything yourself anymore
- - It's very easy to work together. People can be translating the same language at the same time
- - Anyone can download the current translations at any time
+ - You do not need to feel that you are alone translating everything yourself anymore.
+ - It's very easy to work together. People can be translating the same language at the same time.
+ - Anyone can download the current translations at any time.
+ - Translations will be automatically upgraded to new major releases of Composr -- there's no risk of work being lost.
+ - Transifex has a high-quality user interface with word-wrapping, filtering options, comments, prioritisation, approval, and more
+ - We have separated out admin strings from user strings
 
 The process is as follows:
 1) Go to [url="Transifex"]https://www.transifex.com[/url].
@@ -400,7 +404,7 @@ As well as the core [tt].ini[/tt] files, there are other things that may be tran
 
 [title="4"]Comcode pages[/title]
 
-A Comcode page is a page like your front page that consists mostly of static text that doesn't have any particular pre-defined content structure. This is contrasted to a page that is generated from some other form of content like a news article or news archive. In the simplest case, a Comcode page is pure translatable text. In more complex cases it may have HTML and Comcode tags mixed in with the text.
+A Comcode page is a page like your front page that consists mostly of static text that doesn't have any particular predefined content structure. This is contrasted to a page that is generated from some other form of content like a news article or news archive. In the simplest case, a Comcode page is pure translatable text. In more complex cases it may have HTML and Comcode tags mixed in with the text.
 
 When you click the "Edit this page" link beneath a Comcode page it will give you the choice of which language to edit. This is how you can edit the Comcode page text, such as the home page or an about-us page. Pages in another language will display the main version's text unless some changes have already been made for that language. Obviously any subsequent copy changes you make to the wording for a particular language, i.e. adding another sentence or paragraph, will need to be repeated for every language that you maintain a translation for (assuming you want to keep your translations consistent).
 
@@ -488,7 +492,7 @@ This affects:
 2) The Logo Wizard.
 3) The [tt]main_custom_gfx[/tt] block.
 
-The solution to '1' is to upload [tt]Courier New Bold Italic.ttf[/tt] from your own computer to [tt]data_custom/fonts/Courier New Bold Italic.ttf[/tt]. We would distribute this file with Composr, except we don't have a licence to; however if you have a copy of Windows or Mac OS you should have your own licenced copy of this file.
+The solution to '1' is to upload [tt]Courier New Bold Italic.ttf[/tt] from your own computer to [tt]data_custom/fonts/Courier New Bold Italic.ttf[/tt]. We would distribute this file with Composr, except we don't have a licence to; however if you have a copy of Windows or Mac OS you should have your own licensed copy of this file.
 
 The solution to '2' is to upload [tt]Verdana.ttf[/tt] from your computer as [tt]data_custom/fonts/Vera.ttf[/tt]. This works for the Verdana font only, which is the default used during the Setup Wizard; if you are using the Logo Wizard manually then you may just want to upload all your fonts to [tt]data_custom/fonts[/tt] and pick one of those you uploaded.
 
@@ -511,7 +515,6 @@ If you like you can just change it to:
 }
 [/code]
 and make sure your language strings don't overrun.
-{$,TODO: Fix wide_table in v11}
 
 [title="2"]Exporting language packs[/title]
 

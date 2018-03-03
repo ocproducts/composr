@@ -174,7 +174,10 @@ if (!function_exists('critical_error')) {
                     ((cms_srv('REMOTE_ADDR') == cms_srv('SERVER_ADDR')) && (cms_srv('HTTP_X_FORWARDED_FOR') == '')) ||
                     ((isset($SITE_INFO['backdoor_ip'])) && (cms_srv('REMOTE_ADDR') == $SITE_INFO['backdoor_ip']) && (cms_srv('HTTP_X_FORWARDED_FOR') == ''))
                 ) ||
-                ((preg_match('#^localhost(\.|\:|$)#', cms_srv('HTTP_HOST')) != 0) && (function_exists('get_base_url')) && (substr(get_base_url(), 0, 16) == 'http://localhost')) ||
+                (function_exists('cms_srv')) &&
+                (
+                    ((preg_match('#^localhost(\.|\:|$)#', cms_srv('HTTP_HOST')) != 0) && (function_exists('get_base_url')) && (substr(get_base_url(), 0, 16) == 'http://localhost'))
+                ) ||
                 ($in_upgrader)
             )
         ) {

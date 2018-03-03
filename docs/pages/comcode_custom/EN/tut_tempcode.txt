@@ -319,7 +319,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$REQUIRE_JAVASCRIPT,example}</td>
-			<td>Include a JavaScript file in the output stream. If you set the second parameter to '1', then loading will be deferred until the end of the page</td>
+			<td>Include a JavaScript file in the output stream. If you set the second parameter to '1', then loading will be deferred until the end of the page. If you include a template into itself, then it will actually include the original version at the point of your include. This is useful for extending the default templates without duplicating them.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$FACILITATE_AJAX_BLOCK_CALL,block code,differing parameters}</td>
@@ -343,7 +343,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$SET_TITLE,xxx}</td>
-			<td>Set the current page title (affects things like the <kbd>&lt;title&rt;</kbd></td>
+			<td>Set the current page title (affects things like the <kbd>&lt;title&rt;</kbd>)</td>
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$EXTRA_HEAD}</td>
@@ -1238,7 +1238,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$MEMBER_OVERRIDE}</td>
-			<td>The Member-ID of the Account being viewed (e.g. if you're staff looking in somebody else's Account then this would find the member ID, otherwise it is your own member ID</td>
+			<td>The Member-ID of the Account being viewed (e.g. if you're staff looking in somebody else's account then this would find the member ID, otherwise it is your own member ID)</td>
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$COOKIE_PATH}</td>
@@ -1267,14 +1267,6 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 		<tr style="background: #DDFFDD">
 			<td>{$COMMENT_COUNT,downloads,3}</td>
 			<td>Find the number of comments made for a resource (first parameter is the resource type code, second parameter is the resource ID)</td>
-		</tr>
-		<tr style="background: #DDFFDD">
-			<td>{$IMAGE_WIDTH,http://example.com/pic.png}</td>
-			<td>Find the width of an image</td>
-		</tr>
-		<tr style="background: #DDFFDD">
-			<td>{$IMAGE_HEIGHT,http://example.com/pic.png}</td>
-			<td>Find the height of the image</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$THUMBNAIL,http://example.com/pic.png,40x60,galleries}</td>
@@ -1313,7 +1305,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 			<td>Find the resource GUID from the resource ID</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$FIND_COMMANDRFS_FILENAME_VIA_ID,&lt;resource-type&gt;,&lt;resource-id&gt;}</td>
+			<td>{$FIND_COMMANDR_FS_FILENAME_VIA_ID,&lt;resource-type&gt;,&lt;resource-id&gt;}</td>
 			<td>Find the Commandr-fs (repository) filename from the resource ID. There is an optional third parameter, which may be set to 1 if you want the resource sub-path to also be included. Sub-paths are relative to the repository-fs path for the resource-type.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
@@ -1329,7 +1321,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 			<td>Find the resource ID from the resource GUID. It is assumed you as the programmer already know the resource-type.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$FIND_ID_VIA_COMMANDRFS_FILENAME,&lt;resource-type&gt;,&lt;filename&gt;}</td>
+			<td>{$FIND_ID_VIA_COMMANDR_FS_FILENAME,&lt;resource-type&gt;,&lt;filename&gt;}</td>
 			<td>Find the resource ID from the Commandr-fs (repository) filename</td>
 		</tr>
 	    <tr style="background: #FFDDDD">
@@ -1337,7 +1329,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 	    	<td>Displays a link to a concept, if it has been saved already from a concept table.</td>
 	    </tr>
 	    <tr style="background: #FFDDDD">
-	    	<td>{$SELF_TUTORIAL_LINK,tutorial_id,page-link}</td>
+	    	<td>{$SET_TUTORIAL_LINK,tutorial_id,page-link}</td>
 	    	<td>Creates a tutorial link for the given tutorial_id to the given page-link. Needs doing in Tempcode because the Comcode parser doesn't know the target page for Comcode being parsed.</td>
 	    </tr>
 		<tr style="background: #DDFFDD">
@@ -1545,11 +1537,11 @@ Understanding of these symbols requires an understanding of basic boolean operat
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$STRPOS,something,hi}</td>
-			<td>Find the position of a string sub-string (first parameter is the search string, second parameter is the substring, returns Tempcode number)</td>
+			<td>Find the position of a string substring (first parameter is the search string, second parameter is the substring, returns Tempcode number)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$IN_STR,something,in}</td>
-			<td>Find whether a sub-string is in a string (first parameter is the search string, second parameter is the substring, returns Tempcode boolean</td>
+			<td>Find whether a substring is in a string (first parameter is the search string, second parameter is the substring, returns Tempcode boolean)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$SUBSTR_COUNT,abacus,a}</td>
@@ -1557,7 +1549,7 @@ Understanding of these symbols requires an understanding of basic boolean operat
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$SUBSTR,something,2,2}</td>
-			<td>Extract a string sub-string (first parameter is the string, second parameter is the index of where to extract from, third parameter is the extraction length)</td>
+			<td>Extract a string substring (first parameter is the string, second parameter is the index of where to extract from, third parameter is the extraction length)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$LENGTH,something}</td>
@@ -1644,8 +1636,8 @@ Understanding of these symbols requires an understanding of basic boolean operat
 			<td>Evaluates the given parameter as Tempcode (takes a string). This is useful for <strong>very</strong> rare situations where you want to write in symbols as parameters to Comcode tags where the parameter is treated as a plain-string. This is only useful in Comcode, when typing Tempcode you can nest Tempcode constructs almost however you like.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$COMCODE,[b]Comcode[/b]}</td>
-			<td>Evaluates the given parameter as Comcode (takes a string). This is useful in conjunction with the above (<kbd>TEMPCODE</kbd>), as anything passed into a symbol won't be evaluated as Comcode.</td>
+			<td>{$COMCODE,[b]Comcode[/b],0}</td>
+			<td>Evaluates the given parameter as Comcode (takes a string). This is useful in conjunction with the above (<kbd>TEMPCODE</kbd>), as anything passed into a symbol won't be evaluated as Comcode. If the second parameter is omitted or set to 1, then Comcode will be parsed with administrative permissions &ndash; be careful about that, as you don't want to process user content like that.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$URLDECODE,a%20b}</td>
@@ -1683,7 +1675,7 @@ You can store and retrieve values in Tempcode variables. These work across templ
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$GET,test}</td>
-			<td>Get the value of a Tempcode variable (give it the name of a variable, returns the value). If you set the 2nd parameter to "1" then the Tempcode cache will be reset for the value being received (allowing it to re-evaluate the value, i.e. operate fully dynamically). This must be set on all GET calls to the same value, otherwise the Tempcode may be flattened prematurely. The <kbd>-</kbd> must be used to do the initial SET.</td>
+			<td>Get the value of a Tempcode variable (give it the name of a variable, returns the value). If you set the 2nd parameter to "1" then the Tempcode cache will be reset for the value being received (allowing it to reevaluate the value, i.e. operate fully dynamically). This must be set on all GET calls to the same value, otherwise the Tempcode may be flattened prematurely. The <kbd>-</kbd> must be used to do the initial SET.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$THEME_WIZARD_COLOR,#RRGGBB,name,equation}</td>
@@ -1802,11 +1794,11 @@ Note that you cannot use directives for symbol parameters because directives con
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>IN_ARRAY</td>
-			<td>See if something is contained in an array, returning a boolean. This only works with arrays passed into templates (not something like a delimitated-list). This is rarely used because it can't be embedded easily within wider expressions. Usually you will use <kbd>IF_IN_ARRAY</kbd>.</td>
+			<td>See if something is contained in an array, returning a boolean. This only works with arrays passed into templates (not something like a delimited-list). This is rarely used because it can't be embedded easily within wider expressions. Usually you will use <kbd>IF_IN_ARRAY</kbd>.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>IF_IN_ARRAY,example,PASSED_IN_ARRAY,output if it is</td>
-			<td>Output something if something is in an array. This only works with arrays passed into templates (not something like a delimitated-list). First parameter is a string to check for, second parameter is the name of an array, third parameter is what to output.</td>
+			<td>Output something if something is in an array. This only works with arrays passed into templates (not something like a delimited-list). First parameter is a string to check for, second parameter is the name of an array, third parameter is what to output.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>IF_NOT_IN_ARRAY,example,PASSED_IN_ARRAY,output if it is not</td>
@@ -2019,7 +2011,7 @@ In this code we are simply creating a new class for our block and then defining 
 
 [title="3"]Creating a template file[/title]
 
-Go to the [tt]themes/default[/tt] folder. There you should find two main templates folder [tt]templates[/tt] and [tt]templates_custom[/tt]. The main [tt]templates[/tt] folder has all the pre-defined templates which the system is using already (&dagger;) so we don't have to make any changes there. The [tt]templates_custom[/tt] folder will have all the user defined templates or the customised templates, so our template file will go there.
+Go to the [tt]themes/default[/tt] folder. There you should find two main templates folder [tt]templates[/tt] and [tt]templates_custom[/tt]. The main [tt]templates[/tt] folder has all the predefined templates which the system is using already (&dagger;) so we don't have to make any changes there. The [tt]templates_custom[/tt] folder will have all the user defined templates or the customised templates, so our template file will go there.
 Create a new blank file [tt]BLOCK_MAIN_FIRST_BLOCK.tpl[/tt] and save it in to [tt]templates_custom[/tt]. [tt].tpl[/tt] is the default extension we give to template files.
 
 &dagger; Actually this isn't quite true. The [tt]css[_custom][/tt], [tt]javascript[_custom][/tt] and [tt]text[_custom][/tt] folders also hold templates. Even CSS files are handled as templates in Composr.
@@ -2203,7 +2195,7 @@ This example shows different content to guests and non-guests:
 
 [title="3"]Thumbnail example[/title]
 
-This example is dynamically changing the image resolution of your avatar, using the [tt]THUMBNAIL[/tt] symbol and the [tt]AVATAR[/tt] sybmol. The second parameter of the [tt]THUMBNAIL[/tt] symbol defines the resolution we are generating.
+This example is dynamically changing the image resolution of your avatar, using the [tt]THUMBNAIL[/tt] symbol and the [tt]AVATAR[/tt] symbol. The second parameter of the [tt]THUMBNAIL[/tt] symbol defines the resolution we are generating.
 
 [code="HTML"]
 <img alt="Your avatar made into a really tiny thumbnail" title="Your avatar made into a really tiny thumbnail" src="{$THUMBNAIL*,{$AVATAR},20x20}" />

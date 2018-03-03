@@ -65,7 +65,7 @@ The following guidelines must be adhered to by webmasters themselves:
 
 [title="3"]The Theme Wizard[/title]
 
-Composr's default CSS uses equations to define colours, all defined against a seed colour. This allows us to define a large harmonious colour scheme programatically, and thus allows the Theme Wizard to work (re-calculating the colours against a different seed colour). It saves themers an enormous amount of time, as manually redefining each colour would be very time consuming, let alone recreating all the theme images within the colour scheme.
+Composr's default CSS uses equations to define colours, all defined against a seed colour. This allows us to define a large harmonious colour scheme programmatically, and thus allows the Theme Wizard to work (recalculating the colours against a different seed colour). It saves themers an enormous amount of time, as manually redefining each colour would be very time consuming, let alone recreating all the theme images within the colour scheme.
 
 Equations look like this in the CSS...
 [code="CSS"]

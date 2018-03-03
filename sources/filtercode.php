@@ -75,8 +75,10 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
         $info = $ob->info();
 
         $table = $info['table'];
-        if (($content_type == 'post') || ($content_type == 'topic') || ($content_type == 'member') || ($content_type == 'group') || ($content_type == 'forum')) {
-            $db = $GLOBALS['FORUM_DB'];
+        if (get_forum_type() == 'cns') {
+            if (($content_type == 'post') || ($content_type == 'topic') || ($content_type == 'member') || ($content_type == 'group') || ($content_type == 'forum')) {
+                $db = $GLOBALS['FORUM_DB'];
+            }
         }
     }
 
@@ -326,7 +328,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
     foreach ($fields_needed as $field) {
         list($field_type, $field_name, $field_label, $default_value, $extra) = $field;
 
-        switch ($field_type) { // NB: These type codes also vaguelly correspond to field hooks, just for convention (we don't use them)
+        switch ($field_type) { // NB: These type codes also vaguely correspond to field hooks, just for convention (we don't use them)
             case 'time':
                 $form_fields->attach(form_input_date($field_label, '', 'filter_' . $field_name, false, $default_value == '', true, ($default_value == '') ? null : intval($default_value)));
                 break;
@@ -953,7 +955,7 @@ function filtercode_to_sql($db, $filters, $content_type = null, $context = null,
 
                 case '~':
                     require_code('database_search');
-                    if (strlen($filter_val) > get_minimum_search_length()) {
+                    if ((db_has_full_text($GLOBALS['SITE_DB']->connection_read)) && (strlen($filter_val) > get_minimum_search_length())) {
                         if ($filter_val != '') {
                             if ($alt != '') {
                                 $alt .= ' OR ';

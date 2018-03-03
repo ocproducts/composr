@@ -380,7 +380,8 @@ However, the framework for this has been done for you with the endpoints API, an
 New endpoint hooks can be created by a PHP programmer easily, providing whatever custom REST API integration is required.
 
 [concepts
- 1_key="iframe"    1_value="A portion of the main web page that encloses another web page (with its own URL)"
+ 1_key="iframe"       1_value="A portion of the main web page that encloses another web page (with its own URL)"
+ 2_key="Mini-block"   2_value="A PHP script that works as a Composr block, with full access to Composr's API but not having to follow any particular structure (to output just [tt]echo[/tt] or [tt]return[/tt]); the page equivalent of a mini-block is a mini-module"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

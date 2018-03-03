@@ -44,7 +44,7 @@ Knowing all the above, we can deduce that there are a number of ways that we cou
  - Change the domain tag (in English, this means "move the domain to a different registrar")
  - Change the reseller (for Tucows-only)
  - Change the nameserver (in English, this means "set a new nameserver so the controller of that nameserver can configure where traffic will go")
- - Change the DNS records at the existing nameserver (in English, this means "re-configure the domain name settings")
+ - Change the DNS records at the existing nameserver (in English, this means "reconfigure the domain name settings")
 
 Which to use? It typically depends on non-technical reasons that can get quite complex. Basically it depends if you are transferring ownership or just making configuration changes.
 

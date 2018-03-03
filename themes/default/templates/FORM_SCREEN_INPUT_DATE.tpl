@@ -16,12 +16,9 @@
 	<input name="{NAME*}_time" id="{NAME*}_time" type="time" size="5"{+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} value="{+START,IF_NON_EMPTY,{HOUR}}{$GET*,time_value}{+END}" class="input_time{$?,{REQUIRED},_required}" />
 {+END}
 
-{+START,SET,comment}
-	Uncomment if you want to force jQuery-UI inputs even when there is native browser input support
-	<script>// <![CDATA[
-		add_event_listener_abstract(window,'load',function() {
-			$('#{NAME;/}').inputDate({});
-			$('#{NAME;/}_time').inputTime({});
-		});
-	//]]></script>
-{+END}
+<script>// <![CDATA[
+	add_event_listener_abstract(window,'load',function() {
+		$('#{NAME;/}').inputDate({});
+		$('#{NAME;/}_time').inputTime({});
+	});
+//]]></script>

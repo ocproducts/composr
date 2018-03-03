@@ -23,9 +23,10 @@ if (!function_exists('json_encode')) {
      * Returns the JSON representation of a value.
      *
      * @param  mixed $value The value being encoded. Can be any type except a resource.
+     * @param  integer $options Bitmask options.
      * @return string Encoded data
      */
-    function json_encode($value)
+    function json_encode($value, $options = 0)
     {
         global $services_json;
         if (!isset($services_json)) {

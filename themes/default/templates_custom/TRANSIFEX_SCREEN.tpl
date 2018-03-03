@@ -33,8 +33,8 @@
 				<td>
 					{+START,IF,{$NOT,{$IS_GUEST}}}
 						<ul class="horizontal_links" style="white-space: nowrap">
-							<li><a href="{DOWNLOAD_CORE_URL*}">Download</a></li>
-							<li><a href="{DOWNLOAD_URL*}">Download with non-bundled addon translations</a></li>
+							<li><a rel="nofollow" href="{DOWNLOAD_CORE_URL*}">Download</a></li>
+							<li><a rel="nofollow" href="{DOWNLOAD_URL*}">Download with non-bundled addon translations</a></li>
 						</ul>
 					{+END}
 					{+START,IF,{$IS_GUEST}}

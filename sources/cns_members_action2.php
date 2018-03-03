@@ -1178,7 +1178,7 @@ function cns_delete_member($member_id)
     $GLOBALS['FORUM_DB']->query_delete('f_members', array('id' => $member_id), '', 1);
     $GLOBALS['FORUM_DB']->query_delete('f_group_members', array('gm_member_id' => $member_id));
     $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_group_leader' => get_member()), array('g_group_leader' => $member_id));
-    $GLOBALS['FORUM_DB']->query_delete('sessions', array('member_id' => $member_id));
+    $GLOBALS['SITE_DB']->query_delete('sessions', array('member_id' => $member_id));
 
     require_code('fields');
 
@@ -2021,7 +2021,7 @@ function cns_delete_boiler_custom_field($field)
 {
     require_lang('cns_special_cpf');
 
-    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
+    $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
     if (!is_null($test)) {
         require_code('cns_members_action');
         cns_delete_custom_field($test);

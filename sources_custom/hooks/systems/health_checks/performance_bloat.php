@@ -102,7 +102,7 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
             'caches/persistent' => 500,
             'caches/self_learning' => 500,
             'uploads/incoming' => 500,
-            'safe_mode_temp' => 500, // TODO: temp in v11
+            'safe_mode_temp' => 500,
             'themes/' . $GLOBALS['FORUM_DRIVER']->get_theme('') . '/templates_cached' => 20,
         );
         foreach ($directories as $dir => $max_threshold_size_in_mb) {

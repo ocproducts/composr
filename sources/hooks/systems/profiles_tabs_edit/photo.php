@@ -49,7 +49,7 @@ class Hook_profiles_tabs_edit_photo
 
         $order = 30;
 
-        // Special delete actualliser
+        // Special delete actualiser
         if (post_param_integer('delete_photo', 0) == 1) {
             require_code('cns_members_action');
             require_code('cns_members_action2');

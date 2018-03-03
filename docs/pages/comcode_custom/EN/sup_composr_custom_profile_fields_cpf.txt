@@ -151,6 +151,4 @@ Finally you can set the order in which this field's name and corresponding value
 
 Hopefully now you can see how quickly you can create sign up forms with checkboxes, radio buttons and dropdown lists using the intuitive Composr interface?
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Members,novice}{$SET,tutorial_add_date,Dec 2014}{$SET,tutorial_summary,What are Custom Profile Fields and why would you use them?}[block]main_tutorial_rating[/block]

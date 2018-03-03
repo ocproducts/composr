@@ -420,6 +420,8 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/tasks/import_member_csv.php',
             'sources/blocks/main_members.php',
             'themes/default/templates/BLOCK_MAIN_MEMBERS.tpl',
+            'themes/default/templates/BLOCK_MAIN_MEMBERS_COMPLEX.tpl',
+            'themes/default/templates/CNS_MEMBER_DIRECTORY_SCREEN_FILTERS.tpl',
             'themes/default/templates/CNS_MEMBER_DIRECTORY_SCREEN_FILTER.tpl',
             'themes/default/templates/CNS_MEMBER_DIRECTORY_USERNAME.tpl',
             'sources/hooks/systems/symbols/CPF_LIST.php',
@@ -467,7 +469,9 @@ class Hook_addon_registry_core_cns
             'templates/CNS_VIEW_GROUP_MEMBER_SECONDARY.tpl' => 'cns_view_group_screen',
             'templates/CNS_VIEW_GROUP_SCREEN.tpl' => 'cns_view_group_screen',
             'templates/BLOCK_MAIN_MEMBERS.tpl' => 'block_main_members',
-            'templates/CNS_MEMBER_DIRECTORY_SCREEN_FILTER.tpl' => 'cns_member_directory_screen_filter',
+            'templates/BLOCK_MAIN_MEMBERS_COMPLEX.tpl' => 'block_main_members',
+            'templates/CNS_MEMBER_DIRECTORY_SCREEN_FILTERS.tpl' => 'block_main_members',
+            'templates/CNS_MEMBER_DIRECTORY_SCREEN_FILTER.tpl' => 'block_main_members',
             'templates/CNS_MEMBER_DIRECTORY_USERNAME.tpl' => 'cns_member_directory_username',
             'templates/CNS_POST_MAP.tpl' => 'cns_post_map',
             'templates/CNS_POST_MAP_ITEM.tpl' => 'cns_post_map',
@@ -763,24 +767,6 @@ class Hook_addon_registry_core_cns
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__cns_member_directory_screen_filter()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('CNS_MEMBER_DIRECTORY_SCREEN_FILTER', array(
-                'NAME' => lorem_word(),
-                'LABEL' => lorem_phrase(),
-                'BLOCK_ID' => '',
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
     public function tpl_preview__cns_member_directory_username()
     {
         return array(
@@ -822,59 +808,61 @@ class Hook_addon_registry_core_cns
      */
     public function tpl_preview__block_main_members()
     {
-        $custom_fields = do_lorem_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array(
-            'NAME' => lorem_phrase(),
-            'VALUE' => placeholder_ip(),
-        ));
-        $poster_details = do_lorem_template('CNS_GUEST_DETAILS', array(
-            'CUSTOM_FIELDS' => $custom_fields,
-        ));
-        $box = do_lorem_template('CNS_MEMBER_BOX', array(
-            'AVATAR_URL' => placeholder_image_url(),
-            'ONLINE' => false,
-            'POSTS' => placeholder_number(),
-            'POINTS' => placeholder_number(),
-            'JOIN_DATE_RAW' => placeholder_date_raw(),
-            'MEMBER_ID' => placeholder_id(),
-            'JOIN_DATE' => placeholder_date(),
-            'PRIMARY_GROUP_NAME' => lorem_phrase(),
-            'CUSTOM_FIELDS' => lorem_phrase(),
-            'CUSTOM_FIELDS_FULL' => lorem_phrase(),
-            'GIVE_CONTEXT' => false,
-        ));
+        $out = array();
 
-        $member_boxes = array();
-        $member_boxes[] = array(
-            'I' => '0',
-            'BREAK' => false,
-            'BOX' => $box,
-            'MEMBER_ID' => placeholder_id(),
-            'GALLERY_NAME' => '',
-            'GALLERY_TITLE' => '',
-        );
+        foreach (array('BLOCK_MAIN_MEMBERS', 'BLOCK_MAIN_MEMBERS_COMPLEX') as $tpl) {
+            $custom_fields = do_lorem_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array(
+                'NAME' => lorem_phrase(),
+                'VALUE' => placeholder_ip(),
+            ));
+            $poster_details = do_lorem_template('CNS_GUEST_DETAILS', array(
+                'CUSTOM_FIELDS' => $custom_fields,
+            ));
+            $box = do_lorem_template('CNS_MEMBER_BOX', array(
+                'AVATAR_URL' => placeholder_image_url(),
+                'ONLINE' => false,
+                'POSTS' => placeholder_number(),
+                'POINTS' => placeholder_number(),
+                'JOIN_DATE_RAW' => placeholder_date_raw(),
+                'MEMBER_ID' => placeholder_id(),
+                'JOIN_DATE' => placeholder_date(),
+                'PRIMARY_GROUP_NAME' => lorem_phrase(),
+                'CUSTOM_FIELDS' => lorem_phrase(),
+                'CUSTOM_FIELDS_FULL' => lorem_phrase(),
+                'GIVE_CONTEXT' => false,
+            ));
 
-        $per_row = 6;
+            $member_boxes = array();
+            $member_boxes[] = array(
+                'I' => '0',
+                'BREAK' => false,
+                'BOX' => $box,
+                'MEMBER_ID' => placeholder_id(),
+                'GALLERY_NAME' => '',
+                'GALLERY_TITLE' => '',
+            );
 
-        $usergroups = array();
-        $usergroups[placeholder_id()] = array('USERGROUP' => lorem_phrase(), 'NUM' => placeholder_number());
+            $per_row = 6;
 
-        $symbols = array(
-            array(
-                'START' => '0',
-                'SYMBOL' => 'a',
-            ),
-            array(
-                'START' => '1',
-                'SYMBOL' => 'b',
-            ),
-            array(
-                'START' => '3',
-                'SYMBOL' => 'c',
-            )
-        );
+            $usergroups = array();
+            $usergroups[placeholder_id()] = array('USERGROUP' => lorem_phrase(), 'NUM' => placeholder_number());
 
-        return array(
-            lorem_globalise(do_lorem_template('BLOCK_MAIN_MEMBERS', array(
+            $symbols = array(
+                array(
+                    'START' => '0',
+                    'SYMBOL' => 'a',
+                ),
+                array(
+                    'START' => '1',
+                    'SYMBOL' => 'b',
+                ),
+                array(
+                    'START' => '3',
+                    'SYMBOL' => 'c',
+                )
+            );
+
+            $out[] = lorem_globalise(do_lorem_template($tpl, array(
                 'BLOCK_ID' => '',
                 'START' => strval(0),
                 'MAX' => strval(30),
@@ -891,8 +879,10 @@ class Hook_addon_registry_core_cns
                 'HAS_ACTIVE_FILTER' => true,
                 'INCLUDE_FORM' => false,
                 'SORT' => '',
-            )), null, '', true)
-        );
+            )), null, '', true);
+        }
+
+        return $out;
     }
 
     /**
@@ -951,7 +941,7 @@ class Hook_addon_registry_core_cns
             'PRIMARY_GROUP_ID' => placeholder_id(),
             'PHOTO_URL' => placeholder_image_url(),
             'PHOTO_THUMB_URL' => placeholder_image_url(),
-            'EMAIL_ADDRESS' => lorem_word(),
+            'EMAIL_ADDRESS' => lorem_word() . '@example.com',
             'AVATAR_URL' => placeholder_avatar(),
             'SIGNATURE' => lorem_phrase(),
             'JOIN_DATE' => placeholder_date(),
@@ -1038,7 +1028,7 @@ class Hook_addon_registry_core_cns
 
         return array(
             lorem_globalise(do_lorem_template('CNS_MEMBER_PROFILE_SCREEN', array(
-                'TITLE' => lorem_title(),
+                'TITLE' => get_screen_title('MEMBER_ACCOUNT', true, array(lorem_phrase(), lorem_phrase())),
                 'MEMBER_ID' => placeholder_id(),
                 'TABS' => $tabs,
             )), null, '', true)

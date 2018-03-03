@@ -58,7 +58,7 @@ class Hook_health_check_network extends Hook_Health_Check
             return;
         }
 
-        require_code('json'); // TODO: Fix in v11
+        require_code('json');
 
         $url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/testing.php?type=http_status_check&url=' . urlencode($this->get_page_url());
         for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or Google issue

@@ -1100,7 +1100,7 @@ abstract class Standard_crud_module
      */
     public function get_entry_rows($recache = false, $orderer = null, $where = null, $force_site_db = false, $join = '', $max = null)
     {
-        if ((!$recache) && (!is_null($orderer)) && (!is_null($where))) {
+        if ((!$recache) && (is_null($orderer)) && (is_null($where))) {
             if (isset($this->cached_entry_rows)) {
                 return array($this->cached_entry_rows, $this->cached_max_rows);
             }
@@ -1118,7 +1118,7 @@ abstract class Standard_crud_module
         }
         $table_raw = (is_null($this->table) ? $this->module_type : $this->table);
         $table = $table_raw . ' r';
-        $db = ((substr($table, 0, 2) == 'f_') && ($table != 'f_welcome_emails r') && (!$force_site_db) && (get_forum_type() != 'none')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+        $db = ((substr($table, 0, 2) == 'f_') && ($table != 'f_welcome_emails r') && (!$force_site_db) && (get_forum_type() == 'cns')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
         if (($orderer_is_multi_lang) && (preg_replace('# (ASC|DESC)$#', '', $orderer) == $select_field)) {
             $_orderer = $GLOBALS['SITE_DB']->translate_field_ref(preg_replace('# (ASC|DESC)$#', '', $orderer));
             if (substr($orderer, -5) == ' DESC') {
@@ -1158,7 +1158,7 @@ abstract class Standard_crud_module
             $_entries[$key] = $row;
         }
 
-        if ((!is_null($orderer)) && (!is_null($where))) {
+        if ((is_null($orderer)) && (is_null($where))) {
             $this->cached_entry_rows = $_entries;
             $this->cached_max_rows = $max_rows;
         }

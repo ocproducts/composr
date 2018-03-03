@@ -44,6 +44,4 @@ To edit the Comcode page which make up the slides for the slider you need to edi
 
 You edit these pages as you would a normal page on your website.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Structure and navigation,Content,novice}{$SET,tutorial_add_date,Sep 2014}{$SET,tutorial_summary,Many websites now make use of sliders to convey information to their visitors. It's incredibly common especially in the world of eCommerce as it allows several items to be displayed neatly together.}[block]main_tutorial_rating[/block]

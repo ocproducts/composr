@@ -230,7 +230,7 @@ class Hook_task_import_wordpress
                         // Save articles as new comcode pages
                         $zone = 'site';
                         $lang = fallback_lang();
-                        $file = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $post['post_name']); // Filter non alphanumeric charactors
+                        $file = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $post['post_name']); // Filter non-alphanumeric characters
                         $full_path = zone_black_magic_filterer(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . $lang . '/' . $file . '.txt');
 
                         // Content
@@ -316,9 +316,13 @@ class Hook_task_import_wordpress
                         if (array_key_exists('COMMENTS', $post)) {
                             $comment_mapping = array();
                             foreach ($post['COMMENTS'] as $comment) {
-                                $submitter = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $comment['comment_author']));
-                                if (is_null($submitter)) {
-                                    $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id(); // If comment is made by a non-member, assign comment to guest account
+                                if (get_forum_type() == 'cns') {
+                                    $submitter = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $comment['comment_author']));
+                                    if (is_null($submitter)) {
+                                        $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id(); // If comment is made by a non-member, assign comment to guest account
+                                    }
+                                } else {
+                                    $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
                                 }
 
                                 require_code('feedback');

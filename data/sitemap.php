@@ -47,6 +47,8 @@ global $FORCE_INVISIBLE_GUEST;
 $FORCE_INVISIBLE_GUEST = false;
 global $EXTERNAL_CALL;
 $EXTERNAL_CALL = false;
+global $KNOWN_UTF8;
+$KNOWN_UTF8 = true;
 global $CSRF_TOKENS;
 $CSRF_TOKENS = true;
 if (!is_file($FILE_BASE . '/sources/global.php')) {

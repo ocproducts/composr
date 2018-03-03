@@ -62,9 +62,7 @@ class Hook_health_check_performance extends Hook_Health_Check
             return;
         }
 
-        // TODO: Document in maintenance spreadsheet for v11 that we have these links here
-
-        $this->state_check_manual('Check for [url="speed issues"]https://developers.google.com/speed/pagespeed/insights[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->state_check_manual('Check for [url="speed issues"]https://developers.google.com/speed/pagespeed/insights/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
     }
 
     /**
@@ -81,10 +79,10 @@ class Hook_health_check_performance extends Hook_Health_Check
             return;
         }
 
-        /*  TODO Enable in v11, currently can't work
+        /*  Currently can't work
         if ($manual_checks) {
             $url = get_base_url() . '/testing-for-404.png';
-            $data = http_download_file($url, null, false); // TODO: In v11 set the parameter to return output even for 404
+            $data = http_download_file($url, null, false); // In v11 set the parameter to return output even for 404
             $this->assert_true(($data === null) || (strpos($data, '<nav class="menu_type__sitemap">') === false), '[tt]404[/tt] status code page is too complex looking for broken images');
         }
         */

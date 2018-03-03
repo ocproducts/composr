@@ -265,7 +265,7 @@ class Hook_health_check_email extends Hook_Health_Check
             if (strpos($_part, '/') === false) {
                 return ($self_ip == $_part);
             } else {
-                require_code('failure'); // TODO: Remove in v11
+                require_code('failure');
                 return ip_cidr_check($self_ip, $_part);
             }
         }
@@ -364,7 +364,7 @@ class Hook_health_check_email extends Hook_Health_Check
             do {
                 sleep(3);
 
-                $resource = imap_open($ref . 'INBOX', $username, $password, CL_EXPUNGE);
+                $resource = @imap_open($ref . 'INBOX', $username, $password, CL_EXPUNGE);
                 $ok = ($resource !== false);
                 if ($i == 0) {
                     $this->assert_true($ok, 'Could not connect to IMAP server, [tt]' . $server . '[/tt]');

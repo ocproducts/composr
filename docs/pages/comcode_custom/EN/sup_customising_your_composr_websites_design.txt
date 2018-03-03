@@ -32,14 +32,12 @@ The next section icon leads you to the edit theme screen which allows you to mak
 
 The third cell is the link to edit the CSS of your theme. Behind this option is a list of all the CSS files which are used within your theme which can be edited. The most common choice here will be [tt]global.css[/tt] as this houses the most commonly used CSS elements. To help you find the correct element on your live theme there is an option in the admin dropdown box at the bottom of the standard theme called a contextual CSS editor. Once this is chosen a new window will open up and as you hover over elements on your live site each CSS element will be highlighted on the new screen.
 
-This feature is completely unique to Composr and offers an extremely powerful theming tool. By using this tool you can quickly see what areas you need to edit to make your site appear just as you want it to. An extra benefit is you can also see which other areas of the site your changes might affect. Obviously I can't tell you exactly what to change as you will want your site to be representative of your ideas.
+This feature is completely unique to Composr and offers an extremely powerful themeing tool. By using this tool you can quickly see what areas you need to edit to make your site appear just as you want it to. An extra benefit is you can also see which other areas of the site your changes might affect. Obviously I can't tell you exactly what to change as you will want your site to be representative of your ideas.
 
 The next cell relates to the editing the templates of your website theme. Like the CSS page, you will be presented with a list menu of all of the templates which are used with your site. Some of these will affect just one content block and others will affect large portions of your site's structure.
 
 The final section relates to all of the images which make up your theme. These are separated in to sections such as logo images and general images e.g the favicon and apple icon. From here you can quickly edit and update the various theme images which make up your site.
 
 From the above you can see Composr's themes can be pretty complex, but the developers have spent time making and refining these really powerful theme design features which you won't find in any other Open Source CMS. If you just want a different colour and a few minor changes to the default theme then Composr offers you the theme wizard to achieve this in a matter of seconds. If you want to make a massive conversion of the software you have all of the tools at your disposal to be able to efficiently find the individual elements you need to change.
-
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Design & Themeing,novice}{$SET,tutorial_add_date,Apr 2013}{$SET,tutorial_summary,How knowledgeable you are in CSS and HTML will determine how detailed a customisation you will be able to make. This tutorial aims to make it easier to find your way around the files you need to edit.}[block]main_tutorial_rating[/block]

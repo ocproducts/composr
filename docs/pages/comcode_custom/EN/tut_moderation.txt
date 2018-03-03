@@ -124,7 +124,7 @@ You can delete a multi-moderation from the bottom of its edit form.
 
 [title="3"]Using a multi-moderation[/title]
 
-To use a multi-moderation, you need to browse to an appropriate topic. Select an appropriate multi-moderation from the 'Topic actions' drop-down list, and click the 'Proceed' button to apply the multi-moderation to the topic. Note that Composr comes with several pre-defined multi-moderations that are present from when you install Composr.
+To use a multi-moderation, you need to browse to an appropriate topic. Select an appropriate multi-moderation from the 'Topic actions' drop-down list, and click the 'Proceed' button to apply the multi-moderation to the topic. Note that Composr comes with several predefined multi-moderations that are present from when you install Composr.
 
 You may also use multi-moderations from the forum view screen, by selecting topics you want to multi-moderate and using a multi-moderation from the 'Topic actions' drop-down list.
 [/surround]
@@ -132,7 +132,7 @@ You may also use multi-moderations from the forum view screen, by selecting topi
 [concepts
  1_key="Moderation"        1_value="The process of managing a discussion forum's content and community"
  2_key="Mass moderation"   2_value="Mass moderation is a technique of applying a certain task to multiple topics or posts in one go"
- 3_key="Multi-moderation"  3_value="Executing a pre-defined set of actions upon a topic"
+ 3_key="Multi-moderation"  3_value="Executing a predefined set of actions upon a topic"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

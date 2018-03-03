@@ -40,7 +40,7 @@ class Hook_check_base_url
             $test_url = static_evaluate_tempcode(build_url(array('page' => ''), '', null, false, false, true)); // But this definitely must exist
         }
 
-        $test = http_download_file($test_url, 0, false, true); // Should return a 200 blank, not an HTTP error or a redirect; actual data would be a Composr error
+        $test = http_download_file($test_url, 1, false, true); // Should return a 200 blank, not an HTTP error or a redirect; actual data would be a Composr error
 
         $has_www = (strpos(get_base_url(), '://www.') !== false);
         $installing = running_script('install');

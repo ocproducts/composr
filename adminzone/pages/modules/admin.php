@@ -400,7 +400,7 @@ class Module_admin
 
         $content = array();
 
-        // Targetted tips
+        // Targeted tips
         $current_results_type = do_lang('TIPS');
         cms_profile_start_for('admin search: ' . $current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
@@ -661,15 +661,15 @@ class Module_admin
             $content[$current_results_type] = new Tempcode();
             $current_results_type_2 = do_lang('OPTION_GROUPS');
             $content[$current_results_type_2] = new Tempcode();
-            foreach ($config_categories as $p => $groups) {
-                $_n = do_lang('CONFIG_CATEGORY_' . $p, null, null, null, null, false);
+            foreach ($config_categories as $_p => $groups) {
+                $_n = do_lang('CONFIG_CATEGORY_' . $_p, null, null, null, null, false);
                 if (is_null($_n)) {
                     continue;
                 }
-                $n = do_lang_tempcode('CONFIG_CATEGORY_' . $p);
+                $n = do_lang_tempcode('CONFIG_CATEGORY_' . $_p);
                 if ($this->_keyword_match($n->evaluate())) {
-                    $_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $p), get_module_zone('admin_config'));
-                    $description = do_lang_tempcode('CONFIG_CATEGORY_DESCRIPTION__' . $p);
+                    $_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $_p), get_module_zone('admin_config'));
+                    $description = do_lang_tempcode('CONFIG_CATEGORY_DESCRIPTION__' . $_p);
                     $breadcrumbs = new Tempcode();
                     $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin', 'type' => 'setup'), 'adminzone'), do_lang_tempcode('SETUP'), false, false));
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
@@ -692,7 +692,7 @@ class Module_admin
                         } else {
                             $group_description = do_lang_tempcode('CONFIG_GROUP_DESCRIP_' . $group, escape_html($post_max_size), escape_html($upload_max_filesize), false);
                         }
-                        $_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $p), get_module_zone('admin_config'));
+                        $_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $_p), get_module_zone('admin_config'));
                         $url = $_url->evaluate();
                         $url .= '#group_' . $group;
                         $breadcrumbs = new Tempcode();
@@ -700,7 +700,7 @@ class Module_admin
                         $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                         $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_config', 'type' => 'browse'), get_module_zone('admin_config')), do_lang_tempcode('CONFIGURATION'), false, false));
                         $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
-                        $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $p), get_module_zone('admin_config')), do_lang_tempcode('CONFIG_CATEGORY_' . $p), false, false));
+                        $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $_p), get_module_zone('admin_config')), do_lang_tempcode('CONFIG_CATEGORY_' . $_p), false, false));
                         $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
                         $content[$current_results_type_2]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'e95b87d01c839e41ee1ea484feeb5cd7', 'NAME' => $n2, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => $group_description, 'SUP' => $sup)));
                     }
@@ -792,11 +792,11 @@ class Module_admin
             $map = array();
             require_code('zones2');
             $all_blocks = find_all_blocks();
-            foreach (array_keys($all_blocks) as $p) {
-                $t = do_lang('BLOCK_' . $p . '_DESCRIPTION', null, null, null, null, false);
-                if (($this->_keyword_match($p)) || ((!is_null($t)) && ($this->_keyword_match($t)))) {
+            foreach (array_keys($all_blocks) as $_p) {
+                $t = do_lang('BLOCK_' . $_p . '_DESCRIPTION', null, null, null, null, false);
+                if (($this->_keyword_match($_p)) || ((!is_null($t)) && ($this->_keyword_match($t)))) {
                     $url = '';
-                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '1368be933d0ccbcd65939f29dd6d7003', 'NAME' => $p, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => escape_html($t))));
+                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '1368be933d0ccbcd65939f29dd6d7003', 'NAME' => $_p, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => escape_html($t))));
                 }
             }
         }
@@ -812,8 +812,8 @@ class Module_admin
             if ($dh !== false) {
                 while (($f = readdir($dh)) !== false) {
                     if (substr($f, -4) == '.tar') {
-                        $p = basename($f, '.tar');
-                        if ($this->_keyword_match($p)) {
+                        $_p = basename($f, '.tar');
+                        if ($this->_keyword_match($_p)) {
                             require_code('tar');
                             $tar = tar_open(get_custom_file_base() . '/imports/addons/' . $f, 'rb');
                             $directory = tar_get_directory($tar);
@@ -826,7 +826,7 @@ class Module_admin
                                 $description = isset($info['description']) ? $info['description'] : '';
                                 $_url = build_url(array('page' => 'admin_addons'), get_module_zone('admin_addons'));
                                 $url = $_url->evaluate();
-                                $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'e9cd6b45e33abf4a2136dc6b1ff5b8ee', 'NAME' => $p, 'URL' => $url, 'TITLE' => $title, 'DESCRIPTION' => $description)));
+                                $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'e9cd6b45e33abf4a2136dc6b1ff5b8ee', 'NAME' => $_p, 'URL' => $url, 'TITLE' => $title, 'DESCRIPTION' => $description)));
                             }
                         }
                     }
@@ -863,13 +863,13 @@ class Module_admin
             }
             $current_results_type = do_lang('PRIVILEGE_SECTIONS');
             $content[$current_results_type] = new Tempcode();
-            foreach (array_keys($pt_sections) as $p) {
-                $n = do_lang($p, null, null, null, null, false);
+            foreach (array_keys($pt_sections) as $_p) {
+                $n = do_lang($_p, null, null, null, null, false);
                 if (is_null($n)) {
                     continue;
                 }
-                if (($this->_keyword_match($n)) || ($this->_keyword_match($p))) {
-                    $_url = build_url(array('page' => 'admin_permissions', 'type' => 'privileges', 'id' => $p), get_module_zone('admin_permissions'));
+                if (($this->_keyword_match($n)) || ($this->_keyword_match($_p))) {
+                    $_url = build_url(array('page' => 'admin_permissions', 'type' => 'privileges', 'id' => $_p), get_module_zone('admin_permissions'));
                     $breadcrumbs = new Tempcode();
                     $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin', 'type' => 'security'), 'adminzone'), do_lang_tempcode('SECURITY'), false, false));
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));

@@ -191,6 +191,8 @@ function comcode_convert_script()
         header('Content-type: text/plain; charset=' . get_charset());
         echo $out;
     }
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**

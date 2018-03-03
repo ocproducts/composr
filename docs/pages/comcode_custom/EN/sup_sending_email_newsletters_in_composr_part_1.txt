@@ -30,6 +30,4 @@ The last option before previewing the e-mail is which template you wish to use. 
 
 [page="_SEARCH:sup_sending_email_newsletters_in_composr_part_2"]Part two[/page] of this tutorial will discuss sending automated and periodic e-mails through the Composr e-mail system.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Newsletters,newsletter,Newsletters,novice}{$SET,tutorial_add_date,Jul 2013}{$SET,tutorial_summary,Composr has an inbuilt e-mail newsletter system. While e-marketing has taken more of a backseat in recent years to social media, it is still an important part of any digital marketing mix.}[block]main_tutorial_rating[/block]

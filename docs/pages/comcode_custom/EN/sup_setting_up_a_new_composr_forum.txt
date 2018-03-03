@@ -36,13 +36,13 @@ The Permissions section allows you to give various usergroups different permissi
 
 Once this is complete you can click on the "Add forum" button.
 
-[title="2"]Re-ordering your forums[/title]
+[title="2"]Reordering your forums[/title]
 
-To re-order your forums, go to Admin Zone > Structure > Forums > Edit forum. From here you can access the edit screen for each forum and also re-order your forum groups and individual forums.
+To reorder your forums, go to Admin Zone > Structure > Forums > Edit forum. From here you can access the edit screen for each forum and also reorder your forum groups and individual forums.
 
-To re-order the grouping so a new grouping appears at the top, you can change the numbers which appear on the blue bar next to each forum grouping name. To re-order the forums within a grouping, simply change the numbers in the drop-downs as required next to each forum that you want to re-order.
+To reorder the grouping so a new grouping appears at the top, you can change the numbers which appear on the blue bar next to each forum grouping name. To reorder the forums within a grouping, simply change the numbers in the drop-downs as required next to each forum that you want to reorder.
 
-Once you have the forums ordered as you like click "Re-order forums".
+Once you have the forums ordered as you like click "Reorder forums".
 
 [title="2"]Performing basic moderation tasks[/title]
 
@@ -55,7 +55,5 @@ Composr forums offer extremely easy access to the most common forum moderation t
 [*] Opening and closing topics
 [/list]
 To activate any of these options simply select the checkbox to the right hand side of each thread, choose the moderation option you want and click Proceed. In some cases you will be taken to another screen which allows you to add a reason why an action is being done so other staff are aware.
-
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Forum,Social,Forum,novice}{$SET,tutorial_add_date,Apr 2013}{$SET,tutorial_summary,One of Composr's core features is the forum. Composr forums include many of the common forum features found within other well-known forum systems. This tutorial covers the basics.}[block]main_tutorial_rating[/block]

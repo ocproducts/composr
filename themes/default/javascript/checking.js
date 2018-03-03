@@ -951,7 +951,7 @@ function toggle_subordinate_fields(pic,help_id)
 
 	var next=field_input.nextSibling;
 	if (!next) return;
-	while (element_has_class(next,'field_input')!==null) // Sometimes divs or whatever may have errornously been put in a table by a programmer, skip past them
+	while (element_has_class(next,'field_input')!==null) // Sometimes divs or whatever may have erroneously been put in a table by a programmer, skip past them
 	{
 		next=next.nextSibling;
 		if (!next) break;

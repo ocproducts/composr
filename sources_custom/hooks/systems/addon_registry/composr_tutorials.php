@@ -94,7 +94,7 @@ You may also wish to edit the \'docs\' zone to change the "Default page" to [tt]
 
 You can also use the Debranding tool from the Admin Zone to make documentation point towards your own install, by setting your own site\'s base URL as the brand URL.
 
-The documentation is primarily maintained on our website, and this archive is only provided for those who wish to view it off-line, or for availability if our website is ever off-line.';
+The documentation is primarily maintained on our website, and this archive is only provided for those who wish to view it offline, or for availability if our website is ever offline.';
     }
 
     /**
@@ -676,19 +676,19 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_configuration/menu_editor.png',
             'data_custom/images/docs/tut_configuration/reaching_adminzone.png',
             'data_custom/images/docs/tut_configuration/setup_wizard.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_create_pt_page.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_create_pt_page1.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_forum_notification_message.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_hovering_over_pt_link.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_hovering_over_startpt_link.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_new_pt.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_pt_page.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_reply_to_pt.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_thunderbird_notification_e_mail.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_whisper.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_whisper_form.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_whisper_link.png',
-            'data_custom/images/docs/tut_correspondance/correspondance_whisper_page.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_create_pt_page.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_create_pt_page1.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_forum_notification_message.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_hovering_over_pt_link.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_hovering_over_startpt_link.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_new_pt.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_pt_page.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_reply_to_pt.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_thunderbird_notification_e_mail.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_whisper.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_whisper_form.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_whisper_link.png',
+            'data_custom/images/docs/tut_correspondence/correspondence_whisper_page.png',
             'data_custom/images/docs/tut_design/simple_box.png',
             'data_custom/images/docs/tut_design/image.png',
             'data_custom/images/docs/tut_disaster/disaster_ban_1.png',
@@ -1095,7 +1095,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_subcom/subcom_cat_add.png',
             'data_custom/images/docs/tut_subcom/subcom_cat_view.png',
             'data_custom/images/docs/tut_subcom/subcom_redirects.png',
-            'data_custom/images/docs/tut_subcom/subcom_virtualed.png',
+            'data_custom/images/docs/tut_subcom/subcom_virtualised.png',
             'data_custom/images/docs/tut_subcom/subcom_zone_add.png',
             'data_custom/images/docs/tut_subcom/subcom_zone_afm.png',
             'data_custom/images/docs/tut_subcom/usergroup.png',
@@ -1290,7 +1290,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'docs/pages/comcode_custom/EN/tut_commandr.txt',
             'docs/pages/comcode_custom/EN/tut_configuration.txt',
             'docs/pages/comcode_custom/EN/tut_cookies.txt',
-            'docs/pages/comcode_custom/EN/tut_correspondance.txt',
+            'docs/pages/comcode_custom/EN/tut_correspondence.txt',
             'docs/pages/comcode_custom/EN/tut_design.txt',
             'docs/pages/comcode_custom/EN/tut_designer_themes.txt',
             'docs/pages/comcode_custom/EN/tut_disaster.txt',

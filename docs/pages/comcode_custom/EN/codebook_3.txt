@@ -132,7 +132,7 @@ We have established the following design goals (in no particular order):
  - [b]Consistency[/b] -- The whole system should have common ways of doing things. Everything should seem consistent to the user, and be so behind the scenes. Consistency is piece of mind, consistency is ease of use, consistency is simplicity, consistency is less code to test and fix. I can't stress how important it is to be consistent.
  - [b]Independence[/b] -- Composr should not have unnecessary dependencies, such as MySQL.
  - [b]Stability[/b] / [b]Error-trapping[/b] / [b]Input-sanitisation[/b] -- Composr should catch all errors, not let things like PHP notices slip through. This means that programmers have to get used to a new level of strictness, we are much less tolerant of errors slipping through because for complex software like Composr we can't afford weak foundations.
- - [b]Scaleability[/b] -- Composr must work on sites both small and huge. For example, it's wrong to put all downloads in a list on any single screen -- there could be 1000's.
+ - [b]Scalability[/b] -- Composr must work on sites both small and huge. For example, it's wrong to put all downloads in a list on any single screen -- there could be 1000's.
  - [b]Portability[/b] -- People should be able to move their websites between servers without much difficulty.
  - [b]Simplicity[/b] -- Features only needed by a minority should be "off-by-default"
 
@@ -430,7 +430,7 @@ Here is a good workflow for writing high-quality code for Composr:
 
 Here are some general tips:
  - It's sometimes a good idea to program algorithms in complete isolation. Separate the complexities of integration from the complexities of implementation. This also leads to better quality code because you will have been forced to abstract the problem already.
- - If working with other remote developers, [url="Cloud9 IDE"]https://c9.io/[/url] is absolutely excellent. You can watch each other code and see the results of running your code.It is very useful for teaching programming technique, team debugging, and pair programming.
+ - If working with other remote developers, [url="Cloud9 IDE"]https://aws.amazon.com/cloud9/[/url] is absolutely excellent. You can watch each other code and see the results of running your code.It is very useful for teaching programming technique, team debugging, and pair programming.
 
 [title="3"]Writing unit tests[/title]
 
@@ -584,6 +584,8 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]allow_php_in_templates[/tt] -- set this to '1' to enable the undocumented Tempcode 'PHP' directive, and its short-hand syntax (written like normal PHP long-tags). This allows you to write PHP code inside templates, but please aware there are strong risks associated with this. It means that themes you install may contain PHP code, or people submitting Comcode content may put in PHP code which you could accidentally unwittingly activate when validating content (as it would be validated against your own security credentials). Note this option is not designed to work from Comcode, because Comcode will add HTML formatting around your PHP code, corrupting it (from a security point of view you need to be aware though, as that could be avoided with some care by a hacker) 
   - [tt]git_autopull[/tt] -- set this to '1' if git changes should automatically be pulled every minute (less frequently if the CRON interval is longer). Assumes a suEXEC-like server and a git deployment and working [tt]shell_exec[/tt]
  - Low-level tuning
+  - [tt]kid_gloves_html[/tt] -- set this to '0' if you want to completely disable the kid-gloves HTML escaping mode, i.e. avoid the need to make declarations in your overrides. You may want to use this if you override various files but aren't really writing custom code and don't really understand how to make the declarations
+  - [tt]whitelisted_blocks[/tt] -- set this to a comma-separated list of block names to whitelist any user to use those blocks independently. This is useful for AJAX-loaded blocks on sites where users may leave pages open, letting their sessions or block authorisations expire.
   - [tt]no_individual_gallery_view[/tt] -- set this to '1' if all images/videos in a flow-mode gallery must be viewed from the flow-mode view (never individually)
   - [tt]root_cat__images[/tt] -- you can set this to the codename of a gallery, which will be the root for gallery selection on the gallery addon's Add Image form (root is not shown as an option). Alternatively, it can be an Selectcode string.
   - [tt]root_cat__videos[/tt] -- you can set this to the codename of a gallery, which will be the root for gallery selection on the gallery addon's Add Video form (root is not shown as an option). Alternatively, it can be an Selectcode string.
@@ -652,6 +654,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]stupidity_mode[/tt] -- set to [tt]leet[/tt] or [tt]bork[/tt], for a fun April Fools-style Comcode joke (clear the Comcode cache after you're done though)
  - Experimental functionality
   - [tt]list_unsubscribe_target[/tt] -- set to a URL for a [tt]List-Unsubscribe[/tt] header to be attached to e-mails with that URL, e.g. [tt]mailto:you@example.com?subject=Unsubscribe&body=Please%20unsubscribe%20me[/tt]
+  - [tt]access_protocol_redirect[/tt] -- set this to '1' if you want to redirect if the wrong access protocol (e.g. HTTP instead of HTTPS) is used to access the site. Note that this option won't apply when pages are served from the static cache, so it is still a good idea to configure the web server to do this directly. Sample code is in the [page="_SEARCH:tut_security"]Security tutorial[/page] (Migrating HTTP websites).
 
 [title="4"]Hidden 'keep' parameters[/title]
 
@@ -668,7 +671,6 @@ The 'keep' parameters available are:
  - [tt]keep_mobile[/tt] -- set to '1' to pretend you're using a PDA
  - [tt]keep_has_js[/tt] -- set to '1' to force Composr to think you have JavaScript (useful if the has-JS cookie isn't saving yet you need to use a JS-based interface)
  - [tt]keep_ldap_debug[/tt] -- set to '1' to forcefully show LDAP errors, when suppressing them might normally be wise due to over-sensitivity
- - [tt]keep_huge[/tt] -- set to '1' if you want to override the precautionary filesize check used by the JS lint
  - [tt]keep_show_query[/tt] -- set to '1' if you want the SQL query used by a search to be echoed out
  - [tt]keep_just_show_query[/tt] -- set to '1' if you want Composr to echo out the query as above, but then to exit before running it
  - [tt]keep_currency[/tt] -- set to an ISO currency code to tell Composr which currency you use
@@ -702,7 +704,6 @@ The 'keep' parameters available are:
  - [tt]keep_devtest[/tt] -- used during development mode to test URL building is working correctly, of no use manually
  - [tt]keep_debug_has_cookies[/tt] -- useful for developers to tell Composr cookies are supported when JavaScript may be off
  - [tt]keep_memory_limit_test[/tt] -- set to a number of megabytes under 32 to reduce the memory limit to this value; useful for performance debugging
- - [tt]keep_no_chain[/tt] -- useful when working with the XML forum driver, tells it to not do reads from the configured chain database
  - [tt]keep_realtime_test[/tt] -- used for testing the realtime feature's display (it injects random data)
  - [tt]keep_wide[/tt] -- remove panels
  - [tt]keep_wide_high[/tt] -- remove panels, as well as the header and footer
@@ -720,6 +721,7 @@ The 'keep' parameters available are:
  - [tt]keep_test_version[/tt] -- set to a dotted version number to test the version block in the Admin Zone dashboard as if you're running a different version. Likely needs combining with [tt]keep_cache_blocks=0[/tt]
  - [tt]keep_no_notifications[/tt] -- set this to '1' to suppress sending of notifications (only works if logged in as an administrator)
  - [tt]keep_quick_hybrid[/tt] -- set this to '1' in a quick installer to let the installer read code files from disk while installing if they are there; this allows hot-fixing/hot-debugging of installation bugs
+ - [tt]keep_translate_sort[/tt] -- set this to 'recent' to make the content translation interface show recent strings first; useful during debugging
 
 The following 'keep' parameters have interface triggers, but are also handy for manual activation:
  - [tt]keep_markers[/tt] -- set this to '1' if you want template start/end markers to be output in the page HTML source when viewed in Composr
@@ -782,9 +784,9 @@ We also have some special cases coded up directly. These are often referenced be
   - [tt]type[/tt]
  - [tt]admin_ecommerce_logs[/tt]
  - [tt]add[/tt]
-   - [tt]group_id[/tt]
-   - [tt]trigger[/tt]
-   - [tt]type_code[/tt]
+  - [tt]group_id[/tt]
+  - [tt]trigger[/tt]
+  - [tt]type_code[/tt]
  - [tt]admin_cns_forums[/tt]
   - [tt]add[/tt]
    - [tt]parent_forum[/tt]
@@ -858,7 +860,7 @@ These log files exist by default in [tt]data_custom[/tt]:
  - [tt]errorlog.php[/tt] -- Run-time error logging (using the PHP error logging system) [shown in Composr Error log page]
 
 The follow log files can be created in [tt]data_custom[/tt], and will then be appended to as Composr runs:
- - [tt]permissioncheckslog.php[/tt] -- Permisison checks (useful for debugging why accessing is failing) [shown in Composr Error log page]
+ - [tt]permissioncheckslog.php[/tt] -- Permission checks (useful for debugging why accessing is failing) [shown in Composr Error log page]
  - [tt]ecommerce.log[/tt] -- raw eCommerce transaction data (useful for debugging IPN)
  - [tt]queries.log[/tt] -- queries running (debugging)
  - [tt]big_query_screens.log[/tt] -- slow queries running (debugging performance)
@@ -967,7 +969,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data/failover_script.php[/tt]
 | Continually check system load, and initiate/deinitiate failover mode as required.
 | [tt]failover[/tt]
-| Command-line via PHP interpretor + 'screen'
+| Command-line via PHP interpreter + 'screen'
 |-
 | [tt]adminzone:static_export[/tt]
 | Export website as a static site, as far as is possible.
@@ -982,7 +984,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data/cron_bridge.php[/tt]
 | Run system scheduler tasks. Can also be used to probe for the likely CRON command to configure against.
 | [tt]core[/tt]
-| CRON (or equivalent) via PHP interpretor
+| CRON (or equivalent) via PHP interpreter
 |-
 | [tt]upgrader.php[/tt]
 | Performing upgrades, detecting alien files, missing files, corrupt files, missing permissions, clearing the caches (without having to run the full Composr), deleting files accidentally uploaded from non-installed addons.
@@ -992,7 +994,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data/commandr.php[/tt]
 | Command line tunnel into Commandr.
 | [tt]commandr[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |}
 
 [title="3"]DevOps[/title]
@@ -1004,9 +1006,9 @@ This section is not designed as primary documentation for the tools. Those tools
 ! Call method
 |-
 | [tt]delete_alien_files.php[/tt]
-| Provide pastable commands for deleting non-bundled addons, and alien files not related to installed addons. To be honest you probably are better off using the integrity checker from the upgrader, copy & pasting and changing into terminal commands via a regexp. Never-the-less this script may be useful for some people, especially ones wanting to take it as a starting point for something more custom.
+| Provide pasteable commands for deleting non-bundled addons, and alien files not related to installed addons. To be honest you probably are better off using the integrity checker from the upgrader, copy & pasting and changing into terminal commands via a regexp. Never-the-less this script may be useful for some people, especially ones wanting to take it as a starting point for something more custom.
 | [tt]meta_toolkit[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]db_export.sh[/tt]
 | Export the live database to an SQL dump.
@@ -1046,12 +1048,12 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]sources/critical_errors.php[/tt]
 | Monitors for logged critical errors, and e-mails them to site staff.
 | [tt]core[/tt]
-| Command-line via PHP interpretor + 'screen'
+| Command-line via PHP interpreter + 'screen'
 |-
 | [tt]data_custom/compile_in_includes.php[/tt]
 | Compile Composr overrides against originals, for a slight performance improvement
 | [tt]performance_compile[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |}
 
 [title="3"]Theme development[/title]
@@ -1123,22 +1125,22 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]_tests/codechecker/phpdoc_parser.php[/tt]
 | Build the function signature library used by the Code Quality Checker.
 | [tt]testing_platform[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]data_custom/build_rewrite_rules.php[/tt]
 | Rebuild all files containing rewrite rules.
 | [tt]composr_release_build[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]data_custom/transifex_pull.php[/tt]
 | Pull language packs down from transifex.
 | [tt]addon_publish[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]data_custom/transifex_push.php[/tt]
 | Push language packs up to transifex.
 | [tt]addon_publish[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]template_xss[/tt]
 | Look to see if templates may have XSS holes. Can be given a parameter to write "fixes" back in (which should be verified by hand).
@@ -1158,7 +1160,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data_custom/stress_test_loader.php[/tt]
 | Create a large amount of test content.
 | [tt]stress_test[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]data_custom/change_addon_bundling.php[/tt]
 | Move an addon between bundled and non-bundled.
@@ -1168,7 +1170,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data_custom/composr_mobile_sdk_build.php[/tt]
 | Bundle string and image assets from a Composr website for making a mobile app.
 | [tt]composr_mobile_sdk[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |}
 
 [title="3"]Documentation development[/title]
@@ -1202,7 +1204,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data_custom/build_tutorials_addon_registry_parts.php[/tt]
 | Used for completing the [tt]addon_registry[/tt] hook to include all the latest tutorials and associated graphics.
 | [tt]composr_tutorials[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |}
 
 [title="3"]Release management[/title]

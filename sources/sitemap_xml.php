@@ -116,10 +116,10 @@ function rebuild_sitemap_set($set_number, $last_time)
         $langs = find_all_langs();
         foreach (array_keys($langs) as $lang) {
             if ($lang != get_site_default_lang()) {
-                $url = _build_url($attributes + array('keep_lang' => $lang), $zone, null, false, false, true, $hash);
+                $_url = _build_url($attributes + array('keep_lang' => $lang), $zone, null, false, false, true, $hash);
 
                 $optional_details = '
-        <xhtml:link rel="alternate" hreflang="' . strtolower($lang) . '" href="' . xmlentities($url) . '" />';
+        <xhtml:link rel="alternate" hreflang="' . strtolower($lang) . '" href="' . xmlentities($_url) . '" />';
             }
         }
 

@@ -240,7 +240,7 @@ function _url_to_filename($url_full)
         return $new_name;
     }
 
-    // Non correspondance, but at least we have something
+    // Non correspondence, but at least we have something
     if (strpos($new_name, '.') === false) {
         return md5($new_name);
     }

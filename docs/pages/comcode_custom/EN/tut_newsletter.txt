@@ -52,7 +52,7 @@ When a user hits the block and subscribes through it, one of the following situa
 The maintenance module is a bit richer:
  - A new subscription -- Composr will sign them up and send a confirmation e-mail
  - An existing subscription never confirmed -- Composr will treat this as a refresh to a new subscription, re-sending the confirmation e-mail (regardless of what password was entered)
- - An existing subscription, with the wrong maintenance password -- Composr will give an error (with an option to re-set the password), unless you are logged in with a privileged account
+ - An existing subscription, with the wrong maintenance password -- Composr will give an error (with an option to reset the password), unless you are logged in with a privileged account
  - An existing subscription, with the correct maintenance password -- Composr will update the newsletter subscription
 
 The block sets only for a single newsletter, and does not support interest levels. The maintenance module can do for multiple newsletters at once, and does support interest levels. This difference between block and maintenance page is intentional, as the block is intended only for new signups to a specific newsletter, not for changing existing subscriptions.
@@ -133,7 +133,7 @@ If you want new template options here you must manually create new templates wit
 Admin Zone > Tools > Newsletter > Manage automatic issues
 You will find you can add (and edit/delete) automatic issues from here.
 [*] This will take you to a new screen to define some basic parameters. You can choose whether this will be a periodic automatic issue or just a one-off automatic issue. Configure as appropriate. Periodic automatic issues require the [page="_SEARCH:tut_configuration"]CRON bridge scheduler[/page] to be configured. Click "Next" when done.
-[*] You will be taken to a form that lets you pick what content to include. This consists of a number of lines referencing content and categories, and you must re-arrange/delete lines as appropriate. For each content type supported, it shows only if there are less than 300 items that would be covered (configurable via the "What's New cut-off point" option). If there are 300 or more, then it considers the content type too common to include and no items are shown. Click "Next" when done.
+[*] You will be taken to a form that lets you pick what content to include. This consists of a number of lines referencing content and categories, and you must rearrange/delete lines as appropriate. For each content type supported, it shows only if there are less than 300 items that would be covered (configurable via the "What's New cut-off point" option). If there are 300 or more, then it considers the content type too common to include and no items are shown. Click "Next" when done.
 [*] If you are sending a one-off then in the next step you get the opportunity to edit the newsletter before it is sent, to add additional information or otherwise customise existing information to make your newsletter is appropriate. For periodic automatic issues you can't do this, for obvious reasons. From now on the process is like sending a normal new issue -- you get to choose who to target to, see a preview, and confirm.
 [/list]
 

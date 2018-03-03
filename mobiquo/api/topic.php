@@ -316,6 +316,9 @@ function get_topic_participants_func($raw_params)
             'is_online' => mobiquo_val($user['is_online'], 'boolean'),
         );
         $display_text = $GLOBALS['FORUM_DRIVER']->get_username($user['user_id'], true);
+        if ($display_text === null) {
+            $display_text = do_lang('UNKNOWN');
+        }
         if ($display_text != $user['username']) {
             $arr += array(
                 'display_text' => mobiquo_val($display_text, 'base64'),

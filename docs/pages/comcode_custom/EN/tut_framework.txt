@@ -99,7 +99,7 @@ All these techniques are handled inside the Composr [tt]sources/global.php[/tt] 
 
 This form of overriding works via class inheritance. All you need to do is to make a [tt]modules_custom[/tt] directory version of an original [tt]modules[/tt] directory file, with two differences:
 1) Instead of just naming the module class [tt]Module_<modulename>[/tt], rename it and inherit using [tt]Mx_<modulename> extends Module_<modulename>[/tt]
-2) As this works via standard class inheritance you are at liberty to, and should, only re-define methods in your override when those methods are actually different from the original ones. i.e. start with a shell of a class and only re-define methods that you are actually wanting to change
+2) As this works via standard class inheritance you are at liberty to, and should, only redefine methods in your override when those methods are actually different from the original ones. i.e. start with a shell of a class and only redefine methods that you are actually wanting to change
 
 [title="3"]Replacing/supplementing a file[/title]
 

@@ -97,7 +97,7 @@ I recommend the following:
  - Universal principles of design (ISBN: [tt]1-59253-007-9[/tt])
  - Site-seeing (ISBN: [tt]0-7645-3674-5[/tt])
 
-To decide on a colour scheme consider an online tool like [url="http://www.colorschemer.com/online.html"]ColorSchemer[/url].
+To decide on a colour scheme consider an online tool like [url="http://colormind.io/"]Colormind[/url].
 
 [title="2"]Web Technologies[/title]
 
@@ -191,7 +191,7 @@ Some professionals will object really strongly to this kind of pragmatic approac
 
 What's really important is to see what matters in the market you are in and let this guide your decision process. If you can get quick wins in areas that are not key then it's worth it, because everyone consistently cares about relationships and design and authority to some basic extent, but don't waste time and money trying to be all things to all people.
 
-If in doubt, you could survey what is important, but chances are you won't get an accurate result using this technique (people tend to say 'yes' to most “would you like” kind of questions). A better approach is to step through some scenarios with your customers, as that will really show you what they care about, and probably also where your competitors have exploitable weak points.
+If in doubt, you could survey what is important, but chances are you won't get an accurate result using this technique (people tend to say 'yes' to most "would you like" kind of questions). A better approach is to step through some scenarios with your customers, as that will really show you what they care about, and probably also where your competitors have exploitable weak points.
 
 [concepts
  1_key="Photoshop"                 1_value="The de-facto standard software for web designers"
@@ -215,7 +215,7 @@ If in doubt, you could survey what is important, but chances are you won't get a
  - http://findicons.com/
  - http://www.freeimages.com/
  - http://www.welie.com/patterns/
- - http://patterntap.com/
+ - http://patterntap.com/patterntap
  - http://www.designyourway.net/drb/web-designers-should-focus-more-on-typography/
  - http://www.creativebloq.com/netmag/6-questions-every-homepage-should-answer-101413151
  - http://www.userfocus.co.uk/resources/guidelines.html

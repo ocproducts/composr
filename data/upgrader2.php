@@ -124,7 +124,7 @@ foreach ($todo as $i => $_target_file) {
 
     if ($target_file == 'data/upgrader2.php') {
         if ($file_offset + $per_cycle < count($todo)) {
-            continue; // Only extract on last step, to avoid possible transitionary bugs between versions of this file (this is the file running and refreshing now, i.e this file!)
+            continue; // Only extract on last step, to avoid possible transitory bugs between versions of this file (this is the file running and refreshing now, i.e this file!)
         }
     } else {
         if ($i < $file_offset) {

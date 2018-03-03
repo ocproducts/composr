@@ -43,7 +43,7 @@ class Hook_content_meta_aware_quiz
             'id_field_numeric' => true,
             'parent_category_field' => null,
             'parent_category_meta_aware_type' => null,
-            'is_category' => false,
+            'is_category' => true,
             'is_entry' => true,
             'category_field' => 'q_type', // For category permissions
             'category_type' => 'quiz', // For category permissions
@@ -80,7 +80,7 @@ class Hook_content_meta_aware_quiz
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => null, // null if has no permissions
+            'permissions_type_code' => 'quiz', // null if has no permissions
 
             'search_hook' => 'quiz',
             'rss_hook' => null,

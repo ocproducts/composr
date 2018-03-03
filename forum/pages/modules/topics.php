@@ -596,7 +596,7 @@ class Module_topics
                 }
             } else {
                 if (!is_numeric($_to_topic_id)) {
-                    $_to_topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => 'topicview', 'm_resource_type' => 'browse', 'm_moniker' => urldecode($_to_topic_id)));
+                    $_to_topic_id = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => 'topicview', 'm_resource_type' => 'browse', 'm_moniker' => urldecode($_to_topic_id)));
                     if (is_null($_to_topic_id)) {
                         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
                     }
@@ -679,7 +679,7 @@ class Module_topics
         $last_time = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_cache_last_time', array('id' => $topic_id));
         $too_old = $last_time < time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'));
         if (!$too_old) {
-            if (!$GLOBALS['SITE_DB']->table_is_locked('f_read_logs')) {
+            if (!$GLOBALS['FORUM_DB']->table_is_locked('f_read_logs')) {
                 $GLOBALS['FORUM_DB']->query_delete('f_read_logs', array('l_topic_id' => $topic_id, 'l_member_id' => get_member()), '', 1);
             }
             return true;
@@ -2168,6 +2168,9 @@ class Module_topics
         $name = $poster;
         if (!is_guest($post_info[0]['p_poster'])) {
             $name = $GLOBALS['FORUM_DRIVER']->get_username($post_info[0]['p_poster'], true);
+            if ($name === null) {
+                $name = $poster;
+            }
         }
 
         $_postdetails = post_param_string('post', null);
@@ -2763,8 +2766,8 @@ END;
             $time = $post_rows[0]['p_time'];
             $count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_time>' . strval($time - 60 * 60 * 24) . ' AND p_time<' . strval($time + 60 * 60 * 24) . ' AND ' . db_string_equal_to('p_ip_address', $ip));
             $_ip_link = build_url(array('page' => 'admin_lookup', 'param' => get_ip_address()), get_module_zone('admin_lookup'));
-            $ip_link = $_ip_link->evaluate();
-            $text = paragraph(do_lang_tempcode('DELETE_POSTS_DESCRIPTION', escape_html(integer_format($count)), escape_html($ip), escape_html($ip_link)));
+            $lookup_ip_url = $_ip_link->evaluate();
+            $text = paragraph(do_lang_tempcode('DELETE_POSTS_DESCRIPTION', escape_html(integer_format($count)), escape_html($ip), escape_html($lookup_ip_url)));
             $submit_name = do_lang_tempcode('DELETE_POST');
             $post_url = build_url(array('page' => '_SELF', 'type' => '_delete_post', 'id' => $post_id), '_SELF', null, true);
             $fields = new Tempcode();
@@ -2869,6 +2872,7 @@ END;
         if ($_topic_info[0]['t_cache_first_post_id'] == $post_id) { // See if we need to copy title
             $_topic_info2 = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_cache_first_title', 't_cache_first_post_id'), array('id' => $topic_id), '', 1);
             if (array_key_exists(0, $_topic_info2)) {
+                require_lang('cns');
                 if ($_topic_info2[0]['t_cache_first_title'] == do_lang('NO_TOPIC_TITLE', strval($topic_id))) {
                     $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_title' => $current_title), array('id' => $_topic_info2[0]['t_cache_first_post_id']), '', 1);
                 }
@@ -3677,7 +3681,7 @@ END;
         return do_template('FORM_SCREEN', array(
             '_GUID' => '9f28869bd74262ae20ba79ace14b87ca',
             'SKIP_WEBSTANDARDS' => true,
-            'STAFF_HELP_URL' => get_tutorial_url('tut_correspondance'),
+            'STAFF_HELP_URL' => get_tutorial_url('tut_correspondence'),
             'HIDDEN' => '',
             'TITLE' => $title,
             'FIELDS' => $fields,
@@ -4212,7 +4216,7 @@ END;
 
         return do_template('FORM_SCREEN', array(
             '_GUID' => '9416df197ee157510e9d6be7458d510f',
-            'STAFF_HELP_URL' => get_tutorial_url('tut_correspondance'),
+            'STAFF_HELP_URL' => get_tutorial_url('tut_correspondence'),
             'HIDDEN' => $hidden,
             'TITLE' => $title,
             'TEXT' => $text,

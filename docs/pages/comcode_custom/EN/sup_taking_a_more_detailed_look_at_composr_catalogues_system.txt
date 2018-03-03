@@ -3,7 +3,7 @@
 [media width="150" description="Catalogues screen" float="right"]data_custom/images/docs/sup_taking_a_more_detailed_look_at_composr_catalogues_system/230ba37f1077fd7ae9cea85f9edac780.png[/media]
 Composr's inbuilt catalogue system is a very useful tool and can be used for a wide range of tasks relating to the display of information on your Composr website.
 
-One way the catalogue system can be leveraged for businesses is in the use of a store locater with a map displaying the locations of your businesses stores. The Catalogue system works in conjunction to the DataMappr addon to be able to achieve this. If you would like to know more about this I have covered it in a previous tutorial which can be found here: How [page="_SEARCH:sup_creating_a_store_locator_for_your_composr_website"]to add a store locator to your Composr website[/page].
+One way the catalogue system can be leveraged for businesses is in the use of a store locator with a map displaying the locations of your businesses stores. The Catalogue system works in conjunction to the DataMappr addon to be able to achieve this. If you would like to know more about this I have covered it in a previous tutorial which can be found here: How [page="_SEARCH:sup_creating_a_store_locator_for_your_composr_website"]to add a store locator to your Composr website[/page].
 
 I wanted to take a look through the Catalogue system to make the options clearer to you. It is impossible to go through every type of option you could use the catalogues system for, but I wanted to make it a little clearer so you can see how you can leverage this really useful system.
 
@@ -52,7 +52,5 @@ There are a huge number of options in this section such as uploading images, lim
 You will of course need to plan out your catalogue before you start building it to make sure you have the right fields in the right order. If you do find you want to reorder your fields this can also be done through changing the "Order" option.
 
 The Catalogue system allows you to add up to 10 fields initially and you will need to add the catalogue and go back in to edit it to be able to add more than ten fields.
-
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Catalogues,Content,Catalogues,novice}{$SET,tutorial_add_date,Aug 2013}{$SET,tutorial_summary,Composr's inbuilt catalogue system is a very useful tool and can be used for a wide range of tasks relating to the display of information on your Composr website.}[block]main_tutorial_rating[/block]

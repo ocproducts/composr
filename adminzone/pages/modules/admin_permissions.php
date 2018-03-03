@@ -822,6 +822,10 @@ class Module_admin_permissions
             $sections_uncommon = new Tempcode();
             $doing_uncommon = false;
             foreach ($_sections as $s) {
+                if (($s['p_section'] == 'FORUMS_AND_MEMBERS') && (get_forum_type() != 'cns')) {
+                    continue;
+                }
+
                 if (is_null($s)) {
                     $doing_uncommon = true;
                 } else {

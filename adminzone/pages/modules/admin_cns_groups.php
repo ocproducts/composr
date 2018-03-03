@@ -342,7 +342,7 @@ class Module_admin_cns_groups extends Standard_crud_module
      * Standard crud_module table function.
      *
      * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL.
+     * @return array A quartet: The choose table, Whether reordering is supported from this screen, Search URL, Archive URL.
      */
     public function create_selection_list_choose_table($url_map)
     {
@@ -559,7 +559,7 @@ class Module_admin_cns_groups extends Standard_crud_module
                     if ($i != 0) {
                         $subs->attach(do_lang_tempcode('LIST_SEP'));
                     }
-                    $subs->attach(hyperlink(build_url(array('page' => 'admin_ecommerce', 'type' => '_edit', 'id' => $sub['id']), get_module_zone('admin_ecommerce')), get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']), false, true));
+                    $subs->attach(hyperlink(build_url(array('page' => 'admin_ecommerce', 'type' => '_edit', 'id' => $sub['id']), get_module_zone('admin_ecommerce')), get_translated_text($sub['s_title'], $GLOBALS['FORUM_DB']), false, true));
                 }
                 require_lang('ecommerce');
                 $text->attach(paragraph(do_lang_tempcode('HAS_THESE_SUBS', $subs)));
@@ -648,8 +648,10 @@ class Module_admin_cns_groups extends Standard_crud_module
 
         if (post_param_integer('is_private_club', 0) == 1) {
             $GLOBALS['SITE_DB']->query_delete('group_privileges', array('group_id' => $id));
+            $GLOBALS['FORUM_DB']->query_delete('group_privileges', array('group_id' => $id));
             $GLOBALS['SITE_DB']->query_delete('group_zone_access', array('group_id' => $id));
             $GLOBALS['SITE_DB']->query_delete('group_category_access', array('group_id' => $id));
+            $GLOBALS['FORUM_DB']->query_delete('group_category_access', array('group_id' => $id));
             $GLOBALS['SITE_DB']->query_delete('group_page_access', array('group_id' => $id));
         }
 

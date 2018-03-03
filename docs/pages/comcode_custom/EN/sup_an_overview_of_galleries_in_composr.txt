@@ -54,6 +54,4 @@ As well as linking directly to one of your galleries in the menus of via a text 
 
 Blocks can be easily added to pages using the Block construction assistant.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Content,Galleries,galleries,novice}{$SET,tutorial_add_date,Nov 2013}{$SET,tutorial_summary,Like many other key elements of popular websites, Composr Galleries are included as a core feature of the CMS. The Gallery in Composr supports both Images and Videos.}[block]main_tutorial_rating[/block]

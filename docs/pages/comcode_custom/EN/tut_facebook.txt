@@ -284,7 +284,7 @@ You could increase the Composr session length to prevent these regular refreshes
 
 As described in the previous section, the Composr page has to refresh itself when it detects a Facebook session is available but the Composr member is not yet logged in.
 
-When it refreshes for the first time it appends [tt]&refreshed_once=1[/tt]/[tt]?refreshed_once=1[/tt] to the URL, as a marker so our JavaScript knows it has made an attempt. If it has failed to make the login connection it refreshes again with [tt]&keep_refreshed_once=1[/tt]/[tt]?keep_refreshed_once=1[/tt]. It tries no further attempts. It does it like this (only up to two re-attempts) because various kinds of connectivity problem, authorisation problem, or problems on Facebook, could otherwise lead to infinite refreshing.
+When it refreshes for the first time it appends [tt]&refreshed_once=1[/tt]/[tt]?refreshed_once=1[/tt] to the URL, as a marker so our JavaScript knows it has made an attempt. If it has failed to make the login connection it refreshes again with [tt]&keep_refreshed_once=1[/tt]/[tt]?keep_refreshed_once=1[/tt]. It tries no further attempts. It does it like this (only up to two reattempts) because various kinds of connectivity problem, authorisation problem, or problems on Facebook, could otherwise lead to infinite refreshing.
 
 When testing log in, make sure you're not starting a login from a URL with any of the above described  [tt]&refreshed_once=1[/tt]/[tt]?refreshed_once=1[/tt]/[tt]&keep_refreshed_once=1[/tt]/[tt]?keep_refreshed_once=1[/tt] markers in it. Also never use such URLs for sharing or putting in your navigation.
 

@@ -110,7 +110,7 @@ It is a good way to visualise how people are using the site. This works best whe
 We don't consider Google Analytics a competitor to our own inbuilt analytics -- both offer different features, complementing each other. Google Analytics is easy to install, we have support built-in so you just need to enter your analytics code in the Composr configuration.
 
 [concepts
- 1_key="SVG"            1_value="Scaleable Vector Graphics, a text-markup-based graphics format that allows infinite scalability of graphics without texture loss due to being vector-based (co-ordinate-delimited shapes) instead of pixel based (specific data for each pixel)."
+ 1_key="SVG"            1_value="Scalable Vector Graphics, a text-markup-based graphics format that allows infinite scalability of graphics without texture loss due to being vector-based (co-ordinate-delimited shapes) instead of pixel based (specific data for each pixel)."
  2_key="Geo-location"   2_value="The process of using some type of individually-identifiable information to find out where in the world somebody is."
 ]Concepts[/concepts]
 

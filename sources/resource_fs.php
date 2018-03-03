@@ -151,7 +151,7 @@ function get_resource_fs_record($resource_type, $resource_id)
 
     $resource_fs_data = $resource_fs_ob->resource_load($resource_type, basename($resource_fs_path), dirname($resource_fs_path));
 
-    return array(json_encode($resource_fs_data), $resource_fs_path);
+    return array(json_encode($resource_fs_data, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0), $resource_fs_path);
 }
 
 /**
@@ -193,13 +193,6 @@ ACTUAL FILESYSTEM INTERACTION IS DONE VIA A RESOURCE-FS OBJECT (fetch that via t
  */
 function generate_resource_fs_moniker($resource_type, $resource_id, $label = null, $new_guid = null, $definitely_new = false)
 {
-    static $cache = array();
-    if (is_null($new_guid)) {
-        if (isset($cache[$resource_type][$resource_id])) {
-            return $cache[$resource_type][$resource_id];
-        }
-    }
-
     $resource_object = get_content_object($resource_type);
     if (is_null($resource_object)) {
         fatal_exit('Cannot load content object for ' . $resource_type);
@@ -223,7 +216,6 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
 
         if ((is_null($new_guid)) && ($lookup[0]['resource_label'] == $label)) {
             $ret = array($no_exists_check_for, $guid, $lookup[0]['resource_label']);
-            $cache[$resource_type][$resource_id] = $ret;
             return $ret;
         }
     } else {
@@ -272,7 +264,6 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
     }
 
     $ret = array($moniker, $guid, $label);
-    $cache[$resource_type][$resource_id] = $ret;
     return $ret;
 }
 
@@ -364,18 +355,12 @@ function find_label_via_id($resource_type, $resource_id)
  */
 function find_id_via_moniker($resource_type, $resource_moniker)
 {
-    static $cache = array();
-    if (isset($cache[$resource_type][$resource_moniker])) {
-        return $cache[$resource_type][$resource_moniker];
-    }
-
     $where = array(
         'resource_type' => $resource_type,
         'resource_moniker' => $resource_moniker,
     );
     $ret = $GLOBALS['SITE_DB']->query_select_value_if_there('alternative_ids', 'resource_id', $where);
 
-    $cache[$resource_type][$resource_moniker] = $ret;
     return $ret;
 }
 
@@ -391,11 +376,6 @@ function find_id_via_label($resource_type, $_resource_label, $subpath = null)
 {
     $resource_label = cms_mb_substr($_resource_label, 0, 255);
 
-    static $cache = array();
-    if (isset($cache[$resource_type][$resource_label][$subpath])) {
-        return $cache[$resource_type][$resource_label][$subpath];
-    }
-
     $commandr_fs_ob = get_resource_commandr_fs_object($resource_type);
     if (is_null($commandr_fs_ob)) {
         fatal_exit('Cannot load resource-fs object for ' . $resource_type);
@@ -408,7 +388,6 @@ function find_id_via_label($resource_type, $_resource_label, $subpath = null)
     $resource_ids = collapse_1d_complexity('resource_id', $ids);
     foreach ($resource_ids as $resource_id) {
         if (_check_id_match($commandr_fs_ob, $resource_type, $resource_id, $subpath)) {
-            $cache[$resource_type][$resource_label][$subpath] = $resource_id;
             return $resource_id;
         }
     }
@@ -417,7 +396,6 @@ function find_id_via_label($resource_type, $_resource_label, $subpath = null)
     $ids = $commandr_fs_ob->find_resource_by_label($resource_type, $_resource_label);
     foreach ($ids as $resource_id) {
         if (_check_id_match($commandr_fs_ob, $resource_type, $resource_id, $subpath)) {
-            $cache[$resource_type][$resource_label][$subpath] = $resource_id;
             return $resource_id;
         }
     }
@@ -464,15 +442,9 @@ function _check_id_match($commandr_fs_ob, $resource_type, $resource_id, $subpath
  */
 function find_id_via_guid($resource_guid)
 {
-    static $cache = array();
-    if (isset($cache[$resource_guid])) {
-        return $cache[$resource_guid];
-    }
-
     $ret = $GLOBALS['SITE_DB']->query_select_value_if_there('alternative_ids', 'resource_id', array(
         'resource_guid' => $resource_guid,
     ));
-    $cache[$resource_guid] = $ret;
     return $ret;
 }
 
@@ -528,7 +500,7 @@ TABLE LEVEL
  */
 function table_to_json($table, $fields_to_skip = null, $where_map = null)
 {
-    return json_encode(table_to_portable_rows($table, $fields_to_skip, $where_map));
+    return json_encode(table_to_portable_rows($table, $fields_to_skip, $where_map), defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0);
 }
 
 /**
@@ -727,11 +699,11 @@ function table_row_to_portable_row($row, $db_fields, $relation_map, $connection 
             $row[$db_field_name] = remap_trans_as_portable($row, $db_field_name, $connection);
         }
 
-        elseif ($db_field_type == 'MEMBER') {
+        elseif (($db_field_type == 'MEMBER') && (get_forum_type() == 'cns')) {
             $row[$db_field_name] = remap_resource_id_as_portable('member', $row[$db_field_name]);
         }
 
-        elseif ($db_field_type == 'GROUP') {
+        elseif (($db_field_type == 'GROUP') && (get_forum_type() == 'cns')) {
             $row[$db_field_name] = remap_resource_id_as_portable('group', $row[$db_field_name]);
         }
 
@@ -779,22 +751,27 @@ function table_row_from_portable_row($row, $db_fields, $relation_map, $connectio
             continue;
         }
 
+        $to_int = false;
+
         $db_field_type = trim($db_field_type, '*?');
 
         if (strpos($db_field_type, '_TRANS') !== false) {
             $row += remap_portable_as_trans($row[$db_field_name], $db_field_name, $connection);
         }
 
-        elseif ($db_field_type == 'MEMBER') {
+        elseif (($db_field_type == 'MEMBER') && (get_forum_type() == 'cns')) {
             $row[$db_field_name] = remap_portable_as_resource_id('member', $row[$db_field_name]);
+            $to_int = true;
         }
 
-        elseif ($db_field_type == 'GROUP') {
+        elseif (($db_field_type == 'GROUP') && (get_forum_type() == 'cns')) {
             $row[$db_field_name] = remap_portable_as_resource_id('group', $row[$db_field_name]);
+            $to_int = true;
         }
 
         elseif ($db_field_type == 'TIME') {
             $row[$db_field_name] = remap_portable_as_time($row[$db_field_name]);
+            $to_int = true;
         }
 
         elseif ($db_field_type == 'URLPATH') {
@@ -803,14 +780,26 @@ function table_row_from_portable_row($row, $db_fields, $relation_map, $connectio
 
         elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == array('f_topics', 'id'))) {
             $row[$db_field_name] = remap_portable_as_resource_id('topic', $row[$db_field_name]);
+            $to_int = true;
         }
 
         elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == array('f_posts', 'id'))) {
             $row[$db_field_name] = remap_portable_as_resource_id('post', $row[$db_field_name]);
+            $to_int = true;
         }
 
         elseif (isset($relation_map[$db_field_name])) {
             $row[$db_field_name] = remap_portable_as_foreign_key($relation_map[$db_field_name], $row[$db_field_name]);
+        }
+
+        if ($db_field_type == 'AUTO_LINK' || $db_field_type == 'INTEGER') {
+            $to_int = true;
+        }
+
+        if ($to_int) {
+            if (is_string($row[$db_field_name])) {
+                $row[$db_field_name] = ($row[$db_field_name] == '') ? null : intval($row[$db_field_name]);
+            }
         }
     }
 
@@ -898,6 +887,10 @@ function remap_portable_as_urlpath($portable_data, $ignore_conflicts = false)
         // Hunt with sensible names until we don't get a conflict
         $i = 2;
         while (file_exists($place)) {
+            if (file_get_contents($place) == $binary) {
+                break;
+            }
+
             $filename = strval($i) . preg_replace('#\..*\.#', '.', basename(urldecode($urlpath)));
             $place = get_custom_file_base() . '/' . dirname(urldecode($urlpath)) . '/' . $filename;
             $urlpath = dirname($urlpath) . '/' . urlencode($filename);
@@ -1024,9 +1017,16 @@ function remap_portable_as_resource_id($resource_type, $portable_data)
     }
 
     // Otherwise, use the label
-    $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
     $subpath = array_key_exists('subpath', $portable_data) ? $portable_data['subpath'] : '';
-    $resource_id = $resource_fs_ob->convert_label_to_id($portable_data['label'], $subpath, $resource_type, false, array_key_exists('guid', $portable_data) ? $portable_data['guid'] : null);
+    $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
+    if ($resource_fs_ob === null) { // Maybe a 'group' (e.g.) and not running on Conversr
+        $resource_id = $GLOBALS['SITE_DB']->query_select_value_if_there('alternative_ids', 'resource_id', array(
+            'resource_type' => $resource_type,
+            'resource_label' => $portable_data['label'],
+        ));
+    } else {
+        $resource_id = $resource_fs_ob->convert_label_to_id($portable_data['label'], $subpath, $resource_type, false, array_key_exists('guid', $portable_data) ? $portable_data['guid'] : null);
+    }
 
     return $resource_id;
 }

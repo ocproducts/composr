@@ -8,7 +8,7 @@ It is worth noting at this point, that it is my view that search engine ranking 
  - having a URL that is given out directly or close-to directly, such as a business card, or a sign
  - Internet banner (or similar) advertising
  - 'placement' of your URL in a prime location, such as in a directory, or made available by someone who has it in their interest to 'pipe' users to you
- - on-line or off-line word-of-mouth, either by you, or by your visitors
+ - online or offline word-of-mouth, either by you, or by your visitors
  - quality of content, such that your site becomes the place to go
  - associate your site with an official cause. A site which is somehow the natural place for people following this cause, will naturally get more hits.
 
@@ -17,7 +17,7 @@ It is worth noting at this point, that it is my view that search engine ranking 
 [title="2"]How web crawlers work[/title]
 
 Search engines work via one of four techniques (or a combination):
-1) manually maintained directories (e.g. Google uses the OpenDmoz directory)
+1) manually maintained directories (this is now mostly a thing of the past, e.g. OpenDmoz was shut down)
 2) accessing databases (e.g. Google uses Wikipedia)
 3) web crawling (e.g. Google has one of the best web crawlers)
 4) aggregation/taking of data from other search engines (e.g. Yahoo used to use Google)
@@ -42,8 +42,8 @@ There are a number of techniques that will improve your site's search engine sta
  - Likewise, use good hyperlink titles[media width="150" description="SEO options for Composr content" float="right"]data_custom/images/docs/tut_seo/seo_content.png[/media]
  - Get keywords into your own URLs (the choice of domain name, the URL path, and the URL filename). Composr's "URL Monikers" feature will help here
  - Get your site linked to by as many quality sites as possible: the more popular the sites, the better (don't get linked to on "link farms" though). This is not just good for the obvious reason of getting hits from those sites, but will also make search engines think your site is popular (in particular, the google PageRank algorithm basically bases website popularity on the number of links it gets)
- - Add your site to directories, including large directories of any kind of website, and small specialist directories relevant to your website
- - Make sure your XML Sitemap is being generated (you will need the CRON bridge scheduler working for this), and submit the sitemap to Google. This is described in more detail in the next section
+ - Add your site to directories or ranker sites, including large directories of any kind of website, and small specialist directories relevant to your website
+ - Make sure your XML Sitemap is being generated (you will need the Cron bridge scheduler working for this), and submit the sitemap to Google. This is described in more detail in the next section
  - Submit your site to additional search engines (Google, Yahoo, Microsoft and Ask are automatic via the XML Sitemap); note that when you submit a site to a search engine, you are only giving it optional information, as they are designed to find websites regardless of whether they are submitted or not. You might want to pay for a service that submits to multiple search engines for you, but be wary of this: search engines may mark these submissions as spam if your submission does not match that search engines submission policy (many of which in fact exclude submission from such bulk services). Note that some search engines require payment for listing
  - Don't waste your time submitting to obscure search engines
  - Do not 'cheat' search engines by making pages with a lot of hidden words: search engines will penalise you for it
@@ -51,6 +51,7 @@ There are a number of techniques that will improve your site's search engine sta
  - Use the URL Schemes feature, as search engines will then see pages opened up with different parameters (to access different content) as separate. This means they are more likely to consider them separately
  - Use dedicated "landing pages" that you can link to from other websites. A landing page is just a normal page that you intend to point people to. For example, you might make an article landing page that is linked to from a directory of articles. The purpose is to give search engines something extra and real to index without distracting your primary visitor flow
  - Set aside time for regular testing; test the right pages show up when doing searches, and the wrong ones don't
+ - Make sure your site has a presence on social media (e.g. Facebook and Twitter)
 
 There are many rogues and companies out there that will promise unachievable things when it comes to getting high search engine rankings: a site that a user would not want to visit and respect, is not going to be able to abuse search engine ranking schemes easily. Our best advice for this is that you should focus on quality, not cheating the system: quality is easier, and cheating will usually end up working against you.
 
@@ -100,7 +101,7 @@ If you cannot configure the CRON bridge scheduler for some reason, you can force
 To test your Sitemap is generating correctly, open up [tt]http://yourbaseurl/data_custom/sitemaps/index.xml[/tt]. You should see an [abbr="eXtensible Markup Language"]XML[/abbr] document with reference to individual sitemap(s).
 
 [box="Important note about Google"]
-For Google to accept the automated Sitemap submissions you need to first submit it via [url="Google webmaster tools"]http://www.google.com/webmasters/tools/[/url]. After you have done this, future automated submissions will go straight through. Google webmaster tools is a great tool in its own right to see how your website is performing on Google.
+For Google to accept the automated Sitemap submissions you need to first submit it via [url="Google webmaster tools"]https://www.google.com/webmasters/tools/home[/url]. After you have done this, future automated submissions will go straight through. Google webmaster tools is a great tool in its own right to see how your website is performing on Google.
 
 Alternatively you can reference it in your [tt]robots.txt[/tt] file, as shown in the [page="_SEARCH:tut_security"]Security tutorial[/page].
 [/box]
@@ -204,7 +205,7 @@ If you are going to go down the SEO route, make sure that you have someone who w
  - [url="Submit to Google"]https://www.google.com/webmasters/tools/submit-url[/url]
  - [url="Submit to Bing"]http://www.bing.com/toolbox/submit-site-url[/url]
  - [url="Sitemaps specification"]http://www.sitemaps.org/[/url]
- - [url="Google webmaster tools"]http://www.google.com/webmasters/tools/[/url]
+ - [url="Google webmaster tools"]https://www.google.com/webmasters/tools/home[/url]
  - https://www.werockyourweb.com/spyfu-vs-semrush-vs-moz-vs-raven-vs-majestic/
  - [url="moz.com"]https://moz.com/[/url]
  - [url="SEMrush"]https://www.semrush.com/[/url]

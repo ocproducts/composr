@@ -435,7 +435,7 @@ function db_escape_string($string)
 function db_function($function, $args = null)
 {
     if ($args === null) {
-        $args = array(); // TODO: Fix in v11, make like this as default parameter
+        $args = array();
     }
 
     $args = @array_map('strval', $args);
@@ -2052,12 +2052,12 @@ class DatabaseConnector
 
         $tries = 0;
         do {
-            if (substr($table, 0, 2) != 'f_') {
-                $db_name = get_db_site();
-                $db = $GLOBALS['SITE_DB'];
-            } else {
+            if ((substr($table, 0, 2) == 'f_') && ($table != 'f_welcome_emails')) {
                 $db_name = get_db_forums();
                 $db = $GLOBALS['FORUM_DB'];
+            } else {
+                $db_name = get_db_site();
+                $db = $GLOBALS['SITE_DB'];
             }
             $locks = $db->query('SHOW OPEN TABLES FROM ' . $db_name . ' WHERE `Table`=\'' . db_escape_string($db->get_table_prefix() . $table) . '\' AND In_use>=1', null, null, true);
             if (is_null($locks)) {

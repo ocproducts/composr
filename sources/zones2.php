@@ -155,7 +155,7 @@ function render_comcode_page_box($row, $give_context = true, $include_breadcrumb
         }
 
         if ($summary == '') {
-            $summary = get_translated_tempcode('zones', $row2[0], 'string_index');
+            $summary = get_translated_tempcode('cached_comcode_pages', $row2[0], 'string_index');
         }
     } else {
         $cc_page_title = '';
@@ -240,7 +240,7 @@ function actual_add_zone($zone, $title, $default_page = 'start', $header_text = 
                                'pages/html/EN', 'pages/html_custom/EN',
                                'pages/modules', 'pages/modules_custom', 'pages');
             foreach ($index_php as $i) {
-                afm_make_file($zone . (($zone == '') ? '' : '/') . $i . '/.htaccess', file_get_contents(get_file_base() . '/pages/.htaccess'), false);
+                afm_make_file($zone . (($zone == '') ? '' : '/') . $i . '/.htaccess', file_get_contents(get_file_base() . '/pages/modules/.htaccess'), false);
             }
         }
         $index_php = array('pages/comcode', 'pages/comcode/EN', 'pages/comcode_custom', 'pages/comcode_custom/EN',

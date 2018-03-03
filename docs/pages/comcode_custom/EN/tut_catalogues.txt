@@ -5,12 +5,12 @@
 
 (in American English catalogues are spelled "catalogs")
 
-The pre-made catalogues are:
+The premade catalogues are:
  - Links (for sharing links with visitors)
  - FAQs (frequently asked questions and answers)
  - Super-members projects (see the [page="_SEARCH:tut_collaboration"]Running a collaboration hub: the Collaboration Zone[/page] tutorial)
  - Contacts (a simple contacts directory / address book)
-All the pre-made catalogues may be removed in the Setup Wizard, so depending on what you chose in that wizard, they may or may not currently be on your site.
+All the premade catalogues may be removed in the Setup Wizard, so depending on what you chose in that wizard, they may or may not currently be on your site.
 
 Catalogues can be used to model most things required by large websites that would otherwise have to be implemented either as new modules, or hard-coded pages. Note that catalogues are designed to store records of which there are likely more than one, not as a container for all unstructured custom information (that is what Comcode pages are for).
 
@@ -186,7 +186,7 @@ If you have multiple catalogues on your website and you wish for them to have cu
 
 [title="3"]Tempcode programming[/title]
 
-It is possibly to achieve template customisation wholely within the default set of templates, by using [page="_SEARCH:tut_tempcode"]template programming[/page]. The catalogue name is passed into every catalogue template meaning you can use template IF directives to differentiate against that name, producing different output accordingly.
+It is possibly to achieve template customisation wholly within the default set of templates, by using [page="_SEARCH:tut_tempcode"]template programming[/page]. The catalogue name is passed into every catalogue template meaning you can use template IF directives to differentiate against that name, producing different output accordingly.
 
 While the main [tt]CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP.tpl[/tt] template uses the [tt]FIELDS[/tt] parameter by default (which consists of precomposited template field rows, built using the other templates), it is also given special parameters correlating to each individual field row and each individual field value. You may thus entirely customise the catalogue look using these low level values to make very customised arrangements that are more complex than the simple tabular arrangement used by default.
 
@@ -269,9 +269,10 @@ You can see how you can reference individual fields in the template like [tt]{FI
 For a full table of fields you can use, put [tt]{+START,PARAM_INFO}{+END}[/tt] temporarily into the template, and it will show you everything defined in a neat table.
 
 Field values are available in three forms:
-1) Standard (e.g. [tt]{FIELD_0}[/tt]) --  Parsed for Comcode (if applicable), and displayed
-2) Plain (e.g. [tt]{FIELD_0_PLAIN}[/tt]) -- Parsed for Comcode (if applicable), and not displayed
-3) Pure (e.g. [tt]{FIELD_0_PURE}[/tt]) -- Not parsed for Comcode, and not displayed
+1) Standard (e.g. [tt]{FIELD_0}[/tt]) --  Parsed for Comcode (if applicable), and rendered by the field code
+2) Plain (e.g. [tt]{FIELD_0_PLAIN}[/tt]) -- Parsed for Comcode (if applicable), and not rendered by the field code
+3) Pure (e.g. [tt]{FIELD_0_PURE}[/tt]) -- Not parsed for Comcode, and not rendered by the field code
+4) Thumbnail (e.g. [tt]{FIELD_0_THUMB}[/tt]) -- Thumbnail version of a picture (i.e. using standardised thumbnail display, rather than a display rendered by the field code); applies to [tt]picture[/tt] fields only
 They are also provided in sequence order (e.g. [tt]{FIELD_0}[/tt]) and by field ID (e.g. [tt]{_FIELD_44}[/tt]). Field ID is more robust, should you reorder fields later it won't affect the naming.
 
 [title="3"]Custom template sets[/title]

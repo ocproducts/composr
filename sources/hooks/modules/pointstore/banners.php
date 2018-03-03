@@ -374,7 +374,7 @@ class Hook_pointstore_banners
         $impprice = intval(get_option('banner_imp'));
         $hitprice = intval(get_option('banner_hit'));
 
-        // Figuring out the price of importance and hits, depedning on how many they bought.
+        // Figuring out the price of importance and hits, depending on how many they bought.
         $impcost = $futimp * $impprice;
         $hitcost = $futhit * $hitprice;
         $total_price = $hitcost + $impcost;

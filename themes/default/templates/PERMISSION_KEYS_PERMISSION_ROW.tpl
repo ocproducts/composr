@@ -2,7 +2,7 @@
 	<td>
 		<label class="accessibility_hidden" for="key_{UID*}">{!MATCH_KEY}</label>
 		<div class="constrain_field">
-			<input class="wide_field" maxlength="255" type="text" id="key_{UID*}" name="key_{UID*}" value="{KEY*}" />
+			<input class="wide_field" maxlength="80" type="text" id="key_{UID*}" name="key_{UID*}" value="{KEY*}" />
 		</div>
 	</td>
 	{CELLS}

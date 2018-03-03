@@ -179,7 +179,7 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
             'group_id' => $cat_ins_group_id
         ));
 
-        $GLOBALS['SITE_DB']->query_insert('group_privileges', array(
+        $GLOBALS['FORUM_DB']->query_insert('group_privileges', array(
             'privilege' => $ins_privilege,
             'group_id' => $ins_group_id,
             'the_page' => $ins_the_page,
@@ -214,7 +214,7 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
             $sitemap_priority = SITEMAP_IMPORTANCE_MEDIUM;
         }
     }
-    notify_sitemap_node_add('SEARCH:forumview:id=' . strval($forum_id), null, null, $sitemap_priority, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
+    notify_sitemap_node_add('_SEARCH:forumview:id=' . strval($forum_id), null, null, $sitemap_priority, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
 
     return $forum_id;
 }

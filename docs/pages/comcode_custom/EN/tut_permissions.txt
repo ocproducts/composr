@@ -80,7 +80,6 @@ Once all the access permissions are set as appropriate, submit the form.
 Composr routinely checks page permissions when choosing whether to include standardised links.
 
 The best example of this would be when viewing someone's member profile. The member profile includes links to all kinds of screens relating to the member being viewed. However, these links are only included if the viewing user (not the member being viewed) has access to the pages involved. For example, if there is no permission to the [tt]contact_member[/tt] page then no contact link will be given.
-[/surround]
 
 [title="3"]Editing category permissions[/title]
 

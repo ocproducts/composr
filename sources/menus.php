@@ -631,15 +631,19 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
     } else { // URL
         // Carefully translate symbols in the URL
         $_url = $branch['url'];
-        $url = new Tempcode();
-        if ($_url !== null) {
-            $sym_pos = mixed();
-            $sym_pos = strpos($_url, '{$');
-            if ($sym_pos !== false) { // Specially encoded $ symbols
-                require_code('tempcode_compiler');
-                $url = template_to_tempcode($url->evaluate());
-            } else {
-                $url = make_string_tempcode($_url);
+        if (is_object($_url)) {
+            $url = $_url;
+        } else {
+            $url = new Tempcode();
+            if ($_url !== null) {
+                $sym_pos = mixed();
+                $sym_pos = strpos($_url, '{$');
+                if ($sym_pos !== false) { // Specially encoded $ symbols
+                    require_code('tempcode_compiler');
+                    $url = template_to_tempcode($url->evaluate());
+                } else {
+                    $url = make_string_tempcode($_url);
+                }
             }
         }
     }

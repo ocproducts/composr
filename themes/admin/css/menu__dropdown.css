@@ -124,7 +124,7 @@ For example:
 	text-decoration: none;
 }
 
-.menu_type__dropdown .nlevel a:hover {
+.menu_type__dropdown .nlevel a:hover span {
 	text-decoration: underline;
 }
 

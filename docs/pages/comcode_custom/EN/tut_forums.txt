@@ -8,7 +8,7 @@ This tutorial will explain how discussion forums work in [concept]Conversr[/conc
 
 [surround]
 [media width="150" description="Adding a forum" float="right"]data_custom/images/docs/tut_forums/forums_add.png[/media]
-[media width="150" description="When editing forums, the full structure is displayed, with an opportunity to re-order both groupings and sub-forums within" float="right"]data_custom/images/docs/tut_forums/forums_edit.png[/media]
+[media width="150" description="When editing forums, the full structure is displayed, with an opportunity to reorder both groupings and sub-forums within" float="right"]data_custom/images/docs/tut_forums/forums_edit.png[/media]
 {!cns:DOC_FORUMS}
 
 Forums are actually a very powerful collaboration tool, not merely limited to chat. For example, ocProducts used a forum as an integral part of the process for the designing of the software you're using right now: it is surprising what forums and topics can be made to represent.
@@ -29,6 +29,7 @@ While discussion forums are primarily meant for discussion, they may in fact be 
 
 It is often useful for a topic that may-not-be-replied-to be made by staff to convey some form of alert. Why? The discussion forums might be used rather than news, or some other Composr medium, due to the easiness of creating and organising topics, or to target an audience that views the discussion forums more regularly than the other mediums.
 [/box]
+[/surround]
 
 [title="3"]Forum groupings[/title]
 

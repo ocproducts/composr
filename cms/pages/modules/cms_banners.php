@@ -210,7 +210,7 @@ class Module_cms_banners extends Standard_crud_module
      * Standard crud_module table function.
      *
      * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A pair: The choose table, Whether re-ordering is supported from this screen.
+     * @return array A pair: The choose table, Whether reordering is supported from this screen.
      */
     public function create_selection_list_choose_table($url_map)
     {
@@ -634,7 +634,11 @@ class Module_cms_banners extends Standard_crud_module
 
             // Meta details...
 
-            $csv_row[do_lang('SUBMITTER')] = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter']);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter']);
+            if ($username === null) {
+                $username = do_lang('UNKNOWN');
+            }
+            $csv_row[do_lang('SUBMITTER')] = $username;
 
             $csv_row[do_lang('ADDED')] = get_timezoned_date($row['add_date']);
             $csv_row[do_lang('EDITED')] = is_null($row['edit_date']) ? '' : date('Y-m-d', $row['edit_date']);
@@ -673,7 +677,7 @@ class Module_cms_banners_cat extends Standard_crud_module
      * Standard crud_module table function.
      *
      * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A pair: The choose table, Whether re-ordering is supported from this screen.
+     * @return array A pair: The choose table, Whether reordering is supported from this screen.
      */
     public function create_selection_list_choose_table($url_map)
     {
