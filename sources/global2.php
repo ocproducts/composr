@@ -60,9 +60,9 @@ function init__global2()
             }
             header('Location: ' . (is_file($RELATIVE_PATH . 'closed.html') ? 'closed.html' : '../closed.html'));
 
-            $aaf = safe_ini_get('auto_append_file');
+            $aaf = ini_get('auto_append_file');
             if (!empty($aaf)) {
-                @include($aff); // Because exit() avoids running this
+                @include($aaf); // Because exit() avoids running this
             }
             exit();
         }

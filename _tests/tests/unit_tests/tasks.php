@@ -122,6 +122,7 @@ class tasks_test_set extends cms_test_case
         $this->assertTrue($num_events_after > $num_events_before);
 
         $last_rows_after = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array(), 'ORDER BY id DESC', 2);
+        $_last_rows_after = $last_rows_after;
         $this->cleanEventRowsForComparison($last_rows_after);
 
         $this->assertTrue($last_rows_before == $last_rows_after);

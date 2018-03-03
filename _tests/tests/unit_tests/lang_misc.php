@@ -77,6 +77,10 @@ class lang_misc_test_set extends cms_test_case
 
         $files = $this->do_dir(get_file_base(), '', 'php');
         foreach ($files as $file) {
+            if ($file == get_file_base() . '/_tests/tests/unit_tests/lang_inline_editing.php') {
+                continue;
+            }
+
             $c = file_get_contents($file);
             $this->process_file_for_references($c, $file);
         }

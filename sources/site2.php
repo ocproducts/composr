@@ -251,9 +251,9 @@ function closed_site()
         $echo = globalise($middle, null, '', true);
         $echo->evaluate_echo();
 
-        $aaf = safe_ini_get('auto_append_file');
+        $aaf = ini_get('auto_append_file');
         if (!empty($aaf)) {
-            @include($aff); // Because exit() avoids running this
+            @include($aaf); // Because exit() avoids running this
         }
 
         exit();
