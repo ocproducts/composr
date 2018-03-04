@@ -40,7 +40,7 @@ Before starting your report:
 
 What to include on your report:
  - [b]Describe your problem[/b]. If the problem it is at all complex it may also help if you can give precise [b]steps to reproduce the problem[/b]. That said, we are a huge fan of [url="Jing"]https://www.techsmith.com/jing-tool.html[/url], and often simply spending a few minutes recording a video means you won't need to type much explanation and your problem will be more easily understood without ambiguity or language problems.
- - If you think there is any chance that the problem only happens on some browsers (e.g. some kind of layout problem or JavaScript problem), [b]report which browser you are using[/b] (e.g. Google Chrome 30).
+ - If you think there is any chance that the problem only happens on some browsers (e.g. some kind of layout problem or JavaScript problem), [b]report which browser you are using[/b] (e.g. Mozilla Firefox 58).
  - If you are not running the latest stable version of Composr, state [b]which Composr version you are running[/b].
  - If you get an error message, copy and paste the [b]error message[/b]. The developers need to know precisely what it said, without paraphrasing or typos.
  - If you see a stack trace, or are invited to generate one, include that [b]full stack trace[/b]. Often stack traces are extremely useful. You should scan over the stack trace first though to make sure there isn't anything in there you wouldn't be happy sharing (such as your website URL, or potentially passwords or sensitive text). If you find anything you do not want to share, simply censor it out of the report. Don't expect the developers to censor things for you unless it really jumps out at them, that's not something they'll have time for.

@@ -162,9 +162,13 @@ Please note that when using 'SU':
 
 [media width="150" description="FirePHP in action" float="right"]data_custom/images/docs/tut_permissions/firephp.png[/media]
 Composr has a special feature to help you diagnose problems with your permission settings.
-1) To use this feature you are best using Google Chrome and have the [url="FirePHP4Chrome"]https://chrome.google.com/webstore/detail/firephp4chrome/gpgbmonepdpnacijbbdijfbecmgoojma[/url] addon installed
-2) Using an admin login, bring up your website and add [tt]&keep_firephp=1&keep_su=test[/tt] to the end of the URL (change [tt]test[/tt] to the username you want to test with)
-3) You should find messages added to Chrome's Console  (find it @ View --> Developer --> JavaScript Console)
+[list="1"]
+[*] To use this feature you need to either use:
+1) Mozilla Firefox with the [url="FirePHP"]https://addons.mozilla.org/en-US/firefox/addon/firephp/[/url] addon installed
+2) Google Chrome with the [url="FirePHP4Chrome"]https://chrome.google.com/webstore/detail/firephp4chrome/gpgbmonepdpnacijbbdijfbecmgoojma[/url] addon installed
+[*] Using an admin login, bring up your website and add [tt]&keep_firephp=1&keep_su=test[/tt] to the end of the URL (change [tt]test[/tt] to the username you want to test with)
+[*] You should find messages added to Chrome's Console  (find it @ View --> Developer --> JavaScript Console)
+[/list]
 
 By looking to see what permission checks pass or fail you can work out what settings you might want to change.
 

@@ -385,7 +385,7 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 		</tr>
 		<tr>
 			<td>Web Browser</td>
-			<td>A tool for accessing web pages and navigating the web. Examples include: Google Chrome, Safari, Firefox, Microsoft Edge, and Opera.</td>
+			<td>A tool for accessing web pages and navigating the web. Examples include: Mozilla Firefox, Google Chrome, Safari, Microsoft Edge, and Opera.</td>
 		</tr>
 		<tr>
 			<td>Web design</td>

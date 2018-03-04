@@ -56,7 +56,7 @@ Browser testing presents the following difficulties:
 2) To test on mobile devices you really should test on a proper mobile device to get a real feel for things.
 3) Safari only works on Mac OS, so you need a Mac.
 4) Microsoft Edge only works on Windows, so you need a Windows install.
-5) On browsers such as Google Chrome operating system font rendering differences may mean things lay out slightly differently on different operating systems.
+5) On browsers such as Google Chrome, operating system font rendering differences may mean things lay out slightly differently on different operating systems.
 
 There are a number of approaches that can help you with the above problems:
 [list]
