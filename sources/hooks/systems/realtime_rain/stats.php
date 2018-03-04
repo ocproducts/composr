@@ -56,7 +56,7 @@ class Hook_realtime_rain_stats
 
                 $title = rain_truncate_for_title(do_lang('HIT', $page_link));
 
-                // Show referer domain or Google search keyword
+                // Show referer domain or web search keyword
                 $referer = @parse_url($row['referer']);
                 $base_url = @parse_url(get_base_url());
                 if ($referer !== false) {

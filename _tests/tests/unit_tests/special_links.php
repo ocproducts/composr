@@ -61,5 +61,7 @@ class special_links_test_set extends cms_test_case
     public function testMiscLinks()
     {
         $this->assertTrue(is_string(http_get_contents('http://www.google.co.uk/search?as_lq=' . urlencode('http://example.com/'), array('trigger_error' => false))), 'Google backreferences link broken');
+
+        $this->assertTrue(is_string(http_get_contents('https://duckduckgo.com/?q=tile+background&iax=images&ia=images', array('trigger_error' => false))), 'DuckDuckGo search broken');
     }
 }

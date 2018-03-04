@@ -551,7 +551,7 @@ body.website-body.frame {
 	/*{+START,CSS_MODE,desktop}*/
 		html>body#main-website { /* #main-website targets only the main site screen, avoiding frames etc */
 			/* Want to change the tiled background?
-				Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
+				Try this web search to get image ideas https://duckduckgo.com/?q=tile+background&iax=images&ia=images
 				Find how to edit the referenced "outer_background" theme image by doing an Admin Zone search for "outer_background"
 			*/
 			background-image: url('{$IMG_INLINE;,outer_background}');
@@ -859,7 +859,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 
 	/* Want to set a tiled background?
 		Uncomment the code below
-		Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
+		Try this web search to get image ideas https://duckduckgo.com/?q=tile+background&iax=images&ia=images
 		Find how to edit the referenced "inner_background" theme image by doing an Admin Zone search for "inner_background"
 	*/
 	/*
@@ -1656,7 +1656,7 @@ th.metadata-title {
 	margin: 1em 0;
 
 	/* Want to change the tiled background?
-		Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
+		Try this web search to get image ideas https://duckduckgo.com/?q=tile+background&iax=images&ia=images
 		Find how to edit the referenced "block_background" theme image by doing an Admin Zone search for "block_background"
 	*/
 	background: url('{$IMG_INLINE;,block_background}') {$GET,area_background};
