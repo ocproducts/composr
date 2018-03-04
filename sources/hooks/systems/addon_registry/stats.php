@@ -104,7 +104,6 @@ class Hook_addon_registry_stats
             'themes/default/images/icons/menu/adminzone/audit/statistics/load_times.svg',
             'themes/default/images/icons/menu/adminzone/audit/statistics/page_views.svg',
             'themes/default/images/icons/menu/adminzone/audit/statistics/submits.svg',
-            'themes/default/images/icons/menu/adminzone/audit/statistics/top_keywords.svg',
             'themes/default/images/icons/menu/adminzone/audit/statistics/top_referrers.svg',
             'themes/default/images/icons/menu/adminzone/audit/statistics/users_online.svg',
             'themes/default/images/icons/menu/adminzone/audit/statistics/index.html',
@@ -167,10 +166,7 @@ class Hook_addon_registry_stats
     {
         $graph = do_lorem_template('STATS_GRAPH', array(
             'GRAPH' => placeholder_url(),
-            'TITLE' => lorem_phrase(),
             'TEXT' => lorem_sentence(),
-            'KEYWORDS_SHARE' => lorem_word(),
-            'DESCRIPTION_KEYWORDS_SHARE' => lorem_word(),
         ));
 
         return array(
@@ -210,22 +206,12 @@ class Hook_addon_registry_stats
      */
     public function tpl_preview__administrative__stats_screen_iscreen()
     {
-        $graph_regionality = do_lorem_template('STATS_GRAPH', array(
-            'GRAPH' => placeholder_url(),
-            'TITLE' => lorem_phrase(),
-            'TEXT' => lorem_sentence(),
-            'KEYWORDS_SHARE' => lorem_word(),
-            'DESCRIPTION_KEYWORDS_SHARE' => lorem_word(),
-        ));
-
         return array(
             lorem_globalise(do_lorem_template('STATS_SCREEN_ISCREEN', array(
                 'TITLE' => lorem_title(),
-                'GRAPH_REGIONALITY' => $graph_regionality,
+                'GRAPH_REGIONALITY' => lorem_phrase(),
                 'STATS_REGIONALITY' => placeholder_table(),
                 'STATS_VIEWS' => lorem_phrase(),
-                'GRAPH_KEYWORDS' => lorem_phrase(),
-                'STATS_KEYWORDS' => lorem_phrase(),
                 'GRAPH_VIEWS_HOURLY' => lorem_phrase(),
                 'STATS_VIEWS_HOURLY' => lorem_phrase(),
                 'GRAPH_VIEWS_DAILY' => lorem_phrase(),

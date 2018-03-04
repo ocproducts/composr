@@ -56,10 +56,6 @@ The per-page breakdowns list more detailed statistics for each page, in various 
 
 {!stats:DOC_TOP_REFERRERS}
 
-[title="3"]Top Google keywords[/title]
-
-{!stats:DOC_TOP_SEARCH_KEYWORDS}
-
 [title="3"]Page load times[/title]
 
 {!stats:DOC_LOAD_TIMES}
