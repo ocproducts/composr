@@ -40,7 +40,7 @@ Also in the setup section is the main configuration section where you can change
 
 The last option on this list is the installation options where you can change settings such as database settings. I strongly advise against changing any options in this section unless you are sure of what you are doing as it is possible to completely break your site!
 
-Also under the setup section you can add Custom Comcode tags. Comcode is used for adding and configuring blocks of information on your site. Custom Comcode is often used to make embedding videos from YouTube or Facebook quicker and easier than using the normal embed code (actually that's built into Composr nowadays just by pasting the URL, but you get the point).
+Also under the setup section you can add Custom Comcode tags. Comcode is used for adding and configuring blocks of information on your site. Custom Comcode is often used to make embedding videos from YouTube, Vimeo, or Facebook quicker and easier than using the normal embed code (actually that's built into Composr nowadays just by pasting the URL, but you get the point).
 [/surround]
 
 [title="2"]The Structure section[/title]

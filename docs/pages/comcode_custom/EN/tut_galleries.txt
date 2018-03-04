@@ -87,12 +87,12 @@ The following common formats are not usable anymore:
 
 Further documentation is provided in the [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page] tutorial.
 
-At the end of the day it may be best just to use the galleries on your site as a wrapper around YouTube. Read on.
+At the end of the day it may be best just to use the galleries on your site as a wrapper around Vimeo or YouTube. Read on.
 
 [title="4"]Transcoding[/title]
 
 Composr does not have inbuilt transcoding support, so you either need to:
-1) just use YouTube. You can post videos on YouTube, then add a video in Composr using the normal YouTube URL as the video URL. Composr will then automatically embed the YouTube player.
+1) just use Vimeo or YouTube. You can post videos on Vimeo/YouTube, then add a video in Composr using the normal Vimeo/YouTube URL as the video URL. Composr will then automatically embed the Vimeo/YouTube player.
 2) install the [tt]gallery_syndication[/tt] addon, to automatically use YouTube as a transcoder.
 3) just post in h.264 [tt].mp4[/tt] to start with. It has become the standard and is supported in all browsers. The only down-side is having to learn how to set your codec settings right when you make the video file.
 

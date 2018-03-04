@@ -577,7 +577,7 @@ As an alternative, Composr provides a fully featured Survey system that can be i
 
 When building an interactive site, it is vitally important to ensure a consistent interface that is free of third-party branding. This provides a more professional appearance, which improves the user experience and increases the user's perception of value and quality. Rather than building your site and picking from a range of service providers à la carte, combining multiple brands and user interfaces (which can appear cheap), Composr provides all of the tools required to provide a professional quality web presence.
 
-Composr has been designed to provide integrated alternatives to the most common cloud-based services; Instead of embedding Youtube videos (with branding and advertising), Composr allows you to upload videos directly to your site. Rather than hosting images using Flickr and posting them to your blog, you can upload and incorporate images without ever leaving the Composr blog editor.
+Composr has been designed to provide integrated alternatives to the most common cloud-based services; Instead of embedding YouTube videos (with branding and advertising), Composr allows you to upload videos directly to your site. Rather than hosting images using Flickr and posting them to your blog, you can upload and incorporate images without ever leaving the Composr blog editor.
 
 In terms of both risk and cost, there are significant advantages to hosting all of your features directly; Composr makes it easy to add new functions over time, often without any complex coding.
 

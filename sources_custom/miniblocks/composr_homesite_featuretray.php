@@ -317,7 +317,7 @@ $feature_tree = array(
             array(
                 array('Multimedia', 'Supports images, videos, audio, and more'),
                 array('Personal galleries', 'Allow your members to create their own galleries'),
-                array('Support for embedding YouTube videos', 'Save on bandwidth'),
+                array('Support for embedding YouTube and Vimeo videos', 'Save on bandwidth'),
                 null, // divider
                 array('Auto-detection of video length and resolution (most file formats)'),
                 array('Full tree-structure support'),
@@ -483,7 +483,7 @@ $feature_tree = array(
             'Rich media <a target="_blank" class="link-exempt no-print" title="(Opens in new window) Example of Comcode" href="http://shareddemo.composr.info/lorem/index.php?page=lorem"><img class="inline-image-3" alt="" width="12" height="12" src="{$IMG*,icons/arrow_box/arrow_box}" /></a>',
             array(
                 array('Comcode', 'Powerful but simple content-enrichment language'),
-                array('Media embedding', 'Easily integrate/attach all common video and image formats, as well as embeds for common sites such as YouTube and Google Maps (just by pasting in the URL)'),
+                array('Media embedding', 'Easily integrate/attach all common video and image formats, as well as embeds for common sites such as Vimeo, YouTube, and Google Maps (just by pasting in the URL)'),
                 array('Easily create cool effects', 'Create scrolling, rolling, randomisation, and hiding effects. Put content in boxes, split content across subpages. Create <abbr title="eXtensible HyperText Markup Language 5">XHTML5</abbr> overlays. Place tooltips'),
                 array('Customise your content for different usergroups'),
                 array('Create count-downs and hit counters'),

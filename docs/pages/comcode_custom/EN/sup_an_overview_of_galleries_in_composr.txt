@@ -5,7 +5,7 @@ Like many other key elements of popular websites, Composr Galleries are included
 
 The Gallery system supports most popular image formats. As well as the popular image formats, Composr also has support for HTML5 video.
 
-As well as uploading videos directly to your Composr website you can also link to a YouTube video to help you save on bandwidth, also save on duplication of videos online, and get better cross-device media compatibility.
+As well as uploading videos directly to your Composr website you can also link to a YouTube or Vimeo video to help you save on bandwidth, also save on duplication of videos online, and get better cross-device media compatibility.
 
 [title="2"]More Gallery options[/title]
 

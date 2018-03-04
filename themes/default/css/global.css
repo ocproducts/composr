@@ -4774,7 +4774,7 @@ a[rel="lightbox"] {
 
 /* We normally expect a standard-sized YouTube embed, but for mobile we will lock the size to the browser window */
 /*{+START,CSS_MODE,mobile}*/
-	.youtube-player {
+	.responsive-media-wrapper {
 		overflow: hidden;
 		width: 100%;
 		position: relative;
@@ -4782,7 +4782,7 @@ a[rel="lightbox"] {
 		padding-top: 25px;
 		height: 0;
 	}
-	.youtube-player iframe {
+	.responsive-media-wrapper iframe {
 		position: absolute;
 		top: 0;
 		left: 0;

@@ -88,7 +88,7 @@ class Hook_addon_registry_gallery_syndication
     {
         return 'Automatically syndicate out videos to YouTube, keeping them in sync, with the option to actually host the videos on these services via an embedded player (giving you free video transcoding and hosting).
 
-For YouTube syndication you must first set up oAuth for Google within Composr. Then you will need to [url="Increase your Youtube video length limit"]http://support.google.com/youtube/bin/answer.py?hl=en&answer=71673[/url].
+For YouTube syndication you must first set up oAuth for Google within Composr. Then you will need to [url="Increase your YouTube video length limit"]http://support.google.com/youtube/bin/answer.py?hl=en&answer=71673[/url].
 
 Unfortunately YouTube support is currently not functional (https://compo.sr/tracker/view.php?id=3166).';
     }

@@ -63,7 +63,7 @@ class Hook_media_rendering_vimeo extends Media_renderer_with_fallback
      */
     public function recognises_url($url)
     {
-        if (preg_match('#^https?://vimeo\.com/(\d+)#', $url) != 0) {
+        if (preg_match('#^https?://vimeo\.com(/[\w/]*)?/(\d+)#', $url) != 0) {
             return MEDIA_RECOG_PRECEDENCE_HIGH;
         }
         return MEDIA_RECOG_PRECEDENCE_NONE;
@@ -78,8 +78,8 @@ class Hook_media_rendering_vimeo extends Media_renderer_with_fallback
     public function get_video_thumbnail($src_url)
     {
         $matches = array();
-        if (preg_match('#^https?://vimeo\.com/(\d+)#', $src_url, $matches) != 0) {
-            $test = get_value('vimeo_thumb_for__' . $matches[1], null, true);
+        if (preg_match('#^https?://vimeo\.com(/[\w/]*)?/(\d+)#', $src_url, $matches) != 0) {
+            $test = get_value('vimeo_thumb_for__' . $matches[2], null, true);
             if ($test !== null) {
                 return $test;
             }
@@ -91,7 +91,7 @@ class Hook_media_rendering_vimeo extends Media_renderer_with_fallback
             }
             $matches2 = array();
             if (preg_match('#<meta property="og:image" content="([^"]+)"#', $html, $matches2) != 0) {
-                //set_value('vimeo_thumb_for__' . $matches[1], $matches2[1], true);     Actually this only happens occasionally (on add/edit), so not needed. Caching would bung up DB and make editing a pain.
+                //set_value('vimeo_thumb_for__' . $matches[2], $matches2[1], true);     Actually this only happens occasionally (on add/edit), so not needed. Caching would bung up DB and make editing a pain.
                 return $matches2[1];
             }
         }
@@ -118,7 +118,7 @@ class Hook_media_rendering_vimeo extends Media_renderer_with_fallback
         if (is_object($url)) {
             $url = $url->evaluate();
         }
-        $attributes['remote_id'] = preg_replace('#^https?://vimeo\.com/(\d+)#', '${1}', $url);
+        $attributes['remote_id'] = preg_replace('#^https?://vimeo\.com(/[\w/]*)?/(\d+)#', '${2}', $url);
         return do_template('MEDIA_VIMEO', array('_GUID' => '490903ba659a899d70d3a2f5afa7d6cb', 'HOOK' => 'vimeo') + _create_media_template_parameters($url, $attributes, $as_admin, $source_member));
     }
 }

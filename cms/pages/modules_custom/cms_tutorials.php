@@ -164,7 +164,7 @@ class Module_cms_tutorials extends Standard_crud_module
 
         $hidden = new Tempcode();
 
-        $fields->attach(form_input_url('URL', 'The direct URL to the tutorial (be it on a private website, on the forum, on YouTube, etc).', 'url', $url, true));
+        $fields->attach(form_input_url('URL', 'The direct URL to the tutorial (be it on a private website, on the forum, on Vimeo, on YouTube, etc).', 'url', $url, true));
 
         $fields->attach(form_input_line('Title', 'The title to the tutorial.', 'title', $title, true));
 

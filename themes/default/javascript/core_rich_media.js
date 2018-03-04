@@ -729,7 +729,7 @@
 
 
     var promiseYouTubeIframeAPIReady;
-    $cms.templates.mediaYoutube = function (params, element) {
+    $cms.templates.mediaYouTube = function (params, element) {
         // Tie into callback event to see when finished, for our slideshows
         // API: https://developers.google.com/youtube/iframe_api_reference
 
