@@ -1276,11 +1276,16 @@ Some cool effects:
  - http://tympanus.net/Tutorials/3DHoverEffects/
  - http://isotope.metafizzy.co/
 
+[title="2"]Structured Data testing[/title]
+
+ - https://www.bing.com/toolbox/markup-validator
+ - https://search.google.com/structured-data/testing-tool/
+ - https://webmaster.yandex.com/tools/microtest/
+
 [title="2"]Miscellaneous[/title]
 
  - http://uitest.com/
  - https://dev.twitter.com/cards/getting-started (you may want to implement this yourself if you use Twitter)
- - https://search.google.com/structured-data/testing-tool/
  - https://developers.facebook.com/tools/debug/sharing/
 
 [concepts
