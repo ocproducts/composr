@@ -208,9 +208,6 @@ class lang_spelling_test_set extends cms_test_case
                 $this->assertTrue(false, 'The word \'lowercase\' was used in ' . $file . '. This should be changed to \'lower case\'.');
             }
         }
-        if (stripos($string, 'PHP info') !== false) {
-            $this->assertTrue(false, 'The word \'PHP info\' was used in ' . $file . '. This should be changed to \'PHP-Info\'.');
-        }
 
         // No space or hyphen wanted (we want our canonical way)
         if (stripos($string, 'user[ -]group') !== false) {
@@ -292,6 +289,12 @@ class lang_spelling_test_set extends cms_test_case
         }
         if (strpos($string, 'RECAPTCHA') !== false) {
             $this->assertTrue(false, 'The phrase \'RECAPTCHA\' was used in ' . $file . '. This should be changed to \'reCAPTCHA\'.');
+        }
+        if (stripos($string, 'MacOS') !== false) {
+            $this->assertTrue(false, 'The word \'MacOS\' was used in ' . $file . '. This should be changed to \'Mac OS\'.');
+        }
+        if (stripos($string, 'Youtube') !== false) {
+            $this->assertTrue(false, 'The word \'Youtube\' was used in ' . $file . '. This should be changed to \'YouTube\'.');
         }
         // page-link, but we can't test for that because "page link" is a valid phrase too
 

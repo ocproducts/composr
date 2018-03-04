@@ -65,7 +65,7 @@ Create a mapping in the ODBC part of control panel:
 
 [title="5"]Mac/Linux[/title]
 
-For Linux or MacOS, we suggest using unixODBC with FreeTDS (avoid iODBC and Microsoft's own drivers, they are a bit more esoteric). PHP will need to be compiled with unixODBC support.
+For Linux or Mac OS, we suggest using unixODBC with FreeTDS (avoid iODBC and Microsoft's own drivers, they are a bit more esoteric). PHP will need to be compiled with unixODBC support.
 
 Make sure the unixODBC and FreeTDS packages are installed via your package manager, or manually compiled and installed. Homebrew works on Mac, but make sure you install FreeTDS like [tt]brew install freetds --with-unixodbc[/tt].
 

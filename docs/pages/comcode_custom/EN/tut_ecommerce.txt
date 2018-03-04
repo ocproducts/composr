@@ -737,7 +737,7 @@ We have summarised the PCI compliance rules below in a way streamlined toward Co
 | No
 |-
 ! Software firewall
-| Any computer used to connect to the webhosting must have a software firewall enabled (e.g. the ones that come with Windows and MacOS).
+| Any computer used to connect to the webhosting must have a software firewall enabled (e.g. the ones that come with Windows and Mac OS).
 | Yes
 | Yes
 |-

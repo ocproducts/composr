@@ -475,7 +475,7 @@ function should_ignore_file($path, $bitmask = 0)
     $ignore_filename_and_dir_name_patterns = array( // Case insensitive
         // Operating system files
         array('\..*\.(png|gif|jpeg|jpg)', '.*'), // Image metadata file, e.g. ".example.png"
-        array('\.\_.*', '.*'), // MacOS extended attributes
+        array('\.\_.*', '.*'), // Mac OS extended attributes
 
         // Web server files
         array('\_vti\_.*', '.*'), // Frontpage

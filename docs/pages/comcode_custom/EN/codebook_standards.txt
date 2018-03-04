@@ -639,7 +639,7 @@ Allow initialisation functions to run twice
 | Portability
 | Product development only
 | Manually
-| Do not assume Composr is running on Linux, or Microsoft Windows, or Apache, or IIS, or MacOS, or a case-sensitive filesystem, or a case-insensitive filesystem, or anything else unless it is defined in our minimum requirements. This is an important lesson for new programmers who may be used to just making something work for the computer they are in-front of. You need to use universally accepted techniques rather than platform-specific APIs.
+| Do not assume Composr is running on Linux, or Microsoft Windows, or Apache, or IIS, or Mac OS, or a case-sensitive filesystem, or a case-insensitive filesystem, or anything else unless it is defined in our minimum requirements. This is an important lesson for new programmers who may be used to just making something work for the computer they are in-front of. You need to use universally accepted techniques rather than platform-specific APIs.
 |}
 
 [title="4"]AJAX[/title]
