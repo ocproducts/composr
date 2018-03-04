@@ -3,7 +3,7 @@
 
 <div class="cntRow">
 	<p>
-		This page shows companies or individuals who have registered their Composr services. Listing&nbsp;is&nbsp;open (&dagger;) and free so <a href="{$PAGE_LINK*,cms:cms_catalogues:add:catalogue_name=partners}">add your listing now</a>.
+		This page shows companies or individuals who have registered their Composr services (*). Listing&nbsp;is&nbsp;open (&dagger;) and free so <a href="{$PAGE_LINK*,cms:cms_catalogues:add:catalogue_name=partners}">add your listing now</a>.
 	</p>
 
 	<h2>Map</h2>
@@ -17,7 +17,8 @@
 	<hr />
 
 	<p>
-		&dagger; It is the responsibility of purchasers of services to assess the suitability of any particular provider they choose.
+		* Services must be substantially related to Composr. For example webhosting that happens to be compatible with Composr would not apply, but webhosting that came with expert Composr support would.<br />
+		&dagger; It is the responsibility of purchasers of services to assess the suitability of any particular provider they choose. Listings are manually validated, but this is not endorsement.
 	</p>
 </div>
 [/semihtml]
