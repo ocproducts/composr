@@ -39,7 +39,6 @@ class lang_duplication_test_set extends cms_test_case
         $exceptions = array(
             'GOOGLE_MAP',
             'GOOGLE_MAP_KEY',
-            'CONFIG_OPTION_google_map_key',
         );
 
         $lang_files = get_lang_files(fallback_lang());

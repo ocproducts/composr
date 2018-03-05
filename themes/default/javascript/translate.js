@@ -11,7 +11,7 @@
         langFrom = strVal(langFrom);
         langTo = strVal(langTo);
 
-        var apiKey = '{$VALUE_OPTION;,google_translate_api_key}';
+        var apiKey = '{$VALUE_OPTION;,google_apis_api_key}';
 
         if (langFrom === langTo) {
             langFrom = 'EN';

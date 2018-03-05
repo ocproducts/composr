@@ -34,18 +34,16 @@ class Hook_config_google_apis_client_secret
             'human_name' => 'GOOGLE_APIS_CLIENT_SECRET',
             'type' => 'line',
             'category' => 'COMPOSR_APIS',
-            'group' => 'GOOGLE_OAUTH_API',
+            'group' => 'GOOGLE_API',
             'explanation' => 'CONFIG_OPTION_google_apis_client_secret',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 2,
+            'order_in_category_group' => 3,
             'required' => false,
 
             'public' => false,
 
             'addon' => 'core_configuration',
-
-            'maintenance_code' => 'google_search_console',
         );
     }
 

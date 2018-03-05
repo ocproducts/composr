@@ -59,65 +59,43 @@ safe_ini_set('ocproducts.xss_detect', '0');
 
 $lstring = get_param_string('lstring', null, INPUT_FILTER_GET_COMPLEX);
 if ($lstring !== null) {
+    require_code('locations_geocoding');
+    $result = geocode($lstring);
+    if ($result !== null) {
+        list($latitude, $longitude, $ne_latitude, $ne_longitude, $sw_latitude, $sw_longitude) = $result;
 
-    $url = 'http://maps.googleapis.com/maps/api/geocode/xml?address=' . urlencode($lstring);
-    if (isset($_COOKIE['google_bias'])) {
-        $url .= '&region=' . urlencode($_COOKIE['google_bias']);
-    }
-    $key = get_option('google_geocode_api_key');
-    /*if ($key == '') { Actually, does work
-        $error_msg = do_lang_tempcode('GOOGLE_GEOCODE_API_NOT_CONFIGURED');
-        return null;
-    }*/
-    $url .= '&language=' . urlencode(strtolower(get_site_default_lang()));
-    if ($key != '') {
-        $url .= '&key=' . urlencode($key);
-    }
-    $result = http_get_contents($url);
-    $matches = array();
-    if (preg_match('#<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#s', $result, $matches) != 0) {
         echo '[';
 
         echo 'null';
         echo ',\'' . addslashes($lstring) . '\'';
-        echo ',' . float_to_raw_string(floatval($matches[1]), 30);
-        echo ',' . float_to_raw_string(floatval($matches[2]), 30);
-        echo ',' . float_to_raw_string(floatval($matches[3]), 30);
-        echo ',' . float_to_raw_string(floatval($matches[4]), 30);
-        echo ',' . float_to_raw_string(floatval($matches[5]), 30);
-        echo ',' . float_to_raw_string(floatval($matches[6]), 30);
+        echo ',' . float_to_raw_string($latitude), 30);
+        echo ',' . float_to_raw_string($longitude), 30);
+        echo ',' . float_to_raw_string($ne_latitude), 30);
+        echo ',' . float_to_raw_string($ne_longitude), 30);
+        echo ',' . float_to_raw_string($sw_latitude), 30);
+        echo ',' . float_to_raw_string($sw_longitude), 30);
 
         echo ']';
     }
 } else {
-
     if (get_param_integer('use_google', 0) == 1) {
-        $url = 'http://maps.googleapis.com/maps/api/geocode/xml?latlng=' . urlencode(get_param_string('latitude')) . ',' . urlencode(get_param_string('longitude'));
-        if (isset($_COOKIE['google_bias'])) {
-            $url .= '&region=' . urlencode($_COOKIE['google_bias']);
-        }
-        $key = get_option('google_geocode_api_key');
-        /*if ($key == '') { Actually, does work
-            $error_msg = do_lang_tempcode('GOOGLE_GEOCODE_API_NOT_CONFIGURED');
-            return null;
-        }*/
-        $url .= '&language=' . urlencode(strtolower(get_site_default_lang()));
-        if ($key != '') {
-            $url .= '&key=' . urlencode($key);
-        }
-        $result = http_get_contents($url);
-        $matches = array();
-        if (preg_match('#<formatted_address>([^<>]*)</formatted_address>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#Us', $result, $matches) != 0) {
+        $latitude = floatval(get_param_string('latitude'));
+        $longitude = floatval(get_param_string('longitude'));
+        $result = reverse_geocode($latitude, $longitude);
+
+        if ($result !== null) {
+            list($formatted_address, $street_address, $city, $county, $state, $post_code, $country, $ne_latitude, $ne_longitude, $sw_latitude, $sw_longitude) = $result;
+
             echo '[';
 
             echo 'null';
-            echo ',\'' . addslashes($matches[1]) . '\'';
-            echo ',' . float_to_raw_string(floatval($matches[2]), 30);
-            echo ',' . float_to_raw_string(floatval($matches[3]), 30);
-            echo ',' . float_to_raw_string(floatval($matches[4]), 30);
-            echo ',' . float_to_raw_string(floatval($matches[5]), 30);
-            echo ',' . float_to_raw_string(floatval($matches[6]), 30);
-            echo ',' . float_to_raw_string(floatval($matches[7]), 30);
+            echo ',\'' . addslashes($formatted_address) . '\'';
+            echo ',' . float_to_raw_string($longitude, 30);
+            echo ',' . float_to_raw_string($longitude, 30);
+            echo ',' . float_to_raw_string($ne_latitude, 30);
+            echo ',' . float_to_raw_string($ne_longitude, 30);
+            echo ',' . float_to_raw_string($sw_latitude, 30);
+            echo ',' . float_to_raw_string($sw_longitude, 30);
 
             echo ']';
         }

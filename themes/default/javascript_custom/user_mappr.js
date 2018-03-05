@@ -21,7 +21,7 @@
 
         var options = {
             callback: googleMapUsersInitialize,
-            other_params: ($cms.configOption('google_map_key') !== '') ? 'key=' + $cms.configOption('google_map_key') : ''
+            other_params: ($cms.configOption('google_apis_api_key') !== '') ? 'key=' + $cms.configOption('google_apis_api_key') : ''
         };
 
         if (region !== '') {

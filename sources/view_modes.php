@@ -291,7 +291,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             $value_found = get_translated_text($key, $forum_db ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB']);
             if ($value_found != '') {
                 $description = make_string_tempcode(escape_html($value_found));
-                if ((get_option('google_translate_api_key') == '') || (user_lang() == get_site_default_lang())) {
+                if ((get_option('google_apis_api_key') == '0') || (get_option('google_apis_api_key') == '') || (user_lang() == get_site_default_lang())) {
                     $actions = new Tempcode();
                 } else {
                     require_javascript('translate');
@@ -367,7 +367,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             $value_found = do_lang($key, null, null, null, null, false);
             $description = array_key_exists($key, $descriptions) ? make_string_tempcode($descriptions[$key]) : new Tempcode();
             if ($value_found !== null) {
-                if ((get_option('google_translate_api_key') == '') || (user_lang() == get_site_default_lang())) {
+                if ((get_option('google_apis_api_key') == '0') || (get_option('google_apis_api_key') == '') || (user_lang() == get_site_default_lang())) {
                     $actions = new Tempcode();
                 } else {
                     require_javascript('translate');

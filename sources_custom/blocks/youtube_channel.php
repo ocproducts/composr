@@ -90,10 +90,10 @@ class Block_youtube_channel
         }
         $channel_url = 'https://www.youtube.com/';
 
-        // Set blank variable that can be set to an error message.
+        // Set blank variable that can be set to an error message
         $channel_error = '';
 
-        // Get API Key config setting. If block config API Key setting is set, use that. If api_key block parameter is set, use that instead.
+        // Get API Key config setting
         $youtube_api_key = get_option('google_apis_api_key');
 
         // Generate error if no YouTube API key is configured or specified

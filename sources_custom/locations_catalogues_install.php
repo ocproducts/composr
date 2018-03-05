@@ -298,14 +298,18 @@ function transcode_remaining_locations()
 
     $errored = 0;
 
-    $type = 'google'; // Either google or bing or mapquest
+    require_code('locations_geocoding');
+    $service = null;
+    choose_geocoding_service($service);
 
     $from = 0;
     do {
         $unknown = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'locations WHERE l_latitude IS NULL AND id>' . strval($from) . ' ORDER BY id', 100);
 
-        if ($type == 'mapquest') {
-            $url = 'http://www.mapquestapi.com/geocoding/v1/batch?key=Fmjtd%7Cluu22h0t2d%2C8l%3Do5-h0r2q&callback=renderBatch&outFormat=xml';
+        if ($service == 'mapquest') {
+            // For MapQuest we do bulk conversions...
+
+            $url = 'http://www.mapquestapi.com/geocoding/v1/batch?key=' . urlencode(get_option('mapquest_geocoding_api_key')) . '&callback=renderBatch&outFormat=xml';
             foreach ($unknown as $i => $location) {
                 $lstring = '{city="' . remove_accents($location['l_place']) . '", country="' . $location['l_country'] . '"}';
                 $url .= '&location=' . urlencode($lstring);
@@ -315,13 +319,13 @@ function transcode_remaining_locations()
                 $from = $location['id'];
             }
 
-            $result = http_get_contents($url);
+            $_result = http_get_contents($url);
 
             $matches = array();
-            if (strpos($result, '<lat>') !== false) {
+            if (strpos($_result, '<lat>') !== false) {
                 foreach ($unknown as $i => $location) {
                     $matches = array();
-                    if (preg_match('#<location>' . preg_quote($location['l_string'], '#')/*<<< xmlentities doesn't work around this for some reason*/ . '</location>.*<geocodeQualityCode>(.*)</geocodeQualityCode>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#sU', $result, $matches) != 0) {
+                    if (preg_match('#<location>' . preg_quote($location['l_string'], '#')/*<<< xmlentities doesn't work around this for some reason*/ . '</location>.*<geocodeQualityCode>(.*)</geocodeQualityCode>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#sU', $_result, $matches) != 0) {
                         if (($matches[1] == 'A5XAX') || ($matches[1] == 'A5XBX')) {
                             $GLOBALS['SITE_DB']->query_update('locations', array('l_latitude' => floatval($matches[2]), 'l_longitude' => floatval($matches[3])), array('id' => $location['id']), '', 1);
                         }
@@ -333,39 +337,23 @@ function transcode_remaining_locations()
             }
 
             if ($errored == 10) {
-                exit($result);
+                warn_exit($_result);
             }
         } else {
             foreach ($unknown as $location) {
-                // Web service to get remaining latitude/longitude
                 $lstring = $location['l_place'] . ', ' . $location['l_parent_3'] . ', ' . $location['l_parent_2'] . ', ' . $location['l_parent_1'] . ', ' . $location['l_country'];
-                if ($type == 'bing') {
-                    $url = 'http://dev.virtualearth.net/REST/v1/Locations?query=' . urlencode($lstring) . '&o=xml&key=AvmgsVWtIoJeCnZXdDnu3dQ7izV9oOowHCNDwbN4R1RPA9OXjfsQX1Cr9HSrsY4j';
-                } elseif ($type == 'google') {
-                    $url = 'http://maps.googleapis.com/maps/api/geocode/xml?address=' . urlencode($lstring);
-                    $key = get_option('google_geocode_api_key');
-                    /*if ($key == '') { Actually, does work
-                        $error_msg = do_lang_tempcode('GOOGLE_GEOCODE_API_NOT_CONFIGURED');
-                        return null;
-                    }*/
-                    $url .= '&language=' . urlencode(strtolower(get_site_default_lang()));
-                    if ($key != '') {
-                        $url .= '&key=' . urlencode($key);
-                    }
-                } else {
-                    exit('unknown type');
-                }
-                $result = http_get_contents($url);
-                $matches = array();
-                if ((($type == 'bing') && (preg_match('#<Latitude>([\-\d\.]+)</Latitude>\s*<Longitude>([\-\d\.]+)</Longitude>#', $result, $matches) != 0)) || (($type == 'google') && (preg_match('#<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#', $result, $matches) != 0))) {
-                    $GLOBALS['SITE_DB']->query_update('locations', array('l_latitude' => floatval($matches[1]), 'l_longitude' => floatval($matches[2])), array('id' => $location['id']), '', 1);
+                $error_msg = new Tempcode();
+                $result = geocode($lstring, $error_msg);
+                if ($result !== null) {
+                    list($latitude, $longitude) = $result;
+                    $GLOBALS['SITE_DB']->query_update('locations', array('l_latitude' => $latitude, 'l_longitude' => $longitude), array('id' => $location['id']), '', 1);
                     $errored = 0;
-                } elseif (preg_match('#(ZERO_RESULTS|<StatusCode>200</StatusCode>)#', $result) == 0) {/*probably hit an API limit, or connection problem*/
+                } else {
                     $errored++;
                 }
 
                 if ($errored == 10) {
-                    exit($result);
+                    warn_exit($error_msg);
                 }
 
                 $from = $location['id'];

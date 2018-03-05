@@ -441,8 +441,7 @@ class Module_admin_lang
 
         // Make our translation page
         $lines = '';
-        $google_translate_api_key = get_option('google_translate_api_key');
-        if (empty($google_translate_api_key)) {
+        if ((get_option('google_apis_api_key') == '0') || (get_option('google_apis_api_key') == '')) {
             $google = '';
         } else {
             $google = $this->get_google_code($lang);

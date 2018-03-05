@@ -1904,7 +1904,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HC_ADMIN_STALE_THRESHOLD
         CONFIG_OPTION_hc_admin_stale_threshold
         HC_GOOGLE_SAFE_BROWSING_API_KEY
-        CONFIG_OPTION_hc_google_safe_browsing_api_key
+        CONFIG_OPTION_hc_google_safe_browsing_api_enabled
         HC_CRON_THRESHOLD
         CONFIG_OPTION_hc_cron_threshold
         HC_CPU_PCT_THRESHOLD
@@ -3026,8 +3026,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_gift_reward_chance
         CONFIG_OPTION_global_donext_icons
         CONFIG_OPTION_google_analytics
-        CONFIG_OPTION_google_geocode_api_key
-        CONFIG_OPTION_google_translate_api_key
+        CONFIG_OPTION_google_geocoding_api_enabled
+        CONFIG_OPTION_google_translate_enabled
         CONFIG_OPTION_group_private_chatrooms
         CONFIG_OPTION_gzip_output
         CONFIG_OPTION_hack_ban_threshold
@@ -3716,7 +3716,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         RECAPTCHA_SERVER_KEY
         RECAPTCHA_SITE_KEY
         CONFIG_GROUP_DEFAULT_DESCRIP_RECAPTCHA
-        CONFIG_GROUP_DESCRIP_GOOGLE_OAUTH_API
+        CONFIG_GROUP_DESCRIP_GOOGLE_API
         CONFIG_GROUP_DESCRIP_MOZ_API
         CONFIG_OPTION_google_apis_api_key
         CONFIG_OPTION_google_apis_client_id
@@ -3740,7 +3740,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         GOOGLE_BROKEN_BACKLINKS__not_found
         GOOGLE_BROKEN_BACKLINKS__server_error
         GOOGLE_BROKEN_BACKLINKS__soft404
-        GOOGLE_OAUTH_API
+        GOOGLE_API
         LIVE_BASE_URLS
         MAXIMUM_API_RESULTS
         MENU_ITEM_UNDER
@@ -5075,14 +5075,14 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         GOOD_PATH
         GOOGLE_ANALYTICS
         GOOGLE_GEOCODE_API_KEY
-        GOOGLE_GEOCODE_API_NOT_CONFIGURED
-        GOOGLE_GEOCODE_COULD_NOT_CONNECT
-        GOOGLE_GEOCODE_COULD_NOT_PARSE
-        GOOGLE_GEOCODE_INCOMPLETE
-        GOOGLE_GEOCODE_OVER_QUERY_LIMIT
-        GOOGLE_GEOCODE_REQUEST_DENIED
-        GOOGLE_GEOCODE_UNKNOWN_ERROR
-        GOOGLE_GEOCODE_ZERO_RESULTS
+        GEOCODE_API_NOT_CONFIGURED
+        GEOCODE_COULD_NOT_CONNECT
+        GEOCODE_COULD_NOT_PARSE
+        GEOCODE_INCOMPLETE
+        GEOCODE_OVER_QUERY_LIMIT
+        GEOCODE_REQUEST_DENIED
+        GEOCODE_UNKNOWN_ERROR
+        GEOCODE_ZERO_RESULTS
         GOOGLE_TRANSLATE_API_KEY
         GRAPH
         GROUP_LEADER

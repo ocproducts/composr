@@ -177,7 +177,7 @@ class Hook_addon_registry_health_check
             'sources/hooks/systems/config/hc_cron_threshold.php',
             'sources/hooks/systems/config/hc_disk_space_threshold.php',
             'sources/hooks/systems/config/hc_error_log_day_flood_threshold.php',
-            'sources/hooks/systems/config/hc_google_safe_browsing_api_key.php',
+            'sources/hooks/systems/config/hc_google_safe_browsing_api_enabled.php',
             'sources/hooks/systems/config/hc_io_pct_threshold.php',
             'sources/hooks/systems/config/hc_mail_address.php',
             'sources/hooks/systems/config/hc_mail_password.php',

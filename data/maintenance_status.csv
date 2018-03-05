@@ -107,8 +107,9 @@ currency,Currency conversion,ocProducts,,Could potentially break due to third-pa
 stop_forum_spam,Stop Forum Spam integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,antispam automated test.
 tornevall,Tornevall integration,ocProducts,,Could potentially break due to third-party changes.,No,antispam automated test.
 newsletter_spam_check,Postmark spam-check integration,ocProducts,,Could potentially break due to third-party changes.,No,newsletters automated test.
-geocoding_google,Google Geocoding,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,geocoding automated test.
-reverse_geocoding_google,Google Geocoding (reverse),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,geocoding automated test.
+geocoding_google,Google Geocoding (forward and reverse),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,geocoding automated test.
+geocoding_bing,Bing Geocoding (forward and reverse),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,geocoding automated test.
+geocoding_mapquest,MapQuest Geocoding (forward and reverse),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,geocoding automated test.
 ip_geocoding,IP address geocoding (internal list),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,Part of release process / geocoding automated test.
 ssl_trust_internal,SSL certificate trust chains (internal list),ocProducts,,Could potentially break due to third-party changes.,No,Part of release process.
 taxcloud,TaxCloud integration for US sales tax,ocProducts,,Could potentially break due to third-party changes.,No,ecommerce_tax automated test.
