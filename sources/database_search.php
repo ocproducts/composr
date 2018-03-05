@@ -738,7 +738,7 @@ function opensearch_script()
 
     $type = get_param_string('type', 'browse');
     switch ($type) {
-        // Make a search suggestion (like Google Suggest)
+        // Make a search suggestion (like Firefox's Awesome Bar)
         case 'suggest':
             require_code('search');
 

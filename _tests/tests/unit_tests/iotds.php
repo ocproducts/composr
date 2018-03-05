@@ -36,9 +36,9 @@ class iotds_test_set extends cms_test_case
         require_code('iotds');
         require_code('iotds2');
 
-        $this->iotd_id = add_iotd('http://google.com', 'Welcome', 'Google', 'images/google.jpg', 0, 0, 0, 0, 'Notes ?', null, null, 0, null, 0, null);
+        $this->iotd_id = add_iotd('https://duckduckgo.com/', 'Welcome', 'DuckDuckGo', 'images/duckduckgo.jpg', 0, 0, 0, 0, 'Notes ?', null, null, 0, null, 0, null);
 
-        $this->assertTrue('http://google.com' == $GLOBALS['SITE_DB']->query_select_value('iotd', 'url', array('id' => $this->iotd_id)));
+        $this->assertTrue('https://duckduckgo.com/' == $GLOBALS['SITE_DB']->query_select_value('iotd', 'url', array('id' => $this->iotd_id)));
     }
 
     public function testEditIotd()

@@ -218,7 +218,7 @@ Or, a more practical example...
  Example Page = http://example.com
  Composr CMS = http://compo.sr
 +Computer companies
- Google = http://google.com
+ Amazon = http://amazon.com
  Apple = http://apple.com
 [/menu]
 [/code]

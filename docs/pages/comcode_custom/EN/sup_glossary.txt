@@ -317,11 +317,11 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 		</tr>
 		<tr>
 			<td>Search Engine</td>
-			<td>A tool that trawls through the web, finding web pages and indexing their contents, so that you can then find pages by searching for key words. Google is a search engine.</td>
+			<td>A tool that trawls through the web, finding web pages and indexing their contents, so that you can then find pages by searching for key words. Bing, Google, and [url="DuckDuckGo"]https://duckduckgo.com/[/url] are search engines.</td>
 		</tr>
 		<tr>
 			<td>SEO</td>
-			<td>Search Engine Optimisation, the attempt to make a web page have a higher search engine rank. SEO techniques can be categorised as 'White Hat' (reputable techniques, a sensible effort to properly represent your site) or 'Black Hat' (dirty tricks that will likely make Google penalise your site). White Hat SEO typically involves connecting your site up to other websites in meaningful ways, and ensuring the contents of the web page are simple and reflective of what people will search for to find it.</td>
+			<td>Search Engine Optimisation, the attempt to make a web page have a higher search engine rank. SEO techniques can be categorised as 'White Hat' (reputable techniques, a sensible effort to properly represent your site) or 'Black Hat' (dirty tricks that will likely make search engines penalise your site). White Hat SEO typically involves connecting your site up to other websites in meaningful ways, and ensuring the contents of the web page are simple and reflective of what people will search for to find it.</td>
 		</tr>
 		<tr>
 			<td>Server</td>

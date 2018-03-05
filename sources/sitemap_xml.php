@@ -38,7 +38,7 @@ function init__sitemap_xml()
 }
 
 /**
- * Top level function to (re)generate a Sitemap (xml file, Google-style).
+ * Top level function to (re)generate a Sitemap (xml file, search-engine-style).
  *
  * @param  ?mixed $callback Callback to run on each iteration (null: none)
  */

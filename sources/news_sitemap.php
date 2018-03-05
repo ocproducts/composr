@@ -19,7 +19,7 @@
  */
 
 /**
- * Top level function to (re)generate a news Sitemap (xml file, Google-style).
+ * Top level function to (re)generate a news Sitemap (xml file, search-engine-style).
  */
 function build_news_sitemap()
 {

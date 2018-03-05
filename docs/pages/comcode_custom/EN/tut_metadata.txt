@@ -24,7 +24,7 @@ All metadata may be automatically set by Composr as described below, but ultimat
 
 [title="2"]Title[/title]
 
-The title is used for the browser window/tab, and often used by external linkers e.g. Google.
+The title is used for the browser window/tab, and often used by external linkers e.g. search engines.
 
 It is generally devised by combining your Site Name, with the screen title of the page being viewed.
 
@@ -41,7 +41,7 @@ In your HTML the title tag looks similar to:
 
 [title="2"]Meta Keywords and Description[/title]
 
-The Meta Keywords and Description are not used by many wide-stream services nowadays (Google doesn't really use them), but are still considered a primary standard for information exchange, so most people do maintain them.
+The Meta Keywords and Description are not used by many wide-stream services nowadays (Search engines don't really use them), but are still considered a primary standard for information exchange, so most people do maintain them.
 
 The site-wide keywords and description can be set at Admin Zone > Setup > Configuration > Site options.
 

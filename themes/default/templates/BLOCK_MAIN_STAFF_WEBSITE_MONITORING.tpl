@@ -27,7 +27,7 @@
 						<tr>
 							<td>{SITE_NAME*}</td>
 							<td>{ALEXA_RANKING`}</td>
-							<td><a href="http://www.google.co.uk/search?as_lq={URL&*}">{ALEXA_LINKS`}</a></td>
+							<td><a href="http://www.google.com/search?as_lq={URL&*}">{ALEXA_LINKS`}</a></td>
 							<td><a class="suggested-link" href="http://web.archive.org/web/*/{URL*}">{!VIEW}</a></td>
 							<td><a class="suggested-link" href="{URL*}">{!VIEW}</a></td>
 						</tr>

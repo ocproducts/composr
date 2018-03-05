@@ -67,7 +67,7 @@ i.e. be very careful.
 
 Often companies needing a website will avoid web design companies entirely and go for one of the following approaches:
 [list]
-[*] Set something quick and simple up on a service like Google Sites.[/*]
+[*] Set something quick and simple up on a service like Wix.[/*]
 [*] Build internally using a CMS and a template. This tends to happen when there's an internal stakeholder in the client company who has a particular technical flair, so it's a bit of an exception.[/*]
 [*] Set up a CMS internally, then use support services to get the more complex stuff done. Truth be told, it's fairly rare for this to happen because usually a client makes an upfront decision on whether to do something entirely themselves, or to hire someone else to do it all; people rarely go half and half.[/*]
 [*] Build something with a skilled in-house team[/*]

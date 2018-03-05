@@ -520,7 +520,7 @@ There are also newer PHP alternatives such as HippyVM, or approaches that limit 
 
 [title="2"]mod_pagespeed[/title]
 
-Google's mod_pagespeed adds some nice micro optimisations. Composr doesn't do these itself because they would hurt CPU performance and modularity, but applying them in a fast Apache module is useful. To be honest, this will not really result in any particularly noticeable performance gain, but if you've got a good budget for trying lots of small things at once, every little bit helps and we thought it worth mentioning and documenting against.
+Google's [tt]mod_pagespeed[/tt] adds some nice micro optimisations. Composr doesn't do these itself because they would hurt CPU performance and modularity, but applying them in a fast Apache module is useful. To be honest, this will not really result in any particularly noticeable performance gain, but if you've got a good budget for trying lots of small things at once, every little bit helps and we thought it worth mentioning and documenting against.
 
 mod_pagespeed is not supplied with Apache, but can be installed on most Linux servers. However you would need server access or for the webhost to do this for you.
 

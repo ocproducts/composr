@@ -64,7 +64,7 @@ class Hook_health_check_network extends Hook_Health_Check
         }
 
         $url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/testing.php?type=http_status_check&url=' . urlencode($this->get_page_url());
-        for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or Google issue
+        for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or compo.sr issue
             $data = http_get_contents($url, array('trigger_error' => false));
 
             if ($data !== null) {
@@ -128,7 +128,7 @@ class Hook_health_check_network extends Hook_Health_Check
         for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or Google issue
             $time_before = microtime(true);
 
-            $data = http_get_contents('http://www.google.com/', array('trigger_error' => false));
+            $data = http_get_contents('http://www.google.com/', array('trigger_error' => false)); // Somewhere with very high availability
 
             if ($data === null) {
                 $ok = false;

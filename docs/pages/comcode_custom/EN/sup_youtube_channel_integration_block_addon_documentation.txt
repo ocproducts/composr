@@ -8,7 +8,7 @@ First, if you don't already have one, you must get a YouTube API Key to use with
 
 Getting Your YouTube API v3 Key:
 [list="1"]
-	[*] If you don't have a Google account (i.e. GMail/Google+), I think you will need one.
+	[*] If you don't have a Google account (i.e. GMail/Google+), you will need one.
 	[*] Go to https://console.developers.google.com/project
 	[*] From there you will click the [i]Create Project[/i] button to create a new project.
 	[*] On the New Project pop-up, give your project a name. Something like [i]YourWebSite[/i] YouTube Channel Block is good. The Project ID is not important, but you can change it if you want. And then click the Create button.
@@ -40,7 +40,12 @@ If future updates to this block require special upgrade instructions, a note wil
 
 [title="2"]The Block Configuration Options[/title]
 
-You can find the block configuration options at Admin Zone > Setup > Configuration > Block options. This addon requires a YouTube API Key to be specified as a block parameter or as a block configuration option. If you choose to specify the YouTube API Key as a block parameter, it will override the YouTube API Key block configuration setting. If you allow other members to use this block, you should leave the YouTube API Key configuration option blank and have your members get their own YouTube API key and have them specify their own key as a block parameter. A 'Time between updates' block configuration option is also available to control how often the cached data for the block is generated. By default it is set to 60 minutes. This means the block will call the YouTube API to regenerate the block data no more often than once every 60 minutes. You can set this 'Time between updates' time to any value your want. A smaller value will keep things updated more often at the expense of more website bandwidth and API quota usage. If you turn off the block caching in the advanced block parameter settings, this 'Time between updates' will have no effect and the block will call the YouTube API each time the block is called. Disabling the cache is good for testing, but keeping it disabled is highly discouraged since it will likely slow down your website, possibly use up excessive amounts of your website bandwidth with YouTube API calls, and use significantly more YouTube API quota usage.
+You can find the block configuration options at Admin Zone > Setup > Configuration > Block options.
+
+This addon also requires the Google API Key you set up to be configured at Admin Zone > Setup > Configuration > Composr APIs.
+
+A 'Time between updates' block configuration option is also available to control how often the cached data for the block is generated. By default it is set to 60 minutes. This means the block will call the YouTube API to regenerate the block data no more often than once every 60 minutes. You can set this 'Time between updates' time to any value your want. A smaller value will keep things updated more often at the expense of more website bandwidth and API quota usage.
+If you turn off the block caching in the advanced block parameter settings, this 'Time between updates' will have no effect and the block will call the YouTube API each time the block is called. Disabling the cache is good for testing, but keeping it disabled is highly discouraged since it will likely slow down your website, possibly use up excessive amounts of your website bandwidth with YouTube API calls, and use significantly more YouTube API quota usage.
 
 [title="2"]Using the Block and Templates[/title]
 

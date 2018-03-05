@@ -9,7 +9,7 @@ In this tutorial I will talk about a couple of slightly-related features that ar
 
 The Composr Partner sites functionality is used to configure the list of partner links exported by this website and used by Composr [tt]side_network[/tt] block. This feature of Composr is designed to make it easy for you to centrally manage one set of partner links, and display them on all of your partner sites.
 
-I do need to add that this should not under any circumstances be used to create a link network as this can have dire consequences in terms of Google rankings. This is primarily to display links to your associated sites. It could be used for example be used to display a list of micro sites related to your main site and allow you to update the links quickly instead of updating multiple sites at once.
+I do need to add that this should not under any circumstances be used to create a link network as this can have dire consequences in terms of search engine rankings. This is primarily to display links to your associated sites. It could be used for example be used to display a list of micro sites related to your main site and allow you to update the links quickly instead of updating multiple sites at once.
 
 The set of links will be used by any Composr site that has been configured (via the &ldquo;Network membership URL&rdquo; option) to draw their links from:
 [tt]http://yourbaseurl/netlink.php[/tt]
