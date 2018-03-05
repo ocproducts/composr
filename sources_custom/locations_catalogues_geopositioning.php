@@ -34,8 +34,6 @@ function fix_geoposition($lstring, $category_id)
     // Web service to get remaining latitude/longitude
     if ($type == 'bing') {
         $url = 'http://dev.virtualearth.net/REST/v1/Locations?query=' . urlencode($lstring) . '&o=xml&key=AvmgsVWtIoJeCnZXdDnu3dQ7izV9oOowHCNDwbN4R1RPA9OXjfsQX1Cr9HSrsY4j';
-    } elseif ($type == 'yahoo') {
-        $url = 'http://where.yahooapis.com/geocode?q=' . urlencode($lstring) . '&appid=dj0yJmk9N0x3TTdPaDNvdElCJmQ9WVdrOWFGWjVOa3hzTldFbWNHbzlNVFU0TXpBMU9EWTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1mNg--';
     } elseif ($type == 'google') {
         $url = 'http://maps.googleapis.com/maps/api/geocode/xml?address=' . urlencode($lstring);
         $key = get_option('google_geocode_api_key');
@@ -52,7 +50,7 @@ function fix_geoposition($lstring, $category_id)
     }
     $result = http_get_contents($url);
     $matches = array();
-    if ((($type == 'bing') && (preg_match('#<Latitude>([\-\d\.]+)</Latitude>\s*<Longitude>([\-\d\.]+)</Longitude>#', $result, $matches) != 0)) || (($type == 'google') && (preg_match('#<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#', $result, $matches) != 0)) || (($type == 'yahoo') && (preg_match('#<latitude>([\-\d\.]+)</latitude>\s*<longitude>([\-\d\.]+)</longitude>#', $result, $matches) != 0))) {
+    if ((($type == 'bing') && (preg_match('#<Latitude>([\-\d\.]+)</Latitude>\s*<Longitude>([\-\d\.]+)</Longitude>#', $result, $matches) != 0)) || (($type == 'google') && (preg_match('#<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#', $result, $matches) != 0))) {
         $latitude = floatval($matches[1]);
         $longitude = floatval($matches[2]);
 

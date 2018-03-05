@@ -298,7 +298,7 @@ function transcode_remaining_locations()
 
     $errored = 0;
 
-    $type = 'google'; // Either google or yahoo or bing or mapquest
+    $type = 'google'; // Either google or bing or mapquest
 
     $from = 0;
     do {
@@ -341,8 +341,6 @@ function transcode_remaining_locations()
                 $lstring = $location['l_place'] . ', ' . $location['l_parent_3'] . ', ' . $location['l_parent_2'] . ', ' . $location['l_parent_1'] . ', ' . $location['l_country'];
                 if ($type == 'bing') {
                     $url = 'http://dev.virtualearth.net/REST/v1/Locations?query=' . urlencode($lstring) . '&o=xml&key=AvmgsVWtIoJeCnZXdDnu3dQ7izV9oOowHCNDwbN4R1RPA9OXjfsQX1Cr9HSrsY4j';
-                } elseif ($type == 'yahoo') {
-                    $url = 'http://where.yahooapis.com/geocode?q=' . urlencode($lstring) . '&appid=dj0yJmk9N0x3TTdPaDNvdElCJmQ9WVdrOWFGWjVOa3hzTldFbWNHbzlNVFU0TXpBMU9EWTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1mNg--';
                 } elseif ($type == 'google') {
                     $url = 'http://maps.googleapis.com/maps/api/geocode/xml?address=' . urlencode($lstring);
                     $key = get_option('google_geocode_api_key');
@@ -359,7 +357,7 @@ function transcode_remaining_locations()
                 }
                 $result = http_get_contents($url);
                 $matches = array();
-                if ((($type == 'bing') && (preg_match('#<Latitude>([\-\d\.]+)</Latitude>\s*<Longitude>([\-\d\.]+)</Longitude>#', $result, $matches) != 0)) || (($type == 'google') && (preg_match('#<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#', $result, $matches) != 0)) || (($type == 'yahoo') && (preg_match('#<latitude>([\-\d\.]+)</latitude>\s*<longitude>([\-\d\.]+)</longitude>#', $result, $matches) != 0))) {
+                if ((($type == 'bing') && (preg_match('#<Latitude>([\-\d\.]+)</Latitude>\s*<Longitude>([\-\d\.]+)</Longitude>#', $result, $matches) != 0)) || (($type == 'google') && (preg_match('#<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#', $result, $matches) != 0))) {
                     $GLOBALS['SITE_DB']->query_update('locations', array('l_latitude' => floatval($matches[1]), 'l_longitude' => floatval($matches[2])), array('id' => $location['id']), '', 1);
                     $errored = 0;
                 } elseif (preg_match('#(ZERO_RESULTS|<StatusCode>200</StatusCode>)#', $result) == 0) {/*probably hit an API limit, or connection problem*/
