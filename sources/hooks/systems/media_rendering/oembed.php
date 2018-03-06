@@ -180,8 +180,13 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
                 return null;
         }
 
+        // Cleanup for CSP
+        if ((!empty($data['html'])) && (function_exists('csp_nonce_html')) && (stripos($data['html'], '<script') !== false)) {
+            $data['html'] = str_ireplace('<script', '<script ' . csp_nonce_html(), $data['html']);
+        }
+
         // Validation
-        if ((!array_key_exists('type', $data)) && (array_key_exists('thumbnail_url', $data))) { // yfrog being weird
+        if ((!array_key_exists('type', $data)) && (array_key_exists('thumbnail_url', $data))) { // Fix possible error
             $data['type'] = 'link';
         }
         if (!array_key_exists('type', $data)) {
@@ -413,7 +418,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
                     $url_pattern = preg_replace('#(.*)=.*$#', '${1}', $oembed_manual_pattern); // Before last =
                     $endpoint = preg_replace('#^.*=#', '', $oembed_manual_pattern); // After last =
                 }
-                if (@preg_match('#^' . str_replace('#', '\#', $url_pattern) . '$#', $url) != 0) {
+                if ((@preg_match('#^' . str_replace('#', '\#', $url_pattern) . '$#', $url) != 0) && (strpos($endpoint, 'key=123456') === false)) {
                     return $endpoint;
                 }
             }
