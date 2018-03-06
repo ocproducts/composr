@@ -215,7 +215,7 @@
 
     var configOptionsJson = JSON.parse('{$PUBLIC_CONFIG_OPTIONS_JSON;}');
     /**
-     * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
+     * WARNING: This is a limited subset of the $CONFIG_OPTION tempcode symbol
      * @memberof $cms
      * @method
      * @param {string} optionName

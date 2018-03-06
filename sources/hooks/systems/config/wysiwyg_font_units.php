@@ -40,7 +40,7 @@ class Hook_config_wysiwyg_font_units
             'list_options' => 'px|em',
             'required' => true,
 
-            'public' => false,
+            'public' => true,
 
             'addon' => 'core_configuration',
         );

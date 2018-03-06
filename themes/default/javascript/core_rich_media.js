@@ -910,7 +910,7 @@
         // If we select an image we want to have good defaults for an image, but only if the defaults weren't already changed
         document.getElementById('tag_contents__b').onchange = function () {
             var ext = this.value.substring(this.value.indexOf('.') + 1);
-            var isImage = ',{$CONFIG_OPTION;,valid_images}'.indexOf(',' + ext + ',') !== -1;
+            var isImage = (',' + $cms.configOption('valid_images')).indexOf(',' + ext + ',') !== -1;
             if (isImage) {
                 var framed = document.getElementById('framed');
                 var wysiwygEditable = document.getElementById('wysiwyg_editable');

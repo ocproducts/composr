@@ -14471,7 +14471,7 @@
         pageType = strVal(pageType);
         name = strVal(name);
         postingFieldName = strVal(postingFieldName) || 'post';
-        filter = strVal(filter) || '{$CONFIG_OPTION;,valid_types}';
+        filter = strVal(filter) || $cms.configOption('valid_types');
         filter += ',' + filter.toUpperCase();
 
         var rep = document.getElementById(name);
@@ -14550,7 +14550,7 @@
         //console.log('$plupload.prepareSimplifiedFileInput()', 'pageType:', pageType, 'name:', name, 'postingFieldName:', postingFieldName, 'filter:', filter, 'attachmentBrowseButton:', attachmentBrowseButton);
 
         name = strVal(name);
-        filter = strVal(filter) || '{$CONFIG_OPTION;^,valid_types}';
+        filter = strVal(filter) || $cms.configOption('valid_types');
         filter += ',' + filter.toUpperCase();
 
         var mainDiv = document.getElementById('js-attachment-store');
@@ -14706,7 +14706,7 @@
 
         window.extraAttachmentBase || (window.extraAttachmentBase = 1000);
 
-        var validTypes = '{$CONFIG_OPTION;,valid_types}'.split(/\s*,\s*/g);
+        var validTypes = $cms.configOption('valid_types').split(/\s*,\s*/g);
 
         files.forEach(function (/**@type { File }*/file) {
             var xhr = new XMLHttpRequest(),

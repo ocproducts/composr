@@ -40,7 +40,7 @@ class Hook_config_chat_message_check_interval
             'list_options' => '',
             'required' => true,
 
-            'public' => false,
+            'public' => true,
 
             'addon' => 'chat',
         );

@@ -40,7 +40,7 @@ class Hook_config_notification_poll_frequency
             'list_options' => '',
             'required' => false,
 
-            'public' => false,
+            'public' => true,
 
             'addon' => 'core_notifications',
         );

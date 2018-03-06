@@ -1,8 +1,6 @@
 (function ($cms, $util, $dom) {
     'use strict';
 
-    var $CONFIG_OPTION_recaptcha_site_key = '{$CONFIG_OPTION;^,recaptcha_site_key}';
-
     var onLoadCallbackName = 'recaptchaLoaded' + $util.random();
 
     var recaptchaLoadedPromise = new Promise(function (resolve) {
@@ -32,7 +30,7 @@
                     captchaEl.dataset.recaptchaSuccessful = '0';
 
                     grecaptchaParameters = {
-                        sitekey: $CONFIG_OPTION_recaptcha_site_key,
+                        sitekey: $cms.configOption('recaptcha_site_key'),
                         callback: function() {
                             captchaEl.dataset.recaptchaSuccessful = '1';
                             $dom.submit(form);
@@ -66,7 +64,7 @@
             form = document.getElementById('posting-form');
         }
 
-        if ($CONFIG_OPTION_recaptcha_site_key !== '') { // ReCAPTCHA Enabled
+        if ($cms.configOption('recaptcha_site_key') !== '') { // ReCAPTCHA Enabled
             return;
         }
 
