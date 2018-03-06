@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -72,7 +72,7 @@ class Block_main_poll
         if ($poll_id === null) {
             $rows = persistent_cache_get('POLL');
             if ($rows === null) {
-                $rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('is_current' => 1), 'ORDER BY add_date DESC', 1);
+                $rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('is_current' => 1), 'ORDER BY add_time DESC', 1);
                 persistent_cache_set('POLL', $rows);
             }
         } else {

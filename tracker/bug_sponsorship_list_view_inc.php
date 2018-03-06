@@ -35,7 +35,7 @@
 		$t_sponsorship_ids = sponsorship_get_all_ids( $f_bug_id );
 
 		$t_sponsorships_exist = count( $t_sponsorship_ids ) > 0;
-		$t_can_sponsor = !bug_is_readonly( $f_bug_id ) && !current_user_is_anonymous();
+		$t_can_sponsor = !bug_is_readonly( $f_bug_id ) && !current_user_is_anonymous() && $sponsorship_open;
 
 		$t_show_sponsorships = $t_sponsorships_exist || $t_can_sponsor;
 	} else {
@@ -61,7 +61,7 @@
 			<img src="images/dollars.gif" alt="<?php echo lang_get( 'sponsor_verb' ) ?>" border="0" />
 		</td>
 		<td class="form-title" colspan="2">
-		<?php 
+		<?php
 			collapse_icon( 'sponsorship' );
 
 			echo lang_get( 'users_sponsoring_bug' );
@@ -95,7 +95,7 @@
 				}
 				$z++;
 			}
-			unset($z);		
+			unset($z);
 		} else {
 			$alternate_currencies_links .= '<a href="http://www.xe.com/ucc/convert/?Amount='.strval($cash_needed).'&amp;From='.$cms_sc_main_currency.'&amp;To='.strtoupper($cms_sc_alternate_currencies).'" target="_blank">&nbsp;'.strtoupper($cms_sc_alternate_currencies).' etc</a>';
 		}
@@ -115,7 +115,7 @@
 				break;
 			default:
 				$cms_sc_alternate_currencies = 'EUR';
-				break;	
+				break;
 		}
 		$alternate_currencies_links .= '<a href="http://www.xe.com/ucc/convert/?Amount='.strval($cash_needed).'&amp;From='.$cms_sc_main_currency.'&amp;To='.$cms_sc_alternate_currencies .'" target="_blank">&nbsp;'.$cms_sc_alternate_currencies .' etc</a>';
 	}

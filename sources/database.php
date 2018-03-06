@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -356,28 +356,6 @@ function is_on_multi_site_network()
 }
 
 /**
- * Get the type of database installed, such as MySQL, or Oracle.
- *
- * @return string The database type
- */
-function get_db_type()
-{
-    global $SITE_INFO;
-    if (isset($SITE_INFO['db_type'])) {
-        $ret = $SITE_INFO['db_type'];
-    } else {
-        $ret = 'mysqli';
-    }
-    if ($ret === 'mysql' && !function_exists('mysql_connect')) {
-        $ret = 'mysqli';
-    }
-    elseif ($ret === 'mysqli' && !function_exists('mysqli_connect')) {
-        $ret = 'mysql';
-    }
-    return $ret;
-}
-
-/**
  * Find the correct database connection for a particular table. i.e. site connection or forum connection.
  * This only works with Composr/Conversr tables, not third-party forums.
  * If modifying this function, search for other cases in the code for 'f_welcome_emails', as similar logic is used elsewhere.
@@ -400,6 +378,28 @@ function get_db_for($table, $force_site_db = false)
     );
     $db = $GLOBALS[$use_forum_db ? 'FORUM_DB' : 'SITE_DB'];
     return $db;
+}
+
+/**
+ * Get the type of database installed, such as MySQL, or Oracle.
+ *
+ * @return string The database type
+ */
+function get_db_type()
+{
+    global $SITE_INFO;
+    if (isset($SITE_INFO['db_type'])) {
+        $ret = $SITE_INFO['db_type'];
+    } else {
+        $ret = 'mysqli';
+    }
+    if ($ret === 'mysql' && !function_exists('mysql_connect')) {
+        $ret = 'mysqli';
+    }
+    elseif ($ret === 'mysqli' && !function_exists('mysqli_connect')) {
+        $ret = 'mysql';
+    }
+    return $ret;
 }
 
 /**

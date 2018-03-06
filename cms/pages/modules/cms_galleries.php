@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -803,7 +803,7 @@ class Module_cms_galleries extends Standard_crud_module
      * Kills Composr if someone is trying to add an image to a gallery that does not support images.
      *
      * @param  ID_TEXT $cat The gallery
-     * @param  boolean $tolerate_non_exist Whether to tolerate the non-existance of the gallery
+     * @param  boolean $tolerate_non_exist Whether to tolerate the non-existence of the gallery
      * @return ?integer Number allowed remaining (null: no limit)
      */
     public function check_images_allowed($cat, $tolerate_non_exist = false)
@@ -1324,7 +1324,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
      * Kills Composr if someone is trying to add a video to a gallery that does not support videos.
      *
      * @param  ID_TEXT $cat The gallery
-     * @param  boolean $tolerate_non_exist Whether to tolerate the non-existance of the gallery
+     * @param  boolean $tolerate_non_exist Whether to tolerate the non-existence of the gallery
      * @return ?integer Number allowed remaining (null: no limit)
      */
     public function check_videos_allowed($cat, $tolerate_non_exist = false)
@@ -1569,7 +1569,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
             $fields->attach($temp);
         }
 
-        $thumbnail_required = false;//(!$no_thumb_needed) && (get_option('allow_audio_videos') == '0') && (find_theme_image('video_thumb', true) == ''); YouTube won't require one for example
+        $thumbnail_required = false;//(!$no_thumb_needed) && (get_option('allow_audio_videos') == '0') && (find_theme_image('video_thumb', true) == ''); Vimeo won't require one for example
         $fields->attach(form_input_upload_multi_source(do_lang_tempcode('THUMBNAIL'), do_lang_tempcode('_DESCRIPTION_THUMBNAIL', escape_html($thumb_width)), $hidden, 'video__thumb', null, $thumbnail_required, $thumb_url));
 
         if (!$no_thumb_needed) {

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -44,6 +44,8 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
         $this->process_checks_section('testLocalLinking', 'Local linking', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testBrokenWebPostForms', 'Broken web POST forms', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testForgottenIcons', 'Default icons', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testSpellingComcodePages', 'Spellchecking of Comcode pages', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testSpellingContent', 'Spellchecking of miscellaneous content', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -72,13 +74,13 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
         $this->stateCheckManual('Check [url="CSS validation"]https://jigsaw.w3.org/css-validator/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
         $this->stateCheckManual('Check [url="WCAG validation"]https://achecker.ca/checker/index.php[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
 
-        $this->stateCheckManual('Check [url="schema.org/microformats validation"]https://search.google.com/structured-data/testing-tool/[/url] on any key pages you want to be semantic');
+        $this->stateCheckManual('Check schema.org/microformats validation on either [url="Google"]https://search.google.com/structured-data/testing-tool/[/url] or [url="Bing"]https://www.bing.com/toolbox/markup-validator[/url] or [url="Yandex"]https://webmaster.yandex.com/tools/microtest/[/url], on any key pages you want to be semantic');
         $this->stateCheckManual('Check [url="OpenGraph metadata"]https://developers.facebook.com/tools/debug/sharing/[/url] on any key pages you expect to be shared');
 
         $this->stateCheckManual('Do a [url="general check"]https://www.woorank.com/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
         $this->stateCheckManual('Do a [url="general check"]https://website.grader.com/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
 
-        $this->stateCheckManual('Test in Firefox');
+        $this->stateCheckManual('Test in Mozilla Firefox');
         $this->stateCheckManual('Test in Google Chrome');
         $this->stateCheckManual('Test in IE10');
         $this->stateCheckManual('Test in IE11');
@@ -340,5 +342,181 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
 
         $test = find_theme_image('webclipicon', false, true, $GLOBALS['FORUM_DRIVER']->get_theme(''));
         $this->assertTrue($test != 'themes/default/images/webclipicon.ico', 'Still using default webclipicon (the webclipicon theme image needs editing)');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testSpellingComcodePages($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        require_code('files2');
+        require_code('spelling');
+
+        if (_find_spell_checker() === null) {
+            $this->assertTrue(false, 'pspell/enchant required for this test');
+            return;
+        }
+
+        $paths = array('pages/comcode_custom/' . user_lang());
+        $zones = find_all_zones();
+        foreach ($zones as $zone) {
+            if ($zone != 'docs') { // Big, and we check this in an automated test
+                $paths[] = $zone . '/pages/comcode_custom/' . user_lang();
+            }
+        }
+        foreach ($paths as $_path) {
+            $files = get_directory_contents(get_file_base() . '/' . $_path, $_path, null, false, true, array('txt'));
+
+            foreach ($files as $path) {
+                $c = file_get_contents(get_file_base() . '/' . $path);
+                $c = clean_comcode_for_spellcheck($c);
+
+                $misspellings = run_spellcheck($c, null, true, false);
+                foreach (array_keys($misspellings) as $word) {
+                    $this->assertTrue(false, 'Misspelling: ' . $word . ' (' . $path . ')');
+                }
+            }
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testSpellingContent($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        require_code('spelling');
+        require_code('database_relations');
+
+        if (_find_spell_checker() === null) {
+            $this->assertTrue(false, 'pspell/enchant required for this test');
+            return;
+        }
+
+        $okay_words = array(
+            // Stuff there by default
+            'american',
+            'cms',
+            'composr',
+            'ecommerce',
+            'facebook',
+            'firstname',
+            'lastname',
+            'ocproducts',
+            'semihtml',
+            'sku',
+            'skype',
+            'sr',
+            'usergroup',
+            'viewable',
+            'yy',
+        );
+
+        $spell_link = spellcheck_initialise();
+        add_spellchecker_words_temp($spell_link, $okay_words);
+
+        $field_types_wanted = array(
+            'SHORT_TEXT',
+            '*SHORT_TEXT',
+            'LONG_TEXT',
+            '*LONG_TEXT',
+            'SHORT_TRANS',
+            '*SHORT_TRANS',
+            'LONG_TRANS',
+            '*LONG_TRANS',
+        );
+        $or_list = '';
+        foreach ($field_types_wanted as $field_type) {
+            if ($or_list != '') {
+                $or_list .= ' OR ';
+            }
+            $or_list .= db_string_equal_to('m_type', $field_type);
+        }
+
+        $db_fields = $GLOBALS['SITE_DB']->query_select('db_meta', array('m_table', 'm_name'), array(), 'WHERE (' . $or_list . ')');
+        foreach ($db_fields as $db_field) {
+            $table = $db_field['m_table'];
+            $name = $db_field['m_name'];
+
+            if (in_array($table, array(
+                // User data
+                'f_topics',
+                'f_posts',
+
+                // Irrelevant
+                'config',
+                'values',
+                'f_emoticons',
+                'url_id_monikers',
+                'theme_images',
+                'wordfilter', // Don't want to swear at the user running this either!
+
+                // Will come in elsewhere
+                'translate',
+                'comcode_pages',
+                'cached_comcode_pages',
+            ))) {
+                continue;
+            }
+
+            if (table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE | TABLE_PURPOSE__AUTOGEN_STATIC | TABLE_PURPOSE__MISC_NO_MERGE)) {
+                continue;
+            }
+
+            if (in_array($name, array(
+                // Irrelevant
+                'author',
+                'm_timezone_offset',
+            ))) {
+                continue;
+            }
+
+            $start = 0;
+            $max = 100;
+            do {
+                push_db_scope_check(true);
+                $rows = $GLOBALS['SITE_DB']->query_select($table, array($name), array(), '', $max, $start);
+                pop_db_scope_check();
+
+                foreach ($rows as $row) {
+                    $_c = $row[$name];
+                    if (is_integer($_c)) {
+                        $c = get_translated_text($_c);
+                    } else {
+                        $c = $_c;
+                    }
+                    $c = clean_comcode_for_spellcheck($c);
+
+                    $misspellings = run_spellcheck($c, null, true, false);
+                    foreach (array_keys($misspellings) as $word) {
+                        $this->assertTrue(false, 'Misspelling: ' . $word . ' (' . $table . ')');
+                    }
+                }
+
+                if (php_function_allowed('set_time_limit')) {
+                    set_time_limit(100);
+                }
+
+                $start += $max;
+            }
+            while (count($rows) > 0);
+        }
     }
 }

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -19,7 +19,7 @@
  */
 
 /**
- * Top level function to (re)generate a news Sitemap (xml file, Google-style).
+ * Top level function to (re)generate a news Sitemap (xml file, search-engine-style).
  */
 function build_news_sitemap()
 {

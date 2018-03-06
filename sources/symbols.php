@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -368,7 +368,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                     $_value = do_template($template_file, $tpl_params, null, true, null, $ex, $td, $theme, $force_original == '1');
                     $value = $_value->evaluate();
 
-                    if ((get_charset() == 'utf-8') && (substr($value, 0, 3) == chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF')))) { // TODO: Can remove after #3467
+                    if ((get_charset() == 'utf-8') && (substr($value, 0, 3) == build_hex_string('efbbbf'))) { // TODO: Can remove after #3467
                         $value = substr($value, 3);
                     }
                 }
@@ -3125,9 +3125,7 @@ function ecv_PHOTO($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
-    if (isset($param[0])) {
-        $value = $GLOBALS['FORUM_DRIVER']->get_member_photo_url(intval($param[0]), (isset($param[1])) && ($param[1] == '1'));
-    }
+    $value = $GLOBALS['FORUM_DRIVER']->get_member_photo_url(isset($param[0]) ? intval($param[0]) : get_member(), (isset($param[1])) && ($param[1] == '1'));
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);

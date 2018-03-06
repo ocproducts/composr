@@ -502,7 +502,7 @@
             }
         });
     };
-    
+
     var domDataMap = new window.WeakMap();
     /**
      * @param el
@@ -1140,7 +1140,7 @@
             delegator = function (e) {
                 var clicked, matches, match;
 
-                if (e.type === 'clickout') { 
+                if (e.type === 'clickout') {
                     // Our custom 'clickout' event needs some special handling and may be fired on multiple matches
                     clicked = e.originalEvent.target;
                     matches = $dom.$$(el, selector);
@@ -2146,7 +2146,7 @@
             });
 
             dom = $util.toArray(container.childNodes);
-            
+
             for (i = 0; i < dom.length; i++) {
                 dom[i].remove();
 
@@ -2258,7 +2258,7 @@
                                 }).call(win); // Set `this` context for eval
                             }
                         });
-                        
+
                         nodes.forEach(function (node) {
                             if ($util.isEl(node)) {
                                 $cms.attachBehaviors(node);
@@ -2374,7 +2374,7 @@
         if (html === undefined) {
             return el.innerHTML;
         }
-        
+
         $dom.empty(el);
         return $dom.append(el, html);
     };

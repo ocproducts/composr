@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -178,7 +178,7 @@ $PCONTINUATIONS_SIMPLE = array(
 
 function lex($text = null)
 {
-    global $PCONTINUATIONS, $PCONTINUATIONS_SIMPLE, $PTOKENS, $TEXT;
+    global $PCONTINUATIONS, $PCONTINUATIONS_SIMPLE, $PTOKENS, $TEXT, $FILENAME;
 
     ini_set('pcre.backtrack_limit', '10000000');
 
@@ -190,6 +190,40 @@ function lex($text = null)
 
     if (strpos($TEXT, '<' . '%') !== false) { // ASP
         log_warning('Use "<' . '?php" tagging for compatibility.');
+    }
+
+    if ((strpos($TEXT, '<?') === false) && (!empty($FILENAME))) {
+        // If it's not PHP, we parse as something differently, and will end up returning no tokens...
+
+        require_code('webstandards');
+        init__webstandards();
+        require_code('webstandards2');
+        init__webstandards2();
+
+        if (substr($FILENAME, -4) == '.css') {
+            $webstandards_parse = check_css($TEXT);
+        }
+
+        elseif (substr($FILENAME, -3) == '.js') {
+            require_code('webstandards_js_lint');
+            init__webstandards_js_lint();
+            require_code('webstandards_js_parse');
+            init__webstandards_js_parse();
+            require_code('webstandards_js_lex');
+            init__webstandards_js_lex();
+
+            $webstandards_parse = check_js($TEXT);
+        }
+
+        else {
+            $is_fragment = (strpos($TEXT, '<!DOCTYPE') === false);
+            $webstandards_manual = !empty($GLOBALS['CHECKS']);
+            $webstandards_parse = check_xhtml($TEXT, false, $is_fragment, true, true, true, true, false, $webstandards_manual, false);
+        }
+
+        foreach ($webstandards_parse['errors'] as $error) {
+            log_warning(html_entity_decode($error['error'], ENT_QUOTES), $error['global_pos'], true);
+        }
     }
 
     if ((strpos($TEXT, '?' . '>') !== false) && (trim(substr($TEXT, strrpos($TEXT, '?' . '>') + 2)) == '')) {

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -540,7 +540,7 @@ class BrokenURLScanner
             return false;
         }
 
-        // If a URL is only redirecting back to the home page, we can consider that broken too... 
+        // If a URL is only redirecting back to the home page, we can consider that broken too...
 
         static $undesirable_redirects = null;
         if ($undesirable_redirects === null) {

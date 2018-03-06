@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -81,7 +81,7 @@ class Module_admin_wordfilter
             $GLOBALS['SITE_DB']->add_auto_key('wordfilter');
 
             if ((strpos(get_db_type(), 'mysql') !== false) && (get_charset() == 'utf-8')) {
-                // Ccould not be made utf8mb4 in advance but can be now because 'id' fields was added as the key
+                // Could not be made utf8mb4 in advance but can be now because 'id' fields was added as the key
                 $GLOBALS['SITE_DB']->query('ALTER TABLE ' . get_table_prefix() . 'wordfilter CONVERT TO CHARACTER SET utf8mb4');
             }
         }

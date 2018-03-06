@@ -281,7 +281,7 @@ Support tickets can work as a basic private issue management system, using Post 
 [concepts
  1_key="Support desk"     1_value="A virtual support desk is the virtual equivalent to a companies real-world help-desk/support-department/reception/call centre."
  2_key="Support ticket"   2_value="A ticket is an issue placed the support ticket system created for private discussion between the placer and the staff"
- 3_key="Post template"    3_value="A pre-defined body of text that can be used as a template for new posts"
+ 3_key="Post template"    3_value="A predefined body of text that can be used as a template for new posts"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

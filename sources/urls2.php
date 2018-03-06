@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -225,7 +225,7 @@ function _url_to_filename($url_full)
         return $new_name;
     }
 
-    // Non correspondance, but at least we have something
+    // Non correspondence, but at least we have something
     if (strpos($new_name, '.') === false) {
         return md5($new_name);
     }
@@ -803,7 +803,7 @@ function _generate_moniker($moniker_src)
             }
         } else {
             // German has inbuilt transliteration
-            $moniker = str_replace(array('ä', 'ö', 'ü', 'ß'), array('ae', 'oe', 'ue', 'ss'), $moniker);
+            $moniker = str_replace(array(build_hex_string('c3a4'), build_hex_string('c3b6'), build_hex_string('c3bc'), build_hex_string('c39f')), array('ae', 'oe', 'ue', 'ss'), $moniker);
         }
     }
 

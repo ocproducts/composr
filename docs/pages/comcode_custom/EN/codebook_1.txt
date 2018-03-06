@@ -871,7 +871,7 @@ foreach ($_hooks as $hook => $object) {
 This code finds all modules/search hooks, then loops over the list of hook names (these are stored in the keys returned from the [tt]find_all_hooks[/tt] function). In each loop iteration it:
 1) loads up the code file for the hook
 2) instantiates the object in the hook using Composr's [tt]object_factory[/tt] function (which it can do because it assumes a class naming convention for all of these kind of hooks)
-3) checks to see if the object instantiated okay, and if it didn't, continue to the next loop iteration. The true parameter to [tt]object_factory[/tt] will prevent Composr automatically failing if it can not create an object and instead make it return [tt]null[/tt]. We do this in case users accidentally upload some other kind of PHP file to the hook directory: if we didn't check for the error here, it'd have caused a stack dump as it wouldn't contain the class we needed.
+3) checks to see if the object instantiated okay, and if it didn't, continue to the next loop iteration. The true parameter to [tt]object_factory[/tt] will prevent Composr automatically failing if it can not create an object and instead make it return [tt]null[/tt]. We do this in case users accidentally upload some other kind of PHP file to the hook directory: if we didn't check for the error here, it'd have caused a stack trace as it wouldn't contain the class we needed.
 4) calls the [tt]info[/tt] function on the hook, loading its results in [tt]$info[/tt]. Again, this is an assumption via a convention for these kinds of hooks, that they will have an [tt]info[/tt] function that behaves in a certain way. From this particular example (search hook) our [tt]info[/tt] function will return us an array structure of details about what the hook can do, and later the code will determine whether to put an 'advanced' search link in for the hook according to whether it supports advanced searches or not (I haven't shown that code here for conciseness).
 
 (*1) Not quite. Hook files of the same kind might be in [tt]sources/hooks/<something>/<somethingelse>[/tt] and also [tt]sources_custom/hooks/<something>/<somethingelse>[/tt].
@@ -995,14 +995,14 @@ When developing you'll probably want to start your development site afresh a few
 
 Composr has a multi-faceted testing strategy as there is no perfect solution for testing (we have thought very long and hard to find one!). Our overall strategy involves different approaches, largely integrated into our automated testing ([tt]testing_platform[/tt] addon):
 1) Code Quality Checker, a lint (henceforth 'CQC'). This is a standalone tool, but also integrated into our automated testing. See [tt]_tests/codechecker/readme.txt[/tt] in the [tt]testing_platform[/tt] addon for documentation.
-2) Automated test framework, with a large number of tests written for it. The framework can incorporate  regression testing, as long as we write regression tests whenever we find bugs. It can incorporate UI testing in a sense as we can program a web bot to do things plus dump all the XHTML).
+2) Automated test framework, with a large number of tests written for it. The framework can incorporate  regression testing, as long as we write regression tests whenever we find bugs. It can incorporate UI testing in a sense as we can program a web bot to do things plus dump all the XHTML). The framework is documented in the description for the [tt]testing_platform[/tt] addon.
 3) Web standards Validation (partly built into CQC, partly built into Composr -- and also implemented as an automated test).
 4) Manual functional test set. The main test set is no longer maintained due to the enormous amount of time required to manually go through the tests, while things likely to break are picked up pretty well by the automated testing. However, we also maintain a smaller list of important tests (https://compo.sr/tracker/view.php?id=3383).
 5) [url="Custom version of PHP"]https://github.com/ocproducts/ocp-php[/url], with type strictness, and XSS detection, among other things.
 6) Manual testing at core-team meet-ups, especially Usability testing / Blackbox testing.
 7) Public beta testing and bug reporting.
 8) Composr development mode, which applies lots of tricksy things, checking various things are done at run-time, and turning features on and off randomly, and doing some performance testing.
-9) Other things we use: MySQL strict mode, Strict JavaScript errors, Spell checkers.
+9) Other things we use: MySQL strict mode, Strict JavaScript errors.
 10) Composr error mails.
 
 [title="3"]Software for editing code[/title]
@@ -1096,7 +1096,7 @@ For example:
  - We can assume things like critical Composr directories are present, such as [tt]sources[/tt]
  - We can't assume non-standard directories like 'lang/FR' are present, so we must either add some conditional logic, or cleanly handle the error event in an appropriate way (in this case perhaps explaining to the user that 'The French language pack is not installed').
 
-[title="4"]Supressing errors[/title]
+[title="4"]Suppressing errors[/title]
 
 Composr will react fatally on most errors unless they are suppressed. This includes [tt]PHP_NOTICE[/tt]s. To suppress errors from a PHP command, put an [tt]@[/tt] symbol before the function call. If the PHP command causing the error is buried inside a Composr API function and you want errors to be shown as 'attached' rather than fatal, you can call [tt]push_suppress_error_death(true)[/tt] then [tt]pop_suppress_error_death()[/tt] after.
 
@@ -1251,7 +1251,7 @@ One common logic error that deserves to be mentioned is the false assumption tha
 
 Another common (and very remedial) logic error is assuming that a hacker won't try and bypass the UI to gain access by manipulating GET/POST variables. Security checks need implementing both in UI code and in actualiser code that carries out the actual tasks.
 
-Another common logic error is passing in secondary ID values from a form, for edit/deletion in actualiser code, and only checking permissions on a primary ID. For example, if a record has some subrecords, and there are checkboxes to delete those subrecords available on the main record's edit screen, it is easy to forget that you need to run permissions checks on the subrecords as well as the main record. As an alternative to running extra permssion checks, sometimes it is possible to construct queries on the subrecords that hard-codes the primary ID, such that the query will only execute if the subrecords referenced really do belong to the main record we checked permissions for; this is valid protection also, and usually involves less code.
+Another common logic error is passing in secondary ID values from a form, for edit/deletion in actualiser code, and only checking permissions on a primary ID. For example, if a record has some subrecords, and there are checkboxes to delete those subrecords available on the main record's edit screen, it is easy to forget that you need to run permissions checks on the subrecords as well as the main record. As an alternative to running extra permission checks, sometimes it is possible to construct queries on the subrecords that hard-codes the primary ID, such that the query will only execute if the subrecords referenced really do belong to the main record we checked permissions for; this is valid protection also, and usually involves less code.
 
 Any special and obvious hack-attack situation that you can figure out (whether real or not) should be logged using the [tt]log_hack_attack_and_die[/tt] function, so that site staff may detect when people are trying to hack or probe the site. While hackers with the source code may avoid the attack scenario you've predicted and logged, it is likely they will make mistakes and get logged anyway, which can be a huge benefit to site admins.
 

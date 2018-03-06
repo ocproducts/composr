@@ -197,7 +197,7 @@ It's worth pointing out that there are some other similar approaches for similar
 
 Many websites provide widgets that you can embed.
 
-Composr has some built-in support for many, try just pasting in a normal URL and it may embed satisfactorily. This works for Google Maps and Youtube videos, for example.
+Composr has some built-in support for many, try just pasting in a normal URL and it may embed satisfactorily. This works for Google Maps, Vimeo videos, and YouTube videos, for example.
 
 If you need to manually embed widget code it is very simple. If you are in the WYSIWYG editor, open the source view (HTML view) of the editor, and paste it in there. If you are not using the WYSIWYG editor then paste it in inside an [tt][html]...[/html][/tt] tag.
 

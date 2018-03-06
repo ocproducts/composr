@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_task_export_member_csv
+class Hook_task_export_members
 {
     /**
      * Run the task hook.
@@ -151,15 +151,22 @@ class Hook_task_export_member_csv
         do {
             $members = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields ON id=mf_member_id WHERE ' . $group_filter_2 . ' ORDER BY m_join_time,id', $limit, $start);
 
+            if ($member_groups_count >= 500) {
+                $or_list = '';
+                foreach ($members as $m) {
+                    if ($or_list != '') {
+                        $or_list .= ' OR ';
+                    }
+                    $or_list .= 'mf_member_id=' . strval($m['id']);
+                }
+                $member_groups = $GLOBALS['FORUM_DB']->query('SELECT gm_member_id,gm_group_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members WHERE (' . $or_list . ') AND gm_validated=1');
+            }
+
             foreach ($members as $iteration => $m) {
                 task_log($this, 'Exporting member row', $iteration + $start, $member_count);
 
                 if (is_guest($m['id'])) {
                     continue;
-                }
-
-                if ($member_groups_count >= 500) {
-                    $member_groups = $GLOBALS['FORUM_DB']->query_select('f_group_members', array('gm_member_id', 'gm_group_id'), array('gm_validated' => 1, 'gm_member_id' => $m['id']));
                 }
 
                 $out = $this->_get_csv_member_record($m, $groups, $headings, $cpfs, $member_groups, $subscription_types);

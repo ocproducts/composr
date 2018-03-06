@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -91,7 +91,7 @@ class Hook_snippet_template_editor_save
                 );
             }
 
-            // Clear cacheing
+            // Clear caching
             require_code('caches3');
             erase_cached_templates(false, array($clean_file));
             erase_cached_templates(false, null, TEMPLATE_DECACHE_BASE);

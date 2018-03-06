@@ -45,7 +45,7 @@
                         'buttons--yes': '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'
                     },
                     '{!comcode:DISABLE_WYSIWYG;^}',
-                    '{!javascript:DISCARD_WYSIWYG_CHANGES;^}', 
+                    '{!javascript:DISCARD_WYSIWYG_CHANGES;^}',
                     null, 600, 140
                 ).then(function (savingCookies) {
                     if (!savingCookies) {
@@ -238,7 +238,7 @@
                     $dom.html('#toggle-wysiwyg-' + textarea.id, '<img width="16" height="16" src="' + $util.srl('{$IMG*;^,icons/editor/wysiwyg_on}') + '" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical-alignment" />');
                 }
 
-                try {  // Unload editor 
+                try {  // Unload editor
                     window.wysiwygEditors[textarea.id].destroy();
                 } catch (ignore) {}
             }
@@ -825,7 +825,7 @@
 
                     _insertTextboxWysiwyg(element, editor, insert);
                     return resolvePromise();
-                } 
+                }
 
                 var url = $util.rel($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&lax_comcode=1' + $cms.keep()));
                 if ($cms.getPageName() === 'topics') {

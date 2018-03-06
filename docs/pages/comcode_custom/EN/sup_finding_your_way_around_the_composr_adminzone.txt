@@ -10,7 +10,7 @@ When the Admin Zone initially opens, you will be presented with the Dashboard sc
 
 When you have a new install like the one in the attached image, there are a number of tasks added for you to work through to get your site ready to go live. Regular tasks on this list include items such as adding news or blog posts, changing the polls and choosing the image of the day. Depending on your site make up some of these may not be used and they can be removed from the list.
 
-You can also add specific tasks to remind you to do certain things and there are a number of custom tasks to help ease you through the process of setting up your site such as submitting your site to Google and adding content to your site. Underneath this section there is a list of all the activity on your site so you can quickly see the most recent interactions and below this section you can add other competitor sites to give you an overview of their site.
+You can also add specific tasks to remind you to do certain things and there are a number of custom tasks to help ease you through the process of setting up your site such as submitting your site to search engines and adding content to your site. Underneath this section there is a list of all the activity on your site so you can quickly see the most recent interactions and below this section you can add other competitor sites to give you an overview of their site.
 
 In the right hand column, the first item is the status of the software and an update if any new versions have been released. This is followed by any posts in the staff forum if it is being used. The next three items are tips relating to the software which can be left or dismissed, a section to add notes and news relating to the software. The final section is a list of useful links to software and websites which you might need in the process of setting up your website.
 
@@ -40,7 +40,7 @@ Also in the setup section is the main configuration section where you can change
 
 The last option on this list is the installation options where you can change settings such as database settings. I strongly advise against changing any options in this section unless you are sure of what you are doing as it is possible to completely break your site!
 
-Also under the setup section you can add Custom Comcode tags. Comcode is used for adding and configuring blocks of information on your site. Custom Comcode is often used to make embedding videos from YouTube or Facebook quicker and easier than using the normal embed code (actually that's built into Composr nowadays just by pasting the URL, but you get the point).
+Also under the setup section you can add Custom Comcode tags. Comcode is used for adding and configuring blocks of information on your site. Custom Comcode is often used to make embedding videos from YouTube, Vimeo, or Facebook quicker and easier than using the normal embed code (actually that's built into Composr nowadays just by pasting the URL, but you get the point).
 [/surround]
 
 [title="2"]The Structure section[/title]

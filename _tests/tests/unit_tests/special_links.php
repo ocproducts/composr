@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -41,7 +41,9 @@ class special_links_test_set extends cms_test_case
             'https://validator.w3.org/' => true,
             'https://jigsaw.w3.org/css-validator/' => true,
             'https://achecker.ca/checker/index.php' => true,
+            'https://www.bing.com/toolbox/markup-validator' => true,
             'https://search.google.com/structured-data/testing-tool/' => true,
+            'https://webmaster.yandex.com/tools/microtest/' => true,
             'https://developers.facebook.com/tools/debug/sharing/' => true,
             'https://www.woorank.com/' => true,
             'https://website.grader.com/' => true,
@@ -60,6 +62,8 @@ class special_links_test_set extends cms_test_case
 
     public function testMiscLinks()
     {
-        $this->assertTrue(is_string(http_get_contents('http://www.google.co.uk/search?as_lq=' . urlencode('http://example.com/'), array('trigger_error' => false))), 'Google backreferences link broken');
+        $this->assertTrue(is_string(http_get_contents('http://www.google.com/search?as_lq=' . urlencode('http://example.com/'), array('trigger_error' => false))), 'Google backreferences link broken');
+
+        $this->assertTrue(is_string(http_get_contents('https://duckduckgo.com/?q=tile+background&iax=images&ia=images', array('trigger_error' => false))), 'DuckDuckGo search broken');
     }
 }

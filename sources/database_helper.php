@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -247,7 +247,7 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
         $GLOBALS['DB_STATIC_OBJECT']->query($sql, $this_ref->connection_write);
     }
 
-    // Considering tabes in a DB reference may be in multiple (if they point to same actual DB's), make sure all our DB objects have their cache cleared
+    // Considering tables in a DB reference may be in multiple (if they point to same actual DB's), make sure all our DB objects have their cache cleared
     if (isset($GLOBALS['SITE_DB'])) {
         unset($GLOBALS['SITE_DB']->table_exists_cache[$table_name]);
     }
@@ -482,7 +482,7 @@ function _helper_drop_table_if_exists($this_ref, $table)
 
     unset($this_ref->table_exists_cache[$table]);
 }
- 
+
 /**
  * Whether byte saving is needed for a particular table's fields.
  *

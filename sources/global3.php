@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -55,7 +55,7 @@ function init__global3()
     if (!defined('STRING_MAGIC_NULL')) {
         define('STRING_MAGIC_NULL', '!--:)abcUNLIKELY');
     }
-    // This is similar, but for integers. As before, it should only be used when null and -1 aren't appropiate OR as the "ignore this field" indicator.
+    // This is similar, but for integers. As before, it should only be used when null and -1 aren't appropriate OR as the "ignore this field" indicator.
     if (!defined('INTEGER_MAGIC_NULL')) {
         define('INTEGER_MAGIC_NULL', 1634817353); // VERY unlikely to occur, but is both a 32bit unsigned and a 32 bit signed number
     }
@@ -193,6 +193,24 @@ function is_suexec_like()
 }
 
 /**
+ * Build a binary string out of a series of hex characters.
+ * We often use this to avoid having to write Unicode characters in our code, as that's fragile.
+ *
+ * @param  string $hex The hex string, with no spaces
+ * @return string Binary string
+ */
+function build_hex_string($hex)
+{
+    $out = '';
+
+    for ($i = 0; $i < strlen($hex); $i += 2) {
+        $out .= chr(hexdec(substr($hex, $i, 2)));
+    }
+
+    return $out;
+}
+
+/**
  * Ensure that the specified file/folder is writeable for the FTP user (so that it can be deleted by the system), and should be called whenever a file is uploaded/created, or a folder is made. We call this function assuming we are giving world permissions.
  *
  * @param  PATH $path The full pathname to the file/directory
@@ -278,10 +296,10 @@ function handle_string_bom($contents)
     $bom_found = null;
 
     $boms = array(
-        'utf-32' => chr(hexdec('FF')) . chr(hexdec('FE')) . chr(hexdec('00')) . chr(hexdec('00')),
-        'utf-16' => chr(hexdec('FF')) . chr(hexdec('FE')),
-        'utf-8' => chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF')) ,
-        'GB-18030' => chr(hexdec('84')) . chr(hexdec('31')) . chr(hexdec('95')) . chr(hexdec('33')),
+        'utf-32' => build_hex_string('fffe0000'),
+        'utf-16' => build_hex_string('fffe'),
+        'utf-8' => build_hex_string('efbbbf') ,
+        'GB-18030' => build_hex_string('84319533'),
     );
 
     $magic_data = substr($contents, 0, 4);
@@ -319,10 +337,10 @@ function handle_file_bom($path, $handle_charset_conversion_automatically = true)
     $bom_found = null;
 
     $boms = array(
-        'utf-32' => chr(hexdec('FF')) . chr(hexdec('FE')) . chr(hexdec('00')) . chr(hexdec('00')),
-        'utf-16' => chr(hexdec('FF')) . chr(hexdec('FE')),
-        'utf-8' => chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF')) ,
-        'GB-18030' => chr(hexdec('84')) . chr(hexdec('31')) . chr(hexdec('95')) . chr(hexdec('33')),
+        'utf-32' => build_hex_string('fffe0000'),
+        'utf-16' => build_hex_string('fffe'),
+        'utf-8' => build_hex_string('efbbbf') ,
+        'GB-18030' => build_hex_string('84319533'),
     );
 
     $orig_file = fopen($path, 'rb');
@@ -3280,6 +3298,7 @@ function strip_html($in)
     if (get_charset() != 'utf-8') {
         $text = str_replace(array('&ndash;', '&mdash;', '&hellip;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '...', '|', '"', '"', "'", "'"), $text);
     }
+    $text = str_replace('><', '> <', $text);
     $text = strip_tags($text);
     return @html_entity_decode($text, ENT_QUOTES);
 }
@@ -3488,7 +3507,7 @@ function send_http_output_ping()
     global $DOING_OUTPUT_PINGS;
     $DOING_OUTPUT_PINGS = true;
 
-    if ((running_script('index')) && (is_cli())) {
+    if ((running_script('index')) && (!is_cli())) {
         echo ' ';
     }
 }

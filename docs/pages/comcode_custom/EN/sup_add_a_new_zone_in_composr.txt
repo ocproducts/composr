@@ -28,7 +28,7 @@ The adding a new zone form is split into three sections which are a zone which d
 
 The first section of the form is where you will fill in the main details of your new zone. The options in this section are...
 
-[b]Codename[/b] -- The codename of the zone is the code which Composr will reference your new zone and this should not have any spaces. As a general SEO rule if you are using multiple words they should be separated by a hyphen instead of an underscore as some people say Google understands hyphens as space and doesn't with underscores (debatable, but it looks nicer too!). The codename will also be used as part of your URL for your new zone so a zone with a codename of "zone-a" would have a URL such as [tt]http://yourbaseurl/zone-a[/tt].
+[b]Codename[/b] -- The codename of the zone is the code which Composr will reference your new zone and this should not have any spaces. The codename will also be used as part of your URL for your new zone so a zone with a codename of "zone-a" would have a URL such as [tt]http://yourbaseurl/zone-a[/tt].
 
 [b]Title[/b] -- this is the title which will be used for the new zone
 

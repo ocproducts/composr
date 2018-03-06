@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -192,8 +192,8 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
 
         if ((addon_installed('ssl')) || (substr(get_base_url(), 0, 7) == 'https://')) {
             // If it's a problem with SSL verification in general
-            for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or Google issue
-                $data = http_get_contents('https://www.google.com/', array('trigger_error' => false));
+            for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or DuckDuckGo issue
+                $data = http_get_contents('https://duckduckgo.com/', array('trigger_error' => false));
 
                 $ok = (($data !== null) && (strpos($data, '<html') !== false));
                 if ($ok) {

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -139,33 +139,33 @@ class xhtml_substr_test_set extends cms_test_case
 
     public function testImage_1()
     {
-        $before = '<a href="www.google.com">My</a><div>foobar<img alt = "kevin" src="' . get_base_url() . '/themes/default/images/cns_emoticons/cheeky.png" />afterfoo </div>';
+        $before = '<a href="https://duckduckgo.com/">My</a><div>foobar<img alt = "kevin" src="' . get_base_url() . '/themes/default/images/cns_emoticons/cheeky.png" />afterfoo </div>';
         $after = xhtml_substr($before, 0, 3, false, false, 0.0);
-        $expected = '<a href="www.google.com">My</a><div>f</div>';
+        $expected = '<a href="https://duckduckgo.com/">My</a><div>f</div>';
         $this->assertTrue($after == $expected);
     }
 
     public function testImage_2()
     {
-        $before = '<a href="www.google.com">My</a><div>foobar<img alt = "kevin" src="' . get_base_url() . '/themes/default/images/cns_emoticons/cheeky.png" />afterfoo </div>';
+        $before = '<a href="https://duckduckgo.com/">My</a><div>foobar<img alt = "kevin" src="' . get_base_url() . '/themes/default/images/cns_emoticons/cheeky.png" />afterfoo </div>';
         $after = xhtml_substr($before, 0, 2, false, false, 0.0);
-        $expected = '<a href="www.google.com">My</a>';
+        $expected = '<a href="https://duckduckgo.com/">My</a>';
         $this->assertTrue($after == $expected);
     }
 
     public function testImage_3()
     {
-        $before = '<a href="www.google.com">My</a><div>foobar<img alt = "kevin" src="' . get_base_url() . '/themes/default/images/cns_emoticons/cheeky.png" />afterfoo </div>';
+        $before = '<a href="https://duckduckgo.com/">My</a><div>foobar<img alt = "kevin" src="' . get_base_url() . '/themes/default/images/cns_emoticons/cheeky.png" />afterfoo </div>';
         $after = xhtml_substr($before, 0, 12, false, false, 0.0);
-        $expected = '<a href="www.google.com">My</a><div>foobar<img alt = "kevin" src="' . get_base_url() . '/themes/default/images/cns_emoticons/cheeky.png" />aft</div>';
+        $expected = '<a href="https://duckduckgo.com/">My</a><div>foobar<img alt = "kevin" src="' . get_base_url() . '/themes/default/images/cns_emoticons/cheeky.png" />aft</div>';
         $this->assertTrue($after == $expected);
     }
 
     public function testImage_4()
     {
-        $before = '<a href="www.google.com">My</a><div>foobar<img alt = "kevin" src="' . get_base_url() . '/themes/default/images/cns_emoticons/cheeky.pngthumb_nail.jpg" />afterfoo </div>';
+        $before = '<a href="https://duckduckgo.com/">My</a><div>foobar<img alt = "kevin" src="' . get_base_url() . '/themes/default/images/cns_emoticons/cheeky.pngthumb_nail.jpg" />afterfoo </div>';
         $after = xhtml_substr($before, 0, 12, false, false, 0.0);
-        $expected = '<a href="www.google.com">My</a><div>foobar<img alt = "kevin" src="' . get_base_url() . '/themes/default/images/cns_emoticons/cheeky.pngthumb_nail.jpg" /></div>';
+        $expected = '<a href="https://duckduckgo.com/">My</a><div>foobar<img alt = "kevin" src="' . get_base_url() . '/themes/default/images/cns_emoticons/cheeky.pngthumb_nail.jpg" /></div>';
         $this->assertTrue($after == $expected);
     }
 

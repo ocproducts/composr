@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
 	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
 ]>
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-	 x="0px" y="0px" width="48px" height="48px" viewBox="-3.5 -12.2 48 48">
+	 x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48">
 <defs>
 </defs>
-<rect x="23.1" y="1.8" fill="#C8691C" width="18.6" height="11.9"/>
-<polygon fill="#F79523" points="0,11.5 11,0 11,22.9 "/>
-<rect x="9.9" y="5.3" fill="#F79523" width="25.2" height="11.9"/>
-<polygon fill="#753900" points="35,5.3 23.1,1.8 23.1,5.3 "/>
+<rect opacity="0" fill="#FFFFFF" width="48" height="48"/>
+<polygon fill="#F79523" points="2.894,24.8 14.908,12.268 14.908,37.337 "/>
+<path fill="#F79523" d="M13.669,18.014c0,0,8.233-1.733,16.953,1.973c8.719,3.705,10.561,10.998,10.561,10.998l-15.238,0.085h-1.437
+	l-10.838-0.085V18.014z"/>
+<path fill="#C8691C" d="M45.156,26.618c0,0-1.843-8.53-10.562-12.235S21.356,12.41,21.356,12.41l-2.942,2.386
+	c0,0,5.757-1.733,14.477,1.972c8.719,3.706,10.561,12.236,10.561,12.236L45.156,26.618z"/>
 </svg>

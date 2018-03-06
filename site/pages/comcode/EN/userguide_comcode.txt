@@ -216,7 +216,7 @@ You can put things in boxes. For example:
 [/semihtml]
 [title="2"]Attachments[/title]
 
-You can use attachments with a number of different Comcode forms. The attachment tags are automatically inserted into your Comcode when you choose an attachment, and you may re-arrange them to move the attachments around; you may also wish to change the width, height, description, or set the type to 'download'. After adding your attachments you may re-use them in other pieces of Comcode, and the attachment will exist until all references are deleted.
+You can use attachments with a number of different Comcode forms. The attachment tags are automatically inserted into your Comcode when you choose an attachment, and you may rearrange them to move the attachments around; you may also wish to change the width, height, description, or set the type to 'download'. After adding your attachments you may re-use them in other pieces of Comcode, and the attachment will exist until all references are deleted.
 
 Attachments may be movies, audio, images, or general downloads. The website automatically decides how to treat your attachment.
 

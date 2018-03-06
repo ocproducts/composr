@@ -247,7 +247,7 @@ q::after {
 	content: "\201d";
 }
 
-/* Re-apply default styles non-HTML5-aware browsers */
+/* Reapply default styles non-HTML5-aware browsers */
 details, aside, header, footer, nav, article, section, figure, figcaption {
 	display: block;
 }
@@ -335,7 +335,7 @@ th, .fake-th {
 .table-header-sorting {
 	float: right;
 }
-.columned-table[itemprop="significantLinks"] tbody tr th, 
+.columned-table[itemprop="significantLinks"] tbody tr th,
 .columned-table[itemprop="significantLinks"] tbody tr .fake-th { /* itemprop is for precedence */
 	background-color: {$GET,box_title_background_2} !important;
 	color: {$GET,box_title_text} !important;
@@ -551,7 +551,7 @@ body.website-body.frame {
 	/*{+START,CSS_MODE,desktop}*/
 		html>body#main-website { /* #main-website targets only the main site screen, avoiding frames etc */
 			/* Want to change the tiled background?
-				Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
+				Try this web search to get image ideas https://duckduckgo.com/?q=tile+background&iax=images&ia=images
 				Find how to edit the referenced "outer_background" theme image by doing an Admin Zone search for "outer_background"
 			*/
 			background-image: url('{$IMG_INLINE;,outer_background}');
@@ -859,7 +859,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 
 	/* Want to set a tiled background?
 		Uncomment the code below
-		Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
+		Try this web search to get image ideas https://duckduckgo.com/?q=tile+background&iax=images&ia=images
 		Find how to edit the referenced "inner_background" theme image by doing an Admin Zone search for "inner_background"
 	*/
 	/*
@@ -1656,7 +1656,7 @@ th.metadata-title {
 	margin: 1em 0;
 
 	/* Want to change the tiled background?
-		Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
+		Try this web search to get image ideas https://duckduckgo.com/?q=tile+background&iax=images&ia=images
 		Find how to edit the referenced "block_background" theme image by doing an Admin Zone search for "block_background"
 	*/
 	background: url('{$IMG_INLINE;,block_background}') {$GET,area_background};
@@ -1887,7 +1887,10 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .box .toggleable-tray-button img {
 	margin-right: 0.5em;
 }
-.toggleable-tray-button img, .box .toggleable-tray-title .toggleable-tray-button img {
+.toggleable-tray-button img {
+	width: 24px;
+}
+.box .toggleable-tray-title .toggleable-tray-button img {
 	width: 20px;
 }
 h3 .toggleable-tray-button img {
@@ -3436,7 +3439,7 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 	font-size: 0.95em;
 }
 
-.associated-minor-button-overlayed {
+.associated-minor-button-overlaid {
 	position: absolute;
 }
 
@@ -3805,13 +3808,13 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 }
 
 .button-screen {
-	background-size: 24px 24px !important;
+	background-size: 22px 22px !important;
 	padding: 6px 39px 7px 7px;
 	border-width: 2px;
 	font-size: 13px;
 	min-width: 8em;
 }
-.buttons--previous.button-screen, 
+.buttons--previous.button-screen,
 .buttons--previous-none.button-screen {
 	padding: 6px 7px 7px 39px !important;
 	background-position: 7px 3px !important;
@@ -3847,7 +3850,7 @@ div .button-micro {
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	display: inline-block;
 }
-.buttons--previous-none, 
+.buttons--previous-none,
 .buttons--next-none {
 	opacity: 0.85 !important;
 	cursor: not-allowed;
@@ -3926,12 +3929,14 @@ NB: Form buttons are wrapped in either:
 */
 
 
-.admin--delete3, 
-.buttons-group .admin--edit, 
-.buttons-group .admin--wiki-edit-tree, 
-.buttons-group .admin--merge, 
+.admin--delete3,
+.buttons-group .admin--edit,
+.buttons-group .admin--wiki-edit-tree,
+.buttons-group .admin--merge,
 .buttons-group .admin--move {
-	background-color: {$GET,red_highlight_background};
+	background-color: {$GET,required_background};
+	color: {$GET,slightly_seeded_text} !important;
+	text-shadow: none !important;
 	border-color: {$GET,red_highlight_text};
 }
 
@@ -4101,6 +4106,12 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 }
 .admin--import {
 	background-image: url('{$IMG,icons/admin/import}') !important;
+}
+.admin--export-csv {
+	background-image: url('{$IMG,icons/admin/export_csv}') !important;
+}
+.admin--import-csv {
+	background-image: url('{$IMG,icons/admin/import_csv}') !important;
 }
 .admin--merge {
 	background-image: url('{$IMG,icons/admin/merge}') !important;
@@ -4763,7 +4774,7 @@ a[rel="lightbox"] {
 
 /* We normally expect a standard-sized YouTube embed, but for mobile we will lock the size to the browser window */
 /*{+START,CSS_MODE,mobile}*/
-	.youtube-player {
+	.responsive-media-wrapper {
 		overflow: hidden;
 		width: 100%;
 		position: relative;
@@ -4771,7 +4782,7 @@ a[rel="lightbox"] {
 		padding-top: 25px;
 		height: 0;
 	}
-	.youtube-player iframe {
+	.responsive-media-wrapper iframe {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -4890,7 +4901,7 @@ a[rel="lightbox"] {
 		padding: 0 22px 5px 0;
 	}
 
-	a[href$=".asf"].user-link, a[href$=".ra"].user-link, a[href$=".wma"].user-link, a[href$=".wav"].user-link, a[href$=".mp3"].user-link, a[href$=".ogg"].user-link, a[href$=".mid"].user-link, a[href$=".mov"].user-link, a[href$=".qt"].user-link, a[href$=".wmv"].user-link, a[href$=".ram"].user-link, a[href$=".rm"].user-link, a[href$=".avi"].user-link, a[href$=".mpg"].user-link, a[href$=".mpe"].user-link, a[href$=".mpeg"].user-link, a[href$=".mp4"].user-link, a[href$=".webm"].user-link, body div a.media-link {
+	a[href$=".asf"].user-link, a[href$=".ra"].user-link, a[href$=".wma"].user-link, a[href$=".wav"].user-link, a[href$=".mp3"].user-link, a[href$=".ogg"].user-link, a[href$=".mid"].user-link, a[href$=".mov"].user-link, a[href$=".qt"].user-link, a[href$=".wmv"].user-link, a[href$=".ram"].user-link, a[href$=".rm"].user-link, a[href$=".avi"].user-link, a[href$=".mpg"].user-link, a[href$=".mpe"].user-link, a[href$=".mpeg"].user-link, a[href$=".mp4"].user-link, a[href$=".mp2"].user-link, a[href$=".mpv2"].user-link, a[href$=".m2v"].user-link, a[href$=".mpa"].user-link, a[href$=".3g2"].user-link, a[href$=".3gp"].user-link, a[href$=".3gp2"].user-link, a[href$=".3gpp"].user-link, a[href$=".3p"].user-link, a[href$=".f4v"].user-link, a[href$=".m4v"].user-link, a[href$=".ogv"].user-link, a[href$=".aac"].user-link, a[href$=".aif"].user-link, a[href$=".aifc"].user-link, a[href$=".aiff"].user-link, a[href$=".weba"].user-link, a[href$=".webm"].user-link, body div a.media-link {
 		background: url('{$IMG;,icons/file_types/page_media}') no-repeat right top;
 		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;

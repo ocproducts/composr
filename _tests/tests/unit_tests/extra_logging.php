@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -105,7 +105,7 @@ class extra_logging_test_set extends cms_test_case
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'lang_EN'), '');
         $data = http_get_contents($url->evaluate(), array('cookies' => array(get_session_cookie() => get_session_id())));
-        $this->assertTrue(strpos($data, 'Translate/re-phrase Composr into English') !== false);
+        $this->assertTrue(strpos($data, 'Translate/rephrase Composr into English') !== false);
     }
 
     public function testSpecialPageTypeValidate()

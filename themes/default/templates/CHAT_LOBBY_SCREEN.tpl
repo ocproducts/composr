@@ -26,7 +26,7 @@
 								<li class="icon-14-proceed">{PRIVATE_CHATROOM}</li>
 							{+END}
 							{+START,IF_NON_EMPTY,{BLOCKING_LINK}}
-								<li class="icon-14-remove-manage">{BLOCKING_LINK}</li>
+								<li class="icon-14-ban">{BLOCKING_LINK}</li>
 							{+END}
 							{+START,IF_NON_EMPTY,{MOD_LINK}}
 								<li class="icon-14-tools">{MOD_LINK}</li>

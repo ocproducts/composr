@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -521,7 +521,7 @@ class Hook_import_mybb
             $perm_banned = false;
 
             if ($ban_period == '---') {
-                // Permanantly banned
+                // Permanently banned
                 $perm_banned = true;
             } else {
                 // Calculate the ban period

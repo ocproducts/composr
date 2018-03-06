@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -60,7 +60,7 @@ class _resource_fs_test_set extends cms_test_case
             if (($limit_to !== null) && ($commandr_fs_hook != $limit_to)) {
                 continue;
             }
-            if (strpos($dir,'_custom')!==false) continue;//TODO
+
             if (get_forum_type() != 'cns') {
                 if ($commandr_fs_hook == 'aggregate_type_instances') { // Contains usergroup creation and referencing by default
                     continue;
@@ -269,11 +269,17 @@ class _resource_fs_test_set extends cms_test_case
                 $result = $ob->folder_delete(basename($path), (strpos($path, '/') === false) ? '' : dirname($path));
                 $this->assertTrue($result !== false, 'Failed to folder_delete ' . $commandr_fs_hook);
 
-                if (strpos($path, '/') !== false) {
-                    $_path = dirname($path);
-                    $result = $ob->folder_delete(basename($_path), dirname($_path));
-                    $this->assertTrue($result !== false, 'Failed to folder_delete ' . $commandr_fs_hook);
+                set_throw_errors(true);
+                try {
+                    if (strpos($path, '/') !== false) {
+                        $_path = dirname($path);
+                        $result = $ob->folder_delete(basename($_path), dirname($_path));
+                        $this->assertTrue($result !== false, 'Failed to folder_delete ' . $commandr_fs_hook);
+                    }
                 }
+                catch (Exception $e) {
+                }
+                set_throw_errors(false);
             }
         }
     }

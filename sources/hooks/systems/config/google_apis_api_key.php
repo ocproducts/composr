@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -34,18 +34,16 @@ class Hook_config_google_apis_api_key
             'human_name' => 'GOOGLE_APIS_API_KEY',
             'type' => 'line',
             'category' => 'COMPOSR_APIS',
-            'group' => 'GOOGLE_OAUTH_API',
+            'group' => 'GOOGLE_API',
             'explanation' => 'CONFIG_OPTION_google_apis_api_key',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 1,
             'required' => false,
 
             'public' => false,
 
             'addon' => 'core_configuration',
-
-            'maintenance_code' => 'google_search_console',
         );
     }
 

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -363,10 +363,10 @@ function find_label_via_id($resource_type, $resource_id)
  */
 function find_id_via_moniker($resource_type, $resource_moniker)
 {
-    static $cache = array();
+    /*static $cache = array(); Things may have been deleted
     if (isset($cache[$resource_type][$resource_moniker])) {
         return $cache[$resource_type][$resource_moniker];
-    }
+    }*/
 
     $where = array(
         'resource_type' => $resource_type,
@@ -390,10 +390,10 @@ function find_id_via_label($resource_type, $_resource_label, $subpath = null)
 {
     $resource_label = cms_mb_substr($_resource_label, 0, 255);
 
-    static $cache = array();
+    /*static $cache = array(); Things may have been deleted
     if (isset($cache[$resource_type][$resource_label][$subpath])) {
         return $cache[$resource_type][$resource_label][$subpath];
-    }
+    }*/
 
     $commandr_fs_ob = get_resource_commandr_fs_object($resource_type);
     if ($commandr_fs_ob === null) {
@@ -463,10 +463,10 @@ function _check_id_match($commandr_fs_ob, $resource_type, $resource_id, $subpath
  */
 function find_id_via_guid($resource_guid)
 {
-    static $cache = array();
+    /*static $cache = array(); Things may have been deleted
     if (isset($cache[$resource_guid])) {
         return $cache[$resource_guid];
-    }
+    }*/
 
     $ret = $GLOBALS['SITE_DB']->query_select_value_if_there('alternative_ids', 'resource_id', array(
         'resource_guid' => $resource_guid,

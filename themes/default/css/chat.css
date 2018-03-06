@@ -546,34 +546,38 @@ ul.icon-links-block-group>li {
 }
 
 .icon-14-add {
-	background-image: url('{$IMG,icons/admin/add}');
+	background-image: url('{$IMG,icons/admin/add}') !important;
 	background-size: 14px 14px;
 }
-.icon-14-edit2 {
-	background-image: url('{$IMG,icons/admin/edit2}');
+.icon-14-edit {
+	background-image: url('{$IMG,icons/admin/edit2}') !important;
 	background-size: 14px 14px;
 }
 .icon-14-export {
-	background-image: url('{$IMG,icons/admin/export}');
+	background-image: url('{$IMG,icons/admin/export}') !important;
 	background-size: 14px 14px;
 }
 .icon-14-proceed {
-	background-image: url('{$IMG,icons/buttons/proceed2}');
+	background-image: url('{$IMG,icons/buttons/proceed2}') !important;
 	background-size: 14px 14px;
 }
-.icon-14-remove-manage {
-	background-image: url('{$IMG,icons/admin/remove_manage}');
+.icon-14-ban {
+	background-image: url('{$IMG,icons/admin/remove}') !important;
 	background-size: 14px 14px;
 }
-.icon-14-remove {
-	background-image: url('{$IMG,icons/admin/remove}');
+.icon-14-unban {
+	background-image: url('{$IMG,icons/buttons/clear}') !important;
+	background-size: 14px 14px;
+}
+.icon-14-delete {
+	background-image: url('{$IMG,icons/admin/delete3}') !important;
 	background-size: 14px 14px;
 }
 .icon-14-sound-effects {
-	background-image: url('{$IMG,icons/buttons/sound_effects}');
+	background-image: url('{$IMG,icons/buttons/sound_effects}') !important;
 	background-size: 14px 14px;
 }
 .icon-14-tools {
-	background-image: url('{$IMG,icons/admin/tools}');
+	background-image: url('{$IMG,icons/checklist/toggle}') !important;
 	background-size: 14px 14px;
 }

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -47,12 +47,12 @@ Content-Type: multipart/mixed;
 
 This is a multipart message in MIME format.
 
---XXXXboundary text 
+--XXXXboundary text
 Content-Type: text/plain
 
 this is the body text
 
---XXXXboundary text 
+--XXXXboundary text
 Content-Type: text/plain;
 Content-Disposition: attachment;
         filename="test.txt"

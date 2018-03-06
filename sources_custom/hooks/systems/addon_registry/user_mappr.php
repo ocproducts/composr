@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -90,16 +90,17 @@ class Hook_addon_registry_user_mappr
 
 The addon adds extra custom profile fields to store members coordinates to store their latitude and logitude. The addon can automatically populate the members when members visit the block page. Members can edit their locations in their profile.
 
-You should configure the "Google Map key" option in the configuration (Admin Zone > Setup > Configuration > Feature options > Google map).
-
-Coordinates of the Google map centre point and zoom level are configurable. You can find the coordinates by using the option in Google Maps Labs or via https://itouchmap.com/latlong.html.
+Before you can use the block you must first configure the API:
+1) Configure the Google API API Key in the configuration (Admin Zone > Configuration > Setup > Composr API options > Google API)
+2) Make sure that Google Maps JavaScript API is enabled on Google\'s end
 
 Parameters:
- - Title -- The Name of the block which will appear on screen for example Store Locater.
+ - Title -- The Name of the block which will appear on screen for example Store Locator.
  - Description -- a Description of the block.
  - Width -- Defaults to 100% of the column.
  - Height -- Defaults to 300px but can be set to how ever many pixels (px) you need it to be.
- - Zoom -- A number between 1 and 17, the higher the number the more zoomed in the map will start at.';
+ - Zoom -- A number between 1 and 17, the higher the number the more zoomed in the map will start at.
+';
     }
 
     /**
@@ -152,7 +153,6 @@ Parameters:
             'themes/default/templates_custom/BLOCK_MAIN_GOOGLE_MAP_USERS.tpl',
             'themes/default/templates_custom/FORM_SCREEN_INPUT_MAP_POSITION.tpl',
             'sources_custom/hooks/systems/fields/float.php',
-            'sources_custom/hooks/systems/config/google_map_key.php',
             'data_custom/set_coordinates.php',
             'sources_custom/hooks/systems/cns_cpf_filter/latitude.php',
             'data_custom/get_member_tooltip.php',

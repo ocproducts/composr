@@ -74,7 +74,7 @@ Composr is designed so that forms of redundancy, such as thumbnails, parsed Comc
 [surround]
 [media width="150" description="Composr forum drivers are specially coded PHP files stored in the [tt]sources/forum[/tt] directory (or sources_custom/forum)." float="right"]data_custom/images/docs/tut_importer/importer_forum_drivers.png[/media]
 [media width="150" description="The forum driver can be changed using the Installation Options editor, but you [b]should not do this[/b] unless you know exactly what you are doing" float="right"]data_custom/images/docs/tut_importer/importer_change_forum_driver.png[/media]
-If you have been running Composr and a third-party forum, and wish to switch to using a complete Composr solution (Composr with Conversr), this is possible if there is a forum importer for your current forum product. The opportunity is presented to move to Conversr as the last importable feature of a forum import, and the function will 'jump' forum drivers for you and re-map any usergroup and user IDs. It is still strongly advised to check your permissions after performing this to ensure extra access wasn't accidentally opened up to users.
+If you have been running Composr and a third-party forum, and wish to switch to using a complete Composr solution (Composr with Conversr), this is possible if there is a forum importer for your current forum product. The opportunity is presented to move to Conversr as the last importable feature of a forum import, and the function will 'jump' forum drivers for you and remap any usergroup and user IDs. It is still strongly advised to check your permissions after performing this to ensure extra access wasn't accidentally opened up to users.
 [/surround]
 
 [title="3"]Converting an existing Composr website manually (experts-only)[/title]
@@ -143,7 +143,7 @@ Other limitations:
  - The importer does not cover Comcode pages fully, only their metadata. However these are just [tt].txt[/tt] files ([tt]<zone>/pages/comcode_custom/<language>/<page>.txt[/tt]) that may be copied from one install to another.
  - Shopping orders aren't imported, make sure there are no outstanding orders at the point of importing.
  - Commandr-fs GUIDs and filenames aren't imported, so these will change post-import.
- - Due to a complex cylic-dependency, usergroup custom fields won't import
+ - Due to a complex cyclic-dependency, usergroup custom fields won't import
  - Comcode ownership is not imported if multi-lang-content is on
 
 Please note that URL and page-link links will not be altered during the import, meaning it is likely they will need updating (because resource IDs change). For example, if a link somewhere linked to download #5, it might need to be changed to link to download #123.

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -88,9 +88,13 @@ class Hook_addon_registry_gallery_syndication
     {
         return 'Automatically syndicate out videos to YouTube, keeping them in sync, with the option to actually host the videos on these services via an embedded player (giving you free video transcoding and hosting).
 
-For YouTube syndication you must first set up oAuth for Google within Composr. Then you will need to [url="Increase your Youtube video length limit"]http://support.google.com/youtube/bin/answer.py?hl=en&answer=71673[/url].
+For YouTube syndication you must first:
+1) Configure the Google API API Key in the configuration (Admin Zone > Configuration > Setup > Composr API options > Google API)
+2) Make sure that YouTube Data API is enabled on Google\'s end
+3) Connect YouTube oAuth from Admin Zone > Setup > API access
+4) [url="Increase your YouTube video length limit"]http://support.google.com/youtube/bin/answer.py?hl=en&answer=71673[/url].
 
-Unfortunately YouTube support is currently not functional (https://compo.sr/tracker/view.php?id=3166).';
+[b]Unfortunately YouTube support is currently not functional[/b] (https://compo.sr/tracker/view.php?id=3166).';
     }
 
     /**

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_hc_google_safe_browsing_api_key
+class Hook_config_hc_google_safe_browsing_api_enabled
 {
     /**
      * Gets the details relating to the config option.
@@ -32,10 +32,10 @@ class Hook_config_hc_google_safe_browsing_api_key
     {
         return array(
             'human_name' => 'HC_GOOGLE_SAFE_BROWSING_API_KEY',
-            'type' => 'line',
+            'type' => 'tick',
             'category' => 'HEALTH_CHECK',
             'group' => 'SECURITY',
-            'explanation' => 'CONFIG_OPTION_hc_google_safe_browsing_api_key',
+            'explanation' => 'CONFIG_OPTION_hc_google_safe_browsing_api_enabled',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => false,
@@ -55,6 +55,6 @@ class Hook_config_hc_google_safe_browsing_api_key
      */
     public function get_default()
     {
-        return '';
+        return '0';
     }
 }

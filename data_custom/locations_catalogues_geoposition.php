@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -42,6 +42,8 @@ global $FORCE_INVISIBLE_GUEST;
 $FORCE_INVISIBLE_GUEST = false;
 global $EXTERNAL_CALL;
 $EXTERNAL_CALL = false;
+global $KNOWN_UTF8;
+$KNOWN_UTF8 = true;
 if (!is_file($FILE_BASE . '/sources/global.php')) {
     exit('<!DOCTYPE html>' . "\n" . '<html lang="EN"><head><title>Critical startup error</title></head><body><h1>Composr startup error</h1><p>The second most basic Composr startup file, sources/global.php, could not be located. This is almost always due to an incomplete upload of the Composr system, so please check all files are uploaded correctly.</p><p>Once all Composr files are in place, Composr must actually be installed by running the installer. You must be seeing this message either because your system has become corrupt since installation, or because you have uploaded some but not all files from our manual installer package: the quick installer is easier, so you might consider using that instead.</p><p>ocProducts maintains full documentation for all procedures and tools, especially those for installation. These may be found on the <a href="http://compo.sr">Composr website</a>. If you are unable to easily solve this problem, we may be contacted from our website and can help resolve it for you.</p><hr /><p style="font-size: 0.8em">Composr is a website engine created by ocProducts.</p></body></html>');
 }
@@ -57,65 +59,43 @@ safe_ini_set('ocproducts.xss_detect', '0');
 
 $lstring = get_param_string('lstring', null, INPUT_FILTER_GET_COMPLEX);
 if ($lstring !== null) {
+    require_code('locations_geocoding');
+    $result = geocode($lstring);
+    if ($result !== null) {
+        list($latitude, $longitude, $ne_latitude, $ne_longitude, $sw_latitude, $sw_longitude) = $result;
 
-    $url = 'http://maps.googleapis.com/maps/api/geocode/xml?address=' . urlencode($lstring);
-    if (isset($_COOKIE['google_bias'])) {
-        $url .= '&region=' . urlencode($_COOKIE['google_bias']);
-    }
-    $key = get_option('google_geocode_api_key');
-    /*if ($key == '') { Actually, does work
-        $error_msg = do_lang_tempcode('GOOGLE_GEOCODE_API_NOT_CONFIGURED');
-        return null;
-    }*/
-    $url .= '&language=' . urlencode(strtolower(get_site_default_lang()));
-    if ($key != '') {
-        $url .= '&key=' . urlencode($key);
-    }
-    $result = http_get_contents($url);
-    $matches = array();
-    if (preg_match('#<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#s', $result, $matches) != 0) {
         echo '[';
 
         echo 'null';
         echo ',\'' . addslashes($lstring) . '\'';
-        echo ',' . float_to_raw_string(floatval($matches[1]), 30);
-        echo ',' . float_to_raw_string(floatval($matches[2]), 30);
-        echo ',' . float_to_raw_string(floatval($matches[3]), 30);
-        echo ',' . float_to_raw_string(floatval($matches[4]), 30);
-        echo ',' . float_to_raw_string(floatval($matches[5]), 30);
-        echo ',' . float_to_raw_string(floatval($matches[6]), 30);
+        echo ',' . float_to_raw_string($latitude), 30);
+        echo ',' . float_to_raw_string($longitude), 30);
+        echo ',' . float_to_raw_string($ne_latitude), 30);
+        echo ',' . float_to_raw_string($ne_longitude), 30);
+        echo ',' . float_to_raw_string($sw_latitude), 30);
+        echo ',' . float_to_raw_string($sw_longitude), 30);
 
         echo ']';
     }
 } else {
-
     if (get_param_integer('use_google', 0) == 1) {
-        $url = 'http://maps.googleapis.com/maps/api/geocode/xml?latlng=' . urlencode(get_param_string('latitude')) . ',' . urlencode(get_param_string('longitude'));
-        if (isset($_COOKIE['google_bias'])) {
-            $url .= '&region=' . urlencode($_COOKIE['google_bias']);
-        }
-        $key = get_option('google_geocode_api_key');
-        /*if ($key == '') { Actually, does work
-            $error_msg = do_lang_tempcode('GOOGLE_GEOCODE_API_NOT_CONFIGURED');
-            return null;
-        }*/
-        $url .= '&language=' . urlencode(strtolower(get_site_default_lang()));
-        if ($key != '') {
-            $url .= '&key=' . urlencode($key);
-        }
-        $result = http_get_contents($url);
-        $matches = array();
-        if (preg_match('#<formatted_address>([^<>]*)</formatted_address>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#Us', $result, $matches) != 0) {
+        $latitude = floatval(get_param_string('latitude'));
+        $longitude = floatval(get_param_string('longitude'));
+        $result = reverse_geocode($latitude, $longitude);
+
+        if ($result !== null) {
+            list($formatted_address, $street_address, $city, $county, $state, $post_code, $country, $ne_latitude, $ne_longitude, $sw_latitude, $sw_longitude) = $result;
+
             echo '[';
 
             echo 'null';
-            echo ',\'' . addslashes($matches[1]) . '\'';
-            echo ',' . float_to_raw_string(floatval($matches[2]), 30);
-            echo ',' . float_to_raw_string(floatval($matches[3]), 30);
-            echo ',' . float_to_raw_string(floatval($matches[4]), 30);
-            echo ',' . float_to_raw_string(floatval($matches[5]), 30);
-            echo ',' . float_to_raw_string(floatval($matches[6]), 30);
-            echo ',' . float_to_raw_string(floatval($matches[7]), 30);
+            echo ',\'' . addslashes($formatted_address) . '\'';
+            echo ',' . float_to_raw_string($longitude, 30);
+            echo ',' . float_to_raw_string($longitude, 30);
+            echo ',' . float_to_raw_string($ne_latitude, 30);
+            echo ',' . float_to_raw_string($ne_longitude, 30);
+            echo ',' . float_to_raw_string($sw_latitude, 30);
+            echo ',' . float_to_raw_string($sw_longitude, 30);
 
             echo ']';
         }
@@ -198,3 +178,5 @@ if ($lstring !== null) {
         }
     }
 }
+
+exit(); // So auto_append_file cannot run and corrupt our output

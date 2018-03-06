@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -68,7 +68,7 @@ function init__locations()
             'NE' => 'Niger',
             'NG' => 'Nigeria',
             'RW' => 'Rwanda',
-            'RE' => (get_charset() == 'utf-8') ? 'Réunion' : 'Reunion',
+            'RE' => (get_charset() == 'utf-8') ? ('R' . build_hex_string('c3a9') . 'union') : 'Reunion',
             'SH' => 'Saint Helena',
             'SN' => 'Senegal',
             'SC' => 'Seychelles',
@@ -77,7 +77,7 @@ function init__locations()
             'ZA' => 'South Africa',
             'SD' => 'Sudan',
             'SZ' => 'Swaziland',
-            'ST' => (get_charset() == 'utf-8') ? 'São Tomé and Príncipe' : 'Sao Tome and Principe',
+            'ST' => (get_charset() == 'utf-8') ? ('S' . build_hex_string('c3a3') . 'o Tom' . build_hex_string('c3a9') . ' and Pr' . build_hex_string('c3ad') . 'ncipe') : 'Sao Tome and Principe',
             'TZ' => 'Tanzania',
             'TG' => 'Togo',
             'TN' => 'Tunisia',
@@ -127,7 +127,7 @@ function init__locations()
             'PY' => 'Paraguay',
             'PE' => 'Peru',
             'PR' => 'Puerto Rico',
-            'BL' => (get_charset() == 'utf-8') ? 'Saint Barthélemy' : 'Saint Barthelemy',
+            'BL' => (get_charset() == 'utf-8') ? ('Saint Barth' . build_hex_string('c3a9') . 'lemy') : 'Saint Barthelemy',
             'KN' => 'Saint Kitts and Nevis',
             'LC' => 'Saint Lucia',
             'MF' => 'Saint Martin',
@@ -252,7 +252,7 @@ function init__locations()
             'SU' => 'Union of Soviet Socialist Republics',
             'GB' => 'United Kingdom',
             'VA' => 'Vatican City',
-            'AX' => (get_charset() == 'utf-8') ? 'Åland Islands' : 'Aland Islands',
+            'AX' => (get_charset() == 'utf-8') ? (build_hex_string('c385') . 'land Islands') : 'Aland Islands',
             'XK' => 'Kosovo', // Unofficial, http://geonames.wordpress.com/2010/03/08/xk-country-code-for-kosovo/. Currently not fully UN recognised, UN-controlled ex-part of Serbia
         ),
         'Oceania' => array(

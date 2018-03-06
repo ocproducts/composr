@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -39,7 +39,6 @@ class lang_duplication_test_set extends cms_test_case
         $exceptions = array(
             'GOOGLE_MAP',
             'GOOGLE_MAP_KEY',
-            'CONFIG_OPTION_google_map_key',
         );
 
         $lang_files = get_lang_files(fallback_lang());

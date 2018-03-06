@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -186,7 +186,7 @@ class Hook_addon_registry_core
             'themes/default/images/icons/buttons/new_comment.svg',
             'themes/default/images/icons/menu/cms/cms.svg',
             'themes/default/images/icons/links/download_as_archive.svg',
-            'themes/default/images/icons/admin/download_csv.svg',
+            'themes/default/images/icons/admin/export_csv.svg',
             'themes/default/images/icons/admin/edit_this.svg',
             'themes/default/images/icons/admin/edit_this_category.svg',
             'themes/default/images/icons/menu/adminzone/audit/email_log.svg',
@@ -277,8 +277,6 @@ class Hook_addon_registry_core
             'themes/default/images/icons/feedback/rating.svg',
             'themes/default/images/icons/trays/contract.svg',
             'themes/default/images/icons/trays/expand.svg',
-            'themes/default/images/icons/trays/contract2.svg',
-            'themes/default/images/icons/trays/expand2.svg',
             'themes/default/images/icons/trays/index.html',
             'themes/default/images/icons/buttons/close.svg',
             'themes/default/images/banner_frame.svg',
@@ -291,7 +289,6 @@ class Hook_addon_registry_core
             'themes/default/images/icons/admin/delete2.svg',
             'themes/default/images/icons/admin/delete3.svg',
             'themes/default/images/icons/admin/remove.svg',
-            'themes/default/images/icons/admin/remove_manage.svg',
             'themes/default/images/icons/admin/tools.svg',
             'themes/default/css/modern_tabs.css',
             'themes/default/images/tabs/modern_subtab_active.svg',
@@ -335,6 +332,11 @@ class Hook_addon_registry_core
             'sources/hooks/systems/sitemap/page_grouping.php',
             'sources/hooks/systems/sitemap/zone.php',
             'sources/hooks/systems/sitemap/entry_point.php',
+            'sources/hooks/systems/geocoding/.htaccess',
+            'sources/hooks/systems/geocoding/bing.php',
+            'sources/hooks/systems/geocoding/google.php',
+            'sources/hooks/systems/geocoding/mapquest.php',
+            'sources/hooks/systems/geocoding/index.html',
             'web.config',
             '.user.ini',
             'data/external_url_proxy.php',
@@ -1169,6 +1171,12 @@ class Hook_addon_registry_core
             'themes/default/images/icons/buttons/cancel2.svg',
             'themes/default/images/icons/links/facebook.svg',
             'themes/default/images/icons/links/twitter.svg',
+            'themes/default/images/icons/links/bandcamp.svg',
+            'themes/default/images/icons/links/dailymotion.svg',
+            'themes/default/images/icons/links/minds.svg',
+            'themes/default/images/icons/links/soundcloud.svg',
+            'themes/default/images/icons/links/spotify.svg',
+            'themes/default/images/icons/links/vimeo.svg',
             'uploads/repimages/index.html',
             'uploads/repimages/.htaccess',
             'uploads/incoming/index.html',

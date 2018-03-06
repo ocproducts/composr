@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -197,7 +197,7 @@ function _convert_request_data_encodings($known_utf8 = false)
         $CONVERTED_ENCODING = true;
         return;
     }
-    
+
     if ((function_exists('mb_convert_encoding')) && (get_value('disable_mbstring') !== '1')) {
         // mbstring option
 

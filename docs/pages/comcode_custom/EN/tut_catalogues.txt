@@ -186,7 +186,7 @@ If you have multiple catalogues on your website and you wish for them to have cu
 
 [title="3"]Tempcode programming[/title]
 
-It is possibly to achieve template customisation wholely within the default set of templates, by using [page="_SEARCH:tut_tempcode"]template programming[/page]. The catalogue name is passed into every catalogue template meaning you can use template IF directives to differentiate against that name, producing different output accordingly.
+It is possibly to achieve template customisation wholly within the default set of templates, by using [page="_SEARCH:tut_tempcode"]template programming[/page]. The catalogue name is passed into every catalogue template meaning you can use template IF directives to differentiate against that name, producing different output accordingly.
 
 While the main [tt]CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP.tpl[/tt] template uses the [tt]FIELDS[/tt] parameter by default (which consists of precomposited template field rows, built using the other templates), it is also given special parameters correlating to each individual field row and each individual field value. You may thus entirely customise the catalogue look using these low level values to make very customised arrangements that are more complex than the simple tabular arrangement used by default.
 

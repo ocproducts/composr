@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -322,7 +322,7 @@ function attach_to_screen_header($data)
 }
 
 /**
- * Mark another parameter non-canonical, so that Google won't consider it when indexing URLs.
+ * Mark another parameter non-canonical, so that search engines won't consider it when indexing URLs.
  *
  * @sets_output_state
  *
@@ -1746,7 +1746,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
             ($codename[0] == '_') ||
             ($zone . ':' . $codename == ':404') ||
 
-            // FUDGE. Sculpt what comes up in Google a bit. We don't want really meta contextual help muddying search results
+            // FUDGE. Sculpt what comes up in search engines a bit. We don't want really meta contextual help muddying search results
             ($codename == 'rules') ||
             ($zone . ':' . $codename == ':recommend_help') ||
             ($zone . ':' . $codename == ':popup_blockers') ||

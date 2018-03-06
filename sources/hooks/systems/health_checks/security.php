@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -63,7 +63,11 @@ class Hook_health_check_security extends Hook_Health_Check
         }
 
         if ($use_test_data_for_pass === null) {
-            $key = get_option('hc_google_safe_browsing_api_key');
+            $key = get_option('google_apis_api_key');
+            if (get_option('hc_google_safe_browsing_api_enabled') == '0') {
+                $this->stateCheckSkipped('Google Safe Browsing API key not configured');
+                return;
+            }
         } else {
             $key = 'AIzaSyBJyvgYzg-moqMRBZwhiivNxhYvafqMWas';
         }

@@ -32,7 +32,7 @@ For example:
 	width: 20px;
 }
 
-.dropdown-menu-item-img, 
+.dropdown-menu-item-img,
 .dropdown-menu-item-caption {
 	vertical-align: middle;
 }
@@ -166,11 +166,11 @@ For example:
 	.dropdown-menu li.nlevel.has-children > a.nlevel-link::after {
 		display: inline-block;
 		vertical-align: middle;
-		content: '→'; /* Right arrow */
+		content: '\2192'; /* Right arrow */
 		margin-left: 0.3em;
 	}
 
-	.dropdown-menu .toplevel-link a, 
+	.dropdown-menu .toplevel-link a,
 	.dropdown-menu .toplevel-link a:visited,
 	.dropdown-menu .toplevel-link a:hover {
 		text-decoration: none;
@@ -181,7 +181,7 @@ For example:
 		margin-bottom: 0.75em;
 	}
 
-	.dropdown-menu ul.nlevel, 
+	.dropdown-menu ul.nlevel,
 	.dropdown-menu div.nlevel {
 		box-shadow: 3px 5px 13px #c9c9c9;
 		line-height: 1.4em;
@@ -196,20 +196,20 @@ For example:
 		overflow: hidden; /* Needed as images are set to float */
 	}
 
-	.dropdown-menu .nlevel li:hover, 
+	.dropdown-menu .nlevel li:hover,
 	.dropdown-menu .nlevel li.current {
 		background-color: #e8f4ff;
 		background-image: none;
 	}
 
-	.dropdown-menu .nlevel li, 
-	.dropdown-menu div.nlevel, 
+	.dropdown-menu .nlevel li,
+	.dropdown-menu div.nlevel,
 	.dropdown-menu .nlevel .menu-spacer {
 		background-image: linear-gradient(to bottom, #cbdaed, #d8e4f0);
 		font-weight: normal;
 		border-bottom: 1px solid #e7eef8;
 		min-height: 20px;
-	
+
 		/* We do want wrapping for this, as menu labels could be longer than the available space between the start of the dropdown label and the edge of the fixed width */
 		white-space: normal;
 	}
@@ -224,7 +224,7 @@ For example:
 		background-size: 6px 6px !important;
 	}
 
-	.dropdown-menu .nlevel a, 
+	.dropdown-menu .nlevel a,
 	.dropdown-menu .nlevel a:visited {
 		text-decoration: none;
 	}
@@ -233,9 +233,9 @@ For example:
 		text-decoration: underline;
 	}
 
-	.dropdown-menu .nlevel, 
-	.dropdown-menu .nlevel a, 
-	.dropdown-menu .nlevel a:visited, 
+	.dropdown-menu .nlevel,
+	.dropdown-menu .nlevel a,
+	.dropdown-menu .nlevel a:visited,
 	.dropdown-menu .nlevel a:hover {
 		color: {$GET,area_text};
 	}

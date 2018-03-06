@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -56,7 +56,7 @@ class Hook_realtime_rain_stats
 
                 $title = rain_truncate_for_title(do_lang('HIT', $page_link));
 
-                // Show referer domain or Google search keyword
+                // Show referer domain
                 $referer = @parse_url($row['referer']);
                 $base_url = @parse_url(get_base_url());
                 if ($referer !== false) {
@@ -65,12 +65,7 @@ class Hook_realtime_rain_stats
                     }
 
                     if ($referer['host'] != $base_url['host']) {
-                        $matches = array();
-                        if (preg_match('#(&|\?)q=([^&]*)#', $row['referer'], $matches) != 0) {
-                            $title = rain_truncate_for_title(do_lang('HIT', $page_link, $matches[2], $referer['host']));
-                        } else {
-                            $title = rain_truncate_for_title(do_lang('HIT', $page_link, $referer['host']));
-                        }
+                        $title = rain_truncate_for_title(do_lang('HIT', $page_link, $referer['host']));
                     }
                 }
 

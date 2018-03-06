@@ -84,7 +84,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				{$,Breadcrumbs}
 				{+START,IF,{$IN_STR,{$BREADCRUMBS},<a }}{+START,IF,{$SHOW_HEADER}}
 					<nav class="global-breadcrumbs breadcrumbs" itemprop="breadcrumb" id="global-breadcrumbs">
-						<img class="breadcrumbs-img" width="20" height="20" src="{$IMG*,icons/breadcrumbs}" title="{!YOU_ARE_HERE}" alt="{!YOU_ARE_HERE}" />
+						<img class="breadcrumbs-img" width="24" height="24" src="{$IMG*,icons/breadcrumbs}" title="{!YOU_ARE_HERE}" alt="{!YOU_ARE_HERE}" />
 						{$BREADCRUMBS}
 					</nav>
 				{+END}{+END}

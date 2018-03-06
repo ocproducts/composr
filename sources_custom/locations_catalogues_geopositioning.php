@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -27,34 +27,12 @@ function init__locations_catalogues_geopositioning()
 
 function fix_geoposition($lstring, $category_id)
 {
-    $type = 'google'; // Other values not supported
-
     $lstring = preg_replace('#, (Africa|Americas|Asia|Europe|Oceania)$#', '', $lstring); // Confuses Bing
 
-    // Web service to get remaining latitude/longitude
-    if ($type == 'bing') {
-        $url = 'http://dev.virtualearth.net/REST/v1/Locations?query=' . urlencode($lstring) . '&o=xml&key=AvmgsVWtIoJeCnZXdDnu3dQ7izV9oOowHCNDwbN4R1RPA9OXjfsQX1Cr9HSrsY4j';
-    } elseif ($type == 'yahoo') {
-        $url = 'http://where.yahooapis.com/geocode?q=' . urlencode($lstring) . '&appid=dj0yJmk9N0x3TTdPaDNvdElCJmQ9WVdrOWFGWjVOa3hzTldFbWNHbzlNVFU0TXpBMU9EWTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1mNg--';
-    } elseif ($type == 'google') {
-        $url = 'http://maps.googleapis.com/maps/api/geocode/xml?address=' . urlencode($lstring);
-        $key = get_option('google_geocode_api_key');
-        /*if ($key == '') { Actually, does work
-            $error_msg = do_lang_tempcode('GOOGLE_GEOCODE_API_NOT_CONFIGURED');
-            return null;
-        }*/
-        $url .= '&language=' . urlencode(strtolower(get_site_default_lang()));
-        if ($key != '') {
-            $url .= '&key=' . urlencode($key);
-        }
-    } else {
-        exit('unknown type');
-    }
-    $result = http_get_contents($url);
-    $matches = array();
-    if ((($type == 'bing') && (preg_match('#<Latitude>([\-\d\.]+)</Latitude>\s*<Longitude>([\-\d\.]+)</Longitude>#', $result, $matches) != 0)) || (($type == 'google') && (preg_match('#<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#', $result, $matches) != 0)) || (($type == 'yahoo') && (preg_match('#<latitude>([\-\d\.]+)</latitude>\s*<longitude>([\-\d\.]+)</longitude>#', $result, $matches) != 0))) {
-        $latitude = floatval($matches[1]);
-        $longitude = floatval($matches[2]);
+    require_code('locations_geocoding');
+    $result = geocode($lstring);
+    if ($result !== null) {
+        list($latitude, $longitude) = $result;
 
         $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_catalogue_category'), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         require_code('content');

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -321,7 +321,7 @@ function form_for_filtercode($filter, $labels = array(), $content_type = null, $
     foreach ($fields_needed as $field) {
         list($field_type, $field_name, $field_label, $default_value, $extra) = $field;
 
-        switch ($field_type) { // NB: These type codes also vaguelly correspond to field hooks, just for convention (we don't use them)
+        switch ($field_type) { // NB: These type codes also vaguely correspond to field hooks, just for convention (we don't use them)
             case 'time':
                 $form_fields->attach(form_input_date($field_label, '', 'filter_' . $field_name, false, $default_value == '', true, ($default_value == '') ? null : intval($default_value)));
                 break;

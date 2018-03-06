@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -183,7 +183,7 @@ class comcode_test_set extends cms_test_case
         );
         foreach ($expects_no_parse as $comcode) {
             $actual = comcode_to_tempcode($comcode, null, false, null, null, COMCODE_IS_ALL_SEMIHTML);
-            $this->assertTrue(strpos($actual->evaluate(), '{$IMG') !== false, 'Tempcode was parsed when it should not have been, in (2): ' . $comcode);
+            $this->assertTrue((strpos($actual->evaluate(), '{$IMG') !== false) || (strpos($actual->evaluate(), '&#123;$IMG') !== false), 'Tempcode was parsed when it should not have been, in (2): ' . $comcode . '; got: ' . $actual->evaluate());
         }
 
         $expects_parse = array(

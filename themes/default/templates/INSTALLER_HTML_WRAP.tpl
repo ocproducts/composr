@@ -29,9 +29,9 @@
 			<div class="box box---installer-html-wrap">
 				<div class="box-inner">
 					<h1>{!INSTALLER,Composr}: {!INSTALLER_STEP,{STEP},10}</h1>
-	
+
 					<div id="extra-errors"></div>
-	
+
 					<div>
 						{CONTENT}
 					</div>
@@ -49,7 +49,7 @@
 				<a target="_blank" title="compo.sr {!LINK_NEW_WINDOW}" href="{$BRAND_BASE_URL*}">{$BRAND_BASE_URL*}</a>
 			</p>
 		</div>
-	
+
 		<script {$CSP_NONCE_HTML}>
 			{+START,IF_PASSED,GLOBAL_JS}{GLOBAL_JS/}{+END}
 		</script>

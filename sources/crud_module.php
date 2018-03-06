@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -709,9 +709,10 @@ abstract class Standard_crud_module
      * Get some XHTML for a form to choose a catalogue out of all the available ones.
      *
      * @param  Tempcode $title The get_screen_title converted title for this page
+     * @param  string $icon The icon to use
      * @return ?Tempcode The Tempcode for the catalogue chooser (null: already chosen)
      */
-    public function choose_catalogue($title)
+    public function choose_catalogue($title, $icon = 'buttons--proceed')
     {
         if (!$this->catalogue) {
             return null;
@@ -740,7 +741,7 @@ abstract class Standard_crud_module
             'TEXT' => paragraph(do_lang_tempcode('CHOOSE_CATALOGUE')),
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => $icon,
             'SUBMIT_NAME' => $submit_name,
             'SKIP_WEBSTANDARDS' => true,
         ));

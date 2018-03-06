@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -107,7 +107,7 @@ class Hook_admin_setupwizard_installprofiles_infosite
                 'type' => 'listing',
             ),
             'main_rss' => array(
-                'param' => 'http://news.google.com/news?ned=us&topic=h&output=rss',
+                'param' => 'http://feeds.reuters.com/reuters/topNews',
             ),
         );
     }

@@ -395,7 +395,7 @@
 
         return Promise.all(sheetNames.map(_requireCss));
     };
-    
+
     $cms.hasCss = function hasCss(sheetNameOrHref) {
         return (validIdRE.test(sheetNameOrHref) ? _findCssByName(sheetNameOrHref) : _findCssByHref(sheetNameOrHref)) != null;
     };
@@ -407,7 +407,7 @@
      */
     function _requireJavascript(scriptNameOrSrc) {
         scriptNameOrSrc = strVal(scriptNameOrSrc);
-        
+
         var scriptName, scriptSrc, scriptEl;
 
         if (validIdRE.test(scriptNameOrSrc)) {
@@ -478,7 +478,7 @@
         var calls = [];
 
         scripts = arrVal(scripts);
-        
+
         scripts.forEach(function (script) {
             calls.push(function () {
                 return _requireJavascript(script);
@@ -491,7 +491,7 @@
     $cms.hasJavascript = function hasJavascriptLoaded(scriptNameOrSrc) {
         return (validIdRE.test(scriptNameOrSrc) ? _findScriptByName(scriptNameOrSrc) : _findScriptBySrc(scriptNameOrSrc)) != null;
     };
-    
+
     /**
      * @memberof $cms
      * @param flag

@@ -172,7 +172,7 @@
         }
         return ++_uniqueId;
     }
-    
+
     // Unique for every instance of $util
     $util.id = 'util' + ('' + Math.random()).substr(2);
 
@@ -270,7 +270,7 @@
     $util.isPromise = function isPromise(obj) {
         return (obj != null) && (typeof obj === 'object') && (typeof obj.then === 'function');
     };
-    
+
     /**
      * Used to execute a series promises one after another, in a sequence.
      * @see https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html
@@ -652,7 +652,7 @@
     };
 
     /**
-     * 
+     *
      * @param obj
      * @returns {*}
      */
@@ -935,7 +935,7 @@
     $util.pageUrl = function pageUrl() {
         return new URL(window.location);
     };
-    
+
     var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i;
     /**
      * Make a URL scheme-relative
@@ -963,7 +963,7 @@
     };
 
     /**
-     * Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog inbetween their click)
+     * Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog in-between their click)
      * @param url
      * @param target
      */

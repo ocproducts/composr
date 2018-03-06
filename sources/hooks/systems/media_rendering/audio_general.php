@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -69,7 +69,7 @@ class Hook_media_rendering_audio_general extends Media_renderer_with_fallback
             return MEDIA_RECOG_PRECEDENCE_MEDIUM;
         }
 
-        // Plugins may be able to play these formats, although they are preferrably handled in audio_websafe
+        // Plugins may be able to play these formats, although they are preferably handled in audio_websafe
         if ($mime_type == 'audio/ogg') {
             return MEDIA_RECOG_PRECEDENCE_MEDIUM;
         }

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -121,7 +121,7 @@ class Hook_addon_registry_core_language_editing
             'adminzone/pages/modules/admin_lang.php',
             'sources/hooks/systems/page_groupings/language.php',
             'themes/default/images/icons/admin/translate.svg',
-            'sources/hooks/systems/config/google_translate_api_key.php',
+            'sources/hooks/systems/config/google_translate_enabled.php',
             'sources/database_multi_lang_conv.php',
             'themes/default/javascript/core_language_editing.js',
         );

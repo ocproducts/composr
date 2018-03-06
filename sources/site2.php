@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -231,6 +231,12 @@ function closed_site()
         ));
         $echo = globalise($middle, null, '', true);
         $echo->evaluate_echo();
+
+        $aaf = ini_get('auto_append_file');
+        if (!empty($aaf)) {
+            @include($aaf); // Because exit() avoids running this
+        }
+
         exit();
     }
 }

@@ -33,7 +33,7 @@
 					</select>
 				</label>:
 			</p>
-			
+
 			<p>
 				<label class="accessibility-hidden" for="give-reason">{!REASON}</label>
 				<input maxlength="255" size="26" id="give-reason" class="input-line-required" placeholder="{!REASON}" type="text" name="reason" />

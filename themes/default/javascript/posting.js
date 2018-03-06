@@ -51,7 +51,7 @@
     }
 
     /**
-     * 
+     *
      * @param postValue
      * @param number
      * @return {*|boolean}
@@ -122,7 +122,7 @@
             }
 
             var tag = 'attachment', // [attachment]
-                showOverlay = false, 
+                showOverlay = false,
                 defaults = {};
 
             if (!filepath.includes('fakepath')) { // iPhone gives c:\fakepath\image.jpg, so don't use that
@@ -177,7 +177,7 @@
 
                 return $util.promiseSequence(promiseCalls).then(function () {
                     // Add field for next one
-                    var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened inbetween
+                    var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened in-between
                     if (addAnotherField) {
                         addAttachment(window.numAttachments + 1, fieldName);
                     }
@@ -214,7 +214,7 @@
                     if (!comcodeAdded) {  // Cancelled
                         var clearButton = document.getElementById('fsClear_file' + number);
                         if (clearButton) {
-                            $dom.trigger(clearButton, 'click');    
+                            $dom.trigger(clearButton, 'click');
                         }
                         return;
                     }
@@ -244,7 +244,7 @@
 
                     promise.then(function () {
                         // Add field for next one
-                        var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened inbetween
+                        var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened in-between
                         if (addAnotherField) {
                             addAttachment(window.numAttachments + 1, fieldName);
                         }
@@ -631,7 +631,7 @@
             });
 
             return;
-        } 
+        }
 
         $cms.ui.prompt('{!javascript:ENTER_ZONE;^}', '', null, '{!comcode:INPUT_COMCODE_page;^}').then(function (va) {
             if (va !== null) {

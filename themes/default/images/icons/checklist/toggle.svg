@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
 	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
 ]>
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-	 x="0px" y="0px" width="12px" height="12px" viewBox="-0.712 -1.203 12 12">
+	 x="0px" y="0px" width="14px" height="14px" viewBox="0 0 14 14" enable-background="new 0 0 14 14">
 <defs>
 </defs>
-<path fill="#F79523" d="M10.576,2.32c0,1.281-1.038,2.319-2.32,2.319H2.319C1.039,4.64,0,3.602,0,2.32l0,0C0,1.039,1.039,0,2.319,0
-	h5.937C9.538,0,10.576,1.039,10.576,2.32L10.576,2.32z"/>
-<circle fill="#F1F2F2" cx="3.067" cy="2.32" r="1.808"/>
-<path fill="#F79523" d="M10.576,7.274c0,1.281-1.038,2.319-2.32,2.319H2.319C1.039,9.594,0,8.556,0,7.274l0,0
-	c0-1.281,1.039-2.319,2.319-2.319h5.937C9.538,4.955,10.576,5.993,10.576,7.274L10.576,7.274z"/>
-<circle fill="#F1F2F2" cx="7.545" cy="7.274" r="1.809"/>
+<rect opacity="0" fill="#FFFFFF" width="14" height="14"/>
+<path fill="#F79523" d="M13.32,7.427c0,0.735-0.596,1.331-1.331,1.331H2.011c-0.735,0-1.331-0.596-1.331-1.331l0,0
+	c0-0.735,0.596-1.331,1.331-1.331h9.978C12.725,6.096,13.32,6.691,13.32,7.427L13.32,7.427z"/>
+<path fill="#C8691C" d="M8.957,9.874c0,0.822-0.876,1.488-1.957,1.488l0,0c-1.082,0-1.958-0.666-1.958-1.488V5.02
+	c0-0.821,0.876-1.488,1.958-1.488l0,0c1.081,0,1.957,0.667,1.957,1.488V9.874z"/>
 </svg>

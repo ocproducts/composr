@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -41,7 +41,7 @@ class Hook_health_check_install_env_php_lock_down extends Hook_Health_Check
         $this->process_checks_section('testMbstringOverload', 'mbstring overload', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testMaxInputVars', 'max_input_vars', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testSuhosin', 'Suhosin', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testMaxExecutionTime', 'max_ececution_time', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testMaxExecutionTime', 'max_execution_time', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testNeededFunctions', 'Needed functions', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testFileUploads', 'File uploads', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testOpenBasedir', 'open_basedir', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);

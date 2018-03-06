@@ -34,7 +34,7 @@ You know what a website is from an experience point-of-view: a site consists of 
 </ul>
 [/html]
 
-So, from a technical point of view, a website is a bunch of files put on a computer that you access by giving a URL through a web-browser. Well done for reading so far -- there are just a lot of facts and terms, but it's not all that complex once they've sinked-in. Just like when you go to a restaurant for a meal and go through a standard ordering procedure, web browsers and web servers also have a standard operating procedure.
+So, from a technical point of view, a website is a bunch of files put on a computer that you access by giving a URL through a web-browser. Well done for reading so far -- there are just a lot of facts and terms, but it's not all that complex once they've sunk-in. Just like when you go to a restaurant for a meal and go through a standard ordering procedure, web browsers and web servers also have a standard operating procedure.
 
 [media float="right" framed="0" thumb="0"]data_custom/images/docs/dont.png[/media]
 
@@ -74,7 +74,7 @@ Gallery sites are also popular, where the content consists of images.
 
 [title="3"]Shopping-cart sites[/title]
 
-I'm sure you know what a virtual shopping-cart is due to websites such as Amazon. Shopping-cart sites tend to focus on products listings, and methods for choosing and purchasing products on-bulk. In many ways, a shopping-cart site is a CMS site that is focused on products.
+I'm sure you know what a virtual shopping-cart is due to websites such as Amazon. Shopping-cart sites tend to focus on products listings, and methods for choosing and purchasing products in-bulk. In many ways, a shopping-cart site is a CMS site that is focused on products.
 
 [title="3"]Community/social-networking sites[/title]
 
@@ -93,7 +93,7 @@ A portal site is a site generally centred around a vibrant front-page, where fre
 
 [title="3"]Web applications[/title]
 
-A CMS is an example of a web application, but the category of "web application" is much broader. A "web application" is a piece of non-trivial computer software that operates over the world-wide-web, but could equally run as standalone (although an Internet connection might still be required for that). Examples of web-applications include search-engines, web-mail, and on-line mapping software.
+A CMS is an example of a web application, but the category of "web application" is much broader. A "web application" is a piece of non-trivial computer software that operates over the world-wide-web, but could equally run as standalone (although an Internet connection might still be required for that). Examples of web-applications include search-engines, web-mail, and online mapping software.
 
 [title="2"]Trends[/title]
 
@@ -319,7 +319,7 @@ CMSs are becoming more sophisticated and all-encompassing, with support for wide
 			<p><em>Likely deciding factor</em></p>
 		</td>
 		<td>
-			<p>If you need to sell items from a medium+ inventory on-line.</p>
+			<p>If you need to sell items from a medium+ inventory online.</p>
 		</td>
 	</tr>
 	<tr>
@@ -335,7 +335,7 @@ CMSs are becoming more sophisticated and all-encompassing, with support for wide
 			<p><em>Negative factors</em></p>
 		</td>
 		<td>
-			<p>An on-line-store must face complex sales tax and shipping issues.</p>
+			<p>An online-store must face complex sales tax and shipping issues.</p>
 		</td>
 	</tr>
 	<tr>
@@ -577,7 +577,7 @@ As an alternative, Composr provides a fully featured Survey system that can be i
 
 When building an interactive site, it is vitally important to ensure a consistent interface that is free of third-party branding. This provides a more professional appearance, which improves the user experience and increases the user's perception of value and quality. Rather than building your site and picking from a range of service providers à la carte, combining multiple brands and user interfaces (which can appear cheap), Composr provides all of the tools required to provide a professional quality web presence.
 
-Composr has been designed to provide integrated alternatives to the most common cloud-based services; Instead of embedding Youtube videos (with branding and advertising), Composr allows you to upload videos directly to your site. Rather than hosting images using Flickr and posting them to your blog, you can upload and incorporate images without ever leaving the Composr blog editor.
+Composr has been designed to provide integrated alternatives to the most common cloud-based services; Instead of embedding YouTube videos (with branding and advertising), Composr allows you to upload videos directly to your site. Rather than hosting images using Flickr and posting them to your blog, you can upload and incorporate images without ever leaving the Composr blog editor.
 
 In terms of both risk and cost, there are significant advantages to hosting all of your features directly; Composr makes it easy to add new functions over time, often without any complex coding.
 
@@ -595,7 +595,7 @@ If you are from an 'enterprise' background, you'll be used to a different kind o
 
 I'll try and summarise the difference in approaches between the two worlds:
 
-Enterprise: Connect various big-iron systems together using web services. Each is a relatively closed ecosystem, is separately licenced, and has its own advanced interface. Either compilation of custom code is involved, or the use of relatively clunky proprietary scripting languages, and a separate skill-set for each bit of software.
+Enterprise: Connect various big-iron systems together using web services. Each is a relatively closed ecosystem, is separately licensed, and has its own advanced interface. Either compilation of custom code is involved, or the use of relatively clunky proprietary scripting languages, and a separate skill-set for each bit of software.
 
 Open Source: Systems tend to be more light-weight, focused on the core behaviours needed. E.g. Direct SQL queries to MySQL, rather than stored procedures (although you can do them if you want to). However, as the code is all open, and no special licences required, everything has been tuned in a meritocratic kind of way, so things tend to be simple but effective. Particularly for the case of PHP, creating new functionality is extremely time-efficient, because you don't need to compile the code, and you can just plug stuff directly into Composr and essentially have access to all our APIs without needing any web services, or limited public interface, or cut-down scripting system. Things are simple by default, and only get complex when you need to scale things out across multiple tiers etc. You can create tables directly in MySQL using any MySQL frontend you prefer (phpMyAdmin, MySQL workbench, etc).
 

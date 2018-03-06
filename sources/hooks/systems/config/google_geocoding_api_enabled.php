@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_google_geocode_api_key
+class Hook_config_google_geocoding_api_enabled
 {
     /**
      * Gets the details relating to the config option.
@@ -31,11 +31,11 @@ class Hook_config_google_geocode_api_key
     public function get_details()
     {
         return array(
-            'human_name' => 'GOOGLE_GEOCODE_API_KEY',
-            'type' => 'line',
-            'category' => 'SITE',
-            'group' => 'ADVANCED',
-            'explanation' => 'CONFIG_OPTION_google_geocode_api_key',
+            'human_name' => 'GOOGLE_GEOCODE_API_ENABLED',
+            'type' => 'tick',
+            'category' => 'COMPOSR_APIS',
+            'group' => 'GEOCODING',
+            'explanation' => 'CONFIG_OPTION_google_geocoding_api_enabled',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => false,
@@ -55,6 +55,6 @@ class Hook_config_google_geocode_api_key
      */
     public function get_default()
     {
-        return '';
+        return '0';
     }
 }

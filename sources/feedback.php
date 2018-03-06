@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -220,6 +220,8 @@ function post_comment_script()
     // And output as text
     header('Content-Type: text/plain; charset=' . get_charset());
     $comment_details->evaluate_echo();
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**

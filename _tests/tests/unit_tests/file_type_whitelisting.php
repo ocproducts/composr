@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -186,6 +186,28 @@ class file_type_whitelisting_test_set extends cms_test_case
         for ($i = 0; $i < $num_matches; $i++) {
             $ext = $matches[1][$i];
             $this->assertTrue(!array_key_exists($ext, $found), 'Double referenced ' . $ext);
+            $found[$ext] = true;
+        }
+    }
+
+    public function testCSS()
+    {
+        $path = get_file_base() . '/themes/default/css/global.css';
+        $c = file_get_contents($path);
+
+        /*
+        Not all will be here
+        foreach ($this->file_types as $file_type) {
+            $this->assertTrue(strpos($c, '[href$=".' . $file_type . '"]') !== false, 'File type missing from global.css, ' . $file_type);
+        }
+        */
+
+        $matches = array();
+        $num_matches = preg_match_all('#^\[href\$="\.(\w+)"\]#m', $c, $matches);
+        $found = array();
+        for ($i = 0; $i < $num_matches; $i++) {
+            $ext = $matches[1][$i];
+            $this->assertTrue(in_array($ext, $this->file_types), 'Rogue file type ' . $ext);
             $found[$ext] = true;
         }
     }

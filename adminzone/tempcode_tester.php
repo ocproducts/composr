@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -42,6 +42,8 @@ global $FORCE_INVISIBLE_GUEST;
 $FORCE_INVISIBLE_GUEST = false;
 global $EXTERNAL_CALL;
 $EXTERNAL_CALL = false;
+global $KNOWN_UTF8;
+$KNOWN_UTF8 = true;
 global $CSRF_TOKENS;
 $CSRF_TOKENS = true;
 if (!is_file($FILE_BASE . '/sources/global.php')) {

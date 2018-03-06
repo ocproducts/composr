@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -457,7 +457,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
 
     $link_terminator_strs = array(' ', "\n", ']', '[', ')', '"', '>', '<', '}', '{', ".\n", ', ', '. ', "'", '&nbsp;');
     if (get_charset() == 'utf-8') {
-        $nbsp = chr(hexdec('C2')) . chr(hexdec('A0'));
+        $nbsp = build_hex_string('c2a0');
         $link_terminator_strs[] = $nbsp;
     }
 
@@ -1257,7 +1257,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                             }
 
                             // Shortcut lookahead
-                            if (!$differented && !$in_code_tag) {
+                            if (!$differented && !$in_code_tag && !$in_semihtml) {
                                 if (($in_semihtml) && ($next === '-') && (substr($comcode, $pos - 1, 3) === '-->')) { // To stop shortcut interpretation
                                     $continuation .= '-->';
                                     $pos += 2;

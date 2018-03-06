@@ -3,7 +3,7 @@
 This page will answer frequently asked questions (FAQs) about Composr and ocProducts, including:
  - Basic background information
  - Solutions to common problems
- - Succinct answers to common reuqests
+ - Succinct answers to common requests
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -110,7 +110,7 @@ To start a new successful 'web property' (i.e. something for a medium-to-large b
 
 Absolutely. We encourage people to use our software, setting stuff up on their own. You can make quite sophisticated sites for free so long as you don't require a clean-room design or new functionality. If you are, or have, a programmer, you don't [i]need[/i] to solicit the help of any core developers or staff from ocProducts even for significant new functionality.
 
-If you're operating as a hobby and have lots of free time to help others too, you'll have a lot of milage in getting others to help you back. That is one of the beauties of Open Source communities.
+If you're operating as a hobby and have lots of free time to help others too, you'll have a lot of mileage in getting others to help you back. That is one of the beauties of Open Source communities.
 
 However, you need to be very aware that to make a website that is seriously commercially successful, in the modern world, you'll usually need to invest professionally and financially in order to have a chance of competing. You'll often get ignored if you try and get free support and advice from professionals, as they need to get paid for their professional time, and they are always on hectic projects and need to recoup the high costs associated with their initial and ongoing training -- you may be able to get help via the community, but to keep getting good answers you need to build up respect/reputation, which requires that on average every user gives more time into helping others than they take out themselves -- so you should never consider it a totally free lunch.
 
@@ -127,7 +127,7 @@ ocProducts is a business, founded by a group of people fanatic about enabling pe
 
 ocProducts maintains the Composr website and are sponsors of the project and community (the community being wider than any one organisation).
 
-ocProducts has a tendency towards innovative, open, and collaborative practices, including around how business is conducted. We try and make ourselves approachable, rather than filtering all contact, handing out robo-responses, funneling and segmenting everybody, and residing in an ivory tower.
+ocProducts has a tendency towards innovative, open, and collaborative practices, including around how business is conducted. We try and make ourselves approachable, rather than filtering all contact, handing out robo-responses, funnelling and segmenting everybody, and residing in an ivory tower.
 
 [title="3"]Can you write us a system that supports <insert-blank> specifications?[/title]
 
@@ -152,7 +152,7 @@ As we're a company we don't really accept direct donations, but you can:
 We cover most of our costs through work we do for our clients, and feature sponsorships.
 Unlike many other CMS companies, we are financially independent -- we haven't taken outside venture capital, which means we are able to operate our ecosystem to our own founding ideals.
 
-We aren't a non-profit organisation like many CMSs have behind them, because we feel it's important to have an entity that can provide strong product leadership and direct resources efficiently. By being capitalist we have the right mindset to make sure that resources are allocated in a way that derives measurable value, and allows us to turn a profit to re-invest, as opposed to spreading resources around according to the specialist interests of those on a committee. Our belief is that forced committee decisions don't result in good product design and generally weigh/slow things down with bureaucracy and management cost, and general noise and chaos. We also believe that [i]relying[/i] on unpaid volunteers would result in an unbalanced product.
+We aren't a non-profit organisation like many CMSs have behind them, because we feel it's important to have an entity that can provide strong product leadership and direct resources efficiently. By being capitalist we have the right mindset to make sure that resources are allocated in a way that derives measurable value, and allows us to turn a profit to reinvest, as opposed to spreading resources around according to the specialist interests of those on a committee. Our belief is that forced committee decisions don't result in good product design and generally weigh/slow things down with bureaucracy and management cost, and general noise and chaos. We also believe that [i]relying[/i] on unpaid volunteers would result in an unbalanced product.
 
 So there you have it -- we are a small passionate organisation, led by the Composr founders, that ensures Composr is financially sustainable, but also free from big-money interests and short-term profitability burdens.
 And, if the company turns evil or otherwise fails to manage the project effectively, Composr is Open Source so someone can fork it!

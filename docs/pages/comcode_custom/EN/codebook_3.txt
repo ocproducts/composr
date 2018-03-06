@@ -132,7 +132,7 @@ We have established the following design goals (in no particular order):
  - [b]Consistency[/b] -- The whole system should have common ways of doing things. Everything should seem consistent to the user, and be so behind the scenes. Consistency is piece of mind, consistency is ease of use, consistency is simplicity, consistency is less code to test and fix. I can't stress how important it is to be consistent.
  - [b]Independence[/b] -- Composr should not have unnecessary dependencies, such as MySQL.
  - [b]Stability[/b] / [b]Error-trapping[/b] / [b]Input-sanitisation[/b] -- Composr should catch all errors, not let things like PHP notices slip through. This means that programmers have to get used to a new level of strictness, we are much less tolerant of errors slipping through because for complex software like Composr we can't afford weak foundations.
- - [b]Scaleability[/b] -- Composr must work on sites both small and huge. For example, it's wrong to put all downloads in a list on any single screen -- there could be 1000's.
+ - [b]Scalability[/b] -- Composr must work on sites both small and huge. For example, it's wrong to put all downloads in a list on any single screen -- there could be 1000's.
  - [b]Portability[/b] -- People should be able to move their websites between servers without much difficulty.
  - [b]Simplicity[/b] -- Features only needed by a minority should be "off-by-default"
 
@@ -252,7 +252,7 @@ inspect($a, $b, $c);
 
 If output has already started then Composr will give you your details in an info box at the bottom of the displayed screen; otherwise you'll get a text dump.
 
-This is very useful when stepping through code. Often bugs are because you are using the wrong data types (e.g. Tempcode objects being treated as strings). Temporarily placing inspect calls in your code and moving them along as you analyse exactly what is happening is a good way to test exactly what is happening for the occasions when the automatic stack dumps are not available or do not reveal the real cause of the problem.
+This is very useful when stepping through code. Often bugs are because you are using the wrong data types (e.g. Tempcode objects being treated as strings). Temporarily placing inspect calls in your code and moving them along as you analyse exactly what is happening is a good way to test exactly what is happening for the occasions when the automatic stack traces are not available or do not reveal the real cause of the problem.
 
 If you have an IDE with a debugger then this is better, but we find most developers do not have one, and also PHP debuggers tend to be quite unreliable. This old fashioned manual technique of manually tracing through code works well if you are quick at making changes and refreshing the browser window.
 
@@ -284,7 +284,7 @@ Here's a helpful script to search a codebase for a function call happening on a 
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -430,19 +430,6 @@ Here are some general tips:
  - It's sometimes a good idea to program algorithms in complete isolation. Separate the complexities of integration from the complexities of implementation. This also leads to better quality code because you will have been forced to abstract the problem already.
  - If working with other remote developers, [url="Cloud9 IDE"]https://aws.amazon.com/cloud9/[/url] is absolutely excellent. You can watch each other code and see the results of running your code.It is very useful for teaching programming technique, team debugging, and pair programming.
 
-[title="3"]Writing automated tests[/title]
-
-Automated tests allow you to initially verify code works according to your expectations, but also provides enormous long term value. If you have to change code structure around later, or need to test on different environments, a library of automated tests greatly reduce the time-cost of re-testing your work.
-
-Composr's git repository contains the [tt]testing_platform[/tt] addon, which is based on SimpleTest. It is located under the [tt]_tests[/tt] directory.
-
-Writing new tests is really easy, just write a [tt]_tests/tests/unit_tests/whatever.php[/tt] file. Use the SimpleTest assert system to verify test results match expectations.
-If you are coding for core Composr, make sure the new test file is added to the [tt]sources_custom/hooks/systems/addon_registry/testing_platform.php[/tt] file (so that the [tt]testing_platform[/tt] addon will bundle your test).
-
-You can browse/run tests via [tt]http://yourbaseurl/_tests[/tt].
-
-Never install the testing platform on a live site, or at least if you do block public access to it via the web server configuration.
-
 [title="3"]Debugging[/title]
 
 [media description="" width="200" float="right" framed="0"]data_custom/images/docs/codebook_3/3.jpg[/media]
@@ -456,7 +443,7 @@ If you are stuck with a problem you haven't been able to quickly resolve, consid
 
 Here are some general tips:
  - Always think of quick ways to prove/disprove theories, and check facts, like variables match the values you expect them to. If you narrow in on facts, you make solving a problem much easier.
- - Get fully comfortable with the powerful debug tools in a browser such as Google Chrome, such as: the DOM inspector, setting JavaScript breakpoints, setting to pause on JavaScript exceptions, typing into the console, watching the console for errors, and analysing network requests and responses.
+ - Get fully comfortable with the powerful debug tools in a browser such as Mozilla Firefox, such as: the DOM inspector, setting JavaScript breakpoints, setting to pause on JavaScript exceptions, typing into the console, watching the console for errors, and analysing network requests and responses.
  - Get comfortable with unified diff files. They are very useful for many purposes.
  - Have a mind-set of automatic tasks to increase your own efficiency. Write temporary scripts to get things done faster or to reveal data to prove/disprove hypotheses about the nature of a problem, or to build confidence that you've properly fixed things.
  - Whenever something confuses you, try and understand your way through it, even if you've already found another solution. Confusion is an opportunity for learning, a revelation of a gap in your knowledge -- make the best of it so that you get a strong understanding of all technologies. With time, things will get easier and easier, but only if you constantly work at expanding your understanding. Work to build up a unified mental model of how everything works and fits together across all of computer technology.
@@ -968,7 +955,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data/failover_script.php[/tt]
 | Continually check system load, and initiate/deinitiate failover mode as required.
 | [tt]failover[/tt]
-| Command-line via PHP interpretor + 'screen'
+| Command-line via PHP interpreter + 'screen'
 |-
 | [tt]adminzone:static_export[/tt]
 | Export website as a static site, as far as is possible.
@@ -983,7 +970,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data/cron_bridge.php[/tt]
 | Run the system scheduler scripts. Can also be used to probe for the likely Cron command to configure against.
 | [tt]core[/tt]
-| Cron (or equivalent) via PHP interpretor
+| Cron (or equivalent) via PHP interpreter
 |-
 | [tt]upgrader.php[/tt]
 | Performing upgrades, detecting alien files, missing files, corrupt files, missing permissions, clearing the caches (without having to run the full Composr), deleting files accidentally uploaded from non-installed addons.
@@ -993,7 +980,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data/commandr.php[/tt]
 | Command line tunnel into Commandr.
 | [tt]commandr[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |}
 
 [title="3"]DevOps[/title]
@@ -1005,9 +992,9 @@ This section is not designed as primary documentation for the tools. Those tools
 ! Call method
 |-
 | [tt]delete_alien_files.php[/tt]
-| Provide pastable commands for deleting non-bundled addons, and alien files not related to installed addons. To be honest you probably are better off using the integrity checker from the upgrader, copy & pasting and changing into terminal commands via a regexp. Never-the-less this script may be useful for some people, especially ones wanting to take it as a starting point for something more custom.
+| Provide pasteable commands for deleting non-bundled addons, and alien files not related to installed addons. To be honest you probably are better off using the integrity checker from the upgrader, copy & pasting and changing into terminal commands via a regexp. Never-the-less this script may be useful for some people, especially ones wanting to take it as a starting point for something more custom.
 | [tt]meta_toolkit[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]db_export.sh[/tt]
 | Export the live database to an SQL dump.
@@ -1047,12 +1034,12 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]sources/critical_errors.php[/tt]
 | Monitors for logged critical errors, and e-mails them to site staff.
 | [tt]core[/tt]
-| Command-line via PHP interpretor + 'screen'
+| Command-line via PHP interpreter + 'screen'
 |-
 | [tt]data_custom/compile_in_includes.php[/tt]
 | Compile Composr overrides against originals, for a slight performance improvement
 | [tt]performance_compile[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]data_custom/health_check.php[/tt]
 | Run a Health Check.
@@ -1129,22 +1116,22 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]_tests/codechecker/phpdoc_parser.php[/tt]
 | Build the function signature library used by the Code Quality Checker.
 | [tt]testing_platform[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]data_custom/build_rewrite_rules.php[/tt]
 | Rebuild all files containing rewrite rules.
 | [tt]composr_release_build[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]data_custom/transifex_pull.php[/tt]
 | Pull language packs down from transifex.
 | [tt]addon_publish[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]data_custom/transifex_push.php[/tt]
 | Push language packs up to transifex.
 | [tt]addon_publish[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]template_xss[/tt]
 | Look to see if templates may have XSS holes. Can be given a parameter to write "fixes" back in (which should be verified by hand).
@@ -1164,7 +1151,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data_custom/stress_test_loader.php[/tt]
 | Create a large amount of test content.
 | [tt]stress_test[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |-
 | [tt]data_custom/change_addon_bundling.php[/tt]
 | Move an addon between bundled and non-bundled.
@@ -1174,7 +1161,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | [tt]data_custom/composr_mobile_sdk_build.php[/tt]
 | Bundle string and image assets from a Composr website for making a mobile app.
 | [tt]composr_mobile_sdk[/tt]
-| Command-line via PHP interpretor
+| Command-line via PHP interpreter
 |}
 
 [title="3"]Documentation development[/title]
@@ -1204,11 +1191,6 @@ This section is not designed as primary documentation for the tools. Those tools
 | Build the documentation index page.
 | [tt]composr_tutorials[/tt]
 | Composr module
-|-
-| [tt]data_custom/build_tutorials_addon_registry_parts.php[/tt]
-| Used for completing the [tt]addon_registry[/tt] hook to include all the latest tutorials and associated graphics.
-| [tt]composr_tutorials[/tt]
-| Command-line via PHP interpretor
 |}
 
 [title="3"]Release management[/title]

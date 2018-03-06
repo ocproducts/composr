@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -40,7 +40,7 @@ class Module_admin_giftr extends Standard_crud_module
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 5;
+        $info['version'] = 6;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -70,7 +70,7 @@ class Module_admin_giftr extends Standard_crud_module
             $GLOBALS['SITE_DB']->create_table('giftr', array(
                 'id' => '*AUTO',
                 'name' => 'SHORT_TEXT',
-                'image' => 'SHORT_TEXT',
+                'image' => 'URLPATH',
                 'price' => 'INTEGER',
                 'enabled' => 'BINARY',
                 'category' => 'SHORT_TEXT',
@@ -128,6 +128,10 @@ class Module_admin_giftr extends Standard_crud_module
 
         if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
             $GLOBALS['SITE_DB']->rename_table('ocgifts', 'giftr');
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) { // LEGACY
+            $GLOBALS['SITE_DB']->alter_table_field('giftr', 'image', 'URLPATH');
         }
     }
 

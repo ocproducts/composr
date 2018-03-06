@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -177,7 +177,7 @@ class Hook_addon_registry_health_check
             'sources/hooks/systems/config/hc_cron_threshold.php',
             'sources/hooks/systems/config/hc_disk_space_threshold.php',
             'sources/hooks/systems/config/hc_error_log_day_flood_threshold.php',
-            'sources/hooks/systems/config/hc_google_safe_browsing_api_key.php',
+            'sources/hooks/systems/config/hc_google_safe_browsing_api_enabled.php',
             'sources/hooks/systems/config/hc_io_pct_threshold.php',
             'sources/hooks/systems/config/hc_mail_address.php',
             'sources/hooks/systems/config/hc_mail_password.php',
@@ -208,6 +208,7 @@ class Hook_addon_registry_health_check
             'data/health_check.php',
             'adminzone/pages/modules/admin_health_check.php',
             'sources/hooks/systems/page_groupings/health_check.php',
+            'sources/hooks/systems/commandr_commands/health_check.php',
         );
     }
 

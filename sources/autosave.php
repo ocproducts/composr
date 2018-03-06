@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -23,7 +23,7 @@
  *
  * @ignore
  */
-function store_autosave()
+function store_autosave_script()
 {
     require_code('input_filter_2');
     if (get_value('disable_modsecurity_workaround') !== '1') {
@@ -46,6 +46,8 @@ function store_autosave()
             'a_time' => $time,
         ));
     }
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -53,7 +55,7 @@ function store_autosave()
  *
  * @ignore
  */
-function retrieve_autosave()
+function retrieve_autosave_script()
 {
     prepare_for_known_ajax_response();
 
@@ -88,6 +90,8 @@ function retrieve_autosave()
     }
 
     echo '</result></request>';
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**

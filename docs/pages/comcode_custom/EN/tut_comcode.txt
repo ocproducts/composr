@@ -116,7 +116,7 @@ Comcode is primarily written and laid out as plain-text. Special tags (and other
 [/list]
 
 Additionally:
- - Hyperlinks may be written directly, and are automatically detected; these will be interpreted by the media rendering system (for example, a YouTube video hyperlink would result in the video being embedded)
+ - Hyperlinks may be written directly, and are automatically detected; these will be interpreted by the media rendering system (for example, a Vimeo video hyperlink would result in the video being embedded)
 
 [title="3"]Tag syntax[/title]
 

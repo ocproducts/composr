@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -97,7 +97,7 @@ class comcode_wysiwyg_test_set extends cms_test_case
         $this->assertTrue($out == $got);
     }
 
-    public function testCodeTag() // WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED
+    public function testCodeTag() // WYSIWYG_COMCODE__XML_BLOCK_ESCAPED
     {
         $this->assertTrue(wysiwyg_comcode_markup_style('code') == WYSIWYG_COMCODE__XML_BLOCK_ESCAPED);
 

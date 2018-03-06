@@ -16,7 +16,7 @@ Services you could easily offer using Composr features include:
  - File hosting, in the public download database
  - An active community on the forums, with public and private forums; also public and private chatrooms
  - Advertising for projects in a banner exchange, and in a project database
- - Personal author profiles, so people can give information about yourself themself with your file releases
+ - Personal author profiles, so people can give information about themselves with your file releases
  - The points system, so people can be awarded for their work. They can use their gained points to 'purchase' banner hits, e-mail addresses, and text-banner promotion
  - Advertisement of works as images of the day
  - Project documentation on Wiki+

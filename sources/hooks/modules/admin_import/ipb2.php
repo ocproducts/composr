@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -855,7 +855,7 @@ class Hook_import_ipb2
 
                 $forum_id = import_id_remap_get('forum', strval($row['forum_id']), true);
                 if ($forum_id === null) {
-                    //import_id_remap_put('topic', strval($row['tid']), -1);  Want to allow coming back if accidently a forum was missed
+                    //import_id_remap_put('topic', strval($row['tid']), -1);  Want to allow coming back if accidentally a forum was missed
                     continue;
                 }
 

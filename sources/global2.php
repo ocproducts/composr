@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -84,6 +84,11 @@ function init__global2()
                 header('HTTP/1.0 503 Service Temporarily Unavailable');
             }
             header('Location: ' . (is_file($RELATIVE_PATH . 'closed.html') ? 'closed.html' : '../closed.html'));
+
+            $aaf = ini_get('auto_append_file');
+            if (!empty($aaf)) {
+                @include($aaf); // Because exit() avoids running this
+            }
             exit();
         }
     }
@@ -182,6 +187,9 @@ function init__global2()
 
         //  encoding="' . escape_html(get_charset()) . '" not needed due to no data in it
         $output = '<?xml version="1.0" ?' . '><response><result></result></response>';
+        echo $output;
+
+        exit(); // So auto_append_file cannot run and corrupt our output
     }
 
     // Initialise timezones
@@ -639,7 +647,7 @@ function fixup_bad_php_env_vars()
 
     $php_self = empty($_SERVER['PHP_SELF']) ? '' : $_SERVER['PHP_SELF'];
     if ((empty($php_self)) || (/*or corrupt*/strpos($php_self, '.php') === false)) {
-        // We're really desparate if we have to derive this, but here we go
+        // We're really desperate if we have to derive this, but here we go
         $_SERVER['PHP_SELF'] = '/' . preg_replace('#^' . preg_quote($document_root, '#') . '/#', '', $script_filename);
         $path_info = empty($_SERVER['PATH_INFO']) ? '' : $_SERVER['PATH_INFO'];
         if (!empty($path_info)) { // Add in path-info if we have it
@@ -657,13 +665,13 @@ function fixup_bad_php_env_vars()
             $_SERVER['REQUEST_URI'] = $_SERVER['REDIRECT_URL'];
             if (strpos($_SERVER['REQUEST_URI'], '?') === false) {
                 if (count($_GET) != 0) {
-                    $_SERVER['REQUEST_URI'] .= '?' . urldecode(http_build_query($_GET)); // Messy as rewrite URL-embedded parameters will be doubled, but if you've got a broken server don't push it to do rewrites
+                    $_SERVER['REQUEST_URI'] .= '?' . str_replace('/', '%2F', http_build_query($_GET)); // Messy as rewrite URL-embedded parameters will be doubled, but if you've got a broken server don't push it to do rewrites
                 }
             }
         } else {
             $_SERVER['REQUEST_URI'] = $php_self; // Same as PHP_SELF, but...
             if (count($_GET) != 0) { // add in query string data if we have it
-                $_SERVER['REQUEST_URI'] .= '?' . urldecode(http_build_query($_GET));
+                $_SERVER['REQUEST_URI'] .= '?' . str_replace('/', '%2F', http_build_query($_GET));
             }
 
             // ^ NB: May be slight deviation. Default directory index files not considered, i.e. index.php may have been omitted in URL
@@ -671,7 +679,7 @@ function fixup_bad_php_env_vars()
     }
 
     if (empty($_SERVER['QUERY_STRING'])) {
-        $_SERVER['QUERY_STRING'] = urldecode(http_build_query($_GET));
+        $_SERVER['QUERY_STRING'] = str_replace('/', '%2F', http_build_query($_GET));
     }
 }
 
@@ -956,7 +964,7 @@ function catch_fatal_errors()
             case E_USER_ERROR:
                 push_suppress_error_death(false); // We can't recover as we've lost our execution track. Force a nice death rather than trying to display a recoverable error.
                 $GLOBALS['DYING_BADLY'] = true; // Tells composr_error_handler to roll through, definitely an error.
-                $GLOBALS['EXITING'] = 2; // Fudge to force a critical error, we're too desparate to show a Tempcode stack trace.
+                $GLOBALS['EXITING'] = 2; // Fudge to force a critical error, we're too desperate to show a Tempcode stack trace.
                 composr_error_handler($error['type'], $error['message'], $error['file'], $error['line']);
         }
     }
@@ -1067,13 +1075,13 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
  */
 function is_browser_decaching()
 {
-    static $browser_decacheing_cache = null;
-    if ($browser_decacheing_cache !== null) {
-        return $browser_decacheing_cache;
+    static $browser_decaching_cache = null;
+    if ($browser_decaching_cache !== null) {
+        return $browser_decaching_cache;
     }
 
     if (GOOGLE_APPENGINE) {
-        $BROWSER_DECACHEING_CACHE = false;
+        $BROWSER_DECACHING_CACHE = false;
         return false; // Decaching by mistake is real-bad when Google Cloud Storage is involved
     }
 
@@ -1083,13 +1091,13 @@ function is_browser_decaching()
         $config_file = rtrim(str_replace(array('if (!defined(\'DO_PLANNED_DECACHE\')) ', 'define(\'DO_PLANNED_DECACHE\', true);'), array('', ''), $config_file)) . "\n\n";
         require_code('files');
         cms_file_put_contents_safe(get_file_base() . '/_config.php', $config_file, FILE_WRITE_FIX_PERMISSIONS);
-        $BROWSER_DECACHEING_CACHE = true;
+        $BROWSER_DECACHING_CACHE = true;
         return true;
     }
 
     if (get_value('ran_once') === null) { // Track whether Composr has run at least once
         set_value('ran_once', '1');
-        $BROWSER_DECACHEING_CACHE = true;
+        $BROWSER_DECACHING_CACHE = true;
         return true;
     }
 
@@ -1097,8 +1105,8 @@ function is_browser_decaching()
 
     /*
     $header_method = ($_SERVER['HTTP_CACHE_CONTROL'] == 'no-cache') && ($_SERVER['REQUEST_METHOD'] != 'POST') && ((!function_exists('browser_matches')));
-    $BROWSER_DECACHEING = (($header_method) && ((array_key_exists('FORUM_DRIVER', $GLOBALS)) && (has_actual_page_access(get_member(), 'admin_cleanup')) || ($GLOBALS['IS_ACTUALLY_ADMIN'])));
-    return $BROWSER_DECACHEING;
+    $BROWSER_DECACHING = (($header_method) && ((array_key_exists('FORUM_DRIVER', $GLOBALS)) && (has_actual_page_access(get_member(), 'admin_cleanup')) || ($GLOBALS['IS_ACTUALLY_ADMIN'])));
+    return $BROWSER_DECACHING;
     */
 }
 

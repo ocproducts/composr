@@ -273,7 +273,7 @@ class DKIMSignature
          * took care of that before calling the class
          */
 
-        // keep only headers wich are in the signature headers
+        // keep only headers which are in the signature headers
         $a_headers = explode("\r\n", $s_headers);
         foreach ($a_headers as $key => $line) {
             if (!empty($a_headers)) {

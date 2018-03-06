@@ -263,7 +263,7 @@ Tempcode:
 
 You may have used some JavaScript libraries in your design. jQuery is very common nowadays. You can reference these JavaScript resources very simply in the [tt]<head>[/tt] tag just like you would in any simple static website, and it won't cause any problems.
 
-If you are using jQuery you may want to consider linking to the online copy that Google hosts, because then visitors will get a faster page load time because it's probably already cached on their computers (because many sites use the same copies). Obviously only do this if your site is always going to be viewed on the live Internet (it's not good for Intranets!).
+If you are using jQuery you may want to consider linking to the online copy from https://cdnjs.com, because then visitors will get a faster page load time because it's probably already cached on their computers (because many sites use the same copies). Obviously only do this if your site is always going to be viewed on the live Internet (it's not good for Intranets!).
 
 [title="3"]Creating page-links[/title]
 
@@ -487,7 +487,7 @@ If you are not just making a theme, but a whole site, you will need to do some o
 1) Add all your real content
 2) Edit the menus in the theme, to place the real final links
 3) If a page does not exist in the standard Composr then the page needs to be created. The menu can link to non-existing pages (so make up a name for the "Link" field, like "my_new_page") and when this menu item is clicked it shows an error that the page doe not exist and also gives an option to add this page. Once the page is added, this can be edit it like any other Comcode page.
-4) Install any non-bundled addons you may need, such as the Google Maps addon
+4) Install any non-bundled addons you may need, such as the DataMappr addon
 5) If you have used completely new theme images inside content, such as Comcode pages or catalogue entries (using in your own theme's CSS or templates is fine) then you actually want these theme images to be defined inside the default theme rather than your own theme. This is because theoretically any theme could need to use these images, not just your one. So for each of these "content theme images" move [tt]themes/<yourthemename>/images_custom/<yoursitename>/<example>[/tt] to [tt]themes/default/images_custom/<yoursitename>/<example>[/tt].
 
 [title="2"]How Tempcode works, an illustrated example[/title]

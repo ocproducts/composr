@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -40,9 +40,9 @@ function init__files()
         define('IGNORE_FLOATING', 512); // Particular patterns of file which we know may appear but outside the scope of normal checks
         define('IGNORE_SHIPPED_VOLATILE', 1024); // Specific files liable to change that exist out-if-the-box
         define('IGNORE_UNSHIPPED_VOLATILE', 2048); // Specific files liable to change that don't exist out-of-the-box
-        define('IGNORE_CUSTOM_DIRS', 4096); // Any *_custom directory, except for the default index.html/.htaccess files (access controler files) in them
-        define('IGNORE_CUSTOM_DIR_FLOATING_CONTENTS', 8192); // Any *_custom directory which represents user-data we should ignore within a dev machine [very conservative compared to IGNORE_CUSTOM_DIRS, only Comcode pages and theme images], except for the default index.html/.htaccess files (access controler files) in them
-        define('IGNORE_UPLOADS', 16384); // The uploads directory, except for the default index.html/.htaccess files (access controler files) in them
+        define('IGNORE_CUSTOM_DIRS', 4096); // Any *_custom directory, except for the default index.html/.htaccess files (access controller files) in them
+        define('IGNORE_CUSTOM_DIR_FLOATING_CONTENTS', 8192); // Any *_custom directory which represents user-data we should ignore within a dev machine [very conservative compared to IGNORE_CUSTOM_DIRS, only Comcode pages and theme images], except for the default index.html/.htaccess files (access controller files) in them
+        define('IGNORE_UPLOADS', 16384); // The uploads directory, except for the default index.html/.htaccess files (access controller files) in them
 
         define('FILE_WRITE_FAILURE_SILENT', 1);
         define('FILE_WRITE_FAILURE_SOFT', 2);
@@ -475,7 +475,7 @@ function should_ignore_file($path, $bitmask = 0)
     $ignore_filename_and_dir_name_patterns = array( // Case insensitive
         // Operating system files
         array('\..*\.(png|gif|jpeg|jpg)', '.*'), // Image metadata file, e.g. ".example.png"
-        array('\.\_.*', '.*'), // MacOS extended attributes
+        array('\.\_.*', '.*'), // Mac OS extended attributes
 
         // Web server files
         array('\_vti\_.*', '.*'), // Frontpage

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -62,7 +62,7 @@ class Hook_addon_registry_cns_contact_member
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_correspondance',
+            'tut_correspondence',
         );
     }
 

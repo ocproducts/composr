@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -150,10 +150,12 @@ class Block_main_forum_news
                 $news = $myrow['firstpost'];
                 if ($optimise) {
                     $news = make_string_tempcode($news->evaluate());
-                    if (multi_lang_content()) {
-                        $GLOBALS['FORUM_DB']->query_update('translate', array('text_parsed' => $news->to_assembly()), array('id' => $myrow['firstpost_language_string'], 'language' => user_lang()), '', 1);
-                    } else {
-                        $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_post__text_parsed' => $news->to_assembly()), array('id' => $myrow['id']), '', 1);
+                    if (get_forum_type() == 'cns') {
+                        if (multi_lang_content()) {
+                            $GLOBALS['FORUM_DB']->query_update('translate', array('text_parsed' => $news->to_assembly()), array('id' => $myrow['firstpost_language_string'], 'language' => user_lang()), '', 1);
+                        } else {
+                            $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_post__text_parsed' => $news->to_assembly()), array('id' => $myrow['id']), '', 1);
+                        }
                     }
                 }
             } else {

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -98,7 +98,6 @@ class Hook_addon_registry_newsletter
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/menu/adminzone/tools/newsletter/import_subscribers.svg',
             'themes/default/images/icons/menu/adminzone/tools/newsletter/newsletter_email_bounce.svg',
             'themes/default/images/icons/menu/adminzone/tools/newsletter/newsletter_from_changes.svg',
             'themes/default/images/icons/menu/adminzone/tools/newsletter/subscribers.svg',

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -627,7 +627,6 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         $id = cns_make_post($topic_id, $label, $post, $skip_sig, null, $validated, $is_emphasised, $poster_name_if_guest, $ip_address, $time, $poster, $intended_solely_for, $last_edit_time, $last_edit_by, false, true, null, false, null, null, false, true, null, false, $parent_id);
 
         $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
-
         return strval($id);
     }
 

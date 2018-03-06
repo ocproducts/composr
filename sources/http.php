@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -1037,6 +1037,9 @@ class HttpDownloaderCurl extends HttpDownloader
 
         // Response metadata that cURL lets us gather easily
         $this->download_mime_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+        if ($this->download_mime_type === false) {
+            $this->download_mime_type = null;
+        }
         $this->download_size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
         $this->download_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
         if ($this->download_url == $this->connecting_url) {
@@ -1046,7 +1049,7 @@ class HttpDownloaderCurl extends HttpDownloader
         if ($this->message == '206') {
             $this->message = '200'; // We don't care about partial-content return code, as Composr implementation gets ranges differently and we check '200' as a return result
         }
-        if (strpos($this->download_mime_type, ';') !== false) {
+        if (($this->download_mime_type !== null) && (strpos($this->download_mime_type, ';') !== false)) {
             $this->charset = substr($this->download_mime_type, 8 + strpos($this->download_mime_type, 'charset='));
             $this->download_mime_type = substr($this->download_mime_type, 0, strpos($this->download_mime_type, ';'));
         }

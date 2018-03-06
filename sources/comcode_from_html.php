@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -346,7 +346,7 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
     $semihtml = str_replace('&#8203;', '', $semihtml);
     $array_html_preg_replace = array();
     if (get_charset() == 'utf-8') {
-        $semihtml = str_replace(chr(hexdec('e2')) . chr(hexdec('80')) . chr(hexdec('8b')), '', $semihtml);
+        $semihtml = str_replace(build_hex_string('e2808b'), '', $semihtml);
     }
 
     if (stripos($semihtml, '<input') !== false) {
@@ -686,7 +686,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
         $semihtml = comcode_preg_replace($tag, '#^(\[' . $tag . '\])(.*)(\[/' . $tag . '\])$#si', array('comcode_strip_html_tags'), $semihtml);
     }
 
-    // Cleanup how blocks are converted into a line break model. We need to clean up the case where inline leads onto block, by adding a linebreak inbetween. Note that this kind of break does not go *between* blocks, which is the reason we can't arbitrarily place it later on.
+    // Cleanup how blocks are converted into a line break model. We need to clean up the case where inline leads onto block, by adding a linebreak in-between. Note that this kind of break does not go *between* blocks, which is the reason we can't arbitrarily place it later on.
     $semihtml = preg_replace('#([^\s<>]|</(' . implode('|', $inline_elements) . ')>)(<(div|p))#', '${1}<br />${3}', $semihtml);
 
     // Reorder XHTML attributes alphabetically, so our regexp's match better
@@ -1072,11 +1072,11 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     }
 
     // Then, if there is no HTML left, we can avoid the 'semihtml' tag
-    if ((strpos($semihtml2, '<') === false) && (strpos($semihtml2, '&nbsp;') === false) && (strpos($semihtml2, '&#091;') === false)) {
+    if ((strpos($semihtml2, '<') === false) && (strpos($semihtml2, '&nbsp;') === false) && (strpos($semihtml2, '&#091;') === false) && (strpos($semihtml2, '&#123;') === false)) {
         //$semihtml2 = str_replace(array('&lt;', '&gt;', '&amp;'), array('___lt___', '___gt___', '___amp___'), $semihtml2);
         $semihtml2 = @html_entity_decode($semihtml2, ENT_QUOTES);
         //$semihtml2 = str_replace(array('___lt___', '___gt___', '___amp___'), array('&lt;', '&gt;', '&amp;'), $semihtml2);
-        $semihtml2 = str_replace(chr(hexdec('C2')) . chr(hexdec('A0')), '&nbsp;', $semihtml2); // Make nbsp legible as an entity again, as otherwise we'll have portability issues with this very common non-ASCII entity
+        $semihtml2 = str_replace(build_hex_string('c2a0'), '&nbsp;', $semihtml2); // Make nbsp legible as an entity again, as otherwise we'll have portability issues with this very common non-ASCII entity
         return $semihtml2;
     }
 

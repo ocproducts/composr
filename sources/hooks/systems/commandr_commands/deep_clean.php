@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -101,11 +101,12 @@ class Hook_deep_clean
 
                     $new_value = deep_clean($old_value, $title);
                     if ($new_value != $old_value) {
+                        $update = array($field => $new_value);
                         if ($is_trans) {
-                            lang_remap($field, $_old_value, $new_value, $db);
+                            $update += lang_remap($field, $_old_value, $new_value, $db);
                         } else {
-                            $db->query_update($table, array($field => $new_value), $where, '', 1);
                         }
+                        $db->query_update($table, $update, $where, '', 1);
 
                         $total_changed++;
                     }

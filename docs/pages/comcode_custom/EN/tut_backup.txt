@@ -23,7 +23,7 @@ A good backup strategy will automatically and regularly backup all, or all chang
 [title="2"]The Composr backup addon[/title]
 
 [surround]
-The backup addon provided by Composr is a system where the website makes a backup of itself when instructed to do so. You may set up the addon to perform backups on a schedule, or activate themself yourself manually.
+The backup addon provided by Composr is a system where the website makes a backup of itself when instructed to do so. You may set up the addon to perform backups on a schedule, or activate yourself manually.
 
 Access the backup addon from: Admin Zone > Tools > Backups
 

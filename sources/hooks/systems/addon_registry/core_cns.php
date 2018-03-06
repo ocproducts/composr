@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -411,9 +411,9 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/config/valid_email_domains.php',
             'sources/hooks/systems/config/enable_birthdays.php',
             'sources/cns_field_editability.php',
-            'sources/hooks/systems/tasks/export_member_csv.php',
+            'sources/hooks/systems/tasks/export_members.php',
             'sources/hooks/systems/tasks/cns_members_recache.php',
-            'sources/hooks/systems/tasks/import_member_csv.php',
+            'sources/hooks/systems/tasks/import_members.php',
             'sources/blocks/main_members.php',
             'themes/default/templates/BLOCK_MAIN_MEMBERS.tpl',
             'themes/default/templates/BLOCK_MAIN_MEMBERS_COMPLEX.tpl',

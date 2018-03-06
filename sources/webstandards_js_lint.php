@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -138,7 +138,7 @@ function init__webstandards_js_lint()
         'intVal' => array('function', array()),
         'numVal' => array('function', array()),
 
-        /* Defacto-standard */
+        /* De facto-standard */
         'jQuery' => array('Object', array()),
 
         // Future things coming, but not currently here (may not be added, not strictly needed as we ignore missing properties/methods, and the API scope has mushroomed since 'HTML5'):
@@ -198,7 +198,7 @@ function reset_js_global_variables()
  *
  * @param  string $data Code
  * @param  boolean $raw_errors Whether to return raw-errors
- * @return array Standard checker report output
+ * @return array Parse information
  */
 function check_js($data, $raw_errors = false)
 {
@@ -240,7 +240,7 @@ function check_js($data, $raw_errors = false)
 /**
  * Do the actual code check on the parse structure.
  *
- * @param  map $structure Parse structure
+ * @param  array $structure Parse structure
  *
  * @ignore
  */
@@ -280,7 +280,7 @@ function _check_js($structure)
 /**
  * Check a function declaration.
  *
- * @param  map $function The function details
+ * @param  array $function The function details
  */
 function js_check_function($function)
 {

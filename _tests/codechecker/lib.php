@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -196,7 +196,7 @@ function do_dir($dir, $enable_custom = true, $orig_priority = false, $avoid = ar
         }
     }
     closedir($dh);
- 
+
     return $out;
 }
 

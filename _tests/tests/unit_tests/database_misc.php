@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -228,7 +228,7 @@ class database_misc_test_set extends cms_test_case
 
     public function testEmoji()
     {
-        $emoji = chr(hexdec('F0')) . chr(hexdec('9F')) . chr(hexdec('98')) . chr(hexdec('81'));
+        $emoji = build_hex_string('f09f9881');
         set_value('emoji_test', $emoji);
         $this->assertTrue($emoji == get_value('emoji_test'));
         delete_value('emoji_test');
@@ -253,7 +253,7 @@ class database_misc_test_set extends cms_test_case
             'test_data_2' => 'SHORT_TEXT',
         ));
 
-        $data = chr(hexdec('E2')) . chr(hexdec('80')) . chr(hexdec('BE'));
+        $data = build_hex_string('e280be');
 
         $GLOBALS['SITE_DB']->query_insert('testy_test_test_2', array(
             'test_data_1' => $data,

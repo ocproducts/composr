@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -246,7 +246,7 @@ class Hook_addon_registry_all_icons
             'themes/default/images/icons/admin/delete.svg',
             'themes/default/images/icons/admin/delete2.svg',
             'themes/default/images/icons/admin/delete3.svg',
-            'themes/default/images/icons/admin/download_csv.svg',
+            'themes/default/images/icons/admin/export_csv.svg',
             'themes/default/images/icons/admin/edit.svg',
             'themes/default/images/icons/admin/edit2.svg',
             'themes/default/images/icons/admin/edit_one_category.svg',
@@ -260,7 +260,6 @@ class Hook_addon_registry_all_icons
             'themes/default/images/icons/admin/move.svg',
             'themes/default/images/icons/admin/reinstall.svg',
             'themes/default/images/icons/admin/remove.svg',
-            'themes/default/images/icons/admin/remove_manage.svg',
             'themes/default/images/icons/admin/revisions.svg',
             'themes/default/images/icons/admin/sync.svg',
             'themes/default/images/icons/admin/tool.svg',
@@ -354,6 +353,7 @@ class Hook_addon_registry_all_icons
             'themes/default/images/icons/checklist/checklist_todo.svg',
             'themes/default/images/icons/checklist/checklist_done.svg',
             'themes/default/images/icons/checklist/toggle.svg',
+            'themes/default/images/icons/checklist/toggle2.svg',
             'themes/default/images/icons/cns_general/is_off.svg',
             'themes/default/images/icons/cns_general/is_on.svg',
             'themes/default/images/icons/cns_general/new_posts.svg',
@@ -424,6 +424,12 @@ class Hook_addon_registry_all_icons
             'themes/default/images/icons/links/download_as_archive.svg',
             'themes/default/images/icons/links/dropbox.svg',
             'themes/default/images/icons/links/facebook.svg',
+            'themes/default/images/icons/links/bandcamp.svg',
+            'themes/default/images/icons/links/dailymotion.svg',
+            'themes/default/images/icons/links/minds.svg',
+            'themes/default/images/icons/links/soundcloud.svg',
+            'themes/default/images/icons/links/spotify.svg',
+            'themes/default/images/icons/links/vimeo.svg',
             'themes/default/images/icons/links/favorites.svg',
             'themes/default/images/icons/links/github.svg',
             'themes/default/images/icons/links/google_plus.svg',
@@ -537,7 +543,6 @@ class Hook_addon_registry_all_icons
             'themes/default/images/icons/menu/adminzone/tools/code_editor.svg',
             'themes/default/images/icons/menu/adminzone/tools/commandr.svg',
             'themes/default/images/icons/menu/adminzone/tools/health_check.svg',
-            'themes/default/images/icons/menu/adminzone/tools/newsletter/import_subscribers.svg',
             'themes/default/images/icons/menu/adminzone/tools/newsletter/newsletter_email_bounce.svg',
             'themes/default/images/icons/menu/adminzone/tools/newsletter/newsletter_from_changes.svg',
             'themes/default/images/icons/menu/adminzone/tools/newsletter/subscribers.svg',
@@ -688,11 +693,8 @@ class Hook_addon_registry_all_icons
             'themes/default/images/icons/tool_buttons/version_desktop.svg',
             'themes/default/images/icons/tool_buttons/version_mobile.svg',
             'themes/default/images/icons/trays/contract.svg',
-            'themes/default/images/icons/trays/contract2.svg',
             'themes/default/images/icons/trays/expand.svg',
-            'themes/default/images/icons/trays/expand2.svg',
             'themes/default/images/icons/trays/expcon.svg',
-            'themes/default/images/icons/trays/expcon2.svg',
             'themes/default/images/icons/tree_field/category.svg',
             'themes/default/images/icons/tree_field/collapse.svg',
             'themes/default/images/icons/tree_field/entry.svg',

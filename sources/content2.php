@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -683,7 +683,7 @@ function seo_get_fields($type, $id = null, $show_header = true)
 }
 
 /**
- * Explictly sets the meta information for the specified resource.
+ * Explicitly sets the meta information for the specified resource.
  *
  * @param  ID_TEXT $type The type of resource (e.g. download)
  * @param  ID_TEXT $id The ID of the resource
@@ -969,7 +969,7 @@ function _seo_meta_find_data($keyword_sources, $description = '')
     if (cms_mb_strlen($description) > 160) {
         if (get_charset() == 'utf-8') {
             $description = cms_mb_substr($description, 0, 159);
-            $description .= '…';
+            $description .= build_hex_string('e280a6');
         } else {
             $description = cms_mb_substr($description, 0, 157);
             $description .= '...';

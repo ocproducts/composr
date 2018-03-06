@@ -6,7 +6,7 @@
         "includePattern": ".+\\.js(doc|x)?$",
         "excludePattern": "(jwplayer|modernizr|plupload|jquery|jquery_ui|jquery_autocomplete|select2)\\.js"
     },
-    
+
     "opts": {
         "destination": "./jsdoc/",
         "sort": false

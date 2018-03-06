@@ -26,7 +26,7 @@ function checkPasswords(form) {
 	}
 
 	return true;
-	
+
 	function checkPassword(form, fieldName, fieldLabel) {
 		// Check matches with confirm field
 		if (form.elements[fieldName + '_confirm'].value !== form.elements[fieldName].value) {
@@ -59,7 +59,7 @@ function checkPasswords(form) {
 		if (!form.elements[fieldName].value.match(/[^a-zA-Z\d]/)) {
 			isSecurePassword = false;
 		}
-		
+
 		if (!isSecurePassword) {
 			return window.confirm('{!PASSWORD_INSECURE;^/}'.replace('\{1\}', fieldLabel)) && window.confirm('{!CONFIRM_REALLY;^/} {!PASSWORD_INSECURE;^/}'.replace('\{1\}', fieldLabel));
 		}

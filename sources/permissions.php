@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -434,7 +434,7 @@ function load_up_all_module_category_permissions($member_id, $module = null)
         $catclause = '';
         $select = 'category_name,module_the_name';
     }
-    $db = $GLOBALS[(($module == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+    $db = $GLOBALS[((($module == 'forums') || ($module == 'topics')) && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
     if ($db->query_value_if_there('SELECT COUNT(*) FROM ' . $db->get_table_prefix() . 'group_category_access WHERE ' . $catclause . '(' . $groups . ')') > 1000) {
         return; // Performance issue
     }
@@ -512,7 +512,7 @@ function has_category_access($member_id, $module, $category)
     $where .= ')';
     $run_once = true;
 
-    $db = $GLOBALS[(($module == 'forums') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
+    $db = $GLOBALS[((($module == 'forums') || ($module == 'topics')) && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
     $sql = 'SELECT DISTINCT category_name,module_the_name FROM ' . $db->get_table_prefix() . 'group_category_access WHERE (' . $groups . ') ' . $where;
     $sql .= ' UNION ALL ';
     $sql .= 'SELECT DISTINCT category_name,module_the_name FROM ' . $db->get_table_prefix() . 'member_category_access WHERE member_id=' . strval($member_id) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where;
@@ -812,7 +812,7 @@ function has_privilege($member_id, $privilege, $page = null, $cats = null)
     } else {
         $all_privileges_needed = array();
     }
-    $all_privileges_needed[$privilege] = true; 
+    $all_privileges_needed[$privilege] = true;
     foreach ($all_privileges_needed as $privilege_needed => $_) {
         if (is_integer($privilege_needed)) {
             $privilege_needed = strval($privilege_needed);

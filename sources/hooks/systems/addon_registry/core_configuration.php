@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -138,9 +138,12 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/moz_access_id.php',
             'sources/hooks/systems/config/moz_secret_key.php',
             'sources/hooks/systems/config/moz_paid.php',
+            'sources/hooks/systems/config/bing_geocoding_api_key.php',
+            'sources/hooks/systems/config/google_geocoding_api_enabled.php',
+            'sources/hooks/systems/config/mapquest_geocoding_api_key.php',
+            'sources/hooks/systems/config/google_apis_api_key.php',
             'sources/hooks/systems/config/google_apis_client_id.php',
             'sources/hooks/systems/config/google_apis_client_secret.php',
-            'sources/hooks/systems/config/google_apis_api_key.php',
             'adminzone/pages/modules/admin_oauth.php',
             'sources/oauth.php',
             'sources/hooks/systems/oauth/.htaccess',
@@ -279,7 +282,6 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/is_on_strong_forum_tie.php',
             'sources/hooks/systems/config/keywords.php',
             'sources/hooks/systems/config/dynamic_firewall.php',
-            'sources/hooks/systems/config/google_geocode_api_key.php',
             'sources/hooks/systems/config/main_forum_name.php',
             'sources/hooks/systems/config/max_download_size.php',
             'sources/hooks/systems/config/maximum_users.php',

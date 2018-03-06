@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -100,7 +100,7 @@ class Hook_ajax_tree_choose_download
                         if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
                             $map['validated'] = 1;
                         }
-                        $rows = $GLOBALS['SITE_DB']->query_select('images', array('*'), $map, 'ORDER BY add_date,id', 200/*Stop sillyness, could be a DOS attack*/);
+                        $rows = $GLOBALS['SITE_DB']->query_select('images', array('*'), $map, 'ORDER BY add_date,id', 200/*Stop silliness, could be a DOS attack*/);
                         $counter = 0;
                         $div = 2;
                         $_out = new Tempcode();

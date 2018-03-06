@@ -711,7 +711,7 @@
                     if ((e.type === 'mouseover') && options.haveLinks) {
                         return;
                     }
-                    
+
                     if (options.haveLinks && el.tooltipId && $dom.$id(el.tooltipId) && $dom.isDisplayed($dom.$id(el.tooltipId))) {
                         $cms.ui.deactivateTooltip(el);
                         return;
@@ -754,7 +754,7 @@
                     if (!Array.isArray($dom.data(el, 'mouseoverActivateTooltip'))) {
                         return;
                     }
-                    
+
                     var args = arrVal($dom.data(el, 'mouseoverActivateTooltip'));
 
                     args.unshift(el, e);
@@ -780,7 +780,7 @@
                     if (!Array.isArray($dom.data(el, 'focusActivateTooltip'))) {
                         return;
                     }
-                    
+
                     var args = arrVal($dom.data(el, 'focusActivateTooltip'));
 
                     args.unshift(el, e);

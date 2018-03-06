@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -38,7 +38,7 @@ class seo_test_set extends cms_test_case
         $this->assertTrue($keywords == 'Epic', 'Got: ' . $keywords);
 
         // Test unicode too; also capitalised stop words still stripped
-        $emoji = chr(hexdec('F0')) . chr(hexdec('9F')) . chr(hexdec('98')) . chr(hexdec('81'));
+        $emoji = build_hex_string('f09f9881');
         list($keywords) = _seo_meta_find_data(array('This is epic' . $emoji), '');
         $this->assertTrue($keywords == 'epic', 'Got: ' . $keywords);
     }

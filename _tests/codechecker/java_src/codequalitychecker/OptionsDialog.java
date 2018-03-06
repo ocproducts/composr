@@ -26,13 +26,13 @@ public class OptionsDialog extends JDialog {
     JButton textEditorPathBtn = new JButton();
     JLabel jLabel3 = new JLabel();
     JTextField textEditorPath = new JTextField();
-    JCheckBox spelling = new JCheckBox();
     VerticalFlowLayout verticalFlowLayout1 = new VerticalFlowLayout();
     JCheckBox api = new JCheckBox();
     JCheckBox mixed = new JCheckBox();
     JCheckBox checks = new JCheckBox();
     JCheckBox security = new JCheckBox();
     JCheckBox pedantic = new JCheckBox();
+    JCheckBox spelling = new JCheckBox();
 
     public OptionsDialog(Frame owner, String title, boolean modal) {
         super(owner, title, modal);
@@ -50,93 +50,104 @@ public class OptionsDialog extends JDialog {
     }
 
     private void jbInit() throws Exception {
-        panel1.setLayout(null);
-        jTabbedPane1.setBounds(new Rectangle(10, 13, 451, 237));
-        closeBtn.setBounds(new Rectangle(389, 263, 71, 23));
-        closeBtn.setMargin(new Insets(0, 0, 0, 0));
-        closeBtn.setActionCommand("closeBtn");
-        closeBtn.setText("Close");
-        closeBtn.addActionListener(new Dialog2_closeBtn_actionAdapter(this));
-        cancelBtn.setBounds(new Rectangle(308, 263, 71, 23));
-        cancelBtn.setMargin(new Insets(0, 0, 0, 0));
-        cancelBtn.setActionCommand("cancelBtn");
-        cancelBtn.setText("Cancel");
-        cancelBtn.addActionListener(new Dialog2_cancelBtn_actionAdapter(this));
+        this.setModal(true);
+        this.setResizable(false);
+        this.setTitle("Options");
+
+        environment.setLayout(null);
+
+        jLabel1.setText("PHP executable:");
+        jLabel1.setBounds(new Rectangle(8, 52, 104, 22));
+        environment.add(jLabel1);
+        phpPath.setBounds(new Rectangle(114, 54, 228, 19));
+        phpPath.setText(Main.phpPath);
+        environment.add(phpPath);
         phpPathBtn.setBounds(new Rectangle(355, 53, 76, 22));
         phpPathBtn.setMargin(new Insets(0, 0, 0, 0));
         phpPathBtn.setActionCommand("phpPathBtn");
         phpPathBtn.setText("Browse");
         phpPathBtn.addActionListener(new Dialog2_phpPathBtn_actionAdapter(this));
-        textEditorPathBtn.addActionListener(new Dialog2_textEditorPathBtn_actionAdapter(this));
-        projectPathBtn.addActionListener(new Dialog2_projectPathBtn_actionAdapter(this));
-        phpPath.setText(Main.phpPath);
-        phpPath.setBounds(new Rectangle(114, 54, 228, 19));
-        jLabel1.setText("PHP executable:");
-        jLabel1.setBounds(new Rectangle(8, 52, 104, 22));
-        environment.setLayout(null);
+        environment.add(phpPathBtn);
+
+        jLabel2.setText("Project path:");
+        jLabel2.setBounds(new Rectangle(9, 85, 104, 22));
+        environment.add(jLabel2);
+        projectPath.setBounds(new Rectangle(115, 87, 228, 19));
+        projectPath.setText(Main.projectPath);
+        environment.add(projectPath);
         projectPathBtn.setBounds(new Rectangle(356, 86, 76, 22));
         projectPathBtn.setMargin(new Insets(0, 0, 0, 0));
         projectPathBtn.setActionCommand("projectPathBtn");
         projectPathBtn.setText("Browse");
-        jLabel2.setToolTipText("");
-        jLabel2.setText("Project path:");
-        jLabel2.setBounds(new Rectangle(9, 85, 104, 22));
-        projectPath.setBounds(new Rectangle(115, 87, 228, 19));
-        projectPath.setText(Main.projectPath);
-        textEditorPathBtn.setBounds(new Rectangle(355, 20, 76, 22));
-        textEditorPathBtn.setActionCommand("textEditorPathBtn");
-        textEditorPathBtn.setText("Browse");
+        projectPathBtn.addActionListener(new Dialog2_projectPathBtn_actionAdapter(this));
+        environment.add(projectPathBtn);
+
         jLabel3.setText("Text editor path:");
         jLabel3.setBounds(new Rectangle(8, 19, 104, 22));
+        environment.add(jLabel3);
         textEditorPath.setBounds(new Rectangle(114, 21, 228, 19));
         textEditorPath.setText(Main.textEditorPath);
-        spelling.setActionCommand("spelling");
-        spelling.setText(
-                "Spell checking (PHP must have pspell or enchant installed)");
+        environment.add(textEditorPath);
+        textEditorPathBtn.setBounds(new Rectangle(355, 20, 76, 22));
+        projectPathBtn.setMargin(new Insets(0, 0, 0, 0));
+        textEditorPathBtn.setActionCommand("textEditorPathBtn");
+        textEditorPathBtn.setText("Browse");
+        textEditorPathBtn.addActionListener(new Dialog2_textEditorPathBtn_actionAdapter(this));
+        environment.add(textEditorPathBtn);
+
         flags.setLayout(verticalFlowLayout1);
-        api.setToolTipText("");
+
+        api = new JCheckBox(api.getText(), Main.relay__api);
         api.setActionCommand("api");
-        api.setText(
-                "Do API checks (recommended, esp as it helps determine type)");
+        api.setText("Do API checks (recommended, esp as it helps determine type)");
+        flags.add(api);
+
+        mixed = new JCheckBox(mixed.getText(), Main.relay__mixed);
         mixed.setActionCommand("mixed");
         mixed.setText("Flag variables that have no determinable type");
+        flags.add(mixed);
+
+        checks = new JCheckBox(checks.getText(), Main.relay__checks);
         checks.setActionCommand("checks");
-        checks.setText(
-                "Flag areas that need special checking (e.g. file permissions)");
+        checks.setText("Flag areas that need special checking (e.g. file permissions)");
+        flags.add(checks);
+
+        security = new JCheckBox(security.getText(), Main.relay__security);
         security.setActionCommand("security");
         security.setText("Flag security hotspots (e.g. query and exec)");
-        pedantic.setToolTipText("");
+        flags.add(security);
+
+        pedantic = new JCheckBox(pedantic.getText(), Main.relay__pedantic);
         pedantic.setActionCommand("pedantic");
         pedantic.setText("Show pedantic warnings (comment density, etc)");
-        api = new JCheckBox(api.getText(), Main.relay__api);
-        mixed = new JCheckBox(mixed.getText(), Main.relay__mixed);
-        checks = new JCheckBox(checks.getText(), Main.relay__checks);
-        security = new JCheckBox(security.getText(), Main.relay__security);
-        pedantic = new JCheckBox(pedantic.getText(), Main.relay__pedantic);
-        this.setModal(true);
-        this.setResizable(false);
-        this.setTitle("Options");
+        flags.add(pedantic);
+
+        spelling = new JCheckBox(spelling.getText(), Main.relay__spelling);
+        spelling.setActionCommand("spelling");
+        spelling.setText("Spell checking (PHP must have pspell or enchant installed)");
+        flags.add(spelling);
+
+        closeBtn.setBounds(new Rectangle(389, 263, 71, 23));
+        closeBtn.setMargin(new Insets(0, 0, 0, 0));
+        closeBtn.setActionCommand("closeBtn");
+        closeBtn.setText("Close");
+        closeBtn.addActionListener(new Dialog2_closeBtn_actionAdapter(this));
+
+        cancelBtn.setBounds(new Rectangle(308, 263, 71, 23));
+        cancelBtn.setMargin(new Insets(0, 0, 0, 0));
+        cancelBtn.setActionCommand("cancelBtn");
+        cancelBtn.setText("Cancel");
+        cancelBtn.addActionListener(new Dialog2_cancelBtn_actionAdapter(this));
+
+        jTabbedPane1.setBounds(new Rectangle(10, 13, 451, 237));
+        jTabbedPane1.add(flags, "Flags");
+        jTabbedPane1.add(environment, "Environment");
+
+        panel1.setLayout(null);
         getContentPane().add(panel1);
         panel1.add(jTabbedPane1);
         panel1.add(closeBtn);
         panel1.add(cancelBtn);
-        environment.add(textEditorPath);
-        environment.add(jLabel3);
-        environment.add(jLabel1);
-        environment.add(jLabel2);
-        environment.add(projectPath);
-        environment.add(phpPath);
-        environment.add(projectPathBtn);
-        environment.add(phpPathBtn);
-        environment.add(textEditorPathBtn);
-        jTabbedPane1.add(flags, "Flags");
-        flags.add(pedantic);
-        flags.add(security);
-        flags.add(checks);
-        flags.add(mixed);
-        flags.add(api);
-        flags.add(spelling);
-        jTabbedPane1.add(environment, "Environment");
         panel1.setPreferredSize(new Dimension(475, 297));
     }
 

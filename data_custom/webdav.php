@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -38,7 +38,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 @chdir($FILE_BASE);
 
-// Workaround for MacOS slow-downs
+// Workaround for Mac OS slow-downs
 $method = $_SERVER['REQUEST_METHOD'];
 if ($method == 'PROPFIND') {
     $filename = basename($_SERVER['REQUEST_URI']);

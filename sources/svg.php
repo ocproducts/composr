@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -332,7 +332,7 @@ function create_bar_chart($data, $x_label = 'X axis', $y_label = 'Y axis', $x_un
                 document.getElementById(id).addEventListener("mouseover",function () { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById(id).setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
                 document.getElementById(id).de_clarify = function () { document.getElementById(id).setAttribute("style","fill: ' . (($height == 0.0) ? 'black' : 'white') . '"); };
                 document.getElementById(id).addEventListener("focus",function () { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById(id).setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
-                
+
                 document.getElementById(id + "_bar").addEventListener("mouseover",function() { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById(id).setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
                 document.getElementById(id + "_bar").de_clarify = function () { document.getElementById(id).setAttribute("style", "fill: ' . (($height == 0.0) ? 'black' : 'white') . '"); };
                 document.getElementById(id + "_bar").addEventListener("focus",function () { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById(id).setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });

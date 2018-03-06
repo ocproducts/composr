@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -18,6 +18,15 @@
  */
 class geocoding_test_set extends cms_test_case
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        // Please don't use these on a live site, we just need these to test against
+        set_option('mapquest_geocoding_api_key', 'O6xkX0ZeucJRLDDCzyqahkCzAJpVmmfB');
+        set_option('bing_geocoding_api_key', 'AvmgsVWtIoJeCnZXdDnu3dQ7izV9oOowHCNDwbN4R1RPA9OXjfsQX1Cr9HSrsY4j');
+    }
+
     public function testIPGeocode()
     {
         if (get_db_type() == 'xml') {
@@ -37,7 +46,7 @@ class geocoding_test_set extends cms_test_case
         $this->assertTrue(geolocate_ip('217.160.72.6') == 'DE');
     }
 
-    public function testGeocodeGoogle()
+    public function testGeocode()
     {
         if (in_safe_mode()) {
             $this->assertTrue(false, 'Cannot work in safe mode');
@@ -46,13 +55,16 @@ class geocoding_test_set extends cms_test_case
 
         require_code('locations_geocoding');
 
-        $result = geocode('Berlin, DE');
-        $this->assertTrue(($result !== null) && ($result[0] > 52.0) && ($result[0] < 53.0) && ($result[1] > 13.0) && ($result[1] < 14.0));
+        foreach (array('google', 'bing', 'mapquest') as $service) {
+            $error_msg = new Tempcode();
+            $result = geocode('Berlin, DE', $error_msg, $service);
+            $this->assertTrue(($result !== null) && ($result[0] > 52.0) && ($result[0] < 53.0) && ($result[1] > 13.0) && ($result[1] < 14.0), 'Wrong coordinate on ' . $service);
+        }
 
         // Note if this breaks there's also similar code in locations_catalogues_geoposition and locations_catalogues_geopositioning (non-bundled addons)
     }
 
-    public function testReverseGeocodeGoogle()
+    public function testReverseGeocode()
     {
         if (in_safe_mode()) {
             $this->assertTrue(false, 'Cannot work in safe mode');
@@ -61,12 +73,16 @@ class geocoding_test_set extends cms_test_case
 
         require_code('locations_geocoding');
 
-        $address = reverse_geocode(52.516667, 13.388889);
-        $this->assertTrue($address[2] == 'Berlin');
-        $this->assertTrue($address[6] == 'DE');
+        foreach (array('google', 'bing', 'mapquest') as $service) {
+            $error_msg = new Tempcode();
+            $address = reverse_geocode(52.516667, 13.388889, $error_msg, $service);
+            $this->assertTrue($address[2] == 'Berlin', 'Wrong city on ' . $service);
+            $this->assertTrue($address[6] == 'DE', 'Wrong country on ' . $service);
 
-        $address = reverse_geocode(64.133333, -21.933333);
-        $this->assertTrue(substr($address[2], 0, 3) == 'Rey'); // Only check first chars due to charset issues
-        $this->assertTrue($address[6] == 'IS');
+            $error_msg = new Tempcode();
+            $address = reverse_geocode(64.133333, -21.933333, $error_msg, $service);
+            $this->assertTrue(substr($address[2], 0, 3) == 'Rey', 'Wrong city on ' . $service); // Only check first chars due to charset issues
+            $this->assertTrue($address[6] == 'IS', 'Wrong country on ' . $service);
+        }
     }
 }

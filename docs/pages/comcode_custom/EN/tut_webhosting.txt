@@ -213,7 +213,7 @@ You may also wish to create a non-public forum called 'Website support tickets' 
 
 Server variables may be set in the MySQL config -- either the main config file (e.g. [tt]/etc/my.cnf[/tt]), or included files (e.g. from [tt]/etc/my.cnf.d[/tt]) -- or in the startup parameters -- or via setting the server variable at run-time. If they are not set anywhere then MySQL will use hard-coded defaults.
 
-To find which config file(s) MySQL uses, run this command (Linux and MacOS):
+To find which config file(s) MySQL uses, run this command (Linux and Mac OS):
 [code="Bash"]
 mysql --help | grep "Default options" -A 1
 [/code]
@@ -226,7 +226,7 @@ max_allowed_packet = 16M
 ...
 [/code]
 
-To find if a setting is set in startup parameters (Linux and MacOS) run:
+To find if a setting is set in startup parameters (Linux and Mac OS) run:
 [code="Bash"]
 ps -Af | grep mysqld
 [/code]

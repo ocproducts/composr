@@ -599,7 +599,7 @@ You can turn off most of development mode by putting "[tt]&keep_dev_mode=0[/tt]"
 [title="3"]Custom version of PHP[/title]
 
 Our custom version of PHP (linked to under "Programming/programmatic-interface standards") performs 2 main functions:
-1) It makes PHP type strict (if turned on, which Composr does do), so that automatic type conversion results in a PHP notice, which causes a Composr stack dump.
+1) It makes PHP type strict (if turned on, which Composr does do), so that automatic type conversion results in a PHP notice, which causes a Composr stack trace.
 2) It turns on some very special innovative XSS security hole detection code. All PHP strings are tagged as "escaped or non-escaped", and this tagging is maintained through all string operations (e.g. if a string that is escaped is appended to a string that is non-escaped, the result will be a string that is non-escaped). Functions like [tt]htmlentities[/tt] result in escaping being marked, and there is also an [tt]cms_mark_as_escaped[/tt] function to force this manually (useful if you are intentionally injecting HTML literal code, e.g. from an RSS feed). If you output a non-escaped string, a PHP warning is produced about it -- because the developer has not blocked what could well be an XSS security hole. We're very proud of this system, and how elegant it is, and as far as we know it's not anything anyone has done before -- it took quite a few thought experiment sessions until we can up with it.
 
 It also enforces some other coding standards, such as not allowing relative paths to files.
@@ -829,7 +829,7 @@ PRIVILEGE_may_foobar=May foobar
 
 [title="3"]SEO metadata[/title]
 
-To allow SEO (search engine optimization) metadata in your addon, the following is roughly required for different sections of the addon's page-module code. This example is for the download system:
+To allow SEO (search engine optimisation) metadata in your addon, the following is roughly required for different sections of the addon's page-module code. This example is for the download system:
 
 This function [tt]seo_meta_set_for_implicit()[/tt] implicitly (by virtue of extracting keywords from the strings it is passed) sets the meta information for the specified resource. Add it in the model [tt]add_download[/tt] function:
 [code="PHP"]

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -2559,7 +2559,7 @@ function rtrim($str, $characters = " \t\n\r\0\x0B")
 /**
  * Generates a storable representation of a value.
  *
- * @param  mixed $value Whatever is to be serialised 
+ * @param  mixed $value Whatever is to be serialised
  * @return string The serialisation
  */
 function serialize($value)

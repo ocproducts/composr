@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -39,14 +39,21 @@ class currency_test_set extends cms_test_case
 
     public function testCurrencyViaECB()
     {
-        $test = currency_convert(10.00, 'USD', 'GBP');
+        $test = currency_convert(10.00, 'USD', 'GBP', 0, 'ecb');
         $this->assertTrue($test > 0.00);
         $this->assertTrue($test < 10.00); // GBP is worth more
     }
 
+    public function testCurrencyViaConvAPI()
+    {
+        $test = currency_convert(10.00, 'MMK', 'GBP', 0, 'conv_api');
+        $this->assertTrue($test > 0.00);
+        $this->assertTrue($test < 10.00); // GBP is worth *much* more
+    }
+
     public function testCurrencyViaGoogle()
     {
-        $test = currency_convert(10.00, 'MMK', 'GBP'); // ECB doesn't do MMK, so we know this will run via Google
+        $test = currency_convert(10.00, 'MMK', 'GBP', 0, 'google');
         $this->assertTrue($test > 0.00);
         $this->assertTrue($test < 10.00); // GBP is worth *much* more
     }

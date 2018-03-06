@@ -194,13 +194,6 @@ Write comments in the standard way
 | We have a standard comment format at the top of files (different depending on the file type). Use it consistently.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-Blank lines at the end of files
-| Portability
-| Product development only
-| Automated test ([tt]basic_code_formatting.php[/tt])
-| There is a Unix standard that text files should have a terminating line break. As various tools enforce this we standardise on a single line-break for most files. A few exceptions are defined within the automated test for the rare cases where we can't do this.
-|-
-| [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Prefer long lines over forced line-breaks[/color]
 | Consistency
 | Product development only
@@ -208,20 +201,56 @@ Blank lines at the end of files
 | Generally we prefer code to fit on the screen without scrolling, but don't force it by breaking up and indenting lines in a way that doesn't align with structure. It is better to have symmetrical looking code than forced breaks, especially given text editors can have automatic word-wrapping enabled when desired. Often you can break up code in a clean way by pre-computing function arguments, or neatly indenting array or parameter structures.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Define ignoring of files[/color]
-| Modularity: installer generation etc
-| Product development only
-| Manually
-| You need to store dynamic files in appropriate places, often [tt]data_custom[/tt]. Then these files must be marked as ignored in the appropriate way in [tt]sources/files.php[/tt] and [tt].gitignore[/tt].
-Also third-party tools may produce files which you may want to define as ignored, such as Microsoft Windows producing [tt]thumbs.db[/tt] files.
-It's impossible to say here exactly what to do as each case varies.
-|-
-| [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Pass URLs properly[/color]
 | Compatibility with ModSecurity
 | Product development only
 | Manually
 | URLs-within-URLs need to be encoded carefully so as to bypass ModSecurity restrictions (often any embedded URL is blocked). Basically URLs should be read in with a [tt]INPUT_FILTER_URL_*[/tt] flag to [tt]*_param_string[/tt], and URLs should be placed within URLs/forms with a [tt]protect_url_parameter[/tt] call around their value.
+|}
+
+[title="4"]Code formatting[/title]
+
+{|
+! Standard
+! Reason
+! Scope
+! Test method
+! Notes
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Blank lines at the end of files
+| Portability
+| Product development only
+| Automated test ([tt]basic_code_formatting.php[/tt])
+| There is a Unix standard that text files should have a terminating line break. As various tools enforce this we standardise on a single line-break for most files. A few exceptions are defined within the automated test for the rare cases where we can't do this.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Unix line endings
+| Consistency
+| Product development only
+| Automated test ([tt]basic_code_formatting.php[/tt])
+| We work in Unix line-ending format, not Windows.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+No trailing whitespace
+| Consistency
+| Product development only
+| Automated test ([tt]basic_code_formatting.php[/tt])
+| Unless there's a good reason, we don't want floating white-space on the end of lines of code. It's messy.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+No BOM markers
+| Stability
+| All development
+| Automated test ([tt]basic_code_formatting.php[/tt])
+| Many programs are not compatible with byte-order-markers.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Use ASCII
+| Stability
+| Composr development +
+| Automated test ([tt]basic_code_formatting.php[/tt])
+| In order to avoid having to configure IDEs and text editors on what character set to use, and problems with Composr running on different character sets, just make it so your files don't require any specific character set. This is not a strict rule, but certainly don't have your code outputting non-ASCII characters directly if utf-9 isn't being used -- encode such characters in some smarter way, e.g. using HTML entities. The actual text files are saved utf-8.
 |}
 
 [title="3"]Back-end programming[/title]
@@ -588,7 +617,7 @@ If you use cookies, use the Composr cookie API
 Don't write code that'll output PHP 'notice' errors
 | Stability
 | Composr development +
-| Composr makes all PHP notices generate stack dumps
+| Composr makes all PHP notices generate stack traces
 | 
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -603,15 +632,53 @@ Allow initialisation functions to run twice
 | Stability
 | Product development only
 | Automated test ([tt]override_issues.php[/tt])
-| If a developer overrides a [tt].php[/tt] file then the initialisation function of the original will also run. The person doing the override doesn't usually understand this and accomodate for it, so make sure you check that you are not doing anything that can't run twice. Usually this just involves guarding [tt]define[/tt] calls.
+| If a developer overrides a [tt].php[/tt] file then the initialisation function of the original will also run. The person doing the override doesn't usually understand this and accommodate for it, so make sure you check that you are not doing anything that can't run twice. Usually this just involves guarding [tt]define[/tt] calls.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Don't assume about platforms[/color]
 | Portability
 | Product development only
 | Manually
-| Do not assume Composr is running on Linux, or Microsoft Windows, or Apache, or IIS, or MacOS, or a case-sensitive filesystem, or a case-insensitive filesystem, or anything else unless it is defined in our minimum requirements. This is an important lesson for new programmers who may be used to just making something work for the computer they are in-front of. You need to use universally accepted techniques rather than platform-specific APIs.
+| Do not assume Composr is running on Linux, or Microsoft Windows, or Apache, or IIS, or Mac OS, or a case-sensitive filesystem, or a case-insensitive filesystem, or anything else unless it is defined in our minimum requirements. This is an important lesson for new programmers who may be used to just making something work for the computer they are in-front of. You need to use universally accepted techniques rather than platform-specific APIs.
 |}
+
+[title="4"]AJAX[/title]
+
+{|
+! Standard
+! Reason
+! Scope
+! Test method
+! Notes
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Set [tt]KNOWN_UTF[/tt] in front-end controller
+| Internationalisation
+| Product development only
+| Manually
+| This will tell Composr how to do a character set conversion -- as JavaScript uses utf-8 regardless of your document character set. If you don't feel a front-end controller is needed, you may be able to just code using a [tt]snippet[/tt] hook, and the [tt]snippet.php[/tt] front-end controller.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Put your code in a function named [tt]<filename>_script()[/tt]
+| Consistency
+| Product development only
+| Manually
+| 
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Call [tt]prepare_for_ajax_response[/tt]
+| Internationalisation
+| Product development only
+| Manually
+| This function will do character set conversions, and put out appropriate HTTP headers.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Call [tt]exit();[/tt] after your code runs
+| Compatibility
+| Product development only
+| Manually
+| If you do not explicitly exit your code then hosting using [tt]auto_append_file[/tt] could append junk to your XML/JSON, corrupting it. This is common on free web hosting plans.
+}
 
 [title="4"]Files[/title]
 
@@ -641,7 +708,7 @@ Run the [tt]sync_file[/tt] function after making any file changes
 | Portability
 | Product development only
 | Manually
-| Multi-line textual input (from the web browser, or from the file-system) should go through the [tt]unixify_line_format[/tt] function, to make sure line-terminations are converted to the right format that the server operating-system needs.
+| Multi-line textual input (from the web browser, or from the file-system) should go through the [tt]unixify_line_format[/tt] function, to make sure line-terminations are converted to the correct format that the server operating-system needs.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Generally use binary mode[/color]
@@ -711,7 +778,7 @@ Avoid relative paths
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Don't assume where a module is located when you link[/color]
-| Flexability: webmasters may move modules around
+| Flexibility: webmasters may move modules around
 | Product development only
 | Manually
 | Don't assume which zone a module is located in, except in the case of admin modules. Use the [tt]get_module_zone[/tt] function or [tt]_SEARCH[/tt] token to break down such assumptions.
@@ -725,7 +792,7 @@ Avoid relative paths
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Don't assume where an entry-point is located when you link[/color]
-| Flexability: webmasters may move entry-point scripts around
+| Flexibility: webmasters may move entry-point scripts around
 | Product development only
 | Manually
 | Use the [tt]FIND_SCRIPT[/tt] symbol or [tt]find_script[/tt] function to find zone-based scripts. Put non zone-based scripts in [tt]data[/tt] (or [tt]data_custom[/tt] if for an unofficial addon).
@@ -1480,7 +1547,7 @@ Reinstalls must be handled correctly
 [color="red"]Don't spell things [i]rong[/i] or use incorrect grammar[/color]
 | Usability
 | Composr development +
-| Use the [tt].ini[/tt] files with Microsoft Word's checking tools, Automated test ([tt]lang_spelling.php[/tt]), Automated test ([tt]lang_grammar.php[/tt])
+| Automated test ([tt]lang_spelling.php[/tt]), Automated test ([tt]_lang_spelling.php[/tt]), Automated test ([tt]lang_grammar.php[/tt])
 | 
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -1491,17 +1558,10 @@ Reinstalls must be handled correctly
 | Capitalisation is for proper nouns (e.g. Charlie or Microsoft, but not box), for new sentences, or sometimes for sentence-like standalone phrases. We do not generally capitalise things for effect, e.g. "Add News".
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"][i]Wrong to miss out words[/i][/color]
-| Usability
-| Composr development +
-| Manually + use the .ini files with Microsoft Word's checking tools
-| In this example, "It is" is missing from the start of the sentence.
-|-
-| [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Be careful where you put your [i]apostrophe's[/i][/color]
 | Usability
 | Composr development +
-| Manually + use the .ini files with Microsoft Word's checking tools
+| Manually + use the [tt].ini[/tt] files with Microsoft Word's checking tools
 | Apostrophes are not used for plurals.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -1634,7 +1694,7 @@ Define administrative split
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Don't define binary options in negative terms
-| Usabiility
+| Usability
 | Composr development +
 | Manually
 | Do not create an option such as "Disable widgets". It is unnecessarily confusing because you can just make an option "Enable widgets" that defaults to on. This coding standard applies universally across the product, including configuration options, form fields, and code. The only exception is hidden configuration options, which are often set to '1' to disable something.
@@ -1801,7 +1861,7 @@ Write to XHTML5
 | Accessibility
 | Product development only
 | Firefox HTML validator extension / Automated test ([tt]template_previews.php[/tt])
-| We don't actually output XHTML mime-type, or write JavaScript as XHTML-compatible, but we do have the actual markup be XHTML-compatible for better readability and tooling-parsablity.
+| We don't actually output XHTML mime-type, or write JavaScript as XHTML-compatible, but we do have the actual markup be XHTML-compatible for better readability and tooling-parsability.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Don't make assumptions about word order by coding things like [tt]{!GO} {!HERE}[/tt][/color]
@@ -2331,11 +2391,11 @@ Use comment encapsulation
 | You will likely create new icons for very specific purposes. However, icons (especially SVG icons) are also an excellent resource for webmasters to use in their designs (regardless of what addons they've installed). For this reason every icon must be packaged both for the specific addon it is associated with, and the general purpose [tt]all_icons[/tt] addon.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-Compress PNG images and strip gamma
+Compress images and strip gamma from PNG files
 | Performance, compatibility
 | Composr development +
-| Automated test checks compression ratios ([tt]image_compression.php[/tt])
-| Pass PNG images through a compression program such as PNGGauntlet or PNGThing, and strip gamma settings in the process (needed for colour compatibility on some browsers).
+| Automated test checks compression ratios ([tt]image_compression.php[/tt]), Automated test checks SVG quality ([tt]theme_images.php[/tt])
+| Pass PNG images through a compression program such as PNGGauntlet or PNGThing, and strip gamma settings in the process (needed for colour compatibility on some browsers). Strip any unneeded code from SVG files.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use inlining correctly[/color]

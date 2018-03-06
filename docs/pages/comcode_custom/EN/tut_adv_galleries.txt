@@ -92,7 +92,7 @@ An example of a complex gallery hierarchy is as follows:
     - Benjamin's Photos (+)
     - Harry's Photos (+)
 
-[tt](*)[/tt] denotes a personal gallery container that an admin has pre-created in advance
+[tt](*)[/tt] denotes a personal gallery container that an admin has precreated in advance
 [tt](+)[/tt] denotes a personal gallery created automatically by a member (now the gallery owner) adding media
 
 Personal galleries may only be submitted to by the owner of the personal gallery, unless the "Submit to categories belonging to other members" privilege is assigned.

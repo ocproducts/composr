@@ -43,7 +43,7 @@
         var facebookAppid = strVal(params.facebookAppid),
             pageLinkHome = strVal(params.pageLinkHome),
             pageLinkLogout = strVal(params.pageLinkLogout);
-            
+
         if (facebookAppid !== '') {
             facebookInit(facebookAppid, $util.rel('facebook_connect.php'), (params.fbConnectFinishingProfile || params.fbConnectLoggedOut), (params.fbConnectUid === '' ? null : params.fbConnectUid), pageLinkHome, pageLinkLogout);
         }
@@ -101,7 +101,7 @@
             window.FB.getLoginStatus(function (response) {
                 if ((response.status === 'connected') && (response.authResponse)) {
                     // If Composr is currently logging out, tell FB connect to disentangle
-                    // Must have JS FB login before can instruct to logout. Will not re-auth -- we know we have authed due to FB_CONNECT_LOGGED_OUT being set
+                    // Must have JS FB login before can instruct to logout. Will not re-auth -- we know we have auth'd due to FB_CONNECT_LOGGED_OUT being set
                     if (justLoggedOut) {
                         window.FB.logout(function (response) {
                             $util.inform('Facebook: Logged out.');

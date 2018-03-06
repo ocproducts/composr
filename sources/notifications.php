@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -103,7 +103,7 @@ function do_notification_lang($codename, $parameter1 = null, $parameter2 = null,
  * @param  ID_TEXT $codename The codename of the template being loaded
  * @param  ?array $parameters A map of parameters for the template (key to value); you can have any number of parameters of any name, there is no set standard; having a _GUID parameter of random value is a convention (null: no parameters)
  * @param  ?LANGUAGE_NAME $lang The language to load the template in (templates can embed language references) (null: users own language)
- * @param  boolean $light_error Whether to not produce a stack dump if the template is missing
+ * @param  boolean $light_error Whether to not produce a stack trace if the template is missing
  * @param  ?ID_TEXT $fallback Alternate template to use if the primary one does not exist (null: none)
  * @param  string $suffix File type suffix of template file (e.g. .tpl)
  * @set    .tpl .js .xml .txt .css
@@ -653,7 +653,7 @@ function _notification_setting_available($setting, $member_id = null)
 }
 
 /**
- * Find what a member usually receives notifications on. Has some advanced searching support, and checks what is permissable.
+ * Find what a member usually receives notifications on. Has some advanced searching support, and checks what is permissible.
  *
  * @param  MEMBER $to_member_id Member to send to
  * @param  ID_TEXT $notification_code The notification code to use

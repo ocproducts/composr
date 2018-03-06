@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -158,7 +158,7 @@ class Module_admin_points
             'TEXT' => '',
             'HIDDEN' => '',
             'URL' => get_self_url(false, false, array(), false, true),
-            'SUBMIT_ICON' => 'admin--export',
+            'SUBMIT_ICON' => 'admin--export-csv',
             'SUBMIT_NAME' => do_lang_tempcode('EXPORT'),
         ));
     }

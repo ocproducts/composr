@@ -1052,7 +1052,7 @@
                 }
                 if (doc.getElementById('participant__' + roomId + '__' + memberId)) { // They're already put in it
                     return;
-                } 
+                }
                 var newParticipant = doc.createElement('div');
                 var newParticipantInner = window.imParticipantTemplate.replace(/\_\_username\_\_/g, username);
                 newParticipantInner = newParticipantInner.replace(/\_\_id\_\_/g, memberId);
@@ -1342,7 +1342,7 @@
                 function (answer) {
                     if (answer) { // false, because can't recycle if its already open
                         _startIm(people, false);
-                    } 
+                    }
                 }
             );
         } else {

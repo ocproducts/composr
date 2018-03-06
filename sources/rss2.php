@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -241,7 +241,7 @@ function rss_backend_script()
     if ($mode != 'comments') {
         require_code('site');
 
-        // This is just signaling to the static cache in this case, as there's no HTML <head>
+        // This is just signalling to the static cache in this case, as there's no HTML <head>
         inform_non_canonical_parameter('cutoff');
         inform_non_canonical_parameter('days');
         inform_non_canonical_parameter('max');

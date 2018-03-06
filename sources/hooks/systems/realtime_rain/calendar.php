@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -37,7 +37,7 @@ class Hook_realtime_rain_calendar
         if (has_actual_page_access(get_member(), 'calendar')) {
             require_code('calendar');
 
-            $rows = calendar_matches(get_member(), get_member(), !has_privilege(get_member(), 'assume_any_member'), $from, $to); // NOTE: We also show (automatically) any RSS items the user has overlayed onto the calendar
+            $rows = calendar_matches(get_member(), get_member(), !has_privilege(get_member(), 'assume_any_member'), $from, $to); // NOTE: We also show (automatically) any RSS items the user has overlaid onto the calendar
 
             foreach ($rows as $row) {
                 $timestamp = $row[2];

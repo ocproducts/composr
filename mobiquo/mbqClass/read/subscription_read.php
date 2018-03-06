@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -78,7 +78,7 @@ class CMSSubscriptionRead
 
         $where = array('l_member_id' => $member_id, 'l_notification_code' => $notification_code);
 
-        $_notifications = $GLOBALS['SITE_DB']->query_select(
+        $_notifications = $GLOBALS['FORUM_DB']->query_select(
             'notifications_enabled',
             array('l_code_category'),
             $where,

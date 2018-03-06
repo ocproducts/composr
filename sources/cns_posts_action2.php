@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -279,6 +279,7 @@ function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last
     }
 
     if ($first_title == '') {
+        require_lang('cns');
         $first_title = do_lang('NO_TOPIC_TITLE', strval($topic_id));
     }
 

@@ -54,7 +54,7 @@
         var self = this;
         $dom.load.then(function () {
             self.$$('.js-btn-car-move').forEach(function (btn) {
-                btn.style.height = self.mainEl.offsetHeight + 'px';    
+                btn.style.height = self.mainEl.offsetHeight + 'px';
             });
 
             self.createFaders();
@@ -729,7 +729,7 @@
 
 
     var promiseYouTubeIframeAPIReady;
-    $cms.templates.mediaYoutube = function (params, element) {
+    $cms.templates.mediaYouTube = function (params, element) {
         // Tie into callback event to see when finished, for our slideshows
         // API: https://developers.google.com/youtube/iframe_api_reference
 
@@ -742,9 +742,9 @@
                         resolve();
                         delete window.onYouTubeIframeAPIReady;
                     };
-                    $cms.requireJavascript('https://www.youtube.com/iframe_api');  
+                    $cms.requireJavascript('https://www.youtube.com/iframe_api');
                 }
-            });   
+            });
         }
 
         promiseYouTubeIframeAPIReady.then(function () {

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -1125,11 +1125,15 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
             'To sponsor something you should:[list="1"]' . "\n\n" .
             '[*] Go to the [url="tracker"]' . get_base_url() . '/tracker[/url].' . "\n\n" .
             '[*] Find the feature you want to sponsor on the tracker, which usually will have a number of hours filled in for it already. If the issue is not yet on the tracker, you\'ll need to add it, mention that you\'ll sponsor it, and wait for the hours field to be updated. If it is on the tracker already but has no hours set yet, similarly reply to say that you\'d like to sponsor it and wait.' . "\n\n" .
-            '[*] Fill in the sponsor form on the tracker issue.' . "\n\n" .
-            '[*] [page="_SEARCH:professional_support" external="1"]Purchase some support credits[/page] to back up the amount. You can only buy support credits in certain bundles, although you can work out what set of bundles to get to get the exact right number of credits. If this is too bothersome, you can pay directly via PayPal to payment@ocproducts.com with a note to turn it into support credits (include your username).' . "\n\n" .
+            '[*] Bring up your desire to sponsor as a note on the tracker issue.' . "\n\n" .
             '[/list]' . "\n\n" .
-            'If you don\'t know what you want to sponsor but just want to support Composr, we can help you pick something to sponsor, so just [page="site:tickets:ticket:ticket_type=Feedback"]open up a ticket[/page] with us and let us know.' . "\n\n" .
-            'We do need to explain some possible caveats...' . "\n\n" .
+            'A developer will then need to agree to accept sponsorship, after reviewing the accuracy of the issue and their own availability. ocProducts will then need to open the issue for sponsorship and assign the issue.' . "\n\n" .
+            'Then:[list="1"]' . "\n\n" .
+            '[*] Fill in the sponsor form on the tracker issue.' . "\n\n" .
+            '[*] The developer may or may not work for ocProducts. If not ocProducts then payment would be negotiated and made in private, e.g. using PayPal. If it is an ocProducts developer, you should [page="_SEARCH:professional_support" external="1"]purchase some support credits[/page] to back up the amount. You can only buy support credits in certain bundles, although you can work out what set of bundles to get to get the exact right number of credits. If this is too bothersome, you can pay directly via PayPal to payment@ocproducts.com with a note to turn it into support credits (include your username).' . "\n\n" .
+            '[/list]' . "\n\n" .
+            'If you don\'t know what you want to sponsor but just want to support Composr, you could consider [url="Chris\'s Patreon"]https://www.patreon.com/composr[/url], or sponsoring any other individual developer.' . "\n\n" .
+            'We do need to explain some possible caveats of sponsorship...' . "\n\n" .
             'Please be aware that not all sponsorships can be accepted. The developers/community needs to feel a feature is right for Composr before we can add it, regardless of sponsorship.' . "\n\n" .
             'Features could potentially be changed or even removed from Composr at a later date, if the developers decide it is the best action for the product at that particular point in time, even if they were originally sponsored.' . "\n\n" .
             'Sponsorships aren\'t usually acted on immediately, as a developer has to be free. If time is critical, please discuss this on the tracker issue. Sponsorships can be cancelled if you change your mind (assuming work has not already started).' . "\n\n" .

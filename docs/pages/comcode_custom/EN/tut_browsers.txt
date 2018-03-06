@@ -46,7 +46,7 @@ We do not explicitly support the following browsers, but will generally accept b
  - Konqueror (an important browser on Linux, the originator of Webkit)
  - Waterfox, Iceweasel, Pale Moon, SeaMonkey (alternative Gecko browsers)
 
-We also provide support for high quality text-mode browsers such as 'Lynx' and browsers designed for people with disabilities. The inherent nature of this support is that it is partial support for an 'accessible' experience, rather than a 'wizz-bang' experience.
+We also provide support for high quality text-mode browsers such as 'Lynx' and browsers designed for people with disabilities. The inherent nature of this support is that it is partial support for an 'accessible' experience, rather than a 'whizz-bang' experience.
 
 [title="2"]Browser testing[/title]
 
@@ -56,7 +56,7 @@ Browser testing presents the following difficulties:
 2) To test on mobile devices you really should test on a proper mobile device to get a real feel for things.
 3) Safari only works on Mac OS, so you need a Mac.
 4) Microsoft Edge only works on Windows, so you need a Windows install.
-5) On browsers such as Google Chrome operating system font rendering differences may mean things lay out slightly differently on different operating systems.
+5) On browsers such as Google Chrome, operating system font rendering differences may mean things lay out slightly differently on different operating systems.
 
 There are a number of approaches that can help you with the above problems:
 [list]
@@ -71,7 +71,7 @@ There are a number of approaches that can help you with the above problems:
 
 Composr requires JavaScript to be enabled for the default theme and for administration screens. Themers may opt to use our JavaScript-detection functionality to cater to users with JavaScript-enabled if desired.
 
-Previously we suported JavaScript as disabled, but realistically all modern websites (YouTube, Facebook, etc) require JavaScript, so to provide a competitive modern experience we do need it. The ARIA standard allows JavaScript-heavy sites to remain accessible, and print stylesheets can ensure web pages still print effectively.
+Previously we supported JavaScript as disabled, but realistically all modern websites (YouTube, Facebook, etc) require JavaScript, so to provide a competitive modern experience we do need it. The ARIA standard allows JavaScript-heavy sites to remain accessible, and print stylesheets can ensure web pages still print effectively.
 
 [title="2"]Cookies[/title]
 

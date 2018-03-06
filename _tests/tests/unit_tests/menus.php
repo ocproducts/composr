@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -26,14 +26,14 @@ class menus_test_set extends cms_test_case
 
         require_code('menus2');
 
-        $this->menu_id = add_menu_item('Test', 1, null, 'testing menu', 'http://www.example.com', 1, 'downloads', 0, 1, 'testing');
+        $this->menu_id = add_menu_item('Test', 1, null, 'testing menu', 'https://duckduckgo.com/', 1, 'downloads', 0, 1, 'testing');
 
         $this->assertTrue('Test' == $GLOBALS['SITE_DB']->query_select_value('menu_items', 'i_menu', array('id' => $this->menu_id)));
     }
 
     public function testEditMenu()
     {
-        edit_menu_item($this->menu_id, 'Service', 2, null, 'Serv', 'http://www.google.com', 0, 'catalogues', 1, 0, 'tested', '', 0);
+        edit_menu_item($this->menu_id, 'Service', 2, null, 'Serv', 'https://duckduckgo.com/', 0, 'catalogues', 1, 0, 'tested', '', 0);
 
         $this->assertTrue('Service' == $GLOBALS['SITE_DB']->query_select_value('menu_items', 'i_menu', array('id' => $this->menu_id)));
     }

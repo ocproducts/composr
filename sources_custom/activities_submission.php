@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -99,9 +99,9 @@ function activities_addon_syndicate_described_activity($a_language_string_code =
 }
 
 /**
- * AJAX script handler for submitting posts.
+ * AJAX script for submitting posts.
  */
-function activities_ajax_submit_handler()
+function activities_handler_script()
 {
     prepare_for_known_ajax_response();
 
@@ -160,12 +160,14 @@ function activities_ajax_submit_handler()
     $response .= '</content></response>';
 
     echo $response;
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
- * AJAX script handler for refreshing the post list.
+ * AJAX script for refreshing the post list.
  */
-function activities_ajax_update_list_handler()
+function activities_updater_script()
 {
     $map = array();
 
@@ -246,14 +248,16 @@ function activities_ajax_update_list_handler()
     }
 
     echo $response;
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
- * AJAX script handler for removing posts.
+ * AJAX script for removing posts.
  */
-function activities_ajax_removal_handler()
+function activities_removal_script()
 {
-    $is_guest = false; // Can't be doing with overcomplicated SQL breakages. Weed it out.
+    $is_guest = false; // Can't be doing with over-complicated SQL breakages. Weed it out.
     $guest_id = intval($GLOBALS['FORUM_DRIVER']->get_guest_id());
     $viewer_id = intval(get_member()); //We'll need this later anyway.
     if ($guest_id == $viewer_id) {
@@ -290,6 +294,8 @@ function activities_ajax_removal_handler()
     $response .= '</response>';
 
     echo $response;
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**

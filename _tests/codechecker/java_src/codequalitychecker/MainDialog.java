@@ -119,8 +119,7 @@ public class MainDialog extends JFrame {
         scanSignaturesBtn.setBounds(new Rectangle(277, 538, 122, 37));
         scanSignaturesBtn.setMargin(new Insets(0, 0, 0, 0));
         scanSignaturesBtn.setActionCommand("scanSignaturesBtn");
-        scanSignaturesBtn.setText(
-                "<html>Compile function signatures (PHP)</html>");
+        scanSignaturesBtn.setText("<html>Compile function signatures (PHP)</html>");
         scanSignaturesBtn.setBackground(new Color(215, 245, 229));
         scanSignaturesBtn.addActionListener(new Dialog1_scanSignaturesBtn_actionAdapter(this));
         countBtn.setBounds(new Rectangle(122, 538, 67, 37));
@@ -189,22 +188,17 @@ public class MainDialog extends JFrame {
     public void initiateFileSearch(String type) {
         boolean sort_new = false, skip_custom = false;
 
-        String path = new String(Main.projectPath.replace("\"", ""));
+        String path = Main.projectPath.replace("\"", "");
         if ((path.equals(".")) || (path.equals("./")) || (path.equals(".\\"))) {
             path = "";
         }
 
         int n;
-        n = JOptionPane.showOptionDialog(this, "Would you like to skip files underneath any directory with '*_custom' in the name?",
-                "Question", JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null, null, null);
+        n = JOptionPane.showOptionDialog(this, "Would you like to skip files underneath any directory with '*_custom' in the name?", "Question", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
         if (n == JOptionPane.YES_OPTION) {
             skip_custom = true;
         }
-        n = JOptionPane.showOptionDialog(this,
-                "Would you like to sort by date?",
-                "Question", JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null, null, null);
+        n = JOptionPane.showOptionDialog(this, "Would you like to sort by date?", "Question", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
         if (n == JOptionPane.YES_OPTION) {
             sort_new = true;
         }
@@ -221,8 +215,7 @@ public class MainDialog extends JFrame {
         }
     }
 
-    private ArrayList<SearchFile> initiateFileSearch(String type, String path, String rec_subpath,
-            boolean skip_custom) {
+    private ArrayList<SearchFile> initiateFileSearch(String type, String path, String rec_subpath, boolean skip_custom) {
         Date d = new Date();
         long currentTime = d.getTime() / 1000;
         ArrayList<SearchFile> finalFiles = new ArrayList();
@@ -230,8 +223,7 @@ public class MainDialog extends JFrame {
         File myFile = new File(path);
         String[] theFiles = myFile.list();
         if (theFiles == null) {
-            JOptionPane.showMessageDialog(this,
-                    "Could not search the directory " + path + ".");
+            JOptionPane.showMessageDialog(this, "Could not search the directory " + path + ".");
             return finalFiles;
         }
         Arrays.sort(theFiles);
@@ -239,14 +231,7 @@ public class MainDialog extends JFrame {
         long last_m;
         File tmpFile;
         for (i = 0; i < theFiles.length; i++) {
-            if (theFiles[i].equals(".")) {
-                continue;
-            }
-            if (theFiles[i].equals("..")) {
-                continue;
-            }
-
-            if (theFiles[i].equals("_meta_tree")) { // Very special case, directory can get huge
+            if (theFiles[i].equals(".") || theFiles[i].equals("..")) {
                 continue;
             }
 
@@ -255,38 +240,56 @@ public class MainDialog extends JFrame {
             last_m = tmpFile.lastModified() / 1000 + 60 * 60 * 24;
 
             if (tmpFile.isDirectory()) {
-                if (theFiles[i].equals("_meta_tree")) {
+                // Similar to IGNORE_FLOATING
+                if ((theFiles[i].equals("_meta_tree"))
+                        || (theFiles[i].equals("tracker"))
+                        || (theFiles[i].equals("exports"))
+                        || (theFiles[i].equals("ckeditor"))
+                        || (theFiles[i].equals("simpletest"))) {
                     continue;
                 }
 
-                if ((skip_custom) && ((theFiles[i].equals("uploads")) || (theFiles[i].equals("_tests")) || (theFiles[i].equals("mobiquo")) || (theFiles[i].equals("ocproducts")) || (theFiles[i].equals("buildr")) || (theFiles[i].equals("tracker")) || (theFiles[i].equals("exports")) || (theFiles[i].equals("simpletest")) || (theFiles[i].indexOf("_custom") != -1))) {
+                // Similar to IGNORE_NONBUNDLED
+                if ((skip_custom) && (
+                        (theFiles[i].equals("uploads"))
+                        || (theFiles[i].equals("_tests"))
+                        || (theFiles[i].equals("mobiquo"))
+                        || (theFiles[i].equals("ocproducts"))
+                        || (theFiles[i].equals("buildr"))
+                        || (theFiles[i].contains("_custom")))) {
                     continue;
                 }
 
-                ArrayList<SearchFile> next = initiateFileSearch(type, tmpFile.getAbsolutePath(),
-                        rec_subpath + ((rec_subpath.equals("")) ? "" : File.separator)
-                        + tmpFile.getName(), skip_custom);
+                // Recurse
+                ArrayList<SearchFile> next = initiateFileSearch(type, tmpFile.getAbsolutePath(), rec_subpath + ((rec_subpath.equals("")) ? "" : File.separator) + tmpFile.getName(), skip_custom);
                 finalFiles.addAll(next);
             } else if (tmpFile.isFile()) {
-                if (theFiles[i].equals("_config.php")) {
+                // Similar to IGNORE_SHIPPED_VOLATILE
+                if (theFiles[i].equals("_config.php") || theFiles[i].equals("errorlog.php")) {
                     continue;
                 }
 
+                // Similar to IGNORE_ACCESS_CONTROLLERS
+                if (tmpFile.length() == 0) {
+                    continue;
+                }
+
+                 // Filter by file type
                 if ((type.equals("PHP")) && (!theFiles[i].toLowerCase().endsWith(".php"))) {
                     continue;
                 }
                 if ((type.equals("HTML"))
+                        && (!theFiles[i].toLowerCase().endsWith(".css"))
+                        && (!theFiles[i].toLowerCase().endsWith(".js"))
                         && (!theFiles[i].toLowerCase().endsWith(".html"))
                         && (!theFiles[i].toLowerCase().endsWith(".htm"))
-                        && (!theFiles[i].toLowerCase().endsWith(".css"))
                         && (!theFiles[i].endsWith(".tpl"))
                         && (!theFiles[i].toLowerCase().endsWith(".ini"))) {
                     continue;
                 }
 
-                SearchFile mySearchFile = new SearchFile(rec_subpath
-                        + ((rec_subpath.equals("")) ? "" : File.separator)
-                        + tmpFile.getName(), tmpFile.lastModified());
+                // Add to file list
+                SearchFile mySearchFile = new SearchFile(rec_subpath + ((rec_subpath.equals("")) ? "" : File.separator) + tmpFile.getName(), tmpFile.lastModified());
                 finalFiles.add(mySearchFile);
             }
         }
@@ -339,8 +342,7 @@ public class MainDialog extends JFrame {
             }
 
             try {
-                myReader = new BufferedReader(new FileReader(Main.projectPath
-                        + File.separator + (String) listModel.getElementAt(i)));
+                myReader = new BufferedReader(new FileReader(Main.projectPath + File.separator + (String) listModel.getElementAt(i)));
                 line = myReader.readLine();
                 while (line != null) {
                     if (!line.equals("")) {
@@ -352,13 +354,11 @@ public class MainDialog extends JFrame {
             } // No contribution to count
         }
 
-        JOptionPane.showMessageDialog(this,
-                "There are " + count + " lines of code in these files (discluding blank lines).");
+        JOptionPane.showMessageDialog(this, "There are " + count + " lines of code in these files (discluding blank lines).");
     }
 
     public void specialBtn_actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(this,
-                "Open up a web browser to the testing-tools directory, so the index.php loads and displays all available tools.");
+        JOptionPane.showMessageDialog(this,  "Open up a web browser to the testing-tools directory, so the index.php loads and displays all available tools.");
     }
 
     private ArrayList<String> decompose_line(String line) {
@@ -414,8 +414,7 @@ public class MainDialog extends JFrame {
             try {
                 val_2_a = Integer.parseInt((String) decomposed.get(2));
                 val_2_b = Integer.parseInt((String) skip_decomposition.get(2));
-                if ((same_0) && (same_1) && (val_2_a > val_2_b - 10)
-                        && (val_2_a < val_2_b + 10) && (same_3) && (same_4)) {
+                if ((same_0) && (same_1) && (val_2_a > val_2_b - 10) && (val_2_a < val_2_b + 10) && (same_3) && (same_4)) {
                     return true;
                 }
             } catch (NumberFormatException e) {
@@ -487,10 +486,7 @@ public class MainDialog extends JFrame {
             this.jLabel1.setVisible(false);
             this.jLabel2.setVisible(false);
         } catch (java.io.IOException e2) {
-            JOptionPane.showMessageDialog(this,
-                    "Failure executing PHP backend. ("
-                    + e2.toString() + ")", "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Failure executing PHP backend. (" + e2.toString() + ")", "Error", JOptionPane.ERROR_MESSAGE);
             tempProgress.setVisible(false);
             return;
         }
@@ -502,19 +498,16 @@ public class MainDialog extends JFrame {
         int i, j;
 
         if (sv.length == 0) {
-            JOptionPane.showMessageDialog(this, "No files were selected.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No files were selected.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         String line = "code_quality.php spacedpaths=1";
         if (!no_path) {
-            line = line + " path="
-                    + Main.projectPath;
+            line = line + " path="  + Main.projectPath;
         } else {
             line = line + " path=\"\"";
         }
         for (i = 0; i < sv.length; i++) {
-            line = line + " "
-                    + ((String) sv[i]);
+            line = line + " " + ((String) sv[i]);
         }
         if (Main.relay__api) {
             line = line + " api=1";
@@ -606,14 +599,12 @@ public class MainDialog extends JFrame {
         }
 
         if (this.errors.getSelectedIndex() == -1) {
-            JOptionPane.showMessageDialog(this, "No file was selected.", "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No file was selected.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         try {
             Runtime.getRuntime().exec(line);
         } catch (java.io.IOException e) {
-            JOptionPane.showMessageDialog(this, "Failure executing text editor.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Failure executing text editor.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

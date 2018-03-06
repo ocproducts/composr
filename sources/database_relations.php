@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -116,8 +116,8 @@ function get_table_purpose_flags()
         'staff_checklist_cus_tasks' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AS_COMMANDER_FS_EXTENDED_CONFIG,
         'db_meta' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AUTOGEN_STATIC,
         'db_meta_indices' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AUTOGEN_STATIC,
-        'digestives_consumed' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
-        'digestives_tin' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
+        'digestives_consumed' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
+        'digestives_tin' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__FLUSHABLE | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
         'download_categories' => TABLE_PURPOSE__NORMAL,
         'download_downloads' => TABLE_PURPOSE__NORMAL,
         'download_licences' => TABLE_PURPOSE__NORMAL,
@@ -156,7 +156,7 @@ function get_table_purpose_flags()
         'f_warnings' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*under f_members*/,
         'f_welcome_emails' => TABLE_PURPOSE__NORMAL,
         'failedlogins' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE,
-        'feature_lifetime_monitor' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
+        'feature_lifetime_monitor' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
         'filedump' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*subsumed within filedump hook when it finds files*/,
         'galleries' => TABLE_PURPOSE__NORMAL,
         'gifts' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE | TABLE_PURPOSE__SUBDATA/*under f_members*/,
@@ -188,7 +188,7 @@ function get_table_purpose_flags()
         'news' => TABLE_PURPOSE__NORMAL,
         'news_categories' => TABLE_PURPOSE__NORMAL,
         'news_category_entries' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*under news*/,
-        'news_rss_cloud' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__MISC_NO_MERGE/*too-site-tied*/ | TABLE_PURPOSE__SUBDATA/*under news*/,
+        'news_rss_cloud' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE | TABLE_PURPOSE__MISC_NO_MERGE/*too-site-tied*/ | TABLE_PURPOSE__SUBDATA/*under news*/,
         'newsletter_archive' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*under newsletters*/,
         'newsletter_drip_send' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE,
         'newsletter_periodic' => TABLE_PURPOSE__NORMAL,
@@ -231,7 +231,7 @@ function get_table_purpose_flags()
         'staff_links' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AS_COMMANDER_FS_EXTENDED_CONFIG,
         'stats' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__FLUSHABLE,
         'ecom_subscriptions' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE | TABLE_PURPOSE__SUBDATA/*under f_members*/,
-        'task_queue' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
+        'task_queue' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
         'temp_block_permissions' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__FLUSHABLE,
         'theme_images' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_STAGING_COPY/*as can deal in files*/,
         'theme_screen_tree' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE,

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -27,7 +27,7 @@ class theme_images_test_set extends cms_test_case
         require_code('files2');
     }
 
-    public function testNoHiddenSVGRaster()
+    public function testSVGQuality()
     {
         require_code('files2');
         $files = get_directory_contents(get_file_base() . '/themes/default/', get_file_base() . '/themes/default/', 0, true, true, array('svg'));
@@ -36,17 +36,18 @@ class theme_images_test_set extends cms_test_case
             $c = file_get_contents($path);
             $_c = $c;
 
-            $this->assertTrue(strpos($c, '<image') === false, 'Raster data in ' . $path . '; fix with &auto_fix=1');
+            $this->assertTrue(strpos($c, '<image') === false, 'Raster data in ' . $path);
 
             $bad_patterns = array(
                 '<!-- Generator.*-->',
                 '\s+xml:space="preserve"',
                 '\s+enable-background="[^"]*"',
                 '\s+xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"',
+                '<[^<>]* display="none"[^<>]*/>\n',
             );
             foreach ($bad_patterns as $bad_pattern) {
                 if (preg_match('#' . $bad_pattern . '#', $c) != 0) {
-                    $this->assertTrue(false, 'Found: ' . $bad_pattern);
+                    $this->assertTrue(false, 'Found: ' . $bad_pattern . '; fix with &auto_fix=1');
                     $c = preg_replace('#' . $bad_pattern . '#', '', $c);
                 }
             }

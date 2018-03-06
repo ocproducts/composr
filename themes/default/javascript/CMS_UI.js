@@ -12,9 +12,7 @@
      */
     $cms.ui.toggleableTray = function toggleableTray(el, animate) {
         var $IMG_expand = $util.srl('{$IMG;,icons/trays/expand}'),
-            $IMG_expand2 = $util.srl('{$IMG;,icons/trays/expand2}'),
-            $IMG_contract = $util.srl('{$IMG;,icons/trays/contract}'),
-            $IMG_contract2 = $util.srl('{$IMG;,icons/trays/contract2}');
+            $IMG_contract = $util.srl('{$IMG;,icons/trays/contract}');
 
         el = $dom.elArg(el);
         animate = $cms.configOption('enable_animations') ? boolVal(animate, true) : false;
@@ -43,14 +41,14 @@
 
         if (iconImg) {
             if (expanding) {
-                setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
+                setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract);
                 iconImg.alt = iconImg.alt.replace('{!EXPAND;^}', '{!CONTRACT;^}');
                 iconImg.title = '{!CONTRACT;^}';
                 if (iconImg.cmsTooltipTitle !== undefined) {
                     iconImg.cmsTooltipTitle = '{!CONTRACT;^}';
                 }
             } else {
-                setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2);
+                setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand);
                 iconImg.alt = iconImg.alt.replace('{!CONTRACT;^}', '{!EXPAND;^}');
                 iconImg.title = '{!EXPAND;^}';
                 if (iconImg.cmsTooltipTitle !== undefined) {
@@ -64,21 +62,11 @@
         return expanding;
 
         // Execution ends here
-        function setTrayThemeImage(beforeThemeImg, afterThemeImg, before1Url, after1Url, after2Url) {
-            var is1 = $util.srl(iconImg.src) === $util.srl(before1Url);
-
-            if (is1) {
-                if (isThemeWizard) {
-                    iconImg.src = iconImg.src.replace(beforeThemeImg, afterThemeImg);
-                } else {
-                    iconImg.src = $util.srl(after1Url);
-                }
+        function setTrayThemeImage(beforeThemeImg, afterThemeImg, beforeUrl, afterUrl) {
+            if (isThemeWizard) {
+                iconImg.src = iconImg.src.replace(beforeThemeImg, afterThemeImg);
             } else {
-                if (isThemeWizard) {
-                    iconImg.src = iconImg.src.replace(beforeThemeImg + '2', afterThemeImg + '2');
-                } else {
-                    iconImg.src = $util.srl(after2Url);
-                }
+                iconImg.src = $util.srl(afterUrl);
             }
         }
     };
@@ -257,7 +245,7 @@
         forceWidth = Boolean(forceWidth);
         win || (win = window);
         haveLinks = Boolean(haveLinks);
-        
+
         if (el.deactivatedAt && ((Date.now() - el.deactivatedAt) < 200)) {
             return;
         }

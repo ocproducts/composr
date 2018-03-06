@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -180,6 +180,9 @@ class lang_spelling_test_set extends cms_test_case
         if (stripos($string, 'safe-mode') !== false) {
             $this->assertTrue(false, 'The word \'safe-mode\' was used in ' . $file . '. This should be changed to \'safe mode\'.');
         }
+        if (stripos($string, ' on-line') !== false) {
+            $this->assertTrue(false, 'The word \'on-line\' was used in ' . $file . '. This should be changed to \'online\'.');
+        }
         if (stripos($string, 'base-URL') !== false) {
             $this->assertTrue(false, 'The word \'base-URL\' was used in ' . $file . '. This should be changed to \'base URL\'.');
         }
@@ -204,9 +207,6 @@ class lang_spelling_test_set extends cms_test_case
             if (stripos($string, 'lowercase') !== false) {
                 $this->assertTrue(false, 'The word \'lowercase\' was used in ' . $file . '. This should be changed to \'lower case\'.');
             }
-        }
-        if (stripos($string, 'PHP info') !== false) {
-            $this->assertTrue(false, 'The word \'PHP info\' was used in ' . $file . '. This should be changed to \'PHP-Info\'.');
         }
 
         // No space or hyphen wanted (we want our canonical way)
@@ -290,6 +290,12 @@ class lang_spelling_test_set extends cms_test_case
         if (strpos($string, 'RECAPTCHA') !== false) {
             $this->assertTrue(false, 'The phrase \'RECAPTCHA\' was used in ' . $file . '. This should be changed to \'reCAPTCHA\'.');
         }
+        if (stripos($string, 'MacOS') !== false) {
+            $this->assertTrue(false, 'The word \'MacOS\' was used in ' . $file . '. This should be changed to \'Mac OS\'.');
+        }
+        if (stripos($string, 'Youtube') !== false) {
+            $this->assertTrue(false, 'The word \'Youtube\' was used in ' . $file . '. This should be changed to \'YouTube\'.');
+        }
         // page-link, but we can't test for that because "page link" is a valid phrase too
 
         // Our canonical way of writing "Open Source"
@@ -359,6 +365,8 @@ class lang_spelling_test_set extends cms_test_case
             'recieve'=> 'receive',
             'eratic' => 'erratic',
             'psuedo' => 'pseudo',
+            'overidable' => 'overridable',
+            'stack dump' => 'stack trace',
         );
         if (strpos($file, 'calendar') !== false) {
             $common_spelling_mistakes['occurrence'] = 'recurrence';

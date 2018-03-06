@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -24,9 +24,9 @@ class authors_test_set extends cms_test_case
 
         require_code('authors');
 
-        add_author('author1', 'http://www.google.com', 3, 'Happy', 'Play', '', '');
+        add_author('author1', 'https://duckduckgo.com/', 3, 'Happy', 'Play', '', '');
 
-        add_author('author2', 'http://www.yahoo.com', 3, 'Welcome', 'Drama', '', '');
+        add_author('author2', 'http://www.yahoo.com/', 3, 'Welcome', 'Drama', '', '');
 
         $this->assertTrue('author1' == $GLOBALS['SITE_DB']->query_select_value('authors', 'author', array('author' => 'author1')));
     }

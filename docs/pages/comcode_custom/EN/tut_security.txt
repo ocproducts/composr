@@ -221,7 +221,7 @@ The following types of alert are defined:
  - [tt]SCRIPT_UPLOAD_HACK[/tt], The user tried to upload a PHP script. This may well be innocent (if they are uploading a saved web-page with [tt].php[/tt] in the URL for example, or if they are uploading a script they expect people to be able to download in raw form)
  - [tt]ASCII_ENTITY_URL_HACK[/tt], The user introduced HTML into a Comcode HTML tag that used ASCII-encoded entities. This is likely to be innocent, but is blocked because it can be used to trick JavaScript filtration
  - [tt]SCRIPT_URL_HACK[/tt] / [tt]SCRIPT_URL_HACK_2[/tt], This is highly likely to be a hack attempt, as a user explicitly specified a URL which was code and not a real URL
- - [tt]LAME_SPAM_HACK[/tt], This is a blocked spam attempt, where the anti-spam blackhole feature was activated -- this would only happen if a spam bot was posting and can be detected earliy, so doesn't go through the spam heuristics system
+ - [tt]LAME_SPAM_HACK[/tt], This is a blocked spam attempt, where the anti-spam blackhole feature was activated -- this would only happen if a spam bot was posting and can be detected early, so doesn't go through the spam heuristics system
  - [tt]TRY_TO_DOWNLOAD_SCRIPT[/tt], The user tried to add a download with a manual URL that links to private files that are not meant to be downloadable. This may be an honest mistake -- but if it is [tt]_config.php[/tt], then it is very likely to be a hack attempt. A more detailed explanation follows further in this tutorial
  - [tt]TICKET_OTHERS_HACK[/tt], The user tried to access support tickets from another user. This is either a bug (we know of no way it would happen normally), or a hack attempt
  - [tt]TICKET_SYSTEM_WEIRD[/tt], The user tried to access a support ticket with an non-standard name. This is either a bug, or a hack attempt; if it is a hack attempt, it is probably not one that would get anywhere even if it was not blocked
@@ -287,7 +287,7 @@ We also have of internal checks that always run, many related to "Alert types" (
 
 We also have standard output escaping mechanisms so that attempts to inject bad data do not lead to bad outcomes.
 
-In summary, we have defense across a number of layers, and code without making poor assumptions. This is called "defense in depth" -- programmers are fallible, so it's best to have multiple lines of defense.
+In summary, we have defence across a number of layers, and code without making poor assumptions. This is called "defence in depth" -- programmers are fallible, so it's best to have multiple lines of defence.
 
 [title="3"]Content Security Policy (CSP)[/title]
 
@@ -405,7 +405,7 @@ There is no clear risk.
 |}
 * Nonces are configurable in HTML/templates via placing [tt]{$CSP_NONCE_HTML}[/tt] in the opening tag. An XSS hacker has no way to know the nonce, so can't inject script/style requiring it. At the current time nonces are only supported in CSP by script and CSS files, but the W3C is discussing changes this.
 
-Note that the "Trusted parter sites" configuration options automatically include "www." if not specified.
+Note that the "Trusted partner sites" configuration options automatically include "www." if not specified.
 The "Allowed iframe ancestors" configuration option and "Allowed iframe descendants" configuration option allow wildcarding to allow any request (and do by default due to the low risk and commonality of frame use).
 
 There are many settings related to CSP in the Composr security options (Admin Zone > Setup > Configuration > Security options), including:
@@ -719,7 +719,7 @@ There is a special script ([tt]rootkit_detection.php[/tt]) that will help detect
 [title="3"]HTTP authentication[/title]
 
 There is nothing stopping you using HTTP authentication served by your web server on top of the website if you want some extra security.
-For example, it is possible to use HTTP Authentication to deny access to the whole of Composr to anyone without a pre-allocated HTTP-Auth password. For more information on this, see 'related topics'.
+For example, it is possible to use HTTP Authentication to deny access to the whole of Composr to anyone without a preallocated HTTP-Auth password. For more information on this, see 'related topics'.
 
 However, you should let requests from the web server itself through that without needing to authenticate so that it can read its own URLs (otherwise you could have some problems, such as security errors when editing theme images).
 

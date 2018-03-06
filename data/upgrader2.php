@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -89,7 +89,7 @@ foreach ($todo as $i => $_target_file) {
 
     if ($target_file == 'data/upgrader2.php') {
         if ($file_offset + $per_cycle < count($todo)) {
-            continue; // Only extract on last step, to avoid possible transitionary bugs between versions of this file (this is the file running and refreshing now, i.e this file!)
+            continue; // Only extract on last step, to avoid possible transitory bugs between versions of this file (this is the file running and refreshing now, i.e this file!)
         }
     } else {
         if ($i < $file_offset) {

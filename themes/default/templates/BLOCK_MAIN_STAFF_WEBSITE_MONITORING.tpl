@@ -6,7 +6,7 @@
 		<h3 class="toggleable-tray-title js-tray-header">
 			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top-left-toggle js-click-staff-block-flip" href="#!">{!EDIT}</a>
 
-			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!SITE_WATCHLIST}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,icons/trays/contract2}" /></a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!SITE_WATCHLIST}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,icons/trays/contract}" /></a>
 
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!SITE_WATCHLIST}</a>
 		</h3>
@@ -27,7 +27,7 @@
 						<tr>
 							<td>{SITE_NAME*}</td>
 							<td>{ALEXA_RANKING`}</td>
-							<td><a href="http://www.google.co.uk/search?as_lq={URL&*}">{ALEXA_LINKS`}</a></td>
+							<td><a href="http://www.google.com/search?as_lq={URL&*}">{ALEXA_LINKS`}</a></td>
 							<td><a class="suggested-link" href="http://web.archive.org/web/*/{URL*}">{!VIEW}</a></td>
 							<td><a class="suggested-link" href="{URL*}">{!VIEW}</a></td>
 						</tr>

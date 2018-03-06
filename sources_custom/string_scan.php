@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -1904,7 +1904,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HC_ADMIN_STALE_THRESHOLD
         CONFIG_OPTION_hc_admin_stale_threshold
         HC_GOOGLE_SAFE_BROWSING_API_KEY
-        CONFIG_OPTION_hc_google_safe_browsing_api_key
+        CONFIG_OPTION_hc_google_safe_browsing_api_enabled
         HC_CRON_THRESHOLD
         CONFIG_OPTION_hc_cron_threshold
         HC_CPU_PCT_THRESHOLD
@@ -1997,7 +1997,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CATALOGUE_CSV_NEW_HANDLING
         CATALOGUE_CSV_UPDATE_HANDLING
         CATALOGUE_ENTRIES_PER_PAGE
-        CATALOGUE_EXPORT
         CATALOGUE_FIELD
         CATALOGUE_GENERIC_ADD
         CATALOGUE_GENERIC_ADD_CATEGORY
@@ -3027,8 +3026,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_gift_reward_chance
         CONFIG_OPTION_global_donext_icons
         CONFIG_OPTION_google_analytics
-        CONFIG_OPTION_google_geocode_api_key
-        CONFIG_OPTION_google_translate_api_key
+        CONFIG_OPTION_google_geocoding_api_enabled
+        CONFIG_OPTION_google_translate_enabled
         CONFIG_OPTION_group_private_chatrooms
         CONFIG_OPTION_gzip_output
         CONFIG_OPTION_hack_ban_threshold
@@ -3717,7 +3716,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         RECAPTCHA_SERVER_KEY
         RECAPTCHA_SITE_KEY
         CONFIG_GROUP_DEFAULT_DESCRIP_RECAPTCHA
-        CONFIG_GROUP_DESCRIP_GOOGLE_OAUTH_API
+        CONFIG_GROUP_DESCRIP_GOOGLE_API
         CONFIG_GROUP_DESCRIP_MOZ_API
         CONFIG_OPTION_google_apis_api_key
         CONFIG_OPTION_google_apis_client_id
@@ -3725,7 +3724,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_moz_access_id
         CONFIG_OPTION_moz_paid
         CONFIG_OPTION_moz_secret_key
-        CONFIG_OPTION_recaptcha_servey_key
+        CONFIG_OPTION_recaptcha_server_key
         CONFIG_OPTION_recaptcha_site_key
         DESCRIPTION_LINK_TYPES
         DESCRIPTION_LIVE_BASE_URLS
@@ -3741,7 +3740,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         GOOGLE_BROKEN_BACKLINKS__not_found
         GOOGLE_BROKEN_BACKLINKS__server_error
         GOOGLE_BROKEN_BACKLINKS__soft404
-        GOOGLE_OAUTH_API
+        GOOGLE_API
         LIVE_BASE_URLS
         MAXIMUM_API_RESULTS
         MENU_ITEM_UNDER
@@ -3892,7 +3891,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_DISPLAY_REVIEW_STATUS
         DESCRIPTION_DISPLAY_TYPE
         DESCRIPTION_DOWNLOADS_STATISTICS
-        DESCRIPTION_DOWNLOAD_AS_CSV
+        DESCRIPTION_EXPORT_AS_CSV
         DESCRIPTION_DOWNLOAD_COMPOSR_HOMESITE
         DESCRIPTION_DOWNLOAD_COST
         DESCRIPTION_DOWNLOAD_IMAGES
@@ -4336,7 +4335,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DOC_DASHBOARD
         DOC_DELETE_LURKERS
         DOC_DOWNLOADS
-        DOC_DOWNLOAD_MEMBER_CSV
+        DOC_EXPORT_MEMBERS
         DOC_ECOMMERCE
         DOC_EDIT_MEMBER
         DOC_EMAIL_LOG
@@ -4354,7 +4353,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DOC_GROUPS
         DOC_HELPER_PANEL
         DOC_IMPORT
-        DOC_IMPORT_MEMBER_CSV
+        DOC_IMPORT_MEMBERS
         DOC_INSTALL_GEOLOCATION_DATA
         DOC_INVESTIGATE_USER
         DOC_IP_BAN
@@ -4428,11 +4427,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DOWNLOADS_DEFAULT_SORT_ORDER
         DOWNLOADS_SUBCAT_NARROWIN
         DOWNLOAD_ADDED
-        DOWNLOAD_AS_CSV
+        EXPORT_AS_CSV
         DOWNLOAD_ENTRIES_PER_PAGE
         DOWNLOAD_GALLERY_ROOT
         DOWNLOAD_IMAGES
-        DOWNLOAD_MEMBER_CSV
+        EXPORT_MEMBERS
         DOWNLOAD_STATS_BACKUP
         DOWNLOAD_STATS_RANGE
         DOWNLOAD_SUBCATS_PER_PAGE
@@ -5076,14 +5075,14 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         GOOD_PATH
         GOOGLE_ANALYTICS
         GOOGLE_GEOCODE_API_KEY
-        GOOGLE_GEOCODE_API_NOT_CONFIGURED
-        GOOGLE_GEOCODE_COULD_NOT_CONNECT
-        GOOGLE_GEOCODE_COULD_NOT_PARSE
-        GOOGLE_GEOCODE_INCOMPLETE
-        GOOGLE_GEOCODE_OVER_QUERY_LIMIT
-        GOOGLE_GEOCODE_REQUEST_DENIED
-        GOOGLE_GEOCODE_UNKNOWN_ERROR
-        GOOGLE_GEOCODE_ZERO_RESULTS
+        GEOCODE_API_NOT_CONFIGURED
+        GEOCODE_COULD_NOT_CONNECT
+        GEOCODE_COULD_NOT_PARSE
+        GEOCODE_INCOMPLETE
+        GEOCODE_OVER_QUERY_LIMIT
+        GEOCODE_REQUEST_DENIED
+        GEOCODE_UNKNOWN_ERROR
+        GEOCODE_ZERO_RESULTS
         GOOGLE_TRANSLATE_API_KEY
         GRAPH
         GROUP_LEADER
@@ -5180,7 +5179,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         IMPORT_ICAL
         IMPORT_ICAL_DONE
         IMPORT_ICAL_TEXT
-        IMPORT_MEMBER_CSV
+        IMPORT_MEMBERS
         IMPORT_NEWS
         IMPORT_NEWSLETTER_SUBSCRIBERS
         IMPORT_NEWS_DONE
@@ -5637,6 +5636,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MODULES
         MODULE_MANAGEMENT
         MODULE_TRANS_NAME_admin
+        MODULE_TRANS_NAME_admin_shopping
         MODULE_TRANS_NAME_admin_actionlog
         MODULE_TRANS_NAME_admin_addons
         MODULE_TRANS_NAME_admin_awards
@@ -5660,7 +5660,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MODULE_TRANS_NAME_admin_custom_comcode
         MODULE_TRANS_NAME_admin_debrand
         MODULE_TRANS_NAME_admin_ecommerce
-        MODULE_TRANS_NAME_admin_shopping
         MODULE_TRANS_NAME_admin_email_log
         MODULE_TRANS_NAME_admin_errorlog
         MODULE_TRANS_NAME_admin_import
@@ -5718,7 +5717,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MOVE_TOPICS
         MOVE_UP
         MSN_FORUM_DB_NOT_CNS_ALREADY
-        MULTILANG_OFF
+        MULTILANG_OFF_OPTION
+        MULTILANG_OFF_PRACTICAL
         MULTILANG_OFF_CONTENT
         MULTI_LANG_CONTENT
         MULTI_LANG_CONTENT_TEXT
@@ -7459,8 +7459,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         WRITE_ERROR_MISSING_DIRECTORY
         WRONG_RESET_SESSION
         WROTE_CONFIGURATION
-        XHTML_ANCESTER_BLOCK_INLINE
-        XHTML_ANCESTER_INLINE_NORMAL
+        XHTML_ANCESTOR_BLOCK_INLINE
+        XHTML_ANCESTOR_INLINE_NORMAL
         XHTML_A_NAME
         XHTML_A_SPACES
         XHTML_BAD_ATTRIBUTE_VALUE
@@ -7484,7 +7484,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         XHTML_FORM_TYPE
         XHTML_ID_UNBOUND
         XHTML_IE_ONCHANGE
-        XHTML_MISSING_ANCESTER
+        XHTML_MISSING_ANCESTOR
         XHTML_MISSING_ATTRIBUTE
         XHTML_MISSING_TAG
         XHTML_NAME_ID_DEPRECATED

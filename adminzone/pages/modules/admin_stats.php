@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -158,7 +158,6 @@ class Module_admin_stats
             'users_online' => array('USERS_ONLINE_STATISTICS', 'menu/adminzone/audit/statistics/users_online'),
             'submission_rates' => array('SUBMISSION_STATISTICS', 'menu/adminzone/audit/statistics/submits'),
             'referrers' => array('TOP_REFERRERS', 'menu/adminzone/audit/statistics/top_referrers'),
-            'keywords' => array('TOP_SEARCH_KEYWORDS', 'menu/adminzone/audit/statistics/top_keywords'),
             'page' => array('PAGES_STATISTICS', 'menu/adminzone/audit/statistics/page_views'),
             'load_times' => array('LOAD_TIMES', 'menu/adminzone/audit/statistics/load_times'),
             'clear' => array('CLEAR_STATISTICS', 'menu/adminzone/audit/statistics/clear_stats'),
@@ -211,7 +210,6 @@ class Module_admin_stats
         }
 
         if ($type == '_page') {
-            inform_non_canonical_parameter('sort_keywords');
             inform_non_canonical_parameter('sort_regionalities');
             inform_non_canonical_parameter('sort_views');
         }
@@ -232,10 +230,6 @@ class Module_admin_stats
 
         if ($type == 'referrers') {
             $this->title = get_screen_title('TOP_REFERRERS');
-        }
-
-        if ($type == 'keywords') {
-            $this->title = get_screen_title('TOP_SEARCH_KEYWORDS');
         }
 
         if ($type == 'overview') {
@@ -299,8 +293,6 @@ class Module_admin_stats
             return $this->submission_rates();
         } elseif ($type == 'referrers') {
             return $this->referrers();
-        } elseif ($type == 'keywords') {
-            return $this->keywords();
         } elseif ($type == '_page') {
             return $this->show_page();
         } elseif ($type == 'load_times') {
@@ -340,7 +332,6 @@ class Module_admin_stats
             array('menu/adminzone/audit/statistics/submits', array('_SELF', array('type' => 'submission_rates'), '_SELF'), do_lang('SUBMISSION_STATISTICS'), 'DOC_SUBMISSION_STATISTICS'),
             array('menu/adminzone/audit/statistics/load_times', array('_SELF', array('type' => 'load_times'), '_SELF'), do_lang('LOAD_TIMES'), 'DOC_LOAD_TIMES'),
             array('menu/adminzone/audit/statistics/top_referrers', array('_SELF', array('type' => 'referrers'), '_SELF'), do_lang('TOP_REFERRERS'), 'DOC_TOP_REFERRERS'),
-            array('menu/adminzone/audit/statistics/top_keywords', array('_SELF', array('type' => 'keywords'), '_SELF'), do_lang('TOP_SEARCH_KEYWORDS'), 'DOC_TOP_SEARCH_KEYWORDS'),
         );
 
         $hooks = find_all_hook_obs('modules', 'admin_stats', 'Hook_admin_stats_');
@@ -647,7 +638,7 @@ class Module_admin_stats
 
         $this->title = get_screen_title('LOAD_TIMES_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
 
-        // We calculate MIN not AVG, because data can be made very dirty by slow clients or if the server is having trouble at one specfic point. It's a shame.
+        // We calculate MIN not AVG, because data can be made very dirty by slow clients or if the server is having trouble at one specific point. It's a shame.
         $rows = $GLOBALS['SITE_DB']->query('SELECT the_page,MIN(milliseconds) AS min_time FROM ' . get_table_prefix() . 'stats WHERE date_and_time>' . strval($time_start) . ' AND date_and_time<' . strval($time_end) . ' GROUP BY the_page');
         if (count($rows) < 1) {
             return warn_screen($this->title, do_lang_tempcode('NO_DATA'));
@@ -861,153 +852,6 @@ class Module_admin_stats
         ));
 
         $tpl = do_template('STATS_SCREEN', array('_GUID' => '777bc5f8573a5cef54aa0bc9bdc0ee29', 'TITLE' => $this->title, 'GRAPH' => $graph, 'STATS' => $list));
-
-        require_code('templates_internalise_screen');
-        return internalise_own_screen($tpl);
-    }
-
-    /**
-     * The UI to show top search keywords.
-     *
-     * @return Tempcode The UI
-     */
-    public function keywords()
-    {
-        // Handle time range
-        if (get_param_integer('dated', 0) == 0) {
-            return $this->get_between($this->title, true);
-        }
-        $time_start = post_param_date('time_start', true);
-        $time_end = post_param_date('time_end', true);
-        if ($time_end !== null) {
-            $time_end += 60 * 60 * 24 - 1; // So it is end of day not start
-        }
-        if ($time_start === null) {
-            $time_start = 0;
-        }
-        if ($time_end === null) {
-            $time_end = time();
-        }
-        $first_stat = $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'MIN(date_and_time)');
-        if ($time_end < $first_stat) {
-            warn_exit(do_lang_tempcode('NO_DATA_SPECIFIC'));
-        }
-
-        $start = get_param_integer('start', 0);
-        $max = get_param_integer('max', 25);
-        $csv = get_param_integer('csv', 0) == 1;
-        if ($csv) {
-            if (php_function_allowed('set_time_limit')) {
-                @set_time_limit(0);
-            }
-            $start = 0;
-            $max = 10000;
-            /*$time_start = 0;     Actually, this is annoying. We have legitimate reason to filter, and cannot re-filter the data in Excel retro-actively
-            $time_end = time();*/
-        }
-
-        $this->title = get_screen_title('TOP_SEARCH_KEYWORDS_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
-
-        $sortables = array('referer' => do_lang_tempcode('TOP_SEARCH_KEYWORDS'));
-        $test = explode(' ', get_param_string('sort', 'referer DESC', INPUT_FILTER_GET_COMPLEX), 2);
-        if (count($test) == 1) {
-            $test[1] = 'DESC';
-        }
-        list($sortable, $sort_order) = $test;
-        if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
-            log_hack_attack_and_exit('ORDERBY_HACK');
-        }
-
-        $rows = $GLOBALS['SITE_DB']->query('SELECT referer FROM ' . get_table_prefix() . 'stats WHERE referer LIKE \'' . db_encode_like('http://www.google.%q=%') . '\' AND date_and_time>' . strval($time_start) . ' AND date_and_time<' . strval($time_end) . ' ORDER BY ' . $sortable . ' ' . $sort_order);
-        if (count($rows) < 1) {
-            return warn_screen($this->title, do_lang_tempcode('NO_DATA'));
-        }
-
-        $keywords = array();
-        $total = 0;
-        foreach ($rows as $value) {
-            $matches = array();
-            preg_match('#(&|\?)q=([^&]*)#', $value['referer'], $matches);
-            if (!array_key_exists(1, $matches)) {
-                continue;
-            }
-            $_keywords = explode('+', rawurldecode($matches[2]));
-            foreach ($_keywords as $keyword) {
-                $keyword = str_replace('"', '', $keyword);
-                if (trim($keyword) == '') {
-                    continue;
-                }
-                if (substr($keyword, 0, strlen('cache:')) == 'cache:') {
-                    continue;
-                }
-
-                if (!array_key_exists($keyword, $keywords)) {
-                    $keywords[$keyword] = 1;
-                } else {
-                    $keywords[$keyword]++;
-                }
-                $total++;
-            }
-        }
-
-        if ($sort_order == 'ASC') {
-            asort($keywords, SORT_NATURAL | SORT_FLAG_CASE);
-        } else {
-            arsort($keywords, SORT_NATURAL | SORT_FLAG_CASE);
-        }
-
-        require_code('templates_results_table');
-        $header_row = results_header_row(array(do_lang_tempcode('KEYWORD'), do_lang_tempcode('COUNT_VIEWS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
-        $fields = new Tempcode();
-        $degrees = ($total == 0) ? 360.0 : (360 / $total);
-        $done_total = 0;
-        $data = array();
-        $i = 0;
-
-        $real_data = array();
-        foreach ($keywords as $keyword => $views) {
-            if ($i < $start) {
-                $i++;
-                continue;
-            } elseif ($i >= $start + $max) {
-                break;
-            }
-            if ($keyword == '') {
-                $link = do_lang('_UNKNOWN');
-            } else {
-                $link = escape_html($keyword);
-            }
-            $fields->attach(results_entry(array($link, integer_format($views)), true));
-
-            $real_data[] = array(
-                do_lang('KEYWORD') => $keyword,
-                do_lang('COUNT_TOTAL') => $views,
-            );
-
-            $data[$keyword] = $keywords[$keyword] * $degrees;
-            $done_total += $data[$keyword];
-            $i++;
-        }
-        if ((360 - $done_total) > 0) {
-            $data[do_lang('OTHER')] = 360 - $done_total;
-            $fields->attach(results_entry(array(do_lang('OTHER'), float_format((360 - $done_total) / $degrees)), true));
-        }
-        $list = results_table(do_lang_tempcode('TOP_SEARCH_KEYWORDS'), $start, 'start', $max, 'max', count($keywords), $header_row, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());
-        if ($csv) {
-            make_csv($real_data, 'search_keywords.csv');
-        }
-
-        $output = create_pie_chart($data);
-        $this->save_graph('Global-Keywords', $output);
-
-        $graph = do_template('STATS_GRAPH', array(
-            '_GUID' => 'a199b095199a0e337d38c78564909e52',
-            'GRAPH' => get_custom_base_url() . '/data_custom/modules/admin_stats/Global-Keywords.xml',
-            'TITLE' => do_lang_tempcode('KEYWORDS_SHARE'),
-            'TEXT' => do_lang_tempcode('DESCRIPTION_KEYWORDS_SHARE'),
-        ));
-
-        $tpl = do_template('STATS_SCREEN', array('_GUID' => 'ab791072361184a05c7e60a3127ee439', 'TITLE' => $this->title, 'GRAPH' => $graph, 'STATS' => $list));
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);
@@ -1262,107 +1106,6 @@ class Module_admin_stats
         list($graph_ip, $list_ip) = array_values($this->page_x_share($page, 'ip', 'IP_ADDRESS_DISTRIBUTION', 'DESCRIPTION_IP_ADDRESS_DISTRIBUTION', 'IP_ADDRESS'));
 
         //************************************************************************************************
-        // Keywords
-        //************************************************************************************************
-        $start = get_param_integer('start_keywords', 0);
-        $max = get_param_integer('max_keywords', 30);
-        $sortables = array('referer' => do_lang_tempcode('TOP_SEARCH_KEYWORDS'));
-        $test = explode(' ', get_param_string('sort_keywords', 'referer DESC', INPUT_FILTER_GET_COMPLEX));
-        if (count($test) == 1) {
-            $test[1] = 'DESC';
-        }
-        list($sortable, $sort_order) = $test;
-        if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
-            log_hack_attack_and_exit('ORDERBY_HACK');
-        }
-
-        $where = db_string_equal_to('the_page', $page);
-        if (substr($page, 0, 6) == 'pages/') {
-            $where .= ' OR ' . db_string_equal_to('the_page', '/' . $page); // Legacy compatibility
-        }
-        $ip_filter = $GLOBALS['DEV_MODE'] ? '' : (' AND ' . db_string_not_equal_to('ip', get_ip_address()));
-        $rows = $GLOBALS['SITE_DB']->query('SELECT id,referer FROM ' . get_table_prefix() . 'stats WHERE (' . $where . ')' . $ip_filter . ' AND referer LIKE \'' . db_encode_like('http://www.google.%q=%') . '\' ORDER BY ' . $sortable . ' ' . $sort_order, 2000/*reasonable limit*/);
-        if (count($rows) < 1) {
-            $list_keywords = new Tempcode();
-            $graph_keywords = new Tempcode();
-        } else {
-            $keywords = array();
-            $num_keywords = 0;
-            foreach ($rows as $value) {
-                $matches = array();
-                preg_match('#(&|\?)q=([^&]*)#', $value['referer'], $matches);
-                if (!array_key_exists(2, $matches)) {
-                    continue;
-                }
-                $_keywords = explode('+', rawurldecode($matches[2]));
-                foreach ($_keywords as $keyword) {
-                    $keyword = str_replace('"', '', $keyword);
-                    if (trim($keyword) == '') {
-                        continue;
-                    }
-                    if (substr($keyword, 0, strlen('cache:')) == 'cache:') {
-                        continue;
-                    }
-
-                    $num_keywords++;
-
-                    if (!array_key_exists($keyword, $keywords)) {
-                        $keywords[$keyword] = 1;
-                    } else {
-                        $keywords[$keyword]++;
-                    }
-                }
-            }
-            if ($num_keywords == 0) {
-                $list_keywords = new Tempcode();
-                $graph_keywords = new Tempcode();
-            } else {
-                $degrees = 360 / $num_keywords;
-
-                require_code('templates_results_table');
-                $header_row = results_header_row(array(do_lang_tempcode('KEYWORD'), do_lang_tempcode('PEAK')), $sortables, 'sort', $sortable . ' ' . $sort_order);
-                $fields = new Tempcode();
-                $done_total = 0;
-                $data = array();
-                $i = 0;
-
-                foreach ($keywords as $key => $value) {
-                    if ($i < $start) {
-                        $i++;
-                        continue;
-                    } elseif ($i >= $start + $max) {
-                        break;
-                    }
-                    if ($key == '') {
-                        $link = do_lang('_UNKNOWN');
-                    } else {
-                        $link = escape_html($key);
-                    }
-                    $fields->attach(results_entry(array($link, integer_format($value)), true));
-
-                    $data[$key] = $degrees * $value;
-                    $done_total += $data[$key];
-                    $i++;
-                }
-                if ((360 - $done_total) > 0) {
-                    $data[do_lang('OTHER')] = 360 - $done_total;
-                    $fields->attach(results_entry(array(do_lang('OTHER'), integer_format((int)((360 - $done_total) / $degrees))), true));
-                }
-                $list_keywords = results_table(do_lang_tempcode('TOP_SEARCH_KEYWORDS'), $start, 'start_keywords', $max, 'max_keywords', $i, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort_keywords');
-
-                $output = create_pie_chart($data);
-                $this->save_graph(strval($rows[0]['id']) . '-Keywords', $output);
-
-                $graph_keywords = do_template('STATS_GRAPH', array(
-                    '_GUID' => '6e3a48274f2e3babf546292b8eec2f9b',
-                    'GRAPH' => get_custom_base_url() . '/data_custom/modules/admin_stats/' . strval($rows[0]['id']) . '-Keywords.xml',
-                    'TITLE' => do_lang_tempcode('KEYWORDS_SHARE'),
-                    'TEXT' => do_lang_tempcode('DESCRIPTION_KEYWORDS_SHARE'),
-                ));
-            }
-        }
-
-        //************************************************************************************************
         // Regionalities
         //************************************************************************************************
         $regionalities_test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
@@ -1509,8 +1252,6 @@ class Module_admin_stats
             'GRAPH_REGIONALITY' => $graph_regionality,
             'STATS_REGIONALITY' => $list_regionality,
             'STATS_VIEWS' => $list_views,
-            'GRAPH_KEYWORDS' => $graph_keywords,
-            'STATS_KEYWORDS' => $list_keywords,
             'GRAPH_VIEWS_HOURLY' => $graph_views_hourly,
             'STATS_VIEWS_HOURLY' => $list_views_hourly,
             'GRAPH_VIEWS_DAILY' => $graph_views_daily,

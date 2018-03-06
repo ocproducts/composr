@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -101,7 +101,7 @@ function create_tracker_issue($version, $tracker_title, $tracker_message, $track
             '0',
             '40', /* High priority */
             '50', /* Minor severity */
-            '10', /* Always reproducable */
+            '10', /* Always reproducible */
             '80', /* Status: Resolved */
             '20', /* Resolution: Fixed */
             '10',

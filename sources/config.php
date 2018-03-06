@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -97,7 +97,7 @@ function multi_lang()
     }
 
     $MULTI_LANG_CACHE = false;
-    if (get_option('enable_language_selection') != '1') {
+    if (get_option('enable_language_selection') !== '1') {
         return false;
     }
 
@@ -287,9 +287,8 @@ function get_theme_option($name, $default = null, $theme = null, $missing_ok = f
                     'icons/menus/menu_bullet_hover',
                     'icons/tool_buttons/top',
                     'icons/trays/contract',
-                    'icons/trays/contract2',
                     'icons/trays/expand',
-                    'icons/trays/expand2',
+                    'icons/trays/expcon',
                     'icons/tree_field/category',
                     'inner_background',
                     'logo/-logo',

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -28,7 +28,7 @@ class Hook_endpoint_account_setup_push_notifications
     public function run($type, $id)
     {
         // Store a device notification token (i.e. identification of a device, so we can send notifications to it).
-    
+
         $token_type = either_param_string('device'); // iOS|android
         $member_id = either_param_integer('member', get_member());
         $token = either_param_string('token');

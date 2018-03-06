@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -172,10 +172,6 @@ function uninstall_cns()
  */
 function install_cns($upgrade_from = null)
 {
-    if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-        exit(); // Needed as YSlow can load as GET's in background and cause horrible results
-    }
-
     require_code('cns_members');
     require_code('cns_topics');
     require_code('cns_groups');

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -39,7 +39,7 @@ if(!function_exists('spliti'))          { function spliti($pattern, $subject, $l
 # I will be getting a regular expression book for
 # X-Mas, however =)
 #
-# ©2001 Wayne Eggert
+# (c) 2001 Wayne Eggert
 #-----------------------------------------------------
 # DISCLAIMER: THIS CODE MAY NOT BE MODIFIED IN ANY MANNER
 # WITHOUT MY CONSENT.  IT SHOULD BE USED FOR EDUCATIONAL

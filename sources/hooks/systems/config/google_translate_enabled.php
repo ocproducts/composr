@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_google_translate_api_key
+class Hook_config_google_translate_enabled
 {
     /**
      * Gets the details relating to the config option.
@@ -31,11 +31,11 @@ class Hook_config_google_translate_api_key
     public function get_details()
     {
         return array(
-            'human_name' => 'GOOGLE_TRANSLATE_API_KEY',
-            'type' => 'line',
+            'human_name' => 'GOOGLE_TRANSLATE_ENABLED',
+            'type' => 'tick',
             'category' => 'SITE',
             'group' => 'INTERNATIONALISATION',
-            'explanation' => 'CONFIG_OPTION_google_translate_api_key',
+            'explanation' => 'CONFIG_OPTION_google_translate_enabled',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 10,
@@ -56,6 +56,6 @@ class Hook_config_google_translate_api_key
      */
     public function get_default()
     {
-        return '';
+        return '0';
     }
 }

@@ -37,7 +37,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				{+START,IF,{$NOT,{$HAS_ZONE_ACCESS,adminzone}}}
 					{$SET,admin_menu_string,site:{$DEFAULT_ZONE_PAGE_NAME}\,include=node\,title={!HOME}\,icon=buttons/close + cms:\,include=node\,max_recurse_depth=3\,use_page_groupings=1,type={$?,{$MOBILE},mobile,dropdown}}
 				{+END}
-				
+
 				{$BLOCK-,block=menu,param={$GET,admin_menu_string},type=dropdown}
 
 				{+START,IF,{$MOBILE}}
@@ -68,7 +68,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				{$,Breadcrumbs}
 				{+START,IF,{$IN_STR,{$BREADCRUMBS},<a }}{+START,IF,{$SHOW_HEADER}}
 					<nav class="global-breadcrumbs breadcrumbs" itemprop="breadcrumb" id="global-breadcrumbs">
-						<img class="breadcrumbs-img" width="20" height="20" src="{$IMG*,icons/breadcrumbs}" title="{!YOU_ARE_HERE}" alt="{!YOU_ARE_HERE}" />
+						<img class="breadcrumbs-img" width="24" height="24" src="{$IMG*,icons/breadcrumbs}" title="{!YOU_ARE_HERE}" alt="{!YOU_ARE_HERE}" />
 						{$BREADCRUMBS}
 					</nav>
 				{+END}{+END}

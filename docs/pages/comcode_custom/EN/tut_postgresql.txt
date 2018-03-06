@@ -52,7 +52,7 @@ To get a Postgres console [i]if[/i] you are already logged into the same system 
 [code="Bash"]
 psql postgres
 [/code]
-[i]or[/i], if not you can either [tt]su[/tt]/[tt]sudo[/tt] into that user (Linux or MacOS), [i]or[/i] be explicit:
+[i]or[/i], if not you can either [tt]su[/tt]/[tt]sudo[/tt] into that user (Linux or Mac OS), [i]or[/i] be explicit:
 [code="Bash"]
 psql postgres -U <user>
 [/code]
@@ -74,7 +74,7 @@ You can create a user like:
 [code="Bash"]
 CREATE USER cms WITH password 'examplePassword';
 [/code]
-Note that Postgres will not actually use this password for authentication of 'peer' or 'ident' authentication is on, it will authenticate using Unix user account. This was the case for me by default when testing on Fedora Linux, but not MacOS. I had to edit [tt]/var/lib/pgsql/data/pg_hba.conf[/tt]:
+Note that Postgres will not actually use this password for authentication of 'peer' or 'ident' authentication is on, it will authenticate using Unix user account. This was the case for me by default when testing on Fedora Linux, but not Mac OS. I had to edit [tt]/var/lib/pgsql/data/pg_hba.conf[/tt]:
 [code="Text"]
 # "local" is for Unix domain socket connections only
 local   all             postgres                                     peer
@@ -161,7 +161,7 @@ The main complexities of Postgres support, for MySQL developers are:
 
 [title="2"]See also[/title]
 
- - http://www.psequel.com/ (a free MacOS Postgres GUI)
+ - http://www.psequel.com/ (a free Mac OS Postgres GUI)
  - https://www.heidisql.com/ (a free Windows Postgres GUI)
  - http://phppgadmin.sourceforge.net/doku.php (a free web-based Postgres GUI)
  - http://dbeaver.jkiss.org/ (a free cross-platform Postgres GUI)

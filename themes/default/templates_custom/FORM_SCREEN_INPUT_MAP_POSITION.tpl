@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,data_mappr}
-{$SET,google_map_key,{$CONFIG_OPTION,google_map_key}}
-<div data-tpl="formScreenInputMapPosition" data-tpl-params="{+START,PARAMS_JSON,LATITUDE,LONGITUDE,NAME,google_map_key}{_*}{+END}">
+{$SET,google_apis_api_key,{$CONFIG_OPTION,google_apis_api_key}}
+<div data-tpl="formScreenInputMapPosition" data-tpl-params="{+START,PARAMS_JSON,LATITUDE,LONGITUDE,NAME,google_apis_api_key}{_*}{+END}">
 	<div id="map-position-{NAME*}" style="width:100%; height:300px"></div>
 
 	<label for="{NAME*}_latitude">

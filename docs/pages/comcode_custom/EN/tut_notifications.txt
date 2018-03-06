@@ -29,7 +29,7 @@ Web notifications are particularly cool. If you have the website open (or pinned
 
 Additionally, most platforms will allow native notification display:
  - in the Windows notification center
- - in the MacOS notification center
+ - in the Mac OS notification center
  - in the Internet Explorer pinned site notification area
  - [s]in the main notification area of iPhone or Android phones[/s] -- unfortunately this doesn't work at the time of writing, as background pages don't run and most mobile browsers don't support HTML5 notifications
 
@@ -114,7 +114,7 @@ Actual digest content is queued up in the [tt]digestives_tin[/tt] table.
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_correspondance"]Correspondence between members[/page]
+ - [page="_SEARCH:tut_correspondence"]Correspondence between members[/page]
  - [page="_SEARCH:tut_email"]Understanding and configuring e-mail[/page]
  - [page="_SEARCH:tut_members"]Composr member system[/page]
  - [page="_SEARCH:tut_forum_tracking"]Keeping on track of busy forums[/page]

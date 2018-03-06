@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -40,7 +40,7 @@ class comcode_pages_test_set extends cms_test_case
 
         foreach ($files as $file) {
             if ($file != 'themes/default/text/tempcode_test.txt') {
-                continue; // TODO
+                continue;
             }
 
             if (preg_match('#^(adminzone/pages|buildr/pages|docs/pages|site/pages|pages|themes/default/text|themes/default/text_custom|data/modules/cms_comcode_pages)/#', $file) == 0) {

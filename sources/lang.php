@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -202,7 +202,7 @@ function user_lang()
     }
 
     // Quick exit: No Internationalisation enabled
-    if ((function_exists('get_option')) && (get_option('enable_language_selection') != '1')) {
+    if ((function_exists('get_option')) && (get_option('enable_language_selection') !== '1')) {
         $USER_LANG_CACHED = get_site_default_lang();
         return $USER_LANG_CACHED;
     }

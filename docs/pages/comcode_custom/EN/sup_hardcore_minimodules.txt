@@ -105,17 +105,17 @@ For example, you can use:
 
 [title="2"]Example 4[/title]
 
-This simple example shows how to bridge one web system, to another. The example embeds Google into your page. Naturally, this is a silly example, but the same technique can be used to bridge your own scripts, should you be more comfortable programming in a language other than PHP.
+This simple example shows how to bridge one web system, to another. The example embeds DuckDuckGo into your page. Naturally, this is a silly example, but the same technique can be used to bridge your own scripts, should you be more comfortable programming in a language other than PHP.
 
 [code="PHP"]
 <?php
 
 echo '<div style="position: relative; overflow: hidden">';
-echo file_get_contents('http://google.com/');
+echo file_get_contents('https://duckduckgo.com/');
 echo '</div>';
 [/code]
 
-Note I had to add a little CSS to stop Google trying to render parts of its layout on-top of the Composr website.
+Note I had to add a little CSS to stop DuckDuckGo trying to render parts of its layout on-top of the Composr website.
 
 [title="2"]See also[/title]
 

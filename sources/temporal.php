@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -137,7 +137,7 @@ function get_users_timezone($member_id = null)
     // Get user timezone
     if ((get_forum_type() == 'cns') && (!is_guest($member_id))) {
         $timezone_member = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_timezone_offset');
-    } elseif ((function_exists('cms_admirecookie')) && (get_option('is_on_timezone_detection') == '1') && (get_option('enable_timezones') != '0')) {
+    } elseif ((function_exists('cms_admirecookie')) && (get_option('is_on_timezone_detection') === '1') && (get_option('enable_timezones') !== '0')) {
         $client_time = cms_admirecookie('client_time');
         $client_time_ref = cms_admirecookie('client_time_ref');
 

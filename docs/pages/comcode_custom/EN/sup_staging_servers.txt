@@ -113,7 +113,7 @@ There are 3 plausible approaches for synching Configuration and Structure:[list=
  [*] By creating a site-specific versioning script. This is described in the section below. This is recommended for serious development.
  [*] By noting down Commandr commands used to do the configuration, then re-executing them on live later. This is only really recommended for small occasionally changes, but for those it works well due to the interactivity of it.
 [/list]
-[*] Note down every change you're making and manually re-apply it live.
+[*] Note down every change you're making and manually reapply it live.
 [*] Use diff tools to compare database dumps taken at different points in times, and manually transfer the database changes. This is not recommended due to complexity, but useful when in a tight spot.
 [/list]
 
@@ -178,7 +178,7 @@ You can make a Composr [tt]systems/startup[/tt] hook to add a notice only for th
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 */
 
 /**

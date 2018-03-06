@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_task_import_member_csv
+class Hook_task_import_members
 {
     /**
      * Run the task hook.
@@ -37,10 +37,10 @@ class Hook_task_import_member_csv
         require_code('cns_members_action');
         require_code('fields');
 
-        require_code('hooks/systems/tasks/export_member_csv');
-        $download_ob = new Hook_task_export_member_csv();
+        require_code('hooks/systems/tasks/export_members');
+        $download_ob = new Hook_task_export_members();
 
-        log_it('IMPORT_MEMBER_CSV');
+        log_it('IMPORT_MEMBERS');
 
         push_query_limiting(false);
 

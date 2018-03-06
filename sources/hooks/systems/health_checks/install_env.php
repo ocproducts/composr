@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -188,7 +188,7 @@ class Hook_health_check_install_env extends Hook_Health_Check
         $php_too_old = (substr($phpv, 0, 2) == '3.') || (substr($phpv, 0, 2) == '4.') || (substr($phpv, 0, 4) == '5.0.') || (substr($phpv, 0, 4) == '5.1.') || (substr($phpv, 0, 4) == '5.2.') || (substr($phpv, 0, 4) == '5.3.') || (substr($phpv, 0, 4) == '5.4.') || (substr($phpv, 0, 4) == '5.5.'); // LEGACY also maintain in tut_webhosting.txt
         $this->assertTrue(!$php_too_old, do_lang('PHP_TOO_OLD'));
 
-        $max_tested_php_version = '7.2'; // LEGACY: This needs to keep raising
+        $max_tested_php_version = '7.2'; // LEGACY: This needs to keep raising (also it is in tut_webhosting.txt)
         if (!is_maintained('php')) {
             $php_too_new = version_compare(PHP_VERSION, $max_tested_php_version . '.1000', '>'); // LEGACY needs maintaining
             $this->assertTrue(
@@ -363,10 +363,10 @@ class Hook_health_check_install_env extends Hook_Health_Check
             return;
         }
 
-        $cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT ' . db_function('LENGTH', array('\'' . db_escape_string(chr(hexdec('C2')) . chr(hexdec('A3'))) . '\'')));
+        $cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT ' . db_function('LENGTH', array('\'' . db_escape_string(build_hex_string('c2a3')) . '\'')));
         $this->assertTrue($cnt == 1, 'Database connection is not encoding Unicode properly (non-latin characters, utf8)');
 
-        $cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT ' . db_function('LENGTH', array('\'' . db_escape_string(chr(hexdec('F0')) . chr(hexdec('9F')) . chr(hexdec('98')) . chr(hexdec('8E'))) . '\'')));
+        $cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT ' . db_function('LENGTH', array('\'' . db_escape_string(build_hex_string('f09f988e')) . '\'')));
         $this->assertTrue($cnt == 1, 'Database connection is not encoding Unicode properly (emojis, utf8mb4)');
     }
 }

@@ -4,9 +4,9 @@
     Program E
     Copyright 2002, Paul Rydell
     Portions by Jay Myers
-    
+
     This file is part of Program E.
-    
+
     Program E is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -24,7 +24,7 @@
 
 /**
  * AIML loading functions
- * 
+ *
  * Contains contains the functions for the actual loading of AIML.
  * @author Paul Rydell
  * @copyright 2002
@@ -38,7 +38,7 @@
 * The general preferences and database details.
 */
 
-global $selectbot, $annesID;			
+global $selectbot, $annesID;
 
 
 /**
@@ -50,14 +50,14 @@ global $selectbot, $annesID;
 *
 * @return void
 */
-function deletebot($bot)		
+function deletebot($bot)
 {
 
-	$q="delete from bot where bot=$bot";	
+	$q="delete from bot where bot=$bot";
     $e = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $q);
     if ($e){
     }
-    $q="delete from patterns where bot=$bot";	
+    $q="delete from patterns where bot=$bot";
     $e = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $q);
     if ($e){
     }
@@ -65,11 +65,11 @@ function deletebot($bot)
     $e = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $q);
     if ($e){
     }
-    $q="delete from bots where id=$bot"; 
+    $q="delete from bots where id=$bot";
     $e = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $q);
     if ($e){
     }
-    $q="delete from gmcache";			
+    $q="delete from gmcache";
     $e = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $q);
     if ($e){
     }
@@ -80,35 +80,35 @@ function deletebot($bot)
 /**
 * Deletes information about a bot in the cache and bot tables.
 *
-* Used by the incremental bot loader program so it doesn't wipe out the whole 
+* Used by the incremental bot loader program so it doesn't wipe out the whole
 * bot on each aiml file load. Deletes everything in bot, bots and gmcache tables.
-* 
+*
 * @param integer $bot             The bot's ID.
 *
 * @return void
 */
 
-// 
-// 
-function deletejustbot($bot){			
+//
+//
+function deletejustbot($bot){
 
-	$q="delete from bots where id=$bot"; 
+	$q="delete from bots where id=$bot";
     $e = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $q);
     if ($e){
     }
-	$q="delete from bot where bot=$bot";	
+	$q="delete from bot where bot=$bot";
 	$e = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $q);
 	if ($e){
 	}
-    $q="delete from gmcache";			
+    $q="delete from gmcache";
     $e = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $q);
     if ($e){
     }
 
 }
 
-/** 
-* Deletes the gmcache table. 
+/**
+* Deletes the gmcache table.
 *
 * This needs to be called whenever the patterns or templates table is updated.
 *
@@ -116,7 +116,7 @@ function deletejustbot($bot){
 */
 function flushcache()
 {
-    $q="delete from gmcache";			
+    $q="delete from gmcache";
     $e = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $q);
     if ($e){
     }
@@ -146,7 +146,7 @@ function upperkeysarray($testa)
 *
 * Write the substitution arrays back into the subs.inc
 *
-* @global object                 The opened subs.inc file, ready to write to. 
+* @global object                 The opened subs.inc file, ready to write to.
 *
 * @param string $string          most likely an array or all arrays turned into a big file.
 *
@@ -161,7 +161,7 @@ function addtosubs($string)
 
 }
 
-/** 
+/**
 * Create the object for writing the substitution include file
 *
 * Creates the object, which is then used by addtosubs() to write to
@@ -184,22 +184,22 @@ function createsubfile()
 /**
 * Find a word in the patterns table given the word and the parent.
 *
-* The AIML patterns are stored in the MySQL table in a binary tree format. 
-* This function retrieves the next word details based upon the previous' word's ID. 
+* The AIML patterns are stored in the MySQL table in a binary tree format.
+* This function retrieves the next word details based upon the previous' word's ID.
 * If this word doesn't exist it returns 0, else it returns it's details.
 *
 * @uses setnotend()
 *
 * @param string $word             The word that is to be searched
 * @param integer $parent          The ID of the parent word
-* 
+*
 * @return integer                 The ID of the word that was searched
 */
 function findwordid($word,$parent)
 {
 
     $word=addslashes($word);
-    $query="select id,isend from patterns where word='$word' and parent=$parent";	
+    $query="select id,isend from patterns where word='$word' and parent=$parent";
 
     $selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
     if ($selectcode){
@@ -208,7 +208,7 @@ function findwordid($word,$parent)
         }
         else{
             while ($q = mysqli_fetch_array($selectcode)){
-                
+
                 if ($q[1]==1){
                     setnotend($q[0]);
                 }
@@ -228,7 +228,7 @@ function findwordid($word,$parent)
 *
 * @param string $word             The word that is to be searched, either _ or *
 * @param integer $parent          The ID of the parent word
-* 
+*
 * @return integer                 The ID of the word that was searched
 */
 function findwordidstar($word,$parent)
@@ -240,8 +240,8 @@ function findwordidstar($word,$parent)
     elseif ($word=="_"){
         $val=1;
     }
-    $query="select id,isend from patterns where parent=$parent and word is null and ordera=$val";	
-    
+    $query="select id,isend from patterns where parent=$parent and word is null and ordera=$val";
+
     $selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
     if ($selectcode){
         if(!mysqli_num_rows($selectcode)){
@@ -249,11 +249,11 @@ function findwordidstar($word,$parent)
         }
         else{
             while ($q = mysqli_fetch_array($selectcode)){
-                
+
                 if ($q[1]==1){
                     setnotend($q[0]);
                 }
-                
+
                 return $q[0];
             }
         }
@@ -265,7 +265,7 @@ function findwordidstar($word,$parent)
 * Set an entry in the patterns table to not be flagged as the last word in its context.
 *
 * Update a record in the patterns table, change isend column from 1 to 0. Given a particular word ID.
-* 
+*
 * @param integer $wordid
 *
 * @return void
@@ -285,7 +285,7 @@ function setnotend($wordid)
 * Inserts the pattern into the patterns table.
 *
 * inserts the pattern, that and topic as individual words in binary tree format into the patterns table
-* 
+*
 * @uses findwordid()
 * @uses insertwordpattern()
 * @uses findwordidstar()
@@ -297,7 +297,7 @@ function setnotend($wordid)
 */
 function insertmysentence($mybigsentence)
 {
-    global $selectbot, $annesID;		
+    global $selectbot, $annesID;
 
     $sentencepart="";
 
@@ -323,7 +323,7 @@ function insertmysentence($mybigsentence)
         else {
             $word=$allwords[$x];
         }
-        
+
         if (strtoupper($word)=="<INPUT>"){
             $sentencepart="INPUT";
         } elseif (strtoupper($word)=="<THAT>"){
@@ -331,7 +331,7 @@ function insertmysentence($mybigsentence)
         } elseif (strtoupper($word)=="<TOPIC>"){
             $sentencepart="TOPIC";
         }
-        
+
         // Find out if it is the last word in its context
         if ($x==(count($allwords)-1)){
             $lwic=1;
@@ -343,22 +343,22 @@ function insertmysentence($mybigsentence)
         elseif ((strtoupper($allwords[$x+1])=="<THAT>") || (strtoupper($allwords[$x+1])=="<TOPIC>")){
             $lwic=1;
         }
-        
+
         if (($word!="*")&&($word!="_")){
 
             if ($newstarted!=1){
                 $wordid=findwordid($word,$parent);
             }
-            
+
             if (($wordid!=0) && ($newstarted!=1)){
                 $parent=$wordid;
             }
             else {
-                
+
                 $newstarted=1;
 
                 $sword=addslashes($word);
-                $qadd="($selectbot, null,'$sword',2,$parent,$lwic)";	
+                $qadd="($selectbot, null,'$sword',2,$parent,$lwic)";
 
 				$parent = insertwordpattern($qadd);
 
@@ -368,15 +368,15 @@ function insertmysentence($mybigsentence)
         }
         elseif (($word=="*")||($word=="_")){
 
-            if ($newstarted!=1){            
+            if ($newstarted!=1){
                 $wordid=findwordidstar($word,$parent);
             }
-            
+
             if (($wordid!=0) && ($newstarted!=1)){
                 $parent=$wordid;
             }
             else {
-                
+
                 $newstarted=1;
 
                 if ($word=="*"){
@@ -386,7 +386,7 @@ function insertmysentence($mybigsentence)
                     $val=1;
                 }
 
-                $qadd="($selectbot, null,null,$val,$parent,$lwic)";	
+                $qadd="($selectbot, null,null,$val,$parent,$lwic)";
 
 				$parent = insertwordpattern($qadd);
 
@@ -403,7 +403,7 @@ function insertmysentence($mybigsentence)
 /**
 * Inserts an entry into the patterns table. Returns the ID of the new row inserted.
 *
-* insert a word into the patterns table, returns the id of the record so it can be 
+* insert a word into the patterns table, returns the id of the record so it can be
 * used as the parent ID of the next word that's to be inserted.
 *
 * @param string $qadd                 The word of the pattern to be inserted
@@ -426,7 +426,7 @@ function insertwordpattern($qadd)
 * Inserts a template into the template table.
 *
 * Insert the template into the template database. <br/>
-* This version has been adapted to also insert the pattern, that and topic into the additionally added columns 
+* This version has been adapted to also insert the pattern, that and topic into the additionally added columns
 *
 * @uses templateexists()
 *
@@ -437,7 +437,7 @@ function insertwordpattern($qadd)
 * @global string               the that, including variables like _ and *
 *
 * @param integer $idused       The ID of the record in the patterns table that links to the template table.
-* @param string $template      The contents inbetween <template/> tags. 
+* @param string $template      The contents inbetween <template/> tags.
 *
 * @return void
 */
@@ -445,7 +445,7 @@ function insertmytemplate($idused,$template)
 {
 
 	global $selectbot,$templatesinserted, $pattern, $topic, $that;
-    
+
     if (!templateexists($idused)){
         $templatesinserted++;
 
@@ -511,15 +511,15 @@ function templateexists($idused)
 * @param resource $parser        SAX XML resource handler
 * @param string $name            name of the encountered tag.
 * @param array $attrs            contains the additional attribues of a tag, like value, id, find.
-* 
+*
 * @return void
 */
 function startS($parser,$name,$attrs)
 {
 
-    global $selectbot, $whaton, $startupwhich, $splitterarray, 
+    global $selectbot, $whaton, $startupwhich, $splitterarray,
     $inputarray, $genderarray, $personarray, $person2array, $allbots, $areinc;
-    
+
     $attrs=upperkeysarray($attrs);
 
     if (strtoupper($name)=='LEARN') {
@@ -539,24 +539,24 @@ function startS($parser,$name,$attrs)
     }
 
     if (strtoupper($name)=="PROPERTY"){
-        $q="insert into bot (bot,name,value) values ($selectbot,'" . addslashes($attrs["NAME"]) . "','" . addslashes($attrs["VALUE"]) . "')";	
+        $q="insert into bot (bot,name,value) values ($selectbot,'" . addslashes($attrs["NAME"]) . "','" . addslashes($attrs["VALUE"]) . "')";
 
         $qcode=mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $q);
         if ($qcode){
         }
 
     }
-    elseif (strtoupper($name)=="BOT") {					
-		$bot = $attrs["ID"];					
+    elseif (strtoupper($name)=="BOT") {
+		$bot = $attrs["ID"];
 		if (botexists($bot)){
 			$existbotid = getbotid($bot);
 			if ($areinc==1){
-				deletebot($existbotid);	
+				deletebot($existbotid);
 			}
 		}
 
 		$asbot=addslashes($bot);
-		$q="insert into bots (id,botname) values (null,'$asbot')";	
+		$q="insert into bots (id,botname) values (null,'$asbot')";
 		$qcode=mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $q);
 
 		if ($areinc==1){
@@ -571,8 +571,8 @@ function startS($parser,$name,$attrs)
 		$selectbot=$newbotid;
 		$allbots[]=$selectbot;
 
-		#print "<font size='3'><b>Loading bot: $bot ($selectbot)<BR></b></font>\n";	
-		flush();							
+		#print "<font size='3'><b>Loading bot: $bot ($selectbot)<BR></b></font>\n";
+		flush();
     }
     elseif (strtoupper($name)=="SPLITTER"){
         $splitterarray[]=$attrs["VALUE"];
@@ -595,11 +595,11 @@ function startS($parser,$name,$attrs)
     }
 }
 
-/** 
+/**
 * Called by the XML parser that is parsing the startup.xml file.
 *
 * @global string                 Which start tag was processed last
-* 
+*
 * @param resource $parser        SAX XML resource handler
 * @param string $name            name of the encountered tag.
 *
@@ -613,18 +613,18 @@ function endS($parser,$name)
     }
 }
 
-/** 
+/**
 * Process contents <learn> tag in startup.xml
 *
 * Called by the XML parser that is parsing the startup.xml file. * -> all files in directory, or single file.
-* 
+*
 * @todo When using * it should process AIML in subdirectories too. This is currently only supported by using multiple <learn> tag entries for every folder containing AIML files.
 *
 * @uses learnallfiles()
 *
 * @global string
-* @global array       contains the AIML files to learn.         
-* @global integer     
+* @global array       contains the AIML files to learn.
+* @global integer
 *
 * @param resource $parser        SAX XML resource handler
 * @param string $data            assuming it contains the path to the file.
@@ -634,12 +634,12 @@ function handlemeS($parser, $data)
     global $whaton, $learnfiles, $selectbot;
     if (strtoupper($whaton)=="LEARN"){
         if (trim($data)=="*"){
-            learnallfiles($selectbot);        
+            learnallfiles($selectbot);
         }
         else {
 			$learnfiles[$selectbot][]=trim($data);
         }
-    
+
     }
 }
 
@@ -672,19 +672,19 @@ function botexists($name){
 * Gets a bot's property value.
 *
 * Retrieves the value of a particular bot predicate. If the predicate isn't set, then it will return the value 'default'. This has been hardcoded
-* 
-* 
+*
+*
 * @global integer
-* 
+*
 * @param string $name        the name of the bot predicate to be retrieved.
 *
 * @return string             the value of the bot predicate.
 */
 function getbotvalue($name)
 {
-    global $selectbot;	
+    global $selectbot;
 
-    $q="select value from bot where name=" . addslashes($name) . " and bot=$selectbot";	
+    $q="select value from bot where name=" . addslashes($name) . " and bot=$selectbot";
 
     $selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $q);
     if ($selectcode){
@@ -705,7 +705,7 @@ function getbotvalue($name)
 * Gets the ID of a bot given its name
 *
 * @todo move this function to a common include file shared by both the Loader and the Interpreter.
-* 
+*
 * @param string $name              The name of the bot
 *
 * @ return integer                 The bot's ID.
@@ -744,7 +744,7 @@ function getbotid ($name)
 *
 * @return void
 */
-function startElement($parser, $name, $attrs) 
+function startElement($parser, $name, $attrs)
 {
     global $whaton,$template,$pattern,$recursive,$topic;
 
@@ -787,12 +787,12 @@ function startElement($parser, $name, $attrs)
 
     }
     elseif ((strtoupper($whaton)=="TEMPLATE")&&(strtoupper($name)!="TEMPLATE")){
-        
+
         $template .="<$name";
 
         while (list ($key, $val) = each ($attrs)) {
             $template .= " $key=\"$val\" ";
-        }        
+        }
 
         $template .=">";
     }
@@ -806,12 +806,12 @@ function startElement($parser, $name, $attrs)
 
 /**
 * Used by the AIML XML parser
-* 
+*
 * Looks for the end tags of 'topic' and 'category'.
 *
 * @uses insertmysentence()
 * @uses insertmytemplate()
-* 
+*
 * @global string                  which tag is being processed
 * @global string
 * @global string
@@ -824,11 +824,11 @@ function startElement($parser, $name, $attrs)
 *
 * @return void
 */
-function endElement($parser, $name) 
+function endElement($parser, $name)
 {
 
 	global $whaton,$pattern,$template,$recursive,$topic,$that;
-    
+
     if (strtoupper($name)=="TOPIC"){
         $topic="";
     }
@@ -849,13 +849,13 @@ function endElement($parser, $name)
             $pattern="*";
         }
 
-    
+
         $mybigsentence="<input> $pattern <that> $that <topic> $topic";
 
 //echo $mybigsentence;
-     
+
      $idused=insertmysentence($mybigsentence);
-            
+
         insertmytemplate($idused,$template);
 
         // IIS doesn't flush properly unless it has a bunch of characters in it. This fills it with spaces.
@@ -875,7 +875,7 @@ function endElement($parser, $name)
         }
         elseif ((strtoupper($whaton)=="TEMPLATE")&&(strtoupper($name)!="TEMPLATE")){
             $template .="</$name>";
-        }    
+        }
     }
 
 }
@@ -883,7 +883,7 @@ function endElement($parser, $name)
 
 /**
 * Part of the AIML XML parser.
-* 
+*
 * Checks for start tags of pattern, topic, that, template and CDATA
 *
 * @global string
@@ -892,15 +892,15 @@ function endElement($parser, $name)
 * @global string
 * @global string
 *
-* @param resource $parser        SAX XML resource handler 
-* @param string $data            containing what needs to be parsed, I guess. 
+* @param resource $parser        SAX XML resource handler
+* @param string $data            containing what needs to be parsed, I guess.
 *
 * @return void
 */
 function handleme($parser, $data)
 {
     global $whaton,$pattern,$template,$topic,$that;
-    
+
     if (strtoupper($whaton)=="PATTERN"){
         $pattern .= $data;
     }
@@ -922,10 +922,10 @@ function handleme($parser, $data)
 * Parses the startup.xml if the bot id loaded incrementally. One file at a time. This is very hacky and may not work properly.
 *
 * @uses learn()
-* 
+*
 * @global string                 The root directory of the AIML files?
 * @global array                  This array will hold the files to LEARN
-* @global boolean                
+* @global boolean
 * @global array                  Contains all the botnames.
 * @global integer                contains the selected bot ID.
 *
@@ -967,7 +967,7 @@ function loadstartupinc($fileid){
 
 	foreach ($allbots as $bot){
 
-		# print "<font size='3'><b>Loading bot: $bot<BR></b></font>\n";	
+		# print "<font size='3'><b>Loading bot: $bot<BR></b></font>\n";
 
 	    $single_learnfiles = $learnfiles[$bot];
 		$single_learnfiles = array_unique($single_learnfiles);
@@ -994,7 +994,7 @@ function loadstartupinc($fileid){
 /**
 * Parses startup.xml
 *
-* Loads the startup.xml in the botloading process. 
+* Loads the startup.xml in the botloading process.
 * XML parses the startup.xml file.
 *
 * @todo Seperate the XML reading from the processing code. Perhaps making a seperate class for this.
@@ -1018,7 +1018,7 @@ function loadstartup()
 {
 
     global $learnfiles,$allbots,$selectbot,$areinc;
-    
+
 	$areinc=1;
 
 //    print "<font size='3'>Loading startup.xml<BR></font>\n";
@@ -1044,7 +1044,7 @@ function loadstartup()
 
 	# For each of the bots learn all of the files
 	foreach ($allbots as $bot){
-//		print "<font size='3'><b>Loading bot: $bot<BR></b></font>\n";	
+//		print "<font size='3'><b>Loading bot: $bot<BR></b></font>\n";
 	    $single_learnfiles = $learnfiles[$bot];
 		$single_learnfiles = array_unique($single_learnfiles);
 		foreach ($single_learnfiles as $file) {
@@ -1071,9 +1071,9 @@ function learnallfiles($curbot)
 {
     global $learnfiles;
 
-    $dir=opendir (get_custom_file_base()."/sources_custom/programe/aiml/"); 
-    while ($file = readdir($dir)) { 
-        
+    $dir=opendir (get_custom_file_base()."/sources_custom/programe/aiml/");
+    while ($file = readdir($dir)) {
+
         if (substr($file,strpos($file,"."))==".aiml"){
 
             $learnfiles[$curbot][]=$file;
@@ -1087,8 +1087,8 @@ function learnallfiles($curbot)
 /**
 * Learn the AIML string.
 *
-* XML parse the AIML string. It seems to have a hardcoded time limit of 600, presume seconds. 
-* 
+* XML parse the AIML string. It seems to have a hardcoded time limit of 600, presume seconds.
+*
 * @uses startElement()
 * @uses endElement()
 * @uses handleme()
@@ -1146,7 +1146,7 @@ function learn($file)
     else {
         $file=get_custom_file_base()."/sources_custom/programe/aiml/" . $file;
     }
-    
+
     if (!($fp = fopen($file, "r"))) {
         die("could not open XML input");
     }
@@ -1157,22 +1157,22 @@ function learn($file)
                         xml_error_string(xml_get_error_code($xml_parser)),
                         xml_get_current_line_number($xml_parser)));
         }
-    } 
+    }
     fclose($fp);
     xml_parser_free($xml_parser);
 }
 
 /**
-* Creates the PHP array code for subs.inc. 
+* Creates the PHP array code for subs.inc.
 *
 * Subs.inc contains PHP code written during the bot load process. This function creates the array PHP code and returns the code as a string.
 *
 * @uses cleanforsearch()
 * @uses cleanforreplace()
-* 
+*
 * @param array          is an array with either gender, person(2), input and splitter details
-* @param string         which array is being processed, is also the array namein subs.inc. 
-* 
+* @param string         which array is being processed, is also the array namein subs.inc.
+*
 * @return string        the array PHP code
 */
 function makesrphp($inarray,$sname)
@@ -1220,7 +1220,7 @@ function makesrphp($inarray,$sname)
 * @uses learnstring()
 *
 * @global integer           bot ID.
-* 
+*
 * @param string $aimlstring    The AIML string to be loaded.
 * @param integer $botid        The bot's ID.
 *
@@ -1248,7 +1248,7 @@ function loadaimlstring($aimlstring,$botid)
 * @uses learnstring()
 *
 * @global integer           bot ID.
-* 
+*
 * @param string $aimlstring    The AIML string to be loaded.
 * @param integer $botid        The bot's ID.
 *
@@ -1272,24 +1272,24 @@ function loadaimlcategory($aimlstring,$botid)
 
 
 /**
-* Create the array PHP code for the sentence splitters 
+* Create the array PHP code for the sentence splitters
 *
-* In AIML it is custom to return a reply for every sentence the user inputs. 
+* In AIML it is custom to return a reply for every sentence the user inputs.
 * This means the sentence input needs to be split into individual sentences.
-* However, some people find that the semi-colon should also be added, while 
-* others think it should. The user will define the sentence splitters in 
-* startup.xml and these will then be stored in a PHP file included by the 
-* application. 
+* However, some people find that the semi-colon should also be added, while
+* others think it should. The user will define the sentence splitters in
+* startup.xml and these will then be stored in a PHP file included by the
+* application.
 *
 * @param array $splitterarray       containing the sentence splitters found in startup.xml
-* 
+*
 * @return string                    PHP array code for storing the sentence splitters
 */
 function makesplitterphp($splitterarray)
 {
     $splitterphp="\$likeperiodsearch=array(\n";
     for ($x=0;$x<count($splitterarray);$x++){
-        
+
         $splitterphp.="\"" . $splitterarray[$x] . "\",\n";
 
     }
@@ -1297,12 +1297,12 @@ function makesplitterphp($splitterarray)
 
     $splitterphp.="\$likeperiodreplace=array(\n";
     for ($x=0;$x<count($splitterarray);$x++){
-        
+
         $splitterphp.="\"" . "." . "\",\n";
 
     }
     $splitterphp.=");\n";
-    
+
     return $splitterphp;
 }
 
@@ -1312,10 +1312,10 @@ function makesplitterphp($splitterarray)
 * Add slashes for replacement purposes
 *
 * Making a string safe to preform a replacement function on.
-* 
+*
 * @param string $input           string to be cleaned.
-* 
-* @return string                 cleaned string. 
+*
+* @return string                 cleaned string.
 */
 function cleanforreplace($input)
 {
@@ -1331,10 +1331,10 @@ function cleanforreplace($input)
 * Add slashes for database query purpose
 *
 * Making a string safe to put the text in an SQL query.
-* 
+*
 * @param string $input           string to be cleaned.
-* 
-* @return string                 cleaned string. 
+*
+* @return string                 cleaned string.
 */
 function cleanforsearch($input)
 {

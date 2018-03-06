@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -116,6 +116,7 @@ class Hook_addon_registry_core_adminzone_dashboard
             'themes/default/images/icons/checklist/checklist_todo.svg',
             'themes/default/images/icons/checklist/checklist_done.svg',
             'themes/default/images/icons/checklist/toggle.svg',
+            'themes/default/images/icons/checklist/toggle2.svg',
             'themes/default/images/icons/checklist/index.html',
             'lang/EN/tips.ini',
             'sources/hooks/systems/snippets/checklist_task_manage.php',

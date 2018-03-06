@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -47,6 +47,8 @@ global $FORCE_INVISIBLE_GUEST;
 $FORCE_INVISIBLE_GUEST = false;
 global $EXTERNAL_CALL;
 $EXTERNAL_CALL = false;
+global $KNOWN_UTF8;
+$KNOWN_UTF8 = true;
 global $MICRO_AJAX_BOOTUP;
 $MICRO_AJAX_BOOTUP = false;
 if (!is_file($FILE_BASE . '/sources/global.php')) {
@@ -56,7 +58,7 @@ require($FILE_BASE . '/sources/global.php');
 
 require_code('autosave');
 if (get_param_string('type') == 'store') {
-    store_autosave();
+    store_autosave_script();
 } else {
-    retrieve_autosave();
+    retrieve_autosave_script();
 }

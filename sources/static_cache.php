@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -254,6 +254,12 @@ function static_cache($mode)
                 if ($since != '') {
                     if (strtotime($since) < $mtime) {
                         header('HTTP/1.0 304 Not Modified');
+
+                        $aaf = ini_get('auto_append_file');
+                        if (!empty($aaf)) {
+                            @include($aaf); // Because exit() avoids running this
+                        }
+
                         exit();
                     }
                 }

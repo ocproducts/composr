@@ -66,7 +66,7 @@ How to link the SDK into your project, assuming you are using Eclipse:
 	[*] Click "Add" button under the "Library" section
 	[*] A dialog box opens up asking to select the library. Select [tt]CMS_SDK[/tt] from the list and click "OK"
 	[*] Click "OK" on the "Properties" dialog box
-	[*] Eclipse should automatically re-build your project (or) you can do a project cleanup from under Project --> Clean.
+	[*] Eclipse should automatically rebuild your project (or) you can do a project cleanup from under Project --> Clean.
 [/list]
 [*] Now you can access all the features of CMS_SDK in your project.
 [/list]
@@ -2320,7 +2320,7 @@ The standardised [tt]id[/tt] specifies the Commandr-fs path
 | [i]Whatever the Commandr-fs hook has[/i]
 |}
 
-You may want to install a browser extension such as [url="JSONView"]https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en[/url] when developing with the API.
+You may want to install a browser extension such as [url="JSONView"]https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en[/url] when developing with the API. Mozilla Firefox has great JSON viewing built-in.
 
 [title="2"]Other approaches to mobile integration[/title]
 

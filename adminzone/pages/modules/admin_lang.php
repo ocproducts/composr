@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -396,8 +396,12 @@ class Module_admin_lang
      */
     public function interface_content()
     {
+        if (get_option('allow_international') === '0') {
+            warn_exit(do_lang_tempcode('MULTILANG_OFF_OPTION'));
+        }
+
         if (!multi_lang()) {
-            warn_exit(do_lang_tempcode('MULTILANG_OFF'));
+            warn_exit(do_lang_tempcode('MULTILANG_OFF_PRACTICAL'));
         }
 
         if (!multi_lang_content()) {
@@ -437,8 +441,7 @@ class Module_admin_lang
 
         // Make our translation page
         $lines = '';
-        $google_translate_api_key = get_option('google_translate_api_key');
-        if (empty($google_translate_api_key)) {
+        if ((get_option('google_apis_api_key') == '0') || (get_option('google_apis_api_key') == '')) {
             $google = '';
         } else {
             $google = $this->get_google_code($lang);

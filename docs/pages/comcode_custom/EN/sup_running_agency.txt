@@ -31,15 +31,15 @@ You will need to decide what software you are going to use internally. Standardi
 Here are some areas to consider, and suggestions:
  - Internal chat (e.g. Skype, HipChat, IRC)
  - Sharing files (e.g. Dropbox)
- - Writing documents (e.g. Microsoft Office, LibreOffice, Google Docs) -- sadly, no Open Source tool can currently match Microsoft Office in terms of stability, ease of use, and performance
+ - Writing documents (e.g. Microsoft Office, LibreOffice, Zoho Docs, Google Docs) -- sadly, no Open Source tool can currently match Microsoft Office in terms of stability, ease of use, and performance
  - Source code control system (e.g. Git, Bitbucket)
  - Issue tracker (e.g. MantisBT, Bitbucket issues, Github issues, JIRA)
  - Standard IDE (e.g. PhpStorm, Netbeans, TextMate)
  - Analytics (e.g. Google Analytics)
  - Stack software (e.g. LAMP)
  - Framework software (e.g. Composr CMS for advanced sites, Wordpress for blogs, Magento for eCommerce, Symphony for business process implementations)
- - E-mail provider (e.g. Google Apps, or running your own internal e-mail); possible "all staff" mailing list; standardised e-mail signatures
- - Calendar provider (e.g. Google Calendar)
+ - E-mail provider (e.g. Zoho Mail, or running your own internal e-mail); possible "all staff" mailing list; standardised e-mail signatures
+ - Calendar provider (e.g. Zoho Calendar)
  - Up-time monitoring service (e.g. Uptime Robot)
  - Anti-virus system (e.g. AVG)
  - Browser testing (e.g. BrowserStack)
@@ -65,7 +65,7 @@ Here is some infrastructure you will likely need:
  - Internal servers (if any, probably not necessary nowadays)
  - External servers (e.g. staging server)
  - Hosting environment (e.g. dedicated server with multiple sites, VPNs via Amazon EC2, separate shared hosting accounts)
- - Social media accounts (e.g. Twitter Profile, Facebook Page, Google Plus Page, Youtube Channel) [see the [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page] tutorial]
+ - Social media accounts (e.g. Twitter Profile, Facebook Page, Google+ Page, YouTube Channel) [see the [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page] tutorial]
  - Your own website (duh!)
 
 For your infrastructure you will need:
@@ -402,7 +402,7 @@ The post-development process might be roughly as follows:
 1) Make sure the developer produces and has passed a functional test set. Go through it and make sure it all works and that the test set is comprehensive, and give the results of this to the client -- or show them the unit tests that have passed. There likely will be some back-and-forth until the client can be allowed to see anything (but you should be far ahead of schedule at this point).
 2) For non-maintenance projects or maintenance projects that require some review, give a link to the staging server to the client.
 3) Feed amends as required, remembering you have a proper change management process for this. If the developer is not in-house then feed them through to the issue tracker so that they can be tracked (not e-mail or IM unless they are really trivial issues that will be fixed immediately). For efficiency you could just attach client bug reports en-masse into single issue tracker issues, there is no need to re-flow everything into single issues. Do not bring perfectionism to issue fielding, only clarity. Be fast and furious with the reporting pipeline, because there will be 100s of issues, and they mostly just need fixing not deliberating on (which would suck up endless days in discussions).
-4) Re-deploy to staging server (repeating steps 2-4 until done).
+4) Redeploy to staging server (repeating steps 2-4 until done).
 5) For new projects, set up an up-time monitor
 6) Review project success, comparing expected times and actual times. Learn any lessons that need to be learnt and feed back to improve processes if required.
 7) For new clients, send them a feedback form. If you get good feedback from this then ask them for referrals (i.e. names of other businesses they may know).
@@ -476,7 +476,7 @@ If the client is a programmer, or some other kind of engineer, a warning flag sh
 
 If you are obliged to follow special corporate processes, ensure these are clearly documented in a file located in the project directory. The file should be obvious and findable by anyone working on the project.
 
-The quote will likely need to be multiplied up to cover the cost of implementing the extra processes, including on-going/repeat training for them.
+The quote will likely need to be multiplied up to cover the cost of implementing the extra processes, including ongoing/repeat training for them.
 
 [title="3"]Taking over projects[/title]
 

@@ -72,7 +72,7 @@ If you prefer atomic permissions you can use the [tt]fixperms.bat[/tt] script to
 Things can get tricky on Windows shared hosting. Let's assume you have found what user your hosting is running under, you still need to set permissions. It's not clearly defined how to do this, but should be one of the following:
 1) Using Windows Explorer, using Remote Desktop. This is assuming you have Remote Desktop access.
 2) Using a webhosting control panel interface.
-If you can't do either of these things, then my best advice is to find new hosting! You don't want to have to ask the webhost to do it for you everytime you change something, that's going to be a PITA.
+If you can't do either of these things, then my best advice is to find new hosting! You don't want to have to ask the webhost to do it for you every time you change something, that's going to be a PITA.
 
 It's outside the scope of this tutorial to discuss how to ensure file permissions are secure on shared hosting, but we do touch on it in the [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page] tutorial. Really this is up to the webhost to get right.
 

@@ -19,7 +19,7 @@ The last-visit detection system works using session cookies. If the last-visit c
 This has three ramifications:
 1) Session cookies must be enabled for it to work (almost certainly they will be, as cookie restrictions rarely work upon the short-term session cookies).
 2) If you switch around between accounts the reports will not be accurate, as your existing last-visit session cookie will continue to persist.
-3) If you do not shut down your browser window then this will be considered an on-going visit (closing a tab is not sufficient to make the web browser delete session cookies for a site).
+3) If you do not shut down your browser window then this will be considered an ongoing visit (closing a tab is not sufficient to make the web browser delete session cookies for a site).
 [/surround]
 
 [title="3"]Topics with unread posts[/title]

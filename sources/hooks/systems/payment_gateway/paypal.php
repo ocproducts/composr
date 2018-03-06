@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -407,7 +407,7 @@ class Hook_payment_gateway_paypal
                         if ($silent_fail) {
                             return null;
                         }
-                        exit(); // PayPal auto-cancels at a configured point ("To avoid unnecessary cancellations, you can specify that PayPal should reattempt failed payments before canceling subscriptions."). So, we only listen to the actual cancellation signal.
+                        exit(); // PayPal auto-cancels at a configured point ("To avoid unnecessary cancellations, you can specify that PayPal should reattempt failed payments before cancelling subscriptions."). So, we only listen to the actual cancellation signal.
 
                     case 'subscr_modify':
                         $status = 'SModified';

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -981,7 +981,7 @@ function step_4()
                 is_object($specific['title']) ? $specific['title'] : make_string_tempcode($specific['title']),
                 is_object($specific['description']) ? $specific['description'] : make_string_tempcode($specific['description']),
                 $specific['name'],
-                !empty($SITE_INFO[$specific['name']]) ? $SITE_INFO[$specific['name']] : $specific['default'],
+                empty($SITE_INFO[$specific['name']]) ? $specific['default'] : $SITE_INFO[$specific['name']],
                 strpos($specific['name'], 'password') !== false,
                 array_key_exists('required', $specific) ? $specific['required'] : false
             ));
@@ -2652,23 +2652,15 @@ function handle_self_referencing_embedment()
                 exit();
 
             case 'contract':
-                header('Content-type: image/svg+xml');
-                if (!file_exists(get_file_base() . '/themes/default/images/icons/trays/contract.svg')) {
-                    $out = file_array_get('themes/default/images/icons/trays/contract.svg');
-                    echo $out;
-                } else {
-                    print(file_get_contents(get_file_base() . '/themes/default/images/icons/trays/contract.svg'));
-                    exit();
-                }
-                exit();
-
             case 'expand':
+            case 'contract2':
+            case 'expand2':
                 header('Content-type: image/svg+xml');
-                if (!file_exists(get_file_base() . '/themes/default/images/icons/trays/expand.svg')) {
-                    $out = file_array_get('themes/default/images/icons/trays/expand.svg');
+                if (!file_exists(get_file_base() . '/themes/default/images/icons/trays/' . $type . '.svg')) {
+                    $out = file_array_get('themes/default/images/icons/trays/' . $type . '.svg');
                     echo $out;
                 } else {
-                    print(file_get_contents(get_file_base() . '/themes/default/images/icons/trays/expand.svg'));
+                    print(file_get_contents(get_file_base() . '/themes/default/images/icons/trays/' . $type . '.svg'));
                     exit();
                 }
                 exit();
@@ -2802,11 +2794,10 @@ function example($example, $description = '')
     if ($description == '') {
         return do_lang_tempcode($example);
     }
+
     $it = new Tempcode();
-    if ($description != '') {
-        $it->attach(do_lang_tempcode($description));
-        $it->attach('<br />');
-    }
+    $it->attach(do_lang_tempcode($description));
+    $it->attach('<br />');
     $it->attach(do_lang_tempcode('FOR_EXAMPLE', do_lang_tempcode($example)));
     return $it;
 }

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -85,6 +85,8 @@ function realtime_rain_script()
     }
     $out->evaluate_echo();
     echo '</result></request>';
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**

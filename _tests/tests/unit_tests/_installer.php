@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -20,7 +20,7 @@
  */
 class _installer_test_set extends cms_test_case
 {
-    /*TODOpublic function testQuickInstallerBuildsAndDoesNotFullyCrash()
+    public function testQuickInstallerBuildsAndDoesNotFullyCrash()
     {
         $limit_to = get_param_string('limit_to', '');
         if (($limit_to != '') && ($limit_to != 'testQuickInstallerBuildsAndDoesNotFullyCrash')) {
@@ -81,7 +81,7 @@ class _installer_test_set extends cms_test_case
             exit();
         }
         $this->assertTrue($success, 'No submit button found'); // Has start button: meaning something worked
-    }*/
+    }
 
     public function testFullInstallSafeMode()
     {
@@ -101,7 +101,7 @@ class _installer_test_set extends cms_test_case
         }
     }
 
-    /*TODOpublic function testFullInstallNormalMode()
+    public function testFullInstallNormalMode()
     {
         $limit_to = get_param_string('limit_to', '');
         if (($limit_to != '') && ($limit_to != 'testFullInstallNormalMode')) {
@@ -117,7 +117,7 @@ class _installer_test_set extends cms_test_case
         if (!$result) {
             return;
         }
-    }*/
+    }
 
     protected function do_headless_install($safe_mode)
     {
@@ -160,7 +160,7 @@ class _installer_test_set extends cms_test_case
                 true,
                 'mysqli'
             );
-            $fail_message = 'Failed on trial #' . strval($i + 1);
+            $fail_message = 'Failed on trial #' . strval($i + 1) . ' ';
             $fail_message .= ($safe_mode ? '(safe mode)' : '(no safe mode)');
             if (!isset($_GET['debug'])) {
                 $fail_message .= ' -- append &debug=1 to the URL to get debug output';

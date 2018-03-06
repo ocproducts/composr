@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -589,7 +589,7 @@ class Module_admin_shopping
             '_GUID' => 'e2e5097798c963f4977ba22b50ddf2f3',
             'SKIP_WEBSTANDARDS' => true,
             'TITLE' => $this->title,
-            'SUBMIT_ICON' => 'admin--export',
+            'SUBMIT_ICON' => 'admin--export-csv',
             'SUBMIT_NAME' => do_lang_tempcode('EXPORT_ORDER_LIST'),
             'TEXT' => paragraph(do_lang_tempcode('EXPORT_ORDER_LIST_TEXT')),
             'URL' => build_url(array('page' => '_SELF', 'type' => '_export_orders'), '_SELF'),

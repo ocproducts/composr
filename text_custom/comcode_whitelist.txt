@@ -10,6 +10,7 @@
 /<script src="\/\/storify.com\/\w+\/\w+\.js">/
 </script>
 /<iframe width="\d+" height="\d+" src="(http:\/\/)?www\.(youtube-nocookie|youtube)\.com\/embed\/[^"]*" frameborder="0" allowfullscreen>/
+/<iframe src="https:\/\/player.vimeo.com\/video\/\d+" width="\d+" height="\d+" frameborder="0"( title="[^"]*")?><\/iframe>/
 </iframe>
 /<object width="\d+" height="\d+">/
 /<param name="movie" value="(http:\/\/)?www\.(youtube-nocookie|youtube)\.com\/v\/[^"]*">/

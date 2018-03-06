@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -387,7 +387,9 @@ class Hook_import_html_site
                 }
             }
             // Strip bits
-            $site_name = trim(preg_replace('#^[\|\-–—,]#', '', preg_replace('#[\|\-–—,]$#', '', trim($lcs))));
+            $regexp_1 = '#^[\|\-' . ((get_charset() == 'utf-8') ? (build_hex_string('e28093') . build_hex_string('e28094')) : '') . ',]#';
+            $regexp_2 = '#[\|\-' . ((get_charset() == 'utf-8') ? (build_hex_string('e28093') . build_hex_string('e28094')) : '') . '] )?' . preg_quote($site_name) . ',]$#';
+            $site_name = trim(preg_replace($regexp_1, '', preg_replace($regexp_2, '', trim($lcs))));
             // Save as site name
             set_option('site_name', $site_name);
         }
@@ -421,7 +423,8 @@ class Hook_import_html_site
                 $matches = array();
                 $page_title = null;
                 if (preg_match('#<title>(.*)</title>#', $filtered, $matches) != 0) {
-                    $page_title = preg_replace('#( [\|\-–—] )?' . preg_quote($site_name) . '( [\|\-–—] )?#', '', $matches[1]);
+                    $regexp = '#( [\|\-' . ((get_charset() == 'utf-8') ? (build_hex_string('e28093') . build_hex_string('e28094')) : '') . '] )?' . preg_quote($site_name) . '( [\|\-' . ((get_charset() == 'utf-8') ? (build_hex_string('e28093') . build_hex_string('e28094')) : '') . '] )?' . preg_quote($site_name) . '] )?#';
+                    $page_title = preg_replace($regexp, '', $matches[1]);
                 }
                 $page_keywords = null;
                 if (preg_match('#<meta name="keywords" content="([^"]*)"#', $filtered, $matches) != 0) {

@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -738,7 +738,7 @@ function opensearch_script()
 
     $type = get_param_string('type', 'browse');
     switch ($type) {
-        // Make a search suggestion (like Google Suggest)
+        // Make a search suggestion (like Firefox's Awesome Bar)
         case 'suggest':
             require_code('search');
 
@@ -1214,7 +1214,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
                 $where_clause_3 = $where_clause_2 . (($where_clause_3 == '') ? '' : ((($where_clause_2 == '') ? '' : ' AND ') . $where_clause_3));
 
-                // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendence can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
+                // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendance can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
                 $tmp_subquery = 'SELECT 1 AS x FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : (' WHERE ' . $where_clause_3));
                 $GLOBALS['SITE_DB']->static_ob->apply_sql_limit_clause($tmp_subquery, MAXIMUM_RESULT_COUNT_POINT);
                 $_count_query .= '(SELECT COUNT(*) FROM (' . $tmp_subquery . ') counter)';
@@ -1272,7 +1272,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                 list($_where, $_operator) = $search_clause_set;
 
                 foreach ($_where as $__where) {
-                    // See if we have a combined fulltext index coveraging multiple columns
+                    // See if we have a combined fulltext index covering multiple columns
                     $has_combined_index_coverage = false;
                     foreach ($indices_for_table as $index) {
                         if (substr($index['i_name'], 0, 1) == '#') {
@@ -1377,7 +1377,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             if ($group_by_ok && false/*Actually we cannot assume that r.id exists*/) {
                 $_count_query_main_search = 'SELECT COUNT(DISTINCT r.id)' . $query;
             } else {
-                // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendence can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
+                // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendance can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
                 $tmp_subquery = 'SELECT 1 AS x' . $query;
                 $GLOBALS['SITE_DB']->static_ob->apply_sql_limit_clause($tmp_subquery, MAXIMUM_RESULT_COUNT_POINT);
                 $_count_query_main_search = '(SELECT COUNT(*) FROM (' . $tmp_subquery . ') counter)';

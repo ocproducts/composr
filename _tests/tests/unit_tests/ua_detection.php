@@ -3,7 +3,7 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -41,7 +41,7 @@ class ua_detection_test_set extends cms_test_case
         $topic_id = cns_make_topic(db_get_first_id(), 'Test');
         cns_make_post($topic_id, 'Welcome', 'Welcome to the posts', 0, false, null, 0, null, null, null, null, null, null, null, true, true, null, true, '', null, false, false, false);
 
-        $data = http_get_contents($url->evaluate(), array('ignore_http_status' => true, 'trigger_error' => false, 'ua' => 'Googlebot', 'cookies' => array(get_session_cookie() => get_session_id())));
+        $data = http_get_contents($url->evaluate(), array('ignore_http_status' => true, 'trigger_error' => false, 'ua' => 'bingbot', 'cookies' => array(get_session_cookie() => get_session_id())));
         $this->assertTrue(strpos($data, 'findpost') === false);
 
         $data = http_get_contents($url->evaluate(), array('ignore_http_status' => true, 'trigger_error' => false, 'cookies' => array(get_session_cookie() => get_session_id())));
