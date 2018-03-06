@@ -4901,7 +4901,7 @@ a[rel="lightbox"] {
 		padding: 0 22px 5px 0;
 	}
 
-	a[href$=".asf"].user-link, a[href$=".ra"].user-link, a[href$=".wma"].user-link, a[href$=".wav"].user-link, a[href$=".mp3"].user-link, a[href$=".ogg"].user-link, a[href$=".mid"].user-link, a[href$=".mov"].user-link, a[href$=".qt"].user-link, a[href$=".wmv"].user-link, a[href$=".ram"].user-link, a[href$=".rm"].user-link, a[href$=".avi"].user-link, a[href$=".mpg"].user-link, a[href$=".mpe"].user-link, a[href$=".mpeg"].user-link, a[href$=".mp4"].user-link, a[href$=".webm"].user-link, body div a.media-link {
+	a[href$=".asf"].user-link, a[href$=".ra"].user-link, a[href$=".wma"].user-link, a[href$=".wav"].user-link, a[href$=".mp3"].user-link, a[href$=".ogg"].user-link, a[href$=".mid"].user-link, a[href$=".mov"].user-link, a[href$=".qt"].user-link, a[href$=".wmv"].user-link, a[href$=".ram"].user-link, a[href$=".rm"].user-link, a[href$=".avi"].user-link, a[href$=".mpg"].user-link, a[href$=".mpe"].user-link, a[href$=".mpeg"].user-link, a[href$=".mp4"].user-link, a[href$=".mp2"].user-link, a[href$=".mpv2"].user-link, a[href$=".m2v"].user-link, a[href$=".mpa"].user-link, a[href$=".3g2"].user-link, a[href$=".3gp"].user-link, a[href$=".3gp2"].user-link, a[href$=".3gpp"].user-link, a[href$=".3p"].user-link, a[href$=".f4v"].user-link, a[href$=".m4v"].user-link, a[href$=".ogv"].user-link, a[href$=".aac"].user-link, a[href$=".aif"].user-link, a[href$=".aifc"].user-link, a[href$=".aiff"].user-link, a[href$=".weba"].user-link, a[href$=".webm"].user-link, body div a.media-link {
 		background: url('{$IMG;,icons/file_types/page_media}') no-repeat right top;
 		background-size: 16px 16px !important;
 		padding: 0 22px 5px 0;
