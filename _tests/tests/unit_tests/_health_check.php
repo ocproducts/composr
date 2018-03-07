@@ -30,7 +30,7 @@ class _health_check_test_set extends cms_test_case
         foreach ($categories as $category_label => $sections) {
             foreach ($sections['SECTIONS'] as $section_label => $results) {
                 foreach ($results['RESULTS'] as $result) {
-                    $this->assertTrue($result['RESULT'] != HEALTH_CHECK__FAIL, $category_label . ': ' . $section_label . ': ' . str_replace('%', 'pct', $result['MESSAGE']->evaluate()));
+                    $this->assertTrue($result['RESULT'] != HEALTH_CHECK__FAIL, $category_label . ': ' . $section_label . ': ' . str_replace('%', '%%', $result['MESSAGE']->evaluate()));
                 }
             }
         }

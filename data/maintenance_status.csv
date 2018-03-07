@@ -129,3 +129,4 @@ cors,Running across multiple domains and Cross-Origin Resource Sharing (CORS),oc
 mixed_https,Having a combination of HTTPS and HTTP pages,ocProducts,,Not regularly Tested.,No,
 inline_editing,Inline Editing,ocProducts,,"Not regularly Tested, and themes are not typically expected to support it out-of-the-box.",No,
 download_pdf_indexing,Download PDF search indexing,ocProducts,,Not regularly Tested.,No,
+oembed,Default oEmbed configuration,ocProducts,,Not regularly Tested.,No,oembed automated test.

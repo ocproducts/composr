@@ -99,13 +99,15 @@ class Hook_media_rendering_hyperlink
         $_url = is_object($url) ? $url->evaluate() : $url;
         $_url_safe = is_object($url_safe) ? $url_safe->evaluate() : $url_safe;
 
-        if ((isset($attributes['likely_not_framed'])) && ($attributes['likely_not_framed'] == '1')) {
-            $attributes['framed'] = '0';
-        }
-
         // Try and find the link title
         require_code('http');
         $meta_details = get_webpage_meta_details($_url);
+
+        $image_url = ((array_key_exists('thumb_url', $attributes)) && ($attributes['thumb_url'] != '')) ? $attributes['thumb_url'] : $meta_details['t_image_url'];
+
+        if ((isset($attributes['likely_not_framed'])) && ($attributes['likely_not_framed'] == '1') && ($image_url == '')) {
+            $attributes['framed'] = '0';
+        }
 
         $defined_not_framed = ((array_key_exists('framed', $attributes)) && ($attributes['framed'] == '0'));
 
@@ -132,7 +134,7 @@ class Hook_media_rendering_hyperlink
                     'TITLE' => $meta_details['t_title'],
                    'META_TITLE' => $meta_title,
                    'DESCRIPTION' => ((array_key_exists('description', $attributes)) && ($attributes['description'] != '')) ? $attributes['description'] : $meta_details['t_description'],
-                   'IMAGE_URL' => ((array_key_exists('thumb_url', $attributes)) && ($attributes['thumb_url'] != '')) ? $attributes['thumb_url'] : $meta_details['t_image_url'],
+                   'IMAGE_URL' => $image_url,
                    'URL' => $meta_details['t_url'],
                    'WIDTH' => ((array_key_exists('width', $attributes)) && ($attributes['width'] != '')) ? $attributes['width'] : get_option('thumb_width'),
                    'HEIGHT' => ((array_key_exists('height', $attributes)) && ($attributes['height'] != '')) ? $attributes['height'] : get_option('thumb_width'),

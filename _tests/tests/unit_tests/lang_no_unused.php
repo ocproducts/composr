@@ -233,7 +233,7 @@ class lang_no_unused_test_set extends cms_test_case
                 }
 
                 $contains = (preg_match('#(\{!' . preg_quote($key, '#') . '|:' . preg_quote($key, '#') . '|\'' . preg_quote($key, '#') . '\')#', $all_code) != 0);
-                $this->assertTrue($contains, $key . ': cannot find usage of language string (' . str_replace('%', '', $val) . ')');
+                $this->assertTrue($contains, $key . ': cannot find usage of language string (' . str_replace('%', '%%', $val) . ')');
             }
         }
         closedir($dh);
