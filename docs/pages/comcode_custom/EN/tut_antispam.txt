@@ -85,6 +85,8 @@ There is a developer addon, [tt]antispam_question[/tt], which checks the value o
 
 You could then then configure your forum permissions so there is only a single forum these members see, that normal members don't. This effectively works as a shadow-ban. You can then move people out of Probation manually if you need to.
 
+The developer addon hard-codes the CPF ID being checked against, and the expected value, and the ID of the usergroup to put failing members in (the default Probation usergroup). It would be fairly easy to customise with minimal coding skills, although ideally we'd add a [url="more extensive configurable feature"]https://compo.sr/tracker/view.php?id=1579[/url].
+
 [title="2"]What we don't do[/title]
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
