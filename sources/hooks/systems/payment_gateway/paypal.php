@@ -63,7 +63,7 @@ class Hook_payment_gateway_paypal
      */
     protected function _get_remote_form_url()
     {
-        return ecommerce_test_mode() ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
+        return ecommerce_test_mode() ? 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr' : 'https://ipnpb.paypal.com/cgi-bin/webscr';
     }
 
     /**

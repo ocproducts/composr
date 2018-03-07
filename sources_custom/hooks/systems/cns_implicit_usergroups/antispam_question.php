@@ -3,21 +3,39 @@
  Composr
  Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licensing information.
+ See text/EN/licence.txt for full licencing information.
 
 */
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    under18s
+ * @package    antispam_question
  */
 
 /**
  * Hook class.
  */
-class Hook_implicit_usergroups_under18s
+class Hook_implicit_usergroups_antispam_question
 {
+    /*
+    Add a CPF something like...
+
+    Name = What is Composr a kind of?
+    Description = This question is designed to reduce the number of spammers we have joining the site. It indicates you have at least some interest in what you're signing up to.
+    Default value = Commercial Maintenance System|Commercial Management Solution|Contacts Maintenance System|Contacts Management Solution|Content Maintenance Solution|Content Management System
+    Owner viewable = no
+    Owner settable = no
+    Publicly viewable = no
+    Type = A value chosen from a list
+    Field options = widget=radio
+    Required field = yes
+    Show on the join form = yes
+    */
+
+    protected $field_id = 46;
+    protected $expected_answer = 'Content Management System';
+
     /**
      * Run function for implicit usergroup hooks. Finds the group IDs it is bound to.
      *
@@ -30,8 +48,15 @@ class Hook_implicit_usergroups_under18s
 
     protected function _where()
     {
-        $eago = intval(date('Y')) - 18;
-        return 'm_dob_year>' . strval($eago) . ' OR m_dob_year=' . strval($eago) . ' AND (m_dob_month>' . date('m') . ' OR m_dob_month=' . date('m') . ' AND m_dob_day>=' . date('d') . ')';
+        require_code('cns_members');
+        $mappings = cns_get_custom_field_mappings($GLOBALS['FORUM_DRIVER']->get_guest_id());
+        $f = 'field_' . strval($this->field_id);
+        if (!isset($mappings[$f])) {
+            // So it does not crash if the CPF does not exist
+            return '1=0';
+        }
+
+        return '(SELECT field_' . strval($this->field_id) . ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields mcf ON mcf.mf_member_id=id) NOT IN (\'\', \'' . db_escape_string($this->expected_answer) . '\')';
     }
 
     /**
@@ -66,18 +91,15 @@ class Hook_implicit_usergroups_under18s
      */
     public function is_member_within($member_id, $group_id, &$is_exclusive = null)
     {
-        if ($member_id == get_member()) {
-            // IDEA: Support timezones, decide age based on user's own timezone
+        $is_exclusive = true;
 
-            $eago = intval(date('Y')) - 18;
-            $row = $GLOBALS['FORUM_DRIVER']->get_member_row($member_id);
-            $dob_year = $row['m_dob_year'];
-            $dob_month = $row['m_dob_month'];
-            $dob_day = $row['m_dob_day'];
-            return $dob_year > $eago || $dob_year == $eago && ($dob_month > intval(date('m')) || $dob_month == intval(date('m')) && $dob_day >= intval(date('d')));
+        require_code('cns_members');
+        $mappings = cns_get_custom_field_mappings($member_id);
+        $f = 'field_' . strval($this->field_id);
+        if (!isset($mappings[$f])) {
+            return false;
         }
-
-        $sql = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE (' . $this->_where() . ') AND id=' . strval($member_id);
-        return ($GLOBALS['FORUM_DB']->query_value_if_there($sql) !== null);
+        $val = $mappings[$f];
+        return ($val != $this->expected_answer) && ($val != '');
     }
 }

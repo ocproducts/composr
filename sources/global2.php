@@ -180,13 +180,13 @@ function init__global2()
         require_code('chat_poller');
         chat_poller();
     }
-    if ((running_script('notifications')) && (@filemtime(get_custom_file_base() . '/data_custom/modules/web_notifications/latest.dat') >= get_param_integer('time_barrier'))) {
+    if ((running_script('notifications')) && (@filemtime(get_custom_file_base() . '/data_custom/modules/web_notifications/latest.dat') <= get_param_integer('time_barrier'))) {
         prepare_for_known_ajax_response();
 
         header('Content-Type: application/xml');
 
         //  encoding="' . escape_html(get_charset()) . '" not needed due to no data in it
-        $output = '<?xml version="1.0" ?' . '><response><result></result></response>';
+        $output = '<?xml version="1.0" ?' . '><response><result><time>' . strval(time()) . '</time></result></response>';
         echo $output;
 
         exit(); // So auto_append_file cannot run and corrupt our output
