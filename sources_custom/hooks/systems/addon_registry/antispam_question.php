@@ -10,13 +10,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    under18s
+ * @package    antispam_question
  */
 
 /**
  * Hook class.
  */
-class Hook_addon_registry_under18s
+class Hook_addon_registry_antispam_question
 {
     /**
      * Get a list of file permissions to set
@@ -86,7 +86,7 @@ class Hook_addon_registry_under18s
      */
     public function get_description()
     {
-        return 'Example of an implicit usergroup hook, to automatically put all members under 18 into a special usergroup.';
+        return 'Puts a member on probation if they get a question wrong when joining. This is a code example, the code needs tweaking for your site.';
     }
 
     /**
@@ -120,7 +120,7 @@ class Hook_addon_registry_under18s
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/_generic_admin/component.png';
+        return 'themes/default/images/icons/48x48/menu/adminzone/security.png';
     }
 
     /**
@@ -131,8 +131,8 @@ class Hook_addon_registry_under18s
     public function get_file_list()
     {
         return array(
-            'sources_custom/hooks/systems/addon_registry/under18s.php',
-            'sources_custom/hooks/systems/cns_implicit_usergroups/under18s.php',
+            'sources_custom/hooks/systems/addon_registry/antispam_question.php',
+            'sources_custom/hooks/systems/cns_implicit_usergroups/antispam_question.php',
         );
     }
 }

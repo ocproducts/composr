@@ -75,12 +75,21 @@ You need to specifically configure the options for Honey Pot -- it requires you 
 If someone spams on the forum (assuming you are running [concept]Conversr[/concept]) then they can use the 'report post' feature to alert the staff to the spammer activity.
 This is described in the [page="_SEARCH:tut_censor"]Policing a community site tutorial[/page].
 
+[title="2"]Guest posting[/title]
+
+You may simply want to deny guest posting permissions, which will raise the effort spammers have to go to. This may be enough to deter them.
+
+[title="2"]Per-site Q&A / Probation / Shadow-banning (advanced)[/title]
+
+There is a developer addon, [tt]antispam_question[/tt], which checks the value of a custom profile field to see if it matches a pre-defined setting. If it does not, it puts the member in the Probation usergroup only.
+
+You could then then configure your forum permissions so there is only a single forum these members see, that normal members don't. This effectively works as a shadow-ban. You can then move people out of Probation manually if you need to.
+
 [title="2"]What we don't do[/title]
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
 We're not a fan of all anti-spam systems. Here's a run-down of what we don't do:
  - Some popular spam checking tools will run checks through a commercial third-party server. We'd rather deliver our code to you within Composr, for improved performance, and in line with our Open Source philosophy.
- - We don't try and use pattern-analysis to detect spammers, because it would be so easy for a spammer to adjust their spam-bots to get past our filters.
  - Various alternative CAPTCHA systems (as explained above, under 'CAPTCHA')
 
 [title="2"]Making a spam report to the developers[/title]
