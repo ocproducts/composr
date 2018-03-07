@@ -482,7 +482,6 @@ class Module_warnings extends Standard_crud_module
                     $tornevall_api_username = '';
                 }
                 if ($stopforumspam_api_key . $tornevall_api_username != '') {
-                    require_lang('submitban');
                     $fields->attach(form_input_tick(do_lang_tempcode('SYNDICATE_TO_STOPFORUMSPAM'), do_lang_tempcode('DESCRIPTION_SYNDICATE_TO_STOPFORUMSPAM'), 'stopforumspam', false));
                 }
             }
