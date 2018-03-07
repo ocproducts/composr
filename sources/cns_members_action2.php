@@ -1265,7 +1265,7 @@ function cns_unban_member($member_id)
         return;
     }
 
-    require_code('mail');
+    require_lang('submitban');
 
     $username = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_username');
     $email_address = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_email_address');

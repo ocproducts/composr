@@ -56,7 +56,7 @@ class Hook_implicit_usergroups_antispam_question
             return '1=0';
         }
 
-        return '(SELECT field_' . strval($this->field_id) . ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields mcf ON mcf.mf_member_id=id) NOT IN (\'\', \'' . db_escape_string($this->expected_answer) . '\')';
+        return '(SELECT field_' . strval($this->field_id) . ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields mcf WHERE mcf.mf_member_id=id) NOT IN (\'\', \'' . db_escape_string($this->expected_answer) . '\')';
     }
 
     /**
