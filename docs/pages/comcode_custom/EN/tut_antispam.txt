@@ -79,6 +79,8 @@ This is described in the [page="_SEARCH:tut_censor"]Policing a community site tu
 
 You may simply want to deny guest posting permissions, which will raise the effort spammers have to go to. This may be enough to deter them.
 
+You may want to also disable permission for Guests to report content.
+
 [title="2"]Per-site Q&A / Probation / Shadow-banning (advanced)[/title]
 
 There is a developer addon, [tt]antispam_question[/tt], which checks the value of a custom profile field to see if it matches a pre-defined setting. If it does not, it puts the member in the Probation usergroup only.

@@ -48,6 +48,14 @@ class Hook_implicit_usergroups_antispam_question
 
     protected function _where()
     {
+        require_code('cns_members');
+        $mappings = cns_get_custom_field_mappings($GLOBALS['FORUM_DRIVER']->get_guest_id());
+        $f = 'field_' . strval($this->field_id);
+        if (!isset($mappings[$f])) {
+            // So it does not crash if the CPF does not exist
+            return '1=0';
+        }
+
         return '(SELECT field_' . strval($this->field_id) . ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields mcf ON mcf.mf_member_id=id) NOT IN (\'\', \'' . db_escape_string($this->expected_answer) . '\')';
     }
 
@@ -87,7 +95,11 @@ class Hook_implicit_usergroups_antispam_question
 
         require_code('cns_members');
         $mappings = cns_get_custom_field_mappings($member_id);
-        $val = $mappings['field_' . strval($this->field_id)];
+        $f = 'field_' . strval($this->field_id);
+        if (!isset($mappings[$f])) {
+            return false;
+        }
+        $val = $mappings[$f];
         return ($val != $this->expected_answer) && ($val != '');
     }
 }
