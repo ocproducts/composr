@@ -111,7 +111,9 @@ When you add the block you see various block parameters to be filled in includin
  - height -- Defaults to 300px but can be set to how ever many pixels(px) you need it to be
  - zoom -- A number between 1 and 17, the higher the number the more zoomed in the map will start at
  - latitude -- The Latitude coordinates where you want the centre of the map to be when first loaded
- - longitude -- The Longitude coordinates where you want the centre of the map to be when first loaded';
+ - longitude -- The Longitude coordinates where you want the centre of the map to be when first loaded
+
+Coordinates of the Google map centre point and zoom level are configurable. You can find the coordinates by using the option in Google Maps Labs or via https://itouchmap.com/latlong.html.';
     }
 
     /**
