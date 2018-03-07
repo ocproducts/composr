@@ -459,7 +459,7 @@
                 values.push(form.elements['email_address'].value);
             }
 
-            if (params.useCaptcha && ('{$CONFIG_OPTION;,recaptcha_site_key}' === '')) {
+            if (params.useCaptcha && ($cms.configOption('recaptcha_site_key') === '')) {
                 values.push(form.elements['captcha'].value);
             }
 
@@ -487,7 +487,7 @@
                 checkPromises.push($cms.form.doAjaxFieldTest(url));
             }
 
-            if (params.useCaptcha && ('{$CONFIG_OPTION;,recaptcha_site_key}' === '')) {
+            if (params.useCaptcha && ($cms.configOption('recaptcha_site_key') === '')) {
                 url = params.snippetScript + '?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
                 checkPromises.push($cms.form.doAjaxFieldTest(url));
             }

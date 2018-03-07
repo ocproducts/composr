@@ -21,7 +21,7 @@
             this.btnSubmit.style.display = 'none';
         }
 
-        if (params.useCaptcha && ('{$CONFIG_OPTION;,recaptcha_site_key}' === '')) {
+        if (params.useCaptcha && ($cms.configOption('recaptcha_site_key') === '')) {
             this.addCaptchaChecking();
         }
 

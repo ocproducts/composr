@@ -2,8 +2,8 @@
 
     'use strict';
     // Constants
-    window.MESSAGE_CHECK_INTERVAL = Math.max(3000, parseInt('{$CONFIG_OPTION,chat_message_check_interval}'));
-    window.TRANSITORY_ALERT_TIME = parseInt('{$CONFIG_OPTION,chat_transitory_alert_time}');
+    window.MESSAGE_CHECK_INTERVAL = Math.max(3000, parseInt($cms.configOption('chat_message_check_interval')));
+    window.TRANSITORY_ALERT_TIME = parseInt($cms.configOption('chat_transitory_alert_time'));
     window.LOGS_DOWNLOAD_INTERVAL = 3000;
 
     // Tracking variables

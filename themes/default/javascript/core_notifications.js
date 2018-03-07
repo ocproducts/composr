@@ -7,7 +7,7 @@
      Poll for notifications (and unread PTs)
      */
     window.notificationsAlreadyPresented || (window.notificationsAlreadyPresented = {});
-    (window.NOTIFICATION_POLL_FREQUENCY != null) || (window.NOTIFICATION_POLL_FREQUENCY = '{$CONFIG_OPTION%,notification_poll_frequency}');
+    (window.NOTIFICATION_POLL_FREQUENCY != null) || (window.NOTIFICATION_POLL_FREQUENCY = $cms.configOption('notification_poll_frequency'));
     (window.notificationsTimeBarrier != null) || (window.notificationsTimeBarrier = 0);
 
     $cms.views.NotificationButtons = NotificationButtons;

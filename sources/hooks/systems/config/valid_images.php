@@ -40,7 +40,7 @@ class Hook_config_valid_images
             'list_options' => '',
             'required' => true,
 
-            'public' => false,
+            'public' => true,
 
             'addon' => 'core_configuration',
         );

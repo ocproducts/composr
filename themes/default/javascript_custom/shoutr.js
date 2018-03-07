@@ -1,7 +1,7 @@
 (function ($cms, $util, $dom) {
     'use strict';
 
-    var MESSAGE_CHECK_INTERVAL = window.MESSAGE_CHECK_INTERVAL = Math.max(3000, parseInt('{$CONFIG_OPTION,chat_message_check_interval}'));
+    var MESSAGE_CHECK_INTERVAL = window.MESSAGE_CHECK_INTERVAL = Math.max(3000, $cms.configOption('chat_message_check_interval'));
 
     var sbChatCheckTimerId = null,
         sbChatRoomId = null,

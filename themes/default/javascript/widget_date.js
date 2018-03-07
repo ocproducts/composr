@@ -205,7 +205,7 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
           prevText: '{!PREVIOUS;^}',
           nextText: '{!NEXT;^}',
           currentText: '{!TODAY;^}',
-          firstDay: +'{$?,{$CONFIG_OPTION,ssw},0,1}',
+          firstDay: $cms.configOption('ssw') ? 0 : 1,
           dateFormat: 'MM dd, yy',
           changeMonth: true,
           changeYear: true,

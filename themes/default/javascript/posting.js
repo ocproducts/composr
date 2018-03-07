@@ -110,9 +110,9 @@
             }
 
             var ext = filepath.replace(/^.*\./, '').toLowerCase(),
-                isImage = ',{$CONFIG_OPTION;,valid_images},'.includes(',' + ext + ','),
-                isVideo = ',{$CONFIG_OPTION;,valid_videos},'.includes(',' + ext + ','),
-                isAudio = ',{$CONFIG_OPTION;,valid_audios},'.includes(',' + ext + ','),
+                isImage = (',' + $cms.configOption('valid_images') + ',').includes(',' + ext + ','),
+                isVideo = (',' + $cms.configOption('valid_videos') + ',').includes(',' + ext + ','),
+                isAudio = (',' + $cms.configOption('valid_audios') + ',').includes(',' + ext + ','),
                 isArchive = (ext === 'tar') || (ext === 'zip'),
                 prefix = '', suffix = '';
 
