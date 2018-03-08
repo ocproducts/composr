@@ -51,7 +51,7 @@
 		</div>
 
 		<script {$CSP_NONCE_HTML}>
-			{+START,IF_PASSED,GLOBAL_JS}{GLOBAL_JS/}{+END}
+			{+START,IF_PASSED,INSTALLER_JS}{INSTALLER_JS/}{+END}
 		</script>
 	</body>
 </html>
