@@ -429,7 +429,7 @@
                 if (node.children && node.children.length) {
                     var ul = $dom.create('ul', {
                         id: 'sitemap_menu_children_' + $util.random(),
-                        className: 'toggleable-tray'
+                        className: 'toggleable-tray js-tray-content'
                     });
                     // Show expand icon...
                     $dom.append(span, document.createTextNode(' '));
@@ -438,7 +438,7 @@
                         className: 'toggleable-tray-button',
                         href: '#!',
                         dataset: {
-                            clickTrayToggle: branchId
+                            clickTrayToggle: '#' + branchId
                         }
                     });
 
