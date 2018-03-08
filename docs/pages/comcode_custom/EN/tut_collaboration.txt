@@ -1,11 +1,11 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Running a collaboration hub[/title]
 
-Composr includes many features that allow your website to function, in whole or in part, as an on-line collaboration tool.
+Composr includes many features that allow your website to function, in whole or in part, as an online collaboration tool.
 Some of these features are directly documented in this tutorial as they are implemented directly for collaboration purposes; others are referenced and discussed in other tutorials.
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Virtues of on-line collaboration[/title]
+[title="2"]Virtues of online collaboration[/title]
 
 The Internet, combined with Composr, is a powerful tool for online-collaboration. It provides the ability for people across the world to work together; but even when used by people working in the same building it can still be a great aid in the sharing and organising of information.
 
@@ -67,4 +67,4 @@ Most members will only be able to delete their own files, but all files are view
 
  - [page="_SEARCH:tut_users"]People in their roles[/page]
 
-{$SET,tutorial_tags,Collaboration,filedump,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr includes many features that allow your website to function, in whole or in part, as an on-line collaboration tool.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Collaboration,filedump,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr includes many features that allow your website to function, in whole or in part, as an online collaboration tool.}[block]main_tutorial_rating[/block]

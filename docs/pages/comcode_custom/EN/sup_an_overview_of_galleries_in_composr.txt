@@ -24,7 +24,7 @@ As well as the above in Composr you can also:
 [*] Fill in Search engine optimisation information to help aid users to find your content through search engines
 [/list]
 
-As you can see the core feature of galleries in Composr is a well-rounded part of the software and can be a really powerful tool. The benefit of utilising a built in gallery rather than having to rely on a third party plugin means all of the elements of the feature are coded to the same standards of code quality and security levels. It also means that when you come to change the style and design of your website you can change the gallery style and the main design of the website at the same time. Additionally, the gallery pulls many of the style elements from the main CSS file and not from a separate file which helps reduce duplication.
+As you can see the core feature of galleries in Composr is a well-rounded part of the software and can be a really powerful tool. The benefit of utilising a built-in gallery rather than having to rely on a third party plugin means all of the elements of the feature are coded to the same standards of code quality and security levels. It also means that when you come to change the style and design of your website you can change the gallery style and the main design of the website at the same time. Additionally, the gallery pulls many of the style elements from the main CSS file and not from a separate file which helps reduce duplication.
 
 [title="2"]Managing your gallery in Composr[/title]
 

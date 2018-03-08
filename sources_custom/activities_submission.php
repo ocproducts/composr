@@ -230,13 +230,10 @@ function activities_updater_script()
                     'IS_PUBLIC' => $is_public,
                 ));
 
-                // We dump our response in CDATA, since that lets us work around the
-                // fact that our list elements aren't actually in a list, etc.
-                // However, we allow comcode but some tags make use of CDATA. Since
-                // CDATA can't be nested (as it's a form of comment), we take this
-                // into account by base64 encoding the whole template and decoding
-                // it in the browser. We wrap it in some arbitrary XML and a CDATA
-                // tag so that the JavaScript knows what it's received
+                // We dump our response in CDATA, since that lets us work around the fact that our list elements aren't actually in a list, etc.
+                // However, we allow Comcode but some tags make use of CDATA. Since CDATA can't be nested (as it's a form of comment), we take this
+                // into account by base64 encoding the whole template and decoding it in the browser. We wrap it in some arbitrary XML and a
+                // CDATA tag so that the JavaScript knows what it's received
                 $list_items .= '<listitem id="' . strval($row['id']) . '"><![CDATA[' . base64_encode($list_item->evaluate()) . ']]></listitem>';
             }
             $response .= '<response><success>1</success><feedlen>' . $map['max'] . '</feedlen><content>' . $list_items . '</content><supp>' . escape_html($where_clause) . '</supp></response>';
@@ -300,8 +297,7 @@ function activities_removal_script()
 
 /**
  * Maintains a text file in data_custom. This contains the latest activity's ID.
- * Since the JavaScript polls for updates, it can check against this before
- * running any PHP.
+ * Since the JavaScript polls for updates, it can check against this before running any PHP.
  *
  * @param  integer $id The ID we are going to write to the file
  * @param  integer $timeout Our timeout in milliseconds (how long we should keep trying). Default: 1000

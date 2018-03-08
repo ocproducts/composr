@@ -97,7 +97,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
 
             $matches_extract = array();
             if ((!browser_matches('simplified_attachments_ui')) && (strpos($comcode, ']new_' . $matches[1] . '[/attachment]') === false) && (strpos($comcode, ']new_' . $matches[1] . '[/attachment_safe]') === false)) {
-                if (preg_match('#\]\d+\[/attachment\]#', $comcode) == 0) { // Attachment could have already been put through (e.g. during a preview). If we have actual ID's referenced, it's almost certainly the case.
+                if (preg_match('#\]\d+\[/attachment\]#', $comcode) == 0) { // Attachment could have already been put through (e.g. during a preview). If we have actual IDs referenced, it's almost certainly the case.
                     $comcode .= "\n\n" . '[attachment]new_' . $matches[1] . '[/attachment]';
                 }
             }
@@ -130,7 +130,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
         $attachment = $COMCODE_ATTACHMENTS[$id][$i];
 
         if ($attachment['initial_id'] !== null) {
-            // If it's a new one, we need to change the comcode to reference the ID we made for it
+            // If it's a new one, we need to change the Comcode to reference the ID we made for it
             if ($attachment['type'] == 'new') {
                 $marker_id = intval(substr($attachment['initial_id'], 4)); // After 'new_'
 
@@ -155,7 +155,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
         // Clear any de-referenced attachments
         foreach ($before as $ref) {
             if ((!in_array($ref['a_id'], $ids_present)) && (strpos($comcode, 'attachment.php?id=') === false) && (!multi_lang())) {
-                // Delete reference (as it's not actually in the new comcode!)
+                // Delete reference (as it's not actually in the new Comcode!)
                 $db->query_delete('attachment_refs', array('id' => $ref['id']), '', 1);
 
                 // Was that the last reference to this attachment? (if so -- delete attachment)

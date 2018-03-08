@@ -552,7 +552,7 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
                 ));
             }
             if ((!in_array(get_page_name(), $DONT_CARE_MISSING_PAGES)) && (running_script('index'))) {
-                $found_in_post = false; // We don't want to send email if someone's just posting it right now, because they'll see the error on their screen, and we don't want staff spammed by member mistakes
+                $found_in_post = false; // We don't want to send e-mail if someone's just posting it right now, because they'll see the error on their screen, and we don't want staff spammed by member mistakes
                 foreach ($_POST as $val) {
                     if (is_array($_POST)) {
                         continue;
@@ -1780,7 +1780,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $url_full = $url;
             }
             $striped_base_url = str_replace('www.', '', str_replace('https://', '', str_replace('http://', '', get_base_url())));
-            if (($striped_base_url != '') && (substr($url, 0, 1) != '%') && (strpos($url_full, $striped_base_url) === false)) { // We don't want to hammer our own server when we have Comcode pages full of links to our own site (much less risk of hammering other people's servers, as we won't tend to have loads of links to them). Would also create bugs in emails sent out - e.g. auto-running approve_ip.php links hence voiding the intent of the feature.
+            if (($striped_base_url != '') && (substr($url, 0, 1) != '%') && (strpos($url_full, $striped_base_url) === false)) { // We don't want to hammer our own server when we have Comcode pages full of links to our own site (much less risk of hammering other people's servers, as we won't tend to have loads of links to them). Would also create bugs in e-mails sent out - e.g. auto-running approve_ip.php links hence voiding the intent of the feature.
                 $temp_tpl = test_url($url_full, 'url', $given_url, $source_member);
             }
 

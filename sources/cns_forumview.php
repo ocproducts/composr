@@ -236,7 +236,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                         $subforums = new Tempcode();
                         ksort($subforum['children']);
                         foreach ($subforum['children'] as $child) {
-                            // Work out where the subsubforum url is
+                            // Work out where the subsubforum URL is
                             if (is_numeric($child['redirection'])) {
                                 $link = hyperlink(build_url(array('page' => '_SELF', 'id' => $child['redirection']), '_SELF'), $child['name'], false, true);
                             } elseif ($child['redirection'] != '') {

@@ -2072,7 +2072,7 @@ function get_formatted_address($address_parts)
             }
 
             if (($address_part_codename == 'post_code') && (!empty($address_parts['state'])) && (!empty($address_parts['country'])) && ($address_parts['country'] == 'US')) {
-                $address = rtrim($address); // We want the zip code to show after the state
+                $address = rtrim($address); // We want the ZIP code to show after the state
             }
 
             $address .= $address_part . "\n";

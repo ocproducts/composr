@@ -34,8 +34,8 @@ There are two routes you can take to edit your website logo. I will cover both.
 The simplest way to edit your main website logo is to:
 [list="1"]
 [*] Go to your homepage
-[*] Hover your mouse over the logo in the top left until you see a popup to "edit theme image"
-[*] Click the popup which will take you to the edit screen
+[*] Hover your mouse over the logo in the top left until you see a pop-up to "edit theme image"
+[*] Click the pop-up which will take you to the edit screen
 [*] Click the Upload option and upload your new logo image
 [*] Click to save
 [*] If your Logo does not look right you may need to tweak your CSS or the image and repeat the steps above.

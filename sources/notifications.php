@@ -147,7 +147,7 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
     $body_prefix = isset($advanced_parameters['body_prefix']) ? $advanced_parameters['body_prefix'] : ''; // Only relevant if $create_ticket is true: body prefix for storage
     $body_suffix = isset($advanced_parameters['body_prefix']) ? $advanced_parameters['body_prefix'] : ''; // Only relevant if $create_ticket is true: body suffix for storage
     $attachments = isset($advanced_parameters['attachments']) ? $advanced_parameters['attachments'] : null; // A list of attachments (each attachment being a map, path=>filename) (null: none)
-    $use_real_from = isset($advanced_parameters['use_real_from']) ? $advanced_parameters['use_real_from'] : false; // Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
+    $use_real_from = isset($advanced_parameters['use_real_from']) ? $advanced_parameters['use_real_from'] : false; // Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose e-mail addresses for this particular notification type (i.e. if it's a direct contact)
     $send_immediately = isset($advanced_parameters['send_immediately']) ? $advanced_parameters['send_immediately'] : false; // Whether to send immediately rather than script end; this may be the case if the notification settings are expected to change before script end
 
     global $NOTIFICATIONS_ON;
@@ -434,7 +434,7 @@ class Notification_dispatcher
                 require_code('sms');
                 $successes = dispatch_sms($wrapped_message, array($to_member_id));
                 if ($successes == 0) { // Could not send
-                    $setting = $setting | A_INSTANT_EMAIL; // Make sure it also goes to email then
+                    $setting = $setting | A_INSTANT_EMAIL; // Make sure it also goes to e-mail then
                     $message_to_send = do_lang('sms:INSTEAD_OF_SMS', $message);
                 }
             }

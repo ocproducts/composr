@@ -367,11 +367,11 @@ and customise the numbers until they work.
 [title="3"]Menus[/title]
 
 You probably don't want to hard-code sets of page-links into templates for themes as it's hard to edit (a theme should not assume what pages a site has, although it is okay to make smaller assumptions, like what social media buttons it might use), so we suggest you use menus. There are a number of different default menu layout types:
- - [b]dropdown[/b]: a horizontal menu with drop-downs that can also work as a single-layer horizontal menu. Used on all zones in Composr, by default.
- - [b]tree[/b]: a vertical menu. Used by default on panels.
- - [b]embossed[/b]: a vertical menu, that makes each link look like a button, well-suited for tablets.
- - [b]popup[/b]: a vertical menu, with pop-outs (the vertical equivalent of a drop-down menu).
- - [b]select[/b]: a simple XHTML [tt]<select>[/tt] based navigation menu.
+ - [tt]dropdown[/tt]: a horizontal menu with drop-downs that can also work as a single-layer horizontal menu. Used on all zones in Composr, by default.
+ - [tt]tree[/tt]: a vertical menu. Used by default on panels.
+ - [tt]embossed[/tt]: a vertical menu, that makes each link look like a button, well-suited for tablets.
+ - [tt]popup[/tt]: a vertical menu, with pop-outs (the vertical equivalent of a drop-down menu).
+ - [tt]select[/tt]: a simple XHTML [tt]<select>[/tt] based navigation menu.
 The menu layout types are distinguished by their templates. Each menu type has its own set of templates that includes the name of the menu layout type. The template naming pattern would be [tt]MENU_<layouttype>.tpl[/tt], [tt]MENU_BRANCH_<layouttype>.tpl[/tt] and [tt]MENU_SPACER_<layouttype>.tpl[/tt]. You can create a new menu layout type just by making a new set of templates (using an existing set as a base), but this is virtually never necessary: it is often easiest just to customise one of the default sets.
 
 You can have as many menus of each layout type as you like. They are placed using the [tt]menu[/tt] block.

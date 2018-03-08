@@ -442,7 +442,7 @@ function get_comcode_editor($field_name = 'post', $cut_down = false, $is_posting
     }
     $_buttons[] = 'comcode';
     if (!$cut_down) {
-        $_buttons[] = 'list'; // NB: list isn't actually a comcode tag, it's a textcode syntax
+        $_buttons[] = 'list'; // NB: list isn't actually a Comcode tag, it's a textcode syntax
     }
 
     // Links

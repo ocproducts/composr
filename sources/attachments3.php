@@ -122,7 +122,7 @@ function delete_attachments($type, $db = null)
     // Clear any de-referenced attachments
     $before = $db->query_select('attachment_refs', array('a_id', 'id'), array('r_referer_type' => $type));
     foreach ($before as $ref) {
-        // Delete reference (as it's not actually in the new comcode!)
+        // Delete reference (as it's not actually in the new Comcode!)
         $db->query_delete('attachment_refs', array('id' => $ref['id']), '', 1);
 
         // Was that the last reference to this attachment? (if so -- delete attachment)

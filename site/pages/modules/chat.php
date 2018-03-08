@@ -462,7 +462,7 @@ class Module_chat
             enforce_personal_access($member_id);
         }
 
-        // Starting an IM? The IM will popup by AJAX once the page loads, because it's in the system now
+        // Starting an IM? The IM will pop-up by AJAX once the page loads, because it's in the system now
         $enter_im = get_param_integer('enter_im', null);
         if (($enter_im !== null) && (!is_guest())) {
             $test = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'chat_rooms WHERE is_im=1 AND allow_list LIKE \'' . db_encode_like('%' . strval($enter_im) . '%') . '\'');

@@ -179,7 +179,7 @@ class Block_twitter_feed
 
         // Generate variables and pass them to Style template for each status (status=tweet)
         foreach ($twitter_statuses as $status) {
-            // Process $tweet_text to convert twitter screen names, hashtags, emails and urls into clickable links
+            // Process $tweet_text to convert twitter screen names, hashtags, e-mails and urls into clickable links
             $tweet_text = ' ' . htmlentities($status['text'], ENT_NOQUOTES, 'utf-8');
             $tweet_text = preg_replace_callback("#@(\w+)#is", array($this, '_convert_name_callback'), $tweet_text);
             $tweet_text = preg_replace_callback("#\#(\w+)#is", array($this, '_convert_hashtag_callback'), $tweet_text);
@@ -187,7 +187,7 @@ class Block_twitter_feed
             $tweet_text = preg_replace_callback("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r<]*)#is", array($this, '_convert_website_callback'), $tweet_text);
             $tweet_text = preg_replace("#(^|[\n ])([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>", $tweet_text);
 
-            // Process $twitter_userdescription to convert twitter screen names, hashtags, emails and urls into clickable links
+            // Process $twitter_userdescription to convert twitter screen names, hashtags, e-mails and URLs into clickable links
             $twitter_userdescription = ' ' . htmlentities($status['user']['description'], ENT_NOQUOTES, 'utf-8');
             $twitter_userdescription = preg_replace_callback("#@(\w+)#is", array($this, '_convert_name_callback'), $twitter_userdescription);
             $twitter_userdescription = preg_replace_callback("#\#(\w+)#is", array($this, '_convert_hashtag_callback'), $twitter_userdescription);

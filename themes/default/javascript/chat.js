@@ -1134,7 +1134,7 @@
                     processChatXmlMessages(ajaxResult, true);
                 }, post);
             } else {
-                // Open popup
+                // Open pop-up
                 var imPopupWindowOptions = 'width=370,height=460,menubar=no,toolbar=no,location=no,resizable=no,scrollbars=yes,top=' + ((screen.height - 520) / 2) + ',left=' + ((screen.width - 440) / 2);
                 var newWindow = window.open($util.rel('data/empty.html?instant_messaging'), 'room_' + roomId, imPopupWindowOptions); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
                 if (!newWindow || (newWindow.window === undefined /*BetterPopupBlocker for Chrome returns a fake new window but won't have this defined in it*/)) {
@@ -1149,7 +1149,7 @@
 
                     if (newWindow && (newWindow.document !== undefined)) {
                         newWindow.document.open();
-                        newWindow.document.write(newOne); // This causes a blocking on Firefox while files download/parse. It's annoying, you'll see the popup freezes. But it works after a few seconds.
+                        newWindow.document.write(newOne); // This causes a blocking on Firefox while files download/parse. It's annoying, you'll see the pop-up freezes. But it works after a few seconds.
                         newWindow.document.close();
                         newWindow.topWindow = window;
                         newWindow.roomId = roomId;
@@ -1223,7 +1223,7 @@
             roomId = null;
         }
 
-        if (window !== window.topWindow) { // Can't display in an autonomous popup
+        if (window !== window.topWindow) { // Can't display in an autonomous pop-up
             return;
         }
 

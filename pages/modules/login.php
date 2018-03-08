@@ -248,7 +248,7 @@ class Module_login
             $extra = new Tempcode();
         }
 
-        // It's just a session confirm to an existing cookie login, so we can make "remember me" ticked to avoid making user re-tick it
+        // It's just a session confirm to an existing cookie login, so we can make "remember me" ticked to avoid making user re-tick (check) it
         if (!is_guest() && isset($_COOKIE[get_member_cookie()]) && !$GLOBALS['SESSION_CONFIRMED_CACHE']) {
             $_POST['remember'] = '1';
         }

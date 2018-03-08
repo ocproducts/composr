@@ -7,7 +7,7 @@ How knowledgeable you are in CSS and HTML will determine how detailed a customis
 [title="2"]The Theme Wizard[/title]
 
 [media width="150" description="Composr theme wizard" float="right"]data_custom/images/docs/sup_customising_your_composr_websites_design/13fcdc8b191c7abad8b5a613b9fcc229.png[/media]
-I will start in the most sensible place to begin and that is with the theme wizard which is built in to Composr. After logging in to the Admin Zone, go to the Style screen and choose the Themes option. Once you arrive on the page you should see a table of options for the default theme and if you haven't made any theme changes yet this should be the only theme installed.
+I will start in the most sensible place to begin and that is with the theme wizard which is built into Composr. After logging in to the Admin Zone, go to the Style screen and choose the Themes option. Once you arrive on the page you should see a table of options for the default theme and if you haven't made any theme changes yet this should be the only theme installed.
 
 Scroll down the page a little and click the Theme Wizard link. Your first task will be to give your theme a name and then choose the seed colour for the theme. The seed colour determines all of the colours on your basic theme from the colour of menus to the colour of links. This doesn't mean everything will be that colour but will be a variation of that base colour which compliments the theme.
 

@@ -216,7 +216,7 @@ Follow the following example to create links:
 
 [title="4"]Using Smilies[/title]
 
-Smilies are available for the chat interface. Click the emoticons link to get a popup to help you apply them.
+Smilies are available for the chat interface. Click the emoticons link to get a pop-up to help you apply them.
 
 [title="4"]Refreshing the chat screen[/title]
 

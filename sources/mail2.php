@@ -348,12 +348,12 @@ function _find_mail_bounces($server, $port, $folder, $username, $password, $boun
 
                 // Find e-mail addresses in body
                 // (message/content IDs look similar, avoid those, also avoid routine headers)
-                $_body = preg_replace('#"[^"]*" #', '', $body); // Strip out quoted name before e-mail address, to put email address right after header so that our backreference assertions work
+                $_body = preg_replace('#"[^"]*" #', '', $body); // Strip out quoted name before e-mail address, to put e-mail address right after header so that our backreference assertions work
                 $_body = preg_replace('#: .* <([^"\n<>@]+@[^\n<>@]+)>#', ': <$1>', $_body); // Also strip unquoted names
                 $_body = preg_replace('#(Message-ID: |Content-ID: |Return-Path: |From: |Reply-To: |X-Sender: |X-Google-Original-From: )<([^"\n<>@]+@[^\n<>@]+)>#', '', $_body); // Also strip unwanted headers
                 $num_matches = preg_match_all('#<([^"\n<>@]+@[^\n<>@]+)>#i', $_body, $matches);
                 if ($num_matches == 0) {
-                    $num_matches = preg_match_all('#([\w\.\-\+]+@[\w\.\-]+)#i', $_body, $matches); // Try less explicit but stricter formed email addresses
+                    $num_matches = preg_match_all('#([\w\.\-\+]+@[\w\.\-]+)#i', $_body, $matches); // Try less explicit but stricter formed e-mail addresses
                 }
 
                 for ($i = 0; $i < $num_matches; $i++) {

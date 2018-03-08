@@ -249,7 +249,7 @@
                     }
                 });
 
-                // Draw lines and emails animation (after delay, so that we know it's rendered by then and hence knows full coordinates)
+                // Draw lines and e-mails animation (after delay, so that we know it's rendered by then and hence knows full coordinates)
                 setTimeout(function () {
                     if ((clonedMessage.linesFor === undefined) || (clonedMessage.iconMultiplicity === undefined)) {
                         return;

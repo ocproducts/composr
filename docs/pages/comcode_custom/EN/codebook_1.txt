@@ -822,7 +822,7 @@ For both blocks and Comcode tags you can use any of the following language const
 | Yes
 |-
 | "Must be either [tt]...[/tt] or [tt]...[/tt] or [tt]...[/tt]"
-| Used to create an adhoc list. Can be as many terms as desired.
+| Used to create an ad hoc list. Can be as many terms as desired.
 | Yes
 | No (but you can do a simple pipe-list instead)
 |-
@@ -939,7 +939,7 @@ As discussed previously, these hooks have a convention of having a [tt]run[/tt] 
 1) It returns no-results if the calendar addon is not installed. We don't strictly need to do this, as this file won't be here normally if the calendar addon is not installed (the hook file is listed as one of the files in the calendar addon so would be uninstalled along with other calendar files). The reason we do it is in case the file was accidentally restored after the calendar addon was removed (there are many ways someone might accidentally do that).
 2) It checks a couple of permissions. One is that the accessing user has permission to [tt]assume_any_member[/tt] -- if they don't, no-results are returned, so the link won't show (this particular hook's link is for the purposes of admins, to allow them to access other member's calendars via their member profile, so should only show to admins really). It also checks the accessing user has access to the [tt]calendar[/tt] module in general.
 3) It then returns an array structure that matches the convention for these hooks. That is:
-4) "List of tuples for results. Each tuple is: type,title,url" (checking the PHP-doc API signature is always handy if you want to know how a hook should behave). In this case the link is a 'views' link, is given a link caption of whatever the 'CALENDAR' language string contains, and has given the [tt]build_url[/tt]-defined URL. The [tt]members[/tt] module (this is where the hooks are called from) knows what to do with this tuple of data, we just had to make sure we return what was expected.
+4) "List of tuples for results. Each tuple is: [tt]type[/tt],[tt]title[/tt],[tt]url[/tt]" (checking the PHP-doc API signature is always handy if you want to know how a hook should behave). In this case the link is a 'views' link, is given a link caption of whatever the 'CALENDAR' language string contains, and has given the [tt]build_url[/tt]-defined URL. The [tt]members[/tt] module (this is where the hooks are called from) knows what to do with this tuple of data, we just had to make sure we return what was expected.
 
 So now that I have explained how hook's have contracts, how they are called, and gone through an example hook implementation, you should be able to write your own. To write a new hook simply:
 1) take an existing hook file, copy it to a new filename (e.g. [tt]example.php[/tt] instead of [tt]calendar.php[/tt])
@@ -1017,9 +1017,9 @@ The above are just suggestions. Use whatever you like (within reason -- not Wind
 
 [title="3"]Javadoc-like commenting[/title]
 
-All functions should be documented in the Javadoc-esque syntax used for other functions. Javadoc is a simple way of describing a function via a specially formatted comment placed just before the function starts. The syntax is parsed by Composr's own special functions so it isn't quite phpdoc/javadoc syntax but it is very similar.
+All functions should be documented in the Javadoc-esque syntax used for other functions. Javadoc is a simple way of describing a function via a specially formatted comment placed just before the function starts. The syntax is parsed by Composr's own special functions so it isn't quite PHPDoc/Javadoc syntax but it is very similar.
 
-With phpdoc and the function header-line itself, every function has the following:
+With PHPDoc and the function header-line itself, every function has the following:
  - A description
  - A list of all parameters
   - The code-name of the parameter

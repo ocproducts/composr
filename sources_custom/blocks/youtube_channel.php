@@ -135,7 +135,7 @@ class Block_youtube_channel
         }
         $temp_nothumbplayer = $channel_nothumbplayer;
 
-        // Get playlist ID from YouTube API v3 using user name so we can get the uploads playlist, or use the specified playlist ID if no user name is specified.
+        // Get playlist ID from YouTube API v3 using username so we can get the uploads playlist, or use the specified playlist ID if no username is specified.
         if (!empty($channel_name)) {
             $channel = json_decode(@file_get_contents("https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=$channel_name&fields=items(contentDetails(relatedPlaylists(uploads)))&key=$youtube_api_key"));
 
@@ -143,14 +143,14 @@ class Block_youtube_channel
             if (isset($channel->items[0]->contentDetails->relatedPlaylists->uploads)) {
                 $playlist_id = $channel->items[0]->contentDetails->relatedPlaylists->uploads;
             } else {
-                $channel_error .= 'Error: Unable to get uploads playlist for <b>' . $channel_name . '</b>. Verify you have the correct user name and API key.<br />';
+                $channel_error .= 'Error: Unable to get uploads playlist for <b>' . $channel_name . '</b>. Verify you have the correct username and API key.<br />';
             }
 
-            // Set channel url using user name
+            // Set channel URL using username
             $channel_url = 'http://www.youtube.com/user/' . $channel_name;
         }
         if (empty($playlist_id)) {
-            $channel_error .= 'Error: No channel user name or playlist ID specified.<br />';
+            $channel_error .= 'Error: No channel username or playlist ID specified.<br />';
         }
 
         // Get playlist video list from YouTube API v3
@@ -164,7 +164,7 @@ class Block_youtube_channel
             $channel_error .= 'Error: start_video parameter is beyond the end of the playlist.<br />';
         }
 
-        // Set channel name and url if user name parameter was not used
+        // Set channel name and URL if username parameter was not used
         if (empty($channel_name) && isset($playlist_items->items[0]->snippet->channelTitle)) {
             $channel_name = $playlist_items->items[0]->snippet->channelTitle;
             $channel_url = 'https://www.youtube.com/channel/' . $playlist_items->items[0]->snippet->channelId;
@@ -199,7 +199,7 @@ class Block_youtube_channel
                     //get video thumbnails
                     $thumbnails = $entry->snippet->thumbnails;
 
-                    //generate video url
+                    //generate video URL
                     $video_url = 'https://www.youtube.com/watch?v=' . $video_id;
 
                     //generate shortened description
@@ -363,7 +363,7 @@ class Block_youtube_channel
                         $duration_numeric = sprintf('%02d', $hours) . ':' . $numeric->format('i:s:');
                     }
 
-                    // Generate embedded video player url
+                    // Generate embedded video player URL
                     $embedvideo = 'https://www.youtube.com/embed/' . $video_id;
 
                     // Generate the iframe YouTube Player embed code
@@ -400,7 +400,7 @@ class Block_youtube_channel
                     $thumb_img = $thumbimg[$channel_thumbnail];
                     $thumb_alt = $thumbalt[$channel_thumbnail];
                     $t = 0;
-                    // Loop through and add a url to thumbimg for which thumbnails weren't available
+                    // Loop through and add a URL to thumbimg for which thumbnails weren't available
                     foreach ($thumbimg as $thumburl) {
                         if ($thumburl['url'] === null) {
                             $thumbimg[$t]['url'] = $base_thumb_url . $thumbalt[$t] . '.jpg';

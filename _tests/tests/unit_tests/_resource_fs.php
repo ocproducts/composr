@@ -16,7 +16,7 @@
 // php _tests/index.php _resource_fs
 
 /*
-These tests test all var hooks. Some general Resource-FS tests are in the commandr_fs test set.
+These tests test all var hooks. Some general Resource-fs tests are in the commandr_fs test set.
 */
 
 /**

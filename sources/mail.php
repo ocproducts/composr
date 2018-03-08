@@ -42,7 +42,7 @@ return-path    (aka envelope-from aka reverse-path)      SET BY SMTP SERVER, NOT
 from           Who actually sent, SMTP-wise (should be accurate, as may be checked by SPF)
 reply-to       Who replies go to
 sender         Not needed, not often used
-x-sender       As per sender, but might not be an email address
+x-sender       As per sender, but might not be an e-mail address
 
 Full details:
 http://people.dsv.su.se/~jpalme/ietf/ietf-mail-attributes.html
@@ -514,7 +514,7 @@ abstract class Mail_dispatcher_base
         $this->in_html = isset($advanced_parameters['in_html']) ? $advanced_parameters['in_html'] : false; // HTML-only
         $this->bypass_queue = isset($advanced_parameters['bypass_queue']) ? $advanced_parameters['bypass_queue'] : (($this->priority < 3) || (strpos(serialize($this->attachments), 'tmpfile') !== false)); // Whether to bypass queueing
         $this->coming_out_of_queue = isset($advanced_parameters['coming_out_of_queue']) ? $advanced_parameters['coming_out_of_queue'] : false; // Whether to bypass queueing, because this code is running as a part of the queue management tools (null: auto-decide)
-        $this->mail_template = isset($advanced_parameters['mail_template']) ? $advanced_parameters['mail_template'] : 'MAIL'; // The template used to show the email
+        $this->mail_template = isset($advanced_parameters['mail_template']) ? $advanced_parameters['mail_template'] : 'MAIL'; // The template used to show the e-mail
         $this->require_recipient_valid_since = isset($advanced_parameters['require_recipient_valid_since']) ? $advanced_parameters['require_recipient_valid_since'] : null; // Implement the Require-Recipient-Valid-Since header (null: no restriction)
 
         $this->extra_cc_addresses = isset($advanced_parameters['extra_cc_addresses']) ? $advanced_parameters['extra_cc_addresses'] : array(); // Extra CC addresses to use (null: none)
@@ -1183,7 +1183,7 @@ abstract class Mail_dispatcher_base
         if ($file_path_stub !== null) {
             $total_filesize += @filesize($file_path_stub);
             if ($total_filesize > 1024 * 1024 * 5) {
-                return null; // Too large to process into an email
+                return null; // Too large to process into an e-mail
             }
 
             $file_contents = @file_get_contents($file_path_stub);
@@ -1209,7 +1209,7 @@ abstract class Mail_dispatcher_base
                             require_code('mime_types');
                             $total_filesize += @filesize($_full);
                             if ($total_filesize > 1024 * 1024 * 5) {
-                                return null; // Too large to process into an email
+                                return null; // Too large to process into an e-mail
                             }
                             $file_contents = file_get_contents($_full);
                             $mime_type = get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous'));
@@ -1225,7 +1225,7 @@ abstract class Mail_dispatcher_base
                 }
                 $total_filesize += strlen($file_contents);
                 if ($total_filesize > 1024 * 1024 * 5) {
-                    return null; // Too large to process into an email
+                    return null; // Too large to process into an e-mail
                 }
                 if ($http_result->download_mime_type !== null) {
                     $mime_type = $http_result->download_mime_type;
@@ -1304,7 +1304,7 @@ function filter_css($c, $theme, $context)
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
     }
 
-    // Reduce input parameters to critical components, and cache on - saves a lot of time if multiple emails sent by script
+    // Reduce input parameters to critical components, and cache on - saves a lot of time if multiple e-mails sent by script
     static $cache = array();
     $simple_sig = preg_replace('#\s+(?!class)(?!id)[\w\-]+="[^"<>]*"#', '', preg_replace('#[^<>]*(<[^<>]+>)[^<>]*#s', '${1}', $context));
     $simple_sig .= $c . $theme;
@@ -1312,7 +1312,7 @@ function filter_css($c, $theme, $context)
         return $cache[$simple_sig];
     }
 
-    $_css = do_template($c, array(), user_lang(), true/*can't fail on this error because it could be an email from queue, with different addon state*/, null, '.css', 'css', $theme);
+    $_css = do_template($c, array(), user_lang(), true/*can't fail on this error because it could be an e-mail from queue, with different addon state*/, null, '.css', 'css', $theme);
     $css = $_css->evaluate();
 
     // Find out all our IDs

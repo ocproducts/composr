@@ -123,7 +123,7 @@ class _commandr_fs_test_set extends cms_test_case
             if ($info !== null) {
                 $fs_hook = $info['commandr_filesystem_hook'];
                 if ($fs_hook !== null) {
-                    $this->assertTrue(array_key_exists($fs_hook, $commandr_fs_hooks), 'Commandr-FS hook with broken Resource-FS reference: ' . $fs_hook);
+                    $this->assertTrue(array_key_exists($fs_hook, $commandr_fs_hooks), 'Commandr-fs hook with broken Resource-fs reference: ' . $fs_hook);
                     $referenced_in_cma[$fs_hook] = true;
                 }
             }
@@ -139,7 +139,7 @@ class _commandr_fs_test_set extends cms_test_case
             $path = get_file_base() . '/' . $dir . '/hooks/systems/commandr_fs/' . $commandr_fs_hook . '.php';
             $c = file_get_contents($path);
             if (strpos($c, ' extends Resource_fs_base') !== false) {
-                $this->assertTrue(array_key_exists($commandr_fs_hook, $referenced_in_cma), 'Resource-FS hook not referenced: ' . $commandr_fs_hook);
+                $this->assertTrue(array_key_exists($commandr_fs_hook, $referenced_in_cma), 'Resource-fs hook not referenced: ' . $commandr_fs_hook);
             }
         }
     }

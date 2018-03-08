@@ -57,13 +57,13 @@ We use multiple files so that you only need to translate what you actually use a
 
 Composr is developed in (British) English, and this is technically known as the 'fall-back language', because English always has a complete set of language files and strings. If the active language defines all strings then the fall-back language is never even loaded -- which is different to the approach of other systems such as [tt]po[/tt].
 
-The [tt].ini[/tt] files for any translation are stored together in a directory that is named with the standard ISO two-letter code to denote that language; for example, English is 'EN'. A list of these codes is in [tt]lang/langs.ini[/tt]. We use upper-case for the names; often other software uses lower-case, but it varies.
+The [tt].ini[/tt] files for any translation are stored together in a directory that is named with the standard ISO two-letter code to denote that language; for example, English is 'EN'. A list of these codes is in [tt]lang/langs.ini[/tt]. We use upper case for the names; often other software uses lower case, but it varies.
 
 All bundled languages packs are located in the [tt]lang[/tt] directory of Composr. There is also a [tt]lang_custom[/tt] directory which contains files from custom language packs, or language files that 'override' those available in the [tt]lang[/tt] directory. Whenever language files are edited in the Admin Zone, changes to the original file are automatically overridden to a [tt]lang_custom[/tt] one.
 
 [title="4"]Special strings[/title]
 
-Language string codes that are in lower-case are special strings, that should not be translated directly. These strings contain encoded information relating to the language pack. All these strings have documentation labels to explain what they do.
+Language string codes that are in lower case are special strings, that should not be translated directly. These strings contain encoded information relating to the language pack. All these strings have documentation labels to explain what they do.
 
 For dates and times we use the PHP [url]http://php.net/manual/en/function.strftime.php[/url] function, except the following changes are made by Composr...
  - [tt]%e[/tt] is the day of the month but will not have a leading space (because that's ugly) and will work on Windows servers too

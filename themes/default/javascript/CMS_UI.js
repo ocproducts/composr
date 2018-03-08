@@ -553,7 +553,7 @@
      - alert
      - prompt
      - confirm
-     - open (known as popups)
+     - open (known as pop-ups)
      - showModalDialog
      A term we are using for these kinds of 'overlay' is '(faux) modal window'.
 
@@ -754,10 +754,10 @@
                 try {
                     result = window.showModalDialog(url, name, options);
                 } catch (ignore) {
-                    // IE gives "Access is denied" if popup was blocked, due to var result assignment to non-real window
+                    // IE gives "Access is denied" if pop-up was blocked, due to var result assignment to non-real window
                 }
                 var timerNow = new Date().getTime();
-                if ((timerNow - 100) > timer) { // Not popup blocked
+                if ((timerNow - 100) > timer) { // Not pop-up blocked
                     if (result == null) {
                         if (callback != null) {
                             callback(null);

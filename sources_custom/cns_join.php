@@ -89,7 +89,7 @@ function set_from_referrer_field()
     if ($referrer_member !== null) {
         $GLOBALS['FORUM_DB']->query_delete('f_invites', array(
             'i_email_address' => post_param_string('email_address'),
-        ), '', 1); // Delete old invites for this email address
+        ), '', 1); // Delete old invites for this e-mail address
         $GLOBALS['FORUM_DB']->query_insert('f_invites', array(
             'i_inviter' => $referrer_member,
             'i_email_address' => post_param_string('email_address'),

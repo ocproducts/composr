@@ -104,7 +104,7 @@ class Hook_video_syndication_youtube
 
                 if ($detected_video !== null) {
                     $remote_id = $detected_video['remote_id'];
-                    if ((!array_key_exists($remote_id, $videos)) || (!$videos[$remote_id]['validated'])) { // If new match, or last match was unvalidated (i.e. old version)
+                    if ((!array_key_exists($remote_id, $videos)) || (!$videos[$remote_id]['validated'])) { // If new match, or last match was non-validated (i.e. old version)
                         $videos[$remote_id] = $detected_video;
                     }
                 }
@@ -130,7 +130,7 @@ class Hook_video_syndication_youtube
 
                 if ($detected_video !== null) {
                     $remote_id = $detected_video['remote_id'];
-                    if ((!array_key_exists($remote_id, $videos)) || (!$videos[$remote_id]['validated'])) { // If new match, or last match was unvalidated (i.e. old version)
+                    if ((!array_key_exists($remote_id, $videos)) || (!$videos[$remote_id]['validated'])) { // If new match, or last match was non-validated (i.e. old version)
                         $videos[$remote_id] = $detected_video;
                     }
                 }

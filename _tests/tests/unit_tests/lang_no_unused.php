@@ -210,18 +210,10 @@ class lang_no_unused_test_set extends cms_test_case
             'TAX_VAT',
         ));
 
-        $dh = opendir(get_file_base() . '/lang/EN/');
-        while (($file = readdir($dh)) !== false) {
-            if ($file[0] == '.') {
-                continue;
-            }
-
-            if (substr($file, -4) != '.ini') {
-                continue;
-            }
-
+        $files = get_directory_contents(get_file_base() . '/lang/EN', get_file_base() . '/lang/EN', null, false, true, array('ini'));
+        foreach ($files as $path) {
             $input = array();
-            _get_lang_file_map(get_file_base() . '/lang/EN/' . $file, $input, 'strings', false, true, 'EN');
+            _get_lang_file_map($path, $input, 'strings', false, true, 'EN');
 
             foreach ($input as $key => $val) {
                 if (preg_match($skip_prefixes_regexp, $key) != 0) {
@@ -236,6 +228,5 @@ class lang_no_unused_test_set extends cms_test_case
                 $this->assertTrue($contains, $key . ': cannot find usage of language string (' . str_replace('%', '%%', $val) . ')');
             }
         }
-        closedir($dh);
     }
 }

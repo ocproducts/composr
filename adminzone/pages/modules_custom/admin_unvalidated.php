@@ -112,7 +112,7 @@ class Module_admin_unvalidated
                 if (array_key_exists('db_title', $info)) {
                     $_title = $row[$info['db_title']];
                     if ($info['db_title_dereference']) {
-                        $_title = get_translated_text($_title, $db); // May actually be comcode (can't be certain), but in which case it will be shown as source
+                        $_title = get_translated_text($_title, $db); // May actually be Comcode (can't be certain), but in which case it will be shown as source
                     }
                 } else {
                     $_title = '#' . (is_integer($id) ? strval($id) : $id);

@@ -186,7 +186,7 @@ class Module_recommend
             return $this->actual();
         }
 
-        // If reached these, then there should be set manually at least on email address!
+        // If reached these, then there should be set manually at least on e-mail address!
         if (array_key_exists('email_address_0', $_POST) && strlen(trim($_POST['email_address_0'])) == 0) {
             warn_exit(do_lang_tempcode('ERROR_NO_CONTACTS_SELECTED'));
         }
@@ -362,7 +362,7 @@ class Module_recommend
         $email_counter = 0;
         foreach ($_POST as $key => $input_value) {
             if (substr($key, 0, 14) == 'email_address_') {
-                $already[] = $input_value; //email address
+                $already[] = $input_value; // e-mail address
                 $email_counter++;
                 $hidden->attach(form_input_hidden($key, $input_value));
             } else {
@@ -535,7 +535,7 @@ class Module_recommend
                                         }
                                     }
                                 }
-                                // Hmm, first one that is not the email then
+                                // Hmm, first one that is not the e-mail then
                                 if ($name_field_index === null) {
                                     foreach ($csv_header_line_fields as $i => $header_field) {
                                         if ($i != $email_field_index) {
@@ -661,7 +661,7 @@ class Module_recommend
             }
         }
 
-        // Add emails from address book file
+        // Add e-mails from address book file
         foreach ($adrbook_use_these as $key => $value) {
             $cur_email = (array_key_exists($key, $adrbook_emails) && strlen($adrbook_emails[$key]) > 0) ? $adrbook_emails[$key] : '';
             $cur_name = (array_key_exists($key, $adrbook_names) && strlen($adrbook_names[$key]) > 0) ? $adrbook_names[$key] : '';

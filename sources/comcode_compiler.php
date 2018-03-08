@@ -472,7 +472,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
         }
     }
     if ($pass_id === null) {
-        $pass_id = strval(mt_rand(0, mt_getrandmax())); // This is a unique ID that refers to this specific piece of comcode
+        $pass_id = strval(mt_rand(0, mt_getrandmax())); // This is a unique ID that refers to this specific piece of Comcode
     }
     global $COMCODE_ATTACHMENTS;
     if (!array_key_exists($pass_id, $COMCODE_ATTACHMENTS)) {
@@ -1078,7 +1078,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                 }
                             }
 
-                            // Escaping of comcode tag starts lookahead
+                            // Escaping of Comcode tag starts lookahead
                             if (($next === '\\') && (!$in_code_tag)) { // We are changing \[ to [ with the side-effect of blocking a tag start. To get \[ literal, we need the symbols \\[... and add extra \-pairs as needed. We are only dealing with \ and [ (update: and now {) here, it's not a further extended means of escaping.
                                 if (($pos != $len) && (($comcode[$pos] === '"') || ($comcode[$pos - 1] === '&') && (substr($comcode, $pos - 1, 6) === '&quot;'))) {
                                     if ($semiparse_mode) {
@@ -1813,7 +1813,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                             break;
                         }
 
-                        // Do the comcode for this tag
+                        // Do the Comcode for this tag
                         if ($in_semihtml) { // We need to perform some work to clean up the Comcode tag's attributes, as they generally do not support Comcode/HTML themselves (are plain text)
                             foreach ($_last[1] as $index => $conv) {
                                 $_last[1][$index] = @html_entity_decode(str_replace('<br />', "\n", $conv), ENT_QUOTES);

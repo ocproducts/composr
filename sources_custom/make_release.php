@@ -132,7 +132,7 @@ function make_installers($skip_file_grab = false)
             $file_list .= '\'' . $path . '\',';
         }
 
-        // Build install.php, which has to have all our data.cms file offsets put into it (data.cms is an uncompressed zip, but the quick installer cheats - it can't truly read arbitrary zips)
+        // Build install.php, which has to have all our data.cms file offsets put into it (data.cms is an uncompressed ZIP, but the quick installer cheats - it can't truly read arbitrary ZIPs)
         $code = file_get_contents(get_file_base() . '/install.php');
         $installer_start = "<" . "?php
             /* QUICK INSTALLER CODE starts */

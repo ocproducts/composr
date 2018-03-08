@@ -142,7 +142,7 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
 
     $touch_result = @touch($_full, $max_mtime);
     if ($GLOBALS['DEV_MODE'] && !$touch_result && get_page_name() == 'build_addons') {
-        warn_exit(comcode_to_tempcode('You need to fix file ownership of the existing tar files. Run a command like [tt]sudo chown _www exports/addons/*.tar[/tt]'));
+        warn_exit(comcode_to_tempcode('You need to fix file ownership of the existing TAR files. Run a command like [tt]sudo chown _www exports/addons/*.tar[/tt]'));
     }
 
     fix_permissions($_full);
@@ -358,7 +358,7 @@ function inform_about_addon_install($file, $also_uninstalling = array(), $also_i
 {
     $full = get_custom_file_base() . '/imports/addons/' . $file;
 
-    // Look in the tar
+    // Look in the TAR
     require_code('tar');
     if (!file_exists($full)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('ADDON')));

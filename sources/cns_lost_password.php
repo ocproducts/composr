@@ -69,7 +69,7 @@ function lost_password_emailer_step($username, $email_address)
     $password_reset_process = get_password_reset_process();
 
     require_code('crypt');
-    $code = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_change_code'); // Re-use existing code if possible, so that overlapping reset emails don't cause chaos
+    $code = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_change_code'); // Re-use existing code if possible, so that overlapping reset e-mails don't cause chaos
     if ($code != '') {
         if ($password_reset_process == 'ultra') {
             list($code, $session_id) = explode('__', $code);

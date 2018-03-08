@@ -46,7 +46,7 @@ class Hook_endpoint_account_contact_us
         $notification_message = do_lang('CONTACT_US_NOTIFICATION_MESSAGE', comcode_escape(get_site_name()), comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member())), array($post, comcode_escape($category)), get_site_default_lang());
         dispatch_notification('ticket_reply', $type . '_' . $id, $notification_subject, $notification_message, null, null, array('create_ticket' => true));
 
-        // Send standard confirmation email to current user
+        // Send standard confirmation e-mail to current user
         $email_from = trim(post_param_string('email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member())));
         if ($email_from != '' && get_option('message_received_emails') == '1') {
             require_code('mail');

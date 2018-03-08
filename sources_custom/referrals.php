@@ -40,7 +40,7 @@ function assign_referral_awards($referee, $trigger)
     $referee_displayname = $GLOBALS['FORUM_DRIVER']->get_username($referee, true);
     $referee_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($referee);
     if ($referee_email == '') {
-        return; // Weird situation! Somehow the member has no email address defined and hence we can't lookup the referral, can't normally happen
+        return; // Weird situation! Somehow the member has no e-mail address defined and hence we can't lookup the referral, can't normally happen
     }
 
     require_lang('referrals');

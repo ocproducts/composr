@@ -714,7 +714,7 @@
         return ((str != null) && (str = strVal(str))) ?
             str.replace(/[\-_]+/g, ' ') // Replaces any - or _ characters with a space
                 .replace(/[^\w\s]/g, '') // Removes any non alphanumeric characters
-                .replace(/ (.)/g, function ($1) { // Uppercases the first character in each group immediately following a space (delimited by spaces)
+                .replace(/ (.)/g, function ($1) { // Upper cases the first character in each group immediately following a space (delimited by spaces)
                     return $1.toUpperCase();
                 })
                 .replace(/ /g, '') // Removes spaces

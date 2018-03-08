@@ -103,7 +103,7 @@ function form_to_email($subject = null, $subject_prefix = '', $subject_suffix = 
         dispatch_mail($subject, $body, ($to_email === null) ? null : array($to_email), $to_name, $from_email, $from_name, array('attachments' => $attachments));
     }
 
-    // Send standard confirmation email to current user
+    // Send standard confirmation e-mail to current user
     if ($from_email != '' && get_option('message_received_emails') == '1') {
         dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $body), array($from_email), $from_name, '', '', array('as' => get_member()));
     }

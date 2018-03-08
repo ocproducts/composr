@@ -399,7 +399,7 @@ function cns_ldap_authorise_login($cn, $password)
     $login = ldap_get_login_string($cn);
 
     $test = (/*workaround PHP bug- blank passwords do anonymous bind*/$password == '') ? false : @ldap_bind($LDAP_CONNECTION, $login, $password);
-    if ($test !== false) { // Note, for Windows Active Directory the CN is the full user name, not the login name. Therefore users log in with this.
+    if ($test !== false) { // Note, for Windows Active Directory the CN is the full username, not the login name. Therefore users log in with this.
         cns_ldap_bind(); // Rebind under normal name, so we're not stuck on this user's bind
 
         // We only get here if we are authorised. As to not complicate Composr's authentication chain, we trick it by setting our db password to that of our given password, ONLY once LDAP login is confirmed.

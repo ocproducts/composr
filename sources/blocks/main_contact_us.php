@@ -118,7 +118,7 @@ class Block_main_contact_us
             }
             dispatch_notification('ticket_reply', $type . '_' . $id, $notification_subject, $notification_message, null, null, array('create_ticket' => true, 'attachments' => $attachments));
 
-            // Send standard confirmation email to current user
+            // Send standard confirmation e-mail to current user
             if ($from_email != '' && get_option('message_received_emails') == '1') {
                 require_code('mail');
                 dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $body), array($from_email), empty($from_name) ? null : $from_name, '', '', array('require_recipient_valid_since' => get_member()));

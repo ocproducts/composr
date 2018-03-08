@@ -4409,7 +4409,7 @@ div:hover>.edit-menu-link-inline, div:hover>.edit-page-link-inline {
 .comcode-quote, .comcode-code {
 	margin: 1em;
 
-	/* Takes off default from email clients */
+	/* Takes off default from e-mail clients */
 	border: 0 !important;
 	padding: 0 !important;
 

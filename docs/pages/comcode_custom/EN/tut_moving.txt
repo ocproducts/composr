@@ -26,7 +26,7 @@ Composr has an enormous number of files. The quick installer extracts all of the
 The good news is that most webhosting control panels come with high quality file managers. To transfer files follow the following process:
 1) Log in to your control panel in the old server.
 2) Proceed to the file manager.
-3) Zip up the contents of the directory Composr is installed in (it's best to ZIP up everything within the directory via mass-selection, rather than zipping the parent directory).
+3) ZIP up the contents of the directory Composr is installed in (it's best to ZIP up everything within the directory via mass-selection, rather than zipping the parent directory).
 4) Download the ZIP to your machine.
 5) Upload the ZIP to the new hosting preferably using SFTP/FTP (using a file manager is very likely to time-out). Put it in a place equivalent to where it was generated on the old hosting.
 6) Log in to your control panel in the new server.

@@ -473,7 +473,7 @@ class Module_admin_shopping
 
         $this->send_dispatch_notification($id);
 
-        if ($redirect === null) { // If a redirect url is not passed, redirect to the order list
+        if ($redirect === null) { // If a redirect URL is not passed, redirect to the order list
             $_redirect = build_url(array('page' => '_SELF', 'type' => 'show_orders'), get_module_zone('admin_shopping'));
             $redirect = $_redirect->evaluate();
         }

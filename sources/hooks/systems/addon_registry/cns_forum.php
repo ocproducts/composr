@@ -1776,7 +1776,7 @@ class Hook_addon_registry_cns_forum
             cns_delete_topic($record['id']);
         }
 
-        // Unvalidated topic
+        // Non-validated topic
         $to_delete = $GLOBALS['FORUM_DB']->query_select('f_topics', array('id'), array('t_cache_first_title' => lorem_phrase() . ' (' . do_lang('MODIFIER_unvalidated') . ')'));
         foreach ($to_delete as $record) {
             cns_delete_topic($record['id']);
@@ -1829,7 +1829,7 @@ class Hook_addon_registry_cns_forum
         cns_make_post($topic_id, lorem_phrase(), lorem_chunk(), 0, true, 1, 0, null, null, null, null, null, null, null, false, true, null, true, lorem_phrase() . ' (' . do_lang('MODIFIER_closed') . ')');
         cns_make_post($topic_id, lorem_phrase(), lorem_chunk(), 0, true, 1, 1, null, null, null, null, null, null, null, false, true, null, true, lorem_phrase() . ' (' . do_lang('MODIFIER_closed') . ')'); // With emphasised post
 
-        // Unvalidated topic
+        // Non-validated topic
         $topic_id = cns_make_topic(db_get_first_id(), lorem_phrase(), '', 0, 1, 0, 0, null, null, false);
         cns_make_post($topic_id, lorem_phrase(), lorem_chunk(), 0, true, 1, 0, null, null, null, null, null, null, null, false, true, null, true, lorem_phrase() . ' (' . do_lang('MODIFIER_unvalidated') . ')');
 

@@ -683,7 +683,7 @@
 
         if (isOpener) {
             element = $cms.getMainCmsWindow().document.getElementById(fieldName);
-            if (!element) { // If it is really actually cascading popups
+            if (!element) { // If it is really actually cascading pop-ups
                 element = window.opener.document.getElementById(fieldName);
             }
         } else {
@@ -871,7 +871,7 @@
                 findTagsInEditor(editor, element);
             } catch (e) { // Sometimes happens on Firefox in Windows, appending is a bit tamer (e.g. you cannot insert if you have the start of a h1 at cursor)
                 after = editor.getData();
-                if (after === before) { // Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
+                if (after === before) { // Could have just been a window.scrollBy pop-up-blocker exception, so only do this if the op definitely failed
                     editor.document.getBody().appendHtml(insert);
                 }
             }

@@ -509,7 +509,7 @@ I also added a line there to say where your XML Sitemap is.
 [title="2"]File-type white-list[/title]
 
 In the security configuration, Composr defines a list of file types that may be uploaded to the website, via the various upload mechanisms that exist in Composr, such as that of the download module and the attachment system. By default, this white-list is roughly (this is not kept up-to-date):
- - sql,odt,ods,ps,pdf,doc,txt,psd,tga,tif,gif,png,bmp,jpg,jpeg,avi,mov,mpg,mpeg,asf,wmv,ram,ra,rm,qt,mov,zip,tar,rar,gz,wav,mp3,ogg,torrent,php
+ - [tt]sql,odt,ods,ps,pdf,doc,txt,psd,tga,tif,gif,png,bmp,jpg,jpeg,avi,mov,mpg,mpeg,asf,wmv,ram,ra,rm,qt,mov,zip,tar,rar,gz,wav,mp3,ogg,torrent,php[/tt]
 
 It is important to understand that there are two sides to the security of file uploads:
 1) on the server-side, it must be impossible for a file to be uploaded that might execute on the server, instead of download (such as a php file). You may have noticed that php is an allowed file extension in the list: this is because php uploads are explicitly blocked internally, but only in the situation where the file would be stored on disk with its original extension (which the attachment system does not do)

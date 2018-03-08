@@ -36,6 +36,7 @@ class web_resources_test_set extends cms_test_case
         require_code('webstandards2');
         require_lang('webstandards');
         require_code('themes2');
+        require_code('files2');
 
         global $WEBSTANDARDS_JAVASCRIPT, $WEBSTANDARDS_CSS, $WEBSTANDARDS_WCAG, $WEBSTANDARDS_COMPAT, $WEBSTANDARDS_EXT_FILES, $WEBSTANDARDS_MANUAL;
         $WEBSTANDARDS_JAVASCRIPT = true;
@@ -92,54 +93,45 @@ class web_resources_test_set extends cms_test_case
             unset($exceptions[array_search($only, $exceptions)]);
         }
 
-        $dh = @opendir(get_file_base() . '/themes/' . $theme . '/' . $dir);
-        if ($dh !== false) {
-            while (($file = readdir($dh)) !== false) {
-                if (substr($file, -3) == '.js') {
-                    if (in_array($file, $exceptions)) {
-                        continue;
-                    }
+        $files = get_directory_contents(get_file_base() . '/themes/' . $theme . '/' . $dir, get_file_base() . '/themes/' . $theme . '/' . $dir, null, false, true, array('js'));
+        foreach ($files as $path) {
+            if (in_array(basename($path), $exceptions)) {
+                continue;
+            }
 
-                    if ($only !== null) {
-                        if ($file != $only) {
-                            continue;
-                        }
-                    }
-
-                    if (!is_file(get_file_base() . '/themes/' . $theme . '/' . $dir . '/' . $file)) {
-                        continue;
-                    }
-
-                    $path = javascript_enforce(basename($file, '.js'), $theme);
-                    if ($path == '') {
-                        continue; // Empty file, so skipped
-                    }
-
-                    $c = file_get_contents($path);
-                    $errors = check_js($c);
-                    if ($errors !== null) {
-                        foreach ($errors['errors'] as $i => $e) {
-                            $e['line'] += 3;
-                            $errors['errors'][$i] = $e;
-                        }
-                    }
-                    if (($errors !== null) && ($errors['errors'] == array())) {
-                        $errors = null; // Normalise
-                    }
-                    $this->assertTrue(($errors === null), 'Bad JS in ' . $file);
-                    if ($errors !== null) {
-                        if (get_param_integer('debug', 0) == 1) {
-                            unset($errors['tag_ranges']);
-                            unset($errors['value_ranges']);
-                            unset($errors['level_ranges']);
-                            echo '<pre>';
-                            var_dump($errors['errors']);
-                            echo '</pre>';
-                        }
-                    }
+            if ($only !== null) {
+                if (basename($path) != $only) {
+                    continue;
                 }
             }
-            closedir($dh);
+
+            $path = javascript_enforce(basename($path, '.js'), $theme);
+            if ($path == '') {
+                continue; // Empty file, so skipped
+            }
+
+            $c = file_get_contents($path);
+            $errors = check_js($c);
+            if ($errors !== null) {
+                foreach ($errors['errors'] as $i => $e) {
+                    $e['line'] += 3;
+                    $errors['errors'][$i] = $e;
+                }
+            }
+            if (($errors !== null) && ($errors['errors'] == array())) {
+                $errors = null; // Normalise
+            }
+            $this->assertTrue(($errors === null), 'Bad JS in ' . $path);
+            if ($errors !== null) {
+                if (get_param_integer('debug', 0) == 1) {
+                    unset($errors['tag_ranges']);
+                    unset($errors['value_ranges']);
+                    unset($errors['level_ranges']);
+                    echo '<pre>';
+                    var_dump($errors['errors']);
+                    echo '</pre>';
+                }
+            }
         }
     }
 
@@ -160,6 +152,9 @@ class web_resources_test_set extends cms_test_case
     protected function css_test_for_theme($theme, $dir)
     {
         $exceptions = array(
+            'no_cache.css',
+            'svg.css', // SVG-CSS
+
             // Third-party code not confirming to Composr standards
             'widget_color.css',
             'widget_date.css',
@@ -176,41 +171,36 @@ class web_resources_test_set extends cms_test_case
             unset($exceptions[array_search($only, $exceptions)]);
         }
 
-        $dh = @opendir(get_file_base() . '/themes/' . $theme . '/' . $dir);
-        if ($dh !== false) {
-            while (($file = readdir($dh)) !== false) {
-                if ((substr($file, -4) == '.css') && ($file != 'svg.css'/*SVG-CSS*/) && ($file != 'no_cache.css')) {
-                    if (in_array($file, $exceptions)) {
-                        continue;
-                    }
+        $files = get_directory_contents(get_file_base() . '/themes/' . $theme . '/' . $dir, get_file_base() . '/themes/' . $theme . '/' . $dir, null, false, true, array('css'));
+        foreach ($files as $path) {
+            if (in_array(basename($path), $exceptions)) {
+                continue;
+            }
 
-                    $path = css_enforce(basename($file, '.css'), $theme);
-                    if ($path == '') {
-                        continue; // Nothing in file after minimisation
-                    }
+            $path = css_enforce(basename($path, '.css'), $theme);
+            if ($path == '') {
+                continue; // Nothing in file after minimisation
+            }
 
-                    if ($only !== null) {
-                        if ($file != $only) {
-                            continue;
-                        }
-                    }
-
-                    $c = file_get_contents($path);
-                    $errors = check_css($c);
-                    if (($errors !== null) && ($errors['errors'] == array())) {
-                        $errors = null; // Normalise
-                    }
-                    $this->assertTrue(($errors === null), 'Bad CSS in ' . $file . (($only === null) ? (' (run with &only=' . $file . '&debug=1 to see errors)') : ''));
-                    if ($errors !== null) {
-                        if (get_param_integer('debug', 0) == 1) {
-                            echo '<pre>';
-                            var_dump($errors['errors']);
-                            echo '</pre>';
-                        }
-                    }
+            if ($only !== null) {
+                if (basename($path) != $only) {
+                    continue;
                 }
             }
-            closedir($dh);
+
+            $c = file_get_contents($path);
+            $errors = check_css($c);
+            if (($errors !== null) && ($errors['errors'] == array())) {
+                $errors = null; // Normalise
+            }
+            $this->assertTrue(($errors === null), 'Bad CSS in ' . $path . (($only === null) ? (' (run with &only=' . basename($path) . '&debug=1 to see errors)') : ''));
+            if ($errors !== null) {
+                if (get_param_integer('debug', 0) == 1) {
+                    echo '<pre>';
+                    var_dump($errors['errors']);
+                    echo '</pre>';
+                }
+            }
         }
     }
 }

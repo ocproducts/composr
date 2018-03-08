@@ -42,19 +42,17 @@ class template_previews_test_set extends cms_test_case
         $GLOBALS['OUTPUT_STREAMING'] = false;
 
         require_code('lorem');
-        require_code('files');
+        require_code('files2');
     }
 
     public function testNoMissingPreviews()
     {
         $templates = array();
-        $dh = opendir(get_file_base() . '/themes/default/templates');
-        while (($file = readdir($dh)) !== false) {
-            if ((strtolower(substr($file, -4)) == '.tpl') && ($file[0] != '.')) {
-                $templates[] = 'templates/' . $file;
-            }
+
+        $files = get_directory_contents(get_file_base() . '/themes/default/templates', get_file_base() . '/themes/default/templates', null, false, true, array('tpl'));
+        foreach ($files as $path) {
+            $templates[] = 'templates/' . basename($path);
         }
-        closedir($dh);
 
         $all_previews = find_all_previews__by_template();
 

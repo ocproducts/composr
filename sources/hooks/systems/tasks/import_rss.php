@@ -91,7 +91,7 @@ class Hook_task_import_rss
             // Dates
             $post_time = array_key_exists('clean_add_date', $item) ? $item['clean_add_date'] : (array_key_exists('add_date', $item) ? strtotime($item['add_date']) : time());
             if ($post_time === false) {
-                $post_time = time(); // We've seen this situation in an error email, it's if the add date won't parse by PHP
+                $post_time = time(); // We've seen this situation in an error e-mail, it's if the add date won't parse by PHP
             }
             if (($post_time < 0) || ($post_time > 2147483647)) { // TODO: #3046 in tracker
                 $post_time = 2147483647;
@@ -251,12 +251,12 @@ class Hook_task_import_rss
                 $trackback_for_type = 'news';
                 $trackback_id = $id;
             } else {
-                // If we don't have permission to write comcode pages, skip the page
+                // If we don't have permission to write Comcode pages, skip the page
                 if (!has_submit_permission('high', get_member(), get_ip_address(), null, null)) {
                     continue;
                 }
 
-                // Save articles as new comcode pages
+                // Save articles as new Comcode pages
                 $zone = 'site';
                 $lang = fallback_lang();
                 $file = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $post_name); // Filter non-alphanumeric characters

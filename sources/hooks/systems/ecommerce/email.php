@@ -507,7 +507,7 @@ class Hook_ecommerce_email
                     warn_exit(do_lang_tempcode('INVALID_EMAIL_PREFIX'));
                 }
 
-                // Is the email for things to be forwarded to valid?
+                // Is the e-mail for things to be forwarded to valid?
                 if (!is_email_address($email)) {
                     warn_exit(do_lang_tempcode('INVALID_EMAIL_ADDRESS'));
                 }
@@ -531,7 +531,7 @@ class Hook_ecommerce_email
      */
     protected function _ecom_product_handle_error_taken($prefix, $suffix)
     {
-        // Has this email address been taken?
+        // Has this e-mail address been taken?
         $taken = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.txn_id', 'details', array('details' => $prefix, 'details2' => '@' . $suffix), ' AND (t_type_code LIKE \'POP3%\' OR t_type_code LIKE \'FORW%\')');
         if ($taken !== null) {
             warn_exit(do_lang_tempcode('EMAIL_TAKEN'));

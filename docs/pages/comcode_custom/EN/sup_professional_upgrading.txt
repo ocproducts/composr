@@ -288,7 +288,7 @@ find . -name .DS_Store -exec rm {} \;
 (The upgrader does delete empty directories caused by alien file removal.)
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Consider replacing all the tar files in [tt]addons/imports[/tt] so you're sure they're fresh
+| Consider replacing all the TAR files in [tt]addons/imports[/tt] so you're sure they're fresh
 | If you download a [url="custom upgrade package"]http://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=10.0.0[/url] you can find all the TAR files in it (the [i]from[/i] version number in the URL is irrelevant)
 |-
 ! {$INC,step_num}{$GET,step_num}
@@ -368,7 +368,7 @@ Options 3 or 4 are the most likely you will want to use.
 |-
 ! {$INC,step_num}{$GET,step_num}
 | If the site being upgraded has files changing regularly (perhaps edited Comcode pages), download those changed files and extract locally
-| This is a script to identify changed remote files and zip them:
+| This is a script to identify changed remote files and ZIP them:
 [codebox="PHP"]
 <?php /*
 
@@ -432,7 +432,7 @@ foreach ($files as $file) {
     echo $file . chr(10);
 }
 
-echo 'Done; set &zip=1 to download a zip file';
+echo 'Done; set &zip=1 to download a ZIP file';
 
 if (!empty($_GET['self_destruct']) {
     unlink('find_new_files.php');
@@ -471,12 +471,12 @@ function do_dir($dir)
 | [url="http://www.ozerov.de/bigdump/"]http://www.ozerov.de/bigdump/[/url]
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Upload a zip of the files into a [tt]_new[/tt] folder, being careful to not include the [tt].git[/tt] folder in the zip
+| Upload a ZIP of the files into a [tt]_new[/tt] folder, being careful to not include the [tt].git[/tt] folder in the ZIP
 | If some upload directories are too big, omit them and resolve this by moving back the old ones from the live server.
-For a further level of professionalism you may choose to deploy using your git repository rather than a zip file, if so push git up to a shared repository (e.g. github or bitbucket) and do a pull from the server, rather than uploading and extracting a zip.
+For a further level of professionalism you may choose to deploy using your git repository rather than a ZIP file, if so push git up to a shared repository (e.g. github or bitbucket) and do a pull from the server, rather than uploading and extracting a ZIP.
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Extract the zip live on the server (control panel file managers can do this, or a simple custom PHP script)
+| Extract the ZIP live on the server (control panel file managers can do this, or a simple custom PHP script)
 | [codebox="PHP"]
 <?php /*
 
@@ -549,7 +549,7 @@ if ($res === true) {
 |
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Delete the [tt]_temp[/tt] folder and the zip file
+| Delete the [tt]_temp[/tt] folder and the ZIP file
 |
 |-
 ! {$INC,step_num}{$GET,step_num}

@@ -156,7 +156,7 @@ class Block_main_staff_checklist
             )));
         }
 
-        // Handle built in items
+        // Handle built-in items
 
         $rets_no_times = array();
         $rets_todo_counts = array();

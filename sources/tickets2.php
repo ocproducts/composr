@@ -267,7 +267,7 @@ function ticket_add_post($ticket_id, $ticket_type_id, $title, $post, $staff_only
  */
 function ticket_wrap_with_email_address($post, $email, $mandatory_guest_email = false)
 {
-    // Do we need to tack on an email address?
+    // Do we need to tack on an e-mail address?
     if ($email != '') {
         $body = '> ' . str_replace("\n", "\n" . '> ', $post);
         if (substr($body, -2) == '> ') {

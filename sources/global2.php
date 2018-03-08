@@ -353,7 +353,7 @@ function init__global2()
         require_code('templates'); // So that we can do error templates
         require_code('tempcode'); // Output is done with Tempcode
         if (!$MICRO_BOOTUP) {
-            require_code('comcode'); // Much output goes through comcode
+            require_code('comcode'); // Much output goes through Comcode
         }
     }
     require_code('zones'); // Zone is needed because zones are where all Composr pages reside

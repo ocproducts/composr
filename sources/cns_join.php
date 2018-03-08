@@ -248,13 +248,13 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         $allow_emails_from_staff = post_param_integer('allow_emails_from_staff', 0);
     }
 
-    $groups = cns_get_all_default_groups(true); // $groups will contain the built in default primary group too (it is not $secondary_groups)
+    $groups = cns_get_all_default_groups(true); // $groups will contain the built-in default primary group too (it is not $secondary_groups)
     $primary_group = post_param_integer('primary_group', null);
-    if (($primary_group !== null) && (!in_array($primary_group, $groups)/*= not built in default, which is automatically ok to join without extra security*/)) {
+    if (($primary_group !== null) && (!in_array($primary_group, $groups)/*= not built-in default, which is automatically ok to join without extra security*/)) {
         // Check security
         $test = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'g_is_presented_at_install', array('id' => $primary_group));
         if ($test == 1) {
-            $groups = cns_get_all_default_groups(false); // Get it so it does not include the built in default primary group
+            $groups = cns_get_all_default_groups(false); // Get it so it does not include the built-in default primary group
             $groups[] = $primary_group; // And add in the *chosen* primary group
         } else {
             $primary_group = null;
@@ -262,7 +262,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     } else {
         $primary_group = null;
     }
-    if ($primary_group === null) { // Security error, or built in default (which will already be in $groups)
+    if ($primary_group === null) { // Security error, or built-in default (which will already be in $groups)
         $primary_group = get_first_default_group();
     }
 

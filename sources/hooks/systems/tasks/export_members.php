@@ -297,7 +297,7 @@ class Hook_task_export_members
                             $at = date('Y-m-d', intval($m[substr($part, 1)]));
                             break;
 
-                        case '#': // url
+                        case '#': // URL
                             $at = $m[substr($part, 1)];
                             if ((url_is_local($at)) && ($at != '')) {
                                 $at = get_complex_base_url($at) . '/' . $at;

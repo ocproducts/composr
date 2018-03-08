@@ -445,7 +445,7 @@ class Module_cms_comcode_pages
             $page_rows = $GLOBALS['SITE_DB']->query($sql, $max, $start, false, false, $lang_fields);
             $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM (SELECT DISTINCT c.the_zone,c.the_page FROM ' . $ttable . ' WHERE ' . $where_map . ') x', false, false, $lang_fields);
 
-            // Put together meta-data
+            // Put together metadata
             $files_list = array();
             foreach ($page_rows as $row) {
                 $located = _request_page($row['the_page'], $row['the_zone'], null, $lang);
@@ -467,7 +467,7 @@ class Module_cms_comcode_pages
             $files_list = $this->get_comcode_files_list_disk_search($lang, $zone_filter);
         }
 
-        // Gather meta-data, enough for sorting
+        // Gather metadata, enough for sorting
         $rows = array();
         foreach ($files_list as $page_link => $path_bits) {
             list($zone, $page) = explode(':', $page_link, 2);

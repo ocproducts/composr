@@ -524,7 +524,7 @@
                 if (window.sitemap == null) {
                     elements[i].disabled = true;
                 }
-                // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILST all-global is on
+                // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILE all-global is on
                 elements[i].selectedIndex = window[elements[i].name] + 1; // -1 is at index 0
             }
         }
@@ -541,7 +541,7 @@
 
         var selectElement = document.getElementById(name + '_privilege_' + privilege);
         if (allGlobal) {
-            // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILST all-global is on
+            // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILE all-global is on
             selectElement.selectedIndex = window[name + '_privilege_' + privilege] + 1; // -1 is at index 0
             if (window.sitemap == null) {
                 selectElement.disabled = true;
