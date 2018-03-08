@@ -19,12 +19,12 @@ The menu system supports 'template sets' to allow different kinds of menu on a w
 The template set to use is specified as one of the parameters to the [tt]menu[/tt] block.
 
 The following template sets exist:
- - [b]embossed[/b] (the default type, a very simple single-layered type for side-placed menus; big buttons to make it tablet-friendly; does not support multiple-levels)
- - [b]tree[/b] (for side-placed menus where branches can be contracted and expanded as drawers; supports multiple-levels)
- - [b]popup[/b] (for side-placed menus where branches may popup as overlays by hovering the mouse over other branches; supports multiple-levels)
- - [b]dropdown[/b] (for top-placed menus; supports multiple-levels)
- - [b]sitemap[/b] (a spaced out menu type with expanders and contractors, designed for display on a page)
- - [b]select[/b] (select menu items via a dropdown list; does not support multiple-levels)
+ - [tt]embossed[/tt] (the default type, a very simple single-layered type for side-placed menus; big buttons to make it tablet-friendly; does not support multiple-levels)
+ - [tt]tree[/tt] (for side-placed menus where branches can be contracted and expanded as drawers; supports multiple-levels)
+ - [tt]popup[/tt] (for side-placed menus where branches may pop-up as overlays by hovering the mouse over other branches; supports multiple-levels)
+ - [tt]dropdown[/tt] (for top-placed menus; supports multiple-levels)
+ - [tt]sitemap[/tt] (a spaced out menu type with expanders and contractors, designed for display on a page)
+ - [tt]select[/tt] (select menu items via a dropdown list; does not support multiple-levels)
 
 Template sets contain the following templates:
  - [tt]MENU_*.tpl[/tt]

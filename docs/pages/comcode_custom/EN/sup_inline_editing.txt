@@ -106,7 +106,7 @@ Or you can fetch the list values automatically:
 
 [title="2"]Example for member profile editing[/title]
 
-Imagine you want to deploy a CPF on a custom comcode page, and want to let a member edit their own CPF from that page.
+Imagine you want to deploy a CPF on a Custom Comcode page, and want to let a member edit their own CPF from that page.
 This Tempcode would make it possible:
 [code="Tempcode"]
 {+START,FRACTIONAL_EDITABLE,{$CPF_VALUE,About me,{$MEMBER}},field_1,_SEARCH:members:view:{$MEMBER},1,1,1}{$COMCODE,{$CPF_VALUE,About me,{$MEMBER}}}{+END}

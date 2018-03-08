@@ -2140,8 +2140,8 @@ Create a new blank file [tt]BLOCK_MAIN_FIRST_BLOCK.tpl[/tt] and save it in to [t
 
 [title="3"]Adding the block to front page[/title]
 
-Now that we have the block and template file ready, lets add the block to our front page so that we can test the examples. To add a block to the front page we will have to make the changes in the comcode file [tt]start.txt[/tt] which contains all the blocks which show up on the front page.
-[tt]start.txt[/tt] file is located in [tt]pages/comcode_custom/EN[/tt] (the same rule as templates applies here as well, i.e. the customised comcode files should go in to [tt]_custom[/tt] folder).
+Now that we have the block and template file ready, lets add the block to our front page so that we can test the examples. To add a block to the front page we will have to make the changes in the Comcode file [tt]start.txt[/tt] which contains all the blocks which show up on the front page.
+[tt]start.txt[/tt] file is located in [tt]pages/comcode_custom/EN[/tt] (the same rule as templates applies here as well, i.e. the customised Comcode files should go in to [tt]_custom[/tt] folder).
 
 [media width="150" description="Our empty box" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp1.png[/media]
 Edit [tt]start.txt[/tt] file using your text editor, and add this on the end:

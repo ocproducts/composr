@@ -74,7 +74,7 @@ function do_work()
     set_mass_import_mode();
 
     // members (remember to test the username autocompleter, and birthdays)
-    // authors (remember to check author autocompleter and popup author list)
+    // authors (remember to check author autocompleter and pop-up author list)
     // lots of people getting notifications on a forum
     // lots of people getting notifications on a topic
     require_code('authors');

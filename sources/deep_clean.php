@@ -71,7 +71,7 @@ function deep_clean($d, $heading = '')
         $d = trim($d);
     }
 
-    // Uppercase -> Title Case
+    // Upper case -> Title Case
     if ((preg_match('#[a-z]#', $d) == 0) && (strpos($d, ' ') !== false)) {
         $d = cms_mb_ucwords($d);
     }

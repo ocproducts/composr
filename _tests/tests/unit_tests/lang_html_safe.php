@@ -47,8 +47,6 @@ class lang_html_safe_test_set extends cms_test_case
         if (($dh = opendir(get_file_base() . '/lang/EN')) !== false) {
             while (($FILE = readdir($dh)) !== false) {
                 if ($FILE[0] != '.') {
-                    //echo htmlentities($FILE).', ';
-
                     $map = better_parse_ini_file(get_file_base() . '/lang/EN/' . $FILE);
                     foreach ($map as $string => $val) {
                         if ((trim($string) != '') && ($string[0] != '[')) {

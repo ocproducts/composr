@@ -43,7 +43,7 @@ function init__site__pages__modules_custom__galleries($code)
     $code = override_str_replace_exactly(
         "\$current_entry = do_template('GALLERY_FLOW_MODE_IMAGE'",
         "
-        // Add the workflow form if this entry is unvalidated
+        // Add the workflow form if this entry is non-validated
         if (\$row['validated'] == 0) {
             require_code('workflows');
 
@@ -64,7 +64,7 @@ function init__site__pages__modules_custom__galleries($code)
     $code = override_str_replace_exactly(
         "\$current_entry = do_template('GALLERY_FLOW_MODE_VIDEO",
         "
-        // Add the workflow form if this entry is unvalidated
+        // Add the workflow form if this entry is non-validated
         if (\$row['validated'] == 0) {
             require_code('workflows');
 

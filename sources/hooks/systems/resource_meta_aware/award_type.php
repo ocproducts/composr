@@ -81,7 +81,7 @@ class Hook_resource_meta_aware_award_type
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => null, // null if has no permissions
+            'permissions_type_code' => 'award', // null if has no permissions
 
             'search_hook' => null,
             'rss_hook' => null,

@@ -600,7 +600,7 @@ class Module_booking
             warn_exit(do_lang_tempcode('BOOKING_ERROR'));
         }
 
-        // Send emails
+        // Send e-mails
         send_booking_emails($request);
 
         // Show success

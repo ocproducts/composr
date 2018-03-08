@@ -1022,7 +1022,7 @@ This section is not designed as primary documentation for the tools. Those tools
 | Composr module
 |-
 | [tt]recentchanges.sh[/tt]
-| Zip up recently changed files.
+| ZIP up recently changed files.
 | [tt]linux_helper_scripts[/tt]
 | Command-line via Bash
 |-

@@ -21,7 +21,7 @@
 /*
 Notes:
  - We cannot/do-not fully recurse the Sitemap with arbitrary permissions or as an arbitrary user.
-   We do collect permission data, but this is collected for the Permission Tree Editor, not for node availability meta processing.
+   We do collect permission data, but this is collected for the Permissions Tree Editor, not for node availability meta processing.
    Node availability (of view access) is checked automatically as a part of the sitemap crawl.
    This isn't for no good reason - the Sitemap is intrinsicly variable on a user-to-user basis, it is not necessarily shared.
  - When get_node is called, it is assumed that the node object really can handle the requested page-link.
@@ -970,7 +970,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                 $cma_entry_ob = get_content_object($entry_content_type);
                 $cma_entry_info = $cma_entry_ob->info();
 
-                if ((!$require_permission_support) || ($cma_entry_info['permissions_type_code'] !== null)) {
+                if ((!$require_permission_support) || (($cma_entry_info['permissions_type_code'] !== null) && ($cma_entry_info['is_category']/*Unlikely to be true!*/) && (!$cma_entry_info['is_entry']))) {
                     $child_hook_ob = $this->_get_sitemap_object($entry_sitetree_hook);
 
                     $children_entries = array();

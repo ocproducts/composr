@@ -204,7 +204,7 @@ function rss_backend_script()
     }
 
     if ($type == 'RSS2') {
-        // Change a full url into constituent parts
+        // Change a full URL into constituent parts
         $base_url = get_base_url();
         $port = 80;
         $end_protocol_pos = strpos($base_url, '://');

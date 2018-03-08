@@ -107,7 +107,7 @@ class Hook_addon_registry_under18s
     public function get_dependencies()
     {
         return array(
-            'requires' => array(),
+            'requires' => array('Conversr'),
             'recommends' => array(),
             'conflicts_with' => array(),
         );

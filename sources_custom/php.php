@@ -14,7 +14,7 @@
  */
 
 /*
-Here is the code used to extract phpdoc style function comments  from PHP code.
+Here is the code used to extract PHPDoc style function comments  from PHP code.
 */
 
 /**
@@ -193,7 +193,7 @@ function get_php_file_api($filename, $include_code = true, $pedantic_warnings = 
 
                         if ($pedantic_warnings) {
                             if (preg_match('#^@param  [^\s]+ \$\w+ #s', $ltrim) == 0) {
-                                attach_message('The spacing alignment for a phpdoc parameter definition on ' . $function_name . ' was not as expected; maybe too few or too many spaces. This is a pedantic error, but we like consistent code layout.', 'inform');
+                                attach_message('The spacing alignment for a PHPDoc parameter definition on ' . $function_name . ' was not as expected; maybe too few or too many spaces. This is a pedantic error, but we like consistent code layout.', 'inform');
                             }
 
                             if ((substr($ltrim, -1) == '.') && (substr_count($ltrim, '.') == 1)) {
@@ -242,7 +242,7 @@ function get_php_file_api($filename, $include_code = true, $pedantic_warnings = 
 
                         if ($pedantic_warnings) {
                             if (preg_match('#^@return [^ ]#s', $ltrim) == 0) {
-                                attach_message('The spacing alignment for a phpdoc return definition on ' . $function_name . ' was not as expected; maybe too few or too many spaces. This is a pedantic error, but we like consistent code layout.', 'inform');
+                                attach_message('The spacing alignment for a PHPDoc return definition on ' . $function_name . ' was not as expected; maybe too few or too many spaces. This is a pedantic error, but we like consistent code layout.', 'inform');
                             }
 
                             if ((substr($ltrim, -1) == '.') && (substr_count($ltrim, '.') == 1)) {
@@ -401,7 +401,7 @@ function get_php_file_api($filename, $include_code = true, $pedantic_warnings = 
     for ($i = 0; array_key_exists($i, $lines); $i++) {
         $line = ltrim($lines[$i]);
         if ((preg_match('#^((public|private|protected|static|abstract) )*function (.*)#', $line) != 0) && ((trim($lines[$i - 1]) == '') || (trim($lines[$i - 1]) == '{'))) {
-            // Infer some parameters from the function line, given we have no phpdoc
+            // Infer some parameters from the function line, given we have no PHPDoc
             if (substr($lines[$i], 0, 9) == 'function ') { // Only if not class level (i.e. global)
                 $function_name = preg_replace('#function\s+(\w+)\s*\(.*#s', '${1}', $line);
                 $parameters = array();

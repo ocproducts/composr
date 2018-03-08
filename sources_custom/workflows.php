@@ -216,12 +216,12 @@ function get_workflow_form($workflow_content_id)
     }
 
     /////////////////////////
-    // Approval tick boxes //
+    // Approval checkboxes //
     /////////////////////////
 
     $available_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()); // What groups our user is in
     $existing_status = array(); // This shows the current approval status, but is not editable
-    $approval_status = array(); // This list of tuples holds tick-boxes for editing the approval status
+    $approval_status = array(); // This list of tuples holds checkboxes for editing the approval status
     $send_next = array(); // This map of group names to tuples holds the details for who to send this to next
     $approve_count = 0; // This keeps each approval box distinct
     $send_count = 0; // This keeps the 'send next' boxes distinct
@@ -242,7 +242,7 @@ function get_workflow_form($workflow_content_id)
 
     // Now loop through all approval points in workflow order
     foreach ($approval_points as $point => $approval_point_name) {
-        // Only show one tick box for each approval point, if any
+        // Only show one checkbox for each approval point, if any
         $approval_shown = false;
 
         // Go through each group allowed to modify this value...
@@ -252,10 +252,10 @@ function get_workflow_form($workflow_content_id)
                 // If so then remember that we've handled this point
                 $approval_shown = true;
 
-                // Remember that we can tick something
+                // Remember that we can tick (check) something
                 $have_permission_over_a_point = true;
 
-                // Add the details to the editable tick-box values
+                // Add the details to the editable checkbox values
                 $approval_status[$approve_count] = array();
                 $approval_status[$approve_count][] = $approval_point_name; // Pretty name
                 $approval_status[$approve_count][] = 'approval_' . strval($point); // Name
@@ -286,8 +286,8 @@ function get_workflow_form($workflow_content_id)
                 $send_next[$allowed_group] = array();
                 $send_next[$allowed_group][] = $group_names[$allowed_group]; // Pretty name
                 $send_next[$allowed_group][] = 'send_' . strval($allowed_group); // Name
-                // Set the default value. We want groups allowed to approve the next+1 point ticked (assuming we're approving the next one)
-                // For simplicity, let's keep these unticked for now.
+                // Set the default value. We want groups allowed to approve the next+1 point ticked (checked) (assuming we're approving the next one)
+                // For simplicity, let's keep these unticked (unchecked) for now.
                 //if (in_array($allowed_group['usergroup'], $groups_shown))
                 //{
                 $send_next[$allowed_group][] = false;
@@ -309,7 +309,7 @@ function get_workflow_form($workflow_content_id)
             // Increment the unique ID for the array elements
             $approve_count++;
 
-            // If this is the first entry we're not permitted to change and it is not already ticked...
+            // If this is the first entry we're not permitted to change and it is not already ticked (checked)...
             if (!$permission_limit && (!array_key_exists($point, $statuses) || ($statuses[$point] == 0))) {
                 // ... remember it (since we can send-to those who are permitted)
                 $next_point = $point;
@@ -365,12 +365,12 @@ function get_workflow_form($workflow_content_id)
         $group_order[$score][] = $group_id;
     }
 
-    // Finally we can get the tick-box details we found earlier and put them in the right order
+    // Finally we can get the checkbox details we found earlier and put them in the right order
     $send_to_boxes = array();
     foreach ($group_order as $score => $list_of_groups) {
         // Add the group if its the only one
         if (count($list_of_groups) == 1) {
-            // Before adding the tick box, see if it should be active
+            // Before adding the checkbox, see if it should be active
             if (in_array($list_of_groups[0], $active_groups)) {
                 $send_next[$list_of_groups[0]][2] = 1;
             }
@@ -391,7 +391,7 @@ function get_workflow_form($workflow_content_id)
             // Now we can add them in order of average
             foreach ($list_of_groups_order as $average_collection) {
                 foreach ($average_collection as $group_id) {
-                    // Before adding the tick box, see if it should be active
+                    // Before adding the checkbox, see if it should be active
                     if (in_array($group_id, $active_groups)) {
                         $send_next[$group_id][2] = 1;
                     }
@@ -428,10 +428,10 @@ function get_workflow_form($workflow_content_id)
     // Show the current status next
     $workflow_fields->attach(form_input_various_ticks($existing_status, '', null, do_lang_tempcode('CURRENT_APPROVAL_STATUS'), false));
 
-    // Attach the workflow tick boxes next
+    // Attach the workflow checkboxes next
     $workflow_fields->attach(form_input_various_ticks($approval_status, '', null, do_lang_tempcode('POINTS_TO_APPROVE'), false));
 
-    // Add the 'live' tickbox
+    // Add the 'live' checkbox
     // NOTE: Not used at the moment; content becomes live once all points have been approved
     //$workflow_fields->attach($live_box);
 
@@ -512,7 +512,7 @@ function workflow_update_handler()
         }
     }
 
-    // From the groups we can get the members, and from there the emails
+    // From the groups we can get the members, and from there the e-mails
     foreach ($GLOBALS['FORUM_DRIVER']->member_group_query($group_ids) as $member) {
         $send_to_members[$member['id']] = 1;
     }
@@ -532,7 +532,7 @@ function workflow_update_handler()
 
     // Look for any differences we need to make
     foreach ($old_values as $old_value) {
-        $noted = false;        // Keep a note of each value for including in emails
+        $noted = false;        // Keep a note of each value for including in e-mails
 
         // Only compare against values which we've been given
         if (array_key_exists($old_value['workflow_approval_point_id'], $approvals)) {
@@ -585,7 +585,7 @@ function workflow_update_handler()
         if ($status_code) {
             $notes_approved[] = $approval_id;
         } else {
-            // Just because it's not approved, doesn't mean that it was unticked.
+            // Just because it's not approved, doesn't mean that it was unchecked.
             // It may have just been added to the workflow.
             if (!in_array($approval_id, $new_approvals)) {
                 $notes_disapproved[] = $approval_id;
@@ -680,7 +680,7 @@ function workflow_update_handler()
         $status_list .= ', ';
     }
 
-    // At last we can send the email
+    // At last we can send the e-mail
     require_code('notifications');
     if (count($send_to_members) > 0) {
         $success_message .= do_lang('APPROVAL_CHANGED_NOTIFICATIONS');

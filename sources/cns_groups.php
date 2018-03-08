@@ -377,7 +377,7 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
                     }
                 }
 
-                return array($PROBATION_GROUP_CACHE => 1);
+                return array($PROBATION_GROUP_CACHE => true);
             }
         }
     }
@@ -401,8 +401,12 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
         foreach ($hooks as $ob) {
             $group_ids = $ob->get_bound_group_ids();
             foreach ($group_ids as $group_id) {
-                if ($ob->is_member_within($member_id, $group_id)) {
+                if ($ob->is_member_within($member_id, $group_id, $is_exclusive)) {
                     $groups[$group_id] = true;
+
+                    if ($is_exclusive === true) {
+                        return $groups;
+                    }
                 }
             }
         }

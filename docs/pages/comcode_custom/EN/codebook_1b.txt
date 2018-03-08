@@ -979,7 +979,7 @@ Most Composr create/edit/delete interfaces are done via an CRUD module, as this 
   - ownership checks for edit/delete
   - view permissions for edit (you can't edit what you can't view)
   - unsetting of validation if the user can't bypass validation
- - sending out new-content emails to staff
+ - sending out new-content e-mails to staff
  - Standard SEO fields
  - Standard award fields
  - Standard 'you should log in' messages

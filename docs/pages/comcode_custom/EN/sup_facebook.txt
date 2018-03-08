@@ -24,7 +24,7 @@ Integration is done via configuring an app on Facebook; no actual app code needs
 [*] Go to the "Settings" section
 [*] Enter your domain name into the "Main App Domain" field
 [*] Enter your privacy page URL into the "Privacy policy URL" field (link to your website's privacy page)
-[*] Change the "Contact Email" field if no e-mail address is currently there, or if it is wrong
+[*] Change the "Contact e-mail" field if no e-mail address is currently there, or if it is wrong
 [*] Click "Add Platform"
 [*] Choose "Website"
 [*] Enter your base URL into the "Site URL" field. It's crucial that you give Facebook the correct base URL to your site. It absolutely will not allow things to integrate if it does not match exactly. Make sure you have the same case (i.e. all lower case) and the same use or non-use of 'www.' in the domain name and same use of 'https' or 'http'.

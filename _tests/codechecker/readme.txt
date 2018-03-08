@@ -49,7 +49,7 @@ HTML etc
 Some tips:
  - If you need a form field label but can't place it in your design, make it invisible.
 
-If you want to check an HTML email (which requires additional rules), name the file '_mail.html' or '_mail.htm' and load in the files like any other file.
+If you want to check an HTML e-mail (which requires additional rules), name the file '_mail.html' or '_mail.htm' and load in the files like any other file.
 
 Accessibility
 -------------

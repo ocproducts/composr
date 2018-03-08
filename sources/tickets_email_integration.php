@@ -609,7 +609,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
 
         $ticket_url = ticket_add_post($new_ticket_id, $ticket_type_id, $subject, $body, false, $member_id);
 
-        // Send email (to staff)
+        // Send e-mail (to staff)
         send_ticket_email($new_ticket_id, $subject, $body, $ticket_url, $from_email, $ticket_type_id, $member_id, true);
     } else {
         // Reply to the ticket...
@@ -626,7 +626,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         }
         list($__title) = $details;
 
-        // Send email (to staff & to confirm receipt to $member_id)
+        // Send e-mail (to staff & to confirm receipt to $member_id)
         send_ticket_email($existing_ticket_id, $__title, $body, $ticket_url, $from_email, null, $member_id, true);
     }
 

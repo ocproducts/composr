@@ -89,7 +89,7 @@ function basic_newsletter_join($email, $language = null, $get_confirm_mail = fal
         }
     }
 
-    // Send confirm email
+    // Send confirm e-mail
     if ($get_confirm_mail) {
         $_url = build_url(array('page' => 'newsletter', 'type' => 'confirm', 'email' => $email, 'confirm' => $code_confirm), get_module_zone('newsletter'));
         $url = $_url->evaluate();

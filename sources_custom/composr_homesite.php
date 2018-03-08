@@ -366,11 +366,11 @@ function demonstratr_add_site($codename, $name, $email_address, $password, $desc
     // _config.php
     reset_base_config_file($server);
 
-    // Welcome email
+    // Welcome e-mail
     require_lang('sites');
     require_code('mail');
     $subject = do_lang('CMS_EMAIL_SUBJECT');
-    $message = do_lang('CMS_EMAIL_BODY', comcode_escape($codename)/*email is not secure,comcode_escape($password)*/);
+    $message = do_lang('CMS_EMAIL_BODY', comcode_escape($codename)/*e-mail is not secure,comcode_escape($password)*/);
     dispatch_mail($subject, $message, array($email_address));
 }
 
@@ -611,7 +611,7 @@ if (\$_SERVER['HTTP_HOST'] == 'composr.info') {
  */
 function reset_aliases()
 {
-    return; // Needs customising for each deployment; Demonstratr personal demos currently not supporting email hosting
+    return; // Needs customising for each deployment; Demonstratr personal demos currently not supporting e-mail hosting
 
     /*
     require_code('files');
@@ -811,7 +811,7 @@ function demonstratr_delete_old_sites()
         reset_aliases();
     }
 
-    // Warning emails
+    // Warning e-mails
     require_code('mail');
     $sites = $GLOBALS['SITE_DB']->query('SELECT s_codename FROM ' . get_table_prefix() . 'sites WHERE s_add_time<' . strval(time() - 60 * 60 * 24 * 20) . ' AND ' . db_string_not_equal_to('s_codename', 'shareddemo') . ' AND s_sent_expire_message=0');
     foreach ($sites as $site) {

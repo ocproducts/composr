@@ -56,15 +56,17 @@ class Hook_config_oembed_manual_patterns
     {
         $default = '';
 
+        // Update oembed automated test if updating this too
+
         $default .= "(https?://(www\.)?youtube\.com/watch\?v=.*|https?://youtu\.be/\..*) = http://www.youtube.com/oembed\n";
         $default .= "(https?://vimeo\.com/\d+) = http://vimeo.com/api/oembed.{format}\n";
         $default .= "(https?://(www\.)?dailymotion\.com/video/.*|https?://dai\.ly/.*) = http://www.dailymotion.com/services/oembed\n";
         $default .= "(https?://www\.slideshare\.net/.*/.*) = http://www.slideshare.net/api/oembed/2\n";
-        $default .= "(https?://.*\.flickr\.com/photos/.*|https?://flic\.kr/p/.*) = http://www.flickr.com/services/oembed\n";
+        $default .= "(https?://.*\.flickr\.com/photos/.*|https?://flic\.kr/p/.*) = http://www.flickr.com/services/oembed?format={format}\n";
         $default .= "(https?://(www\.)?instagram\.com/p/.*) = http://api.instagram.com/oembed\n";
-        $default .= "(https?://soundcloud\.com/.*/.*) = http://soundcloud.com/oembed\n";
+        $default .= "(https?://soundcloud\.com/.*/.*) = http://soundcloud.com/oembed?format={format}\n";
         $default .= "(https?://twitter\.com/.*/status/\d+) = https://api.twitter.com/1/statuses/oembed.{format}\n";
-        $default .= "(https?://(www\.)?facebook\.com/.*) = https://www.facebook.com/plugins/page/oembed.json/\n"; // Facebook may give "Security Check Required" when trying to auto-detect, so hard-code
+        $default .= "(https?://(www\.)?facebook\.com/.*) = https://www.facebook.com/plugins/page/oembed.{format}/\n"; // Facebook may give "Security Check Required" when trying to auto-detect, so hard-code
 
         $default .= "(https?://.*\.tumblr\.com/post/.*) = http://api.embed.ly/1/oembed?key=123456\n";
         $default .= "(https?://edition\.cnn\.com/.*) = http://api.embed.ly/1/oembed?key=123456\n";

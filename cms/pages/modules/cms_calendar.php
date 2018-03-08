@@ -952,9 +952,9 @@ class Module_cms_calendar extends Standard_crud_module
 
         $fixed_past = false;
 
-        // Fixing past occurrences
+        // Fixing past recurrences
         if (($delete_status == '3') && (!fractional_edit())) {
-            // Fix past occurrences
+            // Fix past recurrences
             $past_times = find_periods_recurrence($event['e_timezone'], 1, $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type'], $event['e_start_hour'], $event['e_start_minute'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type'], $event['e_end_hour'], $event['e_end_minute'], $event['e_recurrence'], $event['e_recurrences'], utctime_to_usertime(mktime($event['e_start_hour'], $event['e_start_minute'], 0, $event['e_start_month'], $event['e_start_day'], $event['e_start_year'])), utctime_to_usertime(time()));
             if (count($past_times) > 0) {
                 foreach ($past_times as $past_time) {
@@ -977,7 +977,7 @@ class Module_cms_calendar extends Standard_crud_module
                     $recurrences = max(0, $_recurrences - count($past_times));
                 }
 
-                // Find next occurrence in future
+                // Find next recurrence in future
                 if (count($past_times) == 0) {
                     $start_year = $_start_year;
                     $start_month = $_start_month;
@@ -1461,7 +1461,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
      * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
      * @param  ?AUTO_LINK $type The category ID we were working in (null: N/A)
-     * @param  string $date The Y-m-d of the added/edited event (first occurrence) (blank: whatever)
+     * @param  string $date The Y-m-d of the added/edited event (first recurrence) (blank: whatever)
      * @return Tempcode The UI
      */
     public function _do_next_manager($title, $description, $id, $type, $date)

@@ -968,7 +968,7 @@
         }
 
         if (!attachedEventAction) {
-            setTimeout(dispatchBlockHelper, 1000); // Delay it, so if we have in a faux popup it can set up fauxClose
+            setTimeout(dispatchBlockHelper, 1000); // Delay it, so if we have in a faux pop-up it can set up fauxClose
         }
 
         function shutdownOverlay() {

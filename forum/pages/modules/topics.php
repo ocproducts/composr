@@ -1691,7 +1691,7 @@ class Module_topics
             $specialisation->attach(form_input_line(do_lang_tempcode('GUEST_NAME'), new Tempcode(), 'poster_name_if_guest', (get_option('force_guest_names') == '1') ? '' : do_lang('GUEST'), true));
         }
 
-        // Various kinds of tick options
+        // Various kinds of tick (check) options
         if ((!$private_topic) && (cns_may_moderate_forum($forum_id, get_member()))) {
             $moderation_options = array(
                 array(do_lang_tempcode('OPEN'), 'open', true, do_lang_tempcode('DESCRIPTION_OPEN')),
@@ -2261,7 +2261,7 @@ class Module_topics
         $add_poll = post_param_integer('add_poll', 0);
         $topic_validated = $validated;
         if ($validated == 1) {
-            $topic_validated = 1 - $add_poll; // If a topic is gonna have a poll added, it starts unvalidated. Adding the poll will validate it.
+            $topic_validated = 1 - $add_poll; // If a topic is gonna have a poll added, it starts non-validated. Adding the poll will validate it.
         }
 
         $anonymous = post_param_integer('anonymous', 0);

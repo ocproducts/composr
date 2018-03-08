@@ -145,7 +145,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>You won't need much awareness of XML unless doing particular advanced configuration.</td>
 		</tr>
 		<tr>
-			<td>File formats like [url="http://tools.ietf.org/html/rfc5545"]iCalendar 2.0[/url], CSV files, JPEG, PNG, Zip, Tar, Gzip</td>
+			<td>File formats like [url="http://tools.ietf.org/html/rfc5545"]iCalendar 2.0[/url], CSV files, JPEG, PNG, ZIP, Tar, Gzip</td>
 			<td>These are used in specific areas of Composr, for reading and writing special file types. PNG is an image file format. PNG is used in favour to GIF, as it supports images more than 256 colours, 'alpha transparency' (blended transparency that is not tied to background colour) and is not encumbered by software patents.</td>
 			<td>The ability to use image editors, and choose appropriate image file types, is definitely useful. Being able to import and export appropriately-structured CSV files (spreadsheets) is also useful.</td>
 		</tr>
@@ -330,7 +330,7 @@ attributename="attributevalue"
 The syntax for an attribute is quite simple, too. However, there are some rules and guidelines you must stick to:
  - Encase the attribute value in double-quotes
  - Don't surround the equals with spaces (it must be next to the last character of the attribute name, and the opening double-quote for the attribute value)
- - Keep the attribute name lower-case
+ - Keep the attribute name lower case
 
 Putting tags together is only slightly more complex than using single tags. You must bear in mind that XHTML is designed to produce a tree-structure of tags: one tag will contain several others ([i]descendants[/i]), which in turn will contain another few (more descendants), or some text, etc.
 [code="HTML"]

@@ -624,7 +624,7 @@ class Module_tickets
                 }
             }
 
-            // Meta-data...
+            // Metadata...
 
             set_extra_request_metadata(array(
                 'created' => date('Y-m-d', $ticket_posts[0]['date']),
@@ -881,7 +881,7 @@ class Module_tickets
             enable_notifications('ticket_assigned_staff', $ticket_id);
         }
 
-        // Send email...
+        // Send e-mail...
 
         // Find true ticket title
         list($ticket_title, $topic_id) = get_ticket_meta_details($ticket_id);

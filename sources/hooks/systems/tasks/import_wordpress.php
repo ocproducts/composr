@@ -222,12 +222,12 @@ class Hook_task_import_wordpress
 
                         $topic_identifier = 'news_' . strval($id);
                     } elseif ($post['post_type'] == 'page') { // Page/articles
-                        // If we don't have permission to write comcode pages, skip the page
+                        // If we don't have permission to write Comcode pages, skip the page
                         if (!has_submit_permission('high', get_member(), get_ip_address(), null, null)) {
                             continue;
                         }
 
-                        // Save articles as new comcode pages
+                        // Save articles as new Comcode pages
                         $zone = 'site';
                         $lang = fallback_lang();
                         $file = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $post['post_name']); // Filter non-alphanumeric characters

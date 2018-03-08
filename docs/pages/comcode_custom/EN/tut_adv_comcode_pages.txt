@@ -128,7 +128,7 @@ A common point of confusion is the difference between blocks and boxes.
 
 Boxes are a visual convention in Composr. They are what they sound like.
 
-A block does not necessarily have any visual form. It could create a popup. It could hover over the site in a circle. It may take on the form of a greek goddess. In practice, however, a block almost always does actually put itself in a box in the default templates.
+A block does not necessarily have any visual form. It could create a pop-up. It could hover over the site in a circle. It may take on the form of a greek goddess. In practice, however, a block almost always does actually put itself in a box in the default templates.
 
 [title="3"]Customising a block template, for different circumstances (advanced)[/title]
 

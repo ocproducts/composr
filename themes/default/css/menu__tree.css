@@ -15,7 +15,7 @@
 	padding: 3px 5px 3px 0 !important;
 }
 
-.menu-type--tree ul li a { /* ul li added to ensure precedence over ".nl li" selector, whilst not forcing us to use up our only !important */
+.menu-type--tree ul li a { /* ul li added to ensure precedence over ".nl li" selector, while not forcing us to use up our only !important */
 	padding-left: 14px;
 	display: inline-block; /* This says that we want to encourage greedy space consumption rather than wrapping */
 }

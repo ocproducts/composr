@@ -662,7 +662,7 @@ class Module_admin_lang
                 afm_make_directory('caches/lang/' . $lang, true);
             }
 
-            // Make comcode page dirs
+            // Make Comcode page dirs
             $zones = find_all_zones();
             foreach ($zones as $zone) {
                 $_special_dir = get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/comcode_custom/' . $lang;

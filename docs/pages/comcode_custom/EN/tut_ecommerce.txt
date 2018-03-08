@@ -546,7 +546,7 @@ To use the TaxCloud system:
 6) Fill in the "TaxCloud API key" configuration option (Admin Zone > Setup > Configuration > eCommerce options > Tax) on your Composr site
 7) Fill in the "TaxCloud API ID" configuration option on your Composr site
 8) Set the "Business country" configuration option on your Composr site to US
-9) Set the "Business state" configuration option on your Composr site to the state you operate your business from (make sure you enter a 2-character state code in upper-case, not the full written state name)
+9) Set the "Business state" configuration option on your Composr site to the state you operate your business from (make sure you enter a 2-character state code in upper case, not the full written state name)
 10) You may ignore the "Tax countries" configuration option and "Tax states" configuration option
 11) Set the "Currency" configuration option on your Composr site to USD
 12) Configure tax configuration options, and shopping catalogue items, to use the appropriate TIC code(s)

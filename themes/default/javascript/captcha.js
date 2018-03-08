@@ -64,7 +64,7 @@
             form = document.getElementById('posting-form');
         }
 
-        if ($cms.configOption('recaptcha_site_key') !== '') { // ReCAPTCHA Enabled
+        if ($cms.configOption('recaptcha_site_key') !== '') { // reCAPTCHA Enabled
             return;
         }
 

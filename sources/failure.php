@@ -109,7 +109,7 @@ function zip_error($errno, $mzip = false)
         'ZIPARCHIVE::ER_INVAL' => 'Invalid argument',
         'ZIPARCHIVE::ER_NOZIP' => 'Not a zip archive',
         'ZIPARCHIVE::ER_INTERNAL' => 'Internal error',
-        'ZIPARCHIVE::ER_INCONS' => 'Zip archive inconsistent',
+        'ZIPARCHIVE::ER_INCONS' => 'ZIP archive inconsistent',
         'ZIPARCHIVE::ER_REMOVE' => 'Can\'t remove file',
         'ZIPARCHIVE::ER_DELETED' => 'Entry has been deleted',
     );
@@ -994,7 +994,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         return;
     }
 
-    // Make sure we don't send too many error emails
+    // Make sure we don't send too many error e-mails
     if ((function_exists('get_value')) && (!$GLOBALS['BOOTSTRAPPING']) && (array_key_exists('SITE_DB', $GLOBALS)) && ($GLOBALS['SITE_DB'] !== null)) {
         $num = intval(get_value('num_error_mails_' . date('Y-m-d'), null, true)) + 1;
         if ($num == 51) {
@@ -1394,7 +1394,7 @@ function _access_denied($class, $param, $force_login)
     }
 
     if (((is_guest()) && ((running_script('attachment')) || (running_script('dload')) || (running_script('index')))) || ($force_login)) { // Show login screen if appropriate
-        // We do want to supply a nice login screen for attachment/dload scripts because they are sometimes externally linked to (e.g. in emails or hotlinks)
+        // We do want to supply a nice login screen for attachment/dload scripts because they are sometimes externally linked to (e.g. in e-mails or hotlinks)
         // Otherwise we want flat access denied due to a flat request/response model
         // NB: Also see similar running_script lines in globalise function
 

@@ -42,7 +42,7 @@ Members may specify the privacy settings for content they post, if the [tt]conte
 There are a number of ways to punish members who do not follow site policy (such as trolls), including:
  - Charging points to the member or giving them a negative number of points (which might result in sustaining a reduced rank for a time, if you also moving them down to a lower ranking usergroup on the rank scale). Points are primarily charged from a member's points profile (in Conversr this is a member profile tab, otherwise it's via the [tt]points[/tt] module).
  - Banning them in various ways described under "Banning"
- - Moving them to a restricted usergroup (there's an inbuilt "Probation" feature to move them automatically into probation usergroup for a limited period of time). This is done by editing their account settings.
+ - Moving them to a restricted usergroup (there's an inbuilt "Probation" feature to move them automatically into probation usergroup for a limited period of time). This is done by editing their account settings or via the warn/punish form.
  - 'Verbally' (unofficially) warning them, via a Private Topic.
  - Giving them a formal warning (read on).
 

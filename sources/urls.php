@@ -564,7 +564,7 @@ function _build_url($vars, $zone_name = '', $skip = array(), $keep_all = false, 
         }
     }
 
-    // Things we need to keep in the url
+    // Things we need to keep in the URL
     $keep_actual = array();
     if (($HAS_KEEP_IN_URL_CACHE === null) || ($HAS_KEEP_IN_URL_CACHE) || ($keep_all)) {
         $keep_cant_use = array();

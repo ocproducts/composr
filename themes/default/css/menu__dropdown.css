@@ -227,7 +227,7 @@ For example:
 		padding-right: 0;
 	}
 
-	.dropdown-menu ul.nlevel li a { /* ul li added to ensure precedence over ".nl li" selector, whilst not forcing us to use up our only !important */
+	.dropdown-menu ul.nlevel li a { /* ul li added to ensure precedence over ".nl li" selector, while not forcing us to use up our only !important */
 		padding-left: 14px;
 		background-size: 6px 6px !important;
 	}

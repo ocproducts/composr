@@ -42,14 +42,14 @@ function init__m_zip()
         @eval("class ZIPARCHIVE
 {
     const ER_OK=0;  /* N No error */
-    const ER_MULTIDISK=1;  /* N Multi-disk zip archives not supported */
+    const ER_MULTIDISK=1;  /* N Multi-disk ZIP archives not supported */
     const ER_RENAME=2;  /* S Renaming temporary file failed */
-    const ER_CLOSE=3;  /* S Closing zip archive failed */
+    const ER_CLOSE=3;  /* S Closing ZIP archive failed */
     const ER_SEEK=4;  /* S Seek error */
     const ER_READ=5;  /* S Read error */
     const ER_WRITE=6;  /* S Write error */
     const ER_CRC=7;  /* N CRC error */
-    const ER_ZIPCLOSED=8;  /* N Containing zip archive was closed */
+    const ER_ZIPCLOSED=8;  /* N Containing ZIP archive was closed */
     const ER_NOENT=9;  /* N No such file */
     const ER_EXISTS=10;  /* N File already exists */
     const ER_OPEN=11;  /* S Can't open file */
@@ -60,7 +60,7 @@ function init__m_zip()
     const ER_COMPNOTSUPP=16;  /* N Compression method not supported */
     const ER_EOF=17;  /* N Premature EOF */
     const ER_INVAL=18;  /* N Invalid argument */
-    const ER_NOZIP=19;  /* N Not a zip archive */
+    const ER_NOZIP=19;  /* N Not a ZIP archive */
     const ER_INTERNAL=20;  /* N Internal error */
     const ER_INCONS=21;  /* N Zip archive inconsistent */
     const ER_REMOVE=22;  /* S Can't remove file */
@@ -69,10 +69,10 @@ function init__m_zip()
 ");
 
         /**
-         * Open a zip file for reading.
+         * Open a ZIP file for reading.
          *
-         * @param  PATH $zip_file The zip file path
-         * @return mixed The zip file resource (number if error)
+         * @param  PATH $zip_file The ZIP file path
+         * @return mixed The ZIP file resource (number if error)
          */
         function zip_open($zip_file)
         {
@@ -138,9 +138,9 @@ function init__m_zip()
         }
 
         /**
-         * Close a zip file.
+         * Close a ZIP file.
          *
-         * @param  array $open_zip_file The zip file resource
+         * @param  array $open_zip_file The ZIP file resource
          * @return boolean Whether the file closed correctly
          */
         function zip_close($open_zip_file)
@@ -169,9 +169,9 @@ function init__m_zip()
         }
 
         /**
-         * Reads the next entry in a zip file archive.
+         * Reads the next entry in a ZIP file archive.
          *
-         * @param  array $open_zip_file The zip file resource
+         * @param  array $open_zip_file The ZIP file resource
          * @return ~array A directory entry resource for later use with the m_zip_entry_...() functions (false: if there's no more entries to read).
          */
         function zip_read($open_zip_file)
@@ -273,9 +273,9 @@ function init__m_zip()
         }
 
         /**
-         * Opens a directory entry in a zip file for reading.
+         * Opens a directory entry in a ZIP file for reading.
          *
-         * @param  array $zip The zip file resource
+         * @param  array $zip The ZIP file resource
          * @param  array $zip_entry Directory entry resource returned by m_zip_read()
          * @param  string $mode The file access mode
          * @set    rb

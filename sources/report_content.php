@@ -233,7 +233,7 @@ function report_content_form_fields(&$hidden)
     }
 
     if (is_guest()) {
-        // If the reporter is a guest user, ask for, but do not require, an email address for further communication.
+        // If the reporter is a guest user, ask for, but do not require, an e-mail address for further communication.
         $field = form_input_email(do_lang('EMAIL_ADDRESS'), do_lang('DESCRIPTION_REPORT_EMAIL'), 'email', null, false, null);
         $specialisation->attach($field);
     }
@@ -451,7 +451,7 @@ function _report_content($content_type, $content_id, $report_title, $report_post
 
     delete_cache_entry('main_staff_checklist');
 
-    // If a report topic was closed then we will block any further reports from this member counting towards unvalidation
+    // If a report topic was closed then we will block any further reports from this member counting towards non-validation
     $counts_for_unvalidation = true;
     if (get_forum_type() == 'cns') {
         $topic_id = null;
@@ -478,14 +478,14 @@ function _report_content($content_type, $content_id, $report_title, $report_post
     require_code('content');
     list(, , $cma_info, , $content_url) = content_get_details($content_type, $content_id);
 
-    // If hit threshold, mark down r_counts and unvalidate the content
+    // If hit threshold, mark down r_counts and non-validate the content
     $count = $GLOBALS['SITE_DB']->query_select_value('reported_content', 'COUNT(*)', array(
         'r_content_type' => $content_type,
         'r_content_id' => $content_id,
         'r_counts' => 1, // All those not already counted to a de-validation
     ));
     if ($count >= intval(get_option('reported_times'))) {
-        // Mark as unvalidated
+        // Mark as non-validated
         if (($cma_info['validated_field'] !== null) && (strpos($cma_info['table'], '(') === false)) {
             $db = get_db_for($cma_info['table']);
             $db->query_update($cma_info['table'], array($cma_info['validated_field'] => 0), get_content_where_for_str_id($content_id, $cma_info));

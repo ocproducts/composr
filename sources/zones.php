@@ -1175,7 +1175,7 @@ function do_block($codename, $map = array(), $ttl = null)
                     if (isset($SMART_CACHE)) {
                         $SMART_CACHE->paused = true;
                     }
-                    $do_inlining_mode = ($codename != 'menu'/*This generates on too many pages and has it's own internal optimisation*/);
+                    $do_inlining_mode = ($codename != 'menu'/*This generates on too many pages and has its own internal optimisation*/);
                     if ($do_inlining_mode) {
                         push_tempcode_parameter_inlining_mode(true);
                     }

@@ -532,7 +532,7 @@
                         }
                     });
 
-                    // Fiddle it, to behave like a popup would
+                    // Fiddle it, to behave like a pop-up would
                     setTimeout(function () {
                         $dom.illustrateFrameLoad('overlay-iframe');
                         iframe.src = self.href;
@@ -889,7 +889,7 @@
             }
         },
         /**
-         * Fiddle it, to behave like a popup would
+         * Fiddle it, to behave like a pop-up would
          * @param { HTMLIFrameElement } iframe
          */
         makeFrameLikePopup: function makeFrameLikePopup(iframe) {
@@ -936,7 +936,7 @@
                 mainWebsite.id = '';
             }
 
-            // Remove popup spacing
+            // Remove pop-up spacing
             popupSpacer = iDoc.getElementById('popup-spacer');
             if (popupSpacer) {
                 popupSpacer.id = '';

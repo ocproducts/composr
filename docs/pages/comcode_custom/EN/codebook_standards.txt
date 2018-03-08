@@ -50,14 +50,14 @@ You are invited to improve automated test code as you see fit.
 
 [title="3"]Code formatting within editors[/title]
 
-To automatically format code for PSR-2 you can either use the "PHP-CS-Fixer" open source project, or ideally PHP-Storm. PHP-CS-Fixer has some bugs and can't clean everything (especially argument spacing) but generally does a serviceable job.
+To automatically format code for PSR-2 you can either use the "PHP-CS-Fixer" Open Source project, or ideally PhpStorm. PHP-CS-Fixer has some bugs and can't clean everything (especially argument spacing) but generally does a serviceable job.
 
 The optimum PHP-CS-Fixer command is:
 [code="Bash"]
 php-cs-fixer fix --fixers=indentation,phpdoc_params,visibility,braces,lowercase_constants,function_declaration,controls_spaces,eof_ending,standardize_not_equal,elseif,lowercase_keywords,php_closing_tag,short_tag,object_operator,trailing_spaces,linefeed,encoding,concat_with_spaces,operators_spaces .
 [/code]
 
-It is a good idea to use an editor/IDE with support for the [tt].editorconfig[/tt] standard. Most editors/IDEs have a plugin for it. [tt].editorconfig[/tt] will help you automatically set correct tab settings (amongst other things) as you move between different projects.
+It is a good idea to use an editor/IDE with support for the [tt].editorconfig[/tt] standard. Most editors/IDEs have a plugin for it. [tt].editorconfig[/tt] will help you automatically set correct tab settings (among other things) as you move between different projects.
 
 [title="2"]Standards[/title]
 
@@ -317,7 +317,7 @@ These rules are very standard, but if broken then code-overriding may not work c
 | URL schemes
 | All development
 | Manually
-| All modules should be coded to use [tt]type[/tt] as the internal specifier of what 'screen' to show. The [tt]run[/tt] function should decide what function to call based on this parameter, and typically also the [tt]run_pre[/tt] function will be there to load meta-data for the screen (allows HTML to start streaming while the screen code runs). The default entry point for a module must either not exist, or be named [tt]browse[/tt]. Do not hardcode defaults other than [tt]browse[/tt] as it will interfere with the page-link permission security and the URL scheme support.
+| All modules should be coded to use [tt]type[/tt] as the internal specifier of what 'screen' to show. The [tt]run[/tt] function should decide what function to call based on this parameter, and typically also the [tt]run_pre[/tt] function will be there to load metadata for the screen (allows HTML to start streaming while the screen code runs). The default entry point for a module must either not exist, or be named [tt]browse[/tt]. Do not hardcode defaults other than [tt]browse[/tt] as it will interfere with the page-link permission security and the URL scheme support.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Export metadata[/color]
@@ -485,7 +485,7 @@ Use only white-listed functions
 | Portability: PHP [tt]disabled_functions[/tt] option
 | Product development only
 | Code Quality Checker
-| In fact, don't assume any rarely-used function is available unless it is listed in the [tt]sources/phpstub.php[/tt] file (Code Quality Checker will check, no need to manually check). We have avoided many functions where web hosts often block using the PHP [tt]disable_functions[/tt] option. Use our [tt]php_function_allowed[/tt] function.
+| In fact, don't assume any rarely-used function is available unless it is listed in the [tt]sources/phpstub.php[/tt] file (Code Quality Checker will check, no need to manually check). We have avoided many functions where webhosts often block using the PHP [tt]disable_functions[/tt] option. Use our [tt]php_function_allowed[/tt] function.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Do not require cookies to be available on visitor machines[/color]
@@ -625,7 +625,7 @@ Don't write code that'll output PHP 'notice' errors
 | Usability
 | Composr development +
 | Manually
-| This convention makes emails easier to scan in an inbox and stops incorrect automatic threading.
+| This convention makes e-mails easier to scan in an inbox and stops incorrect automatic threading.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Allow initialisation functions to run twice
@@ -677,7 +677,7 @@ Call [tt]exit();[/tt] after your code runs
 | Compatibility
 | Product development only
 | Manually
-| If you do not explicitly exit your code then hosting using [tt]auto_append_file[/tt] could append junk to your XML/JSON, corrupting it. This is common on free web hosting plans.
+| If you do not explicitly exit your code then hosting using [tt]auto_append_file[/tt] could append junk to your XML/JSON, corrupting it. This is common on free webhosting plans.
 }
 
 [title="4"]Files[/title]
@@ -934,11 +934,11 @@ Don't use [tt]LIMIT[/tt] manually, use the API
 | This is the case for MySQL but does not necessarily hold true. Use [tt]db_get_first_id()[/tt] to find the number to use.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Use upper-case SQL keywords (e.g. [tt]WHERE[/tt] not [tt]where[/tt])[/color]
+[color="red"]Use upper case SQL keywords (e.g. [tt]WHERE[/tt] not [tt]where[/tt])[/color]
 | Consistency
 | Product development only
 | Manually
-| If you must write your own SQL, write SQL keywords in upper-case (e.g. [tt]SELECT[/tt], [tt]FROM[/tt], [tt]UPDATE[/tt], [tt]WHERE[/tt], [tt]LIKE[/tt], [tt]AND[/tt], [tt]OR[/tt]). This makes it easier to scan over them, and makes it look distinct from PHP code.
+| If you must write your own SQL, write SQL keywords in upper case (e.g. [tt]SELECT[/tt], [tt]FROM[/tt], [tt]UPDATE[/tt], [tt]WHERE[/tt], [tt]LIKE[/tt], [tt]AND[/tt], [tt]OR[/tt]). This makes it easier to scan over them, and makes it look distinct from PHP code.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use the correct forum API[/color]
@@ -966,7 +966,7 @@ Don't use [tt]LIMIT[/tt] manually, use the API
 | Stability
 | Product development only
 | Manually
-| Some web hosts will restrict SQL write permission if a database size limit is exceeded, so any routine write queries should have the [tt]$fail_ok[/tt] option set so that it doesn't take the whole site down.
+| Some webhosts will restrict SQL write permission if a database size limit is exceeded, so any routine write queries should have the [tt]$fail_ok[/tt] option set so that it doesn't take the whole site down.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Stay within common denominator of limits
@@ -1074,11 +1074,11 @@ Here are some guidelines for designing/naming templates...
 ! Notes
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-Templates should be named in upper-case
+Templates should be named in upper case
 | Portability
 | Composr development +
 | Composr development mode
-| Case sensitive file systems mean we want a strong convention. There may be a few exceptions, particularly CSS and JavaScript templates are all lower-case except for includes (which are upper-case).
+| Case sensitive file systems mean we want a strong convention. There may be a few exceptions, particularly CSS and JavaScript templates are all lower case except for includes (which are upper case).
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Use [tt]_SCREEN[/tt] templates
@@ -1427,7 +1427,7 @@ If you are writing regular expressions to extract data from HTML, you should ant
 | 
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]...that tags may be written in upper-case[/color]
+[color="red"]...that tags may be written in upper case[/color]
 | 
 | 
 | 
@@ -2242,17 +2242,17 @@ Fix any strict warnings
 | Usability
 | Composr development +
 | Manually (although if you try and call from the global scope the [tt]web_resources.php[/tt] test will complain)
-| Better styling, no issues with popup blockers, no issues on full-screen UIs and tablets with poor window management.
+| Better styling, no issues with pop-up blockers, no issues on full-screen UIs and tablets with poor window management.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Don't rely on [tt]window.focus[/tt] / [tt]window.print[/tt] / [tt]window.scrollTo[/tt] / [tt]window.scrollBy[/tt] / [tt]window.resizeTo[/tt] / [tt]window.resizeBy[/tt] / [tt]window.moveTo[/tt] / [tt]window.moveBy[/tt] existing[/color]
 | Stability
 | Composr development +
 | Manually
-| Popup blockers may remove this functionality, setting them to null. You must catch exceptions over the calls.
+| Pop-up blockers may remove this functionality, setting them to null. You must catch exceptions over the calls.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]It's written JavaScript not Javascript or ECMAScript[/color]
+[color="red"]It's written JavaScript not [tt]Javascript[/tt] or [tt]ECMAScript[/tt][/color]
 | Standards compliance
 | Product development only
 | Manually

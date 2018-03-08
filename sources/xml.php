@@ -97,20 +97,10 @@ function xmlentities($string, $charset = null)
  */
 function convert_bad_entities($data, $charset = 'ISO-8859-1')
 {
-    if (defined('ENT_HTML401')) { // PHP5.4+, we must explicitly give the charset, but when we do it helps us
-        if ((strtoupper($charset) != 'ISO-8859-1') && (strtolower($charset) != 'utf-8')) {
-            $charset = 'ISO-8859-1';
-        }
-        $table = array_flip(get_html_translation_table(HTML_ENTITIES, ENT_COMPAT | ENT_HTML401, $charset));
-    } else {
-        $table = array_flip(get_html_translation_table(HTML_ENTITIES));
-
-        if (strtolower($charset) == 'utf-8') {
-            foreach ($table as $x => $y) {
-                $table[$x] = utf8_encode($y);
-            }
-        }
+    if ((strtoupper($charset) != 'ISO-8859-1') && (strtolower($charset) != 'utf-8')) {
+        $charset = 'ISO-8859-1';
     }
+    $table = array_flip(get_html_translation_table(HTML_ENTITIES, ENT_COMPAT | ENT_HTML401, $charset));
 
     unset($table['&amp;']);
     unset($table['&gt;']);
@@ -159,7 +149,7 @@ class CMS_simple_xml_reader
         $xml_parser = @xml_parser_create_ns();
         if ($xml_parser === false) {
             $this->error = do_lang_tempcode('XML_PARSING_NOT_SUPPORTED');
-            return; // PHP5 default build on windows comes with this function disabled, so we need to be able to escape on error
+            return; // PHP 5 default build on windows comes with this function disabled, so we need to be able to escape on error
         }
         xml_set_object($xml_parser, $this);
         @xml_parser_set_option($xml_parser, XML_OPTION_TARGET_ENCODING, get_charset());

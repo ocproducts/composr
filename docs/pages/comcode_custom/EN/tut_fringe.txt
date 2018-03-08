@@ -168,7 +168,9 @@ You may wish to set up profiles on popular social media sites, such as:
 
 You may also wish to have a presence on question and answer sites, such as:
  - Quora
- - Stack Overflow
+ - Stack Exchange
+
+We have built a spreadsheet [url="tracking how Composr can integrate"]https://docs.google.com/spreadsheets/d/1_yaJeGzDIsxq33I7Wg9I-lTBDk3YS22WPBwJ971v5tI/[/url] with different 3rd party websites.
 
 [title="2"]See also[/title]
 

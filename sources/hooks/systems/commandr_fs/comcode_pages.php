@@ -60,7 +60,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
                 if (strpos($label, ':') !== false) {
                     list($zone, $page) = explode(':', $label, 2);
                     $where = array('the_zone' => $zone, 'the_page' => $page);
-                } else { // comcode_page is the only Resource-FS hook where a codename-based-label going in may not go out. Fortunately a missing ':' fully implies that we can/should do a partial search, as no missing colon will be there for a label that ended up in-direct-use.
+                } else { // comcode_page is the only Resource-fs hook where a codename-based-label going in may not go out. Fortunately a missing ':' fully implies that we can/should do a partial search, as no missing colon will be there for a label that ended up in-direct-use.
                     $page = $label;
                     $where = array('the_page' => $page);
                 }

@@ -38,7 +38,7 @@ function init__images()
 }
 
 /**
- * Find image dimensions. Better than PHP's built in getimagesize as it gets the correct size for animated gifs.
+ * Find image dimensions. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
  *
  * @param  string $path Either a filesystem path or an absolute URL
  * @return ~array The width and height (false: error)

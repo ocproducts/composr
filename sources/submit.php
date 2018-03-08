@@ -98,7 +98,7 @@ function send_validation_request($type, $table, $non_integer_id, $id, $url, $mem
         if (array_key_exists('db_title', $good)) {
             $title = $rows[0][$good['db_title']];
             if ($good['db_title_dereference']) {
-                $title = get_translated_text($title, $db); // May actually be comcode (can't be certain), but in which case it will be shown as source
+                $title = get_translated_text($title, $db); // May actually be Comcode (can't be certain), but in which case it will be shown as source
             }
         } else {
             $title = '#' . (is_integer($id) ? strval($id) : $id);

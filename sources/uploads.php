@@ -581,7 +581,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
  */
 function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_type = 15, $accept_errors = false)
 {
-    // Security check against naughty url's
+    // Security check against naughty URLs
     $url = array();
     $url[0] = /*filter_naughty*/(post_param_string($specify_name));
     $url[1] = rawurldecode(basename($url[0]));

@@ -1952,7 +1952,7 @@
         try {
             scrollBy(0, dist);
         } catch (e) {
-            return; // May be stopped by popup blocker
+            return; // May be stopped by pop-up blocker
         }
 
         setTimeout(function () {

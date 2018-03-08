@@ -20,6 +20,8 @@ class missing_colour_equations_test_set extends cms_test_case
 {
     public function testMissingColourEquations()
     {
+        require_code('files2');
+
         $dont_check = array(
             'commandr.css',
             'install.css',
@@ -31,24 +33,21 @@ class missing_colour_equations_test_set extends cms_test_case
             'jquery_ui.css',
         );
 
-        $dh = opendir(get_file_base() . '/themes/default/css');
-        while (($file = readdir($dh)) !== false) {
-            if (substr($file, -4) == '.css') {
-                if (in_array($file, $dont_check)) {
-                    continue;
-                }
+        $files = get_directory_contents(get_file_base() . '/themes/default/css', get_file_base() . '/themes/default/css', null, false, true, array('css'));
+        foreach ($files as $path) {
+            if (in_array(basename($path), $dont_check)) {
+                continue;
+            }
 
-                $c = file_get_contents(get_file_base() . '/themes/default/css/' . $file);
-                $matches = array();
-                $count = preg_match_all('/^.+(\#[0-9A-Fa-f]{3,6})(.*)$/m', $c, $matches);
-                for ($i = 0; $i < $count; $i++) {
-                    if (strpos($matches[0][$i], '{$') === false) {
-                        $line = substr_count(substr($c, 0, strpos($c, $matches[0][$i])), "\n") + 1;
-                        $this->assertTrue(false, 'Missing colour equation in ' . $file . ':' . strval($line) . ' for ' . $matches[1][$i]);
-                    }
+            $c = file_get_contents($path);
+            $matches = array();
+            $count = preg_match_all('/^.+(\#[0-9A-Fa-f]{3,6})(.*)$/m', $c, $matches);
+            for ($i = 0; $i < $count; $i++) {
+                if (strpos($matches[0][$i], '{$') === false) {
+                    $line = substr_count(substr($c, 0, strpos($c, $matches[0][$i])), "\n") + 1;
+                    $this->assertTrue(false, 'Missing colour equation in ' . $path . ':' . strval($line) . ' for ' . $matches[1][$i]);
                 }
             }
         }
-        closedir($dh);
     }
 }
