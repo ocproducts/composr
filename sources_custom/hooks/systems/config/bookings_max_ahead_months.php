@@ -47,6 +47,10 @@ class Hook_config_bookings_max_ahead_months
      */
     public function get_default()
     {
+        if (!addon_installed('booking')) {
+            return null;
+        }
+
         return '36';
     }
 }

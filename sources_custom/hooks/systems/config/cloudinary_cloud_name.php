@@ -47,6 +47,10 @@ class Hook_config_cloudinary_cloud_name
      */
     public function get_default()
     {
+        if (!addon_installed('cloudinary')) {
+            return null;
+        }
+
         return '';
     }
 }

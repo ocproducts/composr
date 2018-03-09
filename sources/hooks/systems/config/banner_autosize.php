@@ -53,6 +53,10 @@ class Hook_config_banner_autosize
      */
     public function get_default()
     {
+        if (!addon_installed('banners')) {
+            return null;
+        }
+
         return '0';
     }
 }

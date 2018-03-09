@@ -53,6 +53,10 @@ class Hook_config_is_on_banner_buy
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return (!addon_installed('banners')) ? null : ((get_site_default_lang() == fallback_lang()) ? '1' : '0');
     }
 }

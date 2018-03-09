@@ -47,6 +47,10 @@ class Hook_config_photobucket_client_id
      */
     public function get_default()
     {
+        if (!addon_installed('image_syndication')) {
+            return null;
+        }
+
         return '';
     }
 }

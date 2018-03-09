@@ -48,6 +48,10 @@ class Hook_config_mentor_usergroup
      */
     public function get_default()
     {
+        if (!addon_installed('mentorr')) {
+            return null;
+        }
+
         return do_lang('SUPER_MODERATORS');
     }
 }

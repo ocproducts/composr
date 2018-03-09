@@ -53,6 +53,10 @@ class Hook_config_enable_skip_sig
      */
     public function get_default()
     {
+        if (!addon_installed('cns_signatures')) {
+            return null;
+        }
+
         return '0';
     }
 }

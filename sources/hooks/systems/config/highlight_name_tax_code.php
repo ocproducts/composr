@@ -54,6 +54,10 @@ class Hook_config_highlight_name_tax_code
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return (get_forum_type() != 'cns') ? null : '0%';
     }
 }

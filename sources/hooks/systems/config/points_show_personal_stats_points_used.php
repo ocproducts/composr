@@ -53,6 +53,10 @@ class Hook_config_points_show_personal_stats_points_used
      */
     public function get_default()
     {
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         return '0';
     }
 }

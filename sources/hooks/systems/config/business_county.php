@@ -54,6 +54,10 @@ class Hook_config_business_county
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         require_code('locations');
         return geolocate_ip();
     }

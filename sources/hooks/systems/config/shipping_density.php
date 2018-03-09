@@ -54,6 +54,10 @@ class Hook_config_shipping_density
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         require_code('locations');
         if (geolocate_ip() == 'US') {
             return '139.0'; // 139 in3/lb (https://en.wikipedia.org/wiki/Dimensional_weight)

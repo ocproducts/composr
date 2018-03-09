@@ -53,6 +53,10 @@ class Hook_config_hc_page_size_threshold
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         return '1000';
     }
 }

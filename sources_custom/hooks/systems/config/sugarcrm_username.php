@@ -48,6 +48,10 @@ class Hook_config_sugarcrm_username
      */
     public function get_default()
     {
+        if (!addon_installed('sugarcrm')) {
+            return null;
+        }
+
         return 'admin';
     }
 }

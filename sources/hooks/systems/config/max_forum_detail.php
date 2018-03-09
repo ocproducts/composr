@@ -53,6 +53,10 @@ class Hook_config_max_forum_detail
      */
     public function get_default()
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         return (get_forum_type() != 'cns') ? null : '100';
     }
 }

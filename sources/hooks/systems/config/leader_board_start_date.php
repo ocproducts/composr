@@ -53,6 +53,10 @@ class Hook_config_leader_board_start_date
      */
     public function get_default()
     {
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         return strval(website_creation_time());
     }
 }

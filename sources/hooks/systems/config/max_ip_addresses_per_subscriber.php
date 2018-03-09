@@ -53,6 +53,10 @@ class Hook_config_max_ip_addresses_per_subscriber
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }

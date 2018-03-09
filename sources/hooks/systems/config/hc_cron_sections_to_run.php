@@ -54,6 +54,10 @@ class Hook_config_hc_cron_sections_to_run
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         return '';
     }
 

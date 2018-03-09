@@ -53,6 +53,10 @@ class Hook_config_chat_private_room_deletion_time
      */
     public function get_default()
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         return '1440';
     }
 }

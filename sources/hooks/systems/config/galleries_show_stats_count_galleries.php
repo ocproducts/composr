@@ -53,6 +53,10 @@ class Hook_config_galleries_show_stats_count_galleries
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return addon_installed('stats_block') ? '0' : null;
     }
 }

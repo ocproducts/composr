@@ -53,6 +53,10 @@ class Hook_config_points_RECOMMEND_SITE
      */
     public function get_default()
     {
+        if (!addon_installed('recommend')) {
+            return null;
+        }
+
         return addon_installed('points') ? '350' : null;
     }
 }

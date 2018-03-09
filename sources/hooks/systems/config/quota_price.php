@@ -54,6 +54,10 @@ class Hook_config_quota_price
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '0.04';
     }
 }

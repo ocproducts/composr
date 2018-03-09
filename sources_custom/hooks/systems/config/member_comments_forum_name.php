@@ -48,6 +48,10 @@ class Hook_config_member_comments_forum_name
      */
     public function get_default()
     {
+        if (!addon_installed('member_comments')) {
+            return null;
+        }
+
         return do_lang('member_comments:MEMBER_COMMENTS_FORUM_NAME', '', '', '', get_site_default_lang());
     }
 }

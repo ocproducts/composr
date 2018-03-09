@@ -53,6 +53,10 @@ class Hook_config_chat_max_messages_to_show
      */
     public function get_default()
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         return '50';
     }
 }

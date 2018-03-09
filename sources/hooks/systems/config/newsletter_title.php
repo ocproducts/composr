@@ -54,6 +54,10 @@ class Hook_config_newsletter_title
      */
     public function get_default()
     {
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         return get_option('site_name') . ' ' . cms_mb_strtolower(do_lang('newsletter:NEWSLETTER'));
     }
 }

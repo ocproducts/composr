@@ -52,6 +52,10 @@ class Hook_config_sitewide_im
      */
     public function get_default()
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         return '0';
     }
 }

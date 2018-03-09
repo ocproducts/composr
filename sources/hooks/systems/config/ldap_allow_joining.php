@@ -53,6 +53,10 @@ class Hook_config_ldap_allow_joining
      */
     public function get_default()
     {
+        if (!addon_installed('ldap')) {
+            return null;
+        }
+
         return '0';
     }
 }

@@ -53,6 +53,10 @@ class Hook_config_newsletter_allow_ext_images
      */
     public function get_default()
     {
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         return '0';
     }
 }

@@ -53,6 +53,10 @@ class Hook_config_search_cns_own_pt
      */
     public function get_default()
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         if (!addon_installed('search')) {
             return null;
         }

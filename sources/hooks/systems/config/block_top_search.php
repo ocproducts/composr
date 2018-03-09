@@ -53,6 +53,10 @@ class Hook_config_block_top_search
      */
     public function get_default()
     {
+        if (!addon_installed('search')) {
+            return null;
+        }
+
         return '1';
     }
 }

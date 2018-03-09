@@ -54,6 +54,10 @@ class Hook_config_maximum_download
      */
     public function get_default()
     {
+        if (!addon_installed('downloads')) {
+            return null;
+        }
+
         return '15';
     }
 }

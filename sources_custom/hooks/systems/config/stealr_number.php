@@ -47,6 +47,10 @@ class Hook_config_stealr_number
      */
     public function get_default()
     {
+        if (!addon_installed('stealr')) {
+            return null;
+        }
+
         return '1';
     }
 }

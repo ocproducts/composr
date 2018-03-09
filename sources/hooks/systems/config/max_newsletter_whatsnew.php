@@ -54,6 +54,10 @@ class Hook_config_max_newsletter_whatsnew
      */
     public function get_default()
     {
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         return '300';
     }
 }

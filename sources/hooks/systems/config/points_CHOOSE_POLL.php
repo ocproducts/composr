@@ -53,6 +53,10 @@ class Hook_config_points_CHOOSE_POLL
      */
     public function get_default()
     {
+        if (!addon_installed('polls')) {
+            return null;
+        }
+
         return addon_installed('points') ? '35' : null;
     }
 }

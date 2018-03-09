@@ -53,6 +53,10 @@ class Hook_config_points_per_currency_unit
      */
     public function get_default()
     {
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         return addon_installed('ecommerce') ? '100.0' : null;
     }
 }

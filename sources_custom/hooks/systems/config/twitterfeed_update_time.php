@@ -47,6 +47,10 @@ class Hook_config_twitterfeed_update_time
      */
     public function get_default()
     {
+        if (!addon_installed('twitter_feed_integration_block')) {
+            return null;
+        }
+
         return '30';
     }
 }

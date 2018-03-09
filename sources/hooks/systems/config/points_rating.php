@@ -53,6 +53,10 @@ class Hook_config_points_rating
      */
     public function get_default()
     {
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         return '5';
     }
 }

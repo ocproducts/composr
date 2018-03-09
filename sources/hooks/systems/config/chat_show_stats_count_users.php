@@ -53,6 +53,10 @@ class Hook_config_chat_show_stats_count_users
      */
     public function get_default()
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         return addon_installed('stats_block') ? '0' : null;
     }
 }

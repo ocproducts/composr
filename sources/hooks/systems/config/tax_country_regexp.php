@@ -54,6 +54,10 @@ class Hook_config_tax_country_regexp
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '';
     }
 }

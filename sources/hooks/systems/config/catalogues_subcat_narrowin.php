@@ -53,6 +53,10 @@ class Hook_config_catalogues_subcat_narrowin
      */
     public function get_default()
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         return '0';
     }
 }

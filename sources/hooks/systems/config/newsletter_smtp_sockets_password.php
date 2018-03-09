@@ -54,6 +54,10 @@ class Hook_config_newsletter_smtp_sockets_password
      */
     public function get_default()
     {
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         if (!php_function_allowed('fsockopen')) {
             return null;
         }

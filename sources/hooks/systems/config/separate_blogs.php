@@ -54,6 +54,10 @@ class Hook_config_separate_blogs
      */
     public function get_default()
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         return '0';
     }
 }

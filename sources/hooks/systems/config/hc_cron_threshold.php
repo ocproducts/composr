@@ -54,6 +54,10 @@ class Hook_config_hc_cron_threshold
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         return strval(5 * 60);
     }
 }

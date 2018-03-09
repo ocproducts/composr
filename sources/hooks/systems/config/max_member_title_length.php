@@ -53,6 +53,10 @@ class Hook_config_max_member_title_length
      */
     public function get_default()
     {
+        if (!addon_installed('cns_member_titles')) {
+            return null;
+        }
+
         return '20';
     }
 }

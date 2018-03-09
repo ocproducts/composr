@@ -48,6 +48,10 @@ class Hook_config_sugarcrm_composr_company_field
      */
     public function get_default()
     {
+        if (!addon_installed('sugarcrm')) {
+            return null;
+        }
+
         return 'Company';
     }
 }

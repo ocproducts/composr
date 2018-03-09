@@ -47,6 +47,10 @@ class Hook_config_jestr_string_changes
      */
     public function get_default()
     {
+        if (!addon_installed('jestr')) {
+            return null;
+        }
+
         return "it's=its\nits=it's";
     }
 }

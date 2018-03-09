@@ -54,6 +54,10 @@ class Hook_config_hc_processes_to_monitor
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         $processes = array(
             'php\d*(\.dSYM)?',
             //'php\d*-cgi(\.dSYM)?',    Might be FastCGI

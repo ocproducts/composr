@@ -53,6 +53,10 @@ class Hook_config_store_revisions
      */
     public function get_default()
     {
+        if (!addon_installed('actionlog')) {
+            return null;
+        }
+
         return '1';
     }
 }

@@ -54,6 +54,10 @@ class Hook_config_hc_io_mbs
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         return '10.0';
     }
 }

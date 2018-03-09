@@ -48,6 +48,10 @@ class Hook_config_sugarcrm_messaging_mappings
      */
     public function get_default()
     {
+        if (!addon_installed('sugarcrm')) {
+            return null;
+        }
+
         return "post=description
 phone=phone_work
 website=website

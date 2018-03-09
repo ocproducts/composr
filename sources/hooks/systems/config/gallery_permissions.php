@@ -53,6 +53,10 @@ class Hook_config_gallery_permissions
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return '1';
     }
 }

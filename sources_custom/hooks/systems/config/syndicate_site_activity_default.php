@@ -48,6 +48,10 @@ class Hook_config_syndicate_site_activity_default
      */
     public function get_default()
     {
+        if (!addon_installed('activity_feed')) {
+            return null;
+        }
+
         return '';
     }
 }

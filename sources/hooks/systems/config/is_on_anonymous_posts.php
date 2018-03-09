@@ -53,6 +53,10 @@ class Hook_config_is_on_anonymous_posts
      */
     public function get_default()
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         return '1';
     }
 }

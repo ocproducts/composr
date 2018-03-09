@@ -48,6 +48,10 @@ class Hook_config_sugarcrm_member_mappings
      */
     public function get_default()
     {
+        if (!addon_installed('sugarcrm')) {
+            return null;
+        }
+
         return "Job Title=title
 (Web Site)=lead_source
 [_lead_source_description]=lead_source_description

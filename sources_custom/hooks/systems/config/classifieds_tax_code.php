@@ -47,6 +47,10 @@ class Hook_config_classifieds_tax_code
      */
     public function get_default()
     {
+        if (!addon_installed('classified_ads')) {
+            return null;
+        }
+
         return '0%';
     }
 }

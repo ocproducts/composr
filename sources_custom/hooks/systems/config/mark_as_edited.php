@@ -47,6 +47,10 @@ class Hook_config_mark_as_edited
      */
     public function get_default()
     {
+        if (!addon_installed('cns_tapatalk')) {
+            return null;
+        }
+
         return '1';
     }
 }

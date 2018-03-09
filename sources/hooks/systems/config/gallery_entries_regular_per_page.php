@@ -53,6 +53,10 @@ class Hook_config_gallery_entries_regular_per_page
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return '30';
     }
 }

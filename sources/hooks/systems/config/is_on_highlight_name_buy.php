@@ -53,6 +53,10 @@ class Hook_config_is_on_highlight_name_buy
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return ((get_forum_type() != 'cns') || (get_option('enable_highlight_name') == '0')) ? null : '1';
     }
 }

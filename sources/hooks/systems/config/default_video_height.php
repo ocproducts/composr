@@ -54,6 +54,10 @@ class Hook_config_default_video_height
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return '385';
     }
 }

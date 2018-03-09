@@ -47,6 +47,10 @@ class Hook_config_notification_codes_for_mobile
      */
     public function get_default()
     {
+        if (!addon_installed('composr_mobile_sdk')) {
+            return null;
+        }
+
         return 'cns_topic,like,comment_posted,cns_new_pt,cns_topic_invite,chat,activity,im_invited';
     }
 }

@@ -53,6 +53,10 @@ class Hook_config_catalogue_subcats_per_page
      */
     public function get_default()
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         return '30';
     }
 }

@@ -54,6 +54,10 @@ class Hook_config_banner_hit_price
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return (!addon_installed('banners')) ? null : '0.40';
     }
 }

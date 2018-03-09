@@ -53,6 +53,10 @@ class Hook_config_immediate_downloads
      */
     public function get_default()
     {
+        if (!addon_installed('downloads')) {
+            return null;
+        }
+
         return '0';
     }
 }

@@ -47,6 +47,10 @@ class Hook_config_max_classified_listings_per_page
      */
     public function get_default()
     {
+        if (!addon_installed('classified_ads')) {
+            return null;
+        }
+
         return '30';
     }
 }

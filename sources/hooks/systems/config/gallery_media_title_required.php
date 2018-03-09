@@ -53,6 +53,10 @@ class Hook_config_gallery_media_title_required
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return '1';
     }
 }

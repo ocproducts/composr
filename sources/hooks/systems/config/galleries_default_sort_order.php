@@ -53,6 +53,10 @@ class Hook_config_galleries_default_sort_order
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return 'add_date DESC';
     }
 }

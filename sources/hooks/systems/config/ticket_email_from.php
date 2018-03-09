@@ -54,6 +54,10 @@ class Hook_config_ticket_email_from
      */
     public function get_default()
     {
+        if (!addon_installed('tickets')) {
+            return null;
+        }
+
         if (GOOGLE_APPENGINE) {
             return 'tickets@appid.appspotmail.com';
         }

@@ -54,6 +54,10 @@ class Hook_config_hc_requests_window_size
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         return '20';
     }
 }

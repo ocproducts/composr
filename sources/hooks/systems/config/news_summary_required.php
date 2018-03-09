@@ -53,6 +53,10 @@ class Hook_config_news_summary_required
      */
     public function get_default()
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         return '0';
     }
 }

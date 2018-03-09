@@ -49,6 +49,10 @@ class Hook_config_confluence_password
      */
     public function get_default()
     {
+        if (!addon_installed('confluence')) {
+            return null;
+        }
+
         return '';
     }
 }

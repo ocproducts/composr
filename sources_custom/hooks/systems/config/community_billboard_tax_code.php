@@ -48,6 +48,10 @@ class Hook_config_community_billboard_tax_code
      */
     public function get_default()
     {
+        if (!addon_installed('community_billboard')) {
+            return null;
+        }
+
         return '0%';
     }
 }

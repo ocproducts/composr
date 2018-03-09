@@ -53,6 +53,10 @@ class Hook_config_ticket_auto_assign
      */
     public function get_default()
     {
+        if (!addon_installed('tickets')) {
+            return null;
+        }
+
         return '0';
     }
 }

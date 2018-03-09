@@ -54,6 +54,10 @@ class Hook_config_intro_forum_id
      */
     public function get_default()
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         return '';
     }
 }

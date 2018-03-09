@@ -47,6 +47,10 @@ class Hook_config_youtube_channel_block_update_time
      */
     public function get_default()
     {
+        if (!addon_installed('youtube_channel_integration_block')) {
+            return null;
+        }
+
         return '60';
     }
 }

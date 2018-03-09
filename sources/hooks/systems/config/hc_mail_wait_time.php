@@ -54,6 +54,10 @@ class Hook_config_hc_mail_wait_time
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         if (!function_exists('imap_open')) {
             return null;
         }

@@ -48,6 +48,10 @@ class Hook_config_video_sync_transcoding
      */
     public function get_default()
     {
+        if (!addon_installed('gallery_syndication')) {
+            return null;
+        }
+
         require_lang('gallery_syndication');
         return do_lang('SYND_LOCAL', null, null, null, fallback_lang());
     }

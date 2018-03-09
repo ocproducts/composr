@@ -53,6 +53,10 @@ class Hook_config_forum_show_stats_count_posts
      */
     public function get_default()
     {
+        if (!addon_installed('stats_block')) {
+            return null;
+        }
+
         return '1';
     }
 }

@@ -54,6 +54,10 @@ class Hook_config_ecom_price_honour_time
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '14';
     }
 }

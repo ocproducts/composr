@@ -53,6 +53,10 @@ class Hook_config_points_per_daily_visit
      */
     public function get_default()
     {
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         if (!addon_installed('stats')) {
             return null;
         }

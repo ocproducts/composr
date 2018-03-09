@@ -53,6 +53,10 @@ class Hook_config_points_chat
      */
     public function get_default()
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         return addon_installed('points') ? '1' : null;
     }
 }

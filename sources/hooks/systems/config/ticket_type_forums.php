@@ -53,6 +53,10 @@ class Hook_config_ticket_type_forums
      */
     public function get_default()
     {
+        if (!addon_installed('tickets')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }

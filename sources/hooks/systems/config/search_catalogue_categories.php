@@ -53,6 +53,10 @@ class Hook_config_search_catalogue_categories
      */
     public function get_default()
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         if (!addon_installed('search')) {
             return null;
         }

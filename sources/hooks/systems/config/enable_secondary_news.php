@@ -53,6 +53,10 @@ class Hook_config_enable_secondary_news
      */
     public function get_default()
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         return '0';
     }
 }

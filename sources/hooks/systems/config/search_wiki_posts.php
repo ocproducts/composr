@@ -53,6 +53,10 @@ class Hook_config_search_wiki_posts
      */
     public function get_default()
     {
+        if (!addon_installed('wiki')) {
+            return null;
+        }
+
         if (!addon_installed('search')) {
             return null;
         }

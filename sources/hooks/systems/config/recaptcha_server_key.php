@@ -54,6 +54,10 @@ class Hook_config_recaptcha_server_key
      */
     public function get_default()
     {
+        if (!addon_installed('captcha')) {
+            return null;
+        }
+
         return '';
     }
 }

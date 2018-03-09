@@ -53,6 +53,10 @@ class Hook_config_store_credit_card_numbers
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '0';
     }
 }

@@ -54,6 +54,10 @@ class Hook_config_mails_per_send
      */
     public function get_default()
     {
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         return '60';
     }
 }

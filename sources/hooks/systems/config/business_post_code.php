@@ -54,6 +54,10 @@ class Hook_config_business_post_code
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '';
     }
 }

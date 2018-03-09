@@ -53,6 +53,10 @@ class Hook_config_points_ADD_IMAGE
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return addon_installed('points') ? '100' : null;
     }
 }

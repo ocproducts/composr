@@ -53,6 +53,10 @@ class Hook_config_hc_scan_page_links
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         return ":\n:sitemap";
     }
 }

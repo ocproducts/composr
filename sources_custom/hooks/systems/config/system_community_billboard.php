@@ -47,6 +47,10 @@ class Hook_config_system_community_billboard
      */
     public function get_default()
     {
+        if (!addon_installed('community_billboard')) {
+            return null;
+        }
+
         return '';
     }
 }

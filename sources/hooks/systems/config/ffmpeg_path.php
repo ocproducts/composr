@@ -54,6 +54,10 @@ class Hook_config_ffmpeg_path
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         if (GOOGLE_APPENGINE) {
             return null;
         }

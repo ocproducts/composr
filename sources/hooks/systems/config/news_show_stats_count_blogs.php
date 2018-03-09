@@ -53,6 +53,10 @@ class Hook_config_news_show_stats_count_blogs
      */
     public function get_default()
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         return addon_installed('stats_block') ? '0' : null;
     }
 }

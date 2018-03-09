@@ -53,6 +53,10 @@ class Hook_config_captcha_single_guess
      */
     public function get_default()
     {
+        if (!addon_installed('captcha')) {
+            return null;
+        }
+
         return '0';
     }
 }

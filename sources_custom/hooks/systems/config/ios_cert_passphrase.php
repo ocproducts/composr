@@ -47,6 +47,10 @@ class Hook_config_ios_cert_passphrase
      */
     public function get_default()
     {
+        if (!addon_installed('composr_mobile_sdk')) {
+            return null;
+        }
+
         return '';
     }
 }

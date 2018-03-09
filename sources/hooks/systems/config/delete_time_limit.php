@@ -53,6 +53,10 @@ class Hook_config_delete_time_limit
      */
     public function get_default()
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         return '15';
     }
 }

@@ -48,6 +48,10 @@ class Hook_config_sugarcrm_member_sync_types
      */
     public function get_default()
     {
+        if (!addon_installed('sugarcrm')) {
+            return null;
+        }
+
         return 'both';
     }
 }

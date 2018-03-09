@@ -53,6 +53,10 @@ class Hook_config_bottom_show_commandr_button
      */
     public function get_default()
     {
+        if (!addon_installed('commandr')) {
+            return null;
+        }
+
         return (get_file_base() != get_custom_file_base()) ? '0' : '1';
     }
 }

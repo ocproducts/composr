@@ -54,6 +54,10 @@ class Hook_config_business_state
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         if ((get_option('cpf_enable_state') == '0') && (get_option('business_country') != 'US')) {
             return null;
         }

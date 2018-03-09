@@ -53,6 +53,10 @@ class Hook_config_search_quiz
      */
     public function get_default()
     {
+        if (!addon_installed('quizzes')) {
+            return null;
+        }
+
         if (!addon_installed('search')) {
             return null;
         }

@@ -48,6 +48,10 @@ class Hook_config_community_billboard_price_points
      */
     public function get_default()
     {
+        if (!addon_installed('community_billboard')) {
+            return null;
+        }
+
         if (!addon_installed('points')) {
             return null;
         }

@@ -53,6 +53,10 @@ class Hook_config_cart_hold_hours
      */
     public function get_default()
     {
+        if (!addon_installed('shopping')) {
+            return null;
+        }
+
         return '24';
     }
 }

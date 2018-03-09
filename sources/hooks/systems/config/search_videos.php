@@ -53,6 +53,10 @@ class Hook_config_search_videos
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         if (!addon_installed('search')) {
             return null;
         }

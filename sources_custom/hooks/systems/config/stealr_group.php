@@ -47,6 +47,10 @@ class Hook_config_stealr_group
      */
     public function get_default()
     {
+        if (!addon_installed('stealr')) {
+            return null;
+        }
+
         return do_lang('MEMBER');
     }
 }

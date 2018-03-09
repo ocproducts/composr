@@ -54,6 +54,10 @@ class Hook_config_topic_pin_price
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return has_no_forum() ? null : '1.00';
     }
 }

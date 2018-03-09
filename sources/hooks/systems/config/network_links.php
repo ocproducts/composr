@@ -53,6 +53,10 @@ class Hook_config_network_links
      */
     public function get_default()
     {
+        if (!addon_installed('msn')) {
+            return null;
+        }
+
         return get_base_url() . '/data/netlink.php';
     }
 }

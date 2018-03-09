@@ -54,6 +54,10 @@ class Hook_config_tax_system
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return (get_option('yeehaw') == '1') ? 'TAX_SALES' : 'TAX_VAT';
     }
 }

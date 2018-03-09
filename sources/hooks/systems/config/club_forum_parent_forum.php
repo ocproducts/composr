@@ -53,6 +53,10 @@ class Hook_config_club_forum_parent_forum
      */
     public function get_default()
     {
+        if (!addon_installed('cns_clubs')) {
+            return null;
+        }
+
         return strval(db_get_first_id());
     }
 }

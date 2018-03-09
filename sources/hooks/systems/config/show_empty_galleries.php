@@ -54,6 +54,10 @@ class Hook_config_show_empty_galleries
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return '1';
     }
 }

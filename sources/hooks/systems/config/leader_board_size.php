@@ -53,6 +53,10 @@ class Hook_config_leader_board_size
      */
     public function get_default()
     {
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         return '5';
     }
 }

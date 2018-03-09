@@ -47,6 +47,10 @@ class Hook_config_points_for_thanking
      */
     public function get_default()
     {
+        if (!addon_installed('cns_tapatalk')) {
+            return null;
+        }
+
         return '10';
     }
 }

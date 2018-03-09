@@ -54,6 +54,10 @@ class Hook_config_hc_io_pct_threshold
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         if (strpos(PHP_OS, 'Linux') === false) {
             return null;
         }

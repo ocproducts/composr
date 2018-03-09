@@ -47,6 +47,10 @@ class Hook_config_iotd_update_time
      */
     public function get_default()
     {
+        if (!addon_installed('iotds')) {
+            return null;
+        }
+
         return '24';
     }
 }

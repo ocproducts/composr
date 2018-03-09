@@ -47,6 +47,10 @@ class Hook_config_cloudinary_api_key
      */
     public function get_default()
     {
+        if (!addon_installed('cloudinary')) {
+            return null;
+        }
+
         return '';
     }
 }

@@ -54,6 +54,10 @@ class Hook_config_minutes_between_sends
      */
     public function get_default()
     {
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         return '10';
     }
 }

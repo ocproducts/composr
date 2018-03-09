@@ -47,6 +47,10 @@ class Hook_config_cloudinary_transfer_directories
      */
     public function get_default()
     {
+        if (!addon_installed('cloudinary')) {
+            return null;
+        }
+
         return "uploads/attachments\nuploads/galleries\nuploads/downloads";
     }
 }

@@ -53,6 +53,10 @@ class Hook_config_personal_under_members
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }

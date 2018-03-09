@@ -54,6 +54,10 @@ class Hook_config_shipping_distance_units
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         require_code('locations');
         if (geolocate_ip() == 'US') {
             return 'In';

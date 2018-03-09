@@ -54,6 +54,10 @@ class Hook_config_ticket_forum_name
      */
     public function get_default()
     {
+        if (!addon_installed('tickets')) {
+            return null;
+        }
+
         return do_lang('tickets:TICKET_FORUM_NAME', '', '', '', get_site_default_lang());
     }
 }

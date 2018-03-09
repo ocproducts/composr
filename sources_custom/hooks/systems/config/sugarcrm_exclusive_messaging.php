@@ -48,6 +48,10 @@ class Hook_config_sugarcrm_exclusive_messaging
      */
     public function get_default()
     {
+        if (!addon_installed('sugarcrm')) {
+            return null;
+        }
+
         return '0';
     }
 }

@@ -53,6 +53,10 @@ class Hook_config_ldap_is_enabled
      */
     public function get_default()
     {
+        if (!addon_installed('ldap')) {
+            return null;
+        }
+
         return '0';
     }
 }

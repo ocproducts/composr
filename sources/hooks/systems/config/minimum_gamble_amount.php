@@ -54,6 +54,10 @@ class Hook_config_minimum_gamble_amount
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         if (!addon_installed('points')) {
             return null;
         }

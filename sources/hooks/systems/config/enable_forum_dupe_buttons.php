@@ -53,6 +53,10 @@ class Hook_config_enable_forum_dupe_buttons
      */
     public function get_default()
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         return '1';
     }
 }

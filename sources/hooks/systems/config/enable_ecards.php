@@ -53,6 +53,10 @@ class Hook_config_enable_ecards
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return '0';
     }
 }

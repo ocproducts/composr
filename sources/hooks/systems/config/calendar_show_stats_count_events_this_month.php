@@ -53,6 +53,10 @@ class Hook_config_calendar_show_stats_count_events_this_month
      */
     public function get_default()
     {
+        if (!addon_installed('calendar')) {
+            return null;
+        }
+
         return addon_installed('stats_block') ? '0' : null;
     }
 }

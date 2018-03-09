@@ -53,6 +53,10 @@ class Hook_config_post_read_history_days
      */
     public function get_default()
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         return (get_forum_type() != 'cns') ? null : '21';
     }
 }

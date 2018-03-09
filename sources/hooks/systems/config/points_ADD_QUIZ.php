@@ -53,6 +53,10 @@ class Hook_config_points_ADD_QUIZ
      */
     public function get_default()
     {
+        if (!addon_installed('quizzes')) {
+            return null;
+        }
+
         return addon_installed('points') ? '0' : null;
     }
 }

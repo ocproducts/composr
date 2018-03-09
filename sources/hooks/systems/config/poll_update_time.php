@@ -53,6 +53,10 @@ class Hook_config_poll_update_time
      */
     public function get_default()
     {
+        if (!addon_installed('polls')) {
+            return null;
+        }
+
         return '168';
     }
 }

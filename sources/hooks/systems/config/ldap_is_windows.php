@@ -53,6 +53,10 @@ class Hook_config_ldap_is_windows
      */
     public function get_default()
     {
+        if (!addon_installed('ldap')) {
+            return null;
+        }
+
         return (DIRECTORY_SEPARATOR == '/') ? '0' : '1';
     }
 }

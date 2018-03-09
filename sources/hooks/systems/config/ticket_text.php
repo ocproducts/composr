@@ -54,6 +54,10 @@ class Hook_config_ticket_text
      */
     public function get_default()
     {
+        if (!addon_installed('tickets')) {
+            return null;
+        }
+
         return do_lang('tickets:NEW_TICKET_WELCOME');
     }
 }

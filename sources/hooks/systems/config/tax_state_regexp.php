@@ -54,6 +54,10 @@ class Hook_config_tax_state_regexp
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return (get_option('cpf_enable_state') == '1') ? '' : null;
     }
 }

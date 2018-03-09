@@ -47,6 +47,10 @@ class Hook_config_points_CHOOSE_IOTD
      */
     public function get_default()
     {
+        if (!addon_installed('iotds')) {
+            return null;
+        }
+
         return addon_installed('points') ? '35' : null;
     }
 }

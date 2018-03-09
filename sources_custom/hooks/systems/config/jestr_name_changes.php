@@ -47,6 +47,10 @@ class Hook_config_jestr_name_changes
      */
     public function get_default()
     {
+        if (!addon_installed('jestr')) {
+            return null;
+        }
+
         return "Angelic\nBaubles\nChristmas\nDasher\nEvergreen\nFestive\nGifted\nHoliday\nIcicles\nJolly\nKingly\nEnlightened\nMerry\nNoel\nOrnamental\nParty\nKingly\nRudolph\nSeasonal\nTinsel\nYuletide\nVisionary\nWiseman\nXmas\nYuletide\nXmas";
     }
 }

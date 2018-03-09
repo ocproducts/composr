@@ -54,6 +54,10 @@ class Hook_config_max_personal_gallery_videos_high
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return '50';
     }
 }

@@ -53,6 +53,10 @@ class Hook_config_ecommerce_test_mode
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '0';
     }
 }

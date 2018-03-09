@@ -47,6 +47,10 @@ class Hook_config_rules_topic_id
      */
     public function get_default()
     {
+        if (!addon_installed('cns_tapatalk')) {
+            return null;
+        }
+
         return '';
     }
 }

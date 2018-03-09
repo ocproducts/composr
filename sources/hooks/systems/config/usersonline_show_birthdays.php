@@ -53,6 +53,10 @@ class Hook_config_usersonline_show_birthdays
      */
     public function get_default()
     {
+        if (!addon_installed('users_online_block')) {
+            return null;
+        }
+
         return ((has_no_forum()) || (get_forum_type() != 'cns')) ? null : '0';
     }
 }

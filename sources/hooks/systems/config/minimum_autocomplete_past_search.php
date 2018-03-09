@@ -53,6 +53,10 @@ class Hook_config_minimum_autocomplete_past_search
      */
     public function get_default()
     {
+        if (!addon_installed('search')) {
+            return null;
+        }
+
         return '10';
     }
 }

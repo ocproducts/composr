@@ -53,6 +53,10 @@ class Hook_config_is_rss_advertised
      */
     public function get_default()
     {
+        if (!addon_installed('syndication_blocks')) {
+            return null;
+        }
+
         return '0';
     }
 }

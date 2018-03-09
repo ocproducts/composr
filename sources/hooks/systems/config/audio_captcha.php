@@ -53,6 +53,10 @@ class Hook_config_audio_captcha
      */
     public function get_default()
     {
+        if (!addon_installed('captcha')) {
+            return null;
+        }
+
         return '1';
     }
 }

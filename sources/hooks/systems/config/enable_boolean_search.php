@@ -53,6 +53,10 @@ class Hook_config_enable_boolean_search
      */
     public function get_default()
     {
+        if (!addon_installed('search')) {
+            return null;
+        }
+
         return '0';
     }
 }

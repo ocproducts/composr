@@ -54,6 +54,10 @@ class Hook_config_manual_subscription_expiry_notice
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '';
     }
 }

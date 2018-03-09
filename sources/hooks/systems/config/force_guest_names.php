@@ -53,6 +53,10 @@ class Hook_config_force_guest_names
      */
     public function get_default()
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         return '0';
     }
 }

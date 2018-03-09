@@ -53,6 +53,10 @@ class Hook_config_is_on_rss
      */
     public function get_default()
     {
+        if (!addon_installed('syndication_blocks')) {
+            return null;
+        }
+
         return '1';
     }
 }

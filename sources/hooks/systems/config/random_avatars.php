@@ -53,6 +53,10 @@ class Hook_config_random_avatars
      */
     public function get_default()
     {
+        if (!addon_installed('cns_member_avatars')) {
+            return null;
+        }
+
         return '1';
     }
 }

@@ -53,6 +53,10 @@ class Hook_config_hc_is_test_site
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         return '-1';
     }
 }

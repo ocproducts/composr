@@ -47,6 +47,10 @@ class Hook_config_stealr_type
      */
     public function get_default()
     {
+        if (!addon_installed('stealr')) {
+            return null;
+        }
+
         return 'Members that are inactive, but has lots points';
     }
 }

@@ -53,6 +53,10 @@ class Hook_config_search_polls
      */
     public function get_default()
     {
+        if (!addon_installed('polls')) {
+            return null;
+        }
+
         if (!addon_installed('search')) {
             return null;
         }

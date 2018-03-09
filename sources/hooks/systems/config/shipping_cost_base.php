@@ -54,6 +54,10 @@ class Hook_config_shipping_cost_base
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '10.00';
     }
 }

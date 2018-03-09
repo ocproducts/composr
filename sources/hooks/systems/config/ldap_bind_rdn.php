@@ -54,6 +54,10 @@ class Hook_config_ldap_bind_rdn
      */
     public function get_default()
     {
+        if (!addon_installed('ldap')) {
+            return null;
+        }
+
         return (DIRECTORY_SEPARATOR == '/') ? 'NotManager' : 'NotAdministrator';
     }
 }

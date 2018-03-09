@@ -53,6 +53,10 @@ class Hook_config_wiki_show_stats_count_pages
      */
     public function get_default()
     {
+        if (!addon_installed('wiki')) {
+            return null;
+        }
+
         return addon_installed('stats_block') ? '0' : null;
     }
 }

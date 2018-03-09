@@ -53,6 +53,10 @@ class Hook_config_super_logging
      */
     public function get_default()
     {
+        if (!addon_installed('stats')) {
+            return null;
+        }
+
         return '1';
     }
 }

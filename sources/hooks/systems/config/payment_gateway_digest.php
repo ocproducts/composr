@@ -54,6 +54,10 @@ class Hook_config_payment_gateway_digest
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '';
     }
 }

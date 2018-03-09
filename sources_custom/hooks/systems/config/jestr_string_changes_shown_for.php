@@ -47,6 +47,10 @@ class Hook_config_jestr_string_changes_shown_for
      */
     public function get_default()
     {
+        if (!addon_installed('jestr')) {
+            return null;
+        }
+
         return '';
     }
 }

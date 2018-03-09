@@ -53,6 +53,10 @@ class Hook_config_transaction_flat_fee
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '';
     }
 }

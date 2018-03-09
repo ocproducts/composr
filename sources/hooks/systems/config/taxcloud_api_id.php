@@ -54,6 +54,10 @@ class Hook_config_taxcloud_api_id
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '';
     }
 }

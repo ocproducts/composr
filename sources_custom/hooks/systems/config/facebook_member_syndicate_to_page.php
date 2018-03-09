@@ -48,6 +48,10 @@ class Hook_config_facebook_member_syndicate_to_page
      */
     public function get_default()
     {
+        if (!addon_installed('facebook_support')) {
+            return null;
+        }
+
         return '0';
     }
 }

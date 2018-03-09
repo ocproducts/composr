@@ -53,6 +53,10 @@ class Hook_config_maximum_autocomplete_suggestions
      */
     public function get_default()
     {
+        if (!addon_installed('search')) {
+            return null;
+        }
+
         return '7';
     }
 }

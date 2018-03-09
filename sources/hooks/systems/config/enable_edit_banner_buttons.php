@@ -53,6 +53,10 @@ class Hook_config_enable_edit_banner_buttons
      */
     public function get_default()
     {
+        if (!addon_installed('banners')) {
+            return null;
+        }
+
         return '1';
     }
 }

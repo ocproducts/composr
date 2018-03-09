@@ -53,6 +53,10 @@ class Hook_config_filedump_show_stats_count_total_space
      */
     public function get_default()
     {
+        if (!addon_installed('filedump')) {
+            return null;
+        }
+
         return addon_installed('stats_block') ? '0' : null;
     }
 }

@@ -54,6 +54,10 @@ class Hook_config_ping_url
      */
     public function get_default()
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         // http://blogsearch.google.com/ping?url={url} is the direct Google Blog search one
         // Note that we also ping the major search engines directly with the RSS feed, as a sitemap; those do not need specifying in the ping URLs
         return 'http://pingomatic.com/ping/?title={title}&blogurl={url}&rssurl={rss}';

@@ -53,6 +53,10 @@ class Hook_config_chat_message_check_interval
      */
     public function get_default()
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         return '5000';
     }
 }

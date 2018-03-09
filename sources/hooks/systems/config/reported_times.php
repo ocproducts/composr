@@ -53,6 +53,10 @@ class Hook_config_reported_times
      */
     public function get_default()
     {
+        if (!addon_installed('tickets')) {
+            return null;
+        }
+
         return '3';
     }
 }

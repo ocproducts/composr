@@ -53,6 +53,10 @@ class Hook_config_use_local_payment
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '0';
     }
 }

@@ -53,6 +53,10 @@ class Hook_config_is_on_topic_pin_buy
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return has_no_forum() ? null : '1';
     }
 }

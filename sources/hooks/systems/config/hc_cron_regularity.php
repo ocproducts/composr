@@ -54,6 +54,10 @@ class Hook_config_hc_cron_regularity
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         return strval(60 * 3); // Every 3 hours
     }
 }

@@ -56,6 +56,10 @@ class Hook_config_shipping_shippo_api_test
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '';
     }
 }

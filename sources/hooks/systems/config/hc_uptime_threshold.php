@@ -54,6 +54,10 @@ class Hook_config_hc_uptime_threshold
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
             return null;
         }

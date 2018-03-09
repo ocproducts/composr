@@ -53,6 +53,10 @@ class Hook_config_wiki_enable_content_posts
      */
     public function get_default()
     {
+        if (!addon_installed('wiki')) {
+            return null;
+        }
+
         return '1';
     }
 }

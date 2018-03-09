@@ -54,6 +54,10 @@ class Hook_config_maximum_image_size
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return '1024';
     }
 }

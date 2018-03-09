@@ -52,6 +52,10 @@ class Hook_config_chat_message_direction
      */
     public function get_default()
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         return 'upwards';
     }
 }

@@ -53,6 +53,10 @@ class Hook_config_stats_store_time
      */
     public function get_default()
     {
+        if (!addon_installed('stats')) {
+            return null;
+        }
+
         return '124';
     }
 }

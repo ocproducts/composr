@@ -53,6 +53,10 @@ class Hook_config_use_banner_permissions
      */
     public function get_default()
     {
+        if (!addon_installed('banners')) {
+            return null;
+        }
+
         return '0';
     }
 }

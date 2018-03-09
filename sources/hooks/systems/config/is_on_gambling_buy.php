@@ -53,6 +53,10 @@ class Hook_config_is_on_gambling_buy
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         if (!addon_installed('points')) {
             return null;
         }

@@ -53,6 +53,10 @@ class Hook_config_leader_board_show_staff
      */
     public function get_default()
     {
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         return '1';
     }
 }

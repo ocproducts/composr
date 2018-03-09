@@ -54,6 +54,10 @@ class Hook_config_ldap_login_qualifier
      */
     public function get_default()
     {
+        if (!addon_installed('ldap')) {
+            return null;
+        }
+
         return '';
     }
 }

@@ -47,6 +47,10 @@ class Hook_config_bookings_show_warnings_for_months
      */
     public function get_default()
     {
+        if (!addon_installed('booking')) {
+            return null;
+        }
+
         return '6';
     }
 }

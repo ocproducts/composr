@@ -48,6 +48,10 @@ class Hook_config_sugarcrm_default_company
      */
     public function get_default()
     {
+        if (!addon_installed('sugarcrm')) {
+            return null;
+        }
+
         return do_lang('UNKNOWN');
     }
 }

@@ -54,6 +54,10 @@ class Hook_config_maximum_gamble_multiplier
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '200';
     }
 }

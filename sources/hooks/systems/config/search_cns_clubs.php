@@ -53,6 +53,10 @@ class Hook_config_search_cns_clubs
      */
     public function get_default()
     {
+        if (!addon_installed('cns_clubs')) {
+            return null;
+        }
+
         if (!addon_installed('search')) {
             return null;
         }

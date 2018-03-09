@@ -54,6 +54,10 @@ class Hook_config_ldap_base_dn
      */
     public function get_default()
     {
+        if (!addon_installed('ldap')) {
+            return null;
+        }
+
         return 'dc=' . str_replace('.', ',dc=', get_domain());
     }
 }

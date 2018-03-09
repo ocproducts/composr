@@ -53,6 +53,10 @@ class Hook_config_chat_default_post_font
      */
     public function get_default()
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         return 'Verdana';
     }
 }

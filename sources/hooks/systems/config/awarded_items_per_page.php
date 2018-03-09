@@ -53,6 +53,10 @@ class Hook_config_awarded_items_per_page
      */
     public function get_default()
     {
+        if (!addon_installed('awards')) {
+            return null;
+        }
+
         return '20';
     }
 }

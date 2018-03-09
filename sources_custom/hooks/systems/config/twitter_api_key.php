@@ -48,6 +48,10 @@ class Hook_config_twitter_api_key
      */
     public function get_default()
     {
+        if (!addon_installed('twitter_support')) {
+            return null;
+        }
+
         return '';
     }
 }

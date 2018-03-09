@@ -48,6 +48,10 @@ class Hook_config_is_on_community_billboard_buy
      */
     public function get_default()
     {
+        if (!addon_installed('community_billboard')) {
+            return null;
+        }
+
         return '1';
     }
 }

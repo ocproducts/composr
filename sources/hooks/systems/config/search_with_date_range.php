@@ -53,6 +53,10 @@ class Hook_config_search_with_date_range
      */
     public function get_default()
     {
+        if (!addon_installed('search')) {
+            return null;
+        }
+
         return '0';
     }
 }

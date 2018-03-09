@@ -47,6 +47,10 @@ class Hook_config_bank_dividend
      */
     public function get_default()
     {
+        if (!addon_installed('bankr')) {
+            return null;
+        }
+
         return '4';
     }
 }

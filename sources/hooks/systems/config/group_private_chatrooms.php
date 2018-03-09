@@ -53,6 +53,10 @@ class Hook_config_group_private_chatrooms
      */
     public function get_default()
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         return '1';
     }
 }

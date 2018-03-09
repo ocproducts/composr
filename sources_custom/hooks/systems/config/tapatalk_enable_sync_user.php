@@ -47,6 +47,10 @@ class Hook_config_tapatalk_enable_sync_user
      */
     public function get_default()
     {
+        if (!addon_installed('cns_tapatalk')) {
+            return null;
+        }
+
         return '0';
     }
 }

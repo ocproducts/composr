@@ -47,6 +47,10 @@ class Hook_config_stealr_points
      */
     public function get_default()
     {
+        if (!addon_installed('stealr')) {
+            return null;
+        }
+
         return '10';
     }
 }

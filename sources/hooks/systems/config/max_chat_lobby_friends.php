@@ -53,6 +53,10 @@ class Hook_config_max_chat_lobby_friends
      */
     public function get_default()
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         return '15';
     }
 }

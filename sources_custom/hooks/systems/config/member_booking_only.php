@@ -47,6 +47,10 @@ class Hook_config_member_booking_only
      */
     public function get_default()
     {
+        if (!addon_installed('booking')) {
+            return null;
+        }
+
         return '0';
     }
 }

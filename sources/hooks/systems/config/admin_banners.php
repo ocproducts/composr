@@ -53,6 +53,10 @@ class Hook_config_admin_banners
      */
     public function get_default()
     {
+        if (!addon_installed('banners')) {
+            return null;
+        }
+
         return '1';
     }
 }

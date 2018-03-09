@@ -55,6 +55,10 @@ class Hook_config_hc_google_safe_browsing_api_enabled
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         return '0';
     }
 }

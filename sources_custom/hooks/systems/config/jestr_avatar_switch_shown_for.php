@@ -47,6 +47,10 @@ class Hook_config_jestr_avatar_switch_shown_for
      */
     public function get_default()
     {
+        if (!addon_installed('jestr')) {
+            return null;
+        }
+
         return '';
     }
 }

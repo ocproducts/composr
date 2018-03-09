@@ -53,6 +53,10 @@ class Hook_config_point_logs_per_page
      */
     public function get_default()
     {
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         return '10';
     }
 }

@@ -47,6 +47,10 @@ class Hook_config_after_edit_mark_unread
      */
     public function get_default()
     {
+        if (!addon_installed('cns_tapatalk')) {
+            return null;
+        }
+
         return '0';
     }
 }

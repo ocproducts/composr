@@ -53,6 +53,10 @@ class Hook_config_show_gallery_counts
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return ((get_forum_type() == 'cns') ? '0' : null);
     }
 }

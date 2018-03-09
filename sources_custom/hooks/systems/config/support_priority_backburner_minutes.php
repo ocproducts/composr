@@ -48,6 +48,10 @@ class Hook_config_support_priority_backburner_minutes
      */
     public function get_default()
     {
+        if (!addon_installed('composr_homesite_support_credits')) {
+            return null;
+        }
+
         return '10';
     }
 }

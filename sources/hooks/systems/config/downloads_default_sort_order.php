@@ -53,6 +53,10 @@ class Hook_config_downloads_default_sort_order
      */
     public function get_default()
     {
+        if (!addon_installed('downloads')) {
+            return null;
+        }
+
         return 'title ASC';
     }
 }

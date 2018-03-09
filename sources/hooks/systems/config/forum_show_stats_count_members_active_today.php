@@ -53,6 +53,10 @@ class Hook_config_forum_show_stats_count_members_active_today
      */
     public function get_default()
     {
+        if (!addon_installed('stats_block')) {
+            return null;
+        }
+
         return ((get_forum_type() == 'cns') && (!has_no_forum()) && (addon_installed('stats_block'))) ? '0' : null;
     }
 }

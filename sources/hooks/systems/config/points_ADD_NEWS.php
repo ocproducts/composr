@@ -53,6 +53,10 @@ class Hook_config_points_ADD_NEWS
      */
     public function get_default()
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         return addon_installed('points') ? '225' : null;
     }
 }

@@ -47,6 +47,10 @@ class Hook_config_insult_points
      */
     public function get_default()
     {
+        if (!addon_installed('bantr')) {
+            return null;
+        }
+
         return '10';
     }
 }

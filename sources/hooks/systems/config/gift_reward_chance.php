@@ -54,6 +54,10 @@ class Hook_config_gift_reward_chance
      */
     public function get_default()
     {
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         return '25';
     }
 }

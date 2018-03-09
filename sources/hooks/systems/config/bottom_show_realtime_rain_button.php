@@ -53,6 +53,10 @@ class Hook_config_bottom_show_realtime_rain_button
      */
     public function get_default()
     {
+        if (!addon_installed('realtime_rain')) {
+            return null;
+        }
+
         return '0';
     }
 }

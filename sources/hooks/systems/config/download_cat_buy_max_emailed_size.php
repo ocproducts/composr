@@ -53,6 +53,10 @@ class Hook_config_download_cat_buy_max_emailed_size
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         if (!addon_installed('downloads')) {
             return null;
         }

@@ -47,6 +47,10 @@ class Hook_config_enable_notifications_instant_ios
      */
     public function get_default()
     {
+        if (!addon_installed('composr_mobile_sdk')) {
+            return null;
+        }
+
         if (!is_file(get_custom_file_base() . '/data_custom/modules/ios/server_certificates.pem')) {
             return null;
         }

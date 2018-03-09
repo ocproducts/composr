@@ -53,6 +53,10 @@ class Hook_config_points_if_liked
      */
     public function get_default()
     {
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         return '5';
     }
 }

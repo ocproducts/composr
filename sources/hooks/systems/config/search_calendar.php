@@ -53,6 +53,10 @@ class Hook_config_search_calendar
      */
     public function get_default()
     {
+        if (!addon_installed('calendar')) {
+            return null;
+        }
+
         if (!addon_installed('search')) {
             return null;
         }

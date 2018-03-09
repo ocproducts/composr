@@ -53,6 +53,10 @@ class Hook_config_points_ADD_DOWNLOAD
      */
     public function get_default()
     {
+        if (!addon_installed('downloads')) {
+            return null;
+        }
+
         return addon_installed('points') ? '150' : null;
     }
 }

@@ -54,6 +54,10 @@ class Hook_config_mail_server
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return 'mail.' . get_domain();
     }
 }

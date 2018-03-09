@@ -53,6 +53,10 @@ class Hook_config_captcha_on_feedback
      */
     public function get_default()
     {
+        if (!addon_installed('captcha')) {
+            return null;
+        }
+
         return '1';
     }
 }

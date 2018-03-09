@@ -54,6 +54,10 @@ class Hook_config_backup_server_user
      */
     public function get_default()
     {
+        if (!addon_installed('backup')) {
+            return null;
+        }
+
         return '';
     }
 }

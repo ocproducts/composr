@@ -54,6 +54,10 @@ class Hook_config_newsletter_website_email
      */
     public function get_default()
     {
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         $staff_address = get_option('staff_address');
         $website_email = 'website@' . get_domain();
         if (substr($staff_address, -strlen(get_domain()) - 1) == '@' . get_domain()) {

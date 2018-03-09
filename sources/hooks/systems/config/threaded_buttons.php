@@ -53,6 +53,10 @@ class Hook_config_threaded_buttons
      */
     public function get_default()
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         return '0';
     }
 }

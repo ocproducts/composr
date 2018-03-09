@@ -54,6 +54,10 @@ class Hook_config_hc_transfer_latency_threshold
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         return '0.4';
     }
 }

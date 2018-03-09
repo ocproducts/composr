@@ -48,6 +48,10 @@ class Hook_config_gallery_sync_orphaned_handling
      */
     public function get_default()
     {
+        if (!addon_installed('gallery_syndication')) {
+            return null;
+        }
+
         return '2';
     }
 }

@@ -53,6 +53,10 @@ class Hook_config_enable_csv_recommend
      */
     public function get_default()
     {
+        if (!addon_installed('recommend')) {
+            return null;
+        }
+
         return '0';
     }
 }

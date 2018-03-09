@@ -54,6 +54,10 @@ class Hook_config_ldap_member_class
      */
     public function get_default()
     {
+        if (!addon_installed('ldap')) {
+            return null;
+        }
+
         return (get_option('ldap_is_windows') == '1') ? 'user' : 'posixAccount';
     }
 }

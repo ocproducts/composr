@@ -49,6 +49,10 @@ class Hook_config_confluence_cache_time
      */
     public function get_default()
     {
+        if (!addon_installed('confluence')) {
+            return null;
+        }
+
         return '5';
     }
 }

@@ -54,6 +54,10 @@ class Hook_config_forw_url
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return 'http://' . get_domain() . ':2082/frontend/x/mail/addfwd.html';
     }
 }

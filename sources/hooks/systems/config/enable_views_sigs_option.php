@@ -53,6 +53,10 @@ class Hook_config_enable_views_sigs_option
      */
     public function get_default()
     {
+        if (!addon_installed('cns_signatures')) {
+            return null;
+        }
+
         return '0';
     }
 }

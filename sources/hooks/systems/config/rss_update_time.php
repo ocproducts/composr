@@ -54,6 +54,10 @@ class Hook_config_rss_update_time
      */
     public function get_default()
     {
+        if (!addon_installed('syndication_blocks')) {
+            return null;
+        }
+
         return '60';
     }
 }

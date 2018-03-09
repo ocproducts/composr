@@ -53,6 +53,10 @@ class Hook_config_hc_error_log_day_flood_threshold
      */
     public function get_default()
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         return '50';
     }
 }

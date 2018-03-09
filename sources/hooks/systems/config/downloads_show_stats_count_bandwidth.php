@@ -53,6 +53,10 @@ class Hook_config_downloads_show_stats_count_bandwidth
      */
     public function get_default()
     {
+        if (!addon_installed('downloads')) {
+            return null;
+        }
+
         return addon_installed('stats_block') ? '0' : null;
     }
 }

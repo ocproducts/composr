@@ -54,6 +54,10 @@ class Hook_config_initial_quota
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '200';
     }
 }

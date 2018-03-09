@@ -53,6 +53,10 @@ class Hook_config_reverse_thumb_order
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return '0';
     }
 }

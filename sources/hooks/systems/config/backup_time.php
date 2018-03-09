@@ -53,6 +53,10 @@ class Hook_config_backup_time
      */
     public function get_default()
     {
+        if (!addon_installed('backup')) {
+            return null;
+        }
+
         return '168';
     }
 }

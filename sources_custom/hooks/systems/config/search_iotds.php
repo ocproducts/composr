@@ -47,6 +47,10 @@ class Hook_config_search_iotds
      */
     public function get_default()
     {
+        if (!addon_installed('iotds')) {
+            return null;
+        }
+
         if (!addon_installed('search')) {
             return null;
         }

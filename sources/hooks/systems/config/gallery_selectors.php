@@ -53,6 +53,10 @@ class Hook_config_gallery_selectors
      */
     public function get_default()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return '12,24,36,64,128';
     }
 }

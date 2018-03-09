@@ -54,6 +54,10 @@ class Hook_config_business_street_address
      */
     public function get_default()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return '';
     }
 }

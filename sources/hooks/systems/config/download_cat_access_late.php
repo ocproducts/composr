@@ -53,6 +53,10 @@ class Hook_config_download_cat_access_late
      */
     public function get_default()
     {
+        if (!addon_installed('downloads')) {
+            return null;
+        }
+
         return '0';
     }
 }

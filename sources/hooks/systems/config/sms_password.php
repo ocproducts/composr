@@ -56,6 +56,10 @@ class Hook_config_sms_password
      */
     public function get_default()
     {
+        if (!addon_installed('sms')) {
+            return null;
+        }
+
         return '';
     }
 }
