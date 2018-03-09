@@ -1171,6 +1171,11 @@ class Module_admin_newsletter extends Standard_crud_module
             get_file_base() . '/themes/default/templates',
         );
         foreach ($tpl_paths as $tpl_path) {
+            $default_mail_template = post_param_string('template', null);
+            if ($default_mail_template === null) {
+                $default_mail_template = get_value('default_newsletter_mail_template', 'MAIL');
+            }
+
             $dh = @opendir($tpl_path);
             if ($dh !== false) {
                 while (($f = readdir($dh)) !== false) {
@@ -1188,7 +1193,7 @@ class Module_admin_newsletter extends Standard_crud_module
         } else {
             $template_choices = new Tempcode();
             foreach ($_template_choices as $tpl) {
-                $template_choices->attach(form_input_list_entry($tpl, post_param_string('template', 'MAIL') == $tpl, $tpl));
+                $template_choices->attach(form_input_list_entry($tpl, $default_mail_template == $tpl, $tpl));
             }
             $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER_TEMPLATE'), do_lang_tempcode('DESCRIPTION_NEWSLETTER_TEMPLATE'), 'template', $template_choices, null, false, true));
         }
