@@ -108,4 +108,28 @@
         }
         return false;
     });
+
+    if (Element.prototype.remove === undefined) {
+        Element.prototype.remove = function remove() {
+            if (this.parentNode !== null) {
+                this.parentNode.removeChild(this);
+            }
+        };  
+    }
+    
+    if (CharacterData.prototype.remove === undefined) {
+        CharacterData.prototype.remove = function remove() {
+            if (this.parentNode !== null) {
+                this.parentNode.removeChild(this);
+            }
+        };
+    }
+    
+    if (DocumentType.prototype.remove === undefined) {
+        DocumentType.prototype.remove = function remove() {
+            if (this.parentNode !== null) {
+                this.parentNode.removeChild(this);
+            }
+        };
+    }
 }());

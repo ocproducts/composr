@@ -1,3 +1,15 @@
+/*{+START,INCLUDE,polyfill_fetch,.js,javascript}*//*{+END}*/
+
+/*{+START,INCLUDE,polyfill_general,.js,javascript}*//*{+END}*/
+
+/*{+START,INCLUDE,polyfill_keyboardevent_key,.js,javascript}*//*{+END}*/
+
+/*{+START,INCLUDE,polyfill_url,.js,javascript}*//*{+END}*/
+
+/*{+START,INCLUDE,polyfill_web_animations,.js,javascript}*//*{+END}*/
+
+/*{+START,INCLUDE,json5,.js,javascript}*//*{+END}*/
+
 /*{+START,INCLUDE,UTIL,.js,javascript}*//*{+END}*/
 
 /*{+START,INCLUDE,DOM,.js,javascript}*//*{+END}*/
