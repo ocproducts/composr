@@ -1340,7 +1340,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
 
         // Render
-        list($html_version, $text_version, $in_html) = newsletter_preview($message, $subject, $html_only == 1);
+        list($html_version, $text_version, $in_html) = newsletter_preview($message, $subject, $html_only == 1, null, null, null, null, null, null, $template);
 
         // Subject line
         $_full_subject = $subject;
@@ -1362,6 +1362,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 'no_cc' => true,
                 'as_admin' => true,
                 'in_html' => $in_html,
+                'mail_template' => $template,
             )
         );
 
@@ -1586,7 +1587,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $display_map['SUBJECT'] = $subject;
 
         $message = $rows[0]['newsletter'];
-        list($html_version, $text_version) = newsletter_preview($message, $subject, $rows[0]['html_only'] == 1);
+        list($html_version, $text_version) = newsletter_preview($message, $subject, $rows[0]['html_only'] == 1, null, null, null, null, null, null, $rows[0]['template']);
         $display_map['HTML_VERSION'] = do_template('NEWSLETTER_PREVIEW', array('_GUID' => '5efb08a7867bd1cd90271568853fcbb9', 'HTML_PREVIEW' => $html_version));
         if ($text_version != '') {
             $display_map['TEXT_VERSION'] = $text_version;

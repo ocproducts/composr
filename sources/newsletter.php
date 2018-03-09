@@ -665,9 +665,10 @@ function newsletter_variable_substitution($message, $subject, $forename, $surnam
  * @param  ?string $address Address (null: reasonable default)
  * @param  ?string $sendid Send ID (null: reasonable default)
  * @param  ?string $hash Password hash (null: reasonable default)
+ * @param  ID_TEXT $template The mail template to preview with
  * @return array A triple: HTML version, Text version, Whether the e-mail has to be fully HTML
  */
-function newsletter_preview($message, $subject, $html_only, $forename = null, $surname = null, $name = null, $address = null, $sendid = null, $hash = null)
+function newsletter_preview($message, $subject, $html_only, $forename = null, $surname = null, $name = null, $address = null, $sendid = null, $hash = null, $template = 'MAIL')
 {
     if ($forename === null) {
         $forename = do_lang('SAMPLE_FORENAME');
@@ -716,7 +717,7 @@ function newsletter_preview($message, $subject, $html_only, $forename = null, $s
         pop_media_mode();
 
         $html_version = do_template(
-            'MAIL',
+            $template,
             array(
                 '_GUID' => 'b081cf9104748b090f63b6898027985e',
                 'TITLE' => $subject,
