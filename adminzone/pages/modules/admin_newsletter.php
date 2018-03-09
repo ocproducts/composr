@@ -1171,6 +1171,11 @@ class Module_admin_newsletter extends Standard_crud_module
             get_file_base() . '/themes/default/templates',
         );
         foreach ($tpl_paths as $tpl_path) {
+            $default_mail_template = post_param_string('template', null);
+            if ($default_mail_template === null) {
+                $default_mail_template = get_value('default_newsletter_mail_template', 'MAIL');
+            }
+
             $dh = @opendir($tpl_path);
             if ($dh !== false) {
                 while (($f = readdir($dh)) !== false) {
@@ -1188,7 +1193,7 @@ class Module_admin_newsletter extends Standard_crud_module
         } else {
             $template_choices = new Tempcode();
             foreach ($_template_choices as $tpl) {
-                $template_choices->attach(form_input_list_entry($tpl, post_param_string('template', 'MAIL') == $tpl, $tpl));
+                $template_choices->attach(form_input_list_entry($tpl, $default_mail_template == $tpl, $tpl));
             }
             $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER_TEMPLATE'), do_lang_tempcode('DESCRIPTION_NEWSLETTER_TEMPLATE'), 'template', $template_choices, null, false, true));
         }
@@ -1335,7 +1340,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
 
         // Render
-        list($html_version, $text_version, $in_html) = newsletter_preview($message, $subject, $html_only == 1);
+        list($html_version, $text_version, $in_html) = newsletter_preview($message, $subject, $html_only == 1, null, null, null, null, null, null, $template);
 
         // Subject line
         $_full_subject = $subject;
@@ -1357,6 +1362,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 'no_cc' => true,
                 'as_admin' => true,
                 'in_html' => $in_html,
+                'mail_template' => $template,
             )
         );
 
@@ -1581,7 +1587,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $display_map['SUBJECT'] = $subject;
 
         $message = $rows[0]['newsletter'];
-        list($html_version, $text_version) = newsletter_preview($message, $subject, $rows[0]['html_only'] == 1);
+        list($html_version, $text_version) = newsletter_preview($message, $subject, $rows[0]['html_only'] == 1, null, null, null, null, null, null, $rows[0]['template']);
         $display_map['HTML_VERSION'] = do_template('NEWSLETTER_PREVIEW', array('_GUID' => '5efb08a7867bd1cd90271568853fcbb9', 'HTML_PREVIEW' => $html_version));
         if ($text_version != '') {
             $display_map['TEXT_VERSION'] = $text_version;

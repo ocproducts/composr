@@ -2061,7 +2061,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_enable_timezones_VALUE_2
         CONFIG_OPTION_staff_email_receipt_configurability
         CHECKLIST_INITIAL_TASK_CONTENT
-        CHECKLIST_INITIAL_TASK_GOOGLE_WEBMASTER_TOOLS
         CHECKLIST_INITIAL_TASK_UPTIME_MONITOR
         CHECK_BROKEN_URLS
         CHECK_LIST

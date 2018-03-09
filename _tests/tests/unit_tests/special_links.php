@@ -36,6 +36,8 @@ class special_links_test_set extends cms_test_case
         $urls = array(
             'https://seositecheckup.com/' => true,
             'https://www.google.com/webmasters/tools/home' => false,
+            'https://www.bing.com/toolbox/webmaster/' => false,
+            'https://webmaster.yandex.com/' => false,
             'https://www.thehoth.com/' => true,
             'https://serps.com/tools/' => true,
             'https://validator.w3.org/' => true,

@@ -797,6 +797,7 @@ class Module_topicview
             }
 
             $post_warning = '';
+
             if ($topic_info['is_really_threaded'] == 1) {
                 $post_warning = do_lang('THREADED_REPLY_NOTICE', $post_warning);
             }

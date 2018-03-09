@@ -45,6 +45,9 @@ class Hook_preview_cns_post
         require_css('cns');
 
         $original_comcode = post_param_string('post');
+        require_code('form_templates');
+        handle_default_comcode_text_input($original_comcode);
+
         require_code('cns_posts_action');
         require_code('cns_posts_action2');
         cns_check_post($original_comcode, post_param_integer('topic_id', null), get_member());

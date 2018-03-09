@@ -52,7 +52,11 @@ class Hook_preview_comments
         }
 
         $poster_name = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+
         $post_comcode = post_param_string('post');
+        require_code('form_templates');
+        handle_default_comcode_text_input($post_comcode);
+
         $post = comcode_to_tempcode($post_comcode);
 
         // Conversr renderings of poster

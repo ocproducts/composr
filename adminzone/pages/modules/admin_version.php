@@ -393,7 +393,7 @@ class Module_admin_version
             ));
         }
 
-        if (($upgrade_from < 11) && ($upgrade_from !== null)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 11)) {
             $GLOBALS['SITE_DB']->query_update('comcode_pages', array('p_submitter' => 2), array('p_submitter' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
         }
 
