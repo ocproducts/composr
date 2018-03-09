@@ -2183,7 +2183,11 @@ class Module_topics
         }
 
         $post_id = post_param_integer('post_id');
+
         $post = post_param_string('post');
+        require_code('form_templates');
+        handle_default_comcode_text_input($post);
+
         $anonymous = post_param_integer('anonymous', 0);
 
         require_code('report_content');
@@ -2252,6 +2256,9 @@ class Module_topics
         $skip_sig = post_param_integer('skip_sig', 0);
 
         $post = post_param_string('post');
+        require_code('form_templates');
+        handle_default_comcode_text_input($post);
+
         $title = post_param_string('title', null);
         if ($title === null) {
             $title = '';

@@ -343,6 +343,8 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
 
     require_lang('comcode');
 
+    handle_default_comcode_text($post);
+
     $tabindex = get_form_field_tabindex($tabindex);
 
     $post = filter_form_field_default(is_object($submit_name) ? $submit_name->evaluate() : $submit_name, $post);
@@ -1133,6 +1135,8 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
 
     require_lang('comcode');
 
+    handle_default_comcode_text($default);
+
     $tabindex = get_form_field_tabindex($tabindex);
 
     $_required = ($required) ? '-required' : '';
@@ -1194,6 +1198,8 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
 function form_input_huge_comcode($pretty_name, $description, $name, $default, $required, $tabindex = null, $rows = 20, $description_side = '', $default_parsed = null, $scrolls = false, $force_non_wysiwyg = false)
 {
     require_lang('comcode');
+
+    handle_default_comcode_text($default);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -2692,4 +2698,36 @@ function get_form_field_tabindex($tabindex = null)
         $TABINDEX++;
     }
     return $tabindex;
+}
+
+/**
+ * Put in default text to a Comcode field, if it's not pre-populated with anything.
+ *
+ * @param  ?string $default Default value (null: not set) (blank: not set)
+ */
+function handle_default_comcode_text(&$default)
+{
+    if (empty($default)) {
+        $_dct = get_value('default_comcode_text', '');
+        if ($_dct != '') {
+            $default = str_replace('{content}', '', $_dct);
+        }
+    }
+}
+
+/**
+ * Adjust quick replies to be wrapped with the default_comcode_text hidden option (if applicable).
+ *
+ * @param  string $post Post value
+ */
+function handle_default_comcode_text_input(&$post)
+{
+    if ($post != '') {
+        if (post_param_integer('_comment_form_post', 0) == 1) {
+            $_dct = get_value('default_comcode_text', '');
+            if (($_dct != '') && (strpos($_dct, '{content}') !== false)) {
+                $post = str_replace('{content}', $post, $_dct);
+            }
+        }
+    }
 }
