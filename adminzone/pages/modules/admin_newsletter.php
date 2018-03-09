@@ -1533,7 +1533,7 @@ class Module_admin_newsletter extends Standard_crud_module
         } else {
             $comcode_version = comcode_to_tempcode($message, get_member(), true);
             $_preview = do_template(
-                'MAIL',
+                $template,
                 array(
                     '_GUID' => 'b081cf9104748b090f63b6898027985e',
                     'TITLE' => $subject,
