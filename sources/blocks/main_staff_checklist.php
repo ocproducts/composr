@@ -87,10 +87,8 @@ class Block_main_staff_checklist
                 do_lang('CHECKLIST_INITIAL_TASK_CONTENT'),
                 '[page="adminzone:admin_health_check"]' . do_lang('CHECKLIST_HEALTH_CHECK') . '[/page]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_UPTIME_MONITOR') . '"]https://uptimerobot.com/[/url]',
-                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_GOOGLE_WEBMASTER_TOOLS') . '"]https://www.google.com/webmasters/tools/home[/url]',
                 '[html]<p style="margin: 0">Facebook user? Like Composr on Facebook:</p><iframe src="https://compo.sr/uploads/website_specific/compo.sr/facebook.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:330px; height:20px;" allowTransparency="true"></iframe>[/html]',
                 '[page="adminzone:admin_version"]Consider helping out with the Composr project[/page]',
-                // NB: Google and Bing submission is automatic, via Sitemaps feature
             );
             foreach ($tasks as $task) {
                 $GLOBALS['SITE_DB']->query_insert('staff_checklist_cus_tasks', array(
