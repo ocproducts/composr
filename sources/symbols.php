@@ -3868,7 +3868,7 @@ function ecv_HAS_PRIVILEGE($lang, $escaped, $param)
     $value = '';
 
     if ((isset($param[0])) && (function_exists('has_privilege'))) {
-        $value = has_privilege((($param !== null) && (isset($param[1]))) ? intval($param[1]) : get_member(), $param[0]) ? '1' : '0';
+        $value = has_privilege((($param !== null) && (isset($param[1]))) ? intval($param[1]) : get_member(), $param[0], isset($param[2]) ? $param[2] : null, empty($param[3]) ? null : explode('|', $param[3])) ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {
