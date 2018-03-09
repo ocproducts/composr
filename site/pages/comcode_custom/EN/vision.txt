@@ -39,44 +39,43 @@
 		<div class="vision-list">
 			<ul>
 				<li>
-					A Composr website should excel at more than just article publishing. Nobody should have to rely on non-standard addons to achieve common website functionality &ndash; conversely, feature must be easily justifiable and software bloat avoided.
+					Enter richness. A Composr website should excel at more than just article publishing: nobody should have to rely on non-standard addons to achieve common website functionality. Conversely, features must be easily justifiable and software bloat avoided.
 				</li>
 
 				<li>
-					Features should almost always be designed for users not developers.<br />Developers should also be supported in achieving their optimal productivity.
+					For everybody. Key features should be designed for users not developers.<br />Developers should also be supported in achieving their optimal productivity.
 				</li>
 
 				<li>
-					A CMS should embody and reflect web standards: it is a tool for building for the mechanisms we define in our standards; standards&nbsp;and&nbsp;tools are other sides of the same coin.
+					Of the web. A CMS should embody and reflect web standards: it is a tool for building for the mechanisms we define in our standards; standards&nbsp;and&nbsp;tools are other sides of the same coin. We will also support other initatives to keep the web open, free, and democratic.
 				</li>
 
 				<li>
-					Everything should fit together smoothly, into a tidy streamlined model:<br />From the features running through the software, to the clean design of the Composr website.
+					With harmony. Everything should fit together smoothly, into a tidy streamlined model:<br />From the features running through the software, to the clean design of the Composr website.
 				</li>
 
 				<li>
-					Composr should remain Open Source software, free to download, install, and modify.<br />
-					Openness fosters innovation throughout all the corners of society.
+					Unencumbered. Composr should remain Open Source software, free to download, install, and modify.<br />Openness fosters innovation throughout all the corners of society.
 				</li>
 
 				<li>
-					Everything should be as documented and user-friendly as possible &ndash; any area where this can't be done inside the development process should be made achievable by a well-integrated crowd-sourcing mechanism.
+					Bring a smile. Everything should be as documented and user-friendly as possible &ndash; any area where this can't be achieved by the core developers should be crowd-sourced.
 				</li>
 
 				<li>
-					Composr is here to empower everybody, from casual users, to programmers, to web managers.<br />People in every country of the world.
+					For the world. Composr is here to empower everybody, from casual users, to programmers, to web managers.<br />People in every country of the world.
 				</li>
 
 				<li>
-					Composr users should be encouraged to give back to the Composr project in what ways they can, to ensure Composr continues to push forward unencumbered by external influences &ndash; and contributors should be given the credit they deserve for the efforts they put in.
+					Of the people. Composr users should be encouraged to give back to the Composr project in what ways they can, to ensure Composr continues to push forward unencumbered by external influences &ndash; and contributors should be given the credit they deserve for the efforts they put in.
 				</li>
 
 				<li>
-					Composr development should not be guided by short-term fads, or reinventions of the wheel.<br />Composr should not be biased in its affiliation with third party companies.
+					Play true and fair. Composr development should not be guided by short-term fads, or reinventions of the wheel. Composr should not be biased in its affiliation with third-party companies.
 				</li>
 
 				<li>
-					Everything in Composr should be done to best standards, and fully flexible and customisable.
+					Strong but malleable. Everything in the Composr ecosystem should be done to high standards, and fully flexible and customisable.
 				</li>
 			</ul>
 
