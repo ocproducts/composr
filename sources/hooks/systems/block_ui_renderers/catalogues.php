@@ -35,6 +35,10 @@ class Hook_block_ui_renderers_catalogues
      */
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         if (($parameter == 'param') && (in_array($block, array('main_contact_catalogues')))) {
             require_code('catalogues');
             $structured_list = create_selection_list_catalogues($default);

@@ -32,10 +32,14 @@ class Hook_attachments_wiki_page
      */
     public function run($id, $db)
     {
+        if (!addon_installed('wiki')) {
+            return false;
+        }
+
         if ($db->is_forum_db()) {
             return false;
         }
 
-        return (has_category_access(get_member(), 'wiki_page', strval($id)));
+        return has_category_access(get_member(), 'wiki_page', strval($id));
     }
 }

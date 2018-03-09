@@ -31,6 +31,10 @@ class Hook_content_meta_aware_forum
      */
     public function info($zone = null)
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns' || !isset($GLOBALS['FORUM_DB'])) {
             return null;
         }

@@ -33,6 +33,10 @@ class Hook_notification_payment_received_staff extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         $list = array();
         $list['payment_received_staff'] = array(do_lang('ecommerce:ECOMMERCE'), do_lang('ecommerce:NOTIFICATION_TYPE_payment_received_staff'));
         return $list;

@@ -32,6 +32,10 @@ class Hook_attachments_news
      */
     public function run($id, $db)
     {
+        if (!addon_installed('news')) {
+            return false;
+        }
+
         if ($db->is_forum_db()) {
             return false;
         }
@@ -47,6 +51,6 @@ class Hook_attachments_news
         if ($cat_id === null) {
             return false;
         }
-        return (has_category_access(get_member(), 'news', strval($cat_id)));
+        return has_category_access(get_member(), 'news', strval($cat_id));
     }
 }

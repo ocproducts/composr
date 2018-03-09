@@ -156,14 +156,14 @@ class Block_main_sortable_table
         if ((substr($file, -4) == '.csv') || (preg_match('#^[\w\.]+$#', $file) == 0/*Not safe as a table name*/)) {
             // Find/validate path
             if (substr($file, -4) != '.csv') {
-                return paragraph('We only accept CSV files, for security reasons.', 'red_alert');
+                return paragraph('We only accept CSV files, for security reasons.', '9kalmcrafmbg3hi4162gursqzdf6q43j', 'red-alert');
             }
             $path = get_custom_file_base() . '/uploads/website_specific/' . filter_naughty($file);
             if (!is_file($path)) {
                 $path = get_custom_file_base() . '/uploads/website_specific/' . filter_naughty($file);
             }
             if (!is_file($path)) {
-                return paragraph('File not found (' . escape_html($file) . ').', 'red_alert');
+                return paragraph('File not found (' . escape_html($file) . ').', 'encs8t6p4oax17o84fq6uwhjcty6mo13', 'nothing-here');
             }
 
             // Load data
@@ -258,10 +258,10 @@ class Block_main_sortable_table
                 $header_row = array_shift($_rows);
 
                 if (count($header_row) < 2) {
-                    return paragraph('We expect at least two headers. Make sure you save as a true comma-deliminated CSV file.', 'red_alert');
+                    return paragraph('We expect at least two headers. Make sure you save as a true comma-deliminated CSV file.', '37odjvkieql3atnq0mjb9yves78wc6yo', 'red-alert');
                 }
             } else {
-                return paragraph('Empty CSV file.', 'red_alert');
+                return paragraph('Empty CSV file.', '006kvk6di5j0d4x1h83eb90k8vbbx03m', 'red-alert');
             }
 
             // Prepare initial header templating
@@ -282,12 +282,12 @@ class Block_main_sortable_table
             // Database table...
 
             if (stripos($file, 'f_members') !== false) {
-                return paragraph('Security filter disallows display of the ' . escape_html($file) . ' table.', 'red_alert');
+                return paragraph('Security filter disallows display of the ' . escape_html($file) . ' table.', '71d6xnfv3fnomqo2jo4xqlm8n98xngwk', 'red-alert');
             }
 
             $records = $GLOBALS['SITE_DB']->query_select($file, array('*'));
             if (count($records) == 0) {
-                return paragraph(do_lang('NO_ENTRIES'), 'red_alert');
+                return paragraph(do_lang('NO_ENTRIES'), 'et1gqf521gjjz8yaz1ecu1x7of4nt16m', 'nothing-here');
             }
             $header_row = array();
             foreach ($records as $i => $record) {

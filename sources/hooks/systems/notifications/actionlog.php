@@ -56,6 +56,10 @@ class Hook_notification_actionlog extends Hook_notification__Staff
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('actionlog')) {
+            return array();
+        }
+
         $page_links = array();
 
         require_all_lang();
@@ -87,6 +91,10 @@ class Hook_notification_actionlog extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('actionlog')) {
+            return array();
+        }
+
         $list = array();
         $list['actionlog'] = array(do_lang('STAFF'), do_lang('actionlog:NOTIFICATION_TYPE_actionlog'));
         return $list;

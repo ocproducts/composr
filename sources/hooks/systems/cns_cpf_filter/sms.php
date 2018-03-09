@@ -30,6 +30,10 @@ class Hook_cns_cpf_filter_sms
      */
     public function to_enable()
     {
+        if (!addon_installed('sms')) {
+            return array();
+        }
+
         $cpf = array();
         if (get_option('sms_username') != '') {
             $cpf['mobile_phone_number'] = true;

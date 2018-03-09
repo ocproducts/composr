@@ -40,6 +40,10 @@ class Hook_cns_auth_wordpress
      */
     public function auth($username, $user_id, $password_hashed, $password_raw, $cookie_login, $row)
     {
+        if (!addon_installed('import')) {
+            return do_lang_tempcode('INTERNAL_ERROR');
+        }
+
         if (class_exists('PasswordHash')) { // 'if' just there for code quality checker
             $wp_hasher = new PasswordHash(8, true);
 

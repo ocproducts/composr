@@ -31,6 +31,10 @@ class Hook_task_export_quiz
      */
     public function run($quiz_id)
     {
+        if (!addon_installed('quizzes')) {
+            return null;
+        }
+
         $filename = 'quiz.csv';
 
         $headers = array();

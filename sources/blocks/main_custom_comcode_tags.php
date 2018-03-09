@@ -70,7 +70,7 @@ class Block_main_custom_comcode_tags
         }
 
         if (!array_key_exists(0, $tags)) {
-            return paragraph(do_lang_tempcode('NONE_EM'), '', 'nothing-here');
+            return paragraph(do_lang_tempcode('NONE_EM'), 'wa7toclrdmr6di83mmc2te5kgb34qslc', 'nothing-here');
         }
 
         $_tags = array();

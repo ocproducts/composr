@@ -30,6 +30,10 @@ class Hook_snippet_calendar_recurrence_suggest
      */
     public function run()
     {
+        if (!addon_installed('calendar')) {
+            return new Tempcode();
+        }
+
         require_code('calendar');
 
         $date = post_param_date('date', true, false);

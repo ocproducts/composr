@@ -31,6 +31,10 @@ class Hook_resource_meta_aware_post_template
      */
     public function info($zone = null)
     {
+        if (!addon_installed('cns_post_templates')) {
+            return null;
+        }
+
         return array(
             'support_custom_fields' => false,
 

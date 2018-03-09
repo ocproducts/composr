@@ -31,7 +31,7 @@ class Hook_search_videos extends FieldsSearchHook
      */
     public function info($check_permissions = true)
     {
-        if (!module_installed('galleries')) {
+        if (!addon_installed('galleries')) {
             return null;
         }
 

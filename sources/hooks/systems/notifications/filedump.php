@@ -44,6 +44,10 @@ class Hook_notification_filedump extends Hook_Notification
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('filedump')) {
+            return array();
+        }
+
         require_code('files2');
 
         $path = get_custom_file_base() . '/uploads/filedump';
@@ -90,6 +94,10 @@ class Hook_notification_filedump extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('filedump')) {
+            return array();
+        }
+
         $list = array();
         $list['filedump'] = array(do_lang('CONTENT'), do_lang('filedump:NOTIFICATION_TYPE_filedump'));
         return $list;

@@ -50,7 +50,7 @@ class Block_main_member_bar
     public function run($map)
     {
         if (get_forum_type() != 'cns') {
-            return paragraph(do_lang_tempcode('NO_CNS'), 'red-alert');
+            return paragraph(do_lang_tempcode('NO_CNS'), '22lg0bjjoy2j1jl25n4t1sh9xsgzj8no', 'red-alert');
         }
 
         require_css('cns');

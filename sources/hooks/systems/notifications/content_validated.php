@@ -31,6 +31,10 @@ class Hook_notification_content_validated extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('unvalidated')) {
+            return array();
+        }
+
         $list = array();
         $list['content_validated'] = array(do_lang('CONTENT'), do_lang('unvalidated:NOTIFICATION_TYPE_content_validated'));
         return $list;

@@ -31,6 +31,10 @@ class Hook_symbol_GALLERY_VIDEO_FOR_URL
      */
     public function run($param)
     {
+        if (!addon_installed('galleries')) {
+            return '';
+        }
+
         $value = '';
 
         if (array_key_exists(0, $param)) {

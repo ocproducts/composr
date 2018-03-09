@@ -44,6 +44,10 @@ class Hook_notification_calendar_event extends Hook_Notification
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('calendar')) {
+            return array();
+        }
+
         $page_links = array();
 
         $types = $GLOBALS['SITE_DB']->query_select('calendar_types', array('id', 't_title'));
@@ -80,6 +84,10 @@ class Hook_notification_calendar_event extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('calendar')) {
+            return array();
+        }
+
         $list = array();
         $list['calendar_event'] = array(do_lang('CONTENT'), do_lang('calendar:NOTIFICATION_TYPE_calendar_event'));
         return $list;

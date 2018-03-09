@@ -31,6 +31,10 @@ class Hook_task_export_catalogue
      */
     public function run($catalogue_name)
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         $filename = $catalogue_name . '-' . date('Y-m-d') . '.csv';
 
         $headers = array();

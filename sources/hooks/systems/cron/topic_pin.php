@@ -34,6 +34,10 @@ class Hook_cron_topic_pin
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         if ($calculate_num_queued) {
             if ($last_run === null) {
                 $last_run = 0;

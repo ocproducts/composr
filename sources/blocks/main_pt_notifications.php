@@ -50,7 +50,7 @@ class Block_main_pt_notifications
     public function run($map)
     {
         if (get_forum_type() != 'cns') {
-            return paragraph(do_lang_tempcode('NO_CNS'), 'red-alert');
+            return paragraph(do_lang_tempcode('NO_CNS'), 'joqcoq45aqit7q2kz0xm1tkkfa1xueql', 'red-alert');
         }
 
         require_code('cns_general');

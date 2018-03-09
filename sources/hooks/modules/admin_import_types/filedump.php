@@ -30,6 +30,10 @@ class Hook_admin_import_types_filedump
      */
     public function run()
     {
+        if (!addon_installed('filedump')) {
+            return array();
+        }
+
         return array(
             'filedump' => 'FILEDUMP',
         );

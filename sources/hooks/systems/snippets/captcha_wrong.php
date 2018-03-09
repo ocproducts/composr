@@ -30,6 +30,10 @@ class Hook_snippet_captcha_wrong
      */
     public function run()
     {
+        if (!addon_installed('captcha')) {
+            return new Tempcode();
+        }
+
         $val = get_param_string('name');
 
         require_code('captcha');

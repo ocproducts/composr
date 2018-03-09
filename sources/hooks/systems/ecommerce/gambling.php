@@ -30,6 +30,10 @@ class Hook_ecommerce_gambling
      */
     public function get_product_category()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return array(
             'category_name' => do_lang('GAMBLING'),
             'category_description' => do_lang_tempcode('GAMBLING_DESCRIPTION'),
@@ -48,6 +52,10 @@ class Hook_ecommerce_gambling
      */
     public function get_products($search = null)
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         if (!addon_installed('points')) {
             return array();
         }

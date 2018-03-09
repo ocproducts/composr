@@ -62,6 +62,10 @@ class Hook_sitemap_search extends Hook_sitemap_base
      */
     public function get_virtual_nodes($page_link, $callback = null, $valid_node_types = null, $child_cutoff = null, $max_recurse_depth = null, $recurse_level = 0, $options = 0, $zone = '_SEARCH', $meta_gather = 0, $return_anyway = false)
     {
+        if (!addon_installed('search')) {
+            return array();
+        }
+
         $nodes = ($callback === null || $return_anyway) ? array() : null;
 
         if (($valid_node_types !== null) && (!in_array('_search', $valid_node_types))) {
@@ -126,6 +130,10 @@ class Hook_sitemap_search extends Hook_sitemap_base
      */
     public function get_node($page_link, $callback = null, $valid_node_types = null, $child_cutoff = null, $max_recurse_depth = null, $recurse_level = 0, $options = 0, $zone = '_SEARCH', $meta_gather = 0, $row = null, $return_anyway = false)
     {
+        if (!addon_installed('search')) {
+            return null;
+        }
+
         $matches = array();
         preg_match('#^([^:]*):([^:]*):([^:]*):([^:]*)#', $page_link, $matches);
         $page = $matches[2];

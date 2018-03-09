@@ -42,6 +42,10 @@ class Hook_task_send_newsletter
      */
     public function run($message_id, $message, $subject, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $mail_template)
     {
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         $auto_pause = (get_option('newsletter_auto_pause') == '1');
 
         if ($auto_pause) {

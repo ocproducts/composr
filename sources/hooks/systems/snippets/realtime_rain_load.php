@@ -30,6 +30,10 @@ class Hook_snippet_realtime_rain_load
      */
     public function run()
     {
+        if (!addon_installed('realtime_rain')) {
+            return new Tempcode();
+        }
+
         require_lang('realtime_rain');
 
         $min_time = $GLOBALS['SITE_DB']->query_select_value('stats', 'MIN(date_and_time)');

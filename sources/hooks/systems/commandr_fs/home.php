@@ -33,6 +33,10 @@ class Hook_commandr_fs_home
      */
     public function listing($meta_dir, $meta_root_node, &$commandr_fs)
     {
+        if (!addon_installed('filedump')) {
+            return array();
+        }
+
         $path = get_custom_file_base() . '/uploads/filedump';
         foreach ($meta_dir as $meta_dir_section) {
             $path .= '/' . filter_naughty($meta_dir_section);

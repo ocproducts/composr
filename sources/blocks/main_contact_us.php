@@ -96,7 +96,7 @@ class Block_main_contact_us
             if ($from_email != '') {
                 require_code('type_sanitisation');
                 if (!is_email_address($from_email)) {
-                    return paragraph(do_lang_tempcode('INVALID_EMAIL_ADDRESS'), '', 'red-alert');
+                    return paragraph(do_lang_tempcode('INVALID_EMAIL_ADDRESS'), '5pu5qw042z8exijsgty78o4tvq9mpnb6', 'red-alert');
                 }
             }
             $from_name = trim(post_param_string('poster_name_if_guest', post_param_string('name', $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true))));

@@ -30,6 +30,10 @@ class Hook_admin_import_types_chat
      */
     public function run()
     {
+        if (!addon_installed('chat')) {
+            return array();
+        }
+
         return array(
             'chat_rooms' => 'CHATROOMS',
         );

@@ -33,6 +33,10 @@ class Hook_task_import_filesystem_downloads
      */
     public function run($destination, $server_path, $subfolders)
     {
+        if (!addon_installed('downloads')) {
+            return null;
+        }
+
         require_code('downloads2');
         require_lang('downloads');
 

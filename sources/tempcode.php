@@ -955,7 +955,7 @@ function do_template($codename, $parameters = array(), $lang = null, $light_erro
         if ($found === null) {
             if ($fallback === null) {
                 if ($light_error) {
-                    return paragraph(do_lang_tempcode('MISSING_TEMPLATE_FILE', escape_html($directory . '/' . $codename . $suffix)), '34rwefwfdee');
+                    return paragraph(do_lang_tempcode('MISSING_TEMPLATE_FILE', escape_html($directory . '/' . $codename . $suffix)), '5bi5yne9a1trw48se2psx1bbfagkahcy', 'nothing-here');
                 }
                 fatal_exit(do_lang_tempcode('MISSING_TEMPLATE_FILE', escape_html($directory . '/' . $codename . $suffix)));
             } else {

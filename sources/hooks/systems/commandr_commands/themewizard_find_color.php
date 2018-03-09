@@ -33,6 +33,10 @@ class Hook_commandr_command_themewizard_find_color
      */
     public function run($options, $parameters, &$commandr_fs)
     {
+        if (!addon_installed('themewizard')) {
+            return array('', '', '', do_lang('INTERNAL_ERROR'));
+        }
+
         require_lang('themes');
 
         if ((array_key_exists('h', $options)) || (array_key_exists('help', $options))) {

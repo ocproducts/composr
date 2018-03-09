@@ -30,6 +30,10 @@ class Hook_task_cns_topics_recache
      */
     public function run()
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         cns_require_all_forum_stuff();
 
         // Topics and posts

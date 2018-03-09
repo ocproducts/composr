@@ -26,10 +26,14 @@ class Hook_admin_setupwizard_installprofiles_blog
     /**
      * Get info about the installprofile.
      *
-     * @return array Map of installprofile details
+     * @return ?array Map of installprofile details (null: profile is unavailable)
      */
     public function info()
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         require_lang('news');
         return array(
             'title' => do_lang('BLOG'),

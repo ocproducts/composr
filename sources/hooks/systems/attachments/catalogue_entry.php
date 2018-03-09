@@ -32,6 +32,10 @@ class Hook_attachments_catalogue_entry
      */
     public function run($id, $db)
     {
+        if (!addon_installed('catalogues')) {
+            return false;
+        }
+
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
             if (!has_privacy_access('catalogue_entry', strval($id))) {
@@ -48,6 +52,6 @@ class Hook_attachments_catalogue_entry
             return false;
         }
 
-        return ((get_value('disable_cat_cat_perms') === '1') || (has_category_access(get_member(), 'catalogues_category', strval($info[0]['cc_id']))));
+        return (get_value('disable_cat_cat_perms') === '1') || (has_category_access(get_member(), 'catalogues_category', strval($info[0]['cc_id'])));
     }
 }

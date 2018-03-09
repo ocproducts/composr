@@ -31,6 +31,10 @@ class Hook_notification_subscription_cancelled_staff extends Hook_notification__
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         $list = array();
         $list['subscription_cancelled_staff'] = array(do_lang('ecommerce:ECOMMERCE'), do_lang('ecommerce:NOTIFICATION_TYPE_subscription_cancelled_staff'));
         return $list;

@@ -30,6 +30,10 @@ class Hook_preview_custom_comcode
      */
     public function applies()
     {
+        if (!addon_installed('custom_comcode')) {
+            return false;
+        }
+
         $applies = get_page_name() == 'admin_custom_comcode';
         return array($applies, null, false);
     }

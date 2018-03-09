@@ -44,6 +44,10 @@ class Hook_notification_ticket_assigned_staff extends Hook_Notification
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('tickets')) {
+            return array();
+        }
+
         $page_links = array();
 
         $tickets = $GLOBALS['SITE_DB']->query_select('notifications_enabled', array('l_code_category'), array('l_notification_code' => 'ticket_assigned_staff', 'l_member_id' => get_member()), 'ORDER BY id DESC', 200/*reasonable limit*/);
@@ -102,6 +106,10 @@ class Hook_notification_ticket_assigned_staff extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('tickets')) {
+            return array();
+        }
+
         $list = array();
         $list['ticket_assigned_staff'] = array(do_lang('MESSAGES'), do_lang('tickets:NOTIFICATION_TYPE_ticket_assigned_staff'));
         return $list;

@@ -31,6 +31,10 @@ class Hook_trackback_images
      */
     public function run($id)
     {
+        if (!addon_installed('galleries')) {
+            return false;
+        }
+
         $rows = $GLOBALS['SITE_DB']->query_select('images', array('allow_trackbacks'), array('id' => intval($id)), '', 1);
         if (!array_key_exists(0, $rows)) {
             return false;

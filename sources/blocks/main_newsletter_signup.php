@@ -72,7 +72,7 @@ class Block_main_newsletter_signup
 
         $_newsletter_title = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletters', 'title', array('id' => $newsletter_id));
         if ($_newsletter_title === null) {
-            return paragraph(do_lang_tempcode('MISSING_RESOURCE'), '', 'red-alert');
+            return paragraph(do_lang_tempcode('MISSING_RESOURCE'), '6rg82p4wj198c6p8h9t4qcn6x7ke9q88', 'nothing-here');
         }
         $newsletter_title = get_translated_text($_newsletter_title);
 

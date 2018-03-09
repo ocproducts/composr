@@ -31,6 +31,10 @@ class Hook_resource_meta_aware_usergroup_subscription
      */
     public function info($zone = null)
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return array(
             'support_custom_fields' => false,
 

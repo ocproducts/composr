@@ -31,6 +31,10 @@ class Hook_notification_invited_content extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('content_privacy')) {
+            return array();
+        }
+
         $list = array();
         $list['invited_content'] = array(do_lang('ACTIVITY'), do_lang('content_privacy:NOTIFICATION_TYPE_invited_content'));
         return $list;

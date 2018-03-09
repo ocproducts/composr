@@ -33,6 +33,10 @@ class Hook_task_index_download
      */
     public function run($id, $url, $original_filename)
     {
+        if (!addon_installed('downloads')) {
+            return null;
+        }
+
         require_code('downloads');
         require_code('downloads2');
 

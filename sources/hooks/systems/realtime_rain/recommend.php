@@ -32,6 +32,10 @@ class Hook_realtime_rain_recommend
      */
     public function run($from, $to)
     {
+        if (!addon_installed('recommend')) {
+            return array();
+        }
+
         $drops = array();
 
         if ((has_actual_page_access(get_member(), 'admin_cns_members')) && (get_forum_type() == 'cns')) {

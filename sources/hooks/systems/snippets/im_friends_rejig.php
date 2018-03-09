@@ -30,6 +30,10 @@ class Hook_snippet_im_friends_rejig
      */
     public function run()
     {
+        if (!addon_installed('chat')) {
+            return new Tempcode();
+        }
+
         require_code('chat_lobby');
 
         $member_id = get_param_integer('member_id', get_member());

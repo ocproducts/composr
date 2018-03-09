@@ -32,6 +32,10 @@ class Hook_cron_subscription_mails
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }

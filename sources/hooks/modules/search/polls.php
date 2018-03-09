@@ -31,7 +31,7 @@ class Hook_search_polls extends FieldsSearchHook
      */
     public function info($check_permissions = true)
     {
-        if (!module_installed('polls')) {
+        if (!addon_installed('polls')) {
             return null;
         }
 

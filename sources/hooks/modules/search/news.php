@@ -31,7 +31,7 @@ class Hook_search_news extends FieldsSearchHook
      */
     public function info($check_permissions = true)
     {
-        if (!module_installed('news')) {
+        if (!addon_installed('news')) {
             return null;
         }
 

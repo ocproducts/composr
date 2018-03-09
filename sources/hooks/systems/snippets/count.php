@@ -30,6 +30,10 @@ class Hook_snippet_count
      */
     public function run()
     {
+        if (!addon_installed('counting_blocks')) {
+            return new Tempcode();
+        }
+
         $name = post_param_string('name');
         update_stat($name, 1);
 

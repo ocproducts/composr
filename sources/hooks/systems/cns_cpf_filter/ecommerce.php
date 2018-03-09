@@ -30,6 +30,10 @@ class Hook_cns_cpf_filter_ecommerce
      */
     public function to_enable()
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         $cpf = array();
 
         // General payment details

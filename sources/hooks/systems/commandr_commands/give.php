@@ -33,6 +33,10 @@ class Hook_commandr_command_give
      */
     public function run($options, $parameters, &$commandr_fs)
     {
+        if (!addon_installed('points')) {
+            return array('', '', '', do_lang('INTERNAL_ERROR'));
+        }
+
         if ((array_key_exists('h', $options)) || (array_key_exists('help', $options))) {
             return array('', do_command_help('give', array('h', 'a'), array(true, true, true)), '', '');
         } else {

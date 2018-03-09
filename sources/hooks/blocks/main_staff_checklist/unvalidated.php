@@ -30,6 +30,10 @@ class Hook_checklist_unvalidated
      */
     public function run()
     {
+        if (!addon_installed('unvalidated')) {
+            return array();
+        }
+
         // Validate/delete submissions
 
         list($num_unvalidated_1, $num_unvalidated_2) = $this->get_num_unvalidated();

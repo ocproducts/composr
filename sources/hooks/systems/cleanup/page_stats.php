@@ -30,6 +30,10 @@ class Hook_cleanup_page_stats
      */
     public function info()
     {
+        if (!addon_installed('stats')) {
+            return null;
+        }
+
         require_lang('stats');
 
         $info = array();

@@ -30,7 +30,7 @@ class Hook_unvalidated_quiz
      */
     public function info()
     {
-        if (!module_installed('quiz')) {
+        if (!addon_installed('quizzes')) {
             return null;
         }
 

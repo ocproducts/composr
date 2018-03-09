@@ -60,6 +60,10 @@ class Hook_sitemap_catalogue_entry extends Hook_sitemap_content
      */
     public function get_node($page_link, $callback = null, $valid_node_types = null, $child_cutoff = null, $max_recurse_depth = null, $recurse_level = 0, $options = 0, $zone = '_SEARCH', $meta_gather = 0, $row = null, $return_anyway = false)
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         $_ = $this->_create_partial_node_structure($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
         if ($_ === null) {
             return null;

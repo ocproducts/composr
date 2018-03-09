@@ -34,6 +34,10 @@ class Hook_ecommerce_interest
      */
     public function get_products($search = null)
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         $products = array(
             'INTEREST' => array(
                 'item_name' => do_lang('ecommerce:CUSTOM_PRODUCT_INTEREST'),

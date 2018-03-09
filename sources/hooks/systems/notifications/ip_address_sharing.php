@@ -43,6 +43,10 @@ class Hook_notification_ip_address_sharing extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         $limit = get_option('max_ip_addresses_per_subscriber');
         if ($limit == '') {
             return array();

@@ -33,6 +33,7 @@ class Hook_stats_filedump
         if (!addon_installed('filedump')) {
             return new Tempcode();
         }
+
         if (!file_exists(get_custom_file_base() . '/uploads/filedump')) {
             return new Tempcode();
         }

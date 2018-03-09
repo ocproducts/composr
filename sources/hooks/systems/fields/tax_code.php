@@ -23,6 +23,20 @@
  */
 class Hook_fields_tax_code
 {
+    /**
+     * Find what field types this hook can serve. This method only needs to be defined if it is not serving a single field type with a name corresponding to the hook itself.
+     *
+     * @return array Map of field type to field type title
+     */
+    public function get_field_types()
+    {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
+        return array('tax_code' => do_lang_tempcode('FIELD_TYPE_tax_code'));
+    }
+
     // ==============
     // Module: search
     // ==============

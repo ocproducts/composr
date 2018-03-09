@@ -30,6 +30,10 @@ class Hook_import_downloads
      */
     public function info()
     {
+        if (!addon_installed('downloads')) {
+            return null;
+        }
+
         $info = array();
         $info['product'] = 'Downloads';
         $info['hook_type'] = 'redirect';

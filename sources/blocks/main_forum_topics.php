@@ -124,7 +124,7 @@ class Block_main_forum_topics
         if ((is_numeric($forum_name)) && (get_forum_type() == 'cns')) {
             $forum_name = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => intval($forum_name)));
             if ($forum_name === null) {
-                return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'topic'), '', 'red-alert');
+                return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'topic'), 'qkth5itf1332vrwalii3gsrlpwyc75rn', 'nothing-here');
             }
         }
         $_title = do_lang_tempcode('ACTIVE_TOPICS_IN', escape_html($forum_name));

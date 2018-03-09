@@ -33,6 +33,10 @@ class Hook_commandr_command_feed_display
      */
     public function run($options, $parameters, &$commandr_fs)
     {
+        if (!addon_installed('syndication_blocks')) {
+            return array('', '', '', do_lang('INTERNAL_ERROR'));
+        }
+
         require_code('crypt');
 
         if ((array_key_exists('h', $options)) || (array_key_exists('help', $options))) {

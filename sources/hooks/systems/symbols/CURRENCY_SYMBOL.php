@@ -31,6 +31,10 @@ class Hook_symbol_CURRENCY_SYMBOL
      */
     public function run($param)
     {
+        if (!addon_installed('ecommerce')) {
+            return '';
+        }
+
         $value = '';
 
         if (addon_installed('ecommerce')) {

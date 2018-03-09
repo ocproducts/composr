@@ -110,7 +110,7 @@ class Block_main_google_map
         if ($catalogue_name != '') {
             $catalogue_row = load_catalogue_row($catalogue_name, true);
             if ($catalogue_row === null) {
-                return paragraph('Could not find the catalogue named "' . escape_html($catalogue_name) . '".', '', 'nothing-here');
+                return paragraph('Could not find the catalogue named "' . escape_html($catalogue_name) . '".', '0zyrq2x4iusrqcm33xmd38v6zl0mdo5q', 'nothing-here');
             }
         }
 
@@ -180,7 +180,7 @@ class Block_main_google_map
             }
             $entries_to_show = array_merge($entries_to_show, $ce_entries);
             if ((count($entries_to_show) == 0) && (($min_latitude == '') || ($max_latitude == '') || ($min_longitude == '') || ($max_longitude == ''))) { // If there's nothing to show and no given bounds
-                //return paragraph(do_lang_tempcode('NO_ENTRIES'), '', 'nothing-here');
+                //return paragraph(do_lang_tempcode('NO_ENTRIES'), 'g5z3aykmphx1zyhg47zu7ahwv8ajfmj1', 'nothing-here');
             }
 
             // Find long/lat fields

@@ -31,7 +31,7 @@ class Hook_search_wiki_posts extends FieldsSearchHook
      */
     public function info($check_permissions = true)
     {
-        if (!module_installed('wiki')) {
+        if (!addon_installed('wiki')) {
             return null;
         }
 

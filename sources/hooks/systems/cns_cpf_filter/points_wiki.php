@@ -30,6 +30,10 @@ class Hook_cns_cpf_filter_points_wiki
      */
     public function to_enable()
     {
+        if (!addon_installed('wiki')) {
+            return array();
+        }
+
         return array('points_gained_wiki' => true);
     }
 }

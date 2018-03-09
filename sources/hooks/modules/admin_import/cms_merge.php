@@ -39,6 +39,10 @@ class Hook_import_cms_merge
      */
     public function info()
     {
+        if (!addon_installed('import')) {
+            return null;
+        }
+
         $info = array();
         $info['supports_advanced_import'] = true;
         $info['product'] = do_lang('COMPOSR_SITE_MERGER');

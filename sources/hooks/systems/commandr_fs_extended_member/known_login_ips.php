@@ -24,6 +24,16 @@
 class Hook_commandr_fs_extended_member__known_login_ips
 {
     /**
+     * Whether the filesystem hook is active.
+     *
+     * @return boolean Whether it is
+     */
+    public function is_active()
+    {
+        return true;
+    }
+
+    /**
      * Read a virtual property for a member file.
      *
      * @param  MEMBER $member_id The member ID

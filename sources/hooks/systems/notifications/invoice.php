@@ -31,6 +31,10 @@ class Hook_notification_invoice extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         $list = array();
         $list['invoice'] = array(do_lang('ecommerce:ECOMMERCE'), do_lang('ecommerce:NOTIFICATION_TYPE_invoice'));
         return $list;

@@ -31,6 +31,10 @@ class Hook_content_meta_aware_event
      */
     public function info($zone = null)
     {
+        if (!addon_installed('calendar')) {
+            return null;
+        }
+
         return array(
             'support_custom_fields' => true,
 

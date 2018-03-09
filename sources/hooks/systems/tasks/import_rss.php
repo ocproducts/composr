@@ -36,6 +36,10 @@ class Hook_task_import_rss
      */
     public function run($is_validated, $download_images, $to_own_account, $import_blog_comments, $import_to_blog, $rss)
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         require_code('rss');
         require_code('files');
         require_lang('news');

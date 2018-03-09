@@ -32,6 +32,10 @@ class Hook_cron_newsletter_drip_send
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         return array(
             'label' => 'Send queued newsletters',
             'num_queued' => $calculate_num_queued ? $GLOBALS['SITE_DB']->query_select_value('newsletter_drip_send', 'COUNT(*)') : null,

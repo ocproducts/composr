@@ -288,7 +288,7 @@ function get_attachments($posting_field_name, $true_attachment_ui = true)
     }
 
     $attachment_template = do_template('ATTACHMENT', array(
-        '_GUID' => 'c3b38ca70cbd1c5f9cf91bcae9ed11dsds',
+        '_GUID' => 'c3b38ca70cbd1c5f9cf91bcae9ed11ds',
         'POSTING_FIELD_NAME' => $posting_field_name,
         'I' => '__num_attachments__',
         'SYNDICATION_JSON' => $syndication_json,

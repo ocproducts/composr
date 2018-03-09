@@ -30,6 +30,10 @@ class Hook_admin_import_types_quotes
      */
     public function run()
     {
+        if (!addon_installed('random_quotes')) {
+            return array();
+        }
+
         return array(
             'quotes' => 'QUOTES',
         );

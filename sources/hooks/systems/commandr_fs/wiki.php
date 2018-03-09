@@ -76,6 +76,16 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
     }
 
     /**
+     * Whether the filesystem hook is active.
+     *
+     * @return boolean Whether it is
+     */
+    public function is_active()
+    {
+        return addon_installed('wiki');
+    }
+
+    /**
      * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label

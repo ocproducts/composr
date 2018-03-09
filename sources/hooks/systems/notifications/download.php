@@ -44,6 +44,10 @@ class Hook_notification_download extends Hook_Notification
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('downloads')) {
+            return array();
+        }
+
         require_code('downloads');
 
         $total = $GLOBALS['SITE_DB']->query_select_value('download_categories', 'COUNT(*)');
@@ -81,6 +85,10 @@ class Hook_notification_download extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('downloads')) {
+            return array();
+        }
+
         $list = array();
         $list['download'] = array(do_lang('CONTENT'), do_lang('downloads:NOTIFICATION_TYPE_download'));
         return $list;

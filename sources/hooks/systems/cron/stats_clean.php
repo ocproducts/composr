@@ -32,6 +32,10 @@ class Hook_cron_stats_clean
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('stats')) {
+            return null;
+        }
+
         return array(
             'label' => 'Clean out old statistics',
             'num_queued' => null,

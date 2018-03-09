@@ -31,6 +31,10 @@ class Hook_resource_meta_aware_aggregate_type_instance
      */
     public function info($zone = null)
     {
+        if (!addon_installed('aggregate_types')) {
+            return null;
+        }
+
         return array(
             'support_custom_fields' => false,
 

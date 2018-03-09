@@ -30,6 +30,10 @@ class Hook_notes_msn
      */
     public function run($file)
     {
+        if (!addon_installed('msn')) {
+            return;
+        }
+
         if ((strpos($file, '/netlink') !== false) || ($file == 'netlink')) {
             delete_cache_entry('side_network');
         }

@@ -30,7 +30,7 @@ class Hook_unvalidated_wiki
      */
     public function info()
     {
-        if (!module_installed('wiki')) {
+        if (!addon_installed('wiki')) {
             return null;
         }
 

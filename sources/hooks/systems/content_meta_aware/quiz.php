@@ -31,6 +31,10 @@ class Hook_content_meta_aware_quiz
      */
     public function info($zone = null)
     {
+        if (!addon_installed('quizzes')) {
+            return null;
+        }
+
         return array(
             'support_custom_fields' => true,
 

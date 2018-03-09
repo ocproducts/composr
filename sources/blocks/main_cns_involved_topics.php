@@ -54,7 +54,7 @@ class Block_main_cns_involved_topics
     public function run($map)
     {
         if (get_forum_type() != 'cns') {
-            return paragraph(do_lang_tempcode('NO_CNS'), 'red-alert');
+            return paragraph(do_lang_tempcode('NO_CNS'), '3wdm0cx063l7qs0mtk5qhq1kwczp8q5e', 'red-alert');
         }
 
         $block_id = get_block_id($map);

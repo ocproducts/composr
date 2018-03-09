@@ -31,6 +31,10 @@ class Hook_content_meta_aware_news_category
      */
     public function info($zone = null)
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         return array(
             'support_custom_fields' => false,
 

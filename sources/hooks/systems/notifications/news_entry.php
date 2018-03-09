@@ -44,6 +44,10 @@ class Hook_notification_news_entry extends Hook_Notification
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('news')) {
+            return array();
+        }
+
         $page_links = array();
 
         $types = $GLOBALS['SITE_DB']->query_select('news_categories', array('id', 'nc_title'));
@@ -80,6 +84,10 @@ class Hook_notification_news_entry extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('news')) {
+            return array();
+        }
+
         $list = array();
         $list['news_entry'] = array(do_lang('CONTENT'), do_lang('news:NOTIFICATION_TYPE_news_entry'));
         return $list;

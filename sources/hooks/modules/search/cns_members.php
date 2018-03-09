@@ -158,9 +158,6 @@ class Hook_search_cns_members extends FieldsSearchHook
      */
     public function run($content, $only_search_meta, $direction, $max, $start, $only_titles, $content_where, $author, $author_id, $cutoff, $sort, $limit_to, $boolean_operator, $where_clause, $search_under, $boolean_search)
     {
-        if (get_forum_type() != 'cns') {
-            return array();
-        }
         require_code('cns_members');
 
         $remapped_orderer = '';
@@ -332,7 +329,7 @@ class Hook_search_cns_members extends FieldsSearchHook
         if (get_param_integer('option__emails_only', 0) == 1) {
             $link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['id'], $row['m_username'], false);
             $link2 = ($row['m_email_address'] == '') ? new Tempcode() : hyperlink('mailto: ' . $row['m_email_address'], $row['m_email_address'], false, true);
-            return paragraph($link->evaluate() . ' &lt;' . $link2->evaluate() . '&gt;', 'e3f;l23kf;l320932kl');
+            return paragraph($link->evaluate() . ' &lt;' . $link2->evaluate() . '&gt;', 'wtoaz4b4yp5rwe4wcmyknihps8ujoguv');
         }
         require_code('cns_members2');
         $GLOBALS['CNS_DRIVER']->MEMBER_ROWS_CACHED[$row['id']] = $row;

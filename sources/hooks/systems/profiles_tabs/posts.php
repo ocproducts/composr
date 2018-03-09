@@ -32,6 +32,10 @@ class Hook_profiles_tabs_posts
      */
     public function is_active($member_id_of, $member_id_viewing)
     {
+        if (!addon_installed('cns_forum')) {
+            return false;
+        }
+
         return true;
     }
 

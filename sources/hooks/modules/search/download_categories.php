@@ -31,7 +31,7 @@ class Hook_search_download_categories extends FieldsSearchHook
      */
     public function info($check_permissions = true)
     {
-        if (!module_installed('downloads')) {
+        if (!addon_installed('downloads')) {
             return null;
         }
 

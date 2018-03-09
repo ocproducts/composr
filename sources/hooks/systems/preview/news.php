@@ -30,6 +30,10 @@ class Hook_preview_news
      */
     public function applies()
     {
+        if (!addon_installed('news')) {
+            return false;
+        }
+
         $applies = ((get_page_name() == 'cms_news') || (get_page_name() == 'cms_blogs')) && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
         return array($applies, 'news', false);
     }

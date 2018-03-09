@@ -44,6 +44,10 @@ class Hook_notification_wiki extends Hook_Notification
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('wiki')) {
+            return array();
+        }
+
         require_code('wiki');
 
         $total = $GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'COUNT(*)');
@@ -87,6 +91,10 @@ class Hook_notification_wiki extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('wiki')) {
+            return array();
+        }
+
         $list = array();
         $list['wiki'] = array(do_lang('CONTENT'), do_lang('wiki:NOTIFICATION_TYPE_wiki'));
         return $list;

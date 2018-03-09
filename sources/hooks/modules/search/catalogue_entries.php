@@ -31,7 +31,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
      */
     public function info($check_permissions = true)
     {
-        if (!module_installed('catalogues')) {
+        if (!addon_installed('catalogues')) {
             return null;
         }
 
@@ -158,10 +158,6 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
      */
     public function run($content, $only_search_meta, $direction, $max, $start, $only_titles, $content_where, $author, $author_id, $cutoff, $sort, $limit_to, $boolean_operator, $where_clause, $search_under, $boolean_search)
     {
-        if (!module_installed('catalogues')) {
-            return array();
-        }
-
         $remapped_orderer = '';
         switch ($sort) {
             case 'average_rating':

@@ -30,6 +30,10 @@ class Hook_admin_stats_search
      */
     public function info()
     {
+        if (!addon_installed('search')) {
+            return null;
+        }
+
         require_lang('search');
 
         return array(

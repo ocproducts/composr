@@ -32,6 +32,10 @@ class Hook_cron_leader_board
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         return array(
             'label' => 'Leader-board generation',
             'num_queued' => null,

@@ -52,7 +52,7 @@ class Hook_whatsnew_catalogues
      */
     public function run($cutoff_time, $lang, $filter)
     {
-        if (!module_installed('catalogues')) {
+        if (!addon_installed('catalogues')) {
             return array();
         }
 

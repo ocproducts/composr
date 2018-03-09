@@ -34,6 +34,10 @@ class Hook_ecommerce_highlight_name
      */
     public function get_products($search = null)
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         $price_points = get_option('highlight_name_price_points');
 
         $products = array(

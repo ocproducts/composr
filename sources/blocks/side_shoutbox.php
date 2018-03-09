@@ -104,13 +104,13 @@ class Block_side_shoutbox
                 $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0));
             }
             if ($room_id === null) {
-                return paragraph(do_lang_tempcode('NONE_EM'), '', 'nothing-here');
+                return paragraph(do_lang_tempcode('NONE_EM'), 'o4aalke6yvke9k6bxw21oh91wrbnysxt', 'nothing-here');
             }
         }
 
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_check)) {
-            return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'chat'), '', 'red-alert');
+            return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'chat'), '0okich7nm484clp00dph7yln7u69s037', 'nothing-here');
         }
 
         // Did a message get sent last time?

@@ -30,6 +30,10 @@ class Hook_snippet_exists_catalogue
      */
     public function run()
     {
+        if (!addon_installed('catalogues')) {
+            return new Tempcode();
+        }
+
         $val = get_param_string('name');
 
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => $val));

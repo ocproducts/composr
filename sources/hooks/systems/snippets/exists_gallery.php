@@ -30,6 +30,10 @@ class Hook_snippet_exists_gallery
      */
     public function run()
     {
+        if (!addon_installed('galleries')) {
+            return new Tempcode();
+        }
+
         $val = get_param_string('name');
 
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => $val));

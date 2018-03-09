@@ -34,6 +34,10 @@ class Hook_cron_catalogue_view_reports
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         if ($calculate_num_queued) {
             $time_now = time();
 

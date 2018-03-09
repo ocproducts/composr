@@ -30,6 +30,10 @@ class Hook_import_catalogues
      */
     public function info()
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         $info = array();
         $info['product'] = 'Catalogues (CSV files)';
         $info['hook_type'] = 'redirect';

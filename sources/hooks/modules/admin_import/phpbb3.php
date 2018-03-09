@@ -57,6 +57,10 @@ class Hook_import_phpbb3
      */
     public function info()
     {
+        if (!addon_installed('import')) {
+            return null;
+        }
+
         $info = array();
         $info['supports_advanced_import'] = false;
         $info['product'] = 'phpBB 3.0.x';

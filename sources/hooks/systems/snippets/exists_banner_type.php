@@ -30,6 +30,10 @@ class Hook_snippet_exists_banner_type
      */
     public function run()
     {
+        if (!addon_installed('banners')) {
+            return new Tempcode();
+        }
+
         $val = get_param_string('name');
 
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banner_types', 'id', array('id' => $val));

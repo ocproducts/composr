@@ -31,6 +31,10 @@ class Hook_content_meta_aware_catalogue
      */
     public function info($zone = null)
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         return array(
             'support_custom_fields' => false,
 

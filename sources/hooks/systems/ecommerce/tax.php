@@ -34,6 +34,10 @@ class Hook_ecommerce_tax
      */
     public function get_products($search = null)
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         $products = array(
             'TAX_GENERAL' => array(
                 'item_name' => do_lang('ecommerce:CUSTOM_PRODUCT_TAX'),

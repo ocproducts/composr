@@ -36,6 +36,10 @@ class Hook_rss_cns_private_topics
      */
     public function run($_filters, $cutoff, $prefix, $date_string, $max)
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }

@@ -32,6 +32,10 @@ class Hook_attachments_calendar
      */
     public function run($id, $db)
     {
+        if (!addon_installed('calendar')) {
+            return false;
+        }
+
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
             if (!has_privacy_access('event', $id)) {

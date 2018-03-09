@@ -30,6 +30,10 @@ class Hook_checklist_awards
      */
     public function run()
     {
+        if (!addon_installed('awards')) {
+            return array();
+        }
+
         $award_types = $GLOBALS['SITE_DB']->query_select('award_types', array('*'));
 
         $out = array();

@@ -31,6 +31,10 @@ class Hook_search_cns_posts extends FieldsSearchHook
      */
     public function info($check_permissions = true)
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }

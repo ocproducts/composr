@@ -98,7 +98,7 @@ class Block_main_members
     public function run($map)
     {
         if (get_forum_type() != 'cns') {
-            return paragraph(do_lang_tempcode('NO_CNS'), 'red-alert');
+            return paragraph(do_lang_tempcode('NO_CNS'), 'lnxrdzazqbcnmcg8ubo3y915wcef6t13', 'red-alert');
         }
 
         require_code('cns_members');
@@ -190,7 +190,7 @@ class Block_main_members
                 } else {
                     $group_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $_usergroup));
                     if ($group_id === null) {
-                        return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'group'), 'red-alert');
+                        return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'group'), '3e6642ua0bf7q3qcmlt322rpnik8nlhh', 'nothing-here');
                     }
                 }
                 $where .= ' OR (m_primary_group=' . strval($group_id) . ' OR EXISTS(SELECT gm_member_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members x WHERE x.gm_member_id=r.id AND gm_validated=1 AND gm_group_id=' . strval($group_id) . '))';

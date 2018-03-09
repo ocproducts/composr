@@ -32,6 +32,10 @@ class Hook_realtime_rain_actionlog
      */
     public function run($from, $to)
     {
+        if (!addon_installed('actionlog')) {
+            return array();
+        }
+
         $drops = array();
 
         $rows = $GLOBALS['SITE_DB']->query('SELECT ip,the_type,member_id,date_and_time AS timestamp FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'actionlogs WHERE date_and_time BETWEEN ' . strval($from) . ' AND ' . strval($to));

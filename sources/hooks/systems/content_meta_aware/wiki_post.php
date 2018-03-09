@@ -31,6 +31,10 @@ class Hook_content_meta_aware_wiki_post
      */
     public function info($zone = null)
     {
+        if (!addon_installed('wiki')) {
+            return null;
+        }
+
         return array(
             'support_custom_fields' => true,
 

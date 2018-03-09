@@ -30,6 +30,10 @@ class Hook_admin_import_types_quizzes
      */
     public function run()
     {
+        if (!addon_installed('quizzes')) {
+            return array();
+        }
+
         return array(
             'quizzes' => 'QUIZZES',
         );

@@ -44,6 +44,10 @@ class Hook_notification_member_entered_chatroom extends Hook_Notification
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('chat')) {
+            return array();
+        }
+
         $page_links = array();
 
         require_code('chat');
@@ -81,6 +85,10 @@ class Hook_notification_member_entered_chatroom extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('chat')) {
+            return array();
+        }
+
         $list = array();
         $list['member_entered_chatroom'] = array(do_lang('ACTIVITY'), do_lang('chat:NOTIFICATION_TYPE_member_entered_chatroom'));
         return $list;

@@ -35,6 +35,10 @@ class Hook_task_import_ftp_downloads
      */
     public function run($destination, $server_url, $subfolders)
     {
+        if (!addon_installed('downloads')) {
+            return null;
+        }
+
         require_code('downloads2');
         require_lang('downloads');
 

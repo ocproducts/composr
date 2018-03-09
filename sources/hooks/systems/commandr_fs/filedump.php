@@ -63,6 +63,10 @@ class Hook_commandr_fs_filedump
      */
     public function listing($meta_dir, $meta_root_node, &$commandr_fs)
     {
+        if (!addon_installed('filedump')) {
+            return array();
+        }
+
         list($path, $place) = $this->get_complete_path($meta_dir);
 
         $listing = array();

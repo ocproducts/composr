@@ -31,6 +31,10 @@ class Hook_content_meta_aware_banner
      */
     public function info($zone = null)
     {
+        if (!addon_installed('banners')) {
+            return null;
+        }
+
         return array(
             'support_custom_fields' => false,
 

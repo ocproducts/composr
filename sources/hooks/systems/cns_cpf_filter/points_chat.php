@@ -30,6 +30,10 @@ class Hook_cns_cpf_filter_points_chat
      */
     public function to_enable()
     {
+        if (!addon_installed('chat')) {
+            return array();
+        }
+
         return array('points_gained_chat' => true);
     }
 }

@@ -30,6 +30,10 @@ class Hook_admin_import_types_points
      */
     public function run()
     {
+        if (!addon_installed('points')) {
+            return array();
+        }
+
         return array(
             'points_gifts_and_charges' => 'POINTS',
         );

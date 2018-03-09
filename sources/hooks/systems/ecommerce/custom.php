@@ -30,6 +30,10 @@ class Hook_ecommerce_custom
      */
     public function config()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_custom', array('*'), array(), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('c_title'));
         $out = array();
         foreach ($rows as $i => $row) {
@@ -190,6 +194,10 @@ class Hook_ecommerce_custom
      */
     public function get_products($search = null)
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         $products = array();
 
         $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_custom', array('*'), array('c_enabled' => 1));

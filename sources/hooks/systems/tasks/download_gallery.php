@@ -31,6 +31,10 @@ class Hook_task_download_gallery
      */
     public function run($cat)
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         require_code('galleries');
         require_lang('galleries');
         require_code('zip');

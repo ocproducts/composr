@@ -30,6 +30,10 @@ class Hook_preview_calendar
      */
     public function applies()
     {
+        if (!addon_installed('calendar')) {
+            return false;
+        }
+
         require_code('uploads');
         $applies = (get_page_name() == 'cms_calendar') && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit')) && ((is_plupload()) || (count($_FILES) != 0));
         return array($applies, 'calendar', false);

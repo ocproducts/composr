@@ -32,6 +32,10 @@ class Hook_attachments_wiki_post
      */
     public function run($id, $db)
     {
+        if (!addon_installed('wiki')) {
+            return false;
+        }
+
         if ($db->is_forum_db()) {
             return false;
         }
@@ -40,6 +44,6 @@ class Hook_attachments_wiki_post
         if ($cat_id === null) {
             return false;
         }
-        return (has_category_access(get_member(), 'wiki_page', strval($cat_id)));
+        return has_category_access(get_member(), 'wiki_page', strval($cat_id));
     }
 }

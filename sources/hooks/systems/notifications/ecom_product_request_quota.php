@@ -31,6 +31,10 @@ class Hook_notification_ecom_product_request_quota extends Hook_notification__St
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         $list = array();
         $list['ecom_product_request_quota'] = array(do_lang('ecommerce:ECOMMERCE'), do_lang('ecommerce:NOTIFICATION_TYPE_ecom_product_request_quota'));
         return $list;

@@ -30,11 +30,15 @@ class Hook_cleanup_cns_topics
      */
     public function info()
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
-        } else {
-            cns_require_all_forum_stuff();
         }
+
+        cns_require_all_forum_stuff();
 
         require_lang('cns');
 

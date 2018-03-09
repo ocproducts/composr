@@ -30,6 +30,10 @@ class Hook_checklist_newsletter_paused
      */
     public function run()
     {
+        if (!addon_installed('newsletter')) {
+            return array();
+        }
+
         $url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'FEATURE'), get_module_zone('admin_config'), array(), false, false, false, 'group_NEWSLETTER');
         $task = do_lang_tempcode('newsletter:NAG_UNPAUSE_NEWSLETTER', escape_html_tempcode($url));
 

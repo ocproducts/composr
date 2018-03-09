@@ -30,6 +30,10 @@ class Hook_admin_import_types_polls
      */
     public function run()
     {
+        if (!addon_installed('polls')) {
+            return array();
+        }
+
         return array(
             'polls' => 'POLL_ARCHIVE',
         );

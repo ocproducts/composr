@@ -33,6 +33,10 @@ class Hook_commandr_command_continue_import
      */
     public function run($options, $parameters, &$commandr_fs)
     {
+        if (!addon_installed('import')) {
+            return array('', '', '', do_lang('INTERNAL_ERROR'));
+        }
+
         require_lang('import');
 
         if ((array_key_exists('h', $options)) || (!array_key_exists(0, $parameters)) || (array_key_exists('help', $options))) {

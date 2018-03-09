@@ -31,6 +31,10 @@ class Hook_symbol_CATALOGUE_ENTRY_ALL_FIELD_VALUES
      */
     public function run($param)
     {
+        if (!addon_installed('catalogues')) {
+            return '';
+        }
+
         $value = '';
         if (isset($param[0])) {
             $entry_id = intval($param[0]);

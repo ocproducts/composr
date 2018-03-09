@@ -31,6 +31,10 @@ class Hook_notification_order_dispatched extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('shopping')) {
+            return array();
+        }
+
         $list = array();
         $list['order_dispatched'] = array(do_lang('ecommerce:ECOMMERCE'), do_lang('shopping:NOTIFICATION_TYPE_order_dispatched'));
         return $list;

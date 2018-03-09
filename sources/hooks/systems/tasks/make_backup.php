@@ -34,6 +34,10 @@ class Hook_task_make_backup
      */
     public function run($file, $b_type, $max_size)
     {
+        if (!addon_installed('backup')) {
+            return null;
+        }
+
         require_code('backup');
         $backup_result = make_backup($file, $b_type, $max_size, array($this, 'log'));
 

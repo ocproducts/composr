@@ -31,6 +31,10 @@ class Hook_symbol_CATALOGUE_ENTRY_FIELD_VALUE_PLAIN
      */
     public function run($param)
     {
+        if (!addon_installed('catalogues')) {
+            return '';
+        }
+
         $value = mixed();
         $value = '';
         if (!empty($param[1])) {

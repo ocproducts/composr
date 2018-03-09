@@ -30,6 +30,10 @@ class Hook_cleanup_catalogues
      */
     public function info()
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         require_lang('catalogues');
 
         $info = array();

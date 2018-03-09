@@ -31,6 +31,10 @@ class Hook_content_meta_aware_chat
      */
     public function info($zone = null)
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         return array(
             'support_custom_fields' => false,
 

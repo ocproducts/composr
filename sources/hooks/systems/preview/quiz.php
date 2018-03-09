@@ -30,6 +30,10 @@ class Hook_preview_quiz
      */
     public function applies()
     {
+        if (!addon_installed('quizzes')) {
+            return false;
+        }
+
         $applies = (get_page_name() == 'cms_quiz') && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
         return array($applies, null, false);
     }

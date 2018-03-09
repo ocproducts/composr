@@ -26,10 +26,14 @@ class Hook_admin_setupwizard_installprofiles_portfolio
     /**
      * Get info about the installprofile.
      *
-     * @return array Map of installprofile details
+     * @return ?array Map of installprofile details (null: profile is unavailable)
      */
     public function info()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         require_lang('galleries');
         return array(
             'title' => do_lang('PORTFOLIO'),

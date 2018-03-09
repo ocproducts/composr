@@ -30,6 +30,10 @@ class Hook_admin_import_types_banners
      */
     public function run()
     {
+        if (!addon_installed('banners')) {
+            return array();
+        }
+
         return array(
             'banners' => 'BANNERS',
         );

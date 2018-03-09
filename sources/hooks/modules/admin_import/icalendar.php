@@ -30,6 +30,10 @@ class Hook_import_icalendar
      */
     public function info()
     {
+        if (!addon_installed('calendar')) {
+            return null;
+        }
+
         $info = array();
         $info['product'] = 'iCalendar file';
         $info['hook_type'] = 'redirect';

@@ -44,6 +44,10 @@ class Hook_notification_gallery_entry extends Hook_Notification
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('galleries')) {
+            return array();
+        }
+
         require_code('galleries');
 
         $total = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)');
@@ -80,6 +84,10 @@ class Hook_notification_gallery_entry extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('galleries')) {
+            return array();
+        }
+
         $list = array();
         $list['gallery_entry'] = array(do_lang('CONTENT'), do_lang('galleries:NOTIFICATION_TYPE_gallery_entry'));
         return $list;

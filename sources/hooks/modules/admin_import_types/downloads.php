@@ -30,6 +30,10 @@ class Hook_admin_import_types_downloads
      */
     public function run()
     {
+        if (!addon_installed('downloads')) {
+            return array();
+        }
+
         return array(
             'downloads_and_categories' => 'SECTION_DOWNLOADS',
         );

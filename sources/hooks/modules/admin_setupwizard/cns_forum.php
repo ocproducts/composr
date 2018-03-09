@@ -70,7 +70,7 @@ class Hook_sw_cns_forum
      */
     public function get_fields($field_defaults)
     {
-        if (get_forum_type() != 'cns' || post_param_integer('addon_cns_forum', null) === 0) {
+        if (!addon_installed('cns_forum') || get_forum_type() != 'cns' || post_param_integer('addon_cns_forum', null) === 0) {
             return array(new Tempcode(), new Tempcode());
         }
 
@@ -100,7 +100,7 @@ class Hook_sw_cns_forum
      */
     public function set_fields()
     {
-        if (get_forum_type() != 'cns' || post_param_integer('addon_cns_forum', null) === 0) {
+        if (!addon_installed('cns_forum') || get_forum_type() != 'cns' || post_param_integer('addon_cns_forum', null) === 0) {
             return;
         }
 
@@ -137,7 +137,7 @@ class Hook_sw_cns_forum
     /**
      * Run function for blocks in the setup wizard.
      *
-     * @return array Map of block names, to display types
+     * @return array A pair: Main blocks and Side blocks (each is a map of block names to display types)
      */
     public function get_blocks()
     {

@@ -30,6 +30,10 @@ class Hook_admin_import_types_galleries
      */
     public function run()
     {
+        if (!addon_installed('galleries')) {
+            return array();
+        }
+
         return array(
             'images_and_galleries' => 'GALLERIES',
         );

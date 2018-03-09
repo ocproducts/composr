@@ -95,6 +95,16 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
     }
 
     /**
+     * Whether the filesystem hook is active.
+     *
+     * @return boolean Whether it is
+     */
+    public function is_active()
+    {
+        return addon_installed('catalogues');
+    }
+
+    /**
      * Find whether a kind of resource handled by this hook (folder or file) can be under a particular kind of folder.
      *
      * @param  ?ID_TEXT $above Folder resource type (null: root)

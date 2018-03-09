@@ -74,6 +74,16 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
     }
 
     /**
+     * Whether the filesystem hook is active.
+     *
+     * @return boolean Whether it is
+     */
+    public function is_active()
+    {
+        return addon_installed('galleries');
+    }
+
+    /**
      * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)

@@ -31,6 +31,10 @@ class Hook_resource_meta_aware_ticket_type
      */
     public function info($zone = null)
     {
+        if (!addon_installed('tickets')) {
+            return null;
+        }
+
         return array(
             'support_custom_fields' => false,
 

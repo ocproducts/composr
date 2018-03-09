@@ -35,6 +35,10 @@ class Hook_block_ui_renderers_awards
      */
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {
+        if (!addon_installed('awards')) {
+            return null;
+        }
+
         if ($block . ':' . $parameter == 'main_awards:param') { // special case for awards
             $list = new Tempcode();
             $rows = $GLOBALS['SITE_DB']->query_select('award_types', array('id', 'a_title'));

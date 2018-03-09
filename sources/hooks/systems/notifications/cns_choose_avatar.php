@@ -43,6 +43,10 @@ class Hook_notification_cns_choose_avatar extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('cns_member_avatars')) {
+            return array();
+        }
+
         $list = array();
         $list['cns_choose_avatar'] = array(do_lang('MEMBERS'), do_lang('cns:NOTIFICATION_TYPE_cns_choose_avatar'));
         return $list;

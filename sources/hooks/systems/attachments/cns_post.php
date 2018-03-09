@@ -32,9 +32,14 @@ class Hook_attachments_cns_post
      */
     public function run($id, $db)
     {
+        if (!addon_installed('cns_forum')) {
+            return false;
+        }
+
         if (get_forum_type() != 'cns') {
             return false; // Shouldn't be here, but maybe it's left over somehow
         }
+
         require_code('cns_forums');
         require_code('cns_topics');
         $info = $GLOBALS['FORUM_DB']->query_select('f_posts', array('p_cache_forum_id', 'p_intended_solely_for', 'p_poster', 'p_topic_id'), array('id' => intval($id)), '', 1);
@@ -73,6 +78,6 @@ class Hook_attachments_cns_post
                 }
             }
         }
-        return (has_category_access(get_member(), 'forums', strval($forum_id)));
+        return has_category_access(get_member(), 'forums', strval($forum_id));
     }
 }

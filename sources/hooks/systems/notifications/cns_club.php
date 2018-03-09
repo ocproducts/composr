@@ -43,6 +43,10 @@ class Hook_notification_cns_club extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('cns_clubs')) {
+            return array();
+        }
+
         $list = array();
         $list['cns_club'] = array(do_lang('USERGROUPS'), do_lang('cns:NOTIFICATION_TYPE_cns_club'));
         return $list;

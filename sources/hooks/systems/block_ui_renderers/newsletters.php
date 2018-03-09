@@ -35,6 +35,10 @@ class Hook_block_ui_renderers_newsletters
      */
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         if (($parameter == 'param') && (in_array($block, array('main_newsletter_signup')))) { // newsletter list
             $list = new Tempcode();
             $rows = $GLOBALS['SITE_DB']->query_select('newsletters', array('id', 'title'));

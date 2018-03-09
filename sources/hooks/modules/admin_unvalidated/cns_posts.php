@@ -30,6 +30,10 @@ class Hook_unvalidated_cns_posts
      */
     public function info()
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }

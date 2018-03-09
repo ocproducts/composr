@@ -31,6 +31,10 @@ class Hook_symbol_CHAT_IM
      */
     public function run($param)
     {
+        if (!addon_installed('chat')) {
+            return '';
+        }
+
         $value = '';
 
         if ($GLOBALS['STATIC_TEMPLATE_TEST_MODE']) {

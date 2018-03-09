@@ -32,6 +32,10 @@ class Hook_profiles_tabs_pts
      */
     public function is_active($member_id_of, $member_id_viewing)
     {
+        if (!addon_installed('cns_forum')) {
+            return false;
+        }
+
         return (($member_id_of == $member_id_viewing) || (has_privilege($member_id_viewing, 'view_other_pt')));
     }
 

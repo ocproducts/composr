@@ -377,6 +377,10 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         $hooks = find_all_hook_obs('systems', 'commandr_fs_extended_member', 'Hook_commandr_fs_extended_member__');
         foreach ($hooks as $hook => $ob) {
+            if (!$ob->is_active()) {
+                continue;
+            }
+
             if (isset($properties[$hook])) {
                 $ob->write_property($id, $properties[$hook]);
             }

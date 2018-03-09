@@ -31,7 +31,7 @@ class Hook_search_quiz extends FieldsSearchHook
      */
     public function info($check_permissions = true)
     {
-        if (!module_installed('quiz')) {
+        if (!addon_installed('quizzes')) {
             return null;
         }
 

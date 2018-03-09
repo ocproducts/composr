@@ -26,7 +26,7 @@ class Hook_sw_calendar
     /**
      * Run function for blocks in the setup wizard.
      *
-     * @return array Map of block names, to display types
+     * @return array A pair: Main blocks and Side blocks (each is a map of block names to display types)
      */
     public function get_blocks()
     {

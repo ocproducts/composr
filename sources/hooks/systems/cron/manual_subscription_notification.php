@@ -32,6 +32,10 @@ class Hook_cron_manual_subscription_notification
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         if (get_option('manual_subscription_expiry_notice') == '') {
             return null;
         }

@@ -31,7 +31,7 @@ class Hook_search_calendar extends FieldsSearchHook
      */
     public function info($check_permissions = true)
     {
-        if (!module_installed('calendar')) {
+        if (!addon_installed('calendar')) {
             return null;
         }
 

@@ -30,6 +30,10 @@ class Hook_notes_quotes
      */
     public function run($file)
     {
+        if (!addon_installed('random_quotes')) {
+            return;
+        }
+
         if ((strpos($file, '/quotes') !== false) || ($file == 'quotes')) {
             delete_cache_entry('main_quotes');
         }

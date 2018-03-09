@@ -30,7 +30,7 @@ class Hook_unvalidated_news
      */
     public function info()
     {
-        if (!module_installed('news')) {
+        if (!addon_installed('news')) {
             return null;
         }
 

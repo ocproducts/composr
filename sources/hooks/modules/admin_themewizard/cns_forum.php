@@ -30,6 +30,10 @@ class Hook_admin_themewizard_cns_forum
      */
     public function run()
     {
+        if (!addon_installed('cns_forum')) {
+            return array(array(), array());
+        }
+
         return array(array('icons/cns_general/no_new_posts_redirect', 'icons/cns_general/new_posts_redirect', 'icons/cns_general/no_new_posts', 'icons/cns_general/new_posts', 'icons/cns_topic_modifiers/involved',), array('pageitem/warn',));
     }
 }

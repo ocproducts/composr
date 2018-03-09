@@ -35,6 +35,10 @@ class Hook_block_ui_renderers_news
      */
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         if ((($default == '') || (is_numeric(str_replace(',', '', $default)))) && ($parameter == 'select') && (in_array($block, array('bottom_news', 'main_news', 'side_news', 'side_news_archive')))) { // news category list
             require_code('news');
             $list = create_selection_list_news_categories(($default == '') ? -1 : intval($default));

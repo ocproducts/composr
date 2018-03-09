@@ -31,6 +31,10 @@ class Hook_notification_received_points extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('points')) {
+            return array();
+        }
+
         $list = array();
         $list['received_points'] = array(do_lang('ACTIVITY'), do_lang('points:NOTIFICATION_TYPE_received_points'));
         return $list;

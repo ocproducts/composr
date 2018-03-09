@@ -17,6 +17,7 @@
  * @copyright  ocProducts Ltd
  * @package    core_rich_media
  */
+
 /*
 Notes...
  - Link rendering will not use passed description parameter, etc. This is intentional: the normal flow of rendering through a standardised media template is not used.

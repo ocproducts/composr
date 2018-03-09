@@ -93,7 +93,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
      */
     public function is_active()
     {
-        return (get_forum_type() == 'cns') && (!is_on_multi_site_network());
+        return (addon_installed('cns_forum')) && (get_forum_type() == 'cns') && (!is_on_multi_site_network());
     }
 
     /**

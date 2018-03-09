@@ -32,6 +32,10 @@ class Hook_profiles_tabs_points
      */
     public function is_active($member_id_of, $member_id_viewing)
     {
+        if (!addon_installed('points')) {
+            return false;
+        }
+
         return has_actual_page_access($member_id_viewing, 'points');
     }
 

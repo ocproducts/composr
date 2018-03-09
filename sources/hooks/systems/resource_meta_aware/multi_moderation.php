@@ -31,6 +31,10 @@ class Hook_resource_meta_aware_multi_moderation
      */
     public function info($zone = null)
     {
+        if (!addon_installed('cns_multi_moderations')) {
+            return null;
+        }
+
         return array(
             'support_custom_fields' => false,
 

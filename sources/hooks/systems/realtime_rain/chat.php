@@ -32,6 +32,10 @@ class Hook_realtime_rain_chat
      */
     public function run($from, $to)
     {
+        if (!addon_installed('chat')) {
+            return array();
+        }
+
         $drops = array();
 
         if (has_actual_page_access(get_member(), 'chat')) {

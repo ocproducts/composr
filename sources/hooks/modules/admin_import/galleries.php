@@ -30,6 +30,10 @@ class Hook_import_galleries
      */
     public function info()
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         $info = array();
         $info['product'] = 'Gallery media';
         $info['hook_type'] = 'redirect';

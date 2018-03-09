@@ -32,6 +32,10 @@ class Hook_cron_catalogue_entry_timeouts
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         if ($calculate_num_queued) {
             $num_queued = 0;
 

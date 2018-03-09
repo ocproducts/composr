@@ -43,6 +43,10 @@ class Hook_notification_new_order extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('shopping')) {
+            return array();
+        }
+
         $list = array();
         $list['new_order'] = array(do_lang('ecommerce:ECOMMERCE'), do_lang('shopping:NOTIFICATION_TYPE_new_order'));
         return $list;

@@ -35,6 +35,10 @@ class Hook_block_ui_renderers_polls
      */
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {
+        if (!addon_installed('polls')) {
+            return null;
+        }
+
         if ($block . ':' . $parameter == 'main_poll:param') { // special case for polls
             $list = new Tempcode();
             $rows = $GLOBALS['SITE_DB']->query_select('poll', array('id', 'question'), array(), 'ORDER BY add_time DESC,id DESC', 100/*In case insane number*/);

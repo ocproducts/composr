@@ -30,6 +30,10 @@ class Hook_admin_import_types_core
      */
     public function run()
     {
+        if (!addon_installed('import')) {
+            return array();
+        }
+
         $ret = array(
             'attachments' => 'ATTACHMENTS',
             'attachment_references' => 'ATTACHMENT_REFERENCES',

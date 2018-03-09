@@ -32,6 +32,10 @@ class Hook_realtime_rain_stats
      */
     public function run($from, $to)
     {
+        if (!addon_installed('stats')) {
+            return array();
+        }
+
         $drops = array();
 
         if (has_actual_page_access(get_member(), 'admin_stats')) {

@@ -30,6 +30,10 @@ class Hook_cns_cpf_filter_notifications
      */
     public function to_enable()
     {
+        if (!addon_installed('cns_forum')) {
+            return array();
+        }
+
         return array('smart_topic_notification' => true);
     }
 }

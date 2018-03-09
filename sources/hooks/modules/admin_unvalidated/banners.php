@@ -30,7 +30,7 @@ class Hook_unvalidated_banners
      */
     public function info()
     {
-        if (!module_installed('banners')) {
+        if (!addon_installed('banners')) {
             return null;
         }
 

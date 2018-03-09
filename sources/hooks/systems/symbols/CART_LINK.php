@@ -31,6 +31,10 @@ class Hook_symbol_CART_LINK
      */
     public function run($param)
     {
+        if (!addon_installed('shopping')) {
+            return '';
+        }
+
         $value = '';
 
         require_lang('shopping');

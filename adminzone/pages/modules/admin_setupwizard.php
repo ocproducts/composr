@@ -241,7 +241,9 @@ class Module_admin_setupwizard
                 if (file_exists($path)) {
                     $_hook_bits = extract_module_functions($path, array('info'));
                     $installprofile = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : @eval($_hook_bits[0]);
-                    $installprofiles->attach(form_input_list_entry($hook . '__' . $theme, get_param_string('id', '') == $hook . '__' . $theme, do_lang('INSTALLPROFILE_WITH_THEME', $installprofile['title'], $theme_title)));
+                    if ($installprofile !== null) {
+                        $installprofiles->attach(form_input_list_entry($hook . '__' . $theme, get_param_string('id', '') == $hook . '__' . $theme, do_lang('INSTALLPROFILE_WITH_THEME', $installprofile['title'], $theme_title)));
+                    }
                 }
             }
         }
@@ -256,7 +258,9 @@ class Module_admin_setupwizard
             }
             $_hook_bits = extract_module_functions($path, array('info'));
             $installprofile = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : @eval($_hook_bits[0]);
-            $installprofiles->attach(form_input_list_entry($hook, get_param_string('id', '') == $hook, $installprofile['title']));
+            if ($installprofile !== null) {
+                $installprofiles->attach(form_input_list_entry($hook, get_param_string('id', '') == $hook, $installprofile['title']));
+            }
         }
 
         $fields = new Tempcode();

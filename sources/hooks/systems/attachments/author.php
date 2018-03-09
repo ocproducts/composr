@@ -32,6 +32,10 @@ class Hook_attachments_author
      */
     public function run($id, $db)
     {
+        if (!addon_installed('authors')) {
+            return false;
+        }
+
         return true;
     }
 }

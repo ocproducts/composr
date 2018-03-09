@@ -35,6 +35,10 @@ class Hook_block_ui_renderers_chat
      */
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         if ($block . ':' . $parameter == 'side_shoutbox:param') { // special case for chatrooms
             $list = new Tempcode();
             $rows = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'room_name'), array('is_im' => 0), '', 100/*In case insane number*/);

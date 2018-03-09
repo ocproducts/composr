@@ -34,6 +34,10 @@ class Hook_task_import_newsletter_subscribers
      */
     public function run($_language, $newsletter_id, $subscribe, $path)
     {
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         require_lang('cns');
         require_lang('newsletter');
         require_code('newsletter');

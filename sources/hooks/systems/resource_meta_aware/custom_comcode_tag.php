@@ -31,6 +31,10 @@ class Hook_resource_meta_aware_custom_comcode_tag
      */
     public function info($zone = null)
     {
+        if (!addon_installed('custom_comcode')) {
+            return null;
+        }
+
         return array(
             'support_custom_fields' => false,
 

@@ -31,6 +31,10 @@ class Hook_symbol_STOCK_CHECK
      */
     public function run($param)
     {
+        if (!addon_installed('shopping')) {
+            return '';
+        }
+
         $value = '';
 
         if (array_key_exists(0, $param)) {

@@ -273,7 +273,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         if ($huge) {
             $all_forums = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id', 'f_name', 'f_position', 'f_forum_grouping_id', 'f_order_sub_alpha', 'f_parent_forum'), array('f_parent_forum' => $id), 'ORDER BY f_parent_forum,f_position', intval(get_option('general_safety_listing_limit')));
             if (count($all_forums) == intval(get_option('general_safety_listing_limit'))) {
-                return paragraph(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
+                return paragraph(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'), 'tozu1if5yx6og9lmfx7jc0eczhnzahx1', 'red-alert');
             }
         } else {
             if (count($all_forums) == 0) {

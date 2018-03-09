@@ -31,7 +31,7 @@ class Hook_search_filedump extends FieldsSearchHook
      */
     public function info($check_permissions = true)
     {
-        if (!module_installed('filedump')) {
+        if (!addon_installed('filedump')) {
             return null;
         }
 

@@ -34,6 +34,10 @@ class Hook_task_export_ecom_transactions
      */
     public function run($start_date, $end_date, $transaction_status, $type_code)
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         $filename = 'transactions_' . (($transaction_status == '') ? '' : ($transaction_status . '__')) . (($type_code == '') ? '' : ($type_code . '__')) . date('Y-m-d', $start_date) . '--' . date('Y-m-d', $end_date) . '.csv';
 
         require_code('ecommerce');

@@ -32,6 +32,10 @@ class Hook_task_export_points_log
      */
     public function run($from, $to)
     {
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         require_lang('points');
         require_code('points');
 

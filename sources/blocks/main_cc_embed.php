@@ -174,7 +174,7 @@ class Block_main_cc_embed
         $is_ecommerce = is_ecommerce_catalogue($catalogue_name, $catalogue);
         if ($is_ecommerce) {
             if (get_forum_type() != 'cns') {
-                return paragraph(do_lang_tempcode('NO_CNS'), '', 'red-alert');
+                return paragraph(do_lang_tempcode('NO_CNS'), '9k0v50crqhabzsxv9l2pq3dcxjketh6a', 'red-alert');
             }
         }
 

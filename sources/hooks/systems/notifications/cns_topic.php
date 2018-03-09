@@ -44,6 +44,10 @@ class Hook_notification_cns_topic extends Hook_Notification
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('cns_forum')) {
+            return array();
+        }
+
         require_code('cns_forums2');
 
         $notification_category = get_param_string('id', null);
@@ -164,6 +168,10 @@ class Hook_notification_cns_topic extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('cns_forum')) {
+            return array();
+        }
+
         $list = array();
         $list['cns_topic'] = array(do_lang('CONTENT'), do_lang('cns:NOTIFICATION_TYPE_cns_topic'));
         return $list;

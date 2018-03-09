@@ -31,6 +31,10 @@ class Hook_symbol_CATALOGUE_ENTRY_BACKREFS
      */
     public function run($param)
     {
+        if (!addon_installed('catalogues')) {
+            return '';
+        }
+
         $value = '';
         if (isset($param[0])) {
             $limit = isset($param[1]) ? intval($param[1]) : null;

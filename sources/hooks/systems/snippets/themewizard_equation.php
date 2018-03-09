@@ -30,6 +30,10 @@ class Hook_snippet_themewizard_equation
      */
     public function run()
     {
+        if (!addon_installed('themewizard')) {
+            return new Tempcode();
+        }
+
         $theme = get_param_string('theme');
         $equation = get_param_string('css_equation', false, INPUT_FILTER_GET_COMPLEX);
 

@@ -24,6 +24,16 @@
 class Hook_commandr_fs_extended_member__chat_sound_effects
 {
     /**
+     * Whether the filesystem hook is active.
+     *
+     * @return boolean Whether it is
+     */
+    public function is_active()
+    {
+        return addon_installed('chat');
+    }
+
+    /**
      * Read a virtual property for a member file.
      *
      * @param  MEMBER $member_id The member ID

@@ -32,6 +32,10 @@ class Hook_cron__health_check
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         return array(
             'label' => 'Health Check',
             'num_queued' => null,

@@ -30,6 +30,10 @@ class Hook_task_catalogues_recache
      */
     public function run()
     {
+        if (!addon_installed('stats')) {
+            return null;
+        }
+
         require_code('catalogues2');
         rebuild_catalogue_cat_treecache();
 

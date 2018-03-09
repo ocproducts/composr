@@ -52,6 +52,10 @@ class Hook_sw_core
      */
     public function get_fields($field_defaults)
     {
+        if (!addon_installed('setupwizard')) {
+            return array(new Tempcode(), new Tempcode());
+        }
+
         $fields = new Tempcode();
         $hidden = new Tempcode();
 
@@ -90,6 +94,10 @@ class Hook_sw_core
      */
     public function set_fields()
     {
+        if (!addon_installed('setupwizard')) {
+            return;
+        }
+
         set_option('show_content_tagging', post_param_string('show_content_tagging', '0'));
         set_option('show_content_tagging_inline', post_param_string('show_content_tagging_inline', '0'));
         set_option('show_screen_actions', post_param_string('show_screen_actions', '0'));

@@ -44,6 +44,10 @@ class Hook_notification_ticket_new_staff extends Hook_Notification
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('tickets')) {
+            return array();
+        }
+
         $page_links = array();
 
         $types = $GLOBALS['SITE_DB']->query_select('ticket_types', array('id', 'ticket_type_title'));
@@ -66,6 +70,10 @@ class Hook_notification_ticket_new_staff extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('tickets')) {
+            return array();
+        }
+
         $list = array();
         $list['ticket_new_staff'] = array(do_lang('MESSAGES'), do_lang('tickets:NOTIFICATION_TYPE_ticket_new_staff'));
         return $list;

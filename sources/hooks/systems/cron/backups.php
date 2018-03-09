@@ -32,6 +32,10 @@ class Hook_cron_backups
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('backup')) {
+            return null;
+        }
+
         $backup_schedule_time = intval(get_value('backup_schedule_time'));
 
         if ($backup_schedule_time == 0) {

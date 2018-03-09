@@ -32,6 +32,10 @@ class Hook_profiles_tabs_edit_title
      */
     public function is_active($member_id_of, $member_id_viewing)
     {
+        if (!addon_installed('cns_member_titles')) {
+            return false;
+        }
+
         return has_privilege($member_id_viewing, 'may_choose_custom_title') && (($member_id_of == $member_id_viewing) || (has_privilege($member_id_viewing, 'assume_any_member')) || (has_privilege($member_id_viewing, 'member_maintenance')));
     }
 

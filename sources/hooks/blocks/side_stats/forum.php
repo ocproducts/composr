@@ -30,6 +30,10 @@ class Hook_stats_forum
      */
     public function run()
     {
+        if (!addon_installed('stats_block')) {
+            return new Tempcode();
+        }
+
         if (get_forum_type() != 'none') {
             $bits = new Tempcode();
             if (get_option('forum_show_stats_count_members') == '1') {

@@ -50,13 +50,17 @@ class Hook_whatsnew_cns_forumview
      */
     public function run($cutoff_time, $lang, $filter)
     {
-        $max = intval(get_option('max_newsletter_whatsnew'));
-
-        $new = new Tempcode();
+        if (!addon_installed('cns_forum')) {
+            return array();
+        }
 
         if (get_forum_type() != 'cns') {
             return array();
         }
+
+        $max = intval(get_option('max_newsletter_whatsnew'));
+
+        $new = new Tempcode();
 
         require_code('selectcode');
         $or_list = selectcode_to_sqlfragment($filter, 't_forum_id');

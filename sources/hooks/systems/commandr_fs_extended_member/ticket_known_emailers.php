@@ -24,6 +24,16 @@
 class Hook_commandr_fs_extended_member__ticket_known_emailers
 {
     /**
+     * Whether the filesystem hook is active.
+     *
+     * @return boolean Whether it is
+     */
+    public function is_active()
+    {
+        return addon_installed('tickets');
+    }
+
+    /**
      * Read a virtual property for a member file.
      *
      * @param  MEMBER $member_id The member ID

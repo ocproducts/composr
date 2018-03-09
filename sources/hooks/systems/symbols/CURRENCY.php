@@ -31,6 +31,10 @@ class Hook_symbol_CURRENCY
      */
     public function run($param)
     {
+        if (!addon_installed('ecommerce')) {
+            return '';
+        }
+
         if (isset($param[0])) {
             require_code('currency');
 

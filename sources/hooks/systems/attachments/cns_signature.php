@@ -32,9 +32,14 @@ class Hook_attachments_cns_signature
      */
     public function run($id, $db)
     {
+        if (!addon_installed('cns_signatures')) {
+            return false;
+        }
+
         if (get_forum_type() != 'cns') {
             return false; // Shouldn't be here, but maybe it's left over somehow
         }
+
         return true;
     }
 }

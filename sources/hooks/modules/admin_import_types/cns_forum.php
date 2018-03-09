@@ -30,6 +30,10 @@ class Hook_admin_import_types_cns_forum
      */
     public function run()
     {
+        if (!addon_installed('cns_forum')) {
+            return array();
+        }
+
         return array(
             'cns_post_templates' => 'POST_TEMPLATES',
             'cns_announcements' => 'ANNOUNCEMENTS',

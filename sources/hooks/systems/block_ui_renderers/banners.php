@@ -35,6 +35,10 @@ class Hook_block_ui_renderers_banners
      */
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {
+        if (!addon_installed('banners')) {
+            return null;
+        }
+
         if (($parameter == 'param') && (in_array($block, array('main_banner_wave', 'main_top_sites')))) { // banner type list
             require_code('banners2');
             $list = create_selection_list_banner_types($default);

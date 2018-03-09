@@ -24,6 +24,16 @@
 class Hook_commandr_fs_extended_config__checklist_tasks
 {
     /**
+     * Whether the filesystem hook is active.
+     *
+     * @return boolean Whether it is
+     */
+    public function is_active()
+    {
+        return true;
+    }
+
+    /**
      * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)

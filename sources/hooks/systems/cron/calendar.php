@@ -32,6 +32,10 @@ class Hook_cron_calendar
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('calendar')) {
+            return null;
+        }
+
         if ($calculate_num_queued) {
             $sql = 'SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_jobs j LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_events e ON e.id=j.j_event_id LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_reminders n ON n.id=j.j_reminder_id WHERE validated=1 AND j_time<' . strval(time());
             $num_queued = $GLOBALS['SITE_DB']->query_value_if_there($sql);

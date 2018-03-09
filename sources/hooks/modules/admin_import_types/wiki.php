@@ -30,6 +30,10 @@ class Hook_admin_import_types_wiki
      */
     public function run()
     {
+        if (!addon_installed('wiki')) {
+            return array();
+        }
+
         return array(
             'wiki' => 'WIKI',
         );

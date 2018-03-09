@@ -32,6 +32,10 @@ class Hook_cron_ticket_type_lead_times
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('tickets')) {
+            return null;
+        }
+
         return array(
             'label' => 'Support lead time calculation',
             'num_queued' => null,

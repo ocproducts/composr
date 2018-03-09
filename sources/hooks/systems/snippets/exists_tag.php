@@ -30,6 +30,10 @@ class Hook_snippet_exists_tag
      */
     public function run()
     {
+        if (!addon_installed('custom_comcode')) {
+            return new Tempcode();
+        }
+
         $val = get_param_string('name');
 
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('custom_comcode', 'tag_tag', array('tag_tag' => $val));

@@ -30,6 +30,10 @@ class Hook_import_wordpress
      */
     public function info()
     {
+        if (!addon_installed('import')) {
+            return null;
+        }
+
         $info = array();
         $info['product'] = 'Wordpress blog';
         $info['hook_type'] = 'redirect';

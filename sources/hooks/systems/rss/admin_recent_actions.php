@@ -36,6 +36,10 @@ class Hook_rss_admin_recent_actions
      */
     public function run($_filters, $cutoff, $prefix, $date_string, $max)
     {
+        if (!addon_installed('actionlog')) {
+            return null;
+        }
+
         if (!has_actual_page_access(get_member(), 'admin_actionlog')) {
             return null;
         }

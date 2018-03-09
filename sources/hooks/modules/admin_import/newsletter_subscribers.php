@@ -30,6 +30,10 @@ class Hook_import_newsletter_subscribers
      */
     public function info()
     {
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         $info = array();
         $info['product'] = 'Newsletter subscribers (CSV files)';
         $info['hook_type'] = 'redirect';

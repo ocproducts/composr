@@ -43,6 +43,10 @@ class Hook_notification_health_check extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('health_check')) {
+            return array();
+        }
+
         $list = array();
         $list['health_check'] = array(do_lang('ERRORS'), do_lang('health_check:NOTIFICATION_TYPE_health_check'));
         return $list;

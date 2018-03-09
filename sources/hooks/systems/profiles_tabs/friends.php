@@ -32,6 +32,10 @@ class Hook_profiles_tabs_friends
      */
     public function is_active($member_id_of, $member_id_viewing)
     {
+        if (!addon_installed('chat')) {
+            return false;
+        }
+
         return addon_installed('chat');
     }
 

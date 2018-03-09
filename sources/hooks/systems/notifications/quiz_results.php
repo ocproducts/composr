@@ -56,6 +56,10 @@ class Hook_notification_quiz_results extends Hook_notification__Staff
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('quizzes')) {
+            return array();
+        }
+
         $page_links = array();
 
         $types = $GLOBALS['SITE_DB']->query_select('quizzes', array('id', 'q_name'));
@@ -78,6 +82,10 @@ class Hook_notification_quiz_results extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('quizzes')) {
+            return array();
+        }
+
         $list = array();
         $list['quiz_results'] = array(do_lang('GENERAL'), do_lang('quiz:NOTIFICATION_TYPE_quiz_results'));
         return $list;

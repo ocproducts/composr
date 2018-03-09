@@ -30,6 +30,10 @@ class Hook_ecommerce_usergroup
      */
     public function get_product_category()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return array(
             'category_name' => do_lang('USERGROUP_SUBSCRIPTION'),
             'category_description' => do_lang_tempcode('USERGROUP_SUBSCRIPTION_DESCRIPTION'),
@@ -48,6 +52,10 @@ class Hook_ecommerce_usergroup
      */
     public function get_products($search = null)
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         if ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) {
             return array();
         }

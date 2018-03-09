@@ -31,6 +31,10 @@ class Hook_trackback_catalogues
      */
     public function run($id)
     {
+        if (!addon_installed('catalogues')) {
+            return false;
+        }
+
         $rows = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('allow_trackbacks'), array('id' => intval($id)), '', 1);
         if (!array_key_exists(0, $rows)) {
             return false;

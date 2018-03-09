@@ -47,7 +47,7 @@ class Block_side_shoutbox
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         if (!addon_installed('chat')) {
-            return paragraph('The chat addon must be installed', '', 'inline-wip-message');
+            return paragraph('The chat addon must be installed', 'ppw4bavk9nr9s0ymi3ozhkkmkz7itp98', 'red-alert');
         }
 
         require_lang('chat');
@@ -90,13 +90,13 @@ class Block_side_shoutbox
                 $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0));
             }
             if ($room_id === null) {
-                return paragraph(do_lang_tempcode('NONE_EM'), '', 'nothing-here');
+                return paragraph(do_lang_tempcode('NONE_EM'), 'bwkc04vf6j5ebavzfnbxlh161qctdwtb', 'nothing-here');
             }
         }
 
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_check)) {
-            return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'chat'), '', 'red-alert');
+            return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'chat'), 'qgkdgqhgdd9yymwqc6t9ma3nt9rp9w2x', 'nothing-here');
         }
 
         // Did a message get sent last time?

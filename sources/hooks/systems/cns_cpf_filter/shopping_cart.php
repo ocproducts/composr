@@ -30,6 +30,10 @@ class Hook_cns_cpf_filter_shopping_cart
      */
     public function to_enable()
     {
+        if (!addon_installed('shopping')) {
+            return array();
+        }
+
         $cpf = array();
 
         $cpf = array_merge($cpf, array('firstname' => true, 'lastname' => true));

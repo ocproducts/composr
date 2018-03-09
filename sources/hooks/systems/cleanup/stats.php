@@ -30,6 +30,10 @@ class Hook_cleanup_stats
      */
     public function info()
     {
+        if (!addon_installed('stats')) {
+            return null;
+        }
+
         if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             return null;
         }

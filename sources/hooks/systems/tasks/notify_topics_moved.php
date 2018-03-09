@@ -32,6 +32,10 @@ class Hook_task_notify_topics_moved
      */
     public function run($or_list, $forum_name)
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         require_code('notifications');
         require_code('urls2');
         require_lang('cns');

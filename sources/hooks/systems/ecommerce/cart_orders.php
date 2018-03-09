@@ -48,6 +48,10 @@ class Hook_ecommerce_cart_orders
      */
     public function get_products($search = null)
     {
+        if (!addon_installed('shopping')) {
+            return array();
+        }
+
         $products = array();
 
         require_lang('shopping');

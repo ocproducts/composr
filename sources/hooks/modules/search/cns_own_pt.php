@@ -31,6 +31,10 @@ class Hook_search_cns_own_pt extends FieldsSearchHook
      */
     public function info($check_permissions = true)
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }
@@ -100,12 +104,10 @@ class Hook_search_cns_own_pt extends FieldsSearchHook
      */
     public function run($content, $only_search_meta, $direction, $max, $start, $only_titles, $content_where, $author, $author_id, $cutoff, $sort, $limit_to, $boolean_operator, $where_clause, $search_under, $boolean_search)
     {
-        if (get_forum_type() != 'cns') {
-            return array();
-        }
         if (get_member() == $GLOBALS['CNS_DRIVER']->get_guest_id()) {
             return array();
         }
+
         require_code('cns_forums');
         require_code('cns_posts');
         require_css('cns');

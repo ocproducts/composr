@@ -32,6 +32,10 @@ class Hook_profiles_tabs_warnings
      */
     public function is_active($member_id_of, $member_id_viewing)
     {
+        if (!addon_installed('cns_warnings')) {
+            return false;
+        }
+
         return (($member_id_of == $member_id_viewing) || (has_privilege($member_id_viewing, 'assume_any_member'))) && ($GLOBALS['FORUM_DB']->query_select_value('f_warnings', 'COUNT(*)', array('w_member_id' => $member_id_of, 'w_is_warning' => 1)) > 0);
     }
 

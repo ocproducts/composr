@@ -30,7 +30,7 @@ class Hook_unvalidated_calendar
      */
     public function info()
     {
-        if (!module_installed('calendar')) {
+        if (!addon_installed('calendar')) {
             return null;
         }
 

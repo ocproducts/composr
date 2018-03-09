@@ -30,6 +30,10 @@ class Hook_preview_cns_signature
      */
     public function applies()
     {
+        if (!addon_installed('cns_signatures')) {
+            return false;
+        }
+
         require_lang('cns');
 
         $member_id = get_param_integer('id', get_member());

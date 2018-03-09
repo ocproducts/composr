@@ -30,7 +30,7 @@ class Hook_unvalidated_downloads
      */
     public function info()
     {
-        if (!module_installed('downloads')) {
+        if (!addon_installed('downloads')) {
             return null;
         }
 

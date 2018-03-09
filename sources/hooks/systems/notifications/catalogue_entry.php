@@ -44,6 +44,10 @@ class Hook_notification_catalogue_entry extends Hook_Notification
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('catalogues')) {
+            return array();
+        }
+
         require_code('catalogues');
 
         $name = substr($notification_code, strlen('catalogue_entry__'));
@@ -83,6 +87,10 @@ class Hook_notification_catalogue_entry extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('catalogues')) {
+            return array();
+        }
+
         $list = array();
         $catalogues = $GLOBALS['SITE_DB']->query('SELECT c_name,c_title FROM ' . get_table_prefix() . 'catalogues WHERE c_name NOT LIKE \'\_%\'');
         foreach ($catalogues as $catalogue) {

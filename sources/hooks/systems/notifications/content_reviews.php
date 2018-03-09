@@ -56,6 +56,10 @@ class Hook_notification_content_reviews extends Hook_notification__Staff
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('content_reviews')) {
+            return array();
+        }
+
         $page_links = array();
 
         $_hooks = find_all_hooks('systems', 'content_meta_aware');
@@ -94,6 +98,10 @@ class Hook_notification_content_reviews extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('content_reviews')) {
+            return array();
+        }
+
         $list = array();
         $list['content_reviews'] = array(do_lang('CONTENT'), do_lang('content_reviews:NOTIFICATION_TYPE_content_reviews'));
         $list['content_reviews__own'] = array(do_lang('CONTENT'), do_lang('content_reviews:NOTIFICATION_TYPE_content_reviews__own'));

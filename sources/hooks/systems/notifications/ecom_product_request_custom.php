@@ -44,6 +44,10 @@ class Hook_notification_ecom_product_request_custom extends Hook_notification__S
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         $page_links = array();
 
         $types = $GLOBALS['SITE_DB']->query_select('ecom_prods_custom', array('id', 'c_title'));
@@ -66,6 +70,10 @@ class Hook_notification_ecom_product_request_custom extends Hook_notification__S
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         $list = array();
         $list['ecom_product_request_custom'] = array(do_lang('ecommerce:ECOMMERCE'), do_lang('ecommerce:NOTIFICATION_TYPE_ecom_product_request_custom'));
         return $list;

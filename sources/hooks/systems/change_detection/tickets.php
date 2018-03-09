@@ -31,6 +31,10 @@ class Hook_change_detection_tickets
      */
     public function run($data)
     {
+        if (!addon_installed('tickets')) {
+            return false;
+        }
+
         if (get_param_string('type', 'browse') == 'browse') {
             require_lang('tickets');
             require_code('tickets');

@@ -1026,15 +1026,15 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
         case 'acronym':
         case 'abbr':
-            $temp_tpl = do_template('COMCODE_ABBR', array('_GUID' => 'acbc4f991dsf03f81b61919b74ac24c91', 'CONTENT' => $embed, 'TITLE' => $attributes['param']));
+            $temp_tpl = do_template('COMCODE_ABBR', array('_GUID' => 'acbc4f991dsf03f81b61919b74ac24c9', 'CONTENT' => $embed, 'TITLE' => $attributes['param']));
             break;
 
         case 'address':
-            $temp_tpl = do_template('COMCODE_ADDRESS', array('_GUID' => 'acbcsdf9910703f81b61919b74ac24c91', 'CONTENT' => $embed));
+            $temp_tpl = do_template('COMCODE_ADDRESS', array('_GUID' => 'acbcsdf9910703f81b61919b74ac24c9', 'CONTENT' => $embed));
             break;
 
         case 'dfn':
-            $temp_tpl = do_template('COMCODE_DFN', array('_GUID' => 'acbc4f9910703f81b61sf19b74ac24c91', 'CONTENT' => $embed));
+            $temp_tpl = do_template('COMCODE_DFN', array('_GUID' => 'acbc4f9910703f81b61sf19b74ac24c9', 'CONTENT' => $embed));
             break;
 
         case 'pulse':
@@ -1048,7 +1048,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             }
             $speed = ($attributes['param'] == '') ? 100 : intval($attributes['param']);
 
-            $temp_tpl = do_template('COMCODE_PULSE', array('_GUID' => 'adsd4f9910sfd03f81b61919b74ac24c91', 'CONTENT' => $embed, 'MIN_COLOR' => $min_color, 'MAX_COLOR' => $max_color, 'SPEED' => strval($speed)));
+            $temp_tpl = do_template('COMCODE_PULSE', array('_GUID' => 'adsd4f9910sfd03f81b61919b74ac24c', 'CONTENT' => $embed, 'MIN_COLOR' => $min_color, 'MAX_COLOR' => $max_color, 'SPEED' => strval($speed)));
             break;
 
         case 'del':
@@ -1057,7 +1057,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $temp_tpl = test_url($cite, 'del', $cite, $source_member);
             }
             $datetime = array_key_exists('datetime', $attributes) ? $attributes['datetime'] : null;
-            $temp_tpl->attach(do_template('COMCODE_DEL', array('_GUID' => 'acsd4f9910sfd03f81b61919b74ac24c91', 'CONTENT' => $embed, 'CITE' => $cite, 'DATETIME' => $datetime)));
+            $temp_tpl->attach(do_template('COMCODE_DEL', array('_GUID' => 'acsd4f9910sfd03f81b61919b74ac24c', 'CONTENT' => $embed, 'CITE' => $cite, 'DATETIME' => $datetime)));
             break;
 
         case 'ins':

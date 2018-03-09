@@ -32,6 +32,10 @@ class Hook_profiles_tabs_edit_privacy
      */
     public function is_active($member_id_of, $member_id_viewing)
     {
+        if (!addon_installed('cns_cpfs')) {
+            return false;
+        }
+
         if (get_option('enable_privacy_tab') == '0') {
             return false;
         }

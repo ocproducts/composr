@@ -56,7 +56,7 @@ class Block_main_custom_gfx
         $type_id = empty($map['param']) ? 'rollover_button' : $map['param'];
 
         if ((!file_exists(get_file_base() . '/sources/hooks/blocks/main_custom_gfx/' . filter_naughty_harsh($type_id) . '.php')) && (!file_exists(get_file_base() . '/sources_custom/hooks/blocks/main_custom_gfx/' . filter_naughty_harsh($type_id) . '.php'))) {
-            return paragraph(do_lang_tempcode('NO_SUCH_RENDERER', escape_html($type_id)), '', 'red-alert');
+            return paragraph(do_lang_tempcode('NO_SUCH_RENDERER', escape_html($type_id)), '9fnvnqrcmgmrv8b7dppw87mabedtuh9m', 'red-alert');
         }
 
         require_code('hooks/blocks/main_custom_gfx/' . filter_naughty_harsh($type_id, true), true);
@@ -101,7 +101,7 @@ class Block_main_custom_gfx
             $file_contents = file_get_contents(((strpos($img_path, '/default/images/') !== false) ? get_file_base() : get_custom_file_base()) . '/' . $img_path);
             $img = @imagecreatefromstring($file_contents);
             if ($img === false) {
-                return paragraph(do_lang_tempcode('CORRUPT_FILE', escape_html($img_path)), '', 'red-alert');
+                return paragraph(do_lang_tempcode('CORRUPT_FILE', escape_html($img_path)), 'h8b1p9evu0ibhnjl0ze2ny4x0gxgcpwq', 'red-alert');
             }
 
             imagealphablending($img, true);

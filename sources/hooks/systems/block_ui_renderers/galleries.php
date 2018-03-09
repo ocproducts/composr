@@ -35,6 +35,10 @@ class Hook_block_ui_renderers_galleries
      */
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         if ((($default == '') || (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $default) != 0)) && ($parameter == 'param') && (in_array($block, array('side_galleries', 'main_gallery_embed', 'main_image_fader')))) { // gallery list
             require_code('galleries');
             $list = create_selection_list_gallery_tree($default);

@@ -30,6 +30,10 @@ class Hook_preview_image
      */
     public function applies()
     {
+        if (!addon_installed('galleries')) {
+            return false;
+        }
+
         $applies = (get_page_name() == 'cms_galleries') && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
         return array($applies, null, false);
     }

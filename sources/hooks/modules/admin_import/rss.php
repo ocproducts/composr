@@ -30,6 +30,10 @@ class Hook_import_rss
      */
     public function info()
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         $info = array();
         $info['product'] = 'News RSS/Atom';
         $info['hook_type'] = 'redirect';

@@ -30,6 +30,10 @@ class Hook_ecommerce_email
      */
     public function config()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'ecom_prods_prices WHERE name LIKE \'' . db_encode_like('forw\_%') . '\'');
         $out_forw = array();
         foreach ($rows as $i => $row) {
@@ -237,6 +241,10 @@ class Hook_ecommerce_email
      */
     public function get_product_category()
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return array(
             'category_name' => do_lang('EMAIL_ACCOUNTS', integer_format(intval(get_option('initial_quota')))),
             'category_description' => do_lang_tempcode('EMAIL_TYPES_DESCRIPTION', escape_html(integer_format(intval(get_option('initial_quota'))))),
@@ -255,6 +263,10 @@ class Hook_ecommerce_email
      */
     public function get_products($search = null)
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         $products = array();
 
         $initial_quota = intval(get_option('initial_quota'));

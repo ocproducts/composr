@@ -66,6 +66,10 @@ class Hook_commandr_fs_etc
         require_code('resource_fs');
         $hooks = find_all_hook_obs('systems', 'commandr_fs_extended_config', 'Hook_commandr_fs_extended_config__');
         foreach ($hooks as $hook => $ob) {
+            if (!$ob->is_active()) {
+                continue;
+            }
+
             $modification_time = $ob->get_edit_date();
 
             $listing[] = array(

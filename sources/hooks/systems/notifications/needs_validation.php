@@ -31,6 +31,10 @@ class Hook_notification_needs_validation extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('unvalidated')) {
+            return array();
+        }
+
         $list = array();
         $list['needs_validation'] = array(do_lang('VALIDATION'), do_lang('unvalidated:NOTIFICATION_TYPE_needs_validation'));
         return $list;

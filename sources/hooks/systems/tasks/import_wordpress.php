@@ -36,6 +36,10 @@ class Hook_task_import_wordpress
      */
     public function run($is_validated, $download_images, $to_own_account, $import_blog_comments, $import_to_blog, $import_wordpress_users)
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         require_lang('news');
         require_code('news');
         require_code('news2');

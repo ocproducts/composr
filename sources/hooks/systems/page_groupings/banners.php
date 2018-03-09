@@ -32,11 +32,11 @@ class Hook_page_groupings_banners
      */
     public function run($member_id = null, $extensive_docs = false)
     {
-        require_lang('banners');
-
         if (!addon_installed('banners')) {
             return array();
         }
+
+        require_lang('banners');
 
         return array(
             array('cms', 'menu/cms/banners', array('cms_banners', array('type' => 'browse'), get_module_zone('cms_banners')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('banners:BANNERS'), make_string_tempcode(escape_html(integer_format(@intval($GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', array(), '', true)))))), 'banners:DOC_BANNERS'),

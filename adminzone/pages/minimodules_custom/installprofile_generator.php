@@ -73,10 +73,14 @@ class Hook_admin_setupwizard_installprofiles_mycustomprofile
     /**
      * Get info about the installprofile.
      *
-     * @return array Map of installprofile details
+     * @return ?array Map of installprofile details (null: profile is unavailable)
      */
     function info()
     {
+        if (!addon_installed('setupwizard')) {
+            return null;
+        }
+
         return array(
             'title' => 'My Custom installprofile',
         );

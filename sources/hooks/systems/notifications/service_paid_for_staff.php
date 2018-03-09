@@ -43,6 +43,10 @@ class Hook_notification_service_paid_for_staff extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('ecommerce')) {
+            return array();
+        }
+
         $list = array();
         $list['service_paid_for_staff'] = array(do_lang('ecommerce:ECOMMERCE'), do_lang('ecommerce:NOTIFICATION_TYPE_service_paid_for_staff'));
         return $list;

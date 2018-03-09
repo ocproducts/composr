@@ -30,6 +30,10 @@ class Hook_task_install_geolocation_data
      */
     public function run()
     {
+        if (!addon_installed('stats')) {
+            return null;
+        }
+
         push_query_limiting(false);
 
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');

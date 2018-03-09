@@ -30,6 +30,10 @@ class Hook_preview_banner
      */
     public function applies()
     {
+        if (!addon_installed('banners')) {
+            return false;
+        }
+
         $applies = (get_page_name() == 'cms_banners') && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
         return array($applies, null, false);
     }

@@ -30,6 +30,10 @@ class Hook_admin_stats_cns_posting_rates
      */
     public function info()
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }

@@ -30,6 +30,10 @@ class Hook_checklist_default_content
      */
     public function run()
     {
+        if (!addon_installed('setupwizard')) {
+            return array();
+        }
+
         $status = ($GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_name', array('zone_name' => 'lorem')) === null) ? 1 : 0;
 
         if ($status == 0) {
