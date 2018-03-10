@@ -12,6 +12,10 @@
  * @copyright  ocProducts Ltd
  * @package    disastr
  */
+
+/**
+ * Hook class.
+ */
 class Hook_page_groupings_disastr
 {
     /**

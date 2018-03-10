@@ -12,6 +12,10 @@
  * @copyright  ocProducts Ltd
  * @package    buildr
  */
+
+/**
+ * Hook class.
+ */
 class Hook_page_groupings_buildr
 {
     /**

@@ -1,10 +1,17 @@
-<?php
+<?php /*
 
-/*
-This finds a Composr member's Facebook ID, in offline mode.
+ Composr
+ Copyright (c) ocProducts, 2004-2016
 
-Use FB_CONNECT_UID to get the Facebook ID of the currently active user, via an active Facebook Connect session.
+ See text/EN/licence.txt for full licencing information.
+
 */
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    facebook_support
+ */
 
 /**
  * Hook class.

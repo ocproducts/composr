@@ -12,6 +12,10 @@
  * @copyright  ocProducts Ltd
  * @package    comcode_html_whitelist
  */
+
+/**
+ * Hook class.
+ */
 class Hook_page_groupings_comcode_whitelist
 {
     /**

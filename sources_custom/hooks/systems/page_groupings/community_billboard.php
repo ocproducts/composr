@@ -12,6 +12,10 @@
  * @copyright  ocProducts Ltd
  * @package    community_billboard
  */
+
+/**
+ * Hook class.
+ */
 class Hook_page_groupings_community_billboard
 {
     /**
