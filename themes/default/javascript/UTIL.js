@@ -313,6 +313,49 @@
     };
 
     /**
+     * Enhances a promise with methods to query its state (Credit: https://stackoverflow.com/a/21489870/362006)
+     * @param promise
+     * @returns { Promise }
+     */
+    $util.promiseMakeQuerable = function promiseMakeQuerable(promise) {
+        // Don't modify any promise that has been already modified.
+        if (typeof promise.isResolved === 'function') {
+            return promise;
+        }
+
+        // Set initial state
+        var isPending = true,
+            isRejected = false,
+            isResolved = false;
+
+        // Observe the promise, saving the fulfillment in a closure scope.
+        var result = promise.then(
+            function(v) {
+                isResolved = true;
+                isPending = false;
+                return v;
+            },
+            function(e) {
+                isRejected = true;
+                isPending = false;
+                throw e;
+            }
+        );
+
+        result.isResolved = function () {
+            return isResolved;
+        };
+        result.isPending = function () {
+            return isPending;
+        };
+        result.isRejected = function () {
+            return isRejected;
+        };
+        
+        return result;
+    };
+
+    /**
      * @param obj
      * @returns {boolean}
      */

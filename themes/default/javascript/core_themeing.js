@@ -4,8 +4,8 @@
     /*
      Naming conventions...
 
-     t_ Tab header
-     g_ Tab body
+     t- Tab header
+     g- Tab body
      b_ Toolbar
      e_ Editor textbox
      */
@@ -101,7 +101,7 @@
                 window.templateEditorOpenFiles[file].unsavedChanges = false;
 
                 var fileId = fileToFileId(file);
-                var ob = document.getElementById('t_' + fileId);
+                var ob = document.getElementById('t-' + fileId);
                 ob.classList.remove('file-changed');
                 ob.classList.add('file-nonchanged');
             }
@@ -566,7 +566,7 @@
             stub = strVal(params.stub);
 
         $dom.on(container, 'click', '.js-click-template-insert-parameter', function () {
-            templateInsertParameter('b-' + fileId + '_' + stub, fileId);
+            templateInsertParameter('b_' + fileId + '_' + stub, fileId);
         });
 
         function templateInsertParameter(dropdownName, fileId) {
@@ -751,53 +751,43 @@
         });
 
         function addTemplate() {
-            $cms.ui.prompt(
-                '{!themes:INPUT_TEMPLATE_TYPE;^}',
-                'templates',
-                function (subdir) {
-                    if (subdir !== null) {
-                        if (subdir !== 'templates' && subdir !== 'css' && subdir !== 'javascript' && subdir !== 'text' && subdir !== 'xml') {
-                            $cms.ui.alert('{!themes:BAD_TEMPLATE_TYPE;^}');
-                            return;
-                        }
-
-                        $cms.ui.prompt(
-                            '{!themes:INPUT_TEMPLATE_NAME;^}',
-                            'example',
-                            function (file) {
-                                if (file !== null) {
-                                    file = file.replace(/\..*$/, '');
-                                    switch (subdir) {
-                                        case 'templates':
-                                            file += '.tpl';
-                                            break;
-
-                                        case 'css':
-                                            file += '.css';
-                                            break;
-
-                                        case 'javascript':
-                                            file += '.js';
-                                            break;
-
-                                        case 'text':
-                                            file += '.txt';
-                                            break;
-
-                                        case 'xml':
-                                            file += '.xml';
-                                            break;
-                                    }
-
-                                    templateEditorAddTab(file);
-                                }
-                            },
-                            '{!themes:ADD_TEMPLATE;^}'
-                        );
+            $cms.ui.prompt('{!themes:INPUT_TEMPLATE_TYPE;^}', 'templates', null, '{!themes:ADD_TEMPLATE;^}').then(function (subdir) {
+                if (subdir !== null) {
+                    if (subdir !== 'templates' && subdir !== 'css' && subdir !== 'javascript' && subdir !== 'text' && subdir !== 'xml') {
+                        $cms.ui.alert('{!themes:BAD_TEMPLATE_TYPE;^}');
+                        return;
                     }
-                },
-                '{!themes:ADD_TEMPLATE;^}'
-            );
+
+                    $cms.ui.prompt('{!themes:INPUT_TEMPLATE_NAME;^}', 'example', null , '{!themes:ADD_TEMPLATE;^}').then(function (file) {
+                        if (file !== null) {
+                            file = file.replace(/\..*$/, '');
+                            switch (subdir) {
+                                case 'templates':
+                                    file += '.tpl';
+                                    break;
+
+                                case 'css':
+                                    file += '.css';
+                                    break;
+
+                                case 'javascript':
+                                    file += '.js';
+                                    break;
+
+                                case 'text':
+                                    file += '.txt';
+                                    break;
+
+                                case 'xml':
+                                    file += '.xml';
+                                    break;
+                            }
+
+                            templateEditorAddTab(file);
+                        }
+                    });
+                }
+            });
         }
 
         function templateEditorAssignUnloadEvent() {
@@ -833,7 +823,7 @@
             // Set content from revision
             var url = templateEditorLoadingUrl(file, revisionId);
             $cms.loadSnippet(url).then(function (html) {
-                document.getElementById('t_' + fileId).className = 'tab tab-active';
+                document.getElementById('t-' + fileId).className = 'tab tab-active';
 
                 templateEditorTabLoadedContent(html, file);
             });
@@ -945,7 +935,7 @@
             fileId = fileToFileId(file);
 
         // Switch to tab if exists
-        if (document.getElementById('t_' + fileId)) {
+        if (document.getElementById('t-' + fileId)) {
             $cms.ui.selectTab('g', fileId);
 
             templateEditorShowTab(fileId);
@@ -957,15 +947,14 @@
         var headers = document.getElementById('template-editor-tab-headers');
 
         var header = document.createElement('a');
-        header.setAttribute('aria-controls', 'g_' + fileId);
+        header.setAttribute('aria-controls', 'g-' + fileId);
         header.setAttribute('role', 'tab');
-        header.href = '#';
-        header.id = 't_' + fileId;
+        header.href = '#!';
+        header.id = 't-' + fileId;
         header.className = 'tab file-nonchanged';
-        header.addEventListener('click', function (event) {
+        header.addEventListener('click', function () {
             $cms.ui.selectTab('g', fileId);
             templateEditorShowTab(fileId);
-            return false;
         });
 
         var ext = (tabTitle.indexOf('.') !== -1) ? tabTitle.substring(tabTitle.indexOf('.') + 1, tabTitle.length) : '';
@@ -1008,11 +997,11 @@
             event.preventDefault();
 
             if (window.templateEditorOpenFiles[file].unsavedChanges) {
-                $cms.ui.confirm('{!themes:UNSAVED_CHANGES;^}'.replace('\{1\}', file), function (result) {
+                $cms.ui.confirm('{!themes:UNSAVED_CHANGES;^}'.replace('\{1\}', file), null, '{!Q_SURE;^}', true).then(function (result) {
                     if (result) {
                         templateEditorTabUnloadContent(file);
                     }
-                }, '{!Q_SURE;^}', true);
+                });
             } else {
                 templateEditorTabUnloadContent(file);
             }
@@ -1023,9 +1012,9 @@
         // Create new tab body
         var bodies = document.getElementById('template-editor-tab-bodies');
         var body = document.createElement('div');
-        body.setAttribute('aria-labeledby', 't_' + fileId);
+        body.setAttribute('aria-labeledby', 't-' + fileId);
         body.setAttribute('role', 'tabpanel');
-        body.id = 'g_' + fileId;
+        body.id = 'g-' + fileId;
         body.style.display = 'none';
         var loadingImage = document.createElement('img');
         loadingImage.className = 'ajax-loading';
@@ -1037,7 +1026,7 @@
 
         // Set content
         var url = templateEditorLoadingUrl(file);
-        $cms.loadSnippet(url, null, true).then(function (html) {
+        $cms.loadSnippet(url).then(function (html) {
             templateEditorTabLoadedContent(html, file);
         });
 
@@ -1068,14 +1057,14 @@
             }
 
             function templateEditorRemoveTab(fileId) {
-                var header = document.getElementById('t_' + fileId);
+                var header = document.getElementById('t-' + fileId);
                 if (header) {
                     var isActive = (header.classList.contains('tab-active'));
 
-                    header.parentNode.removeChild(header);
-                    var body = document.getElementById('g_' + fileId);
+                    header.remove();
+                    var body = document.getElementById('g-' + fileId);
                     if (body) {
-                        body.parentNode.removeChild(body);
+                        body.remove();
                     }
 
                     templateEditorCleanTabs();
@@ -1092,10 +1081,10 @@
         var url = 'template_editor_load';
         url += '&file=' + encodeURIComponent(file);
         url += '&theme=' + encodeURIComponent(window.templateEditorTheme);
-        if (window.templateEditorActiveGuid !== undefined) {
+        if (window.templateEditorActiveGuid != null) {
             url += '&active_guid=' + encodeURIComponent(window.templateEditorActiveGuid);
         }
-        if (window.templateEditorLivePreviewUrl !== undefined) {
+        if (window.templateEditorLivePreviewUrl != null) {
             url += '&live_preview_url=' + encodeURIComponent($cms.protectURLParameter(window.templateEditorLivePreviewUrl));
         }
         if (revisionId !== undefined) {
@@ -1130,7 +1119,7 @@
 
         setTimeout(function () {
             var textareaId = 'e_' + fileId;
-            if (editareaIsLoaded(textareaId)) {
+            if (window.editareaIsLoaded(textareaId)) {
                 var editor = window.aceEditors[textareaId];
                 var editorSession = editor.getSession();
                 editorSession.on('change', function () {
@@ -1152,7 +1141,7 @@
             window.templateEditorOpenFiles[file].unsavedChanges = true;
 
             var fileId = fileToFileId(file);
-            var ob = document.getElementById('t_' + fileId);
+            var ob = document.getElementById('t-' + fileId);
             ob.classList.remove('file-nonchanged');
             ob.classList.add('file-changed');
         }
@@ -1160,7 +1149,7 @@
 
     function templateEditorShowTab(fileId) {
         setTimeout(function () {
-            if (!document.getElementById('t_' + fileId) || !document.getElementById('t_' + fileId).classList.contains('tab-active')) {
+            if (!document.getElementById('t-' + fileId) || !document.getElementById('t-' + fileId).classList.contains('tab-active')) {
                 // No longer visible
                 return;
             }

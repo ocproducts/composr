@@ -1527,8 +1527,13 @@
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
         var uid = $util.uid(el);
-        _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
-        _animationQueue[uid] = _animationQueue[uid].then(doFadeIn);
+        
+        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
+            _animationQueue[uid] = $util.promiseMakeQuerable(doFadeIn());
+        } else {
+            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(doFadeIn));
+        }
+
         return _animationQueue[uid];
 
         function doFadeIn() {
@@ -1574,10 +1579,15 @@
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
         var uid = $util.uid(el);
-        _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
-        _animationQueue[uid] = _animationQueue[uid].then(doFadeOut);
-        return _animationQueue[uid];
 
+        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
+            _animationQueue[uid] = $util.promiseMakeQuerable(doFadeOut());
+        } else {
+            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(doFadeOut));
+        }
+
+        return _animationQueue[uid];
+        
         function doFadeOut() {
             return new Promise(function (resolve) {
                 if ($dom.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
@@ -1609,8 +1619,13 @@
         opacity = numVal(opacity);
 
         var uid = $util.uid(el);
-        _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
-        _animationQueue[uid] = _animationQueue[uid].then(doFadeTo);
+        
+        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
+            _animationQueue[uid] = $util.promiseMakeQuerable(doFadeTo());
+        } else {
+            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(doFadeTo));
+        }
+
         return _animationQueue[uid];
 
         function doFadeTo() {
@@ -1644,8 +1659,13 @@
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
         var uid = $util.uid(el);
-        _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
-        _animationQueue[uid] = _animationQueue[uid].then(doFadeToggle);
+
+        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
+            _animationQueue[uid] = $util.promiseMakeQuerable(doFadeToggle());
+        } else {
+            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(doFadeToggle));
+        }
+        
         return _animationQueue[uid];
 
         function doFadeToggle() {
@@ -1671,8 +1691,13 @@
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
         var uid = $util.uid(el);
-        _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
-        _animationQueue[uid] = _animationQueue[uid].then(doSlideDown);
+        
+        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
+            _animationQueue[uid] = $util.promiseMakeQuerable(doSlideDown());
+        } else {
+            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(doSlideDown));
+        }
+        
         return _animationQueue[uid];
 
         function doSlideDown() {
@@ -1743,8 +1768,13 @@
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
         var uid = $util.uid(el);
-        _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
-        _animationQueue[uid] = _animationQueue[uid].then(doSlideUp);
+        
+        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
+            _animationQueue[uid] = $util.promiseMakeQuerable(doSlideUp());
+        } else {
+            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(doSlideUp));
+        }
+        
         return _animationQueue[uid];
 
         function doSlideUp() {
@@ -1802,8 +1832,13 @@
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
         var uid = $util.uid(el);
-        _animationQueue[uid] || (_animationQueue[uid] = Promise.resolve());
-        _animationQueue[uid] = _animationQueue[uid].then(doSlideToggle);
+        
+        if (!_animationQueue[uid] || _animationQueue[uid].isResolved()) {
+            _animationQueue[uid] = $util.promiseMakeQuerable(doSlideToggle());
+        } else {
+            _animationQueue[uid] = $util.promiseMakeQuerable(_animationQueue[uid].then(doSlideToggle));
+        }
+        
         return _animationQueue[uid];
 
         function doSlideToggle() {
