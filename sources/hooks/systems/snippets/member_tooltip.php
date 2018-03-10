@@ -21,6 +21,10 @@
 /**
  * Hook class.
  */
+
+/**
+ * Hook class.
+ */
 class Hook_snippet_member_tooltip
 {
     /**
