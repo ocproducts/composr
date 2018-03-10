@@ -26,6 +26,10 @@ class Hook_members_customers
      */
     public function run($member_id)
     {
+        if (!addon_installed('composr_homesite_support_credits')) {
+            return array();
+        }
+
         if (!has_actual_page_access(get_member(), 'admin_ecommerce', get_module_zone('admin_ecommerce'))) {
             return array();
         }

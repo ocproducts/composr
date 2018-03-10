@@ -13,13 +13,16 @@
 */
 
 /**
- * @license        http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
- * @copyright      ocProducts Ltd
- * @package        core_cns
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    core_cns
+ */
+
+/**
+ * Hook class.
  */
 class Hook_snippet_member_tooltip
 {
-
     /**
      * Standard modular run function for snippet hooks. Generates XHTML to insert into a page using AJAX.
      *

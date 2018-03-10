@@ -27,6 +27,10 @@ class Hook_profiles_tabs_related
      */
     public function is_active($member_id_of, $member_id_viewing)
     {
+        if (!addon_installed('related_members')) {
+            return false;
+        }
+
         require_lang('related');
 
         return (get_cms_cpf(do_lang('RELATED_CPF'), $member_id_of) != '');

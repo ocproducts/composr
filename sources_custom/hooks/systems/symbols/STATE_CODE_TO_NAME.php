@@ -26,6 +26,10 @@ class Hook_symbol_STATE_CODE_TO_NAME
      */
     public function run($param)
     {
+        if (!addon_installed('world_regions')) {
+            return '';
+        }
+
         $value = '';
 
         if (!empty($param[0])) {

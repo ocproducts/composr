@@ -288,7 +288,7 @@ function appengine_is_live()
 function tacit_https()
 {
     $https = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : '';
-    return (($https != '') && ($https != 'off'));
+    return ($https != '') && ($https != 'off');
 }
 
 /**

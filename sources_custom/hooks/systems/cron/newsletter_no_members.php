@@ -29,6 +29,10 @@ class Hook_cron_newsletter_no_members
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('newsletter_no_members')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }

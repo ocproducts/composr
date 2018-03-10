@@ -27,6 +27,10 @@ class Hook_profiles_tabs_comments
      */
     public function is_active($member_id_of, $member_id_viewing)
     {
+        if (!addon_installed('member_comments')) {
+            return false;
+        }
+
         $forum_name = get_option('member_comments_forum_name');
         $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
         return $forum_id !== null;

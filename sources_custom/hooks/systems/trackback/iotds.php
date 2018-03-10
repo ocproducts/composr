@@ -26,7 +26,7 @@ class Hook_trackback_iotds
      */
     public function run($id)
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('iotd')) {
+        if (!addon_installed('iotds')) {
             return false;
         }
 

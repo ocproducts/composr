@@ -329,7 +329,7 @@ function require_code($codename, $light_exit = false)
  */
 function php_error_has_happened($errormsg)
 {
-    return (($errormsg != '') && (stripos($errormsg, 'deprecated') === false/*deprecated errors can leak through because even though we return true in our error handler, error handlers won't run recursively, so if this code is loaded during an error it'll stream through deprecated stuff here*/));
+    return ($errormsg != '') && (stripos($errormsg, 'deprecated') === false/*deprecated errors can leak through because even though we return true in our error handler, error handlers won't run recursively, so if this code is loaded during an error it'll stream through deprecated stuff here*/);
 }
 
 /**
@@ -382,7 +382,7 @@ function override_str_replace_exactly($search, $replace, $subject, $times = 1)
  */
 function appengine_is_live()
 {
-    return ((GOOGLE_APPENGINE) && (!is_writable(get_file_base() . '/sources/global.php')));
+    return (GOOGLE_APPENGINE) && (!is_writable(get_file_base() . '/sources/global.php'));
 }
 
 /**

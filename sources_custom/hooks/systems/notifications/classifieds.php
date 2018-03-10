@@ -26,7 +26,7 @@ class Hook_notification_classifieds extends Hook_Notification
      */
     public function list_handled_codes()
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('ecom_classifieds_prices')) {
+        if (!addon_installed('classified_ads')) {
             return array();
         }
 

@@ -25,6 +25,10 @@ class Hook_snippet_tutorial_box
      */
     public function run()
     {
+        if (!addon_installed('composr_tutorials')) {
+            return new Tempcode();
+        }
+
         require_code('tutorials');
 
         $tutorial_name = get_param_string('tutorial_name');

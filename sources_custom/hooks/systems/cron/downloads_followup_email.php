@@ -27,6 +27,10 @@ class Hook_cron_downloads_followup_email
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('downloads_followup_email')) {
+            return null;
+        }
+
         $time_now = time();
         if ($last_run === null) {
             $last_run = $time_now - self::INITIAL_BACK_TIME;

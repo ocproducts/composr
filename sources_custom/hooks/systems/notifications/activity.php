@@ -39,6 +39,10 @@ class Hook_notification_activity extends Hook_Notification
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('activity_feed')) {
+            return array();
+        }
+
         $page_links = array();
 
         $notification_category = get_param_string('id', null);
@@ -95,6 +99,10 @@ class Hook_notification_activity extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('activity_feed')) {
+            return array();
+        }
+
         $list = array();
         $list['activity'] = array(do_lang('ACTIVITY'), do_lang('activities:NOTIFICATION_TYPE_activity'));
         return $list;

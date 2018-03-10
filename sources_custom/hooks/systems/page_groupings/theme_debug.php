@@ -27,6 +27,10 @@ class Hook_page_groupings_theme_debug
      */
     public function run($member_id = null, $extensive_docs = false)
     {
+        if (!addon_installed('theme_debug')) {
+            return array();
+        }
+
         return array(
             array('site_meta', 'admin/tool', array('theme_debug', array(), get_page_zone('theme_debug')), make_string_tempcode('Theme testing / fixup tools')),
             array('style', 'admin/tool', array('fix_partial_themewizard_css', array(), get_page_zone('fix_partial_themewizard_css')), make_string_tempcode('Fixup themewizard themes')),

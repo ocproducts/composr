@@ -33,7 +33,7 @@ class Hook_upload_syndication_photobucket
 
     public function is_enabled()
     {
-        return get_option('photobucket_client_id') != '' && get_option('photobucket_client_secret') != '';
+        return (addon_installed('image_syndication')) && (get_option('photobucket_client_id') != '') && (get_option('photobucket_client_secret') != '');
     }
 
     public function happens_always()

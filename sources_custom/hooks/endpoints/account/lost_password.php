@@ -27,6 +27,10 @@ class Hook_endpoint_account_lost_password
      */
     public function run($type, $id)
     {
+        if (!addon_installed('composr_mobile_sdk')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         $username = trim(either_param_string('username', ''));
         $email_address = trim(either_param_string('email_address', ''));
 

@@ -20,6 +20,10 @@ class Hook_startup_facebook
 {
     public function run()
     {
+        if (!addon_installed('facebook_support')) {
+            return;
+        }
+
         if (running_script('index') || running_script('preview') || running_script('iframe')) {
             require_javascript('facebook_support');
             require_lang('facebook');

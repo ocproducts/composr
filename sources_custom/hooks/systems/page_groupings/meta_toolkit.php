@@ -27,6 +27,10 @@ class Hook_page_groupings_meta_toolkit
      */
     public function run($member_id = null, $extensive_docs = false)
     {
+        if (!addon_installed('meta_toolkit')) {
+            return array();
+        }
+
         return array(
             array('tools', 'admin/tool', array('sql_schema_generate', array(), get_page_zone('sql_schema_generate')), make_string_tempcode('Doc build: Generate database schema')),
             array('tools', 'admin/tool', array('sql_schema_generate_by_addon', array(), get_page_zone('sql_schema_generate_by_addon')), make_string_tempcode('Doc build: Generate database schema, by addon')),

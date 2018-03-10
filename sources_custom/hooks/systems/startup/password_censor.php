@@ -20,6 +20,10 @@ class Hook_startup_password_censor
 {
     public function run()
     {
+        if (!addon_installed('password_censor')) {
+            return;
+        }
+
         foreach ($_POST as $key => $val) {
             if ((is_string($val)) && (strpos($val, '[encrypt') !== false)) {
                 require_code('password_censor');

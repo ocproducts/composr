@@ -20,6 +20,10 @@ class Hook_startup_param_restrict
 {
     public function run()
     {
+        if (!addon_installed('pagination_protection')) {
+            return;
+        }
+
         $max = 100;
 
         foreach ($_GET as $key => $val) {

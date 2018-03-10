@@ -26,6 +26,10 @@ class Hook_notification_workflow_step extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('workflows')) {
+            return array();
+        }
+
         $list = array();
         $list['workflow_step'] = array(do_lang('workflows:CONTENT_VALIDATION'), do_lang('workflows:NOTIFICATION_TYPE_workflow_step'));
         return $list;

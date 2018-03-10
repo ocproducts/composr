@@ -20,6 +20,10 @@ class Hook_comcode_preparse_tapatalk
 {
     public function preparse(&$comcode)
     {
+        if (!addon_installed('cns_tapatalk')) {
+            return;
+        }
+
         if (!defined('IN_MOBIQUO')) {
             $protocol = tacit_https() ? 'https:' : 'http:';
             $comcode = preg_replace('/\[emoji(\d+)\]/i', '[img]' . $protocol . '//emoji.tapatalk-cdn.com/emoji$1.png[/img]', $comcode);

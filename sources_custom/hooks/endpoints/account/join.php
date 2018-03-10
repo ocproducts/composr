@@ -27,6 +27,10 @@ class Hook_endpoint_account_join
      */
     public function run($type, $id)
     {
+        if (!addon_installed('composr_mobile_sdk')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         require_code('cns_join');
         cns_require_all_forum_stuff();
         list($message, $member_id) = cns_join_actual(false);

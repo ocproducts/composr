@@ -95,13 +95,15 @@ class Hook_fields_float
      */
     public function render_field_value($field, $ev)
     {
-        require_lang('locations');
+        if ((addon_installed('data_mappr')) || (addon_installed('user_mappr'))) {
+            require_lang('locations');
 
-        $_cf_name = array_key_exists('trans_name', $field) ? $field['trans_name'] : get_translated_text($field['cf_name']);
-        if (($_cf_name == do_lang('LATITUDE')) || ($_cf_name == do_lang('LONGITUDE')) || ($_cf_name == 'cms_latitude') || ($_cf_name == 'cms_longitude')) {
-            if (is_object($ev)) {
-                if ($ev->evaluate() == do_lang('NA_EM')) {
-                    return ''; // Cleanup noisy data
+            $_cf_name = array_key_exists('trans_name', $field) ? $field['trans_name'] : get_translated_text($field['cf_name']);
+            if (($_cf_name == do_lang('LATITUDE')) || ($_cf_name == do_lang('LONGITUDE')) || ($_cf_name == 'cms_latitude') || ($_cf_name == 'cms_longitude')) {
+                if (is_object($ev)) {
+                    if ($ev->evaluate() == do_lang('NA_EM')) {
+                        return ''; // Cleanup noisy data
+                    }
                 }
             }
         }
@@ -159,43 +161,45 @@ class Hook_fields_float
 
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
 
-        if ($_cf_name == do_lang('LONGITUDE') || $_cf_name == 'cms_longitude') { // Assumes there is a Latitude field too, although not critical
-            $pretty_name = $_cf_name;
-            $description = $_cf_description;
-            $required = $field['cf_required'] == 1;
+        if ((addon_installed('data_mappr')) || (addon_installed('user_mappr'))) {
+            if ($_cf_name == do_lang('LONGITUDE') || $_cf_name == 'cms_longitude') { // Assumes there is a Latitude field too, although not critical
+                $pretty_name = $_cf_name;
+                $description = $_cf_description;
+                $required = $field['cf_required'] == 1;
 
-            $latitude = '';
-            $longitude = '';
+                $latitude = '';
+                $longitude = '';
 
-            global $LATITUDE;
-            if ((!empty($LATITUDE)) && ($LATITUDE != do_lang('NA'))) {
-                $latitude = float_to_raw_string(floatval($LATITUDE), 10, true);
-            }
-            if ((!empty($actual_value)) && ($actual_value != do_lang('NA'))) {
-                $longitude = float_to_raw_string(floatval($actual_value), 10, true);
+                global $LATITUDE;
+                if ((!empty($LATITUDE)) && ($LATITUDE != do_lang('NA'))) {
+                    $latitude = float_to_raw_string(floatval($LATITUDE), 10, true);
+                }
+                if ((!empty($actual_value)) && ($actual_value != do_lang('NA'))) {
+                    $longitude = float_to_raw_string(floatval($actual_value), 10, true);
+                }
+
+                // To stop it crashing
+                if ($latitude == '' && $longitude != '') {
+                    $latitude = '0';
+                }
+                if ($latitude != '' && $longitude == '') {
+                    $longitude = '0';
+                }
+
+                $input = do_template('FORM_SCREEN_INPUT_MAP_POSITION', array('_GUID' => '86d69d152d7bfd125e6216c9ac936cfd', 'REQUIRED' => $required, 'NAME' => $input_name, 'LATITUDE' => $latitude, 'LONGITUDE' => $longitude));
+                $lang_string = 'MAP_POSITION_FIELD_field_' . strval($field['id']);
+                $test = do_lang($lang_string, null, null, null, null, false);
+                if ($test === null) {
+                    $lang_string = 'MAP_POSITION_FIELD';
+                }
+                return _form_input($input_name, do_lang_tempcode($lang_string), '', $input, $required, false);
             }
 
-            // To stop it crashing
-            if ($latitude == '' && $longitude != '') {
-                $latitude = '0';
+            if ($_cf_name == do_lang('LATITUDE')) { // Assumes there is a Longitude field too
+                global $LATITUDE;
+                $LATITUDE = $actual_value; // Store for when Longitude field is rendered - critical, else won't be entered
+                return new Tempcode();
             }
-            if ($latitude != '' && $longitude == '') {
-                $longitude = '0';
-            }
-
-            $input = do_template('FORM_SCREEN_INPUT_MAP_POSITION', array('_GUID' => '86d69d152d7bfd125e6216c9ac936cfd', 'REQUIRED' => $required, 'NAME' => $input_name, 'LATITUDE' => $latitude, 'LONGITUDE' => $longitude));
-            $lang_string = 'MAP_POSITION_FIELD_field_' . strval($field['id']);
-            $test = do_lang($lang_string, null, null, null, null, false);
-            if ($test === null) {
-                $lang_string = 'MAP_POSITION_FIELD';
-            }
-            return _form_input($input_name, do_lang_tempcode($lang_string), '', $input, $required, false);
-        }
-
-        if ($_cf_name == do_lang('LATITUDE')) { // Assumes there is a Longitude field too
-            global $LATITUDE;
-            $LATITUDE = $actual_value; // Store for when Longitude field is rendered - critical, else won't be entered
-            return new Tempcode();
         }
 
         return form_input_float($_cf_name, $_cf_description, $input_name, (($actual_value === null) || ($actual_value === '')) ? null : floatval($actual_value), $field['cf_required'] == 1);
@@ -218,17 +222,20 @@ class Hook_fields_float
         $tmp_name = 'field_' . strval($id);
         $default = STRING_MAGIC_NULL;
         $_cf_name = array_key_exists('trans_name', $field) ? $field['trans_name'] : get_translated_text($field['cf_name']);
-        if ($_cf_name == do_lang('LATITUDE') || $_cf_name == 'cms_latitude') {
-            $default = post_param_string('latitude', STRING_MAGIC_NULL);
-        }
-        if ($_cf_name == do_lang('LONGITUDE') || $_cf_name == 'cms_longitude') {
-            $default = post_param_string('longitude', STRING_MAGIC_NULL);
+
+        if ((addon_installed('data_mappr')) || (addon_installed('user_mappr'))) {
+            if ($_cf_name == do_lang('LATITUDE') || $_cf_name == 'cms_latitude') {
+                $default = post_param_string('latitude', STRING_MAGIC_NULL);
+            }
+            if ($_cf_name == do_lang('LONGITUDE') || $_cf_name == 'cms_longitude') {
+                $default = post_param_string('longitude', STRING_MAGIC_NULL);
+            }
         }
 
         $ret = post_param_string($tmp_name, $default);
 
         if (($ret != STRING_MAGIC_NULL) && ($ret != '')) {
-            $ret = float_to_raw_string(float_unformat($ret, $_cf_name == 'cms_latitude' || $_cf_name == 'cms_longitude'), 30);
+            $ret = float_to_raw_string(float_unformat($ret, ((addon_installed('data_mappr')) || (addon_installed('user_mappr'))) && ($_cf_name == 'cms_latitude' || $_cf_name == 'cms_longitude')), 30);
         }
 
         return $ret;

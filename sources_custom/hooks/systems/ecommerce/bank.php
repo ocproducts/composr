@@ -25,6 +25,10 @@ class Hook_ecommerce_bank
      */
     public function get_product_category()
     {
+        if (!addon_installed('bankr')) {
+            return null;
+        }
+
         require_lang('bank');
 
         $bank_dividend = intval(get_option('bank_dividend'));
@@ -50,8 +54,8 @@ class Hook_ecommerce_bank
      */
     public function get_products($search = null)
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('bank')) {
-            return array();
+        if (!addon_installed('bankr')) {
+            return null;
         }
 
         require_lang('bank');

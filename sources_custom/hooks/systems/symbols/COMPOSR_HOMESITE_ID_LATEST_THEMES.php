@@ -26,6 +26,10 @@ class Hook_symbol_COMPOSR_HOMESITE_ID_LATEST_THEMES
      */
     public function run($param)
     {
+        if (!addon_installed('composr_homesite')) {
+            return '';
+        }
+
         require_code('composr_homesite');
         $version = get_latest_version_basis_number();
         if ($version === null) {

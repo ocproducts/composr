@@ -38,6 +38,10 @@ class Hook_notification_error_occurred_weather extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('weather')) {
+            return array();
+        }
+
         $list = array();
         $list['error_occurred_weather'] = array(do_lang('ERRORS'), do_lang('weather:NOTIFICATION_TYPE_error_occurred_weather'));
         return $list;

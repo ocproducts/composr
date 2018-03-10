@@ -25,6 +25,10 @@ class Hook_image_thumbs
      */
     public function info()
     {
+        if (!addon_installed('thumbnail_editor')) {
+            return null;
+        }
+
         return null; // Disabled if thumbnails are controlled manually
     }
 }

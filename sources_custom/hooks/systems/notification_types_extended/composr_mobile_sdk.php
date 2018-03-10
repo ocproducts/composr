@@ -23,6 +23,10 @@ class Hook_notification_types_extended_composr_mobile_sdk
      */
     public function init()
     {
+        if (!addon_installed('composr_mobile_sdk')) {
+            return;
+        }
+
         define('A_INSTANT_IOS', 0x100);         // (256 in decimal) iOS (not supplied by default in Composr, may be served via addon)
         define('A_INSTANT_ANDROID', 0x200);     // (512 in decimal) Android (not supplied by default in Composr, may be served via addon)
 
@@ -42,6 +46,10 @@ class Hook_notification_types_extended_composr_mobile_sdk
      */
     public function _get_available_notification_types($member_id_of)
     {
+        if (!addon_installed('composr_mobile_sdk')) {
+            return array();
+        }
+
         require_lang('composr_mobile_sdk');
 
         $__notification_types = array(
@@ -67,6 +75,10 @@ class Hook_notification_types_extended_composr_mobile_sdk
      */
     public function _find_member_statistical_notification_type($to_member_id, $notification_code, $aggressive_pre_search)
     {
+        if (!addon_installed('composr_mobile_sdk')) {
+            return null;
+        }
+
         $_notification_codes_for_mobile = get_option('notification_codes_for_mobile');
         $notification_codes_for_mobile = ($_notification_codes_for_mobile == '') ? array() : explode(',', $_notification_codes_for_mobile);
         if ($aggressive_pre_search && !in_array($notification_code, $notification_codes_for_mobile)) {
@@ -95,7 +107,7 @@ class Hook_notification_types_extended_composr_mobile_sdk
      */
     public function _notification_setting_available($setting, $member_id, &$system_wide, &$for_member)
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('device_token_details')) {
+        if (!addon_installed('composr_mobile_sdk')) {
             return;
         }
 

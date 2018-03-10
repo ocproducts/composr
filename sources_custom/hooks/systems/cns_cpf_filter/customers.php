@@ -25,6 +25,10 @@ class Hook_cns_cpf_filter_customers
      */
     public function to_enable()
     {
+        if (!addon_installed('composr_homesite_support_credits')) {
+            return array();
+        }
+
         require_lang('customers');
 
         $cpf = array();

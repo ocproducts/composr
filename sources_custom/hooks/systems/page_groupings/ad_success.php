@@ -27,6 +27,10 @@ class Hook_page_groupings_ad_success
      */
     public function run($member_id = null, $extensive_docs = false)
     {
+        if (!addon_installed('ad_success')) {
+            return array();
+        }
+
         return array(
             array('audit', 'admin/tool', array('ad_success', array(), get_page_zone('ad_success')), make_string_tempcode('Ad success')),
         );

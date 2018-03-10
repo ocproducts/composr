@@ -29,7 +29,7 @@ class Hook_cron_bank
      */
     public function info($last_run, $calculate_num_queued)
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('bank')) {
+        if (!addon_installed('bankr')) {
             return null;
         }
 

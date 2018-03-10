@@ -2458,7 +2458,7 @@ function is_invisible()
 {
     global $SESSION_CACHE;
     $s = get_session_id();
-    return ((isset($SESSION_CACHE[$s])) && ($SESSION_CACHE[$s]['session_invisible'] == 1));
+    return (isset($SESSION_CACHE[$s])) && ($SESSION_CACHE[$s]['session_invisible'] == 1);
 }
 
 /**
@@ -2923,7 +2923,7 @@ function has_js()
     if (get_param_integer('keep_has_js', null) === 0) {
         return false;
     }
-    return ((isset($_COOKIE['js_on'])) && ($_COOKIE['js_on'] == '1'));
+    return (isset($_COOKIE['js_on'])) && ($_COOKIE['js_on'] == '1');
 }
 
 /**
@@ -3765,7 +3765,7 @@ function escape_header($str, $within_quotes = false)
  */
 function is_cli()
 {
-    return ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && ($_SERVER['REMOTE_ADDR'] == ''));
+    return (php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && ($_SERVER['REMOTE_ADDR'] == '');
 }
 
 /**

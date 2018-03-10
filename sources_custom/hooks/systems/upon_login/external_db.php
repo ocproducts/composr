@@ -27,6 +27,10 @@ class Hook_upon_login_external_db
      */
     public function run($new_attempt, $username, $member_id)
     {
+        if (!addon_installed('external_db_login')) {
+            return;
+        }
+
         if (!$new_attempt) {
             return; // We don't try and bind to a third-party login if we're dealing with re-establishing an existing Composr session
         }

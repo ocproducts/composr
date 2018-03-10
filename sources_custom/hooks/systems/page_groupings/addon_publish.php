@@ -27,6 +27,10 @@ class Hook_page_groupings_addon_publish
      */
     public function run($member_id = null, $extensive_docs = false)
     {
+        if (!addon_installed('addon_publish')) {
+            return array();
+        }
+
         return array(
             array('tools', 'admin/tool', array('admin_generate_adhoc_upgrade', array(), get_page_zone('admin_generate_adhoc_upgrade')), make_string_tempcode('Release tools: Create ad hoc-upgrade-TAR/guidance')),
             array('tools', 'admin/tool', array('build_addons', array(), get_page_zone('build_addons')), make_string_tempcode('Release tools: Build non-bundled addon TARs')),

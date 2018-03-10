@@ -20,6 +20,10 @@ class Hook_upon_query_banner_click_points
 {
     public function run_post($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
     {
+        if (!addon_installed('banner_click_points')) {
+            return;
+        }
+
         if ($query[0] == 'S') {
             return;
         }

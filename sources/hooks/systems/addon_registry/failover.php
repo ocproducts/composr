@@ -23,7 +23,6 @@
  */
 class Hook_addon_registry_failover
 {
-
     /**
      * Get a list of file permissions to set.
      *

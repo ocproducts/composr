@@ -26,6 +26,10 @@ class Hook_members_classifieds
      */
     public function run($member_id)
     {
+        if (!addon_installed('classified_ads')) {
+            return array();
+        }
+
         if (!has_actual_page_access(get_member(), 'classifieds', get_module_zone('classifieds'))) {
             return array();
         }

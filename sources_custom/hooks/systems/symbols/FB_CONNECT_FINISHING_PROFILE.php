@@ -20,6 +20,10 @@ class Hook_symbol_FB_CONNECT_FINISHING_PROFILE
 {
     public function run($param)
     {
+        if (!addon_installed('facebook_support')) {
+            return '';
+        }
+
         require_code('facebook_connect');
 
         if (isset($GLOBALS['FACEBOOK_FINISHING_PROFILE'])) {

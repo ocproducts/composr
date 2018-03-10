@@ -1419,6 +1419,6 @@ class Hook_notification__Staff extends Hook_Notification
         $test = ($only_if_enabled_on__notification_code === null) ? true : notifications_enabled($only_if_enabled_on__notification_code, $only_if_enabled_on__category, $member_id);
 
         require_code('permissions');
-        return (($test) && (has_privilege($member_id, 'may_enable_staff_notifications')));
+        return ($test) && (has_privilege($member_id, 'may_enable_staff_notifications'));
     }
 }

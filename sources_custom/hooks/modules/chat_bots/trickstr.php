@@ -66,6 +66,10 @@ class Hook_chat_bot_trickstr
      */
     function reply_to_any_communication($room_id, $string)
     {
+        if (!addon_installed('trickstr')) {
+            return null;
+        }
+
         $people = get_chatters_in_room($room_id);
         if (count($people) > 2) {
             return null; // Don't spam if noone is here
@@ -97,6 +101,10 @@ class Hook_chat_bot_trickstr
      */
     function handle_commands($room_id, $string)
     {
+        if (!addon_installed('trickstr')) {
+            return null;
+        }
+
         if (!is_writable(get_file_base() . "/temp/subs.inc")) {
             return null;
         }

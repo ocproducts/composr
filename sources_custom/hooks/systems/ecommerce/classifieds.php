@@ -25,6 +25,10 @@ class Hook_ecommerce_classifieds
      */
     public function get_product_category()
     {
+        if (!addon_installed('classified_ads')) {
+            return null;
+        }
+
         require_lang('classifieds');
 
         return array(
@@ -45,8 +49,8 @@ class Hook_ecommerce_classifieds
      */
     public function get_products($search = null)
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('ecom_classifieds_prices')) {
-            return array();
+        if (!addon_installed('classified_ads')) {
+            return null;
         }
 
         require_lang('classifieds');

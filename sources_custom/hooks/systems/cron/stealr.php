@@ -27,6 +27,10 @@ class Hook_cron_stealr
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('stealr')) {
+            return null;
+        }
+
         $stealr_group = get_option('stealr_group');
         if ($stealr_group == '') {
             return null;

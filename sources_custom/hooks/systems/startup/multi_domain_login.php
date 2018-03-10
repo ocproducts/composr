@@ -20,6 +20,10 @@ class Hook_startup_multi_domain_login
 {
     public function run($MICRO_BOOTUP, $MICRO_AJAX_BOOTUP)
     {
+        if (!addon_installed('multi_domain_login')) {
+            return;
+        }
+
         if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP) && (running_script('index'))) {
             //if (isset($_POST['login_username'])) return;  Actually, we'll use caching to avoid this
 
@@ -42,7 +46,7 @@ class Hook_startup_multi_domain_login
         }
     }
 
-    public function session_syndicate_code($domain, $path)
+    protected function session_syndicate_code($domain, $path)
     {
         $url = 'http://' . $domain . '/' . $path . (($path == '') ? '' : '/') . 'data_custom/multi_domain_login.php';
         $url .= '?session_expiry_time=' . urlencode(get_option('session_expiry_time'));

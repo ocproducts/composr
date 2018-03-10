@@ -30,11 +30,7 @@ class Hook_preview_video
      */
     public function applies()
     {
-        if (!addon_installed('galleries')) {
-            return false;
-        }
-
-        $applies = (get_page_name() == 'cms_galleries') && ((get_param_string('type', '') == 'add_other') || (get_param_string('type', '') == '_edit_other'));
+        $applies = (!addon_installed('galleries')) && (get_page_name() == 'cms_galleries') && ((get_param_string('type', '') == 'add_other') || (get_param_string('type', '') == '_edit_other'));
         return array($applies, null, false);
     }
 

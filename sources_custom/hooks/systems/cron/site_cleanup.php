@@ -27,6 +27,10 @@ class Hook_cron_site_cleanup
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('composr_homesite')) {
+            return null;
+        }
+
         if ($calculate_num_queued) {
             require_code('composr_homesite');
 

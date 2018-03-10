@@ -26,6 +26,10 @@ class Hook_notification_referral extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('referrals')) {
+            return array();
+        }
+
         $list = array();
         $list['referral'] = array(do_lang('MEMBERS'), do_lang('referrals:NOTIFICATION_TYPE_referral'));
         return $list;

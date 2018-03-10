@@ -20,6 +20,10 @@ class Hook_symbol_FB_CONNECT_ACCESS_TOKEN
 {
     public function run($param)
     {
+        if (!addon_installed('facebook_support')) {
+            return '';
+        }
+
         if ($GLOBALS['GETTING_MEMBER']) {
             return ''; // Probably the Tempcode compiler doing some scanning, startup still happening, could cause crash
         }

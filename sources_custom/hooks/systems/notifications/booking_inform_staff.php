@@ -38,6 +38,10 @@ class Hook_notification_booking_inform_staff extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('booking')) {
+            return array();
+        }
+
         $list = array();
         $list['booking_inform_staff'] = array(do_lang('booking:BOOKINGS'), do_lang('NOTIFICATION_TYPE_booking_inform_staff'));
         return $list;

@@ -43,6 +43,10 @@ class Hook_notification_booking_customer extends Hook_Notification
      */
     public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $start = 0, $max = 300)
     {
+        if (!addon_installed('booking')) {
+            return array();
+        }
+
         $members = $this->_all_members_who_have_enabled($notification_code, $category, $to_member_ids, $start, $max);
         $members = $this->_all_members_who_have_enabled_with_page_access($members, 'booking', $notification_code, $category, $to_member_ids, $start, $max);
 

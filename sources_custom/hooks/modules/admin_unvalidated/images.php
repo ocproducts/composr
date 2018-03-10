@@ -25,7 +25,11 @@ class Hook_unvalidated_images
      */
     public function info()
     {
-        if (!module_installed('galleries')) {
+        if (!addon_installed('workflows')) {
+            return null;
+        }
+
+        if (!addon_installed('galleries')) {
             return null;
         }
 

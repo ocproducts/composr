@@ -27,6 +27,10 @@ class Hook_cron_classifieds
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('classified_ads')) {
+            return null;
+        }
+
         if (!addon_installed('catalogues')) {
             return null;
         }

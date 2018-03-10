@@ -20,6 +20,10 @@ class Hook_upon_query_user_sync
 {
     public function run_post($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
     {
+        if (!addon_installed('user_sync')) {
+            return;
+        }
+
         if ($query[0] == 'S') {
             return;
         }

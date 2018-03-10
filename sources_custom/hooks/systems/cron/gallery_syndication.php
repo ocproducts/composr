@@ -27,6 +27,10 @@ class Hook_cron_gallery_syndication
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('gallery_syndication')) {
+            return null;
+        }
+
         return array(
             'label' => 'Synchronise galleries',
             'num_queued' => null, // Too time-consuming to calculate

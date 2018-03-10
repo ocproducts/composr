@@ -25,7 +25,7 @@ class Hook_sitemap_confluence extends Hook_sitemap_content
      */
     public function is_active()
     {
-        return ((get_option('confluence_subdomain') != '') && (get_option('confluence_space') != ''));
+        return (addon_installed('confluence')) && (get_option('confluence_subdomain') != '') && (get_option('confluence_space') != '');
     }
 
     /**

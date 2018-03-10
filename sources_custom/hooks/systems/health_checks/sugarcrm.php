@@ -32,7 +32,7 @@ class Hook_health_check_sugarcrm extends Hook_Health_Check
      */
     public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        if ($check_context != CHECK_CONTEXT__INSTALL) {
+        if (($check_context != CHECK_CONTEXT__INSTALL) && (addon_installed('sugarcrm'))) {
             $base_url = get_option('sugarcrm_base_url');
             $username = get_option('sugarcrm_username');
 

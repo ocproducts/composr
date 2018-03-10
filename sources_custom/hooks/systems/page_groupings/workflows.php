@@ -18,6 +18,10 @@
  */
 class Hook_page_groupings_workflows
 {
+    if (!addon_installed('TODO')) {
+        return array();
+    }
+
     /**
      * Run function for do_next_menu hooks. They find links to put on standard navigation menus of the system.
      *
@@ -27,6 +31,10 @@ class Hook_page_groupings_workflows
      */
     public function run($member_id = null, $extensive_docs = false)
     {
+        if (!addon_installed('workflows')) {
+            return array();
+        }
+
         return array(
             array('setup', 'spare/workflows', array('admin_workflow', array('type' => 'browse'), get_module_zone('admin_workflow')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('workflows:WORKFLOWS'), @make_string_tempcode(escape_html(integer_format(@intval($GLOBALS['SITE_DB']->query_select_value('workflows', 'COUNT(*)', array(), '', true)))))), 'workflows:DOC_WORKFLOWS'),
         );

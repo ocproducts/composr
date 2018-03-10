@@ -25,6 +25,10 @@ class Hook_syndication_facebook
 
     public function is_available()
     {
+        if (!addon_installed('facebook_support')) {
+            return false;
+        }
+
         if (get_option('facebook_syndicate') == '0') {
             return false;
         }

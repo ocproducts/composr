@@ -27,6 +27,10 @@ class Hook_cron_user_export
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('user_simple_csv_sync')) {
+            return null;
+        }
+
         require_code('user_export');
 
         if (!USER_EXPORT_ENABLED) {

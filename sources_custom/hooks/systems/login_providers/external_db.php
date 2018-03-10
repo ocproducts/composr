@@ -26,6 +26,10 @@ class Hook_login_provider_external_db
      */
     public function try_login($member_id)
     {
+        if (!addon_installed('external_db_login')) {
+            return null;
+        }
+
         if (($member_id === null) || (is_guest($member_id))) {
             require_code('external_db');
 

@@ -37,6 +37,10 @@ class Hook_notification_downloads_followup_email extends Hook_Notification
      */
     public function create_category_tree($notification_code, $id)
     {
+        if (!addon_installed('downloads_followup_email')) {
+            return array();
+        }
+
         require_code('downloads');
 
         if ($id === null) {
@@ -76,6 +80,10 @@ class Hook_notification_downloads_followup_email extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('downloads_followup_email')) {
+            return array();
+        }
+
         $list = array();
         $list['downloads_followup_email'] = array(do_lang('CONTENT'), do_lang('downloads_followup_email:NOTIFICATION_TYPE_downloads_followup_email'));
         return $list;

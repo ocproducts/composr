@@ -27,6 +27,10 @@ class Hook_page_groupings_twitter
      */
     public function run($member_id = null, $extensive_docs = false)
     {
+        if (!addon_installed('twitter_support')) {
+            return array();
+        }
+
         return array(
             array('setup', 'links/twitter', array('twitter_oauth', array(), get_page_zone('twitter_oauth')), do_lang_tempcode('twitter:TWITTER_SYNDICATION'), 'twitter:DOC_TWITTER_SYNDICATION'),
         );

@@ -12,6 +12,10 @@
  * @copyright  ocProducts Ltd
  * @package    disastr
  */
+
+/**
+ * Hook class.
+ */
 class Hook_page_groupings_disastr
 {
     /**
@@ -23,6 +27,10 @@ class Hook_page_groupings_disastr
      */
     public function run($member_id = null, $extensive_docs = false)
     {
+        if (!addon_installed('disastr')) {
+            return array();
+        }
+
         return array(
             array('setup', 'spare/disaster', array('admin_disastr', array('type' => 'browse'), get_module_zone('admin_disastr')), do_lang_tempcode('disastr:DISEASES_TITLE'), 'disastr:DOC_DISASTR'),
         );

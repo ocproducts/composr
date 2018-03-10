@@ -26,6 +26,10 @@ class Hook_symbol_DECRYPT
      */
     public function run($param)
     {
+        if (!addon_installed('password_censor')) {
+            return '';
+        }
+
         $value = '';
 
         if (!empty($param[1])) {

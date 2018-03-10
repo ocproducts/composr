@@ -27,6 +27,10 @@ class Hook_cron_group_points
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('group_points')) {
+            return null;
+        }
+
         return array(
             'label' => 'Assign points for usergroup membership',
             'num_queued' => null,

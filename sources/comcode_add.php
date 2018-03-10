@@ -161,6 +161,11 @@ function _get_details_comcode_tags()
     $hooks = find_all_hook_obs('systems', 'comcode', 'Hook_comcode_');
     foreach ($hooks as $object) {
         $tag = $object->get_tag();
+
+        if ($tag === null) {
+            continue;
+        }
+
         $custom_tag_list[$tag['tag_tag']] = $tag;
 
         if ($tag['tag_textual_tag'] == 1) {

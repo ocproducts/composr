@@ -15,6 +15,10 @@
 
 function init__hooks__systems__ecommerce__usergroup($in)
 {
+    if (!addon_installed('referrals')) {
+        return $in;
+    }
+
     require_code('referrals');
 
     return override_str_replace_exactly(

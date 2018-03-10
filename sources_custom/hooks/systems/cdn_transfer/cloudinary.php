@@ -1,5 +1,21 @@
-<?php
+<?php /*
 
+ Composr
+ Copyright (c) ocProducts, 2004-2018
+
+ See text/EN/licence.txt for full licensing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    cloudinary
+ */
+
+/**
+ * Hook class.
+ */
 class Hook_cdn_transfer_cloudinary
 {
     /**
@@ -9,6 +25,10 @@ class Hook_cdn_transfer_cloudinary
      */
     public function is_enabled()
     {
+        if (!addon_installed('cloudinary')) {
+            return false;
+        }
+
         $cloud_name = get_option('cloudinary_cloud_name');
         $api_key = get_option('cloudinary_api_key');
         $api_secret = get_option('cloudinary_api_secret');

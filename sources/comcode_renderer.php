@@ -252,6 +252,10 @@ function _custom_comcode_import($db)
         foreach ($hooks as $object) {
             $tag = $object->get_tag();
 
+            if ($tag === null) {
+                continue;
+            }
+
             $VALID_COMCODE_TAGS[$tag['tag_tag']] = true;
             if ($tag['tag_block_tag'] == 1) {
                 $BLOCK_TAGS[$tag['tag_tag']] = true;

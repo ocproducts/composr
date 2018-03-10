@@ -26,6 +26,10 @@ class Hook_notification_got_disease extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('disastr')) {
+            return array();
+        }
+
         $list = array();
         $list['got_disease'] = array(do_lang('GENERAL'), do_lang('disastr:NOTIFICATION_TYPE_got_disease'));
         return $list;

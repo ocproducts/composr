@@ -26,7 +26,7 @@ class Hook_member_boxes_buildr
      */
     public function run($member_id)
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('w_realms')) {
+        if (!addon_installed('buildr')) {
             return null;
         }
 

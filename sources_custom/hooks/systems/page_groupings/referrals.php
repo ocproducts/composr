@@ -27,6 +27,10 @@ class Hook_page_groupings_referrals
      */
     public function run($member_id = null, $extensive_docs = false)
     {
+        if (!addon_installed('referrals')) {
+            return array();
+        }
+
         $ret = array();
 
         $path = get_custom_file_base() . '/text_custom/referrals.txt';

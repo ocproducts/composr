@@ -26,6 +26,10 @@ class Hook_symbol_POINTS_FROM_USERGROUPS
      */
     public function run($param)
     {
+        if (!addon_installed('group_points')) {
+            return '';
+        }
+
         require_code('points');
         $member_id = isset($param[0]) ? intval($param[0]) : get_member();
         $value = strval(total_points($member_id) - non_overridden__total_points($member_id));

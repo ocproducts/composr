@@ -27,6 +27,10 @@ class Hook_page_groupings_make_release
      */
     public function run($member_id = null, $extensive_docs = false)
     {
+        if (!addon_installed('composr_release_build')) {
+            return array();
+        }
+
         return array(
             array('tools', 'admin/tool', array('plug_guid', array(), get_page_zone('plug_guid')), make_string_tempcode('Release tools: Plug in missing GUIDs')),
             array('tools', 'admin/tool', array('make_release', array(), get_page_zone('make_release')), make_string_tempcode('Release tools: Make a Composr release')),

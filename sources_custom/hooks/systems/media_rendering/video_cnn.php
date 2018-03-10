@@ -12,6 +12,10 @@
  * @copyright  ocProducts Ltd
  * @package    extended_media_rendering
  */
+
+/**
+ * Hook class.
+ */
 class Hook_media_rendering_video_cnn extends Media_renderer_with_fallback
 {
     /**
@@ -54,6 +58,10 @@ class Hook_media_rendering_video_cnn extends Media_renderer_with_fallback
      */
     public function recognises_url($url)
     {
+        if (!addon_installed('extended_media_rendering')) {
+            return MEDIA_RECOG_PRECEDENCE_NONE;
+        }
+
         if (preg_match('#^https?://(edition\.|www\.)?cnn\.com/.*/video/(.*)\.html#', $url) != 0) {
             return MEDIA_RECOG_PRECEDENCE_HIGH;
         }

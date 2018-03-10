@@ -20,6 +20,10 @@ class Hook_upon_query_insults
 {
     public function run_post($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
     {
+        if (!addon_installed('bantr')) {
+            return;
+        }
+
         if ($query[0] == 'S') {
             return;
         }

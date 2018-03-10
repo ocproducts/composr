@@ -27,7 +27,7 @@ class Hook_cron_disastr
      */
     public function info($last_run, $calculate_num_queued)
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('diseases')) {
+        if (!addon_installed('disastr')) {
             return null;
         }
 

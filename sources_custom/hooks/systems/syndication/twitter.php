@@ -25,6 +25,10 @@ class Hook_syndication_twitter
 
     public function is_available()
     {
+        if (!addon_installed('twitter_support')) {
+            return false;
+        }
+
         $api_key = get_option('twitter_api_key');
         if ($api_key == '') {
             return false;

@@ -269,7 +269,7 @@ class Mail_dispatcher_smtp extends Mail_dispatcher_base
      */
     public function is_dispatcher_available($advanced_parameters)
     {
-        return ((!empty($this->smtp_sockets_host)) && (php_function_allowed('fsockopen')));
+        return (!empty($this->smtp_sockets_host)) && (php_function_allowed('fsockopen'));
     }
 
     /**

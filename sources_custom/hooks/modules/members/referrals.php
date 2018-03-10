@@ -26,6 +26,10 @@ class Hook_members_referrals
      */
     public function run($member_id)
     {
+        if (!addon_installed('referrals')) {
+            return array();
+        }
+
         if ((!has_zone_access(get_member(), 'adminzone')) && ($member_id !== get_member())) {
             return array();
         }
@@ -88,6 +92,10 @@ class Hook_members_referrals
      */
     public function get_tracking_details($member_id)
     {
+        if (!addon_installed('referrals')) {
+            return array();
+        }
+
         if ((!has_zone_access(get_member(), 'adminzone')) && ($member_id !== get_member())) {
             return array();
         }

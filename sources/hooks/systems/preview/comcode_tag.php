@@ -30,7 +30,7 @@ class Hook_preview_comcode_tag
      */
     public function applies()
     {
-         $applies = (post_param_string('tag_contents', null) !== null) || (post_param_string('tag_contents__a', null) !== null) || (post_param_string('tag_contents__b', null) !== null) || (post_param_string('tag_contents_0', null) !== null);
+        $applies = (post_param_string('tag_contents', null) !== null) || (post_param_string('tag_contents__a', null) !== null) || (post_param_string('tag_contents__b', null) !== null) || (post_param_string('tag_contents_0', null) !== null);
         return array($applies, null, false);
     }
 

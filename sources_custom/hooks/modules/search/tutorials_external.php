@@ -26,6 +26,10 @@ class Hook_search_tutorials_external extends FieldsSearchHook
      */
     public function info($check_permissions = true)
     {
+        if (!addon_installed('composr_tutorials')) {
+            return null;
+        }
+
         require_lang('tutorials');
 
         $info = array();

@@ -38,6 +38,10 @@ class Hook_notification_referral_staff extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (!addon_installed('referrals')) {
+            return array();
+        }
+
         $list = array();
         $list['referral_staff'] = array(do_lang('MEMBERS'), do_lang('NOTIFICATION_TYPE_referral_staff'));
         return $list;

@@ -179,6 +179,6 @@ class Hook_notification_ticket_assigned_staff extends Hook_Notification
         $test = ($only_if_enabled_on__notification_code === null) ? true : notifications_enabled($only_if_enabled_on__notification_code, $only_if_enabled_on__category, $member_id);
 
         require_code('permissions');
-        return (($test) && (has_privilege($member_id, 'support_operator')));
+        return ($test) && (has_privilege($member_id, 'support_operator'));
     }
 }

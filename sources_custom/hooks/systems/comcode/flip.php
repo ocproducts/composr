@@ -21,10 +21,14 @@ class Hook_comcode_flip
     /**
      * Run function for Comcode hooks. They find the custom-comcode-row-like attributes of the tag.
      *
-     * @return array Fake Custom Comcode row
+     * @return ?array Fake Custom Comcode row (null: disabled)
      */
     public function get_tag()
     {
+        if (!addon_installed('comcode_flip_tag')) {
+            return null;
+        }
+
         return array(
             'tag_title' => 'Flip',
             'tag_description' => 'Provide two-sided square flip spots.',

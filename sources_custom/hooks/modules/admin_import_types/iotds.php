@@ -25,6 +25,10 @@ class Hook_admin_import_types_iotds
      */
     public function run()
     {
+        if (!addon_installed('iotds')) {
+            return array();
+        }
+
         return array(
             'iotds' => 'IOTD_ARCHIVE',
         );

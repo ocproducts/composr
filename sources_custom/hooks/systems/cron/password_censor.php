@@ -27,6 +27,10 @@ class Hook_cron_password_censor
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('password_censor')) {
+            return null;
+        }
+
         return array(
             'label' => 'Censor old written passwords',
             'num_queued' => null, // Too time-consuming to calculate

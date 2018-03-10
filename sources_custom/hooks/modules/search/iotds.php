@@ -26,7 +26,7 @@ class Hook_search_iotds extends FieldsSearchHook
      */
     public function info($check_permissions = true)
     {
-        if (!module_installed('iotds')) {
+        if (!addon_installed('iotds')) {
             return null;
         }
 

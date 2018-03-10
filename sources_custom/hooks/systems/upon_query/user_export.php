@@ -22,6 +22,10 @@ class Hook_upon_query_user_export
 
     public function run_pre($ob, $query, $max, $start, $fail_ok, $get_insert_id)
     {
+        if (!addon_installed('user_simple_csv_sync')) {
+            return;
+        }
+
         if ($query[0] == 'S') {
             return;
         }
@@ -64,6 +68,10 @@ class Hook_upon_query_user_export
 
     public function run_post($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
     {
+        if (!addon_installed('user_simple_csv_sync')) {
+            return;
+        }
+
         if ($query[0] == 'S') {
             return;
         }

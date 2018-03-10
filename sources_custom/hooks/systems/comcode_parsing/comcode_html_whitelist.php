@@ -25,6 +25,10 @@ class Hook_comcode_parsing_comcode_html_whitelist
      */
     public function get_allowed_html_seqs()
     {
+        if (!addon_installed('comcode_html_whitelist')) {
+            return array();
+        }
+
         $allowed_html_seqs = array();
 
         require_code('textfiles');
@@ -52,6 +56,10 @@ class Hook_comcode_parsing_comcode_html_whitelist
      */
     public function comcode_white_listed($comcode_portion)
     {
+        if (!addon_installed('comcode_html_whitelist')) {
+            return false;
+        }
+
         require_code('textfiles');
         static $whitelists = null;
         if ($whitelists === null) {

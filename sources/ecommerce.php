@@ -718,7 +718,7 @@ function perform_local_payment()
     $payment_gateway = get_option('payment_gateway');
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
     $payment_gateway_object = object_factory('Hook_payment_gateway_' . filter_naughty_harsh($payment_gateway));
-    return ((get_option('use_local_payment') == '1') && (method_exists($payment_gateway_object, 'do_local_transaction')));
+    return (get_option('use_local_payment') == '1') && (method_exists($payment_gateway_object, 'do_local_transaction'));
 }
 
 /**

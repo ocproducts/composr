@@ -26,6 +26,10 @@ class Hook_members_gifts
      */
     public function run($member_id)
     {
+        if (!addon_installed('giftr')) {
+            return array();
+        }
+
         require_lang('giftr');
 
         if (is_guest()) {
@@ -49,6 +53,10 @@ class Hook_members_gifts
      */
     public function get_sections($member_id)
     {
+        if (!addon_installed('giftr')) {
+            return array();
+        }
+
         require_lang('giftr');
         $rows = $GLOBALS['SITE_DB']->query_select('members_gifts', array('*'), array('to_member_id' => $member_id), '', null, 0, true);
         if ($rows === null) {

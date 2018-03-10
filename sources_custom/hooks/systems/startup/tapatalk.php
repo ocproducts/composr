@@ -20,6 +20,10 @@ class Hook_startup_tapatalk
 {
     public function run()
     {
+        if (!addon_installed('cns_tapatalk')) {
+            return;
+        }
+
         if ((get_option('tapatalk_promote_from_website') === '1') && (running_script('index'))) {
             safe_ini_set('ocproducts.type_strictness', '0');
 

@@ -27,6 +27,10 @@ class Hook_endpoint_account_login
      */
     public function run($type, $id)
     {
+        if (!addon_installed('composr_mobile_sdk')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         $username = trim(post_param_string('username'));
         $password = trim(post_param_string('password', false, INPUT_FILTER_NONE));
 

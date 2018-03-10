@@ -30,11 +30,7 @@ class Hook_preview_poll
      */
     public function applies()
     {
-        if (!addon_installed('polls')) {
-            return false;
-        }
-
-        $applies = (get_page_name() == 'cms_polls');
+        $applies = (!addon_installed('polls')) && (get_page_name() == 'cms_polls');
         return array($applies, null, false);
     }
 

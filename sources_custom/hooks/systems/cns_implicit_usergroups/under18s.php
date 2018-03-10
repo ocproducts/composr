@@ -42,6 +42,10 @@ class Hook_implicit_usergroups_under18s
      */
     public function get_member_list($group_id)
     {
+        if (!addon_installed('under18s')) {
+            return array();
+        }
+
         return list_to_map('id', $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $this->_where()));
     }
 
@@ -53,6 +57,10 @@ class Hook_implicit_usergroups_under18s
      */
     public function get_member_list_count($group_id)
     {
+        if (!addon_installed('under18s')) {
+            return 0;
+        }
+
         return $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $this->_where());
     }
 
@@ -66,6 +74,10 @@ class Hook_implicit_usergroups_under18s
      */
     public function is_member_within($member_id, $group_id, &$is_exclusive = null)
     {
+        if (!addon_installed('under18s')) {
+            return false;
+        }
+
         if ($member_id == get_member()) {
             // IDEA: Support timezones, decide age based on user's own timezone
 

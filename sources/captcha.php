@@ -232,10 +232,10 @@ function form_input_captcha($hidden)
 function use_captcha()
 {
     if (get_option('recaptcha_site_key') != '') {
-        return ((is_guest()) && (intval(get_option('use_captchas')) == 1));
+        return (is_guest()) && (intval(get_option('use_captchas')) == 1);
     }
 
-    $answer = ((is_guest()) && (intval(get_option('use_captchas')) == 1) && (function_exists('imagetypes')));
+    $answer = (is_guest()) && (intval(get_option('use_captchas')) == 1) && (function_exists('imagetypes'));
     return $answer;
 }
 

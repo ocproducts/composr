@@ -487,7 +487,7 @@ class Module_admin_cns_groups extends Standard_crud_module
      */
     public function may_delete_this($id)
     {
-        return ((intval($id) != db_get_first_id() + 0) && (intval($id) != db_get_first_id() + 1) && (intval($id) != db_get_first_id() + 8));
+        return (intval($id) != db_get_first_id() + 0) && (intval($id) != db_get_first_id() + 1) && (intval($id) != db_get_first_id() + 8);
     }
 
     /**

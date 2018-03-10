@@ -38,6 +38,10 @@ class Hook_activities_activities
      */
     public function syndicate_described_activity($a_language_string_code = '', $a_label_1 = '', $a_label_2 = '', $a_label_3 = '', $a_page_link_1 = '', $a_page_link_2 = '', $a_page_link_3 = '', $a_addon = '', $a_is_public = 1, $a_member_id = null, $sitewide_too = false, $also_involving = null)
     {
+        if (!addon_installed('activity_feed')) {
+            return null;
+        }
+
         require_code('activities_submission');
 
         cms_profile_start_for('syndicate_described_activity');
@@ -53,6 +57,10 @@ class Hook_activities_activities
      */
     public function has_external_site_wide_syndication()
     {
+        if (!addon_installed('activity_feed')) {
+            return false;
+        }
+
         $dests = find_all_hook_obs('systems', 'syndication', 'Hook_syndication_');
         foreach ($dests as $ob) {
             if (($ob->is_available()) && ($ob->auth_is_set_site())) {
@@ -70,6 +78,10 @@ class Hook_activities_activities
      */
     public function get_syndication_option_fields($content_type)
     {
+        if (!addon_installed('activity_feed')) {
+            return new Tempcode();
+        }
+
         $fields = new Tempcode();
         require_code('activities');
         if ((has_privilege(get_member(), 'syndicate_site_activity')) && (has_external_site_wide_syndication())) {

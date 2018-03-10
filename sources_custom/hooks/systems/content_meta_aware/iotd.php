@@ -26,6 +26,10 @@ class Hook_content_meta_aware_iotd
      */
     public function info($zone = null)
     {
+        if (!addon_installed('iotds')) {
+            return null;
+        }
+
         return array(
             'support_custom_fields' => true,
 

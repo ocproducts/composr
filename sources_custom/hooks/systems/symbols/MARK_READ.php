@@ -20,6 +20,10 @@ class Hook_symbol_MARK_READ
 {
     public function run($param)
     {
+        if (!addon_installed('content_read_tracking')) {
+            return '';
+        }
+
         if (!isset($param[1])) {
             return ''; // Not enough parameters
         }

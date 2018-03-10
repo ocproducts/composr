@@ -26,6 +26,10 @@ class Hook_members_booking
      */
     public function run($member_id)
     {
+        if (!addon_installed('booking')) {
+            return array();
+        }
+
         if (!has_actual_page_access(get_member(), 'cms_booking')) {
             return array();
         }

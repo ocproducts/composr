@@ -21,10 +21,14 @@ class Hook_comcode_encrypt
     /**
      * Run function for comcode hooks. They find the custom-comcode-row-like attributes of the tag.
      *
-     * @return array Fake custom Comcode row
+     * @return ?array Fake Custom Comcode row (null: disabled)
      */
     public function get_tag()
     {
+        if (!addon_installed('password_censor')) {
+            return null;
+        }
+
         return array(
             'tag_title' => 'Encrypt',
             'tag_description' => 'Store the contents of the tag as encrypted in the database.',

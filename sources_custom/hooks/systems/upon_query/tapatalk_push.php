@@ -20,6 +20,10 @@ class Hook_upon_query_tapatalk_push
 {
     public function run($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
     {
+        if (!addon_installed('cns_tapatalk')) {
+            return;
+        }
+
         if ($query[0] == 'S') {
             return;
         }

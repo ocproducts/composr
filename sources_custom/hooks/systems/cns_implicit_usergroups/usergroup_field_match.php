@@ -78,6 +78,10 @@ class Hook_implicit_usergroups_usergroup_field_match
      */
     public function get_member_list($group_id)
     {
+        if (!addon_installed('usergroup_field_match')) {
+            return array();
+        }
+
         $out = array();
 
         $structure = $this->_get_structure();
@@ -102,6 +106,10 @@ class Hook_implicit_usergroups_usergroup_field_match
      */
     public function get_member_list_count($group_id)
     {
+        if (!addon_installed('usergroup_field_match')) {
+            return 0;
+        }
+
         $structure = $this->_get_structure();
         $for_group = $structure[$group_id];
 
@@ -134,6 +142,10 @@ class Hook_implicit_usergroups_usergroup_field_match
      */
     public function is_member_within($member_id, $group_id)
     {
+        if (!addon_installed('usergroup_field_match')) {
+            return false;
+        }
+
         static $cache = array(); // So finding if member in each, is quick
 
         $structure = $this->_get_structure();

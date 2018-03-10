@@ -17,6 +17,10 @@ class Hook_upon_query_sugarcrm
 {
     public function run_post($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
     {
+        if (!addon_installed('sugarcrm')) {
+            return;
+        }
+
         if ($query[0] == 'S') {
             return;
         }
@@ -46,6 +50,10 @@ class Hook_upon_query_sugarcrm
 
     protected function sync_user($member_id)
     {
+        if (!addon_installed('sugarcrm')) {
+            return;
+        }
+
         require_code('sugarcrm');
 
         global $SUGARCRM;

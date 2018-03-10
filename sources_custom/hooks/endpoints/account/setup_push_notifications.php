@@ -27,6 +27,10 @@ class Hook_endpoint_account_setup_push_notifications
      */
     public function run($type, $id)
     {
+        if (!addon_installed('composr_mobile_sdk')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         // Store a device notification token (i.e. identification of a device, so we can send notifications to it).
 
         $token_type = either_param_string('device'); // iOS|android

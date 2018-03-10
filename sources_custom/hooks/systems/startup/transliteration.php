@@ -20,6 +20,10 @@ class Hook_startup_transliteration
 {
     public function run()
     {
+        if (!addon_installed('transliteration')) {
+            return;
+        }
+
         require_code('transliteration');
     }
 }

@@ -38,6 +38,10 @@ class Hook_task_ios_notification
      */
     public function run($to_member_id, $notification_code, $code_category, $subject, $message, $properties, $from_member_id, $priority, $no_cc, $attachments, $use_real_from)
     {
+        if (!addon_installed('composr_mobile_sdk')) {
+            return null;
+        }
+
         require_code('composr_mobile_sdk/ios/notifications');
         $ob = new IOSPushNotifications();
         $this->ios_dispatch($to_member_id, $notification_code, $code_category, $subject, $message, $properties, $from_member_id, $priority, $no_cc, $attachments, $use_real_from);

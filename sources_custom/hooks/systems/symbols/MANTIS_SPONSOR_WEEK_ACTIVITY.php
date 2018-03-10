@@ -20,6 +20,10 @@ class Hook_symbol_MANTIS_SPONSOR_WEEK_ACTIVITY
 {
     public function run($param)
     {
+        if (!addon_installed('composr_homesite_support_credits')) {
+            return '';
+        }
+
         $cnt_in_last_week = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM mantis_sponsorship_table WHERE date_submitted>' . strval(time() - 60 * 60 * 24 * 7));
         return strval($cnt_in_last_week);
     }

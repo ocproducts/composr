@@ -25,6 +25,10 @@ class Hook_ecommerce_community_billboard
      */
     public function get_product_category()
     {
+        if (!addon_installed('community_billboard')) {
+            return null;
+        }
+
         require_lang('community_billboard');
 
         return array(
@@ -45,8 +49,8 @@ class Hook_ecommerce_community_billboard
      */
     public function get_products($search = null)
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('community_billboard')) {
-            return array();
+        if (!addon_installed('community_billboard')) {
+            return null;
         }
 
         require_lang('community_billboard');

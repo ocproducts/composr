@@ -27,7 +27,7 @@ class Hook_oauth_youtube
     {
         return array(
             'label' => 'YouTube',
-            'available' => true,
+            'available' => addon_installed('gallery_syndication'),
             'protocol' => 'oauth2',
             'options' => array(
                 'client_id' => 'google_apis_client_id',

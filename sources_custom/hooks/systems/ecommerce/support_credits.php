@@ -25,6 +25,10 @@ class Hook_ecommerce_support_credits
      */
     public function get_product_category()
     {
+        if (!addon_installed('composr_homesite_support_credits')) {
+            return null;
+        }
+
         require_lang('customers');
 
         return array(
@@ -45,8 +49,8 @@ class Hook_ecommerce_support_credits
      */
     public function get_products($search = null)
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('credit_purchases')) {
-            return array();
+        if (!addon_installed('composr_homesite_support_credits')) {
+            return null;
         }
 
         if (get_forum_type() != 'cns') {

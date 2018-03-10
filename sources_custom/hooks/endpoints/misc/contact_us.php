@@ -27,6 +27,10 @@ class Hook_endpoint_account_contact_us
      */
     public function run($type, $id)
     {
+        if (!addon_installed('composr_mobile_sdk')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         if (!addon_installed('tickets')) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }

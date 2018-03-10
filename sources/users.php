@@ -432,7 +432,7 @@ function is_httpauth_login()
     }
 
     require_code('cns_members');
-    return ((!empty($_SERVER['PHP_AUTH_USER'])) && (cns_authusername_is_bound_via_httpauth($_SERVER['PHP_AUTH_USER']) !== null));
+    return (!empty($_SERVER['PHP_AUTH_USER'])) && (cns_authusername_is_bound_via_httpauth($_SERVER['PHP_AUTH_USER']) !== null);
 }
 
 /**

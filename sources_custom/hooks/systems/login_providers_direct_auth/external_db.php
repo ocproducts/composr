@@ -32,6 +32,10 @@ class Hook_login_providers_direct_auth_external_db
      */
     public function try_login($username, $user_id, $password_hashed, $password_raw, $cookie_login = false)
     {
+        if (!addon_installed('external_db_login')) {
+            return null;
+        }
+
         require_code('external_db');
 
         if ($cookie_login || $password_raw == '') {

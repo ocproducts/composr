@@ -41,6 +41,10 @@ class Hook_video_syndication_youtube
 
     public function is_active()
     {
+        if (!addon_installed('gallery_syndication')) {
+            return false;
+        }
+
         $youtube_client_id = get_option('google_apis_client_id');
         if ($youtube_client_id == '') {
             return false;

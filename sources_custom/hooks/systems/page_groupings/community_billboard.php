@@ -12,6 +12,10 @@
  * @copyright  ocProducts Ltd
  * @package    community_billboard
  */
+
+/**
+ * Hook class.
+ */
 class Hook_page_groupings_community_billboard
 {
     /**
@@ -23,6 +27,10 @@ class Hook_page_groupings_community_billboard
      */
     public function run($member_id = null, $extensive_docs = false)
     {
+        if (!addon_installed('community_billboard')) {
+            return array();
+        }
+
         return array(
             array('audit', 'menu/adminzone/audit/community_billboard', array('admin_community_billboard', array('type' => 'browse'), get_module_zone('admin_community_billboard')), do_lang_tempcode('community_billboard:COMMUNITY_BILLBOARD'), 'community_billboard:DOC_COMMUNITY_BILLBOARD'),
         );

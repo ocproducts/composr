@@ -27,6 +27,10 @@ class Hook_profiles_tabs_filedump
      */
     public function is_active($member_id_of, $member_id_viewing)
     {
+        if (!addon_installed('member_filedumps')) {
+            return false;
+        }
+
         return (($member_id_of == $member_id_viewing) || (has_privilege($member_id_viewing, 'assume_any_member')));
     }
 

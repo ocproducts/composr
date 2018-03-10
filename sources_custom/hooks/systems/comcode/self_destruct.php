@@ -21,10 +21,14 @@ class Hook_comcode_self_destruct
     /**
      * Run function for comcode hooks. They find the custom-comcode-row-like attributes of the tag.
      *
-     * @return array Fake custom Comcode row
+     * @return ?array Fake Custom Comcode row (null: disabled)
      */
     public function get_tag()
     {
+        if (!addon_installed('password_censor')) {
+            return null;
+        }
+
         return array(
             'tag_title' => 'Self-destruct',
             'tag_description' => 'The contents will not appear in notifications, and, for private topic and support ticket posts, will self-destruct after 30 days.',

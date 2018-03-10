@@ -27,6 +27,10 @@ class Hook_cron_user_sync
      */
     public function info($last_run, $calculate_num_queued)
     {
+        if (!addon_installed('user_sync')) {
+            return null;
+        }
+
         if (get_value('user_sync_enabled') !== '1') {
             return null;
         }

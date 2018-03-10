@@ -25,7 +25,7 @@ class Hook_ecommerce_giftr
      */
     public function get_product_category()
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('giftr')) {
+        if (!addon_installed('giftr')) {
             return null;
         }
 
@@ -49,6 +49,10 @@ class Hook_ecommerce_giftr
      */
     public function get_products($search = null)
     {
+        if (!addon_installed('giftr')) {
+            return null;
+        }
+
         require_lang('giftr');
 
         $products = array();

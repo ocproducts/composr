@@ -12,6 +12,10 @@
  * @copyright  ocProducts Ltd
  * @package    comcode_html_whitelist
  */
+
+/**
+ * Hook class.
+ */
 class Hook_page_groupings_comcode_whitelist
 {
     /**
@@ -23,6 +27,10 @@ class Hook_page_groupings_comcode_whitelist
      */
     public function run($member_id = null, $extensive_docs = false)
     {
+        if (!addon_installed('comcode_html_whitelist')) {
+            return array();
+        }
+
         return array(
             array('setup', 'menu/adminzone/setup/custom_comcode', array('comcode_whitelist', array(), get_page_zone('comcode_whitelist')), make_string_tempcode('Edit Comcode whitelist')),
         );

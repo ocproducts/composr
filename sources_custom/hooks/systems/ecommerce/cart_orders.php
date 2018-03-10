@@ -15,7 +15,7 @@
 
 function init__hooks__systems__ecommerce__cart_orders($in)
 {
-    if (!$GLOBALS['SITE_DB']->table_exists('referees_qualified_for')) {
+    if (!addon_installed('referrals')) {
         return $in;
     }
 

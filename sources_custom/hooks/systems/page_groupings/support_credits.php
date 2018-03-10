@@ -27,6 +27,10 @@ class Hook_page_groupings_support_credits
      */
     public function run($member_id = null, $extensive_docs = false)
     {
+        if (!addon_installed('composr_homesite_support_credits')) {
+            return array();
+        }
+
         return array(
             array('audit', 'admin/tool', array('outstanding_credits', array(), get_page_zone('outstanding_credits')), do_lang_tempcode('customers:UNSPENT_SUPPORT_CREDITS')),
             array('tools', 'admin/tool', array('admin_customers', array(), get_module_zone('admin_customers')), do_lang_tempcode('customers:CHARGE_CUSTOMER')),

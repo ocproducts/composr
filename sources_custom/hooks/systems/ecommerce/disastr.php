@@ -25,6 +25,10 @@ class Hook_ecommerce_disastr
      */
     public function get_product_category()
     {
+        if (!addon_installed('disastr')) {
+            return null;
+        }
+
         require_lang('disastr');
 
         return array(
@@ -45,8 +49,8 @@ class Hook_ecommerce_disastr
      */
     public function get_products($search = null)
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('members_diseases')) {
-            return array();
+        if (!addon_installed('disastr')) {
+            return null;
         }
 
         require_lang('disastr');

@@ -27,6 +27,10 @@ class Hook_page_groupings_installprofile_generator
      */
     public function run($member_id = null, $extensive_docs = false)
     {
+        if (!addon_installed('installprofile_generator')) {
+            return array();
+        }
+
         return array(
             array('setup', 'admin/tool', array('installprofile_generator', array(), get_page_zone('installprofile_generator')), make_string_tempcode('Export installprofile')),
         );

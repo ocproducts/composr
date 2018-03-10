@@ -27,6 +27,10 @@ class Hook_profiles_tabs_activities
      */
     public function is_active($member_id_of, $member_id_viewing)
     {
+        if (!addon_installed('activity_feed')) {
+            return false;
+        }
+
         return true;
     }
 

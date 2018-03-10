@@ -332,7 +332,7 @@ function is_under_radar($test)
         return false;
     }
 
-    return ((strlen($test) < $GLOBALS['SITE_DB']->get_minimum_search_length()) && ($test != ''));
+    return (strlen($test) < $GLOBALS['SITE_DB']->get_minimum_search_length()) && ($test != '');
 }
 
 /**
