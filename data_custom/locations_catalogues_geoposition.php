@@ -68,12 +68,12 @@ if ($lstring !== null) {
 
         echo 'null';
         echo ',\'' . addslashes($lstring) . '\'';
-        echo ',' . float_to_raw_string($latitude), 30);
-        echo ',' . float_to_raw_string($longitude), 30);
-        echo ',' . float_to_raw_string($ne_latitude), 30);
-        echo ',' . float_to_raw_string($ne_longitude), 30);
-        echo ',' . float_to_raw_string($sw_latitude), 30);
-        echo ',' . float_to_raw_string($sw_longitude), 30);
+        echo ',' . float_to_raw_string($latitude, 30);
+        echo ',' . float_to_raw_string($longitude, 30);
+        echo ',' . float_to_raw_string($ne_latitude, 30);
+        echo ',' . float_to_raw_string($ne_longitude, 30);
+        echo ',' . float_to_raw_string($sw_latitude, 30);
+        echo ',' . float_to_raw_string($sw_longitude, 30);
 
         echo ']';
     }

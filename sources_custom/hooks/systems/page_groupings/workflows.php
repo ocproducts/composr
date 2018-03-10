@@ -18,10 +18,6 @@
  */
 class Hook_page_groupings_workflows
 {
-    if (!addon_installed('TODO')) {
-        return array();
-    }
-
     /**
      * Run function for do_next_menu hooks. They find links to put on standard navigation menus of the system.
      *

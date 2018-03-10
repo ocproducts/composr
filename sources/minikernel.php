@@ -433,8 +433,9 @@ function fatal_exit($text)
             'ERROR' => true,
         ));
     } else {
-        $installer_js = do_template('global', array(), null, false, null, '.js', 'javascript');
-        $installer_js .= do_template('installer', array(), null, false, null, '.js', 'javascript');
+        $installer_js = new Tempcode();
+        $installer_js->attach(do_template('global', array(), null, false, null, '.js', 'javascript'));
+        $installer_js->attach(do_template('installer', array(), null, false, null, '.js', 'javascript'));
         $out_final = do_template('INSTALLER_HTML_WRAP', array(
             '_GUID' => '990e78523cee0b6782e1e09d73a700a7',
             'CSS_NOCACHE' => $css_nocache,
@@ -664,8 +665,9 @@ function warn_exit($text)
             'ERROR' => true,
         ));
     } else {
-        $installer_js = do_template('global', array(), null, false, null, '.js', 'javascript');
-        $installer_js .= do_template('installer', array(), null, false, null, '.js', 'javascript');
+        $installer_js = new Tempcode();
+        $installer_js->attach(do_template('global', array(), null, false, null, '.js', 'javascript'));
+        $installer_js->attach(do_template('installer', array(), null, false, null, '.js', 'javascript'));
         $out_final = do_template('INSTALLER_HTML_WRAP', array(
             '_GUID' => '710e7ea5c186b4c42bb3a5453dd915ed',
             'CSS_NOCACHE' => $css_nocache,

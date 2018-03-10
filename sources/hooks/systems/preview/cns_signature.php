@@ -30,15 +30,11 @@ class Hook_preview_cns_signature
      */
     public function applies()
     {
-        if (!addon_installed('cns_signatures')) {
-            return false;
-        }
-
         require_lang('cns');
 
         $member_id = get_param_integer('id', get_member());
 
-        $applies = (get_page_name() == 'members') && (post_param_string('signature', null) !== null);
+        $applies = (addon_installed('cns_signatures')) && (get_page_name() == 'members') && (post_param_string('signature', null) !== null);
         if ($applies) {
             require_code('cns_groups');
             $max_sig_length = cns_get_member_best_group_property($member_id, 'max_sig_length_comcode');

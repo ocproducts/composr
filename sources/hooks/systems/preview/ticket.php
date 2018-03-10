@@ -30,11 +30,7 @@ class Hook_preview_ticket
      */
     public function applies()
     {
-        if (!addon_installed('tickets')) {
-            return false;
-        }
-
-        $applies = (get_page_name() == 'tickets');
+        $applies = (addon_installed('tickets')) && (get_page_name() == 'tickets');
         return array($applies, 'cns_post', false, array('post'));
     }
 

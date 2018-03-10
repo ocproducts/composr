@@ -350,6 +350,7 @@ class Hook_commandr_fs_members
         if (count($meta_dir) == 1) {
             // We're in a member's directory, and writing one of their profile fields
             if (array_key_exists($file_name, $this->field_mapping)) {
+                $val = mixed();
                 $val = $contents;
                 if (in_array($file_name, array(
                     'id',

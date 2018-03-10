@@ -33,7 +33,7 @@ class Hook_main_custom_gfx_text_overlay
     public function run($map, &$block)
     {
         if (!addon_installed('custom_comcode')) {
-            return paragraph(do_lang_tempcode(('MISSING_ADDON', escape_html('custom_comcode')), 'vprbp8lzibhjml97gl8q5p8qjkmmwd0c', 'red-alert');
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('custom_comcode')), 'vprbp8lzibhjml97gl8q5p8qjkmmwd0c', 'red-alert');
         }
 
         if ((!function_exists('imagettftext')) || (!array_key_exists('FreeType Support', gd_info())) || (@imagettfbbox(26.0, 0.0, get_file_base() . '/data/fonts/Vera.ttf', 'test') === false)) {

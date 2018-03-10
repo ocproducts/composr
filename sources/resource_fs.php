@@ -222,7 +222,7 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
 
         if (($new_guid === null) && ($lookup[0]['resource_label'] == $label)) {
             $ret = array($no_exists_check_for, $guid, $lookup[0]['resource_label']);
-            $cache[$resource_type][$resource_id] = $ret;
+            //$cache[$resource_type][$resource_id] = $ret;
             return $ret;
         }
     } else {
@@ -271,7 +271,7 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
     }
 
     $ret = array($moniker, $guid, $label);
-    $cache[$resource_type][$resource_id] = $ret;
+    //$cache[$resource_type][$resource_id] = $ret;
     return $ret;
 }
 
@@ -374,7 +374,7 @@ function find_id_via_moniker($resource_type, $resource_moniker)
     );
     $ret = $GLOBALS['SITE_DB']->query_select_value_if_there('alternative_ids', 'resource_id', $where);
 
-    $cache[$resource_type][$resource_moniker] = $ret;
+    //$cache[$resource_type][$resource_moniker] = $ret;
     return $ret;
 }
 
@@ -407,7 +407,7 @@ function find_id_via_label($resource_type, $_resource_label, $subpath = null)
     $resource_ids = collapse_1d_complexity('resource_id', $ids);
     foreach ($resource_ids as $resource_id) {
         if (_check_id_match($commandr_fs_ob, $resource_type, $resource_id, $subpath)) {
-            $cache[$resource_type][$resource_label][$subpath] = $resource_id;
+            //$cache[$resource_type][$resource_label][$subpath] = $resource_id;
             return $resource_id;
         }
     }
@@ -416,7 +416,7 @@ function find_id_via_label($resource_type, $_resource_label, $subpath = null)
     $ids = $commandr_fs_ob->find_resource_by_label($resource_type, $_resource_label);
     foreach ($ids as $resource_id) {
         if (_check_id_match($commandr_fs_ob, $resource_type, $resource_id, $subpath)) {
-            $cache[$resource_type][$resource_label][$subpath] = $resource_id;
+            //$cache[$resource_type][$resource_label][$subpath] = $resource_id;
             return $resource_id;
         }
     }
@@ -471,7 +471,7 @@ function find_id_via_guid($resource_guid)
     $ret = $GLOBALS['SITE_DB']->query_select_value_if_there('alternative_ids', 'resource_id', array(
         'resource_guid' => $resource_guid,
     ));
-    $cache[$resource_guid] = $ret;
+    //$cache[$resource_guid] = $ret;
     return $ret;
 }
 

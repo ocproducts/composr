@@ -2384,6 +2384,16 @@ function preg_split($pattern, $subject, $max_splits = null, $mode = null)
 }
 
 /**
+ * Returns the error code of the last PCRE regex execution.
+ *
+ * @return integer The error code of the last PCRE regex execution
+ */
+function preg_last_error()
+{
+    return 0;
+}
+
+/**
  * Prints human-readable information about a variable.
  *
  * @param  mixed $data The variable

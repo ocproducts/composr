@@ -30,13 +30,9 @@ class Hook_preview_cns_welcome_email
      */
     public function applies()
     {
-        if (!addon_installed('welcome_emails')) {
-            return false;
-        }
-
         $member_id = get_param_integer('id', get_member());
 
-        $applies = (get_page_name() == 'admin_cns_welcome_emails');
+        $applies = (addon_installed('welcome_emails')) && (get_page_name() == 'admin_cns_welcome_emails');
         if ($applies) {
             require_lang('cns');
             require_code('mail');
