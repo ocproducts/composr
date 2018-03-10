@@ -439,6 +439,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/cqc_sources.php',
             '_tests/tests/unit_tests/cqc_welcome.php',
             '_tests/tests/unit_tests/web_resources.php',
+            '_tests/tests/unit_tests/versioning.php',
             '_tests/tests/unit_tests/dev_environment.php',
             '_tests/tests/unit_tests/filter_xml.php',
             '_tests/tests/unit_tests/upload_directory.php',

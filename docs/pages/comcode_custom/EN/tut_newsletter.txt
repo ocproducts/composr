@@ -12,7 +12,14 @@ Think carefully about how you wish to mix news, forum announcements or forum new
 
 [title="3"]Newsletters vs Memberships[/title]
 
-Newsletter subscription is distinct from membership, in that a subscription is solely tied to an e-mail address, and there is no formal tie between a subscription and a member account, and vice versa. This said, the newsletter subscription has special support for sending out newsletters to usergroup members regardless of whether they have specifically subscribed to a newsletter (it only shows usergroups that have at least one member in them with a configured e-mail address).
+Newsletter subscription is distinct from membership, in that a subscription is solely tied to an e-mail address, and there is no formal tie between a subscription and a member account, and vice versa. This said, the newsletter system has special support for sending out newsletters to usergroup members (Conversr-only) regardless of whether they have specifically subscribed to a newsletter.
+
+A count will be given, counting all targetable members in the usergroup. Targetable means the following criteria need to be true for the member:
+ - validated
+ - not banned
+ - allows staff e-mails (unless the "Allow members to opt-out of staff e-mails" option is not enabled)
+ - has a configured e-mail address
+It only shows usergroups that have at least one targetable member.
 
 If you only ever e-mail members, it is better to ask them to join target usergroups rather than target newsletters. i.e. You may be best off never asking users to join a newsletter directly.
 

@@ -129,7 +129,7 @@ ssl	https
 seed	theme wizard
 chart	graph
 author	bio	biography
-block	widget
+block	widget	pagelet	portlet
 moniker	slug
 guest	anonymous
 rules	license	licence	agreement	terms	conditions	legals t&cs

@@ -153,7 +153,7 @@ function get_version_components__from_dotted($dotted)
         if (strpos($dotted, '.' . $type) !== false) {
             $qualifier = $type;
             $qualifier_number = intval(substr($dotted, strrpos($dotted, '.' . $type) + strlen('.' . $type)));
-            $basis_dotted_number = substr($dotted, 0, strrpos($dotted, '.' . $type));
+            $basis_dotted_number = preg_replace('#(\.0)+$#', '', substr($dotted, 0, strrpos($dotted, '.' . $type)));
             break;
         }
     }
@@ -200,9 +200,16 @@ function get_version_pretty__from_dotted($dotted)
  */
 function is_substantial_release($dotted)
 {
-    list(, , , $long_dotted_number) = get_version_components__from_dotted($dotted);
+    list(, , , , , $long_dotted_number_with_qualifier) = get_version_components__from_dotted($dotted);
 
-    return (substr($long_dotted_number, -2) == '.0') || (strpos($long_dotted_number, 'beta1') !== false) || (strpos($long_dotted_number, 'RC1') !== false);
+    if (preg_match('#^\d+\.0\.0(\.beta1|\.RC1|)$#', $long_dotted_number_with_qualifier) != 0) { // e.g. 3.0.0 or 3.0.0.beta1 or 3.0.0.RC1
+        return true;
+    }
+    if (preg_match('#^\d+\.\d+\.0(\.beta1|\.RC1|)$#', $long_dotted_number_with_qualifier) != 0) { // e.g. 3.1.0 or 3.1.0.beta1 or 3.1.0.RC1
+        return true;
+    }
+
+    return false;
 }
 
 /**

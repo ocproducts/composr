@@ -320,7 +320,7 @@ class Module_groups
 
             $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $row['id']), '_SELF');
 
-            $num_members = integer_format(cns_get_group_members_raw_count($row['id'], true));
+            $num_members = integer_format(cns_get_group_members_raw_count($row['id'], true, false, true, false));
 
             $entry = array();
             $entry[] = hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, true);
@@ -370,7 +370,7 @@ class Module_groups
 
                 $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $row['id']), '_SELF');
 
-                $num_members = integer_format(cns_get_group_members_raw_count($row['id'], true));
+                $num_members = integer_format(cns_get_group_members_raw_count($row['id'], true, false, true, false));
 
                 $_p_t = $row['g_promotion_threshold'];
                 $p_t = new Tempcode();
@@ -429,7 +429,7 @@ class Module_groups
 
             $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $row['id']), '_SELF');
 
-            $num_members = integer_format(cns_get_group_members_raw_count($row['id'], true));
+            $num_members = integer_format(cns_get_group_members_raw_count($row['id'], true, false, true, false));
 
             $entry = array();
             $entry[] = hyperlink($url, make_fractionable_editable('group', $row['id'], $group_name), false, true);
@@ -587,11 +587,11 @@ class Module_groups
         // Secondary members
         $s_start = get_param_integer('s_start', 0);
         $s_max = get_param_integer('s_max', intval(get_option('secondary_members_per_page')));
-        $_secondary_members = cns_get_group_members_raw($id, false, true, true, cns_may_control_group($id, get_member()), $s_max, $s_start);
+        $_secondary_members = cns_get_group_members_raw($id, false, cns_may_control_group($id, get_member()), true, false, $s_max, $s_start);
         $secondary_members = new Tempcode();
         $prospective_members = new Tempcode();
-        $s_max_rows = cns_get_group_members_raw_count($id, false, false, true, cns_may_control_group($id, get_member()));
-        $d_max_rows = cns_get_group_members_raw_count($id, false, true, true, cns_may_control_group($id, get_member()));
+        $s_max_rows = cns_get_group_members_raw_count($id, false, false, false);
+        $d_max_rows = cns_may_control_group($id, get_member()) ? cns_get_group_members_raw_count($id, false, true, false) : 0;
         foreach ($_secondary_members as $secondary_member) {
             $m_username = $GLOBALS['FORUM_DRIVER']->get_member_row_field($secondary_member['gm_member_id'], 'm_username');
             if ($m_username === null) {
