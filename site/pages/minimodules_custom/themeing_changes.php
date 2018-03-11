@@ -13,6 +13,13 @@
  * @package    composr_homesite
  */
 
+i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+$error_msg = new Tempcode();
+if (!addon_installed__autoinstall('composr_homesite', $error_msg)) {
+    return $error_msg;
+}
+
 // (Call with &test_mode=1 to use test data)
 
 require_code('composr_homesite');

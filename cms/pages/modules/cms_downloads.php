@@ -52,6 +52,10 @@ class Module_cms_downloads extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('downloads')) {
+            return null;
+        }
+
         $ret = array(
             'browse' => array('MANAGE_DOWNLOADS', 'menu/rich_content/downloads'),
         );
@@ -104,6 +108,11 @@ class Module_cms_downloads extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('downloads', $error_msg)) {
+            return $error_msg;
+        }
+
         $this->cat_crud_module = class_exists('Mx_cms_downloads_cat') ? new Mx_cms_downloads_cat() : new Module_cms_downloads_cat();
         $this->alt_crud_module = class_exists('Mx_cms_downloads_alt') ? new Mx_cms_downloads_alt() : new Module_cms_downloads_alt();
         $GLOBALS['MODULE_CMS_DOWNLOADS'] = $this;

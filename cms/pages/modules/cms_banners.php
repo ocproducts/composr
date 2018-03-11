@@ -53,6 +53,10 @@ class Module_cms_banners extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('banners')) {
+            return null;
+        }
+
         $this->cat_crud_module = class_exists('Mx_cms_banners_cat') ? new Mx_cms_banners_cat() : new Module_cms_banners_cat();
 
         return array(
@@ -80,6 +84,11 @@ class Module_cms_banners extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('banners', $error_msg)) {
+            return $error_msg;
+        }
+
         require_lang('banners');
 
         $this->cat_crud_module = class_exists('Mx_cms_banners_cat') ? new Mx_cms_banners_cat() : new Module_cms_banners_cat();

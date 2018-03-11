@@ -286,6 +286,10 @@ class Module_buildr
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('buildr')) {
+            return null;
+        }
+
         return array(
             'browse' => array('BUILDR', 'spare/world'),
         );
@@ -301,6 +305,11 @@ class Module_buildr
     public function pre_run()
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('buildr', $error_msg)) {
+            return $error_msg;
+        }
 
         $type = either_param_string('type', 'room');
 

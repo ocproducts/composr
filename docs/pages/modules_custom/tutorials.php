@@ -575,6 +575,10 @@ class Module_tutorials
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('composr_tutorials')) {
+            return null;
+        }
+
         return array(
             'browse' => array('tutorials:TUTORIALS', 'help'),
         );
@@ -588,6 +592,11 @@ class Module_tutorials
     public function run()
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('composr_tutorials', $error_msg)) {
+            return $error_msg;
+        }
 
         require_code('tutorials');
 

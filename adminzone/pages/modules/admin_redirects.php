@@ -114,6 +114,10 @@ class Module_admin_redirects
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('redirects_editor')) {
+            return null;
+        }
+
         return array(
             'browse' => array('REDIRECTS', 'menu/adminzone/structure/redirects'),
         );
@@ -128,6 +132,11 @@ class Module_admin_redirects
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('redirects_editor', $error_msg)) {
+            return $error_msg;
+        }
+
         require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
 
         $type = get_param_string('type', 'browse');

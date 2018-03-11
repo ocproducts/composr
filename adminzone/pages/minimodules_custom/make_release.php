@@ -15,6 +15,11 @@
 
 /*EXTRA FUNCTIONS: sha1_file*/
 
+$error_msg = new Tempcode();
+if (!addon_installed__autoinstall('composr_release_build', $error_msg)) {
+    return $error_msg;
+}
+
 /*
 This code is the frontend to make Composr builds.
 

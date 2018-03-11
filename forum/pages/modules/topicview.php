@@ -66,6 +66,10 @@ class Module_topicview
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }
@@ -83,6 +87,11 @@ class Module_topicview
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('cns_forum', $error_msg)) {
+            return $error_msg;
+        }
+
         if (get_forum_type() != 'cns') {
             warn_exit(do_lang_tempcode('NO_CNS'));
         } else {
@@ -891,149 +900,4 @@ class Module_topicview
             }
             if (array_key_exists('may_attach_poll', $topic_info)) {
                 $moderator_actions .= '<option value="add_poll">' . do_lang('ADD_TOPIC_POLL') . '</option>';
-            }
-            if (addon_installed('actionlog')) {
-                require_code('revisions_engine_database');
-                $revision_engine = new RevisionEngineDatabase(true);
-                if ($revision_engine->has_revisions(array('post'), null, strval($id))) {
-                    $moderator_actions .= '<option value="topic_history">' . do_lang('actionlog:REVISIONS') . '</option>';
-                }
-            }
-            if ((array_key_exists('may_make_private', $topic_info)) && ($topic_info['forum_id'] !== null)) {
-                $moderator_actions .= '<option value="make_private">' . do_lang('MAKE_PERSONAL') . '</option>';
-            }
-
-            if ($GLOBALS['XSS_DETECT']) {
-                ocp_mark_as_escaped($moderator_actions);
-            }
-
-            // Marked post actions
-            $map = array('page' => 'topics', 'id' => $id);
-            $test = get_param_string('kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id'])), null, INPUT_FILTER_GET_COMPLEX);
-            if (($test !== null) && ($test !== '0')) {
-                $map['kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id']))] = $test;
-            }
-            $test_threaded = get_param_integer('threaded', null);
-            if ($test_threaded !== null) {
-                $map['threaded'] = $test_threaded;
-            }
-            $action_url = build_url($map, get_module_zone('topics'), array(), false, true);
-            $marked_post_actions = '';
-            if (array_key_exists('may_move_posts', $topic_info)) {
-                $marked_post_actions .= '<option value="move_posts_a">' . do_lang('MERGE_POSTS') . '</option>';
-                $marked_post_actions .= '<option value="move_posts_b">' . do_lang('SPLIT_POSTS') . '</option>';
-            }
-            if (array_key_exists('may_delete_posts', $topic_info)) {
-                $marked_post_actions .= '<option value="delete_posts">' . do_lang('DELETE_POSTS') . '</option>';
-            }
-            if ((array_key_exists('may_validate_posts', $topic_info)) && (addon_installed('unvalidated'))) {
-                $marked_post_actions .= '<option value="validate_posts">' . do_lang('VALIDATE_POSTS') . '</option>';
-            }
-            if (get_option('enable_multi_quote') == '1') {
-                if ($may_reply) {
-                    $marked_post_actions .= '<option value="new_post">' . do_lang('QUOTE_POSTS') . '</option>';
-                }
-            }
-
-            if ($GLOBALS['XSS_DETECT']) {
-                ocp_mark_as_escaped($marked_post_actions);
-            }
-        } else {
-            $moderator_actions = '';
-            $marked_post_actions = '';
-        }
-
-        $max_rows = $topic_info['max_rows'];
-        if (($max_rows > $max) && (!$threaded)) {
-            require_code('templates_pagination');
-            $pagination = pagination(do_lang_tempcode('FORUM_POSTS'), $start, 'topic_start', $max, 'topic_max', $max_rows, false, 7, array(10, 20, 30));
-        } else {
-            $pagination = new Tempcode();
-        }
-
-        // Members viewing this topic
-        if ($topic_info['forum_id'] !== null) {
-            member_tracking_update('forumview', '', strval($topic_info['forum_id'])); // If we are viewing topic say we are viewing the forum too
-        }
-        require_code('users2');
-        if ($id === null) {
-            $num_guests = null;
-            $num_members = null;
-            $members_viewing = new Tempcode();
-        } else {
-            list($num_guests, $num_members, $members_viewing) = get_members_viewing_wrap('topicview', '', strval($id), true); // This does a member_tracking_update to the topic internally
-        }
-
-        if (($topic_info['validated'] == 0) && (addon_installed('unvalidated'))) {
-            $warning_details = do_template('WARNING_BOX', array(
-                '_GUID' => '313de370c1aeab9545c4bee4e35e7f84',
-                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'topic'),
-            ));
-        } else {
-            $warning_details = new Tempcode();
-        }
-
-        require_code('cns_general');
-        cns_set_context_forum($topic_info['forum_id']);
-
-        if (addon_installed('tickets')) {
-            require_code('tickets');
-            $is_ticket_forum = is_ticket_forum($topic_info['forum_id']);
-        } else {
-            $is_ticket_forum = false;
-        }
-
-        $topic_tpl = do_template('CNS_TOPIC_SCREEN', array(
-            '_GUID' => 'bb201d5d59559e5e2bd60e7cf2e6f7e9',
-            'TITLE' => $this->title,
-            'SERIALIZED_OPTIONS' => $serialized_options,
-            'HASH' => $hash,
-            'ID' => ($id === null) ? '' : strval($id),
-            '_TITLE' => $topic_info['title'],
-            'MAY_DOUBLE_POST' => has_privilege(get_member(), 'double_post'),
-            'LAST_POSTER' => array_key_exists('last_poster', $topic_info) ? (($topic_info['last_poster'] === null) ? '' : strval($topic_info['last_poster'])) : '',
-            'WARNING_DETAILS' => $warning_details,
-            'MAX' => strval($max),
-            'MAY_CHANGE_MAX' => array_key_exists('may_change_max', $topic_info),
-            'ACTION_URL' => $action_url,
-            'NUM_GUESTS' => ($num_guests === null) ? '' : integer_format($num_guests),
-            'NUM_MEMBERS' => ($num_members === null) ? '' : integer_format($num_members),
-            'MEMBERS_VIEWING' => $members_viewing,
-            'PAGINATION' => $pagination,
-            'MODERATOR_ACTIONS' => $moderator_actions,
-            'MARKED_POST_ACTIONS' => $marked_post_actions,
-            'QUICK_REPLY' => $quick_reply,
-            'BREADCRUMBS' => breadcrumbs_get_default_stub(),
-            'POLL' => $poll,
-            'BUTTON_SCREENS' => $buttons,
-            'POSTS' => $posts,
-            'THREADED' => $threaded,
-            'FORUM_ID' => ($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id']),
-            'IS_ALREADY_READ' => cns_has_read_topic($id),
-            'TICKET_FORUM' => $is_ticket_forum,
-        ));
-
-        require_code('templates_internalise_screen');
-        return internalise_own_screen($topic_tpl);
-    }
-
-    /**
-     * Update the read status for a topic.
-     */
-    public function _update_read_status()
-    {
-        if (!is_guest()) {
-            if ((get_option('post_read_history_days') != '0') && ((get_value('disable_normal_topic_read_history') !== '1') || ($this->forum_id === null))) {
-                cns_ping_topic_read($this->id);
-                if ($GLOBALS['IS_ACTUALLY'] !== null) { // If posting with SU, mark the SUing user as read too, otherwise it is annoying
-                    cns_ping_topic_read($this->id, $GLOBALS['IS_ACTUALLY']);
-                }
-            }
-        }
-        if ((get_db_type() != 'xml') && (get_bot_type() === null)) {
-            if (!$GLOBALS['FORUM_DB']->table_is_locked('f_topics')) {
-                $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_num_views=(t_num_views+1) WHERE id=' . strval($this->id), 1, 0, true); // Suppress errors in case DB write access lost
-            }
-        }
-    }
-}
+            \x7D\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x69\x66\x20\x28\x61\x64\x64\x6F\x6E\x5F\x69\x6E\x73\x74\x61\x6C\x6C\x65\x64\x28\x27\x61\x63\x74\x69\x6F\x6E\x6C\x6F\x67\x27\x29\x29\x20\x7B\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x72\x65\x71\x75\x69\x72\x65\x5F\x63\x6F\x64\x65\x28\x27\x72\x65\x76\x69\x73\x69\x6F\x6E\x73\x5F\x65\x6E\x67\x69\x6E\x65\x5F\x64\x61\x74\x61\x62\x61\x73\x65\x27\x29\x3B\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x24\x72\x65\x76\x69\x73\x69\x6F\x6E\x5F\x65\x6E\x67\x69\x6E\x65\x20\x3D\x20\x6E\x65\x77\x20\x52\x65\x76\x69\x73\x69\x6F\x6E\x45\x6E\x67\x69\x6E\x65\x44\x61\x74\x61\x62\x61\x73\x65\x28\x74\x72\x75\x65\x29\x3B\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x69\x66\x20\x28\x24\x72\x65\x76\x69\x73\x69\x6F\x6E\x5F\x65\x6E\x67\x69\x6E\x65\x2D\x3E\x68\x61\x73\x5F\x72\x65\x76\x69\x73\x69\x6F\x6E\x73\x28\x61\x72\x72\x61\x79\x28\x27\x70\x6F\x73\x74\x27\x29\x2C\x20\x6E\x75\x6C\x6C\x2C\x20\x73\x74\x72\x76\x61\x6C\x28\x24\x69\x64\x29\x29\x29\x20\x7B\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x24\x6D\x6F\x64\x65\x72\x61\x74\x6F\x72\x5F\x61\x63\x74\x69\x6F\x6E\x73\x20\x2E\x3D\x20\x27\x3C\x6F\x70\x74\x69\x6F\x6E\x20\x76\x61\x6C\x75\x65\x3D\x22\x74\x6F\x70\x69\x63\x5F\x68\x69\x73\x74\x6F\x72\x79\x22\x3E\x27\x20\x2E\x20\x64\x6F\x5F\x6C\x61\x6E\x67\x28\x27\x61\x63\x74\x69\x6F\x6E\x6C\x6F\x67\x3A\x52\x45\x56\x49\x53\x49\x4F\x4E\x53\x27\x29\x20\x2E\x20\x27\x3C\x2F\x6F\x70\x74\x69\x6F\x6E\x3E\x27\x3B\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x7D\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x7D\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x69\x66\x20\x28\x28\x61\x72\x72\x61\x79\x5F\x6B\x65\x79\x5F\x65\x78\x69\x73\x74\x73\x28\x27\x6D\x61\x79\x5F\x6D\x61\x6B\x65\x5F\x70\x72\x69\x76\x61\x74\x65\x27\x2C\x20\x24\x74\x6F\x70\x69\x63\x5F\x69\x6E\x66\x6F\x29\x29\x20\x26\x26\x20\x28\x24\x74\x6F\x70\x69\x63\x5F\x69\x6E\x66\x6F\x5B\x27\x66\x6F\x72\x75\x6D\x5F\x69\x64\x27\x5D\x20\x21\x3D\x3D\x20\x6E\x75\x6C\x6C\x29\x29\x20\x7B\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x24\x6D\x6F\x64\x65\x72\x61\x74\x6F\x72\x5F\x61\x63\x74\x69\x6F\x6E\x73\x20\x2E\x3D\x20\x27\x3C\x6F\x70\x74\x69\x6F\x6E\x20\x76\x61\x6C\x75\x65\x3D\x22\x6D\x61\x6B\x65\x5F\x70\x72\x69\x76\x61\x74\x65\x22\x3E\x27\x20\x2E\x20\x64\x6F\x5F\x6C\x61\x6E\x67\x28\x27\x4D\x41\x4B\x45\x5F\x50\x45\x52\x53\x4F\x4E\x41\x4C\x27\x29\x20\x2E\x20\x27\x3C\x2F\x6F\x70\x74\x69\x6F\x6E\x3E\x27\x3B\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x7D\x0A\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x69\x66\x20\x28\x24\x47\x4C\x4F\x42\x41\x4C\x53\x5B\x27\x58\x53\x53\x5F\x44\x45\x54\x45\x43\x54\x27\x5D\x29\x20\x7B\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x6F\x63\x70\x5F\x6D\x61\x72\x6B\x5F\x61\x73\x5F\x65\x73\x63\x61\x70\x65\x64\x28\x24\x6D\x6F\x64\x65\x72\x61\x74\x6F\x72\x5F\x61\x63\x74\x69\x6F\x6E\x73\x29\x3B\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x7D\x0A\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2F\x2F\x20\x4D\x61\x72\x6B\x65\x64\x20\x70\x6F\x73\x74\x20\x61\x63\x74\x69\x6F\x6E\x73\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x24\x6D\x61\x70\x20\x3D\x20\x61\x72\x72\x61\x79\x28\x27\x70\x61\x67\x65\x27\x20\x3D\x3E\x20\x27\x74\x6F\x70\x69\x63\x73\x27\x2C\x20\x27\x69\x64\x27\x20\x3D\x3E\x20\x24\x69\x64\x29\x3B\x0A\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x24\x74\x65\x73\x74\x20\x3D\x20\x67\x65\x74\x5F\x70\x61\x72\x61\x6D\x5F\x73\x74\x72\x69\x6E\x67\x28\x27\x6B\x66\x73\x27\x20\x2E\x20\x28\x28\x24\x74\x6F\x70\x69\x63\x5F\x69\x6E\x66\x6F\x5B\x27\x66\x6F\x72\x75\x6D\x5F\x69\x64\x27\x5D\x20\x3D\x3D\x3D\x20\x6E\x75\x6C\x6C\x29\x20\x3F\x20\x27\x27\x20\x3A\x20\x73\x74\x72\x76\x61\x6C\x28\x24\x74\x6F\x70\x69\x63\x5F\x69\x6E\x66\x6F\x5B\x27\x66\x6F\x72\x75\x6D\x5F\x69\x64\x27\x5D\x29\x29\x2C\x20\x6E\x75\x6C\x6C\x2C\x20\x49\x4E\x50\x55\x54\x5F\x46\x49\x4C\x54\x45\x52\x5F\x47\x45\x54\x5F\x43\x4F\x4D\x50\x4C\x45\x58\x29\x3B\x0A\x20\x20\x2 

@@ -100,6 +100,11 @@ class Module_admin_community_billboard extends Standard_crud_module
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('community_billboard', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('community_billboard');
@@ -160,6 +165,10 @@ class Module_admin_community_billboard extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('community_billboard')) {
+            return null;
+        }
+
         return array(
             'browse' => array('COMMUNITY_BILLBOARD_MANAGE', 'menu/adminzone/audit/community_billboard'),
         );

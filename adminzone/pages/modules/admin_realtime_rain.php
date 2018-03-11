@@ -51,6 +51,10 @@ class Module_admin_realtime_rain
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('realtime_rain')) {
+            return null;
+        }
+
         return array(
             '!' => array('_REALTIME_RAIN', 'menu/adminzone/audit/realtime_rain'),
         );
@@ -65,6 +69,11 @@ class Module_admin_realtime_rain
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('realtime_rain', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('realtime_rain');

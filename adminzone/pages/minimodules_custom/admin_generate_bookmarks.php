@@ -25,6 +25,11 @@ Folders can't themselves be links, so a node may have both a link and a separate
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+$error_msg = new Tempcode();
+if (!addon_installed__autoinstall('browser_bookmarks', $error_msg)) {
+    return $error_msg;
+}
+
 if (post_param_integer('confirm', 0) == 0) {
     $preview = 'Generate bookmarks';
     $title = get_screen_title($preview, false);

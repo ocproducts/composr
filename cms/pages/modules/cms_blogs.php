@@ -55,6 +55,10 @@ class Module_cms_blogs extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         if (!has_privilege(get_member(), 'have_personal_category', 'cms_news')) {
             return null;
         }
@@ -84,6 +88,11 @@ class Module_cms_blogs extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('news', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('news');

@@ -243,6 +243,10 @@ class Module_banners
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('banners')) {
+            return null;
+        }
+
         if ($check_perms) {
             if (is_guest($member_id)) {
                 return array();
@@ -275,6 +279,11 @@ class Module_banners
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('banners', $error_msg)) {
+            return $error_msg;
+        }
+
         require_lang('banners');
         $type = get_param_string('type', 'browse');
 

@@ -19,6 +19,11 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+$error_msg = new Tempcode();
+if (!addon_installed__autoinstall('composr_homesite', $error_msg)) {
+    return $error_msg;
+}
+
 $title = get_screen_title('Publish new Composr release', false);
 $title->evaluate_echo();
 

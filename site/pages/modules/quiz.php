@@ -201,6 +201,10 @@ class Module_quiz
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('quizzes')) {
+            return null;
+        }
+
         return array(
             'browse' => array('QUIZZES', 'menu/rich_content/quiz'),
         );
@@ -220,6 +224,11 @@ class Module_quiz
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('quizzes', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('quiz');

@@ -100,6 +100,10 @@ class Module_admin_revisions
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('actionlog')) {
+            return null;
+        }
+
         return array(
             'browse' => array('REVISIONS', 'admin/revisions'),
         );
@@ -114,6 +118,11 @@ class Module_admin_revisions
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('actionlog', $error_msg)) {
+            return $error_msg;
+        }
+
         require_lang('actionlog');
 
         $type = get_param_string('type', 'browse');

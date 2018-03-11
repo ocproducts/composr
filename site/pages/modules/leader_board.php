@@ -51,6 +51,10 @@ class Module_leader_board
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         if ($GLOBALS['SITE_DB']->query_select_value('leader_board', 'COUNT(*)') == 0) {
             return array();
         }
@@ -68,6 +72,11 @@ class Module_leader_board
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('points', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('leader_board');

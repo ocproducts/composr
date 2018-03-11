@@ -218,6 +218,10 @@ class Module_wiki
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('wiki')) {
+            return null;
+        }
+
         $ret = array(
             'browse' => array('WIKI_HOME', 'menu/rich_content/wiki'),
             'random' => array('RANDOM_PAGE', 'menu/rich_content/wiki/random_page'),
@@ -246,6 +250,11 @@ class Module_wiki
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('wiki', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('wiki');

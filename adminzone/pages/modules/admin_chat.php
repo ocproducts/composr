@@ -45,6 +45,10 @@ class Module_admin_chat extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         $ret = array(
             'browse' => array('MANAGE_CHATROOMS', 'menu/social/chat/chat'),
         );
@@ -66,6 +70,11 @@ class Module_admin_chat extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('chat', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('chat');

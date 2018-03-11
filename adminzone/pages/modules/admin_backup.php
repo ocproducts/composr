@@ -51,6 +51,10 @@ class Module_admin_backup
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('backup')) {
+            return null;
+        }
+
         return array(
             'browse' => array('BACKUP', 'menu/adminzone/tools/bulk_content_actions/backups'),
         );
@@ -91,6 +95,11 @@ class Module_admin_backup
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('backup', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('backups');

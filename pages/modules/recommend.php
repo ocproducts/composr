@@ -93,6 +93,10 @@ class Module_recommend
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('recommend')) {
+            return null;
+        }
+
         $ret = array(
             'browse' => array('RECOMMEND_SITE', 'menu/site_meta/recommend'),
         );
@@ -114,6 +118,11 @@ class Module_recommend
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('recommend', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
         if (array_key_exists('upload', $_FILES) && isset($_FILES['upload']['tmp_name']) && strlen($_FILES['upload']['tmp_name']) > 0) {
             $type = 'gui2';

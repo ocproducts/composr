@@ -51,6 +51,10 @@ class Module_admin_points
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         $ret = array(
             'browse' => array('GIFT_TRANSACTIONS', 'menu/adminzone/audit/points_log'),
         );
@@ -71,6 +75,11 @@ class Module_admin_points
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('points', $error_msg)) {
+            return $error_msg;
+        }
+
         require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
 
         $type = get_param_string('type', 'browse');

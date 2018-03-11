@@ -83,6 +83,10 @@ class Module_contact_member
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('cns_contact_member')) {
+            return null;
+        }
+
         return array();
     }
 
@@ -93,6 +97,11 @@ class Module_contact_member
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('cns_contact_member', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         if (get_forum_type() != 'cns') {

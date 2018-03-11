@@ -15,6 +15,11 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+$error_msg = new Tempcode();
+if (!addon_installed__autoinstall('composr_homesite', $error_msg)) {
+    return $error_msg;
+}
+
 $text = file_get_contents(get_file_base() . '/text/EN/licence.txt');
 
 $text = preg_replace('#(^|\n)(.*)\n=+\r?\n#', '${1}[title]${2}[/title]' . "\n", $text);

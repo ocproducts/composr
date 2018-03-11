@@ -53,6 +53,10 @@ class Module_admin_phpinfo
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('phpinfo')) {
+            return null;
+        }
+
         return array(
             '!' => array('PHPINFO', 'menu/adminzone/tools/phpinfo'),
         );
@@ -65,6 +69,11 @@ class Module_admin_phpinfo
      */
     public function run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('phpinfo', $error_msg)) {
+            return $error_msg;
+        }
+
         if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }

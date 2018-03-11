@@ -150,6 +150,10 @@ class Module_admin_stats
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('stats')) {
+            return null;
+        }
+
         require_lang('stats');
 
         $ret = array(
@@ -192,6 +196,11 @@ class Module_admin_stats
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('stats', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('stats');

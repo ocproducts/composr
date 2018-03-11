@@ -42,6 +42,13 @@ class Module_cms_tutorials extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('composr_tutorials', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('tutorials');
@@ -57,8 +64,6 @@ class Module_cms_tutorials extends Standard_crud_module
      */
     public function run_start($type)
     {
-        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
-
         require_code('tutorials');
 
         if ($type == 'browse') {
@@ -79,6 +84,10 @@ class Module_cms_tutorials extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('composr_tutorials')) {
+            return null;
+        }
+
         return array(
             'browse' => array('tutorials:TUTORIALS', 'help'),
         ) + parent::get_entry_points();

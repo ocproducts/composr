@@ -51,6 +51,10 @@ class Module_admin_debrand
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('debrand')) {
+            return null;
+        }
+
         return array(
             'browse' => array('SUPER_DEBRAND', 'menu/adminzone/style/debrand'),
         );
@@ -65,6 +69,11 @@ class Module_admin_debrand
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('debrand', $error_msg)) {
+            return $error_msg;
+        }
+
         require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
 
         appengine_live_guard();

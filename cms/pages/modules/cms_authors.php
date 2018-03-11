@@ -51,6 +51,10 @@ class Module_cms_authors
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('authors')) {
+            return null;
+        }
+
         $ret = array(
             'browse' => array('AUTHOR_MANAGE', 'menu/rich_content/authors'),
             '_add' => array('EDIT_MY_AUTHOR_PROFILE', 'menu/cms/author_set_own_profile'),
@@ -86,6 +90,11 @@ class Module_cms_authors
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('authors', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('authors');

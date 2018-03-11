@@ -211,6 +211,10 @@ class Module_newsletter
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         if ($check_perms) {
             if ($GLOBALS['SITE_DB']->query_select_value('newsletters', 'COUNT(*)') == 0) {
                 return array();
@@ -230,6 +234,11 @@ class Module_newsletter
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('newsletter', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('newsletter');

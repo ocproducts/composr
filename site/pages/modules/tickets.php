@@ -143,6 +143,10 @@ class Module_tickets
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('tickets')) {
+            return null;
+        }
+
         if (get_forum_type() == 'none') {
             return null;
         }
@@ -162,6 +166,11 @@ class Module_tickets
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('tickets', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('tickets');

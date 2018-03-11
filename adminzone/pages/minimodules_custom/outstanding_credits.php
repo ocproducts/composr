@@ -13,6 +13,11 @@
  * @package    composr_homesite_support_credits
  */
 
+$error_msg = new Tempcode();
+if (!addon_installed__autoinstall('composr_homesite_support_credits', $error_msg)) {
+    return $error_msg;
+}
+
 if (get_forum_type() != 'cns') {
     warn_exit(do_lang_tempcode('NO_CNS'));
 }

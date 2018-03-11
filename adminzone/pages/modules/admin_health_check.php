@@ -51,6 +51,10 @@ class Module_admin_health_check
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('health_check')) {
+            return null;
+        }
+
         return array(
             'browse' => array('HEALTH_CHECK', 'menu/adminzone/tools/health_check'),
         );
@@ -65,6 +69,11 @@ class Module_admin_health_check
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('health_check', $error_msg)) {
+            return $error_msg;
+        }
+
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         require_code('health_check');

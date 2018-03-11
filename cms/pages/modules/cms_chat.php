@@ -51,6 +51,10 @@ class Module_cms_chat
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         return array(
             'browse' => array('CHAT_MODERATION', 'menu/social/chat/chat'),
         );
@@ -78,6 +82,11 @@ class Module_cms_chat
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('chat', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('chat');

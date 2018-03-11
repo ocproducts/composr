@@ -270,6 +270,10 @@ class Module_calendar
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('calendar')) {
+            return null;
+        }
+
         return array(
             'browse' => array('CALENDAR', 'menu/rich_content/calendar'),
         );
@@ -293,6 +297,11 @@ class Module_calendar
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('calendar', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('calendar');

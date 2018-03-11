@@ -53,6 +53,10 @@ class Module_admin_ecommerce_logs
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         if (get_value('unofficial_ecommerce') !== '1') {
             if (get_forum_type() != 'cns') {
                 return null;
@@ -89,6 +93,11 @@ class Module_admin_ecommerce_logs
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('ecommerce', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_code('ecommerce');

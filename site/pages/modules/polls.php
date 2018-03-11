@@ -176,6 +176,10 @@ class Module_polls
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('polls')) {
+            return null;
+        }
+
         return array(
             'browse' => array('POLLS', 'menu/social/polls'),
         );
@@ -193,6 +197,11 @@ class Module_polls
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('polls', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('polls');

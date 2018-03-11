@@ -60,6 +60,10 @@ class Module_cms_catalogues extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false, $simplified = false)
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         $ret = array(
             'browse' => array('MANAGE_CATALOGUES', 'menu/rich_content/catalogues/catalogues'),
 
@@ -118,6 +122,11 @@ class Module_cms_catalogues extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('catalogues', $error_msg)) {
+            return $error_msg;
+        }
+
         require_code('input_filter_2');
         if (get_value('disable_modsecurity_workaround') !== '1') {
             modsecurity_workaround_enable();

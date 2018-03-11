@@ -52,6 +52,10 @@ class Module_admin_commandr
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('commandr')) {
+            return null;
+        }
+
         return array(
             '!' => array('COMMANDR', 'menu/adminzone/tools/commandr'),
         );
@@ -102,6 +106,11 @@ class Module_admin_commandr
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('commandr', $error_msg)) {
+            return $error_msg;
+        }
+
         require_code('input_filter_2');
 
         if (get_value('disable_modsecurity_workaround') !== '1') {

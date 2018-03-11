@@ -473,6 +473,10 @@ class Module_catalogues
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         if ($be_deferential) {
             return null;
         }
@@ -505,6 +509,11 @@ class Module_catalogues
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('catalogues', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('catalogues');

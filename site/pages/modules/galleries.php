@@ -248,6 +248,10 @@ class Module_galleries
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return array(
             'browse' => array('GALLERIES_HOME', 'menu/rich_content/galleries'),
         );
@@ -275,6 +279,11 @@ class Module_galleries
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('galleries', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_code('galleries');

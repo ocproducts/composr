@@ -97,6 +97,10 @@ class Module_authors
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('authors')) {
+            return null;
+        }
+
         if ($check_perms && is_guest($member_id)) {
             return array();
         }
@@ -115,6 +119,11 @@ class Module_authors
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('authors', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('authors');
