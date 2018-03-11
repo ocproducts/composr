@@ -148,7 +148,7 @@
         automated = !!automated;
 
         if (!fromUrl) {
-            var tabMarker = $dom.$id('tab--' + tab.toLowerCase());
+            var tabMarker = $dom.$('#tab--' + tab.toLowerCase());
             if (tabMarker) {
                 // For URL purposes, we will change URL to point to tab
                 // HOWEVER, we do not want to cause a scroll so we will be careful
@@ -160,14 +160,14 @@
 
         var tabs = [], i, element;
 
-        element = $dom.$id('t-' + tab);
-
+        element = $dom.$('#t-' + tab);
+        
         if (!element) {
             $util.fatal('$cms.ui.selectTab(): "#t-' + tab + '" element not found');
         }
 
         for (i = 0; i < element.parentElement.children.length; i++) {
-            if (element.parentElement.children[i].id && (element.parentElement.children[i].id.substr(0, 2) === 't-')) {
+            if (element.parentElement.children[i].id.startsWith('t-')) {
                 tabs.push(element.parentElement.children[i].id.substr(2));
             }
         }
@@ -175,12 +175,14 @@
         for (i = 0; i < tabs.length; i++) {
             element = $dom.$id(id + '-' + tabs[i]);
             if (element) {
-                $dom.toggle(element, (tabs[i] === tab));
-
                 if (tabs[i] === tab) {
                     if (window['load_tab__' + tab] === undefined) {
                         $dom.fadeIn(element);
+                    } else {
+                        $dom.show(element);
                     }
+                } else {
+                    $dom.hide(element);
                 }
             }
 
