@@ -309,7 +309,7 @@ function is_non_human_email($subject, $body, $full_header, $from_email)
     if (strpos($full_header, "\r\nfrom: <>") !== false) {
         return true;
     }
-    if (strpos($full_header, "\r\nauto-submitted: ") !== false && strpos($full_header, "\r\nauto-submitted: no") === false) {
+    if ((strpos($full_header, "\r\nauto-submitted: ") !== false) && (strpos($full_header, "\r\nauto-submitted: no") === false)) {
         return true;
     }
 

@@ -2475,7 +2475,7 @@ function ecv_TRIM($lang, $escaped, $param)
         }
 
         if ($value !== '') {
-            if (strpos($value, '<') === false && strpos($value, '&') === false) {
+            if ((strpos($value, '<') === false) && (strpos($value, '&') === false)) {
                 if ($GLOBALS['XSS_DETECT']) {
                     $is_escaped = ocp_is_escaped($value);
                 }

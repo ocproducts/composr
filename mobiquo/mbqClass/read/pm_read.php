@@ -212,7 +212,7 @@ class CMSPmRead
             return self::READ;
         }
 
-        if ($topic_read_time !== null && $topic_read_time > $post_details['p_time']) {
+        if (($topic_read_time !== null) && ($topic_read_time > $post_details['p_time'])) {
             return self::READ;
         }
 

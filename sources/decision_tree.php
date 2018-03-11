@@ -283,7 +283,7 @@ class DecisionTree
                     $section = null;
                 }
 
-                if ($section !== null && $current_section !== $section) {
+                if (($section !== null) && ($current_section !== $section)) {
                     $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '103da055fbd879f2bfc023d83d64091d', 'TITLE' => $section)));
                 }
                 $current_section = $section;

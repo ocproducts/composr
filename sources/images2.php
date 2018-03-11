@@ -549,7 +549,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
     }
 
     // Set the background if we have one
-    if ($thumb_options !== null && $red !== null) {
+    if (($thumb_options !== null) && ($red !== null)) {
         $dest = imagecreatetruecolor($width, $height);
         imagealphablending($dest, false);
         if ((function_exists('imagecolorallocatealpha')) && ($using_alpha)) {
@@ -603,7 +603,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         $ext2 = get_file_extension($to);
     }
     // If we've got transparency then we have to save as PNG
-    if ($thumb_options !== null && isset($using_alpha) && $using_alpha || $ext2 == '') {
+    if (($thumb_options !== null) && (isset($using_alpha)) && ($using_alpha) || ($ext2 == '')) {
         $ext2 = 'png';
     }
 

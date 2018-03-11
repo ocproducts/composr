@@ -209,10 +209,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         }
 
         // Run Query
-        $rows = $GLOBALS['SITE_DB']->query($myquery, 500/*reasonable limit - old ones should be turned off*/, 0, true, true, array('caption' => 'SHORT_TRANS__COMCODE'));
-        if ($rows === null) {
-            $rows = array(); // Error, but tolerate it as it could be on each page load
-        }
+        $rows = $GLOBALS['SITE_DB']->query($myquery, 500/*reasonable limit - old ones should be turned off*/, 0, false, true, array('caption' => 'SHORT_TRANS__COMCODE'));
 
         // Filter out what we don't have permission for
         if (get_option('use_banner_permissions') == '1') {

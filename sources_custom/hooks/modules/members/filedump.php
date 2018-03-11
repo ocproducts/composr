@@ -26,6 +26,10 @@ class Hook_members_filedump
      */
     public function run($member_id)
     {
+        if (!addon_installed('member_filedumps')) {
+            return array();
+        }
+
         if (!addon_installed('filedump')) {
             return array();
         }

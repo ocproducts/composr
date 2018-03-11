@@ -57,7 +57,7 @@ function get_latest_version_basis_number()
 {
     require_code('version2');
     $latest_pretty = get_latest_version_pretty();
-    if ($latest_pretty === null && $GLOBALS['DEV_MODE']) { // Not uploaded any releases to dev site?
+    if (($latest_pretty === null) && ($GLOBALS['DEV_MODE'])) { // Not uploaded any releases to dev site?
         $latest_pretty = float_to_raw_string(cms_version_number(), 2, true);
     }
     if ($latest_pretty === null) {
@@ -380,8 +380,8 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
 
     // Create database
     $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $SITE_INFO['mysql_root_password'], 'cms_');
-    $master_conn->query('DROP DATABASE `demonstratr_site_' . $codename . '`', null, 0, true);
-    $master_conn->query('CREATE DATABASE `demonstratr_site_' . $codename . '`', null, 0, true);
+    $master_conn->query('DROP DATABASE IF EXISTS `demonstratr_site_' . $codename . '`');
+    $master_conn->query('CREATE DATABASE `demonstratr_site_' . $codename . '`');
     $user = substr(md5('demonstratr_site_' . $codename), 0, 16);
     $master_conn->query('GRANT ALL ON `demonstratr_site_' . $codename . '`.* TO \'' . $user . '\'@\'%\' IDENTIFIED BY \'' . db_escape_string($SITE_INFO['mysql_demonstratr_password']) . '\''); // tcp/ip
     $master_conn->query('GRANT ALL ON `demonstratr_site_' . $codename . '`.* TO \'' . $user . '\'@\'localhost\' IDENTIFIED BY \'' . db_escape_string($SITE_INFO['mysql_demonstratr_password']) . '\''); // local socket
@@ -841,11 +841,11 @@ function demonstratr_delete_site($server, $codename, $bulk = false)
     $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $SITE_INFO['mysql_root_password'], 'cms_');
     $master_conn->query('DROP DATABASE IF EXISTS `demonstratr_site_' . $codename . '`');
     $user = substr(md5('demonstratr_site_' . $codename), 0, 16);
-    $master_conn->query('REVOKE ALL ON `demonstratr_site_' . $codename . '`.* FROM \'' . $user . '\'', null, 0, true);
+    $master_conn->query('REVOKE ALL ON `demonstratr_site_' . $codename . '`.* FROM \'' . $user . '\'', null, 0, true); // Suppress errors in case access denied
     //$master_conn->query('DROP USER \'demonstratr_site_' . $codename . '\'');
 
     $GLOBALS['SITE_DB']->query_delete('sites_deletion_codes', array('s_codename' => $codename), '', 1);
-    $GLOBALS['SITE_DB']->query_update('sites_email', array('s_codename' => $codename . '__expired_' . strval(mt_rand(0, mt_getrandmax()))), array('s_codename' => $codename), '', 1, 0, false, true);
+    $GLOBALS['SITE_DB']->query_update('sites_email', array('s_codename' => $codename . '__expired_' . strval(mt_rand(0, mt_getrandmax()))), array('s_codename' => $codename), '', 1);
 
     // Directory entry
     $GLOBALS['SITE_DB']->query_delete('sites', array('s_codename' => $codename), '', 1);

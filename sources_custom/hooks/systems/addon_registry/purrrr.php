@@ -235,7 +235,7 @@ class Hook_addon_registry_purrrr
      */
     public function install($upgrade_from = null)
     {
-        if (!module_installed('iotds')) {
+        if (!addon_installed('iotds')) {
             return;
         }
 

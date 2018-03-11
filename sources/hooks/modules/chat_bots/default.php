@@ -32,10 +32,6 @@ class Hook_chat_bot_default
      */
     public function handle_commands($room_id, $command)
     {
-        if (!addon_installed('chat')) {
-            return null;
-        }
-
         switch ($command) {
             case 'help':
                 $out = do_lang('CHAT_HELP_BOTMSG');

@@ -61,17 +61,6 @@ class Module_cms_tutorials extends Standard_crud_module
 
         require_code('tutorials');
 
-        if (!module_installed('tutorials')) {
-            require_code('zones2');
-
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_header_text', array('zone_name' => 'docs'));
-            if ($test === null) {
-                actual_add_zone('docs', do_lang('TUTORIALS'), 'tutorials');
-            }
-
-            reinstall_module('docs', 'tutorials');
-        }
-
         if ($type == 'browse') {
             return $this->browse();
         }

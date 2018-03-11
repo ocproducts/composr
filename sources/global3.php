@@ -742,7 +742,7 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
         }
     }
 
-    if ($row !== null && $content_type !== null) {
+    if (($row !== null) && ($content_type !== null)) {
         // Add in generic data...
 
         $cma_mappings = array(
@@ -2494,7 +2494,7 @@ function get_num_users_site()
         // Store a peak record if there is one
         $PEAK_USERS_EVER_CACHE = get_value('user_peak');
         if (($PEAK_USERS_EVER_CACHE === null) || ($PEAK_USERS_EVER_CACHE == '')) {
-            $_peak_users_user = $GLOBALS['SITE_DB']->query_select_value_if_there('usersonline_track', 'MAX(peak)', array(), '', true);
+            $_peak_users_user = $GLOBALS['SITE_DB']->query_select_value_if_there('usersonline_track', 'MAX(peak)');
             $PEAK_USERS_EVER_CACHE = ($_peak_users_user === null) ? $NUM_USERS_SITE_CACHE : strval($_peak_users_user);
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('user_peak', $PEAK_USERS_EVER_CACHE);
@@ -2502,7 +2502,7 @@ function get_num_users_site()
         }
         if (intval($NUM_USERS_SITE_CACHE) > intval($PEAK_USERS_EVER_CACHE)) {
             // New record
-            $GLOBALS['SITE_DB']->query_insert('usersonline_track', array('date_and_time' => time(), 'peak' => intval($NUM_USERS_SITE_CACHE)), false, true);
+            $GLOBALS['SITE_DB']->query_insert('usersonline_track', array('date_and_time' => time(), 'peak' => intval($NUM_USERS_SITE_CACHE)), false, true); // errors suppressed in case of race condition
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('user_peak', $NUM_USERS_SITE_CACHE);
             }
@@ -2518,11 +2518,11 @@ function get_num_users_site()
             $PEAK_USERS_WEEK_CACHE = $NUM_USERS_SITE_CACHE;
 
             // But also delete anything else in the last 7 days that was less than the new weekly peak record, to keep the stats clean (we only want 7 day peaks to be stored)
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'usersonline_track WHERE date_and_time>' . strval(time() - 60 * 60 * 24 * 7) . ' AND peak<=' . $PEAK_USERS_WEEK_CACHE, null, 0, true);
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'usersonline_track WHERE date_and_time>' . strval(time() - 60 * 60 * 24 * 7) . ' AND peak<=' . $PEAK_USERS_WEEK_CACHE);
 
             // Set record for week
             set_value('user_peak_week', $PEAK_USERS_WEEK_CACHE);
-            $GLOBALS['SITE_DB']->query_insert('usersonline_track', array('date_and_time' => time(), 'peak' => intval($PEAK_USERS_WEEK_CACHE)), false, true);
+            $GLOBALS['SITE_DB']->query_insert('usersonline_track', array('date_and_time' => time(), 'peak' => intval($PEAK_USERS_WEEK_CACHE)), false, true); // errors suppressed in case of race condition
         }
     }
     return intval($NUM_USERS_SITE_CACHE);

@@ -361,7 +361,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
             $num_unread++;
         }
 
-        if (!$pinned && $keyset_field_stripped !== null && isset($topic[$keyset_field_stripped])) {
+        if ((!$pinned) && ($keyset_field_stripped !== null) && (isset($topic[$keyset_field_stripped]))) {
             $keyset_value = $topic[$keyset_field_stripped]; // We keep overwriting this value until the last loop iteration
         }
     }

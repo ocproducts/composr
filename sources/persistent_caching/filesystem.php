@@ -68,7 +68,7 @@ class Persistent_caching_filesystem
     {
         if ($key != 'PERSISTENT_CACHE_OBJECTS'/*this key is too volatile with concurrency*/) {
             global $PC_FC_CACHE;
-            if ($min_cache_date === null && isset($PC_FC_CACHE[$key])) {
+            if (($min_cache_date === null) && (isset($PC_FC_CACHE[$key]))) {
                 return $PC_FC_CACHE[$key];
             }
         }

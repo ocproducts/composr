@@ -252,7 +252,7 @@ function actual_rename_zone_lite($zone, $new_zone, $dont_bother_with_main_row = 
     }
     $GLOBALS['SITE_DB']->query_update('group_page_access', array('zone_name' => $new_zone), array('zone_name' => $zone));
     $GLOBALS['SITE_DB']->query_update('member_page_access', array('zone_name' => $new_zone), array('zone_name' => $zone));
-    $GLOBALS['SITE_DB']->query_update('comcode_pages', array('the_zone' => $new_zone), array('the_zone' => $zone), '', null, 0, false, true); // May fail because the table might not exist when this is called
+    $GLOBALS['SITE_DB']->query_update('comcode_pages', array('the_zone' => $new_zone), array('the_zone' => $zone));
     if (addon_installed('redirects_editor')) {
         $GLOBALS['SITE_DB']->query_update('redirects', array('r_from_zone' => $new_zone), array('r_from_zone' => $zone));
         $GLOBALS['SITE_DB']->query_update('redirects', array('r_to_zone' => $new_zone), array('r_to_zone' => $zone));
@@ -622,7 +622,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
 
     // Check page name
     require_code('type_sanitisation');
-    if ((strlen($new_file) < 1) || (!is_alphanumeric($new_file)) || (strpos($new_file, '-') !== false && strpos($new_file, '_') !== false)/*can't have both*/) {
+    if ((strlen($new_file) < 1) || (!is_alphanumeric($new_file)) || ((strpos($new_file, '-') !== false) && (strpos($new_file, '_') !== false))/*can't have both*/) {
         warn_exit(do_lang_tempcode('EMPTY_CODENAME'));
     }
     require_code('zones2');

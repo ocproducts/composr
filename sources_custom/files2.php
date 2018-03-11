@@ -27,6 +27,10 @@
  */
 function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_exit = true, $outfile_path = null, $callback = null, $metadata = array())
 {
+    if (!addon_installed('excel_support')) {
+        return non_overridden__make_csv($data, $filename, $headers, $output_and_exit, $outfile_path, $callback, $metadata);
+    }
+
     require_code('files_spout');
     require_code('spout/src/Spout/Common/Exception/SpoutException');
     require_code('spout/src/Spout/Reader/Exception/ReaderException');

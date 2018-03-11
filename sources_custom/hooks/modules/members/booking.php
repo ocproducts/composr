@@ -33,9 +33,6 @@ class Hook_members_booking
         if (!has_actual_page_access(get_member(), 'cms_booking')) {
             return array();
         }
-        if (!$GLOBALS['SITE_DB']->table_exists('bookable')) {
-            return array();
-        }
 
         require_lang('booking');
         require_code('booking');

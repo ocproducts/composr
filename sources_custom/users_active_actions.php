@@ -18,13 +18,17 @@
  */
 function handle_active_logout()
 {
+    non_overridden__handle_active_logout();
+
+    if (!addon_installed('facebook_support')) {
+        return;
+    }
+
     if (get_forum_type() == 'cns') {
         $compat = $GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_password_compat_scheme');
     } else {
         $compat = '';
     }
-
-    non_overridden__handle_active_logout();
 
     if ($compat == 'facebook') {
         $GLOBALS['FACEBOOK_LOGOUT'] = true;

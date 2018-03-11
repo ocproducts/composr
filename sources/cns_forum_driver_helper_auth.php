@@ -243,7 +243,7 @@ function _forum_authorise_login($this_ref, $username, $user_id, $password_hashed
 
                 require_code('crypt');
                 $code = ($test2 !== null) ? $test2 : get_secure_random_string();
-                $this_ref->db->query_insert('f_member_known_login_ips', array('i_val_code' => $code, 'i_member_id' => $row['id'], 'i_ip' => $ip), false, true);
+                $this_ref->db->query_insert('f_member_known_login_ips', array('i_val_code' => $code, 'i_member_id' => $row['id'], 'i_ip' => $ip), false, true); // errors suppressed in case of race condition
                 $url = find_script('approve_ip') . '?code=' . urlencode($code);
                 $url_simple = find_script('approve_ip');
                 require_code('comcode');

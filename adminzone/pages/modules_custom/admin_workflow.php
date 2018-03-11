@@ -265,7 +265,7 @@ class Module_admin_workflow extends Standard_crud_module
 
             // Now see if we're the default
             $default_workflow = get_default_workflow();
-            if ($default_workflow !== null && $id == $default_workflow) {
+            if (($default_workflow !== null) && ($id == $default_workflow)) {
                 $default = true;
             }
             // Get the approval points in workflow order

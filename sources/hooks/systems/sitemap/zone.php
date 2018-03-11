@@ -503,7 +503,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
             $struct['children'] = $children;
         }
 
-        if ($callback !== null && $call_struct) {
+        if (($callback !== null) && ($call_struct)) {
             call_user_func($callback, $struct);
         }
 

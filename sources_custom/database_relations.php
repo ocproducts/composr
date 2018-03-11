@@ -22,6 +22,11 @@
 function get_table_purpose_flags()
 {
     $ret = non_overridden__get_table_purpose_flags();
+
+    if (!addon_installed('meta_toolkit')) {
+        return $ret;
+    }
+
     $more = array(
         'activities' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE | TABLE_PURPOSE__SUBDATA/*under f_members*/,
         'bank' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE,
@@ -92,6 +97,11 @@ function get_table_purpose_flags()
 function get_table_descriptions()
 {
     $ret = non_overridden__get_table_descriptions();
+
+    if (!addon_installed('meta_toolkit')) {
+        return $ret;
+    }
+
     $more = array(
     );
     return $ret + $more;
@@ -105,6 +115,11 @@ function get_table_descriptions()
 function get_relation_map()
 {
     $ret = non_overridden__get_relation_map();
+
+    if (!addon_installed('meta_toolkit')) {
+        return $ret;
+    }
+
     $more = array(
     );
     return $ret + $more;
@@ -145,7 +160,7 @@ function get_innodb_tables_by_addon()
     $hooks = find_all_hooks('systems', 'addon_registry');
     $tables_by = array();
     foreach ($hooks as $hook => $hook_type) {
-        if (strpos($hook_type, '_custom') !== false && get_param_integer('include_custom', 0) == 0) {
+        if ((strpos($hook_type, '_custom') !== false) && (get_param_integer('include_custom', 0) == 0)) {
             continue;
         }
 

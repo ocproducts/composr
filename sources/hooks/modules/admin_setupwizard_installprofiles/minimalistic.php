@@ -30,10 +30,6 @@ class Hook_admin_setupwizard_installprofiles_minimalistic
      */
     public function info()
     {
-        if (!addon_installed('setupwizard')) {
-            return null;
-        }
-
         return array(
             'title' => do_lang('MINIMALISTIC_SITE'),
         );

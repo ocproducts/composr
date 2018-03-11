@@ -203,7 +203,7 @@ class Module_cms_comcode_pages
         $zones = find_all_zones();
         $out = array();
         foreach ($zones as $zone) {
-            if ($zone_filter !== null && !in_array($zone, $zone_filter)) {
+            if (($zone_filter !== null) && (!in_array($zone, $zone_filter))) {
                 continue;
             }
 
@@ -228,7 +228,7 @@ class Module_cms_comcode_pages
                 }
 
                 $located = _request_page($page, $zone, null, $lang);
-                if ($located !== false && $located[0] != 'REDIRECT') {
+                if (($located !== false) && ($located[0] != 'REDIRECT')) {
                     $_full_path = $located[count($located) - 1];
                     $full_path = get_custom_file_base() . '/' . $_full_path;
                     if (!is_file($full_path)) {
@@ -449,7 +449,7 @@ class Module_cms_comcode_pages
             $files_list = array();
             foreach ($page_rows as $row) {
                 $located = _request_page($row['the_page'], $row['the_zone'], null, $lang);
-                if ($located !== false && $located[0] != 'REDIRECT') {
+                if (($located !== false) && ($located[0] != 'REDIRECT')) {
                     $_zone = $located[count($located) - 1];
                     $page_path = get_custom_file_base() . (($_zone == '') ? '' : '/') . $_zone;
                     if (!is_file($page_path)) {
@@ -738,7 +738,7 @@ class Module_cms_comcode_pages
         }
 
         require_code('type_sanitisation');
-        if ((!is_alphanumeric($file)) || (strpos($file, '-') !== false && strpos($file, '_') !== false)/*can't have both*/) {
+        if ((!is_alphanumeric($file)) || ((strpos($file, '-') !== false) && (strpos($file, '_') !== false))/*can't have both*/) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
 
@@ -1392,7 +1392,7 @@ class Module_cms_comcode_pages
             } else {
                 $located = _request_page($page['the_page'], $page['the_zone']);
                 $_zone = $located[count($located) - 1];
-                if ($located !== false && $located[0] != 'REDIRECT' && isset($located[4])) {
+                if (($located !== false) && ($located[0] != 'REDIRECT') && (isset($located[4]))) {
                     $page_path = get_custom_file_base() . (($_zone == '') ? '' : '/') . $_zone;
                     if (!is_file($page_path)) {
                         $page_path = get_file_base() . (($_zone == '') ? '' : '/') . $_zone;

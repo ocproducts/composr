@@ -39,10 +39,6 @@ class Hook_import_cms_merge
      */
     public function info()
     {
-        if (!addon_installed('import')) {
-            return null;
-        }
-
         $info = array();
         $info['supports_advanced_import'] = true;
         $info['product'] = do_lang('COMPOSR_SITE_MERGER');
@@ -2914,7 +2910,7 @@ class Hook_import_cms_merge
             if ($row['gm_member_id'] === null) {
                 continue;
             }
-            $GLOBALS['FORUM_DB']->query_insert('f_group_members', $row, false, true);
+            $GLOBALS['FORUM_DB']->query_insert('f_group_members', $row, false, true); // errors suppressed in case already there
         }
 
         // Known login IPs
@@ -2928,19 +2924,17 @@ class Hook_import_cms_merge
         }
 
         // Group member timeouts
-        if ($db->table_exists('f_group_member_timeouts')) {
-            $rows = $db->query_select('f_group_member_timeouts', array('*'));
-            foreach ($rows as $row) {
-                $member_id = import_id_remap_get('member', strval($row['member_id']));
-                if ($member_id === null) {
-                    continue;
-                }
-                $group_id = import_id_remap_get('group', strval($row['group_id']));
-                if ($group_id === null) {
-                    continue;
-                }
-                $GLOBALS['FORUM_DB']->query_insert('f_group_member_timeouts', array('member_id' => $member_id, 'group_id' => $group_id, 'timeout' => $row['timeout']));
+        $rows = $db->query_select('f_group_member_timeouts', array('*'));
+        foreach ($rows as $row) {
+            $member_id = import_id_remap_get('member', strval($row['member_id']));
+            if ($member_id === null) {
+                continue;
             }
+            $group_id = import_id_remap_get('group', strval($row['group_id']));
+            if ($group_id === null) {
+                continue;
+            }
+            $GLOBALS['FORUM_DB']->query_insert('f_group_member_timeouts', array('member_id' => $member_id, 'group_id' => $group_id, 'timeout' => $row['timeout']));
         }
 
         // Invites
@@ -2952,7 +2946,7 @@ class Hook_import_cms_merge
                     continue;
                 }
 
-                $GLOBALS['FORUM_DB']->query_insert('f_invites', array('i_inviter' => $i_inviter, 'i_email_address' => $row['i_email_address'], 'i_time' => $row['i_time'], 'i_taken' => $row['i_taken']), false, true);
+                $GLOBALS['FORUM_DB']->query_insert('f_invites', array('i_inviter' => $i_inviter, 'i_email_address' => $row['i_email_address'], 'i_time' => $row['i_time'], 'i_taken' => $row['i_taken']), false, true); // errors suppressed in case already there
             }
         }
     }

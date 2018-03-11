@@ -15,6 +15,10 @@
 
 function init__cns_join($in)
 {
+    if (!addon_installed('referrals')) {
+        return $in;
+    }
+
     // More referral fields in form
     $path = get_custom_file_base() . '/text_custom/referrals.txt';
     if (!is_file($path)) {

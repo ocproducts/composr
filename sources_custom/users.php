@@ -15,10 +15,11 @@
 
 function init__users()
 {
-    //if (addon_installed('Facebook Support', true))
-    if (is_file(get_file_base() . '/sources/facebook_connect.php')) {
-        require_code('facebook_connect');
+    if (!addon_installed('facebook_support')) {
+        return $in;
     }
+
+    require_code('facebook_connect');
 }
 
 function unused_other_func()
@@ -33,6 +34,10 @@ function unused_other_func()
  */
 function is_httpauth_login()
 {
+    if (!addon_installed('facebook_support')) {
+        return non_overridden__is_httpauth_login();
+    }
+
     if (get_forum_type() != 'cns') {
         return false;
     }

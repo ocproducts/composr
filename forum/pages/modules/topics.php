@@ -2122,7 +2122,7 @@ class Module_topics
         $posting_form = get_posting_form(do_lang('REPLY'), 'buttons--new-reply', $post, $post_url, $hidden_fields, $specialisation, null, $topic_posts->evaluate(), $specialisation2, null, $js_function_calls);
 
         if ($parent_id === null) {
-            if ($forum_id !== null && get_param_integer('threaded', $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_is_threaded', array('id' => $forum_id))) == 1) {
+            if (($forum_id !== null) && (get_param_integer('threaded', $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_is_threaded', array('id' => $forum_id))) == 1)) {
                 $title = get_screen_title('_ADD_POST_TOP_LEVEL', true, array(escape_html($topic_title)));
             } else {
                 $title = get_screen_title('_ADD_POST', true, array(escape_html($topic_title)));

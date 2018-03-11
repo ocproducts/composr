@@ -32,7 +32,7 @@ class Hook_page_groupings_workflows
         }
 
         return array(
-            array('setup', 'spare/workflows', array('admin_workflow', array('type' => 'browse'), get_module_zone('admin_workflow')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('workflows:WORKFLOWS'), @make_string_tempcode(escape_html(integer_format(@intval($GLOBALS['SITE_DB']->query_select_value('workflows', 'COUNT(*)', array(), '', true)))))), 'workflows:DOC_WORKFLOWS'),
+            array('setup', 'spare/workflows', array('admin_workflow', array('type' => 'browse'), get_module_zone('admin_workflow')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('workflows:WORKFLOWS'), make_string_tempcode(escape_html(integer_format(intval($GLOBALS['SITE_DB']->query_select_value('workflows', 'COUNT(*)')))))), 'workflows:DOC_WORKFLOWS'),
         );
     }
 }

@@ -430,7 +430,7 @@ function _helper_delete_index_if_exists($this_ref, $table_name, $index_name)
 
     foreach ($possible_final_index_names as $_index_name) {
         $query = 'DROP INDEX ' . $_index_name . ' ON ' . $this_ref->get_table_prefix() . $table_name;
-        $this_ref->query($query, null, 0, true);
+        $this_ref->query($query, null, 0, true); // Suppress errors in case does not exist
     }
 
     $this_ref->query_delete('db_meta_indices', array('i_table' => $table_name, 'i_name' => $full_index_name));

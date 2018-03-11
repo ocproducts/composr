@@ -326,7 +326,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
         $end_hour = null;
     }
 
-    if ($end_year !== null && $end_month !== null && $end_day !== null) { // Must define end date relative to start date; we will calculate $end_monthly_spec_type. This code is re-run at the end of the loop, as we need to re-sync each time
+    if (($end_year !== null) && ($end_month !== null) && ($end_day !== null)) { // Must define end date relative to start date; we will calculate $end_monthly_spec_type. This code is re-run at the end of the loop, as we need to re-sync each time
         if ($end_monthly_spec_type != 'day_of_month') {
             // Work out using deltas
             $end_day = $start_day_of_month + $dif_days;
@@ -385,7 +385,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
             $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, ($start_hour === null) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour, ($start_minute === null) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, $timezone, $do_timezone_conv == 1);
         }
         // Bump end date forward - or reset it relative to the start date
-        if ($end_year !== null && $end_month !== null && $end_day !== null) {
+        if (($end_year !== null) && ($end_month !== null) && ($end_day !== null)) {
             if ($end_monthly_spec_type == 'day_of_month') {
                 // Bump forward simply
                 $end_year += $dif_year;
@@ -1735,7 +1735,7 @@ function get_calendar_event_first_date($timezone, $do_timezone_conv, $start_year
         $_from = cal_get_start_utctime_for_event($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $do_timezone_conv == 1);
         $from = cal_utctime_to_usertime($_from, $timezone, false);
         $to = null;
-        if ($end_year !== null && $end_month !== null && $end_day !== null) {
+        if (($end_year !== null) && ($end_month !== null) && ($end_day !== null)) {
             $_to = cal_get_end_utctime_for_event($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $do_timezone_conv == 1);
             $to = cal_utctime_to_usertime($_to, $timezone, false);
         }

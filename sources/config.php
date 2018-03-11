@@ -580,7 +580,7 @@ function set_value($name, $value, $elective_or_lengthy = false)
     $VALUE_OPTIONS_CACHE[$name]['the_value'] = $value;
     $VALUE_OPTIONS_CACHE[$name]['date_and_time'] = time();
     if ($existed_before) {
-        $GLOBALS['SITE_DB']->query_update('values', array('date_and_time' => time(), 'the_value' => $value), array('the_name' => $name), '', 1, 0, false, true);
+        $GLOBALS['SITE_DB']->query_update('values', array('date_and_time' => time(), 'the_value' => $value), array('the_name' => $name), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
     } else {
         $GLOBALS['SITE_DB']->query_insert('values', array('date_and_time' => time(), 'the_value' => $value, 'the_name' => $name), false, true); // Allow failure, if there is a race condition
     }

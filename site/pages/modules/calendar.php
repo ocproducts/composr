@@ -1592,7 +1592,7 @@ class Module_calendar
         if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $event['e_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('calendar_events')) {
-                $GLOBALS['SITE_DB']->query_update('calendar_events', array('e_views' => $event['e_views']), array('id' => $id), '', 1, 0, false, true);
+                $GLOBALS['SITE_DB']->query_update('calendar_events', array('e_views' => $event['e_views']), array('id' => $id), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
             }
         }
 

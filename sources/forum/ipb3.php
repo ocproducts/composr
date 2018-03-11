@@ -32,7 +32,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
      */
     public function check_db()
     {
-        $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'groups', null, 0, true);
+        $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'groups', null, 0, true); // Suppress errors as we're checking to see if the table is there
         return $test !== null;
     }
 
@@ -659,7 +659,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
         $id = $this->db->query_select_value_if_there('pfields_data', 'pf_id', array('pf_title' => $name));
         if ($id === null) {
             $id = $this->db->query_insert('pfields_data', array('pf_group_id' => 1, 'pf_input_format' => '', 'pf_topic_format' => '{title} : {content}', 'pf_content' => '', 'pf_title' => $name, 'pf_type' => 'text', 'pf_member_hide' => 1 - $viewable, 'pf_max_input' => $length, 'pf_member_edit' => $settable, 'pf_position' => 0), true);
-            $this->db->query('ALTER TABLE ' . $this->db->get_table_prefix() . 'pfields_content ADD field_' . strval($id) . ' TEXT', null, 0, true);
+            $this->db->query('ALTER TABLE ' . $this->db->get_table_prefix() . 'pfields_content ADD field_' . strval($id) . ' TEXT', null, 0, true); // Suppress errors in case field already exists
         }
         return $id !== null;
     }

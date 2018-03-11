@@ -32,7 +32,7 @@ class Forum_driver_smf2 extends Forum_driver_base
      */
     public function check_db()
     {
-        $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'members', null, 0, true);
+        $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'members', null, 0, true); // Suppress errors as we're checking to see if the table is there
         return $test !== null;
     }
 
@@ -108,7 +108,7 @@ class Forum_driver_smf2 extends Forum_driver_base
      */
     public function install_create_custom_field($name, $length)
     {
-        $this->db->query('ALTER TABLE ' . $this->db->get_table_prefix() . 'members ADD cms_' . $name . ' TEXT', null, 0, true);
+        $this->db->query('ALTER TABLE ' . $this->db->get_table_prefix() . 'members ADD cms_' . $name . ' TEXT', null, 0, true); // Suppress errors in case field already exists
         return true;
     }
 
@@ -224,7 +224,7 @@ class Forum_driver_smf2 extends Forum_driver_base
      */
     public function set_custom_field($member, $field, $value)
     {
-        $this->db->query_update('members', array('cms_' . $field => $value), array('id_member' => $member), '', null, 0, false, true);
+        $this->db->query_update('members', array('cms_' . $field => $value), array('id_member' => $member), '', null, 0, false, true); // Errors suppressed in case field gone missing
     }
 
     /**
@@ -833,7 +833,7 @@ class Forum_driver_smf2 extends Forum_driver_base
      */
     public function is_banned($member)
     {
-        $rows = $this->db->query('SELECT id_ban FROM ' . $this->db->get_table_prefix() . 'banned WHERE id_member=' . strval($member) . ' AND expire_time IS NULL OR expire_time>' . strval(time()), null, 0, true);
+        $rows = $this->db->query('SELECT id_ban FROM ' . $this->db->get_table_prefix() . 'banned WHERE id_member=' . strval($member) . ' AND expire_time IS NULL OR expire_time>' . strval(time()), null, 0, true); // Suppress errors in case of other table name
         if ($rows === null) {
             $rows = $this->db->query('SELECT id_ban FROM ' . $this->db->get_table_prefix() . 'ban_items i LEFT JOIN ' . $this->db->get_table_prefix() . 'ban_groups g on i.id_ban_group=g.id_ban_group WHERE id_member=' . strval($member) . ' AND expire_time IS NULL OR expire_time>' . strval(time()));
         }

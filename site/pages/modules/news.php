@@ -651,7 +651,7 @@ class Module_news
         if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['news_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('news')) {
-                $GLOBALS['SITE_DB']->query_update('news', array('news_views' => $myrow['news_views']), array('id' => $id), '', 1, 0, false, true);
+                $GLOBALS['SITE_DB']->query_update('news', array('news_views' => $myrow['news_views']), array('id' => $id), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
             }
         }
 

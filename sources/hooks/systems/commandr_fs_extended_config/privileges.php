@@ -30,7 +30,7 @@ class Hook_commandr_fs_extended_config__privileges
      */
     public function is_active()
     {
-        return addon_installed('commandr');
+        return true;
     }
 
     /**

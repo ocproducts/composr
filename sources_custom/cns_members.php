@@ -21,10 +21,12 @@
  */
 function cns_is_httpauth_member($member_id)
 {
-    $scheme = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_password_compat_scheme');
+    if (addon_installed('facebook_support')) {
+        $scheme = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_password_compat_scheme');
 
-    if ($scheme == 'facebook') {
-        return true;
+        if ($scheme == 'facebook') {
+            return true;
+        }
     }
 
     return $scheme == 'httpauth';

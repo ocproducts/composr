@@ -25,6 +25,10 @@ Note that regions are an amorphous concept. They should not be used for strict a
  */
 function create_region_selection_list($regions = array())
 {
+    if (!addon_installed('world_regions')) {
+        return non_overridden__create_region_selection_list($regions);
+    }
+
     require_code('locations/us');
 
     require_code('locations');
@@ -64,6 +68,10 @@ function create_region_selection_list($regions = array())
  */
 function get_region()
 {
+    if (!addon_installed('world_regions')) {
+        return non_overridden__get_region();
+    }
+
     $region = get_param_string('keep_region', null);
     if ($region !== null) {
         if ($region == '') {

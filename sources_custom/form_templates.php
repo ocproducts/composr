@@ -27,6 +27,10 @@
  */
 function form_input_various_ticks($options, $description, $_tabindex = null, $_pretty_name = '', $simple_style = false, $custom_name = null, $custom_value = null)
 {
+    if (!addon_installed('workflows')) {
+        return non_overridden__form_input_various_ticks($options, $description, $_tabindex, $_pretty_name, $simple_style, $custom_name, $custom_value);
+    }
+
     if (count($options) == 0) {
         return new Tempcode();
     }

@@ -131,7 +131,7 @@ function preload_block_internal_caching()
     global $SMART_CACHE;
     if (has_caching_for('block')) {
         $blocks_needed = $SMART_CACHE->get('blocks_needed');
-        if ($blocks_needed !== null && $blocks_needed !== false) {
+        if (($blocks_needed !== null) && ($blocks_needed !== false)) {
             $bulk = array();
 
             foreach ($blocks_needed as $param => $_) {

@@ -29,15 +29,11 @@ class Hook_checklist_community_billboard
             return array();
         }
 
-        if (!$GLOBALS['SITE_DB']->table_exists('community_billboard')) {
-            return array();
-        }
-
         require_lang('community_billboard');
 
         $num_queue = $this->get_num_community_billboard_queue();
 
-        $rows = $GLOBALS['SITE_DB']->query_select('community_billboard', array('activation_time', 'days'), array('active_now' => 1), '', null, 0, true);
+        $rows = $GLOBALS['SITE_DB']->query_select('community_billboard', array('activation_time', 'days'), array('active_now' => 1));
         if ($rows === null) {
             return array();
         }

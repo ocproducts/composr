@@ -119,9 +119,9 @@ function create_session($member_id, $session_confirmed = 0, $invisible = false, 
             'the_type' => cms_mb_substr(get_param_string('type', '', INPUT_FILTER_GET_COMPLEX), 0, 80),
             'the_id' => cms_mb_substr(get_param_string('id', ''), 0, 80),
         );
-        $GLOBALS['SITE_DB']->query_insert('sessions', $new_session_row, false, true);
+        $GLOBALS['SITE_DB']->query_insert('sessions', $new_session_row);
         if ((get_forum_type() == 'cns') && (!$GLOBALS['FORUM_DB']->table_is_locked('f_members'))) {
-            $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_total_sessions=m_total_sessions+1 WHERE id=' . strval($member_id), 1, 0, true);
+            $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_total_sessions=m_total_sessions+1 WHERE id=' . strval($member_id), 1, 0, true); // Suppress errors in case DB write access lost
         }
 
         $SESSION_CACHE[$new_session] = $new_session_row;
@@ -142,7 +142,7 @@ function create_session($member_id, $session_confirmed = 0, $invisible = false, 
         );
         $big_change = ($prior_session_row['last_activity'] < time() - 10) || ($prior_session_row['session_confirmed'] != $session_confirmed) || ($prior_session_row['ip'] != $new_session_row['ip']);
         if ($big_change) {
-            $GLOBALS['SITE_DB']->query_update('sessions', $new_session_row, array('the_session' => $new_session), '', 1, 0, false, true);
+            $GLOBALS['SITE_DB']->query_update('sessions', $new_session_row, array('the_session' => $new_session), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
         }
 
         $SESSION_CACHE[$new_session] = array_merge($SESSION_CACHE[$new_session], $new_session_row);
@@ -164,7 +164,7 @@ function create_session($member_id, $session_confirmed = 0, $invisible = false, 
         global $SESSION_CACHE;
         $test = isset($prior_session_row['last_activity']) ? $prior_session_row['last_activity'] : null;
         if ($test === null) {
-            $test = $GLOBALS['SITE_DB']->query_select_value('stats', 'MAX(date_and_time)', array('member_id' => $member_id), '', true);
+            $test = $GLOBALS['SITE_DB']->query_select_value('stats', 'MAX(date_and_time)', array('member_id' => $member_id));
         }
         if ($test !== null) {
             require_code('temporal');

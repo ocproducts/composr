@@ -1413,7 +1413,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
                         rewind($write_to_file);
                         fclose($write_to_file);
                     }
-                    if ($download_test !== null && $download_test->data !== null) {
+                    if (($download_test !== null) && ($download_test->data !== null)) {
                         $filename = ($download_test->filename === null) ? basename(urldecode($url)) : $download_test->filename;
                         list($_video_width, $_video_height, $_video_length) = get_video_details($temp_path, $filename);
                     } else {

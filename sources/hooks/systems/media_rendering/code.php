@@ -63,10 +63,10 @@ class Hook_media_rendering_code
      */
     public function recognises_url($url)
     {
-        if (strpos($url, '://localhost/') !== false && strpos(get_base_url(), '://localhost/') === false) {
+        if ((strpos($url, '://localhost/') !== false) && (strpos(get_base_url(), '://localhost/') === false)) {
             return MEDIA_RECOG_PRECEDENCE_NONE;
         }
-        if (strpos($url, '://127.0.0.1/') !== false && strpos(get_base_url(), '://127.0.0.1/') === false) {
+        if ((strpos($url, '://127.0.0.1/') !== false) && (strpos(get_base_url(), '://127.0.0.1/') === false)) {
             return MEDIA_RECOG_PRECEDENCE_NONE;
         }
 

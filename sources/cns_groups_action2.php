@@ -216,7 +216,7 @@ function cns_delete_group($group_id, $target_group = null)
     $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_promotion_target' => null), array('g_promotion_target' => $group_id));
     $GLOBALS['FORUM_DB']->query_update('f_members', array('m_primary_group' => $target_group), array('m_primary_group' => $group_id));
     if ($orig_target_group !== null) {
-        $GLOBALS['FORUM_DB']->query_update('f_group_members', array('gm_group_id' => $target_group), array('gm_group_id' => $group_id), '', null, 0, false, true);
+        $GLOBALS['FORUM_DB']->query_update('f_group_members', array('gm_group_id' => $target_group), array('gm_group_id' => $group_id), '', null, 0, false, true); // Errors suppressed in case rows conflict with existing
     }
     $GLOBALS['FORUM_DB']->query_delete('f_group_members', array('gm_group_id' => $group_id));
     $GLOBALS['FORUM_DB']->query_delete('f_groups', array('id' => $group_id), '', 1);

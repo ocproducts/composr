@@ -25,6 +25,10 @@
  */
 function cns_field_editable($field_name, $special_type)
 {
+    if (!addon_installed('facebook_support')) {
+        return non_overridden__cns_field_editable($field_name, $special_type);
+    }
+
     switch ($field_name) {
         case 'username':
             switch ($special_type) {

@@ -789,7 +789,7 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
     $trans_full_path = get_file_base() . '/' . $trans_path;
 
     $limit_substring = _transifex_env_limit_substring();
-    if ($limit_substring !== null && strpos($path, $limit_substring) === false) {
+    if (($limit_substring !== null) && (strpos($path, $limit_substring) === false)) {
         $files[] = $trans_path;
 
         return;
@@ -822,7 +822,7 @@ function _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$f
     $trans_full_path = get_file_base() . '/' . $trans_path;
 
     $limit_substring = _transifex_env_limit_substring();
-    if ($limit_substring !== null && strpos($_f, $limit_substring) === false) {
+    if (($limit_substring !== null) && (strpos($_f, $limit_substring) === false)) {
         $files[] = $trans_path;
 
         return;

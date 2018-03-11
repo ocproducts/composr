@@ -68,10 +68,6 @@ class Hook_sitemap_iotd extends Hook_sitemap_content
             return $nodes;
         }
 
-        if (!$GLOBALS['SITE_DB']->table_exists('iotd')) {
-            return $nodes;
-        }
-
         $page = $this->_make_zone_concrete($zone, $page_link);
 
         $consider_validation = (($options & SITEMAP_GEN_CONSIDER_VALIDATION) != 0);

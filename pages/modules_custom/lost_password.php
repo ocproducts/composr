@@ -40,10 +40,12 @@ class Mx_lost_password extends Module_lost_password
      */
     public function run()
     {
-        $redirect_url = get_value('external_lost_password_url', null, true);
-        if (!empty($redirect_url)) {
-            header('Location: ' . escape_header($redirect_url));
-            exit();
+        if (addon_installed('external_db_login')) {
+            $redirect_url = get_value('external_lost_password_url', null, true);
+            if (!empty($redirect_url)) {
+                header('Location: ' . escape_header($redirect_url));
+                exit();
+            }
         }
 
         return parent::run();

@@ -38,7 +38,7 @@ class Hook_upon_query_insults
             return;
         }
 
-        //if (strpos($query, $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members') !== false && strpos($query, 'BY RAND') == false) // to test without registration
+        //if ((strpos($query, $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members') !== false) && (strpos($query, 'BY RAND') == false)) // to test without registration
         if (strpos($query, 'INTO ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts') !== false) {
             require_code('permissions');
 
@@ -54,11 +54,11 @@ class Hook_upon_query_insults
             $poster_id = get_member();
             $post = post_param_string('post', '');
 
-            $posted_data = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => $ret), '', 1, 0, true);
+            $posted_data = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => $ret), '', 1);
 
             $topic_id = (isset($posted_data[0]['p_topic_id']) && $posted_data[0]['p_topic_id'] > 0) ? $posted_data[0]['p_topic_id'] : 0;
 
-            $first_post_data = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('p_topic_id' => $topic_id), 'ORDER BY p_time,id', 1, 0, true);
+            $first_post_data = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('p_topic_id' => $topic_id), 'ORDER BY p_time,id', 1);
 
             $_first_post = $first_post_data[0]['p_post'];
             if ($_first_post === 0 || $_first_post === '') { // Still being created
@@ -90,7 +90,7 @@ class Hook_upon_query_insults
 
                 if ($get_reply != '') {
                     // Get PT
-                    $pt = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1, 0, true);
+                    $pt = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1);
 
                     $to_member = (isset($pt[0]['t_pt_to']) && $pt[0]['t_pt_to'] > 0) ? $pt[0]['t_pt_to'] : 0;
 
@@ -104,7 +104,7 @@ class Hook_upon_query_insults
                             require_code('points2');
                             require_lang('insults');
 
-                            $rows = $GLOBALS['SITE_DB']->query('SELECT g.id FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'gifts g WHERE ' . $GLOBALS['SITE_DB']->translate_field_ref('reason') . ' LIKE \'' . db_encode_like('%' . $insult . '%') . '\' AND g.gift_to=' . strval($poster_id), 1, 0, true, false, array('reason' => 'SHORT_TRANS'));
+                            $rows = $GLOBALS['SITE_DB']->query('SELECT g.id FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'gifts g WHERE ' . $GLOBALS['SITE_DB']->translate_field_ref('reason') . ' LIKE \'' . db_encode_like('%' . $insult . '%') . '\' AND g.gift_to=' . strval($poster_id), 1, 0, false, false, array('reason' => 'SHORT_TRANS'));
 
                             // If the member doesn't get reward yet, give him/her his award
                             if (!isset($rows[0]['id'])) {

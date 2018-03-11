@@ -15,6 +15,10 @@
 
 function init__catalogues2($code)
 {
+    if (!addon_installed('data_mappr')) {
+        return $code;
+    }
+
     return str_replace(
         "delete_cache_entry('main_cc_embed');",
         "

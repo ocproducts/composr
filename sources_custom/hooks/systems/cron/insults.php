@@ -57,7 +57,7 @@ class Hook_cron_insults
             $sql .= ' AND m_validated=1';
         }
         $sql .= ' ORDER BY ' . db_function('RAND');
-        $selected_members = $GLOBALS['FORUM_DB']->query($sql, 2, 0, true);
+        $selected_members = $GLOBALS['FORUM_DB']->query($sql, 2);
         $selected_member1 = (isset($selected_members[0]['id']) && $selected_members[0]['id'] > 0) ? $selected_members[0]['id'] : 0;
         $selected_member2 = (isset($selected_members[1]['id']) && $selected_members[1]['id'] > 0) ? $selected_members[1]['id'] : 0;
 

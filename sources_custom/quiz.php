@@ -17,6 +17,10 @@ function init__quiz($in = null)
 {
     i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+    if (!addon_installed('challengr')) {
+        return $in;
+    }
+
     $in = override_str_replace_exactly(
         "if (\$minimum_percentage >= \$quiz['q_percentage'])",
         "

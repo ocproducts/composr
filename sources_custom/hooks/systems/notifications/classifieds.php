@@ -31,7 +31,7 @@ class Hook_notification_classifieds extends Hook_Notification
         }
 
         $list = array();
-        $catalogues = $GLOBALS['SITE_DB']->query_select('ecom_classifieds_prices', array('DISTINCT c_catalogue_name'), array(), '', null, 0, true);
+        $catalogues = $GLOBALS['SITE_DB']->query_select('ecom_classifieds_prices', array('DISTINCT c_catalogue_name'));
         if ($catalogues === null) {
             return array();
         }

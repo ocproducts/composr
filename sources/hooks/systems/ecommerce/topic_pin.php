@@ -30,10 +30,6 @@ class Hook_ecommerce_topic_pin
      */
     public function get_product_category()
     {
-        if (!addon_installed('ecommerce')) {
-            return null;
-        }
-
         if (!addon_installed('cns_forum')) {
             return null;
         }
@@ -56,10 +52,6 @@ class Hook_ecommerce_topic_pin
      */
     public function get_products($search = null)
     {
-        if (!addon_installed('ecommerce')) {
-            return array();
-        }
-
         if (!addon_installed('cns_forum')) {
             return array();
         }

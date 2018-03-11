@@ -156,7 +156,7 @@ foreach (array_keys($themes) as $theme) {
 
         ksort($selectors);
         foreach (array_keys($selectors) as $selector) {
-            if (strpos($non_css_contents, $selector) === false && preg_match('#^(page|zone)_running_#', $selector) == 0) {
+            if ((strpos($non_css_contents, $selector) === false) && (preg_match('#^(page|zone)_running_#', $selector) == 0)) {
                 echo '<br />Possibly unused CSS selector: ' . escape_html($selector);
             }
         }

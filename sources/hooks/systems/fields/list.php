@@ -133,7 +133,7 @@ class Hook_fields_list extends ListFieldHook
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
 
         $custom_values = option_value_from_field_array($field, 'custom_values', 'off');
-        $selected = ($actual_value !== null && $actual_value !== '' && $actual_value !== $field['cf_default']);
+        $selected = (($actual_value !== null) && ($actual_value !== '') && ($actual_value !== $field['cf_default']));
         $custom_value = ($selected && !array_key_exists($actual_value, $list));
 
         $value_remap = option_value_from_field_array($field, 'value_remap', 'none');

@@ -218,8 +218,9 @@ if ($DEFAULT_FORUM === null) {
 require_code('tempcode_compiler');
 $css_nocache = _do_template('default', '/css/', 'no_cache', 'no_cache', 'EN', '.css');
 
-$installer_js = do_template('global', array(), null, false, null, '.js', 'javascript');
-$installer_js .= do_template('installer', array(), null, false, null, '.js', 'javascript');
+$installer_js = new Tempcode();
+$installer_js->attach(do_template('global', array(), null, false, null, '.js', 'javascript'));
+$installer_js->attach(do_template('installer', array(), null, false, null, '.js', 'javascript'));
 
 $out_final = do_template('INSTALLER_HTML_WRAP', array(
     '_GUID' => '29aa056c05fa360b72dbb01c46608c4b',

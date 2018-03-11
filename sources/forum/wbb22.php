@@ -32,7 +32,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
      */
     public function check_db()
     {
-        $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'users', null, 0, true);
+        $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'users', null, 0, true); // Suppress errors as we're checking to see if the table is there
         return $test !== null;
     }
 
@@ -121,7 +121,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
         if (!array_key_exists(0, $test)) {
             $this->db->query('INSERT INTO bb' . $_POST['bb_forum_number'] . '_profilefields (title,description,required,hidden,maxlength,fieldsize) VALUES (\'' . db_escape_string($name) . '\',\'\',' . strval($required) . ',' . strval(1 - $viewable) . ',' . strval($length) . ',' . strval($length) . ')');
             $key = $this->db->query_select_value('profilefields', 'MAX(profilefieldid)');
-            $this->db->query('ALTER TABLE bb' . $_POST['bb_forum_number'] . '_userfields ADD field' . $key . ' TEXT', null, 0, true);
+            $this->db->query('ALTER TABLE bb' . $_POST['bb_forum_number'] . '_userfields ADD field' . $key . ' TEXT', null, 0, true); // Suppress errors in case field already exists
             return true;
         }
         return false;

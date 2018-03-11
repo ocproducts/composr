@@ -61,11 +61,6 @@ class Block_main_tutorials_carousel
 
         $block_id = get_block_id($map);
 
-        if (!module_installed('tutorials')) {
-            require_code('zones2');
-            reinstall_module('docs', 'tutorials');
-        }
-
         $criteria = empty($map['param']) ? '' : $map['param'];
         if ($criteria == '') {
             $criteria = 'recent';

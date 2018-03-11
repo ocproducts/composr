@@ -911,9 +911,9 @@ class Module_admin_stats
         foreach ($rows as $row) {
             $page = $row['the_page'];
             $matches = array();
-            if ((preg_match('#^/?([^/]+)/pages/([^/]+)/(\w\w/)?([^/\.]+)\.(php|txt|htm)$#', $page, $matches) == 1) && ($matches[4] == 'catalogues') && (addon_installed('catalogues')) && ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array(), '', true) < 300)) {
+            if ((preg_match('#^/?([^/]+)/pages/([^/]+)/(\w\w/)?([^/\.]+)\.(php|txt|htm)$#', $page, $matches) == 1) && ($matches[4] == 'catalogues') && (addon_installed('catalogues')) && ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)') < 300)) {
                 require_lang('catalogues');
-                $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array(), '', null, 0, true);
+                $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'));
                 foreach ($categories as $cat) {
                     $where = db_string_equal_to('the_page', $page);
                     if (substr($page, 0, 6) == 'pages/') {

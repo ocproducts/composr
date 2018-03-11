@@ -30,7 +30,7 @@ class Hook_symbol_HAS_READ
         if (is_guest()) {
             return '1'; // Guests can't be tracked, assume read (so no unread icon might show, which is the normal use-case for this feature)
         }
-        if (!$GLOBALS['SITE_DB']->table_exists('content_read')) {
+        if (!addon_installed('content_read_tracking')) {
             return '0'; // Not installed yet
         }
 
