@@ -49,6 +49,11 @@ class Block_side_printer_friendly
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('printer_friendly_block', $error_msg)) {
+            return $error_msg;
+        }
+
         $block_id = get_block_id($map);
 
         $url = get_self_url(true, false, array('wide_print' => 1));

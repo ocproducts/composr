@@ -56,6 +56,11 @@ class Block_main_google_map_users
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('user_mappr', $error_msg)) {
+            return $error_msg;
+        }
+
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         require_lang('google_map_users');

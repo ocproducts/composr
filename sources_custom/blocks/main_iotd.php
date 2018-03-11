@@ -58,6 +58,11 @@ class Block_main_iotd
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('iotds', $error_msg)) {
+            return $error_msg;
+        }
+
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         $block_id = get_block_id($map);

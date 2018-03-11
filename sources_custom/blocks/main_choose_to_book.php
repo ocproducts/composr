@@ -20,6 +20,11 @@ class Block_main_choose_to_book
 {
     public function run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('booking', $error_msg)) {
+            return $error_msg;
+        }
+
         return new Tempcode();
     }
 }

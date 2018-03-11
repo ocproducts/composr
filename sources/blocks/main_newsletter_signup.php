@@ -63,6 +63,11 @@ class Block_main_newsletter_signup
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('newsletter', $error_msg)) {
+            return $error_msg;
+        }
+
         require_lang('newsletter');
         require_css('newsletter');
 

@@ -55,6 +55,11 @@ class Block_twitter_feed
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('twitter_feed', $error_msg)) {
+            return $error_msg;
+        }
+
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         $block_id = get_block_id($map);

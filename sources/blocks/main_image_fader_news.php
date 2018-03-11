@@ -66,6 +66,11 @@ class Block_main_image_fader_news
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('news', $error_msg)) {
+            return $error_msg;
+        }
+
         require_lang('news');
         require_code('news');
         require_css('news');

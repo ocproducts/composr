@@ -62,6 +62,11 @@ class Block_side_rss
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('syndication_blocks', $error_msg)) {
+            return $error_msg;
+        }
+
         if (!addon_installed('news')) {
             return new Tempcode();
         }

@@ -49,6 +49,11 @@ class Block_main_custom_gfx
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('custom_comcode', $error_msg)) {
+            return $error_msg;
+        }
+
         // Loads up correct hook and returns rendering
 
         require_lang('custom_comcode');

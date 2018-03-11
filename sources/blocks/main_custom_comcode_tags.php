@@ -49,6 +49,11 @@ class Block_main_custom_comcode_tags
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('custom_comcode', $error_msg)) {
+            return $error_msg;
+        }
+
         require_lang('custom_comcode');
 
         $block_id = get_block_id($map);

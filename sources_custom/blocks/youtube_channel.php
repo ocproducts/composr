@@ -2,6 +2,7 @@
 
 /**
  * Licensed under Creative Commons Public Domain license (CC0).  You are free to copy, use, distribute, and modify as you wish.
+ * @package    youtube_channel_integration_block
  */
 
 /*EXTRA FUNCTIONS: DateTime|DateInterval*/
@@ -50,6 +51,11 @@ class Block_youtube_channel
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('youtube_channel_integration_block', $error_msg)) {
+            return $error_msg;
+        }
+
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         // Set up some arrays for dealing with thumbnails

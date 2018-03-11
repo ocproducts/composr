@@ -62,6 +62,11 @@ class Block_side_network
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('msn', $error_msg)) {
+            return $error_msg;
+        }
+
         $block_id = get_block_id($map);
 
         $netlinks = get_option('network_links');

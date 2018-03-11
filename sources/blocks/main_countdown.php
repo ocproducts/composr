@@ -49,6 +49,11 @@ class Block_main_countdown
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('counting_blocks', $error_msg)) {
+            return $error_msg;
+        }
+
         require_css('counting_blocks');
 
         require_lang('dates');

@@ -57,6 +57,11 @@ class Block_main_ebay
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('ebay_store', $error_msg)) {
+            return $error_msg;
+        }
+
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         require_lang('ebay');

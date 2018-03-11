@@ -63,6 +63,11 @@ class Block_main_forum_news
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('forum_blocks', $error_msg)) {
+            return $error_msg;
+        }
+
         if (has_no_forum()) {
             return new Tempcode();
         }

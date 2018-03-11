@@ -1257,7 +1257,7 @@ function has_no_forum()
 /**
  * Check to see if an addon is installed.
  *
- * @param  ID_TEXT $addon The module name
+ * @param  ID_TEXT $addon The addon name
  * @param  boolean $non_bundled_too Whether to check non-bundled addons (ones without an addon_registry hook)
  * @return boolean Whether it is
  */
@@ -1288,6 +1288,23 @@ function addon_installed($addon, $non_bundled_too = false)
     }
 
     return $answer;
+}
+
+/**
+ * Check to see if an addon is installed. If not, install it or return an error message, depending on config.
+ *
+ * @param  ID_TEXT $addon The addon name
+ * @param  Tempcode $error_msg Put an error message in here
+ * @return boolean Whether it is
+ */
+function addon_installed__autoinstall($addon, &$error_msg)
+{
+    if (!addon_installed($addon)) {
+        $error_msg = do_lang_tempcode('MISSING_ADDON', escape_html($addon));
+
+        return false;
+    }
+    return true;
 }
 
 /**

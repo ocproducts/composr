@@ -49,6 +49,11 @@ class Block_main_poll
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('polls', $error_msg)) {
+            return $error_msg;
+        }
+
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('polls');
 
         require_code('polls');

@@ -66,6 +66,11 @@ class Block_side_calendar
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('calendar', $error_msg)) {
+            return $error_msg;
+        }
+
         require_code('calendar');
         require_lang('calendar');
         require_lang('dates');
