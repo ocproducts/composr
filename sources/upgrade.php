@@ -385,10 +385,26 @@ END;
  */
 function upgrader_menu_screen()
 {
+    // Clear cache automatically
     clear_caches_1();
 
+    // Some labels
     $l_choices = do_lang('UPGRADER_CHOICES');
+    $l_maintenance = do_lang('UPGRADER_MAINTENANCE');
+    $l_upgrading = do_lang('UPGRADER_UPGRADING');
+    $l_important = do_lang('IMPORTANT');
+    $l_bugs = do_lang('UPGRADER_BUGS');
+    $l_release_notes = do_lang('UPGRADER_RELEASE_NOTES');
+    $l_refer_release_notes = do_lang('UPGRADER_REFER_RELEASE_NOTES');
+    $l_upgrade_steps = do_lang('UPGRADER_UPGRADE_STEPS');
+    $l_step = do_lang('UPGRADER_STEP');
+    $l_action = do_lang('ACTION');
+    $l_estimated_time = do_lang('UPGRADER_ESTIMATED_TIME');
+    $l_not_for_patch = do_lang('UPGRADER_NOT_FOR_PATCH');
+    $l_customisations = do_lang('UPGRADER_CUSTOMISATIONS');
+    $l_error_correction = do_lang('UPGRADER_ERROR_CORRECTION');
 
+    // Show version number
     $a = float_to_raw_string(cms_version_number(), 10, true);
     $b = get_value('version');
     if ($b === null) {
@@ -398,43 +414,24 @@ function upgrader_menu_screen()
     }
     $l_up_info = do_lang('UPGRADER_UP_INFO' . (($a == $b) ? '_1' : '_2'), $a, $b);
 
-    $oc = (get_option('site_closed') == '0') ? do_lang('OPEN') : do_lang('CLOSED');
-    $l_fu_closedness = do_lang('UPGRADER_CLOSENESS', $oc);
-
-    $l_maintenance = do_lang('UPGRADER_MAINTENANCE');
-
-    $l_upgrading = do_lang('UPGRADER_UPGRADING');
-
-    $l_take_backup = do_lang('UPGRADER_TAKE_BACKUP');
-
+    // Clear cache link
     $l_clear_caches = upgrader_link('upgrader.php?type=decache', do_lang('UPGRADER_CLEAR_CACHES'));
 
-    $l_check_permissions = upgrader_link('upgrader.php?type=check_perms', do_lang('UPGRADER_CHECK_PERMISSIONS'));
-
-    $l_fix_permissions = upgrader_link('upgrader.php?type=fix_perms', do_lang('UPGRADER_FIX_PERMISSIONS'));
-
-    $l_close_site = upgrader_link('upgrader.php?type=close_site', do_lang('UPGRADER_CLOSE_SITE'), get_option('site_closed') == '1');
-
-    $l_integrity_scan = upgrader_link('upgrader.php?type=integrity_scan&allow_merging=1', do_lang('UPGRADER_INTEGRITY_SCAN'), false, do_lang('UPGRADER_WILL_MERGE'));
-
-    $l_integrity_scan_no_merging = upgrader_link('upgrader.php?type=integrity_scan', do_lang('UPGRADER_INTEGRITY_SCAN_NO_CSS_MERGE'));
-
-    $l_database_upgrade = upgrader_link('upgrader.php?type=db_upgrade', do_lang('UPGRADER_DATABASE_UPGRADE'));
-
-    $l_theme_upgrade = upgrader_link('upgrader.php?type=theme_upgrade', do_lang('UPGRADER_THEME_UPGRADE'));
-
-    $l_open_site = upgrader_link('upgrader.php?type=open_site', do_lang('UPGRADER_OPEN_SITE'), get_option('site_closed') == '0');
-
-    $l_error_correction = do_lang('UPGRADER_ERROR_CORRECTION');
-
-    $l_not_for_patch = do_lang('UPGRADER_NOT_FOR_PATCH');
-
+    // Tutorial link
     $l_tutorial = upgrader_link(get_tutorial_url('tut_upgrade'), do_lang('UPGRADER_TUTORIAL'));
 
-    $l_release_notes = do_lang('UPGRADER_RELEASE_NOTES');
+    // Backup link
+    $l_take_backup = do_lang('UPGRADER_TAKE_BACKUP');
 
-    $l_refer_release_notes = do_lang('UPGRADER_REFER_RELEASE_NOTES');
+    // Open/close sections and links
+    $oc = (get_option('site_closed') == '0') ? do_lang('OPEN') : do_lang('CLOSED');
+    $l_fu_closedness = do_lang('UPGRADER_CLOSENESS', $oc);
+    $l_close_site = upgrader_link('upgrader.php?type=close_site', do_lang('UPGRADER_CLOSE_SITE'), get_option('site_closed') == '1');
+    $l_open_site = upgrader_link('upgrader.php?type=open_site', do_lang('UPGRADER_OPEN_SITE'), get_option('site_closed') == '0');
+    $closed = comcode_to_tempcode(get_option('closed'), null, true);
+    $closed_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'SITE'), get_module_zone('admin_config'), array(), false, false, false, 'group_CLOSED_SITE');
 
+    // Transfer files link
     $news_id = post_param_integer('news_id', null);
     $from_version = post_param_string('from_version', strval(cms_version()) . '.' . cms_version_minor());
     $tar_url = '';
@@ -454,29 +451,24 @@ function upgrader_menu_screen()
     }
     $l_download = upgrader_link('upgrader.php?type=file_upgrade&tar_url=' . urlencode(base64_encode($tar_url)), do_lang('UPGRADER_DOWNLOAD'));
 
-    $l_important = do_lang('IMPORTANT');
+    // Integrity scan link
+    $l_integrity_scan = upgrader_link('upgrader.php?type=integrity_scan&allow_merging=1', do_lang('UPGRADER_INTEGRITY_SCAN'), false, do_lang('UPGRADER_WILL_MERGE'));
+    $l_integrity_scan_no_merging = upgrader_link('upgrader.php?type=integrity_scan', do_lang('UPGRADER_INTEGRITY_SCAN_NO_CSS_MERGE'));
 
-    $l_bugs = do_lang('UPGRADER_BUGS');
+    // Database upgrade link
+    $l_database_upgrade = upgrader_link('upgrader.php?type=db_upgrade', do_lang('UPGRADER_DATABASE_UPGRADE'));
 
-    $l_upgrade_steps = do_lang('UPGRADER_UPGRADE_STEPS');
+    // Theme upgrade link
+    $l_theme_upgrade = upgrader_link('upgrader.php?type=theme_upgrade', do_lang('UPGRADER_THEME_UPGRADE'));
 
-    $l_action = do_lang('ACTION');
-    $l_step = do_lang('UPGRADER_STEP');
-    $l_estimated_time = do_lang('UPGRADER_ESTIMATED_TIME');
-
+    // Error correction links
     $l_safe_mode = upgrader_link('index.php?keep_safe_mode=1', do_lang('UPGRADER_SAFE_MODE'));
-
     $num_addons = $GLOBALS['SITE_DB']->query_select_value('addons', 'COUNT(*)');
     $l_addon_management = upgrader_link('adminzone/index.php?page=admin_addons&keep_safe_mode=1', do_lang('UPGRADER_ADDON_MANAGEMENT', integer_format($num_addons)), $num_addons == 0);
-
-    $l_remove_addon_files = upgrader_link('upgrader.php?type=addon_remove', do_lang('UPGRADER_REMOVE_ADDON_FILES'));
-
-    $l_customisations = do_lang('UPGRADER_CUSTOMISATIONS');
-
-    $closed = comcode_to_tempcode(get_option('closed'), null, true);
-    $closed_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'SITE'), get_module_zone('admin_config'), array(), false, false, false, 'group_CLOSED_SITE');
-
     $show_permission_buttons = (!GOOGLE_APPENGINE && !is_suexec_like() || $GLOBALS['DEV_MODE']);
+    $l_check_permissions = upgrader_link('upgrader.php?type=check_perms', do_lang('UPGRADER_CHECK_PERMISSIONS'));
+    $l_fix_permissions = upgrader_link('upgrader.php?type=fix_perms', do_lang('UPGRADER_FIX_PERMISSIONS'));
+    $l_remove_addon_files = upgrader_link('upgrader.php?type=addon_remove', do_lang('UPGRADER_REMOVE_ADDON_FILES'));
 
     $out = '';
 
