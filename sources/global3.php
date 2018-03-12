@@ -1256,11 +1256,14 @@ function has_no_forum()
 
 /**
  * Check to see if an addon is installed.
+ * Will also include check database tables for addons that are hook-based, just in case filesystem and database got out of sync.
+ * For addons with no addon_registry hook can also check the database (if requested via $check_hookless).
  *
  * @param  ID_TEXT $addon The addon name
+ * @param  boolean $check_hookless Whether to check addons with no addon_registry hook (it's very rare to need this)
  * @return boolean Whether it is
  */
-function addon_installed($addon)
+function addon_installed($addon, $check_hookless = false)
 {
     global $ADDON_INSTALLED_CACHE;
     if ($ADDON_INSTALLED_CACHE == array()) {
@@ -1272,8 +1275,34 @@ function addon_installed($addon)
         return $ADDON_INSTALLED_CACHE[$addon];
     }
 
+    // Check addon_registry hook
     $addon = filter_naughty($addon);
     $answer = is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $addon . '.php') || is_file(get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . $addon . '.php');
+
+    // Check addons table
+    if ((!$answer) && ($check_hookless) && (!running_script('install'))) {
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('addons', 'addon_name', array('addon_name' => $addon));
+        if ($test !== null) {
+            $answer = true;
+        }
+    } else {
+        if ($answer) {
+            // Check tables defined in db_meta.dat (bundled addons)
+            static $data = null;
+            if ($data === null) {
+                $data = unserialize(file_get_contents(get_file_base() . '/data/db_meta.dat'));
+            }
+            foreach ($data['tables'] as $table_name => $table) {
+                if ($table['addon'] == $addon) {
+                    $db = get_db_for($table_name);
+                    if (!$db->table_exists($table_name)) {
+                        $answer = false;
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
     $ADDON_INSTALLED_CACHE[$addon] = $answer;
     if (function_exists('persistent_cache_set')) {
@@ -1284,16 +1313,18 @@ function addon_installed($addon)
 }
 
 /**
- * Check to see if an addon is installed. If not, install it or return an error message, depending on config.
+ * Check to see if an addon is installed. If not, install return an error message with a link to manage addons.
  *
  * @param  ID_TEXT $addon The addon name
  * @param  Tempcode $error_msg Put an error message in here
  * @return boolean Whether it is
  */
-function addon_installed__autoinstall($addon, &$error_msg)
+function addon_installed__messaged($addon, &$error_msg)
 {
     if (!addon_installed($addon)) {
-        $error_msg = do_lang_tempcode('MISSING_ADDON', escape_html($addon));
+        $_error_msg = do_lang('MISSING_ADDON', escape_html($addon));
+        $addon_manage_url = build_url(array('page' => 'admin_addons'), 'adminzone');
+        $error_msg = do_lang_tempcode('BROKEN_ADDON_REMEDIES', $_error_msg, escape_html(find_script('upgrader')), escape_html(static_evaluate_tempcode($addon_manage_url)));
 
         return false;
     }

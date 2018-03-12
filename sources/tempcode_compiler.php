@@ -973,7 +973,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
 
         // Try and merge some strings that don't need to be in separate seq_parts
         $c_stripped_down = str_replace(array('\\\\', '\\"'), array('', ''), $c); // Remove literal slashes and literal quotes so we can do an accurate scan to ensure it is all one string
-        if ($c_stripped_down[0] === '"' && strpos($c_stripped_down, '"', 1) === strlen($c_stripped_down) - 1) {
+        if (($c_stripped_down[0] === '"') && (strpos($c_stripped_down, '"', 1) === strlen($c_stripped_down) - 1)) {
             if ($just_done_string) {
                 $pi = count($merged) - 1;
                 $merged[$pi] = substr($merged[$pi], 0, strlen($merged[$pi]) - 1) . substr($c, 1, strlen($c) - 1);

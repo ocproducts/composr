@@ -144,7 +144,7 @@ class Module_admin_awards extends Standard_crud_module
     public function pre_run($top_level = true, $type = null)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('awards', $error_msg)) {
+        if (!addon_installed__messaged('awards', $error_msg)) {
             return $error_msg;
         }
 

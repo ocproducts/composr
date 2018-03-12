@@ -15,6 +15,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('calculatr')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('calculatr')), 'r26bp8s01wwiv031jmdakpfk3ohyrq8v', 'red-alert');
+}
+
 load_csp(array('csp_allow_eval_js' => '1'));
 
 require_javascript('checking');

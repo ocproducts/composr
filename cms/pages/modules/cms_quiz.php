@@ -96,7 +96,7 @@ class Module_cms_quiz extends Standard_crud_module
     public function pre_run($top_level = true, $type = null)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('quizzes', $error_msg)) {
+        if (!addon_installed__messaged('quizzes', $error_msg)) {
             return $error_msg;
         }
 

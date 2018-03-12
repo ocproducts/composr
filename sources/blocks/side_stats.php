@@ -63,7 +63,7 @@ class Block_side_stats
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('stats_block', $error_msg)) {
+        if (!addon_installed__messaged('stats_block', $error_msg)) {
             return $error_msg;
         }
 

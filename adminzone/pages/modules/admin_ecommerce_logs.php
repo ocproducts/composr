@@ -94,7 +94,7 @@ class Module_admin_ecommerce_logs
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('ecommerce', $error_msg)) {
+        if (!addon_installed__messaged('ecommerce', $error_msg)) {
             return $error_msg;
         }
 

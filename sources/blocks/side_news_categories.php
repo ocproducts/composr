@@ -64,7 +64,7 @@ class Block_side_news_categories
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('news', $error_msg)) {
+        if (!addon_installed__messaged('news', $error_msg)) {
             return $error_msg;
         }
 

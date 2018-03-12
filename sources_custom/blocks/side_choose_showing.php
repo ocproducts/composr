@@ -20,7 +20,7 @@ class Block_side_choose_showing
     public function run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('booking', $error_msg)) {
+        if (!addon_installed__messaged('booking', $error_msg)) {
             return $error_msg;
         }
 

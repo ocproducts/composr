@@ -15,6 +15,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('composr_homesite')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')), 'rltg3g7ssx2l3oux03qnqnwhwgj8vrcs', 'red-alert');
+}
+
 $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
 // TODO: #3032 (must default charset to utf-8 if no BOM though)
 

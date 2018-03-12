@@ -47,7 +47,7 @@ class Block_main_tutorial_rating
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('composr_tutorials', $error_msg)) {
+        if (!addon_installed__messaged('composr_tutorials', $error_msg)) {
             return $error_msg;
         }
 

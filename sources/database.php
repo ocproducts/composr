@@ -2084,26 +2084,38 @@ class DatabaseConnector
      */
     public function table_exists($table_name, $really = false)
     {
-        if ($really && strpos(get_db_type(), 'mysql') !== false) {
-            // Just works with MySQL (too complex to do for all SQL's http://forums.whirlpool.net.au/forum-replies-archive.cfm/523219.html)
-            $full_table_name = $this->get_table_prefix() . $table_name;
-            $rows = $this->query("SHOW TABLES LIKE '" . $full_table_name . "'");
-            foreach ($rows as $row) {
-                foreach ($row as $field) {
-                    if ($field == $full_table_name) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
         if (array_key_exists($table_name, $this->table_exists_cache)) {
             return $this->table_exists_cache[$table_name];
         }
 
-        $test = $this->query_select_value_if_there('db_meta', 'm_name', array('m_table' => $table_name));
-        $this->table_exists_cache[$table_name] = ($test !== null);
+        if (($really) && (strpos(get_db_type(), 'mysql') !== false)) {
+            // Just works with MySQL (too complex to do for all SQL's http://forums.whirlpool.net.au/forum-replies-archive.cfm/523219.html)...
+
+            $prefix = $this->get_table_prefix();
+            $rows = $this->query('SHOW TABLES');
+            foreach ($rows as $row) {
+                foreach ($row as $field) {
+                    if (substr($field, 0, strlen($prefix)) == $prefix) {
+                        $_table_name = substr($field, strlen($prefix));
+                        $this->table_exists_cache[$_table_name] = true;
+                    }
+                }
+            }
+
+            if (!array_key_exists($table_name, $this->table_exists_cache)) {
+                $this->table_exists_cache[$table_name] = false;
+            }
+            return $this->table_exists_cache[$table_name];
+        }
+
+        $rows = $this->query_select('db_meta', array('DISTINCT m_table'));
+        foreach ($rows as $row) {
+            $this->table_exists_cache[$row['m_table']] = true;
+        }
+
+        if (!array_key_exists($table_name, $this->table_exists_cache)) {
+            $this->table_exists_cache[$table_name] = false;
+        }
         return $this->table_exists_cache[$table_name];
     }
 

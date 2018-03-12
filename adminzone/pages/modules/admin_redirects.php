@@ -133,7 +133,7 @@ class Module_admin_redirects
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('redirects_editor', $error_msg)) {
+        if (!addon_installed__messaged('redirects_editor', $error_msg)) {
             return $error_msg;
         }
 

@@ -101,7 +101,7 @@ class Module_admin_community_billboard extends Standard_crud_module
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('community_billboard', $error_msg)) {
+        if (!addon_installed__messaged('community_billboard', $error_msg)) {
             return $error_msg;
         }
 

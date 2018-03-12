@@ -71,7 +71,7 @@ class Module_admin_chat extends Standard_crud_module
     public function pre_run($top_level = true, $type = null)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('chat', $error_msg)) {
+        if (!addon_installed__messaged('chat', $error_msg)) {
             return $error_msg;
         }
 

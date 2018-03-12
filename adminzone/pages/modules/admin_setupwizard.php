@@ -72,7 +72,7 @@ class Module_admin_setupwizard
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('setupwizard', $error_msg)) {
+        if (!addon_installed__messaged('setupwizard', $error_msg)) {
             return $error_msg;
         }
 

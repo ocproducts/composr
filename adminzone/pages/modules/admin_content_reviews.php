@@ -111,7 +111,7 @@ class Module_admin_content_reviews
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('content_reviews', $error_msg)) {
+        if (!addon_installed__messaged('content_reviews', $error_msg)) {
             return $error_msg;
         }
 

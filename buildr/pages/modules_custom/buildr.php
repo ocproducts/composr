@@ -307,7 +307,7 @@ class Module_buildr
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('buildr', $error_msg)) {
+        if (!addon_installed__messaged('buildr', $error_msg)) {
             return $error_msg;
         }
 

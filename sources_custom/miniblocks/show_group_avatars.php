@@ -23,6 +23,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('show_group_avatars')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('show_group_avatars')), 'zupnq0hhjmuzafxnz1z17e2fv3f3yuoh', 'red-alert');
+}
+
 if (get_forum_type() != 'cns') {
     return paragraph(do_lang_tempcode('NO_CNS'), 'o1mp434qrijc2ms5hseqvm5ynodw74rr', 'red-alert');
 }

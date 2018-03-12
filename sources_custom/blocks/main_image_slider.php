@@ -61,7 +61,7 @@ class Block_main_image_slider
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('image_slider', $error_msg)) {
+        if (!addon_installed__messaged('image_slider', $error_msg)) {
             return $error_msg;
         }
 

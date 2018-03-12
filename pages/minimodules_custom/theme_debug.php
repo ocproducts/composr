@@ -18,7 +18,7 @@
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 $error_msg = new Tempcode();
-if (!addon_installed__autoinstall('theme_debug', $error_msg)) {
+if (!addon_installed__messaged('theme_debug', $error_msg)) {
     return $error_msg;
 }
 
@@ -110,7 +110,7 @@ foreach (array_keys($themes) as $theme) {
                     }
 
                     // Let's do a few simple CSS checks, less than a proper validator would do
-                    if (substr($f, -4) == '.css' && strpos($contents, '{$,parser hint: external}') === false) {
+                    if ((substr($f, -4) == '.css') && (strpos($contents, '{$,parser hint: external}') === false)) {
                         // Test comment/brace balancing
                         if (substr_count($contents, '{') != substr_count($contents, '}')) {
                             echo '<br />Mismatched braces in ' . escape_html($f);

@@ -183,7 +183,6 @@ class Hook_addon_registry_commandr
             'sources/hooks/systems/commandr_commands/find.php',
             'sources/hooks/systems/commandr_commands/find_codes.php',
             'sources/hooks/systems/commandr_commands/find_entry_points.php',
-            'sources/hooks/systems/commandr_commands/fix_perms.php',
             'sources/hooks/systems/commandr_commands/grep.php',
             'sources/hooks/systems/commandr_commands/help.php',
             'sources/hooks/systems/commandr_commands/index.html',

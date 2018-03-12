@@ -63,7 +63,7 @@ class Block_top_search
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('search', $error_msg)) {
+        if (!addon_installed__messaged('search', $error_msg)) {
             return $error_msg;
         }
 

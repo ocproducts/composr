@@ -123,7 +123,7 @@ class Module_search
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('search', $error_msg)) {
+        if (!addon_installed__messaged('search', $error_msg)) {
             return $error_msg;
         }
 

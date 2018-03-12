@@ -50,13 +50,6 @@ class Hook_cleanup_criticise_mysql_fields
     public function run()
     {
         require_code('database_repair');
-        $repair_ob = new DatabaseRepair();
-        list($phase, $sql) = $repair_ob->search_for_database_issues();
-
-        if ($sql != '') {
-            return do_lang_tempcode('MYSQL_QUERY_CHANGES_MAKE_' . strval($phase), escape_html($sql));
-        }
-
-        return do_lang_tempcode('NO_MYSQL_QUERY_CHANGES_MAKE');
+        return database_repair_wrap();
     }
 }

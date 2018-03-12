@@ -78,7 +78,7 @@ It is a good idea to use an editor/IDE with support for the [tt].editorconfig[/t
 | Technical debt
 | All development
 | Manually
-| Don't copy & paste big blocks of code (exceptions: see below), or the same snippet of code time-and-time-again. If you spot a reusable chunk of code, consider making both usages work via a new shared function. Sometimes if you see the same [b]pattern[/b] of code time-and-time-again it makes sense to abstract that too.
+| Don't copy & paste big chunks of code (exceptions: see below), or the same snippet of code time-and-time-again. If you spot a reusable chunk of code, consider making both usages work via a new shared function. Sometimes if you see the same [b]pattern[/b] of code time-and-time-again it makes sense to abstract that too.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Only ever copy & paste if you need to, and use care[/color]
@@ -143,13 +143,6 @@ We do not use [tt]HACKHACK[/tt] or [tt]FIXME[/tt] markers, although the CQC will
 | Composr development +
 | Manually
 | Use software engineering best practices (while also keeping things consistent with how Composr is designed, sometimes unconventional decisions may have been made for a reason).
-|-
-| [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Write well modularised code[/color]
-| Modularity
-| Composr development +
-| Manually
-| Group things into separate files where appropriate. For example, an API acting for a certain addon would be in a number of code files named after that addon. CSS for an addon would be in a file named after that addon.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use meaningful function / class / variable / file / identifier names[/color]
@@ -509,20 +502,6 @@ Put standard [tt]index.html[/tt] and [tt].htaccess[/tt] files in new directories
 | Almost all directories should contain an empty [tt]index.html[/tt] (to stop directory browsing on web servers that have it enabled). Most directories should also contain the small [tt].htaccess[/tt] file (copy it from another deep directory) that we use to block direct file access. If you strictly need to block access to a directory for security reasons you should also update [tt]web.config[/tt] to reflect that (for IIS users).
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-All files must be associated with an addon
-| Modularity
-| Product development only
-| Automated test ([tt]modularisation.php[/tt])
-| Every file intended to be distributed with Composr must be registered in one addon, installation / uninstallation / integrity-scans. To do this list it in the obvious position within one of the [tt]sources/hooks/systems/addon_registry[/tt] files. If it is a PHP file it should have a matching [tt]@package[/tt] line at the top of the file.
-|-
-| [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Manage any interdependencies between addons[/color]
-| Modularity: so addons may be uninstalled freely
-| Product development only
-| Manually, Automated test ([tt]addon_references.php[/tt]) helps a bit, Automated test ([tt]addon_guards.php[/tt]) helps a bit
-| Dependencies may be properly handled via hooks, using the [tt]get_dependencies[/tt] function in the [tt]addon_registry[/tt] hook (i.e. say addons only work if some other addon is also there), or via code that uses the [tt]addon_installed[/tt] function to guard off the dependency. For example, if you used the [tt]galleries[/tt] addon in some feature in the [tt]downloads[/tt] addon, you would make sure the [tt]downloads[/tt] addon did not break if the [tt]galleries[/tt] addon was uninstalled (instead you'd write code to turn off the feature if the dependency was not met).
-|-
-| [size="0.8"]{$INC,cs_count,1})[/size]
 Don't define too many functions in a single file
 | Portability: PHP [tt]memory_limit[/tt] setting / performance
 | Composr development +
@@ -641,6 +620,65 @@ Allow initialisation functions to run twice
 | Manually
 | Do not assume Composr is running on Linux, or Microsoft Windows, or Apache, or IIS, or Mac OS, or a case-sensitive filesystem, or a case-insensitive filesystem, or anything else unless it is defined in our minimum requirements. This is an important lesson for new programmers who may be used to just making something work for the computer they are in-front of. You need to use universally accepted techniques rather than platform-specific APIs.
 |}
+
+[title="4"]Addons[/title]
+
+{|
+! Standard
+! Reason
+! Scope
+! Test method
+! Notes
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Write well modularised code[/color]
+| Modularity
+| Composr development +
+| Manually
+| Group things into separate files where appropriate. For example, an API acting for a certain addon would be in a number of code files named after that addon. CSS for an addon would be in a file named after that addon.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+All files must be associated with an addon
+| Modularity
+| Product development only
+| Automated test ([tt]modularisation.php[/tt])
+| Every file intended to be distributed with Composr must be registered in one addon, installation / uninstallation / integrity-scans. To do this list it in the obvious position within one of the [tt]sources/hooks/systems/addon_registry[/tt] files. If it is a PHP file it should have a matching [tt]@package[/tt] line at the top of the file.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Manage any interdependencies between addons[/color]
+| Modularity: so addons may be uninstalled freely
+| Product development only
+| Manually, Automated test ([tt]addon_references.php[/tt]) helps a bit, Automated test ([tt]addon_guards.php[/tt]) helps a bit
+| Dependencies should be properly handled via hooks, using the [tt]get_dependencies[/tt] function in the [tt]addon_registry[/tt] hook (i.e. say addons only work if some other addon is also there), and via code that uses the [tt]addon_installed[/tt] function to guard off the dependency. For example, if you used the [tt]galleries[/tt] addon in some feature in the [tt]downloads[/tt] addon, you would make sure the [tt]downloads[/tt] addon did not break if the [tt]galleries[/tt] addon was uninstalled (instead you'd write code to turn off the feature if the dependency was not met, or return an error message via the [tt]ADDON_MISSING[/tt] language string).
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Hooks should not crash for missing dependencies
+| Integrity
+| Product development only
+| Automated test ([tt]addon_guards.php[/tt])
+| Hooks should not crash for missing dependencies (including the files owner addon), they should just exit cleanly.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Blocks should not crash for missing dependencies
+| Integrity
+| Product development only
+| Automated test ([tt]addon_guards.php[/tt])
+| Blocks should not crash for missing dependencies (including the files owner addon), they should just put out an error as the block output. The [tt]addon_installed__messaged[/tt] function may be used for the check on the files owner addon.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Modules should not crash for missing dependencies
+| Integrity
+| Product development only
+| Automated test ([tt]addon_guards.php[/tt])
+| Modules should not crash for missing dependencies (including the files owner addon), they should just put out an error. The [tt]addon_installed__messaged[/tt] function may be used for the check on the files owner addon.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Entry-point scripts should not crash for missing dependencies
+| Integrity
+| Product development only
+| Automated test ([tt]addon_guards.php[/tt])
+| Entry-point scripts should not crash for missing dependencies (including the files owner addon), they should just put out an error.
+}
 
 [title="4"]AJAX[/title]
 
@@ -795,7 +833,7 @@ Avoid relative paths
 | Flexibility: webmasters may move entry-point scripts around
 | Product development only
 | Manually
-| Use the [tt]FIND_SCRIPT[/tt] symbol or [tt]find_script[/tt] function to find zone-based scripts. Put non zone-based scripts in [tt]data[/tt] (or [tt]data_custom[/tt] if for an unofficial addon).
+| Use the [tt]FIND_SCRIPT[/tt] symbol or [tt]find_script[/tt] function to find zone-based scripts. Put non zone-based scripts in [tt]data[/tt] (or [tt]data_custom[/tt] if for a non-bundled addon).
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use the [tt]*_custom[/tt] filing system properly[/color]
@@ -1352,6 +1390,13 @@ List block parameters
 | All development
 | Manually
 | If a block has caching and you are only testing with caching disabled (the norm in development mode) it is possible that your blocks caching is completely misconfigured, which will cause stack traces.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Blocks should not exit
+| Stability
+| Product development only
+| Automated test ([tt]blocks.php[/tt])
+| If a block hits an error condition it must return an error message, not call a function like [tt]warn_exit[/tt]. An error on a block can't be a fatal thing.
 |}
 
 [title="4"]Attachments[/title]

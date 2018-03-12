@@ -149,7 +149,7 @@ class Module_admin_import
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('import', $error_msg)) {
+        if (!addon_installed__messaged('import', $error_msg)) {
             return $error_msg;
         }
 

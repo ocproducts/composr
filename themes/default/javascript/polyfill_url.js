@@ -98,7 +98,7 @@
 
         window.URLSearchParams = URLSearchParams;
         /**
-         * @class {URLSearchParams}
+         * @class { URLSearchParams }
          * @param [init]
          */
         function URLSearchParams(init) {
@@ -344,7 +344,7 @@
 
         window.URL = URL;
         /**
-         * @class {URL}
+         * @class { URL }
          * @param url
          * @param [base]
          */
@@ -543,7 +543,7 @@
                 },
                 /**
                  * @memberof URL#
-                 * @type {URLSearchParams}
+                 * @type { URLSearchParams }
                  */
                 searchParams: {
                     get: function () {

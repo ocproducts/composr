@@ -80,7 +80,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         }
 
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('cns_multi_moderations', $error_msg)) {
+        if (!addon_installed__messaged('cns_multi_moderations', $error_msg)) {
             return $error_msg;
         }
 

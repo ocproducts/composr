@@ -50,7 +50,7 @@ class Block_main_contact_us
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('tickets', $error_msg)) {
+        if (!addon_installed__messaged('tickets', $error_msg)) {
             return $error_msg;
         }
 

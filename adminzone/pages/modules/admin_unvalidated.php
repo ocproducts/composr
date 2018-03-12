@@ -70,7 +70,7 @@ class Module_admin_unvalidated
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('unvalidated', $error_msg)) {
+        if (!addon_installed__messaged('unvalidated', $error_msg)) {
             return $error_msg;
         }
 

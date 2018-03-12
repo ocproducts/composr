@@ -387,7 +387,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
                     if (!is_file($tmp_path)) {
                         $tmp_path = get_file_base() . '/lang_custom/' . fallback_lang() . '/' . $lang_file . '.ini';
                     }
-                    if (is_file($tmp_path) && strpos(file_get_contents($tmp_path), "\n{$key}=") !== false) {
+                    if ((is_file($tmp_path)) && (strpos(file_get_contents($tmp_path), "\n{$key}=") !== false)) {
                         $key_extended .= ' (' . $lang_file . ')';
                         break;
                     }

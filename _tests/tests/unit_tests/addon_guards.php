@@ -45,31 +45,48 @@ class addon_guards_test_set extends cms_test_case
         'systems/syndication' => 'activity_feed',
     );
 
-    public function testHookAddonGuards()
+    public function testAddonGuardsCohesion()
     {
         require_code('files2');
-        $sources_files = get_directory_contents(get_file_base() . '/sources/hooks', 'sources/hooks', null, true, true, array('php'));
-        $sources_custom_files = get_directory_contents(get_file_base() . '/sources_custom/hooks', 'sources_custom/hooks', null, true, true, array('php'));
-        $files = array_merge($sources_files, $sources_custom_files);
+
+        $exceptions = array(
+            '(sources|sources_custom)/hooks/systems/addon_registry/\w+\.php',
+            '(sources|sources_custom)/hooks/systems/meta/\w+\.php',
+            '(sources|sources_custom)/hooks/systems/module_permissions/\w+\.php',
+            '(sources|sources_custom)/hooks/systems/ajax_tree/\w+\.php',
+            '(sources|sources_custom)/hooks/systems/disposable_values/\w+\.php',
+            '(sources|sources_custom)/hooks/systems/non_active_urls/\w+\.php',
+        );
+
+        $hooks_files = get_directory_contents(get_file_base() . '/sources/hooks', 'sources/hooks', null, true, true, array('php'));
+        $hooks_custom_files = get_directory_contents(get_file_base() . '/sources_custom/hooks', 'sources_custom/hooks', null, true, true, array('php'));
+        $blocks_files = get_directory_contents(get_file_base() . '/sources/blocks', 'sources/blocks', null, true, true, array('php'));
+        $blocks_custom_files = get_directory_contents(get_file_base() . '/sources_custom/blocks', 'sources_custom/blocks', null, true, true, array('php'));
+        $miniblocks_custom_files = get_directory_contents(get_file_base() . '/sources_custom/miniblocks', 'sources_custom/miniblocks', null, true, true, array('php'));
+
+        $modules_files = array();
+        $zones = find_all_zones();
+        foreach ($zones as $zone) {
+            $modules_files = get_directory_contents(get_file_base() . '/' . $zone . '/pages', $zone . '/pages', null, true, true, array('php'));
+        }
+
+        $files = array_merge($hooks_files, $hooks_custom_files, $blocks_files, $blocks_custom_files, $miniblocks_custom_files, $modules_files);
+
         foreach ($files as $path) {
             $matches_hook_details = array();
-            if (preg_match('#^\w+/hooks/(\w+)/(\w+)/\w+\.php$#', $path, $matches_hook_details) == 0) {
-                $this->assertTrue(false, 'Unexpected file ' . $path);
-                continue;
+            if (preg_match('#^\w+/hooks/(\w+)/(\w+)/\w+\.php$#', $path, $matches_hook_details) != 0) {
+                $hook_type = $matches_hook_details[1];
+                $hook_subtype = $matches_hook_details[2];
+            } else {
+                $hook_type = null;
+                $hook_subtype = null;
             }
-            $hook_type = $matches_hook_details[1];
-            $hook_subtype = $matches_hook_details[2];
 
             // Exceptions
-            if (in_array($hook_type . '/' . $hook_subtype, array(
-                'systems/addon_registry',
-                'systems/meta',
-                'systems/module_permissions',
-                'systems/ajax_tree',
-                'systems/disposable_values',
-                'systems/non_active_urls',
-            ))) {
-                continue;
+            foreach ($exceptions as $exception) {
+                if (preg_match('#^' . $exception . '$#', $path) != 0) {
+                    continue 2;
+                }
             }
 
             $c = file_get_contents(get_file_base() . '/' . $path);
@@ -81,18 +98,21 @@ class addon_guards_test_set extends cms_test_case
             }
             $addon = $matches[1];
 
+            $has = (strpos($c, 'addon_installed(\'' . addslashes($addon) . '\')') !== false) || (strpos($c, 'addon_installed__messaged(\'' . addslashes($addon) . '\'') !== false);
+
             if (
-                ($addon == 'core') ||
-                (substr($addon, 0, 5) == 'core_') || ((array_key_exists($hook_type . '/' . $hook_subtype, $this->hook_ownership)) && ($addon == $this->hook_ownership[$hook_type . '/' . $hook_subtype]))
+                ($addon == 'core') || // No checks needed for core
+                (substr($addon, 0, 5) == 'core_') || // No checks needed for core
+                (($hook_type !== null) && (array_key_exists($hook_type . '/' . $hook_subtype, $this->hook_ownership)) && ($addon == $this->hook_ownership[$hook_type . '/' . $hook_subtype])) // No checks needed for self-ownership of hooks of particular addons
             ) {
-                $this->assertTrue(strpos($c, 'addon_installed(\'' . addslashes($addon) . '\')') === false, 'No need to do addon check for ' . $path);
+                $this->assertTrue(!$has, 'No need to do addon check for ' . $path);
             } else {
-                $this->assertTrue(strpos($c, 'addon_installed(\'' . addslashes($addon) . '\')') !== false, 'Missing addon check for ' . $path);
+                $this->assertTrue($has, 'Missing addon check for ' . $path);
             }
         }
     }
 
-    public function testAddonGuards()
+    /*TODOpublic function testAddonGuardsImplicitCodeCalls()
     {
         $files_in_addons = array();
 
@@ -158,7 +178,7 @@ class addon_guards_test_set extends cms_test_case
                                 ($file_in_addon != $addon) &&
                                 (substr($file_in_addon, 0, 5) != 'core_') &&
                                 ($file_in_addon != 'core') &&
-                                (strpos($path, $file_in_addon) === false/*looks like a hook for this addon*/) &&
+                                (strpos($path, $file_in_addon) === false) && // looks like a hook for this addon
                                 ((!in_array($file_in_addon, $requires)) && ((!in_array('news', $requires)) || ($file_in_addon != 'news_shared')))
                             ) {
                                 $search_for = 'addon_installed(\'' . $file_in_addon . '\')';
@@ -204,5 +224,5 @@ class addon_guards_test_set extends cms_test_case
                 }
             }
         }
-    }
+    }*/
 }

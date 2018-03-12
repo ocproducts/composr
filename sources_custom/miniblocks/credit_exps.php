@@ -15,6 +15,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('composr_homesite_support_credits')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite_support_credits')), '6i3v3cs3s5ia4gu7mqcegz643hqz5nb6', 'red-alert');
+}
+
 if (!addon_installed('tickets')) {
     return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('tickets')), 'tivtotrvmlpkmqizx5toryotzigbrq8f', 'red-alert');
 }

@@ -64,7 +64,7 @@ class Block_main_awards
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('awards', $error_msg)) {
+        if (!addon_installed__messaged('awards', $error_msg)) {
             return $error_msg;
         }
 

@@ -197,7 +197,7 @@ class Module_admin_stats
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('stats', $error_msg)) {
+        if (!addon_installed__messaged('stats', $error_msg)) {
             return $error_msg;
         }
 

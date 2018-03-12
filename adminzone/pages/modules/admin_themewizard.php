@@ -76,7 +76,7 @@ class Module_admin_themewizard
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('themewizard', $error_msg)) {
+        if (!addon_installed__messaged('themewizard', $error_msg)) {
             return $error_msg;
         }
 

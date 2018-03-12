@@ -70,7 +70,7 @@ class Module_admin_phpinfo
     public function run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('phpinfo', $error_msg)) {
+        if (!addon_installed__messaged('phpinfo', $error_msg)) {
             return $error_msg;
         }
 

@@ -64,7 +64,7 @@ class Block_side_users_online
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('users_online_block', $error_msg)) {
+        if (!addon_installed__messaged('users_online_block', $error_msg)) {
             return $error_msg;
         }
 

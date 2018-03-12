@@ -60,7 +60,7 @@ class Block_side_amazon_affiliate_sales
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('amazon_affiliate_sales', $error_msg)) {
+        if (!addon_installed__messaged('amazon_affiliate_sales', $error_msg)) {
             return $error_msg;
         }
 

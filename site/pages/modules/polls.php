@@ -198,7 +198,7 @@ class Module_polls
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('polls', $error_msg)) {
+        if (!addon_installed__messaged('polls', $error_msg)) {
             return $error_msg;
         }
 

@@ -95,7 +95,7 @@ class Module_cms_wiki
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('wiki', $error_msg)) {
+        if (!addon_installed__messaged('wiki', $error_msg)) {
             return $error_msg;
         }
 

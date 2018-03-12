@@ -64,7 +64,7 @@ class Block_side_galleries
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('galleries', $error_msg)) {
+        if (!addon_installed__messaged('galleries', $error_msg)) {
             return $error_msg;
         }
 

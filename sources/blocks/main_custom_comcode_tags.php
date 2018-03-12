@@ -50,7 +50,7 @@ class Block_main_custom_comcode_tags
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('custom_comcode', $error_msg)) {
+        if (!addon_installed__messaged('custom_comcode', $error_msg)) {
             return $error_msg;
         }
 

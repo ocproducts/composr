@@ -222,7 +222,7 @@ class Module_news
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('news', $error_msg)) {
+        if (!addon_installed__messaged('news', $error_msg)) {
             return $error_msg;
         }
 

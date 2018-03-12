@@ -120,7 +120,7 @@ class Module_authors
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('authors', $error_msg)) {
+        if (!addon_installed__messaged('authors', $error_msg)) {
             return $error_msg;
         }
 

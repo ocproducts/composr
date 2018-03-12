@@ -70,7 +70,7 @@ class Module_admin_debrand
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('debrand', $error_msg)) {
+        if (!addon_installed__messaged('debrand', $error_msg)) {
             return $error_msg;
         }
 

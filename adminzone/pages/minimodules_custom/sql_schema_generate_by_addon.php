@@ -22,7 +22,7 @@ First run this, then run SQLEditor on the files created in uploads/website_speci
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 $error_msg = new Tempcode();
-if (!addon_installed__autoinstall('meta_toolkit', $error_msg)) {
+if (!addon_installed__messaged('meta_toolkit', $error_msg)) {
     return $error_msg;
 }
 

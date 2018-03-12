@@ -16,7 +16,7 @@
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 $error_msg = new Tempcode();
-if (!addon_installed__autoinstall('static_export', $error_msg)) {
+if (!addon_installed__messaged('static_export', $error_msg)) {
     return $error_msg;
 }
 

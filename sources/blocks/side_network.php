@@ -63,7 +63,7 @@ class Block_side_network
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('msn', $error_msg)) {
+        if (!addon_installed__messaged('msn', $error_msg)) {
             return $error_msg;
         }
 

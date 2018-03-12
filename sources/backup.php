@@ -232,9 +232,9 @@ function make_backup($file, $b_type = 'full', $max_size = 100, $callback = null)
 
     if ($b_type == 'full') {
         set_value('last_backup', strval(time()));
-        $original_files = (get_param_integer('keep_backup_alien', 0) == 1) ? unserialize(file_get_contents(get_file_base() . '/data/files.dat')) : array();
+        $avoid_backing_up = (get_param_integer('keep_backup_alien', 0) == 1) ? unserialize(file_get_contents(get_file_base() . '/data/files.dat')) : array();
         $root_only_dirs = directories_to_backup();
-        tar_add_folder($backup_file, $log_file, get_custom_file_base(), $max_size, '', $original_files, $root_only_dirs, !running_script('cron_bridge'), IGNORE_REBUILDABLE_OR_TEMP_FILES_FOR_BACKUP, $callback);
+        tar_add_folder($backup_file, $log_file, get_custom_file_base(), $max_size, '', $avoid_backing_up, $root_only_dirs, !running_script('cron_bridge'), IGNORE_REBUILDABLE_OR_TEMP_FILES_FOR_BACKUP, $callback);
     } elseif ($b_type == 'incremental') {
         $threshold = intval(get_value('last_backup'));
 
@@ -365,6 +365,15 @@ function directories_to_backup()
     foreach ($addon_files as $addon_file) {
         if (strpos($addon_file['filename'], '/') !== false) {
             $root_only_dirs[preg_replace('#/.*#', '', $addon_file['filename'])] = true;
+        }
+    }
+    $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
+    foreach ($hooks as $hook => $ob) {
+        $addon_files = $ob->get_file_list();
+        foreach ($addon_files as $_addon_file) {
+            if (strpos($_addon_file, '/') !== false) {
+                $root_only_dirs[preg_replace('#/.*#', '', $_addon_file)] = true;
+            }
         }
     }
 

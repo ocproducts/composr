@@ -117,7 +117,7 @@ class Module_admin_wordfilter
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('wordfilter', $error_msg)) {
+        if (!addon_installed__messaged('wordfilter', $error_msg)) {
             return $error_msg;
         }
 

@@ -15,6 +15,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('classified_ads')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('classified_ads')), 'y1h3lkkxrcy2mjehmt7na6n0p6c4ed23', 'red-alert');
+}
+
 if (!addon_installed('catalogues')) {
     return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('catalogues')), 'xosodjlsl900rswpx7vw68a7xg2tgjod', 'red-alert');
 }

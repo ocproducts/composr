@@ -96,7 +96,7 @@ class Module_admin_backup
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('backup', $error_msg)) {
+        if (!addon_installed__messaged('backup', $error_msg)) {
             return $error_msg;
         }
 

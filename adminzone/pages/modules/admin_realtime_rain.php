@@ -70,7 +70,7 @@ class Module_admin_realtime_rain
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('realtime_rain', $error_msg)) {
+        if (!addon_installed__messaged('realtime_rain', $error_msg)) {
             return $error_msg;
         }
 

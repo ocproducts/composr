@@ -86,8 +86,8 @@ if (get_base_url() != 'http://shareddemo.composr.info') {
     warn_exit('Must be called for shared demo');
 }
 
-require_code('upgrade');
-require_lang('upgrade');
+require_code('upgrade_integrity_scan');
+require_code('upgrade_shared_installs');
 require_code('shared_installs');
 require_all_core_cms_code();
 
@@ -98,7 +98,7 @@ if (get_param_integer('integrity', 0) == 1) {
 }
 
 // Close site
-set_option('closed', do_lang('FU_CLOSED_FOR_UPGRADES', get_site_name()));
+set_option('closed', do_lang('UPGRADER_CLOSED_FOR_UPGRADES', get_site_name()));
 set_option('site_closed', '1');
 @rename(get_file_base() . '/closed.html.old', get_file_base() . '/closed.html');
 

@@ -119,7 +119,7 @@ class Module_admin_revisions
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('actionlog', $error_msg)) {
+        if (!addon_installed__messaged('actionlog', $error_msg)) {
             return $error_msg;
         }
 

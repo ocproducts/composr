@@ -68,7 +68,7 @@ class Block_side_cns_private_topics
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('cns_forum', $error_msg)) {
+        if (!addon_installed__messaged('cns_forum', $error_msg)) {
             return $error_msg;
         }
 

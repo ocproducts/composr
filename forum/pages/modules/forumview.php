@@ -95,7 +95,7 @@ class Module_forumview
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('cns_forum', $error_msg)) {
+        if (!addon_installed__messaged('cns_forum', $error_msg)) {
             return $error_msg;
         }
 

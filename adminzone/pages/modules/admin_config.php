@@ -67,7 +67,7 @@ class Module_admin_config
             }
 
             if (get_value('brand_base_url') === null) {
-                $ret['upgrader'] = array('FU_UPGRADER_TITLE', 'menu/adminzone/tools/upgrade');
+                $ret['upgrader'] = array('UPGRADER_UPGRADER_TITLE', 'menu/adminzone/tools/upgrade');
             }
 
             if (addon_installed('syndication')) {
@@ -147,7 +147,7 @@ class Module_admin_config
         }
 
         if ($type == 'upgrader') {
-            $this->title = get_screen_title('FU_UPGRADER_TITLE');
+            $this->title = get_screen_title('UPGRADER_UPGRADER_TITLE');
         }
 
         if ($type == 'backend') {
@@ -348,8 +348,8 @@ class Module_admin_config
             'COUNT' => null,
             'TITLE' => '',
             'URL' => build_url(array('page' => '_SELF', 'type' => 'upgrader'), '_SELF'),
-            'NAME' => do_lang_tempcode('FU_UPGRADER_TITLE'),
-            'DESCRIPTION' => do_lang_tempcode('FU_UPGRADER_INTRO'),
+            'NAME' => do_lang_tempcode('UPGRADER_UPGRADER_TITLE'),
+            'DESCRIPTION' => do_lang_tempcode('UPGRADER_UPGRADER_INTRO'),
         )));
         $categories_tpl->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
             '_GUID' => '0fde99ae81367fb7405e94b6731a7d9a',

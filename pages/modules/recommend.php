@@ -119,7 +119,7 @@ class Module_recommend
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('recommend', $error_msg)) {
+        if (!addon_installed__messaged('recommend', $error_msg)) {
             return $error_msg;
         }
 

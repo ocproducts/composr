@@ -196,7 +196,7 @@ class Module_booking
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('booking', $error_msg)) {
+        if (!addon_installed__messaged('booking', $error_msg)) {
             return $error_msg;
         }
 

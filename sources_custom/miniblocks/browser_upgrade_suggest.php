@@ -15,6 +15,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('browser_detect')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('browser_detect')), 'mtnxujz7y0ldjtbsm14b370oe4y2j3th', 'red-alert');
+}
+
 $ie_needed = array_key_exists('ie_needed', $map) ? floatval($map['ie_needed']) : 11.0;
 $firefox_needed = array_key_exists('firefox_needed', $map) ? floatval($map['firefox_needed']) : 8.0;
 $safari_needed = array_key_exists('safari_needed', $map) ? floatval($map['safari_needed']) : 5.0;

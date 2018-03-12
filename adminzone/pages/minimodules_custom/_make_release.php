@@ -27,7 +27,7 @@ if (!addon_installed('news')) {
 }
 
 $error_msg = new Tempcode();
-if (!addon_installed__autoinstall('composr_homesite', $error_msg)) {
+if (!addon_installed__messaged('composr_homesite', $error_msg)) {
     return $error_msg;
 }
 

@@ -15,6 +15,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('nested_cpf_csv_lists')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('nested_cpf_csv_lists')), 'u31142oyccwcex2ojn8a35yy2k04j98i', 'red-alert');
+}
+
 require_code('nested_csv');
 $csv_structure = get_nested_csv_structure();
 

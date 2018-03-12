@@ -280,7 +280,7 @@ class Module_banners
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('banners', $error_msg)) {
+        if (!addon_installed__messaged('banners', $error_msg)) {
             return $error_msg;
         }
 

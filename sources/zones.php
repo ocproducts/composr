@@ -530,7 +530,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
         $MODULES_ZONES_CACHE[$check_redirects][$_zone][$type][$module_name] = null;
         return null;
     }
-    warn_exit(do_lang_tempcode('MISSING_MODULE_REFERENCED', escape_html($module_name)), false, true);
+    warn_exit(do_lang_tempcode('MISSING_MODULE_FILE', escape_html($module_name)), false, true);
     return null;
 }
 
@@ -556,7 +556,7 @@ function get_comcode_zone($page_name, $error = true)
         return $test;
     }
     if ($error) {
-        warn_exit(do_lang_tempcode('MISSING_MODULE_REFERENCED', escape_html($page_name)), false, true);
+        warn_exit(do_lang_tempcode('MISSING_MODULE_FILE', escape_html($page_name)), false, true);
     }
     return null;
 }
@@ -595,7 +595,7 @@ function get_page_zone($page_name, $error = true)
         return $test;
     }
     if ($error) {
-        warn_exit(do_lang_tempcode('MISSING_MODULE_REFERENCED', escape_html($page_name)), false, true);
+        warn_exit(do_lang_tempcode('MISSING_MODULE_FILE', escape_html($page_name)), false, true);
     }
     return null;
 }
@@ -715,58 +715,7 @@ function load_module_page($string, $codename, &$out = null)
         $object = object_factory('Module_' . filter_naughty_harsh($codename));
     }
 
-    // Get info about what is installed and what is on disk
-    if (get_value('assume_modules_correct') !== '1') {
-        $rows = persistent_cache_get('MODULES');
-        if ($rows === null) {
-            $rows = list_to_map('module_the_name', $GLOBALS['SITE_DB']->query_select('modules', array('*'), ($GLOBALS['PERSISTENT_CACHE'] === null) ? array('module_the_name' => $codename) : array()));
-            persistent_cache_set('MODULES', $rows);
-        }
-        if (array_key_exists($codename, $rows)) {
-            $info = $object->info();
-            $installed_version = $rows[$codename]['module_version'];
-            $installed_hack_version = $rows[$codename]['module_hack_version'];
-            $installed_hacked_by = $rows[$codename]['module_hacked_by'];
-            if ($installed_hacked_by === null) {
-                $installed_hacked_by = '';
-            }
-            $this_version = $info['version'];
-            $this_hack_version = $info['hack_version'];
-            $this_hacked_by = $info['hacked_by'];
-            if ($this_hacked_by === null) {
-                $this_hacked_by = '';
-            }
-
-            // See if we need to do an upgrade
-            if (($installed_version < $this_version) && (array_key_exists('update_require_upgrade', $info))) {
-                require_code('files2');
-                require_all_core_cms_code();
-                $GLOBALS['SITE_DB']->query_update('modules', array('module_version' => $this_version, 'module_hack_version' => $this_hack_version, 'module_hacked_by' => $this_hacked_by), array('module_the_name' => $codename), '', 1); // Happens first so if there is an error it won't loop (if we updated install code manually there will be an error)
-                $object->install($installed_version, $installed_hack_version, $installed_hacked_by);
-
-                persistent_cache_delete('MODULES');
-            } elseif (($installed_hack_version < $this_hack_version) && (array_key_exists('hack_require_upgrade', $info))) {
-                require_code('files2');
-                require_all_core_cms_code();
-                /*if (($installed_hacked_by!=$this_hacked_by) && ($installed_hacked_by !== null))
-                    {
-                            fatal_exit('Managed by different author');
-                    } Probably better we leave the solution to this to modders rather than just block the potential for there even to be a solution   */
-
-                $GLOBALS['SITE_DB']->query_update('modules', array('module_version' => $this_version, 'module_hack_version' => $this_hack_version, 'module_hacked_by' => $this_hacked_by), array('module_the_name' => $codename), '', 1);
-                $object->install($installed_version, $installed_hack_version, $installed_hacked_by);
-
-                persistent_cache_delete('MODULES');
-            }
-        } else {
-            require_code('zones2');
-            $zone = substr($string, 0, strpos($string, '/'));
-            if ($zone == 'pages') {
-                $zone = '';
-            }
-            reinstall_module($zone, $codename);
-        }
-    }
+    _check_module_installation_status($object, $codename);
 
     if (($GLOBALS['OUTPUT_STREAMING']) && ($out !== null)) {
         $GLOBALS['TEMPCODE_CURRENT_PAGE_OUTPUTTING'] = $out;
@@ -1137,11 +1086,10 @@ function do_block($codename, $map = array(), $ttl = null)
                 }
                 $cache = get_cache_entry($codename, $cache_identifier, $special_cache_flags, $ttl, true, $map['cache'] === '2', $map);
                 if ($cache === null) {
-                    push_query_limiting(false);
-
                     if ($object === null) {
                         list($object, $new_security_scope) = do_block_hunt_file($codename, $map);
                     }
+
                     if (!is_object($object)) {
                         // This probably happened as we uninstalled a block, and now we're getting a "missing block" message back.
 
@@ -1157,6 +1105,17 @@ function do_block($codename, $map = array(), $ttl = null)
 
                         return $out;
                     }
+
+                    push_query_limiting(false);
+
+                    $out = _check_block_installation_status($object, $codename);
+                    if ($out !== null) {
+                        if (!$GLOBALS['OUTPUT_STREAMING']) {
+                            restore_output_state(false, true);
+                        }
+                        return $out;
+                    }
+
                     $backup_langs_requested = $LANGS_REQUESTED;
                     $backup_required_all_lang = $REQUIRED_ALL_LANG;
                     $LANGS_REQUESTED = array();
@@ -1229,27 +1188,8 @@ function do_block($codename, $map = array(), $ttl = null)
     if ($object === null) {
         list($object, $new_security_scope) = do_block_hunt_file($codename, $map);
     }
-    if (is_object($object)) {
-        push_query_limiting(false);
 
-        $backup_langs_requested = $LANGS_REQUESTED;
-        $backup_required_all_lang = $REQUIRED_ALL_LANG;
-        $LANGS_REQUESTED = array();
-        $REQUIRED_ALL_LANG = array();
-        if ($new_security_scope) {
-            _solemnly_enter();
-        }
-        $cache = $object->run($map);
-        if ($new_security_scope) {
-            $_cache = $cache->evaluate();
-            _solemnly_leave($_cache);
-            if (!has_solemnly_declared(I_UNDERSTAND_XSS)) {
-                $cache = make_string_tempcode($_cache);
-            }
-        }
-
-        pop_query_limiting();
-    } else {
+    if (!is_object($object)) {
         $out = new Tempcode();
         $out->attach(@strval($object));
         if (!$GLOBALS['OUTPUT_STREAMING']) {
@@ -1257,6 +1197,34 @@ function do_block($codename, $map = array(), $ttl = null)
         }
         return $out;
     }
+
+    $out = _check_block_installation_status($object, $codename);
+    if ($out !== null) {
+        if (!$GLOBALS['OUTPUT_STREAMING']) {
+            restore_output_state(false, true);
+        }
+        return $out;
+    }
+
+    push_query_limiting(false);
+
+    $backup_langs_requested = $LANGS_REQUESTED;
+    $backup_required_all_lang = $REQUIRED_ALL_LANG;
+    $LANGS_REQUESTED = array();
+    $REQUIRED_ALL_LANG = array();
+    if ($new_security_scope) {
+        _solemnly_enter();
+    }
+    $cache = $object->run($map);
+    if ($new_security_scope) {
+        $_cache = $cache->evaluate();
+        _solemnly_leave($_cache);
+        if (!has_solemnly_declared(I_UNDERSTAND_XSS)) {
+            $cache = make_string_tempcode($_cache);
+        }
+    }
+
+    pop_query_limiting();
 
     // May it be added to cache_on?
     if ((!$DO_NOT_CACHE_THIS) && (method_exists($object, 'caching_environment')) && (has_caching_for('block'))) {
@@ -1277,6 +1245,7 @@ function do_block($codename, $map = array(), $ttl = null)
     if (!$GLOBALS['OUTPUT_STREAMING']) {
         restore_output_state(false, true);
     }
+
     return $cache;
 }
 
@@ -1812,4 +1781,84 @@ function extract_module_functions($path, $functions, $params = array(), $prefer_
     }
 
     return $out;
+}
+
+/**
+ * Check a module is properly installed/upgraded, and give an error message if it is not.
+ *
+ * @param  object $object The module object
+ * @param  ID_TEXT $codename The block name
+ */
+function _check_module_installation_status($object, $codename)
+{
+    // Get info about what is installed and what is on disk
+    if (get_value('assume_modules_correct') !== '1') {
+        $rows = persistent_cache_get('MODULES');
+        if ($rows === null) {
+            $rows = list_to_map('module_the_name', $GLOBALS['SITE_DB']->query_select('modules', array('*'), ($GLOBALS['PERSISTENT_CACHE'] === null) ? array('module_the_name' => $codename) : array()));
+            persistent_cache_set('MODULES', $rows);
+        }
+        if (array_key_exists($codename, $rows)) {
+            $info = $object->info();
+            $installed_version = $rows[$codename]['module_version'];
+            $installed_hack_version = $rows[$codename]['module_hack_version'];
+            $this_version = $info['version'];
+            $this_hack_version = $info['hack_version'];
+
+            // See if we need to do an upgrade
+            if (
+                (($installed_version < $this_version) && (array_key_exists('update_require_upgrade', $info))) ||
+                (($installed_hack_version < $this_hack_version) && (array_key_exists('hack_require_upgrade', $info)))
+            ) {
+                warn_exit(do_lang_tempcode('OUTDATED_ADDON_REMEDIES', escape_html($codename), escape_html(find_script('upgrader'))));
+            }
+        } else {
+            $_error_msg = do_lang('MISSING_MODULE', escape_html($codename));
+            $addon_manage_url = build_url(array('page' => 'admin_addons'), 'adminzone');
+            $error_msg = do_lang_tempcode('BROKEN_ADDON_REMEDIES', $_error_msg, escape_html(find_script('upgrader')), escape_html(static_evaluate_tempcode($addon_manage_url)));
+            warn_exit($error_msg);
+        }
+    }
+}
+
+/**
+ * Check a block is properly installed/upgraded, and give an error message if it is not.
+ *
+ * @param  object $object The block object
+ * @param  ID_TEXT $codename The block name
+ * @return ?Tempcode The block error output (null: no error)
+ */
+function _check_block_installation_status($object, $codename)
+{
+    // Get info about what is installed and what is on disk
+    if (get_value('assume_modules_correct') !== '1') {
+        $rows = persistent_cache_get('BLOCKS');
+        if ($rows === null) {
+            $rows = list_to_map('block_name', $GLOBALS['SITE_DB']->query_select('blocks', array('*'), ($GLOBALS['PERSISTENT_CACHE'] === null) ? array('block_name' => $codename) : array()));
+            persistent_cache_set('BLOCKS', $rows);
+        }
+        if (array_key_exists($codename, $rows)) {
+            $info = $object->info();
+            $installed_version = $rows[$codename]['block_version'];
+            $installed_hack_version = $rows[$codename]['block_hack_version'];
+            $this_version = $info['version'];
+            $this_hack_version = $info['hack_version'];
+
+            // See if we need to do an upgrade
+            if (
+                (($installed_version < $this_version) && (array_key_exists('update_require_upgrade', $info))) ||
+                (($installed_hack_version < $this_hack_version) && (array_key_exists('hack_require_upgrade', $info)))
+            ) {
+                $error_msg = do_lang_tempcode('OUTDATED_ADDON_REMEDIES', escape_html($codename), escape_html(find_script('upgrader')));
+                return div($error_msg, '7jsfqaeaaf07kawlhnvteul10wm34bcu', 'red-alert');
+            }
+        } else {
+            $_error_msg = do_lang('MISSING_BLOCK', escape_html($codename));
+            $addon_manage_url = build_url(array('page' => 'admin_addons'), 'adminzone');
+            $error_msg = do_lang_tempcode('BROKEN_ADDON_REMEDIES', $_error_msg, escape_html(find_script('upgrader')), escape_html(static_evaluate_tempcode($addon_manage_url)));
+            return div($error_msg, 'bolznyf0jx9omujol6xbmqetlcuo7d6b', 'red-alert');
+        }
+    }
+
+    return null;
 }

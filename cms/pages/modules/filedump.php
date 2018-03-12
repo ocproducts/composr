@@ -135,7 +135,7 @@ class Module_filedump
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('filedump', $error_msg)) {
+        if (!addon_installed__messaged('filedump', $error_msg)) {
             return $error_msg;
         }
 

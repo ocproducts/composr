@@ -54,7 +54,7 @@ class Block_main_friends_list
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('chat', $error_msg)) {
+        if (!addon_installed__messaged('chat', $error_msg)) {
             return $error_msg;
         }
 

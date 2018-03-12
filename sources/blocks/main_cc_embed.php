@@ -67,7 +67,7 @@ class Block_main_cc_embed
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('catalogues', $error_msg)) {
+        if (!addon_installed__messaged('catalogues', $error_msg)) {
             return $error_msg;
         }
 

@@ -298,7 +298,7 @@ class Module_calendar
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('calendar', $error_msg)) {
+        if (!addon_installed__messaged('calendar', $error_msg)) {
             return $error_msg;
         }
 

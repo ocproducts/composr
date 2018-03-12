@@ -167,7 +167,7 @@ class Module_tickets
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('tickets', $error_msg)) {
+        if (!addon_installed__messaged('tickets', $error_msg)) {
             return $error_msg;
         }
 

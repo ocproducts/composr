@@ -90,7 +90,7 @@ class Module_warnings extends Standard_crud_module
     public function pre_run($top_level = true, $type = null)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('cns_warnings', $error_msg)) {
+        if (!addon_installed__messaged('cns_warnings', $error_msg)) {
             return $error_msg;
         }
 
@@ -743,7 +743,7 @@ class Module_warnings extends Standard_crud_module
         $hooks = find_all_hook_obs('systems', 'content_meta_aware', 'Hook_content_meta_aware_');
         foreach ($hooks as $hook => $ob) {
             $cma_info = $ob->info();
-            if (($hook != 'member') && ($cma_info['table'] !== null) && ($cma_info['submitter_field'] !== null) && (($cma_info['id_field'] !== null) && strpos($cma_info['submitter_field'], ':') === false) && ($cma_info['commandr_filesystem_hook'] !== null)) {
+            if (($hook != 'member') && ($cma_info['table'] !== null) && ($cma_info['submitter_field'] !== null) && (($cma_info['id_field'] !== null) && (strpos($cma_info['submitter_field'], ':') === false)) && ($cma_info['commandr_filesystem_hook'] !== null)) {
                 $start = 0;
                 $max = 100;
 

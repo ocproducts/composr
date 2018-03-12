@@ -108,7 +108,7 @@ class Module_admin_ip_ban
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('securitylogging', $error_msg)) {
+        if (!addon_installed__messaged('securitylogging', $error_msg)) {
             return $error_msg;
         }
 

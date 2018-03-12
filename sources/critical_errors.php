@@ -18,7 +18,7 @@
  * @package    core
  */
 
-if (isset($_SERVER['argv'][0]) && strpos($_SERVER['argv'][0], 'critical_errors.php') !== false) {
+if ((isset($_SERVER['argv'][0])) && (strpos($_SERVER['argv'][0], 'critical_errors.php') !== false)) {
     $cli = ((function_exists('php_sapi_name')) && (strpos(ini_get('disable_functions'), 'php_sapi_name') === false) && (php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
     if ($cli) {
         // Critical error monitoring mode
@@ -247,7 +247,7 @@ END;
         echo '<h1 class="screen-title">Critical error &ndash; bailing out</h1>' . "\n" . '<div class="red-alert" role="error">' . $error . '</div>' . "\n";
         flush();
         if (($in_upgrader) && (strpos($error, 'Allowed memory') === false)) {
-            require_code('upgrade');
+            require_code('upgrade_integrity_scan');
             echo '<div class="box guid-{_GUID}"><div class="box-inner"><h2>Integrity check</h2><p><strong>If you think this problem could be due to corruption caused by a failed upgrade (e.g. time-out during extraction), check the following integrity check&hellip;</strong></p>', run_integrity_check(true), '</div></div><br />';
         }
         flush();

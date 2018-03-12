@@ -18,9 +18,72 @@
  * @package    core
  */
 
+/*EXTRA FUNCTIONS: mysql\_.+*/
+
 /*
 Only works with MySQL.
 */
+
+/**
+ * Run a MySQL database repair (inbuilt).
+ *
+ * @return Tempcode Results
+ */
+function database_repair_inbuilt()
+{
+    require_lang('cleanup');
+
+    $out = new Tempcode();
+
+    if (strpos(get_db_type(), 'mysql') === false) {
+        return $out;
+    }
+
+    $tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table'));
+
+    $GLOBALS['SITE_DB']->ensure_connected();
+    $connection = $GLOBALS['SITE_DB']->connection_write;
+    $static_ob = $GLOBALS['DB_STATIC_OBJECT'];
+
+    foreach ($tables as $table) {
+        if ($table['m_table'] == 'sessions') {
+            continue; // HEAP, so can't be repaired
+        }
+
+        $table = get_table_prefix() . $table['m_table'];
+
+        // Check/Repair
+        $result = $static_ob->query('CHECK TABLE ' . $table . ' FAST', $connection);
+        $status_row = end($result);
+        if ($status_row['Msg_type'] != 'status') {
+            $out->attach(paragraph(do_lang_tempcode('TABLE_ERROR', escape_html($table), escape_html($status_row['Msg_type']), array(escape_html($status_row['Msg_text']))), 'dfsdgdsgfgd'));
+            $result2 = $static_ob->query('REPAIR TABLE ' . $table, $connection);
+            $status_row_2 = end($result2);
+            $out->attach(paragraph(do_lang_tempcode('TABLE_FIXED', escape_html($table), escape_html($status_row_2['Msg_type']), array(escape_html($status_row_2['Msg_text']))), 'dfsdfgdst4'));
+        }
+    }
+
+    return $out;
+}
+
+/**
+ * Run a MySQL database repair (schema check).
+ *
+ * @return Tempcode Results
+ */
+function database_repair_wrap()
+{
+    require_lang('cleanup');
+
+    $repair_ob = new DatabaseRepair();
+    list($phase, $sql) = $repair_ob->search_for_database_issues();
+
+    if ($sql != '') {
+        return do_lang_tempcode('MYSQL_QUERY_CHANGES_MAKE_' . strval($phase), escape_html($sql));
+    }
+
+    return do_lang_tempcode('NO_MYSQL_QUERY_CHANGES_MAKE');
+}
 
 /**
  * Provide advice for repairing database issues.

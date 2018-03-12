@@ -15,6 +15,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('top_posters')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('top_posters')), 'p9l4c31b4jc75gl2g1jywdr6elxnyecw', 'red-alert');
+}
+
 if (get_forum_type() != 'cns') {
     return paragraph(do_lang_tempcode('NO_CNS'), 'shcpt9ntekawt1e640rsn17792io5y22', 'red-alert');
 }

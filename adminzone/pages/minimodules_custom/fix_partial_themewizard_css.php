@@ -25,7 +25,7 @@ TODO: Merge into ":theme_debug" #3361
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 $error_msg = new Tempcode();
-if (!addon_installed__autoinstall('theme_debug', $error_msg)) {
+if (!addon_installed__messaged('theme_debug', $error_msg)) {
     return $error_msg;
 }
 

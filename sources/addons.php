@@ -43,23 +43,23 @@ function get_default_addon_details()
 /**
  * Get info about an addon, simulating an extended version of the traditional Composr-addon database row.
  *
- * @param  string $addon The name of the addon
+ * @param  string $addon_name The name of the addon
  * @param  boolean $get_dependencies_on_this Whether to search for dependencies on this
  * @param  ?array $row Database row (null: lookup via a new query)
  * @param  ?array $ini_info .ini-format info (needs processing) (null: unknown / N/A)
  * @param  ?PATH $path Force reading from a particular path (null: no path)
  * @return array The map of details
  */
-function read_addon_info($addon, $get_dependencies_on_this = false, $row = null, $ini_info = null, $path = null)
+function read_addon_info($addon_name, $get_dependencies_on_this = false, $row = null, $ini_info = null, $path = null)
 {
     // Hook file has highest priority...
 
     if ($path === null) {
         $is_orig = false;
-        $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($addon) . '.php';
+        $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($addon_name) . '.php';
         if (!file_exists($path)) {
             $is_orig = true;
-            $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($addon) . '.php';
+            $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($addon_name) . '.php';
         }
     } else {
         $is_orig = (strpos($path, '/sources_custom/hooks/systems/addon_registry/') !== false);
@@ -119,7 +119,7 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
         }
 
         $addon_info = array(
-            'name' => $addon,
+            'name' => $addon_name,
             'author' => $author,
             'organisation' => $organisation,
             'version' => float_to_raw_string($version, 2, true),
@@ -134,7 +134,7 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
             'default_icon' => $default_icon,
         );
         if ($get_dependencies_on_this) {
-            $addon_info['dependencies_on_this'] = find_addon_dependencies_on($addon);
+            $addon_info['dependencies_on_this'] = find_addon_dependencies_on($addon_name);
         }
 
         return $addon_info;
@@ -167,7 +167,7 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
             'default_icon' => null,
         );
         if ($get_dependencies_on_this) {
-            $addon_info['dependencies_on_this'] = find_addon_dependencies_on($addon);
+            $addon_info['dependencies_on_this'] = find_addon_dependencies_on($addon_name);
         }
 
         return $addon_info;
@@ -176,7 +176,7 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
     // Next try what is in the database...
 
     if ($row === null) {
-        $addon_rows = $GLOBALS['SITE_DB']->query_select('addons', array('*'), array('addon_name' => $addon), '', 1);
+        $addon_rows = $GLOBALS['SITE_DB']->query_select('addons', array('*'), array('addon_name' => $addon_name), '', 1);
         if (array_key_exists(0, $addon_rows)) {
             $row = $addon_rows[0];
         }
@@ -196,11 +196,11 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
             'default_icon' => null,
         );
 
-        $addon_info['files'] = array_unique(collapse_1d_complexity('filename', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename'), array('addon_name' => $addon))));
-        $addon_info['dependencies'] = collapse_1d_complexity('addon_name_dependant_upon', $GLOBALS['SITE_DB']->query_select('addons_dependencies', array('addon_name_dependant_upon'), array('addon_name' => $addon, 'addon_name_incompatibility' => 0)));
-        $addon_info['incompatibilities'] = collapse_1d_complexity('addon_name_dependant_upon', $GLOBALS['SITE_DB']->query_select('addons_dependencies', array('addon_name_dependant_upon'), array('addon_name' => $addon, 'addon_name_incompatibility' => 1)));
+        $addon_info['files'] = array_unique(collapse_1d_complexity('filename', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename'), array('addon_name' => $addon_name))));
+        $addon_info['dependencies'] = collapse_1d_complexity('addon_name_dependant_upon', $GLOBALS['SITE_DB']->query_select('addons_dependencies', array('addon_name_dependant_upon'), array('addon_name' => $addon_name, 'addon_name_incompatibility' => 0)));
+        $addon_info['incompatibilities'] = collapse_1d_complexity('addon_name_dependant_upon', $GLOBALS['SITE_DB']->query_select('addons_dependencies', array('addon_name_dependant_upon'), array('addon_name' => $addon_name, 'addon_name_incompatibility' => 1)));
         if ($get_dependencies_on_this) {
-            $addon_info['dependencies_on_this'] = find_addon_dependencies_on($addon);
+            $addon_info['dependencies_on_this'] = find_addon_dependencies_on($addon_name);
         }
         return $addon_info;
     }

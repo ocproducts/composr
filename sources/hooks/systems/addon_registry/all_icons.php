@@ -488,7 +488,6 @@ class Hook_addon_registry_all_icons
             'themes/default/images/icons/menu/adminzone/audit/statistics/search.svg',
             'themes/default/images/icons/menu/adminzone/audit/statistics/statistics.svg',
             'themes/default/images/icons/menu/adminzone/audit/statistics/submits.svg',
-            'themes/default/images/icons/menu/adminzone/audit/statistics/top_keywords.svg',
             'themes/default/images/icons/menu/adminzone/audit/statistics/top_referrers.svg',
             'themes/default/images/icons/menu/adminzone/audit/statistics/users_online.svg',
             'themes/default/images/icons/menu/adminzone/audit/trackbacks.svg',

@@ -70,7 +70,7 @@ class Module_admin_errorlog
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('errorlog', $error_msg)) {
+        if (!addon_installed__messaged('errorlog', $error_msg)) {
             return $error_msg;
         }
 

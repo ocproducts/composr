@@ -67,7 +67,7 @@ class Module_cms_cns_groups extends Standard_crud_module
     public function pre_run($top_level = true, $type = null)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('cns_clubs', $error_msg)) {
+        if (!addon_installed__messaged('cns_clubs', $error_msg)) {
             return $error_msg;
         }
 

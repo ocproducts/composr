@@ -962,9 +962,10 @@ function find_updated_addons()
  */
 function find_addon_effective_mtime($addon_name)
 {
-    $files_rows = array_unique(collapse_1d_complexity('filename', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename'), array('addon_name' => $addon_name))));
+    $addon_info = read_addon_info($addon_name);
+
     $mtime = null;
-    foreach ($files_rows as $filename) {
+    foreach ($addon_info['files'] as $filename) {
         if (@file_exists(get_file_base() . '/' . $filename)) { //@d due to possible bad file paths
             $_mtime = filemtime(get_file_base() . '/' . $filename);
             $mtime = ($mtime === null) ? $_mtime : max($mtime, $_mtime);
@@ -1084,6 +1085,54 @@ function inform_about_addon_uninstall($addon, $also_uninstalling = array(), $add
 }
 
 /**
+ * Find what addons a set of files are in.
+ *
+ * @param  array $paths List of files
+ * @return array A map between file path and addon
+ */
+function find_addons_for_files($paths)
+{
+    if (count($paths) == 0) {
+        return array();
+    }
+
+    $addons = array();
+    foreach ($paths as $path) {
+        $addons[$path] = array();
+    }
+
+    $or_list = '';
+    foreach ($paths as $path) {
+        if ($or_list != '') {
+            $or_list .= ' OR ';
+        }
+        $or_list .= db_string_equal_to('filename', $path);
+    }
+    $addon_files = $GLOBALS['SITE_DB']->query_select('addons_files', array('addon_name', 'filename'), array(), 'WHERE ' . $or_list);
+    foreach ($addon_files as $_path) {
+        if (in_array($_path['filename'], $paths)) {
+            $addons[$_path['filename']][] = $_path['addon_name'];
+        }
+    }
+
+    $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
+    foreach ($hooks as $hook => $ob) {
+        $files = $ob->get_file_list();
+        foreach ($files as $path) {
+            if (in_array($path, $paths)) {
+                $addons[$path][] = $hook;
+            }
+        }
+    }
+
+    foreach ($addons as &$files) {
+        $files = array_unique($files);
+    }
+
+    return $addons;
+}
+
+/**
  * Completely uninstall the specified addon from the system.
  *
  * @param  string $addon Name of the addon
@@ -1105,10 +1154,10 @@ function uninstall_addon($addon, $clear_caches = true)
     uninstall_addon_soft($addon);
     $last = array();
     $zones_gone = array();
+    $addons_for_files = find_addons_for_files($addon_info['files']);
     foreach ($addon_info['files'] as $filename) {
         if (file_exists(get_file_base() . '/' . $filename)) {
-            $test = $GLOBALS['SITE_DB']->query_select_value('addons_files', 'COUNT(*)', array('filename' => $filename));
-            if ($test <= 1) { // Make sure it's not shared with other addons
+            if (count($addons_for_file[$filename]) <= 1) { // Make sure it's not shared with other addons
                 if (substr($filename, 0, 37) == 'sources/hooks/systems/addon_registry/') {
                     $last[] = $filename;
                     continue;

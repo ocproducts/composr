@@ -70,7 +70,7 @@ class Module_admin_referrals
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('referrals', $error_msg)) {
+        if (!addon_installed__messaged('referrals', $error_msg)) {
             return $error_msg;
         }
 

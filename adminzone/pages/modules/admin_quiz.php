@@ -74,7 +74,7 @@ class Module_admin_quiz
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('quizzes', $error_msg)) {
+        if (!addon_installed__messaged('quizzes', $error_msg)) {
             return $error_msg;
         }
 

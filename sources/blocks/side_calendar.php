@@ -67,7 +67,7 @@ class Block_side_calendar
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('calendar', $error_msg)) {
+        if (!addon_installed__messaged('calendar', $error_msg)) {
             return $error_msg;
         }
 

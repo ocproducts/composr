@@ -292,7 +292,7 @@ function install_cns($upgrade_from = null)
         rename_config_option('post_history_days', 'post_read_history_days');
 
         // Directory moving
-        require_code('upgrade');
+        require_code('upgrade_lib');
         $fields = array(
             'm_photo_url' => 'uploads/ocf_photos',
             'm_photo_thumb_url' => 'uploads/ocf_photos_thumbs',

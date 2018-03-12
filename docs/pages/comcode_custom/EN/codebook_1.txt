@@ -295,14 +295,14 @@ and removes:
 3) uploaded files that relate to downloads
 4) stored values that relate to downloads
 
-Composr modules auto-install/auto-upgrade when accessed.
+Composr modules check if installation/upgrade is needed when accessed.
 If a user is installing an addon, it will install any modules/blocks within it, if said module/block was not already installed.
 If a user is uninstalling an addon, it will uninstall any modules/blocks within it.
 
 If you are supplying an updated module to a user, outside of the formal addon process:
  - If the database structure has changed, code the module with correct versioning to update the database structure (versioning is described further down)
  - Make sure the user does [b]not[/b] uninstall the old module, because we do not wish to lose the data
- - Get the user to simply replace the old module file with your new one; just accessing it will then cause it to auto-upgrade
+ - Get the user to simply replace the old module file with your new one; just accessing it will then cause it to prompt to upgrade
 
 [title="5"]The [tt]install[/tt] function[/title]
 
@@ -386,7 +386,7 @@ function info()
 	...
 	$info['version'] = 2;
 	// Setting 'update_require_upgrade' makes Composr realise it can do an upgrade
-	//  At run-time it will compare the version in the database, to the version above and auto-upgrade if required
+	//  At run-time it will compare the version in the database, to the version above and prompt to upgrade if required
 	$info['update_require_upgrade'] = true;
 	...
 	return $info;
@@ -707,7 +707,6 @@ The main five implementation differences and points of note are:
 2) You should define a [tt]BLOCK_blockname_DESCRIPTION[/tt] and [tt]BLOCK_blockname_USE[/tt] language string for the block, to explain what it does and what it is for.
 3) The [tt]info[/tt] method defines a [tt]parameters[/tt] entry in the array returned. This is simply a list of the parameters the block can take. It is used by the block construction tool. For each parameter listed there there should be a language string [tt]BLOCK_blockname_PARAM_parametername[/tt]. Look at how existing block parameter language strings are done to see how to lay it out -- the format is parsed by the block construction tool so it is quite strict. In particular reference the default value in your string.
 4) You can allow the block to cache by defining a [tt]caching_environment[/tt] method. This returns an array which has a [tt]ttl[/tt] (the number of minutes the cache lasts) and a [tt]cache_on[/tt] which is a string containing PHP code that defines the signature (array) for a cached instance of the block. The PHP code can make use of [tt]$map[/tt], and must define a different array for each possible way the block could turn out (i.e. the array is a signature that distinguishes that particular appearance, based on the block's parameters and optionally other things like the viewing user's usergroup membership).
-5) Blocks do not automatically upgrade when run like modules do. If you define upgrade paths you need to trigger them from the Composr upgrader script.
 
 Blocks should be documented, and this is done by creating specially named language strings. These strings are utilised by the Block construction assistant to allow the webmaster to add in the block in a user friendly fashion. Imagine a block called [tt]example[/tt] with parameters [tt]a[/tt] and [tt]b[/tt]. You would define language strings as follows:
 [code="INI"]

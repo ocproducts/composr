@@ -107,7 +107,7 @@ class Module_admin_commandr
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('commandr', $error_msg)) {
+        if (!addon_installed__messaged('commandr', $error_msg)) {
             return $error_msg;
         }
 

@@ -83,7 +83,7 @@ class Module_cms_chat
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('chat', $error_msg)) {
+        if (!addon_installed__messaged('chat', $error_msg)) {
             return $error_msg;
         }
 

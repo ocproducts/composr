@@ -18,10 +18,25 @@
  */
 class blocks_test_set extends cms_test_case
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        require_code('zones2');
+    }
+
+    public function testBlocksNotExiting()
+    {
+        $blocks = find_all_blocks();
+        foreach (array_keys($blocks) as $block) {
+            $path = _get_block_path($block);
+            $c = file_get_contents($path);
+            $this->assertTrue(strpos($c, 'warn_exit(') === false, 'warn_exit in ' . $path);
+        }
+    }
+
     public function testBlocksNotOverDefined()
     {
-        require_code('zones2');
-
         require_code('caches3');
         erase_block_cache();
 

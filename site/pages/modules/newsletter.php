@@ -235,7 +235,7 @@ class Module_newsletter
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('newsletter', $error_msg)) {
+        if (!addon_installed__messaged('newsletter', $error_msg)) {
             return $error_msg;
         }
 

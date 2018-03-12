@@ -15,6 +15,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('group_points')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('group_points')), 'tl49gdaw7tr37siemgg8nx85kh4uqpqd', 'red-alert');
+}
+
 if (!addon_installed('points')) {
     return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('points')), '3umhxm898adwsf01425xck2ub40zj9v7', 'red-alert');
 }

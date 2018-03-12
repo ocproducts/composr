@@ -15,6 +15,8 @@
 
 // This inserts GUIDs throughout, and records them all to guids.dat (which the template editor uses).
 
+// This is useful when wanting to generate quick GUIDs by hand: https://www.browserling.com/tools/random-string
+
 /*
     NB: Multi line do_template calls may be uglified. You can find those in your IDE using
     do_template[^\n]*_GUID[^\n]*\n\t+'
@@ -23,7 +25,7 @@
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 $error_msg = new Tempcode();
-if (!addon_installed__autoinstall('composr_release_build', $error_msg)) {
+if (!addon_installed__messaged('composr_release_build', $error_msg)) {
     return $error_msg;
 }
 

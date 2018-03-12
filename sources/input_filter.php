@@ -475,7 +475,7 @@ function filter_form_field_default($name, $val, $live = false)
                                 check_wordfilter($val, $name, true, true, false);
                                 $WORDS_TO_FILTER_CACHE = $temp_remember;
                             } else {
-                                if ($live && strpos($val, $attributes['embed']) !== false) {
+                                if (($live) && (strpos($val, $attributes['embed']) !== false)) {
                                     warn_exit_wordfilter($name, do_lang_tempcode('WORDFILTER_YOU', escape_html($attributes['embed']))); // In soviet Russia, words filter you
                                 }
                             }

@@ -880,7 +880,7 @@ function _transifex($call, $http_verb, $params = array(), $trigger_error = true)
     if (substr($call, 0, 1) != '/') {
         warn_exit('Calls must start with /');
     }
-    if (substr($call, -1) != '/' && strpos($call, '/?') === false) {
+    if ((substr($call, -1) != '/') && (strpos($call, '/?') === false)) {
         warn_exit('Calls must end with /');
     }
 

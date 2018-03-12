@@ -36,7 +36,7 @@ class Hook_commandr_command_database_upgrade
         if ((array_key_exists('h', $options)) || (array_key_exists('help', $options))) {
             return array('', do_command_help('database_upgrade', array('h'), array()), '', '');
         } else {
-            require_code('upgrade');
+            require_code('upgrade_db_upgrade');
             $result = upgrade_modules();
             if ($result == '') {
                 $result = do_lang('NO_ACTION_REQUIRED');

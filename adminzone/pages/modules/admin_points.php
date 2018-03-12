@@ -76,7 +76,7 @@ class Module_admin_points
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('points', $error_msg)) {
+        if (!addon_installed__messaged('points', $error_msg)) {
             return $error_msg;
         }
 

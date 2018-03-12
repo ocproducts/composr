@@ -637,7 +637,7 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]no_catalogue_field_assembly_fieldmaps[/tt] -- see above, but only if fieldmap assembly not required
   - [tt]no_catalogue_field_assembly_grid[/tt] -- see above, but only if grid assembly not required
   - [tt]no_catalogue_field_assembly_tabular[/tt] -- see above, but only if tabular assembly not required
-  - [tt]assume_modules_correct[/tt] -- set to '1' if module auto-installation/auto-upgrade should not happen; this will improve performance
+  - [tt]assume_modules_correct[/tt] -- set to '1' if module/block version checking should not happen; this will improve performance
   - [tt]no_priority_redirects[/tt] -- set to '1' if redirects should only be considered if a page cannot be found via other means
   - [tt]disable_tags[/tt] -- set to '1' if you don't want tags to be generated (small performance tweak)
   - [tt]disable_awards_in_titles[/tt] -- set this to '1' if you don't want awards to be displayed on content screens (small performance improvement)

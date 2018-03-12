@@ -23,592 +23,149 @@
  */
 function upgrade_script()
 {
+    // Init...
+
     safe_ini_set('ocproducts.xss_detect', '0');
 
     require_lang('upgrade');
     require_all_core_cms_code();
+
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(180);
     }
 
-    if ((array_key_exists('given_password', $_POST))) {
-        $given_password = post_param_string('given_password', false, INPUT_FILTER_NONE);
-        require_code('crypt_master');
-        if (check_master_password($given_password)) {
-            $type = get_param_string('type', 'browse');
-
-            require_code('abstract_file_manager');
-
-            up_do_header();
-
-            if (post_param_string('ftp_username', '') != '') {
-                $_POST['uses_ftp'] = '1';
-                _ftp_info(true); // To give early error if there's a problem
-            }
-
-            // Handle shared site upgrading with no per-site UI
-            global $SITE_INFO;
-            if (isset($SITE_INFO['custom_file_base_stub'])) { // This upgrader script must be called on a particular site with a real DB (e.g. shareddemo.composr.info), but will run for all sites on same install
-                require_code('shared_installs');
-                $u = current_share_user();
-                if ($u !== null) {
-                    upgrade_sharedinstall_sites();
-                    global $SITE_INFO;
-                    $cmd = 'mysqldump -u' . escapeshellarg_wrap($SITE_INFO['db_site_user'] . '_shareddemo') . ' -p' . escapeshellarg_wrap($SITE_INFO['db_site_password']) . ' ' . escapeshellarg_wrap($SITE_INFO['db_site']) . '_shareddemo';
-                    echo '<p>Now regenerate <kbd>template.sql</kbd>, using something like <kbd>' . escape_html($cmd) . ' > ~/public_html/uploads/website_specific/compo.sr/demonstratr/template.sql</kbd></p>';
-                    up_do_footer();
-                    return;
-                }
-            }
-
-            $show_more_link = true;
-
-            switch ($type) {
-                case 'misc': // LEGACY
-                case 'browse':
-                    clear_caches_1();
-
-                    $l_choices = do_lang('FU_CHOICES');
-                    $oc = (get_option('site_closed') == '0') ? do_lang('OPEN') : do_lang('CLOSED');
-                    $a = float_to_raw_string(cms_version_number(), 10, true);
-                    $b = get_value('version');
-                    if ($b === null) {
-                        $b = do_lang('UNKNOWN');
-                    } else {
-                        $b = float_to_raw_string(floatval($b), 10, true); // Normalise decimal places
-                    }
-                    $l_up_info = do_lang('FU_UP_INFO' . (($a == $b) ? '_1' : '_2'), $a, $b);
-                    $l_fu_closedness = do_lang('FU_CLOSENESS', $oc);
-                    $l_maintenance = do_lang('FU_MAINTENANCE');
-                    $l_upgrading = do_lang('FU_UPGRADING');
-                    $l_take_backup = do_lang('FU_TAKE_BACKUP');
-                    $l_clear_caches = fu_link('upgrader.php?type=decache', do_lang('FU_CLEAR_CACHES'));
-                    $l_check_permissions = fu_link('upgrader.php?type=check_perms', do_lang('FU_CHECK_PERMISSIONS'));
-                    $l_fix_permissions = fu_link('upgrader.php?type=fix_perms', do_lang('FU_FIX_PERMISSIONS'));
-                    $l_close_site = fu_link('upgrader.php?type=close_site', do_lang('FU_CLOSE_SITE'), get_option('site_closed') == '1');
-                    $l_integrity_scan = fu_link('upgrader.php?type=integrity_scan&allow_merging=1', do_lang('FU_INTEGRITY_SCAN'), false, do_lang('FU_WILL_MERGE'));
-                    $l_integrity_scan_no_merging = fu_link('upgrader.php?type=integrity_scan', do_lang('FU_INTEGRITY_SCAN_NO_CSS_MERGE'));
-                    $l_database_upgrade = fu_link('upgrader.php?type=db_upgrade', do_lang('FU_DATABASE_UPGRADE'));
-                    $l_theme_upgrade = fu_link('upgrader.php?type=theme_upgrade', do_lang('FU_THEME_UPGRADE'));
-                    $l_open_site = fu_link('upgrader.php?type=open_site', do_lang('FU_OPEN_SITE'), get_option('site_closed') == '0');
-                    $l_error_correction = do_lang('FU_ERROR_CORRECTION');
-                    $l_not_for_patch = do_lang('FU_NOT_FOR_PATCH');
-                    $l_tutorial = fu_link(get_tutorial_url('tut_upgrade'), do_lang('FU_TUTORIAL'));
-                    $l_release_notes = do_lang('FU_RELEASE_NOTES');
-                    $l_refer_release_notes = do_lang('FU_REFER_RELEASE_NOTES');
-                    $news_id = post_param_integer('news_id', null);
-                    $from_version = post_param_string('from_version', strval(cms_version()) . '.' . cms_version_minor());
-                    $tar_url = '';
-                    if ($news_id !== null) {
-                        require_code('files');
-                        $fetch_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/fetch_release_details.php?format=json&news_id=' . strval($news_id) . '&from_version=' . urlencode($from_version);
-                        $news = http_get_contents($fetch_url, array('timeout' => 30.0));
-
-                        $details = json_decode($news, true);
-                        if ($details[0] != '') {
-                            $l_refer_release_notes = $details[0];
-                            if ($details[2] != '') {
-                                $l_refer_release_notes .= '<div style="overflow: auto; height: 150px">' . $details[2] . '</div>';
-                            }
-                        }
-                        $tar_url = $details[1];
-                    }
-                    $l_download = fu_link('upgrader.php?type=file_upgrade&tar_url=' . urlencode(base64_encode($tar_url)), do_lang('FU_DOWNLOAD'));
-                    $l_important = do_lang('IMPORTANT');
-                    $l_bugs = do_lang('FU_BUGS');
-                    $l_upgrade_steps = do_lang('FU_UPGRADE_STEPS');
-                    $l_action = do_lang('ACTION');
-                    $l_step = do_lang('FU_STEP');
-                    $l_estimated_time = do_lang('FU_ESTIMATED_TIME');
-                    $l_safe_mode = fu_link('index.php?keep_safe_mode=1', do_lang('FU_SAFE_MODE'));
-                    $num_addons = $GLOBALS['SITE_DB']->query_select_value('addons', 'COUNT(*)');
-                    $l_addon_management = fu_link('adminzone/index.php?page=admin_addons&keep_safe_mode=1', do_lang('FU_ADDON_MANAGEMENT', integer_format($num_addons)), $num_addons == 0);
-                    $l_remove_addon_files = fu_link('upgrader.php?type=addon_remove', do_lang('FU_REMOVE_ADDON_FILES'));
-                    $l_customisations = do_lang('FU_CUSTOMISATIONS');
-                    $closed = comcode_to_tempcode(get_option('closed'), null, true);
-                    $closed_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'SITE'), get_module_zone('admin_config'), array(), false, false, false, 'group_CLOSED_SITE');
-
-                    echo "
-<p>{$l_choices}</p>
-
-<div style=\"margin: 0 50px\">
-    <h2>{$l_maintenance}&hellip;</h2><ul class=\"compact-list\">
-        <li>{$l_clear_caches}</li>";
-                    if (!is_suexec_like()) {
-                        echo "
-                            ";
-                    }
-                    if (!GOOGLE_APPENGINE) {
-                        echo "
-        <li>{$l_check_permissions}</li>
-        <li>{$l_fix_permissions}</li>
-                                        ";
-                    }
-                    echo "
-    </ul>";
-
-                    echo "
-    <h2 style=\"margin-top: 2em\">{$l_upgrading}&hellip;</h2>
-
-    <h3>{$l_important}</h3>
-
-    <p>{$l_bugs}</p>
-
-    <h3>{$l_release_notes}</h3>
-
-    <p>{$l_refer_release_notes}</p>
-
-    <h3>{$l_upgrade_steps}</h3>
-
-    <div class=\"wide-table-wrap\"><table class=\"columned-table autosized-table results-table wide-table spaced-table\">
-        <thead>
-            <tr>
-                    <th>{$l_step}</th>
-                    <th>{$l_action}</th>
-                    <th>{$l_estimated_time}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><th>X</th><td>{$l_not_for_patch} {$l_tutorial}</td><td>" . escape_html(display_time_period(60 * 120)) . "</td></tr>
-            <tr><th>1</th><td>{$l_take_backup}</td><td>" . escape_html(display_time_period(60 * 120)) . "</td></tr>
-            <tr><th>2</th><td>{$l_close_site}  {$l_fu_closedness}<br /><q style=\"font-style: italic\">" . $closed->evaluate() . "</q> <span class=\"associated-link\"><a href=\"" . escape_html($closed_url->evaluate()) . "\" title=\"(this link will open in a new window)\" target=\"_blank\">" . do_lang('CHANGE') . "</a></span></td><td>" . escape_html(display_time_period(60)) . "</td></tr>
-            <tr><th>3</th><td>{$l_download}</td><td>" . escape_html(display_time_period(60 * 5)) . "</td></tr>
-            <tr><th>4</th><td>{$l_not_for_patch} {$l_integrity_scan_no_merging}<!-- " . do_lang('OR') . " {$l_integrity_scan}--></td><td>" . str_replace(' ', '&nbsp;', escape_html(display_time_period(60 * 10))) . "&nbsp;&dagger;</td></tr>
-            <tr><th>5</th><td>{$l_not_for_patch} {$l_database_upgrade}<br />{$l_up_info}</td><td>" . escape_html(display_time_period(60 * 5)) . "</td></tr>
-            <tr><th>6</th><td>{$l_not_for_patch} {$l_theme_upgrade}</td><td>" . escape_html(display_time_period(60 * 5)) . "</td></tr>
-            <tr><th>7</th><td>{$l_clear_caches}</td><td>1 minute</td></tr>
-            <tr><th>8</th><td>{$l_open_site}  {$l_fu_closedness}</td><td>1 minute</td></tr>
-        </tbody>
-    </table></div>
-
-    <p>&dagger; {$l_customisations}</p>
-
-    <h2 style=\"margin-top: 2em\">{$l_error_correction}&hellip;</h2><ul class=\"compact-list\">
-        <li style=\"padding: 0.5em\">{$l_safe_mode}</li>
-        <li style=\"padding: 0.5em\">{$l_addon_management}</li>
-        <li style=\"padding: 0.5em\">{$l_remove_addon_files}</li>
-    </ul>
-</div>
-";
-                    $show_more_link = false;
-                    break;
-
-                case 'decache':
-                    clear_caches_2();
-                    echo '<p>' . do_lang('SUCCESS') . '</p>';
-                    break;
-
-                case 'check_perms':
-                    echo check_perms();
-                    break;
-
-                case 'fix_perms':
-                    echo fix_perms();
-                    break;
-
-                case 'open_site':
-                    set_option('site_closed', '0');
-                    echo '<p>' . do_lang('SUCCESS') . '</p>';
-                    break;
-
-                case 'close_site':
-                    set_option('closed', do_lang('FU_CLOSED_FOR_UPGRADES', get_site_name()));
-                    set_option('site_closed', '1');
-                    echo '<p>' . do_lang('SUCCESS') . '</p>';
-                    break;
-
-                case 'file_upgrade':
-                    appengine_live_guard();
-
-                    require_code('version2');
-                    $personal_upgrader_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=' . urlencode(get_version_dotted());
-                    $hooks = find_all_hooks('systems', 'addon_registry');
-                    foreach (array_keys($hooks) as $hook) {
-                        if (is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $hook . '.php')) {
-                            $personal_upgrader_url .= '&addon_' . $hook . '=1';
-                        }
-                    }
-
-                    if (get_param_string('tar_url', '', INPUT_FILTER_URL_GENERAL) == '') {
-                        echo do_lang('FU_FILE_UPGRADE_INFO');
-                    }
-                    echo do_lang('FU_FILE_UPGRADE_INFO_MANUAL', escape_html($personal_upgrader_url));
-                    echo '<form title="' . do_lang('PROCEED') . '" enctype="multipart/form-data" action="upgrader.php?type=_file_upgrade" method="post">' . post_fields_relay();
-                    echo '<p><label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" size="80" value="' . escape_html(base64_decode(get_param_string('tar_url', '', INPUT_FILTER_URL_GENERAL))) . '" /></p>';
-                    echo '<p><label for="dry_run"><input type="checkbox" id="dry_run" name="dry_run" value="1" /> ' . do_lang('FU_DRY_RUN') . '</label></p>';
-                    if ((get_local_hostname() == 'compo.sr') || ($GLOBALS['DEV_MODE'])) { // for ocProducts to use on own site, for testing
-                        echo '<p><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" /></p>';
-                        echo '<script ' . csp_nonce_html() . '>var url=document.getElementById(\'url\'); url.addEventListener(\'change\', function() { document.getElementById(\'upload\').disabled=url.value!=\'\'; });</script>';
-                    }
-                    echo '<p><input class="buttons--proceed button-screen" type="submit" value="' . do_lang('PROCEED') . '" /></p>';
-                    echo '</form>';
-                    $show_more_link = false;
-                    break;
-
-                case '_file_upgrade':
-                    appengine_live_guard();
-
-                    // Dry run?
-                    $dry_run = (post_param_integer('dry_run', 0) == 1);
-                    if ($dry_run) {
-                        echo '<p>' . do_lang('FU_DOING_DRY_RUN') . '</p>';
-                    }
-
-                    // Turn off limits, this may be exhaustive
-                    if (php_function_allowed('set_time_limit')) {
-                        @set_time_limit(0);
-                    }
-                    disable_php_memory_limit();
-
-                    // Download file
-                    require_code('tar');
-                    $local_temp_path = false;
-                    if ((post_param_string('url', '', INPUT_FILTER_URL_GENERAL) == '') && ((get_local_hostname() == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
-                        $temp_path = $_FILES['upload']['tmp_name'];
-                    } else {
-                        if (post_param_string('url', '', INPUT_FILTER_URL_GENERAL) == '') {
-                            warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
-                        }
-
-                        $url = post_param_string('url', false, INPUT_FILTER_URL_GENERAL);
-                        if (substr($url, 0, strlen(get_base_url() . '/')) == get_base_url() . '/') {
-                            $local_temp_path = true;
-                            $temp_path = get_custom_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/')));
-                            if (!is_file($temp_path)) {
-                                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
-                            }
-                        } else {
-                            $temp_path = cms_tempnam();
-                            $myfile = fopen($temp_path, 'wb');
-                            http_get_contents($url, array('write_to_file' => $myfile));
-                            fclose($myfile);
-                        }
-                    }
-
-                    // We do support using a .zip (e.g. manual installer package), but we need to convert it
-                    if (substr(strtolower($temp_path), -4) == '.zip') {
-                        require_code('tar2');
-                        $temp_path_new = convert_zip_to_tar($temp_path);
-                        @unlink($temp_path);
-                        rename($temp_path_new, $temp_path);
-                        fix_permissions($temp_path);
-                    }
-
-                    // Open up TAR
-                    $upgrade_resource = tar_open($temp_path, 'rb');
-                    //tar_extract_to_folder($upgrade_resource, '', true);
-                    $directory = tar_get_directory($upgrade_resource); // Uses up to around 5MB of RAM
-
-                    // Hopefully $popup_simple_extract will be true (i.e. suEXEC mode), as it is safer
-                    $popup_simple_extract = (_ftp_info() === false);
-                    if ($popup_simple_extract) {
-                        $data = array('todo' => array());
-                    } else {
-                        echo '<p>' . do_lang('EXTRACTING_MESSAGE') . '</p>';
-                    }
-
-                    // Find addons
-                    $addon_contents = array();
-                    foreach ($directory as $upgrade_file2) {
-                        // See if we can find an addon registry file in our upgrade file
-                        if ((strpos($upgrade_file2['path'], '/addon_registry/') !== false) && (substr($upgrade_file2['path'], -4) == '.php')) {
-                            $file_data = tar_get_file($upgrade_resource, $upgrade_file2['path']);
-                            $addon_contents[basename($upgrade_file2['path'], '.php')] = $file_data['data'];
-                        }
-                    }
-                    $files_for_tar_updating = array();
-
-                    // Process files
-                    $i = 0;
-                    $cnt = count($directory);
-                    foreach ($directory as $offset => $upgrade_file) {
-                        $i++;
-                        echo '<!-- Looking at ' . escape_html($upgrade_file['path']) . ' (' . strval($i) . ' / ' . strval($cnt) . ') -->';
-
-                        // Skip over these, from manual installer package (which may be used for an upgrade)
-                        if ($upgrade_file['path'] == '_config.php') {
-                            continue;
-                        }
-                        if ($upgrade_file['path'] == 'install.php') {
-                            continue;
-                        }
-                        if ($upgrade_file['path'] == 'install.sql' || $upgrade_file['path'] == '_config.php.template') {
-                            continue;
-                        }
-
-                        if (!$popup_simple_extract) {
-                            // See if we can skip the file, if the on-disk version is identical?
-                            if ((file_exists(get_file_base() . '/' . $upgrade_file['path'])) && (filesize(get_file_base() . '/' . $upgrade_file['path']) == $upgrade_file['size'])) {
-                                $tar_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
-                                if (file_get_contents(get_file_base() . '/' . $upgrade_file['path']) == $tar_data['data']) {
-                                    echo do_lang('U_SKIPPING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
-                                    continue;
-                                }
-                            }
-                        }
-
-                        // What kind of file did we find?
-                        if ((strpos($upgrade_file['path'], '/addon_registry/') !== false) && ((file_exists(get_file_base() . '/' . $upgrade_file['path'])) || (strpos($upgrade_file['path'], '/core_') !== false))) {
-                            // Addon registry file, for installed addon...
-
-                            if (substr($upgrade_file['path'], -1) != '/') {
-                                if ($popup_simple_extract) {
-                                    $data['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
-                                } else {
-                                    $file_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
-                                    if (!$dry_run) {
-                                        afm_make_file($upgrade_file['path'], $file_data['data'], ($file_data['mode'] & 0002) != 0);
-                                    }
-                                    echo do_lang('U_EXTRACTING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
-                                }
-                            }
-                        } else {
-                            // Some other file...
-
-                            $found = null;
-                            if (substr($upgrade_file['path'], -1) != '/') {
-                                foreach ($addon_contents as $addon_name => $addon_data) {
-                                    // See if this is the addon for the file
-                                    $addon_file_path = $upgrade_file['path'];
-                                    if (strpos($addon_data, '\'' . addslashes($addon_file_path) . '\'') !== false) {
-                                        $found = $addon_name;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            // Install if it's a file in an addon we have installed or for a core addon
-                            //  (if we couldn't find the addon for it we have to assume a corrupt upgrade TAR and must skip the file)
-                            if (($found !== null) && ((file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php')) || (substr($found, 0, 5) == 'core_'))) {
-                                if (substr($upgrade_file['path'], -1) == '/') {
-                                    if (!$dry_run) {
-                                        afm_make_directory($upgrade_file['path'], false, true);
-                                    }
-                                } else {
-                                    if ($popup_simple_extract) {
-                                        $data['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
-                                    } else {
-                                        $file_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
-                                        if (!$dry_run) {
-                                            if (!file_exists(get_file_base() . '/' . dirname($upgrade_file['path']))) {
-                                                afm_make_directory(dirname($upgrade_file['path']), false, true);
-                                            }
-                                            afm_make_file($upgrade_file['path'], $file_data['data'], ($file_data['mode'] & 0002) != 0);
-                                        }
-
-                                        echo do_lang('U_EXTRACTING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
-                                    }
-                                }
-                            }
-
-                            // Record to copy it into our archived addon so that addon is kept up-to-date
-                            if (substr($upgrade_file['path'], -1) != '/') {
-                                if (($found !== null) && (file_exists(get_file_base() . '/imports/addons/' . $found . '.tar'))) {
-                                    $files_for_tar_updating[$found][$upgrade_file['path']] = array($upgrade_file['mode'], $upgrade_file['mtime']);
-                                }
-                            }
-                        }
-                    }
-
-                    // Copy it into our archived addon so that addon is kept up-to-date
-                    foreach ($files_for_tar_updating as $found => $files) {
-                        $old_addon_file = tar_open(get_file_base() . '/imports/addons/' . $found . '.tar', 'rb');
-                        $directory2 = tar_get_directory($old_addon_file, true);
-                        if ($directory2 !== null) {
-                            // New version of TAR file
-                            $new_addon_file = tar_open(get_file_base() . '/imports/addons/' . $found . '.new.tar', 'wb');
-
-                            // Add files from old TAR file, except ones we are replacing
-                            foreach ($directory2 as $d) {
-                                if (array_key_exists($d['path'], $files)) {
-                                    continue;
-                                }
-
-                                $file_data = tar_get_file($old_addon_file, $d['path']);
-
-                                $file_data['data'] = preg_replace('#^version=.*#m', 'version=(version-synched)', $file_data['data']);
-
-                                tar_add_file($new_addon_file, $d['path'], $file_data['data'], $d['mode'], $d['mtime']);
-                            }
-                            tar_close($old_addon_file);
-
-                            foreach ($files as $file_to_update => $_file_to_update) {
-                                list($file_to_update_mode, $file_to_update_mtime) = $_file_to_update;
-
-                                $file_data = tar_get_file($upgrade_resource, $file_to_update);
-
-                                tar_add_file($new_addon_file, $file_to_update, $file_data['data'], $upgrade_file['mode'], $upgrade_file['mtime']);
-
-                                echo do_lang('U_PACKING_MESSAGE', escape_html($file_to_update)) . '<br />';
-                            }
-
-                            tar_close($new_addon_file);
-
-                            if (!$dry_run) {
-                                unlink(get_file_base() . '/imports/addons/' . $found . '.tar');
-                                rename(get_file_base() . '/imports/addons/' . $found . '.new.tar', get_file_base() . '/imports/addons/' . $found . '.tar');
-                            } else {
-                                unlink(get_file_base() . '/imports/addons/' . $found . '.new.tar');
-                            }
-                            sync_file(get_file_base() . '/imports/addons/' . $found . '.tar');
-                        }
-                    }
-
-                    tar_close($upgrade_resource);
-
-                    // Do extraction within iframe, if possible
-                    if ($popup_simple_extract) {
-                        @unlink(get_custom_file_base() . '/data_custom/upgrader.cms.tmp');
-                        @unlink(get_custom_file_base() . '/data_custom/upgrader.tmp');
-                        if (!$local_temp_path) {
-                            $test = @copy($temp_path, get_custom_file_base() . '/data_custom/upgrader.cms.tmp');
-                            if ($test === false) {
-                                fatal_exit(do_lang_tempcode('FU_FTP_NEEDED'));
-                            }
-                            @unlink($temp_path);
-                            $temp_path = get_custom_file_base() . '/data_custom/upgrader.cms.tmp';
-                        }
-                        require_code('files');
-                        $tmp_data_path = get_custom_file_base() . '/data_custom/upgrader.tmp';
-                        cms_file_put_contents_safe($tmp_data_path, serialize($data));
-                        global $SITE_INFO;
-                        if (isset($GLOBALS['SITE_INFO']['admin_password'])) { // LEGACY
-                            $GLOBALS['SITE_INFO']['master_password'] = $GLOBALS['SITE_INFO']['admin_password'];
-                            unset($GLOBALS['SITE_INFO']['admin_password']);
-                        }
-                        if (!$dry_run) {
-                            $extract_url = get_base_url() . '/data/upgrader2.php?hashed_password=' . urlencode($SITE_INFO['master_password']) . '&tmp_path=' . urlencode($temp_path) . '&file_offset=0&tmp_data_path=' . urlencode($tmp_data_path) . '&done=' . urlencode(do_lang('DONE'));
-                            echo '<p>' . do_lang('FU_EXTRACTING_WINDOW', integer_format(count($data['todo']))) . '</p>';
-                            echo '<iframe frameBorder="0" style="width: 100%; height: 400px" src="' . escape_html($extract_url) . '"></iframe>';
-                        } else {
-                            echo '<p>' . do_lang('FILES') . ':</p>';
-                            echo '<ul>';
-                            foreach ($data['todo'] as $file) {
-                                echo '<li>' . escape_html($file[0]) . '</li>';
-                            }
-                            echo '</ul>';
-                        }
-                    } else {
-                        echo '<p>' . do_lang('SUCCESS') . '</p>';
-                        if (!$local_temp_path) {
-                            @unlink($temp_path);
-                        }
-                    }
-
-                    unset($_POST['news_id']);
-                    unset($_POST['from_version']);
-
-                    break;
-
-                case 'integrity_scan':
-                    $allow_merging = either_param_integer('allow_merging', 0);
-                    echo run_integrity_check(false, $allow_merging == 1);
-                    break;
-
-                case '_integrity_scan':
-                    _integrity_scan();
-                    echo '<p>' . do_lang('SUCCESS') . '</p>';
-                    break;
-
-                case 'db_upgrade':
-                    $something_done = false;
-
-                    clear_caches_2();
-
-                    $version_files = cms_version_number();
-                    $_version_database_cns = get_value('cns_version');
-                    if ($_version_database_cns === null) { // LEGACY
-                        $_version_database_cns = get_value('ocf_version');
-                    }
-                    if ($_version_database_cns === null) {
-                        $_version_database_cns = get_value('version');
-                    }
-                    if ($_version_database_cns === null) {
-                        $version_database_cns = $version_files;
-                    } else {
-                        $version_database_cns = floatval($_version_database_cns);
-                    }
-
-                    if (version_specific()) {
-                        echo do_lang('FU_UPGRADED_CORE_TABLES');
-                        $something_done = true;
-                    }
-
-                    $done = upgrade_modules();
-                    if ($done != '') {
-                        echo do_lang('FU_UPGRADE_MODULES', $done);
-                        $something_done = true;
-                    }
-                    if (!$something_done) {
-                        echo do_lang('NO_UPGRADE_DONE');
-                    }
-
-                    if ($version_database_cns < $version_files) {
-                        echo do_lang('FU_MUST_UPGRADE_CNS', fu_link('upgrader.php?type=cns', do_lang('FU_UPGRADE_CNS')));
-                    }
-                    break;
-
-                case 'theme_upgrade':
-                    appengine_live_guard();
-
-                    echo upgrade_themes();
-                    break;
-
-                case 'cns': // Only to be launched as a consequent of db_upgrade
-                    if (cns_upgrade()) {
-                        echo '<p>' . do_lang('SUCCESS') . '</p>';
-                    } else {
-                        echo do_lang('FU_NO_CNS_UPGRADE');
-                    }
-                    break;
-
-                case 'addon_remove':
-                    echo '<p>This addon removal tool remove all files from a given list of addons. It should only be used if you have placed files from addons (non-bundled or bundled) that are not actually installed/were uninstalled. Do not use it on addons that are installed (i.e. have tables and settings for them in the database already).</p>';
-                    echo '<p>';
-                    echo 'For example, it is useful if you have extracted the contents of the full manual installer package as part of an upgrade and need to now remove the files from addons you were not actually using (not a supported upgrade practice, but sometimes useful for developers to do).<br />';
-                    echo 'If you backed up the original website files under <kbd>old</kbd> and were upgrading to <kbd>new</kbd>, this shell command would find the list of addon names to remove:<br />';
-                    echo '<kbd>diff -rcw old/sources/hooks/systems/addon_registry new/sources/hooks/systems/addon_registry | sed -e "s/Only in new\/sources\/hooks\/systems\/addon_registry: \(.*\)\.php/\1/" -e \'tx\' -e \'d\' -e \':x\'</kbd>';
-                    echo '</p>';
-                    echo '<form action="upgrader.php?type=_addon_remove" method="post">';
-                    echo '<p><label for="addons">Addons to remove:</label><br /><textarea name="addons" id="addons" class="wide-field" rows="10"></textarea>';
-                    echo '<input class="admin--delete3 button-screen" type="submit" value="Remove addon files" />';
-                    echo post_fields_relay();
-                    echo '</form>';
-                    break;
-
-                case '_addon_remove':
-                    $_addons = post_param_string('addons');
-                    $addons = explode("\n", $_addons);
-                    $addon_files = array();
-                    require_code('addons');
-                    foreach ($addons as $addon) {
-                        $addon = trim($addon);
-                        if ($addon == '') {
-                            continue;
-                        }
-                        $details = read_addon_info($addon);
-                        $addon_files = array_merge($addon_files, $details['files']);
-                    }
-                    foreach ($addon_files as $addon_file) {
-                        afm_delete_file($addon_file);
-                    }
-                    echo '<p>The files have been deleted. Now, you may want install TARs for any bundled addons that were removed, in <kbd>exports/addons</kbd>, so you can reinstall them when you want. To generate these from a development copy of Composr, go to <kbd>adminzone/index.php?page=build_addons&export_bundled_addons=1&export_addons=0</kbd> and then copy them over.</p>';
-                    break;
-            }
-
-            if ($show_more_link) {
-                echo '<hr class="spaced-rule" /><div>' . fu_link('upgrader.php?type=browse', do_lang('MORE_OPTIONS')) . '</div>';
-            }
-        } else {
-            up_do_header();
-            up_do_login(do_lang((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD'));
-        }
-    } else {
-        up_do_header();
-        up_do_login();
+    // Security...
+
+    if (!array_key_exists('given_password', $_POST)) {
+        upgrader_output_header();
+        upgrader_output_login();
+        upgrader_output_footer();
+        return;
     }
 
-    up_do_footer();
+    $given_password = post_param_string('given_password', false, INPUT_FILTER_NONE);
+    require_code('crypt_master');
+    if (!check_master_password($given_password)) {
+        upgrader_output_header();
+        upgrader_output_login(do_lang((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD'));
+        upgrader_output_footer();
+        return;
+    }
+
+    // Action handling...
+
+    $type = get_param_string('type', 'browse');
+
+    require_code('upgrade_lib');
+    require_code('abstract_file_manager');
+
+    upgrader_output_header();
+
+    if (post_param_string('ftp_username', '') != '') {
+        $_POST['uses_ftp'] = '1';
+        _ftp_info(true); // To give early error if there's a problem
+    }
+
+    // Handle shared site upgrading with no per-site UI
+    global $SITE_INFO;
+    if (isset($SITE_INFO['custom_file_base_stub'])) { // This upgrader script must be called on a particular site with a real DB (e.g. shareddemo.composr.info), but will run for all sites on same install
+        require_code('shared_installs');
+        $u = current_share_user();
+        if ($u !== null) {
+            require_code('upgrade_shared_installs');
+            echo upgrader_sharedinstall_screen();
+            upgrader_output_footer();
+            return;
+        }
+    }
+
+    $show_more_link = true;
+
+    switch ($type) {
+        case 'misc': // LEGACY
+        case 'browse':
+            echo upgrader_menu_screen();
+            $show_more_link = false;
+            break;
+
+        case 'decache':
+            echo upgrader_decache_screen();
+            break;
+
+        case 'check_perms':
+            require_code('upgrade_perms');
+            echo upgrader_check_perms_screen();
+            break;
+
+        case 'fix_perms':
+            require_code('upgrade_perms');
+            echo upgrader_fix_perms_screen();
+            break;
+
+        case 'open_site':
+            echo upgrader_open_site_screen();
+            break;
+
+        case 'close_site':
+            echo upgrader_close_site_screen();
+            break;
+
+        case 'file_upgrade':
+            require_code('upgrade_files');
+            appengine_live_guard();
+            echo upgrader_file_upgrade_screen();
+            $show_more_link = false;
+            break;
+
+        case '_file_upgrade':
+            require_code('upgrade_files');
+            appengine_live_guard();
+            echo _upgrader_file_upgrade_screen();
+            break;
+
+        case 'integrity_scan':
+            require_code('upgrade_integrity_scan');
+            echo upgrader_integrity_scan_screen();
+            break;
+
+        case '_integrity_scan':
+            require_code('upgrade_integrity_scan');
+            echo upgrader__integrity_scan_screen();
+            break;
+
+        case 'addon_remove':
+            require_code('upgrade_integrity_scan');
+            echo upgrader_addon_remove_screen();
+            break;
+
+        case '_addon_remove':
+            require_code('upgrade_integrity_scan');
+            echo upgrader__addon_remove_screen();
+            break;
+
+        case 'db_upgrade':
+            require_code('upgrade_db_upgrade');
+            echo upgrader_db_upgrade_screen();
+            $something_done = false;
+            break;
+
+        case 'db_upgrade_cns': // Only to be launched as a consequent of db_upgrade
+            require_code('upgrade_db_upgrade');
+            echo upgrader_db_upgrade_cns_screen();
+            break;
+
+        case 'theme_upgrade':
+            require_code('upgrade_themes');
+            appengine_live_guard();
+            echo upgrader_theme_upgrade_screen();
+            break;
+    }
+
+    if ($show_more_link) {
+        echo '<hr class="spaced-rule" /><div>' . upgrader_link('upgrader.php?type=browse', do_lang('MORE_OPTIONS')) . '</div>';
+    }
+
+    upgrader_output_footer();
 }
 
 /**
@@ -634,7 +191,7 @@ function post_fields_relay()
  * @param  string $js Extra JavaScript
  * @return string The form-based link
  */
-function fu_link($url, $text, $disabled = false, $js = '')
+function upgrader_link($url, $text, $disabled = false, $js = '')
 {
     $hidden = (strpos($url, 'http://compo.sr') !== false || strpos($url, '/index.php') !== false) ? '' : post_fields_relay();
     if (get_param_integer('keep_safe_mode', 0) == 1) {
@@ -660,7 +217,7 @@ function fu_link($url, $text, $disabled = false, $js = '')
  *
  * @param  ?string $message Error message (null: none)
  */
-function up_do_login($message = null)
+function upgrader_output_login($message = null)
 {
     $type = get_param_string('type', 'browse');
     global $SITE_INFO;
@@ -707,15 +264,15 @@ function up_do_login($message = null)
     }
     require_lang('installer');
     $l_password = do_lang('MASTER_PASSWORD');
-    $l_ftp_info = do_lang('FU_FTP_INFO');
+    $l_ftp_info = do_lang('UPGRADER_FTP_INFO');
     $l_ftp_domain = do_lang('FTP_DOMAIN');
     $l_ftp_directory = do_lang('FTP_DIRECTORY');
     $l_ftp_username = do_lang('FTP_USERNAME');
     $l_ftp_password = do_lang('FTP_PASSWORD');
     $l_login = do_lang('_LOGIN');
-    $l_login_info = do_lang('FU_LOGIN_INFO');
-    $l_login_info_pass_forget = do_lang('FU_LOGIN_INFO_PASS_FORGET');
-    $l_login_forgot_password_q = do_lang('FU_LOGIN_FORGOT_PASSWORD_Q');
+    $l_login_info = do_lang('UPGRADER_LOGIN_INFO');
+    $l_login_info_pass_forget = do_lang('UPGRADER_LOGIN_INFO_PASS_FORGET');
+    $l_login_forgot_password_q = do_lang('UPGRADER_LOGIN_FORGOT_PASSWORD_Q');
     if ($message !== null) {
         echo '<p><strong>' . $message . '</strong></p>';
     }
@@ -775,10 +332,10 @@ function up_do_login($message = null)
 /**
  * Output the upgrader page header.
  */
-function up_do_header()
+function upgrader_output_header()
 {
-    $upgrader_title = do_lang('FU_UPGRADER_TITLE');
-    $upgrader_intro = do_lang('FU_UPGRADER_INTRO');
+    $upgrader_title = do_lang('UPGRADER_UPGRADER_TITLE');
+    $upgrader_intro = do_lang('UPGRADER_UPGRADER_INTRO');
     $charset = get_charset();
     $lang = user_lang();
     $dir = do_lang('dir');
@@ -812,7 +369,7 @@ END;
 /**
  * Output the upgrader page footer.
  */
-function up_do_footer()
+function upgrader_output_footer()
 {
     echo <<<END
     </div></body>
@@ -821,1890 +378,208 @@ END;
 }
 
 /**
- * Clear many caches.
- */
-function clear_caches_1() // These have to happen early - to prevent things that could kill the update process
-{
-    require_code('caches3');
-    erase_cached_templates();
-    erase_cached_language();
-    delete_value('cdn');
-}
-
-/**
- * Clear more caches. This is intentionally done after db upgrading.
- */
-function clear_caches_2()
-{
-    require_code('caches3');
-    erase_comcode_cache();
-    erase_block_cache(true);
-    erase_comcode_page_cache();
-    erase_persistent_cache();
-}
-
-/**
- * Find extra directories to chmod.
- *
- * @return array Extra directories to chmod
- */
-function get_chmod_array_2()
-{
-    $hooks = find_all_hook_obs('systems', 'chmod', 'Hook_chmod_');
-    $directories = array();
-    foreach ($hooks as $ob) {
-        $directories = array_merge($directories, $ob->run());
-    }
-    return $directories;
-}
-
-/**
- * Do permission checking.
- *
- * @return string Output messages
- */
-function check_perms()
-{
-    require_code('inst_special');
-    require_code('files');
-
-    $super_out = '';
-
-    $array = array_merge(get_chmod_array(fallback_lang()), get_chmod_array_2());
-    require_code('themes2');
-    $themes = find_all_themes();
-
-    $out = '';
-    for ($i = 0; $i < count($array); $i++) {
-        $chmod = $array[$i];
-        if (is_dir(get_file_base() . '/' . $chmod)) {
-            if (strpos($chmod, 'themes/default') !== false) { // chmod ALL theme dirs
-                foreach (array_keys($themes) as $theme) {
-                    $_chmod = str_replace('themes/default', 'themes/' . $theme, $chmod);
-                    $dh = @opendir(get_file_base() . '/' . $_chmod);
-                    if ($dh !== false) {
-                        while (($file = readdir($dh)) !== false) {
-                            if (!should_ignore_file($_chmod . '/' . $file, IGNORE_ACCESS_CONTROLLERS)) {
-                                $array[] = $_chmod . '/' . $file;
-                            }
-                        }
-                        closedir($dh);
-                    }
-                }
-            } else {
-                $dh = @opendir(get_file_base() . '/' . $chmod);
-                if ($dh !== false) {
-                    while (($file = readdir($dh)) !== false) {
-                        if (!should_ignore_file($chmod . '/' . $file, IGNORE_ACCESS_CONTROLLERS)) {
-                            $array[] = $chmod . '/' . $file;
-                        }
-                    }
-                    closedir($dh);
-                }
-            }
-        }
-        /*
-        if (strpos($chmod, 'themes/default') !== false) { // chmod ALL theme files      DISABLED (too noisy)
-            foreach (array_keys($themes) as $theme) {
-                $_chmod = str_replace('themes/default', 'themes/' . $theme, $chmod);
-                if (!file_exists(get_file_base() . '/' . $_chmod)) {
-                    continue;
-                }
-                if (!cms_is_writable(get_file_base() . '/' . $_chmod)) {
-                    $out .= '<li>' . do_lang('FU_NEEDS_CHMOD', '<kbd>' . escape_html($_chmod) . '</kbd>') . '</li>';
-                }
-            }
-        } else {*/
-        if (!file_exists(get_file_base() . '/' . $chmod)) {
-            continue;
-        }
-        if (!cms_is_writable(get_file_base() . '/' . $chmod)) {
-            $out .= '<li>' . do_lang('FU_NEEDS_CHMOD', '<kbd>' . escape_html($chmod) . '</kbd>') . '</li>';
-        }
-        //}
-    }
-    if (!is_suexec_like()) {
-        $out .= check_excess_perms($array);
-    }
-    if ($out == '') {
-        $super_out = do_lang('FU_ALL_CHMODDED_GOOD');
-    } else {
-        $super_out = do_lang('WARNING_FILE_CHMOD', $out);
-    }
-
-    return $super_out;
-}
-
-/**
- * Do permission setting.
- *
- * @return string Output messages
- */
-function fix_perms()
-{
-    require_code('inst_special');
-    require_code('files');
-
-    $super_out = '';
-
-    $array = array_merge(get_chmod_array(fallback_lang()), get_chmod_array_2());
-    require_code('themes2');
-    $themes = find_all_themes();
-
-    push_suppress_error_death(true);
-
-    for ($i = 0; $i < count($array); $i++) {
-        $chmod = $array[$i];
-        if (is_dir(get_file_base() . '/' . $chmod)) {
-            if (strpos($chmod, 'themes/default') !== false) {
-                foreach (array_keys($themes) as $theme) {
-                    $_chmod = str_replace('themes/default', 'themes/' . $theme, $chmod);
-                    $dh = @opendir(get_file_base() . '/' . $_chmod);
-                    if ($dh !== false) {
-                        while (($file = readdir($dh)) !== false) {
-                            if (!should_ignore_file($_chmod . '/' . $file, IGNORE_ACCESS_CONTROLLERS)) {
-                                $array[] = $_chmod . '/' . $file;
-                            }
-                        }
-                        closedir($dh);
-                    }
-                }
-            } else {
-                $dh = @opendir(get_file_base() . '/' . $chmod);
-                if ($dh !== false) {
-                    while (($file = readdir($dh)) !== false) {
-                        if (!should_ignore_file($chmod . '/' . $file, IGNORE_ACCESS_CONTROLLERS)) {
-                            $array[] = $chmod . '/' . $file;
-                        }
-                    }
-                    closedir($dh);
-                }
-            }
-        }
-        /*
-        if (strpos($chmod,'themes/default') !== false) {
-            foreach (array_keys($themes) as $theme) {
-                $_chmod = str_replace('themes/default', 'themes/' . $theme, $chmod);
-                if (!file_exists(get_file_base() . '/' . $_chmod)) {
-                    continue;
-                }
-                if (!cms_is_writable(get_file_base() . '/' . $_chmod)) {
-                    afm_set_perms($_chmod, true);
-                }
-            }
-        } else {*/
-        if (!file_exists(get_file_base() . '/' . $chmod)) {
-            continue;
-        }
-        if (!cms_is_writable(get_file_base() . '/' . $chmod)) {
-            afm_set_perms($chmod, true);
-        }
-        //}
-    }
-
-    $super_out = '';
-
-    foreach ($GLOBALS['ATTACHED_MESSAGES_RAW'] as $_error) {
-        $error = $_error[0];
-        if (is_object($error)) {
-            $error = $error->evaluate();
-        }
-        $super_out .= '<p>' . $error . '</p>';
-    }
-
-    $super_out .= '<p>' . do_lang('SUCCESS') . '</p>';
-
-    pop_suppress_error_death();
-
-    return $super_out;
-}
-
-/**
- * Tell the user about any modules that need moving again (because the cms ones haven't moved).
- *
- * @return array Pair: HTML list of moved files, raw list
- */
-function move_modules()
-{
-    $out = '';
-    $outr = array();
-
-    $zones = find_all_zones();
-    foreach ($zones as $zone) {
-        $pages = find_all_pages($zone, 'modules');
-        foreach (array_keys($pages) as $page) {
-            // See if this isn't the true home of the module
-            foreach ($zones as $zone2) {
-                $_path_a = $zone2 . '/pages/modules/' . $page . '.php'; // potential true home
-                $_path_b = $zone . '/pages/modules/' . $page . '.php'; // where it is now
-                $path_a = zone_black_magic_filterer(get_file_base() . '/' . $_path_a);
-                $path_b = zone_black_magic_filterer(get_file_base() . '/' . $_path_b);
-                if (($zone2 != $zone) && (file_exists($path_a)) && (filemtime($path_a) >= filemtime($path_b))) {
-                    if (($page == 'filedump') && ($zone2 == 'cms')) {
-                        continue; // This has moved between versions
-                    }
-
-                    $out .= '<li><input type="checkbox" name="' . uniqid('', true) . '" value="move:' . escape_html($_path_a . ':' . $_path_b) . '" /> ' . do_lang('FILE_MOVED', '<kbd>' . escape_html($page) . '</kbd>', '<kbd>' . escape_html($zone2) . '</kbd>', '<kbd>' . escape_html($zone) . '</kbd>') . '</li>';
-                    $outr[] = $path_b;
-                }
-            }
-        }
-    }
-
-    return array($out, $outr);
-}
-
-/**
- * Find any excess permissions.
- *
- * @param  array $array Permissions that DO need to be set
- * @param  string $rel Where we are searching under
- * @return string Messages
- */
-function check_excess_perms($array, $rel = '')
-{
-    $out = '';
-
-    require_code('files');
-
-    $dir = get_file_base() . '/' . $rel . '/';
-
-    $dh = @opendir($dir);
-    if ($dh !== false) {
-        while (($file = readdir($dh)) !== false) {
-            if (($file == '.') || ($file == '..')) {
-                continue;
-            }
-
-            $is_dir = @is_dir($dir . $file);
-
-            if ((should_ignore_file($dir . $file, IGNORE_ACCESS_CONTROLLERS)) && ($is_dir)) {
-                continue;
-            }
-
-            $relpath = $rel . (($rel == '') ? '' : '/') . $file;
-            $ok = (in_array($relpath, $array)) || (in_array(preg_replace('#^[^/]+/#', 'site/', $relpath), $array)) || (in_array(preg_replace('#^themes/[^/]+/#', 'themes/default/', $relpath), $array));
-            if ((php_function_allowed('posix_getuid')) && (!$ok) && (cms_is_writable($dir . $file)) && (fileowner($dir . $file) != posix_getuid())) {
-                $out .= '<li>' . do_lang('FU_NEEDS_UNCHMOD', '<kbd>' . escape_html($rel . (($rel == '') ? '' : '/') . $file)) . '</kbd></li>';
-            }
-
-            if (($is_dir) && (!$ok)) {
-                $out .= check_excess_perms($array, escape_html($rel . (($rel == '') ? '' : '/') . $file));
-            }
-        }
-    }
-
-    return $out;
-}
-
-/**
- * Do an integrity check. This does not include an alien check in basic mode; otherwise check_alien() is called within this function.
- *
- * @param  boolean $basic Whether to just do the minimum basic scan
- * @param  boolean $allow_merging Whether merging of CSS changes is allowed
- * @param  boolean $unix_help Whether to give some help to unix people
- * @return string Results
- */
-function run_integrity_check($basic = false, $allow_merging = true, $unix_help = false)
-{
-    $ret_str = '';
-    $found_something = false;
-
-    require_code('files');
-
-    disable_php_memory_limit();
-
-    // We'll need to know about stuff in our addon registry, and file manifest
-    if (function_exists('find_all_hooks')) {
-        $hooks = find_all_hooks('systems', 'addon_registry');
-    } else {
-        $hooks = array();
-        $dir = get_file_base() . '/sources/hooks/systems/addon_registry';
-        $dh = @opendir($dir);
-        if ($dh !== false) {
-            while (($file = readdir($dh)) !== false) {
-                if ((substr($file, -4) == '.php') && (preg_match('#^[\w\-]*$#', substr($file, 0, strlen($file) - 4)) != 0)) {
-                    $hooks[substr($file, 0, strlen($file) - 4)] = 'sources';
-                }
-            }
-            closedir($dh);
-        }
-    }
-    $master_data = @unserialize(file_get_contents(get_file_base() . '/data/files.dat'));
-    if ($master_data === false) {
-        $master_data = array();
-    }
-    $hook_files = array();
-    foreach ($hooks as $hook => $hook_type) {
-        if ($hook_type != 'sources_custom') {
-            if (!isset($master_data['sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php'])) {
-                continue; // Old addon
-            }
-        }
-
-        $path = get_custom_file_base() . '/' . $hook_type . '/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
-        if (!file_exists($path)) {
-            $path = get_file_base() . '/' . $hook_type . '/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
-        }
-        $hook_files[$hook] = file_get_contents($path);
-    }
-
-    // Moved module handling
-    if ($basic) {
-        $not_missing = array();
-    } else {
-        $hidden = post_fields_relay();
-        $ret_str .= '<form title="' . do_lang('PROCEED') . '" action="upgrader.php?type=_integrity_scan" method="post">' . $hidden;
-        list($moved, $not_missing) = move_modules();
-        if ($moved != '') {
-            $ret_str .= do_lang('WARNING_MOVED_MODULES', $moved);
-            $found_something = true;
-        }
-    }
-
-    // Override handling
-    list($outdated__outdated_original_and_override, $outdated__possibly_outdated_override, $outdated__missing_original_but_has_override, $outdated__uninstalled_addon_but_has_override) = check_outdated__handle_overrides(get_file_base() . '/', '', $master_data, $hook_files, $allow_merging);
-
-    // Look for missing files, wrt bundled addons
-    $outdated__outdated_original = '';
-    $outdated__missing_file_entirely = '';
-    $outdated__future_files = '';
-    $files_determined_to_upload = array();
-    $files_to_check = array();
-    foreach ($hook_files as $addon_name => $hook_file) {
-        $matches = array();
-        if (preg_match('#function get_file_list\(\)\s*\{([^\}]*)\}#', $hook_file, $matches) != 0) {
-            $files_to_check = array_merge($files_to_check, eval($matches[1]));
-        }
-    }
-    unset($hook_files);
-    sort($files_to_check);
-    foreach ($files_to_check as $file) {
-        if (($basic) && (time() - $_SERVER['REQUEST_TIME'] > 5)) {
-            return ''; // Taking too long
-        }
-
-        if (should_ignore_file($file, IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_NONBUNDLED | IGNORE_FLOATING | IGNORE_CUSTOM_DIRS | IGNORE_UPLOADS)) {
-            continue;
-        }
-
-        if ($file == 'data/files.dat') {
-            continue; // Can't check integrity against self!
-        }
-        if ($file == 'data/files_previous.dat') {
-            continue; // Comes in outside scope of files.dat
-        }
-        if ($file == 'recommended.htaccess') {
-            continue; // May be renamed
-        }
-
-        $file_info = @$master_data[$file];
-
-        if (!file_exists(get_file_base() . '/' . $file)) {
-            if (!in_array(get_file_base() . '/' . $file, $not_missing)) {
-                $outdated__missing_file_entirely .= '<li><kbd>' . escape_html($file) . '</kbd></li>';
-                $files_determined_to_upload[] = $file;
-            }
-        } elseif ($file_info !== null) {
-            if (@filesize(get_file_base() . '/' . $file) > 1024 * 1024) {
-                continue; // Too big, so special exception
-            }
-
-            $file_contents = @file_get_contents(get_file_base() . '/' . $file);
-            if ($file_contents === false) {
-                continue;
-            }
-            if (strpos($file, '/version.php') !== false) {
-                $file_contents = preg_replace('/\d{10}/', '', $file_contents);
-            }
-            $true_hash = sprintf('%u', crc32(preg_replace('#[\r\n\t ]#', '', $file_contents)));
-            if ($true_hash != $file_info[0]) {
-                if (filemtime(get_file_base() . '/' . $file) < cms_version_time()) {
-                    $outdated__outdated_original .= '<li><kbd>' . escape_html($file) . '</kbd></li>'; //  [disk-hash: '.$true_hash.', required-hash: '.$file_info[0].']
-                    $files_determined_to_upload[] = $file;
-                } else {
-                    $outdated__future_files .= '<li><kbd>' . escape_html($file) . '</kbd></li>';
-                }
-            }
-        }
-    }
-
-    // Output integrity check results
-    if ($outdated__possibly_outdated_override != '') {
-        if ($basic) {
-            $ret_str .= '<p>The following files have been superseded by new versions, but you have overrides/customisations blocking the new versions. Look into this and consider reincorporating your changes into our new version. If this is not done, bugs (potentially security holes) may occur, or be left unfixed. If you edited using an inbuilt editor, the file on which you based it will be saved as <kbd>file.editfrom</kbd>: you may use a tool such as <a href="http://winmerge.sourceforge.net/" target="_blank">WinMerge</a> to compare the <kbd>editfrom</kbd> file to your own, and then apply those same changes to the latest version of the file.</p><ul>' . $outdated__possibly_outdated_override . '</ul>';
-        } else {
-            $ret_str .= do_lang('WARNING_FILE_OUTDATED', $outdated__possibly_outdated_override);
-        }
-        $found_something = true;
-    }
-    if ($outdated__outdated_original_and_override != '') {
-        if ($basic) {
-            $ret_str .= '<p>The following non-overridden files are outdated, as are the corresponding overridden files (you can find the correct versions for the original in the manual installer ZIP for the version you\'re running, but the overrides may still cause problems and might need removing/replacing):</p><ul>' . $outdated__outdated_original_and_override . '</ul>';
-        } else {
-            $ret_str .= do_lang('WARNING_FILE_OUTDATED_ORIGINAL_AND_OVERRIDE', $outdated__outdated_original_and_override);
-        }
-        $found_something = true;
-    }
-    if ($outdated__missing_original_but_has_override != '') {
-        if ($basic) {
-            $ret_str .= '<p>The following original files to these overridden files are actually missing (you can find them in the manual installer ZIP for the version you\'re running):</p><ul>' . $outdated__missing_original_but_has_override . '</ul>';
-        } else {
-            $ret_str .= do_lang('WARNING_FILE_MISSING_ORIGINAL_BUT_HAS_OVERRIDE', $outdated__missing_original_but_has_override);
-        }
-        $found_something = true;
-    }
-    if (($outdated__uninstalled_addon_but_has_override != '') && (!$basic)) {
-        $ret_str .= do_lang('WARNING_FILE_FROM_UNINSTALLED_ADDON', $outdated__uninstalled_addon_but_has_override);
-        $found_something = true;
-    }
-    if ($outdated__missing_file_entirely != '') {
-        if ($basic) {
-            $ret_str .= '<p>These files are actually missing and need uploading (you can find them in the manual installer ZIP for the version you\'re running):</p><ul>' . $outdated__missing_file_entirely . '</ul>';
-        } else {
-            $ret_str .= do_lang('WARNING_FILE_MISSING_FILE_ENTIRELY', $outdated__missing_file_entirely);
-        }
-        $found_something = true;
-    }
-    if ($outdated__outdated_original != '') {
-        if ($basic) {
-            $ret_str .= '<p>These files are outdated (you can find the correct versions in the manual installer ZIP for the version you\'re running):</p><ul>' . $outdated__outdated_original . '</ul>';
-        } else {
-            $ret_str .= do_lang('WARNING_FILE_OUTDATED_ORIGINAL', $outdated__outdated_original);
-        }
-        $found_something = true;
-    }
-    if ($outdated__future_files != '') {
-        if ($basic) {
-            $ret_str .= '<p>These files do not match the ones bundled with your version, but claim to be newer (so these might be bug fixes someone has put here):</p><ul>' . $outdated__future_files . '</ul>';
-        } else {
-            $ret_str .= do_lang('WARNING_FILE_FUTURE_FILES', $outdated__future_files);
-        }
-        $found_something = true;
-    }
-
-    // And some special help for unix geeks
-    if (($unix_help) && (php_function_allowed('escapeshellcmd'))) {
-        $unix_out = 'CMS_EXTRACTED_AT="<manual-extracted-at-dir>";' . "\n" . 'cd "<temp-dir-to-upload-from>";' . "\n";
-        $directories_to_make = array();
-        foreach ($files_determined_to_upload as $file) {
-            $dirname = dirname($file);
-            if ($dirname == '.') {
-                $dirname = '';
-            }
-            $directories_to_make[$dirname] = true;
-        }
-        foreach (array_keys($directories_to_make) as $directory) {
-            $unix_out .= 'mkdir -p ' . escapeshellcmd($directory) . ';' . "\n";
-        }
-        foreach ($files_determined_to_upload as $file) {
-            $dirname = dirname($file);
-            if ($dirname == '.') {
-                $dirname = '';
-            }
-            $unix_out .= 'cp "$CMS_EXTRACTED_AT/' . escapeshellcmd($file) . '" "' . escapeshellcmd($dirname) . '"/;' . "\n";
-        }
-        require_lang('upgrade');
-        $ret_str .= do_lang('SH_COMMAND', nl2br(escape_html($unix_out)));
-        $found_something = true;
-    }
-
-    // Alien files
-    if (!$basic) {
-        $master_data = array();
-        foreach ($files_to_check as $file) {
-            $master_data[$file] = true;
-        }
-
-        $addon_files = collapse_2d_complexity('filename', 'addon_name', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename', 'addon_name')));
-        if (file_exists(get_file_base() . '/data/files_previous.dat')) {
-            $previous_manifest = @unserialize(file_get_contents(get_file_base() . '/data/files_previous.dat'));
-            if ($previous_manifest === false) {
-                $previous_manifest = array();
-            }
-        } else {
-            $previous_manifest = array();
-        }
-        list($alien, $addon) = check_alien($addon_files, $previous_manifest, $master_data, get_file_base() . '/');
-        if (($moved != '') || ($alien != '')) {
-            $ret_str .= '<div>';
-            if ($alien != '') {
-                $ret_str .= do_lang('WARNING_FILE_ALIEN', $alien);
-            }
-            if ($addon != '') {
-                $ret_str .= do_lang('WARNING_FILE_ADDON', $addon);
-            }
-            $ret_str .= '<p class="associated-details"><a href="#!" onclick="var checkmarks=this.parentNode.parentNode.getElementsByTagName(\'input\'); for (var i=0;i&lt;checkmarks.length;i++) { checkmarks[i].checked=true; } return false;">' . do_lang('FU_CHECK_ALL') . '</a></p>';
-            $ret_str .= '<input class="buttons--proceed button-screen" accesskey="c" type="submit" value="' . do_lang('FU_AUTO_HANDLE') . '" />';
-            $ret_str .= '</div>';
-
-            $found_something = true;
-        }
-        $ret_str .= '</form>';
-    }
-
-    if (!$found_something) {
-        $ret_str = do_lang('NO_ISSUES_FOUND');
-    }
-
-    return $ret_str;
-}
-
-/**
- * Check for out-dated files.
- *
- * @param  SHORT_TEXT $dir The directory we are scanning relative to
- * @param  SHORT_TEXT $rela The directory (relative) we are scanning
- * @param  array $master_data Unserialised data/files.dat
- * @param  array $hook_files A list of the contents of our addon registry hook files
- * @param  boolean $allow_merging Whether merging of CSS changes is allowed
- * @return array Tuple of various kinds of outdated/missing files
- */
-function check_outdated__handle_overrides($dir, $rela, &$master_data, &$hook_files, $allow_merging)
-{
-    $outdated__outdated_original_and_override = '';
-    $outdated__possibly_outdated_override = '';
-    $outdated__missing_original_but_has_override = '';
-    $outdated__uninstalled_addon_but_has_override = '';
-
-    require_code('diff');
-    require_code('files');
-
-    $dh = @opendir($dir);
-    if ($dh !== false) {
-        while (($file = readdir($dh)) !== false) {
-            if (should_ignore_file($rela . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_DIRS | IGNORE_UPLOADS | IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_NONBUNDLED | IGNORE_FLOATING)) {
-                continue;
-            }
-
-            $is_dir = @is_dir($dir . $file);
-
-            if (($is_dir) && (is_readable($dir . $file))) {
-                list($_outdated__outdated_original_and_override, $_outdated__possibly_outdated_override, $_outdated__missing_original_but_has_override, $_outdated__uninstalled_addon_but_has_override) = check_outdated__handle_overrides($dir . $file . '/', $rela . $file . '/', $master_data, $hook_files, $allow_merging);
-                $outdated__outdated_original_and_override .= $_outdated__outdated_original_and_override;
-                $outdated__possibly_outdated_override .= $_outdated__possibly_outdated_override;
-                $outdated__missing_original_but_has_override .= $_outdated__missing_original_but_has_override;
-                $outdated__uninstalled_addon_but_has_override .= $_outdated__uninstalled_addon_but_has_override;
-            } else {
-                if (strpos($rela, '_custom') !== false) {
-                    $equiv_file = get_file_base() . '/' . str_replace('_custom', '', $rela) . $file;
-                    if ((!file_exists($equiv_file)) && (substr($rela, 0, 7) == 'themes/') && (substr_count($rela, '/') == 3)) {
-                        $equiv_file = get_file_base() . '/' . str_replace('_custom', '', preg_replace('#themes/[^/]*/#', 'themes/default/', $rela)) . $file;
-                    }
-                    if (file_exists($equiv_file)) {
-                        if ($allow_merging) {
-                            if (file_exists($dir . $file . '.editfrom')) { // If we edited-from, then we use that to do the compare
-                                $hash_on_disk = sprintf('%u', crc32(preg_replace('#[\r\n\t ]#', '', file_get_contents($dir . $file . '.editfrom'))));
-                                $only_if_noncustom = false;
-                            } else {
-                                $hash_on_disk = sprintf('%u', crc32(preg_replace('#[\r\n\t ]#', '', file_get_contents($dir . $file))));
-                                $only_if_noncustom = true;
-                            }
-                            $_true_hash = sprintf('%u', crc32(preg_replace('#[\r\n\t ]#', '', file_get_contents($equiv_file))));
-                            if (array_key_exists($file, $master_data)) { // Get hash from perfection table
-                                $true_hash = $master_data[$rela . $file][0];
-                                if ($true_hash != $_true_hash) {
-                                    $outdated__outdated_original_and_override .= '<li><kbd>' . escape_html($rela . $file) . '</kbd></li>';
-                                    unset($master_data[$rela . $file]);
-                                    continue;
-                                }
-                            } else { // Get hash from non-overridden file (equiv file)
-                                if ($only_if_noncustom) {
-                                    $true_hash = null; // Except we can't as we're not looking at the .editfrom and thus can't expect equality
-                                } else {
-                                    $true_hash = $_true_hash;
-                                }
-                            }
-
-                            if (($true_hash !== null) && ($hash_on_disk != $true_hash)) {
-                                if ((function_exists('diff_compute_new')) && (substr($file, -4) == '.css') && ($true_hash !== 2) && (file_exists($dir . $file . '.editfrom')) && (cms_is_writable($dir . $file))) {
-                                    $new = diff_compute_new($equiv_file, $dir . $file . '.editfrom', $dir . $file);
-                                    cms_file_put_contents_safe($dir . $file . '.' . strval(time()), file_get_contents($dir . $file), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
-                                    cms_file_put_contents_safe($dir . $file, $new, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
-                                    $outdated__possibly_outdated_override .= '<li><kbd>' . escape_html($rela . $file) . '</kbd> ' . do_lang('AUTO_MERGED') . '</li>';
-                                    cms_file_put_contents_safe($dir . $file . '.editfrom', file_get_contents($equiv_file), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
-                                } else {
-                                    $outdated__possibly_outdated_override .= '<li><kbd>' . escape_html($rela . $file) . '</kbd></li>';
-                                }
-                            }
-                        } else {
-                            $outdated__possibly_outdated_override .= '<li><kbd>' . escape_html($rela . $file) . '</kbd></li>';
-                        }
-
-                        unset($master_data[$rela . $file]);
-                    } elseif (array_key_exists(str_replace('_custom', '', preg_replace('#themes/[^/]*/#', 'themes/default/', $rela)) . $file, $master_data)) {
-                        $known_in_addon = false;
-                        foreach ($hook_files as $hook_file) {
-                            if (strpos($hook_file, str_replace('themes/default/css/', '', str_replace('themes/default/templates/', '', str_replace('_custom', '', preg_replace('#themes/[^/]*/#', 'themes/default/', $rela)))) . $file) !== false) {
-                                $known_in_addon = true;
-                                break;
-                            }
-                        }
-                        if ($known_in_addon) {
-                            $outdated__missing_original_but_has_override .= '<li><kbd>' . escape_html($rela . $file) . '</kbd></li>';
-                        } else {
-                            $outdated__uninstalled_addon_but_has_override .= '<li><kbd>' . escape_html($rela . $file) . '</kbd></li>';
-                        }
-                        unset($master_data[$rela . $file]);
-                    }
-                }
-            }
-        }
-    }
-
-    return array($outdated__outdated_original_and_override, $outdated__possibly_outdated_override, $outdated__missing_original_but_has_override, $outdated__uninstalled_addon_but_has_override);
-}
-
-/**
- * Check for alien files.
- *
- * @param  array $addon_files List of files from non-bundled addons (a map: relative file paths as keys of map)
- * @param  array $old_files List of files from old version
- * @param  array $files List of verbatim files
- * @param  SHORT_TEXT $dir The directory we are scanning relative to
- * @param  SHORT_TEXT $rela The directory (relative) we are scanning
- * @param  boolean $raw Whether to give raw output (no UI)
- * @return array A pair: HTML list of alien files, HTML list of addon files
- */
-function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = false)
-{
-    $alien = '';
-    $alien_count = 0;
-    $addon = '';
-
-    require_code('files');
-
-    $dh = @opendir($dir);
-    if ($dh !== false) {
-        if ($rela == '') {
-            $old_addons_now_gone = array(
-                'sources/hooks/systems/addon_registry/core_installation_uninstallation.php', // LEGACY
-            );
-            $modules_moved_intentionally = array(
-            );
-            foreach (array_merge($old_addons_now_gone, $modules_moved_intentionally) as $x) {
-                if (file_exists(get_file_base() . '/' . $x)) {
-                    $alien .= '<li>';
-                    if (!$raw) {
-                        $alien .= '<input checked="checked" type="checkbox" name="' . uniqid('', true) . '" value="delete:' . escape_html($x) . '" /> ';
-                    }
-                    $alien .= '<kbd>' . escape_html($x) . '</kbd></li>';
-                }
-            }
-        }
-        $dir_files = array();
-        while (($file = readdir($dh)) !== false) {
-            $dir_files[] = $file;
-        }
-        sort($dir_files);
-        foreach ($dir_files as $file) {
-            if (should_ignore_file($rela . $file, IGNORE_CUSTOM_DIRS | IGNORE_UPLOADS | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES | IGNORE_NONBUNDLED | IGNORE_FLOATING | IGNORE_UNSHIPPED_VOLATILE | IGNORE_REVISION_FILES | IGNORE_EDITFROM_FILES)) {
-                continue;
-            }
-
-            $is_dir = @is_dir($dir . $file);
-            if (!is_readable($dir . $file)) {
-                continue;
-            }
-
-            if ($is_dir) {
-                if (!file_exists($dir . $file . '/_config.php')) {
-                    if (($rela == '') && (!file_exists($dir . $file . '/pages'))) { // Scan to make sure it's not some other system placed under the webroot
-                        $ok = false;
-                        foreach (array_keys($files) as $f) {
-                            if (substr($f, 0, strlen($rela . $file . '/')) == $rela . $file . '/') {
-                                $ok = true;
-                                break;
-                            }
-                        }
-                        if (!$ok) {
-                            continue;
-                        }
-                    }
-
-                    list($_alien, $_addon) = check_alien($addon_files, $old_files, $files, $dir . $file . '/', $rela . $file . '/', $raw);
-                    $alien .= $_alien;
-                    $addon .= $_addon;
-                }
-            } else {
-                if (!array_key_exists($rela . $file, $files)) {
-                    if (strpos($rela, 'pages/modules') !== false) { // Check it isn't a moved module
-                        $zones = find_all_zones();
-                        $matches = array();
-                        preg_match('#(.*)pages/modules#', $rela, $matches);
-                        $current_zone = str_replace('/', '', $matches[1]);
-                        foreach ($zones as $zone) {
-                            if (array_key_exists(str_replace($current_zone . '/', $zone . (($zone == '') ? '' : '/'), $rela . $file), $files)) {
-                                continue 2;
-                            }
-                        }
-                    }
-                    $disabled = '';
-                    //if ((is_dir($dir . '/' . $file == '')) && ()) Not needed as this is only for files
-                    $checked = '';
-
-                    if (array_key_exists($rela . $file, $old_files)) {
-                        $checked = 'checked="checked" ';
-                    }
-                    $file_html = '';
-                    $file_html .= '<li>';
-                    if (!$raw) {
-                        $file_html .= '<input ' . $disabled . $checked . 'type="checkbox" name="' . uniqid('', true) . '" value="delete:' . escape_html($rela . $file) . '" /> ';
-                    }
-                    $file_html .= '<kbd>' . escape_html($rela . $file) . '</kbd></li>' . "\n";
-                    if (array_key_exists($rela . $file, $addon_files)) {
-                        $addon .= $file_html;
-                    } else {
-                        if ($alien_count <= 10000) { // Reasonable limit
-                            $alien .= $file_html;
-                            $alien_count++;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    if ($alien_count > 10000) { // Reasonable limit
-        $alien = '';
-    }
-
-    return array($alien, $addon);
-}
-
-/**
- * Move/delete certain selected things, in follow up to an integrity scan.
+ * Do upgrader screen: menu.
  *
  * @ignore
+ * @return string Output messages
  */
-function _integrity_scan()
+function upgrader_menu_screen()
 {
-    foreach (array_keys($_POST) as $key) {
-        $val = post_param_string($key);
-        if (strpos($val, ':') !== false) {
-            $bits = explode(':', $val);
-            if ($bits[0] == 'delete') {
-                afm_delete_file($bits[1]);
-            } elseif ($bits[0] == 'move') {
-                afm_delete_file($bits[2]);
-                afm_move($bits[1], $bits[2]);
-            }
+    clear_caches_1();
 
-            // Now delete empty directories
-            $_subdirs = explode('/', dirname($bits[1]));
-            $subdirs = array();
-            $buildup = '';
-            foreach ($_subdirs as $subdir) {
-                if ($buildup != '') {
-                    $buildup .= '/';
-                }
-                $buildup .= $subdir;
+    $l_choices = do_lang('UPGRADER_CHOICES');
 
-                $subdirs[] = $buildup;
-            }
-            foreach (array_reverse($subdirs) as $subdir) {
-                $files = @scandir(get_file_base() . '/' . $subdir);
-                if (($files !== false) && (count(array_diff($files, array('..', '.', '.DS_Store'))) == 0)) {
-                    @unlink(get_file_base() . '/' . $subdir . '/.DS_Store');
-                    @rmdir(get_file_base() . '/' . $subdir);
-                }
-            }
-
-            unset($_POST[$key]); // We don't want it propagating with buttons, annoying and confusing
-        }
+    $a = float_to_raw_string(cms_version_number(), 10, true);
+    $b = get_value('version');
+    if ($b === null) {
+        $b = do_lang('UNKNOWN');
+    } else {
+        $b = float_to_raw_string(floatval($b), 10, true); // Normalise decimal places
     }
-}
+    $l_up_info = do_lang('UPGRADER_UP_INFO' . (($a == $b) ? '_1' : '_2'), $a, $b);
 
-/**
- * Version specific upgrading. These are things that are relatively major structural changes and therefore will get done outside the module upgrade system.
- *
- * @return boolean Whether anything was done
- */
-function version_specific()
-{
-    // Version specific (rather than component specific) upgrading
-    $version_files = cms_version_number();
-    $_version_database = get_value('version');
-    $version_database = floatval($_version_database);
-    if ($_version_database === null) {
-        $version_database = $version_files;
-    }
-    if ($version_database < $version_files) {
-        // LEGACY
+    $oc = (get_option('site_closed') == '0') ? do_lang('OPEN') : do_lang('CLOSED');
+    $l_fu_closedness = do_lang('UPGRADER_CLOSENESS', $oc);
 
-        if ($version_database < 9.0) {
-            $dh = @opendir(get_custom_file_base() . '/imports/mods');
-            if ($dh !== false) {
-                while (($f = readdir($dh)) !== false) {
-                    if (substr($f, -4) == '.tar') {
-                        @rename(get_custom_file_base() . '/imports/mods/' . $f, get_file_base() . '/imports/addons/' . $f);
-                        sync_file_move(get_custom_file_base() . '/imports/mods/' . $f, get_file_base() . '/imports/addons/' . $f);
-                    }
-                }
-            }
-        }
-        if ($version_database < 10.0) {
-            $GLOBALS['SITE_DB']->add_table_field('config', 'c_value_trans', '?LONG_TRANS');
-            $GLOBALS['SITE_DB']->query('UPDATE ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'config SET c_value_trans=config_value,config_value=\'\' WHERE ' . db_string_not_equal_to('config_value', '') . ' AND (' . db_string_equal_to('the_type', 'transtext') . ' OR ' . db_string_equal_to('the_type', 'transline') . ')');
+    $l_maintenance = do_lang('UPGRADER_MAINTENANCE');
 
-            $GLOBALS['SITE_DB']->rename_table('adminlogs', 'actionlogs');
+    $l_upgrading = do_lang('UPGRADER_UPGRADING');
 
-            @rename(get_custom_file_base() . '/data_custom/breadcrumbs.xml', get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
-            sync_file_move(get_custom_file_base() . '/data_custom/breadcrumbs.xml', get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
-            @rename(get_custom_file_base() . '/data_custom/fields.xml', get_custom_file_base() . '/data_custom/xml_config/fields.xml');
-            sync_file_move(get_custom_file_base() . '/data_custom/fields.xml', get_custom_file_base() . '/data_custom/xml_config/fields.xml');
+    $l_take_backup = do_lang('UPGRADER_TAKE_BACKUP');
 
-            $remap = array(
-                'ocf_post' => 'cns_post',
-                'ocf_signature' => 'cns_signature',
-            );
-            foreach ($remap as $from => $to) {
-                $GLOBALS['SITE_DB']->query_update('attachment_refs', array('r_referer_type' => $to), array('r_referer_type' => $from));
-            }
+    $l_clear_caches = upgrader_link('upgrader.php?type=decache', do_lang('UPGRADER_CLEAR_CACHES'));
 
-            $remap = array(
-                'cedi' => 'wiki',
-                'contactmember' => 'contact_member',
-                'admin_occle' => 'admin_commandr',
-                'admin_flagrant' => 'admin_community_billboard', // Not actually bundled, but can take over existing tables now if installed again
-                'onlinemembers' => 'usersonline',
-                'leaderboard' => 'leader_board',
-                'admin_ocf_categories' => 'admin_cns_categories',
-                'admin_ocf_customprofilefields' => 'admin_cns_customprofilefields',
-                'admin_ocf_emoticons' => 'admin_cns_emoticons',
-                'admin_ocf_forums' => 'admin_cns_forums',
-                'admin_ocf_groups' => 'admin_cns_groups',
-                'admin_ocf_history' => 'admin_cns_history',
-                'admin_ocf_join' => 'admin_cns_members',
-                'admin_ocf_ldap' => 'admin_cns_ldap',
-                'admin_ocf_merge_members' => 'admin_cns_merge_members',
-                'admin_ocf_multimoderations' => 'admin_cns_multimoderations',
-                'admin_ocf_post_templates' => 'admin_cns_post_templates',
-                'admin_ocf_welcome_emails' => 'admin_cns_welcome_emails',
-                'cms_cedi' => 'cms_wiki',
-                'cms_ocf_groups' => 'cms_cns_groups',
-            );
-            foreach ($remap as $from => $to) {
-                $GLOBALS['SITE_DB']->query_delete('modules', array('module_the_name' => $to));
-                $GLOBALS['SITE_DB']->query_update('modules', array('module_the_name' => $to), array('module_the_name' => $from), '', 1);
-                $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'menu_items SET i_url=REPLACE(i_url,\'' . $from . '\',\'' . $to . '\')');
-            }
-            /*
-            $deleted_modules = array(
-            );
-            foreach ($deleted_modules as $module_name) {
-                $GLOBALS['SITE_DB']->query_delete('modules', array('module_the_name' => $module_name));
-            }
-            */
-            persistent_cache_delete('MODULES');
+    $l_check_permissions = upgrader_link('upgrader.php?type=check_perms', do_lang('UPGRADER_CHECK_PERMISSIONS'));
 
-            $remap = array(
-                'side_ocf_personal_topics' => 'side_cns_private_topics',
-                'side_stored_menu' => 'menu',
-                'side_root_galleries' => 'side_galleries',
-            );
-            foreach ($remap as $from => $to) {
-                $GLOBALS['SITE_DB']->query_delete('blocks', array('block_name' => $to));
-                $GLOBALS['SITE_DB']->query_update('blocks', array('block_name' => $to), array('block_name' => $from), '', 1);
-            }
-            $deleted_blocks = array(
-                'main_feedback',
-                'main_sitemap',
-                'main_as_zone_access',
-                'main_recent_galleries',
-                'main_top_galleries',
-                'main_recent_cc_entries',
-                'main_recent_downloads',
-                'main_top_downloads',
-                'main_download_tease',
-                'main_gallery_tease',
-            );
-            foreach ($deleted_blocks as $block_name) {
-                $GLOBALS['SITE_DB']->query_delete('blocks', array('block_name' => $block_name));
-            }
+    $l_fix_permissions = upgrader_link('upgrader.php?type=fix_perms', do_lang('UPGRADER_FIX_PERMISSIONS'));
 
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'menu_items SET i_url=REPLACE(i_url,\'ocf_\',\'cns_\')');
+    $l_close_site = upgrader_link('upgrader.php?type=close_site', do_lang('UPGRADER_CLOSE_SITE'), get_option('site_closed') == '1');
 
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values WHERE the_name LIKE \'' . db_encode_like('%cns_%') . '\'');
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_name=REPLACE(the_name,\'ocf_\',\'cns_\')');
+    $l_integrity_scan = upgrader_link('upgrader.php?type=integrity_scan&allow_merging=1', do_lang('UPGRADER_INTEGRITY_SCAN'), false, do_lang('UPGRADER_WILL_MERGE'));
 
-            $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_resource_type' => 'browse'), array('m_resource_type' => 'misc'), '', 1);
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=\'ocp_street_address\' WHERE text_original=\'ocp_building_name_or_number\'');
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=REPLACE(text_original,\'ocp_\',\'cms_\') WHERE text_original LIKE \'ocp\_%\'');
-            $GLOBALS['SITE_DB']->alter_table_field('msp', 'specific_permission', '*ID_TEXT', 'privilege');
-            $GLOBALS['SITE_DB']->alter_table_field('gsp', 'specific_permission', '*ID_TEXT', 'privilege');
-            if ($GLOBALS['SITE_DB']->table_exists('pstore_permissions')) {
-                $GLOBALS['SITE_DB']->alter_table_field('pstore_permissions', 'p_specific_permission', 'ID_TEXT', 'p_privilege');
-            }
-            $GLOBALS['SITE_DB']->rename_table('msp', 'member_privileges');
-            $GLOBALS['SITE_DB']->rename_table('gsp', 'group_privileges');
-            $GLOBALS['SITE_DB']->rename_table('sp_list', 'privilege_list');
-            $GLOBALS['SITE_DB']->rename_table('usersubmitban_ip', 'banned_ip');
-            $GLOBALS['SITE_DB']->query_update('db_meta_indices', array('i_fields' => 'member_id'), array('i_name' => 'xas'), '', 1);
-            $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => 'MEMBER'), array('m_type' => 'USER'));
-            $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => '?MEMBER'), array('m_type' => '?USER'));
-            $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => '*MEMBER'), array('m_type' => '*USER'));
-            $GLOBALS['SITE_DB']->alter_table_field('actionlogs', 'the_user', 'MEMBER', 'member_id');
-            $GLOBALS['SITE_DB']->alter_table_field('sessions', 'the_user', 'MEMBER', 'member_id');
-            $GLOBALS['SITE_DB']->alter_table_field('sessions', 'the_session', '*ID_TEXT');
-            $GLOBALS['SITE_DB']->query_update('privilege_list', array('p_section' => 'FORUMS_AND_MEMBERS'), array('p_section' => 'SECTION_FORUMS'));
-            $GLOBALS['SITE_DB']->query_update('privilege_list', array('p_section' => 'BANNERS'), array('p_section' => '_BANNERS'));
-            $GLOBALS['SITE_DB']->query_delete('config', array('c_set' => 0)); // Defaults not saved in in same way in v10
-            $GLOBALS['SITE_DB']->delete_table_field('config', 'human_name');
-            $GLOBALS['SITE_DB']->delete_table_field('config', 'the_type');
-            $GLOBALS['SITE_DB']->delete_table_field('config', 'eval');
-            $GLOBALS['SITE_DB']->delete_table_field('config', 'the_page');
-            $GLOBALS['SITE_DB']->delete_table_field('config', 'section');
-            $GLOBALS['SITE_DB']->delete_table_field('config', 'explanation');
-            $GLOBALS['SITE_DB']->delete_table_field('config', 'shared_hosting_restricted');
-            $GLOBALS['SITE_DB']->delete_table_field('config', 'c_data');
-            $GLOBALS['SITE_DB']->alter_table_field('config', 'the_name', '*ID_TEXT', 'c_name');
-            $GLOBALS['SITE_DB']->alter_table_field('config', 'config_value', 'LONG_TEXT', 'c_value');
-            $GLOBALS['SITE_DB']->add_table_field('config', 'c_needs_dereference', 'BINARY', 0);
-            $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
-            foreach ($hooks as $hook => $ob) {
-                $option = $ob->get_details();
-                $needs_dereference = ($option['type'] == 'transtext' || $option['type'] == 'transline' || $option['type'] == 'comcodetext' || $option['type'] == 'comcodeline') ? 1 : 0;
-                $GLOBALS['SITE_DB']->query_update('config', array('c_needs_dereference' => $needs_dereference), array('c_name' => $hook), '', 1);
-            }
-            $GLOBALS['SITE_DB']->query_update('zones', array('zone_theme' => 'admin'), array('zone_name' => 'adminzone'), '', 1);
-            $GLOBALS['SITE_DB']->query_update('zones', array('zone_theme' => 'admin'), array('zone_name' => 'cms'), '', 1);
-            $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => 'SHORT_TEXT'), array('m_type' => 'MD5'));
-            $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => '*SHORT_TEXT'), array('m_type' => '*MD5'));
-            rename_config_option('ocf_show_profile_link', 'cns_show_profile_link');
+    $l_integrity_scan_no_merging = upgrader_link('upgrader.php?type=integrity_scan', do_lang('UPGRADER_INTEGRITY_SCAN_NO_CSS_MERGE'));
 
-            delete_value('last_implicit_sync');
-            delete_value('last_newsletter_drip_send');
-            delete_value('last_confirm_reminder_time');
-            delete_value('oracle_index_cleanup_last_time');
-            delete_value('last_sitemap_time_calc');
-            delete_value('last_ticket_lead_time_calc');
-            if (get_value('last_welcome_mail_time') !== null) {
-                $GLOBALS['SITE_DB']->query_insert('long_values', array('date_and_time' => time(), 'the_value' => get_value('last_welcome_mail_time'), 'the_name' => 'last_welcome_mail_time'));
-                delete_value('last_welcome_mail_time');
-            }
+    $l_database_upgrade = upgrader_link('upgrader.php?type=db_upgrade', do_lang('UPGRADER_DATABASE_UPGRADE'));
 
-            foreach (array('INTEGER', 'REAL') as $bad_type) {
-                $bad_fields = $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name'), array('m_type' => $bad_type, 'm_table' => 'f_member_custom_fields'));
-                foreach ($bad_fields as $bad_field) {
-                    $GLOBALS['SITE_DB']->alter_table_field('f_member_custom_fields', $bad_field['m_name'], '?' . $bad_type);
-                }
-            }
+    $l_theme_upgrade = upgrader_link('upgrader.php?type=theme_upgrade', do_lang('UPGRADER_THEME_UPGRADE'));
 
-            // This seems to be a legacy problem on some sites, but would crash on v10 if no-multi-lang was enabled. Generally things would corrupt.
-            require_code('cns_members');
-            $fields = $GLOBALS['SITE_DB']->query('SELECT id FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'f_custom_fields WHERE cf_type IN (\'long_trans\',\'short_trans\')');
-            $member_mappings = cns_get_custom_field_mappings(get_member());
-            foreach ($fields as $field) {
-                $db_field = 'field_' . strval($field['id']);
-                if (is_string($member_mappings[$db_field])) {
-                    $GLOBALS['SITE_DB']->promote_text_field_to_comcode('f_member_custom_fields', $db_field, 'mf_member_id');
-                }
-            }
+    $l_open_site = upgrader_link('upgrader.php?type=open_site', do_lang('UPGRADER_OPEN_SITE'), get_option('site_closed') == '0');
 
-            // For old (and renamed) non-bundled addons
-            if ($GLOBALS['SITE_DB']->table_exists('bank')) {
-                $GLOBALS['SITE_DB']->alter_table_field('bank', 'divident', 'INTEGER', 'dividend');
-                rename_config_option('bank_divident', 'bank_dividend');
-            }
+    $l_error_correction = do_lang('UPGRADER_ERROR_CORRECTION');
 
-            // Delete old files
-            @unlink(get_file_base() . '/pages/html_custom/EN/cedi_tree_made.htm');
-            @unlink(get_file_base() . '/site/pages/html_custom/EN/cedi_tree_made.htm');
-            @unlink(get_file_base() . '/pages/html_custom/EN/download_tree_made.htm');
-            @unlink(get_file_base() . '/site/pages/html_custom/EN/download_tree_made.htm');
+    $l_not_for_patch = do_lang('UPGRADER_NOT_FOR_PATCH');
 
-            // File replacements
-            $reps = array(
-                '#([^\w])cedi([^\w])#' => '$1wiki$2',
-                '#([^\w])seedy([^\w])#' => '$1wiki$2',
-                '#ocPortal#' => 'Composr',
-                '#ocp_#' => 'cms_',
-                '#side_ocf_personal_topics#' => 'side_cns_private_topics',
-                '#ocf_#' => 'cns_',
-                '# filter="#' => ' select="',
-                '# select="#' => ' filter="',
-                '# ocselect="#' => ' filter="',
-                '# caption="#' => ' title="',
-                '#main_feedback#' => 'main_contact_us',
-                '#side_stored_menu#' => 'menu',
-                '#topsites#' => 'top_sites',
-                '#internal_box#' => 'box',
-                '#external_box#' => 'box',
-                '# type="curved"#' => '',
-                '# type=&quot;curved&quot;#' => '',
-                '#side_root_galleries#' => 'side_galleries',
-                '#\[block\]main_sitemap\[/block\]#' => '{$BLOCK,block=menu,param={$_GET,under},use_page_groupings=1,type=sitemap,quick_cache=1}',
-                '#\[attachment([^\[\]]*)\]url_([^\[\]]*)\[/attachment[^\[\]]*\]#' => '[media$1]$2[/media]',
-                '#\{\$OCF#' => '{$CNS',
-                '#:misc#' => ':browse',
-                '#type=misc#' => 'type=browse',
-                '#:product=#' => ':type_code=',
-                '#&product=#' => '&type_code=',
-                '#&amp;product=#' => '&amp;type_code=',
-                '#solidborder#' => 'results_table',
-            );
-            perform_search_replace($reps);
-        }
+    $l_tutorial = upgrader_link(get_tutorial_url('tut_upgrade'), do_lang('UPGRADER_TUTORIAL'));
 
-        if ($version_database < 11.0) {
-            if ((addon_installed('tickets')) && (get_forum_type() == 'cns')) {
-                require_code('tickets');
-                require_code('cns_forums_action2');
-                $target_forum_id = get_ticket_forum_id(null, false, true);
-                if ($target_forum_id !== null) {
-                    $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'id', array('f_name' => 'Reported posts forum'));
-                    if ($forum_id !== null) {
-                        cns_delete_forum($forum_id, $target_forum_id);
-                    }
-                    $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'id', array('f_name' => 'Website "Contact Us" messages'));
-                    if ($forum_id !== null) {
-                        cns_delete_forum($forum_id, $target_forum_id);
-                    }
-                }
-            }
+    $l_release_notes = do_lang('UPGRADER_RELEASE_NOTES');
 
-            if (multi_lang_content()) {
-                $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=\'cms_payment_card_type\' WHERE text_original=\'cms_payment_type\'');
-                $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET cf_type=\'year_month\' WHERE (text_original=\'cms_payment_card_start_date\' OR text_original=\'cms_payment_card_expiry_date\')');
-            } else {
-                $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields SET cf_name=\'cms_payment_card_type\' WHERE cf_name=\'cms_payment_type\'');
-                $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields SET cf_type=\'year_month\' WHERE (cf_name=\'cms_payment_card_start_date\' OR cf_name=\'cms_payment_card_expiry_date\')');
+    $l_refer_release_notes = do_lang('UPGRADER_REFER_RELEASE_NOTES');
+
+    $news_id = post_param_integer('news_id', null);
+    $from_version = post_param_string('from_version', strval(cms_version()) . '.' . cms_version_minor());
+    $tar_url = '';
+    if ($news_id !== null) {
+        require_code('files');
+        $fetch_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/fetch_release_details.php?format=json&news_id=' . strval($news_id) . '&from_version=' . urlencode($from_version);
+        $news = http_get_contents($fetch_url, array('timeout' => 30.0));
+
+        $details = json_decode($news, true);
+        if ($details[0] != '') {
+            $l_refer_release_notes = $details[0];
+            if ($details[2] != '') {
+                $l_refer_release_notes .= '<div style="overflow: auto; height: 150px">' . $details[2] . '</div>';
             }
         }
-
-        set_value('version', float_to_raw_string($version_files, intval($version_database), true));
-
-        return true;
+        $tar_url = $details[1];
     }
+    $l_download = upgrader_link('upgrader.php?type=file_upgrade&tar_url=' . urlencode(base64_encode($tar_url)), do_lang('UPGRADER_DOWNLOAD'));
 
-    return false;
-}
+    $l_important = do_lang('IMPORTANT');
 
-/**
- * Zone index.php files could go stale, rebuild them.
- */
-function rebuild_zone_files()
-{
-    $zones = find_all_zones();
-    foreach ($zones as $zone) {
-        if (!in_array($zone, array('', 'cms', 'adminzone', 'site', 'forum', 'collaboration'/*LEGACY*/))) {
-            if (strpos(file_get_contents(get_custom_file_base() . '/' . $zone . '/index.php'), 'core') !== false) {
-                @file_put_contents(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/index.php', file_get_contents(get_custom_file_base() . '/site/index.php'));
-                fix_permissions(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/index.php');
-                sync_file(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/index.php');
-            }
-        }
-    }
-}
+    $l_bugs = do_lang('UPGRADER_BUGS');
 
-/**
- * Move files from one folder to another.
- * Doesn't move .htaccess and index.html.
- * Deletes the folder afterward.
- *
- * @param  PATH $from Source path
- * @param  PATH $to Destination path
- */
-function move_folder_contents($from, $to)
-{
-    $dh = @opendir(get_custom_file_base() . '/' . $from);
-    if ($dh !== false) {
-        while (($f = readdir($dh)) !== false) {
-            if (($f == 'index.html') || ($f == '.htaccess')) {
-                continue;
-            }
+    $l_upgrade_steps = do_lang('UPGRADER_UPGRADE_STEPS');
 
-            @rename(get_custom_file_base() . '/' . $from . '/' . $f, $to . '/' . $f);
-        }
-        closedir($dh);
-        @rmdir(get_custom_file_base() . '/' . $from);
-    }
-}
+    $l_action = do_lang('ACTION');
+    $l_step = do_lang('UPGRADER_STEP');
+    $l_estimated_time = do_lang('UPGRADER_ESTIMATED_TIME');
 
-/**
- * Perform a big search and replace.
- *
- * @param  array $reps Change from/to this
- */
-function perform_search_replace($reps)
-{
-    // Find directories to do replacements in...
+    $l_safe_mode = upgrader_link('index.php?keep_safe_mode=1', do_lang('UPGRADER_SAFE_MODE'));
 
-    $target_dirs = array();
+    $num_addons = $GLOBALS['SITE_DB']->query_select_value('addons', 'COUNT(*)');
+    $l_addon_management = upgrader_link('adminzone/index.php?page=admin_addons&keep_safe_mode=1', do_lang('UPGRADER_ADDON_MANAGEMENT', integer_format($num_addons)), $num_addons == 0);
 
-    $langs = find_all_langs();
+    $l_remove_addon_files = upgrader_link('upgrader.php?type=addon_remove', do_lang('UPGRADER_REMOVE_ADDON_FILES'));
 
-    require_code('themes2');
-    $themes = find_all_themes();
-    foreach (array_keys($themes) as $theme) {
-        $target_dirs[] = 'themes/' . $theme . '/templates_custom';
-        $target_dirs[] = 'themes/' . $theme . '/css_custom';
-        $target_dirs[] = 'themes/' . $theme . '/text_custom';
-        $target_dirs[] = 'themes/' . $theme . '/xml_custom';
-        $target_dirs[] = 'themes/' . $theme . '/javascript_custom';
-    }
+    $l_customisations = do_lang('UPGRADER_CUSTOMISATIONS');
 
-    $target_dirs[] = 'text_custom';
-    foreach (array_keys($langs) as $lang) {
-        $target_dirs[] = 'text_custom/' . $lang;
-    }
+    $closed = comcode_to_tempcode(get_option('closed'), null, true);
+    $closed_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'SITE'), get_module_zone('admin_config'), array(), false, false, false, 'group_CLOSED_SITE');
 
-    $zones = find_all_zones();
-    foreach ($zones as $zone) {
-        foreach (array_keys($langs) as $lang) {
-            $target_dirs[] = $zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang;
-        }
-    }
+    $show_permission_buttons = (!GOOGLE_APPENGINE && !is_suexec_like() || $GLOBALS['DEV_MODE']);
 
-    // Do replacement...
-
-    foreach ($target_dirs as $_dir) {
-        $dir = get_custom_file_base() . '/' . $_dir;
-        if (is_dir($dir)) {
-            $dh = opendir($dir);
-            if ($dh !== false) {
-                while (($f = readdir($dh)) !== false) {
-                    $path = $dir . '/' . $f;
-                    $contents = file_get_contents($path);
-                    $contents_orig = $contents;
-                    $contents = preg_replace(array_keys($reps), array_values($reps), $contents);
-                    if ($contents != $contents_orig) {
-                        require_code('files');
-                        cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
-                    }
-                }
-                closedir($dh);
-            }
-        }
-    }
-}
-
-/**
- * Rename a zone in the database and move any custom pages in it.
- *
- * @param  ID_TEXT $zone The old name of the zone
- * @param  ID_TEXT $new_zone The new name of the zone
- * @param  boolean $dont_bother_with_main_row Whether to assume the main zone row has already been renamed as part of a wider editing operation
- */
-function fu_rename_zone($zone, $new_zone, $dont_bother_with_main_row = false)
-{
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
-
-    require_code('zones2');
-    require_code('zones3');
-    actual_rename_zone_lite($zone, $new_zone, $dont_bother_with_main_row);
-    $pages = find_all_pages_wrap($zone, true, false, FIND_ALL_PAGES__ALL);
-    foreach ($pages as $page => $type) {
-        $path = get_file_base() . (($zone == '') ? '' : '/') . $zone . '/pages/' . $type . '/' . $page;
-        $new_path = get_file_base() . '/' . $new_zone . '/pages/' . $type . '/' . $page;
-        if ((cms_is_writable($path)) && (cms_is_writable($new_path))) {
-            rename($path, $new_path);
-            sync_file_move($path, $new_path);
-        }
-    }
-}
-
-/**
- * Upgrade all modules.
- *
- * @return string List of upgraded/installed modules/blocks
- */
-function upgrade_modules()
-{
     $out = '';
 
-    require_code('zones2');
-    require_code('zones3');
+    $out .= "
+        <p>{$l_choices}</p>
 
-    $ret = upgrade_module('adminzone', 'admin_version');
-    if ($ret == 1) {
-        $out .= '<li>' . do_lang('FU_UPGRADED_MODULE', '<kbd>admin_version</kbd>') . '</li>';
+        <div style=\"margin: 0 50px\">
+            <h2>{$l_maintenance}&hellip;</h2>
+
+            <ul class=\"compact-list\">
+                <li>{$l_clear_caches}</li>
+            </ul>
+
+            <h2 style=\"margin-top: 2em\">{$l_upgrading}&hellip;</h2>
+
+            <h3>{$l_important}</h3>
+            <p>{$l_bugs}</p>
+
+            <h3>{$l_release_notes}</h3>
+            <p>{$l_refer_release_notes}</p>
+
+            <h3>{$l_upgrade_steps}</h3>
+            <div class=\"wide-table-wrap\"><table class=\"columned-table autosized-table results-table wide-table spaced-table\">
+                <thead>
+                    <tr>
+                        <th>{$l_step}</th>
+                        <th>{$l_action}</th>
+                        <th>{$l_estimated_time}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><th>X</th><td>{$l_not_for_patch} {$l_tutorial}</td><td>" . escape_html(display_time_period(60 * 120)) . "</td></tr>
+
+                    <tr><th>1</th><td>{$l_take_backup}</td><td>" . escape_html(display_time_period(60 * 120)) . "</td></tr>
+
+                    <tr><th>2</th><td>{$l_close_site}  {$l_fu_closedness}<br /><q style=\"font-style: italic\">" . $closed->evaluate() . "</q> <span class=\"associated-link\"><a href=\"" . escape_html($closed_url->evaluate()) . "\" title=\"(this link will open in a new window)\" target=\"_blank\">" . do_lang('CHANGE') . "</a></span></td><td>" . escape_html(display_time_period(60)) . "</td></tr>
+
+                    <tr><th>3</th><td>{$l_download}</td><td>" . escape_html(display_time_period(60 * 5)) . "</td></tr>
+
+                    <tr><th>4</th><td>{$l_not_for_patch} {$l_integrity_scan_no_merging}<!-- " . do_lang('OR') . " {$l_integrity_scan}--></td><td>" . str_replace(' ', '&nbsp;', escape_html(display_time_period(60 * 10))) . "&nbsp;&dagger;</td></tr>
+
+                    <tr><th>5</th><td>{$l_not_for_patch} {$l_database_upgrade}<br />{$l_up_info}</td><td>" . escape_html(display_time_period(60 * 5)) . "</td></tr>
+
+                    <tr><th>6</th><td>{$l_not_for_patch} {$l_theme_upgrade}</td><td>" . escape_html(display_time_period(60 * 5)) . "</td></tr>
+
+                    <tr><th>7</th><td>{$l_clear_caches}</td><td>1 minute</td></tr>
+
+                    <tr><th>8</th><td>{$l_open_site}  {$l_fu_closedness}</td><td>1 minute</td></tr>
+                </tbody>
+            </table></div>
+
+            <p>&dagger; {$l_customisations}</p>
+
+            <h2 style=\"margin-top: 2em\">{$l_error_correction}&hellip;</h2>
+
+            <ul class=\"compact-list\">";
+    if ($show_permission_buttons) {
+        $out .= "
+                <li>{$l_check_permissions} / {$l_fix_permissions}</li>";
     }
-
-    $zones = find_all_zones();
-    if (!in_array('adminzone', $zones)) {
-        $zones[] = 'adminzone';
-    }
-    if (!in_array('cms', $zones)) {
-        $zones[] = 'cms';
-    }
-    if (!in_array('site', $zones)) {
-        $zones[] = 'site';
-    }
-    foreach ($zones as $zone) {
-        $modules = find_all_modules($zone);
-        foreach ($modules as $module => $type) {
-            $ret = upgrade_module($zone, $module);
-            if ($ret == 1) {
-                $out .= '<li>' . do_lang('FU_UPGRADED_MODULE', '<kbd>' . escape_html($module) . '</kbd>') . '</li>';
-            } elseif ($ret == -2) {
-                if ($type == 'modules_custom') {
-                    continue;
-                }
-
-                if (reinstall_module($zone, $module)) {
-                    $out .= '<li>' . do_lang('FU_INSTALLED_MODULE', '<kbd>' . escape_html($module) . '</kbd>') . '</li>';
-                }
-            }
-        }
-    }
-
-    require_code('zones2');
-    require_code('zones3');
-    $blocks = find_all_blocks();
-    foreach ($blocks as $block => $type) {
-        $ret = upgrade_block($block);
-        if ($ret == 1) {
-            $out .= '<li>' . do_lang('FU_UPGRADED_BLOCK', '<kbd>' . escape_html($block) . '</kbd>') . '</li>';
-        } elseif ($ret == -2) {
-            if ($type == 'sources_custom') {
-                continue;
-            }
-
-            if (reinstall_block($block)) {
-                $out .= '<li>' . do_lang('FU_INSTALLED_BLOCK', '<kbd>' . escape_html($block) . '</kbd>') . '</li>';
-            }
-        }
-    }
-
-    require_code('addons2');
-    $addons = find_all_hooks('systems', 'addon_registry');
-    foreach ($addons as $addon => $type) {
-        $ret = upgrade_addon_soft($addon);
-        if ($ret == 1) {
-            $out .= '<li>' . do_lang('FU_UPGRADED_ADDON', '<kbd>' . escape_html($addon) . '</kbd>') . '</li>';
-        } elseif ($ret == -2) {
-            if ($type == 'sources_custom') {
-                continue;
-            }
-
-            reinstall_addon_soft($addon);
-
-            $out .= '<li>' . do_lang('FU_INSTALLED_ADDON', '<kbd>' . escape_html($addon) . '</kbd>') . '</li>';
-        }
-    }
+    $out .= "
+                <li>{$l_safe_mode}</li>
+                <li>{$l_addon_management}</li>
+                <li>{$l_remove_addon_files}</li>
+            </ul>
+        </div>";
 
     return $out;
 }
 
 /**
- * Upgrade Conversr if appropriate.
+ * Do upgrader screen: decaching.
  *
- * @return boolean Whether anything was done
+ * @ignore
+ * @return string Output messages
  */
-function cns_upgrade()
+function upgrader_decache_screen()
 {
-    $version_files = cms_version_number();
-    $_version_database_cns = get_value('cns_version');
-    if ($_version_database_cns === null) { // LEGACY
-        $_version_database_cns = get_value('ocf_version');
-        set_value('cns_version', $_version_database_cns);
-        delete_value('ocf_version');
-    }
-    if ($_version_database_cns === null) {
-        $_version_database_cns = get_value('version');
-    }
-    if ($_version_database_cns === null) {
-        $version_database_cns = $version_files;
-    } else {
-        $version_database_cns = floatval($_version_database_cns);
-    }
-
-
-    if ($version_files != $version_database_cns) {
-        global $SITE_INFO;
-        $SITE_INFO['db_forums'] = $SITE_INFO['db_site'];
-        $SITE_INFO['db_forums_host'] = (!empty($SITE_INFO['db_site_host'])) ? $SITE_INFO['db_site_host'] : 'localhost';
-        $SITE_INFO['db_forums_user'] = (!empty($SITE_INFO['db_site_user'])) ? $SITE_INFO['db_site_user'] : 'root';
-        $SITE_INFO['db_forums_password'] = array_key_exists('db_site_password', $SITE_INFO) ? $SITE_INFO['db_site_password'] : '';
-        $GLOBALS['FORUM_DB'] = $GLOBALS['SITE_DB'];
-
-        require_code('forum/cns');
-        $GLOBALS['FORUM_DRIVER'] = object_factory('Forum_driver_cns');
-        $GLOBALS['FORUM_DRIVER']->db = $GLOBALS['SITE_DB'];
-
-        require_code('cns_install');
-        install_cns($version_database_cns);
-
-        set_value('cns_version', float_to_raw_string($version_files, 10, true));
-
-        return true;
-    }
-    return false;
-}
-
-/**
- * Make sure the site database has the correct character set internally. Composr already ensures the communication charset makes sense for what Composr is using, this makes sure it stores sanely too.
- */
-function fix_mysql_database_charset()
-{
-    global $SITE_INFO;
-    if (empty($SITE_INFO['database_charset'])) {
-        $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8' : 'latin1'; // LEGACY: Too many assumptions, maybe we should just remove fix_mysql_database_charset and change_mysql_database_charset
-    }
-    change_mysql_database_charset($SITE_INFO['database_charset'], $GLOBALS['SITE_DB']);
-}
-
-/**
- * Refresh a MySQL database's character set.
- *
- * @param  ID_TEXT $new_charset Character set
- * @param  object $db Database
- * @param  boolean $reencode Whether to let MySQL do a reencoding of the characters (if this is set to false we actually are adjusting the interpretation while leaving the disk data the same)
- */
-function change_mysql_database_charset($new_charset, $db, $reencode = false)
-{
-    cms_ob_end_clean();
-
-    if (php_function_allowed('set_time_limit')) {
-        @set_time_limit(0);
-    }
-
-    push_db_scope_check(false);
-
-    $fulltext_indices = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('*'));
-    foreach ($fulltext_indices as $index) {
-        if (substr($index['i_name'], 0, 1) == '#') {
-            echo 'Deleting index: ' . $index['i_table'] . '/' . $index['i_name'] . "\n";
-            flush();
-
-            $GLOBALS['SITE_DB']->delete_index_if_exists($index['i_table'], $index['i_name']);
-        }
-    }
-
-    echo 'Changing overall character set for database' . "\n";
-    flush();
-    $db->query('ALTER DATABASE ' . get_db_site() . ' CHARACTER SET ' . $new_charset);
-
-    $remap = $GLOBALS['DB_STATIC_OBJECT']->get_type_remap();
-
-    $tables = collapse_1d_complexity('m_table', $db->query_select('db_meta', array('DISTINCT m_table')));
-    foreach ($tables as $table) {
-        echo 'Changing character sets for: ' . $table . "\n";
-        flush();
-
-        $fields = $db->query_select('db_meta', array('m_name', 'm_table', 'm_type'), array('m_table' => $table));
-
-        $db->query('ALTER TABLE ' . $db->get_table_prefix() . $table . ' CHARACTER SET ' . $new_charset);
-        foreach ($fields as $field) {
-            $db_type = strtoupper($remap[str_replace(array('*', '?'), array('', ''), $field['m_type'])]);
-            if ((strpos($db_type, 'TEXT') !== false) || (strpos($db_type, 'CHAR') !== false)) {
-                $db_type_temp = $db_type;
-                if (substr($db_type, 0, 4) == 'CHAR') {
-                    $db_type_temp = str_replace('CHAR', 'BINARY', $db_type);
-                } elseif (substr($db_type, 0, 7) == 'VARCHAR') {
-                    $db_type_temp = str_replace('VARCHAR', 'VARBINARY', $db_type);
-                } elseif (substr($db_type, 0, 4) == 'LONGTEXT') {
-                    $db_type_temp = str_replace('LONGTEXT', 'LONGBLOB', $db_type);
-                }
-
-                foreach ($reencode ? array($db_type) : array($db_type_temp, $db_type) as $i => $db_type) {
-                    $query = 'ALTER TABLE ' . $db->get_table_prefix() . $table . ' CHANGE ' . $field['m_name'] . ' ' . $field['m_name'] . ' ' . $db_type;
-                    if ($i == 1 || $reencode) {
-                        $query .= ' CHARACTER SET ' . $new_charset;
-                    }
-                    $query .= ' ' . ((strpos($field['m_name'], '?') !== false) ? 'NULL' : 'NOT NULL');
-                    $db->query($query);
-                }
-            }
-        }
-    }
-
-    foreach ($fulltext_indices as $index) {
-        if (substr($index['i_name'], 0, 1) == '#') {
-            echo 'Rebuilding index: ' . $index['i_table'] . '/' . $index['i_name'] . "\n";
-            flush();
-
-            $GLOBALS['SITE_DB']->create_index($index['i_table'], $index['i_name'], explode(',', $index['i_fields']));
-        }
-    }
-
-    pop_db_scope_check();
-}
-
-/**
- * Upgrade all themes.
- *
- * @return string HTML output
- */
-function upgrade_themes()
-{
-    $test_run = (get_param_integer('live_run', 0) == 0);
-
-    $str = '';
-
-    $str .= '<h2>Theme upgrade: ' . ($test_run ? 'test run' : 'live results') . '</h2>';
-
-    require_code('themes2');
-    $themes = find_all_themes();
-    $has_errors = false;
-    foreach (array_keys($themes) as $theme) {
-        $from = round(cms_version_number()) - 1;
-        $to = cms_version_number();
-        list($errors, $successes) = upgrade_theme($theme, $from, $to, $test_run);
-
-        $str .= '<h3>' . escape_html($theme) . '</h3>';
-
-        foreach ($errors as $error) {
-            $str .= '<p style="background: #DDD; margin: 1em; padding: 1em">&#x2717; ' . $error->evaluate() . '</p>';
-            $has_errors = true;
-        }
-
-        foreach ($successes as $success) {
-            $str .= '<p style="background: #DDD; margin: 1em; padding: 1em">&#x2713; ' . $success->evaluate() . '</p>';
-        }
-    }
-
-    if ($test_run) {
-        if ($has_errors) {
-            $str .= '<p>' . do_lang('FU_THEME_ERRORS') . '</p>';
-        }
-
-        $l_theme_upgrade = fu_link('upgrader.php?type=theme_upgrade&live_run=1', do_lang('FU_THEME_UPGRADE_FINAL'));
-        $str .= $l_theme_upgrade;
-    }
-
-    return $str;
-}
-
-/**
- * Upgrade a theme automatically, using hand-coded migration arrays.
- *
- * @param  ID_TEXT $theme Theme to be upgraded
- * @param  float $from_version From version
- * @param  float $to_version Target version
- * @param  boolean $test_run Whether executing a test run (i.e. not do anything)
- * @return array A pair: List of errors, List of successes
- */
-function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
-{
-    $errors = array();
-    $successes = array();
-
-    if (!$test_run) {
-        require_code('abstract_file_manager');
-        force_have_afm_details();
-    }
-
-    $css_replace__single_match = array();
-    $css_prepend__single_match = array();
-    $css_append__single_match = array();
-    $css_replace__multi_match = array();
-    $css_prepend__multi_match = array();
-    $css_append__multi_match = array();
-    $css_file_append = array();
-    $theme_images_new = array();
-    $theme_images_renames = array();
-    $templates_replace = array();
-    $templates_rename = array();
-    $templates_borked = array();
-
-    if (false) {
-        $css_recognition_string = '2004-2011'; // Must be defined. Ensures theme is right version.
-
-        $css_replace__multi_match = array(
-            '*' => array(),
-            'global.css' => array(),
-        );
-
-        $css_replace__single_match = array();
-
-        $css_prepend__single_match = array();
-
-        $css_append__single_match = array();
-
-        $css_file_append = array();
-
-        // NB: This UNIX command can work out what theme images are added...
-        // OLD=/Library/WebServer/Documents/test/themes/default/images ; NEW=/Library/WebServer/Documents/git/themes/default/images ; diff -r $OLD $NEW | grep "Only in $NEW" | grep -v .DS_Store | sed "s#Only in "$NEW"##g" | sed "s#: #/#g" | sed "s#^/##g" | sed "s#^EN/##g" | sed "s#\.*$##"
-        // Obviously only theme-wizable images should go here
-        $theme_images_new = array();
-
-        $theme_images_renames = array();
-
-        $templates_replace = array(
-            '*' => array(),
-        );
-
-        /*Find deleted/renamed templates:
-        OLD=/Library/WebServer/Documents/test/themes/default/templates ; NEW=/Library/WebServer/Documents/git/themes/default/templates ; diff -r $OLD $NEW | grep .tpl$ | grep "Only in "$OLD | sed "s#Only in "$OLD": ##"*/
-        $templates_rename = array();
-
-        /*Find diff of changes templates
-        OLD=/Library/WebServer/Documents/test/themes/default/templates ; NEW=/Library/WebServer/Documents/git/themes/default/templates ; diff -u $OLD $NEW > ~/Desktop/diff.txt*/
-        $templates_borked = array();
-    } else {
-        $errors[] = do_lang_tempcode('NO_DEFINED_THEME_UPGRADER');
-        return array($errors, array());
-    }
-
-    if (addon_installed('themewizard')) {
-        require_code('themewizard');
-        $seed = find_theme_seed($theme);
-        $dark = find_theme_dark($theme);
-        list($colours, $landscape) = calculate_theme($seed, 'default', 'equations', 'colours', $dark);
-    }
-
-    // CSS
-    $css_dir = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/css_custom/';
-    $dh = @opendir($css_dir);
-    if ($dh !== false) {
-        while (($css_file = readdir($dh)) !== false) {
-            if (substr($css_file, -4) != '.css') {
-                continue;
-            }
-            if (substr($css_file, 0, 1) == '.') {
-                continue;
-            }
-
-            $css_file_contents = file_get_contents($css_dir . $css_file);
-            $orig_css_file_contents = $css_file_contents;
-            if (strpos($css_file_contents, $css_recognition_string) === false) {
-                $errors[] = do_lang_tempcode('NON_RECOGNISED_CSS_FILE', escape_html($css_file), escape_html(float_to_raw_string($from_version)));
-                //continue;      Actually we'll let it pass
-            }
-
-            // Apply single match rules. First check single match rules apply exactly once (means rule is bogus if it matches more than once, or unusable if not at all)
-            foreach (array('css_replace' => $css_replace__single_match, 'css_prepend' => $css_prepend__single_match, 'css_append' => $css_append__single_match) as $rule_set_type => $rule_set) {
-                foreach ($rule_set as $target_file => $_rule_set) {
-                    // If people have moved CSS into global.css, to optimise page load times
-                    if (($target_file != '*') && ($target_file != 'global.css') && ($css_file == 'global.css')) {
-                        if ((file_exists($css_dir . $target_file)) && (strlen(trim(file_get_contents($css_dir . $target_file))) == 0)) {
-                            $target_file = 'global.css';
-                        }
-                    }
-
-                    if (($target_file == '*') || ($target_file == $css_file)) {
-                        foreach ($_rule_set as $from => $to) {
-                            // Apply theme wizard to $to
-                            if (addon_installed('themewizard')) {
-                                $to = themewizard_colours_to_css($to, $landscape, 'default', 'equations', $seed);
-                            }
-
-                            $occurrences = substr_count($css_file_contents, $from);
-                            if ($occurrences == 0) { // Try after applying theme wizard
-                                if (addon_installed('themewizard')) {
-                                    $from = themewizard_colours_to_css($from, $landscape, 'default', 'equations', $seed);
-                                    $occurrences = substr_count($css_file_contents, $from);
-                                }
-                            }
-                            if ($occurrences == 0) {
-                                $errors[] = do_lang_tempcode('CSS_RULE_UNMATCHED_' . $rule_set_type, escape_html($from), escape_html($to), escape_html($target_file));
-                            } elseif ($occurrences > 1) {
-                                $errors[] = do_lang_tempcode('CSS_RULE_OVERMATCHED_' . $rule_set_type, escape_html($from), escape_html($to), escape_html($target_file));
-                            } else {
-                                switch ($rule_set_type) {
-                                    case 'css_replace':
-                                        $css_file_contents = str_replace($from, $to, $css_file_contents);
-                                        break;
-
-                                    case 'css_prepend':
-                                        $pos = strpos($css_file_contents, $from);
-                                        if (substr($css_file_contents, $pos - strlen($to), strlen($to)) != $to) {
-                                            $css_file_contents = substr($css_file_contents, 0, $pos) . $to . substr($css_file_contents, $pos);
-                                        }
-                                        break;
-
-                                    case 'css_append':
-                                        $pos = strpos($css_file_contents, $from) + strlen($from);
-                                        if (substr($css_file_contents, $pos, strlen($to)) != $to) {
-                                            $css_file_contents = substr($css_file_contents, 0, $pos) . $to . substr($css_file_contents, $pos);
-                                        }
-                                        break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Apply multi-match rules
-            foreach (array('css_replace' => $css_replace__multi_match, 'css_prepend' => $css_prepend__multi_match, 'css_append' => $css_append__multi_match) as $rule_set_type => $rule_set) {
-                foreach ($rule_set as $target_file => $_rule_set) {
-                    if (($target_file == '*') || ($target_file == $css_file)) {
-                        foreach ($_rule_set as $from_a => $to) {
-                            // Apply theme wizard to $to
-                            if (addon_installed('themewizard')) {
-                                $to = themewizard_colours_to_css($to, $landscape, 'default', 'equations', $seed);
-                            }
-
-                            $froms = array($from_a);
-                            if (addon_installed('themewizard')) {
-                                $froms[] = themewizard_colours_to_css($from_a, $landscape, 'default', 'equations', $seed);
-                            }
-                            foreach ($froms as $from) {
-                                switch ($rule_set_type) {
-                                    case 'css_replace':
-                                        $css_file_contents = str_replace($from, $to, $css_file_contents);
-                                        break;
-
-                                    case 'css_prepend':
-                                        $pos = 0;
-                                        do {
-                                            $pos = strpos($css_file_contents, $from, $pos);
-                                            if ($pos !== false) {
-                                                if (substr($css_file_contents, $pos, -strlen($to)) != $to) {
-                                                    $css_file_contents = substr($css_file_contents, 0, $pos) . $to . substr($css_file_contents, $pos);
-                                                    $pos += strlen($to) + strlen($from);
-                                                } else {
-                                                    $pos += strlen($from);
-                                                }
-                                            }
-                                        } while ($pos !== false);
-                                        break;
-
-                                    case 'css_append':
-                                        $pos = 0;
-                                        do {
-                                            $pos = strpos($css_file_contents, $from, $pos);
-                                            if ($pos !== false) {
-                                                if (substr($css_file_contents, $pos, strlen($to)) != $to) {
-                                                    $pos += strlen($from);
-                                                    $css_file_contents = substr($css_file_contents, 0, $pos) . $to . substr($css_file_contents, $pos);
-                                                    $pos += strlen($to);
-                                                } else {
-                                                    $pos += strlen($from);
-                                                }
-                                            }
-                                        } while ($pos !== false);
-                                        break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Apply unmatched rules
-            foreach ($css_file_append as $target_file => $rule_set) {
-                if (($target_file == '*') || ($target_file == $css_file)) {
-                    foreach ($rule_set as $to) {
-                        $css_file_contents .= $to;
-                    }
-                }
-            }
-
-            if (!$test_run) {
-                // Take revision
-                $revision_file = $css_dir . $css_file . '.' . strval(time());
-                if (@copy($css_dir . $css_file, $revision_file) !== false) {
-                    fix_permissions($revision_file);
-                    sync_file($revision_file);
-                }
-
-                // Save
-                if ($orig_css_file_contents != $css_file_contents) {
-                    require_code('files');
-                    cms_file_put_contents_safe($css_dir . $css_file, $css_file_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
-                }
-
-                $successes[] = do_lang_tempcode('CSS_FILE_UPGRADED', escape_html($css_file));
-            }
-        }
-
-        closedir($dh);
-    }
-
-    // Theme images
-    require_code('themes2');
-    require_code('themes3');
-    $langs = array('EN' => 'lang');//find_all_langs();
-    foreach ($theme_images_renames as $old => $new) {
-        foreach (array_keys($langs) as $lang) {
-            $path = urldecode(find_theme_image($old, true, true, $theme, $lang));
-            if ($path != '') {
-                $new_path = str_replace('/' . $old, '/' . $new, $path);
-                if (!$test_run) {
-                    if (!file_exists(get_custom_file_base() . '/' . $new_path)) {
-                        if (file_exists($path)) {
-                            afm_move($path, $new_path);
-                        }
-
-                        $where_map = array('theme' => $theme, 'id' => $new);
-                        if (($lang != '') && ($lang !== null)) {
-                            $where_map['lang'] = $lang;
-                        }
-                        $GLOBALS['SITE_DB']->query_delete('theme_images', $where_map);
-
-                        actual_edit_theme_image($old, $theme, $lang, $new, $new_path);
-
-                        $successes[] = do_lang_tempcode('THEME_IMAGE_RENAMED', escape_html($old), escape_html($new));
-                    }
-                }
-            }
-        }
-    }
-    if (addon_installed('themewizard')) {
-        if ($theme != 'default') {
-            foreach ($theme_images_new as $new) {
-                foreach (array_keys($langs) as $lang) {
-                    $path = urldecode(find_theme_image($new, true, true, 'default', $lang));
-                    if ($path != '') {
-                        $new_path = str_replace('themes/default/images/', 'themes/' . $theme . '/images/', $path);
-                        if (!file_exists(get_custom_file_base() . '/' . $new_path)) {
-                            if (!$test_run) {
-                                afm_make_directory(dirname($new_path), true, true);
-                            }
-
-                            $image = calculate_theme($seed, 'default', 'equations', $new, $dark, $colours, $landscape, $lang);
-                            if ($image !== null) {
-                                if (!$test_run) {
-                                    @imagepng($image, get_custom_file_base() . '/' . $new_path, 9) or intelligent_write_error(get_custom_file_base() . '/' . $new_path);
-                                    imagedestroy($image);
-                                    fix_permissions(get_custom_file_base() . '/' . $new_path);
-                                    sync_file(get_custom_file_base() . '/' . $new_path);
-                                    require_code('images_png');
-                                    png_compress(get_custom_file_base() . '/' . $new_path);
-
-                                    $successes[] = do_lang_tempcode('THEME_IMAGE_NEW', escape_html($new));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Templates
-    $directories = array(
-        'templates' => 'tpl',
-        'javascript' => 'js',
-        'xml' => 'xml',
-        'text' => 'txt',
-    );
-    foreach ($directories as $directory => $ext) {
-        $templates_dir = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/' . $directory . '_custom/';
-        $dh = @opendir($templates_dir);
-        if ($dh !== false) {
-            while (($templates_file = readdir($dh)) !== false) {
-                if (substr($templates_file, -4) != '.' . $ext) {
-                    continue;
-                }
-
-                $templates_file_contents = file_get_contents($templates_dir . $templates_file);
-                $orig_templates_file_contents = $templates_file_contents;
-
-                foreach ($templates_replace as $target_file => $rule_set) {
-                    if (($target_file == '*') || ($target_file == $templates_file)) {
-                        foreach ($rule_set as $from => $to) {
-                            $templates_file_contents = str_replace($from, $to, $templates_file_contents);
-                        }
-                    }
-                }
-                if (array_key_exists($templates_file, $templates_rename)) {
-                    if (!$test_run) {
-                        @rename($templates_dir . $templates_file, $templates_dir . $templates_rename[$templates_file]) or intelligent_write_error($templates_dir . $templates_rename[$templates_file]);
-                        $successes[] = do_lang_tempcode('TEMPLATE_RENAMED', escape_html($templates_file), escape_html($templates_rename[$templates_file]));
-                    }
-                    $templates_file = $templates_rename[$templates_file];
-                }
-                if ($templates_file_contents != $orig_templates_file_contents) {
-                    if (!$test_run) {
-                        $successes[] = do_lang_tempcode('TEMPLATE_ALTERED', escape_html($templates_file));
-
-                        // Save
-                        require_code('files');
-                        cms_file_put_contents_safe($templates_dir . $templates_file_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
-                    }
-                }
-
-                if (in_array($templates_file, $templates_borked)) {
-                    $errors[] = do_lang_tempcode('TEMPLATE_WILL_NEED_RESTORING', escape_html($templates_file));
-                }
-            }
-
-            closedir($dh);
-        }
-    }
-
-    return array($errors, $successes);
-}
-
-/**
- * Upgrade shared installs.
- *
- * @param  integer $from Position to proceed from
- */
-function upgrade_sharedinstall_sites($from = 0)
-{
-    global $CURRENT_SHARE_USER, $SITE_INFO, $TABLE_LANG_FIELDS_CACHE;
-
-    // Find sites
-    $sites = array();
-    foreach (array_keys($SITE_INFO) as $key) {
-        $matches = array();
-        if (preg_match('#^custom_user_(.*)#', $key, $matches) != 0) {
-            $sites[] = $matches[1];
-        }
-    }
-
-    disable_php_memory_limit();
-
-    $total = count($sites);
-
-    foreach ($sites as $i => $site) {
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
-
-        if (($i < $from) && ($site != 'shareddemo')) {
-            continue;
-        }
-
-        // Change active site
-        $CURRENT_SHARE_USER = $site;
-        $TABLE_LANG_FIELDS_CACHE = array();
-        _general_db_init();
-
-        // Reset DB
-        $GLOBALS['SITE_DB'] = new DatabaseConnector(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), get_table_prefix());
-        $GLOBALS['FORUM_DB'] = $GLOBALS['SITE_DB'];
-
-        // NB: File path will be ok
-
-        // NB: Other internal caching could need changing in the future, but works at time of writing
-
-        // Go!
-        automate_upgrade();
-
-        echo 'Upgraded ' . escape_html($site) . ' (' . escape_html(number_format($i + 1) . ' of ' . number_format($total)) . ')<br />';
-        flush();
-    }
-}
-
-/**
- * Automatically go through a partial upgrade for current site.
- */
-function automate_upgrade__safe()
-{
-    // Database
-    clear_caches_1();
     clear_caches_2();
-    version_specific();
-    upgrade_modules();
-    rebuild_zone_files();
-
-    // Conversr
-    cns_upgrade();
+    return '<p>' . do_lang('SUCCESS') . '</p>';
 }
 
 /**
- * Automatically go through full upgrade for current site.
+ * Do upgrader screen: open site.
+ *
+ * @ignore
+ * @return string Output messages
  */
-function automate_upgrade()
+function upgrader_open_site_screen()
 {
-    automate_upgrade__safe();
+    set_option('site_closed', '0');
+    return '<p>' . do_lang('SUCCESS') . '</p>';
+}
 
-    // Themes
-    require_code('themes2');
-    $themes = find_all_themes();
-    foreach (array_keys($themes) as $theme) {
-        $from = round(cms_version_number()) - 1;
-        $to = cms_version_number();
-        upgrade_theme($theme, $from, $to, false);
-    }
+/**
+ * Do upgrader screen: close site.
+ *
+ * @ignore
+ * @return string Output messages
+ */
+function upgrader_close_site_screen()
+{
+    set_option('closed', do_lang('UPGRADER_CLOSED_FOR_UPGRADES', get_site_name()));
+    set_option('site_closed', '1');
+    return '<p>' . do_lang('SUCCESS') . '</p>';
 }

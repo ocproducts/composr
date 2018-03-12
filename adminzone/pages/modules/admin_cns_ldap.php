@@ -74,7 +74,7 @@ class Module_admin_cns_ldap
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('ldap', $error_msg)) {
+        if (!addon_installed__messaged('ldap', $error_msg)) {
             return $error_msg;
         }
 

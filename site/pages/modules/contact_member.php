@@ -98,7 +98,7 @@ class Module_contact_member
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('cns_contact_member', $error_msg)) {
+        if (!addon_installed__messaged('cns_contact_member', $error_msg)) {
             return $error_msg;
         }
 

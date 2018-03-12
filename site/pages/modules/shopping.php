@@ -252,7 +252,7 @@ class Module_shopping
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('shopping', $error_msg)) {
+        if (!addon_installed__messaged('shopping', $error_msg)) {
             return $error_msg;
         }
 

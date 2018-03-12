@@ -63,7 +63,7 @@ class Block_bottom_rss
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('syndication_blocks', $error_msg)) {
+        if (!addon_installed__messaged('syndication_blocks', $error_msg)) {
             return $error_msg;
         }
 

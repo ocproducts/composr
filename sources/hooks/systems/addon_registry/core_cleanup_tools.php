@@ -125,7 +125,7 @@ class Hook_addon_registry_core_cleanup_tools
             'sources/hooks/systems/cleanup/index.html',
             'sources_custom/hooks/systems/cleanup/index.html',
             'sources/hooks/systems/cleanup/language.php',
-            'sources/hooks/systems/cleanup/mysql_optimise.php',
+            'sources/hooks/systems/cleanup/mysql_repair.php',
             'sources/hooks/systems/cleanup/orphaned_lang_strings.php',
             'sources/hooks/systems/cleanup/orphaned_uploads.php',
             'sources/hooks/systems/cleanup/templates.php',

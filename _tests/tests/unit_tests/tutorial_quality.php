@@ -231,7 +231,7 @@ class tutorial_quality_test_set extends cms_test_case
 
                 $this->assertTrue(strpos($c, '{$SET,tutorial_add_date,') !== false, $file . ' has no defined add date');
                 $this->assertTrue(strpos($c, '[block]main_tutorial_rating[/block]') !== false, $file . ' has no rating block');
-                if (preg_match('#^sup_#', $file) == 0 && substr_count($c, '[title="2"') > 1 && strpos($file, 'codebook') === false) {
+                if ((preg_match('#^sup_#', $file) == 0) && (substr_count($c, '[title="2"') > 1) && (strpos($file, 'codebook') === false)) {
                     $this->assertTrue(strpos($c, '[contents]decimal,lower-alpha[/contents]') !== false, $file . ' has no TOC');
                 }
             }

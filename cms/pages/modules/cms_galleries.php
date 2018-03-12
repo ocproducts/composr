@@ -120,7 +120,7 @@ class Module_cms_galleries extends Standard_crud_module
     public function pre_run($top_level = true, $type = null)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('galleries', $error_msg)) {
+        if (!addon_installed__messaged('galleries', $error_msg)) {
             return $error_msg;
         }
 

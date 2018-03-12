@@ -66,8 +66,7 @@ class Hook_health_check_integrity extends Hook_Health_Check
             return;
         }
 
-        require_code('upgrade');
-        require_lang('upgrade');
+        require_code('upgrade_integrity_scan');
         $data = run_integrity_check(false, false, false);
         $this->assertTrue($data == do_lang('NO_ISSUES_FOUND'), 'Integrity checker reporting potential issues, see upgrader for details');
     }
@@ -157,8 +156,6 @@ class Hook_health_check_integrity extends Hook_Health_Check
             return;
         }
 
-        require_code('upgrade');
-
         $version_files = cms_version_number();
 
         $_version_database = get_value('version');
@@ -202,9 +199,8 @@ class Hook_health_check_integrity extends Hook_Health_Check
             return;
         }
 
-        require_code('upgrade');
-        require_lang('upgrade');
+        require_code('upgrade_perms');
 
-        $this->assertTrue(check_perms() == do_lang('FU_ALL_CHMODDED_GOOD'), 'File permissions (chmodding) are not complete, see upgrader for details');
+        $this->assertTrue(upgrader_check_perms_screen() == do_lang('UPGRADER_ALL_CHMODDED_GOOD'), 'File permissions (chmodding) are not complete, see upgrader for details');
     }
 }

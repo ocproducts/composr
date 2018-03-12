@@ -15,6 +15,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('member_filedumps')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('member_filedumps')), '2w60cngyu9f26bseweyg40lix71r65ug', 'red-alert');
+}
+
 require_code('files2');
 
 $member_id = isset($map['member_id']) ? intval($map['member_id']) : get_member();

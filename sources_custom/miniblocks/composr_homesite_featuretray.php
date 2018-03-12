@@ -15,6 +15,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('composr_homesite')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')), 'nvs4uiit60bctm7u2ya1bkopk8xkyyyu', 'red-alert');
+}
+
 $_download_page_url = build_url(array('page' => 'download'), 'site');
 $download_page_url = $_download_page_url->evaluate();
 

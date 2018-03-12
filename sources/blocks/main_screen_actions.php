@@ -50,7 +50,7 @@ class Block_main_screen_actions
     public function run($map)
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('recommend', $error_msg)) {
+        if (!addon_installed__messaged('recommend', $error_msg)) {
             return $error_msg;
         }
 

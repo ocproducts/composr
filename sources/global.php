@@ -100,7 +100,7 @@ function require_code($codename, $light_exit = false)
             $has_orig = is_file($path_orig);
         }
         if (($path_custom !== $path_orig) && ($has_orig)) {
-            $orig = str_replace(array('?' . '>', '<' . '?php'), array('', ''), file_get_contents($path_orig));
+            $orig = clean_php_file_for_eval(file_get_contents($path_orig), $path_orig);
             $a = file_get_contents($path_custom);
 
             if (strpos($a, '/*FORCE_ORIGINAL_LOAD_FIRST*/') === false/*e.g. Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined*/) {
@@ -165,7 +165,7 @@ function require_code($codename, $light_exit = false)
                 // Note we load the original and then the override. This is so function_exists can be used in the overrides (as we can't support the re-definition) OR in the case of Mx_ class derivation, so that the base class is loaded first.
 
                 if (isset($_GET['keep_show_parse_errors'])) {
-                    $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_orig)));
+                    $orig = clean_php_file_for_eval(file_get_contents($path_orig), $path_orig);
                     $do_sed = function_exists('push_suppress_error_death');
                     if ($do_sed) {
                         push_suppress_error_death(true);
@@ -187,7 +187,7 @@ function require_code($codename, $light_exit = false)
                 }
 
                 if (isset($_GET['keep_show_parse_errors'])) {
-                    $custom = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_custom)));
+                    $custom = clean_php_file_for_eval(file_get_contents($path_custom), $path_custom);
                     $do_sed = function_exists('push_suppress_error_death');
                     if ($do_sed) {
                         push_suppress_error_death(true);
@@ -210,7 +210,7 @@ function require_code($codename, $light_exit = false)
             }
         } else {
             if (isset($_GET['keep_show_parse_errors'])) {
-                $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_custom)));
+                $orig = clean_php_file_for_eval(file_get_contents($path_custom), $path_custom);
                 $do_sed = function_exists('push_suppress_error_death');
                 if ($do_sed) {
                     push_suppress_error_death(true);
@@ -252,7 +252,7 @@ function require_code($codename, $light_exit = false)
         if (isset($_GET['keep_show_parse_errors'])) {
             $contents = @file_get_contents($path_orig);
             if ($contents !== false) {
-                $orig = str_replace(array('?' . '>', '<' . '?php'), array('', ''), $contents);
+                $orig = clean_php_file_for_eval($contents, $path_orig);
                 $do_sed = function_exists('push_suppress_error_death');
                 if ($do_sed) {
                     push_suppress_error_death(true);
@@ -319,6 +319,24 @@ function require_code($codename, $light_exit = false)
         warn_exit($error_message, false, true);
     }
     fatal_exit($error_message);
+}
+
+/**
+ * Make a PHP file evaluable.
+ *
+ * @param  string $c File contents
+ * @param  string $path File path
+ * @return string Cleaned up file
+ */
+function clean_php_file_for_eval($c, $path)
+{
+    $reps = array();
+    $reps['?' . '>'] = '';
+    $reps['<' . '?php'] = '';
+    $reps['__FILE__'] = "'" . addslashes($path) . "'";
+    $reps['__DIR__'] = "'" . addslashes(dirname($path)) . "'";
+
+    return str_replace(array_keys($reps), array_values($reps), $c);
 }
 
 /**

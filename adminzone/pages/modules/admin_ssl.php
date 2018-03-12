@@ -70,7 +70,7 @@ class Module_admin_ssl
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('ssl', $error_msg)) {
+        if (!addon_installed__messaged('ssl', $error_msg)) {
             return $error_msg;
         }
 

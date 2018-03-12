@@ -57,7 +57,7 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
             if (is_object($text)) {
                 $text = $text->evaluate();
             }
-            if ($text == do_lang('DATE_TIME') && strpos($result_entries->evaluate(), '<a ') !== false) {
+            if (($text == do_lang('DATE_TIME')) && (strpos($result_entries->evaluate(), '<a ') !== false)) {
                 $message = paragraph(do_lang_tempcode('CLICK_DATE_FOR_MORE'));
             }
         }

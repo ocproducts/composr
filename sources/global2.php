@@ -551,7 +551,7 @@ function init__global2()
 
         // Auto-upgrade
         if (($CURRENT_SHARE_USER !== null) && (float_to_raw_string(cms_version_number()) != get_value('version'))) {
-            require_code('upgrade');
+            require_code('upgrade_shared_installs');
             automate_upgrade__safe();
         }
     }

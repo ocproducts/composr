@@ -15,6 +15,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('composr_homesite')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')), 'h0u9px8wh68nroz053xjgygly0aalnzi', 'red-alert');
+}
+
 require_code('patreon');
 $level = isset($map['level']) ? intval($map['level']) : 30;
 $patreon_patrons = get_patreon_patrons_on_minimum_level($level);

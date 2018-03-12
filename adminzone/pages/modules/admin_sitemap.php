@@ -70,7 +70,7 @@ class Module_admin_sitemap
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('page_management', $error_msg)) {
+        if (!addon_installed__messaged('page_management', $error_msg)) {
             return $error_msg;
         }
 

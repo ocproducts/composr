@@ -235,7 +235,7 @@ class Module_downloads
     public function pre_run()
     {
         $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('downloads', $error_msg)) {
+        if (!addon_installed__messaged('downloads', $error_msg)) {
             return $error_msg;
         }
 
