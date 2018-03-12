@@ -136,6 +136,10 @@ class Hook_addon_registry_community_billboard
     {
         return array(
             'themes/default/images_custom/icons/menu/adminzone/audit/community_billboard.svg',
+            'themes/default/images_custom/icons/menu/adminzone/audit/index.html',
+            'themes/default/images_custom/icons/menu/adminzone/index.html',
+            'themes/default/images_custom/icons/menu/index.html',
+            'themes/default/images_custom/icons/index.html',
             'themes/default/templates_custom/COMMUNITY_BILLBOARD_DETAILS.tpl',
             'themes/default/templates_custom/COMMUNITY_BILLBOARD_STORE_LIST_LINE.tpl',
             'themes/default/templates_custom/ECOM_PRODUCT_COMMUNITY_BILLBOARD.tpl',

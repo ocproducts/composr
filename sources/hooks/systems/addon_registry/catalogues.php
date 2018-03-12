@@ -163,6 +163,7 @@ class Hook_addon_registry_catalogues
             'cms/pages/modules/cms_catalogues.php',
             'lang/EN/catalogues.ini',
             'site/pages/modules/catalogues.php',
+            'sources/hooks/systems/tasks/catalogues_recache.php',
             'sources/hooks/systems/notifications/catalogue_view_reports.php',
             'sources/hooks/systems/notifications/catalogue_entry.php',
             'sources/catalogues.php',

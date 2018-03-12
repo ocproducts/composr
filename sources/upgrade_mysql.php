@@ -23,7 +23,7 @@
  *
  * @ignore
  */
-function init__upgrade_perms()
+function init__upgrade_mysql()
 {
     require_lang('upgrade');
 }

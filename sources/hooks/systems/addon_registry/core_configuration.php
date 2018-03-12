@@ -136,6 +136,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/honeypot_url.php',
             'sources/hooks/systems/config/implied_spammer_confidence.php',
             'sources/hooks/systems/config/moz_access_id.php',
+            'sources/hooks/systems/config/max_queued_mails_per_cron_cycle.php',
             'sources/hooks/systems/config/moz_secret_key.php',
             'sources/hooks/systems/config/moz_paid.php',
             'sources/hooks/systems/config/bing_geocoding_api_key.php',

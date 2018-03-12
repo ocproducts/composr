@@ -191,6 +191,8 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/codechecker/lex.php',
             '_tests/codechecker/lib.php',
             '_tests/codechecker/netbeans/.htaccess',
+            '_tests/codechecker/netbeans/build/classes/codequalitychecker/.htaccess',
+            '_tests/codechecker/netbeans/index.html',
             '_tests/codechecker/netbeans/build/classes/codequalitychecker/AboutDialog.class',
             '_tests/codechecker/netbeans/build/classes/codequalitychecker/Dialog1_aboutBtn_actionAdapter.class',
             '_tests/codechecker/netbeans/build/classes/codequalitychecker/Dialog1_ClearErrorsBtn_actionAdapter.class',

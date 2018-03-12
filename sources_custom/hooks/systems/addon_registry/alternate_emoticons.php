@@ -158,6 +158,7 @@ class Hook_addon_registry_alternate_emoticons
             'themes/default/images_custom/cns_emoticons/whistle.png',
             'themes/default/images_custom/cns_emoticons/wink.png',
             'themes/default/images_custom/cns_emoticons/wub.png',
+            'themes/default/images_custom/cns_emoticons/index.html',
         );
     }
 

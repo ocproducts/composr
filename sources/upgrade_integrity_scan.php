@@ -103,22 +103,13 @@ function load_integrity_manifest($previous = false)
 }
 
 /**
- * Do an integrity check. This does not include an alien check in basic mode; otherwise check_alien() is called within this function.
+ * Load up a list of files for the addons we have installed (addon_registry based ones only).
  *
- * @param  boolean $basic Whether to just do the minimum basic scan
- * @param  boolean $allow_merging Whether merging of CSS changes is allowed
- * @param  boolean $unix_help Whether to give some help to unix people
- * @return string Results
+ * @param  array $manifest Manifest of file checksums
+ * @return array A pair: List of hook files, List of files
  */
-function run_integrity_check($basic = false, $allow_merging = true, $unix_help = false)
+function load_files_list_of_installed_addons($manifest)
 {
-    $ret_str = '';
-    $found_something = false;
-
-    require_code('files');
-
-    disable_php_memory_limit();
-
     // We'll need to know about stuff in our addon registry, and file manifest
     if (function_exists('find_all_hooks')) {
         $hooks = find_all_hooks('systems', 'addon_registry');
@@ -136,7 +127,6 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
             closedir($dh);
         }
     }
-    $manifest = load_integrity_manifest();
     $hook_files = array();
     foreach ($hooks as $hook => $hook_type) {
         if ($hook_type != 'sources_custom') {
@@ -148,6 +138,34 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         $path = get_file_base() . '/' . $hook_type . '/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
         $hook_files[$hook] = file_get_contents($path);
     }
+    $files_to_check = array();
+    foreach ($hook_files as $addon_name => $hook_file) {
+        $matches = array();
+        if (preg_match('#function get_file_list\(\)\s*\{([^\}]*)\}#', $hook_file, $matches) != 0) {
+            $files_to_check = array_merge($files_to_check, eval($matches[1])); // A bit of a hack, but saves a lot of RAM
+        }
+    }
+    sort($files_to_check);
+
+    return array($files_to_check, $hook_files);
+}
+
+/**
+ * Do an integrity check. This does not include an alien check in basic mode; otherwise check_alien() is called within this function.
+ *
+ * @param  boolean $basic Whether to just do the minimum basic scan
+ * @param  boolean $allow_merging Whether merging of CSS changes is allowed
+ * @param  boolean $unix_help Whether to give some help to unix people
+ * @return string Results
+ */
+function run_integrity_check($basic = false, $allow_merging = true, $unix_help = false)
+{
+    $ret_str = '';
+    $found_something = false;
+
+    require_code('files');
+
+    disable_php_memory_limit();
 
     // Moved module handling
     if ($basic) {
@@ -162,6 +180,9 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         }
     }
 
+    $manifest = load_integrity_manifest();
+    list($files_to_check, $hook_files) = load_files_list_of_installed_addons($manifest);
+
     // Override handling
     $check_outdated__handle_overrides_result = check_outdated__handle_overrides(get_file_base() . '/', '', $manifest, $hook_files, $allow_merging);
     list($outdated__outdated_original_and_override, $outdated__possibly_outdated_override, $outdated__missing_original_but_has_override, $outdated__uninstalled_addon_but_has_override) = $check_outdated__handle_overrides_result;
@@ -171,15 +192,6 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
     $outdated__missing_file_entirely = '';
     $outdated__future_files = '';
     $files_determined_to_upload = array();
-    $files_to_check = array();
-    foreach ($hook_files as $addon_name => $hook_file) {
-        $matches = array();
-        if (preg_match('#function get_file_list\(\)\s*\{([^\}]*)\}#', $hook_file, $matches) != 0) {
-            $files_to_check = array_merge($files_to_check, eval($matches[1])); // A bit of a hack, but saves a lot of RAM
-        }
-    }
-    unset($hook_files); // Save some memory
-    sort($files_to_check);
     foreach ($files_to_check as $file) {
         if (($basic) && (time() - $_SERVER['REQUEST_TIME'] > 5)) {
             return ''; // Taking too long
@@ -235,7 +247,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         if ($basic) {
             $ret_str .= '<p>The following files have been superseded by new versions, but you have overrides/customisations blocking the new versions. Look into this and consider reincorporating your changes into our new version. If this is not done, bugs (potentially security holes) may occur, or be left unfixed. If you edited using an inbuilt editor, the file on which you based it will be saved as <kbd>file.editfrom</kbd>: you may use a tool such as <a href="http://winmerge.sourceforge.net/" target="_blank">WinMerge</a> to compare the <kbd>editfrom</kbd> file to your own, and then apply those same changes to the latest version of the file.</p><ul>' . $outdated__possibly_outdated_override . '</ul>';
         } else {
-            $ret_str .= do_lang('WARNING_FILE_OUTDATED', $outdated__possibly_outdated_override);
+            $ret_str .= do_lang('WARNING_FILE_OUTDATED_OVERRIDE', $outdated__possibly_outdated_override);
         }
         $found_something = true;
     }
@@ -256,7 +268,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         $found_something = true;
     }
     if (($outdated__uninstalled_addon_but_has_override != '') && (!$basic)) {
-        $ret_str .= do_lang('WARNING_FILE_FROM_UNINSTALLED_ADDON', $outdated__uninstalled_addon_but_has_override);
+        $ret_str .= do_lang('WARNING_FILE_OVERRIDE_FROM_UNINSTALLED_ADDON', $outdated__uninstalled_addon_but_has_override);
         $found_something = true;
     }
     if ($outdated__missing_file_entirely != '') {
@@ -311,8 +323,8 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
 
     // Alien files
     if (!$basic) {
-        list($alien, $addon) = check_alien(get_file_base() . '/', '', false, null, null, $manifest);
-        if (($moved != '') || ($alien != '')) {
+        list($alien, $addon) = check_alien(get_file_base() . '/', '', false, null, null, array_flip($files_to_check));
+        if (($alien != '') || ($addon != '')) {
             $ret_str .= '<div>';
             if ($alien != '') {
                 $ret_str .= do_lang('WARNING_FILE_ALIEN', $alien);
@@ -496,7 +508,9 @@ function check_alien($dir, $rela = '', $raw = false, $addon_files = null, $old_f
         $old_files = load_integrity_manifest(true);
     }
     if ($files === null) {
-        $files = load_integrity_manifest(true);
+        $manifest = load_integrity_manifest();
+        list($files_to_check, $hook_files) = load_files_list_of_installed_addons($manifest);
+        $files = array_flip($files_to_check);
     }
 
     $alien = '';
