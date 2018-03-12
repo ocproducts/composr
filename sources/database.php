@@ -2255,7 +2255,7 @@ class DatabaseConnector
         }
 
         $ret = '';
-        if (substr(get_db_type(), 0, 5) == 'mysql') {
+        if (strpos(get_db_type(), 'mysql') !== false) {
             if ((!$do_check_first) || ($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_fields', array('i_table' => $table, 'i_name' => $index)) !== null)) {
                 $ret = ' FORCE INDEX (' . filter_naughty_harsh($index) . ')';
             }
@@ -2353,7 +2353,7 @@ class DatabaseConnector
             return false; // Actually, we have delayed insert for these so locking is not an issue
         }
 
-        if (substr(get_db_type(), 0, 5) != 'mysql' || get_value('innodb') === '1') {
+        if (strpos(get_db_type(), 'mysql') === false || get_value('innodb') === '1') {
             return false;
         }
 

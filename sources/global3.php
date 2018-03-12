@@ -1258,12 +1258,11 @@ function has_no_forum()
  * Check to see if an addon is installed.
  *
  * @param  ID_TEXT $addon The addon name
- * @param  boolean $non_bundled_too Whether to check non-bundled addons (ones without an addon_registry hook)
  * @return boolean Whether it is
  */
-function addon_installed($addon, $non_bundled_too = false)
+function addon_installed($addon)
 {
-    global $ADDON_INSTALLED_CACHE, $SITE_INFO;
+    global $ADDON_INSTALLED_CACHE;
     if ($ADDON_INSTALLED_CACHE == array()) {
         if (function_exists('persistent_cache_get')) {
             $ADDON_INSTALLED_CACHE = persistent_cache_get('ADDONS_INSTALLED');
@@ -1275,12 +1274,6 @@ function addon_installed($addon, $non_bundled_too = false)
 
     $addon = filter_naughty($addon);
     $answer = is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $addon . '.php') || is_file(get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . $addon . '.php');
-    if ((!$answer) && ($non_bundled_too) && (!running_script('install'))) {
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('addons', 'addon_name', array('addon_name' => $addon));
-        if ($test !== null) {
-            $answer = true;
-        }
-    }
 
     $ADDON_INSTALLED_CACHE[$addon] = $answer;
     if (function_exists('persistent_cache_set')) {

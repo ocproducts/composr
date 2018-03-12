@@ -47,5 +47,9 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('themewizard')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('themewizard')));
+}
+
 require_code('themewizard');
 generate_logo(get_param_string('name'), get_param_string('font'), get_param_string('logo_theme_image'), get_param_string('background_theme_image'), true, get_param_string('theme'), get_param_integer('standalone_version', 0) == 1);

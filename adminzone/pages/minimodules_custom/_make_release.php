@@ -19,6 +19,13 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('downloads')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')));
+}
+if (!addon_installed('news')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('news')));
+}
+
 $error_msg = new Tempcode();
 if (!addon_installed__autoinstall('composr_homesite', $error_msg)) {
     return $error_msg;

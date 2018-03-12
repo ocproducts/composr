@@ -49,6 +49,10 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('directory_protect')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('directory_protect')));
+}
+
 $file = get_param_string('file', false, INPUT_FILTER_GET_COMPLEX);
 $filename = basename($file);
 

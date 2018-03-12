@@ -50,11 +50,15 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+if (!addon_installed('composr_homesite')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
+}
+
 if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
     access_denied();
 }
-
-i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 // Close site with message
 require_code('config2');

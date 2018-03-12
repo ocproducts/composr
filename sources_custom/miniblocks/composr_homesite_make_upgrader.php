@@ -15,6 +15,13 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('downloads')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')), '033cdc5wtl2new7j2degs0lo2n2gbhwy', 'red-alert');
+}
+if (!addon_installed('news')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news')), 'c39eg9wtj29jb07b15zkmno460d6712y', 'red-alert');
+}
+
 if (!function_exists('mu_ui')) {
     function mu_ui()
     {

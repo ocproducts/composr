@@ -31,6 +31,10 @@ class Hook_endpoint_account_login
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
         $username = trim(post_param_string('username'));
         $password = trim(post_param_string('password', false, INPUT_FILTER_NONE));
 

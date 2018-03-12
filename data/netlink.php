@@ -52,6 +52,10 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('msn')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('msn')));
+}
+
 require_code('multi_site_networks');
 
 $redir_url = get_param_string('url', '', INPUT_FILTER_URL_GENERAL);

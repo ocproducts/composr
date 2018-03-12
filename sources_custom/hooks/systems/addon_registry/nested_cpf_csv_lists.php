@@ -109,9 +109,7 @@ Set Custom Profile Field list fields to have a default value like [tt]countries.
     public function get_dependencies()
     {
         return array(
-            'requires' => array(
-                'PHP5.2',
-            ),
+            'requires' => array(),
             'recommends' => array(),
             'conflicts_with' => array(),
         );

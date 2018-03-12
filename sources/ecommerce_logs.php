@@ -162,7 +162,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
     require_code('locations');
 
     if (!addon_installed('shopping')) {
-        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('shopping')));
     }
 
     $order_title = do_lang('CART_ORDER', strval($id));

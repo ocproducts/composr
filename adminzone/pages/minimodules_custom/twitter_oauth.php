@@ -20,6 +20,10 @@ if (!addon_installed__autoinstall('twitter_support', $error_msg)) {
     return $error_msg;
 }
 
+if (!function_exists('curl_init')) {
+    warn_exit(do_lang_tempcode('NO_CURL_ON_SERVER'));
+}
+
 require_code('developer_tools');
 destrictify();
 

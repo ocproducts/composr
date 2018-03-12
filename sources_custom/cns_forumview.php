@@ -30,6 +30,10 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
         return $ret;
     }
 
+    if (!addon_installed('tickets')) {
+        return $ret;
+    }
+
     if (empty($topic['forum_id'])) {
         return $ret;
     }

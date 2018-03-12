@@ -85,6 +85,10 @@ class Module_admin_shopping
             return $error_msg;
         }
 
+        if (!addon_installed('shopping')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('shopping')));
+        }
+
         require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
 
         $type = get_param_string('type', 'browse');

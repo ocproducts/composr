@@ -1361,7 +1361,7 @@ class Module_admin_setupwizard
                     // Check dependencies
                     $dependencies = explode(',', $addon_info['dependencies']);
                     foreach (array_keys($uninstalling) as $d) {
-                        if ((addon_installed($d, true)) || (in_array($d, $installing))) {
+                        if ((addon_installed($d)) || (in_array($d, $installing))) {
                             unset($dependencies[array_search($d, $dependencies)]);
                         }
                     }

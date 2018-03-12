@@ -36,6 +36,14 @@ function init__webdav()
  */
 function webdav_script()
 {
+    if (!addon_installed('webdav')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('webdav')));
+    }
+
+    if (!addon_installed('commandr')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('commandr')));
+    }
+
     require_code('sabredav/vendor/autoload');
 
     require_code('webdav_commandr_fs');

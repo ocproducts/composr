@@ -74,6 +74,10 @@ class Module_admin_referrals
             return $error_msg;
         }
 
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('referrals');

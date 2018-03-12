@@ -23,6 +23,10 @@
  */
 function chat_logs_script()
 {
+    if (!addon_installed('chat')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('chat')));
+    }
+
     // Closed site
     $site_closed = get_option('site_closed');
     if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {

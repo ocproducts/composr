@@ -31,6 +31,14 @@ class Hook_cron_disastr
             return null;
         }
 
+        if (!addon_installed('points')) {
+            return null;
+        }
+
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         return array(
             'label' => 'Disastr',
             'num_queued' => null,

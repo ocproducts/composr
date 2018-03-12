@@ -18,6 +18,20 @@
  */
 function buildr_messages_script()
 {
+    if (!addon_installed('buildr')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('buildr')));
+    }
+
+    if (!addon_installed('points')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('points')));
+    }
+    if (!addon_installed('ecommerce')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')));
+    }
+    if (!addon_installed('chat')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('chat')));
+    }
+
     require_lang('buildr');
     require_lang('chat');
     require_css('buildr');
@@ -45,6 +59,20 @@ function buildr_messages_script()
  */
 function buildr_map_script()
 {
+    if (!addon_installed('buildr')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('buildr')));
+    }
+
+    if (!addon_installed('points')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('points')));
+    }
+    if (!addon_installed('ecommerce')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')));
+    }
+    if (!addon_installed('chat')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('chat')));
+    }
+
     require_code('buildr');
 
     $realm = get_param_integer('realm', null);

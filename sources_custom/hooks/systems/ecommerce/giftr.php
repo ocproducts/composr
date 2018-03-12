@@ -49,10 +49,6 @@ class Hook_ecommerce_giftr
      */
     public function get_products($search = null)
     {
-        if (!addon_installed('giftr')) {
-            return null;
-        }
-
         require_lang('giftr');
 
         $products = array();
@@ -114,6 +110,13 @@ class Hook_ecommerce_giftr
      */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
+        if (!addon_installed('ecommerce')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+        if (!addon_installed('points')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
         $gift_id = intval(preg_replace('#^GIFTR_#', '', $type_code));
         $rows = $GLOBALS['SITE_DB']->query_select('giftr', array('*'), array('id' => $gift_id), '', 1);
         if (!array_key_exists(0, $rows)) {

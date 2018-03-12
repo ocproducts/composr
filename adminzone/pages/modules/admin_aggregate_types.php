@@ -125,6 +125,13 @@ class Module_admin_aggregate_types extends Standard_crud_module
             return $error_msg;
         }
 
+        if (!addon_installed('commandr')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('commandr')));
+        }
+        if (!addon_installed('import')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('import')));
+        }
+
         if ($type === null) {
             $type = get_param_string('type', 'browse');
         }

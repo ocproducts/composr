@@ -29,11 +29,6 @@ class Mx_login extends Module_login
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
-        $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('external_db_login', $error_msg)) {
-            return $error_msg;
-        }
-
         $GLOBALS['OUTPUT_STREAMING'] = false;
         parent::pre_run();
     }
@@ -45,7 +40,7 @@ class Mx_login extends Module_login
      */
     public function run()
     {
-        if (addon_installed('external_db_login')) {
+        if (addon_installed('external_db_login') && get_forum_type() == 'cns') {
             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 $redirect_url = get_value('external_login_url', null, true);
                 if (!empty($redirect_url)) {

@@ -19,6 +19,10 @@ function init__hooks__systems__ecommerce__cart_orders($in)
         return $in;
     }
 
+    if (get_forum_type() != 'cns') {
+        return $in;
+    }
+
     require_code('referrals');
 
     return override_str_replace_exactly(

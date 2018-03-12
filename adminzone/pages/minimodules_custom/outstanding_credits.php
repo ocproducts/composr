@@ -13,16 +13,33 @@
  * @package    composr_homesite_support_credits
  */
 
+i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
 $error_msg = new Tempcode();
 if (!addon_installed__autoinstall('composr_homesite_support_credits', $error_msg)) {
     return $error_msg;
+}
+
+if (!addon_installed('tickets')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('tickets')));
+}
+if (!addon_installed('stats')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('stats')));
+}
+if (!addon_installed('ecommerce')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')));
+}
+if (!addon_installed('points')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('points')));
 }
 
 if (get_forum_type() != 'cns') {
     warn_exit(do_lang_tempcode('NO_CNS'));
 }
 
-i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+if (strpos(get_db_type(), 'mysql') !== false) {
+    warn_exit('This works with MySQL only');
+}
 
 $start = get_param_integer('start', 0);
 $max = get_param_integer('max', 50);

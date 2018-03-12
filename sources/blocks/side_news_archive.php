@@ -68,6 +68,10 @@ class Block_side_news_archive
             return $error_msg;
         }
 
+        if (!addon_installed('news_shared')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')), 'jgoer1lzlefihrpu4tank2j9e7uwmf17', 'red-alert');
+        }
+
         require_lang('news');
 
         $block_id = get_block_id($map);

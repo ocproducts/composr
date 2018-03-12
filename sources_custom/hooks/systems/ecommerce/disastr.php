@@ -49,10 +49,6 @@ class Hook_ecommerce_disastr
      */
     public function get_products($search = null)
     {
-        if (!addon_installed('disastr')) {
-            return null;
-        }
-
         require_lang('disastr');
 
         $products = array();
@@ -127,6 +123,18 @@ class Hook_ecommerce_disastr
      */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
+        if (!addon_installed('disastr')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
+        if (!addon_installed('points')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
+        if (get_forum_type() != 'cns') {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
         if (is_guest($member_id)) {
             return ECOMMERCE_PRODUCT_NO_GUESTS;
         }

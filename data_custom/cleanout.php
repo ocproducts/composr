@@ -56,6 +56,10 @@ FUDGE It assumes multi-language content is turned off because it doesn't bother 
 If that feature is needed the code could be improved.
 */
 
+if (!addon_installed('meta_toolkit')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('meta_toolkit')));
+}
+
 $out = cleanup();
 if (!headers_sent()) {
     header('Content-type: text/plain; charset=' . get_charset());
@@ -73,6 +77,10 @@ if (!headers_sent()) {
  */
 function cleanup()
 {
+    if (get_forum_type() != 'cns') {
+        warn_exit(do_lang_tempcode('NO_CNS'));
+    }
+
     $password = post_param_string('password', null, INPUT_FILTER_NONE);
     if ($password === null) {
         @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><input class="admin--delete3 button-screen" type="submit" value="Delete programmed data" /></form>');

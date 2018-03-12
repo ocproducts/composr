@@ -111,7 +111,6 @@ class Hook_addon_registry_bankr
                 'System scheduler',
                 'points',
                 'ecommerce',
-                'points',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),

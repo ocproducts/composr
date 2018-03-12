@@ -26,6 +26,14 @@ function init__site__pages__modules_custom__galleries($code)
         return $code;
     }
 
+    if (!addon_installed('unvalidated')) {
+        return $code;
+    }
+
+    if (!addon_installed('galleries')) {
+        return $code;
+    }
+
     // Add a redirection for the workflow handling
     $code = override_str_replace_exactly(
         "// What are we doing?\n        \$type = get_param_string('type', 'browse');",

@@ -23,6 +23,10 @@
  */
 function incoming_bounced_email_script()
 {
+    if (!addon_installed('newsletter')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('newsletter')));
+    }
+
     if (!GOOGLE_APPENGINE) {
         return;
     }

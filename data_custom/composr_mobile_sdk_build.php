@@ -55,6 +55,10 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('composr_mobile_sdk')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_mobile_sdk')));
+}
+
 // Bootstrap tools
 $ob = new Composr_mobile_sdk_tools();
 $ob->run();

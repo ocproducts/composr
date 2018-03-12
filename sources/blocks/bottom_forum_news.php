@@ -68,6 +68,10 @@ class Block_bottom_forum_news
             return $error_msg;
         }
 
+        if (!addon_installed('news_shared')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')), 'jhmazz9b50kv3de1drxujlw7p5haozvo', 'red-alert');
+        }
+
         if (has_no_forum()) {
             return new Tempcode();
         }

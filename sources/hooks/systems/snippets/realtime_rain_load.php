@@ -31,7 +31,11 @@ class Hook_snippet_realtime_rain_load
     public function run()
     {
         if (!addon_installed('realtime_rain')) {
-            return new Tempcode();
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('realtime_rain')));
+        }
+
+        if (!addon_installed('stats')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('stats')));
         }
 
         require_lang('realtime_rain');

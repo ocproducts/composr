@@ -20,6 +20,13 @@ if (!addon_installed__autoinstall('addon_publish', $error_msg)) {
     return $error_msg;
 }
 
+if (!addon_installed('downloads')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')));
+}
+if (!addon_installed('galleries')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('galleries')));
+}
+
 if (post_param_integer('confirm', 0) == 0) {
     $preview = 'Publish addons';
     $title = get_screen_title($preview, false);

@@ -71,6 +71,10 @@ class Block_main_news
             return $error_msg;
         }
 
+        if (!addon_installed('news_shared')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')), 'd791iqh0ytnpf0azwolpxojd881q9ir2', 'red-alert');
+        }
+
         require_lang('cns');
         require_lang('news');
         require_css('news');

@@ -24,6 +24,14 @@ class Hook_upon_query_add_mentor
             return;
         }
 
+        if (!addon_installed('chat')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('chat')));
+        }
+
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         if ($query[0] == 'S') {
             return;
         }

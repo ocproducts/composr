@@ -27,7 +27,7 @@
  */
 function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_exit = true, $outfile_path = null, $callback = null, $metadata = array())
 {
-    if (!addon_installed('excel_support')) {
+    if (!addon_installed('excel_support') || !function_exists('zip_open') || !function_exists('xml_parser_create')) {
         return non_overridden__make_csv($data, $filename, $headers, $output_and_exit, $outfile_path, $callback, $metadata);
     }
 

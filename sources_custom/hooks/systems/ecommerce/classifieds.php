@@ -49,10 +49,6 @@ class Hook_ecommerce_classifieds
      */
     public function get_products($search = null)
     {
-        if (!addon_installed('classified_ads')) {
-            return null;
-        }
-
         require_lang('classifieds');
 
         $num_products_for_sale = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries e JOIN ' . get_table_prefix() . 'ecom_classifieds_prices c ON c.c_catalogue_name=e.c_name', 'COUNT(*)');
@@ -104,6 +100,17 @@ class Hook_ecommerce_classifieds
      */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
+        if (!addon_installed('classified_ads')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
+        if (!addon_installed('catalogues')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+        if (!addon_installed('ecommerce')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
         $purchase_id = get_param_string('id', null);
 
         if (($must_be_listed) && ($purchase_id === null)) {

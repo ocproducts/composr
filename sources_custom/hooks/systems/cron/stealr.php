@@ -31,6 +31,17 @@ class Hook_cron_stealr
             return null;
         }
 
+        if (!addon_installed('points')) {
+            return null;
+        }
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         $stealr_group = get_option('stealr_group');
         if ($stealr_group == '') {
             return null;

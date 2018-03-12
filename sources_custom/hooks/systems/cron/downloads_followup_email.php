@@ -31,6 +31,10 @@ class Hook_cron_downloads_followup_email
             return null;
         }
 
+        if (!addon_installed('downloads')) {
+            return null;
+        }
+
         $time_now = time();
         if ($last_run === null) {
             $last_run = $time_now - self::INITIAL_BACK_TIME;

@@ -34,18 +34,23 @@ class Hook_admin_import_types_cns_forum
             return array();
         }
 
-        return array(
+        $ret = array(
             'cns_post_templates' => 'POST_TEMPLATES',
             'cns_announcements' => 'ANNOUNCEMENTS',
             'cns_forum_groupings' => 'FORUM_GROUPINGS',
             'cns_forums' => 'SECTION_FORUMS',
             'cns_topics' => 'FORUM_TOPICS',
-            'cns_polls_and_votes' => 'TOPIC_POLLS',
             'cns_posts' => 'FORUM_POSTS',
             'cns_post_files' => 'POST_FILES',
             'cns_multi_moderations' => 'MULTI_MODERATIONS',
             'cns_private_topics' => 'PRIVATE_TOPICS',
             'cns_saved_warnings' => 'SAVED_WARNINGS',
         );
+
+        if (addon_installed('polls')) {
+            $ret['cns_polls_and_votes'] = 'TOPIC_POLLS';
+        }
+
+        return $ret;
     }
 }

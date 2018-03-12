@@ -49,6 +49,16 @@ class Module_cms_tutorials extends Standard_crud_module
             return $error_msg;
         }
 
+        if (!addon_installed('composr_homesite')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
+        }
+        if (!addon_installed('composr_homesite_support_credits')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite_support_credits')));
+        }
+        if (!addon_installed('composr_release_build')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_release_build')));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('tutorials');

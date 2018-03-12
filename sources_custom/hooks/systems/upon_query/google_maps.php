@@ -24,6 +24,10 @@ class Hook_upon_query_google_maps
             return;
         }
 
+        if (!addon_installed('catalogues')) {
+            return;
+        }
+
         if ($query[0] == 'S') {
             return;
         }

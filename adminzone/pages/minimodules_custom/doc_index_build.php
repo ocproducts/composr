@@ -20,6 +20,16 @@ if (!addon_installed__autoinstall('composr_tutorials', $error_msg)) {
     return $error_msg;
 }
 
+if (!addon_installed('composr_homesite')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
+}
+if (!addon_installed('composr_homesite_support_credits')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite_support_credits')));
+}
+if (!addon_installed('composr_release_build')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_release_build')));
+}
+
 if (post_param_integer('confirm', 0) == 0) {
     $preview = 'Make addon tutorial index';
     $title = get_screen_title($preview, false);

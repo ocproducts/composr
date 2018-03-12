@@ -49,14 +49,6 @@ class Hook_ecommerce_support_credits
      */
     public function get_products($search = null)
     {
-        if (!addon_installed('composr_homesite_support_credits')) {
-            return null;
-        }
-
-        if (get_forum_type() != 'cns') {
-            return array();
-        }
-
         require_lang('customers');
 
         $products = array();
@@ -100,6 +92,28 @@ class Hook_ecommerce_support_credits
      */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
+        if (!addon_installed('composr_homesite_support_credits')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
+        if (!addon_installed('tickets')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+        if (!addon_installed('stats')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+        if (!addon_installed('points')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
+        if (get_forum_type() != 'cns') {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
         return ($member_id != $GLOBALS['FORUM_DRIVER']->get_guest_id()) ? ECOMMERCE_PRODUCT_AVAILABLE : ECOMMERCE_PRODUCT_NO_GUESTS;
     }
 

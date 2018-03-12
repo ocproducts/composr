@@ -47,11 +47,19 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('user_mappr')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('user_mappr')));
+}
+
 set_coordinates();
 
 function set_coordinates()
 {
     header('Content-type: text/plain; charset=' . get_charset());
+
+    if (get_forum_type() != 'cns') {
+        warn_exit(do_lang_tempcode('NO_CNS'));
+    }
 
     $_coords = get_param_string('coord', '');
     $member_id = get_param_integer('mid', get_member());

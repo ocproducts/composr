@@ -36,6 +36,10 @@ class Hook_login_providers_direct_auth_external_db
             return null;
         }
 
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         require_code('external_db');
 
         if ($cookie_login || $password_raw == '') {

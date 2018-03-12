@@ -277,7 +277,7 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
     }
 
     // Delete stuff
-    if ($poll_id !== null) {
+    if (($poll_id !== null) && (addon_installed('polls'))) {
         require_code('cns_polls_action');
         require_code('cns_polls_action2');
         cns_delete_poll($poll_id, '', false);

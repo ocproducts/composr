@@ -111,9 +111,7 @@ class Hook_addon_registry_cloudinary
     public function get_dependencies()
     {
         return array(
-            'requires' => array(
-                'PHP5.3',
-            ),
+            'requires' => array(),
             'recommends' => array(),
             'conflicts_with' => array(),
         );

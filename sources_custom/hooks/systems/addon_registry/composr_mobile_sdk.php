@@ -112,7 +112,6 @@ The documentation for this addon is covered in a dedicated tutorial (' . get_bra
     {
         return array(
             'requires' => array(
-                'PHP5.3',
                 'Conversr',
             ),
             'recommends' => array(),

@@ -24,7 +24,7 @@
 function rules_script()
 {
     if (!addon_installed('cns_forum')) {
-        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('cns_forum')));
     }
 
     $id = get_param_integer('id', null);

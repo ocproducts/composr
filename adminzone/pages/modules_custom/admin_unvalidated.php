@@ -66,9 +66,8 @@ class Module_admin_unvalidated
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
-        $error_msg = new Tempcode();
-        if (!addon_installed__autoinstall('workflows', $error_msg)) {
-            return $error_msg;
+        if (!addon_installed('unvalidated')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('unvalidated')));
         }
 
         $type = get_param_string('type', 'browse');

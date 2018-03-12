@@ -15,6 +15,24 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('tickets')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('tickets')), 'tivtotrvmlpkmqizx5toryotzigbrq8f', 'red-alert');
+}
+if (!addon_installed('ecommerce')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')), 'qkf23refnl212qwqn7foixklt4fmz8l7', 'red-alert');
+}
+if (!addon_installed('points')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('points')), 'iknm2uc9sjay5y7j71mqgec3jnqpuloz', 'red-alert');
+}
+
+if (get_forum_type() != 'cns') {
+    return paragraph(do_lang_tempcode('NO_CNS'), '3umhxm898adwsf01425xck2ub40zj9v7', 'red-alert');
+}
+
+if (strpos(get_db_type(), 'mysql') !== false) {
+    return paragraph('This works with MySQL only', '4wr6c3yhtmnlnprymsibx35b7mjnuwm1', 'red-alert');
+}
+
 $block_id = get_block_id($map);
 
 $backburner_minutes = integer_format(intval(get_option('support_priority_backburner_minutes')));

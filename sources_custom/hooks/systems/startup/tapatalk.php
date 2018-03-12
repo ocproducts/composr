@@ -24,6 +24,14 @@ class Hook_startup_tapatalk
             return;
         }
 
+        if (!addon_installed('cns_forum')) {
+            return;
+        }
+
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         if ((get_option('tapatalk_promote_from_website') === '1') && (running_script('index'))) {
             safe_ini_set('ocproducts.type_strictness', '0');
 

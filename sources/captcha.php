@@ -33,6 +33,10 @@ function init__captcha()
  */
 function captcha_script()
 {
+    if (!addon_installed('captcha')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('captcha')));
+    }
+
     if (get_option('recaptcha_site_key') != '') {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }

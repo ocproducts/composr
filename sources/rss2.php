@@ -23,6 +23,10 @@
  */
 function backend_cloud_script()
 {
+    if (!addon_installed('syndication')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('syndication')));
+    }
+
     // Closed site
     $site_closed = get_option('site_closed');
     if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
@@ -75,6 +79,10 @@ function _cloud_register_them($path, $procedure, $protocol, $port, $watching_cha
  */
 function rss_backend_script()
 {
+    if (!addon_installed('syndication')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('syndication')));
+    }
+
     // Closed site
     $site_closed = get_option('site_closed');
     if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (get_ip_address() != $_SERVER['SERVER_ADDR']) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {

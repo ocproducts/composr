@@ -55,6 +55,13 @@ class Module_admin_content_reviews
             return null;
         }
 
+        if (!addon_installed('commandr')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('commandr')));
+        }
+        if (!addon_installed('unvalidated')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('unvalidated')));
+        }
+
         return array(
             '!' => array('_CONTENT_NEEDING_REVIEWING', 'menu/adminzone/audit/content_reviews'),
         );

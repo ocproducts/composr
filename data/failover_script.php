@@ -45,6 +45,10 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 
 require($FILE_BASE . '/_config.php');
 
+if (!addon_installed('failover')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('failover')));
+}
+
 $cli = ((function_exists('php_sapi_name')) && (strpos(ini_get('disable_functions'), 'php_sapi_name') === false) && (php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
 if ($cli) {
     header('Content-type: text/plain; charset=utf-8');

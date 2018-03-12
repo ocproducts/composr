@@ -37,6 +37,10 @@ class Hook_commandr_command_feed_display
             return array('', '', '', do_lang('INTERNAL_ERROR'));
         }
 
+        if (!addon_installed('news')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('news')));
+        }
+
         require_code('crypt');
 
         if ((array_key_exists('h', $options)) || (array_key_exists('help', $options))) {

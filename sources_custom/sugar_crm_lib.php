@@ -125,7 +125,7 @@ class SugarWrapper
      * @param string $md5_password
      * @return boolean
      */
-    function connect($rest_url = null, $username = null, $password = null, $md5_password = true)
+    public function connect($rest_url = null, $username = null, $password = null, $md5_password = true)
     {
         if (!is_null($rest_url)) {
             $this->rest_url = $rest_url;
@@ -740,7 +740,7 @@ class SugarWrapper
      *
      * @return boolean
      */
-    function is_logged_in()
+    public function is_logged_in()
     {
         return $this->logged_in;
     }
@@ -749,7 +749,7 @@ class SugarWrapper
      * Closes the API connection when the PHP class object is destroyed
      * @codeCoverageIgnore
      */
-    function __destruct()
+    public function __destruct()
     {
         if ($this->logged_in) {
             $l = $this->rest_request(

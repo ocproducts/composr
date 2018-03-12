@@ -89,6 +89,13 @@ class Module_cms_booking extends Standard_crud_module
             return $error_msg;
         }
 
+        if (!addon_installed('calendar')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('calendar')));
+        }
+        if (!addon_installed('ecommerce')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')));
+        }
+
         if ($top_level) {
             $this->cat_crud_module = class_exists('Mx_cms_booking_blacks') ? new Mx_cms_booking_blacks() : new Module_cms_booking_blacks(); // Blacks
             $this->alt_crud_module = class_exists('Mx_cms_booking_supplements') ? new Mx_cms_booking_supplements() : new Module_cms_booking_supplements(); // Supplements

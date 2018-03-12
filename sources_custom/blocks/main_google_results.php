@@ -57,12 +57,12 @@ class Block_main_google_results
      */
     public function run($map)
     {
+        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
         $error_msg = new Tempcode();
         if (!addon_installed__autoinstall('google_search', $error_msg)) {
             return $error_msg;
         }
-
-        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         require_lang('google_search');
 

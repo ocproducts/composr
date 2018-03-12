@@ -111,13 +111,14 @@ class Hook_addon_registry_composr_homesite_support_credits
         return array(
             'requires' => array(
                 'tickets',
-                'stats',
                 'ecommerce',
                 'points',
-                'MySQL',
+                'Conversr',
                 'all_icons',
             ),
             'recommends' => array(
+                'stats',
+                'MySQL',
                 'composr_homesite',
                 'composr_release_build',
                 'composr_tutorials',
@@ -179,6 +180,8 @@ class Hook_addon_registry_composr_homesite_support_credits
             'themes/default/templates_custom/POINTS_PROFILE.tpl',
             'themes/default/templates_custom/SHOW_CREDITS_BAR.tpl',
             'themes/default/templates_custom/SUPPORT_CREDITS_OUTSTANDING_SCREEN.tpl',
+            'themes/default/javascript_custom/composr_homesite_support_credits.js',
+
             'tracker/.gitignore',
             'tracker/account_delete.php',
             'tracker/account_manage_columns_page.php',
@@ -1262,7 +1265,6 @@ class Hook_addon_registry_composr_homesite_support_credits
             'tracker/library/phpmailer/index.html',
             'tracker/library/phpmailer/language/.htaccess',
             'tracker/library/phpmailer/language/index.html',
-            'themes/default/javascript_custom/composr_homesite_support_credits.js',
         );
     }
 }

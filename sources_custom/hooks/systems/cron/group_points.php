@@ -31,6 +31,10 @@ class Hook_cron_group_points
             return null;
         }
 
+        if (!addon_installed('points')) {
+            return null;
+        }
+
         return array(
             'label' => 'Assign points for usergroup membership',
             'num_queued' => null,

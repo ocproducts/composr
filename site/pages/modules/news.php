@@ -226,6 +226,10 @@ class Module_news
             return $error_msg;
         }
 
+        if (!addon_installed('news_shared')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('news');

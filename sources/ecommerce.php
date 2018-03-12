@@ -1344,6 +1344,10 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
  */
 function handle_ipn_transaction_script($silent_fail = false, $send_notifications = true)
 {
+    if (!addon_installed('ecommerce')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')));
+    }
+
     if ((file_exists(get_custom_file_base() . '/data_custom/ecommerce.log')) && (cms_is_writable(get_custom_file_base() . '/data_custom/ecommerce.log'))) {
         $myfile = fopen(get_custom_file_base() . '/data_custom/ecommerce.log', 'at');
         flock($myfile, LOCK_EX);

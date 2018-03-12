@@ -49,6 +49,5 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-require_code('cns_moderation_action');
 require_code('cns_moderation_action2');
 warnings_script();

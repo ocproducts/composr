@@ -25,6 +25,13 @@ class Block_main_choose_to_book
             return $error_msg;
         }
 
+        if (!addon_installed('calendar')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('calendar')), '1ayp8sbbibrvi0946jt8xqs8bm2p6rdy', 'red-alert');
+        }
+        if (!addon_installed('ecommerce')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')), 's6qmg4mfv0x5d7ozrvoskkdape0opr7j', 'red-alert');
+        }
+
         return new Tempcode();
     }
 }

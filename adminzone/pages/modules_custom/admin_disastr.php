@@ -146,6 +146,14 @@ class Module_admin_disastr extends Standard_crud_module
             return $error_msg;
         }
 
+        if (!addon_installed('points')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('points')));
+        }
+
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('disastr');
@@ -168,11 +176,7 @@ class Module_admin_disastr extends Standard_crud_module
      */
     public function run_start($type)
     {
-        if (get_forum_type() != 'cns') {
-            warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
-        }
+        cns_require_all_forum_stuff();
 
         require_code('cns_groups_action');
         require_code('cns_forums_action');

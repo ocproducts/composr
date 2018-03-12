@@ -30,6 +30,16 @@ class Hook_member_boxes_buildr
             return null;
         }
 
+        if (!addon_installed('points')) {
+            return null;
+        }
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         $zone = get_page_zone('buildr', false);
         if ($zone === null) {
             return array();

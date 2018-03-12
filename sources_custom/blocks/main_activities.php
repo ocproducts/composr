@@ -114,12 +114,12 @@ class Block_main_activities
      */
     public function run($map)
     {
+        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
         $error_msg = new Tempcode();
         if (!addon_installed__autoinstall('activity_feed', $error_msg)) {
             return $error_msg;
         }
-
-        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         require_lang('activities');
         require_css('activities');

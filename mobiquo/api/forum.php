@@ -104,7 +104,7 @@ function get_config_func($raw_params)
         'mark_topic_read' => '1',
         'first_unread' => '1',
         'alert' => '1',
-        'get_activity' => addon_installed('activity_feed', true) ? '1' : '0',
+        'get_activity' => addon_installed('activity_feed') ? '1' : '0',
         'direct_unsubscribe' => '0', // '0' means we work with subscribing/unsubscribing from forum IDs, not any special subscription IDs
         'prefix_edit' => '0',
         'ban_delete_type' => 'soft_delete',

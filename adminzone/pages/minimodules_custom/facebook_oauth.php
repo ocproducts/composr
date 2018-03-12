@@ -20,6 +20,13 @@ if (!addon_installed__autoinstall('facebook_support', $error_msg)) {
     return $error_msg;
 }
 
+if (!function_exists('curl_init')) {
+    warn_exit(do_lang_tempcode('NO_CURL_ON_SERVER'));
+}
+if (!function_exists('session_status')) {
+    warn_exit('PHP session extension missing');
+}
+
 require_code('developer_tools');
 destrictify();
 

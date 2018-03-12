@@ -24,6 +24,10 @@ class Hook_startup_composr_homesite__for_outdated_version
             return;
         }
 
+        if (!addon_installed('downloads')) {
+            return;
+        }
+
         // Viewing outdated docs?
         $zone_name = get_zone_name();
         if (get_param_integer('keep_old_docs_test', 0) == 1 && $GLOBALS['DEV_MODE']) {

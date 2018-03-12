@@ -40,6 +40,14 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('composr_homesite')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
+}
+
+if (!addon_installed('news')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('news')));
+}
+
 $news_id = get_param_integer('news_id');
 
 header('Content-type: text/plain; charset=' . get_charset());

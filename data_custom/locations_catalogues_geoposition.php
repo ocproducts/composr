@@ -49,6 +49,10 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('locations_catalogues')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('locations_catalogues')));
+}
+
 require_code('locations_catalogues_geopositioning');
 
 prepare_for_known_ajax_response();

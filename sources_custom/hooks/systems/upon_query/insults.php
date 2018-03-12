@@ -24,6 +24,14 @@ class Hook_upon_query_insults
             return;
         }
 
+        if (!addon_installed('points')) {
+            return;
+        }
+
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         if ($query[0] == 'S') {
             return;
         }

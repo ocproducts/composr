@@ -49,6 +49,17 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('addon_publish')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('addon_publish')));
+}
+
+if (!addon_installed('downloads')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')));
+}
+if (!addon_installed('galleries')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('galleries')));
+}
+
 $password = post_param_string('password', null, INPUT_FILTER_NONE);
 if ($password === null) {
     @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><input class="admin--delete3 button-screen" type="submit" value="Delete programmed data" /></form>');

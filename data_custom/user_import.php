@@ -47,6 +47,9 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-require_code('user_import');
+if (!addon_installed('user_simple_csv_sync')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('user_simple_csv_sync')));
+}
 
+require_code('user_import');
 do_user_import();

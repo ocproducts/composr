@@ -68,7 +68,7 @@ class Block_main_rss
         }
 
         if (!addon_installed('news')) {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news')), 'u0z4xtei5rorsx4ahx6gxuol8y64yi29', 'red-alert');
         }
 
         require_lang('news');

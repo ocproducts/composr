@@ -128,6 +128,10 @@ class Module_cms_news extends Standard_crud_module
             return $error_msg;
         }
 
+        if (!addon_installed('news_shared')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')));
+        }
+
         $this->cat_crud_module = class_exists('Mx_cms_news_cat') ? new Mx_cms_news_cat() : new Module_cms_news_cat();
 
         $type = get_param_string('type', 'browse');

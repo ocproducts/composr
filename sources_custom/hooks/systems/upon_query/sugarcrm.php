@@ -21,6 +21,10 @@ class Hook_upon_query_sugarcrm
             return;
         }
 
+        if (!function_exists('curl_init')) {
+            return;
+        }
+
         if ($query[0] == 'S') {
             return;
         }

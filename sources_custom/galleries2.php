@@ -21,6 +21,10 @@ function init__galleries2($code)
         return $code;
     }
 
+    if (!addon_installed('unvalidated')) {
+        return $code;
+    }
+
     // We want to inject our workflow handling code into add_image...
     $code = override_str_replace_exactly(
         "log_it('ADD_IMAGE', strval(\$id), \$title);",

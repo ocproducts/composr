@@ -105,6 +105,10 @@ class Module_admin_community_billboard extends Standard_crud_module
             return $error_msg;
         }
 
+        if (!addon_installed('ecommerce')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('community_billboard');

@@ -111,9 +111,7 @@ The normal Composr block construction assistant will help you set up the block o
     public function get_dependencies()
     {
         return array(
-            'requires' => array(
-                'recommend',
-            ),
+            'requires' => array(),
             'recommends' => array(),
             'conflicts_with' => array(),
         );

@@ -148,6 +148,10 @@ class Module_admin_workflow extends Standard_crud_module
             return $error_msg;
         }
 
+        if (!addon_installed('unvalidated')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('unvalidated')));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_code('workflows');

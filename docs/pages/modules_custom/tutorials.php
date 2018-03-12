@@ -598,6 +598,16 @@ class Module_tutorials
             return $error_msg;
         }
 
+        if (!addon_installed('composr_homesite')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
+        }
+        if (!addon_installed('composr_homesite_support_credits')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite_support_credits')));
+        }
+        if (!addon_installed('composr_release_build')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_release_build')));
+        }
+
         require_code('tutorials');
 
         $title = get_screen_title('Tutorials &ndash; Learning Composr', false);

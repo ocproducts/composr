@@ -30,7 +30,7 @@ class Hook_cleanup_criticise_mysql_fields
      */
     public function info()
     {
-        if (substr(get_db_type(), 0, 5) != 'mysql') {
+        if (strpos(get_db_type(), 'mysql') === false) {
             return null;
         }
 

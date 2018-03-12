@@ -30,6 +30,10 @@ class Hook_login_provider_external_db
             return null;
         }
 
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         if (($member_id === null) || (is_guest($member_id))) {
             require_code('external_db');
 

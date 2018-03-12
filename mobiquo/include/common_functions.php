@@ -68,6 +68,14 @@ function initialise_composr()
     convert_request_data_encodings(true);
 
     push_lax_comcode(true);
+
+    if (!addon_installed('cns_forum')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('cns_forum')));
+    }
+
+    if (get_forum_type() != 'cns') {
+        warn_exit(do_lang_tempcode('NO_CNS'));
+    }
 }
 
 /**

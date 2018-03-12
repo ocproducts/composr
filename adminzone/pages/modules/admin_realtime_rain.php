@@ -74,6 +74,10 @@ class Module_admin_realtime_rain
             return $error_msg;
         }
 
+        if (!addon_installed('stats')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('stats')));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('realtime_rain');

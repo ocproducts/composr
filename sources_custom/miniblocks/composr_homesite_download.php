@@ -83,6 +83,10 @@ if (!function_exists('do_release')) {
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('downloads')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')), 'gal8hu40ptk3dlran4bwiodqrpb41jqs', 'red-alert');
+}
+
 require_lang('composr_homesite');
 require_code('composr_homesite');
 require_lang('downloads');

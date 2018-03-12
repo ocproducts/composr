@@ -58,12 +58,16 @@ class Block_main_image_slider
      */
     public function run($map)
     {
+        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
         $error_msg = new Tempcode();
         if (!addon_installed__autoinstall('image_slider', $error_msg)) {
             return $error_msg;
         }
 
-        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+        if (!addon_installed('galleries')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('galleries')), 'cer2r1bqzio6b98ksizgsptqnvidthq6', 'red-alert');
+        }
 
         require_css('skitter');
         require_javascript('jquery');

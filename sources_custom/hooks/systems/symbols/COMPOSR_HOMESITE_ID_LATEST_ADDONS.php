@@ -30,6 +30,10 @@ class Hook_symbol_COMPOSR_HOMESITE_ID_LATEST_ADDONS
             return '';
         }
 
+        if (!addon_installed('downloads')) {
+            return '';
+        }
+
         require_code('composr_homesite');
         $version = get_latest_version_basis_number();
         if ($version === null) {

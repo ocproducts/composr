@@ -44,12 +44,19 @@ class Block_main_facebook_like
      */
     public function run($map)
     {
+        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
         $error_msg = new Tempcode();
         if (!addon_installed__autoinstall('facebook_support', $error_msg)) {
             return $error_msg;
         }
 
-        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+        if (!function_exists('curl_init')) {
+            return paragraph(do_lang_tempcode('NO_CURL_ON_SERVER'), '5ldkzkb0bo25j30gmw653k5t7keqb1nv', 'red-alert');
+        }
+        if (!function_exists('session_status')) {
+            return paragraph('PHP session extension missing', '2kii599c4uz2g43k69ogp53wob87650o', 'red-alert');
+        }
 
         require_code('facebook_connect');
 

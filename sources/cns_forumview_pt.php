@@ -124,7 +124,7 @@ function cns_get_private_topics($start = 0, $true_start = 0, $max = null, $sql_s
         if ($topic_row['t_is_open'] == 0) {
             $topic['modifiers'][] = 'closed';
         }
-        if ($topic_row['t_poll_id'] !== null) {
+        if (($topic_row['t_poll_id'] !== null) && (addon_installed('polls'))) {
             $topic['modifiers'][] = 'poll';
         }
         $num_posts = $topic_row['t_cache_num_posts'];

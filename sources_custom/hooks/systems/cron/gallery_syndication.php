@@ -31,6 +31,14 @@ class Hook_cron_gallery_syndication
             return null;
         }
 
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
+        if (!function_exists('curl_init')) {
+            return null;
+        }
+
         return array(
             'label' => 'Synchronise galleries',
             'num_queued' => null, // Too time-consuming to calculate

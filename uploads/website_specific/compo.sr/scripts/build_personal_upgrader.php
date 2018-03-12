@@ -40,6 +40,17 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('composr_homesite')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
+}
+
+if (!addon_installed('downloads')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')));
+}
+if (!addon_installed('news')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('news')));
+}
+
 require_code('version2');
 require_code('composr_homesite');
 require_code('uploads/website_specific/compo.sr/upgrades/make_upgrader.php');

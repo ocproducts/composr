@@ -89,6 +89,10 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
             return $error_msg;
         }
 
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('cns');
@@ -119,11 +123,8 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
         $this->edit_one_cat_label = do_lang_tempcode('EDIT_FORUM_GROUPING');
         $this->categories_title = do_lang_tempcode('FORUM_GROUPINGS');
 
-        if (get_forum_type() != 'cns') {
-            warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
-        }
+        cns_require_all_forum_stuff();
+
         require_code('cns_forums_action');
         require_code('cns_forums_action2');
         require_code('cns_forums2');

@@ -137,6 +137,10 @@ function convert_lang_code_to_transifex($lang)
 
 function transifex_push_script()
 {
+    if (!addon_installed('transifex')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('transifex')));
+    }
+
     $cli = is_cli();
     if (!$cli) {
         if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
@@ -453,6 +457,10 @@ function _push_ini_file_to_transifex($f, $project_slug, $custom, $administrative
 
 function transifex_pull_script()
 {
+    if (!addon_installed('transifex')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('transifex')));
+    }
+
     $version = _transifex_env_version();
     $lang = _transifex_env_lang();
     $output = _transifex_env_setting('output');

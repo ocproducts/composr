@@ -33,6 +33,13 @@ class Hook_cron_bank
             return null;
         }
 
+        if (!addon_installed('points')) {
+            return null;
+        }
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         if ($calculate_num_queued) {
             $this->to_be_restored = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'bank WHERE add_time<' . strval(time() - (30 * 24 * 60 * 60)));
             $num_queued = count($this->to_be_restored);

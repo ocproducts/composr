@@ -24,6 +24,14 @@ function init__aws()
 
 function amazon_sns_topic_handler_script()
 {
+    if (!addon_installed('aws')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('aws')));
+    }
+
+    if (!function_exists('curl_init')) {
+        warn_exit(do_lang_tempcode('NO_CURL_ON_SERVER'));
+    }
+
     if ($GLOBALS['DEV_MODE'] && get_param_integer('test', 0) == 1) {
         $notification_data = '{
           "notificationType": "Bounce",

@@ -94,13 +94,14 @@ class Module_warnings extends Standard_crud_module
             return $error_msg;
         }
 
-        $type = get_param_string('type', 'browse');
-
         if (get_forum_type() != 'cns') {
             warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
         }
+
+        $type = get_param_string('type', 'browse');
+
+        cns_require_all_forum_stuff();
+
         require_lang('cns_warnings');
         if (addon_installed('securitylogging')) {
             require_lang('submitban');

@@ -311,6 +311,16 @@ class Module_buildr
             return $error_msg;
         }
 
+        if (!addon_installed('points')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('points')));
+        }
+        if (!addon_installed('ecommerce')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')));
+        }
+        if (!addon_installed('chat')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('chat')));
+        }
+
         $type = either_param_string('type', 'room');
 
         require_lang('buildr');

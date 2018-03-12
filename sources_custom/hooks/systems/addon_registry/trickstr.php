@@ -136,12 +136,12 @@ class Hook_addon_registry_trickstr
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/trickstr.php',
-            'sources_custom/programe/.htaccess',
-            'sources_custom/programe/aiml/.htaccess',
-            'sources_custom/programe/aiml/index.html',
-            'sources_custom/programe/index.html',
             'sources_custom/hooks/modules/chat_bots/knowledge.txt',
             'sources_custom/hooks/modules/chat_bots/trickstr.php',
+            'sources_custom/programe/.htaccess',
+            'sources_custom/programe/index.html',
+            'sources_custom/programe/aiml/.htaccess',
+            'sources_custom/programe/aiml/index.html',
             'sources_custom/programe/aiml/readme.txt',
             'sources_custom/programe/aiml/startup.xml',
             'sources_custom/programe/aiml/std-65percent.aiml',

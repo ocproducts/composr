@@ -24,6 +24,14 @@ class Hook_upon_query_user_sync
             return;
         }
 
+        if (!addon_installed('commandr')) {
+            return;
+        }
+
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         if ($query[0] == 'S') {
             return;
         }

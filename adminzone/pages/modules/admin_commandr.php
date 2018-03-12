@@ -111,6 +111,10 @@ class Module_admin_commandr
             return $error_msg;
         }
 
+        if (!addon_installed('import')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('import')));
+        }
+
         require_code('input_filter_2');
 
         if (get_value('disable_modsecurity_workaround') !== '1') {

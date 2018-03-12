@@ -67,6 +67,10 @@ class Block_bottom_rss
             return $error_msg;
         }
 
+        if (!addon_installed('news')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news')), 'v8iz3vqc9lpgf554antlpja9ewhunyvm', 'red-alert');
+        }
+
         $block_id = get_block_id($map);
 
         $url = empty($map['param']) ? (get_brand_base_url() . '/backend.php?type=rss&mode=news') : $map['param'];

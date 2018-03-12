@@ -99,13 +99,14 @@ class Module_forumview
             return $error_msg;
         }
 
-        $type = get_param_string('type', 'browse');
-
         if (get_forum_type() != 'cns') {
             warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
         }
+
+        $type = get_param_string('type', 'browse');
+
+        cns_require_all_forum_stuff();
+
         require_lang('cns');
 
         inform_non_canonical_parameter('#^kfs_.*$#');

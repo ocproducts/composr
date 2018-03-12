@@ -44,12 +44,16 @@ class Block_main_google_map
      */
     public function run($map)
     {
+        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
         $error_msg = new Tempcode();
         if (!addon_installed__autoinstall('data_mappr', $error_msg)) {
             return $error_msg;
         }
 
-        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+        if (!addon_installed('catalogues')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('catalogues')), 'xulrf07ih9l80h4vjwdi4uxjgfg41hor', 'red-alert');
+        }
 
         require_code('catalogues');
         require_lang('google_map');
@@ -115,7 +119,7 @@ class Block_main_google_map
         if ($catalogue_name != '') {
             $catalogue_row = load_catalogue_row($catalogue_name, true);
             if ($catalogue_row === null) {
-                return paragraph('Could not find the catalogue named "' . escape_html($catalogue_name) . '".', '0zyrq2x4iusrqcm33xmd38v6zl0mdo5q', 'nothing-here');
+                return paragraph(do_lang_tempcode('_MISSING_RESOURCE', escape_html($catalogue_name), 'catalogue'), '0zyrq2x4iusrqcm33xmd38v6zl0mdo5q', 'nothing-here');
             }
         }
 

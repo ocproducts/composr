@@ -23,6 +23,10 @@
  */
 function realtime_rain_script()
 {
+    if (!addon_installed('realtime_rain')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('realtime_rain')));
+    }
+
     if (!has_actual_page_access(get_member(), 'admin_realtime_rain')) {
         access_denied('I_ERROR');
     }

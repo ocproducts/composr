@@ -31,6 +31,14 @@ class Hook_cron_insults
             return null;
         }
 
+        if (!addon_installed('points')) {
+            return null;
+        }
+
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         return array(
             'label' => 'Bantr',
             'num_queued' => null,

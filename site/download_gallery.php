@@ -48,5 +48,4 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 require($FILE_BASE . '/sources/global.php');
 
 require_code('galleries3');
-
 download_gallery_script();

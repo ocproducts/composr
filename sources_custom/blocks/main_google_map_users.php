@@ -56,12 +56,16 @@ class Block_main_google_map_users
      */
     public function run($map)
     {
+        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
         $error_msg = new Tempcode();
         if (!addon_installed__autoinstall('user_mappr', $error_msg)) {
             return $error_msg;
         }
 
-        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+        if (get_forum_type() != 'cns') {
+            return paragraph(do_lang_tempcode('NO_CNS'), 'rly9gj7499putj5n2emik09qx1h3w1kg', 'red-alert');
+        }
 
         require_lang('google_map_users');
         require_lang('locations');

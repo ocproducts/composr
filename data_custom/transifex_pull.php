@@ -72,5 +72,9 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('transifex')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('transifex')));
+}
+
 require_code('transifex');
 transifex_pull_script();

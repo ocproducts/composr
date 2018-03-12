@@ -558,6 +558,10 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
  */
 function themewizard_script()
 {
+    if (!addon_installed('themewizard')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('themewizard')));
+    }
+
     $type = get_param_string('type');
     $source_theme = get_param_string('keep_theme_source', 'default');
     $algorithm = get_param_string('keep_theme_algorithm', 'equations');

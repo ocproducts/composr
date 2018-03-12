@@ -81,6 +81,14 @@ class Module_admin_cns_post_templates extends Standard_crud_module
             return $error_msg;
         }
 
+        if (!addon_installed('cns_forum')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('cns_forum')));
+        }
+
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('cns');
@@ -114,15 +122,12 @@ class Module_admin_cns_post_templates extends Standard_crud_module
      */
     public function run_start($type)
     {
+        cns_require_all_forum_stuff();
+
         $this->add_one_label = do_lang_tempcode('ADD_POST_TEMPLATE');
         $this->edit_this_label = do_lang_tempcode('EDIT_THIS_POST_TEMPLATE');
         $this->edit_one_label = do_lang_tempcode('EDIT_POST_TEMPLATE');
 
-        if (get_forum_type() != 'cns') {
-            warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
-        }
         require_code('cns_general_action');
         require_code('cns_general_action2');
 

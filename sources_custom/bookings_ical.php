@@ -18,6 +18,17 @@
  */
 function bookables_ical_script()
 {
+    if (!addon_installed('booking')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('booking')));
+    }
+
+    if (!addon_installed('calendar')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('calendar')));
+    }
+    if (!addon_installed('ecommerce')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')));
+    }
+
     require_code('calendar_ical');
 
     require_lang('booking');
@@ -155,6 +166,17 @@ function bookables_ical_script()
  */
 function bookings_ical_script()
 {
+    if (!addon_installed('booking')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('booking')));
+    }
+
+    if (!addon_installed('calendar')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('calendar')));
+    }
+    if (!addon_installed('ecommerce')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')));
+    }
+
     require_code('crypt');
     $pass_ok = get_param_string('pass', '', INPUT_FILTER_GET_COMPLEX) == ratchet_hash($GLOBALS['SITE_INFO']['master_password'], get_site_salt());
     if ((!$pass_ok) && (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {

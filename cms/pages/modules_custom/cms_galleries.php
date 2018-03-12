@@ -27,6 +27,14 @@ function init__cms__pages__modules_custom__cms_galleries($code)
         return $code;
     }
 
+    if (!addon_installed('unvalidated')) {
+        return $code;
+    }
+
+    if (!addon_installed('galleries')) {
+        return $code;
+    }
+
     // NOTE: There are many classes defined in the cms_galleries file. We need to make all work.
 
     // Replace the validation field for images and videos with a workflow field.

@@ -15,7 +15,7 @@
  */
 
 
-/*EXTRA FUNCTIONS: get_problem_match*/
+/*EXTRA FUNCTIONS: get_problem_match_script*/
 
 // Fixup SCRIPT_FILENAME potentially being missing
 $_SERVER['SCRIPT_FILENAME'] = __FILE__;
@@ -44,4 +44,4 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 require($FILE_BASE . '/sources/global.php');
 
 require_code('errorservice');
-get_problem_match();
+get_problem_match_script();

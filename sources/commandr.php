@@ -36,6 +36,10 @@ function init__commandr()
  */
 function commandr_script()
 {
+    if (!addon_installed('commandr')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('commandr')));
+    }
+
     if (is_cli()) {
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(0);

@@ -78,6 +78,10 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('composr_homesite')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
+}
+
 if (get_base_url() != 'http://shareddemo.composr.info') {
     warn_exit('Must be called for shared demo');
 }

@@ -15,6 +15,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('points')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('points')), 'vuipx2qfsru49w3f74f4f7t16wv4usjq', 'red-alert');
+}
+
 $block_id = get_block_id($map);
 
 $max = array_key_exists('max', $map) ? intval($map['max']) : 10;

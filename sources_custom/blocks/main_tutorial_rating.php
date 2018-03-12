@@ -44,12 +44,22 @@ class Block_main_tutorial_rating
      */
     public function run($map)
     {
+        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
         $error_msg = new Tempcode();
         if (!addon_installed__autoinstall('composr_tutorials', $error_msg)) {
             return $error_msg;
         }
 
-        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+        if (!addon_installed('composr_homesite')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')), 'hz8wk7almyfhzemamnguz0e6ex01qrvs', 'red-alert');
+        }
+        if (!addon_installed('composr_homesite_support_credits')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite_support_credits')), 'dopmcgzft9wr03wark2ydpfkwdzalztg', 'red-alert');
+        }
+        if (!addon_installed('composr_release_build')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('composr_release_build')), 'mz0bowx3abdddomvv19ps29mpcnolnak', 'red-alert');
+        }
 
         $block_id = get_block_id($map);
 

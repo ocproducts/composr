@@ -15,9 +15,15 @@
 
 /*EXTRA FUNCTIONS: sha1_file*/
 
+i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
 $error_msg = new Tempcode();
 if (!addon_installed__autoinstall('composr_release_build', $error_msg)) {
     return $error_msg;
+}
+
+if (!addon_installed('meta_toolkit')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('meta_toolkit')));
 }
 
 /*
@@ -27,8 +33,6 @@ If running on Windows, you need to install the following commands in your path..
  - Infozip's zip.exe and unzip.exe
  - gunzip.exe, gzip.exe, and tar.exe
 */
-
-i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 restrictify();
 safe_ini_set('ocproducts.xss_detect', '0');

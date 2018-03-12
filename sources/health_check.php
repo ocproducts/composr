@@ -101,6 +101,10 @@ function find_health_check_categories_and_sections()
  */
 function health_check_script()
 {
+    if (!addon_installed('health_check')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('health_check')));
+    }
+
     if (!is_cli()) {
         if (!has_actual_page_access(get_member(), 'admin_health_check', 'adminzone')) {
             require_lang('permissions');

@@ -25,6 +25,10 @@
  */
 function download_gateway_script()
 {
+    if (!addon_installed('downloads')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')));
+    }
+
     require_code('downloads');
 
     $id = get_param_integer('id');
@@ -69,6 +73,10 @@ function download_gateway_script()
  */
 function dload_script()
 {
+    if (!addon_installed('downloads')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')));
+    }
+
     // Closed site
     $site_closed = get_option('site_closed');
     if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {

@@ -1979,7 +1979,7 @@ function step_5_core()
     $GLOBALS['SITE_DB']->create_table('translate', $fields);
     $GLOBALS['SITE_DB']->create_index('translate', '#tsearch', array('text_original'));
     $GLOBALS['SITE_DB']->create_index('translate', 'importance_level', array('importance_level'));
-    if (substr(get_db_type(), 0, 5) == 'mysql') {
+    if (strpos(get_db_type(), 'mysql') !== false) {
         $GLOBALS['SITE_DB']->create_index('translate', 'equiv_lang', array('text_original(4)'));
         $GLOBALS['SITE_DB']->create_index('translate', 'decache', array('text_parsed(2)'));
     }

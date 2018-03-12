@@ -28,6 +28,10 @@
  */
 function cns_may_edit_poll_by($forum_id, $poll_owner, $member_id = null)
 {
+    if (!addon_installed('polls')) {
+        return false;
+    }
+
     if ($member_id === null) {
         $member_id = get_member();
     }
@@ -55,6 +59,10 @@ function cns_may_edit_poll_by($forum_id, $poll_owner, $member_id = null)
  */
 function cns_may_attach_poll($topic_id, $topic_owner = null, $has_poll_already = null, $forum_id = null, $member_id = null)
 {
+    if (!addon_installed('polls')) {
+        return false;
+    }
+
     if ($topic_owner === null) {
         $topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1);
         if (!array_key_exists(0, $topic_info)) {
@@ -92,6 +100,10 @@ function cns_may_attach_poll($topic_id, $topic_owner = null, $has_poll_already =
  */
 function cns_may_delete_poll_by($forum_id, $poll_owner, $member_id = null)
 {
+    if (!addon_installed('polls')) {
+        return false;
+    }
+
     if ($member_id === null) {
         $member_id = get_member();
     }
@@ -116,6 +128,10 @@ function cns_may_delete_poll_by($forum_id, $poll_owner, $member_id = null)
  */
 function cns_poll_get_results($poll_id, $request_results = true)
 {
+    if (!addon_installed('polls')) {
+        return null;
+    }
+
     $poll_info = $GLOBALS['FORUM_DB']->query_select('f_polls', array('*'), array('id' => $poll_id), '', 1);
     if (!array_key_exists(0, $poll_info)) {
         attach_message(do_lang_tempcode('_MISSING_RESOURCE', escape_html(strval($poll_id)), 'poll'), 'warn');

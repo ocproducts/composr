@@ -3,7 +3,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  Jason L Verhagen (jlverhagen@tfo.net)
- * @package    twitter_feed
+ * @package    twitter_feed_integration_block
  */
 
 /**
@@ -55,12 +55,20 @@ class Block_twitter_feed
      */
     public function run($map)
     {
+        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
         $error_msg = new Tempcode();
         if (!addon_installed__autoinstall('twitter_feed', $error_msg)) {
             return $error_msg;
         }
 
-        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+        if (!addon_installed('twitter_support')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('twitter_support')), '59lmyuy3bgj51mngrgsqxnmq8sfqv0k9', 'red-alert');
+        }
+
+        if (!function_exists('curl_init')) {
+            return paragraph(do_lang_tempcode('NO_CURL_ON_SERVER'), 'k7gu1s34g0hv67kahaq850b6a16926q9', 'red-alert');
+        }
 
         $block_id = get_block_id($map);
 
@@ -137,7 +145,7 @@ class Block_twitter_feed
         $content = new Tempcode();
 
         // Check for Twitter Support addon dependency before we go any further
-        if (!addon_installed('twitter_support', true)) {
+        if (!addon_installed('twitter_support')) {
             $twitter_error = 'The Twitter Support addon is not installed. The Twitter Feed Integration Block will not work unless the Twitter Support addon is installed. Please download and install the appropriate version of the Twitter Support addon from compo.sr.<br />';
             return do_template($twitter_templatemain, array(
                 'TWITTER_TITLE' => $twitter_title,

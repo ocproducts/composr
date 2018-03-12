@@ -47,10 +47,10 @@ class Block_main_rating
      * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled)
      */
     /*
-    function caching_environment() // We can't cache this block, because it needs to execute in order to allow commenting
+    public function caching_environment() // We can't cache this block, because it needs to execute in order to allow commenting
     {
-        $info['cache_on']='array(has_privilege(get_member(),\'rate\'),array_key_exists(\'extra_param_from\',$map)?$map[\'extra_param_from\']:\'\',array_key_exists(\'param\',$map)?$map[\'param\']:\'main\',array_key_exists(\'page\',$map)?$map[\'page\']:get_page_name(),array_key_exists(\'title\',$map)?$map[\'title\']:\'\')';
-        $info['ttl']=60*5;
+        $info['cache_on'] = 'array(has_privilege(get_member(),\'rate\'),array_key_exists(\'extra_param_from\',$map)?$map[\'extra_param_from\']:\'\',array_key_exists(\'param\',$map)?$map[\'param\']:\'main\',array_key_exists(\'page\',$map)?$map[\'page\']:get_page_name(),array_key_exists(\'title\',$map)?$map[\'title\']:\'\')';
+        $info['ttl'] = 60 * 5;
         return $info;
     }*/
 
