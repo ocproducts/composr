@@ -164,6 +164,7 @@
         
         if (!element) {
             $util.fatal('$cms.ui.selectTab(): "#t-' + tab + '" element not found');
+            return;
         }
 
         for (i = 0; i < element.parentElement.children.length; i++) {
