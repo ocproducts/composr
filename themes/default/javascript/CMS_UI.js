@@ -164,6 +164,7 @@
         
         if (!element) {
             $util.fatal('$cms.ui.selectTab(): "#t-' + tab + '" element not found');
+            return;
         }
 
         for (i = 0; i < element.parentElement.children.length; i++) {
@@ -1139,7 +1140,7 @@
             }
             buttonSet = newButtonSet;
 
-            if ((window.showModalDialog !== undefined) && $cms.configOption('js_overlays')) {
+            if ((window.showModalDialog !== undefined) || $cms.configOption('js_overlays')) {
                 // NB: window.showModalDialog() was removed completely in Chrome 43, and Firefox 55. See WebKit bug 151885 for possible future removal from Safari.
 
                 if (buttonSet.length > 4) {

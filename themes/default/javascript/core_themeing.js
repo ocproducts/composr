@@ -579,23 +579,18 @@
             var valueParts = value.split('__');
             value = valueParts[0];
             if (value === '---') {
-                return false;
+                return;
             }
 
             var hasEditarea = editareaIsLoaded(textbox.name);
 
-            if ((value === 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.configOption('js_overlays'))) {
+            if ((value === 'BLOCK') && $cms.configOption('js_overlays')) {
                 var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + $cms.keep();
-                $cms.ui.showModalDialog(
-                    $util.rel($cms.maintainThemeInLink(url)),
-                    null,
-                    'dialogWidth=750;dialogHeight=600;status=no;resizable=yes;scrollbars=yes;unadorned=yes',
-                    function () {
-                        if (hasEditarea) {
-                            editareaRefresh(textbox.name);
-                        }
+                $cms.ui.showModalDialog($util.rel($cms.maintainThemeInLink(url)), null, 'dialogWidth=750;dialogHeight=600;status=no;resizable=yes;scrollbars=yes;unadorned=yes').then(function () {
+                    if (hasEditarea) {
+                        editareaRefresh(textbox.name);
                     }
-                );
+                });
                 return;
             }
 
@@ -626,7 +621,7 @@
                 definiteGets, parameter, arity, textbox,
                 dropdownName, value, 0, '',
                 function (textbox, name, value, params) {
-                    if (name.indexOf('ppdirective') !== -1) {
+                    if (name.includes('ppdirective')) {
                         window.$editing.insertTextboxWrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}').then(function () {
                             if (hasEditarea) {
                                 editareaRefresh(textbox.name);
@@ -634,7 +629,7 @@
                         });
                     } else {
                         var stValue;
-                        if (name.indexOf('ppparameter') === -1) {
+                        if (!name.includes('ppparameter')) {
                             stValue = '{' + '$';
                         } else {
                             stValue = '{';
@@ -650,8 +645,6 @@
                     }
                 }
             );
-
-            return false;
 
             function _getParameterParameters(definiteGets, parameter, arity, box, name, value, numDone, params, callback) {
                 if (numDone < definiteGets) {
@@ -681,8 +674,7 @@
                             },
                             '{!themes:INSERT_PARAMETER;^}'
                         );
-                    }
-                    else if ((arity === '0-1') || (arity === '3-4')) {
+                    } else if ((arity === '0-1') || (arity === '3-4')) {
                         $cms.ui.prompt(
                             '{!themes:INPUT_OPTIONAL_PARAMETER;^}',
                             '',
@@ -995,6 +987,7 @@
         closeButton.style.verticalAlign = 'middle';
         closeButton.addEventListener('click', function (event) {
             event.preventDefault();
+            event.stopPropagation(); // Required to prevent tab click listener from being fired too
 
             if (window.templateEditorOpenFiles[file].unsavedChanges) {
                 $cms.ui.confirm('{!themes:UNSAVED_CHANGES;^}'.replace('\{1\}', file), null, '{!Q_SURE;^}', true).then(function (result) {
