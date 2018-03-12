@@ -157,7 +157,7 @@ function _upgrader_file_upgrade_screen()
             if ((file_exists(get_file_base() . '/' . $upgrade_file['path'])) && (filesize(get_file_base() . '/' . $upgrade_file['path']) == $upgrade_file['size'])) {
                 $tar_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
                 if (file_get_contents(get_file_base() . '/' . $upgrade_file['path']) == $tar_data['data']) {
-                    $out .= do_lang('U_SKIPPING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
+                    $out .= do_lang('UPGRADER_SKIPPING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
                     continue;
                 }
             }
@@ -175,7 +175,7 @@ function _upgrader_file_upgrade_screen()
                     if (!$dry_run) {
                         afm_make_file($upgrade_file['path'], $file_data['data'], ($file_data['mode'] & 0002) != 0);
                     }
-                    $out .= do_lang('U_EXTRACTING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
+                    $out .= do_lang('UPGRADER_EXTRACTING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
                 }
             }
         } else {
@@ -212,7 +212,7 @@ function _upgrader_file_upgrade_screen()
                             afm_make_file($upgrade_file['path'], $file_data['data'], ($file_data['mode'] & 0002) != 0);
                         }
 
-                        $out .= do_lang('U_EXTRACTING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
+                        $out .= do_lang('UPGRADER_EXTRACTING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
                     }
                 }
             }
@@ -255,7 +255,7 @@ function _upgrader_file_upgrade_screen()
 
                 tar_add_file($new_addon_file, $file_to_update, $file_data['data'], $upgrade_file['mode'], $upgrade_file['mtime']);
 
-                $out .= do_lang('U_PACKING_MESSAGE', escape_html($file_to_update)) . '<br />';
+                $out .= do_lang('UPGRADER_PACKING_MESSAGE', escape_html($file_to_update)) . '<br />';
             }
 
             tar_close($new_addon_file);

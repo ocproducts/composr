@@ -4045,7 +4045,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_MM_POST_TEXT
         DESCRIPTION_MONTHLY_SPEC_TYPE
         DESCRIPTION_MULTI_MODERATION_POST
-        DESCRIPTION_MYSQL_REPAIR
         DESCRIPTION_NAME
         DESCRIPTION_NAME_REFERENCE
         DESCRIPTION_NEED_FTP
@@ -7294,9 +7293,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         USE_TOPICS
         USE_TRUE_FROM
         USING_SU
-        U_EXTRACTING_MESSAGE
-        U_PACKING_MESSAGE
-        U_SKIPPING_MESSAGE
+        UPGRADER_EXTRACTING_MESSAGE
+        UPGRADER_PACKING_MESSAGE
+        UPGRADER_SKIPPING_MESSAGE
         VALIDATED
         VALIDATED_SHORT
         VALIDATE_NEW_MEMBER_MAIL

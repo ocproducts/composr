@@ -164,7 +164,7 @@ function require_code($codename, $light_exit = false)
             } else {
                 // Note we load the original and then the override. This is so function_exists can be used in the overrides (as we can't support the re-definition) OR in the case of Mx_ class derivation, so that the base class is loaded first.
 
-                if (isset($_GET['keep_show_parse_errors'])) {
+                if ((isset($_GET['keep_show_parse_errors'])) && ($_GET['keep_show_parse_errors'] == '1')) {
                     $orig = clean_php_file_for_eval(file_get_contents($path_orig), $path_orig);
                     $do_sed = function_exists('push_suppress_error_death');
                     if ($do_sed) {
@@ -186,7 +186,7 @@ function require_code($codename, $light_exit = false)
                     include($path_orig);
                 }
 
-                if (isset($_GET['keep_show_parse_errors'])) {
+                if ((isset($_GET['keep_show_parse_errors'])) && ($_GET['keep_show_parse_errors'] == '1')) {
                     $custom = clean_php_file_for_eval(file_get_contents($path_custom), $path_custom);
                     $do_sed = function_exists('push_suppress_error_death');
                     if ($do_sed) {
@@ -209,7 +209,7 @@ function require_code($codename, $light_exit = false)
                 }
             }
         } else {
-            if (isset($_GET['keep_show_parse_errors'])) {
+            if ((isset($_GET['keep_show_parse_errors'])) && ($_GET['keep_show_parse_errors'] == '1')) {
                 $orig = clean_php_file_for_eval(file_get_contents($path_custom), $path_custom);
                 $do_sed = function_exists('push_suppress_error_death');
                 if ($do_sed) {
@@ -249,7 +249,7 @@ function require_code($codename, $light_exit = false)
 
         $worked = true;
     } else {
-        if (isset($_GET['keep_show_parse_errors'])) {
+        if ((isset($_GET['keep_show_parse_errors'])) && ($_GET['keep_show_parse_errors'] == '1')) {
             $contents = @file_get_contents($path_orig);
             if ($contents !== false) {
                 $orig = clean_php_file_for_eval($contents, $path_orig);

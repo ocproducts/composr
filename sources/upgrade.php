@@ -159,6 +159,16 @@ function upgrade_script()
             appengine_live_guard();
             echo upgrader_theme_upgrade_screen();
             break;
+
+        case 'mysql_repair':
+            require_code('upgrade_mysql');
+            echo upgrader_mysql_repair_screen();
+            break;
+
+        case 'criticise_mysql_fields':
+            require_code('upgrade_mysql');
+            echo upgrader_criticise_mysql_fields_screen();
+            break;
     }
 
     if ($show_more_link) {
@@ -456,7 +466,7 @@ function upgrader_menu_screen()
     $l_integrity_scan_no_merging = upgrader_link('upgrader.php?type=integrity_scan', do_lang('UPGRADER_INTEGRITY_SCAN_NO_CSS_MERGE'));
 
     // Database upgrade link
-    $l_database_upgrade = upgrader_link('upgrader.php?type=db_upgrade', do_lang('UPGRADER_DATABASE_UPGRADE'));
+    $l_db_upgrade = upgrader_link('upgrader.php?type=db_upgrade', do_lang('UPGRADER_DATABASE_UPGRADE'));
 
     // Theme upgrade link
     $l_theme_upgrade = upgrader_link('upgrader.php?type=theme_upgrade', do_lang('UPGRADER_THEME_UPGRADE'));
@@ -466,9 +476,12 @@ function upgrader_menu_screen()
     $num_addons = $GLOBALS['SITE_DB']->query_select_value('addons', 'COUNT(*)');
     $l_addon_management = upgrader_link('adminzone/index.php?page=admin_addons&keep_safe_mode=1', do_lang('UPGRADER_ADDON_MANAGEMENT', integer_format($num_addons)), $num_addons == 0);
     $show_permission_buttons = (!GOOGLE_APPENGINE && !is_suexec_like() || $GLOBALS['DEV_MODE']);
-    $l_check_permissions = upgrader_link('upgrader.php?type=check_perms', do_lang('UPGRADER_CHECK_PERMISSIONS'));
-    $l_fix_permissions = upgrader_link('upgrader.php?type=fix_perms', do_lang('UPGRADER_FIX_PERMISSIONS'));
-    $l_remove_addon_files = upgrader_link('upgrader.php?type=addon_remove', do_lang('UPGRADER_REMOVE_ADDON_FILES'));
+    $l_check_perms = upgrader_link('upgrader.php?type=check_perms', do_lang('UPGRADER_CHECK_PERMISSIONS'));
+    $l_fix_perms = upgrader_link('upgrader.php?type=fix_perms', do_lang('UPGRADER_FIX_PERMISSIONS'));
+    $l_addon_remove = upgrader_link('upgrader.php?type=addon_remove', do_lang('UPGRADER_REMOVE_ADDON_FILES'));
+    $show_mysql_buttons = (strpos(get_db_type(), 'mysql') !== false);
+    $l_mysql_repair = upgrader_link('upgrader.php?type=mysql_repair', do_lang('MYSQL_REPAIR'));
+    $l_criticise_mysql_fields = upgrader_link('upgrader.php?type=criticise_mysql_fields', do_lang('CORRECT_MYSQL_SCHEMA_ISSUES'));
 
     $out = '';
 
@@ -510,7 +523,7 @@ function upgrader_menu_screen()
 
                     <tr><th>4</th><td>{$l_not_for_patch} {$l_integrity_scan_no_merging}<!-- " . do_lang('OR') . " {$l_integrity_scan}--></td><td>" . str_replace(' ', '&nbsp;', escape_html(display_time_period(60 * 10))) . "&nbsp;&dagger;</td></tr>
 
-                    <tr><th>5</th><td>{$l_not_for_patch} {$l_database_upgrade}<br />{$l_up_info}</td><td>" . escape_html(display_time_period(60 * 5)) . "</td></tr>
+                    <tr><th>5</th><td>{$l_not_for_patch} {$l_db_upgrade}<br />{$l_up_info}</td><td>" . escape_html(display_time_period(60 * 5)) . "</td></tr>
 
                     <tr><th>6</th><td>{$l_not_for_patch} {$l_theme_upgrade}</td><td>" . escape_html(display_time_period(60 * 5)) . "</td></tr>
 
@@ -527,12 +540,18 @@ function upgrader_menu_screen()
             <ul class=\"compact-list\">";
     if ($show_permission_buttons) {
         $out .= "
-                <li>{$l_check_permissions} / {$l_fix_permissions}</li>";
+                <li>{$l_check_perms} / {$l_fix_perms}</li>";
     }
     $out .= "
                 <li>{$l_safe_mode}</li>
                 <li>{$l_addon_management}</li>
-                <li>{$l_remove_addon_files}</li>
+                <li>{$l_addon_remove}</li>";
+    if ($show_mysql_buttons) {
+        $out .= "
+                <li>{$l_mysql_repair}</li>
+                <li>{$l_criticise_mysql_fields}</li>";
+    }
+    $out .= "
             </ul>
         </div>";
 

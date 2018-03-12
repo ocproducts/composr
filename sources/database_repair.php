@@ -31,7 +31,7 @@ Only works with MySQL.
  */
 function database_repair_inbuilt()
 {
-    require_lang('cleanup');
+    require_lang('upgrade');
 
     $out = new Tempcode();
 
@@ -63,6 +63,10 @@ function database_repair_inbuilt()
         }
     }
 
+    if ($out->is_empty()) {
+        $out = do_lang_tempcode('NO_ISSUES_FOUND');
+    }
+
     return $out;
 }
 
@@ -73,7 +77,7 @@ function database_repair_inbuilt()
  */
 function database_repair_wrap()
 {
-    require_lang('cleanup');
+    require_lang('upgrade');
 
     $repair_ob = new DatabaseRepair();
     list($phase, $sql) = $repair_ob->search_for_database_issues();

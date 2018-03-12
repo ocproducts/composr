@@ -107,6 +107,7 @@ class Hook_addon_registry_core_upgrader
             'sources/upgrade_files.php',
             'sources/upgrade_integrity_scan.php',
             'sources/upgrade_lib.php',
+            'sources/upgrade_mysql.php',
             'sources/upgrade_perms.php',
             'sources/upgrade_shared_installs.php',
             'sources/upgrade_themes.php',

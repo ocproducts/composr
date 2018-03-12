@@ -130,10 +130,11 @@ We may very rarely provide something called an "omni-upgrader", which can be use
 [title="2"]Auxiliary features[/title]
 
 There are some extra features in the upgrader that aren't a part of the normal flow:
- - Checking/fixing necessary file permissions
- - Checking/fixing excessive file permissions
+ - Checking/fixing necessary/excessive file permissions
  - Delete all files from a specific addon
  - Opening up the site in Safe Mode
+ - Correcting MySQL schema issues (this is intended for programmers-only, you are very unlikely to need it)
+ - Fixing MySQL tables (this will try and fix some database tables; if the database has become very corrupt, you may need to use a tool such as phpMyAdmin to repair a database from outside Composr)
  - Clearing caches (okay, this is a part of the normal flow, but it is very useful even if not doing an upgrade because you don't need a working Admin Zone to do it)
 
 [concepts
@@ -148,5 +149,6 @@ There are some extra features in the upgrader that aren't a part of the normal f
  - [page="_SEARCH:tut_backup"]Backing up your site[/page]
  - [page="_SEARCH:tut_software_feedback"]Problem and feedback reports, and development policies[/page]
  - [page="_SEARCH:tut_theme_lifecycle"]Theme Lifecycle[/page]
+ - [page="_SEARCH:tut_website_health"]Website Health[/page]
 
 {$SET,tutorial_tags,Upgrading,core_upgrader,Maintenance,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Important background information that will help you keep your website up-to-date with the latest Composr.}[block]main_tutorial_rating[/block]

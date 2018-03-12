@@ -268,7 +268,7 @@ mysqldump client_<codename> > _temp/stage2.sql
 |
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
-| If jumping across versions run through the "Correct MySQL schema issues (advanced)" cleanup tool (Admin Zone > Tools > Website cleanup tools) to find and resolve any unexpected issues that might have developed
+| If jumping across versions run through the "Correct MySQL schema issues (for developers only)" tool in the upgrader to find and resolve any unexpected issues that might have developed
 | Don't just trust the SQL given, check it really is correct to repair the problems found.
 |-
 ! {$INC,step_num}{$GET,step_num}
