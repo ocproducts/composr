@@ -538,7 +538,7 @@
                 try {
                     data = $util.parseJson5(data);
                 } catch (e) {
-                    $util.inform('dataAttr(): Ignoring invalid JSON5 on data attribute "' + key + '" of element', el);
+                    //$util.inform('dataAttr(): Ignoring invalid JSON5 on data attribute "' + key + '" of element', el);
                 }
             } else if ((Number(data).toString() === data) && isFinite(data)) { // Only convert to a number if it doesn't change the string
                 data = Number(data);
