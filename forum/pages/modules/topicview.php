@@ -66,6 +66,10 @@ class Module_topicview
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }
@@ -83,11 +87,17 @@ class Module_topicview
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('cns_forum', $error_msg)) {
+            return $error_msg;
+        }
+
         if (get_forum_type() != 'cns') {
             warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
         }
+
+        cns_require_all_forum_stuff();
+
         require_code('cns_topicview');
 
         $type = get_param_string('type', 'browse');
@@ -648,7 +658,7 @@ class Module_topicview
         $buttons = cns_button_screen_wrap($button_array);
 
         // Poll
-        if (array_key_exists('poll', $topic_info)) {
+        if ((array_key_exists('poll', $topic_info)) && (addon_installed('polls'))) {
             $_poll = $topic_info['poll'];
             $voted_already = $_poll['voted_already'];
             $poll_results = (array_key_exists(0, $_poll['answers'])) && (array_key_exists('num_votes', $_poll['answers'][0]));
@@ -883,13 +893,13 @@ class Module_topicview
             if (array_key_exists('may_close_topic', $topic_info)) {
                 $moderator_actions .= '<option value="close_topic">' . do_lang('CLOSE_TOPIC') . '</option>';
             }
-            if (array_key_exists('may_edit_poll', $topic_info)) {
+            if ((array_key_exists('may_edit_poll', $topic_info)) && (addon_installed('polls'))) {
                 $moderator_actions .= '<option value="edit_poll">' . do_lang('EDIT_TOPIC_POLL') . '</option>';
             }
-            if (array_key_exists('may_delete_poll', $topic_info)) {
+            if ((array_key_exists('may_delete_poll', $topic_info)) && (addon_installed('polls'))) {
                 $moderator_actions .= '<option value="delete_poll">' . do_lang('DELETE_TOPIC_POLL') . '</option>';
             }
-            if (array_key_exists('may_attach_poll', $topic_info)) {
+            if ((array_key_exists('may_attach_poll', $topic_info)) && (addon_installed('polls'))) {
                 $moderator_actions .= '<option value="add_poll">' . do_lang('ADD_TOPIC_POLL') . '</option>';
             }
             if (addon_installed('actionlog')) {
@@ -1032,7 +1042,7 @@ class Module_topicview
         }
         if ((get_db_type() != 'xml') && (get_bot_type() === null)) {
             if (!$GLOBALS['FORUM_DB']->table_is_locked('f_topics')) {
-                $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_num_views=(t_num_views+1) WHERE id=' . strval($this->id), 1, 0, true);
+                $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_num_views=(t_num_views+1) WHERE id=' . strval($this->id), 1, 0, true); // Suppress errors in case DB write access lost
             }
         }
     }

@@ -40,6 +40,14 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('composr_homesite')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
+}
+
+if (!addon_installed('news')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('news')));
+}
+
 $version_dotted = get_param_string('version');
 require_code('version2');
 $version_pretty = get_version_pretty__from_dotted(get_version_dotted__from_anything($version_dotted));

@@ -40,6 +40,14 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('composr_homesite')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
+}
+
+if (!addon_installed('newsletter')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('newsletter')));
+}
+
 $url = get_param_string('url', false, INPUT_FILTER_URL_GENERAL);
 $email = get_param_string('email', false, INPUT_FILTER_GET_COMPLEX);
 $advertise_on = get_param_integer('advertise_on', 0);

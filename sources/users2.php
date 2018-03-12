@@ -145,14 +145,14 @@ function member_blocked($member_id, $member_blocker = null)
         return false;
     }
 
+    if (!addon_installed('chat')) {
+        return false;
+    }
+
     if ($member_id == get_member()) {
         static $members_blocking_us_cache = array();
         if ($members_blocking_us_cache === null) {
-            $rows = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocker'), array('member_blocked' => get_member()), '', null, 0, true);
-            if ($rows === null) {
-                $members_blocking_us_cache = array();
-                return false;
-            }
+            $rows = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocker'), array('member_blocked' => get_member()));
             $members_blocking_us_cache = collapse_1d_complexity('member_blocker', $rows);
         }
         return (in_array($member_blocker, $members_blocking_us_cache));
@@ -160,11 +160,7 @@ function member_blocked($member_id, $member_blocker = null)
 
     static $members_blocked_cache = array();
     if ($members_blocked_cache === null) {
-        $rows = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocked'), array('member_blocker' => get_member()), '', null, 0, true);
-        if ($rows === null) {
-            $members_blocked_cache = array();
-            return false;
-        }
+        $rows = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocked'), array('member_blocker' => get_member()));
         $members_blocked_cache = collapse_1d_complexity('member_blocked', $rows);
     }
     return (in_array($member_id, $members_blocked_cache));

@@ -63,6 +63,11 @@ class Block_main_quotes
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('random_quotes', $error_msg)) {
+            return $error_msg;
+        }
+
         require_lang('quotes');
 
         $block_id = get_block_id($map);

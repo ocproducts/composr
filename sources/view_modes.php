@@ -586,7 +586,7 @@ function check_xhtml_webstandards($out, $display_regardless = false, $preview_mo
     if ($show) {
         return display_webstandards_results($out, $error, $preview_mode != 0, $ret);
     } elseif ($preview_mode == 0) {
-        $GLOBALS['SITE_DB']->query_insert('webstandards_checked_once', array('hash' => $hash), false, true);
+        $GLOBALS['SITE_DB']->query_insert('webstandards_checked_once', array('hash' => $hash), false, true); // errors suppressed in case of race condition
     }
     return '';
 }

@@ -58,10 +58,6 @@ class Hook_ecommerce_catalogue_items
      */
     public function get_products($search = null)
     {
-        if (!addon_installed('shopping')) {
-            return array();
-        }
-
         if ($search === null) {
             $cnt = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries t1 LEFT JOIN ' . get_table_prefix() . 'catalogues t2 ON t1.c_name=t2.c_name', 'COUNT(*)', array('c_ecommerce' => 1));
             if ($cnt > 50) {
@@ -196,6 +192,10 @@ class Hook_ecommerce_catalogue_items
      */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
+        if (!addon_installed('shopping')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
         require_code('catalogues');
 
         if ($must_be_listed) {

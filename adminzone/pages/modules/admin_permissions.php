@@ -352,7 +352,7 @@ class Module_admin_permissions
             }
 
             $list1->attach(form_input_list_entry($id, ($test === null), $name));
-            $list2->attach(form_input_list_entry($id, $test !== null && !in_array($id, $moderator_groups), $name));
+            $list2->attach(form_input_list_entry($id, ($test !== null) && (!in_array($id, $moderator_groups)), $name));
         }
 
         $__groups_without = escape_html(implode(', ', $groups_without));

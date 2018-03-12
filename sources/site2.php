@@ -398,7 +398,7 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
             if ($map['string_index'] === null) {
                 $map['string_index'] = $GLOBALS['SITE_DB']->query_insert('translate', $trans_map, true, true, true);
             } else {
-                $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $map['string_index']) + $trans_map, false, true, true);
+                $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $map['string_index']) + $trans_map, false, true, true); // errors suppressed in case of race condition
             }
 
             table_id_locking_end($GLOBALS['SITE_DB'], $map['string_index'], $lock);
@@ -407,14 +407,14 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
             $map['string_index__source_user'] = $page_submitter;
             $map['string_index__text_parsed'] = $text_parsed;
         }
-        $GLOBALS['SITE_DB']->query_insert('cached_comcode_pages', $map, false, true, true);
+        $GLOBALS['SITE_DB']->query_insert('cached_comcode_pages', $map, false, true, true); // errors suppressed in case of race condition
 
         delete_cache_entry('main_comcode_page_children');
 
         // Try and insert corresponding page; will silently fail if already exists. This is only going to add a row for a page that was not created in-system
         if ($comcode_page_row === null) {
             $comcode_page_row = $new_comcode_page_row;
-            $GLOBALS['SITE_DB']->query_insert('comcode_pages', $comcode_page_row, false, true, true);
+            $GLOBALS['SITE_DB']->query_insert('comcode_pages', $comcode_page_row, false, true, true); // errors suppressed in case of race condition
 
             if (addon_installed('content_reviews')) {
                 require_code('content_reviews2');
@@ -427,7 +427,7 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
             $comcode_page_row = $_comcode_page_row[0];
         } else {
             $comcode_page_row = $new_comcode_page_row;
-            $GLOBALS['SITE_DB']->query_insert('comcode_pages', $comcode_page_row, false, true);
+            $GLOBALS['SITE_DB']->query_insert('comcode_pages', $comcode_page_row, false, true); // errors suppressed in case of race condition
 
             if (addon_installed('content_reviews')) {
                 require_code('content_reviews2');
@@ -439,14 +439,14 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
         if (multi_lang_content()) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('translate', 'id', array('id' => $trans_key, 'language' => $lang));
             if ($test === null) {
-                $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $trans_key, 'source_user' => $page_submitter, 'broken' => 0, 'importance_level' => 1, 'text_original' => $comcode, 'text_parsed' => $text_parsed, 'language' => $lang), false, true, true);
+                $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $trans_key, 'source_user' => $page_submitter, 'broken' => 0, 'importance_level' => 1, 'text_original' => $comcode, 'text_parsed' => $text_parsed, 'language' => $lang), false, true, true); // errors suppressed in case of race condition
                 $index = $trans_key;
 
                 $trans_cc_page_title_key = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'cc_page_title', array('the_page' => $codename, 'the_zone' => $zone, 'the_theme' => $GLOBALS['FORUM_DRIVER']->get_theme()));
                 if ($trans_cc_page_title_key !== null) {
                     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('translate', 'id', array('id' => $trans_cc_page_title_key, 'language' => $lang));
                     if ($test === null) {
-                        $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $trans_cc_page_title_key, 'source_user' => $page_submitter, 'broken' => 0, 'importance_level' => 1, 'text_original' => $title_to_use, 'text_parsed' => '', 'language' => $lang), false, true, true);
+                        $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $trans_cc_page_title_key, 'source_user' => $page_submitter, 'broken' => 0, 'importance_level' => 1, 'text_original' => $title_to_use, 'text_parsed' => '', 'language' => $lang), false, true, true); // errors suppressed in case of race condition
                     }
                 } // else race condition, decached while being recached
             }
@@ -535,7 +535,7 @@ function _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $ne
         $comcode_page_row = $_comcode_page_row[0];
     } else {
         $comcode_page_row = $new_comcode_page_row;
-        $GLOBALS['SITE_DB']->query_insert('comcode_pages', $comcode_page_row, false, true);
+        $GLOBALS['SITE_DB']->query_insert('comcode_pages', $comcode_page_row, false, true); // errors suppressed in case of race condition
 
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');

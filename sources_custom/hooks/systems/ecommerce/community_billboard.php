@@ -49,10 +49,6 @@ class Hook_ecommerce_community_billboard
      */
     public function get_products($search = null)
     {
-        if (!addon_installed('community_billboard')) {
-            return null;
-        }
-
         require_lang('community_billboard');
 
         $products = array();
@@ -98,6 +94,14 @@ class Hook_ecommerce_community_billboard
      */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
+        if (!addon_installed('community_billboard')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
+        if (!addon_installed('ecommerce')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
         if (get_option('is_on_community_billboard_buy') == '0') {
             return ECOMMERCE_PRODUCT_DISABLED;
         }

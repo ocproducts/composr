@@ -134,7 +134,7 @@ function erase_block_cache($erase_cache_signatures_too = false, $theme = null)
     cms_profile_start_for('erase_tempcode_cache');
 
     if ($erase_cache_signatures_too) {
-        $GLOBALS['SITE_DB']->query_delete('cache_on', array(), '', null, 0, true);
+        $GLOBALS['SITE_DB']->query_delete('cache_on', array(), '', null, 0, true); // May fail because the table might not exist when this is called
     }
 
     $where_map = array();
@@ -487,7 +487,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
         javascript_enforce('editing');
     }
 
-    if (class_exists('Self_learning_cache') && $raw_file_regexp === null && $only_templates === array()) {
+    if ((class_exists('Self_learning_cache')) && ($raw_file_regexp === null) && ($only_templates === array())) {
         Self_learning_cache::erase_smart_cache();
     }
 
@@ -522,7 +522,7 @@ function erase_comcode_page_cache()
     push_query_limiting(false);
 
     do {
-        $rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), array(), '', 50, 0, true, array());
+        $rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), array(), '', 50, 0, false, array());
         if ($rows === null) {
             $rows = array();
         }

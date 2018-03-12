@@ -21,6 +21,10 @@ class Hook_contact_forms_sugarcrm
             return false;
         }
 
+        if (!function_exists('curl_init')) {
+            return false;
+        }
+
         require_code('sugarcrm');
 
         global $SUGARCRM;

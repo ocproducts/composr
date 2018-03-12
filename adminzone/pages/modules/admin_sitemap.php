@@ -51,6 +51,10 @@ class Module_admin_sitemap
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('page_management')) {
+            return null;
+        }
+
         return array(
             'browse' => array('SITEMAP_EDITOR', 'menu/adminzone/structure/sitemap/sitemap_editor'),
         );
@@ -65,6 +69,11 @@ class Module_admin_sitemap
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('page_management', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('zones');

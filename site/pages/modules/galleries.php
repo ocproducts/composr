@@ -248,6 +248,10 @@ class Module_galleries
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         return array(
             'browse' => array('GALLERIES_HOME', 'menu/rich_content/galleries'),
         );
@@ -275,6 +279,11 @@ class Module_galleries
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('galleries', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_code('galleries');
@@ -574,7 +583,7 @@ class Module_galleries
         if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['gallery_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('galleries')) {
-                $GLOBALS['SITE_DB']->query_update('galleries', array('gallery_views' => $myrow['gallery_views']), array('name' => $cat), '', 1, 0, false, true);
+                $GLOBALS['SITE_DB']->query_update('galleries', array('gallery_views' => $myrow['gallery_views']), array('name' => $cat), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
             }
         }
 
@@ -791,7 +800,7 @@ class Module_galleries
                     'VIDEO_DETAILS' => show_video_details($row),
                 ));
 
-                $GLOBALS['SITE_DB']->query_update('videos', array('video_views' => $row['video_views'] + 1), array('id' => $row['id']), '', 1, 0, false, true);
+                $GLOBALS['SITE_DB']->query_update('videos', array('video_views' => $row['video_views'] + 1), array('id' => $row['id']), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
 
                 break;
             case 'image':
@@ -857,7 +866,7 @@ class Module_galleries
                     'VIEW_URL' => $view_url,
                 ));
 
-                $GLOBALS['SITE_DB']->query_update('images', array('image_views' => $row['image_views'] + 1), array('id' => $row['id']), '', 1, 0, false, true);
+                $GLOBALS['SITE_DB']->query_update('images', array('image_views' => $row['image_views'] + 1), array('id' => $row['id']), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
 
                 break;
         }
@@ -1229,7 +1238,7 @@ class Module_galleries
         if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['video_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('videos')) {
-                $GLOBALS['SITE_DB']->query_update('videos', array('video_views' => $myrow['video_views']), array('id' => $id), '', 1, 0, false, true);
+                $GLOBALS['SITE_DB']->query_update('videos', array('video_views' => $myrow['video_views']), array('id' => $id), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
             }
         }
 

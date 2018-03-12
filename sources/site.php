@@ -773,7 +773,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
 
         // Yet more SEO redirection (monikers)
         // Does this URL arrangement support monikers?
-        if ($url_id !== null && $redirect_if_non_canonical) { // NB: Comcode page monikers would have been handled in the code above
+        if (($url_id !== null) && ($redirect_if_non_canonical)) { // NB: Comcode page monikers would have been handled in the code above
             $type = get_param_string('type', 'browse');
             $looking_for = '_SEARCH:' . $page . ':' . $type . ':_WILD';
             $hooks = find_all_hooks('systems', 'content_meta_aware');
@@ -1774,7 +1774,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
 
     global $PAGE_STRING, $COMCODE_PARSE_TITLE, $LAST_COMCODE_PARSED_TITLE;
     $COMCODE_PARSE_TITLE = null;
-    if ($PAGE_STRING === null && !$being_included && !$is_panel) {
+    if (($PAGE_STRING === null) && (!$being_included) && (!$is_panel)) {
         $PAGE_STRING = $string;
     }
 
@@ -1828,7 +1828,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
                 }
                 if ((!$support_smart_decaching) || ((($comcode_page_row['p_edit_date'] !== null) && ($comcode_page_row['p_edit_date'] >= $mtime)) || (($comcode_page_row['p_edit_date'] === null) && ($comcode_page_row['p_add_date'] !== null) && ($comcode_page_row['p_add_date'] >= $mtime)))) { // Make sure it has not been edited since last edited or created
                     // Optimised path for empty panels when no super-fast persistent cache
-                    if ($support_smart_decaching/*only should do an fstat if this is enabled*/ && ($being_included || $is_panel) && $GLOBALS['PERSISTENT_CACHE'] === null && filesize($file_base . '/' . $string) == 0) {
+                    if (($support_smart_decaching/*only should do an fstat if this is enabled*/) && (($being_included) || ($is_panel)) && ($GLOBALS['PERSISTENT_CACHE'] === null) && (filesize($file_base . '/' . $string) == 0)) {
                         return new Tempcode();
                     }
 

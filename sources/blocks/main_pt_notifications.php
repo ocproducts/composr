@@ -49,6 +49,11 @@ class Block_main_pt_notifications
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('cns_forum', $error_msg)) {
+            return $error_msg;
+        }
+
         if (get_forum_type() != 'cns') {
             return paragraph(do_lang_tempcode('NO_CNS'), 'joqcoq45aqit7q2kz0xm1tkkfa1xueql', 'red-alert');
         }

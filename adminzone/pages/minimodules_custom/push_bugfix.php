@@ -17,6 +17,11 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+$error_msg = new Tempcode();
+if (!addon_installed__autoinstall('composr_release_build', $error_msg)) {
+    return $error_msg;
+}
+
 restrictify();
 safe_ini_set('ocproducts.xss_detect', '0');
 

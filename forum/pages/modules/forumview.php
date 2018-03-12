@@ -51,6 +51,10 @@ class Module_forumview
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }
@@ -90,13 +94,19 @@ class Module_forumview
      */
     public function pre_run()
     {
-        $type = get_param_string('type', 'browse');
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('cns_forum', $error_msg)) {
+            return $error_msg;
+        }
 
         if (get_forum_type() != 'cns') {
             warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
         }
+
+        $type = get_param_string('type', 'browse');
+
+        cns_require_all_forum_stuff();
+
         require_lang('cns');
 
         inform_non_canonical_parameter('#^kfs_.*$#');

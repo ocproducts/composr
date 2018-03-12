@@ -30,6 +30,16 @@ class Hook_search_tutorials_external extends FieldsSearchHook
             return null;
         }
 
+        if (!addon_installed('composr_homesite')) {
+            return null;
+        }
+        if (!addon_installed('composr_homesite_support_credits')) {
+            return null;
+        }
+        if (!addon_installed('composr_release_build')) {
+            return null;
+        }
+
         require_lang('tutorials');
 
         $info = array();

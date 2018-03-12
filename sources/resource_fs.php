@@ -1107,13 +1107,13 @@ function remap_portable_as_trans($portable_data, $field, $db)
         }
     }
 
-    $db->query('LOCK TABLES ' . get_table_prefix() . 'translate', null, 0, true);
+    $db->query('LOCK TABLES ' . get_table_prefix() . 'translate', null, 0, true); // Suppress errors in case access denied
     $id = $db->query_select_value('translate', 'MAX(id)');
     $id = ($id === null) ? null : ($id + 1);
 
     table_from_portable_rows('translate', $portable_data, array('id' => $id, 'text_parsed' => ''), TABLE_REPLACE_MODE_NONE, $db);
 
-    $db->query('UNLOCK TABLES', null, 0, true);
+    $db->query('UNLOCK TABLES', null, 0, true); // Suppress errors in case access denied
 
     return array($field => $id);
 }

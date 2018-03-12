@@ -218,8 +218,9 @@ if ($DEFAULT_FORUM === null) {
 require_code('tempcode_compiler');
 $css_nocache = _do_template('default', '/css/', 'no_cache', 'no_cache', 'EN', '.css');
 
-$installer_js = do_template('global', array(), null, false, null, '.js', 'javascript');
-$installer_js .= do_template('installer', array(), null, false, null, '.js', 'javascript');
+$installer_js = new Tempcode();
+$installer_js->attach(do_template('global', array(), null, false, null, '.js', 'javascript'));
+$installer_js->attach(do_template('installer', array(), null, false, null, '.js', 'javascript'));
 
 $out_final = do_template('INSTALLER_HTML_WRAP', array(
     '_GUID' => '29aa056c05fa360b72dbb01c46608c4b',
@@ -1978,7 +1979,7 @@ function step_5_core()
     $GLOBALS['SITE_DB']->create_table('translate', $fields);
     $GLOBALS['SITE_DB']->create_index('translate', '#tsearch', array('text_original'));
     $GLOBALS['SITE_DB']->create_index('translate', 'importance_level', array('importance_level'));
-    if (substr(get_db_type(), 0, 5) == 'mysql') {
+    if (strpos(get_db_type(), 'mysql') !== false) {
         $GLOBALS['SITE_DB']->create_index('translate', 'equiv_lang', array('text_original(4)'));
         $GLOBALS['SITE_DB']->create_index('translate', 'decache', array('text_parsed(2)'));
     }

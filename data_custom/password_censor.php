@@ -47,6 +47,9 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-require_code('password_censor');
+if (!addon_installed('password_censor')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('password_censor')));
+}
 
+require_code('password_censor');
 password_censor();

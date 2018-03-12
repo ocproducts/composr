@@ -528,7 +528,7 @@ function get_ticket_meta_details($ticket_id, $hard_error = true)
  */
 function get_ticket_posts($ticket_id, &$forum = null, &$topic_id = null, &$total_ticket_posts = null, $start = 0, $max = null)
 {
-    $ticket = $GLOBALS['SITE_DB']->query_select('tickets', array('*'), array('ticket_id' => $ticket_id), '', 1, 0, true);
+    $ticket = $GLOBALS['SITE_DB']->query_select('tickets', array('*'), array('ticket_id' => $ticket_id), '', 1);
     if (count($ticket) == 1) {
         // We know about it, so grab details from tickets table...
 

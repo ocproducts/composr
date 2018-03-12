@@ -110,7 +110,6 @@ class Hook_addon_registry_webdav
     {
         return array(
             'requires' => array(
-                'PHP5.3',
                 'commandr',
             ),
             'recommends' => array(),

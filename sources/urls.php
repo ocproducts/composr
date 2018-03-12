@@ -310,7 +310,7 @@ function is_page_https($zone, $page)
     }
     if ($HTTPS_PAGES_CACHE === null) {
         if (isset($GLOBALS['SITE_DB'])) {
-            $results = $GLOBALS['SITE_DB']->query_select('https_pages', array('*'), array(), '', null, 0, true);
+            $results = $GLOBALS['SITE_DB']->query_select('https_pages', array('*'));
             $HTTPS_PAGES_CACHE = array();
             if ($results !== null) {
                 foreach ($results as $r) {

@@ -24,6 +24,14 @@ class Hook_comcode_preparse_tapatalk
             return;
         }
 
+        if (!addon_installed('cns_forum')) {
+            return;
+        }
+
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         if (!defined('IN_MOBIQUO')) {
             $protocol = tacit_https() ? 'https:' : 'http:';
             $comcode = preg_replace('/\[emoji(\d+)\]/i', '[img]' . $protocol . '//emoji.tapatalk-cdn.com/emoji$1.png[/img]', $comcode);

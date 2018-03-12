@@ -57,7 +57,7 @@ class Module_buildr
             deldir_contents(get_custom_file_base() . '/uploads/buildr_addon', true);
         }
 
-        if ($GLOBALS['SITE_DB']->table_exists('ecom_prods_prices')) {
+        if (addon_installed('ecommerce')) {
             require_code('buildr');
 
             if (addon_installed('ecommerce')) { // If eCommerce not removed yet
@@ -286,6 +286,10 @@ class Module_buildr
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('buildr')) {
+            return null;
+        }
+
         return array(
             'browse' => array('BUILDR', 'spare/world'),
         );
@@ -301,6 +305,21 @@ class Module_buildr
     public function pre_run()
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('buildr', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!addon_installed('points')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('points')));
+        }
+        if (!addon_installed('ecommerce')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')));
+        }
+        if (!addon_installed('chat')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('chat')));
+        }
 
         $type = either_param_string('type', 'room');
 
@@ -369,7 +388,7 @@ class Module_buildr
         require_code('buildr_screens');
 
         if (get_value('buildr_prices_installed', '0', true) !== '1') {
-            if ($GLOBALS['SITE_DB']->table_exists('ecom_prods_prices')) {
+            if (addon_installed('ecommerce')) {
                 $prices = get_buildr_prices_default();
                 foreach ($prices as $name => $price) {
                     $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => $name, 'price' => null, 'tax_code' => '', 'price_points' => $price));

@@ -42,7 +42,7 @@ class csrf_tags_test_set extends cms_test_case
                     }
 
                     $c = preg_replace('#<input[^<>]* type="(button|submit|image)"[^<>]*>#', '', $c);
-                    if (strpos($c, '<input') === false && strpos($c, '<select') === false && strpos($c, '<textarea') === false) {
+                    if ((strpos($c, '<input') === false) && (strpos($c, '<select') === false) && (strpos($c, '<textarea') === false)) {
                         continue;
                     }
 

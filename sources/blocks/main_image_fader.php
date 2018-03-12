@@ -66,6 +66,11 @@ class Block_main_image_fader
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('galleries', $error_msg)) {
+            return $error_msg;
+        }
+
         require_css('galleries');
         require_lang('galleries');
         require_code('galleries');

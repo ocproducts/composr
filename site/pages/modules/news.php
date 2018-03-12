@@ -182,6 +182,10 @@ class Module_news
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         $has_blogs = ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_categories WHERE nc_owner IS NOT NULL') > 0);
 
         $ret = array(
@@ -217,6 +221,15 @@ class Module_news
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('news', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!addon_installed('news_shared')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('news');
@@ -651,7 +664,7 @@ class Module_news
         if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['news_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('news')) {
-                $GLOBALS['SITE_DB']->query_update('news', array('news_views' => $myrow['news_views']), array('id' => $id), '', 1, 0, false, true);
+                $GLOBALS['SITE_DB']->query_update('news', array('news_views' => $myrow['news_views']), array('id' => $id), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
             }
         }
 

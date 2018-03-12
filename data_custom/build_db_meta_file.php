@@ -47,6 +47,14 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('composr_release_build')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_release_build')));
+}
+
+if (!addon_installed('meta_toolkit')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('meta_toolkit')));
+}
+
 require_code('make_release');
 make_database_manifest();
 echo 'Done';

@@ -105,6 +105,10 @@ class Module_admin_cns_members
      */
     public function pre_run()
     {
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
         require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
 
         $type = get_param_string('type', 'browse');
@@ -187,11 +191,8 @@ class Module_admin_cns_members
      */
     public function run()
     {
-        if (get_forum_type() != 'cns') {
-            warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
-        }
+        cns_require_all_forum_stuff();
+
         require_code('cns_members_action');
         require_code('cns_members_action2');
 

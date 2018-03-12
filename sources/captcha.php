@@ -33,6 +33,10 @@ function init__captcha()
  */
 function captcha_script()
 {
+    if (!addon_installed('captcha')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('captcha')));
+    }
+
     if (get_option('recaptcha_site_key') != '') {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
@@ -263,7 +267,7 @@ function generate_captcha()
     }
 
     // Store code
-    $GLOBALS['SITE_DB']->query_insert('captchas', array('si_session_id' => $session, 'si_time' => time(), 'si_code' => $si_code), false, true);
+    $GLOBALS['SITE_DB']->query_insert('captchas', array('si_session_id' => $session, 'si_time' => time(), 'si_code' => $si_code));
 }
 
 /**

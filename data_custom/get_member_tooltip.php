@@ -38,6 +38,14 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('user_mappr')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('user_mappr')));
+}
+
+if (get_forum_type() != 'cns') {
+    return warn_exit(do_lang_tempcode('NO_CNS'));
+}
+
 require_code('cns_members');
 require_code('cns_members2');
 

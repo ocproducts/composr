@@ -1511,7 +1511,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                 }
 
                                 // Advertising
-                                if ((empty($GLOBALS['IN_MINIKERNEL_VERSION'])) && (!$semiparse_mode) && (!$in_code_tag) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
+                                if ((empty($GLOBALS['IN_MINIKERNEL_VERSION'])) && (addon_installed('banners')) && (!$semiparse_mode) && (!$in_code_tag) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
                                     // Pick up correctly, including permission filtering
                                     if ($ADVERTISING_BANNERS_CACHE === null) {
                                         $ADVERTISING_BANNERS_CACHE = array();
@@ -1519,30 +1519,29 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                         require_code('banners');
                                         $banner_sql = banner_select_sql(null, true);
                                         $banner_sql .= ' AND t_comcode_inline=1 AND ' . db_string_not_equal_to('title_text', '');
-                                        $rows = $GLOBALS['SITE_DB']->query($banner_sql, null, 0, true);
-                                        if ($rows !== null) {
-                                            // Filter out what we don't have permission for
-                                            if (get_option('use_banner_permissions', true) === '1') {
-                                                require_code('permissions');
-                                                $groups = get_permission_where_clause_groups($source_member);
-                                                if ($groups !== null) {
-                                                    $perhaps = collapse_1d_complexity('category_name', $GLOBALS['SITE_DB']->query('SELECT DISTINCT category_name FROM ' . get_table_prefix() . 'group_category_access WHERE ' . db_string_equal_to('module_the_name', 'banners') . ' AND (' . $groups . ')', null, 0, false, true));
-                                                    $new_rows = array();
-                                                    foreach ($rows as $row) {
-                                                        if (in_array($row['name'], $perhaps)) {
-                                                            $new_rows[] = $row;
-                                                        }
-                                                    }
-                                                    $rows = $new_rows;
-                                                }
-                                            }
+                                        $rows = $GLOBALS['SITE_DB']->query($banner_sql);
 
-                                            foreach ($rows as $row) {
-                                                $trigger_text = $row['title_text'];
-                                                foreach (explode(',', $trigger_text) as $t) {
-                                                    if (trim($t) != '') {
-                                                        $ADVERTISING_BANNERS_CACHE[trim($t)] = $row;
+                                        // Filter out what we don't have permission for
+                                        if (get_option('use_banner_permissions', true) === '1') {
+                                            require_code('permissions');
+                                            $groups = get_permission_where_clause_groups($source_member);
+                                            if ($groups !== null) {
+                                                $perhaps = collapse_1d_complexity('category_name', $GLOBALS['SITE_DB']->query('SELECT DISTINCT category_name FROM ' . get_table_prefix() . 'group_category_access WHERE ' . db_string_equal_to('module_the_name', 'banners') . ' AND (' . $groups . ')', null, 0, false, true));
+                                                $new_rows = array();
+                                                foreach ($rows as $row) {
+                                                    if (in_array($row['name'], $perhaps)) {
+                                                        $new_rows[] = $row;
                                                     }
+                                                }
+                                                $rows = $new_rows;
+                                            }
+                                        }
+
+                                        foreach ($rows as $row) {
+                                            $trigger_text = $row['title_text'];
+                                            foreach (explode(',', $trigger_text) as $t) {
+                                                if (trim($t) != '') {
+                                                    $ADVERTISING_BANNERS_CACHE[trim($t)] = $row;
                                                 }
                                             }
                                         }

@@ -32,7 +32,7 @@ class Hook_page_groupings_iotds
         }
 
         return array(
-            array('cms', 'menu/rich_content/iotds', array('cms_iotds', array('type' => 'browse'), get_module_zone('cms_iotds')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('iotds:IOTDS'), @make_string_tempcode(escape_html(integer_format(@intval($GLOBALS['SITE_DB']->query_select_value('iotd', 'COUNT(*)', array(), '', true)))))), 'iotds:DOC_IOTDS'),
+            array('cms', 'menu/rich_content/iotds', array('cms_iotds', array('type' => 'browse'), get_module_zone('cms_iotds')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('iotds:IOTDS'), make_string_tempcode(escape_html(integer_format(intval($GLOBALS['SITE_DB']->query_select_value('iotd', 'COUNT(*)')))))), 'iotds:DOC_IOTDS'),
             array('rich_content', 'menu/rich_content/iotds', array('iotds', array(), get_module_zone('iotds')), do_lang_tempcode('iotds:IOTDS')),
         );
     }

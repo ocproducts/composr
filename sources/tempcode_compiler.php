@@ -1263,7 +1263,7 @@ function template_to_tempcode($text, $symbol_pos = 0, $inside_directive = false,
     }
     list($parts, $preprocessable_bits) = compile_template(substr($text, $symbol_pos), $codename, $theme, $lang, $tolerate_errors, $parameters, $parameters_used);
 
-    if ($parameters !== null && $parameters_used !== null) {
+    if (($parameters !== null) && ($parameters_used !== null)) {
         foreach ($parameters as $key => $parameter) {
             if (!isset($parameters_used[$key])) {
                 unset($parameters[$key]);

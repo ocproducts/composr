@@ -17,7 +17,11 @@ function init__galleries2($code)
 {
     i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
-    if (!$GLOBALS['SITE_DB']->table_exists('workflow_content')) { // Not installed
+    if (!addon_installed('workflows')) { // Not installed
+        return $code;
+    }
+
+    if (!addon_installed('unvalidated')) {
         return $code;
     }
 

@@ -45,6 +45,10 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         $ret = array(
             'browse' => array('MANAGE_NEWSLETTER', 'menu/site_meta/newsletters'),
             'new' => array('NEWSLETTER_SEND', 'menu/site_meta/newsletters'),
@@ -71,6 +75,11 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('newsletter', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('newsletter');

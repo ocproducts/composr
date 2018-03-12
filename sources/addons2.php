@@ -182,7 +182,7 @@ function find_available_addons($installed_too = true)
     foreach ($files as $_file) {
         $file = $_file[0];
 
-        if ((!$installed_too) && (addon_installed(preg_replace('#-\d+#', '', basename($file, '.tar')), true))) {
+        if ((!$installed_too) && (addon_installed(preg_replace('#-\d+#', '', basename($file, '.tar'))))) {
             continue;
         }
 
@@ -658,7 +658,7 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
 
     $addon = $info['name'];
 
-    $was_already_installed = addon_installed($addon, true);
+    $was_already_installed = addon_installed($addon);
 
     require_code('developer_tools');
     destrictify();
@@ -695,7 +695,7 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
 
                         $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
                         foreach (array_keys($groups) as $group_id) {
-                            $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => $zone, 'group_id' => $group_id), false, true);
+                            $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => $zone, 'group_id' => $group_id), false, true); // errors suppressed in case already there
                         }
                     }
 

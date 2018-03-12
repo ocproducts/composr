@@ -100,6 +100,10 @@ class Module_classifieds
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('classified_ads')) {
+            return null;
+        }
+
         $ret = array();
         if (!$check_perms || !is_guest($member_id)) {
             $ret['adverts'] = array('CLASSIFIED_ADVERTS', 'spare/classifieds');
@@ -117,6 +121,18 @@ class Module_classifieds
     public function pre_run()
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('classified_ads', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!addon_installed('catalogues')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('catalogues')));
+        }
+        if (!addon_installed('ecommerce')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')));
+        }
 
         $type = get_param_string('type', 'adverts');
 

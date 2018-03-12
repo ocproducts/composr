@@ -32,7 +32,7 @@ class Hook_cleanup_mysql_optimise
      */
     public function info()
     {
-        if (substr(get_db_type(), 0, 5) != 'mysql') {
+        if (strpos(get_db_type(), 'mysql') === false) {
             return null;
         }
 

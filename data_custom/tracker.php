@@ -39,6 +39,10 @@ if (!file_exists($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('composr_homesite_support_credits')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite_support_credits')));
+}
+
 $GLOBALS['SITE_INFO']['block_url_schemes'] = '1';
 
 $content = do_block('main_mantis_tracker', $_GET);

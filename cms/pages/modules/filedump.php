@@ -109,6 +109,10 @@ class Module_filedump
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('filedump')) {
+            return null;
+        }
+
         $ret = array(
             'browse' => array('FILEDUMP', 'menu/cms/filedump'),
         );
@@ -130,6 +134,11 @@ class Module_filedump
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('filedump', $error_msg)) {
+            return $error_msg;
+        }
+
         require_lang('filedump');
 
         $type = get_param_string('type', 'browse');

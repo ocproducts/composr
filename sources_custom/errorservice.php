@@ -16,8 +16,12 @@
 /**
  * Handler for compo.sr error message web service.
  */
-function get_problem_match()
+function get_problem_match_script()
 {
+    if (!addon_installed('composr_homesite')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
+    }
+
     header('Content-type: text/plain; charset=' . get_charset());
 
     $version = get_param_string('version');

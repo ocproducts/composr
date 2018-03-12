@@ -732,6 +732,10 @@ function generate_text_summary($_temp_summary, $words_searched)
  */
 function opensearch_script()
 {
+    if (!addon_installed('search')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('search')));
+    }
+
     if (!has_actual_page_access(get_member(), 'search')) {
         return; // No access
     }

@@ -16,6 +16,10 @@
 if (!function_exists('init__notifications')) {
     function init__notifications($in)
     {
+        if (!addon_installed('password_censor')) {
+            return $in;
+        }
+
         $in = override_str_replace_exactly(
             "\$dispatcher = ",
             "

@@ -93,7 +93,7 @@ function _save_web_resource_merging($resources, $type, $write_path)
             if (is_file($merge_from)) {
                 $extra_data = unixify_line_format(cms_file_get_contents_safe($merge_from)) . "\n\n";
                 $data .= $extra_data;
-                if (strpos($extra_data, '"use strict";') === false && strpos($extra_data, "'use strict';") === false) {
+                if ((strpos($extra_data, '"use strict";') === false) && (strpos($extra_data, "'use strict';") === false)) {
                     $all_strict = false;
                 }
             } else { // race condition

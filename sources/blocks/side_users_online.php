@@ -63,6 +63,11 @@ class Block_side_users_online
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('users_online_block', $error_msg)) {
+            return $error_msg;
+        }
+
         $count = 0;
         require_code('users2');
         $members = get_users_online(false, null, $count);

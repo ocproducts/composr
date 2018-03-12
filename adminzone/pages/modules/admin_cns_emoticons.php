@@ -68,6 +68,10 @@ class Module_admin_cns_emoticons extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('cns');
@@ -105,11 +109,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
         require_lang('dearchive');
         require_code('images');
 
-        if (get_forum_type() != 'cns') {
-            warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
-        }
+        cns_require_all_forum_stuff();
 
         require_code('cns_general_action');
         require_code('cns_general_action2');

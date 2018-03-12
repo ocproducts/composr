@@ -56,6 +56,10 @@ class Module_warnings extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('cns_warnings')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }
@@ -85,13 +89,19 @@ class Module_warnings extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
-        $type = get_param_string('type', 'browse');
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('cns_warnings', $error_msg)) {
+            return $error_msg;
+        }
 
         if (get_forum_type() != 'cns') {
             warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
         }
+
+        $type = get_param_string('type', 'browse');
+
+        cns_require_all_forum_stuff();
+
         require_lang('cns_warnings');
         if (addon_installed('securitylogging')) {
             require_lang('submitban');

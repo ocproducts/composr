@@ -60,13 +60,15 @@ function check_wordfilter($a, $name = null, $exit = true, $try_patterns = false,
     global $WORDS_TO_FILTER_CACHE;
     if ($WORDS_TO_FILTER_CACHE === null) {
         $WORDS_TO_FILTER_CACHE = array();
-        $rows = $GLOBALS['SITE_DB']->query_select('wordfilter', array('*'), array(), '', null, 0, true);
-        if ($rows !== null) {
-            foreach ($rows as $i => $r) {
-                if (($i == 0) && (!array_key_exists('w_replacement', $r))) {
-                    return $a; // Safe upgrading
+        if (addon_installed('wordfilter')) {
+            $rows = $GLOBALS['SITE_DB']->query_select('wordfilter', array('*'));
+            if ($rows !== null) {
+                foreach ($rows as $i => $r) {
+                    if (($i == 0) && (!array_key_exists('w_replacement', $r))) {
+                        return $a; // Safe upgrading
+                    }
+                    $WORDS_TO_FILTER_CACHE[strtolower($r['word'])] = $r;
                 }
-                $WORDS_TO_FILTER_CACHE[strtolower($r['word'])] = $r;
             }
         }
     }

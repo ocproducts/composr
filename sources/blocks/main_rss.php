@@ -62,8 +62,13 @@ class Block_main_rss
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('syndication_blocks', $error_msg)) {
+            return $error_msg;
+        }
+
         if (!addon_installed('news')) {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news')), 'u0z4xtei5rorsx4ahx6gxuol8y64yi29', 'red-alert');
         }
 
         require_lang('news');

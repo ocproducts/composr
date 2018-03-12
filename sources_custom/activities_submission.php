@@ -103,6 +103,10 @@ function activities_addon_syndicate_described_activity($a_language_string_code =
  */
 function activities_handler_script()
 {
+    if (!addon_installed('activity_feed')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('activity_feed')));
+    }
+
     prepare_for_known_ajax_response();
 
     header('Content-Type: text/xml');
@@ -169,6 +173,10 @@ function activities_handler_script()
  */
 function activities_updater_script()
 {
+    if (!addon_installed('activity_feed')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('activity_feed')));
+    }
+
     $map = array();
 
     $map['max'] = $GLOBALS['SITE_DB']->query_select_value_if_there('values', 'the_value', array('the_name' => get_zone_name() . '_' . get_page_name() . '_update_max'));
@@ -254,6 +262,10 @@ function activities_updater_script()
  */
 function activities_removal_script()
 {
+    if (!addon_installed('activity_feed')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('activity_feed')));
+    }
+
     $is_guest = false; // Can't be doing with over-complicated SQL breakages. Weed it out.
     $guest_id = intval($GLOBALS['FORUM_DRIVER']->get_guest_id());
     $viewer_id = intval(get_member()); //We'll need this later anyway.

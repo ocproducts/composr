@@ -514,7 +514,7 @@ abstract class HttpDownloader
                     }
                     $raw_payload2 .= $val . "\r\n";
                 }
-                if ($this->put !== null && !$this->put_no_delete) {
+                if (($this->put !== null) && (!$this->put_no_delete)) {
                     fwrite($this->put, $raw_payload2);
                     $raw_payload2 = '';
                 }
@@ -536,11 +536,11 @@ abstract class HttpDownloader
                             $this->raw_content_type = $upload_field;
                         }
                     }
-                    if ($this->put !== null && !$this->put_no_delete) {
+                    if (($this->put !== null) && (!$this->put_no_delete)) {
                         fwrite($this->put, $raw_payload2);
                         $raw_payload2 = '';
                     }
-                    if ($this->put !== null && !$this->put_no_delete) {
+                    if (($this->put !== null) && (!$this->put_no_delete)) {
                         $myfile = fopen($file_path, 'rb');
                         while (!feof($myfile)) {
                             $data = @fread($myfile, 1024 * 100);
@@ -557,7 +557,7 @@ abstract class HttpDownloader
                     if (($this->put === null) || (count($this->post_params) != 0) || (count($this->files) != 1)) {
                         $raw_payload2 .= "\r\n";
                     }
-                    if ($this->put !== null && !$this->put_no_delete) {
+                    if (($this->put !== null) && (!$this->put_no_delete)) {
                         fwrite($this->put, $raw_payload2);
                         $raw_payload2 = '';
                     }
@@ -565,7 +565,7 @@ abstract class HttpDownloader
                 if (($this->put === null) || (count($this->post_params) != 0) || (count($this->files) != 1)) {
                     $raw_payload2 .= '----cms' . $this->divider . "--\r\n";
                 }
-                if ($this->put !== null && !$this->put_no_delete) {
+                if (($this->put !== null) && (!$this->put_no_delete)) {
                     fwrite($this->put, $raw_payload2);
                     $raw_payload2 = '';
                 }

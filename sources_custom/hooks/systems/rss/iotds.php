@@ -35,10 +35,6 @@ class Hook_rss_iotds
             return null;
         }
 
-        if (!$GLOBALS['SITE_DB']->table_exists('iotd')) {
-            return null;
-        }
-
         if (!has_actual_page_access(get_member(), 'iotds')) {
             return null;
         }

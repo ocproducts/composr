@@ -51,6 +51,10 @@ class Module_admin_errorlog
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('errorlog')) {
+            return null;
+        }
+
         return array(
             '!' => array('ERRORLOG', 'menu/adminzone/audit/errorlog'),
         );
@@ -65,6 +69,11 @@ class Module_admin_errorlog
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('errorlog', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('errorlog');

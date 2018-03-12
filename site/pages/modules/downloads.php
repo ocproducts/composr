@@ -208,6 +208,10 @@ class Module_downloads
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('downloads')) {
+            return null;
+        }
+
         return array(
             'browse' => array('DOWNLOADS_HOME', 'menu/rich_content/downloads'),
         );
@@ -230,6 +234,11 @@ class Module_downloads
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('downloads', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_code('downloads');
@@ -697,7 +706,7 @@ class Module_downloads
         if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['download_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('download_downloads')) {
-                $GLOBALS['SITE_DB']->query_update('download_downloads', array('download_views' => $myrow['download_views']), array('id' => $id), '', 1, 0, false, true);
+                $GLOBALS['SITE_DB']->query_update('download_downloads', array('download_views' => $myrow['download_views']), array('id' => $id), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
             }
         }
 

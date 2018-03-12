@@ -46,8 +46,13 @@ class Block_side_shoutbox
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('shoutr', $error_msg)) {
+            return $error_msg;
+        }
+
         if (!addon_installed('chat')) {
-            return paragraph('The chat addon must be installed', 'ppw4bavk9nr9s0ymi3ozhkkmkz7itp98', 'red-alert');
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('chat')), 'y8h6nmz8sgqyr3pyc0u3utctjxqomeje', 'red-alert');
         }
 
         require_lang('chat');

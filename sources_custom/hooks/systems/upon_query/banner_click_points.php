@@ -24,6 +24,13 @@ class Hook_upon_query_banner_click_points
             return;
         }
 
+        if (!addon_installed('banners')) {
+            return;
+        }
+        if (!addon_installed('points')) {
+            return;
+        }
+
         if ($query[0] == 'S') {
             return;
         }

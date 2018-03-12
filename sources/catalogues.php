@@ -1479,7 +1479,7 @@ function get_catalogue_category_tree($catalogue_name, $category_id, $breadcrumbs
         return $use_compound_list ? array(array(), '') : array();
     }
 
-    if ($category_details === null && $category_id !== null) {
+    if (($category_details === null) && ($category_id !== null)) {
         $_category_details = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('cc_title'), array('id' => $category_id), '', 1);
         if (!array_key_exists(0, $_category_details)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
@@ -1850,7 +1850,7 @@ function render_catalogue_entry_screen($id)
     if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
         $entry['ce_views']++;
         if (!$GLOBALS['SITE_DB']->table_is_locked('catalogue_entries')) {
-            $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_views' => $entry['ce_views']), array('id' => $id), '', 1, 0, false, true);
+            $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_views' => $entry['ce_views']), array('id' => $id), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
         }
     }
 

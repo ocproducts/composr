@@ -23,6 +23,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (get_forum_type() != 'cns') {
+    return paragraph(do_lang_tempcode('NO_CNS'), 'o1mp434qrijc2ms5hseqvm5ynodw74rr', 'red-alert');
+}
+
 $order = 'm_join_time DESC';
 if (isset($map['order'])) {
     if ($map['order'] == 'random') {

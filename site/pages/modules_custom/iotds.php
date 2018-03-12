@@ -104,6 +104,10 @@ class Module_iotds
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('iotds')) {
+            return null;
+        }
+
         return array(
             'browse' => array('IOTDS', 'menu/rich_content/iotds'),
         );
@@ -122,6 +126,11 @@ class Module_iotds
     public function pre_run()
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('iotds', $error_msg)) {
+            return $error_msg;
+        }
 
         $type = get_param_string('type', 'browse');
 
@@ -238,7 +247,7 @@ class Module_iotds
         if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['iotd_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('iotd')) {
-                $GLOBALS['SITE_DB']->query_update('iotd', array('iotd_views' => $myrow['iotd_views']), array('id' => $id), '', 1, 0, false, true);
+                $GLOBALS['SITE_DB']->query_update('iotd', array('iotd_views' => $myrow['iotd_views']), array('id' => $id), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
             }
         }
 

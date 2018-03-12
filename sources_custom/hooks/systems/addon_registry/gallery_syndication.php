@@ -116,7 +116,6 @@ For YouTube syndication you must first:
     {
         return array(
             'requires' => array(
-                'PHP5.2',
                 'PHP curl extension',
                 'galleries',
             ),

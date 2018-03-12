@@ -29,6 +29,10 @@ class Hook_syndication_twitter
             return false;
         }
 
+        if (!function_exists('curl_init')) {
+            return false;
+        }
+
         $api_key = get_option('twitter_api_key');
         if ($api_key == '') {
             return false;

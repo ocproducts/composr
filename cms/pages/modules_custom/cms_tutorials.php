@@ -42,6 +42,23 @@ class Module_cms_tutorials extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('composr_tutorials', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!addon_installed('composr_homesite')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
+        }
+        if (!addon_installed('composr_homesite_support_credits')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite_support_credits')));
+        }
+        if (!addon_installed('composr_release_build')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_release_build')));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('tutorials');
@@ -57,20 +74,7 @@ class Module_cms_tutorials extends Standard_crud_module
      */
     public function run_start($type)
     {
-        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
-
         require_code('tutorials');
-
-        if (!module_installed('tutorials')) {
-            require_code('zones2');
-
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_header_text', array('zone_name' => 'docs'));
-            if ($test === null) {
-                actual_add_zone('docs', do_lang('TUTORIALS'), 'tutorials');
-            }
-
-            reinstall_module('docs', 'tutorials');
-        }
 
         if ($type == 'browse') {
             return $this->browse();
@@ -90,6 +94,10 @@ class Module_cms_tutorials extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('composr_tutorials')) {
+            return null;
+        }
+
         return array(
             'browse' => array('tutorials:TUTORIALS', 'help'),
         ) + parent::get_entry_points();

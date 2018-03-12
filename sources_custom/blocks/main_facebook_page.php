@@ -59,6 +59,18 @@ class Block_main_facebook_page
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('facebook_support', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!function_exists('curl_init')) {
+            return paragraph(do_lang_tempcode('NO_CURL_ON_SERVER'), 'gyh8q02fa42oidxizj593su3fs6qc9zm', 'red-alert');
+        }
+        if (!function_exists('session_status')) {
+            return paragraph('PHP session extension missing', '1srcvdkreexgjcjhfhywyu9hntjjwh1l', 'red-alert');
+        }
+
         require_lang('facebook');
         require_code('facebook_connect');
 

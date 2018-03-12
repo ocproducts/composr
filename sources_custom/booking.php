@@ -45,6 +45,14 @@ function init__booking()
  */
 function booking_price_ajax_script()
 {
+    if (!addon_installed('booking')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('booking')));
+    }
+
+    if (!addon_installed('ecommerce')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')));
+    }
+
     header('Content-type: text/plain; charset=' . get_charset());
     $request = get_booking_request_from_form();
     echo float_format(find_booking_price($request));

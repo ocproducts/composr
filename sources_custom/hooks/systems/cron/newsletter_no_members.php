@@ -33,6 +33,10 @@ class Hook_cron_newsletter_no_members
             return null;
         }
 
+        if (!addon_installed('newsletter')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }

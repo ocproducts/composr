@@ -88,6 +88,11 @@ class Block_main_leader_board
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('points', $error_msg)) {
+            return $error_msg;
+        }
+
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('leader_board');
 
         require_lang('leader_board');

@@ -47,8 +47,20 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('free_article_import')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('free_article_import')));
+}
+
 if (php_function_allowed('set_time_limit')) {
     @set_time_limit(0);
+}
+
+if (!addon_installed('free_article_import')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('free_article_import')));
+}
+
+if (!addon_installed('news')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('news')));
 }
 
 require_code('news');

@@ -46,6 +46,10 @@ class Module_admin_unvalidated
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('workflows')) {
+            return null;
+        }
+
         return array(
             '!' => array('UNVALIDATED_RESOURCES', 'menu/adminzone/audit/unvalidated'),
         );
@@ -61,6 +65,10 @@ class Module_admin_unvalidated
     public function pre_run()
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+        if (!addon_installed('unvalidated')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('unvalidated')));
+        }
 
         $type = get_param_string('type', 'browse');
 
@@ -124,7 +132,7 @@ class Module_admin_unvalidated
             }
 
             if (!$content->is_empty()) {
-                if (array_key_exists('uses_workflow', $info) && $info['uses_workflow']) {
+                if (addon_installed('workflows') && array_key_exists('uses_workflow', $info) && $info['uses_workflow']) {
                     // Content that uses a workflow is validated via its view screen
                     $post_url = build_url(array('page' => $info['view_module'], 'type' => $info['view_type'], 'validated' => 1/*, 'redirect' => protect_url_parameter(SELF_REDIRECT)*/), get_module_zone($info['view_module']), array(), false, true);
                 } else {

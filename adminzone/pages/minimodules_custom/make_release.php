@@ -15,6 +15,17 @@
 
 /*EXTRA FUNCTIONS: sha1_file*/
 
+i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+$error_msg = new Tempcode();
+if (!addon_installed__autoinstall('composr_release_build', $error_msg)) {
+    return $error_msg;
+}
+
+if (!addon_installed('meta_toolkit')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('meta_toolkit')));
+}
+
 /*
 This code is the frontend to make Composr builds.
 
@@ -22,8 +33,6 @@ If running on Windows, you need to install the following commands in your path..
  - Infozip's zip.exe and unzip.exe
  - gunzip.exe, gzip.exe, and tar.exe
 */
-
-i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 restrictify();
 safe_ini_set('ocproducts.xss_detect', '0');
@@ -118,7 +127,7 @@ function phase_0()
             <fieldset>
             <legend>Upgrade necessity</legend>
             <p>Upgrading is&hellip;</p>
-            <input type="radio" name="needed" id="unrecommended" ' . ((strpos($release_description, 'patch release') === false && strpos($release_description, 'gold') === false) ? 'checked="checked" ' : '') . 'value="not recommended for live sites" /><label for="unrecommended">&hellip;not recommended for live sites&hellip;</label><br />
+            <input type="radio" name="needed" id="unrecommended" ' . (((strpos($release_description, 'patch release') === false) && (strpos($release_description, 'gold') === false)) ? 'checked="checked" ' : '') . 'value="not recommended for live sites" /><label for="unrecommended">&hellip;not recommended for live sites&hellip;</label><br />
             <input type="radio" name="needed" id="not-needed" ' . ((strpos($release_description, 'gold') !== false) ? 'checked="checked" ' : '') . 'value="not necessary" /><label for="not_needed">&hellip;not necessary&hellip;</label><br />
             <input type="radio" name="needed" id="suggested" value="suggested" /><label for="suggested">&hellip;suggested&hellip;</label><br />
             <input type="radio" name="needed" id="advised" ' . ((strpos($release_description, 'patch release') !== false) ? 'checked="checked" ' : '') . 'value="strongly advised" /><label for="advised">&hellip;strongly advised&hellip;</label><br />

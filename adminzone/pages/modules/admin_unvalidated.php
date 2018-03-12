@@ -51,6 +51,10 @@ class Module_admin_unvalidated
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('unvalidated')) {
+            return null;
+        }
+
         return array(
             '!' => array('UNVALIDATED_RESOURCES', 'menu/adminzone/audit/unvalidated'),
         );
@@ -65,6 +69,11 @@ class Module_admin_unvalidated
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('unvalidated', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('unvalidated');

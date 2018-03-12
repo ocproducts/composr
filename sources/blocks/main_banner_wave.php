@@ -62,6 +62,11 @@ class Block_main_banner_wave
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('banners', $error_msg)) {
+            return $error_msg;
+        }
+
         require_css('banners');
 
         $block_id = get_block_id($map);

@@ -449,14 +449,14 @@ function wysiwygify_media_set($semihtml)
     do {
         $media_set_start = strpos($semihtml, '[media_set', $i);
         $media_set_end = strpos($semihtml, '[/media_set]', $i);
-        if ($media_set_start !== false && $media_set_end !== false && $media_set_end > $media_set_start) {
+        if (($media_set_start !== false) && ($media_set_end !== false) && ($media_set_end > $media_set_start)) {
             $middle_before = substr($semihtml, $media_set_start, $media_set_end - $media_set_start);
             $middle_after = preg_replace('#</?(div|br|figure)( [^<>]*)?' . '>#', '', $middle_before);
             $middle_after = preg_replace('#<figcaption( [^<>]*)? ' . '>.*</figcaption>#Us', '', $middle_after);
             $semihtml = substr($semihtml, 0, $media_set_start) . $middle_after . substr($semihtml, $media_set_end);
             $i = $media_set_end - (strlen($middle_before) - strlen($middle_after)) + 1;
         }
-    } while ($media_set_start !== false && $media_set_end !== false && $media_set_end > $media_set_start);
+    } while (($media_set_start !== false) && ($media_set_end !== false) && ($media_set_end > $media_set_start));
     return $semihtml;
 }
 
@@ -1195,7 +1195,7 @@ function array_html_preg_replace($element, $array, $semihtml)
     do {
         $pos_opener_1 = strpos($semihtml, '<' . $element . '>', $pos);
         $pos_opener_2 = strpos($semihtml, '<' . $element . ' ', $pos);
-        $pos_opener = ($pos_opener_1 !== false && ($pos_opener_2 === false || $pos_opener_1 < $pos_opener_2)) ? $pos_opener_1 : $pos_opener_2;
+        $pos_opener = (($pos_opener_1 !== false) && (($pos_opener_2 === false) || ($pos_opener_1 < $pos_opener_2))) ? $pos_opener_1 : $pos_opener_2;
         if ($pos_opener === false) {
             break;
         }
@@ -1207,7 +1207,7 @@ function array_html_preg_replace($element, $array, $semihtml)
 
         $pos_closer_1 = strpos($semihtml, '</' . $element . '>', $pos);
         $pos_closer_2 = strpos($semihtml, '</' . $element . ' ', $pos);
-        $pos_closer = ($pos_closer_1 !== false && ($pos_closer_2 === false || $pos_closer_1 < $pos_closer_2)) ? $pos_closer_1 : $pos_closer_2;
+        $pos_closer = (($pos_closer_1 !== false) && (($pos_closer_2 === false) || ($pos_closer_1 < $pos_closer_2))) ? $pos_closer_1 : $pos_closer_2;
         if ($pos_closer === false) {
             break;
         }

@@ -39,6 +39,17 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('composr_homesite')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')));
+}
+
+if (!addon_installed('downloads')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')));
+}
+if (!addon_installed('news')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('news')));
+}
+
 $version = get_param_string('version'); // This is a 'pretty' version number, rather than a 'dotted' one
 
 $id_float = floatval($version);

@@ -62,6 +62,11 @@ class Block_main_contact_catalogues
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('catalogues', $error_msg)) {
+            return $error_msg;
+        }
+
         require_code('fields');
 
         require_code('mail');

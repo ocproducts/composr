@@ -20,6 +20,10 @@ function init__confluence2()
 
 function confluence_proxy_script()
 {
+    if (!addon_installed('confluence')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('confluence')));
+    }
+
     global $CONFLUENCE_SUBDOMAIN;
 
     $url = qualify_url(cms_srv('QUERY_STRING'), get_confluence_base_url());

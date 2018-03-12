@@ -48,10 +48,6 @@ class Hook_ecommerce_cart_orders
      */
     public function get_products($search = null)
     {
-        if (!addon_installed('shopping')) {
-            return array();
-        }
-
         $products = array();
 
         require_lang('shopping');
@@ -114,6 +110,10 @@ class Hook_ecommerce_cart_orders
      */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
+        if (!addon_installed('shopping')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
         if (!has_actual_page_access($member_id, 'shopping')) {
             if (is_guest()) {
                 return ECOMMERCE_PRODUCT_NO_GUESTS;

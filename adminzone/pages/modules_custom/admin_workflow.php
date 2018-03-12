@@ -120,6 +120,10 @@ class Module_admin_workflow extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('workflows')) {
+            return null;
+        }
+
         return array(
             'browse' => array('MANAGE_WORKFLOWS', 'spare/workflows'),
         ) + parent::get_entry_points();
@@ -138,6 +142,15 @@ class Module_admin_workflow extends Standard_crud_module
     public function pre_run($top_level = true, $type = null)
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('workflows', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!addon_installed('unvalidated')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('unvalidated')));
+        }
 
         $type = get_param_string('type', 'browse');
 
@@ -265,7 +278,7 @@ class Module_admin_workflow extends Standard_crud_module
 
             // Now see if we're the default
             $default_workflow = get_default_workflow();
-            if ($default_workflow !== null && $id == $default_workflow) {
+            if (($default_workflow !== null) && ($id == $default_workflow)) {
                 $default = true;
             }
             // Get the approval points in workflow order

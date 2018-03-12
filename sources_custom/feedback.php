@@ -20,6 +20,10 @@
  */
 function init__feedback()
 {
+    if (!addon_installed('custom_ratings')) {
+        return;
+    }
+
     define('MAX_LIKES_TO_SHOW', 20);
 
     define('RATING_TYPE_star_choice', 0);

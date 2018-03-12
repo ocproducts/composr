@@ -318,7 +318,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
         );
 
         // Poll?
-        if ($topic_info['t_poll_id'] !== null) {
+        if (($topic_info['t_poll_id'] !== null) && (addon_installed('polls'))) {
             require_code('cns_polls');
             if (is_guest()) {
                 $voted_already_map = array('pv_poll_id' => $topic_info['t_poll_id'], 'pv_ip' => get_ip_address());
@@ -541,7 +541,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
                 $out['may_close_topic'] = true;
             }
         }
-        if ($topic_info['t_poll_id'] !== null) {
+        if (($topic_info['t_poll_id'] !== null) && (addon_installed('polls'))) {
             require_code('cns_polls');
 
             if (cns_may_edit_poll_by($forum_id, $topic_info['t_cache_first_member_id'])) {

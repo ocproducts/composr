@@ -25,6 +25,10 @@
  */
 function download_gateway_script()
 {
+    if (!addon_installed('downloads')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')));
+    }
+
     require_code('downloads');
 
     $id = get_param_integer('id');
@@ -69,6 +73,10 @@ function download_gateway_script()
  */
 function dload_script()
 {
+    if (!addon_installed('downloads')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')));
+    }
+
     // Closed site
     $site_closed = get_option('site_closed');
     if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
@@ -1345,11 +1353,11 @@ function log_download($id, $size, $got_before)
     }
 
     // Update download count
-    $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'download_downloads SET num_downloads=(num_downloads+1) WHERE id=' . strval($id), 1, 0, true);
+    $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'download_downloads SET num_downloads=(num_downloads+1) WHERE id=' . strval($id), 1, 0, true); // Suppress errors in case DB access lost
 
     // Update stats
-    $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_value=' . db_cast('(' . db_cast('the_value', 'INT') . '+1)', 'CHAR') . ' WHERE the_name=\'num_downloads_downloaded\'', 1, 0, true);
+    $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_value=' . db_cast('(' . db_cast('the_value', 'INT') . '+1)', 'CHAR') . ' WHERE the_name=\'num_downloads_downloaded\'', 1, 0, true); // Suppress errors in case DB access lost
     if ($size != 0) {
-        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_value=' . db_cast('(' . db_cast('the_value', 'INT') . '+' . strval($size) . ')', 'CHAR') . ' WHERE the_name=\'download_bandwidth\'', 1, 0, true);
+        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_value=' . db_cast('(' . db_cast('the_value', 'INT') . '+' . strval($size) . ')', 'CHAR') . ' WHERE the_name=\'download_bandwidth\'', 1, 0, true); // Suppress errors in case DB access lost
     }
 }

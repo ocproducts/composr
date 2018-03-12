@@ -225,7 +225,7 @@ function _get_group_tags($group = null)
     }
     $group_tags['CUSTOM'] = $not_found;
 
-    if ($group !== null && array_key_exists($group, $group_tags)) {
+    if (($group !== null) && (array_key_exists($group, $group_tags))) {
         return $group_tags[$group];
     }
 

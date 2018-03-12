@@ -51,6 +51,10 @@ class Module_admin_setupwizard
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('setupwizard')) {
+            return null;
+        }
+
         return array(
             'browse' => array('SETUPWIZARD', 'menu/adminzone/setup/setupwizard'),
             'install_test_content' => array('INSTALL_TEST_CONTENT', 'admin/add_one_category'),
@@ -67,6 +71,11 @@ class Module_admin_setupwizard
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('setupwizard', $error_msg)) {
+            return $error_msg;
+        }
+
         require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
 
         $type = get_param_string('type', 'browse');
@@ -1352,7 +1361,7 @@ class Module_admin_setupwizard
                     // Check dependencies
                     $dependencies = explode(',', $addon_info['dependencies']);
                     foreach (array_keys($uninstalling) as $d) {
-                        if ((addon_installed($d, true)) || (in_array($d, $installing))) {
+                        if ((addon_installed($d)) || (in_array($d, $installing))) {
                             unset($dependencies[array_search($d, $dependencies)]);
                         }
                     }

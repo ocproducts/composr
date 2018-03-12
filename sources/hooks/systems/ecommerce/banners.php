@@ -52,10 +52,6 @@ class Hook_ecommerce_banners
      */
     public function get_products($search = null)
     {
-        if (!addon_installed('banners')) {
-            return array();
-        }
-
         require_lang('banners');
 
         $products = array();
@@ -171,6 +167,10 @@ class Hook_ecommerce_banners
      */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
+        if (!addon_installed('banners')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
         if (get_option('is_on_banner_buy') == '0') {
             return ECOMMERCE_PRODUCT_DISABLED;
         }

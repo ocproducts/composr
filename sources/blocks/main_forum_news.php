@@ -63,6 +63,15 @@ class Block_main_forum_news
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('forum_blocks', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!addon_installed('news_shared')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')), 'ivs1rzweo698vmevkjwl2nfas9pg60nm', 'red-alert');
+        }
+
         if (has_no_forum()) {
             return new Tempcode();
         }

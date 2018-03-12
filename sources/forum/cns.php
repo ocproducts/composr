@@ -1707,7 +1707,7 @@ class Forum_driver_cns extends Forum_driver_base
                 if (get_page_name() != 'lost_password') {
                     if (get_db_type() != 'xml') {
                         if (!$this->db->table_is_locked('f_members')) {
-                            $this->db->query_update('f_members', $change_map, array('id' => $id), '', 1, 0, false, true);
+                            $this->db->query_update('f_members', $change_map, array('id' => $id), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
                         }
                     }
                 }

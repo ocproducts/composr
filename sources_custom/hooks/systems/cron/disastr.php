@@ -31,6 +31,14 @@ class Hook_cron_disastr
             return null;
         }
 
+        if (!addon_installed('points')) {
+            return null;
+        }
+
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         return array(
             'label' => 'Disastr',
             'num_queued' => null,
@@ -149,7 +157,7 @@ class Hook_cron_disastr
                 $sql .= ' AND m_validated=1';
             }
             $sql .= ' ORDER BY ' . db_function('RAND');
-            $random_member = $GLOBALS['FORUM_DB']->query($sql, 1, 0, true);
+            $random_member = $GLOBALS['FORUM_DB']->query($sql, 1);
             if (isset($random_member[0])) {
                 $members_disease_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => strval($random_member[0]['id']), 'disease_id' => $disease['id']));
 

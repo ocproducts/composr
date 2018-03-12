@@ -142,6 +142,10 @@ END;
  */
 function sms_callback_script()
 {
+    if (!addon_installed('sms')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('sms')));
+    }
+
     // Currently does nothing. Would receive messages in the form below, via the "data" GET parameter
     /*
     < ?xml version="1.0"? >

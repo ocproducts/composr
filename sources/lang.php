@@ -1349,7 +1349,7 @@ function get_ordinal_suffix($index)
 function table_id_locking_start($db, &$id, &$lock, $table = 'translate', $id_field = 'id')
 {
     if (($id === null) && (multi_lang()) && (strpos(get_db_type(), 'mysql') !== false)) { // Needed as MySQL auto-increment works separately for each combo of other key values (i.e. language in this case). We can't let a language string ID get assigned to something entirely different in another language. This MySQL behaviour is not well documented, it may work differently on different versions.
-        $db->query('LOCK TABLES ' . $db->get_table_prefix() . $table, null, 0, true);
+        $db->query('LOCK TABLES ' . $db->get_table_prefix() . $table, null, 0, true); // Suppress errors in case access denied
         $lock = true;
         $id = $db->query_select_value($table, 'MAX(' . $id_field . ')');
         $id = ($id === null) ? null : ($id + 1);
@@ -1376,7 +1376,7 @@ function table_id_locking_end($db, $id, $lock, $table = 'translate', $id_field =
 {
     if ($lock) {
         if (strpos(get_db_type(), 'mysql') !== false) {
-            $db->query('UNLOCK TABLES', null, 0, true);
+            $db->query('UNLOCK TABLES', null, 0, true); // Suppress errors in case access denied
         } elseif (strpos(get_db_type(), 'sqlserver') !== false) {
             $db->end_transaction();
         }

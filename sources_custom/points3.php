@@ -52,7 +52,7 @@ function points_profile($member_id_of, $member_id_viewing)
     $remaining = available_points($member_id_of);
     $gift_points_used = get_gift_points_used($member_id_of); //$_point_info['gift_points_used'];
     $gift_points_available = get_gift_points_to_give($member_id_of);
-    if ($GLOBALS['SITE_DB']->table_exists('credit_purchases')) {
+    if (addon_installed('composr_homesite_support_credits')) {
         $points_gained_credits = @intval($GLOBALS['SITE_DB']->query_select_value('credit_purchases', 'SUM(num_credits)', array('member_id' => $member_id_of, 'purchase_validated' => 1)));
     } else {
         $points_gained_credits = 0;

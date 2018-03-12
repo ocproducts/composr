@@ -47,10 +47,6 @@ class Hook_import_mybb
      */
     public function info()
     {
-        if (!addon_installed('import')) {
-            return null;
-        }
-
         $info = array();
         $info['supports_advanced_import'] = false;
         $info['product'] = 'MyBB 1.4.x';

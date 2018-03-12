@@ -257,6 +257,10 @@ class Module_chat
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('chat')) {
+            return null;
+        }
+
         $ret = array();
         $ret['browse'] = array('CHAT_LOBBY', 'menu/social/chat/chat');
         if (!$check_perms || !is_guest($member_id)) {
@@ -279,6 +283,11 @@ class Module_chat
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('chat', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('chat');

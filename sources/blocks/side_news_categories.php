@@ -63,6 +63,15 @@ class Block_side_news_categories
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('news', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!addon_installed('news_shared')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')), '724an527putubsm810uxgl2n3m55t1m5', 'red-alert');
+        }
+
         require_lang('news');
 
         $block_id = get_block_id($map);

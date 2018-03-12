@@ -51,6 +51,10 @@ class Module_admin_banners
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('banners')) {
+            return null;
+        }
+
         return array(
             'browse' => array('BANNER_STATISTICS', 'menu/cms/banners'),
         );
@@ -65,6 +69,11 @@ class Module_admin_banners
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('banners', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('banners');

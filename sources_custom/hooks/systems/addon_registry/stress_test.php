@@ -111,7 +111,24 @@ This script takes days to run properly.';
     public function get_dependencies()
     {
         return array(
-            'requires' => array('Conversr'),
+            'requires' => array(
+                'Conversr',
+                'authors',
+                'banners',
+                'calendar',
+                'catalogues',
+                'chat',
+                'cns_clubs',
+                'downloads',
+                'galleries',
+                'news',
+                'newsletters',
+                'polls',
+                'quizzes',
+                'shopping',
+                'tickets',
+                'wiki',
+            ),
             'recommends' => array(),
             'conflicts_with' => array(),
         );

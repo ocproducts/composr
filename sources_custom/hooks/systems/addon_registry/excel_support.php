@@ -110,10 +110,8 @@ class Hook_addon_registry_excel_support
     {
         return array(
             'requires' => array(
-                'PHP gd extension',
                 'PHP zip extension',
                 'PHP xml extension',
-                'PHP5.3',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),
@@ -139,6 +137,9 @@ class Hook_addon_registry_excel_support
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/excel_support.php',
+            'sources_custom/files2.php',
+            'sources_custom/files_spout.php',
+
             'sources_custom/spout/.editorconfig',
             'sources_custom/spout/.gitignore',
             'sources_custom/spout/.travis.yml',
@@ -225,8 +226,6 @@ class Hook_addon_registry_excel_support
             'sources_custom/spout/tests/Spout/Writer/Helper/XLSX/CellHelperTest.php',
             'sources_custom/spout/tests/Spout/Writer/SheetTest.php',
             'sources_custom/spout/tests/Spout/Writer/XLSXTest.php',
-            'sources_custom/files2.php',
-            'sources_custom/files_spout.php',
         );
     }
 }

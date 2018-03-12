@@ -192,7 +192,7 @@ class template_previews_test_set extends cms_test_case
             }
             $_out = $out->evaluate();
 
-            if (stripos($_out, '<html') !== false && strpos($_out, '<xsl') === false) {
+            if ((stripos($_out, '<html') !== false) && (strpos($_out, '<xsl') === false)) {
                 $result = check_xhtml($_out, false, false, false, true, true, true, false, false, true);
                 if (($result !== null) && (count($result['errors']) == 0)) {
                     $result = null;

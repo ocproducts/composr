@@ -121,9 +121,15 @@ class Module_sites
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        $ret = array(
-            'demonstratr' => array('CMS_ADD_SITE', 'admin/add'),
-        );
+        if (!addon_installed('composr_homesite')) {
+            return null;
+        }
+
+        $ret = array();
+
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            $ret['demonstratr'] = array('CMS_ADD_SITE', 'admin/add');
+        }
 
         if (addon_installed('search')) {
             $ret['hostingcopy_step1'] = array('HOSTING_COPY', 'menu/rich_content/downloads');
@@ -142,6 +148,11 @@ class Module_sites
     public function pre_run()
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('composr_homesite', $error_msg)) {
+            return $error_msg;
+        }
 
         $type = get_param_string('type', 'browse');
 
@@ -432,6 +443,10 @@ class Module_sites
      */
     public function demonstratr()
     {
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            warn_exit('This requires MySQL');
+        }
+
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('CMS_CODENAME'), do_lang('CMS_CODENAME_DESCRIPTION'), 'codename', '', true));
         $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), do_lang_tempcode('CMS_YOUR_EMAIL_ADDRESS'), 'email_address', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()), true));
@@ -460,6 +475,10 @@ class Module_sites
      */
     public function _demonstratr()
     {
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            warn_exit('This requires MySQL');
+        }
+
         $codename = strtolower(post_param_string('codename'));
         $name = post_param_string('name', '');
         $email_address = post_param_string('email_address');

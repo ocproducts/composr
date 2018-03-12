@@ -51,6 +51,14 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('thumbnail_editor')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('thumbnail_editor')));
+}
+
+if (!function_exists('imagepng')) {
+    warn_exit(do_lang_tempcode('GD_NEEDED'));
+}
+
 require_code('developer_tools');
 destrictify();
 

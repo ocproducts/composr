@@ -34,6 +34,9 @@ class Hook_cron_classifieds
         if (!addon_installed('catalogues')) {
             return null;
         }
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
 
         if ($calculate_num_queued) {
             $table = 'catalogue_entries e JOIN ' . get_table_prefix() . 'ecom_classifieds_prices p ON p.c_catalogue_name=e.c_name';

@@ -46,6 +46,10 @@ class Module_cms_cns_groups extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('cns_clubs')) {
+            return null;
+        }
+
         return array(
             'browse' => array('MANAGE_CLUBS', 'menu/cms/clubs'),
         ) + parent::get_entry_points();
@@ -62,6 +66,15 @@ class Module_cms_cns_groups extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('cns_clubs', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('cns');
@@ -79,11 +92,8 @@ class Module_cms_cns_groups extends Standard_crud_module
      */
     public function run_start($type)
     {
-        if (get_forum_type() != 'cns') {
-            warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
-        }
+        cns_require_all_forum_stuff();
+
         require_code('cns_groups_action');
         require_code('cns_forums_action');
         require_code('cns_groups_action2');

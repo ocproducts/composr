@@ -176,6 +176,10 @@ class Module_polls
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('polls')) {
+            return null;
+        }
+
         return array(
             'browse' => array('POLLS', 'menu/social/polls'),
         );
@@ -193,6 +197,11 @@ class Module_polls
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('polls', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('polls');
@@ -290,7 +299,7 @@ class Module_polls
         if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['poll_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('poll')) {
-                $GLOBALS['SITE_DB']->query_update('poll', array('poll_views' => $myrow['poll_views']), array('id' => $id), '', 1, 0, false, true);
+                $GLOBALS['SITE_DB']->query_update('poll', array('poll_views' => $myrow['poll_views']), array('id' => $id), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
                 persistent_cache_delete('POLL');
             }
         }

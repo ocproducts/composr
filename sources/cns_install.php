@@ -334,8 +334,8 @@ function install_cns($upgrade_from = null)
             $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf' . strval($id));
             $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', '#mcf_ft_' . strval($id));
 
-            if (substr(get_db_type(), 0, 5) == 'mysql') {
-                $GLOBALS['FORUM_DB']->query('SET sql_mode=\'\'', null, 0, true); // Turn off strict mode
+            if (strpos(get_db_type(), 'mysql') !== false) {
+                $GLOBALS['FORUM_DB']->query('SET sql_mode=\'\'', null, 0, true); // Turn off strict mode, suppress errors in case access denied
             }
             $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($id), $_type);
 

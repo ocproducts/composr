@@ -54,6 +54,10 @@ function render_author_box($row, $zone = '_SEARCH', $give_context = true, $guid 
  */
 function authors_script()
 {
+    if (!addon_installed('authors')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('authors')));
+    }
+
     require_lang('authors');
     require_css('authors');
 

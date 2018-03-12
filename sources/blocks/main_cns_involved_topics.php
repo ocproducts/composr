@@ -53,6 +53,11 @@ class Block_main_cns_involved_topics
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('cns_forum', $error_msg)) {
+            return $error_msg;
+        }
+
         if (get_forum_type() != 'cns') {
             return paragraph(do_lang_tempcode('NO_CNS'), '3wdm0cx063l7qs0mtk5qhq1kwczp8q5e', 'red-alert');
         }

@@ -223,6 +223,10 @@ class Module_shopping
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('shopping')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }
@@ -247,6 +251,15 @@ class Module_shopping
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('shopping', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!addon_installed('shopping')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('shopping')));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('shopping');

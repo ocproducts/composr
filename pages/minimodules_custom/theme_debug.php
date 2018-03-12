@@ -17,6 +17,11 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+$error_msg = new Tempcode();
+if (!addon_installed__autoinstall('theme_debug', $error_msg)) {
+    return $error_msg;
+}
+
 $title = get_screen_title('Theme repair tools', false);
 $title->evaluate_echo();
 
@@ -156,7 +161,7 @@ foreach (array_keys($themes) as $theme) {
 
         ksort($selectors);
         foreach (array_keys($selectors) as $selector) {
-            if (strpos($non_css_contents, $selector) === false && preg_match('#^(page|zone)_running_#', $selector) == 0) {
+            if ((strpos($non_css_contents, $selector) === false) && (preg_match('#^(page|zone)_running_#', $selector) == 0)) {
                 echo '<br />Possibly unused CSS selector: ' . escape_html($selector);
             }
         }

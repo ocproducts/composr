@@ -15,6 +15,24 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('tickets')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('tickets')), 'qyafd17p7tq4q0slzl365g6vwudnqe32', 'red-alert');
+}
+if (!addon_installed('ecommerce')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')), 'p4vhb2m889tb0q03v2rbviei51yh6xzo', 'red-alert');
+}
+if (!addon_installed('points')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('points')), 'urci1ytb83ij5qeb4nomnvzqx5vzcam5', 'red-alert');
+}
+
+if (get_forum_type() != 'cns') {
+    return paragraph(do_lang_tempcode('NO_CNS'), '3c5pw1foncj4v8j2zwbqp0dg6jjezppx', 'red-alert');
+}
+
+if (strpos(get_db_type(), 'mysql') !== false) {
+    return paragraph('This works with MySQL only', '9qjvy42zmboz6uhe4khpgk71yjt4g11e', 'red-alert');
+}
+
 $existing_customer = !is_guest() && ($GLOBALS['SITE_DB']->query_select_value_if_there('credit_purchases', 'num_credits', array('member_id' => get_member())) !== null);
 
 require_lang('customers');

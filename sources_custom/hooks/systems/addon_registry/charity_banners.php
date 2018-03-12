@@ -128,7 +128,6 @@ You can add more banners through this section, just make sure they are 120px &ti
     {
         return array(
             'requires' => array(
-                'Conversr',
                 'banners',
             ),
             'recommends' => array(),
@@ -155,8 +154,8 @@ You can add more banners through this section, just make sure they are 120px &ti
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/charity_banners.php',
-            'data_custom/images/causes/index.html',
             'sources_custom/blocks/main_buttons.php',
+            'data_custom/images/causes/index.html',
             'data_custom/images/causes/amnestyinternational.gif',
             'data_custom/images/causes/bhf.gif',
             'data_custom/images/causes/cancerresearch.gif',

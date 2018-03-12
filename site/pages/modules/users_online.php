@@ -69,6 +69,10 @@ class Module_users_online
      */
     public function pre_run()
     {
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('cns');
@@ -87,11 +91,7 @@ class Module_users_online
      */
     public function run()
     {
-        if (get_forum_type() != 'cns') {
-            warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
-        }
+        cns_require_all_forum_stuff();
 
         $count = 0;
         require_code('users2');

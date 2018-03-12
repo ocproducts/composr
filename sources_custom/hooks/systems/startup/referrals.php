@@ -24,6 +24,10 @@ class Hook_startup_referrals
             return;
         }
 
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         // Store referrer in cookie
         $by_url = get_param_string('keep_referrer', '');
         if ($by_url != '') {

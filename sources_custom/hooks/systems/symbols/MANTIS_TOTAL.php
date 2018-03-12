@@ -24,6 +24,27 @@ class Hook_symbol_MANTIS_TOTAL
             return '';
         }
 
+        if (!addon_installed('tickets')) {
+            return '';
+        }
+        if (!addon_installed('stats')) {
+            return '';
+        }
+        if (!addon_installed('ecommerce')) {
+            return '';
+        }
+        if (!addon_installed('points')) {
+            return '';
+        }
+
+        if (get_forum_type() != 'cns') {
+            return '';
+        }
+
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            return '';
+        }
+
         $cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM mantis_bug_table WHERE status<80');
         return strval($cnt);
     }

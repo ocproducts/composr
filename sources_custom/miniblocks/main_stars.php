@@ -15,6 +15,10 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('points')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('points')), 'zm4ccp3vsxc8wj32w3e4ejtrkn35705x', 'red-alert');
+}
+
 require_code('cns_groups');
 require_code('cns_members');
 require_lang('cns');

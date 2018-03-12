@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Licensed under Creative Commons Public Domain license (CC0).  You are free to copy, use, distribute, and modify as you wish.
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  Jason L Verhagen (jlverhagen@tfo.net)
+ * @package    youtube_channel_integration_block
  */
 
 /*EXTRA FUNCTIONS: DateTime|DateInterval*/
@@ -51,6 +53,11 @@ class Block_youtube_channel
     public function run($map)
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('youtube_channel_integration_block', $error_msg)) {
+            return $error_msg;
+        }
 
         // Set up some arrays for dealing with thumbnails
         $thumb = array('default', 'medium', 'high', 'start', 'middle', 'end', 'standard', 'maxres');

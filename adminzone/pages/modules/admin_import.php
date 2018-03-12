@@ -126,6 +126,10 @@ class Module_admin_import
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('import')) {
+            return null;
+        }
+
         if (get_value('hide_import') === '1') {
             return null;
         }
@@ -144,6 +148,11 @@ class Module_admin_import
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('import', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('import');

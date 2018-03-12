@@ -326,7 +326,7 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
     $done_get_change = false;
     $tree = _notifications_build_category_tree($_notification_types, $notification_code, $ob, null, 0, null, $done_get_change);
     $notification_category_being_changed = get_param_string('id', null);
-    if ($notification_category_being_changed !== null && !$done_get_change) {
+    if (($notification_category_being_changed !== null) && (!$done_get_change)) {
         // The tree has been pruned due to over-sizeness issue (too much content to list), so we have to set a notification here rather than during render.
         enable_notifications($notification_code, $notification_category_being_changed);
 

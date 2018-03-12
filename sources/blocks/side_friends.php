@@ -49,6 +49,11 @@ class Block_side_friends
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('chat', $error_msg)) {
+            return $error_msg;
+        }
+
         if (is_guest()) {
             return new Tempcode(); // Guest has no friends
         }

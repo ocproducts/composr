@@ -31,6 +31,10 @@ class Hook_endpoint_account_join
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
         require_code('cns_join');
         cns_require_all_forum_stuff();
         list($message, $member_id) = cns_join_actual(false);

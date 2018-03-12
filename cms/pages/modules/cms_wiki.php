@@ -53,6 +53,10 @@ class Module_cms_wiki
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('wiki')) {
+            return null;
+        }
+
         $ret = array(
             'browse' => array('MANAGE_WIKI', 'menu/rich_content/wiki'),
             'add_page' => array('WIKI_ADD_PAGE', 'menu/rich_content/wiki'),
@@ -90,6 +94,11 @@ class Module_cms_wiki
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('wiki', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('wiki');

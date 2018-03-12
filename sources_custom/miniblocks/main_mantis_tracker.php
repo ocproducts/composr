@@ -15,6 +15,24 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('tickets')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('tickets')), 'xxuw4d79s9qmq2jgaris712w3nj95ce0', 'red-alert');
+}
+if (!addon_installed('ecommerce')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')), 'z9wzu51gk1qa89j52xdc7ccwpq6l3soz', 'red-alert');
+}
+if (!addon_installed('points')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('points')), 'l56duwk68ywo099433j2st5472a25mqd', 'red-alert');
+}
+
+if (get_forum_type() != 'cns') {
+    return paragraph(do_lang_tempcode('NO_CNS'), '5v7eclbf681s79gdkminmik8ykk7abgy', 'red-alert';
+}
+
+if (strpos(get_db_type(), 'mysql') !== false) {
+    return paragraph('This works with MySQL only', 'uyjdizierysgbisjrrmbipait8lxfyen', 'red-alert');
+}
+
 require_css('tracker');
 require_lang('customers');
 

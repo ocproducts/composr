@@ -87,7 +87,7 @@ class TapatalkPush extends TapatalkBasePush
     public function get_is_tapatalk_member($member_id)
     {
         $is = get_value('is_tapatalk_member__' . strval($member_id), null, true);
-        return ($is !== null && $is === '1');
+        return (($is !== null) && ($is === '1'));
     }
 
     // Push code

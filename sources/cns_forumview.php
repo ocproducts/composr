@@ -361,7 +361,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
             $num_unread++;
         }
 
-        if (!$pinned && $keyset_field_stripped !== null && isset($topic[$keyset_field_stripped])) {
+        if ((!$pinned) && ($keyset_field_stripped !== null) && (isset($topic[$keyset_field_stripped]))) {
             $keyset_value = $topic[$keyset_field_stripped]; // We keep overwriting this value until the last loop iteration
         }
     }
@@ -573,7 +573,7 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
     if (($topic_row['t_validated'] == 0) && (addon_installed('unvalidated'))) {
         $topic['modifiers'][] = 'unvalidated';
     }
-    if ($topic_row['t_poll_id'] !== null) {
+    if (($topic_row['t_poll_id'] !== null) && (addon_installed('polls'))) {
         $topic['modifiers'][] = 'poll';
     }
     $num_posts = $topic_row['t_cache_num_posts'];

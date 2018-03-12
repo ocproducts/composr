@@ -24,6 +24,10 @@ class Hook_startup_composr_homesite__for_outdated_version
             return;
         }
 
+        if (!addon_installed('downloads')) {
+            return;
+        }
+
         // Viewing outdated docs?
         $zone_name = get_zone_name();
         if (get_param_integer('keep_old_docs_test', 0) == 1 && $GLOBALS['DEV_MODE']) {
@@ -62,7 +66,7 @@ class Hook_startup_composr_homesite__for_outdated_version
                 $latest_number = get_latest_version_basis_number();
                 $addons_viewed_for_number = null;
 
-                while ($cat_id !== null && $latest_number !== null) {
+                while (($cat_id !== null) && ($latest_number !== null)) {
                     $cat_details = $GLOBALS['SITE_DB']->query_select('download_categories', array('category', 'parent_id'), array('id' => $cat_id), '', 1);
                     if (array_key_exists(0, $cat_details)) {
                         $cat_detail = $cat_details[0];

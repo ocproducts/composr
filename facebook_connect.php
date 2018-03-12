@@ -1,4 +1,17 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2018
+
+ See text/EN/licence.txt for full licensing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    facebook_support
+ */
 
 $cache_expire = 60 * 60 * 24 * 365;
 header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $cache_expire) . ' GMT');

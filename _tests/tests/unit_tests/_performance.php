@@ -74,11 +74,11 @@ class _performance_test_set extends cms_test_case
 
         $page_link = $node['page_link'];
 
-        if ($this->whitelist !== null && !in_array($page_link, $this->whitelist)) {
+        if (($this->whitelist !== null) && (!in_array($page_link, $this->whitelist))) {
             return;
         }
 
-        if ($this->blacklist !== null && in_array($page_link, $this->blacklist)) {
+        if (($this->blacklist !== null) && (in_array($page_link, $this->blacklist))) {
             return;
         }
 

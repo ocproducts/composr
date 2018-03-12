@@ -51,6 +51,10 @@ class Module_topics
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('cns_forum')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }
@@ -96,6 +100,15 @@ class Module_topics
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('cns_forum', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
         require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
 
         $type = get_param_string('type', 'browse');
@@ -137,11 +150,8 @@ class Module_topics
     {
         @ignore_user_abort(true); // Must keep going till completion
 
-        if (get_forum_type() != 'cns') {
-            warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
-        }
+        cns_require_all_forum_stuff();
+
         require_css('cns');
 
         $type = get_param_string('type', 'browse');
@@ -1729,7 +1739,9 @@ class Module_topics
                 $options[] = array(do_lang_tempcode('_MAKE_ANONYMOUS_POST'), 'anonymous', false, do_lang_tempcode('MAKE_ANONYMOUS_POST_DESCRIPTION'));
             }
         }
-        $options[] = array(do_lang_tempcode('ADD_TOPIC_POLL'), 'add_poll', false, do_lang_tempcode('DESCRIPTION_ADD_TOPIC_POLL'));
+        if (addon_installed('polls')) {
+            $options[] = array(do_lang_tempcode('ADD_TOPIC_POLL'), 'add_poll', false, do_lang_tempcode('DESCRIPTION_ADD_TOPIC_POLL'));
+        }
         if (count($options) == 1) { // Oh, actually we know this was just the option to add a poll, so show simply
             $specialisation->attach(form_input_tick(do_lang_tempcode('ADD_TOPIC_POLL'), do_lang_tempcode('DESCRIPTION_ADD_TOPIC_POLL'), 'add_poll', false));
         } else {
@@ -2122,7 +2134,7 @@ class Module_topics
         $posting_form = get_posting_form(do_lang('REPLY'), 'buttons--new-reply', $post, $post_url, $hidden_fields, $specialisation, null, $topic_posts->evaluate(), $specialisation2, null, $js_function_calls);
 
         if ($parent_id === null) {
-            if ($forum_id !== null && get_param_integer('threaded', $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_is_threaded', array('id' => $forum_id))) == 1) {
+            if (($forum_id !== null) && (get_param_integer('threaded', $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_is_threaded', array('id' => $forum_id))) == 1)) {
                 $title = get_screen_title('_ADD_POST_TOP_LEVEL', true, array(escape_html($topic_title)));
             } else {
                 $title = get_screen_title('_ADD_POST', true, array(escape_html($topic_title)));
@@ -2132,7 +2144,7 @@ class Module_topics
                 array(escape_html($topic_title), escape_html($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_poster_name_if_guest', array('id' => $parent_id)))));
         }
 
-        if (post_param_integer('add_poll', 0) == 1) {
+        if ((post_param_integer('add_poll', 0) == 1) && (addon_installed('polls'))) {
             // Show it worked / Refresh
             $url = build_url(array('page' => '_SELF', 'type' => 'add_poll'), '_SELF');
             return redirect_screen($title, $url, do_lang_tempcode('SUCCESS'));
@@ -2560,7 +2572,7 @@ END;
 
         cms_profile_end_for('_add_reply', '#' . strval($post_id));
 
-        if ($add_poll == 1) {
+        if (($add_poll == 1) && (addon_installed('polls'))) {
             if (post_param_integer('add_poll', 0) == 1) {
                 // Show it worked / Refresh
                 $_url = build_url(array('page' => '_SELF', 'type' => 'add_poll', 'id' => $topic_id, 'try_validate' => (post_param_date('schedule') === null) ? 1 : 0), '_SELF');
@@ -2823,6 +2835,10 @@ END;
      */
     public function vote_poll() // Type
     {
+        if (!addon_installed('polls')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         $topic_id = get_param_integer('id'); // Yes, that's right -- we need to find the pollID from this, and will redirect back to given topic
         $_topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1);
         if (!array_key_exists(0, $_topic_info)) {
@@ -2893,6 +2909,10 @@ END;
      */
     public function add_poll($topic_id = null) // Type
     {
+        if (!addon_installed('polls')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         if ($topic_id === null) {
             $topic_id = get_param_integer('id');
         }
@@ -2963,6 +2983,10 @@ END;
      */
     public function _add_poll() // Type
     {
+        if (!addon_installed('polls')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         $topic_id = get_param_integer('id');
 
         require_code('cns_polls_action');
@@ -3611,6 +3635,10 @@ END;
      */
     public function edit_poll() // Type
     {
+        if (!addon_installed('polls')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         $topic_id = get_param_integer('id');
         $poll_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_poll_id', array('id' => $topic_id));
         if ($poll_id === null) {
@@ -3672,6 +3700,10 @@ END;
      */
     public function _edit_poll() // Type
     {
+        if (!addon_installed('polls')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         $poll_id = get_param_integer('id');
         $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('t_poll_id' => $poll_id));
         if ($topic_id === null) {
@@ -3719,6 +3751,10 @@ END;
      */
     public function delete_poll() // Type
     {
+        if (!addon_installed('polls')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         $topic_id = get_param_integer('id');
         $_topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1);
         if (!array_key_exists(0, $_topic_info)) {
@@ -3737,6 +3773,10 @@ END;
      */
     public function _delete_poll() // Type
     {
+        if (!addon_installed('polls')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         $topic_id = get_param_integer('id');
         $poll_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_poll_id', array('id' => $topic_id));
         if ($poll_id === null) {

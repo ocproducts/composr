@@ -24,6 +24,14 @@ class Hook_upon_query_add_mentor
             return;
         }
 
+        if (!addon_installed('chat')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('chat')));
+        }
+
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         if ($query[0] == 'S') {
             return;
         }
@@ -39,11 +47,7 @@ class Hook_upon_query_add_mentor
             return;
         }
 
-        if (!$GLOBALS['SITE_DB']->table_exists('members_mentors')) {
-            return;
-        }
-
-        //if (strpos($query, $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members') !== false && strpos($query, 'BY RAND') == false) // to test without registration
+        //if ((strpos($query, $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members') !== false) && (strpos($query, 'BY RAND') == false)) // to test without registration
         if (strpos($query, 'INTO ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members') !== false) {
             load_user_stuff();
             if (method_exists($GLOBALS['FORUM_DRIVER'], 'forum_layer_initialise')) {

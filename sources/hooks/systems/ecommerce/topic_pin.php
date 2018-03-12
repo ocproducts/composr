@@ -30,10 +30,6 @@ class Hook_ecommerce_topic_pin
      */
     public function get_product_category()
     {
-        if (!addon_installed('ecommerce')) {
-            return null;
-        }
-
         if (!addon_installed('cns_forum')) {
             return null;
         }
@@ -56,14 +52,6 @@ class Hook_ecommerce_topic_pin
      */
     public function get_products($search = null)
     {
-        if (!addon_installed('ecommerce')) {
-            return array();
-        }
-
-        if (!addon_installed('cns_forum')) {
-            return array();
-        }
-
         require_lang('cns');
 
         $products = array();
@@ -109,6 +97,10 @@ class Hook_ecommerce_topic_pin
      */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
+        if (!addon_installed('cns_forum')) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
+        }
+
         if (has_no_forum()) {
             return ECOMMERCE_PRODUCT_DISABLED;
         }

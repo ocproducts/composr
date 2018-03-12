@@ -33,7 +33,7 @@ function total_points($member_id, $timestamp = null)
 
     $points = non_overridden__total_points($member_id, $timestamp);
 
-    if ($GLOBALS['SITE_DB']->table_exists('credit_purchases')) {
+    if (addon_installed('composr_homesite_support_credits')) {
         $credits = @intval($GLOBALS['SITE_DB']->query_select_value('credit_purchases', 'SUM(num_credits)', array('member_id' => $member_id, 'purchase_validated' => 1)));
 
         if ($timestamp !== null) {
@@ -52,11 +52,10 @@ function total_points($member_id, $timestamp = null)
 
 function get_group_points()
 {
-    $_group_points = $GLOBALS['SITE_DB']->query_select('group_points', array('*'), array(), '', null, 0, true);
-    if ($_group_points === null) {
-        $group_points = array();
-    } else {
-        $group_points = list_to_map('p_group_id', $_group_points);
+    if (!addon_installed('group_points')) {
+        return array();
     }
-    return $group_points;
+
+    $group_points = $GLOBALS['SITE_DB']->query_select('group_points', array('*'));
+    return list_to_map('p_group_id', $group_points);
 }

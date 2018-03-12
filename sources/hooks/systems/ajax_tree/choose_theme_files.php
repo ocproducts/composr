@@ -275,7 +275,7 @@ class Hook_ajax_tree_choose_theme_files
             }
         }
 
-        if ($default !== null && preg_match('#^\w*:\w+$#', $default)) {
+        if (($default !== null) && (preg_match('#^\w*:\w+$#', $default) != 0)) {
             $out .= '<expand>screens</expand>';
             $out .= '<expand>' . $default . '</expand>';
         }
@@ -299,7 +299,7 @@ class Hook_ajax_tree_choose_theme_files
         $_templates_for_addons = array();
         $addons = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
         foreach ($addons as $addon => $ob) {
-            if ($filter_addon !== null && $filter_addon != $addon) {
+            if (($filter_addon !== null) && ($filter_addon != $addon)) {
                 continue;
             }
 

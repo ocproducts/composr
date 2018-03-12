@@ -30,6 +30,13 @@ class Hook_login_provider_facebook
             return null;
         }
 
+        if (!function_exists('curl_init')) {
+            return null;
+        }
+        if (!function_exists('session_status')) {
+            return null;
+        }
+
         /*if (($member_id !== null) && (!is_guest($member_id))) {     Speeds up slighlty, but we don't want to test with this because we need to ensure startup always works right, and it also stops some stuff working
             return $member_id;
         }*/

@@ -56,6 +56,10 @@ function get_download_category_purchase_url($category_id)
  */
 function download_licence_script()
 {
+    if (!addon_installed('downloads')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')));
+    }
+
     $id = get_param_integer('id');
 
     $rows = $GLOBALS['SITE_DB']->query_select('download_licences', array('*'), array('id' => $id), '', 1);

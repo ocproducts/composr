@@ -178,6 +178,10 @@ class Module_subscriptions
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         if ((!$check_perms || !is_guest($member_id)) && ($GLOBALS['SITE_DB']->query_select_value('ecom_subscriptions', 'COUNT(*)') > 0)) {
             return array(
                 'browse' => array('MY_SUBSCRIPTIONS', 'menu/adminzone/audit/ecommerce/subscriptions'),
@@ -195,6 +199,11 @@ class Module_subscriptions
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('ecommerce', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_code('ecommerce');

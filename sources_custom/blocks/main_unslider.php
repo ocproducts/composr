@@ -59,6 +59,11 @@ class Block_main_unslider
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('unslider', $error_msg)) {
+            return $error_msg;
+        }
+
         require_lang('unslider');
         require_css('unslider');
 

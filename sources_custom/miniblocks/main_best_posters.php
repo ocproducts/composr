@@ -1,3 +1,26 @@
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2018
+
+ See text/EN/licence.txt for full licensing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    top_posters
+ */
+
+i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+if (get_forum_type() != 'cns') {
+    return paragraph(do_lang_tempcode('NO_CNS'), 'shcpt9ntekawt1e640rsn17792io5y22', 'red-alert');
+}
+
+?>
+
 <div class="wide-table-wrap">
     <table class="columned-table results-table wide-table">
         <thead>
@@ -9,7 +32,6 @@
         </tr>
         </thead>
         <?php
-        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
         $max = array_key_exists('max', $map) ? intval($map['max']) : 10;
 

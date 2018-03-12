@@ -66,6 +66,11 @@ class Block_main_cc_embed
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('catalogues', $error_msg)) {
+            return $error_msg;
+        }
+
         $block_id = get_block_id($map);
 
         $check_perms = array_key_exists('check', $map) ? ($map['check'] == '1') : true;

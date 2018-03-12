@@ -84,7 +84,7 @@ function may_view_content_behind($member_id, $content_type, $content_id, $type_h
         if (!array_key_exists(0, $post_rows)) {
             return false;
         }
-        if ($post_rows[0]['p_intended_solely_for'] !== null && ($post_rows[0]['p_intended_solely_for'] != $member_id && $post_rows[0]['p_poster'] != $member_id || is_guest($member_id))) {
+        if (($post_rows[0]['p_intended_solely_for'] !== null) && (($post_rows[0]['p_intended_solely_for'] != $member_id) && ($post_rows[0]['p_poster'] != $member_id) || (is_guest($member_id)))) {
             return false;
         }
         $topic_id = $post_rows[0]['p_topic_id'];
@@ -98,7 +98,7 @@ function may_view_content_behind($member_id, $content_type, $content_id, $type_h
             return false;
         }
         require_code('cns_topics');
-        if ($topic_rows[0]['t_forum_id'] === null && ($topic_rows[0]['t_pt_from'] != $member_id && $topic_rows[0]['t_pt_to'] != $member_id && !cns_has_special_pt_access($topic_id, $member_id) || is_guest($member_id))) {
+        if (($topic_rows[0]['t_forum_id'] === null) && (($topic_rows[0]['t_pt_from'] != $member_id) && ($topic_rows[0]['t_pt_to'] != $member_id) && (!cns_has_special_pt_access($topic_id, $member_id)) || (is_guest($member_id)))) {
             return false;
         }
     }

@@ -44,43 +44,43 @@ class Module_admin_customers
         $GLOBALS['SITE_DB']->drop_table_if_exists('credit_purchases');
         $GLOBALS['SITE_DB']->drop_table_if_exists('credit_charge_log');
 
-        if (substr(get_db_type(), 0, 5) != 'mysql') {
+        if (strpos(get_db_type(), 'mysql') === false) {
             return;
         }
 
         // MANTIS TABLE DELETION
 
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bugnote_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bugnote_text_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_file_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_history_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_monitor_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_relationship_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_revision_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_tag_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_bug_text_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_category_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_config_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_custom_field_project_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_custom_field_string_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_custom_field_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_email_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_filters_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_news_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_plugin_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_project_file_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_project_hierarchy_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_project_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_project_user_list_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_project_version_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_sponsorship_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_tag_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_tokens_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_user_pref_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_user_print_pref_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_user_profile_table`");
-        $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS `mantis_user_table`");
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bugnote_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bugnote_text_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_file_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_history_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_monitor_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_relationship_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_revision_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_tag_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_bug_text_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_category_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_config_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_custom_field_project_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_custom_field_string_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_custom_field_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_email_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_filters_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_news_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_plugin_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_project_file_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_project_hierarchy_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_project_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_project_user_list_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_project_version_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_sponsorship_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_tag_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_tokens_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_user_pref_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_user_print_pref_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_user_profile_table`');
+        $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS `mantis_user_table`');
     }
 
     /**
@@ -135,7 +135,7 @@ class Module_admin_customers
 
         // Tracker...
 
-        if (substr(get_db_type(), 0, 5) == 'mysql') {
+        if (strpos(get_db_type(), 'mysql') !== false) {
             $table_type = (get_value('innodb') == '1') ? 'InnoDB' : 'MyISAM';
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bugnote_table` (
@@ -675,6 +675,10 @@ class Module_admin_customers
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('composr_homesite_support_credits')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return array();
         }
@@ -694,6 +698,29 @@ class Module_admin_customers
     public function pre_run()
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('composr_homesite_support_credits', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!addon_installed('tickets')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('tickets')));
+        }
+        if (!addon_installed('ecommerce')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')));
+        }
+        if (!addon_installed('points')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('points')));
+        }
+
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            warn_exit('This works with MySQL only');
+        }
 
         $type = get_param_string('type', 'browse');
 

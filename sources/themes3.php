@@ -256,7 +256,7 @@ function actual_copy_theme($theme, $to)
     foreach ($images as $i) {
         $i['theme'] = $to;
         $i['path'] = str_replace('themes/' . $theme . '/', 'themes/' . $to . '/', $i['path']);
-        $GLOBALS['SITE_DB']->query_insert('theme_images', $i, false, true);
+        $GLOBALS['SITE_DB']->query_insert('theme_images', $i, false, true); // errors suppressed in case already there
     }
 
     Self_learning_cache::erase_smart_cache();
@@ -412,7 +412,7 @@ function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = fa
     $GLOBALS['SITE_DB']->query_delete('theme_images', $where_map);
 
     foreach ($langs as $lang) {
-        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => $path, 'lang' => $lang), false, true);
+        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => $path, 'lang' => $lang), false, true); // errors suppressed in case already there
     }
 
     if (!$quick) {

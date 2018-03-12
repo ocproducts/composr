@@ -57,10 +57,6 @@ class Hook_import_phpbb3
      */
     public function info()
     {
-        if (!addon_installed('import')) {
-            return null;
-        }
-
         $info = array();
         $info['supports_advanced_import'] = false;
         $info['product'] = 'phpBB 3.0.x';
@@ -333,7 +329,7 @@ class Hook_import_phpbb3
             if ($translated_permission == 'read') {
                 // Nothing can do
             } else {
-                $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => $translated_permission, 'group_id' => $group_id, 'the_page' => 'topics', 'module_the_name' => '', 'category_name' => '', 'the_value' => $the_value), false, true);
+                $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => $translated_permission, 'group_id' => $group_id, 'the_page' => 'topics', 'module_the_name' => '', 'category_name' => '', 'the_value' => $the_value), false, true); // errors suppressed in case already there
             }
         }
     }
@@ -714,10 +710,10 @@ class Hook_import_phpbb3
             $the_value = $auth_setting;
             if ($translated_permission == 'read') {
                 if ($the_value == 1) {
-                    $GLOBALS['FORUM_DB']->query_insert('group_category_access', array('group_id' => $group_id, 'module_the_name' => 'forums', 'category_name' => strval($forum_id)), false, true);
+                    $GLOBALS['FORUM_DB']->query_insert('group_category_access', array('group_id' => $group_id, 'module_the_name' => 'forums', 'category_name' => strval($forum_id)), false, true); // errors suppressed in case already there
                 }
             } else {
-                $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => $translated_permission, 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => $the_value), false, true);
+                $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => $translated_permission, 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => $the_value), false, true); // errors suppressed in case already there
             }
         }
     }

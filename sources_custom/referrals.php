@@ -447,6 +447,14 @@ function referrer_is_qualified($scheme, $member_id)
 
 function referrer_report_script($ret = false)
 {
+    if (!addon_installed('referrals')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('referrals')));
+    }
+
+    if (get_forum_type() != 'cns') {
+        warn_exit(do_lang_tempcode('NO_CNS'));
+    }
+
     $path = get_custom_file_base() . '/text_custom/referrals.txt';
     if (!is_file($path)) {
         $path = get_file_base() . '/text_custom/referrals.txt';

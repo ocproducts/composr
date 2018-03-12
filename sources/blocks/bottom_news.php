@@ -66,6 +66,15 @@ class Block_bottom_news
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('news', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!addon_installed('news_shared')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')), 'rb4lxn1kphbwlth5e0fo50pfp1bey2o1', 'red-alert');
+        }
+
         $block_id = get_block_id($map);
 
         $check_perms = array_key_exists('check', $map) ? ($map['check'] == '1') : true;

@@ -107,7 +107,9 @@ class Hook_addon_registry_antispam_question
     public function get_dependencies()
     {
         return array(
-            'requires' => array('Conversr'),
+            'requires' => array(
+                'Conversr',
+            ),
             'recommends' => array(),
             'conflicts_with' => array()
         );

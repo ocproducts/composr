@@ -124,7 +124,9 @@ Once configured then syndication will be an option when adding news posts or cal
             'requires' => array(
                 'PHP curl extension',
             ),
-            'recommends' => array('activity_feed'),
+            'recommends' => array(
+                'activity_feed',
+            ),
             'conflicts_with' => array(),
         );
     }

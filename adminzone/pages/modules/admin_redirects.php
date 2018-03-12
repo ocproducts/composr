@@ -97,7 +97,7 @@ class Module_admin_redirects
                 }
 
                 if (!file_exists(get_file_base() . '/' . $zone . '/pages/comcode/' . fallback_lang() . '/panel_bottom.txt')) {
-                    $GLOBALS['SITE_DB']->query_insert('redirects', array('r_from_page' => 'panel_bottom', 'r_from_zone' => $zone, 'r_to_page' => 'panel_bottom', 'r_to_zone' => '', 'r_is_transparent' => 1), false, true);
+                    $GLOBALS['SITE_DB']->query_insert('redirects', array('r_from_page' => 'panel_bottom', 'r_from_zone' => $zone, 'r_to_page' => 'panel_bottom', 'r_to_zone' => '', 'r_is_transparent' => 1), false, true); // errors suppressed in case already there
                 }
             }
         }
@@ -114,6 +114,10 @@ class Module_admin_redirects
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('redirects_editor')) {
+            return null;
+        }
+
         return array(
             'browse' => array('REDIRECTS', 'menu/adminzone/structure/redirects'),
         );
@@ -128,6 +132,11 @@ class Module_admin_redirects
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('redirects_editor', $error_msg)) {
+            return $error_msg;
+        }
+
         require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
 
         $type = get_param_string('type', 'browse');

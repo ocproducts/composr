@@ -18,6 +18,80 @@
  */
 class addon_guards_test_set extends cms_test_case
 {
+    // We don't need to (and shouldn't) do addon_installed checks in these hook types for the given addon, as it's implied to already exist (nothing else using the hooks)
+    protected $hook_ownership = array(
+        'blocks/main_custom_gfx' => 'custom_comcode',
+        'blocks/side_stats' => 'stats_block',
+        'modules/admin_import' => 'import',
+        'modules/admin_import_types' => 'import',
+        'modules/admin_newsletter' => 'newsletter',
+        'modules/admin_setupwizard' => 'setupwizard',
+        'modules/admin_setupwizard_installprofiles' => 'setupwizard',
+        'modules/admin_stats' => 'stats',
+        'modules/admin_themewizard' => 'themewizard',
+        'modules/admin_unvalidated' => 'unvalidated',
+        'modules/chat_bots' => 'chat',
+        'modules/galleries_users' => 'galleries',
+        'modules/search' => 'search',
+        'systems/commandr_commands' => 'commandr',
+        'systems/commandr_fs' => 'commandr',
+        'systems/commandr_fs_extended_config' => 'commandr',
+        'systems/commandr_fs_extended_member' => 'commandr',
+        'systems/ecommerce' => 'ecommerce',
+        'systems/health_checks' => 'health_check',
+        'systems/payment_gateway' => 'ecommerce',
+        'systems/realtime_rain' => 'realtime_rain',
+        'systems/referrals' => 'referrals',
+        'systems/syndication' => 'activity_feed',
+    );
+
+    public function testHookAddonGuards()
+    {
+        require_code('files2');
+        $sources_files = get_directory_contents(get_file_base() . '/sources/hooks', 'sources/hooks', null, true, true, array('php'));
+        $sources_custom_files = get_directory_contents(get_file_base() . '/sources_custom/hooks', 'sources_custom/hooks', null, true, true, array('php'));
+        $files = array_merge($sources_files, $sources_custom_files);
+        foreach ($files as $path) {
+            $matches_hook_details = array();
+            if (preg_match('#^\w+/hooks/(\w+)/(\w+)/\w+\.php$#', $path, $matches_hook_details) == 0) {
+                $this->assertTrue(false, 'Unexpected file ' . $path);
+                continue;
+            }
+            $hook_type = $matches_hook_details[1];
+            $hook_subtype = $matches_hook_details[2];
+
+            // Exceptions
+            if (in_array($hook_type . '/' . $hook_subtype, array(
+                'systems/addon_registry',
+                'systems/meta',
+                'systems/module_permissions',
+                'systems/ajax_tree',
+                'systems/disposable_values',
+                'systems/non_active_urls',
+            ))) {
+                continue;
+            }
+
+            $c = file_get_contents(get_file_base() . '/' . $path);
+
+            $matches = array();
+            if (preg_match('#@package\s+(\w+)#', $c, $matches) == 0) {
+                $this->assertTrue(false, 'Could not detect addon in ' . $path);
+                continue;
+            }
+            $addon = $matches[1];
+
+            if (
+                ($addon == 'core') ||
+                (substr($addon, 0, 5) == 'core_') || ((array_key_exists($hook_type . '/' . $hook_subtype, $this->hook_ownership)) && ($addon == $this->hook_ownership[$hook_type . '/' . $hook_subtype]))
+            ) {
+                $this->assertTrue(strpos($c, 'addon_installed(\'' . addslashes($addon) . '\')') === false, 'No need to do addon check for ' . $path);
+            } else {
+                $this->assertTrue(strpos($c, 'addon_installed(\'' . addslashes($addon) . '\')') !== false, 'Missing addon check for ' . $path);
+            }
+        }
+    }
+
     public function testAddonGuards()
     {
         $files_in_addons = array();
@@ -95,6 +169,17 @@ class addon_guards_test_set extends cms_test_case
                                         $ok = (strpos($c, $search_for) !== false);
                                     }
                                 }
+                                if (!$ok) {
+                                    $matches_hook_details = array();
+                                    if (preg_match('#^\w+/hooks/(\w+)/(\w+)/\w+\.php$#', $path, $matches_hook_details) != 0) {
+                                        $hook_type = $matches_hook_details[1];
+                                        $hook_subtype = $matches_hook_details[2];
+
+                                        if ((array_key_exists($hook_type . '/' . $hook_subtype, $this->hook_ownership)) && ($file_in_addon == $this->hook_ownership[$hook_type . '/' . $hook_subtype])) {
+                                            $ok = true;
+                                        }
+                                    }
+                                }
 
                                 $error_message = 'Cannot find a guard for the ' . $file_in_addon . ' addon in ' . $path . ' [' . $addon . '], due to ' . $matches[0][$i];
 
@@ -102,35 +187,6 @@ class addon_guards_test_set extends cms_test_case
                                     'Cannot find a guard for the google_appengine addon in sources/global.php [core], due to require_code(\'google_appengine\')',
                                     'Cannot find a guard for the chat addon in sources/global2.php [core], due to require_code(\'chat_poller\')',
                                     'Cannot find a guard for the catalogues addon in sources/crud_module.php [core], due to require_javascript(\'catalogues\')',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/calendar.php [calendar], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/calendar.php [calendar], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/calendar.php [calendar], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/calendar.php [calendar], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/calendar.php [calendar], due to do_template(\'BLOCK_SIDE_STATS_SECTION\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/chat.php [chat], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/chat.php [chat], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/chat.php [chat], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/chat.php [chat], due to do_template(\'BLOCK_SIDE_STATS_SECTION\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/downloads.php [downloads], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/downloads.php [downloads], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/downloads.php [downloads], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/downloads.php [downloads], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/downloads.php [downloads], due to do_template(\'BLOCK_SIDE_STATS_SECTION\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/filedump.php [filedump], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/filedump.php [filedump], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/filedump.php [filedump], due to do_template(\'BLOCK_SIDE_STATS_SECTION\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/galleries.php [galleries], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/galleries.php [galleries], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/galleries.php [galleries], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/galleries.php [galleries], due to do_template(\'BLOCK_SIDE_STATS_SECTION\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/news.php [news], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/news.php [news], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/news.php [news], due to do_template(\'BLOCK_SIDE_STATS_SECTION\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/quiz.php [quizzes], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/quiz.php [quizzes], due to do_template(\'BLOCK_SIDE_STATS_SECTION\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/wiki.php [wiki], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/wiki.php [wiki], due to do_template(\'BLOCK_SIDE_STATS_SUBLINE\',',
-                                    'Cannot find a guard for the stats_block addon in sources/hooks/blocks/side_stats/wiki.php [wiki], due to do_template(\'BLOCK_SIDE_STATS_SECTION\',',
                                     'Cannot find a guard for the catalogues addon in sources/crud_module.php [core], due to do_template(\'CATALOGUE_ADDING_SCREEN\',',
                                     'Cannot find a guard for the catalogues addon in sources/crud_module.php [core], due to do_template(\'CATALOGUE_EDITING_SCREEN\',',
                                     'Cannot find a guard for the backup addon in sources/minikernel.php [core], due to do_template(\'RESTORE_HTML_WRAP\',',

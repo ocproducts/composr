@@ -29,10 +29,6 @@ class Hook_checklist_iotds
             return array();
         }
 
-        if (!$GLOBALS['SITE_DB']->table_exists('iotd')) {
-            return array();
-        }
-
         if (get_option('iotd_update_time') == '' || get_option('iotd_update_time') == '0') {
             return array();
         }

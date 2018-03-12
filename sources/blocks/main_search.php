@@ -62,6 +62,11 @@ class Block_main_search
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('search', $error_msg)) {
+            return $error_msg;
+        }
+
         require_code('search');
 
         $block_id = get_block_id($map);

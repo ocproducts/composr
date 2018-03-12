@@ -132,7 +132,6 @@ This addon does not itself handle the transaction to purchase what is being adve
     {
         return array(
             'requires' => array(
-                'Conversr',
                 'catalogues',
                 'ecommerce',
                 'all_icons',

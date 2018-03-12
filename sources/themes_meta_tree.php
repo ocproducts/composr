@@ -72,7 +72,7 @@ function _record_templates_used()
                         'rel_a' => $rel_a,
                         'rel_b' => $rel_b,
                     );
-                    $GLOBALS['SITE_DB']->query_insert('theme_template_relations', $insert_map, false, true);
+                    $GLOBALS['SITE_DB']->query_insert('theme_template_relations', $insert_map, false, true); // errors suppressed in case of race condition
                 }
             }
 

@@ -54,6 +54,10 @@ class Module_cms_news extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('news')) {
+            return null;
+        }
+
         $this->cat_crud_module = class_exists('Mx_cms_news_cat') ? new Mx_cms_news_cat() : new Module_cms_news_cat();
 
         $ret = array(
@@ -119,6 +123,15 @@ class Module_cms_news extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('news', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!addon_installed('news_shared')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')));
+        }
+
         $this->cat_crud_module = class_exists('Mx_cms_news_cat') ? new Mx_cms_news_cat() : new Module_cms_news_cat();
 
         $type = get_param_string('type', 'browse');

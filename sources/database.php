@@ -188,7 +188,7 @@ function reload_lang_fields($full = false, $only_table = null)
     if ($only_table !== null) {
         $sql .= ' AND ' . db_string_equal_to('m_table', $only_table);
     }
-    $_table_lang_fields = $GLOBALS['SITE_DB']->query($sql, null, 0, true);
+    $_table_lang_fields = $GLOBALS['SITE_DB']->query($sql, null, 0, true); // Suppress errors in case table does not exist yet
     if ($_table_lang_fields !== null) {
         foreach ($_table_lang_fields as $lang_field) {
             if (!isset($TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']])) {
@@ -1470,7 +1470,7 @@ class DatabaseConnector
     public function query($query, $max = null, $start = 0, $fail_ok = false, $skip_safety_check = false, $lang_fields = null, $field_prefix = '')
     {
         global $DEV_MODE;
-        if (!$skip_safety_check && stripos($query, 'union') !== false && strpos(get_db_type(), 'mysql') !== false) {
+        if ((!$skip_safety_check) && (stripos($query, 'union') !== false) && (strpos(get_db_type(), 'mysql') !== false)) {
             $_query = preg_replace('#\s#', ' ', strtolower($query));
             $queries = 1;//substr_count($_query, 'insert into ') + substr_count($_query, 'replace into ') + substr_count($_query, 'update ') + substr_count($_query, 'select ') + substr_count($_query, 'delete from '); Not reliable
             if ((strpos(preg_replace('#\'[^\']*\'#', '\'\'', str_replace('\\\'', '', $_query)), ' union ') !== false) || ($queries > 1)) {
@@ -1686,11 +1686,11 @@ class DatabaseConnector
                 $real_query .= ' LIMIT ' . strval($start) . ',30000000';
             }
 
-            $ret = $this->static_ob->query('SHOW FULL PROCESSLIST', $connection, null, 0, true);
+            $ret = $this->static_ob->query('SHOW FULL PROCESSLIST', $connection, null, 0, true); // Suppress errors in case access denied
             if (is_array($ret)) {
                 foreach ($ret as $process) {
                     if ($process['Info'] === $real_query) {
-                        $this->static_ob->query('KILL ' . strval($process['Id']), $connection, null, 0, true);
+                        $this->static_ob->query('KILL ' . strval($process['Id']), $connection, null, 0, true); // Suppress errors in case access denied
                     }
                 }
             }
@@ -2255,7 +2255,7 @@ class DatabaseConnector
         }
 
         $ret = '';
-        if (substr(get_db_type(), 0, 5) == 'mysql') {
+        if (strpos(get_db_type(), 'mysql') !== false) {
             if ((!$do_check_first) || ($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_fields', array('i_table' => $table, 'i_name' => $index)) !== null)) {
                 $ret = ' FORCE INDEX (' . filter_naughty_harsh($index) . ')';
             }
@@ -2353,7 +2353,7 @@ class DatabaseConnector
             return false; // Actually, we have delayed insert for these so locking is not an issue
         }
 
-        if (substr(get_db_type(), 0, 5) != 'mysql' || get_value('innodb') === '1') {
+        if (strpos(get_db_type(), 'mysql') === false || get_value('innodb') === '1') {
             return false;
         }
 
@@ -2369,7 +2369,7 @@ class DatabaseConnector
             } else {
                 $db_name = get_db_site();
             }
-            $locks = $this->query('SHOW OPEN TABLES FROM ' . $db_name . ' WHERE `Table`=\'' . db_escape_string($this->get_table_prefix() . $table) . '\' AND In_use>=1', null, 0, true);
+            $locks = $this->query('SHOW OPEN TABLES FROM ' . $db_name . ' WHERE `Table`=\'' . db_escape_string($this->get_table_prefix() . $table) . '\' AND In_use>=1', null, 0, true); // Suppress errors in case access denied
             if ($locks === null) {
                 return false; // MySQL version older than 5.0 (e.g. 4.1.x)
             }

@@ -404,7 +404,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
             }
         }
 
-        if ($callback !== null && $call_struct) {
+        if (($callback !== null) && ($call_struct)) {
             call_user_func($callback, $struct);
         }
 

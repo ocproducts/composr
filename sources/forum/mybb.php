@@ -32,7 +32,7 @@ class Forum_driver_mybb extends Forum_driver_base
      */
     public function check_db()
     {
-        $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'users', null, 0, true);
+        $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'users', null, 0, true); // Suppress errors as we're checking to see if the table is there
         return $test !== null;
     }
 
@@ -108,7 +108,7 @@ class Forum_driver_mybb extends Forum_driver_base
      */
     public function install_create_custom_field($name, $length)
     {
-        $this->db->query('ALTER TABLE ' . $this->db->get_table_prefix() . 'users ADD cms_' . $name . ' TEXT', null, 0, true);
+        $this->db->query('ALTER TABLE ' . $this->db->get_table_prefix() . 'users ADD cms_' . $name . ' TEXT', null, 0, true); // Suppress errors in case field already exists
         return true;
     }
 
@@ -226,7 +226,7 @@ class Forum_driver_mybb extends Forum_driver_base
      */
     public function set_custom_field($member, $field, $value)
     {
-        $this->db->query_update('users', array('cms_' . $field => $value), array('uid' => $member), '', null, 0, false, true);
+        $this->db->query_update('users', array('cms_' . $field => $value), array('uid' => $member), '', null, 0, false, true); // Errors suppressed in case field gone missing
     }
 
     /**

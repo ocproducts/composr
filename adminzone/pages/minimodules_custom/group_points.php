@@ -15,6 +15,15 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+$error_msg = new Tempcode();
+if (!addon_installed__autoinstall('group_points', $error_msg)) {
+    return $error_msg;
+}
+
+if (!addon_installed('points')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('points')));
+}
+
 $title = get_screen_title('Usergroup point assignments', false);
 
 require_code('points');

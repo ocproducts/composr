@@ -13,6 +13,8 @@
  * @package    composr_homesite
  */
 
+i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
 require_code('patreon');
 $level = isset($map['level']) ? intval($map['level']) : 30;
 $patreon_patrons = get_patreon_patrons_on_minimum_level($level);

@@ -246,7 +246,7 @@ function tar_add_folder_incremental(&$resource, $log_file, $path, $threshold, $m
                         $mtime = filemtime($full);
                         if ((($mtime > $threshold || $ctime > $threshold)) && (($max_size === null) || (filesize($full) < $max_size * 1024 * 1024))) {
                             tar_add_file($resource, $_subpath, $full, fileperms($full), filemtime($full), true, true);
-                            if ($log_file !== null && fwrite($log_file, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
+                            if (($log_file !== null) && (fwrite($log_file, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0)) {
                                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
                             }
                         }
@@ -345,7 +345,7 @@ function tar_add_folder(&$resource, $log_file, $path, $max_size = null, $subpath
                 } else {
                     if ((($full != $resource['full']) && (($max_size === null) || (filesize($full) < $max_size * 1024 * 1024))) && (!array_key_exists($_subpath, $avoid_backing_up))) {
                         tar_add_file($resource, $_subpath, $full, fileperms($full), filemtime($full), true, true);
-                        if ($log_file !== null && fwrite($log_file, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
+                        if (($log_file !== null) && (fwrite($log_file, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0)) {
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
                         }
                     }

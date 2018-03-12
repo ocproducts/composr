@@ -66,6 +66,15 @@ class Block_side_news
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('news', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!addon_installed('news_shared')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')), '2xrvldyykmd1p8qonelxje3rgzstfpwt', 'red-alert');
+        }
+
         require_lang('news');
         require_css('news');
         require_code('news');

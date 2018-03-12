@@ -15,6 +15,13 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+if (!addon_installed('catalogues')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('catalogues')), 'xosodjlsl900rswpx7vw68a7xg2tgjod', 'red-alert');
+}
+if (!addon_installed('ecommerce')) {
+    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')), 'hf9170z7ri5420765w7qecb5lkqr7i4t', 'red-alert');
+}
+
 require_lang('classifieds');
 
 if (!isset($map['param'])) {

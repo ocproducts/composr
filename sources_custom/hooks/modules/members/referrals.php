@@ -34,10 +34,6 @@ class Hook_members_referrals
             return array();
         }
 
-        if (!$GLOBALS['SITE_DB']->table_exists('referees_qualified_for')) {
-            return array(); // Not installed somehow
-        }
-
         require_code('referrals');
         require_lang('referrals');
 
@@ -98,10 +94,6 @@ class Hook_members_referrals
 
         if ((!has_zone_access(get_member(), 'adminzone')) && ($member_id !== get_member())) {
             return array();
-        }
-
-        if (!$GLOBALS['SITE_DB']->table_exists('referees_qualified_for')) {
-            return array(); // Not installed somehow
         }
 
         require_code('referrals');

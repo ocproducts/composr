@@ -31,7 +31,11 @@ class Hook_snippet_commandr
     public function run()
     {
         if (!addon_installed('commandr')) {
-            return new Tempcode();
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('commandr')));
+        }
+
+        if (!addon_installed('import')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('import')));
         }
 
         if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {

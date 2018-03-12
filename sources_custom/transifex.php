@@ -137,6 +137,10 @@ function convert_lang_code_to_transifex($lang)
 
 function transifex_push_script()
 {
+    if (!addon_installed('transifex')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('transifex')));
+    }
+
     $cli = is_cli();
     if (!$cli) {
         if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
@@ -453,6 +457,10 @@ function _push_ini_file_to_transifex($f, $project_slug, $custom, $administrative
 
 function transifex_pull_script()
 {
+    if (!addon_installed('transifex')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('transifex')));
+    }
+
     $version = _transifex_env_version();
     $lang = _transifex_env_lang();
     $output = _transifex_env_setting('output');
@@ -789,7 +797,7 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
     $trans_full_path = get_file_base() . '/' . $trans_path;
 
     $limit_substring = _transifex_env_limit_substring();
-    if ($limit_substring !== null && strpos($path, $limit_substring) === false) {
+    if (($limit_substring !== null) && (strpos($path, $limit_substring) === false)) {
         $files[] = $trans_path;
 
         return;
@@ -822,7 +830,7 @@ function _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$f
     $trans_full_path = get_file_base() . '/' . $trans_path;
 
     $limit_substring = _transifex_env_limit_substring();
-    if ($limit_substring !== null && strpos($_f, $limit_substring) === false) {
+    if (($limit_substring !== null) && (strpos($_f, $limit_substring) === false)) {
         $files[] = $trans_path;
 
         return;

@@ -31,6 +31,10 @@ class Hook_upon_login_external_db
             return;
         }
 
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
         if (!$new_attempt) {
             return; // We don't try and bind to a third-party login if we're dealing with re-establishing an existing Composr session
         }

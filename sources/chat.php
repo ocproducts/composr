@@ -76,6 +76,10 @@ function render_chat_box($row, $zone = '_SEARCH', $give_context = true, $guid = 
  */
 function messages_script()
 {
+    if (!addon_installed('chat')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('chat')));
+    }
+
     prepare_for_known_ajax_response();
 
     get_screen_title('', false); // Force session time to be updated

@@ -84,6 +84,11 @@ class Block_side_weather
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('weather', $error_msg)) {
+            return $error_msg;
+        }
+
         require_lang('weather');
 
         $block_id = get_block_id($map);

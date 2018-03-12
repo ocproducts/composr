@@ -14,6 +14,7 @@
  */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
 load_csp(array('csp_allow_eval_js' => '1'));
 
 require_javascript('checking');

@@ -290,7 +290,7 @@ class Block_main_multi_content
             $x2 = $this->build_select($select_b, $info, $category_field_access);
         }
 
-        if ($days !== null && $info['date_field'] !== null) {
+        if (($days !== null) && ($info['date_field'] !== null)) {
             $where .= ' AND ';
             $where .= 'r.' . $info['date_field'] . '>=' . strval(time() - 60 * 60 * 24 * $days);
         }

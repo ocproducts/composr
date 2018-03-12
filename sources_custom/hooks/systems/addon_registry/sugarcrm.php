@@ -131,7 +131,9 @@ CRM software supported:
     public function get_dependencies()
     {
         return array(
-            'requires' => array('PHP curl extension'),
+            'requires' => array(
+                'PHP curl extension',
+            ),
             'recommends' => array(),
             'conflicts_with' => array(),
         );

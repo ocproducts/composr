@@ -37,8 +37,8 @@ class Hook_page_groupings_galleries
         }
 
         $cnt = 0;
-        $cnt += @intval($GLOBALS['SITE_DB']->query_select_value('images', 'COUNT(*)', array(), '', true));
-        $cnt += @intval($GLOBALS['SITE_DB']->query_select_value('videos', 'COUNT(*)', array(), '', true));
+        $cnt += intval($GLOBALS['SITE_DB']->query_select_value('images', 'COUNT(*)'));
+        $cnt += intval($GLOBALS['SITE_DB']->query_select_value('videos', 'COUNT(*)'));
 
         return array(
             array('cms', 'menu/rich_content/galleries', array('cms_galleries', array('type' => 'browse'), get_module_zone('cms_galleries')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('galleries:GALLERIES'), make_string_tempcode(escape_html(integer_format($cnt)))), 'galleries:DOC_GALLERIES'),

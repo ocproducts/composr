@@ -175,6 +175,8 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
             'sources_custom/hooks/systems/config/syndicate_site_activity_default.php',
             'sources_custom/activities.php',
             'themes/default/javascript_custom/activity_feed.js',
+            'sources_custom/hooks/systems/syndication/.htaccess',
+            'sources_custom/hooks/systems/syndication/index.html',
         );
     }
 }

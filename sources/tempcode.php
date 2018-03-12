@@ -1745,7 +1745,7 @@ class Tempcode
                         if (isset($this->code_to_preexecute[$myfunc])) {
                             $code = $this->code_to_preexecute[$myfunc];
                             $pos2 = strpos($code, '\\";";');
-                            if ($pos2 !== false && strpos($code, '\\\\"') === false) {
+                            if (($pos2 !== false) && (strpos($code, '\\\\"') === false)) {
                                 $code = substr($code, 0, $pos2) . php_addslashes_twice($attach) . substr($code, $pos2);
                                 $this->code_to_preexecute[$myfunc] = $code;
                                 return;

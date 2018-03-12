@@ -410,6 +410,10 @@ class Module_purchase
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('ecommerce')) {
+            return null;
+        }
+
         return array(
             'browse' => array('PURCHASING', 'menu/rich_content/ecommerce/purchase'),
         );
@@ -424,6 +428,11 @@ class Module_purchase
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('ecommerce', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_code('ecommerce');

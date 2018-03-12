@@ -42,6 +42,10 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 
 require($FILE_BASE . '/sources/global.php');
 
+if (!addon_installed('stress_test')) {
+    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('stress_test')));
+}
+
 if (php_function_allowed('set_time_limit')) {
     @set_time_limit(0);
 }
@@ -61,6 +65,33 @@ function do_work()
     if (!is_cli()) {
         header('Content-type: text/plain; charset=' . get_charset());
         exit('Must run this script on command line, for security reasons');
+    }
+
+    $deps = array(
+        'authors',
+        'banners',
+        'calendar',
+        'catalogues',
+        'chat',
+        'cns_clubs',
+        'downloads',
+        'galleries',
+        'news',
+        'newsletters',
+        'polls',
+        'quizzes',
+        'shopping',
+        'tickets',
+        'wiki',
+    );
+    foreach ($deps as $dep) {
+        if (!addon_installed($dep)) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html($dep)));
+        }
+    }
+
+    if (get_forum_type() != 'cns') {
+        warn_exit(do_lang_tempcode('NO_CNS'));
     }
 
     $num_wanted = isset($_SERVER['argv'][1]) ? intval($_SERVER['argv'][1]) : 200;

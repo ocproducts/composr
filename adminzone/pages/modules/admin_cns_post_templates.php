@@ -48,6 +48,10 @@ class Module_admin_cns_post_templates extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('cns_post_templates')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }
@@ -57,7 +61,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
         }
 
         return array(
-            'browse' => array(do_lang_tempcode('menus:ITEMS_HERE', do_lang_tempcode('POST_TEMPLATES'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value('f_post_templates', 'COUNT(*)', array(), '', true))))), 'menu/adminzone/structure/forum/post_templates'),
+            'browse' => array(do_lang_tempcode('menus:ITEMS_HERE', do_lang_tempcode('POST_TEMPLATES'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value('f_post_templates', 'COUNT(*)'))))), 'menu/adminzone/structure/forum/post_templates'),
         ) + parent::get_entry_points();
     }
 
@@ -72,6 +76,19 @@ class Module_admin_cns_post_templates extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('cns_post_templates', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!addon_installed('cns_forum')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('cns_forum')));
+        }
+
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('cns');
@@ -105,15 +122,12 @@ class Module_admin_cns_post_templates extends Standard_crud_module
      */
     public function run_start($type)
     {
+        cns_require_all_forum_stuff();
+
         $this->add_one_label = do_lang_tempcode('ADD_POST_TEMPLATE');
         $this->edit_this_label = do_lang_tempcode('EDIT_THIS_POST_TEMPLATE');
         $this->edit_one_label = do_lang_tempcode('EDIT_POST_TEMPLATE');
 
-        if (get_forum_type() != 'cns') {
-            warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
-        }
         require_code('cns_general_action');
         require_code('cns_general_action2');
 

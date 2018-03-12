@@ -52,6 +52,10 @@ class Module_cms_galleries extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('galleries')) {
+            return null;
+        }
+
         $ret = array(
             'browse' => array('MANAGE_GALLERIES', 'menu/rich_content/galleries'),
             'add' => array('ADD_IMAGE', 'menu/cms/galleries/add_one_image'),
@@ -115,6 +119,11 @@ class Module_cms_galleries extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('galleries', $error_msg)) {
+            return $error_msg;
+        }
+
         $this->cat_crud_module = class_exists('Mx_cms_galleries_cat') ? new Mx_cms_galleries_cat() : new Module_cms_galleries_cat();
         $this->alt_crud_module = class_exists('Mx_cms_galleries_alt') ? new Mx_cms_galleries_alt() : new Module_cms_galleries_alt();
         $GLOBALS['MODULE_CMS_GALLERIES'] = $this;
@@ -1413,7 +1422,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
                         rewind($write_to_file);
                         fclose($write_to_file);
                     }
-                    if ($download_test !== null && $download_test->data !== null) {
+                    if (($download_test !== null) && ($download_test->data !== null)) {
                         $filename = ($download_test->filename === null) ? basename(urldecode($url)) : $download_test->filename;
                         list($_video_width, $_video_height, $_video_length) = get_video_details($temp_path, $filename);
                     } else {

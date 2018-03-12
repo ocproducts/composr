@@ -21,6 +21,11 @@ First run this, then import it all into a new database (existing is problematic 
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+$error_msg = new Tempcode();
+if (!addon_installed__autoinstall('meta_toolkit', $error_msg)) {
+    return $error_msg;
+}
+
 if (post_param_integer('confirm', 0) == 0) {
     $preview = 'Generate database schema';
     $title = get_screen_title($preview, false);

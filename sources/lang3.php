@@ -618,7 +618,7 @@ function _comcode_lang_string($lang_code)
                     if ($looked_up === null) {
                         return make_string_tempcode(escape_html('{!' . $lang_code . '}'));
                     }
-                    $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $comcode_page[0]['string_index'], 'source_user' => get_member(), 'broken' => 0, 'importance_level' => 1, 'text_original' => $looked_up, 'text_parsed' => '', 'language' => user_lang()), true, false, true);
+                    $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $comcode_page[0]['string_index'], 'source_user' => get_member(), 'broken' => 0, 'importance_level' => 1, 'text_original' => $looked_up, 'text_parsed' => '', 'language' => user_lang()), true, false, true); // errors suppressed in case of race condition
                     $ret = get_translated_tempcode('cached_comcode_pages', $comcode_page_row_cached_only, 'string_index');
                 }
                 unset($GLOBALS['RECORDED_LANG_STRINGS_CONTENT'][$comcode_page[0]['string_index']]);

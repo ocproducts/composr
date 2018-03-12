@@ -36,6 +36,10 @@ function init__commandr()
  */
 function commandr_script()
 {
+    if (!addon_installed('commandr')) {
+        warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('commandr')));
+    }
+
     if (is_cli()) {
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(0);
@@ -977,7 +981,7 @@ class Virtual_shell
             $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], null, 0, false, true);
             pop_db_scope_check();
             if ((is_array($commandr_output)) && (count($commandr_output) > 100)) {
-                $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], 100, 0, true, true);
+                $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], 100);
                 $commandr_output[] = array('...' => '...');
             }
 

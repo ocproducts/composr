@@ -123,6 +123,10 @@ class Module_admin_awards extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('awards')) {
+            return null;
+        }
+
         return array(
             'browse' => array('MANAGE_AWARDS', 'menu/adminzone/setup/awards'),
         ) + parent::get_entry_points();
@@ -139,6 +143,11 @@ class Module_admin_awards extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('awards', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('awards');

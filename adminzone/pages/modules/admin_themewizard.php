@@ -51,6 +51,10 @@ class Module_admin_themewizard
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('themewizard')) {
+            return null;
+        }
+
         $ret = array();
 
         if (!$be_deferential && !$support_crosslinks) {
@@ -71,6 +75,11 @@ class Module_admin_themewizard
      */
     public function pre_run()
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('themewizard', $error_msg)) {
+            return $error_msg;
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('themes');

@@ -31,6 +31,14 @@ class Hook_cron_user_sync
             return null;
         }
 
+        if (!addon_installed('commandr')) {
+            return;
+        }
+
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         if (get_value('user_sync_enabled') !== '1') {
             return null;
         }

@@ -38,6 +38,13 @@ class Hook_cron_content_reviews
             return null;
         }
 
+        if (!addon_installed('commandr')) {
+            return null;
+        }
+        if (!addon_installed('unvalidated')) {
+            return null;
+        }
+
         if ($calculate_num_queued) {
             $query = 'SELECT * FROM ' . get_table_prefix() . 'content_reviews WHERE review_notification_happened=0 AND next_review_time<=' . strval(time());
             $this->pending_content_reviews = $GLOBALS['SITE_DB']->query($query);

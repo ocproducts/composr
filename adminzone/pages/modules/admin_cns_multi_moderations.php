@@ -47,6 +47,10 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (!addon_installed('cns_multi_moderations')) {
+            return null;
+        }
+
         if (get_forum_type() != 'cns') {
             return null;
         }
@@ -56,7 +60,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         }
 
         return array(
-            'browse' => array(do_lang_tempcode('menus:ITEMS_HERE', do_lang_tempcode('MULTI_MODERATIONS'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value('f_multi_moderations', 'COUNT(*)', array(), '', true))))), 'menu/adminzone/structure/forum/multi_moderations'),
+            'browse' => array(do_lang_tempcode('menus:ITEMS_HERE', do_lang_tempcode('MULTI_MODERATIONS'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value('f_multi_moderations', 'COUNT(*)'))))), 'menu/adminzone/structure/forum/multi_moderations'),
         ) + parent::get_entry_points();
     }
 
@@ -71,6 +75,19 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        }
+
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('cns_multi_moderations', $error_msg)) {
+            return $error_msg;
+        }
+
+        if (!addon_installed('cns_forum')) {
+            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('cns_forum')));
+        }
+
         $type = get_param_string('type', 'browse');
 
         require_lang('cns');
@@ -104,11 +121,8 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
      */
     public function run_start($type)
     {
-        if (get_forum_type() != 'cns') {
-            warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
-        }
+        cns_require_all_forum_stuff();
+
         require_code('cns_moderation_action');
         require_code('cns_moderation_action2');
         require_code('cns_general_action2');

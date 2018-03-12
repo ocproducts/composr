@@ -47,6 +47,11 @@ class Block_main_activities_state
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('activity_feed', $error_msg)) {
+            return $error_msg;
+        }
+
         require_lang('activities');
         require_css('activities');
         require_javascript('activity_feed');

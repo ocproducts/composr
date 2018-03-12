@@ -62,6 +62,11 @@ class Block_side_tag_cloud
      */
     public function run($map)
     {
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('search', $error_msg)) {
+            return $error_msg;
+        }
+
         require_lang('search');
         require_css('search');
         require_code('content');

@@ -15,13 +15,6 @@
 
 /*CQC: No check*/
 
-if(!function_exists('ereg'))            { function ereg($pattern, $subject, &$matches = []) { return preg_match('/'.$pattern.'/', $subject, $matches); } }
-if(!function_exists('eregi'))           { function eregi($pattern, $subject, &$matches = []) { return preg_match('/'.$pattern.'/i', $subject, $matches); } }
-if(!function_exists('ereg_replace'))    { function ereg_replace($pattern, $replacement, $string) { return preg_replace('/'.$pattern.'/', $replacement, $string); } }
-if(!function_exists('eregi_replace'))   { function eregi_replace($pattern, $replacement, $string) { return preg_replace('/'.$pattern.'/i', $replacement, $string); } }
-if(!function_exists('split'))           { function split($pattern, $subject, $limit = -1) { return preg_split('/'.$pattern.'/', $subject, $limit); } }
-if(!function_exists('spliti'))          { function spliti($pattern, $subject, $limit = -1) { return preg_split('/'.$pattern.'/i', $subject, $limit); } }
-
 #####################################################
 # eliza.php- Final Project: Eliza program written in PHP
 #
@@ -64,9 +57,13 @@ class Hook_chat_bot_trickstr
      * @param  string $string The message used
      * @return ?string Bot reply (null: bot does not handle the command)
      */
-    function reply_to_any_communication($room_id, $string)
+    public function reply_to_any_communication($room_id, $string)
     {
         if (!addon_installed('trickstr')) {
+            return null;
+        }
+
+        if (strpos(get_db_type(), 'mysql') !== false) {
             return null;
         }
 
@@ -99,13 +96,13 @@ class Hook_chat_bot_trickstr
      * @param  string $string The command used. This is just the chat message, so you can encode and recognise your own parameter scheme if you like.
      * @return ?string Bot reply (null: bot does not handle the command)
      */
-    function handle_commands($room_id, $string)
+    protected function handle_commands($room_id, $string)
     {
         if (!addon_installed('trickstr')) {
             return null;
         }
 
-        if (!is_writable(get_file_base() . "/temp/subs.inc")) {
+        if (!is_writable(get_file_base() . '/temp/subs.inc')) {
             return null;
         }
 
@@ -124,16 +121,16 @@ class Hook_chat_bot_trickstr
                     @set_time_limit(600);
                 }
 
-                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS bot");
-                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS bots");
-                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS conversationlog");
-                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS dstore");
-                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS gmcache");
-                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS gossip");
-                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS patterns");
-                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS templates");
-                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS thatindex");
-                $GLOBALS['SITE_DB']->query("DROP TABLE IF EXISTS thatstack");
+                $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS bot');
+                $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS bots');
+                $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS conversationlog');
+                $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS dstore');
+                $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS gmcache');
+                $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS gossip');
+                $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS patterns');
+                $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS templates');
+                $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS thatindex');
+                $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS thatstack');
 
                 $table_type = (get_value('innodb') == '1') ? 'InnoDB' : 'MyISAM';
 
@@ -225,19 +222,19 @@ class Hook_chat_bot_trickstr
                     PRIMARY KEY  (id)
                 ) ENGINE=" . $table_type);
 
-                $fp = "";
+                $fp = '';
 
                 $templatesinserted = 0;
 
                 $depth = array();
-                $whaton = "";
+                $whaton = '';
 
-                $pattern = "";
-                $topic = "";
-                $that = "";
-                $template = "";
+                $pattern = '';
+                $topic = '';
+                $that = '';
+                $template = '';
 
-                $startupwhich = "";
+                $startupwhich = '';
                 $splitterarray = array();
                 $inputarray = array();
                 $genderarray = array();
@@ -279,7 +276,7 @@ class Hook_chat_bot_trickstr
         mt_srand((double)microtime() * 1000000);
 
         // load knowledge file
-        $lines_array = file(get_custom_file_base() . "/sources_custom/hooks/modules/chat_bots/knowledge.txt");
+        $lines_array = file(get_custom_file_base() . '/sources_custom/hooks/modules/chat_bots/knowledge.txt');
 
         $count = count($lines_array);
 
@@ -289,9 +286,9 @@ class Hook_chat_bot_trickstr
         // arrays.
         for ($x = 0; $x < $count; $x++) {
             $lines_array[$x] = trim($lines_array[$x]);
-            $lines_array[$x] = ereg_replace("[\]", "", $lines_array[$x]);
-            if (strstr($lines_array[$x], "key:")) {
-                eregi("key: (.*)", $lines_array[$x], $kw);
+            $lines_array[$x] = preg_replace('#[\]#', '', $lines_array[$x]);
+            if (strstr($lines_array[$x], 'key:')) {
+                preg_match('#key: (.*)#i', $lines_array[$x], $kw);
                 $kwarray[$kwcount] = strtoupper($kw[1]);
                 $currentkw = $kwcount;
                 $kwcount++;
@@ -299,34 +296,34 @@ class Hook_chat_bot_trickstr
                 $respcount = 0; // reset respcount to null
                 $pricount = 0; // reset pricount to null
             } else {
-                if (strstr($lines_array[$x], "var:")) {
-                    eregi("var: (.*)", $lines_array[$x], $variance);
+                if (strstr($lines_array[$x], 'var:')) {
+                    preg_match('#var: (.*)#i', $lines_array[$x], $variance);
                     $vararray[$currentkw][$varcount] = strtoupper($variance[1]);
                     $varcurrent = $varcount;
                     $varcount++;
                     $respcount = 0;
                 } else {
-                    if (strstr($lines_array[$x], "pri:")) {
-                        eregi("pri: (.*)", $lines_array[$x], $priority);
+                    if (strstr($lines_array[$x], 'pri:')) {
+                        preg_match('#pri: (.*)#i', $lines_array[$x], $priority);
                         $priarray[$currentkw] = $priority[1];
                     } else {
-                        if (strstr($lines_array[$x], "resp:")) {
-                            eregi("resp: (.*)", $lines_array[$x], $response);
+                        if (strstr($lines_array[$x], 'resp:')) {
+                            preg_match('#resp: (.*)#i', $lines_array[$x], $response);
                             $resparray[$currentkw][$varcurrent][$respcount] = $response[1];
                             $respcount++;
                         } else {
-                            if (strstr($lines_array[$x], "syn:")) {
-                                eregi("syn: (.*)", $lines_array[$x], $synonym);
+                            if (strstr($lines_array[$x], 'syn:')) {
+                                preg_match('#syn: (.*)#i', $lines_array[$x], $synonym);
                                 $synonymarray[$syncount] = strtoupper($synonym[1]);
                                 $syncount++;
                             } else {
-                                if (strstr($lines_array[$x], "goto:")) {
-                                    eregi("goto: (.*)", $lines_array[$x], $goto);
+                                if (strstr($lines_array[$x], 'goto:')) {
+                                    preg_match('#goto: (.*)#i', $lines_array[$x], $goto);
                                     $goto = strtoupper($goto[1]);
                                     // find the keyword
                                     for ($zcount = 0; $zcount < count($kwarray); $zcount++) {
                                         // if the keyword already exists
-                                        if (eregi($goto, $kwarray[$zcount])) {
+                                        if (preg_match('#' . $goto . '#i', $kwarray[$zcount])) {
                                             // then we assign properties of the keyword
                                             $vararray[$currentkw][0] = $kwarray[$currentkw];
                                             $resparray[$currentkw] = $resparray[$zcount];
@@ -346,7 +343,7 @@ class Hook_chat_bot_trickstr
         $bestpriority = -2;
         $originalstring = $string;
         if (!$string) {
-            $string = "hello";
+            $string = 'hello';
         }
         $string = strtoupper($string);
 
@@ -357,11 +354,11 @@ class Hook_chat_bot_trickstr
             // remove beginning and trailing white space, breaks, etc
             $string = trim($string);
             // remove puncuation from string
-            $string = ereg_replace('[!?,.]', '', $string);
+            $string = preg_replace('#[!?,.]#', '', $string);
             // split the string up into seperate words
-            $wordarray = explode(" ", $string);
+            $wordarray = explode(' ', $string);
             while ($v < count($wordarray)) {
-                if (eregi($wordarray[$v] . "$", $kwarray[$y])) {
+                if (preg_match('#' . $wordarray[$v] . '$#', $kwarray[$y])) {
                     // find which word holds the most weight in the sentance
                     if ($bestpriority == -2) {
                         $bestpriority = $y;
@@ -380,17 +377,17 @@ class Hook_chat_bot_trickstr
         // find the variance with the most matching words
         $vcount = 0;
         while ($vcount < count($vararray[$bestpriority])) {
-            if (strstr($vararray[$bestpriority][$vcount], "@")) {
-                eregi("@(.*)", $vararray[$bestpriority][$vcount], $syn); // fix this
+            if (strstr($vararray[$bestpriority][$vcount], '@')) {
+                preg_match('#@(.*)#i', $vararray[$bestpriority][$vcount], $syn); // fix this
                 $syn = $syn[1];
                 for ($x = 0; $x < count($synonymarray); $x++) {
-                    if (eregi($syn, strtoupper($synonymarray[$x]))) {
-                        $sarray = explode(" ", $synonymarray[$x]);
+                    if (preg_match('#' . $syn . '#i', strtoupper($synonymarray[$x]))) {
+                        $sarray = explode(' ', $synonymarray[$x]);
                         for ($f = 0; $f < count($sarray); $f++) {
-                            $newstring = ereg_replace("@(.*)$", $sarray[$f], $vararray[$bestpriority][$vcount]);
+                            $newstring = preg_match('#@(.*)$#', $sarray[$f], $vararray[$bestpriority][$vcount]);
                             // works to this point
-                            if (eregi($newstring . "$", $string)) {
-                                $varray = explode(" ", $vararray[$bestpriority][$vcount]);
+                            if (preg_match('#' . $newstring . '$#i', $string)) {
+                                $varray = explode(' ', $vararray[$bestpriority][$vcount]);
                                 if (count($varray) > $pvarray) {
                                     $bestvariance = $vcount;
                                     $pvarray = count($varray);
@@ -400,8 +397,8 @@ class Hook_chat_bot_trickstr
                     }
                 }
             } else {
-                if (ereg($vararray[$bestpriority][$vcount], $string)) {
-                    $varray = explode(" ", $vararray[$bestpriority][$vcount]);
+                if (preg_match('#' . $vararray[$bestpriority][$vcount], $string) . '#i') {
+                    $varray = explode(' ', $vararray[$bestpriority][$vcount]);
                     if (count($varray) > $pvarray) {
                         $bestvariance = $vcount;
                         $pvarray = count($varray);
@@ -420,11 +417,11 @@ class Hook_chat_bot_trickstr
             $random = 0;
         }
         $response = $resparray[$bestpriority][$bestvariance][$random];
-        if ($response == "") {
-            $response = "Sorry, I don't understand what you're trying to say.";
+        if ($response == '') {
+            $response = 'Sorry, I don\'t understand what you\'re trying to say.';
         }
 
-        $originalstring = ereg_replace("[\]", "", $originalstring);
+        $originalstring = preg_match('#[\]#', '', $originalstring);
 
         restrictify();
 

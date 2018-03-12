@@ -34,10 +34,6 @@ class Hook_ecommerce_other
      */
     public function get_products($search = null)
     {
-        if (!addon_installed('ecommerce')) {
-            return array();
-        }
-
         $products = array(
             'OTHER' => array(
                 'item_name' => do_lang('ecommerce:CUSTOM_PRODUCT_OTHER'),

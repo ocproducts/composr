@@ -1312,7 +1312,7 @@ function _create_selection_list(&$out, $node, $default, $valid_selectable_conten
     // Handle node
     $title = str_repeat('-', $depth) . $node['title']->evaluate();
     $selected = ($content_id === (is_integer($default) ? strval($default) : $default));
-    $disabled = ($valid_selectable_content_types !== null && !in_array($node['content_type'], $valid_selectable_content_types));
+    $disabled = (($valid_selectable_content_types !== null) && (!in_array($node['content_type'], $valid_selectable_content_types)));
     $_content_id = $use_compound_list ? $compound_list : $content_id;
     $out->attach(form_input_list_entry($_content_id, $selected, $title, false, $disabled));
 

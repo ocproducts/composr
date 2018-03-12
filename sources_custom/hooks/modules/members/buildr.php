@@ -30,10 +30,6 @@ class Hook_members_buildr
             return array();
         }
 
-        if (!$GLOBALS['SITE_DB']->table_exists('w_members')) {
-            return array();
-        }
-
         $zone = get_page_zone('buildr', false);
         if ($zone === null) {
             return array();
@@ -42,7 +38,7 @@ class Hook_members_buildr
             return array();
         }
 
-        $id = $GLOBALS['SITE_DB']->query_select_value_if_there('w_members', 'id', array('id' => $member_id), '', true);
+        $id = $GLOBALS['SITE_DB']->query_select_value_if_there('w_members', 'id', array('id' => $member_id));
         if ($id !== null) {
             require_lang('buildr');
             return array(array('audit', do_lang_tempcode('BUILDR'), build_url(array('page' => 'buildr', 'type' => 'inventory', 'member' => $member_id), get_module_zone('buildr')), 'spare/world'));

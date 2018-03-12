@@ -47,10 +47,6 @@ class Hook_import_vb3
      */
     public function info()
     {
-        if (!addon_installed('import')) {
-            return null;
-        }
-
         $info = array();
         $info['supports_advanced_import'] = false;
         $info['product'] = 'vBulletin 3.0.x / 3.5.x';

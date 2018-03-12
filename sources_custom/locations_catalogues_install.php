@@ -23,11 +23,6 @@ function init__locations_catalogues_install()
 
 function install_location_data()
 {
-    if (!module_installed('admin_locations')) {
-        require_code('zones2');
-        reinstall_module('adminzone', 'admin_locations');
-    }
-
     require_code('files');
     require_code('locations');
 

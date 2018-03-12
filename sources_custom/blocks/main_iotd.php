@@ -60,6 +60,11 @@ class Block_main_iotd
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        $error_msg = new Tempcode();
+        if (!addon_installed__autoinstall('iotds', $error_msg)) {
+            return $error_msg;
+        }
+
         $block_id = get_block_id($map);
 
         require_lang('iotds');

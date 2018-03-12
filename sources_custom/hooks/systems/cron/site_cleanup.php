@@ -31,6 +31,10 @@ class Hook_cron_site_cleanup
             return null;
         }
 
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            return null;
+        }
+
         if ($calculate_num_queued) {
             require_code('composr_homesite');
 

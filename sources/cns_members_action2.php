@@ -1265,8 +1265,6 @@ function cns_unban_member($member_id)
         return;
     }
 
-    require_lang('submitban');
-
     $username = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_username');
     $email_address = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_email_address');
     $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_join_time');
@@ -1344,7 +1342,7 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
     if (is_object($GLOBALS['FORUM_DB']->connection_read)) {
         $smq = $GLOBALS['FORUM_DB']->strict_mode_query(false);
         if ($smq !== null) {
-            $GLOBALS['FORUM_DB']->query($smq, null, 0, true);
+            $GLOBALS['FORUM_DB']->query($smq, null, 0, true); // Suppress errors in case access denied
         }
     }
     $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($id), $_type); // LEGACY: Field type should not have changed, but bugs can happen, especially between CMS versions, so we allow a CPF edit as a "fixup" op
