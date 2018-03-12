@@ -1140,7 +1140,7 @@
             }
             buttonSet = newButtonSet;
 
-            if ((window.showModalDialog !== undefined) && $cms.configOption('js_overlays')) {
+            if ((window.showModalDialog !== undefined) || $cms.configOption('js_overlays')) {
                 // NB: window.showModalDialog() was removed completely in Chrome 43, and Firefox 55. See WebKit bug 151885 for possible future removal from Safari.
 
                 if (buttonSet.length > 4) {

@@ -24,7 +24,7 @@ function aceComposrLoader(textareaId, programmingLanguage, autoRefresh) {
     editor.setHighlightActiveLine(true);
     editor.setShowPrintMargin(false);
     editor.$blockScrolling = Infinity;
-    if (val.indexOf('{+') !== -1 || val.indexOf('{$') !== -1) {
+    if (val.includes('{+') || val.includes('{$')) {
         // Troublesome Tempcode, so no syntax validation
         editorSession.setOption('useWorker', false);
     }
