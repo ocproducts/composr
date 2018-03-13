@@ -2597,8 +2597,10 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
                 }
                 if (array_key_exists($templates_file, $templates_rename)) {
                     if (!$test_run) {
-                        @rename($templates_dir . $templates_file, $templates_dir . $templates_rename[$templates_file]) or intelligent_write_error($templates_dir . $templates_rename[$templates_file]);
-                        $successes[] = do_lang_tempcode('TEMPLATE_RENAMED', escape_html($templates_file), escape_html($templates_rename[$templates_file]));
+                        if (!file_exists($templates_dir . $templates_rename[$templates_file])) {
+                            @rename($templates_dir . $templates_file, $templates_dir . $templates_rename[$templates_file]) or intelligent_write_error($templates_dir . $templates_rename[$templates_file]);
+                            $successes[] = do_lang_tempcode('TEMPLATE_RENAMED', escape_html($templates_file), escape_html($templates_rename[$templates_file]));
+                        }
                     }
                     $templates_file = $templates_rename[$templates_file];
                 }

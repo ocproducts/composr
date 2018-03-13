@@ -1170,8 +1170,11 @@ class Module_filedump
                         break;
 
                     case 'move':
-                        $path_target = get_custom_file_base() . '/uploads/filedump/' . $target . $file;
-                        rename($path, $path_target) or intelligent_write_error($path);
+                        $path_target = get_custom_file_base() . '/uploads/filedump' . $target . $file;
+                        if (file_exists($path_target)) {
+                            warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($path_target)));
+                        }
+                        @rename($path, $path_target) or intelligent_write_error($path);
                         sync_file_move($path, $path_target);
 
                         $test = $GLOBALS['SITE_DB']->query_update('filedump', array('path' => cms_mb_substr($target, 0, 80)), $where, '', 1);

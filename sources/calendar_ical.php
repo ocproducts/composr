@@ -179,7 +179,7 @@ function output_ical($headers_and_exit = true)
                         if ($username === null) {
                             $username = do_lang('UNKNOWN');
                         }
-                        echo "COMMENT:" . ical_escape(strip_comcode(is_object($comment['message']) ? $comment['message'] : $comment['message']) . ' - ' . $username . ' (' . get_timezoned_date($comment['date']) . ')') . "\r\n";
+                        echo "COMMENT:" . ical_escape(strip_comcode(is_object($comment['message']) ? $comment['message']->evaluate() : $comment['message']) . ' - ' . $username . ' (' . get_timezoned_date($comment['date']) . ')') . "\r\n";
                     }
                 } else {
                     break;
