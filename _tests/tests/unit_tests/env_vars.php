@@ -94,21 +94,21 @@ class env_vars_test_set extends cms_test_case
     {
         $this->wipe_data(true);
         fixup_bad_php_env_vars();
-        $this->assertTrue($this->default_doc_normalise($_SERVER['REQUEST_URI']) == $this->default_doc_normalise($this->bak['REQUEST_URI']));
+        $this->assertTrue(urldecode($this->default_doc_normalise($_SERVER['REQUEST_URI'])) == urldecode($this->default_doc_normalise($this->bak['REQUEST_URI'])));
 
         $this->wipe_data(false);
         fixup_bad_php_env_vars();
-        $this->assertTrue($this->default_doc_normalise($_SERVER['REQUEST_URI']) == $this->default_doc_normalise($this->bak['REQUEST_URI']));
+        $this->assertTrue(urldecode($this->default_doc_normalise($_SERVER['REQUEST_URI'])) == urldecode($this->default_doc_normalise($this->bak['REQUEST_URI'])));
     }
 
     public function testMissing_QUERY_STRING()
     {
         $this->wipe_data(true);
         fixup_bad_php_env_vars();
-        $this->assertTrue($_SERVER['QUERY_STRING'] == $this->bak['QUERY_STRING']);
+        $this->assertTrue(urldecode($_SERVER['QUERY_STRING']) == urldecode($this->bak['QUERY_STRING']));
 
         $this->wipe_data(false);
         fixup_bad_php_env_vars();
-        $this->assertTrue($_SERVER['QUERY_STRING'] == $this->bak['QUERY_STRING']);
+        $this->assertTrue(urldecode($_SERVER['QUERY_STRING']) == urldecode($this->bak['QUERY_STRING']));
     }
 }

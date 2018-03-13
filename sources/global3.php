@@ -1304,6 +1304,12 @@ function addon_installed($addon, $check_hookless = false)
         }
     }
 
+    if ($answer) {
+        if (get_value('addon_disabled_' . $addon) === '1') {
+            $answer = false;
+        }
+    }
+
     $ADDON_INSTALLED_CACHE[$addon] = $answer;
     if (function_exists('persistent_cache_set')) {
         persistent_cache_set('ADDONS_INSTALLED', $ADDON_INSTALLED_CACHE);

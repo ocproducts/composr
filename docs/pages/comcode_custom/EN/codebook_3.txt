@@ -629,6 +629,7 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]disable_form_auto_saving[/tt] -- set this to '1' if you want to disable form auto saving
   - [tt]default_newsletter_mail_template[/tt] -- set to the name of a template to set the default template for newsletters (instead of [tt]MAIL[/tt])
   - [tt]default_comcode_text[/tt] -- set this if you want to have multi-line Comcode editing fields to have a default value; this is useful for setting default font styles but don't want to retroactively affect old content; if you want it to be able to auto-wrap quick-reply content then you can put [tt]{content}[/tt] where you'd like the content to be inserted
+  - [tt]addon_disabled_<addon>[/tt] -- set this to '1' to disable a particular addon (may not be supported by all addons)
  - Performance tuning (positive) [not official options as will break normal expectations of how the system will behave / complicate things]:
   - [tt]lots_of_data_in_*[/tt] -- set this to '1', with '*' replaced with a database table name, if you want the Selectcode mechanism to work with recursive DB lookups rather than one huge flat lookup
   - [tt]disable_cat_cat_perms[/tt] -- set this to '1' if you want to disable catalogue category permissions

@@ -34,7 +34,7 @@
 			{+START,IF_NON_EMPTY,{PAGINATION}}
 				<div class="non-accessibility-redundancy">
 					<div class="pagination-spacing float-surrounder">
-						{$REPLACE, id="blp_, id="blp2_,{$REPLACE, for="blp_, for="blp2_,{$REPLACE, id="r_, id="r2_,{$REPLACE, for="r_, for="r2_,{PAGINATION}}}}}
+						{$REPLACE, id="blp-, id="blp2-,{$REPLACE, for="blp-, for="blp2-,{$REPLACE, id="r-, id="r2-,{$REPLACE, for="r-, for="r2-,{PAGINATION}}}}}
 					</div>
 				</div>
 			{+END}

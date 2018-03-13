@@ -83,6 +83,10 @@ class web_resources_test_set extends cms_test_case
             'mediaelement-and-player.js',
             'sound.js',
             'base64.js',
+            'global.js', // Due to including polyfills (included files will be checked separately though)
+            'json5.js',
+            'polyfill_fetch.js',
+            'polyfill_web_animations.js',
 
             // Partial code that will give errors
             'ATTACHMENT_UI_DEFAULTS.js',
