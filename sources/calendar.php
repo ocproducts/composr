@@ -512,7 +512,7 @@ function create_selection_list_event_types($it = null, $updated_since = null)
     foreach ($types as $i => $type) {
         $types[$i]['t_title_deref'] = get_translated_text($type['t_title']);
     }
-    sort_maps_by($types, 't_title_deref');
+    sort_maps_by($types, 't_title_deref', false, true);
     foreach ($types as $type) {
         if (!has_category_access(get_member(), 'calendar', strval($type['id']))) {
             continue;

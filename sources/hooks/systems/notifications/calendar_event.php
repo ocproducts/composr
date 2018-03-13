@@ -59,7 +59,7 @@ class Hook_notification_calendar_event extends Hook_Notification
                 );
             }
         }
-        sort_maps_by($page_links, 'title');
+        sort_maps_by($page_links, 'title', false, true);
 
         return $page_links;
     }

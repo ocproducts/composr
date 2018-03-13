@@ -140,7 +140,7 @@ function get_award_fields($content_type, $id = null)
         foreach ($rows as $i => $row) {
             $rows[$i]['_title'] = get_translated_text($row['a_title']);
         }
-        sort_maps_by($rows, '_title');
+        sort_maps_by($rows, '_title', false, true);
 
         foreach ($rows as $row) {
             if (has_category_access(get_member(), 'award', strval($row['id']))) {

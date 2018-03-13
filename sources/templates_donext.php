@@ -62,7 +62,7 @@ function do_next_manager_hooked($title, $text, $type, $main_title = null)
         }
     }
 
-    sort_maps_by($links, 2);
+    sort_maps_by($links, 2, false, true);
 
     if ($text !== null) {
         if (strpos($text, ' ') === false) {

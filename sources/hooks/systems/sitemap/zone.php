@@ -497,7 +497,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                 }
             }
 
-            sort_maps_by($children_orphaned, 'title');
+            sort_maps_by($children_orphaned, 'title', false, true);
             $children = array_merge($children, $children_orphaned);
 
             $struct['children'] = $children;

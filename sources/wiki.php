@@ -811,7 +811,7 @@ function create_selection_list_wiki_page_tree($select = null, $id = null, $bread
             $orphans[$i]['_title'] = get_translated_text($orphan['title']);
         }
         if (count($orphans) < intval(get_option('general_safety_listing_limit'))) {
-            sort_maps_by($orphans, '_title');
+            sort_maps_by($orphans, '_title', false, true);
         }
 
         foreach ($orphans as $orphan) {

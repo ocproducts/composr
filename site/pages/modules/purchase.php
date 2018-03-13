@@ -799,7 +799,7 @@ class Module_purchase
         }
 
         if ($category === null/*we assume category products are already sorted in the way desired*/) {
-            sort_maps_by($products, 'ITEM_NAME');
+            sort_maps_by($products, 'ITEM_NAME', false, true);
         }
 
         $result = do_template('ECOM_PURCHASE_STAGE_CHOOSE', array(

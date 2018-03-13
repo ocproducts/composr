@@ -78,7 +78,7 @@ class Hook_notification_comment_posted extends Hook_Notification
                 }
             }
         }
-        sort_maps_by($categories, 'title');
+        sort_maps_by($categories, 'title', false, true);
 
         return $categories;
     }

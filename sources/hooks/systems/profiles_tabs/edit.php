@@ -119,7 +119,7 @@ class Hook_profiles_tabs_edit
             return array($title, null, $order, 'buttons/settings');
         }
 
-        sort_maps_by($tabs, 4);
+        sort_maps_by($tabs, 4, false, true);
         $tabs = array_values($tabs); // Reindex, needed for lastness check
 
         $js_function_calls = array();

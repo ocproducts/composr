@@ -885,7 +885,7 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $true_start = 0,
                         $subforum['children'][$subforum_row2['f_name'] . '__' . strval($subforum_row2['id'])] = array('id' => $subforum_row2['id'], 'name' => $subforum_row2['f_name'], 'redirection' => $subforum_row2['f_redirection']);
                     }
                 }
-                sort_maps_by($subforum['children'], 'name');
+                sort_maps_by($subforum['children'], 'name', false, true);
             }
 
             $forum_groupings[$forum_grouping_id]['subforums'][] = $subforum;

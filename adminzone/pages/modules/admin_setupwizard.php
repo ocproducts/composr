@@ -614,7 +614,7 @@ class Module_admin_setupwizard
                 $all_addons[$addon_name]['name'] = titleify($addon_name);
             }
         }
-        sort_maps_by($all_addons, 'name');
+        sort_maps_by($all_addons, 'name', false, true);
         $_lock_addons_on = get_theme_option('setupwizard__lock_addons_on', null, post_param_string('source_theme', 'default'));
         $lock_addons_on = ($_lock_addons_on == '') ? array() : explode(',', $_lock_addons_on);
         require_code('addons');

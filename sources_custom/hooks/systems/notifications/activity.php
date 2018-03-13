@@ -74,7 +74,7 @@ class Hook_notification_activity extends Hook_Notification
                 'title' => $GLOBALS['FORUM_DRIVER']->get_username(intval($notification_category)),
             );
         }
-        sort_maps_by($page_links, 'title');
+        sort_maps_by($page_links, 'title', false, true);
 
         return array_values($page_links);
     }

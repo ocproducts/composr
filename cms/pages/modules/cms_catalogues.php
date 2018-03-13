@@ -369,7 +369,7 @@ class Module_cms_catalogues extends Standard_crud_module
             $_fields[] = array('row' => $fr, 'title' => $name);
         }
         if ($current_ordering == 'title ASC' || $current_ordering == 'title DESC') {
-            sort_maps_by($_fields, 'title');
+            sort_maps_by($_fields, 'title', false, true);
             if ($current_ordering == 'title DESC') {
                 $_fields = array_reverse($_fields);
             }

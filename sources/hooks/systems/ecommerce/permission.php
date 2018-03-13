@@ -290,7 +290,7 @@ class Hook_ecommerce_permission
         foreach ($rows as $i => $row) {
             $rows[$i]['_title'] = get_translated_text($row['p_title']);
         }
-        sort_maps_by($rows, '_title');
+        sort_maps_by($rows, '_title', false, true);
 
         foreach ($rows as $row) {
             $just_row = db_map_restrict($row, array('id', 'p_description'));

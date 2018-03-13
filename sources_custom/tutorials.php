@@ -122,7 +122,7 @@ function list_tutorials_by($criteria, $tag = null)
         case 'title':
             $tutorials = list_tutorials();
             shuffle($tutorials);
-            sort_maps_by($tutorials, 'title');
+            sort_maps_by($tutorials, 'title', false, true);
             break;
     }
 
@@ -174,7 +174,7 @@ function list_tutorials()
     }
     closedir($dh);
 
-    //sort_maps_by($tutorials, 'title');    Breaks keys
+    //sort_maps_by($tutorials, 'title', false, true);    Breaks keys
 
     require_code('files');
     cms_file_put_contents_safe($cache_path, serialize($tutorials), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);

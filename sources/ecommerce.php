@@ -637,7 +637,7 @@ function find_all_products()
             $products[$type_code] = $details;
         }
     }
-    sort_maps_by($products, 'item_name');
+    sort_maps_by($products, 'item_name', false, true);
     return $products;
 }
 

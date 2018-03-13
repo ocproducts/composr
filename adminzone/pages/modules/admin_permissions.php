@@ -671,7 +671,7 @@ class Module_admin_permissions
         foreach ($_sections as $i => $s) {
             $_sections[$i]['trans'] = do_lang($s['p_section']);
         }
-        sort_maps_by($_sections, 'trans');
+        sort_maps_by($_sections, 'trans', false, true);
         $orderings = array('SUBMISSION', 'GENERAL_SETTINGS', 'FORUMS_AND_MEMBERS', 'STAFF_ACTIONS', '_COMCODE', '_FEEDBACK', 'POINTS');
         $_sections_prior = array();
         foreach ($orderings as $ordering) {

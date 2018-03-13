@@ -271,7 +271,7 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
         foreach ($_cats as $i => $cat) {
             $_cats[$i]['nice_title'] = get_translated_text($cat['nc_title']);
         }
-        sort_maps_by($_cats, 'nice_title');
+        sort_maps_by($_cats, 'nice_title', false, true);
 
         // Sort
         $title_ordered_cats = $_cats;

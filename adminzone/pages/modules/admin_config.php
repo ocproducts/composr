@@ -457,7 +457,7 @@ class Module_admin_config
                 $options_in_group[$name]['human_name_trans'] = do_lang($option['human_name']);
             }
             if ($all_orders_default) {
-                sort_maps_by($options_in_group, 'human_name_trans');
+                sort_maps_by($options_in_group, 'human_name_trans', false, true);
             } else {
                 sort_maps_by($options_in_group, 'order_in_category_group');
             }

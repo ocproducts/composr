@@ -99,7 +99,7 @@ class Hook_sitemap_news_category extends Hook_sitemap_content
         } while (count($rows) == SITEMAP_MAX_ROWS_PER_LOOP);
 
         if (is_array($nodes)) {
-            sort_maps_by($nodes, 'title');
+            sort_maps_by($nodes, 'title', false, true);
         }
 
         return $nodes;

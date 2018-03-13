@@ -113,7 +113,7 @@ class Block_side_news_categories
             }
         }
 
-        sort_maps_by($categories2, '_nc_title');
+        sort_maps_by($categories2, '_nc_title', false, true);
 
         $_categories = array();
         foreach ($categories2 as $category) {

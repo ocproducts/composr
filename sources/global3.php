@@ -1498,16 +1498,18 @@ function _strlen_sort($a, $b)
  *
  * @param  array $rows List of maps to sort
  * @param  mixed $sort_keys Either an integer sort key (to sort by integer key ID of contained arrays) or a Comma-separated list of sort keys (to sort by string key ID of contained arrays; prefix '!' a key to reverse the sort order for it)
- * @param  boolean $preserve_order_if_possible Don't shuffle order unnecessarily (i.e. do a merge sort)
+ * @param  boolean $preserve_order_if_possible Don't shuffle order unnecessarily (i.e. do a merge sort), doesn't support natural supporting
+ * @param  boolean $natural Whether to do a natural sort
  */
-function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false)
+function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false, $natural = false)
 {
     if ($rows == array()) {
         return;
     }
 
-    global $M_SORT_KEY;
+    global $M_SORT_KEY, $M_SORT_NATURAL;
     $M_SORT_KEY = $sort_keys;
+    $M_SORT_NATURAL = $natural;
     if ($preserve_order_if_possible) {
         merge_sort($rows, '_multi_sort');
     } else {
@@ -1611,7 +1613,7 @@ function merge_sort(&$array, $cmp_function = 'strcmp')
  */
 function _multi_sort($a, $b)
 {
-    global $M_SORT_KEY;
+    global $M_SORT_KEY, $M_SORT_NATURAL;
     $keys = explode(',', is_string($M_SORT_KEY) ? $M_SORT_KEY : strval($M_SORT_KEY));
     $first_key = $keys[0];
     if ($first_key[0] === '!') {
@@ -1639,7 +1641,7 @@ function _multi_sort($a, $b)
                 $bv = $bv->evaluate();
             }
 
-            if ((is_numeric($av)) && (is_numeric($bv))) {
+            if ((is_numeric($av)) && (is_numeric($bv)) || $M_SORT_NATURAL) {
                 $ret = strnatcasecmp($av, $bv);
             } else {
                 $ret = strcasecmp($av, $bv);

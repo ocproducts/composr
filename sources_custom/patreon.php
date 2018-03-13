@@ -37,7 +37,7 @@ function get_patreon_patrons_on_minimum_level($level)
     }
     fclose($myfile);
 
-    sort_maps_by($patreon_patrons, 'name');
+    sort_maps_by($patreon_patrons, 'name', false, true);
 
     return $patreon_patrons;
 }

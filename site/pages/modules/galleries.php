@@ -1425,7 +1425,7 @@ class Module_galleries
             foreach ($rows_videos as $row_video) {
                 $combined[] = array($row_video, 'video', $row_video[$_sort]);
             }
-            sort_maps_by($combined, ($_dir == 'DESC') ? '!2' : '2');
+            sort_maps_by($combined, ($_dir == 'DESC') ? '!2' : '2', false, ($_sort == 'title'));
 
             // Find current position in navigation set, and neighbour positions
             foreach ($combined as $position => $c) {

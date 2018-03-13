@@ -246,7 +246,7 @@ function cns_get_forum_tree($member_id = null, $base_forum = null, $breadcrumbs 
             }
         }
     }
-    sort_maps_by($forums, $order);
+    sort_maps_by($forums, $order, false, ($order == 'f_name'));
     $compound_list = '';
     $child_breadcrumbs = ($breadcrumbs == '') ? '' : ($breadcrumbs . ' > ');
     foreach ($forums as $forum) {

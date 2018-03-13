@@ -85,7 +85,7 @@ class Hook_notification_content_reviews extends Hook_notification__Staff
             );
         }
 
-        sort_maps_by($page_links, 'title');
+        sort_maps_by($page_links, 'title', false, true);
 
         return $page_links;
     }

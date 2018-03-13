@@ -507,7 +507,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
                 sort_maps_by($QUERY_LIST, 'time');
                 break;
             case 'text':
-                sort_maps_by($QUERY_LIST, 'text');
+                sort_maps_by($QUERY_LIST, 'text', false, true);
                 break;
         }
         $QUERY_LIST = array_reverse($QUERY_LIST);

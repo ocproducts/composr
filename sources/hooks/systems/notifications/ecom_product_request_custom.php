@@ -57,7 +57,7 @@ class Hook_notification_ecom_product_request_custom extends Hook_notification__S
                 'title' => get_translated_text($type['c_title']),
             );
         }
-        sort_maps_by($page_links, 'title');
+        sort_maps_by($page_links, 'title', false, true);
 
         return $page_links;
     }

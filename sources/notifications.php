@@ -1025,7 +1025,7 @@ class Hook_Notification
                 'title' => $notification_category,
             );
         }
-        sort_maps_by($page_links, 'title');
+        sort_maps_by($page_links, 'title', false, true);
 
         return $page_links;
     }

@@ -560,7 +560,7 @@ class Module_cms_comcode_pages
         if (!$found_via_query) {
             $max_rows = count($rows);
 
-            sort_maps_by($rows, $sortable);
+            sort_maps_by($rows, $sortable, false, ($sortable == 'page_title'));
             if ($sort_order == 'DESC') {
                 $rows = array_reverse($rows);
             }

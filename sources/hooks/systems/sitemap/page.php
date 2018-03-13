@@ -418,7 +418,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
             }
             $struct['children'] = array_values($children);
 
-            sort_maps_by($children, 'title');
+            sort_maps_by($children, 'title', false, true);
         }
 
         return ($callback === null || $return_anyway) ? $struct : null;

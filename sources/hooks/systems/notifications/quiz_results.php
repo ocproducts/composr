@@ -69,7 +69,7 @@ class Hook_notification_quiz_results extends Hook_notification__Staff
                 'title' => get_translated_text($type['q_name']),
             );
         }
-        sort_maps_by($page_links, 'title');
+        sort_maps_by($page_links, 'title', false, true);
 
         return $page_links;
     }

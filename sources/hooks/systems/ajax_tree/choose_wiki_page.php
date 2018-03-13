@@ -77,7 +77,7 @@ class Hook_ajax_tree_choose_wiki_page
                 $orphans[$i]['_title'] = get_translated_text($orphan['title']);
             }
             if (count($orphans) < 50) {
-                sort_maps_by($orphans, '_title');
+                sort_maps_by($orphans, '_title', false, true);
             }
 
             foreach ($orphans as $orphan) {

@@ -57,7 +57,7 @@ class Hook_notification_ticket_new_staff extends Hook_Notification
                 'title' => get_translated_text($type['ticket_type_title']),
             );
         }
-        sort_maps_by($page_links, 'title');
+        sort_maps_by($page_links, 'title', false, true);
 
         return $page_links;
     }

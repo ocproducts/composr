@@ -157,7 +157,7 @@ class Hook_profiles_tabs_about
         require_lang('menus');
         $sections = array('contact' => do_lang_tempcode('CONTACT'), 'profile' => do_lang_tempcode('EDIT_PROFILE'), 'views' => do_lang_tempcode('ACCOUNT'), 'audit' => do_lang_tempcode('AUDIT'), 'content' => do_lang_tempcode('CONTENT'));
         $actions = array();
-        sort_maps_by($modules, 1);
+        sort_maps_by($modules, 1, false, true);
         foreach ($sections as $section_code => $section_title) {
             $links = new Tempcode();
 

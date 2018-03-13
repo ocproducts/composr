@@ -130,7 +130,7 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
         } while (count($rows) == SITEMAP_MAX_ROWS_PER_LOOP);
 
         if (is_array($nodes)) {
-            sort_maps_by($nodes, 'title');
+            sort_maps_by($nodes, 'title', false, true);
         }
 
         return $nodes;
@@ -231,7 +231,7 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
                         $start += SITEMAP_MAX_ROWS_PER_LOOP;
                     } while (count($rows) == SITEMAP_MAX_ROWS_PER_LOOP);
 
-                    sort_maps_by($children_entries, 'title');
+                    sort_maps_by($children_entries, 'title', false, true);
 
                     $children = array_merge($children, $children_entries);
                 }

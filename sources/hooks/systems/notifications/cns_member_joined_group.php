@@ -59,7 +59,7 @@ class Hook_notification_cns_member_joined_group extends Hook_Notification
                 'title' => get_translated_text($type['g_name'], $GLOBALS['FORUM_DB']),
             );
         }
-        sort_maps_by($page_links, 'title');
+        sort_maps_by($page_links, 'title', false, true);
 
         return $page_links;
     }

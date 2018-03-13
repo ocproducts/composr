@@ -783,7 +783,7 @@ function _prepare_tics_list($all_tics, $default, $parent, $pre = '', $depth = 0)
             unset($all_tics[$i]['tic']['children']);
         }
     }
-    sort_maps_by($child_tics, 'label');
+    sort_maps_by($child_tics, 'label', false, true);
 
     $tics_list = new Tempcode();
     foreach ($child_tics as $tic) {

@@ -135,7 +135,7 @@ class Hook_fields_list_multi extends ListFieldHook
 
         $auto_sort = option_value_from_field_array($field, 'auto_sort', 'off');
         if ($auto_sort == 'frontend' || $auto_sort == 'both') {
-            sort_maps_by($all, 'OPTION');
+            sort_maps_by($all, 'OPTION', false, true);
         }
 
         if (isset($field['c_name'])) {

@@ -1022,7 +1022,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                     }
 
                     if ($explicit_order_by_entries === null) {
-                        sort_maps_by($children_entries, 'title');
+                        sort_maps_by($children_entries, 'title', false, true);
                     }
                     $children = array_merge($children, $children_entries);
                 }
@@ -1077,7 +1077,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
             }
 
             if ($explicit_order_by_subcategories === null) {
-                sort_maps_by($children_categories, 'title');
+                sort_maps_by($children_categories, 'title', false, true);
             }
             $children = array_merge($children, $children_categories);
         }

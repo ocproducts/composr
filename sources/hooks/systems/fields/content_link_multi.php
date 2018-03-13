@@ -120,7 +120,7 @@ class Hook_fields_content_link_multi
 
         $auto_sort = option_value_from_field_array($field, 'auto_sort', 'off');
         if ($auto_sort == 'on') {
-            sort_maps_by($out, 0);
+            sort_maps_by($out, 0, false, true);
         }
 
         $ret = new Tempcode();

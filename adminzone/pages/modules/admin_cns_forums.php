@@ -317,7 +317,7 @@ class Module_admin_cns_forums extends Standard_crud_module
             }
         }
         if ($order == 'f_name') {
-            sort_maps_by($subforums, 'f_name');
+            sort_maps_by($subforums, 'f_name', false, true);
         }
         $forum_grouping_id = null;
         $position_in_cat = 0;

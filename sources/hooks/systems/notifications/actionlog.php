@@ -78,7 +78,7 @@ class Hook_notification_actionlog extends Hook_notification__Staff
                 'title' => $lang,
             );
         }
-        sort_maps_by($page_links, 'title');
+        sort_maps_by($page_links, 'title', false, true);
 
         return $page_links;
     }

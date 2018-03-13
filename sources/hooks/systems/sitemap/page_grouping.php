@@ -388,7 +388,7 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
                 }
             }
 
-            sort_maps_by($children, 'title');
+            sort_maps_by($children, 'title', false, true);
 
             $struct['children'] = $children;
         }

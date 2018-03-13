@@ -60,7 +60,7 @@ class Hook_notification_member_entered_chatroom extends Hook_Notification
                 );
             }
         }
-        sort_maps_by($page_links, 'title');
+        sort_maps_by($page_links, 'title', false, true);
 
         return $page_links;
     }
