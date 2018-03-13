@@ -250,12 +250,15 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
     // Considering tables in a DB reference may be in multiple (if they point to same actual DB's), make sure all our DB objects have their cache cleared
     if (isset($GLOBALS['SITE_DB'])) {
         unset($GLOBALS['SITE_DB']->table_exists_cache[$table_name]);
+        unset($GLOBALS['SITE_DB']->table_exists_real_cache[$table_name]);
     }
     if (isset($GLOBALS['FORUM_DB'])) {
         unset($GLOBALS['FORUM_DB']->table_exists_cache[$table_name]);
+        unset($GLOBALS['FORUM_DB']->table_exists_real_cache[$table_name]);
     }
     // Then safely update our own
     $this_ref->table_exists_cache[$table_name] = true;
+    $this_ref->table_exists_real_cache[$table_name] = true;
 
     if (!multi_lang_content()) {
         foreach ($fields_copy as $name => $type) {
@@ -481,6 +484,7 @@ function _helper_drop_table_if_exists($this_ref, $table)
     }
 
     unset($this_ref->table_exists_cache[$table]);
+    unset($this_ref->table_exists_real_cache[$table]);
 }
 
 /**

@@ -1075,7 +1075,7 @@ class DatabaseConnector
     public $text_lookup_original_cache;
     public $text_lookup_cache;
 
-    public $table_exists_cache;
+    public $table_exists_cache, $table_exists_real_cache;
 
     public $static_ob;
 
@@ -1097,6 +1097,7 @@ class DatabaseConnector
         $this->text_lookup_original_cache = array();
         $this->text_lookup_cache = array();
         $this->table_exists_cache = array();
+        $this->table_exists_real_cache = array();
 
         $servers = explode(',', $db_host);
         if (count($servers) == 1) {
@@ -2079,16 +2080,19 @@ class DatabaseConnector
      * Check if a table exists.
      *
      * @param  ID_TEXT $table_name The table name
-     * @param  boolean $really Check direct, not using meta-table (if possible)
+     * @param  boolean $really_only Only check direct rather than using meta-table (if possible) (false: check both directly and using meta-table if possible)
      * @return boolean Whether it exists
      */
-    public function table_exists($table_name, $really = false)
+    public function table_exists($table_name, $really_only = false)
     {
-        if (array_key_exists($table_name, $this->table_exists_cache)) {
-            return $this->table_exists_cache[$table_name];
+        if ((isset($this->table_exists_real_cache[$table_name])) && (($really_only) || (isset($this->table_exists_cache[$table_name])))) {
+            return $this->table_exists_real_cache[$table_name] && ($really_only || $this->table_exists_cache[$table_name]);
         }
 
-        if (($really) && (strpos(get_db_type(), 'mysql') !== false)) {
+        $this->table_exists_real_cache[$table_name] = false;
+        $this->table_exists_cache[$table_name] = false;
+
+        if (strpos(get_db_type(), 'mysql') !== false) {
             // Just works with MySQL (too complex to do for all SQL's http://forums.whirlpool.net.au/forum-replies-archive.cfm/523219.html)...
 
             $prefix = $this->get_table_prefix();
@@ -2097,15 +2101,14 @@ class DatabaseConnector
                 foreach ($row as $field) {
                     if (substr($field, 0, strlen($prefix)) == $prefix) {
                         $_table_name = substr($field, strlen($prefix));
-                        $this->table_exists_cache[$_table_name] = true;
+                        $this->table_exists_real_cache[$_table_name] = true;
                     }
                 }
             }
 
-            if (!array_key_exists($table_name, $this->table_exists_cache)) {
-                $this->table_exists_cache[$table_name] = false;
+            if ($really_only || !$this->table_exists_real_cache[$table_name]) {
+                return $this->table_exists_real_cache[$table_name];
             }
-            return $this->table_exists_cache[$table_name];
         }
 
         $rows = $this->query_select('db_meta', array('DISTINCT m_table'));
@@ -2113,9 +2116,6 @@ class DatabaseConnector
             $this->table_exists_cache[$row['m_table']] = true;
         }
 
-        if (!array_key_exists($table_name, $this->table_exists_cache)) {
-            $this->table_exists_cache[$table_name] = false;
-        }
         return $this->table_exists_cache[$table_name];
     }
 

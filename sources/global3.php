@@ -1285,6 +1285,8 @@ function addon_installed($addon, $check_hookless = false)
         if ($test !== null) {
             $answer = true;
         }
+
+        // Won't check tables because we don't know them for hookless addons (not in db_meta.dat)
     } else {
         if ($answer) {
             // Check tables defined in db_meta.dat (bundled addons)
