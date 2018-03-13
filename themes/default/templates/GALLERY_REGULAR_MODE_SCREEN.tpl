@@ -11,13 +11,7 @@
 	{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
 
 	{+START,IF_NON_EMPTY,{CHILDREN}}
-		<div class="box box---gallery-regular-mode-screen"><div class="box-inner compacted-subbox-stream">
-			<h2>{$?,{$EQ,{CAT},root},{!CATEGORIES},{!SUBCATEGORIES_HERE}}</h2>
-
-			<div>
-				{CHILDREN}
-			</div>
-		</div></div>
+		{CHILDREN}
 	{+END}
 
 	{+START,IF_NON_EMPTY,{ENTRIES}}
