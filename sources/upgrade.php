@@ -1337,7 +1337,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
 
         $addon_files = collapse_2d_complexity('filename', 'addon_name', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename', 'addon_name')));
         list($alien, $addon) = check_alien($addon_files, file_exists(get_file_base() . '/data/files_previous.dat') ? unserialize(file_get_contents(get_file_base() . '/data/files_previous.dat')) : array(), $master_data, get_file_base() . '/');
-        if (($moved != '') || ($alien != '')) {
+        if (($alien != '') || ($addon != '')) {
             $ret_str .= '<div>';
             if ($alien != '') {
                 $ret_str .= do_lang('WARNING_FILE_ALIEN', $alien);
