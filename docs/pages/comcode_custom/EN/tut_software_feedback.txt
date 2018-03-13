@@ -18,12 +18,12 @@ This might mean making a bug report, or making a feature request -- if something
 
 [title="3"]What to expect[/title]
 
-The developers have a track record of responding to bug reports within just a few days. Don't expect a same-day response or in general a weekend/morning/evening response (UK timezone), but do post a reminder if you get no response after a week (it's rare for it to take that long).
+The developers have a track record of responding to bug reports within just a few days. Don't expect a same-day response, but do post a reminder if you get no response after a week (it's rare for it to take that long).
 
-Bug fixes usually come with an automated (non-personal) response that includes a hotfix, a description of the bug, and a link to show the changes made in the code repository (git/github).
+Bug fixes usually come with an automated (non-personal) response that includes a hotfix, a description of the bug, and/or a link to show the changes made in the code repository (git/github).
 
 If you really do require an urgent priority response it means either (or both):
- - You need to be using paid support tickets to get professional-grade support
+ - You need to pay for support from a professional
  - You need to take better backups so you don't rely on external factors
 So please bear this in mind and structure your own processes accordingly.
 
@@ -33,8 +33,8 @@ So please bear this in mind and structure your own processes accordingly.
 We don't want people to have to labour over bug reports. However there are some basic rules you will need to follow...
 
 Before starting your report:
- - [b]Check the bug has not already been fixed[/b]. If you are on the latest release then you'll find a bug list linked to from your Admin Zone dashboard. Don't spend more than 5 minutes looking, but at least have a glance over.
- - [b]Try not to report unrelated problems together[/b]. We're not strict on this, because we would encourage people to submit large testing reports and we'll tolerate some collation for that, but generally speaking it is better each issue is reported separately so that it can be handled in one go without interdependence.
+ - [b]Check the bug has not already been reported[/b] on the [url="tracker"]http://compo.sr/tracker[/url]. Don't spend more than 5 minutes looking, but at least have a glance over.
+ - [b]Try not to report unrelated problems together[/b]. Generally speaking it is better each issue is reported separately so that it can be handled in one go without interdependence.
  - [b]Check it is a Composr bug[/b]. If it relates to a third-party addon, it should not be reported as a Composr bug.
  - [b]Check the FAQ[/b]. If your problem looks like it might be caused by a server configuration issue (for example if you are getting an 'Internal server error' message), please check our [page="_SEARCH:faq"]FAQ[/page] first.
 
@@ -63,7 +63,7 @@ In general:
 
 If you can't remember a PHP or Composr-critical error message, you may be able to find it in your error log (located in Admin Zone > Audit > Low-level logging). The error log shows all non-user-errors that have occurred on your site.
 
-If your report is not clear enough for us to [i]immediately[/i] see it as a bug we may require you to post with a paid ticket and refund you if an investigation proves it was a bug &ndash; so please make your reports as clear as possible.
+If your report is not clear enough for the developers to [i]immediately[/i] see it as a bug it may not be treated as such &ndash; so please make your reports as clear as possible.
 
 [title="3"]Automatic reporting[/title]
 
@@ -177,11 +177,9 @@ If you are using too many resources for shared hosting, you'll need something be
 
 [title="2"]Requesting support[/title]
 
-If you require a professional or official response, you'll need to use the Composr [page="site:professional_support"]paid support service[/page] (or an equivalent third-party service -- we do not hold or seek to hold any support/development monopoly).
-
 Generally, users can help each other out on the community forum.
 
-Please don't ask for free professional/official support (except when reporting bugs in Composr, or under our referral scheme ["Referral scheme for free support"]), as we have to pay our dedicated staff and thus have to have funding for their work hours.
+Please don't demand free professional/official support from the experts. Professionals should be paid competitively for the work they do without quibbles.
 
 [title="3"]Reporting and avoiding emergency problems[/title]
 
@@ -238,63 +236,36 @@ Issues with AJAX and frames specifically can be caused by JavaScript security re
 
 In Composr it can happen if the base URL has changed. One possibility is if it is blank in the [tt]_config.php[/tt] file. If it was never set, and sometimes Composr is getting called by different variants of the base URL (typically with and without 'www.') then the cache can get a mixture, and it triggers such cross-domain errors.
 
-[title="3"]Referral scheme for free support[/title]
-
-[media width="64" thumb="0" float="right" framed="0"]themes/default/images/icons/menu/adminzone/style.svg[/media]
-We know a lot of users would benefit from some advanced professional support on occasion, but that it's hard to find/justify the money if your website is not part of a successful business. The community helps, but sometimes only a programmer has the answer.
-
-Of course after making a great product for free the last thing ocProducts can afford is free individual tuition too.
-
-However, if you do help us bring in direct revenue, we can reward you for that. If you refer agency-service projects to us, you'll be given 5% of the value back in support credits to spend with us as you wish.
-
-This is a great way for us to be able to help you out further, and to help you help us.
-
-We're always in need of projects to pay the bills and to continue innovating. Sometimes it seems like we're "programming Gods", and sometimes businesses can seem inhuman or money-grabbing, but actually we're people who work very hard and make big long-term personal commitments, with big bills to pay. And unlike other non-contributing web design companies we have to compete with on a daily basis, we're always aiming for the stars and taking the Composr community with us.
-
-You can find all about our business offerings from the [url="ocProducts"]http://ocproducts.com/[/url] part of this site. If you know an established or funded business who needs a site doing -- see if you can sell them on our services, and [page=":contact:project"]send us the details of the referral[/page].
-
-So, time to get started :)? If you strike it big and are able to refer a development project at say £5,328, you'll earn one full days free support. That could be a [i]lot[/i] of questions answered, or a simple new addon developed.
-
-The smallprint:
- - It must be a true referral. The entity being referred must not have been considering Composr previously. The entity could be your employer, but it can't be your own business.
- - The order must be over [currency="GBP"]1000[/currency].
- - The exact earning calculation is: 1 support credit for each £111 GBP spent with us, rounded down to the nearest support credit.
- - Only work in the initial order will be considered.
- - The project must actually start (i.e. deposit paid or support credits purchased). We reserve the right to reduce awarded credits if the project is cancelled for some reason, as we won't have made the money to pass on.
- - We reserve the right to change these rules at any time, it's not a binding agreement.
- - This applies for projects done at our agency rate, or long-term secondments of staff -- it doesn't apply to professional support or feature sponsorship which is done at a lower hourly rate.
- - If referred out to a third-party company (which we often do), ocProducts will ask that company to pass back a referral to you, but we cannot guarantee they'll do it.
-
-We suggest that you are open with whoever you are referring: if they realise you'll get a referral but think you are hiding this, it is likely to reflect poorly on you. Also, of course don't refer work you don't think we could realistically do -- e.g. print design work, PR strategy, IT network support.
-
-I neglected to mention that there's something inherently good about referring work – for most projects we do, at least one new feature makes it back into Composr. A lot of what Composr now is came from commercial projects originally.
-
 [title="2"]Providing feedback, or making feature requests[/title]
 
 [media width="150" float="right" framed="0"]data_custom/images/docs/tut_software_feedback/482033_challenge.jpg[/media]
-Feedback is one of the most important signals for us when developing Composr. Our users are often able to show us ideas from new angles, which play a big role in Composr's future. Unfortunately, it is often not possible for us to comment on whether or not any certain feature will be developed.
+Feedback is one of the most important signals for us when developing Composr. Composr users are often able to show us ideas from new angles, which play a big role in Composr's future.
 
-The reason we can't comment on user feedback is because whether we answer 'yes' or 'no' we end up in a difficult situation, as described below.
+Most of the guidance for reporting bugs also counts for posting feature requests, so please review the advice above ("Rules to follow").
 
-Regardless, we have the [url="feature tracker"]http://compo.sr/tracker/[/url] available for full discussions, so your feedback will always be heard, even though we won't necessarily be able to address it. In the spirit of Open Source you can even see ideas direct from the developers (which is our rough equivalent to having a product roadmap). Features can be directly sponsored from the tracker.
+Unfortunately, it is often not possible for the developers to comment on whether or not any certain feature will be developed.
 
-[title="3"]If we declare 'yes' to a suggestion immediately[/title]
+The reason the developers can't comment on user feedback is because whether they answer 'yes' or 'no' they end up in a difficult situation, as described below.
 
- - We need to find funding for the majority of Composr development. Composr is developed professionally, i.e. by paid staff, and we need to meet their salaries. We enthusiastically accept contributions, and some things do come through without direct funding (either sponsored internally, or achieved indirectly through client work). However, as a general rule, funding is required. So, regardless of our views, it often comes down to whether our users are willing to sponsor functionality and is out of the developers hands.
- - Our plans might change for a good reason that we hadn't foreseen -- meaning it wouldn't be included after all. This can happen if the design process reveals a big problem with the idea. This is often the case, even for our team's own ideas. This is a big problem if any of our users build their plans around our premature announcement.
- - Even if we do develop the feature it might take longer than people were expecting, and this not only rushes us into making releases too early, but our users can develop a dependency on us that is unhealthy for not just the development process, but the health of the user's business/organisation.
+Regardless, we have the [url="feature tracker"]http://compo.sr/tracker/[/url] available for full discussions, so your feedback will always be heard, even though the developers won't necessarily be able to address it. In the spirit of Open Source you can even see ideas direct from the developers (which is our rough equivalent to having a product roadmap). Features can be directly sponsored from the tracker.
 
-[title="3"]If we declare 'no' to a suggestion immediately[/title]
+[title="3"]If the developers declare 'yes' to a suggestion immediately[/title]
 
-The problem with this is that it almost always causes arguments -- which of course we wish to avoid.
+ - The developers may need to find funding for development, as professional developers have to spend large amounts of time adding functionality. So, regardless of any developer's views, it often comes down to whether Composr users are able to sponsor functionality.
+ - The core team's plans might change for a good reason that they hadn't foreseen -- meaning it wouldn't be included after all. This can happen if the design process reveals a big problem with the idea. This is often the case, even for developers' own ideas. It would be a big problem if any of Composr users built their plans around a premature announcement.
+ - Even if the developers develop the feature it might take longer than people were expecting, and this not only rushes them into making releases too early, but Composr users can develop a dependency that is unhealthy for not just the development process, but the health of the user's business/organisation.
 
-The reason that arguments are so counter productive lies in the fact that we, and virtually all other development teams, are not in a position where we can accept every suggestion from every user. We have to make wide and complex decisions, based on information most people never see, and based on our years of engineering and design experience. This can be far more complex than most users realise.
+[title="3"]If the developers declare 'no' to a suggestion immediately[/title]
 
-As our perspective can be hard to explain, and the harder we try and explain things, especially when rushed, the more likely the conversation will be perceived as belligerent, or at least very time consuming and distracting.
+The problem with this is that it almost always causes arguments -- which of course we all wish to avoid.
+
+The reason that arguments are so counter productive lies in the fact that development teams are never in a position where they can accept every suggestion from every user. They have to make wide and complex decisions, based on information most people never see, and based on decades of combined engineering and design experience. This can be far more complex than most people realise.
+
+As a developer's perspective can be hard to explain, the harder they try and explain things, especially when rushed, the more likely the conversation will be perceived as belligerent, or at least very time consuming and distracting.
 
 Read on to get a better idea of our perspective.
 
-[title="3"]Why we might think 'no'[/title]
+[title="3"]Why the developers might think 'no'[/title]
 
 There are many reasons, but here are a few:
 1) We may feel a feature over-complicates things;
@@ -305,16 +276,16 @@ There are many reasons, but here are a few:
 6) We may feel a feature would make Composr [page="_SEARCH:antifeatures"]bloatware[/page];
 7) We may feel a feature breaks important engineering principles such as [url="separation of concerns"]http://en.wikipedia.org/wiki/Separation_of_concerns[/url];
 8) We may feel a feature is somehow incoherent with Composr's under-the-hood architecture, so would need many subtle and complex changes to numerous interconnected subsystems, and introduce risks of new bugs or confusion about redefined Composr concepts;
-9) A feature could also be very time consuming or costly, or require skills or experience that no available developer has -- and contrary to often widely-held perceptions, the developers aren't sitting on a big pile of cash, everything is very hard-earned ;);
-10) For features relating to 'flexibility', we sometimes feel that implementing yet another complex extra layer of control may be more complex to control that just customisation of the actual PHP code (which Composr supports in a neat and controlled way);
-11) Often users will travel down a rabbit-hole of feature requests, as an ill-considered substitute to having a proper budget for skilled and experienced developers working on a project. We are always clear that non-trivial projects will always require some amount of designer and developer time, and no amount of us loading Composr with features can change this, so at a certain point of complexity and specificity, we have to say 'just hire a developer to code this directly'.
+9) A feature could require skills or experience that no available developer has;
+10) For features relating to 'flexibility', developers sometimes feel that implementing yet another complex extra layer of control may be more complex to control that just customisation of the actual PHP code (which Composr supports in a neat and controlled way);
+11) Often Composr users will travel down a rabbit-hole of feature requests, as a poor substitute to having a proper budget for skilled and experienced developers working on a project. The core team is clear that non-trivial projects will always require some amount of designer and developer time, and no amount of loading Composr with features can change this, so at a certain point of complexity and specificity the advice would always just be 'hire a developer to code this directly'.
 
 As well as 'yes' vs 'no', there are the matters of strategy and of release management, which are not simple.
 
 [title="4"]Strategy[/title]
 
 [media width="150" float="right"]data_custom/images/docs/tut_software_feedback/feature_workflow.png[/media]
-Each major Composr release usually hosts a wide range of new features, but also concentrates development on one particular overall objective. Typically we do this because we want to do something big and the only way to do it is to make a 'release mission'.
+Each major Composr release usually hosts a wide range of new features, but also concentrates development on one particular overall objective. Typically the developers do this because they want to do something big and the only way to do it is to make a 'release mission'.
 
 Considerations for a feature include:
  - whether it matches the overarching mission
@@ -323,48 +294,44 @@ Considerations for a feature include:
  - scheduling
 
 This said, things don't always get planned smoothly:
- - Feature sponsorships necessarily take precedence over internal strategy by the developers
+ - Feature sponsorships or developer contributions may take precedence over planned strategy
  - Plans often change due to unforeseen changes in the web landscape
- - Users making us aware of a major problem we were not previously aware of
+ - Users making the developers aware of a major problem they were not previously aware of
  - 'Eureka' features that are so good it's worth changing plans to include
 
 [title="4"]Risk management[/title]
 
-In patch releases we typically only fix bugs. However on some occasion we do fix oversights which we consider to:
+In patch releases the developers typically only fix bugs. However on some occasion they do fix oversights which they consider to:
  - be at least moderately annoying
  - be easy to fix
  - introduce low risk of future bugs
  - not introduce incompatibilities
 
 Most features introduce risk in a number of areas, and all features are subject to some kind of prioritisation. For example:
- - there is quite a large risk if we change the database structure, due to complexities of upgrading.
- - there is large incompatibility if we add to the CSS, because it means people's customised themes get busted.
+ - there is quite a large risk if the database structure is changed, due to complexities of upgrading.
+ - there is large incompatibility if the CSS is added to, because it means people's customised themes get busted.
 It is best that risk and incompatibility is managed in bulk, in major releases.
 
 [title="3"]Rules of thumb[/title]
 
 [b]No free guarantees[/b] -- There is no guarantee that someone will implement what you want. Open Source is not a free lunch, and volunteer Open Source developers makers only tend to implement things that are useful to themselves or fun to do. While Open Source programmers are usually highly ethical, and care about moving the world forward through cooperation, it's important to remember the best web developers are highly skilled and experienced professionals, like solicitors or doctors, and thus are paid as such. There's a lot of expertise in a lot of disciplines that is required to be a good web developer.
 
-[b]You can sponsor functionality[/b] -- If you have some financial resources available then you can simply sponsor development financially to push things the way you want them to go. This is the main way Composr is developed.
+[b]You can sponsor functionality[/b] -- If you have some financial resources available then you can simply sponsor development financially to push things the way you want them to go.
 
-[b]Lead by example[/b] -- Of course only a proportion of Composr users can afford to sponsor functionality. So, why not set an example for end-users making contributions by releasing something yourself (addons, themes, translations, etc) -- remember that if you don't release anything, you forfeit a right to complain if others aren't doing the same too. Demonstrating commitment to contributing to the product ecosystem (with deeds, not words) is much more likely to result in people being willing to help you out.
+[b]Lead by example[/b] -- Of course only a proportion of Composr users can afford to sponsor functionality. So, why not set an example for end-users making contributions by releasing something yourself (addons, themes, translations, pull requests, etc) -- remember that if you don't release anything, you forfeit a right to complain if others aren't doing the same too. Demonstrating commitment to contributing to the product ecosystem (with deeds, not words) is much more likely to result in people being willing to help you out.
 
 [title="2"]Contributing code[/title]
 
-First, we thank you for considering contributing to the future of Composr!
+First, we all thank you for considering contributing to the future of Composr!
 
-If you are releasing some code and would like it to be considered for official inclusion into future versions of Composr, you need to choose to assign dual copyright to yourself and to ocProducts (the maintainers). This gives the maintainers the option to include your work, without the possibility of any future legal problems.
+If you are releasing some code and would like it to be considered for official inclusion into future versions of Composr, you need to choose to assign dual copyright to yourself and to ocProducts (the maintainers). This gives the core team the option to include your work, without the possibility of any future legal problems. Potentially contributions could become critical to the software, and it'd be impractical to negotiate/remove each case of contributed code if required.
 
-We do need to note that this would also give us the right to do things such as selling special versions of Composr (including your contributions) under the ocProducts name -- because we need to make sure that if we take in contributions to our code-base, we aren't as a result restricting our future activities done with the whole Composr package. Potentially contributions could become critical to the software, and it'd be impractical to negotiate/remove each case of contributed code, for each case where we find we need to release Composr in a new way.
-
-For the above reasons [b]we are not encouraging or discouraging dual copyright assignment[/b], it's everybody's own decision how they want their work to be used; this section exists to allow people to make an informed decision and for us to explain the process.
-
-If you would like us to consider including your code, mention when you post your work on the tracker that you're "assigning dual copyright with ocProducts Ltd" and be clear about what code it is that it applies to. Also, if you make a future version and do not want a past copyright assignment to carry forward, you should clearly state this too. If you want credit, please clearly remind us to have it included in the attributions part of the Composr licence, and we will happily oblige. Be aware that assigning copyright is not something revocable, and it is not the same as just assigning us a licence, so please think carefully about what you want to do.
+If you would like the project to consider including your code, mention when you post your work on the tracker (or make a pull request) that you're "assigning dual copyright with ocProducts Ltd" and be clear about what code it is that it applies to. Also, if you make a future version and do not want a past copyright assignment to carry forward, you should clearly state this too. If you want credit, please clearly request to have it included in the attributions part of the Composr licence. Be aware that assigning copyright is not something revocable, and it is not the same as just assigning us a licence, so please think carefully about what you want to do.
 
 [title="2"]Providing design feedback[/title]
 
 [media width="250" thumb="0" float="right" framed="0"]data_custom/images/docs/tut_software_feedback/feedback_general.png[/media]
-The Composr community occasionally sees feedback that we should improve the design of the default theme. Usually, however, this feedback is given in very vague terms and is hard to act on. This section will explain how to give design feedback in a clear constructive way, and also give some background on the design constraints that we work within to make Composr.
+The Composr community occasionally sees feedback that we should improve the design of the default theme. Usually, however, this feedback is given in very vague terms and is hard to act on. This section will explain how to give design feedback in a clear constructive way, and also give some background on the design constraints that the developers work within to make Composr.
 
 [title="3"]What not to do[/title]
 
@@ -380,13 +347,13 @@ Composr doesn't look as good as Wordpress.
 Composr doesn't look attractive.
 [/quote]
 
-The problem with this kind of feedback is that it very much reflects the perspective of the person giving the feedback, yet the details behind that perspective are entirely unknown to those reading the feedback and wanting to act on it. The person behind the feedback is usually sincere, but doesn't realise it doesn't help us move towards meeting his/her needs. It's not immediately obvious, but there is a lot more behind something looking "good" or "bad", and it's very much about what you're seeing in the details. In fact, someone looking at a design can feel it look "bad" without knowing why, and only on contemplation does it become clear that it is due to a small number of things in the details being slightly wrong. This is how the brain works, it makes lots of subconscious evaluations on your behalf.
+The problem with this kind of feedback is that it very much reflects the perspective of the person giving the feedback, yet the details behind that perspective are entirely unknown to those reading the feedback and wanting to act on it. The person behind the feedback is sincere, but does not realise it doesn't help anyone move towards meeting his/her needs. There is a lot behind whether something looks "attractive" or "ugly", and it's very much about the fine details. In fact, someone looking at a design can feel it looks ugly without knowing why, and only on contemplation does it become clear that it is due to a small number of things in the details being slightly wrong. This is how the brain works, it makes lots of subconscious evaluations on your behalf.
 
-It takes a great deal of self-control for developers to not see very vague negative feedback as something from a lazy "style over substance" person who wants everything delivered on a plate for them. Fortunately, with just a little bit of work you can ensure that developers will not be under that false impression, that developers will be happy in their work, and give some actionable feedback that will have a positive effect on the future of Composr as a product.
+It takes a great deal of self-control for analytical-minded developers to not see very vague negative feedback as something from a "style over substance" person who wants their whole website delivered on a plate for them. Fortunately, with just a little bit of work you can ensure that developers will not be under that false impression, that developers will be happy in their work, and give some actionable feedback that will have a positive effect on the future of Composr as a product.
 
 [title="3"]Feedback types, in detail[/title]
 
-In this section we'll analyse each of the above positions. Much of this will read as if it is a rebuttal, but that's not our true aim here. By explaining why things are as they are, and the process we work within, we can then explain how real design issues (which we won't deny) can be fed back to us. It also gives you the insight required to challenge our processes or assumptions, should you feel we're doing things wrong.
+In this section we'll analyse each of the above positions. Much of this will read as if it is a rebuttal, but that's not our true aim here. By explaining why things are as they are, and the process the developers work within, we can then explain how real design issues (which nobody would deny) can be fed back. It also gives you the insight required to challenge our processes or assumptions, should you feel the developers are doing things wrong.
 
 [quote]
 Composr's design looks dated.
@@ -394,9 +361,9 @@ Composr's design looks dated.
 
 Often this largely is to do with how blocks look. A lot of modern designs will try and minimise the number of borders and separate shaded areas, and instead use white-space and more subtle dividing lines to lay stuff out. Composr may be thought of as "boxy".
 
-Composr has a modular design because it is not a hard-coded system. Composr is constructed so that you may make many different kinds of website with it, and have full control of the layout. Therefore you construct a layout by putting together a number of components ("blocks" in Composr jargon). By default these blocks will look self-contained, because it's the best way we can make things work out of the box, without you needing to be an expert designer. Things are also quite close together by default because we need to support large numbers of features displaying at once, which is a very common configuration on community websites.
+Composr has a modular design because it is not a hard-coded system. Composr is constructed so that you may make many different kinds of website with it, and have full control of the layout. Therefore you construct a layout by putting together a number of components ("blocks" in Composr jargon). By default these blocks will look self-contained, because it's the best way the developers can make things work out of the box, without you needing to be an expert designer. Things are also quite close together by default because the developers need to support large numbers of features displaying at once, which is a very common configuration on community websites.
 
-We provide a Comcode feature to "de-boxify" the appearance of blocks which helps a great deal. Designers can fully customise the appearance and we fully embrace the design process.
+We provide a Comcode feature to "de-boxify" the appearance of blocks which helps a great deal. Designers can fully customise the appearance and the developers fully embrace the design process.
 
 So, largely this feedback comes down to the fact that if you're creating a website you probably will want to do some amount of design to get things look great for your site. Design is a very human process. It's not truly a situation of Composr being dated, it's more of a situation that modern design quality really is driven by expert designers spending a lot of time and energy to perfect the design for individual websites. Because Composr is not a tool to clone out a standardised kind of website, great design cannot be fully automated.
 
@@ -412,12 +379,12 @@ It is true that you may need to invest more in getting a Composr theme than a Wo
 Composr doesn't look attractive.
 [/quote]
 
-Usually this is more of an issue of a specific configuration of Composr looking a mess for some reason, or some kind of design mistake(s) in the default theme. In other words, it's not Composr as such, it is something specific -- and thus, something we can resolve. This is where constructive criticism is useful.
+Usually this is more of an issue of a specific configuration of Composr looking a mess for some reason, or some kind of design mistake(s) in the default theme. In other words, it's not Composr as such, it is something specific -- and thus, something the developers can resolve. This is where constructive criticism is useful.
 
 [title="3"]How to give constructive criticism[/title]
 
 [media width="100" thumb="0" float="right" framed="0"]themes/default/images/icons/status/inform.svg[/media]
-This is best shown by example. Recently (at the time of writing) we got some very vague feedback, mentioned in passing in our chatroom. It was not mentioned, but we were able to guess that this related to some display issues on the Composr demo, and analysis (read: second guessing) led to some bug reports, that we could then resolve:
+This is best shown by example. Recently (at the time of writing) the developers got some very vague feedback, mentioned in passing in our chatroom. It was not mentioned, but we were able to guess that this related to some display issues on the Composr demo, and analysis (read: second guessing) led to some bug reports, that we could then resolve:
  - http://compo.sr/tracker/view.php?id=1169
  - http://compo.sr/tracker/view.php?id=1170
  - http://compo.sr/tracker/view.php?id=1171
@@ -425,7 +392,7 @@ This is best shown by example. Recently (at the time of writing) we got some ver
  - http://compo.sr/tracker/view.php?id=1173
  - http://compo.sr/tracker/view.php?id=1175
 
-This is exactly what we would like people to do directly. Isolate specific issues, then report them to us. We can then expedite the fixing of such issues very easily.
+This is exactly what the developers would like people to do directly. Isolate specific issues, then report them to us. We can then expedite the fixing of such issues very easily.
 
 [title="3"]Beyond bug fixing[/title]
 
@@ -433,21 +400,21 @@ The spirit of the above section is much of one of treating design issues as bugs
 
 We need designers to get on board. You could actually redesign Composr interfaces yourself (e.g. in Photoshop) and submit them to the tracker for implementation by a developer as HTML/CSS (or make direct patches if you are so inclined). If you're a designer, you could certainly show non-designers how things could look a lot better.
 
-People sometimes suggest that we take on designers to continuously iterate on Composr designs, but it is a lot easier said than done. Finding designers who truly understand [page="_SEARCH:tut_designer_themes"]how to design for CMSs[/page], for user interfaces, for a wide range of considerations and constraints, and to truly be passionate about Composr as a system that serves non-designers, is difficult. Most designers design for specific contexts, which is in stark contrast to how software features are developed. 99 times out of 100, any designer we take on is going to have far too much a limited perspective to truly take the Composr design up a notch.
+Finding designers who truly understand [page="_SEARCH:tut_designer_themes"]how to design for CMSs[/page], for user interfaces, for a wide range of considerations and constraints, and to truly be passionate about Composr as a system that serves non-designers, is difficult. Most designers design for specific contexts, which is in stark contrast to how software features are developed. 99 times out of 100, a regular professional designer is going to have far too much a limited perspective to truly take the Composr design up a notch.
 
-So, if you're a designer reading this, there's a very good chance you could make an excellent contribution to the project!
+So, if you're a designer reading this, there's a very good chance you could make an excellent contribution to the project because you know it better than most!
 
 [title="3"]Further product design reflection[/title]
 
 [media width="64" thumb="0" float="right" framed="0"]themes/default/images/icons/menu/adminzone/setup.svg[/media]
-This is not directly related to the process of reporting design issues, but may result in further insight into the Composr design process.
+This section is not directly related to the process of reporting design issues, but may result in further insight into the Composr design process and help guide your feedback.
 
 [b]Fashion[/b]: there is a saying that "good design is timeless". This is largely true, but it is of course undeniable that:
  - there are trends;
  - the context we work within changes;
  - the nature of how products behave or are used changes;
  - improved technology allows better results.
-We are unlikely to chase fashions with Composr, i.e. we will try and make the design as timeless as possible. To that end, the concept of it being 'dated' from a fashion point of view would likely be a null one. If your particular website is chasing fashion trends, you should invest in it, but Composr isn't likely to be redesigned only for trends, because the cost/disruption to do so would be very high compared to the benefit. Most really good designers understand that design is a lot more about solving problems, learning the best approaches, and optimisation, than it is at getting the latest look. However, what people think of as fashion trends, quite often are things we could treat more objectively, and therefore tackle within Composr's existing design framework without having to keep throwing everything out. For example, once curved borders were renderable by web browsers, we updated Composr to use them in many more places.
+The developers are unlikely to chase fashions with Composr, i.e. we will try and make the design as timeless as possible. To that end, the concept of it being 'dated' from a fashion point of view would likely be a null one. If your particular website is chasing fashion trends, you should invest in it, but Composr isn't likely to be redesigned only for trends, because the cost/disruption to do so would be very high compared to the benefit. Most really good designers understand that design is a lot more about solving problems, learning the best approaches, and optimisation, than it is at getting the latest look. However, what people think of as fashion trends, quite often are things we could treat more objectively, and therefore tackle within Composr's existing design framework without having to keep throwing everything out. For example, once curved borders were renderable by web browsers, the developers updated Composr to use them in many more places.
 
 [b]Modularity[/b]: [i]This is discussed above, under "Feedback types, in detail"[/i]
 
@@ -455,11 +422,11 @@ We are unlikely to chase fashions with Composr, i.e. we will try and make the de
 
 [b]Feature-density[/b]: Composr sites are often feature-filled. This means the default theme is unlikely to have much in common with very minimalistic designs, such as those on a portfolio website.
 
-[b]Back-compatibility[/b]: We have to avoid breaking people's themes too much across releases. We therefore have to choose compatibility break-points carefully.
+[b]Backwards-compatibility[/b]: We have to avoid breaking people's themes too much across releases. We therefore have to choose compatibility break-points carefully.
 
-[b]Browser-compatibility[/b]: We have to make Composr work across a range of web browsers, not just Webkit.
+[b]Browser-compatibility[/b]: We have to make Composr work across a range of web browsers going back years, not just the latest Webkit/Blink.
 
-[b]Low-weight[/b]: Often designers working on custom websites will pick a lot of the very latest design frameworks and JavaScript libraries. However, with Composr we have to support a great number of features, without pulling in dependencies for them all. We can't have lots of different libraries with overlapping functionality, and different coding styles -- Composr would suffer major performance problems, but also become a nightmare to design themes for. In recent years there has been an incredible churn in front-end libraries -- what is hot one year, is outdated the next. It's very important that we isolate Composr from all this and try and make the default theme simple, consistent, and performant.
+[b]Low-weight[/b]: Often designers working on custom websites will pick a lot of the very latest design frameworks and JavaScript libraries. However, with Composr the developers have to support a great number of features, without pulling in dependencies for them all. We can't have lots of different libraries with overlapping functionality, and different coding styles -- Composr would suffer major performance problems, but also become a nightmare to design themes for. In recent years there has been an incredible churn in front-end libraries -- what is hot one year, is outdated the next. It's very important that the developers isolate Composr from all this and try and make the default theme simple, consistent, and performant.
 
 [b]Opinion[/b]: It has to be noted that design is very personal, and not everyone is going to agree on what is good design. Different people have different taste.
 
@@ -479,40 +446,14 @@ Feedback. Be as specific, detailed, and clear as possible.
 
 Feedback feedback feedback feedback.
 
-[title="2"]Business models, Composr funding, and budgets[/title]
-
-[media width="64" thumb="0" float="right" framed="0"]themes/default/images/icons/menu/adminzone/structure.svg[/media]
-Composr is primarily sponsored/maintained by ocProducts Ltd, a company led by the main original developer / current lead developer (Chris Graham). In fact, we have a hybrid model for Composr -- ocProducts takes overall responsibility for keeping the project going to professional standards, as a free Open Source community project.
-
-This section explains how the commercial aspect of our company operates, and the nature of the services we offer. Specifically: how they are priced, and who they are intended for.
-
-The Composr/ocProducts founders are fanatical about enabling people to have great websites, for a lower investment than is typical in the web development industry. We started Composr before even considering making a business of it -- we're really passionate about it, and we always have been. To the founders, the ocProducts business is a tool that allows us to keep doing it full time, now that we're older and have to keep money coming in.
-
-Let's talk about that 'lower investment' I mentioned users making...
- - In many cases that investment is just in time -- our users spending time learning the Composr software, and taking advantage of the great features it has to offer. This way users get a better website than if they had used a lesser tool, or save tens of thousands of dollars that you'd need to pay for a ground-up development from a traditional web development company. Really passionate Composr users go further, and maybe learn HTML, CSS, or even PHP -- and from this, push Composr as far as they want.
- - Sometimes (often for businesses), the investment might be in the form of money. Businesses and organisations can pay developers to make a whole website using Composr. Depending on the website, it'll likely cost somewhere from a few thousand dollars. That's a whole lot better than from tens of thousands -- big saving.
- - In-between there's a proportion of users who need to strike a balance -- to invest their own time, and also to pay for some development services. This usually means users will make websites themselves in Composr, and pay someone to add some extra features, or to provide some direct technical support for the software.
-
-We hope, but absolutely do not require, that many of our users will choose our company to provide their web development services, as well as other services we provide (such as mobile app development, or Internet marketing).
-
-As a company, ocProducts makes almost all its money from services. Composr is free, so we don't make anything at all from that. We [i]choose[/i] to give it out for free because we love the whole concept of it -- what it empowers people to achieve -- [i]we are able to[/i] give it out for free as it provides a foundation for the services we provide.
-A consequence for this is that when we are providing services to people we are acting as a business, earning money to pay our salaries -- not just directly for the work we are doing, but also to fund what we do for free. We are able to do this and still charge less because, as Composr experts, we are able to save lots of money for our clients.
-
-One tricky thing about our business is we walk the line between enthusiast and enterprise services, trying to serve everybody's needs well, and aiming to be fair and open to everybody, be socially responsible, and to maintain a healthy community atmosphere. We make advanced stuff really affordable, but when that stuff is heavily customised with a lot of extra design work, and given heavy customisation to tune it to particular needs, it still can cost a lot of money. Often people who are in communities aren't accustomed to the kind of figures that companies have to pay for things, and expect services to be cheaper, more like the price you see for things in shops, or pay for a software licence. There's a big gap between 'free'/$100 and 'tens of thousands of dollars'. The reality though is most websites for businesses cost this much, or often a lot more because they are developed by a permanent staff.
-Prices seem relatively high, because wages are always a lot higher than disposable income -- think how many $100 there are in the yearly salary of someone who has been through years of university training and with an in-demand skill-set, and then add to that things like the cost of dead time (periods where incoming work is slow), administration costs, write-downs (e.g. non-paying-clients), training, marketing and PR, management, sickness leave, vacation periods, tax, expansion funds, contingency, office and bills, return on investment, and many other costs. For people outside business costing, the actual cost things come to is a bit of a shock, but the figures that go around are fair reflections on the costs of it all.
-
-Now comes the reason we're including all these details in this tutorial. We often get a situation where people come to us looking to purchase some heavy Composr customisations, but don't have past experience of business costs. Most people don't. It doesn't help that most of the real costs for quality programming services out there are never advertised, when costs for the lowest quality of work, or out-of-the-box products, are advertised openly. By explaining the background to how costs are calculated, and what we can and can't deliver for free, I hope we can demonstrate how we maintain an enormous passion for Composr and Open Source, while showing that our professional services are necessarily aimed at organisations with a realistic business budget, and not intended to be taken up by the majority of our users (community websites).
-
-Please be aware also that ocProducts doesn't take payment-in-kind, such as payment in stock, payment via advertising, mentions on mailing lists, commissions, or long-deferred payments. Our operating margins are already quite slim, so in these situations we'd expect a business client to use something like a bank loan to fund their enterprise. We're not professional valuators or risk assessors.
-
 [title="2"]General courtesy and guidelines[/title]
 
-[title="3"]Don't start over over-optimistic, then end up leaning on the developers[/title]
+[title="3"]Don't start over-optimistic, then end up leaning on the developers[/title]
 
 [media width="64" thumb="0" float="right" framed="0"]themes/default/images/icons/menu/adminzone/home.svg[/media]
 Despite [page="_SEARCH:antifeatures"]attempts to accurately describe[/page] what Composr can do, many people see Composr as a way of achieving the equivalent to what high-funded Silicon Valley companies achieve, but for free. Whenever there are roadblocks to that, people often end up trying to lean on the developers to get closer to it.
 
-This can be very frustrating for the developers, who are probably as squeezed for time as anyone around (often already working 15 hour days, 7 days a week). Building and maintaining Composr is a huge effort, and if individual users take more resources from the project than they provide financially, it makes it unsustainable.
+This can be very frustrating for the developers, who are probably as squeezed for time as anyone around (often already working 15 hour days, 7 days a week). Building and maintaining Composr is a huge effort, and if individual users take more resources from the project than they provide through contributions/financially, it makes it unsustainable.
 
 The developers are generally polite (if sometimes a bit curt due to time pressure), and they know a lot of people don't realise how much time responding to people can take, and the developers are empathic about people's technical challenges. But ultimately the developers can't save people from themselves and are often at the receiving end of people's frustration (with undue insults being relatively common).
 
@@ -524,27 +465,20 @@ So, please aim to:
 
 If you do then find it a big challenge to achieve your desired goals, don't approach the developers asking for free support or for new features to be implemented for free. Please do fully interact with other users in the community though, of course.
 
-[title="3"]Don't ask for extra contributions from the developers[/title]
-
-Working a hundred hour week is already not unusual for the developers, so please don't push them to do more, unless you are able to find finance to cover your requests.
-
-That said, please don't let it stop you giving feedback. The critical difference here is that of the difference between feedback/suggestions and requests.
-
 [title="3"]Avoid doing any of the following[/title]
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
-1) Expect the developers to work on a weekend, or evenings, or in the middle of the night, unless there's been a very special arrangement for it
-2) Expect free one-on-one support
-3) When the developers say they can't do something for free, try and twist definitions (e.g. if something specific you want to do is not easy, call it a usability problem and call all usability problems bugs)
-4) If a developer gives out a personal e-mail address for dealing with some issue, keep coming back to it with support questions. Or, send support questions to developers via other external channels, e.g. on Facebook, to try and circumvent the support system (in the process, completely failing to involve yourself in the Composr community)
-5) Call the developers idiots for not doing your work for free, as "it'll bring in lots of paying customers"
-6) Don't take backups, then blame bugs if anything happens to stop your site working, expecting free support to get it fixed
-7) Sponsor a feature, then try and use that to leverage free support in other areas (a sponsorship payment would go directly to fund the work involved implementing the feature, so would not be a donation)
-8) Try to negotiate the lowering of professional hourly rates to that of independent freelancers, or companies operating from developing countries
+1) Expecting core developers to work at specific times (they may be in a different timezone from you, they may only work office hours, or they may only work in their spare time)
+2) Demanding free one-on-one support, or call the developers idiots for not doing your work for free, as "it'll bring in lots of paying customers"
+3) When the developers say they can't do something for free, twisting definitions (e.g. if something specific you want to do is not easy, call it a usability problem and call all usability problems bugs)
+4) Don't take backups, then blaming bugs if anything happens to stop your site working, expecting free support to get it fixed
+5) Sponsor a feature from a developer, then trying to use that to leverage free support in other areas (a sponsorship payment would go directly to fund the work involved implementing the feature, so would not be a donation)
+6) Expecting people to work for less than they think they're worth
+7) Pushing volunteers beyond their limits
 
 [title="2"]Maintenance Policies[/title]
 
-It is an unfortunate but inevitable fact that computer software has bugs. Composr is no exception, and although we work to make sure every single bug gets fixed, we aren't able to make sure every past version ever released is kept bug-free. It is essential that users understand our maintenance policy, and perform upgrades as we suggest.
+It is an unfortunate but inevitable fact that computer software has bugs. Composr is no exception, and although the developers work to make sure every single bug gets fixed, they aren't able to make sure every past version ever released is kept bug-free. It is essential that users understand the maintenance policy, and perform upgrades as suggested.
 
 [title="3"]Flaw policy[/title]
 
@@ -553,54 +487,56 @@ Bugs and security issues are both classified as 'flaws'. There are two classific
  - [b]Major[/b]. A major security or integrity issue, or a bug so significant that it cuts off major functionality.
  - [b]Minor[/b]. Any flaw that is not major.
 
-ocProducts has a rolling support status for versions of Composr (aka/formerly ocPortal).
+The core developers have a rolling support status for versions of Composr.
 Versions may be classified as: [b]beta[/b], [b]stable[/b], [b]supported[/b], [b]defunct[/b].
 
 A [b]supported[/b] version is a previous major version where the initial release of a subsequent new major version was made only in the past 8 months. A [b]defunct[/b] version is older than that. Flaws are handled for the different support statuses as follows:
- - [b]Beta[/b] version. ocProducts will typically release the next new beta version with all bugs up to the major flaw fixed, but there are no guarantees.
- - [b]Stable[/b] version. ocProducts will release a new version with all bugs fixed.
- - [b]Supported[/b] version. ocProducts will release a new version with only the major flaws fixed, as any minor bugs truly will be minor as a whole new version had been developed before they were found. Note that any installation issues or compatibility issues with new software are degraded to minor flaws when considering the [b]supported[/b] version, and hence not fixed in it.
- - [b]Defunct[/b] version. No flaws are handled except when there is an active support contract with particular customers (in which case fixes would only be sent to those customers and to the git repository).
+ - [b]Beta[/b] version. The core developers will typically release the next new beta version with all bugs up to the major flaw fixed, but there are no guarantees.
+ - [b]Stable[/b] version. The core developers will release a new version with all bugs fixed.
+ - [b]Supported[/b] version. The core developers will release a new version with only the major flaws fixed, as any minor bugs truly will be minor as a whole new version had been developed before they were found. Note that any installation issues or compatibility issues with new software are degraded to minor flaws when considering the [b]supported[/b] version, and hence not fixed in it.
+ - [b]Defunct[/b] version. No flaws are handled. You would need to have a commercial vendor support it for you.
 
-Please note that we don't usually immediately release a new version when there is a flaw. We usually put out a hotfix, then a new patch release every few months.
+Please note that the developers don't usually immediately release a new version when there is a flaw. They usually put out a hotfix, then a new patch release every few months.
 
 Please note that if Composr is installed by a hosting-control-panel, it is very unlikely that it will be up-to-date. Thus, hosting-control-panel installs will need immediate upgrade.
 
 [title="4"]Example[/title]
 
-At the time of writing, the support statuses for Composr/ocPortal versions are:
- - 10.x.x - this is [b]beta[/b]
- - 9.x.x - this is [b]supported[/b]
- - 8.x.x - this is [b]stable[/b] (normally this would be defunct, as v9 has been out far longer than 8 months -- but v8 is/was being maintained longer due to the theme compatibility break in v9)
- - 7.x.x - this is [b]defunct[/b]
+At the time of writing, let's assume the support statuses for Composr versions are:
+ - 12.x.x - this is [b]beta[/b]
+ - 11.x.x - this is [b]stable[/b]
+ - 10.x.x - this is [b]supported[/b]
+ - 9.x.x - this is [b]defunct[/b]
 
-If a major flaw was found that exists in 10.x.x, 9.x.x, 8.x.x, then ocProducts would:
- - fix 10.x.x silently (as it is in beta)
- - release a new 9.x.x release
- - release a new 8.x.x release
+If a major flaw was found that exists in 12.x.x, 11.x.x, 10.x.x, 9.x.x, then the developers would:
+ - fix 12.x.x silently (as it is in beta)
+ - release a new 11.x.x release
+ - release a new 10.x.x release
+ - [i]no change to 9.x.x[/i]
 
-If a minor flaw was found that exists in 10.x.x, 9.x.x, 8.x.x, then ocProducts would:
- - fix 10.x.x silently (as it is in beta)
- - release a new 9.x.x release
- - [i]no change to 8.x.x[/i]
+If a minor flaw was found that exists in 12.x.x, 11.x.x, 10.x.x, 9.x.x, then the developers would:
+ - fix 12.x.x silently (as it is in beta)
+ - release a new 11.x.x release
+ - [i]no change to 10.x.x[/i]
+ - [i]no change to 9.x.x[/i]
 
 [title="3"]Security policy[/title]
 
 [media width="64" thumb="0" float="right" framed="0"]themes/default/images/icons/menu/adminzone/security.svg[/media]
-ocProducts believes in being open about how we treat security issues. By explaining how we deal with security issues and why we deal with them in the way we do, we hope that you can better understand how to keep your site patched up. Unfortunately it is virtually impossible to write computer code that doesn't have security issues, because even the smallest mistake or unintended-consequence can lead to them -- ocProducts has very strong standards for writing code to minimalise security holes, as well as in-house developed automatic scanning technology, and layers of redundant security built into Composr itself. Even with all this though, problems will inevitably by found.
+The developers believes in being open about how they treat security issues. By explaining how security issues are dealt with, and why, they hope that you can better understand how to keep your site patched up. Unfortunately it is virtually impossible to write computer code that doesn't have security issues, because even the smallest mistake or unintended-consequence can lead to them -- the developers have very strong standards for writing code to minimalise security holes, as well as in-house developed automatic scanning technology, and layers of redundant security built into Composr itself. Even with all this though, problems will inevitably by found.
 
-There is a security philosophy known as 'full disclosure'. The basis of this is that vulnerabilities are specified in the open soon after they are found. While implementing this would be an act of openness from us, we have decided to not implement it because we have large numbers of users who do not have the expertise and funds to rapidly react to such public disclosures. By not giving full details of security holes, we make it harder for hackers to find them -- reducing the threat by increasing the investment a hacker needs to make. However, we strongly encourage users to keep up to date with all patch releases, because we may have fixed vulnerabilities. The idea is that we make it harder for hackers by not disclosing vulnerabilities, but we quickly release patches and thus don't leave conscientious users vulnerable to persistent hackers. If less-conscientious users don't patch then at least the vulnerabilities aren't disclosed, and if they were disclosed the users would not likely have patched anyway and therefore be in even greater danger. We never sit on vulnerabilities.
+There is a security philosophy known as 'full disclosure'. The basis of this is that vulnerabilities are specified in the open soon after they are found. While implementing this would be an act of openness, the developers have decided to not implement it because they have large numbers of users who do not have the expertise and funds to rapidly react to such public disclosures. By not giving full details of security holes, we make it harder for hackers to find them -- reducing the threat by increasing the investment a hacker needs to make. However, the developers strongly encourage users to keep up to date with all patch releases, because they may have fixed vulnerabilities. The idea is that we make it harder for hackers by not disclosing vulnerabilities, but the developers quickly release patches and thus don't leave conscientious users vulnerable to persistent hackers. If less-conscientious users don't patch then at least the vulnerabilities aren't disclosed, and if they were disclosed the users would not likely have patched anyway and therefore be in even greater danger. We never sit on vulnerabilities.
 
 Security researchers sometimes find vulnerabilities, and usually they do follow full disclosure processes. Therefore it is very possible security holes do get disclosed by third-parties. However, these researchers usually only do their full disclosure after a reasonable time window.
 
-ocProducts reacts to vulnerabilities different depending on whether we classify them as 'major' or 'minor'.
+The developers react to vulnerabilities different depending on whether the developers classify them as 'major' or 'minor'.
  - Major vulnerabilities are considered a 'major flaw', and hence new versions for [b]supported[/b], [b]stable[/b] and [b]beta[/b] are released quickly after the flaw is found. The vulnerabilities are mentioned as existing (along with the severity) in the notes accompanying a new release, the 'version notes' for the prior version, and in a newsletter; there is one exception to this: if the vulnerability is obscure enough to only affect a small proportion of users, it may not be mentioned (keep reading this section for more details on this).
  - Minor vulnerabilities either have a low risk or are so inherently commonplace in all similar software that making new releases to fix each of them is unfeasible. These vulnerabilities are silently fixed, and if there are enough of them or if they are borderline cases, the next minor release mentions their existence. Sometimes a minor vulnerability will be treated as a major one if it has already been disclosed by a third-party (due to an elevated risk).
 
-As stated, we will not always disclose the existence of low-risk vulnerabilities. We appreciate that some might consider this a 'cover up' on ocProduct's part, but the reality is that the decision is made for two reasons:
- - to avoid alarming users
+As stated, the developers will not always disclose the existence of low-risk vulnerabilities. They appreciate that some might consider this a 'cover up', but the reality is that the decision is made for two reasons:
+ - to avoid alarming users who do not know how to assess risk
  - and most importantly, to avoid alerting hackers
-We hope by being up-front, our users will appreciate this and keep their version of Composr up-to-date with the latest stable version of the major version they are using (and within 8 months of release, the latest major version). If users do this, their sites will stay patched for all vulnerabilities ocProducts knows of.
+The developers hope by being up-front, Composr users will appreciate this and keep their version of Composr up-to-date with the latest stable version of the major version they are using (and within 8 months of release, the latest major version). If users do this, their sites will stay patched for all vulnerabilities the developers know of.
 
 [title="2"]See also[/title]
 
