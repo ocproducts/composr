@@ -32,10 +32,10 @@
      */
     $dom.elementsLoaded = new WeakMap();
     
-    document.addEventListener('load', listener, /*useCapture*/true);
-    document.addEventListener('error', listener, /*useCapture*/true);
+    document.addEventListener('load', resourceLoadListener, /*useCapture*/true);
+    document.addEventListener('error', resourceLoadListener, /*useCapture*/true);
     
-    function listener(event) {
+    function resourceLoadListener(event) {
         var loadedEl = event.target, 
             hasLoaded = (event.type === 'load');
 
@@ -66,5 +66,13 @@
             e.preventDefault();
         }
     }, /*useCapture*/true);
+    
+    // Prevent form submission until the DOM is ready
+    $dom.preventFormSubmissionUntilDomReadyListener = function preventFormSubmissionUntilDomReadyListener(e) {
+        e.preventDefault();
+        window.alert('Please wait for the page to load!');
+    };
+
+    window.addEventListener('submit', $dom.preventFormSubmissionUntilDomReadyListener, /*useCapture*/true);
 
 }(window.$dom || (window.$dom = {})));
