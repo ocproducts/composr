@@ -77,21 +77,21 @@ function find_shopping_catalogue_fields($catalogue_name = 'products')
             foreach ($fields as $i => $field) {
                 switch ($key) {
                     case 'product_title':
-                        if (($fields['cf_type'] == 'short_trans') || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
+                        if (($field['cf_type'] == 'short_trans') || (get_translated_text($field['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
                     case 'sku':
-                        if (($fields['cf_type'] == 'codename') || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
+                        if (($field['cf_type'] == 'codename') || (get_translated_text($field['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
                     case 'price':
-                        if ((($fields['cf_type'] == 'float') && (strpos($fields['cf_options'], 'price') !== false)) || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
+                        if ((($field['cf_type'] == 'float') && (strpos($field['cf_options'], 'price') !== false)) || (get_translated_text($field['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
@@ -104,28 +104,28 @@ function find_shopping_catalogue_fields($catalogue_name = 'products')
                     case 'length':
                     case 'width':
                     case 'height':
-                        if (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key)) {
+                        if (get_translated_text($field['cf_name']) == do_lang('ECOM_CAT_' . $key)) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
                     case 'tax_code':
-                        if (($fields['cf_type'] == 'tax_code') || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
+                        if (($field['cf_type'] == 'tax_code') || (get_translated_text($field['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
                     case 'image':
-                        if (($fields['cf_type'] == 'picture') || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
+                        if (($field['cf_type'] == 'picture') || (get_translated_text($field['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
                     case 'description':
-                        if ((in_array($fields['cf_type'], array('long_trans', 'long_text', 'posting_field'))) || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
+                        if ((in_array($field['cf_type'], array('long_trans', 'long_text', 'posting_field'))) || (get_translated_text($field['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
