@@ -122,7 +122,7 @@ This script takes days to run properly.';
                 'downloads',
                 'galleries',
                 'news',
-                'newsletters',
+                'newsletter',
                 'polls',
                 'quizzes',
                 'shopping',

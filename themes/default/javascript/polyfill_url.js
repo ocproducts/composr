@@ -18,7 +18,6 @@
             return true;
         }
         return Array.isArray(o);
-        
     }
 
     function toArray(iter) {

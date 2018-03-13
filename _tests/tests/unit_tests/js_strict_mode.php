@@ -36,6 +36,7 @@ class js_strict_mode_test_set extends cms_test_case
                     'widget_date.js',
                     'WYSIWYG_SETTINGS.js',
                     'xsl_mopup.js',
+                    'polyfill_web_animations.js',
                 ))) {
                     continue;
                 }

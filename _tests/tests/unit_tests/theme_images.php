@@ -47,7 +47,7 @@ class theme_images_test_set extends cms_test_case
             );
             foreach ($bad_patterns as $bad_pattern) {
                 if (preg_match('#' . $bad_pattern . '#', $c) != 0) {
-                    $this->assertTrue(false, 'Found: ' . $bad_pattern . '; fix with &auto_fix=1');
+                    $this->assertTrue(false, 'Found: ' . $bad_pattern . ' in ' . $path . '; fix with &auto_fix=1');
                     $c = preg_replace('#' . $bad_pattern . '#', '', $c);
                 }
             }
@@ -83,7 +83,11 @@ class theme_images_test_set extends cms_test_case
                 if (substr($path, -4) == '.svg') {
                     $c = file_get_contents($path);
                     $matches = array();
-                    preg_match('#width="(\d+)px" height="(\d+)px"#', $c, $matches);
+                    $ok = (preg_match('#width="(\d+)px" height="(\d+)px"#', $c, $matches) != 0);
+                    $this->assertTrue($ok, 'Cannot find SVG width/height in ' . $path);
+                    if (!$ok) {
+                        continue;
+                    }
                     $width = intval($matches[1]);
                     $height = intval($matches[2]);
                 } elseif (is_image($path, IMAGE_CRITERIA_GD_READ, true)) {

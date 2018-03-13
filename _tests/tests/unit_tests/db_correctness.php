@@ -99,7 +99,7 @@ class db_correctness_test_set extends cms_test_case
                 'sources/blocks/main_friends_list.php',
                 'sources/hooks/modules/admin_setupwizard/cns_forum.php',
                 'sources/hooks/systems/cron/subscription_mails.php',
-                'sources/upgrade.php',
+                'sources/upgrade_db_upgrade.php',
             ))) {
                 continue;
             }

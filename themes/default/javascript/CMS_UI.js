@@ -161,7 +161,7 @@
         var tabs = [], i, element;
 
         element = $dom.$('#t-' + tab);
-        
+
         if (!element) {
             $util.fatal('$cms.ui.selectTab(): "#t-' + tab + '" element not found');
             return;

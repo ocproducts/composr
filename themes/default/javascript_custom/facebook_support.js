@@ -92,11 +92,11 @@
             });
 
             // Ignore floods of "Unsafe JavaScript attempt to access frame with URL" errors in Chrome, they are benign
-            
+
             if (!$cms.configOption('facebook_allow_signups')) {
                 return;
             }
-            
+
             // Calling this effectively waits until the login is active on the client side, which we must do before we can do anything (including calling a log out)
             window.FB.getLoginStatus(function (response) {
                 if ((response.status === 'connected') && (response.authResponse)) {

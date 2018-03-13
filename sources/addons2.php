@@ -1157,7 +1157,7 @@ function uninstall_addon($addon, $clear_caches = true)
     $addons_for_files = find_addons_for_files($addon_info['files']);
     foreach ($addon_info['files'] as $filename) {
         if (file_exists(get_file_base() . '/' . $filename)) {
-            if (count($addons_for_file[$filename]) <= 1) { // Make sure it's not shared with other addons
+            if (count($addons_for_files[$filename]) <= 1) { // Make sure it's not shared with other addons
                 if (substr($filename, 0, 37) == 'sources/hooks/systems/addon_registry/') {
                     $last[] = $filename;
                     continue;

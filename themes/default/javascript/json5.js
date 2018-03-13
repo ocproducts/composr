@@ -112,7 +112,7 @@ JSON5.parse = (function () {
         peek = function () {
 
 // Get the next character without consuming it or
-// assigning it to the ch varaible.
+// assigning it to the ch variable.
 
             return text.charAt(at);
         },

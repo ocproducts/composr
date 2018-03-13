@@ -116,6 +116,7 @@ class lang_html_safe_test_set extends cms_test_case
             'NUM_GUESTS',
             'ALT_FIELD',
             'NO_SUCH_THEME_IMAGE',
+            'MISSING_ADDON',
         );
 
         $result = array_keys(array_intersect_key($LANGUAGE_LITERAL, $LANGUAGE_HTML));

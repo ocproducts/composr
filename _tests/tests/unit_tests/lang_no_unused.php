@@ -130,6 +130,7 @@ class lang_no_unused_test_set extends cms_test_case
             'INSERT_FORMATTING_SYMBOL',
             'INSERT_ABSTRACTION_SYMBOL',
             'INSERT_ARITHMETICAL_SYMBOL',
+            'INSERT_MISC_SYMBOL',
             'INSERT_LOGICAL_SYMBOL',
             'INSERT_DIRECTIVE',
             'CSS_RULE_UNMATCHED_css_replace',

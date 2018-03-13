@@ -328,7 +328,7 @@
             isRejected = false,
             isResolved = false;
 
-        // Observe the promise, saving the fulfillment in a closure scope.
+        // Observe the promise, saving the fulfilment in a closure scope.
         var result = promise.then(
             function(v) {
                 isResolved = true;
@@ -351,7 +351,7 @@
         result.isRejected = function () {
             return isRejected;
         };
-        
+
         return result;
     };
 

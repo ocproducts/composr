@@ -133,7 +133,7 @@ Disadvantages to using a multi-site network:
 [title="2"]Virtual roots[/title]
 
 [surround]
-[media width="150" description="The virtualed download category" float="right"]data_custom/images/docs/tut_subcom/subcom_virtualed.png[/media]
+[media width="150" description="The virtualed download category" float="right"]data_custom/images/docs/tut_subcom/subcom_virtualised.png[/media]
 [media width="150" description="Viewing the download category we added, we can find the virtualisation URL" float="right"]data_custom/images/docs/tut_subcom/subcom_cat_view.png[/media]
 [media width="150" description="Adding a download category for the NewTown Parish subcommunity" float="right"]data_custom/images/docs/tut_subcom/subcom_cat_add.png[/media]
 A number of Composr modules contain categories organised into a tree structure, including:

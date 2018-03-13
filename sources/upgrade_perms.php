@@ -206,6 +206,7 @@ function get_excess_perms($array, $rel = '')
                 $out = array_merge($out, get_excess_perms($array, $relpath));
             }
         }
+        closedir($dh);
     }
 
     return $out;

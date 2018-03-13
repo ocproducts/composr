@@ -99,10 +99,6 @@ class Module_admin_ecommerce extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
-        if (!addon_installed('TODO')) {
-            return null;
-        }
-
         $error_msg = new Tempcode();
         if (!addon_installed__messaged('ecommerce', $error_msg)) {
             return $error_msg;

@@ -396,7 +396,7 @@ class Module_admin_lang
      */
     public function interface_content()
     {
-        if (get_option('allow_international') === '0') {
+        if (get_option('enable_language_selection') === '0') {
             warn_exit(do_lang_tempcode('MULTILANG_OFF_OPTION'));
         }
 
@@ -746,7 +746,7 @@ class Module_admin_lang
                 $_current = str_replace('\n', "\n", $old);
             }
 
-            if (($google != '') && (get_option('google_translate_api_key') != '')) {
+            if (($google != '') && (get_option('google_apis_api_key') != '') && (get_option('google_translate_enabled') == '1')) {
                 $actions = do_template('TRANSLATE_ACTION', array('_GUID' => '9e9a68cb2c1a1e23a901b84c9af2280b', 'LANG_FROM' => get_site_default_lang(), 'LANG_TO' => $lang, 'NAME' => 'trans_' . $name, 'OLD' => $_current));
             }
 
@@ -767,7 +767,7 @@ class Module_admin_lang
         return do_template('TRANSLATE_SCREEN', array(
             '_GUID' => 'b3429f8bd0b4eb79c33709ca43e3207c',
             'PAGE' => $lang_file,
-            'GOOGLE' => (get_option('google_translate_api_key') != '') ? $google : '',
+            'GOOGLE' => ((get_option('google_translate_api_key') != '') && (get_option('google_translate_enabled') == '1')) ? $google : '',
             'LANG' => $lang,
             'LINES' => $lines,
             'TITLE' => $this->title,

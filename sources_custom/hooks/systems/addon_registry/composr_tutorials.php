@@ -1085,7 +1085,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_subcom/subcom_cat_add.png',
             'data_custom/images/docs/tut_subcom/subcom_cat_view.png',
             'data_custom/images/docs/tut_subcom/subcom_redirects.png',
-            'data_custom/images/docs/tut_subcom/subcom_virtualed.png',
+            'data_custom/images/docs/tut_subcom/subcom_virtualised.png',
             'data_custom/images/docs/tut_subcom/subcom_zone_add.png',
             'data_custom/images/docs/tut_subcom/subcom_zone_afm.png',
             'data_custom/images/docs/tut_subcom/usergroup.png',

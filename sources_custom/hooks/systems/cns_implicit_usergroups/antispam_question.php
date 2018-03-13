@@ -112,6 +112,6 @@ class Hook_implicit_usergroups_antispam_question
             return false;
         }
         $val = $mappings[$f];
-        return ($val != $this->expected_answer) && ($val != '');
+        return (!empty($val)) && ($val != $this->expected_answer);
     }
 }

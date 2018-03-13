@@ -4005,7 +4005,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_KEEP_DEFAULT_NEWS_CATEGORIES
         DESCRIPTION_KEEP_PERSONAL_GALLERIES
         DESCRIPTION_KEEP_SUBFOLDERS
-        DESCRIPTION_KEYWORDS_SHARE
         DESCRIPTION_LABEL
         DESCRIPTION_LANGUAGE
         DESCRIPTION_LANGUAGE_CACHE
@@ -4395,7 +4394,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DOC_TICKETS
         DOC_TOOLS
         DOC_TOP_REFERRERS
-        DOC_TOP_SEARCH_KEYWORDS
         DOC_TRACKBACKS
         DOC_TRANSLATE
         DOC_TRANSLATE_CONTENT
@@ -5068,7 +5066,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         GO
         GOOD_PATH
         GOOGLE_ANALYTICS
-        GOOGLE_GEOCODE_API_KEY
         GEOCODE_API_NOT_CONFIGURED
         GEOCODE_COULD_NOT_CONNECT
         GEOCODE_COULD_NOT_PARSE
@@ -5077,7 +5074,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         GEOCODE_REQUEST_DENIED
         GEOCODE_UNKNOWN_ERROR
         GEOCODE_ZERO_RESULTS
-        GOOGLE_TRANSLATE_API_KEY
         GRAPH
         GROUP_LEADER
         GROUP_MEMBER_TIMEOUTS
@@ -5327,7 +5323,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         KEEP_WORDFILTER
         KEYSET_PAGINATION
         KEYWORDS
-        KEYWORDS_SHARE
         LAME_SPAM_HACK
         LANGUAGE_CACHE
         LANGUAGE_CORRUPTION
@@ -7174,8 +7169,17 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TOP_REFERRERS
         TOP_REFERRERS_RANGE
         TOP_RIGHT
-        TOP_SEARCH_KEYWORDS
-        TOP_SEARCH_KEYWORDS_RANGE
+        BING_GEOCODE_API_KEY
+        CMD_HEALTH_CHECK_HELP
+        CMD_HEALTH_CHECK_HELP_PARAM_0
+        CONFIG_OPTION_bing_geocoding_api_key
+        CONFIG_OPTION_mapquest_geocoding_api_key
+        GEOCODING
+        GOOGLE_GEOCODE_API_ENABLED
+        GOOGLE_TRANSLATE_ENABLED
+        INSERT_MISC_SYMBOL
+        MAPQUEST_GEOCODE_API_KEY
+        MISSING_BLOCK
         TORNEVALL_API_PASSWORD
         TORNEVALL_API_USERNAME
         TOTAL_DOWNLOADS_IN_ARCHIVE

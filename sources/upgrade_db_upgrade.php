@@ -118,6 +118,7 @@ function version_specific()
                         sync_file_move(get_custom_file_base() . '/imports/mods/' . $f, get_file_base() . '/imports/addons/' . $f);
                     }
                 }
+                closedir($dh);
             }
         }
         if ($version_database < 10.0) {
