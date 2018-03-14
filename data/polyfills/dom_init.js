@@ -62,7 +62,9 @@
 
     // Prevent form submission for forms with a placeholder action
     window.addEventListener('submit', function (e) {
-        if (e.target && (e.target.localName === 'form') && (e.target.getAttribute('action') === '#!')) {
+        var form = e.target;
+        
+        if (form.getAttribute('action') === '#!') {
             e.preventDefault();
         }
     }, /*useCapture*/true);
@@ -70,7 +72,7 @@
     // Prevent form submission until the DOM is ready
     $dom.preventFormSubmissionUntilDomReadyListener = function preventFormSubmissionUntilDomReadyListener(e) {
         e.preventDefault();
-        window.alert('Please wait for the page to load!');
+        window.alert('Please wait for the page to load then try again.');
     };
 
     window.addEventListener('submit', $dom.preventFormSubmissionUntilDomReadyListener, /*useCapture*/true);
