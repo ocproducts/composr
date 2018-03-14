@@ -2648,7 +2648,11 @@ Provide addon screenshots
 | Communication
 | Product development only
 | Manually
-| If you are making functionality that will be costly to maintain for some reason (e.g. dependency on third-parties, or fragile code) then it should be added to [tt]maintenance_status.csv[/tt] for responsibility tracking.
+| If you are making functionality that will be costly to maintain for some reason (e.g. dependency on third-parties, or fragile code) then it should either:
+1) be added to [tt]maintenance_status.csv[/tt] for responsibility tracking (mandatory for bundled addons)
+2) a Health Check hook (where an API key is involved)
+3) an automated test (where no API key is involved)
+4) have a [tt]FRAGILE[/tt] comment in the code (where automated testing is not possible)
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use text-based file formats[/color]

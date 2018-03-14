@@ -96,11 +96,6 @@ mysql,Maintain with new versions of MySQL,ocProducts,,Could potentially break du
 mariadb,Maintain support for MariaDB,ocProducts,,"Could potentially break due to third-party changes, although they do claim MySQL-compatibility.",No,
 options_hidden,Hidden options,ocProducts,,Not regularly tested.,No,
 options_dev,Development options in config_editor.php,ocProducts,,Not regularly tested.,No,
-facebook,Facebook login integration and syndication,ocProducts,ocProducts,Could potentially break due to third-party changes.,Yes,
-tapatalk,Tapatalk,ocProducts,,Could potentially break due to third-party changes.,Yes,
-google_maps,"Google maps (DataMappr, UserMappr)",ocProducts,,Could potentially break due to third-party changes.,Yes,
-twitter,Twitter syndication,ocProducts,,Could potentially break due to third-party changes.,Yes,
-webdav,WebDav access for The Repository,ocProducts,,Could potentially break due to third-party changes.,Yes,
 currency_codes,ISO currencies (internal list),ocProducts,,Could potentially break due to political changes.,No,currency automated test.
 country_codes,ISO countries (internal list) and flag images,ocProducts,,Could potentially break due to political changes.,No,
 currency,Currency conversion,ocProducts,,Could potentially break due to third-party changes.,No,
@@ -130,3 +125,8 @@ mixed_https,Having a combination of HTTPS and HTTP pages,ocProducts,,Not regular
 inline_editing,Inline Editing,ocProducts,,"Not regularly Tested, and themes are not typically expected to support it out-of-the-box.",No,
 download_pdf_indexing,Download PDF search indexing,ocProducts,,Not regularly Tested.,No,
 oembed,Default oEmbed configuration,ocProducts,,Not regularly Tested.,No,oembed automated test.
+facebook,Facebook login integration and syndication,ocProducts,ocProducts,Could potentially break due to third-party changes.,Yes,
+tapatalk,Tapatalk,ocProducts,,Could potentially break due to third-party changes.,Yes,
+google_maps,"Google maps (DataMappr, UserMappr)",ocProducts,,Could potentially break due to third-party changes.,Yes,
+twitter,Twitter syndication,ocProducts,,Could potentially break due to third-party changes.,Yes,
+webdav,WebDav access for The Repository,ocProducts,,Could potentially break due to third-party changes.,Yes,

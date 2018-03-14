@@ -13,6 +13,8 @@
  * @package    google_search
  */
 
+// FRAGILE: This code can not be automatically tested, but may break due to 3rd party API changes.
+
 /**
  * Hook class.
  */
