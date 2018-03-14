@@ -31,6 +31,10 @@
 
     // Start everything
     $dom.ready.then(function () {
+        // Allow form submissions by removing this listener attached early in dom_init.js
+        window.removeEventListener('submit', $dom.preventFormSubmissionUntilDomReadyListener, /*useCapture*/true);
+        delete $dom.preventFormSubmissionUntilDomReadyListener;
+        
         $cms.attachBehaviors(document);
     });
 }(window.$cms, window.$util, window.$dom));

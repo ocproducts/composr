@@ -41,7 +41,7 @@ class Hook_config_google_apis_api_key
             'order_in_category_group' => 1,
             'required' => false,
 
-            'public' => false,
+            'public' => true,
 
             'addon' => 'core_configuration',
         );

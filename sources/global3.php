@@ -1280,35 +1280,37 @@ function addon_installed($addon, $check_hookless = false)
     $answer = is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $addon . '.php') || is_file(get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . $addon . '.php');
 
     // Check addons table
-    if ((!$answer) && ($check_hookless) && (!running_script('install'))) {
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('addons', 'addon_name', array('addon_name' => $addon));
-        if ($test !== null) {
-            $answer = true;
-        }
-
-        // Won't check tables because we don't know them for hookless addons (not in db_meta.dat)
-    } else {
-        if ($answer) {
-            // Check tables defined in db_meta.dat (bundled addons)
-            static $data = null;
-            if ($data === null) {
-                $data = unserialize(file_get_contents(get_file_base() . '/data/db_meta.dat'));
+    if (!running_script('install')) {
+        if ((!$answer) && ($check_hookless)) {
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('addons', 'addon_name', array('addon_name' => $addon));
+            if ($test !== null) {
+                $answer = true;
             }
-            foreach ($data['tables'] as $table_name => $table) {
-                if ($table['addon'] == $addon) {
-                    $db = get_db_for($table_name);
-                    if (!$db->table_exists($table_name)) {
-                        $answer = false;
-                        break;
+
+            // Won't check tables because we don't know them for hookless addons (not in db_meta.dat)
+        } else {
+            if ($answer) {
+                // Check tables defined in db_meta.dat (bundled addons)
+                static $data = null;
+                if ($data === null) {
+                    $data = unserialize(file_get_contents(get_file_base() . '/data/db_meta.dat'));
+                }
+                foreach ($data['tables'] as $table_name => $table) {
+                    if ($table['addon'] == $addon) {
+                        $db = get_db_for($table_name);
+                        if (!$db->table_exists($table_name)) {
+                            $answer = false;
+                            break;
+                        }
                     }
                 }
             }
         }
-    }
 
-    if ($answer) {
-        if (get_value('addon_disabled_' . $addon) === '1') {
-            $answer = false;
+        if ($answer) {
+            if (get_value('addon_disabled_' . $addon) === '1') {
+                $answer = false;
+            }
         }
     }
 
