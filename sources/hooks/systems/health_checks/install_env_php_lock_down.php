@@ -308,9 +308,9 @@ END;
     {
         require_code('files2');
         if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
-            $files = get_directory_contents('/home', '', null);
+            $files = get_directory_contents('/home', '', null, false);
         } else {
-            $files = get_directory_contents('C:\\', '', null);
+            $files = get_directory_contents('C:\\', '', null, false);
         }
         $this->assertTrue(count($files) == 0, do_lang('WARNING_OPEN_BASEDIR'));
     }

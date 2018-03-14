@@ -103,7 +103,6 @@ function get_table_purpose_flags()
         'chat_rooms' => TABLE_PURPOSE__NORMAL,
         'chat_sound_effects' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*under f_members*/,
         'comcode_pages' => TABLE_PURPOSE__NORMAL,
-        'commandrchat' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE,
         'config' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_STAGING_COPY/*has-special-Commandr-fs-hook*/,
         'content_privacy__members' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*under <content>*/,
         'content_privacy' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*under <content>*/,
