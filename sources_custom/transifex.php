@@ -937,10 +937,10 @@ function _transifex_credentials()
     }
 
     if (empty($username)) {
-        warn_exit('Transifex username must be set with :set_value(\'transifex_username\', \'...\', true); or passed as the first CLI parameter', true);
+        warn_exit(do_lang('API_NOT_CONFIGURED', 'Transifex') . ' Username must be set with :set_value(\'transifex_username\', \'...\', true); or passed as the first CLI parameter', true);
     }
     if (empty($password)) {
-        warn_exit('Transifex password must be set with :set_value(\'transifex_password\', \'...\', true); or passed as the second CLI parameter', true);
+        warn_exit(do_lang('API_NOT_CONFIGURED', 'Transifex') . ' Transifex password must be set with :set_value(\'transifex_password\', \'...\', true); or passed as the second CLI parameter', true);
     }
 
     return array($username, $password);

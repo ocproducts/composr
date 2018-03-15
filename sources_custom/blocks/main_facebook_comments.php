@@ -64,7 +64,7 @@ class Block_main_facebook_comments
 
         $appid = get_option('facebook_appid');
         if ($appid == '') {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('API_NOT_CONFIGURED', 'Facebook'), 'mcpdkezerhqqwxa3qas36jainejuetb8', 'red-alert');
         }
         return do_template('BLOCK_MAIN_FACEBOOK_COMMENTS', array(
             '_GUID' => '99de0fd4bc8b3f57d4f9238b798bfcbf',

@@ -21,7 +21,7 @@ function init__confluence()
     $CONFLUENCE_SUBDOMAIN = get_option('confluence_subdomain');
     $CONFLUENCE_SPACE = get_option('confluence_space');
     if (($CONFLUENCE_SUBDOMAIN == '') || ($CONFLUENCE_SPACE == '')) {
-        warn_exit(do_lang_tempcode('CONFLUENCE_NOT_CONFIGURED'));
+        warn_exit(do_lang_tempcode('API_NOT_CONFIGURED', 'Confluence'));
     }
     $CONFLUENCE_USERNAME = get_option('confluence_username');
     $CONFLUENCE_PASSWORD = get_option('confluence_password');

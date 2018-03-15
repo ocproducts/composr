@@ -73,7 +73,7 @@ class Block_main_forum_topics
         }
 
         if (has_no_forum()) {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('NO_FORUM_INSTALLED'), 'u2ij585bcl5tq7snyxqgh3fjn90i11q8', 'red-alert');
         }
 
         require_css('news');
@@ -156,89 +156,85 @@ class Block_main_forum_topics
         } else {
             $forum_names_map = null;
         }
-        if (!has_no_forum()) {
-            $max_rows = 0;
-            $topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics($forum_ids, $limit, 0, $max_rows, '', true, $date_key, $hot == 1);
+        $max_rows = 0;
+        $topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics($forum_ids, $limit, 0, $max_rows, '', true, $date_key, $hot == 1);
 
-            $_topics = array();
-            if ($topics !== null) {
-                sort_maps_by($topics, $date_key);
-                $topics = array_reverse($topics, false);
+        $_topics = array();
+        if ($topics !== null) {
+            sort_maps_by($topics, $date_key);
+            $topics = array_reverse($topics, false);
 
-                if ((count($topics) < $limit) && ($hot == 1)) {
-                    $more_topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics($forum_ids, $limit, 0, $max_rows, '', true, $date_key);
-                    if ($more_topics === null) {
-                        $more_topics = array();
-                    }
-                    $topics = array_merge($topics, $more_topics);
+            if ((count($topics) < $limit) && ($hot == 1)) {
+                $more_topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics($forum_ids, $limit, 0, $max_rows, '', true, $date_key);
+                if ($more_topics === null) {
+                    $more_topics = array();
                 }
-
-                $done = 0;
-                $seen = array();
-                foreach ($topics as $topic) {
-                    if (array_key_exists($topic['id'], $seen)) {
-                        continue;
-                    }
-                    $seen[$topic['id']] = 1;
-
-                    $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($topic['id'], $forum_name, true);
-                    $topic_url_unread = null;
-                    if (get_forum_type() == 'cns') {
-                        $topic_url_unread = build_url(array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic['id']), get_module_zone('topicview'), array(), false, false, false, 'first_unread');
-                    }
-                    $title = escape_html($topic['title']);
-                    $date = get_timezoned_date_time_tempcode($topic[$date_key]);
-                    $username = $topic[$username_key];
-                    $member_id = array_key_exists($memberid_key, $topic) ? $topic[$memberid_key] : null;
-                    if (($forum_names_map !== null) && (!array_key_exists($topic['forum_id'], $forum_names_map))) {
-                        continue; // Maybe Private Topic, slipped in via reference to a missing forum
-                    }
-                    $forum_name = ($forum_names_map === null) ? null : $forum_names_map[$topic['forum_id']];
-
-                    $_topics[] = array(
-                        'POST' => $topic['firstpost'],
-                        'FORUM_ID' => ($forum_names_map === null) ? null : strval($topic['forum_id']),
-                        'FORUM_NAME' => $forum_name,
-                        'TOPIC_URL' => $topic_url,
-                        'TOPIC_URL_UNREAD' => $topic_url_unread,
-                        'TITLE' => $title,
-                        'DATE' => $date,
-                        'DATE_RAW' => strval($topic[$date_key]),
-                        'USERNAME' => $username,
-                        'MEMBER_ID' => ($member_id === null) ? '' : strval($member_id),
-                        'NUM_POSTS' => integer_format($topic['num']),
-                    );
-
-                    $done++;
-
-                    if ($done == $limit) {
-                        break;
-                    }
-                }
-            }
-            if ($_topics === array()) {
-                return do_template('BLOCK_NO_ENTRIES', array(
-                    '_GUID' => 'c76ab018a0746c2875c6cf69c92a01fb',
-                    'BLOCK_ID' => $block_id,
-                    'HIGH' => false,
-                    'FORUM_NAME' => array_key_exists('param', $map) ? $map['param'] : do_lang('DEFAULT_FORUM_TITLE'),
-                    'TITLE' => $_title,
-                    'MESSAGE' => do_lang_tempcode(($hot == 1) ? 'NO_TOPICS_HOT' : 'NO_TOPICS'),
-                    'ADD_NAME' => $add_name,
-                    'SUBMIT_URL' => $submit_url,
-                ));
+                $topics = array_merge($topics, $more_topics);
             }
 
-            return do_template('BLOCK_MAIN_FORUM_TOPICS', array(
-                '_GUID' => '368b80c49a335ad035b00510681d5008',
+            $done = 0;
+            $seen = array();
+            foreach ($topics as $topic) {
+                if (array_key_exists($topic['id'], $seen)) {
+                    continue;
+                }
+                $seen[$topic['id']] = 1;
+
+                $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($topic['id'], $forum_name, true);
+                $topic_url_unread = null;
+                if (get_forum_type() == 'cns') {
+                    $topic_url_unread = build_url(array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic['id']), get_module_zone('topicview'), array(), false, false, false, 'first_unread');
+                }
+                $title = escape_html($topic['title']);
+                $date = get_timezoned_date_time_tempcode($topic[$date_key]);
+                $username = $topic[$username_key];
+                $member_id = array_key_exists($memberid_key, $topic) ? $topic[$memberid_key] : null;
+                if (($forum_names_map !== null) && (!array_key_exists($topic['forum_id'], $forum_names_map))) {
+                    continue; // Maybe Private Topic, slipped in via reference to a missing forum
+                }
+                $forum_name = ($forum_names_map === null) ? null : $forum_names_map[$topic['forum_id']];
+
+                $_topics[] = array(
+                    'POST' => $topic['firstpost'],
+                    'FORUM_ID' => ($forum_names_map === null) ? null : strval($topic['forum_id']),
+                    'FORUM_NAME' => $forum_name,
+                    'TOPIC_URL' => $topic_url,
+                    'TOPIC_URL_UNREAD' => $topic_url_unread,
+                    'TITLE' => $title,
+                    'DATE' => $date,
+                    'DATE_RAW' => strval($topic[$date_key]),
+                    'USERNAME' => $username,
+                    'MEMBER_ID' => ($member_id === null) ? '' : strval($member_id),
+                    'NUM_POSTS' => integer_format($topic['num']),
+                );
+
+                $done++;
+
+                if ($done == $limit) {
+                    break;
+                }
+            }
+        }
+        if ($_topics === array()) {
+            return do_template('BLOCK_NO_ENTRIES', array(
+                '_GUID' => 'c76ab018a0746c2875c6cf69c92a01fb',
                 'BLOCK_ID' => $block_id,
-                'TITLE' => $_title,
-                'TOPICS' => $_topics,
+                'HIGH' => false,
                 'FORUM_NAME' => array_key_exists('param', $map) ? $map['param'] : do_lang('DEFAULT_FORUM_TITLE'),
+                'TITLE' => $_title,
+                'MESSAGE' => do_lang_tempcode(($hot == 1) ? 'NO_TOPICS_HOT' : 'NO_TOPICS'),
+                'ADD_NAME' => $add_name,
                 'SUBMIT_URL' => $submit_url,
             ));
-        } else {
-            return new Tempcode();
         }
+
+        return do_template('BLOCK_MAIN_FORUM_TOPICS', array(
+            '_GUID' => '368b80c49a335ad035b00510681d5008',
+            'BLOCK_ID' => $block_id,
+            'TITLE' => $_title,
+            'TOPICS' => $_topics,
+            'FORUM_NAME' => array_key_exists('param', $map) ? $map['param'] : do_lang('DEFAULT_FORUM_TITLE'),
+            'SUBMIT_URL' => $submit_url,
+        ));
     }
 }

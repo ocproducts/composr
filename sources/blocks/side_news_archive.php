@@ -93,7 +93,7 @@ class Block_side_news_archive
         $rows = array_reverse($rows);
 
         if (count($rows) == 0) {
-            return new Tempcode(); // Nothing
+            return paragraph(do_lang_tempcode('NO_ENTRIES'), '2kkpdv5vq2zbhuu4j4n6gteucgi1mee1', 'red-alert');
         }
         $first = $rows[0]['date_and_time'];
         $last = $rows[count($rows) - 1]['date_and_time'];

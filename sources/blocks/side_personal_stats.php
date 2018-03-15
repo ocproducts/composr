@@ -56,7 +56,7 @@ class Block_side_personal_stats
         $member_id = get_member();
 
         if (get_forum_type() == 'none') {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('NO_FORUM_INSTALLED'), 'kc6kp12z4myd48e2cf9p1nzco1ynartu', 'red-alert');
         }
 
         if (!is_guest($member_id)) {

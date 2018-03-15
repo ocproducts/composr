@@ -64,7 +64,7 @@ class Block_main_facebook_like
 
         $appid = get_option('facebook_appid');
         if ($appid == '') {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('API_NOT_CONFIGURED', 'Facebook'), 'k3k28zaoxf1llhy49dvuihh0ptemcmd8', 'red-alert');
         }
 
         return do_template('BLOCK_MAIN_FACEBOOK_LIKE', array(

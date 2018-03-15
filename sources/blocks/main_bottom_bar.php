@@ -58,10 +58,6 @@ class Block_main_bottom_bar
             return paragraph(do_lang_tempcode('NO_CNS'), '0tcc11s4mxymww9ubl49vqig0m8y72wh', 'red-alert');
         }
 
-        if (!isset($GLOBALS['FORUM_DRIVER'])) {
-            return new Tempcode();
-        }
-
         require_code('cns_general');
         require_code('cns_groups');
         require_css('cns');

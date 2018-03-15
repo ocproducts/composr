@@ -73,7 +73,7 @@ class Block_main_forum_news
         }
 
         if (has_no_forum()) {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('NO_FORUM_INSTALLED'), 'cp9sxfimulv0ufhct6zca6ntdivhrt8p', 'red-alert');
         }
 
         require_lang('news');

@@ -78,7 +78,7 @@ class Block_main_facebook_page
 
         $appid = get_option('facebook_appid');
         if ($appid == '') {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('API_NOT_CONFIGURED', 'Facebook'), 'ty2jeraub73e8bu0bo57m01s4hxby4h1', 'red-alert');
         }
 
         $page_name = empty($map['page_name']) ? get_site_name() : $map['page_name'];

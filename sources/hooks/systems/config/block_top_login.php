@@ -53,6 +53,9 @@ class Hook_config_block_top_login
      */
     public function get_default()
     {
+        if (get_forum_type() == 'none') {
+            return null;
+        }
         return '1';
     }
 }

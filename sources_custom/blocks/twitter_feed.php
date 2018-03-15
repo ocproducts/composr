@@ -30,7 +30,7 @@ class Block_twitter_feed
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('consumer_key', 'consumer_secret', 'access_token', 'access_token_secret', 'screen_name', 'title', 'template_main', 'template_style', 'max_statuses', 'style', 'show_profile_image', 'follow_button_size', 'twitter_logo_color', 'twitter_logo_size');
+        $info['parameters'] = array('screen_name', 'title', 'template_main', 'template_style', 'max_statuses', 'style', 'show_profile_image', 'follow_button_size', 'twitter_logo_color', 'twitter_logo_size');
         return $info;
     }
 
@@ -75,15 +75,15 @@ class Block_twitter_feed
         safe_ini_set('ocproducts.type_strictness', '0');
 
         // Set up variables from parameters
-        $api_key = array_key_exists('consumer_key', $map) ? $map['consumer_key'] : '';
-        $api_secret = array_key_exists('consumer_secret', $map) ? $map['consumer_secret'] : '';
-        $token = array_key_exists('access_token', $map) ? $map['access_token'] : '';
-        $token_secret = array_key_exists('access_token_secret', $map) ? $map['access_token_secret'] : '';
-        if ((get_option('twitterfeed_use_twitter_support_config') == '1') && ($api_key == '' || $api_secret == '' || $token == '' || $token_secret == '')) {
-            $api_key = get_option('twitter_api_key');
-            $api_secret = get_option('twitter_api_secret');
-            $token = get_value('twitter_oauth_token', null, true);
-            $token_secret = get_value('twitter_oauth_token_secret', null, true);
+        $api_key = get_option('twitter_api_key');
+        $api_secret = get_option('twitter_api_secret');
+        if ($api_key == '' || $api_secret == '') {
+            return paragraph(do_lang_tempcode('API_NOT_CONFIGURED'), 'l7gu1s34g0hv67kahaq850b6a16926q9', 'red-alert');
+        }
+        $token = get_value('twitter_oauth_token', null, true);
+        $token_secret = get_value('twitter_oauth_token_secret', null, true);
+        if ($token === null || $token_secret === null) {
+            return paragraph(do_lang_tempcode('API_NOT_CONFIGURED_OAUTH'), 'm7gu1s34g0hv67kahaq850b6a16926q9', 'red-alert');
         }
         $twitter_name = array_key_exists('screen_name', $map) ? $map['screen_name'] : 'coolweens';
         $twitter_title = array_key_exists('title', $map) ? $map['title'] : 'Twitter Feed';
@@ -143,19 +143,6 @@ class Block_twitter_feed
 
         // Create template object
         $content = new Tempcode();
-
-        // Check for Twitter Support addon dependency before we go any further
-        if (!addon_installed('twitter_support')) {
-            $twitter_error = 'The Twitter Support addon is not installed. The Twitter Feed Integration Block will not work unless the Twitter Support addon is installed. Please download and install the appropriate version of the Twitter Support addon from compo.sr.<br />';
-            return do_template($twitter_templatemain, array(
-                'TWITTER_TITLE' => $twitter_title,
-                'TWITTER_ERROR' => $twitter_error,
-                'CONTENT' => $content,
-                'STYLE' => strval($twitter_style),
-                'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code,
-                'USER_SCREEN_NAME' => $twitter_name,
-            ));
-        }
 
         // Initiate Twitter connection
         require_code('twitter');

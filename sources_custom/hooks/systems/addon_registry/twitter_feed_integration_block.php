@@ -81,9 +81,14 @@ class Hook_addon_registry_twitter_feed_integration_block
     {
         return 'Integrate your Twitter feed into your web site, via a block.
 
-First set up an app on Twitter, then use Comcode like:
+[list]
+[*] Set up an app on Twitter
+[*] Configure the Twitter settings in Composr (Admin Zone > Setup > Configuration > Composr API options > Twitter)
+[*] Set up oAuth for Twitter (Admin Zone > Setup > Twitter authorisation)
+[*] Use Comcode like:
 [code="Comcode"]
-[block consumer_key="xxx" consumer_secret="xxx" access_token="xxx" access_token_secret="xxx" screen_name="yourname"]twitter_feed[/block]
+[block screen_name="yourname"]twitter_feed[/block]
+[/list]
 [/code]';
     }
 
@@ -157,7 +162,6 @@ First set up an app on Twitter, then use Comcode like:
             'themes/default/images_custom/twitter_feed/retweet_hover.png',
             'themes/default/images_custom/twitter_feed/retweet_on.png',
             'sources_custom/hooks/systems/config/twitterfeed_update_time.php',
-            'sources_custom/hooks/systems/config/twitterfeed_use_twitter_support_config.php',
             'themes/default/javascript_custom/twitter_feed_integration_block.js',
         );
     }

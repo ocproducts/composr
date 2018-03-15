@@ -94,59 +94,34 @@ class Block_side_weather
         $block_id = get_block_id($map);
 
         $max_days = isset($map['max_days']) ? intval($map['max_days']) : 2;
-
-        if (empty($map['param'])) {
-            $loc_code = '2487889'; // if not found setting a default location for weather
-        } else {
-            $loc_code = $map['param']; // need to pass loc ID ex :INXX0087
-        }
-
-        if (!is_numeric($loc_code)) {
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_weather_codes', 'w_code', array('w_string' => $loc_code));
-            if ($test === null) {
-                $matches = array();
-
-                require_code('files');
-
-                if (preg_match('#^\-?\d+(\.\d+)?,\-?\d+(\.\d+)?$#', $loc_code) != 0) {
-                    $url = 'http://query.yahooapis.com/v1/public/yql?q=' . urlencode('select * from geo.placefinder where text="' . $loc_code . '"') . '&format=json&diagnostics=true&callback=cbfunc';
-                    $result = http_get_contents($url);
-
-                    if (preg_match('#"woeid":\s*"(\d+)"#', $result, $matches) != 0) {
-                        $loc_code = $matches[1];
-                    } else {
-                        return new Tempcode();
-                    }
-                } else {
-                    $http_result = cms_http_request('http://uk.weather.yahoo.com/search/weather?p=' . urlencode($loc_code));
-                    $result = $http_result->data;
-
-                    if (preg_match('#<a href=\'/redirwoei/(\d+)\'>#', $result, $matches) != 0) {
-                        $loc_code = $matches[1];
-                    } elseif (preg_match('#-(\d+)/#', $http_result->download_url, $matches) != 0) {
-                        $loc_code = $matches[1];
-                    } else {
-                        return new Tempcode();
-                    }
-                }
-
-                if (is_numeric($loc_code)) {
-                    $GLOBALS['SITE_DB']->query_insert('cached_weather_codes', array(
-                        'w_string' => $map['param'],
-                        'w_code' => intval($loc_code),
-                    ));
-                }
-            } else {
-                $loc_code = strval($test);
-            }
-        }
-
         $temperature_unit = (array_key_exists('unit', $map) && ($map['unit'] != '')) ? $map['unit'] : 'c';
 
-        $json_url = 'http://query.yahooapis.com/v1/public/yql?q=select+%2A+from+weather.forecast+where+woeid%3D' . urlencode($loc_code) . '%20AND%20u%3D%22' . urlencode($temperature_unit) . '%22&format=json';
-        $http_result = cms_http_request($json_url, array('trigger_error' => false));
-        $json = $http_result->data;
-        if (empty($json)) {
+        if (empty($map['param'])) {
+            $_woeid = '2487889'; // if not found set a default location for weather
+        } else {
+            $_woeid = $map['param']; // need to pass a WOEID
+        }
+        if (!is_numeric($_woeid)) {
+            $woeid = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_weather_codes', 'w_code', array('w_string' => $_woeid));
+            if ($woeid === null) {
+                $matches = array();
+
+                $woeid = $this->_get_woeid($_woeid);
+                if ($woeid === null) {
+                    return paragraph(do_lang_tempcode('WEATHER_LOCATON_NOT_FOUND'), 'kff1df2t2tp3wil1mbn7lxz8il9zrex7', 'red-alert');
+                }
+
+                $GLOBALS['SITE_DB']->query_insert('cached_weather_codes', array(
+                    'w_string' => $_woeid,
+                    'w_code' => $woeid,
+                ));
+            }
+        } else {
+            $woeid = intval($_woeid);
+        }
+
+        list($json_url, $http_result, $result) = $this->_get_weather_data($woeid, $max_days, $temperature_unit);
+        if ($result === null) {
             if (empty($http_result->message_b)) {
                 $http_result->message_b = do_lang('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', $json_url);
             }
@@ -161,60 +136,123 @@ class Block_side_weather
             }
             return do_template('INLINE_WIP_MESSAGE', array('_GUID' => '046c437a5c3799838155b5c5fbe3be26', 'MESSAGE' => htmlentities($http_result->message_b)));
         }
+        if ($result === false) {
+            return paragraph(do_lang_tempcode('NO_RESULTS'), 'xeve22thxm3o3on96d0b1yg26ec3apzh', 'red-alert'); // No weather for here
+        }
+
+        return do_template('BLOCK_SIDE_WEATHER', array(
+            '_GUID' => '8b46b3437fbe05e587b11dd3347fa195',
+
+            'BLOCK_ID' => $block_id,
+            'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
+
+            'LOC_CODE' => strval($woeid),
+            'TEMPERATURE_UNIT' => $temperature_unit,
+
+            'TITLE' => $result['title'],
+            'IMAGE' => $result['image'],
+            'CUR_CONDITIONS' => $result['cur_conditions'],
+            'FORECAST' => $result['forecast'],
+            'LOCATION_CITY' => $result['location_city'],
+            'LOCATION_REGION' => $result['location_region'],
+            'LOCATION_COUNTRY' => $result['location_country'],
+            'WIND_CHILL' => $result['wind_chill'],
+            'WIND_DIRECTION' => $result['wind_direction'],
+            'WIND_SPEED' => $result['wind_speed'],
+            'HUMIDITY' => $result['humidity'],
+            'VISIBILITY' => $result['visibility'],
+            'PRESSURE' => $result['pressure'],
+            'PRESSURE_RISING' => $result['pressure_rising'],
+            'SUNRISE' => $result['sunrise'],
+            'SUNSET' => $result['sunset'],
+            'LAT' => $result['lat'],
+            'LONG' => $result['long'],
+            'FULL_LINK' => $result['full_link'],
+            'PREPARED_DATE' => $result['prepared_date'],
+            'DATES' => $result['dates'],
+        ));
+    }
+
+    /**
+     * Get weather data.
+     *
+     * @param  integer The WOEIE
+     * @param  integer Maximum data to show
+     * @param  string Weather unit
+     * @set c f
+     * @return array A tuple: Call URL, HTTP result, The data/null/false
+     */
+    public function _get_weather_data($woeid, $max_days = 2, $temperature_unit = 'c')
+    {
+        $json_url = 'http://query.yahooapis.com/v1/public/yql?q=select+%2A+from+weather.forecast+where+woeid%3D' . urlencode(strval($woeid)) . '%20AND%20u%3D%22' . urlencode($temperature_unit) . '%22&format=json';
+        $http_result = cms_http_request($json_url, array('trigger_error' => false));
+        $json = $http_result->data;
+        if ($json == '') {
+            return array($json_url, $http_result, null);
+        }
 
         $data = @json_decode($json, true);
 
         if (!isset($data['query']['results']['channel']['location'])) {
-            return new Tempcode(); // No weather for here
+            return array($json_url, $http_result, false);
         }
 
         $feed = $data['query']['results']['channel'];
-
-        $location_city = $feed['location']['city'];
-        $location_region = $feed['location']['region'];
-        $location_country = $feed['location']['country'];
-        $wind_chill = $feed['wind']['chill'];
-        $wind_direction = $feed['wind']['direction'];
-        $wind_speed = $feed['wind']['speed'];
-        $humidity = $feed['atmosphere']['humidity'];
-        $visibility = $feed['atmosphere']['visibility'];
-        $pressure = $feed['atmosphere']['pressure'];
-        $pressure_rising = $feed['atmosphere']['rising'];
-        $sunrise = $feed['astronomy']['sunrise'];
-        $sunset = $feed['astronomy']['sunset'];
-
         $item = $feed['item'];
 
-        $title = $item['title'];
+        $result = array();
+
+        $result['location_city'] = $feed['location']['city'];
+        $result['location_region'] = $feed['location']['region'];
+        $result['location_country'] = $feed['location']['country'];
+        $result['wind_chill'] = $feed['wind']['chill'];
+        $result['wind_direction'] = $feed['wind']['direction'];
+        $result['wind_speed'] = $feed['wind']['speed'];
+        $result['humidity'] = $feed['atmosphere']['humidity'];
+        $result['visibility'] = $feed['atmosphere']['visibility'];
+        $result['pressure'] = $feed['atmosphere']['pressure'];
+        $result['pressure_rising'] = $feed['atmosphere']['rising'];
+        $result['sunrise'] = $feed['astronomy']['sunrise'];
+        $result['sunset'] = $feed['astronomy']['sunset'];
+
+        $result['title'] = $item['title'];
 
         $matches = array();
 
-        $image = '';
+        $result['image'] = '';
         if (preg_match('/<img src="(.*)"\/?' . '>/Usm', $item['description'], $matches) != 0) {
-            $image = $matches[1];
+            $result['image'] = $matches[1];
         }
 
-        $cur_conditions = '';
+        $result['cur_conditions'] = '';
         if (preg_match('/Current Conditions:<\/b>\n<BR \/>(.*)<BR \/>/Uism', $item['description'], $matches) != 0) {
-            $cur_conditions = $matches[1];
+            $result['cur_conditions'] = $matches[1];
         }
 
-        $forecast = '';
+        $result['forecast'] = '';
         if (preg_match('/Forecast:<\/b>\n<BR \/>(.*)<BR \/>/ism', $item['description'], $matches) != 0) {
-            $forecast = $matches[1];
+            $result['forecast'] = $matches[1];
+
+            $result['forecast'] = preg_replace('#(\d+)Low#', '$1 Low', $result['forecast']); // Oh man, bug in Yahoo's layout!
+
+            $num_matches = preg_match_all('#<BR /> (Mon|Tue|Wed|Thu|Fri|Sat|Sun) - .*#', $result['forecast'], $matches);
+            for ($i = $max_days - 1; $i < $num_matches; $i++) {
+                $result['forecast'] = str_replace($matches[0][$i], '', $result['forecast']);
+            }
         }
 
-        $lat = $item['lat'];
-        $long = $item['long'];
-        $full_link = $item['link'];
-        $prepared_date = $item['pubDate'];
-        $dates = array();
+        $result['lat'] = $item['lat'];
+        $result['long'] = $item['long'];
+        $result['full_link'] = $item['link'];
+        $result['prepared_date'] = $item['pubDate'];
+
+        $result['dates'] = array();
         foreach ($item['forecast'] as $i => $_forecast) {
             if ($i == $max_days) {
                 break;
             }
 
-            $dates[] = array(
+            $result['dates'][] = array(
                 'DATE' => strtotime($_forecast['date']),
                 'DAY' => $_forecast['day'],
                 'LOW' => $_forecast['low'],
@@ -224,33 +262,26 @@ class Block_side_weather
             );
         }
 
-        return do_template('BLOCK_SIDE_WEATHER', array(
-            '_GUID' => '8b46b3437fbe05e587b11dd3347fa195',
-            'BLOCK_ID' => $block_id,
-            'TITLE' => $title,
-            'LOC_CODE' => $loc_code,
-            'IMAGE' => $image,
-            'COND' => $cur_conditions,
-            'FORECAST' => $forecast,
-            'LOCATION_CITY' => $location_city,
-            'LOCATION_REGION' => $location_region,
-            'LOCATION_COUNTRY' => $location_country,
-            'WIND_CHILL' => $wind_chill,
-            'WIND_DIRECTION' => $wind_direction,
-            'WIND_SPEED' => $wind_speed,
-            'HUMIDITY' => $humidity,
-            'VISIBILITY' => $visibility,
-            'PRESSURE' => $pressure,
-            'PRESSURE_RISING' => $pressure_rising,
-            'SUNRISE' => $sunrise,
-            'SUNSET' => $sunset,
-            'LAT' => $lat,
-            'LONG' => $long,
-            'FULL_LINK' => $full_link,
-            'PREPARED_DATE' => $prepared_date,
-            'DATES' => $dates,
-            'TEMPERATURE_UNIT' => $temperature_unit,
-            'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
-        ));
+        return array($json_url, $http_result, $result);
+    }
+
+    /**
+     * Get a WOEID from a written description.
+     *
+     * @param  string $written Written description
+     * @return ?integer The WOEID
+     */
+    public function _get_woeid($written)
+    {
+        $matches = array();
+        $url = 'http://query.yahooapis.com/v1/public/yql?q=' . urlencode('select * from geo.places where text="' . $written . '"') . '&format=json';
+        $result = http_get_contents($url);
+        $json = json_decode($result, true);
+
+        if (isset($json['query']['results']['place'][0]['woeid'])) {
+            return intval($json['query']['results']['place'][0]['woeid']);
+        }
+
+        return null;
     }
 }

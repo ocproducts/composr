@@ -73,7 +73,7 @@ class Block_side_forum_news
         }
 
         if (has_no_forum()) {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('NO_FORUM_INSTALLED'), 'zgjxqjszggspvsjqhu2rbj21p145laoe', 'red-alert');
         }
 
         require_css('news');
@@ -136,48 +136,44 @@ class Block_side_forum_news
             $_title = protect_from_escaping(escape_html($map['title']));
         }
 
-        if (get_forum_type() != 'none') {
-            $max_rows = 0;
-            $topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics($forum_ids, $limit, 0, $max_rows, '', false, $date_key);
+        $max_rows = 0;
+        $topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics($forum_ids, $limit, 0, $max_rows, '', false, $date_key);
 
-            $news = array();
-            if ($topics !== null) {
-                sort_maps_by($topics, $date_key);
-                $topics = array_reverse($topics, false);
+        $news = array();
+        if ($topics !== null) {
+            sort_maps_by($topics, $date_key);
+            $topics = array_reverse($topics, false);
 
-                foreach ($topics as $topic) {
-                    $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($topic['id'], $forum_name, true);
-                    $title = $topic['title'];
-                    $date = get_timezoned_date_tempcode($topic[$date_key]);
+            foreach ($topics as $topic) {
+                $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($topic['id'], $forum_name, true);
+                $title = $topic['title'];
+                $date = get_timezoned_date_tempcode($topic[$date_key]);
 
-                    $news[] = array(
-                        'REPLIES' => strval($topic['num']),
-                        'FIRSTTIME' => strval($topic['firsttime']),
-                        'LASTTIME' => strval($topic['lasttime']),
-                        'CLOSED' => strval($topic['closed']),
-                        'FIRSTUSERNAME' => $topic['firstusername'],
-                        'LASTUSERNAME' => $topic['lastusername'],
-                        'FIRSTMEMBERID' => strval($topic['firstmemberid']),
-                        'LASTMEMBERID' => strval($topic['lastmemberid']),
-                        '_DATE' => strval($topic[$date_key]),
-                        'DATE' => $date,
-                        'FULL_URL' => $topic_url,
-                        'NEWS_TITLE' => escape_html($title),
-                    );
-                }
+                $news[] = array(
+                    'REPLIES' => strval($topic['num']),
+                    'FIRSTTIME' => strval($topic['firsttime']),
+                    'LASTTIME' => strval($topic['lasttime']),
+                    'CLOSED' => strval($topic['closed']),
+                    'FIRSTUSERNAME' => $topic['firstusername'],
+                    'LASTUSERNAME' => $topic['lastusername'],
+                    'FIRSTMEMBERID' => strval($topic['firstmemberid']),
+                    'LASTMEMBERID' => strval($topic['lastmemberid']),
+                    '_DATE' => strval($topic[$date_key]),
+                    'DATE' => $date,
+                    'FULL_URL' => $topic_url,
+                    'NEWS_TITLE' => escape_html($title),
+                );
             }
-
-            return do_template('BLOCK_SIDE_FORUM_NEWS', array(
-                '_GUID' => '174fa5ce0d35d9b49dca6347c66494a5',
-                'BLOCK_ID' => $block_id,
-                'FORUM_NAME' => array_key_exists('forum', $map) ? $map['forum'] : do_lang('NEWS'),
-                'TITLE' => $_title,
-                'NEWS' => $news,
-                'SUBMIT_URL' => $submit_url,
-                'ARCHIVE_URL' => ($archive_url === null) ? '' : $archive_url,
-            ));
-        } else {
-            return new Tempcode();
         }
+
+        return do_template('BLOCK_SIDE_FORUM_NEWS', array(
+            '_GUID' => '174fa5ce0d35d9b49dca6347c66494a5',
+            'BLOCK_ID' => $block_id,
+            'FORUM_NAME' => array_key_exists('forum', $map) ? $map['forum'] : do_lang('NEWS'),
+            'TITLE' => $_title,
+            'NEWS' => $news,
+            'SUBMIT_URL' => $submit_url,
+            'ARCHIVE_URL' => ($archive_url === null) ? '' : $archive_url,
+        ));
     }
 }

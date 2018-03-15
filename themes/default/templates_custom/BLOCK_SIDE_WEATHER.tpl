@@ -7,8 +7,8 @@
 
 	<p><strong>{TITLE`}</strong></p>
 
-	{+START,IF_NON_EMPTY,{COND}}
-		<div>{COND`}</div>
+	{+START,IF_NON_EMPTY,{CUR_CONDITIONS}}
+		<div>{CUR_CONDITIONS`}</div>
 	{+END}
 
 	{+START,IF_NON_EMPTY,{FORECAST}}

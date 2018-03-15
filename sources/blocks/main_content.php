@@ -83,7 +83,7 @@ class Block_main_content
         }
         $content_id = isset($map['id']) ? $map['id'] : null;
         if ($content_id === '') {
-            return new Tempcode(); // Might have happened due to some bad chaining in a template
+            return paragraph(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('id')), 'rt44x3hfhc4frhbenjk01ka042716x6g', 'red-alert'); // Might have happened due to some bad chaining in a template
         }
         $randomise = ($content_id === null);
         $zone = isset($map['zone']) ? $map['zone'] : '_SEARCH';
@@ -114,7 +114,7 @@ class Block_main_content
             list(, $resource_page, $resource_type) = explode(':', $info['view_page_link_pattern']);
             $content_id = $info['db']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => $resource_page, 'm_resource_type' => $resource_type, 'm_moniker' => $content_id));
             if ($content_id === null) {
-                return new Tempcode();
+                return paragraph(do_lang_tempcode('MISSING_RESOURCE'), 'wqehgloobwa1s6ibn9tmgweefw8aiogt', 'red-alert');
             }
         }
 
@@ -266,7 +266,7 @@ class Block_main_content
                 $result = request_page(array_key_exists(1, $bits) ? $bits[1] : get_comcode_zone($bits[0]), false, $bits[0], 'comcode_custom', true);
                 restore_output_state();
                 if ($result === null || $result->is_empty()) {
-                    return new Tempcode();
+                    return paragraph(do_lang_tempcode('MISSING_RESOURCE'), 'txon5apczl07u2gq77ags8mfu8bra1e7', 'red-alert');
                 }
             }
 

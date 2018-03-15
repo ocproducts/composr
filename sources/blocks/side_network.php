@@ -85,6 +85,6 @@ class Block_side_network
                 'CONTENT' => $if_network,
             ));
         }
-        return new Tempcode();
+        return paragraph(do_lang_tempcode('NO_OF_THIS', escape_html('config:NETWORK_LINKS')), '9gqq7bq3o09zkpt1i81x7exwo4ny6lve', 'red-alert');
     }
 }

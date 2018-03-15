@@ -73,7 +73,7 @@ class Block_bottom_forum_news
         }
 
         if (has_no_forum()) {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('NO_FORUM_INSTALLED'), '5oomi6o1lipy2tch6rkgd7k9p3a6h2c8', 'red-alert');
         }
 
         $block_id = get_block_id($map);
@@ -117,32 +117,28 @@ class Block_bottom_forum_news
             }
         }
 
-        if (!has_no_forum()) {
-            $max_rows = 0;
-            $topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics($forum_ids, $limit, 0, $max_rows, '', false, $date_key);
+        $max_rows = 0;
+        $topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics($forum_ids, $limit, 0, $max_rows, '', false, $date_key);
 
-            $out = new Tempcode();
-            $_postdetailss = array();
-            if ($topics !== null) {
-                sort_maps_by($topics, $date_key);
-                $topics = array_reverse($topics, false);
+        $out = new Tempcode();
+        $_postdetailss = array();
+        if ($topics !== null) {
+            sort_maps_by($topics, $date_key);
+            $topics = array_reverse($topics, false);
 
-                foreach ($topics as $topic) {
-                    $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($topic['id'], $forum_name, true);
-                    $title = $topic['title'];
-                    $date = get_timezoned_date_tempcode($topic[$date_key]);
+            foreach ($topics as $topic) {
+                $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($topic['id'], $forum_name, true);
+                $title = $topic['title'];
+                $date = get_timezoned_date_tempcode($topic[$date_key]);
 
-                    $_postdetailss[] = array('DATE' => $date, 'FULL_URL' => $topic_url, 'NEWS_TITLE' => escape_html($title));
-                }
+                $_postdetailss[] = array('DATE' => $date, 'FULL_URL' => $topic_url, 'NEWS_TITLE' => escape_html($title));
             }
-
-            return do_template('BLOCK_BOTTOM_NEWS', array(
-                '_GUID' => '04d5390309dcba1f17391e9928da0d56',
-                'BLOCK_ID' => $block_id,
-                'POSTS' => $_postdetailss,
-            ));
-        } else {
-            return new Tempcode();
         }
+
+        return do_template('BLOCK_BOTTOM_NEWS', array(
+            '_GUID' => '04d5390309dcba1f17391e9928da0d56',
+            'BLOCK_ID' => $block_id,
+            'POSTS' => $_postdetailss,
+        ));
     }
 }

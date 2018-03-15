@@ -130,7 +130,7 @@ class Block_side_tag_cloud
         ksort($tags, SORT_NATURAL | SORT_FLAG_CASE);
 
         if (count($tags) == 0) {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('NO_ENTRIES'), 'qsgdln7dvorwfrtjwa1fuvqb9fbyf8sj', 'red-alert');
         }
 
         // Work out variation in sizings

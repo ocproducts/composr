@@ -168,7 +168,7 @@ class Block_main_multi_content
         $select = isset($map['select']) ? $map['select'] : '';
         $select_b = isset($map['select_b']) ? $map['select_b'] : '';
         if ($select_b == '*') {
-            return new Tempcode(); // Indicates some kind of referencing error, probably caused by Tempcode pre-processing - skip execution
+            return paragraph(do_lang_tempcode('INTERNAL_ERROR'), 'nktad4b52ustiuhzvqzin9htz4g26vow', 'red-alert'); // Indicates some kind of referencing error, probably caused by Tempcode pre-processing - skip execution
         }
         $filter = isset($map['filter']) ? $map['filter'] : '';
         $zone = isset($map['zone']) ? $map['zone'] : '_SEARCH';

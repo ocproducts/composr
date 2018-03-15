@@ -65,14 +65,14 @@ class Hook_health_check_security extends Hook_Health_Check
         if ($use_test_data_for_pass === null) {
             $key = get_option('google_apis_api_key');
             if (get_option('hc_google_safe_browsing_api_enabled') == '0') {
-                $this->stateCheckSkipped('Google Safe Browsing API key not configured');
+                $this->stateCheckSkipped(do_lang('API_NOT_CONFIGURED', 'Google Safe Browsing'));
                 return;
             }
         } else {
             $key = 'AIzaSyBJyvgYzg-moqMRBZwhiivNxhYvafqMWas';
         }
         if ($key == '') {
-            $this->stateCheckSkipped('Google Safe Browsing API key not configured');
+            $this->stateCheckSkipped(do_lang('API_NOT_CONFIGURED', 'Google Safe Browsing'));
             return;
         }
 

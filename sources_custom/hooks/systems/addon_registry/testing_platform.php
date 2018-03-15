@@ -390,6 +390,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/_rate_limiting.php',
             '_tests/tests/unit_tests/banners.php',
             '_tests/tests/unit_tests/comcode_wysiwyg.php',
+            '_tests/tests/unit_tests/weather.php',
             '_tests/tests/unit_tests/_bash_parser.php',
             '_tests/tests/unit_tests/_backups.php',
             '_tests/tests/unit_tests/basic_code_formatting.php',

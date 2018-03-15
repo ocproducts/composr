@@ -53,6 +53,9 @@ class Hook_config_show_staff_page_actions
      */
     public function get_default()
     {
+        if (!addon_installed('actionlog')) {
+            return null;
+        }
         return '1';
     }
 }

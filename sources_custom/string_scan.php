@@ -4917,6 +4917,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FORUM_GROUPINGS
         FORUM_IN_PORTAL
         FORUM_NOT_FOUND
+        API_NOT_CONFIGURED
+        API_NOT_CONFIGURED_OAUTH
         FORUM_PATH
         FORUM_PATH_TEXT
         FORUM_POSTS_PER_PAGE

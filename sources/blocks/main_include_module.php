@@ -65,11 +65,11 @@ class Block_main_include_module
         // Find out what we're virtualising
         $param = array_key_exists('param', $map) ? $map['param'] : '';
         if ($param == '') {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('param')), 'o3plvsqh2931w7kjt0u04c4zn2f93xs6', 'red-alert');
         }
         list($zone, $attributes,) = page_link_decode($param);
         if (!array_key_exists('page', $attributes)) {
-            return new Tempcode();
+            $attributes['page'] = DEFAULT_ZONE_PAGE_NAME;
         }
         if ($zone == '_SEARCH') {
             $zone = get_page_zone($attributes['page'], false);
@@ -77,7 +77,7 @@ class Block_main_include_module
             $zone = get_zone_name();
         }
         if ($zone === null) {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('MISSING_PAGE', escape_html($attributes['page'])), 'tc67wb1v1sg1hsvegsxqkxhf1iodh2m1', 'red-alert');
         }
         foreach ($_GET as $key => $val) {
             if ((substr($key, 0, 5) == 'keep_') || ($merge_parameters)) {

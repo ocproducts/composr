@@ -95,7 +95,7 @@ class Block_main_staff_actions
     public function run($map)
     {
         if (!addon_installed('actionlog')) {
-            return new Tempcode();
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('actionlog')), 'kimazz9b50kv3de1drxujlw7p5haozvo', 'red-alert');
         }
 
         require_all_lang();

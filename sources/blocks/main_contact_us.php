@@ -54,6 +54,10 @@ class Block_main_contact_us
             return $error_msg;
         }
 
+        if (get_forum_type() == 'none') {
+            return paragraph(do_lang_tempcode('NO_FORUM_INSTALLED'), 'dwxpstfxs8mhfud6j23yvhorurauchng', 'red-alert');
+        }
+
         require_lang('tickets');
 
         require_code('feedback');
@@ -144,10 +148,6 @@ class Block_main_contact_us
         }
 
         // Form...
-
-        if (get_forum_type() != 'none') {
-            return new Tempcode();
-        }
 
         $emoticons = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
 

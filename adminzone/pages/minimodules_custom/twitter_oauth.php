@@ -13,6 +13,8 @@
  * @package    twitter_support
  */
 
+// We don't use admin_oauth because we use our Twitter library's own oAuth functionality.
+
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 $error_msg = new Tempcode();

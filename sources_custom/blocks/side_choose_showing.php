@@ -24,6 +24,13 @@ class Block_side_choose_showing
             return $error_msg;
         }
 
+        if (!addon_installed('calendar')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('calendar')), '3o9nkf4sbm0yzo8jmdrmvqctvcu6njds', 'red-alert');
+        }
+        if (!addon_installed('ecommerce')) {
+            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce')), 'zslwc37lxcpsluxrjvydbyiecdk6bq3m', 'red-alert');
+        }
+
         return new Tempcode();
     }
 }
