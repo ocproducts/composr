@@ -30,31 +30,31 @@ class character_sets_test_set extends cms_test_case
         // ISO-8859-1 --> utf-8...
 
         // Upper case character set names
-        $input = build_hex_string('a3'); // GBP symbol
+        $input = hex2bin('a3'); // GBP symbol
         $output = convert_to_internal_encoding($input, 'ISO-8859-1', 'UTF-8');
-        $this->assertTrue($output == build_hex_string('c2a3'));
+        $this->assertTrue($output == hex2bin('c2a3'));
 
         // Lower case character set names
-        $input = build_hex_string('a3'); // GBP symbol
+        $input = hex2bin('a3'); // GBP symbol
         $output = convert_to_internal_encoding($input, 'iso-8859-1', 'utf-8');
-        $this->assertTrue($output == build_hex_string('c2a3'));
+        $this->assertTrue($output == hex2bin('c2a3'));
 
         // utf-8 --> ISO-8859-1...
 
         // Upper case character set names
-        $input = build_hex_string('c2a3'); // GBP symbol
+        $input = hex2bin('c2a3'); // GBP symbol
         $output = convert_to_internal_encoding($input, 'UTF-8', 'ISO-8859-1');
-        $this->assertTrue($output == build_hex_string('a3'));
+        $this->assertTrue($output == hex2bin('a3'));
 
         // Lower case character set names
-        $input = build_hex_string('c2a3'); // GBP symbol
+        $input = hex2bin('c2a3'); // GBP symbol
         $output = convert_to_internal_encoding($input, 'utf-8', 'iso-8859-1');
-        $this->assertTrue($output == build_hex_string('a3'));
+        $this->assertTrue($output == hex2bin('a3'));
     }
 
     public function testConvertEntities()
     {
-        $input = build_hex_string('c2a3'); // GBP symbol
+        $input = hex2bin('c2a3'); // GBP symbol
         $output = convert_to_html_encoding($input);
         $this->assertTrue($output == '&#163;');
     }

@@ -803,7 +803,7 @@ function _generate_moniker($moniker_src)
             }
         } else {
             // German has inbuilt transliteration
-            $moniker = str_replace(array(build_hex_string('c3a4'), build_hex_string('c3b6'), build_hex_string('c3bc'), build_hex_string('c39f')), array('ae', 'oe', 'ue', 'ss'), $moniker);
+            $moniker = str_replace(array(hex2bin('c3a4'), hex2bin('c3b6'), hex2bin('c3bc'), hex2bin('c39f')), array('ae', 'oe', 'ue', 'ss'), $moniker);
         }
     }
 

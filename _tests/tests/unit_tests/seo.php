@@ -38,7 +38,7 @@ class seo_test_set extends cms_test_case
         $this->assertTrue($keywords == 'Epic', 'Got: ' . $keywords);
 
         // Test unicode too; also capitalised stop words still stripped
-        $emoji = build_hex_string('f09f9881');
+        $emoji = hex2bin('f09f9881');
         list($keywords) = _seo_meta_find_data(array('This is epic' . $emoji), '');
         $this->assertTrue($keywords == 'epic', 'Got: ' . $keywords);
     }

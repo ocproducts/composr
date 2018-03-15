@@ -363,10 +363,10 @@ class Hook_health_check_install_env extends Hook_Health_Check
             return;
         }
 
-        $cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT ' . db_function('LENGTH', array('\'' . db_escape_string(build_hex_string('c2a3')) . '\'')));
+        $cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT ' . db_function('LENGTH', array('\'' . db_escape_string(hex2bin('c2a3')) . '\'')));
         $this->assertTrue($cnt == 1, 'Database connection is not encoding Unicode properly (non-latin characters, utf8)');
 
-        $cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT ' . db_function('LENGTH', array('\'' . db_escape_string(build_hex_string('f09f988e')) . '\'')));
+        $cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT ' . db_function('LENGTH', array('\'' . db_escape_string(hex2bin('f09f988e')) . '\'')));
         $this->assertTrue($cnt == 1, 'Database connection is not encoding Unicode properly (emojis, utf8mb4)');
     }
 }

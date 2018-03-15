@@ -50,10 +50,10 @@ class basic_code_formatting_test_set extends cms_test_case
         }
 
         $boms = array(
-            'utf-32' => build_hex_string('fffe0000'),
-            'utf-16' => build_hex_string('fffe'),
-            'utf-8' => build_hex_string('efbbbf') ,
-            'GB-18030' => build_hex_string('84319533'),
+            'utf-32' => hex2bin('fffe0000'),
+            'utf-16' => hex2bin('fffe'),
+            'utf-8' => hex2bin('efbbbf') ,
+            'GB-18030' => hex2bin('84319533'),
         );
 
         foreach ($this->files as $path) {
