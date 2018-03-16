@@ -889,9 +889,6 @@ function _url_rewrite_params($zone_name, $vars, $force_index_php = false)
                     $first = false;
                 }
                 if ($_makeup !== '') {
-                    if ($url_scheme === 'PG') {
-                        $makeup .= '/index.php';
-                    }
                     $makeup .= $_makeup;
                 }
             }

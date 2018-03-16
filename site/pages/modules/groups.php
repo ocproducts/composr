@@ -105,7 +105,7 @@ class Module_groups
             $group_name = get_translated_text($group['g_name'], $GLOBALS['FORUM_DB']);
             $club = ($group['g_is_private_club'] == 1);
 
-            breadcrumb_set_self(make_string_tempcode(escape_html($group_name)));
+            breadcrumb_set_self(protect_from_escaping(escape_html($group_name)));
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('USERGROUPS'))));
 
             set_extra_request_metadata(array(

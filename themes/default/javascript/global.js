@@ -1699,7 +1699,7 @@ function smooth_scroll(dest_y,expected_scroll_y,dir,event_after)
 			window.scrollTo(0,dest_y);
 		}
 		catch (e) {}
-		return;
+		if (true) return;
 	/*{+END}*/
 
 	var scroll_y=get_window_scroll_y();
