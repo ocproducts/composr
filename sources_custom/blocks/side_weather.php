@@ -103,25 +103,13 @@ class Block_side_weather
 
                 require_code('files');
 
-                if (preg_match('#^\-?\d+(\.\d+)?,\-?\d+(\.\d+)?$#', $loc_code) != 0) {
-                    $url = 'http://query.yahooapis.com/v1/public/yql?q=' . urlencode('select * from geo.placefinder where text="' . $loc_code . '"') . '&format=json&diagnostics=true&callback=cbfunc';
-                    $result = http_download_file($url);
+                $url = 'http://query.yahooapis.com/v1/public/yql?q=' . urlencode('select * from geo.places where text="' . $loc_code . '"') . '&format=json&diagnostics=true&callback=cbfunc';
+                $result = http_download_file($url);
 
-                    if (preg_match('#"woeid":\s*"(\d+)"#', $result, $matches) != 0) {
-                        $loc_code = $matches[1];
-                    } else {
-                        return new Tempcode();
-                    }
+                if (preg_match('#"woeid":\s*"(\d+)"#', $result, $matches) != 0) {
+                    $loc_code = $matches[1];
                 } else {
-                    $result = http_download_file('http://uk.weather.yahoo.com/search/weather?p=' . urlencode($loc_code));
-
-                    if (preg_match('#<a href=\'/redirwoei/(\d+)\'>#', $result, $matches) != 0) {
-                        $loc_code = $matches[1];
-                    } elseif (preg_match('#-(\d+)/#', $GLOBALS['HTTP_DOWNLOAD_URL'], $matches) != 0) {
-                        $loc_code = $matches[1];
-                    } else {
-                        return new Tempcode();
-                    }
+                    return new Tempcode();
                 }
 
                 if (is_numeric($loc_code)) {
