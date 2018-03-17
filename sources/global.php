@@ -34,6 +34,8 @@ if ((strpos($script_name, '/sources/') !== false) || (strpos($script_name, '/sou
  */
 function require_code($codename, $light_exit = false)
 {
+    // Handle if already required...
+
     global $REQUIRED_CODE, $FILE_BASE, $SITE_INFO;
     if (isset($REQUIRED_CODE[$codename])) {
         return;
@@ -46,15 +48,19 @@ function require_code($codename, $light_exit = false)
         $REQUIRED_CODE[$non_custom_codename] = true;
     }
 
+    // Security...
+
     if (strpos($codename, '..') !== false) {
         $codename = filter_naughty($codename);
     }
+
+    // Optional process tracking...
 
     if ((isset($_GET['keep_show_loading_code'])) && ($_GET['keep_show_loading_code'] === '1')) {
         $before = memory_get_usage();
     }
 
-    $worked = false;
+    // Calculate custom/non-custom status...
 
     $path_custom = $FILE_BASE . '/' . ($shorthand ? ('sources_custom/' . $codename . '.php') : $codename);
     $path_orig = $FILE_BASE . '/' . ($shorthand ? ('sources/' . $codename . '.php') : $non_custom_codename);
@@ -92,6 +98,8 @@ function require_code($codename, $light_exit = false)
         $has_custom = false;
     }
 
+    // Load the code as appropriate...
+
     if (($has_custom) && ((!function_exists('in_safe_mode')) || (!in_safe_mode()) || (!is_file($path_orig)))) {
         $done_init = false;
         $init_func = 'init__' . str_replace('/', '__', str_replace('.php', '', $codename));
@@ -100,13 +108,15 @@ function require_code($codename, $light_exit = false)
             $has_orig = is_file($path_orig);
         }
         if (($path_custom !== $path_orig) && ($has_orig)) {
+            // Have a custom and original (i.e. override)...
+
             $orig = clean_php_file_for_eval(file_get_contents($path_orig), $path_orig);
             $a = file_get_contents($path_custom);
 
             if (strpos($a, '/*FORCE_ORIGINAL_LOAD_FIRST*/') === false/*e.g. Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined*/) {
                 $functions_before = get_defined_functions();
                 $classes_before = get_declared_classes();
-                include($path_custom); // Include our custom
+                call_included_code($path_custom, $codename, $light_exit); // Include our custom
                 $functions_after = get_defined_functions();
                 $classes_after = get_declared_classes();
                 $functions_diff = array_diff($functions_after['user'], $functions_before['user']); // Our custom defined these functions
@@ -152,9 +162,8 @@ function require_code($codename, $light_exit = false)
                 }
 
                 if (!$doing_code_modifier_init && !$overlaps) { // To make stack traces more helpful and help with opcode caching
-                    include($path_orig);
+                    call_included_code($path_orig, $codename, $light_exit);
                 } else {
-                    //static $log_file = null; if ($log_file === null) $log_file = fopen(get_file_base() . '/log.' . strval(time()) . '.txt', 'wb'); flock($log_file, LOCK_EX); fwrite($log_file, $path_orig . "\n"); flock($log_file, LOCK_UN);      Good for debugging errors in eval'd code
                     eval($orig); // Load up modified original
                 }
 
@@ -165,70 +174,24 @@ function require_code($codename, $light_exit = false)
                 // Note we load the original and then the override. This is so function_exists can be used in the overrides (as we can't support the re-definition) OR in the case of Mx_ class derivation, so that the base class is loaded first.
 
                 if ((isset($_GET['keep_show_parse_errors'])) && ($_GET['keep_show_parse_errors'] == '1')) {
-                    $orig = clean_php_file_for_eval(file_get_contents($path_orig), $path_orig);
-                    $do_sed = function_exists('push_suppress_error_death');
-                    if ($do_sed) {
-                        push_suppress_error_death(true);
-                    }
-                    $php_errormsg = '';
-                    safe_ini_set('display_errors', '0');
-                    $eval_result = eval($orig);
-                    if ($do_sed) {
-                        pop_suppress_error_death();
-                    }
-                    if ((php_error_has_happened($php_errormsg)) || ($eval_result === false)) {
-                        if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
-                            critical_error('PASSON', @strval($php_errormsg) . ' [sources/' . $codename . '.php]');
-                        }
-                        fatal_exit(@strval($php_errormsg) . ' [sources/' . $codename . '.php]');
-                    }
+                    call_included_code($path_orig, $codename, $light_exit, clean_php_file_for_eval(file_get_contents($path_orig), $path_orig));
                 } else {
-                    include($path_orig);
+                    call_included_code($path_orig, $codename, $light_exit);
                 }
 
                 if ((isset($_GET['keep_show_parse_errors'])) && ($_GET['keep_show_parse_errors'] == '1')) {
-                    $custom = clean_php_file_for_eval(file_get_contents($path_custom), $path_custom);
-                    $do_sed = function_exists('push_suppress_error_death');
-                    if ($do_sed) {
-                        push_suppress_error_death(true);
-                    }
-                    $php_errormsg = '';
-                    safe_ini_set('display_errors', '0');
-                    $eval_result = eval($custom);
-                    if ($do_sed) {
-                        pop_suppress_error_death();
-                    }
-                    if ((php_error_has_happened($php_errormsg)) || ($eval_result === false)) {
-                        if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
-                            critical_error('PASSON', @strval($php_errormsg) . ' [sources_custom/' . $codename . '.php]');
-                        }
-                        fatal_exit(@strval($php_errormsg) . ' [sources_custom/' . $codename . '.php]');
-                    }
+                    call_included_code($path_custom, $codename, $light_exit, clean_php_file_for_eval(file_get_contents($path_custom), $path_custom));
                 } else {
-                    include($path_custom);
+                    call_included_code($path_custom, $codename, $light_exit);
                 }
             }
         } else {
+            // Have a custom but no original...
+
             if ((isset($_GET['keep_show_parse_errors'])) && ($_GET['keep_show_parse_errors'] == '1')) {
-                $orig = clean_php_file_for_eval(file_get_contents($path_custom), $path_custom);
-                $do_sed = function_exists('push_suppress_error_death');
-                if ($do_sed) {
-                    push_suppress_error_death(true);
-                }
-                $php_errormsg = '';
-                safe_ini_set('display_errors', '0');
-                $eval_result = eval($orig);
-                if ($do_sed) {
-                    pop_suppress_error_death();
-                }
-                if ((php_error_has_happened($php_errormsg)) || ($eval_result === false)) {
-                    if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
-                        critical_error('PASSON', @strval($php_errormsg) . ' [sources_custom/' . $codename . '.php]');
-                    }
-                    fatal_exit(@strval($php_errormsg) . ' [sources_custom/' . $codename . '.php]');
-                }
+                call_included_code($path_custom, $codename, $light_exit, clean_php_file_for_eval(file_get_contents($path_custom), $path_custom));
             } else {
-                include($path_custom);
+                call_included_code($path_custom, $codename, $light_exit);
             }
         }
 
@@ -246,79 +209,52 @@ function require_code($codename, $light_exit = false)
                 call_user_func($init_func);
             }
         }
-
-        $worked = true;
     } else {
-        if ((isset($_GET['keep_show_parse_errors'])) && ($_GET['keep_show_parse_errors'] == '1')) {
-            $contents = @file_get_contents($path_orig);
-            if ($contents !== false) {
-                $orig = clean_php_file_for_eval($contents, $path_orig);
-                $do_sed = function_exists('push_suppress_error_death');
-                if ($do_sed) {
-                    push_suppress_error_death(true);
-                }
-                $php_errormsg = '';
-                safe_ini_set('display_errors', '0');
-                $eval_result = eval($orig);
-                if ($do_sed) {
-                    pop_suppress_error_death();
-                }
-                if ((php_error_has_happened($php_errormsg)) || ($eval_result === false)) {
-                    if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
-                        critical_error('PASSON', @strval($php_errormsg) . ' [sources/' . $codename . '.php]');
-                    }
-                    fatal_exit(@strval($php_errormsg) . ' [sources/' . $codename . '.php]');
-                }
+        // Have an original and no custom (no override)...
 
-                $worked = true;
-            }
+        if ((isset($_GET['keep_show_parse_errors'])) && ($_GET['keep_show_parse_errors'] == '1')) {
+            call_included_code($path_orig, $codename, $light_exit, clean_php_file_for_eval(file_get_contents($path_orig), $path_orig));
         } else {
-            $php_errormsg = '';
-            @include($path_orig);
-            if (!php_error_has_happened($php_errormsg)) {
-                $worked = true;
+            call_included_code($path_orig, $codename, $light_exit);
+        }
+
+        // Optional process tracking (has to run before init function called)
+        if ((isset($_GET['keep_show_loading_code'])) && ($_GET['keep_show_loading_code'] === '1')) {
+            if (function_exists('attach_message')) {
+                attach_message('require_code: ' . $codename . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ')', 'inform');
+            } else {
+                print('<!-- require_code: ' . htmlentities($codename) . ' (' . htmlentities(number_format(memory_get_usage() - $before)) . ' bytes used, now at ' . htmlentities(number_format(memory_get_usage())) . ') -->' . "\n");
+                flush();
             }
         }
 
-        if ($worked) {
-            if ((isset($_GET['keep_show_loading_code'])) && ($_GET['keep_show_loading_code'] === '1')) {
-                if (function_exists('attach_message')) {
-                    attach_message('require_code: ' . $codename . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ')', 'inform');
-                } else {
-                    print('<!-- require_code: ' . htmlentities($codename) . ' (' . htmlentities(number_format(memory_get_usage() - $before)) . ' bytes used, now at ' . htmlentities(number_format(memory_get_usage())) . ') -->' . "\n");
-                    flush();
-                }
-            }
-
-            $init_func = 'init__' . str_replace(array('/', '.php'), array('__', ''), $codename);
-            if (function_exists($init_func)) {
-                call_user_func($init_func);
-            }
+        $init_func = 'init__' . str_replace(array('/', '.php'), array('__', ''), $codename);
+        if (function_exists($init_func)) {
+            call_user_func($init_func);
         }
     }
+
+    // Done...
 
     $REQUIRED_CODE[$codename] = true;
-    if ($worked) {
+}
+
+/**
+ * Require code, but without looking for sources_custom overrides.
+ *
+ * @param  string $codename The codename for the source module to load
+ */
+function require_code_no_override($codename)
+{
+    global $REQUIRED_CODE;
+    if (array_key_exists($codename, $REQUIRED_CODE)) {
         return;
     }
-
-    if ($codename !== 'critical_errors') {
-        if ($php_errormsg != '') {
-            $codename .= '... "' . $php_errormsg . '"';
-        }
+    $REQUIRED_CODE[$codename] = true;
+    require_once(get_file_base() . '/sources/' . filter_naughty($codename) . '.php');
+    if (function_exists('init__' . str_replace('/', '__', $codename))) {
+        call_user_func('init__' . str_replace('/', '__', $codename));
     }
-    if (!function_exists('do_lang')) {
-        if ($codename === 'critical_errors') {
-            exit('<!DOCTYPE html>' . "\n" . '<html lang="EN"><head><title>Critical startup error</title></head><body><h1>Composr startup error</h1><p>The Composr critical error message file, sources/critical_errors.php, could not be located. This is almost always due to an incomplete upload of the Composr system, so please check all files are uploaded correctly.</p><p>Once all Composr files are in place, Composr must actually be installed by running the installer. You must be seeing this message either because your system has become corrupt since installation, or because you have uploaded some but not all files from our manual installer package: the quick installer is easier, so you might consider using that instead.</p><p>ocProducts maintains full documentation for all procedures and tools, especially those for installation. These may be found on the <a href="http://compo.sr">Composr website</a>. If you are unable to easily solve this problem, we may be contacted from our website and can help resolve it for you.</p><hr /><p style="font-size: 0.8em">Composr is a website engine created by ocProducts.</p></body></html>');
-        }
-        critical_error('MISSING_SOURCE', $codename);
-    }
-    $error_string = (is_file($path_orig) || is_file($path_custom)) ? 'MISSING_SOURCE_FILE' : 'CORRUPT_SOURCE_FILE';
-    $error_message = do_lang_tempcode($error_string, escape_html($codename), escape_html($path_orig));
-    if ($light_exit) {
-        warn_exit($error_message, false, true);
-    }
-    fatal_exit($error_message);
 }
 
 /**
@@ -340,32 +276,114 @@ function clean_php_file_for_eval($c, $path)
 }
 
 /**
- * Find whether a PHP error has happened.
+ * Run some code. Bail out on failure.
  *
- * @param  string $errormsg Error message
- * @return boolean Whether a PHP error has happened
+ * @param  string $path File path
+ * @param  string $codename The codename for the source module to load
+ * @param  boolean $light_exit Whether to cleanly fail when a source file is missing
+ * @param  ?string $code File contents (null: use include not eval)
  */
-function php_error_has_happened($errormsg)
+function call_included_code($path, $codename, $light_exit, $code = null)
 {
-    return ($errormsg != '') && (stripos($errormsg, 'deprecated') === false/*deprecated errors can leak through because even though we return true in our error handler, error handlers won't run recursively, so if this code is loaded during an error it'll stream through deprecated stuff here*/);
+    $do_sed = function_exists('push_suppress_error_death') && function_exists('error_clear_last');
+    if ($do_sed) {
+        if (function_exists('error_clear_last')) {
+            error_clear_last();
+        }
+        push_suppress_error_death(true);
+    }
+
+    safe_ini_set('display_errors', '0');
+
+    if ($code === null) {
+        $result = include($path);
+    } else {
+        $result = eval($code);
+    }
+
+    if ($do_sed) {
+        pop_suppress_error_death();
+    }
+
+    if ((php_error_has_happened()) || ($result === false)) {
+        if (!function_exists('do_lang')) {
+            if (!is_file($path)) {
+                critical_error('MISSING_SOURCE', $codename);
+            }
+        }
+
+        if ((!function_exists('do_lang')) || (!function_exists('fatal_exit')) || ($codename === 'failure')) {
+            critical_error('PASSON', cms_error_get_last() . ' ins ' . $path);
+        }
+
+        $error_lang_str = (is_file($path) ? 'CORRUPT_SOURCE_FILE' : 'MISSING_SOURCE_FILE');
+        $error_message = do_lang_tempcode($error_lang_str, escape_html($codename), escape_html($path), cms_error_get_last());
+        if ($light_exit) {
+            warn_exit($error_message, false, true);
+        }
+        fatal_exit($error_message);
+    }
 }
 
 /**
- * Require code, but without looking for sources_custom overrides.
+ * Get last error message.
  *
- * @param  string $codename The codename for the source module to load
+ * @return string Error message (blank: none)
  */
-function require_code_no_override($codename)
+function cms_error_get_last()
 {
-    global $REQUIRED_CODE;
-    if (array_key_exists($codename, $REQUIRED_CODE)) {
-        return;
+    $error = error_get_last();
+    if ($error === null) {
+        return '';
     }
-    $REQUIRED_CODE[$codename] = true;
-    require_once(get_file_base() . '/sources/' . filter_naughty($codename) . '.php');
-    if (function_exists('init__' . str_replace('/', '__', $codename))) {
-        call_user_func('init__' . str_replace('/', '__', $codename));
+
+    switch ($error['type']) {
+        case E_RECOVERABLE_ERROR:
+        case E_USER_ERROR:
+        case E_CORE_ERROR:
+        case E_COMPILE_ERROR:
+        case E_ERROR:
+        case E_PARSE:
+            $type = 'error';
+            break;
+
+        case -123: // Hacked in for the memtrack extension, which was buggy
+        case E_USER_WARNING:
+        case E_CORE_WARNING:
+        case E_COMPILE_WARNING:
+        case E_WARNING:
+            $type = 'warning';
+            break;
+
+        case E_USER_NOTICE:
+        case E_NOTICE:
+            $type = 'notice';
+            break;
+
+        case E_STRICT:
+        case E_USER_DEPRECATED:
+        case E_DEPRECATED:
+        default:
+            $type = 'deprecated';
+            break;
     }
+
+    return '<strong>' . strtoupper($type) . '</strong> [' . strval($error['type']) . '] ' . $error['message'] . ' in ' . $error['file'] . ' on line ' . strval($error['line']);
+}
+
+/**
+ * Find whether a PHP error has happened.
+ *
+ * @return boolean Whether a PHP error has happened
+ */
+function php_error_has_happened()
+{
+    if (function_exists('error_clear_last')) {
+        return false; // We cannot know
+    }
+
+    $egl = error_get_last();
+    return ($egl !== null) && (stripos($egl['message'], 'deprecated') === false/*deprecated errors can leak through because even though we return true in our error handler, error handlers won't run recursively, so if this code is loaded during an error it'll stream through deprecated stuff here*/);
 }
 
 /**
@@ -626,7 +644,6 @@ define('URL_CONTENT_REGEXP', '\w\-\x80-\xFF'); // PHP is done using ASCII (don't
 define('URL_CONTENT_REGEXP_JS', '\w\-\u0080-\uFFFF'); // JavaScript is done using Unicode
 
 // Sanitise the PHP environment some more
-safe_ini_set('track_errors', '1'); // so $php_errormsg is available
 if (!GOOGLE_APPENGINE) {
     safe_ini_set('include_path', '');
     safe_ini_set('allow_url_fopen', '0');
@@ -668,10 +685,13 @@ global $FILE_BASE;
 if (is_file($FILE_BASE . '/sources_custom/critical_errors.php')) {
     require($FILE_BASE . '/sources_custom/critical_errors.php');
 } else {
-    $php_errormsg = '';
+    if (function_exists('error_clear_last')) {
+        error_clear_last();
+    }
     @include($FILE_BASE . '/sources/critical_errors.php');
-    if ($php_errormsg != '') {
-        exit('<!DOCTYPE html>' . "\n" . '<html lang="EN"><head><title>Critical startup error</title></head><body><h1>Composr startup error</h1><p>The third most basic Composr startup file, sources/critical_errors.php, could not be located. This is almost always due to an incomplete upload of the Composr system, so please check all files are uploaded correctly.</p><p>Once all Composr files are in place, Composr must actually be installed by running the installer. You must be seeing this message either because your system has become corrupt since installation, or because you have uploaded some but not all files from our manual installer package: the quick installer is easier, so you might consider using that instead.</p><p>ocProducts maintains full documentation for all procedures and tools, especially those for installation. These may be found on the <a href="http://compo.sr">Composr website</a>. If you are unable to easily solve this problem, we may be contacted from our website and can help resolve it for you.</p><hr /><p style="font-size: 0.8em">Composr is a website engine created by ocProducts.</p></body></html>');
+    if ((function_exists('error_clear_last')) && (error_get_last() !== null)) {
+        $last_error = error_get_last();
+        exit('<!DOCTYPE html>' . "\n" . '<html lang="EN"><head><title>Critical startup error</title></head><body><h1>Composr startup error</h1><p>The third most basic Composr startup file, sources/critical_errors.php, could not be located (error: ' . $last_error['message'] . '). This is almost always due to an incomplete upload of the Composr system, so please check all files are uploaded correctly.</p><p>Once all Composr files are in place, Composr must actually be installed by running the installer. You must be seeing this message either because your system has become corrupt since installation, or because you have uploaded some but not all files from our manual installer package: the quick installer is easier, so you might consider using that instead.</p><p>ocProducts maintains full documentation for all procedures and tools, especially those for installation. These may be found on the <a href="http://compo.sr">Composr website</a>. If you are unable to easily solve this problem, we may be contacted from our website and can help resolve it for you.</p><hr /><p style="font-size: 0.8em">Composr is a website engine created by ocProducts.</p></body></html>');
     }
 }
 

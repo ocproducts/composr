@@ -1832,8 +1832,9 @@ function ecv2_PREG_MATCH($lang, $escaped, $param)
         push_suppress_error_death(true);
         $value = (preg_match('#' . str_replace('#', '\#', $param[0]) . '#' . (isset($param[2]) ? str_replace('e', '', $param[2]) : ''), $param[1]) != 0) ? '1' : '0';
         pop_suppress_error_death();
-        if (isset($php_errormsg)) {
-            attach_message($php_errormsg, 'warn', false, true);
+        if ($value === false) {
+            attach_message(cms_error_get_last(), 'warn', false, true);
+            $value = '';
         }
     }
 

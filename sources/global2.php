@@ -977,7 +977,7 @@ function catch_fatal_errors()
  * @param  PATH $errstr The error message
  * @param  string $errfile The file the error occurred in
  * @param  integer $errline The line the error occurred on
- * @return boolean Mark error handled, so PHP's native error handling code does not execute. i.e. false => bubble, true => handled. For errors we intercept we don't return at all so bubbling never happens in such a case. $php_errormsg is only set if we bubble.
+ * @return boolean Mark error handled, so PHP's native error handling code does not execute. i.e. false => bubble, true => handled. For errors we intercept we don't return at all so bubbling never happens in such a case.
  *
  * @ignore
  */

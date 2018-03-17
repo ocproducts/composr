@@ -187,10 +187,12 @@ class Mail_dispatcher_php extends Mail_dispatcher_base
                 $signed_headers = str_replace("\r\n", $this->line_term, $signature->get_signed_headers($to_line, $subject_wrapped, str_replace($this->line_term, "\r\n", $sending_message), str_replace($this->line_term, "\r\n", $headers)));
             }
 
-            $php_errormsg = null;
+            if (function_exists('error_clear_last')) {
+                error_clear_last();
+            }
             $_worked = mail($to_line, $subject_wrapped, $sending_message, $signed_headers . $headers, $additional);
-            if ((!$worked) && (isset($php_errormsg))) {
-                $error = $php_errormsg;
+            if ((!$worked) && (cms_error_get_last() != '')) {
+                $error = cms_error_get_last();
                 $worked = false;
             }
         }

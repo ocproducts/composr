@@ -342,12 +342,11 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
         } else {
             // Simple, with some guards...
 
-            $php_errormsg = null;
             $tax_country_regexp = get_option('tax_country_regexp');
             if (!empty($tax_country_regexp)) {
                 $check = @preg_match('#' . $tax_country_regexp . '#', $country);
                 if ($check === false) {
-                    warn_exit(do_lang_tempcode('INVALID_REGULAR_EXPRESSION', do_lang('TAX_COUNTRY_REGEXP'), escape_html($tax_country_regexp), $php_errormsg));
+                    warn_exit(do_lang_tempcode('INVALID_REGULAR_EXPRESSION', do_lang('TAX_COUNTRY_REGEXP'), escape_html($tax_country_regexp), cms_error_get_last()));
                 }
                 if ($check == 0) {
                     // EXCEPTION: Country not covered
@@ -360,7 +359,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
             if (!empty($tax_state_regexp)) {
                 $check = @preg_match('#' . $tax_state_regexp . '#', $state);
                 if ($check === false) {
-                    warn_exit(do_lang_tempcode('INVALID_REGULAR_EXPRESSION', do_lang('TAX_STATE_REGEXP'), escape_html($tax_country_regexp), $php_errormsg));
+                    warn_exit(do_lang_tempcode('INVALID_REGULAR_EXPRESSION', do_lang('TAX_STATE_REGEXP'), escape_html($tax_country_regexp), cms_error_get_last()));
                 }
                 if ($check == 0) {
                     // EXCEPTION: State not covered

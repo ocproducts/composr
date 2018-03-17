@@ -1257,7 +1257,7 @@ class Virtual_shell
             $cookie_size = strlen(json_encode($_COOKIE));
             if ($cookie_size < 4096) { // Be careful, large cookies can block Apache requests
                 // Variables
-                $commandr_env_neglect = array('SITE_DB', 'FORUM_DB', 'FORUM_DRIVER', 'GLOBALS', '_SERVER', '_COOKIE', '_GET', '_POST', '_ENV', '_FILES', '_REQUEST', '_SESSION', 'this', 'php_errormsg');
+                $commandr_env_neglect = array('SITE_DB', 'FORUM_DB', 'FORUM_DRIVER', 'GLOBALS', '_SERVER', '_COOKIE', '_GET', '_POST', '_ENV', '_FILES', '_REQUEST', '_SESSION', 'this', 'php_errormsg'/*LEGACY*/);
                 $commandr_env_after = get_defined_vars();
                 $commandr_env_changes = array_diff(array_keys($commandr_env_after), $commandr_env_neglect);
                 $commandr_state_diff = array();

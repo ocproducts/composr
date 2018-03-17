@@ -311,7 +311,7 @@ class Module_sites
         $conn_id = @ftp_connect($domain, $port);
 
         if ($conn_id === false) {
-            warn_exit(do_lang_tempcode('COULD_NOT_CONNECT_SERVER', escape_html(post_param_string('ftp_domain')), @strval($php_errormsg)));
+            warn_exit(do_lang_tempcode('COULD_NOT_CONNECT_SERVER', escape_html(post_param_string('ftp_domain')), cms_error_get_last()));
         }
         $login_result = @ftp_login($conn_id, post_param_string('ftp_username'), post_param_string('ftp_password', false, INPUT_FILTER_NONE));
 
@@ -411,7 +411,7 @@ class Module_sites
         foreach ($array as $filename => $tmp_file) {
             if (!@ftp_put($conn_id, $filename, $tmp_file, FTP_BINARY)) {
                 ftp_close($conn_id);
-                warn_exit(do_lang_tempcode('HOSTING_NO_UPLOAD', @strval($php_errormsg)));
+                warn_exit(do_lang_tempcode('HOSTING_NO_UPLOAD', cms_error_get_last()));
             }
         }
         $file_list = ftp_nlist($conn_id, '.');

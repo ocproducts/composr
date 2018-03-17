@@ -79,7 +79,6 @@ function init__minikernel()
 
     set_error_handler('composr_error_handler');
     register_shutdown_function('catch_fatal_errors');
-    safe_ini_set('track_errors', '1');
     global $SUPPRESS_ERROR_DEATH;
     $SUPPRESS_ERROR_DEATH = array(false);
 
@@ -268,6 +267,52 @@ function get_local_hostname()
         return $_SERVER['SERVER_ADDR'];
     }
     return 'localhost';
+}
+
+/**
+ * Get last error message.
+ *
+ * @return string Error message (blank: none)
+ */
+function cms_error_get_last()
+{
+    $error = error_get_last();
+    if ($error === null) {
+        return '';
+    }
+
+    switch ($error['type']) {
+        case E_RECOVERABLE_ERROR:
+        case E_USER_ERROR:
+        case E_CORE_ERROR:
+        case E_COMPILE_ERROR:
+        case E_ERROR:
+        case E_PARSE:
+            $type = 'error';
+            break;
+
+        case -123: // Hacked in for the memtrack extension, which was buggy
+        case E_USER_WARNING:
+        case E_CORE_WARNING:
+        case E_COMPILE_WARNING:
+        case E_WARNING:
+            $type = 'warning';
+            break;
+
+        case E_USER_NOTICE:
+        case E_NOTICE:
+            $type = 'notice';
+            break;
+
+        case E_STRICT:
+        case E_USER_DEPRECATED:
+        case E_DEPRECATED:
+        default:
+            $type = 'deprecated';
+            break;
+    }
+
+    return '<strong>' . strtoupper($type) . '</strong> [' . strval($error['type']) . '] ' . $error['message'] . ' in ' . $error['file'] . ' on line ' . strval($error['line']);
 }
 
 /**

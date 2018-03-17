@@ -76,7 +76,7 @@ This is a useful tool that does more checks: http://www.dirtymarkup.com/
 Spellcheck
 ----------
 
-The spellchecker requires that ASpell is installed. If it is not, spell checking won't occur.
+The spellchecker requires that ASpell is installed, and the PHP pspell extension. If it is not, spell checking won't occur.
 
 To install on Windows...
 
@@ -173,7 +173,7 @@ PHP gives errors via one of a few methods:
  - Return values (usually in concert with outputted errors or error returning functions)
  - Error throwing (since PHP5)
 
-Errors being outputted is by far the most common. Unfortunately it's rather difficult to handle these errors programmatically, and in many cases they should be because they could relate to external influences such as corrupt input data. The easy way to handle it is to put "@" in front of the command and then to check if the return value was false, but this leaves ambiguity to what the error actually was. A better way is to read $php_errormsg (the track_errors option must be on).
+Errors being outputted is by far the most common. Unfortunately it's rather difficult to handle these errors programmatically, and in many cases they should be because they could relate to external influences such as corrupt input data. The easy way to handle it is to put "@" in front of the command and then to check if the return value was false, but this leaves ambiguity to what the error actually was. A better way is to use error_get_last() to get the value.
 
 If the PHP checker is asked to do 'checks' then it will check against a number of functions that should either be "@'d" or wrapped with a custom error handler. In the cases when there is no @ing, a warning will be shown stating that the wrapping should happen.
 

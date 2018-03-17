@@ -1155,6 +1155,14 @@ function _parse_function_def($function_modifiers = array(), $is_closure = false)
     pparse__parser_expect('BRACKET_OPEN');
     $function['parameters'] = _parse_comma_parameters(true);
     pparse__parser_expect('BRACKET_CLOSE');
+    if ($is_closure) {
+        if (pparse__parser_peek() == 'USE') {
+            pparse__parser_next();
+            pparse__parser_expect('BRACKET_OPEN');
+            $function['using'] = _parse_comma_variables(true);
+            pparse__parser_expect('BRACKET_CLOSE');
+        }
+    }
     if (in_array('abstract', $function_modifiers)) {
         pparse__parser_expect('COMMAND_TERMINATE');
         $function['code'] = array();

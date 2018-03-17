@@ -275,12 +275,12 @@ function _ftp_info($light_fail = false)
         if ((!$ssl) && (@ftp_login($conn, $username, $password) === false)) {
             set_value('ftp_password', '');
             if ($light_fail) {
-                $temp = do_lang_tempcode('NO_FTP_LOGIN', @strval($php_errormsg));
+                $temp = do_lang_tempcode('NO_FTP_LOGIN', cms_error_get_last());
                 $temp->evaluate_echo();
                 return null;
             } else {
                 set_value('ftp_password', ''); // Wipe out password, because we need the user to see FTP login screen again
-                attach_message(do_lang_tempcode('NO_FTP_LOGIN', @strval($php_errormsg)), 'warn');
+                attach_message(do_lang_tempcode('NO_FTP_LOGIN', cms_error_get_last()), 'warn');
                 get_afm_form();
             }
         }
@@ -292,12 +292,12 @@ function _ftp_info($light_fail = false)
         if (@ftp_chdir($conn, $ftp_folder) === false) {
             set_value('ftp_password', '');
             if ($light_fail) {
-                $temp = do_lang_tempcode('NO_FTP_DIR', @strval($php_errormsg), '1');
+                $temp = do_lang_tempcode('NO_FTP_DIR', cms_error_get_last(), '1');
                 $temp->evaluate_echo();
                 return null;
             } else {
                 set_value('ftp_password', ''); // Wipe out password, because we need the user to see FTP login screen again
-                attach_message(do_lang_tempcode('NO_FTP_DIR', @strval($php_errormsg), '1'), 'warn');
+                attach_message(do_lang_tempcode('NO_FTP_DIR', cms_error_get_last(), '1'), 'warn');
                 get_afm_form();
             }
         }
@@ -311,12 +311,12 @@ function _ftp_info($light_fail = false)
         if (!in_array('_config.php', $files)) {
             set_value('ftp_password', '');
             if ($light_fail) {
-                $temp = do_lang_tempcode('NO_FTP_DIR', @strval($php_errormsg), '2');
+                $temp = do_lang_tempcode('NO_FTP_DIR', cms_error_get_last(), '2');
                 $temp->evaluate_echo();
                 return null;
             } else {
                 set_value('ftp_password', ''); // Wipe out password, because we need the user to see FTP login screen again
-                attach_message(do_lang_tempcode('NO_FTP_DIR', @strval($php_errormsg), '2'), 'warn');
+                attach_message(do_lang_tempcode('NO_FTP_DIR', cms_error_get_last(), '2'), 'warn');
                 get_afm_form();
             }
         }
@@ -468,7 +468,7 @@ function afm_make_directory($basic_path, $world_access, $recursive = false)
         if (!file_exists(get_custom_file_base() . '/' . $basic_path)) {
             $success = @ftp_mkdir($conn, $path);
             if (!is_string($success)) {
-                warn_exit(protect_from_escaping(@strval($php_errormsg)), false, true);
+                warn_exit(protect_from_escaping(cms_error_get_last()), false, true);
             }
         }
         @ftp_chmod($conn, $access, $path);
@@ -577,10 +577,10 @@ function afm_make_file($basic_path, $contents, $world_access)
         $success = @ftp_fput($conn, $path, $h, FTP_BINARY);
         if (!$success) {
             if (running_script('upgrader')) {
-                echo @strval($php_errormsg);
+                echo cms_error_get_last();
                 return;
             }
-            warn_exit(protect_from_escaping(@strval($php_errormsg)), false, true);
+            warn_exit(protect_from_escaping(cms_error_get_last()), false, true);
         }
         fclose($h);
 
@@ -645,10 +645,10 @@ function afm_move($basic_old_path, $basic_new_path)
         $success = @ftp_rename($conn, $old_path, $new_path);
         if (!$success) {
             if (running_script('upgrader')) {
-                echo @strval($php_errormsg);
+                echo cms_error_get_last();
                 return;
             }
-            warn_exit(protect_from_escaping(@strval($php_errormsg)), false, true);
+            warn_exit(protect_from_escaping(cms_error_get_last()), false, true);
         }
 
         clearstatcache();
@@ -675,10 +675,10 @@ function afm_delete_file($basic_path)
         $success = @ftp_delete($conn, $path);
         if (!$success) {
             if (running_script('upgrader')) {
-                echo @strval($php_errormsg);
+                echo cms_error_get_last();
                 return;
             }
-            warn_exit(protect_from_escaping(@strval($php_errormsg)), false, true);
+            warn_exit(protect_from_escaping(cms_error_get_last()), false, true);
         }
 
         clearstatcache();

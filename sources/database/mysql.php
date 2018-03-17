@@ -68,7 +68,7 @@ class Database_Static_mysql extends Database_super_mysql
 
         $db_link = $persistent ? @mysql_pconnect($db_host, $db_user, $db_password) : @mysql_connect($db_host, $db_user, $db_password, true);
         if ($db_link === false) {
-            $error = 'Could not connect to database-server (' . mysql_error() . ', ' . (@strval($php_errormsg)) . ')';
+            $error = 'Could not connect to database-server (' . mysql_error() . ', ' . cms_error_get_last() . ')';
             if ($fail_ok) {
                 echo $error . "\n";
                 return null;

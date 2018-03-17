@@ -341,14 +341,14 @@ function open_up_ftp_connection()
     }
 
     if ((!$ssl) && (@ftp_login($conn, $_POST['ftp_username'], $_POST['ftp_password']) === false)) {
-        return 'Could connect to the FTP server but not log in. [' . @strval($php_errormsg) . ']';
+        return 'Could connect to the FTP server but not log in. [' . cms_error_get_last() . ']';
     }
 
     if (substr($_POST['ftp_folder'], -1) != '/') {
         $_POST['ftp_folder'] .= '/';
     }
     if (@ftp_chdir($conn, $_POST['ftp_folder']) === false) {
-        return 'The FTP folder given was invalid or can not otherwise be accessed. [' . @strval($php_errormsg) . ']';
+        return 'The FTP folder given was invalid or can not otherwise be accessed. [' . cms_error_get_last() . ']';
     }
     $files = @ftp_nlist($conn, '.');
     if ($files === false) { // :(. Weird bug on some systems
@@ -518,7 +518,7 @@ END;
                 $h = fopen($path2, 'rb');
                 $ftp_success = @ftp_fput($conn, $save_path, $h, FTP_BINARY);
                 if ($ftp_success === false) {
-                    $message = addslashes(@strval($php_errormsg));
+                    $message = addslashes(cms_error_get_last());
                     echo <<<END
 <script>
 var msg='Could not save via FTP [' . $message . '].';

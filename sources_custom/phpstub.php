@@ -3248,12 +3248,23 @@ function basename($path, $ext = '')
 }
 
 /**
- * Convert binary data (in string form) into hexadecimal representation.
+ * Convert binary data (in string form) into hexadecimal representation (in string form).
  *
  * @param  string $str Binary string
  * @return string Hex string
  */
 function bin2hex($str)
+{
+    return '';
+}
+
+/**
+ * Convert a hexadecimal representation of data (in string form) into binary data (in string form).
+ *
+ * @param  string $str Hex string
+ * @return string Binary string
+ */
+function hex2bin($str)
 {
     return '';
 }
@@ -5452,7 +5463,6 @@ spl_autoload_unregister
 iterator_to_array
 iterator_count
 iterator_apply
-hex2bin
 lcfirst
 header_register_callback
 parse_ini_string

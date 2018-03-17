@@ -1671,7 +1671,7 @@ class HttpDownloaderSockets extends HttpDownloader
             return $input;
         }
 
-        $errstr = @strval($php_errormsg);
+        $errstr = cms_error_get_last();
         if ($this->trigger_error) {
             if ($errstr == '') {
                 $errstr = strval($errno);
@@ -1768,10 +1768,9 @@ class HttpDownloaderFileWrapper extends HttpDownloader
 
             $context = stream_context_create($opts);
 
-            $php_errormsg = null;
             if (($this->byte_limit === null) && ($this->write_to_file === null)) {
                 if ($this->trigger_error) {
-                    push_suppress_error_death(true); // Errors will be attached instead. We don't rely on only $php_errormsg because stream errors don't go into that fully.
+                    push_suppress_error_death(true); // Errors will be attached instead. We don't rely on only cms_error_get_last() because stream errors don't go into that fully.
                     $read_file = file_get_contents($this->connecting_url, false, $context);
                     pop_suppress_error_death();
                 } else {
@@ -1779,7 +1778,7 @@ class HttpDownloaderFileWrapper extends HttpDownloader
                 }
             } else {
                 if ($this->trigger_error) {
-                    push_suppress_error_death(true); // Errors will be attached instead. We don't rely on only $php_errormsg because stream errors don't go into that fully.
+                    push_suppress_error_death(true); // Errors will be attached instead. We don't rely on only cms_error_get_last() because stream errors don't go into that fully.
                     $_read_file = fopen($this->connecting_url, 'rb', false, $context);
                     pop_suppress_error_death();
                 } else {
@@ -1817,7 +1816,7 @@ class HttpDownloaderFileWrapper extends HttpDownloader
             }
         }
 
-        $errstr = @strval($php_errormsg);
+        $errstr = cms_error_get_last();
         if ($this->trigger_error) {
             if ($errstr == '') {
                 $errstr = strval($errno);

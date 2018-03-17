@@ -2052,7 +2052,7 @@ function collapse_1d_complexity($key, $list)
  */
 function cms_strip_tags($str, $allowable_tags)
 {
-    return preg_replace_callback('#</?([^\s<>]+)(\s[^<>]*)?>#', function ($matches) use ($allowable_tags) {
+    return preg_replace_callback('#</?([^\s<>]+)(\s[^<>]*)?' . '>#', function ($matches) use ($allowable_tags) {
         if (stripos($allowable_tags, '<' . preg_quote($matches[1], '#') . '>') !== false) {
             return $matches[0];
         }

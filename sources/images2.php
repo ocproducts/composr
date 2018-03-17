@@ -636,10 +636,10 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         sync_file($to);
     } else {
         if ($exit_on_error) {
-            warn_exit(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), false, true);
+            warn_exit(do_lang_tempcode('ERROR_IMAGE_SAVE', cms_error_get_last()), false, true);
         }
         require_code('site');
-        attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), 'warn', false, true);
+        attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', cms_error_get_last()), 'warn', false, true);
         return $from;
     }
 

@@ -399,9 +399,8 @@ function inform_about_addon_install($file, $also_uninstalling = array(), $also_i
         $data = (strtolower(substr($entry['path'], -4, 4)) == '.tpl') ? tar_get_file($tar, $entry['path'], true) : null;
 
         // check valid path
-        $php_errormsg = null;
-        @file_exists(get_file_base() . '/' . $entry['path']); //@d due to possible bad file paths
-        if ((isset($php_errormsg)) && (strpos($php_errormsg, 'be a valid path') !== false)) {
+        $success = @file_exists(get_file_base() . '/' . $entry['path']); //@d due to possible bad file paths
+        if ((!$success) && (strpos(cms_error_get_last(), 'be a valid path') !== false)) {
             warn_exit(do_lang_tempcode('CORRUPT_TAR'));
         }
 
@@ -807,7 +806,7 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
                 $modphp_file = substr($modphp_file, 0, strlen($modphp_file) - 2);
             }
             if (eval($modphp_file) === false) {
-                fatal_exit(@strval($php_errormsg));
+                fatal_exit(cms_error_get_last());
             }
         }
     }

@@ -1170,12 +1170,10 @@ Error handling in PHP is very inconsistent.
 
 This section does not directly/specially relate to Composr, but we thought we would add it to help new PHP programmers. Generally we deal with what we need to, in the way we need to, within the Composr framework -- and you need to do whatever you need to do for PHP within your own code.
 
-There are 5 main ways to get an error message in PHP:
+There are 3 main ways to get an error message in PHP, depending on what PHP function you are calling:
 1) use a [tt]*_last_error()[/tt] function
-2) check return values
-3) catch the echoed output of a command using output buffering
-4) suppress the error with '@', then listen to the [tt]$php_errormsg[/tt] variable
-5) catch exceptions (newer PHP features only)
+2) suppress the error with '@', check return values, then call [tt]cms_error_get_last()[/tt]
+3) catch exceptions (some PHP features only, typically newer ones)
 
 [title="3"]Security[/title]
 

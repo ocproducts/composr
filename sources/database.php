@@ -2080,7 +2080,7 @@ class DatabaseConnector
      * Check if a table exists.
      *
      * @param  ID_TEXT $table_name The table name
-     * @param  boolean $really_only Only check direct rather than using meta-table (if possible) (false: check both directly and using meta-table if possible)
+     * @param  boolean $really_only Only check direct rather than using meta-table (if possible) (false means check both directly and using meta-table if possible)
      * @return boolean Whether it exists
      */
     public function table_exists($table_name, $really_only = false)

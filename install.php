@@ -1362,7 +1362,7 @@ function step_5_ftp()
         }
 
         if ((!$ssl) && (!@ftp_login($conn, $username, $password))) {
-            warn_exit(do_lang_tempcode('NO_FTP_LOGIN', @strval($php_errormsg)));
+            warn_exit(do_lang_tempcode('NO_FTP_LOGIN', cms_error_get_last()));
         }
 
         $ftp_folder = post_param_string('ftp_folder');
@@ -1370,7 +1370,7 @@ function step_5_ftp()
             $ftp_folder .= '/';
         }
         if (!@ftp_chdir($conn, $ftp_folder)) {
-            warn_exit(do_lang_tempcode('NO_FTP_DIR', @strval($php_errormsg), '1'));
+            warn_exit(do_lang_tempcode('NO_FTP_DIR', cms_error_get_last(), '1'));
         }
         $files = @ftp_nlist($conn, '.');
         if ($files === false) { // :(. Weird bug on some systems
@@ -1380,7 +1380,7 @@ function step_5_ftp()
             }
         }
         if (!in_array('install.php', $files)) {
-            warn_exit(do_lang_tempcode('NO_FTP_DIR', @strval($php_errormsg), '2'));
+            warn_exit(do_lang_tempcode('NO_FTP_DIR', cms_error_get_last(), '2'));
         }
 
         $overwrite_ok = !file_exists(get_file_base() . '/cms_inst_tmp/tmp'); // Because if the file doesn't exist, the step completed in full - we DON'T want to overwrite if it didn't, because the step probably timed out and by refreshing we complete the step in pieces
@@ -1535,10 +1535,10 @@ function step_5_ftp()
                 }
                 fclose($tmp);
                 if (!@ftp_put($conn, $filename, get_file_base() . '/cms_inst_tmp/tmp', FTP_BINARY)) {
-                    if (strpos(@strval($php_errormsg), 'bind() failed') !== false) {
+                    if (strpos(cms_error_get_last(), 'bind() failed') !== false) {
                         warn_exit(do_lang_tempcode('FTP_FIREWALL_ERROR'));
                     } else {
-                        warn_exit(@strval($php_errormsg));
+                        warn_exit(cms_error_get_last());
                     }
                 }
                 $mask = 0;
@@ -2600,7 +2600,7 @@ function handle_self_referencing_embedment()
                     exit();
                 }
                 if ((!$ssl) && (!@ftp_login($conn, $username, $password))) {
-                    echo do_lang('NO_FTP_LOGIN', @strval($php_errormsg));
+                    echo do_lang('NO_FTP_LOGIN', cms_error_get_last());
                     ftp_close($conn);
                     exit();
                 }
@@ -2609,7 +2609,7 @@ function handle_self_referencing_embedment()
                     $ftp_folder .= '/';
                 }
                 if (!@ftp_chdir($conn, $ftp_folder)) {
-                    echo do_lang('NO_FTP_DIR', @strval($php_errormsg), '1');
+                    echo do_lang('NO_FTP_DIR', cms_error_get_last(), '1');
                     ftp_close($conn);
                     exit();
                 }
@@ -2621,7 +2621,7 @@ function handle_self_referencing_embedment()
                     }
                 }
                 if (!in_array('install.php', $files)) {
-                    echo do_lang('NO_FTP_DIR', @strval($php_errormsg), '2');
+                    echo do_lang('NO_FTP_DIR', cms_error_get_last(), '2');
                 }
                 ftp_close($conn);
                 exit();

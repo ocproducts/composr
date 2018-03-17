@@ -105,7 +105,6 @@ class xss_test_set extends cms_test_case
 
     public function testXSSDetectorOnAndWorking()
     {
-        $php_errormsg = null;
         $this->found_error = null;
         $temp = set_error_handler(array($this, '_temp_handler'));
 
@@ -121,13 +120,12 @@ class xss_test_set extends cms_test_case
 
         $setting = ini_get('ocproducts.xss_detect');
         if ($setting !== false) {
-            $this->assertTrue(strpos($php_errormsg, 'XSS vulnerability') !== false, ($setting === false) ? 'ocProducts PHP not running' : '%s');
+            $this->assertTrue(strpos(cms_error_get_last(), 'XSS vulnerability') !== false, ($setting === false) ? 'ocProducts PHP not running' : '%s');
         }
     }
 
     public function testXSSDetectorOnAndWorkingComplex1()
     {
-        $php_errormsg = null;
         $this->found_error = null;
         $temp = set_error_handler(array($this, '_temp_handler'));
 
@@ -150,7 +148,6 @@ class xss_test_set extends cms_test_case
 
     public function testXSSDetectorOnAndWorkingComplex2()
     {
-        $php_errormsg = null;
         $this->found_error = null;
         $temp = set_error_handler(array($this, '_temp_handler'));
 
@@ -174,7 +171,6 @@ class xss_test_set extends cms_test_case
 
     public function testXSSDetectorOnAndWorkingComplex3()
     {
-        $php_errormsg = null;
         $this->found_error = null;
         $temp = set_error_handler(array($this, '_temp_handler'));
 

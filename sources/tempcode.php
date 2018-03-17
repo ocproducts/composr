@@ -1889,7 +1889,7 @@ class Tempcode
             if ($allow_failure) {
                 return false;
             }
-            fatal_exit(@strval($php_errormsg));
+            fatal_exit(cms_error_get_last());
         }
 
         unset($this->cached_output);
@@ -2473,10 +2473,13 @@ function debug_eval($code, &$tpl_funcs = null, $parameters = null, $cl = null)
     if ($code === '') {
         return ''; // Blank eval returns false
     }
+    if (function_exists('error_clear_last')) {
+        error_clear_last();
+    }
     $result = @eval($code);
     if ($result === false) {
         if ($GLOBALS['DEV_MODE']) {
-            $message = (isset($php_errormsg) ? ($php_errormsg . ' - ') : '') . $code;
+            $message = ((cms_error_get_last() != '') ? (cms_error_get_last() . ' - ') : '') . $code;
             //cms_ob_end_clean(); @exit('!' . $message . '!');
             fatal_exit($message);
         }

@@ -436,11 +436,10 @@ class Mail_dispatcher_manualproc extends Mail_dispatcher_base
                 $to_line = '"' . $_to_name . '" <' . $_to_email . '>';
             }
 
-            $php_errormsg = null;
             $worked = $this->manualproc_mail($to_line, $subject_wrapped, $sending_message, $headers, $additional);
 
-            if ((!$worked) && (isset($php_errormsg))) {
-                $error = $php_errormsg;
+            if (!$worked) {
+                $error = cms_error_get_last();
             }
         }
 

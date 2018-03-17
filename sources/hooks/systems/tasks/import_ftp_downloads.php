@@ -68,12 +68,12 @@ class Hook_task_import_ftp_downloads
         if ((array_key_exists('user', $parsed_url)) && (array_key_exists('pass', $parsed_url))) {
             $login_result = @ftp_login($conn_id, $parsed_url['user'], $parsed_url['pass']);
             if ($login_result === false) {
-                return array(null, do_lang_tempcode('NO_FTP_LOGIN', @strval($php_errormsg)));
+                return array(null, do_lang_tempcode('NO_FTP_LOGIN', cms_error_get_last()));
             }
         } else {
             $login_result = @ftp_login($conn_id, 'anonymous', get_option('staff_address'));
             if ($login_result === false) {
-                return array(null, do_lang_tempcode('NO_FTP_LOGIN', @strval($php_errormsg)));
+                return array(null, do_lang_tempcode('NO_FTP_LOGIN', cms_error_get_last()));
             }
         }
 
