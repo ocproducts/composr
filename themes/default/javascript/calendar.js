@@ -81,15 +81,15 @@
                 var url = 'calendar_recurrence_suggest';
                 url += '&monthly_spec_type=' + encodeURIComponent($cms.form.radioValue(form.elements['monthly_spec_type']));
                 if (startDay) {
-                    url += '&date_day=' + encodeURIComponent(startDay.options[startDay.selectedIndex].value);
-                    url += '&date_month=' + encodeURIComponent(startMonth.options[startMonth.selectedIndex].value);
-                    url += '&date_year=' + encodeURIComponent(startYear.options[startYear.selectedIndex].value);
+                    url += '&date_day=' + encodeURIComponent(startDay.value);
+                    url += '&date_month=' + encodeURIComponent(startMonth.value);
+                    url += '&date_year=' + encodeURIComponent(startYear.value);
                 } else {
                     url += '&date=' + encodeURIComponent(start.value);
                 }
                 if (startHour) {
-                    url += '&date_time_hour=' + encodeURIComponent(startHour.options[startHour.selectedIndex].value);
-                    url += '&date_time_minute=' + encodeURIComponent(startMinute.options[startMinute.selectedIndex].value);
+                    url += '&date_time_hour=' + encodeURIComponent(startHour.value);
+                    url += '&date_time_minute=' + encodeURIComponent(startMinute.value);
                 } else {
                     url += '&date_time=' + encodeURIComponent(startTime.value);
                 }

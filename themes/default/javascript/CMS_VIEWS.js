@@ -1247,7 +1247,7 @@
         /* Staff Actions links */
         staffActionsSelect: function (e, form) {
             var ob = form.elements['special_page_type'],
-                val = ob.options[ob.selectedIndex].value;
+                val = ob.value;
 
             if (val !== 'view') {
                 if (form.elements.cache !== undefined) {

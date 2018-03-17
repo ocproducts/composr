@@ -181,7 +181,7 @@
 
             if (editor) {
                 if (field.localName === 'select') {
-                    $dom.toggle(editor, (params.currentZone === field.options[field.selectedIndex].value));
+                    $dom.toggle(editor, (params.currentZone === field.value));
                 } else if (field.localName === 'input') {
                     $dom.toggle(editor, (params.currentZone === field.value));
                 }
@@ -273,7 +273,7 @@
                 store.id = 'redirects_store_' + id;
                 $dom.$id('edit-field-store').appendChild(store);
             }
-            store.value = el.options[el.selectedIndex].value;
+            store.value = el.value;
         }
     }
 }(window.$cms, window.$util, window.$dom));

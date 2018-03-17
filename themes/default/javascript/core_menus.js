@@ -283,7 +283,7 @@
                         if (name.substr(name.length - (('_' + id).length)) === '_' + id) {
                             if (ob.localName === 'select') {
                                 value = ob.form.elements[i].value;
-                                window.myValue = ob.options[ob.selectedIndex].value;
+                                window.myValue = ob.value;
                             } else {
                                 if ((ob.type.toLowerCase() === 'checkbox') && !ob.checked) {
                                     continue;
@@ -534,7 +534,7 @@
         }
         form.elements['theme_img_code'].selectedIndex = s;
         form.elements['theme_img_code'].addEventListener('change', function () {
-            $dom.$('#theme_img_code_' + i).value = this.options[this.selectedIndex].value;
+            $dom.$('#theme_img_code_' + i).value = this.value;
             $dom.$('#theme_img_code_' + i).disabled = (this.selectedIndex === 0);
         });
         if (window.jQuery && window.jQuery.fn.select2) {
@@ -625,7 +625,7 @@
 
                     // If we are a page, check we have a URL
                     branchType = $dom.$id('branch_type_' + id);
-                    if (branchType.options[branchType.selectedIndex].value === 'page') {
+                    if (branchType.value === 'page') {
                         if ((caption.value !== '') && (url.value === '')) {
                             $cms.ui.alert('{!menus:MISSING_URL_ERROR;^}');
                             return false;

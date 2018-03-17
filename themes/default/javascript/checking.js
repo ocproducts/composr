@@ -363,7 +363,7 @@
                             }
                         }
                     } else if (element.selectedIndex >= 0) {
-                        value = element.options[element.selectedIndex].value;
+                        value = element.value;
                         if ((value === '') && (element.size > 1)) {
                             value = '-1';  // Fudge, as we have selected something explicitly that is blank
                         }
@@ -515,7 +515,7 @@
 
                     for (var k = 0; k < es.length; k++) {
                         selectEl = es[k];
-                        if ((selectEl.name.match(/^access_\d+_privilege_/)) && ((isDelete) || (selectEl.options[selectEl.selectedIndex].value === '-1'))) {
+                        if ((selectEl.name.match(/^access_\d+_privilege_/)) && ((isDelete) || (selectEl.value === '-1'))) {
                             selectEl.disabled = true;
                         }
                     }
@@ -639,9 +639,9 @@
                         _year = theForm.elements[prename + '_year'];
 
                     if (_day && _month && _year) {
-                        var day = _day.options[theForm.elements[prename + '_day'].selectedIndex].value,
-                            month = _month.options[theForm.elements[prename + '_month'].selectedIndex].value,
-                            year = _year.options[theForm.elements[prename + '_year'].selectedIndex].value,
+                        var day = _day.value,
+                            month = _month.value,
+                            year = _year.value,
                             sourceDate = new Date(year, month - 1, day);
 
                         if (Number(year) !== sourceDate.getFullYear()) {

@@ -575,7 +575,7 @@
             editareaReverseRefresh('e_' + fileId);
 
             var dropdown = document.getElementById(dropdownName);
-            var value = dropdown.options[dropdown.selectedIndex].value;
+            var value = dropdown.value;
             var valueParts = value.split('__');
             value = valueParts[0];
             if (value === '---') {
