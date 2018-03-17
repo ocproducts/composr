@@ -63,7 +63,7 @@
 				</li>
 
 				<li>
-					For the world. Composr is here to empower everybody, from casual users, to programmers, to web managers.<br />People in every country of the world.
+					For the world. Composr is here to empower everyone, from casual users, to programmers, to web managers.<br />People in every country of the world.
 				</li>
 
 				<li>
@@ -102,7 +102,7 @@
 					<h3>Security</h3>
 				{+END}
 
-				<p>Finally we are very vigilant about solid security and employment layers of security throughout our development process to ensure that the only person making changes to your website is you. Click the icon to the left to the learn more.</p>
+				<p>Finally we are very vigilant about solid security and employ layers of security throughout our development process to ensure that the only person making changes to your website is you. Click the icon to the left to the learn more.</p>
 			</div>
 		</div>
 	</div>

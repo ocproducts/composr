@@ -4,7 +4,7 @@
 {$REQUIRE_JAVASCRIPT,jquery-ui}
 {$REQUIRE_CSS,jquery.ui.all}
 
-[title]Composr compared to other CMSs[/title]
+[title]Composr compared to other Content Management Systems[/title]
 
 {+START,IF,{$NOT,{$MOBILE}}}
 	<div class="cntRow">
@@ -97,7 +97,7 @@
 {+END}
 
 <div class="headlineRow cntRow">
-	<p>This page aims shows many of Composr's benefits. We have many innovative features, but also do a lot of important things as-standard that a lot of the common CMSs don't really do (at least not in an official capacity).{+START,IF,{$MOBILE}}<br />{+END}A deeper philosophical discussion is in the <a href="{$PAGE_LINK*,docs:tut_webapp}" style="white-space:nowrap !important">Web-applications, Composr, and PHP tutorial</a></p>
+	<p>This page shows many of Composr's benefits. We have many innovative features, but also do a lot of important things as-standard that a lot of the common CMSs don't really do (at least not in an official capacity).{+START,IF,{$MOBILE}}<br />{+END}A deeper philosophical discussion is in the <a href="{$PAGE_LINK*,docs:tut_webapp}" style="white-space:nowrap !important">Web-applications, Composr, and PHP tutorial</a></p>
 </div>
 
 {+START,IF,{$NOT,{$MOBILE}}}
@@ -742,7 +742,7 @@ We have to be clear that these don't always hold true, every project is differen
 
 <div class="cntRow">
 	<ul class="cntLiFull">
-		<li>This data was taken from <a href="http://www.cmsmatrix.org/" target="_blank">CMS Matrix</a>, tests run default installs, and our understanding of the systems.<br />Please [page=":contact:free"]notify us[/page] if the status of anything is incorrect and we'll update the table.</li>
+		<li>This data was taken from <a href="http://www.cmsmatrix.org/" target="_blank">CMS Matrix</a>, tests run on default installs, and also is based our understanding of the systems.<br />Please [page=":contact:free"]notify us[/page] if the status of anything is incorrect and we'll update the table.</li>
 		<li>*1: Most of this functionality can be added to other systems using third-party plugins (we explain why we think this is bad above).<br />The features we picked for the table are just some examples: we didn't want to make the table hundreds of rows long.</li>
 		<li>*2: We could have improved our speed by removing bundled addons (this gets Composr 17.77 trans/sec), but we wanted to be consistent in comparing default installations. Drupal 7's default site did not come with any content or blocks placed, so was naturally very fast. Wordpress is simple without much overhead.<br />These figures are outdated and need updating. We have managed to do some quite sophisticated optimisations in Composr v10.</li>
 	</ul>

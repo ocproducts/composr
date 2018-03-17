@@ -4,7 +4,7 @@
 
 <p>The chat can only be as popular as Composr users make it, as a venue for Composr users to help each other. The Composr developers get income from intense commercial work that (along with Composr development) takes up most of their time and concentration, so are unlikely to be able to spend time in the chat.</p>
 
-<p>If you can't get an answer in the chat (due to lack of expertise here, or if your question is long and complex), it is best to pursuit one of the following avenues:</p>
+<p>If you can't get an answer in the chat (due to lack of expertise here, or if your question is long and complex), it is best to pursue one of the following avenues:</p>
 <ul>
 	<li><a href="{$PAGE_LINK*,forum:}">Posting in the forum</a></li>
 	<li>The weekly live chats, which are announced on the forum and across Composr social media</li>
@@ -14,7 +14,7 @@
 <iframe style="width: 100%; height: 700px" src="https://kiwiirc.com/client/irc.kiwiirc.com/?nick={$USERNAME&*}#composrcms"></iframe>
 
 <p>
-	Our goal is to make it really easy to talk to other Composr users to help each other.<br /><br />
+	Our goal is to make it really easy for Composr users to help each other.<br /><br />
 	Want to help out by hanging out here longer-term? Set up an IRC client (such as <a title="HexChat {!LINK_NEW_WINDOW}" href="https://hexchat.github.io/screenshots.html" target="_blank">HexChat</a>) to automatically connect to the Freenode (<kbd>chat.freenode.net</kbd>) <kbd>#composrcms</kbd> channel.<br /><br />
 	Questions only get answered if people like you are here to answer them and/or to set an example.
 </p>

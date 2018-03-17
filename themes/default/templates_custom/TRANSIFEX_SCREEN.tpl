@@ -2,7 +2,7 @@
 
 <p>
 	Use this page to download translations direct from the translation platform (Transifex).<br />
-	Periodically we package translations into formal language addons.<br />
+	We invite translators to also package their translations into formal language addons.<br />
 </p>
 
 <p>

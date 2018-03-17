@@ -1,5 +1,5 @@
 <ul class="difText">
-	<li>Composr has no licensing costs &ndash; it is free to download, even for commercial use &ndash; re-focus investment where it's needed</li>
+	<li>Composr has no licensing costs &ndash; it is free to download, even for commercial use &ndash; so you can re-focus investment where it's needed</li>
 	<li>So many website features are available out of the box: start with just what you need and turn things on as you need them. Lack of reliance on addons = no risk of orphaned features</li>
 	<li>Composr can be thoroughly customised &ndash; you can do a surprising amount without a programmer</li>
 	<li>Use the integrated administration system: everything is neatly organised in harmony. Because Composr is developed by a dedicated team, everything is designed for simplicity and coherence</li>
