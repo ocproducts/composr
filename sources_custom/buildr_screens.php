@@ -120,6 +120,9 @@ function output_inventory_screen($member_id)
             if ($ext == 'webp') {
                 $mypic = @imagecreatefromwebp($pic_url);
             }
+            if ($ext == 'bmp') {
+                $mypic = @imagecreatefrombmp($pic_url);
+            }
             if (($mypic === false) || (imagesx($mypic) > 200)) {
                 $width = 'width: 200px';
             }
@@ -220,6 +223,9 @@ function output_room_screen($member_id)
         }
         if ($ext == 'webp') {
             $mypic = @imagecreatefromwebp($pic_url);
+        }
+        if ($ext == 'bmp') {
+            $mypic = @imagecreatefrombmp($pic_url);
         }
         if (($mypic === false) || (imagesx($mypic) > 430)) {
             $width = 'width: 430px';

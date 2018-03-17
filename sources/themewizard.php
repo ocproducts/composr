@@ -18,7 +18,7 @@
  * @package    themewizard
  */
 
-/*EXTRA FUNCTIONS: imagecreatefromwebp*/
+/*EXTRA FUNCTIONS: imagecreatefromwebp|imagecreatefrombmp*/
 
 /**
  * Standard code module initialisation function.
@@ -1368,6 +1368,8 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
             $image = @imagecreatefromjpeg($path);
         } elseif (function_exists('imagecreatefromwebp') && substr($path, -5) == '.webp') {
             $image = @imagecreatefromwebp($path);
+        } elseif (function_exists('imagecreatefrombmp') && substr($path, -4) == '.bmp') {
+            $image = @imagecreatefrombmp($path);
         } else {
             $image = @imagecreatefrompng($path);
         }
@@ -1518,6 +1520,8 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
             $image = @imagecreatefromjpeg($path);
         } elseif (substr($path, -5) == '.webp') {
             $image = @imagecreatefromwebp($path);
+        } elseif (substr($path, -4) == '.bmp') {
+            $image = @imagecreatefrombmp($path);
         } else {
             $image = @imagecreatefrompng($path);
         }

@@ -622,6 +622,8 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         $test = @imagegif($dest, $to);
     } elseif ((function_exists('imagewebp')) && ($ext2 == 'webp')) {
         $test = @imagewebp($dest, $to);
+    } elseif ((function_exists('imagebmp')) && ($ext2 == 'bmp')) {
+        $test = @imagebmp($dest, $to);
     } else {
         if ($exit_on_error) {
             warn_exit(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext2)), false, true);
