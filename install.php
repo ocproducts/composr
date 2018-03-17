@@ -2962,8 +2962,9 @@ SecFilterScanPOST Off
 </IfModule>
 END;
 
+    $php_version = PHP_MAJOR_VERSION;
     $clauses[] = <<<END
-<IfModule mod_php7.c>
+<IfModule mod_php{$php_version}.c>
 # Composr needs uploads; many hosts leave these low
 php_value post_max_size "500M"
 php_value upload_max_filesize "500M"
