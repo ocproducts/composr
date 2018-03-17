@@ -203,7 +203,7 @@
         },
 
         copyPresets: function (e, select) {
-            $corePermissionManagement.copyPermissionPresets(this.prefix, select.options[select.selectedIndex].value);
+            $corePermissionManagement.copyPermissionPresets(this.prefix, select.value);
             $corePermissionManagement.cleanupPermissionList(this.prefix);
         },
 
@@ -299,7 +299,7 @@
         },
 
         showPermSetting: function (e, select) {
-            if (select.options[select.selectedIndex].value === '-1') {
+            if (select.value === '-1') {
                 $corePermissionManagement.showPermissionSetting(select);
             }
         }

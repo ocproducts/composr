@@ -239,7 +239,7 @@
         });
 
         $dom.on(container, 'submit', '.js-form-submit-add-friend', function (e, form) {
-            $cms.loadSnippet('im_friends_rejig&member_id=' + params.memberId, 'add=' + encodeURIComponent(form.elements['friend_username'].value), true).then(function (html) {
+            $cms.loadSnippet('im_friends_rejig&member_id=' + params.memberId, 'add=' + encodeURIComponent(form.elements['friend_username'].value)).then(function (html) {
                 $dom.html('#friends-wrap', html);
                 form.elements['friend_username'].value = '';
             });

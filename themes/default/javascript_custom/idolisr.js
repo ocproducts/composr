@@ -22,14 +22,14 @@
         $dom.on(container, 'click', '.js-click-check-reason', function (e, el) {
             var reason = document.getElementById('give-reason');
             if ((reason.value.substr(reason.value.indexOf(': ')).length <= 3) && (el.selectedIndex != 0)) {
-                reason.value = el.options[el.selectedIndex].value + ': ';
+                reason.value = el.value + ': ';
             }
         });
 
         $dom.on(container, 'change', '.js-change-check-reason', function (e, el) {
             var reason = document.getElementById('give-reason');
             if ((reason.value.substr(reason.value.indexOf(': ')).length <= 3) && (el.selectedIndex != 0)) {
-                reason.value = el.options[el.selectedIndex].value + ': ';
+                reason.value = el.value + ': ';
             }
         });
     };

@@ -56,7 +56,7 @@
         _length.addEventListener('change', adjustLengths);
 
         function adjustLengths() {
-            var lengthUnits = _lengthUnits.options[_lengthUnits.selectedIndex].value, length = _length.value;
+            var lengthUnits = _lengthUnits.value, length = _length.value;
             if (document.getElementById('auto_recur').checked) {
                 // Limits based on https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/Appx_websitestandard_htmlvariables/
                 if ((lengthUnits === 'd') && ((length < 1) || (length > 90))) {

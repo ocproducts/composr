@@ -17,7 +17,7 @@
 
         function updateProductInfoDisplay() {
             var typeCode = document.getElementById('type_code');
-            var value = typeCode.options[typeCode.selectedIndex].value;
+            var value = typeCode.value;
             var creditsInfo = document.body.querySelectorAll('.creditsInfo');
             for (var i = 0; i < creditsInfo.length; i++) {
                 creditsInfo[i].style.display = (creditsInfo[i].id === 'info_' + value) ? 'block' : 'none';
