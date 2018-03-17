@@ -2043,6 +2043,24 @@ function collapse_1d_complexity($key, $list)
 }
 
 /**
+ * Strip HTML and PHP tags from a string.
+ * Equivalent to PHP's strip_tags, whose $allowable_tags parameter is expected to be deprecated in PHP 7.3 (https://wiki.php.net/rfc/deprecations_php_7_3).
+ *
+ * @param  string $str Subject
+ * @param  string $allowable_tags Comma-separated list of allowable tags
+ * @return string Result
+ */
+function cms_strip_tags($str, $allowable_tags)
+{
+    return preg_replace_callback('#</?([^\s<>]+)(\s[^<>]*)?>#', function ($matches) use ($allowable_tags) {
+        if (stripos($allowable_tags, '<' . preg_quote($matches[1], '#') . '>') !== false) {
+            return $matches[0];
+        }
+        return '';
+    }, $str);
+}
+
+/**
  * Find whether an IP address is valid.
  *
  * @param  IP $ip IP address to check

@@ -410,6 +410,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/database_misc.php',
             '_tests/tests/unit_tests/comment_encapsulation.php',
             '_tests/tests/unit_tests/csrf_tags.php',
+            '_tests/tests/unit_tests/strip_tags.php',
             '_tests/tests/unit_tests/chatrooms.php',
             '_tests/tests/unit_tests/tempcode_errors.php',
             '_tests/tests/unit_tests/currency.php',

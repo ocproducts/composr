@@ -1106,7 +1106,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
  */
 function comcode_strip_html_tags($matches)
 {
-    return $matches[1] . strip_tags($matches[2], '<p><br><div><CDATA__space><CDATA__tab><CDATA__nl><CDATA__lf><CDATA__amp>') . $matches[3];
+    return $matches[1] . cms_strip_tags($matches[2], '<p><br><div><CDATA__space><CDATA__tab><CDATA__nl><CDATA__lf><CDATA__amp>') . $matches[3];
 }
 
 /**

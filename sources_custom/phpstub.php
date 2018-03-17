@@ -2757,10 +2757,9 @@ function strftime($format, $timestamp = null)
  * Strip HTML and PHP tags from a string.
  *
  * @param  string $str Subject
- * @param  string $allowable_tags Comma-separated list of allowable tags
  * @return string Result
  */
-function strip_tags($str, $allowable_tags = '')
+function strip_tags($str)
 {
     return '';
 }

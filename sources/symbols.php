@@ -1641,7 +1641,7 @@ function ecv_STRIP_TAGS($lang, $escaped, $param)
             if (strpos($param[0], '<') === false) { // optimisation
                 $value = $param[0];
             } else {
-                $value = strip_tags($param[0], isset($param[2]) ? $param[2] : '');
+                $value = cms_strip_tags($param[0], isset($param[2]) ? $param[2] : '');
             }
         }
         if ((isset($param[1])) && ($param[1] == '1')) {
