@@ -25,7 +25,7 @@ function upgrade_script()
 {
     // Init...
 
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     require_lang('upgrade');
     require_all_core_cms_code();

@@ -136,13 +136,14 @@ function load_files_list_of_installed_addons($manifest)
         }
 
         $path = get_file_base() . '/' . $hook_type . '/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
-        $hook_files[$hook] = file_get_contents($path);
+        $hook_files[$hook] = $path;
     }
     $files_to_check = array();
-    foreach ($hook_files as $addon_name => $hook_file) {
+    foreach ($hook_files as $addon_name => $hook_path) {
+        $hook_file = file_get_contents($path);
         $matches = array();
         if (preg_match('#function get_file_list\(\)\s*\{([^\}]*)\}#', $hook_file, $matches) != 0) {
-            $files_to_check = array_merge($files_to_check, eval($matches[1])); // A bit of a hack, but saves a lot of RAM
+            $files_to_check = array_merge($files_to_check, cms_eval($matches[1], $hook_path)); // A bit of a hack, but saves a lot of RAM
         }
     }
     sort($files_to_check);

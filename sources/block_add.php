@@ -52,15 +52,16 @@ function block_helper_script()
             if (!file_exists($path)) {
                 $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
             }
-            $hook_files[$hook] = file_get_contents($path);
+            $hook_files[$hook] = $path;
         }
         unset($hook_keys);
         $addon_icons = array();
         $addons_blocks = array();
-        foreach ($hook_files as $addon_name => $hook_file) {
+        foreach ($hook_files as $addon_name => $hook_path) {
+            $hook_file = file_get_contents($hook_path);
             $matches = array();
             if (preg_match('#function get_file_list\(\)\s*\{([^\}]*)\}#', $hook_file, $matches) != 0) {
-                $addon_files = eval($matches[1]);
+                $addon_files = cms_eval($matches[1], $hook_path);
                 if ($addon_files === false) {
                     $addon_files = array(); // Some kind of PHP error
                 }

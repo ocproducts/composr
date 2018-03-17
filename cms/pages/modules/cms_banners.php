@@ -511,7 +511,8 @@ class Module_cms_banners extends Standard_crud_module
     {
         $csv_rows = array();
 
-        $has_banner_network = @intval($GLOBALS['SITE_DB']->query_select_value('banners', 'SUM(views_from)')) != 0;
+        $_has_banner_network = $GLOBALS['SITE_DB']->query_select_value('banners', 'SUM(views_from)');
+        $has_banner_network = (@intval($_has_banner_network) != 0);
 
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_banners') ? null : get_member();
         $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), ($only_owned === null) ? array() : array('submitter' => $only_owned), 'ORDER BY name');

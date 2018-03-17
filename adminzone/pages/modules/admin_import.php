@@ -586,7 +586,7 @@ class Module_admin_import
         }
         send_http_output_ping();
 
-        safe_ini_set('log_errors', '0');
+        cms_ini_set('log_errors', '0');
         global $I_REFRESH_URL;
         $I_REFRESH_URL = $refresh_url;
 

@@ -1208,7 +1208,7 @@ class Module_filedump
         }
 
         if ($action == 'zip') {
-            safe_ini_set('ocproducts.xss_detect', '0');
+            cms_ini_set('ocproducts.xss_detect', '0');
 
             header('Content-Type: application/octet-stream');
             header('Content-Disposition: attachment; filename="filedump-selection.zip"');

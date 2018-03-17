@@ -263,7 +263,7 @@ function _find_helper($new_base_path)
 
             $_hook_bits = extract_module_functions($path . '/' . $file, array('get_file_list'));
             if ($_hook_bits[0] !== null) {
-                $file_list = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : @eval($_hook_bits[0]);
+                $file_list = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : cms_eval($_hook_bits[0], $path . '/' . $file);
             } else {
                 $file_list = array();
             }

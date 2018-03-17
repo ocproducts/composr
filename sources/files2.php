@@ -337,7 +337,7 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
     if ($output_and_exit) {
         $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
 
         if ($outfile !== null) {
             cms_ob_end_clean();

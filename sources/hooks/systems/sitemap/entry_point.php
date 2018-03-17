@@ -53,7 +53,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
                         true, // $be_deferential
                     ));
                     if ($functions[0] !== null) {
-                        $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
+                        $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : cms_eval($functions[0], get_file_base() . '/' . $path);
 
                         if ($entry_points !== null) {
                             if (isset($entry_points['browse'])) {
@@ -143,7 +143,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
 
                 ));
 
-                $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
+                $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : cms_eval($functions[0], get_file_base() . '/' . $path);
 
                 if ((($matches[5] == '') || ($page == 'cms_catalogues' && $matches[5] != ''/*masquerades as direct content types but fulfilled as normal entry points*/)) && (isset($entry_points[$type]))) {
                     $entry_point = $entry_points[$type];

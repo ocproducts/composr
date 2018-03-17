@@ -97,7 +97,7 @@ class Hook_members_quiz
             false,
             array('q_name' => 'SHORT_TRANS')
         );
-        //$has_points = (@intval($GLOBALS['SITE_DB']->query_select_value('quizzes', 'SUM(q_points_for_passing)', array('q_type' => 'TEST', 'q_validated' => 1))) > 0);
+        //$_has_points = $GLOBALS['SITE_DB']->query_select_value('quizzes', 'SUM(q_points_for_passing)', array('q_type' => 'TEST', 'q_validated' => 1)); $has_points = (@intval($_has_points) > 0);
         $categories = array();
         foreach ($entries as $entry) {
             list(

@@ -72,7 +72,7 @@ class Block_twitter_feed
 
         $block_id = get_block_id($map);
 
-        safe_ini_set('ocproducts.type_strictness', '0');
+        cms_ini_set('ocproducts.type_strictness', '0');
 
         // Set up variables from parameters
         $api_key = get_option('twitter_api_key');

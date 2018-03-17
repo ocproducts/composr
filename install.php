@@ -43,9 +43,9 @@ $RELATIVE_PATH = '';
 
 error_reporting(E_ALL);
 
-safe_ini_set('display_errors', '1');
-safe_ini_set('assert.active', '0');
-safe_ini_set('opcache.revalidate_freq', '1'); // Bitnami WAMP puts it to 60 by default, breaking reading of _config.php
+cms_ini_set('display_errors', '1');
+cms_ini_set('assert.active', '0');
+cms_ini_set('opcache.revalidate_freq', '1'); // Bitnami WAMP puts it to 60 by default, breaking reading of _config.php
 
 global $DEFAULT_FORUM;
 $DEFAULT_FORUM = 'cns';
@@ -86,12 +86,12 @@ if (!array_key_exists('type', $_GET)) {
 
 $shl = @ini_get('suhosin.memory_limit');
 if (($shl === false) || ($shl == '') || ($shl == '0')) {
-    safe_ini_set('memory_limit', '-1');
+    cms_ini_set('memory_limit', '-1');
 } else {
     if (is_numeric($shl)) {
         $shl .= 'M'; // Units are in MB for this, while PHP's memory limit setting has it in bytes
     }
-    safe_ini_set('memory_limit', $shl);
+    cms_ini_set('memory_limit', $shl);
 }
 
 // Tunnel into some Composr code we can use
@@ -2508,7 +2508,11 @@ function require_code($codename)
         $file = file_array_get('sources/' . $codename . '.php');
         $file = str_replace('<' . '?php', '', $file);
         $file = str_replace('?' . '>', '', $file);
-        eval($file);
+        if (function_exists('cms_eval')) {
+            cms_eval($file, $path);
+        } else {
+            eval($file);
+        }
         if (function_exists('init__' . str_replace('/', '__', $codename))) {
             call_user_func('init__' . str_replace('/', '__', $codename));
         }
@@ -2545,7 +2549,7 @@ function object_factory($class)
  * @param  string $value New value of option
  * @return ~string Old value of option (false: error)
  */
-function safe_ini_set($var, $value)
+function cms_ini_set($var, $value)
 {
     if (@preg_match('#(\s|,|^)ini_set(\s|$|,)#', strtolower(ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) != 0) {
         return false;

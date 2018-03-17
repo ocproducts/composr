@@ -158,8 +158,6 @@ class Mail_dispatcher_php extends Mail_dispatcher_base
         $worked = true;
         $error = null;
 
-        push_suppress_error_death(true);
-
         // DKIM prep
         $dkim_private_key = get_option('dkim_private_key');
         $signed_headers = ''; // Will be filled later, potentially
@@ -190,14 +188,12 @@ class Mail_dispatcher_php extends Mail_dispatcher_base
             if (function_exists('error_clear_last')) {
                 error_clear_last();
             }
-            $_worked = mail($to_line, $subject_wrapped, $sending_message, $signed_headers . $headers, $additional);
+            $_worked = @mail($to_line, $subject_wrapped, $sending_message, $signed_headers . $headers, $additional);
             if ((!$worked) && (cms_error_get_last() != '')) {
                 $error = cms_error_get_last();
                 $worked = false;
             }
         }
-
-        pop_suppress_error_death();
 
         return array($worked, $error);
     }
@@ -618,6 +614,7 @@ abstract class Mail_dispatcher_base
 
         // Error reporting if necessary
         if (!$worked) {
+            // May have already been attached (depending on our error_handling_* functions), but we'll risk double reporting because it's important
             if ($error === null) {
                 $_error = do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address')));
             } else {

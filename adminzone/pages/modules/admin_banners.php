@@ -127,7 +127,8 @@ class Module_admin_banners
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $_sum = @intval($GLOBALS['SITE_DB']->query_select_value('banners', 'SUM(views_from)'));
+        $__sum = $GLOBALS['SITE_DB']->query_select_value('banners', 'SUM(views_from)');
+        $_sum = @intval($__sum);
         $has_banner_network = ($_sum != 0);
 
         require_code('templates_results_table');

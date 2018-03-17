@@ -1829,12 +1829,11 @@ function ecv2_PREG_MATCH($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[1])) {
-        push_suppress_error_death(true);
-        $value = (preg_match('#' . str_replace('#', '\#', $param[0]) . '#' . (isset($param[2]) ? str_replace('e', '', $param[2]) : ''), $param[1]) != 0) ? '1' : '0';
-        pop_suppress_error_death();
-        if ($value === false) {
+        $result = @preg_match('#' . str_replace('#', '\#', $param[0]) . '#' . (isset($param[2]) ? str_replace('e', '', $param[2]) : ''), $param[1]);
+        if ($result === false) {
             attach_message(cms_error_get_last(), 'warn', false, true);
-            $value = '';
+        } else {
+            $value = ($result != 0) ? '1' : '0';
         }
     }
 

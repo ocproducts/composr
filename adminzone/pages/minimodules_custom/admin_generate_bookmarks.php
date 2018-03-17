@@ -44,7 +44,7 @@ if (get_param_integer('debug', 0) != 1) {
 
 $site_name = escape_html(get_site_name());
 
-safe_ini_set('ocproducts.xss_detect', '0');
+cms_ini_set('ocproducts.xss_detect', '0');
 
 echo <<<END
 <!DOCTYPE NETSCAPE-Bookmark-file-1>

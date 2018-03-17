@@ -66,7 +66,7 @@ function sitemap_script_loading()
 
     header('Content-Type: text/xml');
     $permissions_needed = (get_param_integer('get_perms', 0) == 1); // Whether we are limiting our tree to permission-supporting
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     echo '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>';
     echo "\n" . '<request><result>';
@@ -458,8 +458,9 @@ function _get_overridable_privileges_for_privilege_page($privilege_page)
         );
     }
 
-    $_overridables = extract_module_functions_page(get_module_zone($privilege_page, 'modules', null, 'php', true, false), $privilege_page, array('get_privilege_overrides'));
-    $overridable_privileges = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : eval($_overridables[0]);
+    $zone = get_module_zone($privilege_page, 'modules', null, 'php', true, false);
+    $_overridables = extract_module_functions_page($zone, $privilege_page, array('get_privilege_overrides'));
+    $overridable_privileges = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : cms_eval($_overridables[0], $zone . ':' . $privilege_page);
     if (!is_array($overridable_privileges)) {
         $overridable_privileges = array();
     }

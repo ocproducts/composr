@@ -35,7 +35,7 @@ We have not used the PHP DB2 extension, although we probably could have done so 
  */
 function init__database__ibm()
 {
-    safe_ini_set('odbc.defaultlrl', '20M');
+    cms_ini_set('odbc.defaultlrl', '20M');
 }
 
 /**

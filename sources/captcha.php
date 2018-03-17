@@ -54,7 +54,7 @@ function captcha_script()
     }
     mt_srand(crc32($code_needed)); // Important: to stop averaging out of different attempts. This makes the distortion consistent for that particular code.
 
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     $mode = get_param_string('mode', '');
 
@@ -98,7 +98,7 @@ function captcha_script()
             fclose($myfile);
         }
 
-        safe_ini_set('zlib.output_compression', 'Off');
+        cms_ini_set('zlib.output_compression', 'Off');
 
         // Fix up header
         $data = substr_replace($data, pack('V', strlen($data) - 8), 4, 4);

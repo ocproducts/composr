@@ -145,7 +145,7 @@ foreach (array_keys($hooks) as $hook) {
         if (is_array($_hook_bits[0])) {
             $settings = call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]);
         } else {
-            $settings = @eval($_hook_bits[0]);
+            $settings = cms_eval($_hook_bits[0], $path);
         }
         foreach ($settings as $key => $val) {
             $profile .= "\t\t\t\"" . php_addslashes($key) . "\"=>\"" . php_addslashes($val) . "\",\n";

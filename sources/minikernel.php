@@ -33,6 +33,12 @@
  */
 function init__minikernel()
 {
+    // LEGACY (PHP < 7)
+    if (!class_exists('Error')) {
+        class Error {
+        }
+    }
+
     // Input filtering constants
     if (!defined('INPUT_FILTER_WORDFILTER')) {
         define('INPUT_FILTER_WORDFILTER', 1); // POST-only
@@ -82,9 +88,9 @@ function init__minikernel()
     global $SUPPRESS_ERROR_DEATH;
     $SUPPRESS_ERROR_DEATH = array(false);
 
-    safe_ini_set('ocproducts.type_strictness', '1');
+    cms_ini_set('ocproducts.type_strictness', '1');
 
-    safe_ini_set('date.timezone', 'UTC');
+    cms_ini_set('date.timezone', 'UTC');
 
     set_http_caching(null);
 }
@@ -113,6 +119,8 @@ function set_http_caching($last_modified, $public = false, $expiry_seconds = 604
 
 /**
  * Add new suppress error death setting. Whether error display is suppressed.
+ * Suppressed errors will always be logged and be shown depending on error_handling_* config (unlike with '@'), they just don't cause a fatal exit.
+ * So we use this function over '@' when an error is real and wants logging/possibly-showing.
  *
  * @param  boolean $setting New setting
  */
@@ -1126,7 +1134,7 @@ function cms_ob_end_clean()
 {
     while (ob_get_level() > 0) {
         if (!ob_end_clean()) {
-            safe_ini_set('zlib.output_compression', '0');
+            cms_ini_set('zlib.output_compression', '0');
             break;
         }
     }

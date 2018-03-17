@@ -150,7 +150,7 @@ function transifex_push_script()
     }
 
     @header('Content-type: text/plain; charset=' . get_charset());
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     $core_only = _transifex_env_setting('core_only');
     $push_cms = _transifex_env_setting('push_cms');
@@ -490,7 +490,7 @@ function transifex_pull_script()
             $filename = 'language-' . escape_header($lang) . '-' . get_version_branch(floatval(cms_version_number())) . '.tar';
         }
         header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
 
         require_code('tar');
         $tar_file = tar_open(null, 'wb');
@@ -505,7 +505,7 @@ function transifex_pull_script()
         exit();
     } else {
         header('Content-type: text/plain; charset=' . get_charset());
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
         echo 'Done';
     }
 }

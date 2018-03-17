@@ -58,7 +58,7 @@ class modularisation_test_set extends cms_test_case
             }
         }
 
-        safe_ini_set('memory_limit', '500M');
+        cms_ini_set('memory_limit', '500M');
 
         require_code('files2');
         $unput_files = array();

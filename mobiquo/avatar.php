@@ -30,7 +30,7 @@ if (isset($_GET['user_id'])) {
     $member_id = get_member();
 }
 
-safe_ini_set('ocproducts.xss_detect', '0');
+cms_ini_set('ocproducts.xss_detect', '0');
 
 $url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
 if ($url == '') {

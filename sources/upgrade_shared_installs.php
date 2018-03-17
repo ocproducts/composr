@@ -45,7 +45,7 @@ function upgrader_sharedinstall_screen()
     $out = '';
 
     global $SITE_INFO;
-    $cmd = 'mysqldump -u' . escapeshellarg_wrap($SITE_INFO['db_site_user'] . '_shareddemo') . ' -p' . escapeshellarg_wrap($SITE_INFO['db_site_password']) . ' ' . escapeshellarg_wrap($SITE_INFO['db_site']) . '_shareddemo';
+    $cmd = 'mysqldump -u' . cms_escapeshellarg($SITE_INFO['db_site_user'] . '_shareddemo') . ' -p' . cms_escapeshellarg($SITE_INFO['db_site_password']) . ' ' . cms_escapeshellarg($SITE_INFO['db_site']) . '_shareddemo';
     $out .= '<p>Now regenerate <kbd>template.sql</kbd>, using something like <kbd>' . escape_html($cmd) . ' > ~/public_html/uploads/website_specific/compo.sr/demonstratr/template.sql</kbd></p>';
 
     return $out;

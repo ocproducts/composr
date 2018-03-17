@@ -224,7 +224,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = ar
 
         // Action ini_set commands
         foreach ($ini_set as $key => $val) {
-            safe_ini_set($key, $val);
+            cms_ini_set($key, $val);
         }
 
         // Action HTTP headers

@@ -33,7 +33,7 @@ class Hook_startup_tapatalk
         }
 
         if ((get_option('tapatalk_promote_from_website') === '1') && (running_script('index'))) {
-            safe_ini_set('ocproducts.type_strictness', '0');
+            cms_ini_set('ocproducts.type_strictness', '0');
 
             $board_url = get_base_url(); // NOT the URL to the main forum, used by JS smartbanner to find the mobiquo directory
             $app_forum_name = get_site_name();
@@ -127,7 +127,7 @@ class Hook_startup_tapatalk
 
             attach_to_screen_header($app_head_include);
 
-            safe_ini_set('ocproducts.type_strictness', '1');
+            cms_ini_set('ocproducts.type_strictness', '1');
         }
     }
 }

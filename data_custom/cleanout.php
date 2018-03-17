@@ -63,7 +63,7 @@ if (!addon_installed('meta_toolkit')) {
 $out = cleanup();
 if (!headers_sent()) {
     header('Content-type: text/plain; charset=' . get_charset());
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
     if ($out !== null) {
         echo is_object($out) ? $out->evaluate() : (is_bool($out) ? ($out ? 'true' : 'false') : $out);
     }

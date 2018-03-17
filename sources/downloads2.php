@@ -176,7 +176,7 @@ function dload_script()
         header('Content-Disposition: attachment; filename="' . escape_header($myrow['original_filename'], true) . '"');
     }
 
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     // Is it non-local? If so, redirect
     if ((!url_is_local($full)) || (!file_exists(get_custom_file_base() . '/' . rawurldecode(filter_naughty($full))))) {
@@ -228,7 +228,7 @@ function dload_script()
     $from = 0;
     $new_length = $size;
 
-    safe_ini_set('zlib.output_compression', 'Off'); // So ranges work, plus workaround to bugs caused by IE being 'smart' http://blogs.msdn.com/b/ieinternals/archive/2014/10/21/http-compression-optimize-file-formats-with-deflate.aspx
+    cms_ini_set('zlib.output_compression', 'Off'); // So ranges work, plus workaround to bugs caused by IE being 'smart' http://blogs.msdn.com/b/ieinternals/archive/2014/10/21/http-compression-optimize-file-formats-with-deflate.aspx
 
     // They're trying to resume (so update our range)
     $httprange = $_SERVER['HTTP_RANGE'];
@@ -735,7 +735,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
         case 'pdf':
             if ((php_function_allowed('shell_exec')) && ($tmp_file !== null)) {
                 $enc = (get_charset() == 'utf-8') ? ' -enc UTF-8' : '';
-                $path = 'pdftohtml -i -noframes -stdout -hidden' . $enc . ' -q -xml ' . escapeshellarg_wrap($tmp_file);
+                $path = 'pdftohtml -i -noframes -stdout -hidden' . $enc . ' -q -xml ' . cms_escapeshellarg($tmp_file);
                 if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
                     if (file_exists(get_file_base() . '/data_custom/pdftohtml.exe')) {
                         $path = '"' . get_file_base() . '/data_custom/' . '"' . $path;

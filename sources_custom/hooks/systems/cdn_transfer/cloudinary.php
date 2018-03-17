@@ -77,7 +77,7 @@ class Hook_cdn_transfer_cloudinary
 
         // Proceed...
 
-        safe_ini_set('ocproducts.type_strictness', '0');
+        cms_ini_set('ocproducts.type_strictness', '0');
 
         require_code('Cloudinary/Cloudinary');
 

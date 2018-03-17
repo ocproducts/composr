@@ -70,7 +70,7 @@ class MobiquoServerPOST extends MobiquoServer
 
         $params = array_merge($post, $get);
 
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
 
         global $SERVER_DEFINE;
         $function = $SERVER_DEFINE[$this->get_method_name()]['function'];

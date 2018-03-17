@@ -1076,7 +1076,7 @@ function do_block($codename, $map = array(), $ttl = null)
             $row = get_block_info_row($codename, $map);
         }
         if ($row !== null) {
-            $cache_identifier = do_block_get_cache_identifier($row['cache_on'], $map);
+            $cache_identifier = do_block_get_cache_identifier($codename, $row['cache_on'], $map);
             $special_cache_flags = array_key_exists('special_cache_flags', $row) ? $row['special_cache_flags'] : CACHE_AGAINST_DEFAULT;
 
             // See if it actually is cached
@@ -1230,7 +1230,7 @@ function do_block($codename, $map = array(), $ttl = null)
     if ((!$DO_NOT_CACHE_THIS) && (method_exists($object, 'caching_environment')) && (has_caching_for('block'))) {
         $info = $object->caching_environment($map);
         if ($info !== null) {
-            $cache_identifier = do_block_get_cache_identifier($info['cache_on'], $map);
+            $cache_identifier = do_block_get_cache_identifier($codename, $info['cache_on'], $map);
             if ($cache_identifier !== null) {
                 $special_cache_flags = array_key_exists('special_cache_flags', $info) ? $info['special_cache_flags'] : CACHE_AGAINST_DEFAULT;
 
@@ -1513,11 +1513,12 @@ function get_block_info_row($codename, $map)
  * Takes a string which is a PHP expression over $map (parameter map), and returns a derived identifier.
  * We see if we have something cached by looking for a matching identifier.
  *
+ * @param  ID_TEXT $codename The block name
  * @param  mixed $cache_on PHP expression over $map (the parameter map of the block) OR a call_user_func specifier that will return a result (which will be used if caching is really very important, even for Hip Hop PHP)
  * @param  array $map The block parameter map
  * @return ?LONG_TEXT The derived cache identifier (null: the identifier is CURRENTLY null meaning cannot be cached)
  */
-function do_block_get_cache_identifier($cache_on, $map)
+function do_block_get_cache_identifier($codename, $cache_on, $map)
 {
     static $cache = array();
     $sz = serialize(array($cache_on, $map));

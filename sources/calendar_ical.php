@@ -40,7 +40,7 @@ function ical_escape($in)
  */
 function output_ical($headers_and_exit = true)
 {
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     if ($headers_and_exit) {
         header('Content-Type: text/calendar');

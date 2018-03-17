@@ -35,7 +35,7 @@ If running on Windows, you need to install the following commands in your path..
 */
 
 restrictify();
-safe_ini_set('ocproducts.xss_detect', '0');
+cms_ini_set('ocproducts.xss_detect', '0');
 
 disable_php_memory_limit();
 

@@ -705,9 +705,9 @@ function check_memory_limit_for($file_path, $exit_on_error = true)
                 // Can command line imagemagick save the day?
                 $imagemagick = find_imagemagick();
                 if ($imagemagick !== null) {
-                    $shrink_command = $imagemagick . ' ' . escapeshellarg_wrap($file_path);
+                    $shrink_command = $imagemagick . ' ' . cms_escapeshellarg($file_path);
                     $shrink_command .= ' -resize ' . strval(intval(floatval($max_dim) / 1.5)) . 'x' . strval(intval(floatval($max_dim) / 1.5));
-                    $shrink_command .= ' ' . escapeshellarg_wrap($file_path);
+                    $shrink_command .= ' ' . cms_escapeshellarg($file_path);
                     $err_cond = -1;
                     $output_arr = array();
                     if (php_function_allowed('shell_exec')) {

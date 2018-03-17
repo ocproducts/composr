@@ -375,7 +375,7 @@ function upgrade_module($zone, $module)
         $info['version'] = 2;
         $info['locked'] = true;
     } else {
-        $info = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
+        $info = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : cms_eval($functions[0], $module_path);
     }
 
     $ret = 0;
@@ -387,7 +387,7 @@ function upgrade_module($zone, $module)
             if (is_array($functions[1])) {
                 call_user_func_array($functions[1][0], $functions[1][1]);
             } else {
-                eval($functions[1]);
+                cms_eval($functions[1], $module_path);
             }
             $ret = 1;
         }
@@ -432,14 +432,14 @@ function reinstall_module($zone, $module)
         $info['version'] = 2;
         $info['locked'] = true;
     } else {
-        $info = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
+        $info = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : cms_eval($functions[0], $module_path);
     }
 
     if ($functions[2] !== null) {
         if (is_array($functions[2])) {
             call_user_func_array($functions[2][0], $functions[2][1]);
         } else {
-            eval($functions[2]);
+            cms_eval($functions[2], $module_path);
         }
     }
     if ($info === null) {
@@ -452,7 +452,7 @@ function reinstall_module($zone, $module)
         if (is_array($functions[1])) {
             call_user_func_array($functions[1][0], $functions[1][1]);
         } else {
-            eval($functions[1]);
+            cms_eval($functions[1], $module_path);
         }
     }
     $GLOBALS['SITE_DB']->query_insert('modules', array('module_the_name' => $module, 'module_author' => $info['author'], 'module_organisation' => $info['organisation'], 'module_hacked_by' => ($info['hacked_by'] === null) ? '' : $info['hacked_by'], 'module_hack_version' => $info['hack_version'], 'module_version' => $info['version']));
@@ -493,7 +493,7 @@ function uninstall_module($zone, $module)
         if (is_array($functions[0])) {
             call_user_func_array($functions[0][0], $functions[0][1]);
         } else {
-            eval($functions[0]);
+            cms_eval($functions[0], $module_path);
         }
     }
 }
@@ -619,7 +619,7 @@ function upgrade_block($block)
         return 0;
     }
 
-    $info = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
+    $info = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : cms_eval($functions[0], $block_path);
     if (($functions[1] !== null) && (array_key_exists('update_require_upgrade', $info))) {
         if ((($upgrade_from < $info['version']) && (array_key_exists('update_require_upgrade', $info))) || (($upgrade_from_hack < $info['hack_version']) && (array_key_exists('hack_require_upgrade', $info)))) {
             require_all_core_cms_code();
@@ -628,7 +628,7 @@ function upgrade_block($block)
             if (is_array($functions[1])) {
                 call_user_func_array($functions[1][0], $functions[1][1]);
             } else {
-                eval($functions[1]);
+                cms_eval($functions[1], $block_path);
             }
             if ($info['hacked_by'] === null) {
                 $info['installed_hacked_by'] = '';
@@ -665,10 +665,10 @@ function reinstall_block($block)
         if (is_array($functions[2])) {
             call_user_func_array($functions[2][0], $functions[2][1]);
         } else {
-            eval($functions[2]);
+            cms_eval($functions[2], $block_path);
         }
     }
-    $info = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
+    $info = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : cms_eval($functions[0], $block_path);
     if ($info === null) {
         return false;
     }
@@ -681,7 +681,7 @@ function reinstall_block($block)
         if (is_array($functions[1])) {
             call_user_func_array($functions[1][0], $functions[1][1]);
         } else {
-            eval($functions[1]);
+            cms_eval($functions[1], $block_path);
         }
         return true;
     }
@@ -713,7 +713,7 @@ function uninstall_block($block)
         if (is_array($functions[0])) {
             call_user_func_array($functions[0][0], $functions[0][1]);
         } else {
-            eval($functions[0]);
+            cms_eval($functions[0], $block_path);
         }
     }
 }
@@ -761,7 +761,7 @@ function extract_module_info($path)
     if ($functions[0] === null) {
         return null;
     }
-    return is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
+    return is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : cms_eval($functions[0], $path);
 }
 
 /**

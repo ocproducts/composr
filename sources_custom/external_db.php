@@ -79,7 +79,7 @@ function external_db_user_from_session()
     $db = external_db();
 
     // Look for existing session. The particular system we are integrating has a ASP.net cookie session, and the ASP.net session contains the database session ID (yes, over-complex)
-    safe_ini_set('allow_url_open', '1');
+    cms_ini_set('allow_url_open', '1');
     $opts = array(
         'http' => array(
             'method' => "GET",

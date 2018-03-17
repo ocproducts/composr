@@ -1691,7 +1691,7 @@ function ini_get($varname)
 
 /**
  * Sets the value of a configuration option.
- * Usually call safe_ini_set for Composr code.
+ * Usually call cms_ini_set for Composr code.
  *
  * @param  string $var Config option
  * @param  string $value New value of option
@@ -5081,6 +5081,17 @@ function gzencode($data, $level)
 }
 
 /**
+ * Decode a gzip compressed string.
+ *
+ * @param  string $data In
+ * @return string Out
+ */
+function gzdecode($data)
+{
+    return '';
+}
+
+/**
  * Read entire gz-file into an array.
  *
  * @param  PATH $filename The filename
@@ -5491,7 +5502,6 @@ gzread
 gzpassthru
 gzseek
 gztell
-gzdecode
 zlib_encode
 zlib_decode
 zlib_get_coding_type
@@ -5540,6 +5550,20 @@ stream_supports_lock
 stream_wrapper_register
 stream_wrapper_restore
 stream_wrapper_unregister
+get_resources
+gc_mem_caches
+deflate_init
+deflate_add
+inflate_init
+inflate_add
+imagesetclip
+imagegetclip
+imageopenpolygon
+imageresolution
+socket_addrinfo_lookup
+socket_addrinfo_connect
+socket_addrinfo_bind
+socket_addrinfo_explain
 
 GD stuff that's not on by default...
 
@@ -5548,18 +5572,18 @@ imagewebp
 
 PHP7, so cannot use yet...
 
-get_resources
-gc_mem_caches
 preg_replace_callback_array
-deflate_init
-deflate_add
-inflate_init
-inflate_add
 random_bytes
 random_int
 intdiv
 error_clear_last
 gethostname
+
+PHP7.2, so cannot use yet...
+
+imagecreatefrombmp
+imagebmp
+
 
 
 // ---

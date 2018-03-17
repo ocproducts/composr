@@ -54,7 +54,7 @@ function call_mobiquo_test($method)
  */
 function mobiquo_xmlrpc_simple_call($method, $params, $username = null)
 {
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     $mobiquo = basename(dirname(__DIR__));
 
@@ -98,7 +98,7 @@ function mobiquo_xmlrpc_simple_call($method, $params, $username = null)
  */
 function mobiquo_post_simple_call($method, $params, $username = null, $files = null)
 {
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     $mobiquo = basename(dirname(__DIR__));
 
@@ -137,7 +137,7 @@ function mobiquo_post_simple_call($method, $params, $username = null, $files = n
  */
 function mobiquo_json_simple_call($method, $params, $username = null)
 {
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     $mobiquo = basename(dirname(__DIR__));
 

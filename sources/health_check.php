@@ -126,7 +126,7 @@ function health_check_script()
     $categories = run_health_check($has_fails, $sections_to_run, $passes, $skips, $manual_checks);
 
     header('Content-type: text/plain; charset=' . get_charset());
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     foreach ($categories as $category_label => $sections) {
         foreach ($sections['SECTIONS'] as $section_label => $results) {

@@ -493,7 +493,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
 
     require_code('crypt');
 
-    safe_ini_set('pcre.backtrack_limit', '10000000');
+    cms_ini_set('pcre.backtrack_limit', '10000000');
 
     // Special clean up we always do regardless...
 

@@ -3474,12 +3474,67 @@ function get_mass_import_mode()
  * @param  string $arg The argument
  * @return string Escaped
  */
-function escapeshellarg_wrap($arg)
+function cms_escapeshellarg($arg)
 {
     if (php_function_allowed('escapeshellarg')) {
         return escapeshellarg($arg);
     }
     return "'" . addslashes(str_replace(array(chr(0), "'"), array('', "'\"'\"'"), $arg)) . "'";
+}
+
+/**
+ * Run some code. Bail out on failure.
+ * We cannot always use this over 'eval' because the code will run in a separate scope.
+ *
+ * @param  string $code Code to eval
+ * @param  string $context A context, used in error messages, to help understand where errors may be
+ * @param  boolean $trigger_error Trigger fatal error; even if false an error will be attached
+ * @return mixed The error response
+ */
+function cms_eval($code, $context, $trigger_error = true)
+{
+    push_suppress_error_death(true);
+
+    if (function_exists('error_clear_last')) {
+        error_clear_last();
+    }
+    $errormsg_before = error_get_last();
+
+    try {
+        $result = eval($code);
+        $attach_manually = false;
+
+        $errormsg = cms_error_get_last();
+        if (($errormsg == '') || ($errormsg === $errormsg_before)) {
+            $errormsg = '';
+        }
+    }
+    catch (Exception $e) {
+        $result = false;
+        $attach_manually = true;
+
+        $errormsg = $e->getMessage();
+    }
+    catch (Error $e) {
+        $result = false;
+        $attach_manually = true;
+
+        $errormsg = $e->getMessage();
+    }
+
+    pop_suppress_error_death();
+
+    if ($errormsg != '') {
+        if ($trigger_error) {
+            fatal_exit(protect_from_escaping(escape_html($context) . ': ' . $errormsg));
+        } else {
+            if (($attach_manually) && (get_option('error_handling_errors') != 'SKIP')) {
+                attach_message(protect_from_escaping(escape_html($context) . ': ' . $errormsg), 'notice'); // Won't attach naturally and won't show in a fatal error, so we must attach it
+            } // other errors will have still been attached anyway (depending on error_handling_* configuration)
+        }
+    }
+
+    return $result;
 }
 
 /**

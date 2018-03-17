@@ -13,7 +13,7 @@
  * @package    composr_release_build
  */
 
-/*EXTRA FUNCTIONS: shell_exec|escapeshellarg*/
+/*EXTRA FUNCTIONS: shell_exec*/
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
@@ -23,7 +23,7 @@ if (!addon_installed__messaged('composr_release_build', $error_msg)) {
 }
 
 restrictify();
-safe_ini_set('ocproducts.xss_detect', '0');
+cms_ini_set('ocproducts.xss_detect', '0');
 
 $_title = get_screen_title('Composr bugfix tool', false);
 $_title->evaluate_echo();
@@ -364,9 +364,9 @@ function do_git_commit($git_commit_message, $files)
 
     $cmd = $GIT_PATH . ' commit';
     foreach ($files as $file) {
-        $cmd .= ' ' . escapeshellarg($file);
+        $cmd .= ' ' . cms_escapeshellarg($file);
     }
-    $cmd .= ' -m ' . escapeshellarg($git_commit_message);
+    $cmd .= ' -m ' . cms_escapeshellarg($git_commit_message);
     $result = shell_exec($cmd . ' 2>&1');
 
     $matches = array();
@@ -401,9 +401,9 @@ function create_hotfix_tar($tracker_id, $files)
     chdir($builds_path . '/builds/hotfixes');
     $tar = ((DIRECTORY_SEPARATOR == '\\') ? ('tar') : 'COPYFILE_DISABLE=1 tar');
     $tar_path = $builds_path . '/builds/hotfixes/hotfix-' . strval($tracker_id) . ', ' . date('Y-m-d ga') . '.tar';
-    $cmd = $tar . ' cvf ' . escapeshellarg(basename($tar_path)) . ' -C ' . escapeshellarg(get_file_base()); // Windows doesn't allow absolute path for 'f' option so we need to use 'f' & 'C' to do it
+    $cmd = $tar . ' cvf ' . cms_escapeshellarg(basename($tar_path)) . ' -C ' . cms_escapeshellarg(get_file_base()); // Windows doesn't allow absolute path for 'f' option so we need to use 'f' & 'C' to do it
     foreach ($files as $file) {
-        $cmd .= ' ' . escapeshellarg($file);
+        $cmd .= ' ' . cms_escapeshellarg($file);
     }
     echo '<!--' . shell_exec($cmd . ' 2>&1') . '-->';
     return $tar_path;

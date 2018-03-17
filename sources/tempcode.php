@@ -390,7 +390,7 @@ function closure_eval($code, $parameters)
         return do_lang('NO_PHP_IN_TEMPLATES');
     }
 
-    $ret = /*$GLOBALS['DEV_MODE']?debug_eval($code):*/eval($code);
+    $ret = eval($code);
     if (!is_string($ret)) {
         $ret = @strval($ret);
     }
@@ -659,7 +659,7 @@ function apply_tempcode_escaping($escaped, &$value)
         } elseif ($escape === CC_ESCAPED) {
             $value = str_replace('[', '\\[', str_replace('\\', '\\\\', $value));
         } elseif ($escape === UL_ESCAPED) {
-            $value = cms_url_encode($value);
+            $value = cms_urlencode($value);
         } elseif ($escape === UL2_ESCAPED) {
             $value = rawurlencode($value);
         } elseif ($escape === JSHTML_ESCAPED) {
@@ -712,7 +712,7 @@ function apply_tempcode_escaping_inline($escaped, $value)
         } elseif ($escape === CC_ESCAPED) {
             $value = str_replace('[', '\\[', str_replace('\\', '\\\\', $value));
         } elseif ($escape === UL_ESCAPED) {
-            $value = cms_url_encode($value);
+            $value = cms_urlencode($value);
         } elseif ($escape === UL2_ESCAPED) {
             $value = rawurlencode($value);
         } elseif ($escape === JSHTML_ESCAPED) {
@@ -1822,8 +1822,22 @@ class Tempcode
         if ((count($this->code_to_preexecute) > 10) && ($GLOBALS['CACHE_TEMPLATES'])) {
             // We don't actually use $code_to_preexecute, because it uses too much RAM and DB space throwing full templates into the caching. Instead we rewrite to custom load it whenever it's needed. This isn't inefficient due to normal opcode caching and optimizer opcode caching, and because we cache Tempcode object's evaluations at runtime so it can only happen once per screen view.
             $_file = (strpos($file, '\'') === false) ? $file : php_addslashes($file);
-            $this->code_to_preexecute[] = 'if (($result=tempcode_include(\'' . $_file . '\'))===false) { $tmp=do_template(\'' . php_addslashes($forced_reload_details[0]) . '\',null,\'' . ((strpos($forced_reload_details[2], '\'') === false) ? $forced_reload_details[2] : php_addslashes($forced_reload_details[2])) . '\',false,\'' . (($forced_reload_details[6] === '') ? '' : ((strpos($forced_reload_details[6], '\'') === false) ? $forced_reload_details[6] : php_addslashes($forced_reload_details[6]))) . '\',\'' . ($forced_reload_details[4]) . '\',\'' . ($forced_reload_details[5]) . '\'); clearstatcache(); $tmp2=$GLOBALS[\'CACHE_TEMPLATES\']; if (!@is_file(\'' . $_file . '\')) { $GLOBALS[\'CACHE_TEMPLATES\']=false; } /*$GLOBALS[\'DEV_MODE\']?debug_eval($tmp->code_to_preexecute):*/eval($tmp->code_to_preexecute); $GLOBALS[\'CACHE_TEMPLATES\']=$tmp2; unset($tmp); }
-            else { debug_eval($result[4]); unset($result); }';
+            $this->code_to_preexecute[] = '
+                if (($result=tempcode_include(\'' . $_file . '\'))===false) {
+                    $tmp=do_template(\'' . php_addslashes($forced_reload_details[0]) . '\',null,\'' . ((strpos($forced_reload_details[2], '\'') === false) ? $forced_reload_details[2] : php_addslashes($forced_reload_details[2])) . '\',false,\'' . (($forced_reload_details[6] === '') ? '' : ((strpos($forced_reload_details[6], '\'') === false) ? $forced_reload_details[6] : php_addslashes($forced_reload_details[6]))) . '\',\'' . ($forced_reload_details[4]) . '\',\'' . ($forced_reload_details[5]) . '\');
+                    clearstatcache();
+                    $tmp2=$GLOBALS[\'CACHE_TEMPLATES\'];
+                    if (!@is_file(\'' . $_file . '\')) {
+                        $GLOBALS[\'CACHE_TEMPLATES\']=false;
+                    }
+                    eval($tmp->code_to_preexecute);
+                    $GLOBALS[\'CACHE_TEMPLATES\']=$tmp2;
+                    unset($tmp);
+                } else {
+                    eval($result[4]);
+                    unset($result);
+                }
+            ';
             // NB: $GLOBALS[\'CACHE_TEMPLATES\']=false; is in case the template cache has been detected as broken, it prevents this branch running as it would fail again
         }
 
@@ -1884,7 +1898,7 @@ class Tempcode
             $this->metadata = create_template_tree_metadata();
         }
 
-        $result = /*$GLOBALS['DEV_MODE']?debug_eval($raw_data):*/@eval($raw_data);
+        $result = eval($raw_data);
         if ($result === false) {
             if ($allow_failure) {
                 return false;
@@ -2136,7 +2150,7 @@ class Tempcode
 
         if ($XSS_DETECT) {
             $before = @ini_get('ocproducts.xss_detect');
-            safe_ini_set('ocproducts.xss_detect', '0');
+            cms_ini_set('ocproducts.xss_detect', '0');
         }
 
         $no_eval_cache_before = $NO_EVAL_CACHE;
@@ -2154,20 +2168,11 @@ class Tempcode
         $first_of_long = isset($this->seq_parts[0][3]) || isset($this->seq_parts[3]); // We set this to know not to dig right through to determine emptiness, as this wastes cache memory (it's a tradeoff)
         $tpl_funcs = $KEEP_TPL_FUNCS;
 
+        $codename = $this->codename;
+
         foreach ($this->seq_parts as $seq_parts_group) {
             foreach ($seq_parts_group as $seq_part) {
                 $seq_part_0 = $seq_part[0];
-                /*if ($DEV_MODE) {
-                    if (!isset($tpl_funcs[$seq_part_0])) {
-                        debug_eval($this->code_to_preexecute[$seq_part_0], $tpl_funcs);
-                    }
-                    if (($tpl_funcs[$seq_part_0][0] !== 'e') && (function_exists($tpl_funcs[$seq_part_0]))) {
-                        debug_call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
-                    } else {
-                        $parameters = $seq_part[1];
-                        debug_eval($tpl_funcs[$seq_part_0], $tpl_funcs, $parameters, $cl);
-                    }
-                } else {*/
                 if (!isset($tpl_funcs[$seq_part_0])) {
                     eval($this->code_to_preexecute[$seq_part_0]);
                 }
@@ -2177,7 +2182,6 @@ class Tempcode
                     $parameters = $seq_part[1];
                     eval($tpl_funcs[$seq_part_0]);
                 }
-                //}
 
                 if ((($first_of_long) || ($MEMORY_OVER_SPEED)) && (ob_get_length() > 0)) { // We only quick exit on the first iteration, as we know we likely didn't spend much time getting to it- anything more and we finish so that we can cache for later use by evaluate/evaluate_echo
                     ob_end_clean();
@@ -2185,7 +2189,7 @@ class Tempcode
                         $NO_EVAL_CACHE = $no_eval_cache_before;
                     }
                     if ($XSS_DETECT) {
-                        safe_ini_set('ocproducts.xss_detect', $before);
+                        cms_ini_set('ocproducts.xss_detect', $before);
                     }
                     $this->is_empty = false;
                     return false;
@@ -2208,7 +2212,7 @@ class Tempcode
             $NO_EVAL_CACHE = $no_eval_cache_before;
         }
         if ($XSS_DETECT) {
-            safe_ini_set('ocproducts.xss_detect', $before);
+            cms_ini_set('ocproducts.xss_detect', $before);
         }
         $ret = ($tmp === '');
         $this->is_empty = $ret;
@@ -2247,7 +2251,7 @@ class Tempcode
 
         if ($XSS_DETECT) {
             $before = @ini_get('ocproducts.xss_detect');
-            safe_ini_set('ocproducts.xss_detect', '0');
+            cms_ini_set('ocproducts.xss_detect', '0');
         }
 
         if ($current_lang === null) {
@@ -2262,22 +2266,13 @@ class Tempcode
         }
         $cl = $current_lang;
 
+        $codename = $this->codename;
+
         $tpl_funcs = $KEEP_TPL_FUNCS;
         $no_eval_cache_before = $NO_EVAL_CACHE;
         foreach ($this->seq_parts as $seq_parts_group) {
             foreach ($seq_parts_group as $seq_part) {
                 $seq_part_0 = $seq_part[0];
-                /*if ($DEV_MODE) {
-                    if (!isset($tpl_funcs[$seq_part_0])) {
-                        debug_eval($this->code_to_preexecute[$seq_part_0], $tpl_funcs);
-                    }
-                    if (($tpl_funcs[$seq_part_0][0] !== 'e') && (function_exists($tpl_funcs[$seq_part_0]))) {
-                        debug_call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
-                    } else {
-                        $parameters = $seq_part[1];
-                        debug_eval($tpl_funcs[$seq_part_0], $tpl_funcs, $parameters, $cl);
-                    }
-                } else {*/
                 if (!isset($tpl_funcs[$seq_part_0])) {
                     eval($this->code_to_preexecute[$seq_part_0]);
                 }
@@ -2287,12 +2282,11 @@ class Tempcode
                     $parameters = $seq_part[1];
                     eval($tpl_funcs[$seq_part_0]);
                 }
-                //}
             }
         }
 
         if ($XSS_DETECT) {
-            safe_ini_set('ocproducts.xss_detect', $before);
+            cms_ini_set('ocproducts.xss_detect', $before);
         }
 
         $ret = ob_get_clean();
@@ -2340,6 +2334,8 @@ class Tempcode
             $cl = user_lang();
         }
 
+        $codename = $this->codename;
+
         global $KEEP_TPL_FUNCS, $FULL_RESET_VAR_CODE, $RESET_VAR_CODE, $STOP_IF_STUCK, $STUCK_ABORT_SIGNAL, $DEV_MODE, $TEMPCODE_OUTPUT_STARTED;
         $TEMPCODE_OUTPUT_STARTED = true;
         $tpl_funcs = $KEEP_TPL_FUNCS;
@@ -2369,17 +2365,6 @@ class Tempcode
                 $seq_part = $seq_parts_group[$j];
 
                 $seq_part_0 = $seq_part[0];
-                /*if ($DEV_MODE) {
-                    if (!isset($tpl_funcs[$seq_part_0])) {
-                        debug_eval($this->code_to_preexecute[$seq_part_0], $tpl_funcs);
-                    }
-                    if (($tpl_funcs[$seq_part_0][0] !== 'e') && (function_exists($tpl_funcs[$seq_part_0]))) {
-                        debug_call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
-                    } else {
-                        $parameters = $seq_part[1];
-                        debug_eval($tpl_funcs[$seq_part_0], $tpl_funcs, $parameters, $cl);
-                    }
-                } else {*/
                 if (!isset($tpl_funcs[$seq_part_0])) {
                     eval($this->code_to_preexecute[$seq_part_0]);
                 }
@@ -2389,7 +2374,6 @@ class Tempcode
                     $parameters = $seq_part[1];
                     eval($tpl_funcs[$seq_part_0]);
                 }
-                //}
 
                 if ($stop_if_stuck) {
                     if ($STUCK_ABORT_SIGNAL) {
@@ -2443,6 +2427,8 @@ function recall_named_function($id, $parameters, $code)
  */
 function tempcode_include($filepath)
 {
+    // NB: We suppress errors because the file may be missing, especially due to race conditions. If we fail we return false, and an alternative Tempcode technique is used
+
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);
         $ret = @include($filepath);
@@ -2452,40 +2438,6 @@ function tempcode_include($filepath)
     }
 
     return $ret;
-}
-
-/**
- * Evaluate some PHP, with ability to better debug.
- * In a way this can also quash problems, so only use when debugging. The "@" before eval turns off attach_message.
- *
- * @param  ?string $code Code to evaluate (null: code not found)
- * @param  ?array $tpl_funcs Evaluation code context (null: N/A)
- * @param  ?array $parameters Evaluation parameters (null: N/A)
- * @param  ?ID_TEXT $cl Language (null: N/A)
- * @return mixed Result
- *
- * @ignore
- */
-function debug_eval($code, &$tpl_funcs = null, $parameters = null, $cl = null)
-{
-    global $NO_EVAL_CACHE, $XSS_DETECT, $KEEP_TPL_FUNCS, $FULL_RESET_VAR_CODE, $RESET_VAR_CODE;
-
-    if ($code === '') {
-        return ''; // Blank eval returns false
-    }
-    if (function_exists('error_clear_last')) {
-        error_clear_last();
-    }
-    $result = @eval($code);
-    if ($result === false) {
-        if ($GLOBALS['DEV_MODE']) {
-            $message = ((cms_error_get_last() != '') ? (cms_error_get_last() . ' - ') : '') . $code;
-            //cms_ob_end_clean(); @exit('!' . $message . '!');
-            fatal_exit($message);
-        }
-        $result = '';
-    }
-    return $result;
 }
 
 /**

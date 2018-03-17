@@ -94,7 +94,8 @@ function total_points($member_id, $timestamp = null)
         if (get_forum_type() == 'cns') {
             $points_gained_posting -= min($points_gained_posting, @intval($GLOBALS['FORUM_DB']->query_value_if_there('SELECT SUM(f_post_count_increment) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums f ON f.id=p.p_cache_forum_id WHERE p_time>' . strval($timestamp) . ' AND p_poster=' . strval($member_id))));
         }
-        $points_gained_given -= min($points_gained_given, @intval($GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(amount) FROM ' . get_table_prefix() . 'gifts WHERE date_and_time>' . strval($timestamp) . ' AND gift_to=' . strval($member_id))));
+        $_points_gained_given = $GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(amount) FROM ' . get_table_prefix() . 'gifts WHERE date_and_time>' . strval($timestamp) . ' AND gift_to=' . strval($member_id));
+        $points_gained_given -= min($points_gained_given, @intval($_points_gained_given));
         $points_gained_rating -= min($points_gained_rating, $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'rating WHERE rating_time>' . strval($timestamp) . ' AND rating_member=' . strval($member_id)));
         if (addon_installed('polls')) {
             $points_gained_voting -= min($points_gained_voting, $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'poll_votes v JOIN ' . get_table_prefix() . 'poll p ON p.id=v.v_poll_id WHERE add_time>' . strval($timestamp) . ' AND v_voter_id=' . strval($member_id)));
@@ -198,7 +199,8 @@ function point_info($member_id)
  */
 function get_gift_points_used($member_id)
 {
-    $actual_used = @intval($GLOBALS['SITE_DB']->query_select_value_if_there('gifts', 'SUM(amount)', array('gift_from' => $member_id))); // Most reliable way
+    $_actual_used = $GLOBALS['SITE_DB']->query_select_value_if_there('gifts', 'SUM(amount)', array('gift_from' => $member_id));
+    $actual_used = @intval($_actual_used); // Most reliable way
     $_used = point_info($member_id);
     if (!isset($_used['gift_points_used'])) { // Some kind of DB error
         return $actual_used;

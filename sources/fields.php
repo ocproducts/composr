@@ -133,13 +133,13 @@ function catalogue_file_script()
         header('Content-Disposition: attachment');
     }
     header('Accept-Ranges: bytes');
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     // Default to no resume
     $from = 0;
     $new_length = $size;
 
-    safe_ini_set('zlib.output_compression', 'Off');
+    cms_ini_set('zlib.output_compression', 'Off');
 
     // They're trying to resume (so update our range)
     $httprange = $_SERVER['HTTP_RANGE'];

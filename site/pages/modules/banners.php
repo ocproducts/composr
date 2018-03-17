@@ -498,7 +498,8 @@ class Module_banners
             }
         }
 
-        $sum_views = @intval($GLOBALS['SITE_DB']->query_select_value('banners', 'SUM(views_from)'));
+        $_sum_views = $GLOBALS['SITE_DB']->query_select_value('banners', 'SUM(views_from)');
+        $sum_views = @intval($_sum_views);
         $has_banner_network = ($sum_views != 0);
 
         $fields = new Tempcode();

@@ -176,7 +176,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                             require_lang('zones');
                             require_code('zones2');
                             $functions = extract_module_functions($path_addon, array('get_description'));
-                            $description = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
+                            $description = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : cms_eval($functions[0], $path_addon);
                             $description = do_lang('FROM_ADDON', $package, $description);
                             $struct['description'] = $description;
                         }
@@ -239,7 +239,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                 $has_entry_points = false;
 
                 if ($functions[0] !== null) {
-                    $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
+                    $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : cms_eval($functions[0], $path);
 
                     if ($entry_points === null) {
                         return null;
@@ -303,7 +303,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                             // Is the icon for the container explicitly defined within get_wrapper_icon()?
                             if ($functions[1] !== null) {
                                 if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
-                                    $icon = is_array($functions[1]) ? call_user_func_array($functions[1][0], $functions[1][1]) : eval($functions[1]);
+                                    $icon = is_array($functions[1]) ? call_user_func_array($functions[1][0], $functions[1][1]) : cms_eval($functions[1], $path);
                                     $struct['extra_meta']['image'] = find_theme_image('icons/' . $icon);
                                 }
                             }

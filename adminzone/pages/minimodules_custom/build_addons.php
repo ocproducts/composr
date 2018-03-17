@@ -35,7 +35,7 @@ if (post_param_integer('confirm', 0) == 0) {
 }
 
 restrictify();
-safe_ini_set('ocproducts.xss_detect', '0');
+cms_ini_set('ocproducts.xss_detect', '0');
 
 $_title = get_screen_title('Composr addon building tool', false);
 $_title->evaluate_echo();
