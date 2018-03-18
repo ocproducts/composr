@@ -30,7 +30,7 @@ if (!addon_installed('points')) {
 }
 
 if (get_forum_type() != 'cns') {
-    return paragraph(do_lang_tempcode('NO_CNS'), '5v7eclbf681s79gdkminmik8ykk7abgy', 'red-alert';
+    return paragraph(do_lang_tempcode('NO_CNS'), '5v7eclbf681s79gdkminmik8ykk7abgy', 'red-alert');
 }
 
 if (strpos(get_db_type(), 'mysql') !== false) {

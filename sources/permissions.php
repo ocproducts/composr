@@ -834,7 +834,7 @@ function has_privilege($member_id, $privilege, $page = null, $cats = null)
     }
     $PRIVILEGE_CACHE[$member_id] = array();
     foreach ($perhaps as $p) {
-        if (!@$PRIVILEGE_CACHE[$member_id][$p['privilege']][$p['the_page']][$p['module_the_name']][$p['category_name']]) {
+        if (empty($PRIVILEGE_CACHE[$member_id][$p['privilege']][$p['the_page']][$p['module_the_name']][$p['category_name']])) {
             $PRIVILEGE_CACHE[$member_id][$p['privilege']][$p['the_page']][$p['module_the_name']][$p['category_name']] = ($p['the_value'] == 1);
         }
     }

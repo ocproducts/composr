@@ -34,6 +34,7 @@ class optimisations_fragile_test_set extends cms_test_case
         if (get_forum_type() == 'cns') {
             $_GET['id'] = strval(db_get_first_id());
             $out = load_module_page('forum/pages/modules/forumview.php', 'forumview');
+            unset($_GET['id']);
             require_lang('cns');
             $this->assertTrue(strpos($out->evaluate(), do_lang('ROOT_FORUM')) !== false);
             $this->assertTrue(!function_exists('ecv2_MAKE_URL_ABSOLUTE'), 'symbols2.php used on forumview');

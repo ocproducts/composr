@@ -269,7 +269,7 @@ class Hook_addon_registry_wiki
             'INCLUDE_EXPANSION' => lorem_phrase(),
             'UNVALIDATED' => do_lang('UNVALIDATED'),
             'STAFF_ACCESS' => lorem_phrase(),
-            'EXP_IMG' => placeholder_img_code(),
+            'EXP_IMG' => placeholder_img_code('icons/trays'),
             'RATE_URL' => placeholder_url(),
             'RATING' => $rating_details,
             'ID' => placeholder_id(),

@@ -257,8 +257,8 @@ function find_addon_icon($addon_name, $pick_default = true, $tar_path = null)
                 $file = $d['path'];
                 if (preg_match('#^themes/default/(images|images_custom)/icons/(.*)\.(png|jpg|jpeg|gif)$#', $file, $matches) != 0) {
                     require_code('mime_types');
-                    $data = tar_get_file($tar_file, $file);
-                    return 'data:' . get_mime_type(get_file_extension($file), true) . ';base64,' . base64_encode($data['data']);
+                    $_data = tar_get_file($tar_file, $file);
+                    return 'data:' . get_mime_type(get_file_extension($file), true) . ';base64,' . base64_encode($_data['data']);
                 }
             }
         }

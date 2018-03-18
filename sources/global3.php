@@ -1296,7 +1296,8 @@ function addon_installed($addon, $check_hookless = false)
         }
 
         if ($answer) {
-            if (get_value('addon_disabled_' . $addon) === '1') {
+            global $VALUES_FULLY_LOADED;
+            if (($VALUES_FULLY_LOADED) && (get_value('addon_disabled_' . $addon) === '1')) {
                 $answer = false;
             }
         }
@@ -3524,7 +3525,9 @@ function cms_eval($code, $context, $trigger_error = true)
 
     pop_suppress_error_death();
 
-    if ($errormsg != '') {
+    if (($result === false) && ($errormsg != '')) {
+        // It is possible for this to trigger incorrectly. If we've "@"d something, and explicitly returned false, the hidden error will come through.
+
         if ($trigger_error) {
             fatal_exit(protect_from_escaping(escape_html($context) . ': ' . $errormsg));
         } else {

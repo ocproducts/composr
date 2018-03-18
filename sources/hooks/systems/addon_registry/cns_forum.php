@@ -1089,7 +1089,7 @@ class Hook_addon_registry_cns_forum
 
                 $forums->attach(do_lorem_template('CNS_FORUM_IN_GROUPING', array(
                     'ID' => placeholder_random_id(),
-                    'NEW_POST_OR_NOT' => placeholder_img_code('cns_general'),
+                    'NEW_POST_OR_NOT' => placeholder_img_code('icons/cns_general'),
                     'LANG_NEW_POST_OR_NOT' => lorem_word(),
                     'FORUM_NAME' => lorem_phrase(),
                     'FORUM_URL' => placeholder_url(),

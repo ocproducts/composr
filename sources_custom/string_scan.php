@@ -5712,7 +5712,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MOVE_TOPICS
         MOVE_UP
         MSN_FORUM_DB_NOT_CNS_ALREADY
-        MULTILANG_OFF_OPTION
         MULTILANG_OFF_PRACTICAL
         MULTILANG_OFF_CONTENT
         MULTI_LANG_CONTENT

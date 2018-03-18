@@ -155,7 +155,9 @@ class file_type_whitelisting_test_set extends cms_test_case
 
             $file_types = array();
             $matches = array();
-            preg_match('#return \'([^\']+)\';#', $c, $matches);
+            if (preg_match('#return \'([^\']+)\';#', $c, $matches) == 0) {
+                preg_match('#\$ret = \'([^\']+)\';#', $c, $matches);
+            }
             $file_types = explode(',', $matches[1]);
 
             foreach ($file_types as $file_type) {

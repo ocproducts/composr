@@ -624,7 +624,10 @@ function placeholder_img_code($type = '')
     if (!file_exists($path)) {
         $path = get_file_base() . '/themes/default/images/' . fallback_lang() . '/' . $type;
     }
-    $dh = opendir($path);
+    $dh = @opendir($path);
+    if ($dh === false) {
+        fatal_exit('Cannot find theme image directory: ' . $type);
+    }
     while (($f = readdir($dh)) !== false) {
         $ext = get_file_extension($f);
 
@@ -645,6 +648,7 @@ function placeholder_img_code($type = '')
         }
     }
     closedir($dh);
+
     return '';
 }
 

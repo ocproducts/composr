@@ -718,7 +718,7 @@ class Meta_tree_builder
                     if (count($relationships) > 0) {
                         foreach ($places_for_referencing as $place) {
                             if (!is_dir($place)) {
-                                mkdir($place, 0777);
+                                @mkdir($place, 0777);
                                 fix_permissions($place);
                             }
 

@@ -57,7 +57,7 @@ class images_test_set extends cms_test_case
         $this->assertTrue(is_image('test.gif', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
         $this->assertTrue(is_image('test.ico', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
         $this->assertTrue(!is_image('test.webp', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
-        $this->assertTrue(is_image('test.bmp', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
+        // Won't be in valid_images if not in PHP build $this->assertTrue(is_image('test.bmp', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
         $this->assertTrue(!is_image('test.dat', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
 
         $this->assertTrue(!is_image('test.svg', IMAGE_CRITERIA_GD_READ, /*$as_admin*/true));
