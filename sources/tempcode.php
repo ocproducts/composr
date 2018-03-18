@@ -2176,7 +2176,7 @@ class Tempcode
                 if (!isset($tpl_funcs[$seq_part_0])) {
                     eval($this->code_to_preexecute[$seq_part_0]);
                 }
-                if (($tpl_funcs[$seq_part_0][0] !== 'e'/*for echo*/) && (function_exists($tpl_funcs[$seq_part_0]))) {
+                if (($tpl_funcs[$seq_part_0][0] !== 'e'/*for echo*/) && (is_callable($tpl_funcs[$seq_part_0]))) {
                     call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                 } else {
                     $parameters = $seq_part[1];
@@ -2276,7 +2276,7 @@ class Tempcode
                 if (!isset($tpl_funcs[$seq_part_0])) {
                     eval($this->code_to_preexecute[$seq_part_0]);
                 }
-                if (($tpl_funcs[$seq_part_0][0] !== 'e'/*for echo*/) && (function_exists($tpl_funcs[$seq_part_0]))) {
+                if (($tpl_funcs[$seq_part_0][0] !== 'e'/*for echo*/) && (is_callable($tpl_funcs[$seq_part_0]))) {
                     call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                 } else {
                     $parameters = $seq_part[1];
@@ -2368,7 +2368,7 @@ class Tempcode
                 if (!isset($tpl_funcs[$seq_part_0])) {
                     eval($this->code_to_preexecute[$seq_part_0]);
                 }
-                if (($tpl_funcs[$seq_part_0][0] !== 'e'/*for echo*/) && (function_exists($tpl_funcs[$seq_part_0]))) {
+                if (($tpl_funcs[$seq_part_0][0] !== 'e'/*for echo*/) && (is_callable($tpl_funcs[$seq_part_0]))) {
                     call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                 } else {
                     $parameters = $seq_part[1];
@@ -2412,7 +2412,7 @@ function recall_named_function($id, $parameters, $code)
 {
     $k = 'TEMPCODE_FUNCTION__' . $id;
     if (!isset($GLOBALS[$k])) {
-        $GLOBALS[$k] = @create_function($parameters, $code);
+        $GLOBALS[$k] = eval('return function(' . $parameters . ') { ' . $code . ' };');
     }
     return $GLOBALS[$k];
 }
@@ -2438,22 +2438,6 @@ function tempcode_include($filepath)
     }
 
     return $ret;
-}
-
-/**
- * Call a PHP function, with ability to better debug.
- *
- * @param  string $function Function to call
- * @param  mixed $a First parameter
- * @param  ?mixed $b Second parameter (null: null/none)
- * @param  ?mixed $c Third parameter (null: null/none)
- * @return string Result
- *
- * @ignore
- */
-function debug_call_user_func($function, $a, $b = null, $c = null)
-{
-    return call_user_func($function, $a, $b, $c);
 }
 
 /**

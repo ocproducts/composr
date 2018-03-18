@@ -4432,18 +4432,6 @@ function cosh($arg)
 }
 
 /**
- * Create a function dynamically. Do not use unless absolutely needed.
- *
- * @param  string $args Arguments
- * @param  string $code Code to run
- * @return string Function reference
- */
-function create_function($args, $code)
-{
-    return '';
-}
-
-/**
  * Run some code. Do not use unless absolutely needed.
  *
  * @param  string $code Code to run
@@ -5312,6 +5300,7 @@ eregi
 eregi_replace
 sql_regcase
 define_syslog_variables
+create_function
 
 Disabled simply as we don't feel a need to use them (can enable if we find a use)...
 
