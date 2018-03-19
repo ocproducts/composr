@@ -72,7 +72,7 @@ function captcha_script()
         return;
     }
 
-    $img = catpcha_image($code_needed);
+    list($img, $width, $height) = captcha_image($code_needed);
 
     // Output using CSS
     if (get_option('css_captcha') === '1') {
@@ -119,7 +119,7 @@ function captcha_script()
  * Create an image CATCHA.
  *
  * @param  string $code_needed The code
- * @return string the image CAPTCHA
+ * @return array A tuple: the image CAPTCHA, the width, the height
  */
 function captcha_image($code_needed)
 {
@@ -182,7 +182,7 @@ function captcha_image($code_needed)
         }
     }
 
-    return $img;
+    return array($img, $width, $height);
 }
 
 /**
@@ -255,8 +255,33 @@ function form_input_captcha()
  */
 function use_captcha()
 {
-    $answer = ((is_guest()) && (intval(get_option('use_captchas')) == 1) && (function_exists('imagetypes')));
-    return $answer;
+    if (get_option('use_captchas') == '0') {
+        return false;
+    }
+
+    if (!function_exists('imagetypes')) {
+        return false;
+    }
+
+    if (is_guest()) {
+        return true;
+    }
+
+    if (running_script('captcha')) {
+        return true;
+    }
+
+    $days = get_value('captcha_member_days');
+    if ((!empty($days)) && ($GLOBALS['FORUM_DRIVER']->get_member_join_timestamp(get_member()) > time() - 60 * 60 * 24 * intval($days))) {
+        return true;
+    }
+
+    $posts = get_value('captcha_member_posts');
+    if ((!empty($posts)) && ($GLOBALS['FORUM_DRIVER']->get_post_count(get_member()) < intval($posts))) {
+        return true;
+    }
+
+    return false;
 }
 
 /**

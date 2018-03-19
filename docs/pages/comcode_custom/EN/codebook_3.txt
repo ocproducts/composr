@@ -655,6 +655,8 @@ We have the following which are either unlikely to be useful, or potentially uns
  - Experimental functionality
   - [tt]list_unsubscribe_target[/tt] -- set to a URL for a [tt]List-Unsubscribe[/tt] header to be attached to e-mails with that URL, e.g. [tt]mailto:you@example.com?subject=Unsubscribe&body=Please%20unsubscribe%20me[/tt]
   - [tt]access_protocol_redirect[/tt] -- set this to '1' if you want to redirect if the wrong access protocol (e.g. HTTP instead of HTTPS) is used to access the site. Note that this option won't apply when pages are served from the static cache, so it is still a good idea to configure the web server to do this directly. Sample code is in the [page="_SEARCH:tut_security"]Security tutorial[/page] (Migrating HTTP websites).
+  - [tt]captcha_member_days[/tt] -- set this to a number if new members should continue to have CAPTCHA for this many days
+  - [tt]captcha_member_posts[/tt] -- set this to a number if new members should continue to have CAPTCHA for this many forum posts
 
 [title="4"]Hidden 'keep' parameters[/title]
 
