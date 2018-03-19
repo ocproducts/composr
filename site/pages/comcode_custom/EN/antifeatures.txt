@@ -42,9 +42,9 @@
 				<h3><a href="#">A closed environment</a></h3>
 
 				<div>
-					<p>Composr is Open Source &ndash; in other words, free. Users can customise it how they want, using and employ whoever they want to do it. Competing systems (true competitors &ndash; not basic CMS's) typically cost over $10,000 &ndash; which you only find out after making a phone call to a sales representative.</p>
+					<p>Composr is Open Source &ndash; in other words, free. Users can customise it how they want, using and employ whoever they want to do it. Competing systems (true competitors &ndash; not basic CMSs) typically cost over $10,000 &ndash; which you only find out after making a phone call to a sales representative.</p>
 
-					<p>We don't limit you to what you are allowed to do with Composr, and you can even fork the software (distribute your own versions). We give you the code and you can do what you want with it. Unlike some other CMS we don't charge for de-branding: in fact we have made one simple inbuilt option to de-brand your copy of Composr.</p>
+					<p>We don't limit you to what you are allowed to do with Composr, and you can even fork the software (distribute your own versions). We give you the code and you can do what you want with it. Unlike some other CMSs we don't charge for white labelling; in fact we have made one simple inbuilt option to de-brand your copy of Composr.</p>
 
 					<p>We also strongly believe in creating an open marketplace where people can use our software freely. We do offer our own professional services but we hope users will choose our services based on quality and our relationship with the software &ndash; not by vendor lock-in or monopoly.</p>
 				</div>
@@ -52,7 +52,7 @@
 				<h3><a href="#">Strict software as a service</a></h3>
 
 				<div>
-					<p>This may be the latest buzzword, but it's a buzz with a sour taste. Many SaaS services run on remote servers and you can't make your own modifications. This sucks as much as closed-source software. It's very easy to get a hosting account, or cloud hosting, and install Composr (many hosts can auto-install it for you) &ndash; with all the advantages of strict SaaS but without any loss of control. If you're creating a novel website, you need the option to fully control its code!</p>
+					<p>SaaS is when you don't install and maintain software yourself, but rather use someone else's remote install of it. You therefore cannot make your own modifications, which sucks as much as closed-source software if you need to have a sophisticated website. It's very easy to get a hosting account, or cloud hosting, and install Composr (many hosts can auto-install it for you) &ndash; with all the advantages of strict SaaS but without any loss of control. If you're creating a novel website, you need the option to fully control its code!</p>
 				</div>
 
 				<h3><a href="#">A front end to third-party sites and services</a></h3>
@@ -92,7 +92,7 @@
 				<h3><a href="#">Split into separate front-ends and back-ends</a></h3>
 
 				<div>
-					<p>Composr does not have a segregated admin section in the common sense. Composr gives you complete permissions & privileges control, allowing you to control exactly what you want areas you wish to give users and staff. The divisions are not hard-coded how a third party developer thinks it should be.</p>
+					<p>Composr does not have a segregated admin section in the common sense. Composr gives you complete permissions & privileges control, allowing you to control exactly what areas you wish to give users and staff. The divisions are not hard-coded how a third party developer thinks they should be.</p>
 				</div>
 
 				<h3><a href="#">A cynical attempt to check boxes</a></h3>
@@ -105,7 +105,7 @@
 
 				<div>
 					<p>
-						We don't give the webmaster a drag and drop feature to place blocks because you [i]need[/i] more control. For example, you might want to make a block only show to certain groups, have subtle layout changes for different tablet sizes, or add some randomisation logic to conduct split testing. We've seen many CMSs that provide drag and drop and end up really limiting what you could achieve and we know from experience it would not work for the sites people want.<br />
+						We don't give the webmaster a drag and drop feature to place blocks because you [i]need[/i] more control. For example, you might want to make a block only show to certain usergroups, have subtle layout changes for different tablet sizes, or add some randomisation logic to conduct split testing. We've seen many CMSs that provide drag and drop and end up really limiting what you could achieve and we know from experience it would not work for the sites people want.<br />
 						Instead of drag and drop we have an 'Add block' button, which adds the code for the block to your content. You can then preview the block via a tooltip. It's just as easy, but far more powerful!
 					</p>
 				</div>
@@ -113,7 +113,7 @@
 				<h3><a href="#">A static content exporter</a></h3>
 
 				<div>
-					<p>Composr does not export content to static HTML files for you to upload to a conventional web server. While this approach might result in very fast websites, it is extremely limiting: social applications need dynamism and a deal of interaction which static sites can not offer. This said, there is a Composr option to cache full page content for guest users, and this provides incredibly high performance. We do actually have a static export addon too, but we don't bundle it and it naturally can't support most of Composr's dynamic features.</p>
+					<p>Composr does not export content to static HTML files for you to upload to a conventional web server. While this approach might result in very fast websites, it is extremely limiting: social applications need dynamism and a model of interaction which static sites can not offer. This said, there is a Composr option to cache full page content for guest users, and this provides incredibly high performance. We do actually have a static export addon too, but we don't bundle it and it naturally can't support most of Composr's dynamic features.</p>
 				</div>
 
 				<h3><a href="#">One solution to rule them all</a></h3>
@@ -141,7 +141,7 @@
 				<h3><a href="#">A document management system / Enterprise Intranet</a></h3>
 
 				<div>
-					<p>Some CMS have repositories (aka asset management), complex web services, JSR-286 portlets, and the like. These are necessary for organising sprawling document libraries and integrating with business applications, but Composr doesn't fit into this particular bracket. Rather, Composr is primarily designed for feature-rich websites. Conversely, Intranet/document CMS's can't do what Composr can do. We don't try and replace native filesystems, we feel that sharing files is easier done with something like Dropbox or network drives than sharing it through web apps.</p>
+					<p>Some CMSs have repositories (aka asset management), complex web services, JSR-286 portlets, and the like. These are necessary for organising sprawling document libraries and integrating with business applications, but Composr doesn't fit into this particular bracket. Rather, Composr is primarily designed for feature-rich websites. Conversely, Intranet/document CMSs can't do what Composr can do. We don't try and replace native filesystems, we feel that sharing files is easier done with something like Dropbox or network drives than sharing it through web apps.</p>
 
 					<p>The above all said, Composr does in fact have many enterprise features such as The Repository, which includes an implementation of webdav.</p>
 				</div>
