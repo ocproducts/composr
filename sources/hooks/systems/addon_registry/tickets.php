@@ -118,7 +118,6 @@ class Hook_addon_registry_tickets
             'site/pages/modules/tickets.php',
             'sources/hooks/systems/change_detection/tickets.php',
             'sources/hooks/systems/page_groupings/tickets.php',
-            'sources/hooks/systems/module_permissions/tickets.php',
             'sources/hooks/systems/rss/tickets.php',
             'sources/hooks/systems/cron/ticket_type_lead_times.php',
             'sources/tickets.php',

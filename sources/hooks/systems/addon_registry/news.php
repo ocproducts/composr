@@ -157,7 +157,6 @@ class Hook_addon_registry_news
             'sources/hooks/modules/search/news.php',
             'sources/hooks/systems/attachments/news.php',
             'sources/hooks/systems/page_groupings/news.php',
-            'sources/hooks/systems/module_permissions/news.php',
             'sources/hooks/systems/preview/news.php',
             'sources/hooks/systems/rss/news.php',
             'sources/hooks/systems/trackback/news.php',

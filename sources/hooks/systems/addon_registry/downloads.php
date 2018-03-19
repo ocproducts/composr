@@ -158,7 +158,6 @@ class Hook_addon_registry_downloads
             'sources/hooks/modules/search/downloads.php',
             'sources/hooks/modules/search/download_categories.php',
             'sources/hooks/systems/page_groupings/downloads.php',
-            'sources/hooks/systems/module_permissions/downloads.php',
             'sources/hooks/systems/rss/downloads.php',
             'sources/hooks/systems/trackback/downloads.php',
             'sources/hooks/systems/ajax_tree/choose_download.php',

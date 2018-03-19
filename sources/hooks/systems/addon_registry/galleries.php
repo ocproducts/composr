@@ -190,7 +190,6 @@ class Hook_addon_registry_galleries
             'sources_custom/hooks/modules/galleries_users/index.html',
             'sources/hooks/modules/search/galleries.php',
             'sources/hooks/systems/page_groupings/galleries.php',
-            'sources/hooks/systems/module_permissions/galleries.php',
             'sources/hooks/systems/rss/galleries.php',
             'sources/hooks/modules/admin_unvalidated/videos.php',
             'sources/hooks/modules/search/videos.php',

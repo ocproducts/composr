@@ -145,7 +145,15 @@ class Hook_ecommerce_permission
         $modules = new Tempcode();
         $temp = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
         $modules->attach($temp);
-        $_modules = find_all_hooks('systems', 'module_permissions');
+        $_modules = array();
+        $hooks = find_all_hook_obs('systems', 'content_meta_aware', 'Hook_content_meta_aware_');
+        foreach ($hooks as $ob) {
+            $info = $ob->info();
+            if (($info !== null) && ($info['permissions_type_code'] !== null)) {
+                $_modules[$info['permissions_type_code']] = true;
+            }
+        }
+        ksort($_modules);
         foreach (array_keys($_modules) as $_module) {
             $temp = form_input_list_entry($_module, $_module == $module);
             $modules->attach($temp);

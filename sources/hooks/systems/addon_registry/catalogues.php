@@ -112,8 +112,6 @@ class Hook_addon_registry_catalogues
             'themes/default/images/icons/menu/rich_content/catalogues/products.svg',
             'themes/default/images/icons/menu/rich_content/catalogues/projects.svg',
             'sources/hooks/systems/snippets/exists_catalogue.php',
-            'sources/hooks/systems/module_permissions/catalogues_catalogue.php',
-            'sources/hooks/systems/module_permissions/catalogues_category.php',
             'sources/hooks/systems/rss/catalogues.php',
             'sources/hooks/systems/page_groupings/catalogues.php',
             'sources/hooks/systems/trackback/catalogues.php',
