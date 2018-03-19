@@ -36,10 +36,6 @@
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 }
 
-.docked .menu_edit_main {
-	padding-bottom: 10em;
-}
-
 .dock_button {
 	float: right;
 	margin-right: 0.5em;
@@ -56,10 +52,9 @@
 }
 
 .menu_editor_page.docked {
-	overflow-y: auto;
-	max-height: 380px;
 	margin-right: 1em;
 	padding-right: 0.5em;
+	overflow-y: auto;
 }
 
 .docked #tree_list__root_tree_list {
@@ -76,7 +71,7 @@
 }
 
 .menu_editor_selected_field {
-	background-color: {$GET,native_ui_active_background};
+	background-color: {$GET,native_ui_active_background} !important;
 }
 
 .menu_editor_branch_indent {
@@ -138,6 +133,11 @@
 	.menu_editor_branch input[type="text"] {
 		background-image: url('{$IMG;,icons/28x28/action_small}');
 	}
+}
+
+#menu_editor_wrap input#url {
+	width: 60em;
+	max-width: calc(100% - 70px);
 }
 
 .menu_editor_branch input[type="text"]:focus {
