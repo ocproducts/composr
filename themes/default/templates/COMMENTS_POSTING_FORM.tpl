@@ -35,7 +35,7 @@
 						{TITLE*}
 					{+END}
 					{+START,IF_PASSED,EXPAND_TYPE}
-						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" title="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" width="24" height="24" src="{$IMG*,icons/trays/{EXPAND_TYPE}2}" /></a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" title="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" width="24" height="24" src="{$IMG*,icons/trays/{EXPAND_TYPE}}" /></a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{TITLE*}</a>
 					{+END}
 				</h3>

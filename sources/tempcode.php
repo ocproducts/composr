@@ -2457,8 +2457,10 @@ function record_template_used($tpl_path_descrip)
     $RECORDED_TEMPLATES_USED[$tpl_path_descrip]++;
 
     if (!$called_once) {
-        require_code('themes_meta_tree');
-        register_shutdown_function('_record_templates_used');
+        if (running_script('index')) {
+            require_code('themes_meta_tree');
+            register_shutdown_function('_record_templates_used');
+        }
     }
 
     $called_once = true;

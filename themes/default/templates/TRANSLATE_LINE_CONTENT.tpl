@@ -17,9 +17,9 @@
 
 		<div class="arrow-ruler"><img alt="" width="36" height="36" src="{$IMG*,arrow_ruler}" /></div>
 
-		<div class="accessibility-hidden"><label for="trans_{ID*}">{NAME*}</label></div>
+		<div class="accessibility-hidden"><label for="trans-{ID*}">{NAME*}</label></div>
 		<div>
-			<textarea class="wide-field translate-field" cols="60" rows="{$ADD*,{$DIV,{$LENGTH,{CURRENT}},80},1}" id="trans_{ID*}" name="trans_{ID*}">{CURRENT*}</textarea>
+			<textarea class="wide-field translate-field" cols="60" rows="{$ADD*,{$DIV,{$LENGTH,{CURRENT}},80},1}" id="trans-{ID*}" name="trans_{ID*}">{CURRENT*}</textarea>
 		</div>
 	</td>
 	{+START,IF_NON_EMPTY,{ACTIONS}}

@@ -2102,9 +2102,7 @@ class Hook_addon_registry_core
                     ),
                 ),
                 'SPONSORS' => array(
-                    array(
-                        'NAME' => lorem_word(),
-                    ),
+                    lorem_word() => array('AREAS' => array(lorem_word())),
                 ),
             )), null, '', true)
         );

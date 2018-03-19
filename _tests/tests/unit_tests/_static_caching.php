@@ -64,7 +64,7 @@ class _static_caching_test_set extends cms_test_case
         $this->assertTrue($result !== null, 'Failed to prime cache');
 
         $detect_url = find_script('failover_script');
-        $result = http_get_contents($detect_url, array('trigger_error' => false)); // Should trigger failover, due to broken URL
+        $result = http_get_contents($detect_url, array('trigger_error' => false)); // Should trigger failover, due to our $test_url being a broken URL
         $this->assertTrue($result !== null, 'Failed to call failover script');
 
         clearstatcache();

@@ -170,6 +170,8 @@ class Hook_addon_registry_core_addon_management
         foreach (placeholder_array() as $value) {
             $actions = do_lorem_template('COLUMNED_TABLE_ACTION', array(
                 'GET' => true,
+                'ACTION_TITLE' => lorem_phrase(),
+                'ICON' => 'admin/delete',
                 'NAME' => lorem_phrase(),
                 'HIDDEN' => '',
                 'URL' => placeholder_url(),
@@ -405,6 +407,8 @@ class Hook_addon_registry_core_addon_management
         foreach ($modules as $module) {
             $actions = do_lorem_template('COLUMNED_TABLE_ACTION', array(
                 'GET' => true,
+                'ACTION_TITLE' => lorem_phrase(),
+                'ICON' => 'admin/delete',
                 'NAME' => lorem_phrase(),
                 'HIDDEN' => '',
                 'URL' => placeholder_url(),

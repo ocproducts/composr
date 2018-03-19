@@ -36,11 +36,16 @@ function require_code($codename, $light_exit = false)
 {
     // Handle if already required...
 
-    global $REQUIRED_CODE, $FILE_BASE, $SITE_INFO;
+    global $REQUIRED_CODE, $REQUIRING_CODE, $FILE_BASE, $SITE_INFO;
     if (isset($REQUIRED_CODE[$codename])) {
         return;
     }
+    $ok_per_safe_mode = (!function_exists('in_safe_mode')) || ($REQUIRING_CODE) || (!in_safe_mode());
+    if (isset($REQUIRED_CODE[$codename])) {
+        return; // In case it changed through the above safe mode check
+    }
     $REQUIRED_CODE[$codename] = false; // unset means no, false means in-progress, true means done
+    $REQUIRING_CODE = true;
 
     $shorthand = (strpos($codename, '.php') === false);
     if (!$shorthand) {
@@ -100,7 +105,7 @@ function require_code($codename, $light_exit = false)
 
     // Load the code as appropriate...
 
-    if (($has_custom) && ((!function_exists('in_safe_mode')) || (!in_safe_mode()) || (!is_file($path_orig)))) {
+    if (($has_custom) && (($ok_per_safe_mode) || (!is_file($path_orig)))) {
         $done_init = false;
         $init_func = 'init__' . str_replace('/', '__', str_replace('.php', '', $codename));
 
@@ -113,7 +118,7 @@ function require_code($codename, $light_exit = false)
             $orig = clean_php_file_for_eval(file_get_contents($path_orig), $path_orig);
             $a = file_get_contents($path_custom);
 
-            if (strpos($a, '/*FORCE_ORIGINAL_LOAD_FIRST*/') === false/*e.g. Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined*/) {
+            if (strpos($a, '/*FORCE_ORIGINAL_LOAD_FIRST*/') === false/*e.g. Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined - in such cases we put this comment in the code*/) {
                 $functions_before = get_defined_functions();
                 $classes_before = get_declared_classes();
                 call_included_code($path_custom, $codename, $light_exit); // Include our custom
@@ -237,6 +242,7 @@ function require_code($codename, $light_exit = false)
     // Done...
 
     $REQUIRED_CODE[$codename] = true;
+    $REQUIRING_CODE = false;
 }
 
 /**
@@ -674,12 +680,13 @@ cms_ini_set('docref_root', 'http://php.net/manual/en/');
 cms_ini_set('docref_ext', '.php');
 
 // Get ready for some global variables
-global $REQUIRED_CODE, $CURRENT_SHARE_USER, $PURE_POST, $IN_MINIKERNEL_VERSION;
+global $REQUIRED_CODE, $REQUIRING_CODE, $CURRENT_SHARE_USER, $PURE_POST, $IN_MINIKERNEL_VERSION;
 /** Details of what code files have been loaded up.
  *
  * @global array $REQUIRED_CODE
  */
 $REQUIRED_CODE = array();
+$REQUIRING_CODE = false;
 /** If running on a shared-install, this is the identifying name of the site that is being called up.
  *
  * @global ?ID_TEXT $CURRENT_SHARE_USER

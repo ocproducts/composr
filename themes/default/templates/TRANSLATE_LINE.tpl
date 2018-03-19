@@ -20,7 +20,7 @@
 
 		<div class="arrow-ruler"><img alt="" width="36" height="36" src="{$IMG*,arrow_ruler}" /></div>
 
-		<div class="accessibility-hidden"><label for="trans_{NAME*}">{NAME*}</label></div>
+		<div class="accessibility-hidden"><label for="trans-{NAME*}">{NAME*}</label></div>
 		<div>
 			<textarea {+START,IF,{$EQ,{OLD},{CURRENT}}} disabled="disabled"{+END} class="wide-field translate-field js-textarea-translate-field {+START,IF_PASSED,TRANSLATE_AUTO}js-textarea-click-set-value{+END}" cols="60" rows="{+START,IF,{$EQ,{CURRENT},}}{$ADD,{$DIV,{$LENGTH,{OLD}},80},1}{+END}{+START,IF,{$NEQ,{CURRENT},}}{$ADD,{$DIV,{$LENGTH,{CURRENT}},80},1}{+END}" id="trans-{NAME*}" name="{NAME*}">{CURRENT*}</textarea>
 		</div>

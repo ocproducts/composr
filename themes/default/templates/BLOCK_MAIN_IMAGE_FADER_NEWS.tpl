@@ -20,7 +20,7 @@
 </section>
 
 {+START,LOOP,NEWS}
-	<script type="text/html" id="image-fader-{$GET,RAND_FADER_NEWS}-news-item-{_loop_key}-html" {$CSP_NONCE_HTML}>
+	{+START,SET,news_html}
 		<h3><a href="{URL*`}">{TITLE`}</a></h3>
 
 		<div class="meta-details" role="note">
@@ -41,9 +41,9 @@
 				{+END}
 
 				{+START,IF_NON_EMPTY,{$GET,author_details}}
-				<li>
-					{$GET`,author_details}
-				</li>
+					<li>
+						{$GET`,author_details}
+					</li>
 				{+END}
 			</ul>
 		</div>
@@ -51,13 +51,17 @@
 		{$TRUNCATE_LEFT,{$PREG_REPLACE,<img [^>]*>,,{BODY}},600,0,1,1,0.1}
 
 		{+START,IF,{$NEQ,{NEWS},1}}
-		<div class="pagination">
-			<nav class="float-surrounder">
-				<a href="#!" rel="prev" accesskey="j" title="&laquo;&nbsp;{!PREVIOUS}: {!NEWS}" class="light js-click-btn-prev-cycle">&laquo;&nbsp;{!PREVIOUS}</a>
-				<a href="#!" id="pause-button-{$GET,RAND_FADER_NEWS}" title="{!PAUSE}" class="light js-click-btn-pause-cycle">{!PAUSE}</a>
-				<a href="#!" rel="next" accesskey="k" title="&laquo;&nbsp;{!NEXT}: {!NEWS}" class="light js-click-btn-next-cycle">{!NEXT}&nbsp;&raquo;</a>
-			</nav>
-		</div>
+			<div class="pagination">
+				<nav class="float-surrounder">
+					<a href="#!" rel="prev" accesskey="j" title="&laquo;&nbsp;{!PREVIOUS}: {!NEWS}" class="light js-click-btn-prev-cycle">&laquo;&nbsp;{!PREVIOUS}</a>
+					<a href="#!" id="pause-button-{$GET,RAND_FADER_NEWS}" title="{!PAUSE}" class="light js-click-btn-pause-cycle">{!PAUSE}</a>
+					<a href="#!" rel="next" accesskey="k" title="&laquo;&nbsp;{!NEXT}: {!NEWS}" class="light js-click-btn-next-cycle">{!NEXT}&nbsp;&raquo;</a>
+				</nav>
+			</div>
 		{+END}
+	{+END}
+
+	<script type="text/html" id="image-fader-{$GET,RAND_FADER_NEWS}-news-item-{_loop_key}-html" {$CSP_NONCE_HTML}>
+		{$GET/,news_html}
 	</script>
 {+END}

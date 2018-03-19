@@ -18,7 +18,7 @@
  */
 class rest_test_set extends cms_test_case
 {
-    protected $path;
+    protected $path = null;
 
     public function setUp()
     {
@@ -31,15 +31,9 @@ class rest_test_set extends cms_test_case
 
         $this->establish_admin_session();
 
-        $this->path = '/var/news/general/Hello.cms';
-
-        require_code('commandr_fs');
-        $fs = new Commandr_fs();
-        $fs->listing(array('var', 'news'));
-
-        require_code('commandr_fs');
-        $fs = new Commandr_fs();
-        $fs->listing(array('var', 'news'));
+        if ($this->path === null) {
+            $this->path = '/var/news/general/hello' . substr(md5(uniqid('', true)), 0, 10) . '.cms';
+        }
     }
 
     public function testCreate()
@@ -54,9 +48,21 @@ class rest_test_set extends cms_test_case
         $raw_post = true;
         $http_verb = 'POST';
         $raw_content_type = 'application/json';
-        $result = http_get_contents($url, array('post_params' => $post_params, 'cookies' => $cookies, 'raw_post' => $raw_post, 'http_verb' => $http_verb, 'raw_content_type' => $raw_content_type));
-        $_result = json_decode($result, true);
-        $this->assertTrue($_result['success']);
+        $debug = (get_param_integer('debug', 0) == 1);
+        $result = http_get_contents($url, array('ignore_http_status' => $debug, 'post_params' => $post_params, 'cookies' => $cookies, 'raw_post' => $raw_post, 'http_verb' => $http_verb, 'raw_content_type' => $raw_content_type));
+        $_result = @json_decode($result, true);
+        $this->assertTrue(is_array($_result));
+        if (is_array($_result)) {
+            if ($debug) {
+                @var_dump($_result);
+            }
+
+            $this->assertTrue($_result['success']);
+        } else {
+            if ($debug) {
+                @exit($result);
+            }
+        }
     }
 
     public function testUpdate()
@@ -71,9 +77,21 @@ class rest_test_set extends cms_test_case
         $raw_post = true;
         $http_verb = 'PUT';
         $raw_content_type = 'application/json';
-        $result = http_get_contents($url, array('post_params' => $post_params, 'cookies' => $cookies, 'raw_post' => $raw_post, 'http_verb' => $http_verb, 'raw_content_type' => $raw_content_type));
-        $_result = json_decode($result, true);
-        $this->assertTrue($_result['success']);
+        $debug = (get_param_integer('debug', 0) == 1);
+        $result = http_get_contents($url, array('ignore_http_status' => $debug, 'post_params' => $post_params, 'cookies' => $cookies, 'raw_post' => $raw_post, 'http_verb' => $http_verb, 'raw_content_type' => $raw_content_type));
+        $_result = @json_decode($result, true);
+        $this->assertTrue(is_array($_result));
+        if (is_array($_result)) {
+            if ($debug) {
+                @var_dump($_result);
+            }
+
+            $this->assertTrue($_result['success']);
+        } else {
+            if ($debug) {
+                @exit($result);
+            }
+        }
     }
 
     public function testDelete()
@@ -88,8 +106,20 @@ class rest_test_set extends cms_test_case
         $raw_post = true;
         $http_verb = 'DELETE';
         $raw_content_type = 'application/json';
-        $result = http_get_contents($url, array('post_params' => $post_params, 'cookies' => $cookies, 'raw_post' => $raw_post, 'http_verb' => $http_verb, 'raw_content_type' => $raw_content_type));
-        $_result = json_decode($result, true);
-        $this->assertTrue($_result['success']);
+        $debug = (get_param_integer('debug', 0) == 1);
+        $result = http_get_contents($url, array('ignore_http_status' => $debug, 'post_params' => $post_params, 'cookies' => $cookies, 'raw_post' => $raw_post, 'http_verb' => $http_verb, 'raw_content_type' => $raw_content_type));
+        $_result = @json_decode($result, true);
+        $this->assertTrue(is_array($_result));
+        if (is_array($_result)) {
+            if ($debug) {
+                @var_dump($_result);
+            }
+
+            $this->assertTrue($_result['success']);
+        } else {
+            if ($debug) {
+                @exit($result);
+            }
+        }
     }
 }

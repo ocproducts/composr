@@ -1135,6 +1135,10 @@ function current_script()
  */
 function running_script($is_this_running)
 {
+    if (strpos($_SERVER['SCRIPT_NAME'], '/_tests/') !== false) {
+        return false;
+    }
+
     // First check cache
     global $RUNNING_SCRIPT_CACHE;
     if (isset($RUNNING_SCRIPT_CACHE[$is_this_running . '.php'])) {

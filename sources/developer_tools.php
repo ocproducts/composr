@@ -104,6 +104,28 @@ function semi_dev_mode_startup()
             if ((!$TITLE_CALLED) && (($SCREEN_TEMPLATE_CALLED === null) || ($SCREEN_TEMPLATE_CALLED != '')) && ($EXITING == 0) && (strpos($_SERVER['SCRIPT_NAME'], 'index.php') !== false)) {
                 @exit(escape_html('No title used on screen.'));
             }
+
+            if (function_exists('get_resources') && function_exists('get_resource_type')) {
+                if (function_exists('_cms_profiler_script_end')) {
+                    _cms_profiler_script_end();
+                }
+
+                $rs = get_resources();
+                foreach ($rs as $r) {
+                    $type = get_resource_type($r);
+                    if (!in_array($type, array('Unknown', 'stream-context'))) {
+                        if ($type == 'stream') {
+                            $stream_meta = stream_get_meta_data($r);
+                        } else {
+                            $stream_meta = null;
+                        }
+
+                        if (($stream_meta === null) || (!in_array($stream_meta['stream_type'], array('TEMP', 'MEMORY')))) {
+                            @exit(escape_html('Unexpected resource left open of type, ' . $type . (($type == 'stream') ? ('; ' . var_export($stream_meta, true)) : '')));
+                        }
+                    }
+                }
+            }
         }
 
         register_shutdown_function('dev_mode_aftertests');

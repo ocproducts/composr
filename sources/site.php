@@ -1014,7 +1014,9 @@ function do_site()
         foreach (array_keys($JAVASCRIPTS) as $javascript) {
             $out->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, 'javascript/' . $javascript . '.js');
         }
-        record_template_tree_used($out);
+        if (running_script('index')) {
+            record_template_tree_used($out);
+        }
     }
 
     // Something to do now rather than output normal screen?

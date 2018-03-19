@@ -1483,14 +1483,14 @@ class HttpDownloaderSockets extends HttpDownloader
                                 $this->filename = urldecode(basename($matches[1]));
                             }
 
-                            @fclose($mysock);
-
                             if (strpos($matches[1], '://') === false) {
                                 $matches[1] = qualify_url($matches[1], $url, true);
                             }
 
                             if ($matches[1] != $url) {
                                 if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $this->message) != 0)) {
+                                    @fclose($mysock);
+
                                     if ($this->no_redirect) {
                                         $text = null;
                                         $this->download_url = $matches[1];
@@ -1531,13 +1531,13 @@ class HttpDownloaderSockets extends HttpDownloader
                                 case '401':
                                 case '403':
                                     if (!$this->ignore_http_status) {
+                                        @fclose($mysock);
+
                                         if ($this->trigger_error) {
                                             warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url)), false, true);
                                         } else {
                                             $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url));
                                         }
-
-                                        @fclose($mysock);
 
                                         return null;
                                     }
@@ -1545,13 +1545,13 @@ class HttpDownloaderSockets extends HttpDownloader
 
                                 case '404':
                                     if (!$this->ignore_http_status) {
+                                        @fclose($mysock);
+
                                         if ($this->trigger_error) {
                                             warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url)), false, true);
                                         } else {
                                             $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url));
                                         }
-
-                                        @fclose($mysock);
 
                                         return null;
                                     }
@@ -1561,13 +1561,13 @@ class HttpDownloaderSockets extends HttpDownloader
                                 case '429':
                                 case '500':
                                     if (!$this->ignore_http_status) {
+                                        @fclose($mysock);
+
                                         if ($this->trigger_error) {
                                             warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url)), false, true);
                                         } else {
                                             $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url));
                                         }
-
-                                        @fclose($mysock);
 
                                         return null;
                                     }
@@ -1575,6 +1575,8 @@ class HttpDownloaderSockets extends HttpDownloader
 
                                 case '405':
                                     if ($this->byte_limit == 0 && !$this->no_redirect && empty($this->post_params)) { // Try again as non-HEAD request if we just did a HEAD request that got "Method not allowed"
+                                        @fclose($mysock);
+
                                         if ($this->no_redirect) {
                                             $text = null;
                                             $this->download_url = $matches[1];
@@ -1585,20 +1587,18 @@ class HttpDownloaderSockets extends HttpDownloader
                                             $text = $this->copy_from_other($inner_request, $this);
                                         }
 
-                                        @fclose($mysock);
-
                                         return $text;
                                     }
 
                                 default:
                                     if (!$this->ignore_http_status) {
+                                        @fclose($mysock);
+
                                         if ($this->trigger_error) {
                                             warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($this->message)), false, true);
                                         } else {
                                             $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($this->message));
                                         }
-
-                                        @fclose($mysock);
 
                                         return null;
                                     }

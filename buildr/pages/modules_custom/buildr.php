@@ -57,14 +57,11 @@ class Module_buildr
             deldir_contents(get_custom_file_base() . '/uploads/buildr_addon', true);
         }
 
-        if (addon_installed('ecommerce')) {
+        if ($GLOBALS['SITE_DB']->table_exists('ecom_prods_prices')) {
             require_code('buildr');
-
-            if (addon_installed('ecommerce')) { // If eCommerce not removed yet
-                $prices = get_buildr_prices_default();
-                foreach (array_keys($prices) as $name) {
-                    $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $name), '', 1);
-                }
+            $prices = get_buildr_prices_default();
+            foreach (array_keys($prices) as $name) {
+                $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $name), '', 1);
             }
         }
 

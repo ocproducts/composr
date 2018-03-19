@@ -2659,8 +2659,6 @@ function handle_self_referencing_embedment()
 
             case 'contract':
             case 'expand':
-            case 'contract2':
-            case 'expand2':
                 header('Content-type: image/svg+xml');
                 if (!file_exists(get_file_base() . '/themes/default/images/icons/trays/' . $type . '.svg')) {
                     $out = file_array_get('themes/default/images/icons/trays/' . $type . '.svg');
