@@ -110,7 +110,6 @@ class Hook_addon_registry_calendar
             'sources/hooks/systems/content_meta_aware/event.php',
             'sources/hooks/systems/content_meta_aware/calendar_type.php',
             'sources/hooks/systems/commandr_fs/calendar.php',
-            'sources/hooks/systems/meta/events.php',
             'sources/hooks/blocks/side_stats/calendar.php',
             'sources/hooks/systems/preview/calendar_type.php',
             'sources/hooks/modules/admin_import_types/calendar.php',

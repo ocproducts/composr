@@ -121,8 +121,6 @@ class Hook_addon_registry_catalogues
             'sources/hooks/systems/ajax_tree/choose_catalogue_entry.php',
             'sources/hooks/systems/cron/catalogue_entry_timeouts.php',
             'sources/hooks/systems/cron/catalogue_view_reports.php',
-            'sources/hooks/systems/meta/catalogue_category.php',
-            'sources/hooks/systems/meta/catalogue_entry.php',
             'themes/default/javascript/catalogues.js',
             'sources/hooks/modules/admin_import_types/catalogues.php',
             'sources/hooks/systems/content_meta_aware/catalogue.php',

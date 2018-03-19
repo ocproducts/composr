@@ -120,8 +120,6 @@ class Hook_addon_registry_downloads
             'sources/hooks/systems/content_meta_aware/download.php',
             'sources/hooks/systems/content_meta_aware/download_category.php',
             'sources/hooks/systems/commandr_fs/downloads.php',
-            'sources/hooks/systems/meta/downloads_category.php',
-            'sources/hooks/systems/meta/downloads_download.php',
             'sources/hooks/systems/disposable_values/archive_size.php',
             'sources/hooks/modules/admin_import_types/downloads.php',
             'sources/hooks/modules/admin_setupwizard/downloads.php',

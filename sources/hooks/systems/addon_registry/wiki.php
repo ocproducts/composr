@@ -112,7 +112,6 @@ class Hook_addon_registry_wiki
             'sources/hooks/systems/config/points_wiki.php',
             'sources/hooks/systems/config/wiki_enable_children.php',
             'sources/hooks/systems/config/wiki_enable_content_posts.php',
-            'sources/hooks/systems/meta/wiki_page.php',
             'sources/hooks/systems/disposable_values/num_wiki_files.php',
             'sources/hooks/systems/disposable_values/num_wiki_pages.php',
             'sources/hooks/systems/disposable_values/num_wiki_posts.php',

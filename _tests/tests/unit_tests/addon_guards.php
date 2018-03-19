@@ -51,8 +51,9 @@ class addon_guards_test_set extends cms_test_case
 
         $exceptions = array(
             '(sources|sources_custom)/hooks/systems/addon_registry/\w+\.php',
-            '(sources|sources_custom)/hooks/systems/meta/\w+\.php',
             '(sources|sources_custom)/hooks/systems/ajax_tree/\w+\.php',
+
+            // These contain no code
             '(sources|sources_custom)/hooks/systems/disposable_values/\w+\.php',
             '(sources|sources_custom)/hooks/systems/non_active_urls/\w+\.php',
         );

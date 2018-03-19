@@ -104,7 +104,6 @@ class Hook_addon_registry_custom_comcode
             'sources/custom_comcode.php',
             'sources/hooks/systems/snippets/exists_tag.php',
             'sources/hooks/systems/preview/custom_comcode.php',
-            'sources/hooks/systems/meta/comcode_page.php',
             'sources/hooks/systems/addon_registry/custom_comcode.php',
             'adminzone/pages/modules/admin_custom_comcode.php',
             'themes/default/templates/BLOCK_MAIN_CUSTOM_COMCODE_TAGS.tpl',
