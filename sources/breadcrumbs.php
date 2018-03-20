@@ -163,7 +163,7 @@ class Breadcrumb_substitution_loader
         if (function_exists('libxml_disable_entity_loader')) {
             libxml_disable_entity_loader();
         }
-        $xml_parser = @xml_parser_create();
+        $xml_parser = @xml_parser_create(get_charset());
         if ($xml_parser === false) {
             return; // PHP5 default build on windows comes with this function disabled, so we need to be able to escape on error
         }

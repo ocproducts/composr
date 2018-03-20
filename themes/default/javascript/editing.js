@@ -446,6 +446,7 @@ function wysiwyg_editor_init_for(element,id)
 		}
 	};
 	editor.on('change',sync);
+	editor.on('blur',sync); // 'change' can be buggy, e.g. when pasting, or deleting full editor contents
 	editor.on('mode',function() {
 		var ta=editor.container.$.getElementsByTagName('textarea');
 		if (typeof ta[0]!='undefined')

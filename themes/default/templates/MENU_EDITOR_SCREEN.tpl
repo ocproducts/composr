@@ -54,7 +54,8 @@
 					<script>// <![CDATA[
 						add_event_listener_abstract(window,'load',function() {
 							window.current_selection='';
-							window.sitemap=new tree_list('tree_list','data/sitemap.php?get_perms=0{$KEEP;/}&start_links=1&use_urls=1',null,'',false,null,false,false);
+							window.sitemap=new tree_list('tree_list','data/sitemap.php?get_perms=0{$KEEP;/}&start_links=1',null,'',false,null,false,true);
+							// We will not use &use_urls=1 because this cannot be so easily reliably turned back into the canonical page-links (due to monikers)
 						});
 					//]]></script>
 
