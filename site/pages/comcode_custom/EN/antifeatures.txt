@@ -143,7 +143,7 @@
 				<div>
 					<p>Some CMSs have repositories (aka asset management), complex web services, JSR-286 portlets, and the like. These are necessary for organising sprawling document libraries and integrating with business applications, but Composr doesn't fit into this particular bracket. Rather, Composr is primarily designed for feature-rich websites. Conversely, Intranet/document CMSs can't do what Composr can do. We don't try and replace native filesystems, we feel that sharing files is easier done with something like Dropbox or network drives than sharing it through web apps.</p>
 
-					<p>The above all said, Composr does in fact have many enterprise features such as The Repository, which includes an implementation of webdav.</p>
+					<p>The above all said, Composr does in fact have many enterprise features such as The Repository, which includes an implementation of WebDAV.</p>
 				</div>
 
 				<h3><a href="#">A glorified blog, basic CMS, or &ldquo;site builder&rdquo;</a></h3>
@@ -182,7 +182,7 @@
 					<p>The advantages to our approach:</p>
 					<ul>
 						<li>[b]Simplicity for webmasters[/b]. You can just go to the Content Management zone and choose the icon for the content you are interested in. You will not be distracted with anything related to different content types or your site structure as a whole &ndash; just what exists for the particular content type you are working with.</li>
-						<li>[b]Cleaner feature coding[/b]. When programmers try and squeeze everything through shared subsystems it can become hard to customise things for different cases. For example, imagine you are customising the Composr code so that the submitter of a video gets a community point every time someone views their video. If videos are implemented as a node in a shared tree, then you have to squeeze your extra code into what is already a complicated and abstract mess &ndash; it can become unsustainable and unmaintainable, and require exceptionally smart programmers. With a modular system the programmer simply targets the code of the galleries module.</li>
+						<li>[b]Cleaner feature coding[/b]. When programmers try and squeeze everything through shared subsystems it can become hard to customise things for different cases. For example, imagine you are customising the Composr code so that the submitter of a video gets a community point every time someone views their video. If videos are implemented as a node in a shared tree, then you have to squeeze your extra code into what is already a complicated and abstract mess &ndash; it can become unsustainable and unmaintainable, and requires exceptionally smart programmers. With a modular system the programmer simply targets the code of the galleries module.</li>
 					</ul>
 
 					<p>The advantages of a content-tree approach reside around having broad and deep rich hierarchies. For example, you might put a poll underneath a news story and have that automatically display as a subitem on a menu. You might have a single browsable category containing both news and videos. You might have a pets custom content type, with news stories, videos, and topics underneath it.</p>
@@ -215,7 +215,7 @@
 				<h3><a href="#">Our website is not a contact details farm</a></h3>
 
 				<div>
-					<p>We believe in being open which is why we have transparent pricing for our agency services listed on our website and a free online demo (of course Composr is free anyway). We're not just trying to grab your contact details so we can hassle you to buy our services.</p>
+					<p>We believe in being open which is why we have transparent pricing for our agency services listed on our website and a free online demo (of course Composr is free anyway). We do not force you to enter your contact details before you can try Composr, just so that we can do a hard-sell.</p>
 				</div>
 			</div>
 		</div>
@@ -231,13 +231,13 @@
 				<div>
 					<p>No CMS can eliminate the need for programmers in all cases. If your site has complex or relatively unusual requirements, then you will need a programmer.</p>
 
-					<p>We make Composr as powerful and flexible as we possibly can (without making it an over-complex mess), but we acknowledge occasional real-world limitations &ndash; and we provide [page="site:professional_support"]professional services[/page] when they are needed. Composr catalogues are not a [url="4GL system"]http://en.wikipedia.org/wiki/Fourth-generation_programming_language[/url] and even if they were, 4GLs have not become predominant because they usually fail in their goals.</p>
+					<p>We make Composr as powerful and flexible as we possibly can (without making it an overly-complex mess), but we acknowledge occasional real-world limitations &ndash; and we provide [page="site:professional_support"]professional services[/page] when they are needed. Composr catalogues are not a [url="4GL system"]http://en.wikipedia.org/wiki/Fourth-generation_programming_language[/url] and even if they were, 4GLs have not become predominant because they usually fail in their goals.</p>
 				</div>
 
 				<h3><a href="#">A way to get &ldquo;a world-class website on the cheap&rdquo;</a></h3>
 
 				<div>
-					<p>There is no way to get a complex fully customised, [b]world-class[/b] site cheaply. Most world-class sites have a full-time team of programmers and designers behind them. Composr represents [i]significant cost-savings[/i] and [i]accelerated time-to-market[/i], because you can build on the existing foundations, is future proof for easy growth, and helps you tap into talent. But these are savings, and not eliminations.</p>
+					<p>There is no way to get a complex fully customised, [b]world-class[/b] site cheaply. Most world-class sites have a full-time team of programmers and designers behind them. Composr represents [i]significant cost-savings[/i] and [i]accelerated time-to-market[/i], because you can build on the existing foundations -- is future proof for easy growth -- and helps you tap into talent. But these are savings, and not eliminations.</p>
 
 					<p>If you're trying to operate a world-class website you probably at the very least need a part-time web designer, a few days of [acronym="Search Engine Optimisation"]SEO[/acronym] per-month, a day of content writing per month, and an ongoing relationship with a programmer who can solve technical issues and make small changes competently and swiftly. That's before considering the time needing to manage daily operation, do marketing, and the time taken to develop the website in the first place.</p>
 
@@ -247,7 +247,7 @@
 
 					<p>World-class sites are expensive to run, even with the cost-savings Composr can give, because modern sites are far more than just the technology behind them. We can't understate the importance of making sure you have the budget to achieve what you're trying to achieve so that your project is sustainable.</p>
 
-					<p>We recommend consulting with people who run successful websites with a similar skill level and ambition to your own, and what it costs and takes to do it &ndash; the answer is usually venture-capital investment, or the founding team having a high level of their own technical skill, or both.</p>
+					<p>We recommend consulting with people who run successful websites with a similar skill level and ambition to your own, and asking what it costs and takes to do it &ndash; the answer is usually venture-capital investment, or the founding team having a high level of their own technical skill, or both.</p>
 
 					<p>If you're looking for a site that just does what it needs to without being too flashy, you may well be able to avoid all these costs and just get something up cheaply and quickly. But please please [page="docs:sup_pricing"]think your budgeting and requirements through[/page], and if necessary build a business and financing plan to suit.</p>
 				</div>
@@ -255,10 +255,10 @@
 				<h3><a href="#">A free lunch for web design agencies</a></h3>
 
 				<div>
-					<p>If you run a web design agency you should absolutely never expect to be able to lean on Composr as an immediate way to meet complex clients needs without a programming budget. For a complex project (and in reality &ndash; most people want a complex project, even though they don't want to acknowledge it) it is absolutely essentially that you have either:</p>
+					<p>If you run a web design agency you should absolutely never expect to be able to lean on Composr as an immediate way to meet complex clients needs without a programming budget. For a complex project (and in reality &ndash; most people want a complex project, even though they don't want to acknowledge it) it is absolutely essential that you have either:</p>
 
 					[list="a"]
-						[*]In-house PHP programming skills to back things up with where needed;
+						[*]In-house PHP programming skills to back things up where needed;
 						[*]Or, you budget a chunk of your quoted price for ocProducts support (or from a third party)
 					[/list]
 
@@ -274,7 +274,7 @@
 				<div>
 					<p>Feature-by-feature, we probably have far fewer bugs in Composr than other software. We do not have a back-log of bugs that need fixing. However, as Composr is a vast and flexible system, you'll probably be using a lot of features and using them in ways other people might not have been regularly doing. Very occasionally when we introduce new features, or fix bugs, we can accidentally cause some new bugs. So you should expect to find a few bugs as you go. We try really hard to avoid this happening, with a whole suite of testing tools and processes, but at the end of the day some amount of human fallibility can't be prevented and the small mistakes of computer programmers tend to be far more consequential than the small mistakes of other professionals.</p>
 
-					<p>The staff have a great record for fixing issues very quickly and usually the first person to report a bug is provided a hotfix. All hotfixes are posted publicly into the tracker, and all fixes posted into git. The development team can't, however, provide free one-on-one hotfix deployment to each user &ndash; so we release patch releases occasionally to fix everything people have found.</p>
+					<p>The staff have a great record for fixing issues very quickly and usually the first person to report a bug is provided a hotfix. All hotfixes are posted publicly into the tracker, and all fixes posted into git. The development team can't, however, provide free one-on-one hotfix deployment to each user &ndash; so we put out patch releases occasionally to fix everything people have found.</p>
 
 					<p>If you are working on a commercial project then it is quite conceivable that a bug could be a business issue for you, and a hotfix might not be immediately available. Therefore it makes business sense to budget some support time for having hotfixes manually applied to your site if you do find any issues. As with other points made above, it's important to not assume Open Source software is a free lunch &ndash; Open Source is a philosophy that dramatically increases value for users, but the philosophy can't remove the fact that developers can't fund a warranty for software given away free, so individual attention needs to be handled through a support relationship. We try and avoid this situation as much as possible through our systems to avoid bugs, and by releasing all the fixes out to github so that there is no [i]monopoly[/i] on bug fix support &ndash; but realistically business customers expect expedient responses and the best way is often to use the paid support system.</p>
 				</div>
