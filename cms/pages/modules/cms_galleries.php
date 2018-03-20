@@ -340,7 +340,7 @@ class Module_cms_galleries extends Standard_crud_module
         $post_url = build_url(array('page' => '_SELF', 'type' => '__import', 'cat' => $cat, 'uploading' => 1, 'redirect' => protect_url_parameter(get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL))), '_SELF');
         $fields = new Tempcode();
         $fields->attach(form_input_upload_multi(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_ARCHIVE_MEDIA', escape_html(str_replace(',', ', ', get_option('valid_images') . ',' . get_allowed_video_file_types()))), 'file', true, null, null, true, str_replace(' ', '', get_option('valid_images'))));
-        $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_GALLERY_IMPORT_TITLE'), 'set_title', '', false/*Is multi-upload and may get from EXIF [besides, this is set_title not title] get_option('gallery_media_title_required') == '1'*/));
+        $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_GALLERY_IMPORT_TITLE'), 'set_title', '', get_option('gallery_media_title_required') == '2'));
         $hidden = new Tempcode();
         handle_max_file_size($hidden);
         if (function_exists('imagetypes')) {
@@ -911,7 +911,7 @@ class Module_cms_galleries extends Standard_crud_module
             $filters['filter'] = 'only_conventional_galleries';
         }
 
-        $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, get_option('gallery_media_title_required') == '1'));
+        $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, get_option('gallery_media_title_required') != '0'));
 
         $gallery_title = '';
         if ($cat != '') {
@@ -1520,7 +1520,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
         }
         $filters = array('filter' => 'only_conventional_galleries', 'must_accept_videos' => true, 'addable_filter' => true);
 
-        $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, get_option('gallery_media_title_required') == '1'));
+        $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, get_option('gallery_media_title_required') != '0'));
 
         $gallery_title = '';
         if ($cat != '') {
