@@ -25,6 +25,12 @@ class strip_tags_test_set extends cms_test_case
         $expected = 'Hello  test<x>y</x>';
 
         //$this->assertTrue(strip_tags($x, $keep) == $expected);    Likely to stop working in PHP 7.3+. But known to pass.
-        $this->assertTrue(cms_strip_tags($x, $keep) == $expected);
+        $this->assertTrue(cms_strip_tags($x, $keep, true) == $expected);
+
+        $x = 'Hello <br /> <p>test</p><x>y</x>';
+        $lose = '<x>';
+        $expected = 'Hello <br /> <p>test</p>y';
+
+        $this->assertTrue(cms_strip_tags($x, $lose, false) == $expected);
     }
 }
