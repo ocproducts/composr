@@ -99,10 +99,14 @@ tree_list.prototype.response=function(ajax_result_frame,ajax_result,expanding_id
 	} else // Appending
 	{
 		xml=this.getElementByIdHack(expanding_id,'c');
-		for (i=0;i<ajax_result.childNodes.length;i++)
-		{
-			temp_node=ajax_result.childNodes[i];
-			xml.appendChild(temp_node.cloneNode(true));
+		if (has_child_nodes(xml)) {
+			// User was likely clicking like mad, or had connection issues - as we already rendered this
+		} else {
+			for (i=0;i<ajax_result.childNodes.length;i++)
+			{
+				temp_node=ajax_result.childNodes[i];
+				xml.appendChild(temp_node.cloneNode(true));
+			}
 		}
 		html=document.getElementById(this.name+'tree_list_c_'+expanding_id);
 	}

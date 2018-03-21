@@ -11,7 +11,7 @@ function fade_transition(fade_element,dest_percent_opacity,period_in_msecs,incre
 
 	/*{+START,IF,{$NOT,{$CONFIG_OPTION,enable_animations}}}*/
 		set_opacity(fade_element,dest_percent_opacity/100.0);
-		return;
+		if (true) return;
 	/*{+END}*/
 
 	if (typeof window.fade_transition_timers=='undefined') return;

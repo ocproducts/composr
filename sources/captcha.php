@@ -61,46 +61,68 @@ function captcha_script()
             return;
         }
 
-        $data = '';
-        for ($i = 0; $i < strlen($code_needed); $i++) {
-            $char = strtolower($code_needed[$i]);
-
-            $file_path = get_file_base() . '/data_custom/sounds/' . $char . '.wav';
-            if (!file_exists($file_path)) {
-                $file_path = get_file_base() . '/data/sounds/' . $char . '.wav';
-            }
-            $myfile = fopen($file_path, 'rb');
-            if ($i != 0) {
-                fseek($myfile, 44);
-            } else {
-                $data = fread($myfile, 44);
-            }
-            $_data = fread($myfile, filesize($file_path));
-            for ($j = 0; $j < strlen($_data); $j++) {
-                if (get_option('captcha_noise') == '1') {
-                    $amp_mod = mt_rand(-2, 2);
-                    $_data[$j] = chr(min(255, max(0, ord($_data[$j]) + $amp_mod)));
-                }
-                if (get_option('captcha_noise') == '1') {
-                    if (($j != 0) && (mt_rand(0, 10) == 1)) {
-                        $data .= $_data[$j - 1];
-                    }
-                }
-                $data .= $_data[$j];
-            }
-            fclose($myfile);
-        }
-
         safe_ini_set('zlib.output_compression', 'Off');
 
-        // Fix up header
-        $data = substr_replace($data, pack('V', strlen($data) - 8), 4, 4);
-        $data = substr_replace($data, pack('V', strlen($data) - 44), 40, 4);
+        $data = captcha_audio($code_needed);
+
         header('Content-Length: ' . strval(strlen($data)));
+
         echo $data;
+
         return;
     }
 
+    list($img, $width, $height) = captcha_image($code_needed);
+
+    // Output using CSS
+    if (get_option('css_captcha') === '1') {
+        echo '
+        <!DOCTYPE html>
+        <html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+            <title>' . do_lang('CONTACT_STAFF_TO_JOIN_IF_IMPAIRED') . '</title>
+            <meta name="robots" content="noindex" />
+        </head>
+        <body style="margin: 0">
+        ';
+        if (get_option('js_captcha') === '1') {
+            echo '<div style="display: none" id="hidden_captcha">';
+        }
+        echo '<div style="width: ' . strval($width) . 'px; font-size: 0; line-height: 0">';
+        for ($j = 0; $j < $height; $j++) {
+            for ($i = 0; $i < $width; $i++) {
+                $colour = imagecolorsforindex($img, imagecolorat($img, $i, $j));
+                echo '<span style="vertical-align: bottom; overflow: hidden; display: inline-block; -webkit-text-size-adjust: none; text-size-adjust: none; background: rgb(' . strval($colour['red']) . ',' . strval($colour['green']) . ',' . strval($colour['blue']) . '); width: 1px; height: 1px"></span>';
+            }
+            echo '<br />';
+        }
+        echo '</div>';
+        if (get_option('js_captcha') === '1') {
+            echo '</div>';
+            echo '<script>document.getElementById(\'hidden_captcha\').style.display=\'block\';</script>';
+        }
+        echo '
+        </body>
+        </html>
+        ';
+        imagedestroy($img);
+        exit();
+    }
+
+    // Output as a PNG
+    header('Content-Type: image/png');
+    imagepng($img);
+    imagedestroy($img);
+}
+
+/**
+ * Create an image CATCHA.
+ *
+ * @param  string $code_needed The code
+ * @return array A tuple: the image CAPTCHA, the width, the height
+ */
+function captcha_image($code_needed)
+{
     // Write basic, using multiple fonts with random Y-position offsets
     $characters = strlen($code_needed);
     $fonts = array();
@@ -160,44 +182,51 @@ function captcha_script()
         }
     }
 
-    // Output using CSS
-    if (get_option('css_captcha') === '1') {
-        echo '
-        <!DOCTYPE html>
-        <html xmlns="http://www.w3.org/1999/xhtml">
-        <head>
-            <title>' . do_lang('CONTACT_STAFF_TO_JOIN_IF_IMPAIRED') . '</title>
-            <meta name="robots" content="noindex" />
-        </head>
-        <body style="margin: 0">
-        ';
-        if (get_option('js_captcha') === '1') {
-            echo '<div style="display: none" id="hidden_captcha">';
+    return array($img, $width, $height);
+}
+
+/**
+ * Create an audio CATCHA.
+ *
+ * @param  string $code_needed The code
+ * @return string the audio CAPTCHA
+ */
+function captcha_audio($code_needed)
+{
+    $data = '';
+    for ($i = 0; $i < strlen($code_needed); $i++) {
+        $char = strtolower($code_needed[$i]);
+
+        $file_path = get_file_base() . '/data_custom/sounds/' . $char . '.wav';
+        if (!file_exists($file_path)) {
+            $file_path = get_file_base() . '/data/sounds/' . $char . '.wav';
         }
-        echo '<div style="width: ' . strval($width) . 'px; font-size: 0; line-height: 0">';
-        for ($j = 0; $j < $height; $j++) {
-            for ($i = 0; $i < $width; $i++) {
-                $colour = imagecolorsforindex($img, imagecolorat($img, $i, $j));
-                echo '<span style="vertical-align: bottom; overflow: hidden; display: inline-block; -webkit-text-size-adjust: none; text-size-adjust: none; background: rgb(' . strval($colour['red']) . ',' . strval($colour['green']) . ',' . strval($colour['blue']) . '); width: 1px; height: 1px"></span>';
+        $myfile = fopen($file_path, 'rb');
+        if ($i != 0) {
+            fseek($myfile, 44);
+        } else {
+            $data = fread($myfile, 44);
+        }
+        $_data = fread($myfile, filesize($file_path));
+        for ($j = 0; $j < strlen($_data); $j++) {
+            if (get_option('captcha_noise') == '1') {
+                $amp_mod = mt_rand(-2, 2);
+                $_data[$j] = chr(min(255, max(0, ord($_data[$j]) + $amp_mod)));
+
+                if (($j != 0) && (mt_rand(0, 10) == 1)) {
+                    $data .= $_data[$j - 1];
+                }
             }
+            $data .= $_data[$j];
         }
-        echo '</div>';
-        if (get_option('js_captcha') === '1') {
-            echo '</div>';
-            echo '<script>document.getElementById(\'hidden_captcha\').style.display=\'block\';</script>';
-        }
-        echo '
-        </body>
-        </html>
-        ';
-        imagedestroy($img);
-        exit();
+        fclose($myfile);
     }
 
-    // Output as a PNG
-    header('Content-Type: image/png');
-    imagepng($img);
-    imagedestroy($img);
+    // Fix up header
+    $data = substr_replace($data, pack('V', strlen($data) - 8), 4, 4);
+    $data = substr_replace($data, pack('V', strlen($data) - 44), 40, 4);
+
+    return $data;
 }
 
 /**
@@ -209,7 +238,10 @@ function form_input_captcha()
 {
     $tabindex = get_form_field_tabindex(null);
 
-    generate_captcha();
+    $code_needed = $GLOBALS['SITE_DB']->query_select_value_if_there('captchas', 'si_code', array('si_session_id' => get_session_id()));
+    if (is_null($code_needed)) {
+        generate_captcha();
+    }
 
     // Show template
     $input = do_template('FORM_SCREEN_INPUT_CAPTCHA', array('_GUID' => 'f7452af9b83db36685ae8a86f9762d30', 'TABINDEX' => strval($tabindex)));
@@ -223,8 +255,33 @@ function form_input_captcha()
  */
 function use_captcha()
 {
-    $answer = ((is_guest()) && (intval(get_option('use_captchas')) == 1) && (function_exists('imagetypes')));
-    return $answer;
+    if (get_option('use_captchas') == '0') {
+        return false;
+    }
+
+    if (!function_exists('imagetypes')) {
+        return false;
+    }
+
+    if (is_guest()) {
+        return true;
+    }
+
+    if (running_script('captcha')) {
+        return true;
+    }
+
+    $days = get_value('captcha_member_days');
+    if ((!empty($days)) && ($GLOBALS['FORUM_DRIVER']->get_member_join_timestamp(get_member()) > time() - 60 * 60 * 24 * intval($days))) {
+        return true;
+    }
+
+    $posts = get_value('captcha_member_posts');
+    if ((!empty($posts)) && ($GLOBALS['FORUM_DRIVER']->get_post_count(get_member()) < intval($posts))) {
+        return true;
+    }
+
+    return false;
 }
 
 /**
@@ -235,7 +292,12 @@ function generate_captcha()
     $session = get_session_id();
 
     // Clear out old codes
-    $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'captchas WHERE si_time<' . strval(time() - 60 * 30) . ' OR ' . db_string_equal_to('si_session_id', $session));
+    $where = 'si_time<' . strval(time() - 60 * 30) . ' OR ' . db_string_equal_to('si_session_id', $session);
+    $rows = $GLOBALS['SITE_DB']->query('SELECT si_session_id FROM ' . get_table_prefix() . 'captchas WHERE ' . $where);
+    foreach ($rows as $row) {
+        @unlink(get_custom_file_base() . '/uploads/auto_thumbs/' . $row['si_session_id'] . '.wav');
+    }
+    $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'captchas WHERE ' . $where);
 
     // Create code
     $choices = array('3', '4', '6', '7', '9', 'A', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'P', 'R', 'T', 'W', 'X', 'Y');
@@ -247,6 +309,9 @@ function generate_captcha()
 
     // Store code
     $GLOBALS['SITE_DB']->query_insert('captchas', array('si_session_id' => $session, 'si_time' => time(), 'si_code' => $si_code), false, true);
+
+    require_code('files');
+    cms_file_put_contents_safe(get_custom_file_base() . '/uploads/auto_thumbs/' . $session . '.wav', captcha_audio($si_code)); // TODO: Change auto_thumbs to something else in v11
 
     require_javascript('ajax');
 }

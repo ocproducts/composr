@@ -1,7 +1,7 @@
 {+START,SET,CAPTCHA}
 	<div class="captcha">
 		{+START,IF,{$CONFIG_OPTION,audio_captcha}}
-			<a onclick="return play_self_audio_link(this);" title="{!captcha:PLAY_AUDIO_VERSION}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio&amp;cache_break={$RAND&*}{$KEEP*,0,1}">{!captcha:PLAY_AUDIO_VERSION}</a>
+			<a onclick="return play_self_audio_link(this,captcha_sound);" title="{!captcha:PLAY_AUDIO_VERSION}" href="{$CUSTOM_BASE_URL*}/uploads/auto_thumbs/{$SESSION*}.wav">{!captcha:PLAY_AUDIO_VERSION}</a>
 		{+END}
 		{+START,IF,{$CONFIG_OPTION,css_captcha}}
 			<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="captcha_readable" class="captcha_frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}?cache_break={$RAND&*}{$KEEP*,0,1}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
@@ -14,6 +14,8 @@
 	<input{+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} maxlength="6" size="8" class="input_text_required" value="" type="text" id="captcha" name="captcha" />
 
 	<script>// <![CDATA[
+		var captcha_sound=(typeof window.Audio!='undefined')?new Audio('{$CUSTOM_BASE_URL*}/uploads/auto_thumbs/{$SESSION*}.wav'):null;
+
 		var showevent=(typeof window.onpageshow!='undefined')?'pageshow':'load';
 
 		var func=function() {

@@ -113,7 +113,6 @@ class Module_admin_lookup
      */
     public function run()
     {
-        require_lang('submitban');
         require_code('lookup');
 
         $param = $this->param;

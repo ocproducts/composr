@@ -53,15 +53,15 @@
 
 {+START,IF,{$NEQ,{_GUID},carousel}}
 	<div class="gallery_regular_thumb">
-		{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}}
-			{+START,INCLUDE,MASS_SELECT_MARKER}
-				TYPE={MEDIA_TYPE}
-				ID={ID}
+		<div class="img_thumb_wrap{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}} img_thumb_opaque{+END}" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,TOOLTIP}','auto',null,null,false,true);" onmouseleave="deactivate_tooltip(this);">
+			{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}}
+				{+START,INCLUDE,MASS_SELECT_MARKER}
+					TYPE={MEDIA_TYPE}
+					ID={ID}
+				{+END}
 			{+END}
-		{+END}
 
-		<div class="img_thumb_wrap">
-			<a href="{VIEW_URL*}" class="leave_native_tooltip" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,TOOLTIP}','auto',null,null,false,true);" onmouseleave="deactivate_tooltip(this);">{$TRIM,{THUMB}}</a>
+			<a href="{VIEW_URL*}" class="leave_native_tooltip">{$TRIM,{THUMB}}</a>
 		</div>
 
 		<p class="gallery_media_title_cropped">

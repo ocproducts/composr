@@ -67,7 +67,7 @@ $feature_tree = array(
             array(
                 array('Reporting bugs', 'Big or tiny &ndash; we will be happy if you even report typos we make as bugs.'),
                 array('Reporting usability issues', 'We will be happy if you have any concrete suggestions for making reasonably common tasks even a little bit easier.'),
-                array('Write tutorials', 'Post them on [url="the tracker"]http://compo.sr/tracker/set_project.php?project_id=7[/url] and the staff may add them to the site.'),
+                array('Write tutorials', 'Post them on the forum and [url="link them into the tutorial database"]https://compo.sr/forum/topicview/browse/posting-tutorials.htm[/url].'),
             ),
         ),
 

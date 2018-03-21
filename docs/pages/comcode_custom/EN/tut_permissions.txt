@@ -40,7 +40,7 @@ Admin Zone > Security > Permissions Tree Editor
 
 Another feature of the Permissions Tree Editor is the ability to make batch selections and apply permissions to everything selected. You can do this in the conventional way using the Ctrl/Shift keys (Option/Shift keys on a mac).
 
-Note that the Sitemap shown in the Permission Tree Editor depends on the "Single public zone" configuration option.
+Note that the Sitemap shown in the Permissions Tree Editor depends on the "Single public zone" configuration option.
 If this option is on then the default content pages will be under the Welcome zone, and no Site zone will be shown. The Sitemap will start from Root.
 If this option is off then the default content pages will be under the Site zone. Because the Welcome zone is almost empty the Sitemap will start from the Welcome zone. 
 

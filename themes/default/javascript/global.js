@@ -1699,7 +1699,7 @@ function smooth_scroll(dest_y,expected_scroll_y,dir,event_after)
 			window.scrollTo(0,dest_y);
 		}
 		catch (e) {}
-		return;
+		if (true) return;
 	/*{+END}*/
 
 	var scroll_y=get_window_scroll_y();
@@ -3822,10 +3822,21 @@ function set_up_change_monitor(id)
 }
 
 /* Used by audio CAPTCHA. Wave files won't play inline anymore on Firefox (https://bugzilla.mozilla.org/show_bug.cgi?id=890516) */
-function play_self_audio_link(ob)
+function play_self_audio_link(ob,sound_object)
 {
 	if (browser_matches('gecko') || true/*actually it works well generally*/)
 	{
+		if (sound_object)
+		{
+			// Some browsers will block the below, because the timer makes it think it is 'autoplay'; even this may fail on Safari
+			console.log('Playing .wav fully natively');
+			sound_object.play().catch(function(error) {
+				console.log('Audio playback blocked, reverting to opening .wav in new window');
+				window.open(ob.href);
+			});
+			return false;
+		}
+
 		require_javascript('sound',window.SoundManager);
 
 		var timer=window.setInterval(function() {

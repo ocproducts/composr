@@ -23,7 +23,7 @@
  *
  * @param  GROUP $group_id The ID of the group.
  * @param  boolean $include_primaries Whether to include those in the as a primary member.
- * @param  boolean $non_validated Whether to include those applied to join the, but not validated in.
+ * @param  boolean $non_validated Whether to include those applied to join the group, but not validated in.
  * @param  boolean $include_secondaries Whether to include those in the as a secondary member.
  * @param  boolean $include_unvalidated_members Whether to include those members who are not validated as site members at all yet (parameter currently ignored).
  * @return integer The count.
@@ -96,7 +96,7 @@ function cns_get_group_members_raw_count($group_id, $include_primaries = true, $
  *
  * @param  GROUP $group_id The ID of the group.
  * @param  boolean $include_primaries Whether to include those in the as a primary member.
- * @param  boolean $non_validated Whether to include those applied to join the, but not validated in (also causes it to return maps that contain this info).
+ * @param  boolean $non_validated Whether to include those applied to join the group, but not validated in (also causes it to return maps that contain this info).
  * @param  boolean $include_secondaries Whether to include those in the as a secondary member.
  * @param  boolean $include_unvalidated_members Whether to include those members who are not validated as site members at all yet (parameter currently ignored).
  * @param  ?integer $max Return up to this many entries for primary members and this many entries for secondary members and all LDAP members (null: no limit, only use no limit if querying very restricted usergroups!)

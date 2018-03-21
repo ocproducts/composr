@@ -1643,6 +1643,10 @@ Understanding of these symbols requires an understanding of basic boolean operat
 			<td>{$URLDECODE,a%20b}</td>
 			<td>Remove URL encoding</td>
 		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SMART_LINK_STRIP,<a href="http://example.com/">hello</a>,3}</td>
+			<td>Remove links from the given HTML, if the member ID does not have a positive post count (a temporary measure to disincentivise spammers)</td>
+		</tr>
 	</tbody>
 </table>
 [/html]

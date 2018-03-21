@@ -629,6 +629,10 @@ function afm_copy($old_path, $new_path, $world_access)
  */
 function afm_move($basic_old_path, $basic_new_path)
 {
+    if (file_exists(get_custom_file_base() . '/' . $basic_new_path)) {
+        warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($basic_new_path)));
+    }
+
     if (is_dir(get_custom_file_base() . '/' . $basic_new_path)) {
         $basic_new_path .= substr($basic_old_path, strrpos($basic_old_path, '/')); // If we are moving to a path, add on the filename to that path
     }

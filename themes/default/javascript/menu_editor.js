@@ -4,6 +4,54 @@
 // MENU FUNCTIONS
 // ==============
 
+function do_menu_preview(ob,menu_type)
+{
+	if (!check_menu()) return false;
+
+	var form=ob.form;
+
+	disable_button_just_clicked(ob);
+
+	if (typeof form.original_url=='undefined') form.original_url=form.action;
+
+	form.target='_blank';
+	form.action='{$FIND_SCRIPT;,preview}?page=admin_menus&menu_type=' + window.encodeURIComponent(menu_type) + keep_stub();
+
+	return true;
+}
+
+function do_menu_save(ob)
+{
+	if (!check_menu()) return false;
+
+	var form=ob.form;
+
+	disable_button_just_clicked(ob);
+
+	if (typeof form.original_url!='undefined') form.action=form.original_url;
+
+	form.target='_self';
+
+	return true;
+}
+
+function adjust_pane_heights()
+{
+	var e=document.getElementById('menu_editor_wrap');
+	if (e.className.indexOf(' docked')==-1)
+	{
+		e.style.height='';
+	} else
+	{
+		var mini_form_hider=document.getElementById('mini_form_hider');
+		var new_height=get_window_height()-find_pos_y(e,true)-find_height(mini_form_hider)-10;
+		if (new_height<0) {
+			new_height=0;
+		}
+		e.style.height=new_height+'px';
+	}
+}
+
 function menu_editor_add_new_page()
 {
 	var form=document.getElementById('edit_form');
@@ -104,6 +152,8 @@ function copy_fields_into_bottom(i,changed)
 	var mfh=document.getElementById('mini_form_hider');
 
 	mfh.style.display='block';
+
+	adjust_pane_heights();
 
 	if ((typeof window.fade_transition!='undefined'))
 	{

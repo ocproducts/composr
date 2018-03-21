@@ -355,7 +355,7 @@ class Hook_paypal
             $x = 0;
             $res = mixed();
             do { // Try up to 3 times
-                $res = http_download_file('https://' . (ecommerce_test_mode() ? 'www.sandbox.paypal.com' : 'www.paypal.com') . '/cgi-bin/webscr', null, false, false, 'Composr', $pure_post + array('cmd' => '_notify-validate'));
+                $res = http_download_file('https://' . (ecommerce_test_mode() ? 'ipnpb.sandbox.paypal.com' : 'ipnpb.paypal.com') . '/cgi-bin/webscr', null, false, false, 'Composr', $pure_post + array('cmd' => '_notify-validate'));
                 $x++;
             } while ((is_null($res)) && ($x < 3));
             if (is_null($res)) {
