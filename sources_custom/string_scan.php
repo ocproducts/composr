@@ -8763,6 +8763,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PAID_SUBSCRIPTION_STARTED
         PARTICIPANTS
         PASSED
+        LINKS_STRIPPED
         PASSWORD
         PASSWORD_ALREADY_RESET
         PASSWORD_CHANGED_MAIL_BODY

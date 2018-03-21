@@ -1860,6 +1860,42 @@ function collapse_1d_complexity($key, $list)
 }
 
 /**
+ * Used by cms_strip_tags to handle whether to strip a tag.
+ *
+ * @param  array $matches Array of matches
+ * @return string Substituted tag text
+ *
+ * @ignore
+ */
+function _cms_strip_tags_callback($matches)
+{
+    global $STRIP_TAGS_TAGS, $STRIP_TAGS_TAGS_AS_ALLOW;
+    $tag_covered = stripos($STRIP_TAGS_TAGS, '<' . $matches[1] . '>');
+    if ((($STRIP_TAGS_TAGS_AS_ALLOW) && ($tag_covered !== false)) || ((!$STRIP_TAGS_TAGS_AS_ALLOW) && ($tag_covered === false))) {
+        return $matches[0];
+    }
+    return '';
+}
+
+/**
+ * Strip HTML and PHP tags from a string.
+ * Equivalent to PHP's strip_tags, whose $allowable_tags parameter is expected to be deprecated in PHP 7.3 (https://wiki.php.net/rfc/deprecations_php_7_3).
+ *
+ * @param  string $str Subject
+ * @param  string $tags Comma-separated list of tags
+ * @param  boolean $tags_as_allow Whether tags represents a whitelist (set for false to allow all by default and make $tags a blacklist)
+ * @return string Result
+ */
+function cms_strip_tags($str, $tags, $tags_as_allow = true)
+{
+    global $STRIP_TAGS_TAGS, $STRIP_TAGS_TAGS_AS_ALLOW;
+    $STRIP_TAGS_TAGS = $tags;
+    $STRIP_TAGS_TAGS_AS_ALLOW = $tags_as_allow;
+
+    return preg_replace_callback('#</?([^\s<>]+)(\s[^<>]*)?' . '>#', '_cms_strip_tags_callback', $str);
+}
+
+/**
  * Find whether an IP address is valid
  *
  * @param  IP $ip IP address to check.

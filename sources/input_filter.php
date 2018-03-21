@@ -265,6 +265,25 @@ function hard_filter_input_data__dynamic_firewall($name, &$val)
 }
 
 /**
+ * Used by hard_filter_input_data__html to add rel="nofollow" to links
+ *
+ * @param  array $matches Array of matches
+ * @return string Substituted text
+ *
+ * @ignore
+ */
+function _link_nofollow_callback($matches)
+{
+    // Remove any existing rel attributes (it's too complex to play nice, e.g. what if a hacker added multiple ones and we altered the wrong one)
+    $matches[1] = preg_replace('#\srel="[^"]*"#', '', $matches[1]);
+    $matches[1] = preg_replace('#\srel=\'[^"]*\'#', '', $matches[1]);
+    $matches[1] = preg_replace('#\srel=[^\s<>\'"]*#', '', $matches[1]);
+
+    // Add in our rel attribute
+    return $matches[1] . ' rel="nofollow"' . $matches[2] . $matches[3] . $matches[4];
+}
+
+/**
  * Filter input data for safety within frontend markup, taking account of HTML/JavaScript/CSS/embed attacks.
  * Only called for non-privileged users, filters/alters rather than blocks, due to false-positive likelihood.
  *
@@ -344,6 +363,9 @@ function hard_filter_input_data__html(&$val, $lite = false)
     if ($lite) {
         return;
     }
+
+    // nofollow needs applying
+    $val = preg_replace_callback('#(<a\s[^<>]*)(>)(.*)(</a>)#Ui', '_link_nofollow_callback', $val);
 
     // Check tag balancing (we don't want to allow partial tags to compound together against separately checked chunks)
     $len = strlen($val);

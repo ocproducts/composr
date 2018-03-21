@@ -4946,3 +4946,38 @@ function ecv_THEME_WIZARD_COLOR($lang, $escaped, $param)
     }
     return $value;
 }
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv_SMART_LINK_STRIP($lang, $escaped, $param)
+{
+    $value = '';
+    if ($GLOBALS['XSS_DETECT']) {
+        ocp_mark_as_escaped($value);
+    }
+
+    if (isset($param[1])) {
+        $value = $param[0];
+
+        if ((!has_no_forum()) && ($GLOBALS['FORUM_DRIVER']->get_post_count(intval($param[1])) < 1)) {
+            $value = cms_strip_tags($value, '<a>', false);
+
+            if ($value != $param[0]) {
+                $value .= '<br /><em>' . do_lang('LINKS_STRIPPED') . '</em>';
+            }
+        }
+    }
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
