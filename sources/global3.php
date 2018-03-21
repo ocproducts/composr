@@ -2076,13 +2076,7 @@ function cms_strip_tags($str, $tags, $tags_as_allow = true)
     $STRIP_TAGS_TAGS = $tags;
     $STRIP_TAGS_TAGS_AS_ALLOW = $tags_as_allow;
 
-    return preg_replace_callback('#</?([^\s<>]+)(\s[^<>]*)?' . '>#', function ($matches) use ($tags, $tags_as_allow) {
-        $tag_covered = stripos($tags, '<' . preg_quote($matches[1], '#') . '>');
-        if ((($tags_as_allow) && ($tag_covered !== false)) || ((!$tags_as_allow) && ($tag_covered === false))) {
-            return $matches[0];
-        }
-        return '';
-    }, $str);
+    return preg_replace_callback('#</?([^\s<>]+)(\s[^<>]*)?' . '>#', '_cms_strip_tags_callback', $str);
 }
 
 /**
