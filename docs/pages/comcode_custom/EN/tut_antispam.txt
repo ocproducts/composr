@@ -26,6 +26,17 @@ In other words, Composr's default CAPTCHA tries to be both highly secure, and re
 
 We have an audio option for the CAPTCHA which is important for users with visual impairments. You can also remove the distortion effects from the CAPTCHA, which makes readability easier, but makes it much easier for a spammer to crack it.
 
+[title="3"]Hidden options (advanced)[/title]
+
+These hidden options expand the scope of the CAPTCHA to also cover members:
+ - [tt]captcha_member_days[/tt] -- set this to a number if new members should continue to have CAPTCHA for this many days
+ - [tt]captcha_member_posts[/tt] -- set this to a number if new members should continue to have CAPTCHA for this many forum posts
+
+Sample Commandr command:
+[code]
+:set_value('captcha_member_days', '5'); set_value('captcha_member_posts', '5');
+[/code]
+
 [title="2"]Remote Block Lists (RBLs)[/title]
 
 Remote Block Lists (RBLs) are a technique whereby Composr checks third-party lists of known spammers, via special RBL-protocols, based on DNS. You don't need to know the technical details other than that Composr can be configured to use an RBL service.
@@ -59,6 +70,15 @@ The confidence level is then compared about a number of configured thresholds:
 Other options include:
  - Specifying how long spam results are cached for
  - Specifying how long to trust reports of a spammer that were assigned a "last spam activity" date
+
+[title="2"]Privileges[/title]
+
+Absence of the "Post links that search engines will follow" privilege disincentivises users from posting links. Without this privilege all links will have [tt]rel="nofollow"[/tt].
+
+[title="2"]Links on member profiles[/title]
+
+We entirely block the presence of links on Composr member profiles for members with no posts. The links will automatically reappear once a member has a post, and disappear again if their post(s) are deleted. If the [tt]cns_forum[/tt] addon is not installed then this functionality is not active.
+This is to disincentivise spammers from flagging your site as an easy way to get links that won't even get moderated away.
 
 [title="2"]Black hole[/title]
 
@@ -108,6 +128,8 @@ Include:
 [*] The spammer's user-agent
 [*] The time of the incident
 [*] Whether the spam was by a guest (and if so, if you have guest posting permissions configured)
+[*] An audit trail of pages the spammer went through (to help us identify if it is a bot)
+[*] What is on the spammers member profile (if appropriate)
 [/list]
 
 Avoid being anecdotal or emotional -- give clear and concise facts.
@@ -125,6 +147,10 @@ Once you've made your report hopefully someone can then tell you what case categ
  3_key="Spam-bot"          3_value="A malicious program a spammer runs, to automatically submit spam to websites. It is often written using techniques similar to that of a search engine crawler (to find targets), and then tries to simulate humans but while posting spam. Some spam-bots run on infected PCs, which is why it can be hard to directly block known spammers."
  4_key="Honey Pot"         4_value="A hidden link of area where spam-bots may get to, but a human never would. An effective way for detecting spam-bots."
 ]Concepts[/concepts]
+
+[title="2"]Additional future techniques[/title]
+
+Fighting spam is an ongoing challenge. Actual humans are paid to post spam, and increasingly will try and hide spam behind legitimate activity. Ideas for fighting spammer are categorised under the [url="Type: Spam"]https://compo.sr/tracker/tag_view_page.php?tag_id=52[/url] tracker tag.
 
 [title="2"]See also[/title]
 
