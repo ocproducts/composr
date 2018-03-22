@@ -198,7 +198,9 @@ The Composr code hints what image to use for Open Graph. There are 3 possibiliti
 
 For catalogues you'll need to delete [tt]uploads/catalogues/.htaccess[/tt] for the image sharing to work. Deleting this file is safe so long as you don't have any files in there protected by catalogue permissions that you do not want to be directly accessible.
 
-You may want to just simplify everything and make your own theme image for Open Graph and reference that. This will probably also end up looking nicer because Facebook recommends a 1.91:1 aspect ratio on your image (to avoid cropping) which is unlikely to be close to true for automatically chosen images.
+You may want to just simplify everything and make your own theme image for Open Graph and reference that. This will probably also end up looking nicer because Facebook:
+a) recommends a 1.91:1 aspect ratio on your image (to avoid cropping) which is unlikely to be close to true for automatically chosen images.
+b) there is a bare minimum of 200x200 (more information is included on https://developers.facebook.com/docs/sharing/best-practices#images)
 
 [title="4"]Special case: If you use huge thumbnails[/title]
 

@@ -133,10 +133,10 @@
 												{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
 													{+START,IF_PASSED,EDITABILITY}
 														{$SET,edit_type,{EDIT_TYPE}}
-														{+START,FRACTIONAL_EDITABLE,{RAW_VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
+														{+START,FRACTIONAL_EDITABLE,{RAW_VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{$SMART_LINK_STRIP,{VALUE},{MEMBER_ID}}{+END}
 													{+END}
 													{+START,IF_NON_PASSED,EDITABILITY}
-														{VALUE}
+														{$SMART_LINK_STRIP,{VALUE},{MEMBER_ID}}
 													{+END}
 												{+END}
 												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
