@@ -479,25 +479,20 @@
     }
 
     window.doInputPrivateMessage = function doInputPrivateMessage(fieldName) {
-        $cms.ui.prompt(
-            '{!chat:ENTER_RECIPIENT;^}',
-            '',
-            function (va) {
-                if (va != null) {
-                    $cms.ui.prompt(
-                        '{!MESSAGE;^}',
-                        '',
-                        function (vb) {
-                            if (vb != null) {
-                                window.$editing.insertTextbox(document.getElementById(fieldName), '[private="' + va + '"]' + vb + '[/private]');
-                            }
-                        },
-                        '{!chat:INPUT_CHATCODE_private_message;^}'
-                    );
-                }
-            },
-            '{!chat:INPUT_CHATCODE_private_message;^}'
-        );
+        $cms.ui.prompt('{!chat:ENTER_RECIPIENT;^}', '', null, '{!chat:INPUT_CHATCODE_private_message;^}').then(function (va) {
+            if (va != null) {
+                $cms.ui.prompt(
+                    '{!MESSAGE;^}',
+                    '',
+                    function (vb) {
+                        if (vb != null) {
+                            window.$editing.insertTextbox(document.getElementById(fieldName), '[private="' + va + '"]' + vb + '[/private]');
+                        }
+                    },
+                    '{!chat:INPUT_CHATCODE_private_message;^}'
+                );
+            }
+        });
     };
 
     window.doInputInvite = function doInputInvite(fieldName) {

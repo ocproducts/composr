@@ -59,6 +59,10 @@ function editareaDoSearch(textareaId, regexp) {
     } catch (e) {}
 }
 
+/**
+ * Update underlying textarea from the ACE editor
+ * @param textareaId
+ */
 function editareaReverseRefresh(textareaId) {
     var editor = window.aceEditors[textareaId];
     if (typeof editor === 'undefined') {
@@ -68,6 +72,10 @@ function editareaReverseRefresh(textareaId) {
     document.getElementById(textareaId).value = editor.getValue();
 }
 
+/**
+ * Update ACE editor from the underlying textarea
+ * @param textareaId
+ */
 function editareaRefresh(textareaId) {
     var editor = window.aceEditors[textareaId];
     if (editor == null) {
@@ -77,6 +85,10 @@ function editareaRefresh(textareaId) {
     editor.setValue(document.getElementById(textareaId).value, -1);
 }
 
+/**
+ * Get ACE editor's contents
+ * @param textareaId
+ */
 function editareaGetValue(textareaId) {
     var editor = window.aceEditors[textareaId];
 

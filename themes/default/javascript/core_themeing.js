@@ -35,7 +35,7 @@
     $cms.views.ThemeTemplateEditorTab = ThemeTemplateEditorTab;
     /**
      * @memberof $cms.views
-     * @class
+     * @class ThemeTemplateEditorTab
      * @extends $cms.View
      */
     function ThemeTemplateEditorTab(params) {
@@ -54,7 +54,7 @@
         }
 
         if (params.includeCssEditing && window.opener && window.opener.document) {
-            loadContextualCssEditor(params.file, params.fileId);
+            this.loadContextualCssEditor(params.file, params.fileId);
         }
     }
 
@@ -91,8 +91,8 @@
                 editareaReverseRefresh('e_' + fileToFileId(file));
 
                 var post = 'contents=' + encodeURIComponent(getFileTextbox(file).value);
-                $cms.loadSnippet(url, post, true).then(function (ajaxResult) {
-                    $cms.ui.alert(ajaxResult, null, true);
+                $cms.loadSnippet(url, post).then(function (ajaxResult) {
+                    $cms.ui.alert(ajaxResult);
                     templateEditorTabMarkNonchangedContent(file);
                 });
             }
@@ -169,6 +169,292 @@
                     document.getElementById('css-result-' + params.fileId).value = result;
                 }
             });
+        },
+        
+        loadContextualCssEditor: function loadContextualCssEditor(file, fileId) {
+            var ui = document.getElementById('selectors-' + fileId);
+            ui.style.display = 'block'; // Un-hide it
+            var list = document.createElement('ul');
+            list.id = 'selector_list_' + fileId;
+            document.getElementById('selectors-inner-' + fileId).appendChild(list);
+
+            setUpParentPageHighlighting(file, fileId);
+
+            // Set up background compiles
+            var textareaId = 'e_' + fileId;
+            if (editareaIsLoaded(textareaId)) {
+                var editor = window.aceEditors[textareaId];
+
+                var lastCss = editareaGetValue(textareaId);
+
+                editor.cssRecompilerTimer = setInterval(function () {
+                    if ((window.opener) && (window.opener.document)) {
+                        if (editor.lastChange === undefined) { // No change made at all
+                            return;
+                        }
+
+                        var millisecondsAgo = (new Date()).getTime() - editor.lastChange;
+                        if (millisecondsAgo > 3 * 1000) { // Not changed recently enough (within last 3 seconds)
+                            return;
+                        }
+
+                        if (window.opener.haveSetUpParentPageHighlighting === undefined) {
+                            setUpParentPageHighlighting(file, fileId);
+                            lastCss = '';
+                            /*force new CSS to apply*/
+                        }
+
+                        var newCss = editareaGetValue(textareaId);
+                        if (newCss == lastCss) {// Not changed
+                            return;
+                        }
+
+                        var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=css_compile__text' + $cms.keep(),
+                            post = 'css=' + encodeURIComponent(newCss);
+                        if ($cms.form.isModSecurityWorkaroundEnabled()) {
+                            post = $cms.form.modSecurityWorkaroundAjax(post);
+                        }
+                        $cms.doAjaxRequest(url, null, post).then(function (xhr) {
+                            receiveCompiledCss(xhr, file);
+                        });
+
+                        lastCss = newCss;
+                    }
+                }, 2000);
+            }
+
+            function receiveCompiledCss(ajaxResultFrame, file, win) {
+                var doingCssFor = file.replace(/^css\//, '').replace('.css', '');
+
+                win || (win = window.opener);
+
+                if (win) {
+                    try {
+                        var css = ajaxResultFrame.responseText;
+
+                        // Remove old link tag
+                        var e;
+                        if (doingCssFor === 'no_cache') {
+                            e = win.document.getElementById('inline_css');
+                            if (e) {
+                                e.parentNode.removeChild(e);
+                            }
+                        } else {
+                            var links = win.document.getElementsByTagName('link');
+                            for (var i = 0; i < links.length; i++) {
+                                e = links[i];
+                                if ((e.type === 'text/css') && e.href.includes('/templates_cached/' + window.opener.$cms.userLang() + '/' + doingCssFor)) {
+                                    e.parentNode.removeChild(e);
+                                }
+                            }
+                        }
+
+                        // Create style tag for this
+                        var style = win.document.getElementById('style_for_' + doingCssFor);
+                        if (!style) {
+                            style = win.document.createElement('style');
+                        }
+                        style.type = 'text/css';
+                        style.id = 'style_for_' + doingCssFor;
+                        if (style.styleSheet) {
+                            style.styleSheet.cssText = css;
+                        } else {
+                            if (style.childNodes[0] !== undefined) {
+                                style.removeChild(style.childNodes[0]);
+                            }
+                            var tn = win.document.createTextNode(css);
+                            style.appendChild(tn);
+                        }
+                        win.document.querySelector('head').appendChild(style);
+
+                        for (var j = 0; j < win.frames.length; j++) {
+                            if (win.frames[j]) {// If test needed for some browsers, as window.frames can get out-of-date
+                                receiveCompiledCss(ajaxResultFrame, file, win.frames[j]);
+                            }
+                        }
+                    } catch (ex) {}
+                }
+            }
+
+            function setUpParentPageHighlighting(file, fileId) {
+                window.opener.haveSetUpParentPageHighlighting = true;
+
+                var doingCssFor = file.replace(/^css\//, '').replace('.css', '');
+
+                var li, a, selector, elements, element, j, cssText;
+
+                var selectors = findActiveSelectors(doingCssFor, window.opener);
+
+                var list = document.getElementById('selector_list_' + fileId);
+                $dom.html(list, '');
+
+                for (var i = 0; i < selectors.length; i++) {
+                    selector = selectors[i].selectorText;
+
+                    // Add to list of selectors
+                    li = document.createElement('li');
+                    a = document.createElement('a');
+                    li.appendChild(a);
+                    a.href = '#!';
+                    a.id = 'selector_' + i;
+                    $dom.html(a, $cms.filter.html(selector));
+                    list.appendChild(li);
+
+                    // Add tooltip so we can see what the CSS text is in when hovering the selector
+                    cssText = (selectors[i].cssText === undefined) ? selectors[i].style.cssText : selectors[i].cssText;
+                    if (cssText.indexOf('{') !== -1) {
+                        cssText = cssText.replace(/ \{ /g, ' {<br />\n&nbsp;&nbsp;&nbsp;').replace(/; \}/g, '<br />\n}').replace(/; /g, ';<br />\n&nbsp;&nbsp;&nbsp;');
+                    } else  { // IE
+                        cssText = cssText.toLowerCase().replace(/; /, ';<br />\n');
+                    }
+                    li.addEventListener('mouseout', function (event) {
+                        $cms.ui.deactivateTooltip(this);
+                    });
+                    li.addEventListener('mousemove', function (event) {
+                        $cms.ui.repositionTooltip(this, event);
+                    });
+                    li.addEventListener('mouseover', (function (cssText) {
+                        return function (event) {
+                            $cms.ui.activateTooltip(this, event, cssText, 'auto');
+                        };
+                    }(cssText)));
+
+                    // Jump-to
+                    a.addEventListener('click', (function (selector) {
+                        return function () {
+                            editareaDoSearch(
+                                'e_' + fileId,
+                                '^[ \t]*' + selector.replace(/\./g, '\\.').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\+/g, '\\+').replace(/\*/g, '\\*').replace(/\s/g, '[ \t]+') + '\\s*\\{'
+                            );
+                            return false;
+                        };
+                    }(selector)));
+
+                    // Highlighting on parent page
+                    a.addEventListener('onmouseover', (function (selector) {
+                        return function (event) {
+                            if ((window.opener) && (!event.ctrlKey) && (!event.metaKey)) {
+                                var elements = findSelectorsFor(window.opener, selector);
+                                for (var i = 0; i < elements.length; i++) {
+                                    elements[i].style.outline = '3px dotted green';
+                                    elements[i].style.backgroundColor = 'green';
+                                }
+                            }
+                        };
+                    }(selector)));
+                    a.addEventListener('mouseout', (function (selector) {
+                        return function (event) {
+                            if ((window.opener) && (!event.ctrlKey) && (!event.metaKey)) {
+                                var elements = findSelectorsFor(window.opener, selector);
+                                for (var i = 0; i < elements.length; i++) {
+                                    elements[i].style.outline = '';
+                                    elements[i].style.backgroundColor = '';
+                                }
+                            }
+                        };
+                    }(selector)));
+
+                    // Highlighting from parent page
+                    elements = findSelectorsFor(window.opener, selector);
+                    for (j = 0; j < elements.length; j++) {
+                        element = elements[j];
+
+                        element.addEventListener('mouseover', (function (a, element) {
+                            return function (event) {
+                                if (window && !event.ctrlKey && !event.metaKey) {
+                                    var target = event.target;
+                                    var targetDistance = 0;
+                                    var elementRecurse = element;
+                                    do {
+                                        if (elementRecurse === target) {
+                                            break;
+                                        }
+                                        elementRecurse = elementRecurse.parentNode;
+                                        targetDistance++;
+                                    } while (elementRecurse);
+                                    if (targetDistance > 10) { // Max range
+                                        targetDistance = 10;
+                                    }
+
+                                    a.style.outline = '1px dotted green';
+                                    a.style.background = '#00' + ($util.decToHex(255 - targetDistance * 25)) + '00';
+                                    if (targetDistance > 4) {
+                                        a.style.color = 'white';
+                                    } else {
+                                        a.style.color = 'black';
+                                    }
+                                }
+                            };
+                        }(a, element)));
+                        element.addEventListener('mouseout', (function (a) {
+                            return function (event) {
+                                if ((window) && (!event.ctrlKey) && (!event.metaKey)) {
+                                    a.style.outline = '';
+                                    a.style.background = '';
+                                    a.style.color = '';
+                                }
+                            };
+                        }(a)));
+                    }
+                }
+
+                function findSelectorsFor(opener, selector) {
+                    var result = [], result2;
+                    try {
+                        result2 = opener.document.querySelectorAll(selector);
+                        for (var j = 0; j < result2.length; j++) {
+                            result.push(result2[j]);
+                        }
+                    } catch (e) {}
+
+                    for (var i = 0; i < opener.frames.length; i++) {
+                        if (opener.frames[i]) {// If test needed for some browsers, as window.frames can get out-of-date
+                            result2 = findSelectorsFor(opener.frames[i], selector);
+                            for (var j = 0; j < result2.length; j++) {
+                                result.push(result2[j]);
+                            }
+                        }
+                    }
+                    return result;
+                }
+
+                function findActiveSelectors(match, win) {
+                    var test, selector, selectors = [], classes, i, j, result2;
+                    try {
+                        for (i = 0; i < win.document.styleSheets.length; i++) {
+                            try {
+                                if (
+                                    (!match) ||
+                                    (!win.document.styleSheets[i].href && ((win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].ownerNode.id === 'style_for_' + match) ||
+                                        (!win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].id === 'style_for_' + match))) ||
+                                    (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('/' + match) !== -1) ||
+                                    (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('sheet=' + match) !== -1)
+                                ) {
+                                    classes = win.document.styleSheets[i].rules || win.document.styleSheets[i].cssRules;
+                                    for (j = 0; j < classes.length; j++) {
+                                        selector = classes[j].selectorText;
+                                        test = win.document.querySelectorAll(selector);
+                                        if (test.length !== 0) {
+                                            selectors.push(classes[j]);
+                                        }
+                                    }
+                                }
+                            } catch (e) {}
+                        }
+                    } catch (e) {}
+
+                    for (i = 0; i < win.frames.length; i++) {
+                        if (win.frames[i]) {// If test needed for some browsers, as window.frames can get out-of-date
+                            result2 = findActiveSelectors(match, win.frames[i]);
+                            for (j = 0; j < result2.length; j++) {
+                                selectors.push(result2[j]);
+                            }
+                        }
+                    }
+
+                    return selectors;
+                }
+            }
         }
     });
 
@@ -207,293 +493,7 @@
 
         return true;
     }
-
-    function loadContextualCssEditor(file, fileId) {
-        var ui = document.getElementById('selectors-' + fileId);
-        ui.style.display = 'block'; // Un-hide it
-        var list = document.createElement('ul');
-        list.id = 'selector_list_' + fileId;
-        document.getElementById('selectors-inner-' + fileId).appendChild(list);
-
-        setUpParentPageHighlighting(file, fileId);
-
-        // Set up background compiles
-        var textareaId = 'e_' + fileId;
-        if (editareaIsLoaded(textareaId)) {
-            var editor = window.aceEditors[textareaId];
-
-            var lastCss = editareaGetValue(textareaId);
-
-            editor.cssRecompilerTimer = setInterval(function () {
-                if ((window.opener) && (window.opener.document)) {
-                    if (editor.lastChange === undefined) { // No change made at all
-                        return;
-                    }
-
-                    var millisecondsAgo = (new Date()).getTime() - editor.lastChange;
-                    if (millisecondsAgo > 3 * 1000) { // Not changed recently enough (within last 3 seconds)
-                        return;
-                    }
-
-                    if (window.opener.haveSetUpParentPageHighlighting === undefined) {
-                        setUpParentPageHighlighting(file, fileId);
-                        lastCss = '';
-                        /*force new CSS to apply*/
-                    }
-
-                    var newCss = editareaGetValue(textareaId);
-                    if (newCss == lastCss) {// Not changed
-                        return;
-                    }
-
-                    var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=css_compile__text' + $cms.keep(),
-                        post = 'css=' + encodeURIComponent(newCss);
-                    if ($cms.form.isModSecurityWorkaroundEnabled()) {
-                        post = $cms.form.modSecurityWorkaroundAjax(post);
-                    }
-                    $cms.doAjaxRequest(url, null, post).then(function (xhr) {
-                        receiveCompiledCss(xhr, file);
-                    });
-
-                    lastCss = newCss;
-                }
-            }, 2000);
-        }
-
-        function receiveCompiledCss(ajaxResultFrame, file, win) {
-            var doingCssFor = file.replace(/^css\//, '').replace('.css', '');
-
-            win || (win = window.opener);
-
-            if (win) {
-                try {
-                    var css = ajaxResultFrame.responseText;
-
-                    // Remove old link tag
-                    var e;
-                    if (doingCssFor === 'no_cache') {
-                        e = win.document.getElementById('inline_css');
-                        if (e) {
-                            e.parentNode.removeChild(e);
-                        }
-                    } else {
-                        var links = win.document.getElementsByTagName('link');
-                        for (var i = 0; i < links.length; i++) {
-                            e = links[i];
-                            if ((e.type === 'text/css') && (e.href.indexOf('/templates_cached/' + window.opener.$cms.userLang() + '/' + doingCssFor) !== -1)) {
-                                e.parentNode.removeChild(e);
-                            }
-                        }
-                    }
-
-                    // Create style tag for this
-                    var style = win.document.getElementById('style_for_' + doingCssFor);
-                    if (!style) {
-                        style = win.document.createElement('style');
-                    }
-                    style.type = 'text/css';
-                    style.id = 'style_for_' + doingCssFor;
-                    if (style.styleSheet) {
-                        style.styleSheet.cssText = css;
-                    } else {
-                        if (style.childNodes[0] !== undefined) {
-                            style.removeChild(style.childNodes[0]);
-                        }
-                        var tn = win.document.createTextNode(css);
-                        style.appendChild(tn);
-                    }
-                    win.document.querySelector('head').appendChild(style);
-
-                    for (var j = 0; j < win.frames.length; j++) {
-                        if (win.frames[j]) {// If test needed for some browsers, as window.frames can get out-of-date
-                            receiveCompiledCss(ajaxResultFrame, file, win.frames[j]);
-                        }
-                    }
-                } catch (ex) {}
-            }
-        }
-
-        function setUpParentPageHighlighting(file, fileId) {
-            window.opener.haveSetUpParentPageHighlighting = true;
-
-            var doingCssFor = file.replace(/^css\//, '').replace('.css', '');
-
-            var li, a, selector, elements, element, j, css_text;
-
-            var selectors = findActiveSelectors(doingCssFor, window.opener);
-
-            var list = document.getElementById('selector_list_' + fileId);
-            $dom.html(list, '');
-
-            for (var i = 0; i < selectors.length; i++) {
-                selector = selectors[i].selectorText;
-
-                // Add to list of selectors
-                li = document.createElement('li');
-                a = document.createElement('a');
-                li.appendChild(a);
-                a.href = '#!';
-                a.id = 'selector_' + i;
-                $dom.html(a, $cms.filter.html(selector));
-                list.appendChild(li);
-
-                // Add tooltip so we can see what the CSS text is in when hovering the selector
-                css_text = (selectors[i].cssText === undefined) ? selectors[i].style.cssText : selectors[i].cssText;
-                if (css_text.indexOf('{') !== -1) {
-                    css_text = css_text.replace(/ \{ /g, ' {<br />\n&nbsp;&nbsp;&nbsp;').replace(/; \}/g, '<br />\n}').replace(/; /g, ';<br />\n&nbsp;&nbsp;&nbsp;');
-                } else  { // IE
-                    css_text = css_text.toLowerCase().replace(/; /, ';<br />\n');
-                }
-                li.addEventListener('mouseout', function (event) {
-                    $cms.ui.deactivateTooltip(this);
-                });
-                li.addEventListener('mousemove', function (event) {
-                    $cms.ui.repositionTooltip(this, event);
-                });
-                li.addEventListener('mouseover', (function (cssText) {
-                    return function (event) {
-                        $cms.ui.activateTooltip(this, event, cssText, 'auto');
-                    };
-                }(css_text)));
-
-                // Jump-to
-                a.addEventListener('click', (function (selector) {
-                    return function () {
-                        editareaDoSearch(
-                            'e_' + fileId,
-                            '^[ \t]*' + selector.replace(/\./g, '\\.').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\+/g, '\\+').replace(/\*/g, '\\*').replace(/\s/g, '[ \t]+') + '\\s*\\{'
-                        );
-                        return false;
-                    };
-                }(selector)));
-
-                // Highlighting on parent page
-                a.addEventListener('onmouseover', (function (selector) {
-                    return function (event) {
-                        if ((window.opener) && (!event.ctrlKey) && (!event.metaKey)) {
-                            var elements = findSelectorsFor(window.opener, selector);
-                            for (var i = 0; i < elements.length; i++) {
-                                elements[i].style.outline = '3px dotted green';
-                                elements[i].style.backgroundColor = 'green';
-                            }
-                        }
-                    };
-                }(selector)));
-                a.addEventListener('mouseout', (function (selector) {
-                    return function (event) {
-                        if ((window.opener) && (!event.ctrlKey) && (!event.metaKey)) {
-                            var elements = findSelectorsFor(window.opener, selector);
-                            for (var i = 0; i < elements.length; i++) {
-                                elements[i].style.outline = '';
-                                elements[i].style.backgroundColor = '';
-                            }
-                        }
-                    };
-                }(selector)));
-
-                // Highlighting from parent page
-                elements = findSelectorsFor(window.opener, selector);
-                for (j = 0; j < elements.length; j++) {
-                    element = elements[j];
-
-                    element.addEventListener('mouseover', (function (a, element) {
-                        return function (event) {
-                            if (window && !event.ctrlKey && !event.metaKey) {
-                                var target = event.target;
-                                var targetDistance = 0;
-                                var elementRecurse = element;
-                                do {
-                                    if (elementRecurse === target) {
-                                        break;
-                                    }
-                                    elementRecurse = elementRecurse.parentNode;
-                                    targetDistance++;
-                                } while (elementRecurse);
-                                if (targetDistance > 10) { // Max range
-                                    targetDistance = 10;
-                                }
-
-                                a.style.outline = '1px dotted green';
-                                a.style.background = '#00' + ($util.decToHex(255 - targetDistance * 25)) + '00';
-                                if (targetDistance > 4) {
-                                    a.style.color = 'white';
-                                } else {
-                                    a.style.color = 'black';
-                                }
-                            }
-                        };
-                    }(a, element)));
-                    element.addEventListener('mouseout', (function (a) {
-                        return function (event) {
-                            if ((window) && (!event.ctrlKey) && (!event.metaKey)) {
-                                a.style.outline = '';
-                                a.style.background = '';
-                                a.style.color = '';
-                            }
-                        };
-                    }(a)));
-                }
-            }
-
-            function findSelectorsFor(opener, selector) {
-                var result = [], result2;
-                try {
-                    result2 = opener.document.querySelectorAll(selector);
-                    for (var j = 0; j < result2.length; j++) {
-                        result.push(result2[j]);
-                    }
-                } catch (e) {}
-
-                for (var i = 0; i < opener.frames.length; i++) {
-                    if (opener.frames[i]) {// If test needed for some browsers, as window.frames can get out-of-date
-                        result2 = findSelectorsFor(opener.frames[i], selector);
-                        for (var j = 0; j < result2.length; j++) {
-                            result.push(result2[j]);
-                        }
-                    }
-                }
-                return result;
-            }
-
-            function findActiveSelectors(match, win) {
-                var test, selector, selectors = [], classes, i, j, result2;
-                try {
-                    for (i = 0; i < win.document.styleSheets.length; i++) {
-                        try {
-                            if (
-                                (!match) ||
-                                (!win.document.styleSheets[i].href && ((win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].ownerNode.id === 'style_for_' + match) ||
-                                (!win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].id === 'style_for_' + match))) ||
-                                (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('/' + match) !== -1) ||
-                                (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('sheet=' + match) !== -1)
-                            ) {
-                                classes = win.document.styleSheets[i].rules || win.document.styleSheets[i].cssRules;
-                                for (j = 0; j < classes.length; j++) {
-                                    selector = classes[j].selectorText;
-                                    test = win.document.querySelectorAll(selector);
-                                    if (test.length !== 0) {
-                                        selectors.push(classes[j]);
-                                    }
-                                }
-                            }
-                        } catch (e) {}
-                    }
-                } catch (e) {}
-
-                for (i = 0; i < win.frames.length; i++) {
-                    if (win.frames[i]) {// If test needed for some browsers, as window.frames can get out-of-date
-                        result2 = findActiveSelectors(match, win.frames[i]);
-                        for (j = 0; j < result2.length; j++) {
-                            selectors.push(result2[j]);
-                        }
-                    }
-                }
-
-                return selectors;
-            }
-        }
-    }
-
+    
     $cms.functions.adminThemesEditTheme = function () {
         var themee = document.getElementById('theme'),
             themet = document.getElementById('title'),
@@ -570,31 +570,32 @@
         });
 
         function templateInsertParameter(dropdownName, fileId) {
-            var textbox = document.getElementById('e_' + fileId);
+            var textarea = document.getElementById('e_' + fileId);
 
-            editareaReverseRefresh('e_' + fileId);
+            window.editareaReverseRefresh('e_' + fileId);
 
-            var dropdown = document.getElementById(dropdownName);
-            var value = dropdown.value;
-            var valueParts = value.split('__');
-            value = valueParts[0];
+            var dropdown = document.getElementById(dropdownName),
+                valueParts = dropdown.value.split('__'),
+                value = valueParts[0],
+                arity = valueParts[1];
+            
             if (value === '---') {
                 return;
             }
 
-            var hasEditarea = editareaIsLoaded(textbox.name);
+            var hasEditarea = window.editareaIsLoaded(textarea.name);
 
-            if ((value === 'BLOCK') && $cms.configOption('js_overlays')) {
-                var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + $cms.keep();
+            if ((value === 'BLOCK') && ($cms.configOption('js_overlays') || (window.showModalDialog !== undefined))) {
+                var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textarea.name + '&block_type=template' + $cms.keep();
                 $cms.ui.showModalDialog($util.rel($cms.maintainThemeInLink(url)), null, 'dialogWidth=750;dialogHeight=600;status=no;resizable=yes;scrollbars=yes;unadorned=yes').then(function () {
                     if (hasEditarea) {
-                        editareaRefresh(textbox.name);
+                        window.editareaRefresh(textarea.name);
                     }
                 });
                 return;
             }
-
-            var arity = valueParts[1];
+            
+            // Number of required parameters to be entered
             var definiteGets = 0;
             if (arity === '1') {
                 definiteGets = 1;
@@ -615,80 +616,55 @@
             } else if (arity === '1+') {
                 definiteGets = 1;
             }
-            var parameter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
-
-            _getParameterParameters(
-                definiteGets, parameter, arity, textbox,
-                dropdownName, value, 0, '',
-                function (textbox, name, value, params) {
-                    if (name.includes('ppdirective')) {
-                        window.$editing.insertTextboxWrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}').then(function () {
-                            if (hasEditarea) {
-                                editareaRefresh(textbox.name);
-                            }
-                        });
-                    } else {
-                        var stValue;
-                        if (!name.includes('ppparameter')) {
-                            stValue = '{' + '$';
-                        } else {
-                            stValue = '{';
-                        }
-
-                        value = stValue + value + '*' + params + '}';
-
-                        window.$editing.insertTextbox(textbox, value).then(function () {
-                            if (hasEditarea) {
-                                editareaRefresh(textbox.name);
-                            }
-                        });
-                    }
+            
+            _getParameterParameters(definiteGets, arity, 0, '', function (params) {
+                var text;
+                
+                if (dropdownName.endsWith('_DIRECTIVE')) {
+                    text = '{' + '+START,' + value + params + '}{' + '+END}';
+                } else {
+                    text = '{' + (dropdownName.endsWith('_PARAMETER') ? '' : '$') + value + '*' + params + '}';
                 }
-            );
 
-            function _getParameterParameters(definiteGets, parameter, arity, box, name, value, numDone, params, callback) {
+
+                if (hasEditarea) {
+                    window.aceEditors[textarea.name].insert(text); // Insert at cursor, emulating user input:
+                    window.editareaReverseRefresh(textarea.name);
+                } else {
+                    textarea.value += text;
+                }
+            });
+
+            function _getParameterParameters(definiteGets, arity, numDone, params, callback) {
+                var parameter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
+                
                 if (numDone < definiteGets) {
-                    $cms.ui.prompt(
-                        '{!themes:INPUT_NECESSARY_PARAMETER;^}' + ', ' + parameter[numDone],
-                        '',
-                        function (v) {
-                            if (v !== null) {
-                                params = params + ',' + v;
-                                _getParameterParameters(definiteGets, parameter, arity, box, name, value, numDone + 1, params, callback);
-                            }
-                        },
-                        '{!themes:INSERT_PARAMETER;^}'
-                    );
+                    $cms.ui.prompt('{!themes:INPUT_NECESSARY_PARAMETER;^}' + ', ' + parameter[numDone], '', null, '{!themes:INSERT_PARAMETER;^}').then(function (v) {
+                        if (v !== null) {
+                            params = params + ',' + v;
+                            _getParameterParameters(definiteGets, arity, numDone + 1, params, callback);
+                        }
+                    });
                 } else {
                     if ((arity === '0+') || (arity === '1+')) {
-                        $cms.ui.prompt(
-                            '{!themes:INPUT_OPTIONAL_PARAMETER;^}',
-                            '',
-                            function (v) {
-                                if (v !== null) {
-                                    params = params + ',' + v;
-                                    _getParameterParameters(definiteGets, parameter, arity, box, name, value, numDone + 1, params, callback);
-                                } else {
-                                    callback(box, name, value, params);
-                                }
-                            },
-                            '{!themes:INSERT_PARAMETER;^}'
-                        );
+                        $cms.ui.prompt('{!themes:INPUT_OPTIONAL_PARAMETER;^}', '', null, '{!themes:INSERT_PARAMETER;^}').then(function (v) {
+                            if (v !== null) {
+                                params = params + ',' + v;
+                                _getParameterParameters(definiteGets, arity, numDone + 1, params, callback);
+                            } else {
+                                callback(params);
+                            }
+                        });
                     } else if ((arity === '0-1') || (arity === '3-4')) {
-                        $cms.ui.prompt(
-                            '{!themes:INPUT_OPTIONAL_PARAMETER;^}',
-                            '',
-                            function (v) {
-                                if (v != null) {
-                                    params = params + ',' + v;
-                                }
+                        $cms.ui.prompt('{!themes:INPUT_OPTIONAL_PARAMETER;^}', '', null, '{!themes:INSERT_PARAMETER;^}').then(function (v) {
+                            if (v != null) {
+                                params = params + ',' + v;
+                            }
 
-                                callback(box, name, value, params);
-                            },
-                            '{!themes:INSERT_PARAMETER;^}'
-                        );
+                            callback(params);
+                        });
                     } else {
-                        callback(box, name, value, params);
+                        callback(params);
                     }
                 }
             }

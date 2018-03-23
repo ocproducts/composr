@@ -963,7 +963,7 @@
             var from, to, start, end;
 
             if (element.selectionEnd !== undefined) {
-                from = element.selectionStart;
+                from = element.selectionStart; 
                 to = element.selectionEnd;
                 start = element.value.substring(0, from);
                 end = element.value.substring(to, element.value.length);
