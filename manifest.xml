@@ -107,6 +107,7 @@
   <setAcl path="composr/uploads/attachments_thumbs" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/uploads/auto_thumbs" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/uploads/banners" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
+  <setAcl path="composr/uploads/captcha" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/uploads/catalogues" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/uploads/cns_avatars" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/uploads/cns_cpf_upload" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />

@@ -36,23 +36,23 @@ function init__menus()
  * Take a menu identifier, and return a menu created from it.
  *
  * @param  ID_TEXT $type The type of the menu (determines which templates to use)
- * @param  SHORT_TEXT $menu The menu identifier to use (may be the name of a editable menu, or syntax to load from the Sitemap)
+ * @param  SHORT_TEXT $menu_id The menu identifier to use (may be the name of a editable menu, or syntax to load from the Sitemap)
  * @param  boolean $silent_failure Whether to silently return blank if the menu does not exist
  * @param  boolean $apply_highlighting Whether to apply current-screen highlighting
  * @return array A pair: The generated Tempcode of the menu, the menu nodes
  */
-function build_menu($type, $menu, $silent_failure = false, $apply_highlighting = true)
+function build_menu($type, $menu_id, $silent_failure = false, $apply_highlighting = true)
 {
-    $is_sitemap_menu = (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $menu) == 0);
+    $is_sitemap_menu = (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $menu_id) == 0);
 
     if ($is_sitemap_menu) {
-        $root = _build_sitemap_menu($menu);
+        $root = _build_sitemap_menu($menu_id);
 
         if ($root === null) {
             return array(new Tempcode(), array());
         }
     } else {
-        $root = _build_stored_menu($menu);
+        $root = _build_stored_menu($menu_id);
 
         // Empty?
         if (count($root['children']) == 0) {
@@ -61,10 +61,10 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
             }
 
             $redirect = get_self_url(true, true);
-            $_add_url = build_url(array('page' => 'admin_menus', 'type' => 'edit', 'id' => $menu, 'redirect' => protect_url_parameter($redirect)), 'adminzone');
+            $_add_url = build_url(array('page' => 'admin_menus', 'type' => 'edit', 'id' => $menu_id, 'menu_type' => $type, 'redirect' => protect_url_parameter($redirect)), 'adminzone');
             $add_url = $_add_url->evaluate();
 
-            $content = do_template('INLINE_WIP_MESSAGE', array('_GUID' => '276e6600571b8b4717ca742b6e9da17a', 'MESSAGE' => do_lang_tempcode('MISSING_MENU', escape_html($menu), escape_html($add_url))));
+            $content = do_template('INLINE_WIP_MESSAGE', array('_GUID' => '276e6600571b8b4717ca742b6e9da17a', 'MESSAGE' => do_lang_tempcode('MISSING_MENU', escape_html($menu_id), escape_html($add_url))));
             return array($content, array());
         }
     }
@@ -79,13 +79,14 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
     }
 
     // Edit link
-    if (((!$is_sitemap_menu) || ($menu == get_option('header_menu_call_string'))) && (has_actual_page_access(get_member(), 'admin_menus'))) {
+    if (((!$is_sitemap_menu) || ($menu_id == get_option('header_menu_call_string'))) && (has_actual_page_access(get_member(), 'admin_menus'))) {
         // We have to build up URL using Tempcode as it needs SELF_URL nested as unevaluated Tempcode, for cache-safety
         $page_link = get_module_zone('admin_menus') . ':admin_menus:edit';
         if (!$is_sitemap_menu) {
             $page_link .= ':' . $root['content_id'];
         }
         $page_link .= ':clickable_sections=' . strval((($type == 'popup') || ($type == 'dropdown')) ? 1 : 0);
+        $page_link .= ':menu_type=' . urlencode($type);
         $page_link .= ':redirect=';
         $_page_link = make_string_tempcode($page_link);
         $self_url = symbol_tempcode('SELF_URL', array('1'));
@@ -100,7 +101,7 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
             '_GUID' => 'a5209ec65425bed1207e2f667d9116f6',
             'TYPE' => $type,
             'EDIT_URL' => $url,
-            'NAME' => $is_sitemap_menu ? '' : $menu,
+            'NAME' => $is_sitemap_menu ? '' : $menu_id,
         )));
         $content = $_content;
     }
@@ -111,28 +112,28 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
 /**
  * Take a menu identifier, and return the editable menu.
  *
- * @param  SHORT_TEXT $menu The menu identifier to use (the name of a editable menu)
+ * @param  SHORT_TEXT $menu_id The menu identifier to use (the name of a editable menu)
  * @return array The menu branch structure
  *
  * @ignore
  */
-function _build_stored_menu($menu)
+function _build_stored_menu($menu_id)
 {
     // Load items
-    $root = persistent_cache_get(array('MENU', $menu));
+    $root = persistent_cache_get(array('MENU', $menu_id));
     if ($root === null) {
-        $items = $GLOBALS['SITE_DB']->query_select('menu_items', array('*'), array('i_menu' => $menu), 'ORDER BY i_order');
+        $items = $GLOBALS['SITE_DB']->query_select('menu_items', array('*'), array('i_menu' => $menu_id), 'ORDER BY i_order');
 
         // Search for top-level items, to build root branch
         $root = _get_menu_root_wrapper();
-        $root['content_id'] = $menu;
+        $root['content_id'] = $menu_id;
         foreach ($items as $item) {
             if ($item['i_parent'] === null) {
                 $root['children'] = array_merge($root['children'], _build_stored_menu_branch($item, $items));
             }
         }
 
-        persistent_cache_set(array('MENU', $menu, user_lang()), $root);
+        persistent_cache_set(array('MENU', $menu_id, user_lang()), $root);
     }
     return $root;
 }
@@ -140,22 +141,22 @@ function _build_stored_menu($menu)
 /**
  * Take a menu identifier, and return a Sitemap-based menu created from it.
  *
- * @param  SHORT_TEXT $menu The menu identifier to use (syntax to load from the Sitemap)
+ * @param  SHORT_TEXT $menu_id The menu identifier to use (syntax to load from the Sitemap)
  * @return array The Sitemap node structure (called a 'branch structure' for menus)
  * @ignore
  */
-function _build_sitemap_menu($menu)
+function _build_sitemap_menu($menu_id)
 {
     static $cache = array();
-    if (isset($cache[$menu])) {
-        return $cache[$menu];
+    if (isset($cache[$menu_id])) {
+        return $cache[$menu_id];
     }
 
     require_code('sitemap');
 
     $root = _get_menu_root_wrapper();
 
-    $nodes = explode(' + ', $menu);
+    $nodes = explode(' + ', $menu_id);
     foreach ($nodes as $_node) {
         // Default call options
         $page_link = '';
@@ -168,7 +169,7 @@ function _build_sitemap_menu($menu)
         $icon = null;
 
         // Parse options
-        if ($menu != '') {
+        if ($menu_id != '') {
             $bits = explode(',', $_node);
             $page_link = array_shift($bits);
             foreach ($bits as $bit) {
@@ -266,7 +267,7 @@ function _build_sitemap_menu($menu)
         }
     }
 
-    $cache[$menu] = $root;
+    $cache[$menu_id] = $root;
 
     return $root;
 }

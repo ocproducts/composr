@@ -471,6 +471,7 @@
                 }
             };
             editor.on('change', sync);
+            editor.on('blur',sync); // 'change' can be buggy, e.g. when pasting, or deleting full editor contents
             editor.on('mode', function () {
                 var ta = editor.container.$.querySelector('textarea');
                 if (ta != null) {
@@ -814,7 +815,7 @@
         }
 
         function insertTextboxWysiwyg(element, text, isPlainInsert, html) {
-            console.log('insertTextboxWysiwyg():', 'element:', element, 'text:', text, 'isPlainInsert:', isPlainInsert, 'html:', html);
+            //console.log('insertTextboxWysiwyg():', 'element:', element, 'text:', text, 'isPlainInsert:', isPlainInsert, 'html:', html);
 
             return new Promise(function (resolvePromise) {
                 var editor = window.wysiwygEditors[element.id],

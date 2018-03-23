@@ -152,6 +152,8 @@ class Hook_addon_registry_captcha
             'themes/default/javascript/captcha.js',
             'sources/hooks/systems/config/recaptcha_server_key.php',
             'sources/hooks/systems/config/recaptcha_site_key.php',
+            'sources/hooks/systems/config/captcha_member_days.php',
+            'sources/hooks/systems/config/captcha_member_posts.php',
         );
     }
 

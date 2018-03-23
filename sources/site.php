@@ -2086,7 +2086,8 @@ function log_stats($string, $pg_time)
     $page = $string;
     $ip = get_ip_address();
     $session_id = get_session_id();
-    $member_id = get_member();
+    global $IS_ACTUALLY;
+    $member_id = ($IS_ACTUALLY === null) ? get_member() : $IS_ACTUALLY;
     $time = time();
     $referer = cms_mb_substr($_SERVER['HTTP_REFERER'], 0, 255);
     $browser = cms_mb_substr(get_browser_string(), 0, 255);

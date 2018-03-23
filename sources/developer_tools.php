@@ -18,7 +18,7 @@
  * @package    core
  */
 
-/*EXTRA FUNCTIONS: get_php_file_api|test_fail_php_type_check*/
+/*EXTRA FUNCTIONS: get_php_file_api|test_fail_php_type_check|get_resources|get_resource_type|stream_get_meta_data*/
 
 /*
 Some basic developer tools for Composr PHP development.
@@ -105,7 +105,7 @@ function semi_dev_mode_startup()
                 @exit(escape_html('No title used on screen.'));
             }
 
-            if (function_exists('get_resources') && function_exists('get_resource_type')) {
+            if (function_exists('get_resources') && function_exists('get_resource_type') && function_exists('stream_get_meta_data')) {
                 if (function_exists('_cms_profiler_script_end')) {
                     _cms_profiler_script_end();
                 }

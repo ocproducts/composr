@@ -1289,7 +1289,7 @@ body .accessibility-hidden { /* Contents should be made visible (or interpreted)
 	margin: 1.5em;
 	margin-left: 10px !important;
 	background-image: url('{$IMG_INLINE;,cannot_show}');
-	background-position: left 3px;
+	background-position: left center;
 	background-repeat: no-repeat;
 	background-size: 10px 10px;
 }
@@ -1636,9 +1636,12 @@ th.metadata-title {
 	max-width: 100%;
 	height: auto;
 }
-.img-thumb:hover, body.touch-enabled .img-thumb {
+.img-thumb:hover, body.touch-enabled .img-thumb, .img-thumb-opaque .img-thumb {
 	opacity: 1.0;
 	transition: opacity 0.2s linear !important;
+}
+.img-thumb-opaque .img-thumb {
+	transition: none !important;
 }
 
 /*
@@ -3792,7 +3795,7 @@ input.magic-image-edit-link {
 	background-color: {$GET,lgrad};
 	background-repeat: no-repeat;
 	background-position: 96% 3px; /*fallback*/
-	background-position: right 7px top 3px;
+	background-position: right 7px center;
 	color: {$GET,box_title_text} !important;
 	text-decoration: none !important;
 	{$BETA_CSS_PROPERTY,appearance: none;}
@@ -3817,7 +3820,7 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 .buttons--previous.button-screen,
 .buttons--previous-none.button-screen {
 	padding: 6px 7px 7px 39px !important;
-	background-position: 7px 3px !important;
+	background-position: 7px center !important;
 }
 .button-screen-item {
 	padding: 3px 30px 4px 5px;
@@ -3901,6 +3904,10 @@ div.proceed-button-left-2 {
 	border: 1px solid {$GET,standard_border};
 	margin-left: 2em;
 	margin-top: 1px; /* To get it past a possible overflow:hidden (may be a browser bug) */
+}
+.mass-select-marker input {
+	width: 25px;
+	height: 25px;
 }
 
 .global-button-ref-point {
@@ -4705,7 +4712,7 @@ a[rel="lightbox"] {
 }
 
 .attachment-details .actions-list-strong {
-	background-position: left 4px;
+	background-position: left center;
 }
 
 .attachment-left {

@@ -133,6 +133,10 @@ class Hook_sitemap_forum extends Hook_sitemap_content
             $start += SITEMAP_MAX_ROWS_PER_LOOP;
         } while (count($rows) == SITEMAP_MAX_ROWS_PER_LOOP);
 
+        if (is_array($nodes)) {
+            sort_maps_by($nodes, 'title');
+        }
+
         return $nodes;
     }
 

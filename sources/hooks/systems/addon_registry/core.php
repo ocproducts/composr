@@ -743,6 +743,8 @@ class Hook_addon_registry_core
             '_config.php',
             'uploads/auto_thumbs/index.html',
             'uploads/auto_thumbs/.htaccess',
+            'uploads/captcha/index.html',
+            'uploads/captcha/.htaccess',
             'exports/file_backups/.htaccess',
             'uploads/index.html',
             'sources/xml.php',

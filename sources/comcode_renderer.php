@@ -1804,13 +1804,13 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 if ($rel != '') {
                     $rel .= ' ';
                 }
-                $rel .= 'noopener';
+                $rel .= 'nofollow';
             }
             if (!$as_admin) {
                 if ($rel != '') {
                     $rel .= ' ';
                 }
-                $rel .= 'nofollow';
+                $rel .= 'noopener';
             }
             if ($attributes['target'] == '_blank') {
                 $title = trim(strip_tags(is_object($caption) ? static_evaluate_tempcode($caption) : $caption) . ' ' . do_lang('LINK_NEW_WINDOW'));

@@ -88,6 +88,10 @@ class Hook_sitemap_wiki_page extends Hook_sitemap_content
             }
         }
 
+        if (is_array($nodes)) {
+            sort_maps_by($nodes, 'title');
+        }
+
         return $nodes;
     }
 

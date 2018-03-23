@@ -76,6 +76,9 @@ class Module_topicview
         if ($be_deferential) {
             return array();
         }
+        if ($check_perms && is_guest($member_id)) {
+            return array();
+        }
 
         return array('!' => array('INLINE_PERSONAL_POSTS', 'menu/social/forum/inline_personal_posts'));
     }

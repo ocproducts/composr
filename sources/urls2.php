@@ -790,21 +790,9 @@ function _generate_moniker($moniker_src)
     $max_moniker_length = intval(get_option('max_moniker_length'));
 
     // Transliteration first
-    if ((get_charset() == 'utf-8') && (get_option('moniker_transliteration') == '1')) {
-        if (function_exists('transliterator_transliterate')) {
-            $_moniker = @transliterator_transliterate('Any-Latin; Latin-ASCII; Lower()', $moniker);
-            if (!empty($_moniker)) {
-                $moniker = $_moniker;
-            }
-        } elseif ((function_exists('iconv')) && (get_value('disable_iconv') !== '1')) {
-            $_moniker = @iconv('utf-8', 'ASCII//TRANSLIT//IGNORE', $moniker);
-            if (!empty($_moniker)) {
-                $moniker = $_moniker;
-            }
-        } else {
-            // German has inbuilt transliteration
-            $moniker = str_replace(array(hex2bin('c3a4'), hex2bin('c3b6'), hex2bin('c3bc'), hex2bin('c39f')), array('ae', 'oe', 'ue', 'ss'), $moniker);
-        }
+    if (get_option('moniker_transliteration') == '1') {
+        require_code('character_sets');
+        $moniker = transliterate_string($moniker);
     }
 
     // Substitute to force it to be URL-ready

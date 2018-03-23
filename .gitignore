@@ -61,6 +61,7 @@ gibberish
 php.ini
 /*.shtml
 /uploads/auto_thumbs/*
+/uploads/captcha/*
 /uploads/incoming/*.dat
 /uploads/*/*__*.png
 images_custom/*/*__*.png

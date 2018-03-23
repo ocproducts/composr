@@ -425,7 +425,7 @@ class Hook_addon_registry_all_icons
             'themes/default/images/icons/links/viber.svg',
             'themes/default/images/icons/links/vk.svg',
             'themes/default/images/icons/links/wechat.svg',
-            'themes/default/images/icons/links/xbox_live.svg',
+            'themes/default/images/icons/links/xbox-live.svg',
             'themes/default/images/icons/links/hacker_news.svg',
             'themes/default/images/icons/links/reddit.svg',
             'themes/default/images/icons/links/slashdot.svg',

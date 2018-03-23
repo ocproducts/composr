@@ -95,9 +95,9 @@
             this.displayReviewRating(container, rating);
         },
 
-        playSelfAudioLink: function (e, link) {
+        playSelfAudioLink: function (e, link, soundObject) {
             e.preventDefault();
-            $cms.playSelfAudioLink(link);
+            $cms.playSelfAudioLink(link, soundObject);
         },
 
         focusTexareaPost: function (e, textarea) {

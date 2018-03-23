@@ -912,7 +912,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
             }
         }
         $semihtml = preg_replace('#(&nbsp;|</CDATA__space>|\s)*<br\s*/>#i', '<br />', $semihtml); // Spaces on end of line -> (Remove)
-    } while (preg_replace('#\s#', '', $semihtml) != preg_replace('#\s#', '', $old_semihtml));
+    } while (preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $semihtml) != preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $old_semihtml));
 
     // Undone center tagging
     $semihtml = comcode_preg_replace('left', '#^\[left\]\[center\](.*)\[/center\]\[/left\]$#si', '[left]${1}[/left]', $semihtml);
@@ -1167,7 +1167,7 @@ function comcode_preg_replace($element, $pattern, $replacement, $semihtml)
                 }
             }
         }
-    } while (preg_replace('#\s#', '', $semihtml) != preg_replace('#\s#', '', $old_semihtml));
+    } while (preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $semihtml) != preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $old_semihtml));
 
     return $semihtml;
 }
@@ -1288,7 +1288,7 @@ function array_html_preg_replace($element, $array, $semihtml)
             }
             unset($array[$index]); // If we are going to recurse, we don't want extra work -- let's record that this one completed
         }
-    } while (preg_replace('#\s#', '', $semihtml) != preg_replace('#\s#', '', $old_semihtml));
+    } while (preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $semihtml) != preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $old_semihtml));
 
     return $semihtml;
 }

@@ -604,6 +604,11 @@
   </parameter>
 
   <parameter
+    name="SetAclParameter49" description="Sets the ACL on the right file" defaultValue="{Application Path}/uploads/captcha" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/uploads/captcha" />
+  </parameter>
+
+  <parameter
     name="SetAclParameter53" description="Sets the ACL on the right file" defaultValue="{Application Path}/uploads/cns_photos" tags="Hidden">
     <parameterEntry type="ProviderPath" scope="setAcl" match="composr/uploads/cns_photos" />
   </parameter>

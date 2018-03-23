@@ -31,6 +31,11 @@ class rest_test_set extends cms_test_case
 
         $this->establish_admin_session();
 
+        // This is needed for the default news categories to be discovered in the alternative_ids table
+        require_code('commandr_fs');
+        $fs = new Commandr_fs();
+        $fs->listing(array('var', 'news'));
+
         if ($this->path === null) {
             $this->path = '/var/news/general/hello' . substr(md5(uniqid('', true)), 0, 10) . '.cms';
         }
@@ -55,6 +60,9 @@ class rest_test_set extends cms_test_case
         if (is_array($_result)) {
             if ($debug) {
                 @var_dump($_result);
+                if (!$_result['success']) {
+                    exit();
+                }
             }
 
             $this->assertTrue($_result['success']);

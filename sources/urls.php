@@ -860,9 +860,6 @@ function _url_rewrite_params($zone_name, $vars, $force_index_php = false)
                     $first = false;
                 }
                 if ($_makeup !== '') {
-                    if ($url_scheme === 'PG') {
-                        $makeup .= '/index.php';
-                    }
                     $makeup .= $_makeup;
                 }
             }
@@ -1118,15 +1115,15 @@ function url_to_page_link($url, $abs_only = false, $perfect_only = true)
  * Given a URL or page-link, return an absolute URL.
  *
  * @param  string $url URL or page-link
- * @param  boolean $email_safe Whether to avoid keep_* parameters as it's going in an e-mail
+ * @param  boolean $skip_keep Whether to avoid keep_* parameters as it's going in an e-mail
  * @return URLPATH URL
  */
-function page_link_to_url($url, $email_safe = false)
+function page_link_to_url($url, $skip_keep = false)
 {
     $parts = array();
     if ((preg_match('#([' . URL_CONTENT_REGEXP . ']*):([' . URL_CONTENT_REGEXP . ']+|[^/]|$)((:(.*))*)#', $url, $parts) != 0) && ($parts[1] != 'mailto')) { // Specially encoded page-link. Complex regexp to make sure URLs do not match
         list($zone, $map, $hash) = page_link_decode($url);
-        $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, $email_safe, $hash));
+        $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, $skip_keep, $hash));
     } else {
         $url = qualify_url($url, get_base_url());
     }

@@ -499,6 +499,7 @@ function cleanup()
     if ($log_cache_wip_cleanup) {
         deldir_contents(get_custom_file_base() . '/uploads/incoming_uploads', true);
         deldir_contents(get_custom_file_base() . '/uploads/auto_thumbs', true);
+        deldir_contents(get_custom_file_base() . '/uploads/captcha', true);
         foreach ($table_purposes as $table => $purpose) {
             if ((table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE)) && ($GLOBALS['SITE_DB']->table_exists($table))) {
                 $GLOBALS['SITE_DB']->query_delete($table);

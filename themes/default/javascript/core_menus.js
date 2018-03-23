@@ -68,15 +68,13 @@
             }
         });
 
-        $dom.on(container, 'click', '.js-click-check-menu', function (e, button) {
-            if (!checkMenu()) {
-                e.preventDefault();
-                return;
-            }
-
-            $cms.ui.disableButton(button);
+        $dom.on(container, 'click', '.js-click-preview-menu', function (e, button) {
+            doMenuPreview(e, button, params.menuType);
         });
 
+        $dom.on(container, 'click', '.js-click-save-menu', function (e, button) {
+            doMenuSave(e, button);
+        });
 
         $dom.on(container, 'click', '.js-img-click-toggle-docked-field-editing', toggleDockedFieldEditing);
         $dom.on(container, 'keypress', '.js-img-keypress-toggle-docked-field-editing', toggleDockedFieldEditing);
@@ -91,7 +89,19 @@
                 menuEditorWrapEl.classList.remove('docked');
                 img.src = $util.srl('{$IMG;*,icons/arrow_box/arrow_box}');
             }
+
+            adjustPaneHeights();
         }
+
+        var footers=document.getElementsByTagName('footer');
+        for (var i = 0; i < footers.length; i++) {
+            footers[i].parentNode.removeChild(footers[i]);
+        }
+
+        adjustPaneHeights();
+        $dom.on(window, 'resize', function (e) {
+            adjustPaneHeights();
+        });
     };
 
     $cms.templates.menuEditorBranchWrap = function menuEditorBranchWrap(params, container) {
@@ -500,6 +510,55 @@
     // ==============
     // MENU FUNCTIONS
     // ==============
+
+    function doMenuPreview(e, button, menuType) {
+        if (!checkMenu()) {
+            e.preventDefault();
+            return;
+        }
+
+        var form = button.form;
+
+        $cms.ui.disableButton(button);
+
+        if (typeof form.originalURL == 'undefined') {
+            form.originalURL = form.action;
+        }
+
+        form.target = '_blank';
+        form.action = '{$FIND_SCRIPT;,preview}?page=admin_menus&menu_type=' + window.encodeURIComponent(menuType ? menuType : '') + $cms.keep();
+    }
+
+    function doMenuSave(e, button) {
+        if (!checkMenu()) {
+            e.preventDefault();
+            return;
+        }
+
+        var form = button.form;
+
+        $cms.ui.disableButton(button);
+
+        if (typeof form.originalURL != 'undefined') {
+            form.action = form.originalURL;
+        }
+
+        form.target='_self';
+    }
+
+    function adjustPaneHeights() {
+        var menuEditorWrapEl = $dom.$('.js-el-menu-editor-wrap');
+        if (!menuEditorWrapEl.classList.contains('docked')) {
+            menuEditorWrapEl.style.height = '';
+        } else {
+            var miniFormHider = document.getElementById('mini-form-hider');
+            var newHeight = $dom.getWindowHeight() - $dom.findPosY(menuEditorWrapEl, true) - $dom.height(miniFormHider) - 10;
+            if (newHeight < 0) {
+                newHeight = 0;
+            }
+            $dom.$('.menu-editor-page-inner').style.height = newHeight + 'px';
+        }
+    }
 
     function copyFieldsIntoBottom(i, changed) {
         window.currentSelection = i;

@@ -53,7 +53,7 @@ function render_image_box($row, $zone = '_SEARCH', $give_context = true, $includ
 
     // URL
     $map = array('page' => 'galleries', 'type' => 'image', 'id' => $row['id']);
-    if ($root !== null) {
+    if (($root !== null) && ($root != 'root')) {
         $map['keep_gallery_root'] = $root;
     }
     $url = build_url($map, $zone);
@@ -128,7 +128,7 @@ function render_video_box($row, $zone = '_SEARCH', $give_context = true, $includ
 
     // URL
     $map = array('page' => 'galleries', 'type' => 'video', 'id' => $row['id']);
-    if ($root !== null) {
+    if (($root !== null) && ($root != 'root')) {
         $map['keep_gallery_root'] = $root;
     }
     $url = build_url($map, $zone);
@@ -212,7 +212,7 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
 
     // URL
     $map = array('page' => 'galleries', 'type' => 'browse', 'keep_gallery_root' => ($root == 'root') ? null : $root, 'id' => $myrow['name']);
-    if ($root !== null) {
+    if (($root !== null) && ($root != 'root')) {
         $map['keep_gallery_root'] = $root;
     }
     if ($attach_to_url_filter) {

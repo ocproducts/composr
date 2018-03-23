@@ -440,6 +440,9 @@
           <mapping url="uploads/banners">
             <php:permissions writable="true"/>
           </mapping>
+          <mapping url="uploads/captcha">
+            <php:permissions writable="true"/>
+          </mapping>
           <mapping url="uploads/catalogues">
             <php:permissions writable="true"/>
           </mapping>

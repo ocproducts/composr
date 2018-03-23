@@ -932,7 +932,17 @@
      * @memberof $cms
      * @param ob
      */
-    $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
+    $cms.playSelfAudioLink = function playSelfAudioLink(ob, soundObject) {
+        if (soundObject) {
+            // Some browsers will block the below, because the timer makes it think it is 'autoplay'; even this may fail on Safari
+            $util.inform('Playing .wav fully natively');
+            soundObject.play().catch(function(error) {
+                $util.inform('Audio playback blocked, reverting to opening .wav in new window');
+                window.open(ob.href);
+            });
+            return false;
+        }
+
         $cms.requireJavascript('sound').then(function () {
             window.soundManager.setup({
                 url: $util.rel('data'),

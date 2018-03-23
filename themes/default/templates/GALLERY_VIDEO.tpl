@@ -53,14 +53,14 @@
 
 {+START,IF,{$NEQ,{_GUID},carousel}}
 	<div class="gallery-regular-thumb">
-		{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}}
-			{+START,INCLUDE,MASS_SELECT_MARKER}
-				TYPE={MEDIA_TYPE}
-				ID={ID}
+		<div class="img-thumb-wrap{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}} img-thumb-opaque{+END}" data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}','auto',null,null,false,true]">
+			{+START,IF,{$HAS_DELETE_PERMISSION,mid,{SUBMITTER},{$MEMBER},cms_galleries}}
+				{+START,INCLUDE,MASS_SELECT_MARKER}
+					TYPE={MEDIA_TYPE}
+					ID={ID}
+				{+END}
 			{+END}
-		{+END}
 
-		<div class="img-thumb-wrap" data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}','auto',null,null,false,true]">
 			<a href="{VIEW_URL*}">{$TRIM,{THUMB}}</a>
 		</div>
 
