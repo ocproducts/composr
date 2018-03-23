@@ -213,7 +213,7 @@ function _cms_profiler_script_end()
     global $PAGE_START_TIME, $PROFILER_PATH, $PROFILER_FILEHANDLE;
 
     if (!isset($PROFILER_FILEHANDLE)) {
-        return; // Never started, so don't tail off
+        return; // Never started, or already closed, so don't tail off
     }
 
     // Lock out further profiling
@@ -231,6 +231,7 @@ function _cms_profiler_script_end()
     // Close down file
     if (isset($PROFILER_FILEHANDLE)) {
         fclose($PROFILER_FILEHANDLE);
+        unset($PROFILER_FILEHANDLE);
 
         // Rename file to make total time clearer, for easier identification of slow requests
         $scope_time = intval(($PAGE_START_TIME - microtime(true)) * 1000);

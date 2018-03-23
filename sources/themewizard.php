@@ -18,7 +18,7 @@
  * @package    themewizard
  */
 
-/*EXTRA FUNCTIONS: imagecreatefromwebp*/
+/*EXTRA FUNCTIONS: imagecreatefromwebp|imagecreatefrombmp*/
 
 /**
  * Standard code module initialisation function.
@@ -581,7 +581,7 @@ function themewizard_script()
         $tpl->evaluate_echo();
     }
     if ($type == 'css' || $type == 'css_raw') {
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
         require_code('tempcode_compiler');
         list($colours, $landscape) = calculate_theme($seed, $source_theme, $algorithm, 'colours', $dark);
         if ($show != 'global.css') { // We need to make sure the global.css file is parsed, as it contains some shared THEMEWIZARD_COLOR variables that Tempcode will pick up on
@@ -1368,6 +1368,8 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
             $image = @imagecreatefromjpeg($path);
         } elseif (function_exists('imagecreatefromwebp') && substr($path, -5) == '.webp') {
             $image = @imagecreatefromwebp($path);
+        } elseif (function_exists('imagecreatefrombmp') && substr($path, -4) == '.bmp') {
+            $image = @imagecreatefrombmp($path);
         } else {
             $image = @imagecreatefrompng($path);
         }
@@ -1518,6 +1520,8 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
             $image = @imagecreatefromjpeg($path);
         } elseif (substr($path, -5) == '.webp') {
             $image = @imagecreatefromwebp($path);
+        } elseif (substr($path, -4) == '.bmp') {
+            $image = @imagecreatefrombmp($path);
         } else {
             $image = @imagecreatefrompng($path);
         }

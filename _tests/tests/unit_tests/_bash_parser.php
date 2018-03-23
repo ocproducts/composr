@@ -13,7 +13,7 @@
  * @package    testing_platform
  */
 
-/*EXTRA FUNCTIONS: shell_exec|escapeshellarg*/
+/*EXTRA FUNCTIONS: shell_exec*/
 
 // php _tests/index.php _bash_parser
 
@@ -38,7 +38,7 @@ class _bash_parser_test_set extends cms_test_case
             }
 
             // NB: php-no-ext bit works around bug in Windows version of PHP with slow startup. Make a ../php-no-ext/php.ini file with no extensions listed for loading
-            $message = shell_exec($php_path . ' -l ' . escapeshellarg(get_file_base() . '/' . $path) . ' -c ' . escapeshellarg(get_file_base() . '/../php-no-ext'));
+            $message = shell_exec($php_path . ' -l ' . cms_escapeshellarg(get_file_base() . '/' . $path) . ' -c ' . cms_escapeshellarg(get_file_base() . '/../php-no-ext'));
             $this->assertTrue(strpos($message, 'No syntax errors detected') !== false, $message . ' (' . $path . ')');
         }
     }

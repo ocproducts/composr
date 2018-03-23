@@ -120,11 +120,15 @@
                 }
             } else { // Appending
                 xml = this.getElementByIdHack(expandingId, 'c');
-                for (i = 0; i < ajaxResult.childNodes.length; i++) {
-                    tempNode = ajaxResult.childNodes[i];
-                    xml.appendChild(tempNode.cloneNode(true));
+                if (xml.children.length != 0) {
+                    // User was likely clicking like mad, or had connection issues - as we already rendered this
+                } else {
+                    for (i = 0; i < ajaxResult.childNodes.length; i++) {
+                        tempNode = ajaxResult.childNodes[i];
+                        xml.appendChild(tempNode.cloneNode(true));
+                    }
+                    html = $dom.$id(this.name + 'tree-list-c-' + expandingId);
                 }
-                html = $dom.$id(this.name + 'tree-list-c-' + expandingId);
             }
 
             attributesFullFixup(xml);

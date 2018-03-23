@@ -169,7 +169,7 @@ function notifications_ui($member_id_of)
         sort_maps_by($notification_sections[$i]['NOTIFICATION_CODES'], 'NOTIFICATION_LABEL', false, true);
     }
 
-    // Save via form post
+    // Save via form post (for top-level notification types, not under a notification code)
     if (has_interesting_post_fields()) {
         foreach ($notification_sections as $notification_section) {
             foreach ($notification_section['NOTIFICATION_CODES'] as $notification_code) {
@@ -274,7 +274,7 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
 
     $notification_category = get_param_string('id', null);
     if ($notification_category === null) {
-        if (has_interesting_post_fields()) { // If we've just saved via form POST
+        if (has_interesting_post_fields()) { // If we've just saved via form POST - this is after editing all the category selections for $notification_code
             enable_notifications($notification_code, null, null, A_NA); // Make it clear we've overridden the general value by doing this
 
             foreach (array_keys($_POST) as $key) {
@@ -395,6 +395,7 @@ function _notifications_build_category_tree($_notification_types, $notification_
         $notification_category_being_changed = get_param_string('id', null);
         if (($notification_category_being_changed === $notification_category) || ($force_change_children_to !== null)) {
             if (!$done_get_change) {
+                // A change being called by GET URL
                 if (($force_change_children_to === false/*If recursively disabling*/) || (($force_change_children_to === null) && ($current_setting != A_NA)/*If explicitly toggling this one to disabled*/)) {
                     enable_notifications($notification_code, $notification_category, null, A_NA);
                     $force_change_children_to_children = false;

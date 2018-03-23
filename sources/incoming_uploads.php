@@ -117,7 +117,7 @@ function incoming_uploads_script()
         $outa['upload_id'] = strval($file_db_id);
         $outa['upload_name'] = $name;
         $outa['upload_savename'] = $savename;
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
         echo json_encode($outa);
 
         exit(); // So auto_append_file cannot run and corrupt our output

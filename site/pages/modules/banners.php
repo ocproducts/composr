@@ -498,7 +498,8 @@ class Module_banners
             }
         }
 
-        $sum_views = @intval($GLOBALS['SITE_DB']->query_select_value('banners', 'SUM(views_from)'));
+        $_sum_views = $GLOBALS['SITE_DB']->query_select_value('banners', 'SUM(views_from)');
+        $sum_views = @intval($_sum_views);
         $has_banner_network = ($sum_views != 0);
 
         $fields = new Tempcode();
@@ -517,7 +518,7 @@ class Module_banners
 
         $fields->attach(map_table_field(do_lang_tempcode('ADDED'), get_timezoned_date_time($myrow['add_date'])));
 
-        $expiry_date = ($myrow['expiry_date'] === null) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(get_timezoned_date_time($myrow['expiry_date'])));
+        $expiry_date = ($myrow['expiry_date'] === null) ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html(get_timezoned_date_time($myrow['expiry_date'])));
         $fields->attach(map_table_field(do_lang_tempcode('EXPIRY_DATE'), $expiry_date));
 
         if ($has_banner_network) {

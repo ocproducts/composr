@@ -106,7 +106,6 @@ class Hook_addon_registry_quizzes
             'sources/hooks/systems/config/points_ADD_QUIZ.php',
             'sources/hooks/systems/tasks/export_quiz.php',
             'sources/hooks/systems/config/quiz_show_stats_count_total_open.php',
-            'sources/hooks/systems/meta/quiz.php',
             'sources/hooks/blocks/side_stats/quiz.php',
             'themes/default/templates/QUIZ_ARCHIVE_SCREEN.tpl',
             'themes/default/text/QUIZ_SURVEY_ANSWERS_MAIL.txt',

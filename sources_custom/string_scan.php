@@ -2278,6 +2278,13 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CMS_ZONE
         CNS_CONVERTED_INFO
         CODE_EDITOR
+        CAPTCHA_MEMBER_DAYS
+        CAPTCHA_MEMBER_POSTS
+        CONFIG_OPTION_captcha_member_days
+        CONFIG_OPTION_captcha_member_posts
+        CONFIG_OPTION_gallery_media_title_required_VALUE_0
+        CONFIG_OPTION_gallery_media_title_required_VALUE_1
+        CONFIG_OPTION_gallery_media_title_required_VALUE_2
         SINGLE_PUBLIC_ZONE
         COLUMNS
         COMCODE
@@ -5712,7 +5719,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MOVE_TOPICS
         MOVE_UP
         MSN_FORUM_DB_NOT_CNS_ALREADY
-        MULTILANG_OFF_OPTION
         MULTILANG_OFF_PRACTICAL
         MULTILANG_OFF_CONTENT
         MULTI_LANG_CONTENT
@@ -9356,6 +9362,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PAID_SUBSCRIPTION_STARTED
         PARTICIPANTS
         PASSED
+        LINKS_STRIPPED
         PASSWORD
         PASSWORD_ALREADY_RESET
         PASSWORD_CHANGED_MAIL_BODY

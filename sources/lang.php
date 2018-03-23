@@ -117,7 +117,7 @@ function init__lang()
     global $SEARCH__CONTENT_BITS;
     $SEARCH__CONTENT_BITS = null;
 
-    safe_ini_set('default_charset', get_charset());
+    cms_ini_set('default_charset', get_charset());
 }
 
 // ====

@@ -255,7 +255,7 @@ function cron_bridge_script($caller)
     // In query mode, Composr will just give advice on the system scheduler settings to use
     if (get_param_integer('querymode', 0) == 1) {
         header('Content-type: text/plain; charset=' . get_charset());
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
         require_code('files2');
         $php_path = find_php_path();
         echo $php_path . ' -C -q -c ' . get_file_base() . '/.user.ini ' . $caller;
@@ -490,7 +490,7 @@ function iframe_script()
 
     // Simple AJAX output?
     if ($ajax) {
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
 
         $output->handle_symbol_preprocessing();
         echo $output->evaluate();
@@ -653,7 +653,7 @@ function thumb_script()
     $mime_type = get_mime_type($url_thumb, false);
     header('Content-Type: ' . $mime_type);
 
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     if ((strpos($url_thumb, "\n") !== false) || (strpos($url_thumb, "\r") !== false)) {
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
@@ -711,10 +711,10 @@ function external_url_proxy_script()
     }
 
     // Can't add in compression
-    safe_ini_set('zlib.output_compression', 'Off');
+    cms_ini_set('zlib.output_compression', 'Off');
 
     // No ocProducts XSS filter
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     // Stream
     $content_type = 'application/octet-stream';

@@ -20,8 +20,8 @@ class special_links_test_set extends cms_test_case
 {
     public function testISBN()
     {
-        $this->assertTrue(strpos(http_get_contents('https://isbndb.com/search/books/0241968984', array('trigger_error' => false)), 'No Place to Hide') !== false, 'External link not working, fix test and use within Composr (separate)');
-        $this->assertTrue(strpos(http_get_contents('https://isbndb.com/search/books/978-0241968987', array('trigger_error' => false)), 'No Place to Hide') !== false, 'External link not working, fix test and use within Composr (separate)');
+        $this->assertTrue(strpos(http_get_contents('https://www.bookfinder.com/search/?isbn=0241968984&mode=isbn&st=sr&ac=qr', array('trigger_error' => false)), 'No Place to Hide') !== false, 'External link not working, fix test and use within Composr (separate)');
+        $this->assertTrue(strpos(http_get_contents('https://www.bookfinder.com/search/?isbn=978-0241968987&mode=isbn&st=sr&ac=qr', array('trigger_error' => false)), 'No Place to Hide') !== false, 'External link not working, fix test and use within Composr (separate)');
     }
 
     public function testLookupLinks()
@@ -45,7 +45,7 @@ class special_links_test_set extends cms_test_case
             'https://achecker.ca/checker/index.php' => true,
             'https://www.bing.com/toolbox/markup-validator' => true,
             'https://search.google.com/structured-data/testing-tool/' => true,
-            'https://webmaster.yandex.com/tools/microtest/' => true,
+            'https://webmaster.yandex.com/tools/microtest/' => false,
             'https://developers.facebook.com/tools/debug/sharing/' => true,
             'https://www.woorank.com/' => true,
             'https://website.grader.com/' => true,

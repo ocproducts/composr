@@ -428,6 +428,7 @@ class css_file_test_set extends cms_test_case
             'im-popup-avatar',
             'im-popup-close-button',
             'image_number',
+            'img-thumb-opaque',
             'image_number_select',
             'info_slide_dots',
             'info_slide_thumb',

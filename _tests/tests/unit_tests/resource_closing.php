@@ -58,6 +58,20 @@ class resource_closing_test_set extends cms_test_case
         }
     }
 
+    public function testPHPReporting()
+    {
+        if (!function_exists('get_resources') || !function_exists('get_resource_type')) {
+            return;
+        }
+
+        $rs = get_resources();
+        foreach ($rs as $r) {
+            $type = get_resource_type($r);
+            $ok = in_array($type, array('Unknown', 'stream-context'));
+            $this->assertTrue($ok, 'Unexpected resource left open of type, ' . $type);
+        }
+    }
+
     public function testFclose()
     {
         $exceptions = array(

@@ -103,7 +103,6 @@ class Hook_addon_registry_authors
             'themes/default/images/icons/menu/rich_content/authors.svg',
             'themes/default/css/authors.css',
             'sources/hooks/systems/attachments/author.php',
-            'sources/hooks/systems/meta/authors.php',
             'sources/hooks/systems/addon_registry/authors.php',
             'themes/default/templates/AUTHOR_MANAGE_SCREEN.tpl',
             'themes/default/templates/AUTHOR_SCREEN.tpl',

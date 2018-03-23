@@ -31,7 +31,7 @@ require_code('database/shared/sqlserver');
  */
 function init__database__sqlserver_odbc()
 {
-    safe_ini_set('odbc.defaultlrl', '20M');
+    cms_ini_set('odbc.defaultlrl', '20M');
 }
 
 /**

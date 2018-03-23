@@ -99,9 +99,10 @@ function adminzone_extended_breadcrumbs()
             $hooks = array_merge($_hooks, $hooks);
         }
         foreach ($hooks as $hook => $sources_dir) {
-            $run_function = extract_module_functions(get_file_base() . '/' . $sources_dir . '/hooks/systems/page_groupings/' . $hook . '.php', array('run'));
+            $path = get_file_base() . '/' . $sources_dir . '/hooks/systems/page_groupings/' . $hook . '.php';
+            $run_function = extract_module_functions($path, array('run'));
             if ($run_function[0] !== null) {
-                $info = is_array($run_function[0]) ? call_user_func_array($run_function[0][0], $run_function[0][1]) : eval($run_function[0]);
+                $info = is_array($run_function[0]) ? call_user_func_array($run_function[0][0], $run_function[0][1]) : cms_eval($run_function[0], $path);
 
                 foreach ($info as $i) {
                     if ($i === null) {

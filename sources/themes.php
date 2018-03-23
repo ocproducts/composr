@@ -389,7 +389,7 @@ function cdn_filter($url_path)
 function _search_img_file($theme, $lang, $id, $dir = 'images')
 {
     $places = array(get_custom_file_base(), get_file_base());
-    $extensions = array('png', 'jpg', 'jpe', 'jpeg', 'gif', 'ico', 'cur', 'svg', 'webp');
+    $extensions = array('png', 'jpg', 'jpe', 'jpeg', 'gif', 'ico', 'cur', 'svg', 'webp', 'bmp');
 
     foreach ($places as $_base) {
         $base = $_base . '/themes/';

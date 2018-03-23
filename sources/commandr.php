@@ -1222,11 +1222,11 @@ class Virtual_shell
                 }
 
                 if (is_bool($commandr_val)) {
-                    eval('$' . $commandr_key . '=' . ($commandr_val ? 'true' : 'false') . ';');
+                    cms_eval('$' . $commandr_key . '=' . ($commandr_val ? 'true' : 'false') . ';', 'Redeclare-boolean in Commandr');
                 } elseif ((!is_integer($commandr_val)) && (!is_float($commandr_val))) {
-                    eval('$' . $commandr_key . '=\'' . addslashes($commandr_val) . '\';');
+                    cms_eval('$' . $commandr_key . '=\'' . addslashes($commandr_val) . '\';', 'Redeclare-string in Commandr');
                 } else {
-                    eval('$' . $commandr_key . '=' . strval($commandr_val) . ';');
+                    cms_eval('$' . $commandr_key . '=' . strval($commandr_val) . ';', 'Redeclare-number in Commandr');
                 }
             }
             foreach ($commandr_state_code_diff as $commandr_code) {
@@ -1243,9 +1243,9 @@ class Virtual_shell
 
             $this->output[STREAM_STDERR] = '';
 
-            safe_ini_set('ocproducts.xss_detect', '0');
+            cms_ini_set('ocproducts.xss_detect', '0');
             ob_start();
-            $commandr_eval_output = eval($this->parsed_input[SECTION_COMMAND]);
+            $commandr_eval_output = cms_eval($this->parsed_input[SECTION_COMMAND], 'Commandr PHP-command');
             $commandr_output = ob_get_contents();
             if (($commandr_output == '') && ($commandr_eval_output !== false)) {
                 $commandr_output = @strval($commandr_eval_output);

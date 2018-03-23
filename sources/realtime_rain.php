@@ -33,7 +33,7 @@ function realtime_rain_script()
 
     prepare_for_known_ajax_response();
 
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     header('Content-Type: text/xml');
     echo '<?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>';

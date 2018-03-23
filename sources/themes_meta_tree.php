@@ -51,6 +51,14 @@ function init__themes_meta_tree()
  */
 function _record_templates_used()
 {
+    if (strpos($_SERVER['SCRIPT_NAME'], '/_tests/') !== false) {
+        return;
+    }
+
+    if (get_option('grow_template_meta_tree') == '0') {
+        return;
+    }
+
     global $RECORDED_TEMPLATES_USED;
     $templates_used = array_keys($RECORDED_TEMPLATES_USED);
     sort($templates_used);
@@ -89,6 +97,14 @@ function _record_templates_used()
  */
 function record_template_tree_used($out)
 {
+    if (strpos($_SERVER['SCRIPT_NAME'], '/_tests/') !== false) {
+        return;
+    }
+
+    if (get_option('grow_template_meta_tree') == '0') {
+        return;
+    }
+
     if (!isset($out->metadata)) {
         return;
     }
@@ -718,7 +734,7 @@ class Meta_tree_builder
                     if (count($relationships) > 0) {
                         foreach ($places_for_referencing as $place) {
                             if (!is_dir($place)) {
-                                mkdir($place, 0777);
+                                @mkdir($place, 0777);
                                 fix_permissions($place);
                             }
 

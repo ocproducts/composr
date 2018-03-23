@@ -30,7 +30,7 @@ function confluence_proxy_script()
 
     list($output, $mime_type) = confluence_call_url($url);
 
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     if ((preg_match('#^image/#i', $mime_type) != 0) || (stripos($mime_type, 'svg') !== false)) {
         $mime_type = 'application/octet-stream';

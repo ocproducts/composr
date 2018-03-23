@@ -328,7 +328,7 @@ function find_addon_dependencies_on($addon)
         if ($_hook_bits[0] === null) {
             $dep = array();
         } else {
-            $dep = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : @eval($_hook_bits[0]);
+            $dep = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : cms_eval($_hook_bits[0], $path);
         }
 
         if (in_array($addon, $dep['requires'])) {
@@ -797,17 +797,9 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
     if ($do_db) {
         $_modphp_file = tar_get_file($tar, 'addon_install_code.php');
         if ($_modphp_file !== null) {
-            $modphp_file = trim($_modphp_file['data']);
+            $modphp_file = clean_php_file_for_eval($_modphp_file['data']);
 
-            if (substr($modphp_file, 0, 5) == '<' . '?php') {
-                $modphp_file = substr($modphp_file, 5);
-            }
-            if (substr($modphp_file, -2) == '?' . '>') {
-                $modphp_file = substr($modphp_file, 0, strlen($modphp_file) - 2);
-            }
-            if (eval($modphp_file) === false) {
-                fatal_exit(cms_error_get_last());
-            }
+            cms_eval($modphp_file, $full . ': addon_install_code.php');
         }
     }
 

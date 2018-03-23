@@ -35,7 +35,7 @@ if (post_param_integer('confirm', 0) == 0) {
 
 $filename = 'composr-erd.sql';
 
-safe_ini_set('ocproducts.xss_detect', '0');
+cms_ini_set('ocproducts.xss_detect', '0');
 
 if (!isset($_GET['testing'])) {
     header('Content-Type: application/octet-stream');

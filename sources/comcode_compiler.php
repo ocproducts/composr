@@ -2287,7 +2287,7 @@ function filter_html($as_admin, $source_member, $pos, &$len, &$comcode, $in_html
         }
 
         require_code('input_filter');
-        hard_filter_input_data__html($ahead);
+        hard_filter_input_data__html($ahead); // NB: If we have multiple HTML sections this will guard against it by closing partly open tags
 
         global $OBSCURE_REPLACEMENTS;
         foreach ($OBSCURE_REPLACEMENTS as $temp => $kept) {

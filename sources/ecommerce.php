@@ -189,7 +189,7 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
     $more_params = '';
     foreach ($_GET as $key => $val) {
         if ((is_string($val)) && (!in_array($key, array('page', 'type', 'category', 'type_code', 'purchase_id', 'points', 'cancel', 'from', 'message')))) {
-            $more_params .= ':' . $key . '=' . cms_url_encode($val);
+            $more_params .= ':' . $key . '=' . cms_urlencode($val);
         }
     }
 
@@ -202,7 +202,7 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
         }
     }
 
-    $more_params .= ':type_code=' . cms_url_encode($type_code);
+    $more_params .= ':type_code=' . cms_urlencode($type_code);
 
     $message = method_exists($product_object, 'get_message') ? $product_object->get_message($type_code) : null;
     $has_message = ($message !== null) && (!$message->is_empty());
@@ -225,7 +225,7 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
 
     $purchase_id = get_param_string('purchase_id', null);
     if ($purchase_id !== null) {
-        $more_params .= ':purchase_id=' . cms_url_encode($purchase_id);
+        $more_params .= ':purchase_id=' . cms_urlencode($purchase_id);
     }
 
     $steps[] = array('_SELF:_SELF:pay' . ':' . $more_params, 'pay', do_lang_tempcode('ECOM_PURCHASE_STAGE_pay'));

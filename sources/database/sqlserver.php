@@ -104,9 +104,7 @@ class Database_Static_sqlserver extends Database_super_sqlserver
 
         $this->rewrite_to_unicode_syntax($query);
 
-        push_suppress_error_death(true);
-        $results = sqlsrv_query($connection, $query, array(), array('Scrollable' => 'static', 'QueryTimeout' => $this->query_timeout));
-        pop_suppress_error_death();
+        $results = @sqlsrv_query($connection, $query, array(), array('Scrollable' => 'static', 'QueryTimeout' => $this->query_timeout));
         if (($results === false) && (strtoupper(substr(ltrim($query), 0, 12)) == 'INSERT INTO ') && ((strpos($query, '(id, ') !== false) || (strpos($query, '(_id, ') !== false))) {
             $pos = strpos($query, '(');
             $table_name = substr($query, 12, $pos - 13);

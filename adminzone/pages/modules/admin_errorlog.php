@@ -605,7 +605,7 @@ class Module_admin_errorlog
             $log_file .= '.log';
         }
 
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
 
         header('Content-Type: text/plain');
 

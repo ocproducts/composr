@@ -33,7 +33,7 @@ if (post_param_integer('confirm', 0) == 0) {
     return do_template('CONFIRM_SCREEN', array('TITLE' => $title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
 }
 
-safe_ini_set('ocproducts.xss_detect', '0');
+cms_ini_set('ocproducts.xss_detect', '0');
 
 require_code('database_relations');
 

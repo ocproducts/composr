@@ -59,7 +59,7 @@ prepare_for_known_ajax_response();
 
 header('Content-type: text/plain; charset=' . get_charset());
 
-safe_ini_set('ocproducts.xss_detect', '0');
+cms_ini_set('ocproducts.xss_detect', '0');
 
 $lstring = get_param_string('lstring', null, INPUT_FILTER_GET_COMPLEX);
 if ($lstring !== null) {

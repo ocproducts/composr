@@ -779,7 +779,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
                 $at = '00:' . $at;
             }
 
-            $shell_command = '"' . $ffmpeg_path . 'ffmpeg" -i ' . escapeshellarg_wrap($src_file) . ' -an -ss ' . $at . ' -r 1 -vframes 1 -y ' . escapeshellarg_wrap($dest_file);
+            $shell_command = '"' . $ffmpeg_path . 'ffmpeg" -i ' . cms_escapeshellarg($src_file) . ' -an -ss ' . $at . ' -r 1 -vframes 1 -y ' . cms_escapeshellarg($dest_file);
 
             $shell_commands = array($shell_command, $shell_command . ' -map 0.0:0.0', $shell_command . ' -map 0.1:0.0');
             foreach ($shell_commands as $shell_command) {
@@ -1210,6 +1210,8 @@ function watermark_gallery_image($gallery, $file_path, $filename)
         imagegif($source, $file_path);
     } elseif ((function_exists('imagewebp')) && ($ext == 'webp')) {
         imagewebp($source, $file_path);
+    } elseif ((function_exists('imagebmp')) && ($ext == 'bmp')) {
+        imagebmp($source, $file_path);
     }
 
     // Clean up

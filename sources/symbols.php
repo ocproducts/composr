@@ -1467,7 +1467,7 @@ function keep_symbol($param)
     $first = ((isset($param[0])) && ($param[0] === '1'));
     foreach ($get_vars as $key => $val) {
         if ((@$key[0] == 'k') && (substr($key, 0, 5) === 'keep_') && ((!skippable_keep($key, $val)) || (($key === 'keep_session') && (get_bot_type() === null) && (isset($param[1])) && ($param[1] === '1'))) && (is_string($val))) {
-            $value .= ($first ? '?' : '&') . urlencode($key) . '=' . cms_url_encode($val);
+            $value .= ($first ? '?' : '&') . urlencode($key) . '=' . cms_urlencode($val);
             $first = false;
         }
     }
@@ -4177,9 +4177,7 @@ function ecv_PREG_REPLACE($lang, $escaped, $param)
     }
 
     if (isset($param[2])) {
-        push_suppress_error_death(true);
         $value = @preg_replace('#' . str_replace('#', '\#', $param[0]) . '#' . (isset($param[3]) ? str_replace('e', '', $param[3]) : ''), $param[1], $param[2]);
-        pop_suppress_error_death();
         if ($value === false) {
             attach_message(cms_error_get_last(), 'warn', false, true);
             $value = '';
@@ -5933,6 +5931,32 @@ function ecv_LOGIN_LABEL($lang, $escaped, $param)
     return $value;
 }
 
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result
+ */
+function ecv_TUTORIAL_URL($lang, $escaped, $param)
+{
+    $value = '';
+    if ($GLOBALS['XSS_DETECT']) {
+        ocp_mark_as_escaped($value);
+    }
+
+    if (isset($param[0])) {
+        $value = get_tutorial_url($param[0]);
+    }
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
 
 /**
  * Evaluate a particular Tempcode symbol.
@@ -6009,7 +6033,6 @@ function ecv_PROTECT_URL_PARAMETER($lang, $escaped, $param)
 }
 
 
-
 /**
  * Evaluate a particular Tempcode symbol.
  *
@@ -6045,6 +6068,41 @@ function ecv_PUBLIC_CONFIG_OPTIONS_JSON($lang, $escaped, $param)
         apply_tempcode_escaping($escaped, $value);
     }
 
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result
+ */
+function ecv_SMART_LINK_STRIP($lang, $escaped, $param)
+{
+    $value = '';
+    if ($GLOBALS['XSS_DETECT']) {
+        ocp_mark_as_escaped($value);
+    }
+
+    if (isset($param[1])) {
+        $value = $param[0];
+
+        if ((!has_no_forum()) && ($GLOBALS['FORUM_DRIVER']->get_post_count(intval($param[1])) < 1)) {
+            $value = cms_strip_tags($value, '<a>', false);
+
+            if ($value != $param[0]) {
+                $value .= '<br /><em>' . do_lang('LINKS_STRIPPED') . '</em>';
+            }
+        }
+    }
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
     return $value;
 }
 

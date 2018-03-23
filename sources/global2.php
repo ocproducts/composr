@@ -53,12 +53,12 @@ function init__global2()
 
     fixup_bad_php_env_vars();
 
-    safe_ini_set('log_errors', '1');
+    cms_ini_set('log_errors', '1');
     if ((GOOGLE_APPENGINE) && (!appengine_is_live())) {
         @mkdir(get_custom_file_base() . '/data_custom', 0755);
     }
     $error_log_path = get_custom_file_base() . '/data_custom/errorlog.php';
-    safe_ini_set('error_log', $error_log_path);
+    cms_ini_set('error_log', $error_log_path);
     if ((is_file($error_log_path)) && (filesize($error_log_path) < 17)) {
         @file_put_contents($error_log_path, "<" . "?php return; ?" . ">\n", LOCK_EX);
         if (fileperms(get_custom_file_base() . '/caches/lang') === 0777) { // Try and get permissions correct in a simple way (too early in boot to do properly)
@@ -197,7 +197,7 @@ function init__global2()
     if ($SERVER_TIMEZONE_CACHE != 'UTC') {
         date_default_timezone_set('UTC');
     }
-    safe_ini_set('date.timezone', 'UTC'); // In case PHP does not have it configured, would produce a warning
+    cms_ini_set('date.timezone', 'UTC'); // In case PHP does not have it configured, would produce a warning
 
     // Initialise some error handling
     error_reporting(E_ALL);
@@ -247,10 +247,10 @@ function init__global2()
             @set_time_limit(10);
         }
         if (get_param_integer('keep_type_strictness', null) !== 0) {
-            safe_ini_set('ocproducts.type_strictness', '1');
+            cms_ini_set('ocproducts.type_strictness', '1');
         }
         if (get_param_integer('keep_xss_detect', null) !== 0) {
-            safe_ini_set('ocproducts.xss_detect', '1');
+            cms_ini_set('ocproducts.xss_detect', '1');
         }
         array_splice($_POST, 500, count($_POST) - 500, array()); // Simulate max_input_vars
         foreach ($_POST as $val) {
@@ -422,14 +422,12 @@ function init__global2()
         check_for_spam(null, null, true);
     }
 
-    safe_ini_set('display_errors', '0');
-
     // G-zip?
     $page = get_param_string('page', ''); // Not get_page_name for bootstrap order reasons
     if (!in_safe_mode() && $page != 'admin_config') {
-        safe_ini_set('zlib.output_compression', (get_option('gzip_output') == '1') ? '2048' : 'Off'); // 2KB buffer is based on capturing repetition while not breaking output streaming
+        cms_ini_set('zlib.output_compression', (get_option('gzip_output') == '1') ? '2048' : 'Off'); // 2KB buffer is based on capturing repetition while not breaking output streaming
     }
-    safe_ini_set('zlib.output_compression_level', '2'); // Compression doesn't get much better after this, but performance drop
+    cms_ini_set('zlib.output_compression_level', '2'); // Compression doesn't get much better after this, but performance drop
 
     if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP)) {
         // Before anything gets outputted
@@ -509,7 +507,7 @@ function init__global2()
             $default_memory_limit .= 'M';
         }
     }
-    safe_ini_set('memory_limit', $default_memory_limit);
+    cms_ini_set('memory_limit', $default_memory_limit);
     memory_limit_for_max_param('max');
     if ((isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
         if (get_param_integer('keep_memory_limit', null) === 0) {
@@ -517,7 +515,7 @@ function init__global2()
         } else {
             $memory_test = get_param_integer('keep_memory_limit_test', 0);
             if (($memory_test != 0) && ($memory_test <= 32)) {
-                safe_ini_set('memory_limit', strval($memory_test) . 'M');
+                cms_ini_set('memory_limit', strval($memory_test) . 'M');
             }
         }
     }
@@ -776,7 +774,7 @@ function memory_limit_for_max_param($max_param)
         if (has_privilege(get_member(), 'remove_page_split')) {
             $shl = @ini_get('suhosin.memory_limit');
             if (($shl === false) || ($shl == '') || ($shl == '0')) {
-                safe_ini_set('memory_limit', '128M');
+                cms_ini_set('memory_limit', '128M');
             }
         }
     }
@@ -790,14 +788,14 @@ function disable_php_memory_limit()
     $shl = @ini_get('suhosin.memory_limit');
     if (($shl === false) || ($shl == '') || ($shl == '0')) {
         // Progressively relax more and more (some PHP installs may block at some point)
-        safe_ini_set('memory_limit', '128M');
-        safe_ini_set('memory_limit', '256M');
-        safe_ini_set('memory_limit', '-1');
+        cms_ini_set('memory_limit', '128M');
+        cms_ini_set('memory_limit', '256M');
+        cms_ini_set('memory_limit', '-1');
     } else {
         if (is_numeric($shl)) {
             $shl .= 'M'; // Units are in MB for this, while PHP's memory limit setting has it in bytes
         }
-        safe_ini_set('memory_limit', $shl);
+        cms_ini_set('memory_limit', $shl);
     }
 }
 
@@ -903,6 +901,8 @@ function load_user_stuff()
 
 /**
  * Add new suppress error death setting. Whether error display is suppressed.
+ * Suppressed errors will always be logged and be shown depending on error_handling_* config (unlike with '@'), they just don't cause a fatal exit.
+ * So we use this function over '@' when an error is real and wants logging/possibly-showing.
  *
  * @param  boolean $setting New setting
  */
@@ -939,7 +939,7 @@ function peek_suppress_error_death()
  */
 function catch_fatal_errors()
 {
-    $error = error_get_last();
+    $error = error_get_last(); // If the last error is E_*_ERROR then it would have been fatal, so we should show it via this function
 
     if ($error !== null) {
         if (substr($error['message'], 0, 26) == 'Maximum execution time of ') {
@@ -1022,7 +1022,7 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
             default:
                 $type = 'deprecated';
                 $syslog_type = LOG_INFO;
-                $handling_method = 'SKIP';
+                $handling_method = 'SKIP'; // We always skip these, as they should be fixed during the Composr development cycle and should not concern users. Often we cannot even deal with them until we remove support for an old version, so have to leave a transition period.
                 break;
         }
         if (function_exists('get_option')) {
@@ -1135,6 +1135,10 @@ function current_script()
  */
 function running_script($is_this_running)
 {
+    if (strpos($_SERVER['SCRIPT_NAME'], '/_tests/') !== false) {
+        return false;
+    }
+
     // First check cache
     global $RUNNING_SCRIPT_CACHE;
     if (isset($RUNNING_SCRIPT_CACHE[$is_this_running . '.php'])) {
@@ -1638,8 +1642,8 @@ function either_param_string($name, $default = false, $filters = INPUT_FILTER_DE
         return $ret;
     }
 
-    if ((($filters & INPUT_FILTER_URL_SCHEMES) != 0) && (strpos($ret, ':') !== false) && (function_exists('cms_url_decode_post_process'))) {
-        $ret = cms_url_decode_post_process($ret);
+    if ((($filters & INPUT_FILTER_URL_SCHEMES) != 0) && (strpos($ret, ':') !== false) && (function_exists('cms_urldecode_post_process'))) {
+        $ret = cms_urldecode_post_process($ret);
     }
 
     require_code('input_filter');
@@ -1723,8 +1727,8 @@ function post_param_string($name, $default = false, $filters = INPUT_FILTER_DEFA
         return $ret;
     }
 
-    if ((($filters & INPUT_FILTER_URL_SCHEMES) != 0) && (strpos($ret, ':') !== false) && (function_exists('cms_url_decode_post_process'))) {
-        $ret = cms_url_decode_post_process($ret);
+    if ((($filters & INPUT_FILTER_URL_SCHEMES) != 0) && (strpos($ret, ':') !== false) && (function_exists('cms_urldecode_post_process'))) {
+        $ret = cms_urldecode_post_process($ret);
     }
 
     check_input_field_string($name, $ret, true, $filters);
@@ -1754,8 +1758,8 @@ function get_param_string($name, $default = false, $filters = INPUT_FILTER_DEFAU
         return $ret;
     }
 
-    if ((($filters & INPUT_FILTER_URL_SCHEMES) != 0) && (strpos($ret, ':') !== false) && (function_exists('cms_url_decode_post_process'))) {
-        $ret = cms_url_decode_post_process($ret);
+    if ((($filters & INPUT_FILTER_URL_SCHEMES) != 0) && (strpos($ret, ':') !== false) && (function_exists('cms_urldecode_post_process'))) {
+        $ret = cms_urldecode_post_process($ret);
     }
 
     require_code('input_filter');
@@ -2032,7 +2036,7 @@ function cms_ob_end_clean()
 {
     while (ob_get_level() > 0) {
         if (!@ob_end_clean()) {
-            safe_ini_set('zlib.output_compression', '0');
+            cms_ini_set('zlib.output_compression', '0');
             break;
         }
     }

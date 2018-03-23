@@ -205,7 +205,7 @@ class Module_admin_menus
         // Option to copy to an editable menu
         if ($id == '') {
             $preview = do_lang_tempcode('COPY_TO_EDITABLE_MENU');
-            $confirm_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => 'main_menu', 'redirect' => protect_url_parameter(get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL))), '_SELF');
+            $confirm_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => 'main_menu', 'menu_type' => get_param_string('menu_type', null), 'redirect' => protect_url_parameter(get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL))), '_SELF');
             require_code('templates_confirm_screen');
             return confirm_screen($this->title, $preview, $confirm_url, null, array('copy_from' => get_option('header_menu_call_string'), 'switch_over' => 1));
         }
@@ -273,7 +273,7 @@ class Module_admin_menus
             'I' => '',
         ));
 
-        $map = array('page' => '_SELF', 'type' => '_edit', 'id' => $id);
+        $map = array('page' => '_SELF', 'type' => '_edit', 'id' => $id, 'menu_type' => get_param_string('menu_type', null));
         if (get_param_string('redirect', '!', INPUT_FILTER_URL_INTERNAL) != '!') {
             $map['redirect'] = protect_url_parameter(get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL));
         }
@@ -340,6 +340,7 @@ class Module_admin_menus
             'ROOT_BRANCH' => $root_branch,
             'TITLE' => $this->title,
             'TOTAL_ITEMS' => strval(count($menu_items)),
+            'MENU_TYPE' => get_param_string('menu_type', null),
         ));
     }
 
@@ -375,6 +376,11 @@ class Module_admin_menus
                 }
                 if (($url == '') && ($branch_type == 0)) {
                     $branch_type = 1;
+                }
+
+                // To make it more user-friendly, show a page-link as a URL
+                if ((!looks_like_url($url)) && (strpos($url, ':') !== false)) {
+                    $url = page_link_to_url($url, true);
                 }
 
                 $display = (($branch_type == 0) && (!$clickable_sections)) ? 'display: none' : '';
@@ -434,28 +440,17 @@ class Module_admin_menus
                 $url = $_url->evaluate();
             }
         } else {
-            // Find what we have on the menu first
-            $ids = array();
-            foreach ($_POST as $key => $val) {
-                if (is_string($val)) {
-                    if (substr($key, 0, 7) == 'parent_') {
-                        $ids[intval(substr($key, 7))] = $val;
-                    }
-                }
-            }
-
-            $orderings = array_keys($ids);
-
             // Get language strings currently used
             $old_menu_bits = list_to_map('id', $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_caption', 'i_caption_long'), array('i_menu' => $menu_id)));
 
             // Now, process everything on the root
+            $ids = menu_items_being_saved();
             $order = 0;
-            foreach ($orderings as $id) {
+            foreach (array_keys($ids) as $id) {
                 $parent = $ids[$id];
 
                 if ($parent == '') {
-                    $this->add_menu_item($menu_id, $id, $ids, null, $old_menu_bits, $order);
+                    save_add_menu_item_from_post($menu_id, $id, $ids, null, $old_menu_bits, $order);
                     $order++;
                 }
             }
@@ -472,7 +467,7 @@ class Module_admin_menus
             // Go back to editing the menu
             $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
             if ($url == '') {
-                $_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => $menu_id), '_SELF');
+                $_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => $menu_id, 'menu_type' => get_param_string('menu_type', null)), '_SELF');
                 $url = $_url->evaluate();
             }
         }
@@ -481,86 +476,5 @@ class Module_admin_menus
         persistent_cache_delete(array('MENU', $menu_id));
 
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
-    }
-
-    /**
-     * Add a menu item from details in POST.
-     *
-     * @param  ID_TEXT $menu The name of the menu the item is on
-     * @param  integer $id The ID of the menu item (i.e. what it is referenced as in POST)
-     * @param  array $ids The map of IDs on the menu (ID=>parent)
-     * @param  ?integer $parent The ID of the parent branch (null: no parent)
-     * @param  array $old_menu_bits The map of menu id=>string language string IDs employed by items before the edit
-     * @param  integer $order The order this branch has in the editor (and due to linearly moving through, the number of branches shown assembled ready)
-     */
-    public function add_menu_item($menu, $id, &$ids, $parent, &$old_menu_bits, &$order)
-    {
-        // Load in details of menu item
-        $caption = post_param_string('caption_' . strval($id), '');
-        $caption_long = post_param_string('caption_long_' . strval($id), '');
-        $page_only = post_param_string('page_only_' . strval($id), '');
-        $theme_img_code = post_param_string('theme_img_code_' . strval($id), '');
-        $check_permissions = post_param_integer('check_perms_' . strval($id), 0);
-        $branch_type = post_param_string('branch_type_' . strval($id), 'branch_plus');
-        if ($branch_type == 'branch_plus') {
-            $expanded = 1;
-        } else {
-            $expanded = 0;
-        }
-        $new_window = post_param_integer('new_window_' . strval($id), 0);
-        $include_sitemap = post_param_integer('include_sitemap_' . strval($id), 0);
-
-        $url = post_param_string('url_' . strval($id), '', INPUT_FILTER_URL_GENERAL);
-
-        // See if we can tidy it back to a page-link
-        if (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $url) != 0) {
-            $url = ':' . $url; // So users do not have to think about zones
-        }
-        $page_link = url_to_page_link($url, true);
-        if ($page_link != '') {
-            $url = $page_link;
-        } elseif (strpos($url, ':') === false) {
-            $url = fixup_protocolless_urls($url);
-        }
-
-        $menu_save_map = array(
-            'i_menu' => $menu,
-            'i_order' => $order,
-            'i_parent' => $parent,
-            'i_url' => $url,
-            'i_check_permissions' => $check_permissions,
-            'i_expanded' => $expanded,
-            'i_new_window' => $new_window,
-            'i_include_sitemap' => $include_sitemap,
-            'i_page_only' => $page_only,
-            'i_theme_img_code' => $theme_img_code,
-        );
-
-        // Save
-        if (array_key_exists($id, $old_menu_bits)) {
-            $menu_save_map += lang_remap_comcode('i_caption', $old_menu_bits[$id]['i_caption'], $caption);
-            $menu_save_map += lang_remap_comcode('i_caption_long', $old_menu_bits[$id]['i_caption_long'], $caption_long);
-            $GLOBALS['SITE_DB']->query_update('menu_items', $menu_save_map, array('id' => $id));
-
-            unset($old_menu_bits[$id]);
-            $insert_id = $id;
-        } else {
-            $menu_save_map += insert_lang_comcode('i_caption', $caption, 1);
-            $menu_save_map += insert_lang_comcode('i_caption_long', $caption_long, 1);
-            $insert_id = $GLOBALS['SITE_DB']->query_insert('menu_items', $menu_save_map, true);
-        }
-
-        // Menu item children
-        $my_kids = array();
-        foreach ($ids as $new_id => $child_parent) {
-            if (strval($id) == $child_parent) {
-                $my_kids[] = $new_id;
-            }
-        }
-
-        foreach ($my_kids as $new_id) {
-            $this->add_menu_item($menu, $new_id, $ids, $insert_id, $old_menu_bits, $order);
-            $order++;
-        }
     }
 }

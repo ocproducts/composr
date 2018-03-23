@@ -70,7 +70,7 @@ class Hook_task_import_members
 
         $_csv_data = array();
 
-        safe_ini_set('auto_detect_line_endings', '1'); // TODO: Remove with #3032
+        cms_ini_set('auto_detect_line_endings', '1'); // TODO: Remove with #3032
         $myfile = fopen($path, 'rb');
         // TODO: #3032
         $del = ',';

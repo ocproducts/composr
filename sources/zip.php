@@ -108,7 +108,7 @@ function create_zip_file($file_array, $stream = false, $get_offsets = false, $ou
     if ($stream) {
         cms_ob_end_clean();
 
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
     }
 
     $out = '';

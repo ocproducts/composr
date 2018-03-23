@@ -622,6 +622,8 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         $test = @imagegif($dest, $to);
     } elseif ((function_exists('imagewebp')) && ($ext2 == 'webp')) {
         $test = @imagewebp($dest, $to);
+    } elseif ((function_exists('imagebmp')) && ($ext2 == 'bmp')) {
+        $test = @imagebmp($dest, $to);
     } else {
         if ($exit_on_error) {
             warn_exit(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext2)), false, true);
@@ -705,9 +707,9 @@ function check_memory_limit_for($file_path, $exit_on_error = true)
                 // Can command line imagemagick save the day?
                 $imagemagick = find_imagemagick();
                 if ($imagemagick !== null) {
-                    $shrink_command = $imagemagick . ' ' . escapeshellarg_wrap($file_path);
+                    $shrink_command = $imagemagick . ' ' . cms_escapeshellarg($file_path);
                     $shrink_command .= ' -resize ' . strval(intval(floatval($max_dim) / 1.5)) . 'x' . strval(intval(floatval($max_dim) / 1.5));
-                    $shrink_command .= ' ' . escapeshellarg_wrap($file_path);
+                    $shrink_command .= ' ' . cms_escapeshellarg($file_path);
                     $err_cond = -1;
                     $output_arr = array();
                     if (php_function_allowed('shell_exec')) {

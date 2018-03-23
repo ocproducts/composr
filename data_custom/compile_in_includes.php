@@ -72,7 +72,7 @@ foreach ($files as $file) {
         if (preg_match('#\#PRIOR TO COMPILED>>>(.*)\#<<<PRIOR TO COMPILED#s', $file_data, $matches) != 0) { // Must work back to what it was before compilation
             $file_data = $matches[1];
         } else {
-            $file_data = str_replace(array('?' . '>', '<' . '?php'), array('', ''), $file_data); // Verbatim
+            $file_data = clean_php_file_for_eval($file_data, $file); // Verbatim
         }
         $file_data = preg_replace('#^\##m', '', trim($file_data));
 
@@ -110,7 +110,7 @@ foreach ($files as $file) {
 
                 $functions_before = get_defined_functions();
                 $classes_before = get_declared_classes();
-                eval($file_data); // Include our override
+                cms_eval($file_data, $file_orig);
                 $functions_after = get_defined_functions();
                 $classes_after = get_declared_classes();
                 $functions_diff = array_diff($functions_after['user'], $functions_before['user']); // Our override defined these functions

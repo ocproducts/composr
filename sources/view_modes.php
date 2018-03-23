@@ -381,6 +381,11 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
                 }
                 $description->attach($actions);
 
+                if (!$description->is_empty()) {
+                    $description->attach('<br />');
+                }
+                $description->attach(do_lang('ORIGINAL') . ': ' . do_lang($key, null, null, null, fallback_lang(), false));
+
                 $key_extended = $key;
                 foreach (array_keys(get_lang_files(fallback_lang())) as $lang_file) {
                     $tmp_path = get_file_base() . '/lang/' . fallback_lang() . '/' . $lang_file . '.ini';

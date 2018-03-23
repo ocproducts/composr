@@ -86,7 +86,7 @@ class Hook_addon_registry_performance_compile
      */
     public function get_description()
     {
-        return 'Compile overridden Composr files back into the original versions, for a slight performance improvement. Only for use by expert programmers.';
+        return 'Compile overridden Composr files back into the original versions, for a slight performance improvement. Only for use by expert programmers, as it\'s imperfect and rough.';
     }
 
     /**

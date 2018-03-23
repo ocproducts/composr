@@ -88,8 +88,8 @@ class Hook_addon_registry_twitter_feed_integration_block
 [*] Use Comcode like:
 [code="Comcode"]
 [block screen_name="yourname"]twitter_feed[/block]
-[/list]
-[/code]';
+[/code]
+[/list]';
     }
 
     /**

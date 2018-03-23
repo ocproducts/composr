@@ -14,7 +14,6 @@
 
 	.menu-editor-page.docked {
 		overflow-y: auto;
-		max-height: 380px;
 		margin-right: 1em;
 		padding-right: 0.5em;
 	}
@@ -41,10 +40,6 @@
 		width: 100%;
 		padding: 0 0.5em;
 		box-sizing: border-box;
-	}
-
-	.docked .menu-edit-main {
-		padding-bottom: 2em;
 	}
 
 	.dock-button {
@@ -144,12 +139,17 @@ Branch layout (inner)
 */
 
 .menu-editor-selected-field {
-	background-color: {$GET,native_ui_active_background};
+	background-color: {$GET,native_ui_active_background} !important;
+}
+
+#menu-editor-wrap input#url {
+	width: 60em;
+	max-width: calc(100% - 70px);
 }
 
 .menu-editor-branch input[type="text"] {
 	background: url('{$IMG;,icons/buttons/proceed2}') right center no-repeat white;
-	background-size: 20px 20px;
+	background-size: 16px 16px;
 	cursor: pointer;
 	width: 14em;
 }

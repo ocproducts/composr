@@ -644,7 +644,7 @@
         }
     };
 
-    $cms.templates.formScreenInputCaptcha = function formScreenInputCaptcha(params, container) {
+    $cms.templates.inputCaptcha = function inputCaptcha(params, container) {
         if ($cms.configOption('js_captcha')) {
             $dom.html($dom.$('#captcha-spot'), params.captcha);
         } else {
@@ -653,9 +653,11 @@
             });
         }
 
+        var soundObject = (typeof window.Audio != 'undefined') ? new Audio($dom.$('#captcha-audio').href) : null;
+
         $dom.on(container, 'click', '.js-click-play-self-audio-link', function (e, link) {
             e.preventDefault();
-            $cms.playSelfAudioLink(link);
+            $cms.playSelfAudioLink(link, soundObject);
         });
     };
 

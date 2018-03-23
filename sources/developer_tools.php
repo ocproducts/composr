@@ -18,7 +18,7 @@
  * @package    core
  */
 
-/*EXTRA FUNCTIONS: get_php_file_api|test_fail_php_type_check*/
+/*EXTRA FUNCTIONS: get_php_file_api|test_fail_php_type_check|get_resources|get_resource_type|stream_get_meta_data*/
 
 /*
 Some basic developer tools for Composr PHP development.
@@ -56,7 +56,17 @@ function semi_dev_mode_startup()
             erase_cached_templates(true); // Stop anything trying to read a template cache item (E.g. CSS, JS) that might not exist!
         }*/
 
-        if ((strpos($_SERVER['HTTP_REFERER'], get_local_hostname()) !== false) && (strpos($_SERVER['HTTP_REFERER'], 'keep_devtest') !== false) && (!running_script('attachment')) && (!running_script('external_url_proxy')) && (!running_script('upgrader')) && (strpos($_SERVER['HTTP_REFERER'], 'login') === false) && (get_page_name() != 'login') && (get_param_string('keep_devtest', null) === null)) {
+        if (
+            (strpos($_SERVER['HTTP_REFERER'], get_local_hostname()) !== false) &&
+            (strpos($_SERVER['HTTP_REFERER'], 'keep_devtest') !== false) &&
+            (!running_script('attachment')) &&
+            (!running_script('external_url_proxy')) &&
+            (!running_script('upgrader')) &&
+            (strpos($_SERVER['HTTP_REFERER'], 'login') === false) &&
+            (get_page_name() != 'login') &&
+            (get_page_name() != '404') &&
+            (get_param_string('keep_devtest', null) === null)
+        ) {
             $_GET['keep_devtest'] = '1';
             attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or $cms.keep() (in JavaScript). While not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn', false, true);
         } else {
@@ -93,6 +103,28 @@ function semi_dev_mode_startup()
             }
             if ((!$TITLE_CALLED) && (($SCREEN_TEMPLATE_CALLED === null) || ($SCREEN_TEMPLATE_CALLED != '')) && ($EXITING == 0) && (strpos($_SERVER['SCRIPT_NAME'], 'index.php') !== false)) {
                 @exit(escape_html('No title used on screen.'));
+            }
+
+            if (function_exists('get_resources') && function_exists('get_resource_type') && function_exists('stream_get_meta_data')) {
+                if (function_exists('_cms_profiler_script_end')) {
+                    _cms_profiler_script_end();
+                }
+
+                $rs = get_resources();
+                foreach ($rs as $r) {
+                    $type = get_resource_type($r);
+                    if (!in_array($type, array('Unknown', 'stream-context'))) {
+                        if ($type == 'stream') {
+                            $stream_meta = stream_get_meta_data($r);
+                        } else {
+                            $stream_meta = null;
+                        }
+
+                        if (($stream_meta === null) || (!in_array($stream_meta['stream_type'], array('TEMP', 'MEMORY')))) {
+                            @exit(escape_html('Unexpected resource left open of type, ' . $type . (($type == 'stream') ? ('; ' . var_export($stream_meta, true)) : '')));
+                        }
+                    }
+                }
             }
         }
 
@@ -132,7 +164,7 @@ function destrictify($change_content_type = true, $db_too = false)
     }
     global $PREVIOUS_XSS_STATE;
     @array_push($PREVIOUS_XSS_STATE, ini_get('ocproducts.xss_detect'));
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
     $include_path = ini_get('include_path');
     $include_path .= PATH_SEPARATOR . './';
     $include_path .= PATH_SEPARATOR . get_file_base() . '/';
@@ -142,11 +174,11 @@ function destrictify($change_content_type = true, $db_too = false)
         if (get_zone_name() != '') {
             $include_path .= PATH_SEPARATOR . get_file_base() . '/' . get_zone_name() . '/';
         }
-        safe_ini_set('include_path', $include_path);
+        cms_ini_set('include_path', $include_path);
     }
     //disable_php_memory_limit();   Don't do this, recipe for disaster
-    safe_ini_set('suhosin.executor.disable_emodifier', '0');
-    safe_ini_set('suhosin.executor.multiheader', '0');
+    cms_ini_set('suhosin.executor.disable_emodifier', '0');
+    cms_ini_set('suhosin.executor.multiheader', '0');
     pop_db_scope_check();
     push_db_scope_check(false);
     pop_query_limiting();
@@ -181,19 +213,19 @@ function restrictify()
     }
     if (($GLOBALS['DEV_MODE']) && (strpos($_SERVER['SCRIPT_NAME'], '_tests') === false)) {
         if (get_param_integer('keep_type_strictness', null) !== 0) {
-            safe_ini_set('ocproducts.type_strictness', '1');
+            cms_ini_set('ocproducts.type_strictness', '1');
         }
 
         if (get_param_integer('keep_xss_detect', null) !== 0) {
             global $PREVIOUS_XSS_STATE;
-            safe_ini_set('ocproducts.xss_detect', array_pop($PREVIOUS_XSS_STATE));
+            cms_ini_set('ocproducts.xss_detect', array_pop($PREVIOUS_XSS_STATE));
         }
     }
     if (!GOOGLE_APPENGINE) {
-        safe_ini_set('include_path', '');
+        cms_ini_set('include_path', '');
     }
-    safe_ini_set('suhosin.executor.disable_emodifier', '1');
-    safe_ini_set('suhosin.executor.multiheader', '1');
+    cms_ini_set('suhosin.executor.disable_emodifier', '1');
+    cms_ini_set('suhosin.executor.multiheader', '1');
     pop_db_scope_check();
     push_db_scope_check(true);
     //push_query_limiting(false);   Leave off, may have been set elsewhere than destrictify();
@@ -232,7 +264,7 @@ function _inspect($args, $force_plain = false)
     $plain = headers_sent() || $force_plain || !running_script('index');
 
     if ($plain) {
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
 
         $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 
@@ -299,7 +331,7 @@ function show_memory_points()
 {
     @header('Content-type: text/plain; charset=' . get_charset());
 
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 

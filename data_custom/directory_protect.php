@@ -104,7 +104,7 @@ header('Content-Type: ' . get_mime_type(get_file_extension($filename), false));
 header('Content-Disposition: inline; filename="' . escape_header($filename, true) . '"');
 header('Accept-Ranges: bytes');
 
-safe_ini_set('ocproducts.xss_detect', '0');
+cms_ini_set('ocproducts.xss_detect', '0');
 
 // Caching
 $time = filemtime($_full);
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
 $from = 0;
 $new_length = $size;
 
-safe_ini_set('zlib.output_compression', 'Off');
+cms_ini_set('zlib.output_compression', 'Off');
 
 // They're trying to resume (so update our range)
 $httprange = $_SERVER['HTTP_RANGE'];

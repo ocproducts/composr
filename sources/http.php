@@ -1483,14 +1483,14 @@ class HttpDownloaderSockets extends HttpDownloader
                                 $this->filename = urldecode(basename($matches[1]));
                             }
 
-                            @fclose($mysock);
-
                             if (strpos($matches[1], '://') === false) {
                                 $matches[1] = qualify_url($matches[1], $url, true);
                             }
 
                             if ($matches[1] != $url) {
                                 if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $this->message) != 0)) {
+                                    @fclose($mysock);
+
                                     if ($this->no_redirect) {
                                         $text = null;
                                         $this->download_url = $matches[1];
@@ -1531,13 +1531,13 @@ class HttpDownloaderSockets extends HttpDownloader
                                 case '401':
                                 case '403':
                                     if (!$this->ignore_http_status) {
+                                        @fclose($mysock);
+
                                         if ($this->trigger_error) {
                                             warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url)), false, true);
                                         } else {
                                             $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url));
                                         }
-
-                                        @fclose($mysock);
 
                                         return null;
                                     }
@@ -1545,13 +1545,13 @@ class HttpDownloaderSockets extends HttpDownloader
 
                                 case '404':
                                     if (!$this->ignore_http_status) {
+                                        @fclose($mysock);
+
                                         if ($this->trigger_error) {
                                             warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url)), false, true);
                                         } else {
                                             $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url));
                                         }
-
-                                        @fclose($mysock);
 
                                         return null;
                                     }
@@ -1561,13 +1561,13 @@ class HttpDownloaderSockets extends HttpDownloader
                                 case '429':
                                 case '500':
                                     if (!$this->ignore_http_status) {
+                                        @fclose($mysock);
+
                                         if ($this->trigger_error) {
                                             warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url)), false, true);
                                         } else {
                                             $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url));
                                         }
-
-                                        @fclose($mysock);
 
                                         return null;
                                     }
@@ -1575,6 +1575,8 @@ class HttpDownloaderSockets extends HttpDownloader
 
                                 case '405':
                                     if ($this->byte_limit == 0 && !$this->no_redirect && empty($this->post_params)) { // Try again as non-HEAD request if we just did a HEAD request that got "Method not allowed"
+                                        @fclose($mysock);
+
                                         if ($this->no_redirect) {
                                             $text = null;
                                             $this->download_url = $matches[1];
@@ -1585,20 +1587,18 @@ class HttpDownloaderSockets extends HttpDownloader
                                             $text = $this->copy_from_other($inner_request, $this);
                                         }
 
-                                        @fclose($mysock);
-
                                         return $text;
                                     }
 
                                 default:
                                     if (!$this->ignore_http_status) {
+                                        @fclose($mysock);
+
                                         if ($this->trigger_error) {
                                             warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($this->message)), false, true);
                                         } else {
                                             $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($this->message));
                                         }
-
-                                        @fclose($mysock);
 
                                         return null;
                                     }
@@ -1720,10 +1720,10 @@ class HttpDownloaderFileWrapper extends HttpDownloader
         $errno = 0;
         $errstr = '';
         if (($errno != 110) && (($errno != 10060) || (ini_get('default_socket_timeout') == '1')) && ((ini_get('allow_url_fopen') == '1') || (php_function_allowed('ini_set')))) {
-            safe_ini_set('allow_url_fopen', '1');
+            cms_ini_set('allow_url_fopen', '1');
 
             $this->timeout_before = ini_get('default_socket_timeout');
-            safe_ini_set('default_socket_timeout', strval($this->timeout));
+            cms_ini_set('default_socket_timeout', strval($this->timeout));
 
             if ($this->put !== null) {
                 $this->raw_payload .= file_get_contents($this->put_path);
@@ -1770,7 +1770,7 @@ class HttpDownloaderFileWrapper extends HttpDownloader
 
             if (($this->byte_limit === null) && ($this->write_to_file === null)) {
                 if ($this->trigger_error) {
-                    push_suppress_error_death(true); // Errors will be attached instead. We don't rely on only cms_error_get_last() because stream errors don't go into that fully.
+                    push_suppress_error_death(true); // We have to use this rather than '@' because stream errors don't go into cms_error_get_last() always and thus this is the only way to let those show (as logged/attached messages)
                     $read_file = file_get_contents($this->connecting_url, false, $context);
                     pop_suppress_error_death();
                 } else {
@@ -1778,7 +1778,7 @@ class HttpDownloaderFileWrapper extends HttpDownloader
                 }
             } else {
                 if ($this->trigger_error) {
-                    push_suppress_error_death(true); // Errors will be attached instead. We don't rely on only cms_error_get_last() because stream errors don't go into that fully.
+                    push_suppress_error_death(true); // We have to use this rather than '@' because stream errors don't go into cms_error_get_last() always and thus this is the only way to let those show (as logged/attached messages)
                     $_read_file = fopen($this->connecting_url, 'rb', false, $context);
                     pop_suppress_error_death();
                 } else {
@@ -1802,8 +1802,8 @@ class HttpDownloaderFileWrapper extends HttpDownloader
                 $read_file = substr($read_file, 0, $this->byte_limit);
             }
 
-            safe_ini_set('allow_url_fopen', '0');
-            safe_ini_set('default_socket_timeout', $this->timeout_before);
+            cms_ini_set('allow_url_fopen', '0');
+            cms_ini_set('default_socket_timeout', $this->timeout_before);
 
             if (isset($http_response_header)) {
                 foreach ($http_response_header as $header) {
@@ -1880,7 +1880,7 @@ class HttpDownloaderFilesystem extends HttpDownloader
         $file_path = $file_base . urldecode($parsed['path']);
 
         if ((php_function_allowed('escapeshellcmd')) && (php_function_allowed('shell_exec')) && (substr($file_path, -4) == '.php')) {
-            $cmd = 'DOCUMENT_ROOT=' . escapeshellarg_wrap(dirname(get_file_base())) . ' PATH_TRANSLATED=' . escapeshellarg_wrap($file_path) . ' SCRIPT_NAME=' . escapeshellarg_wrap($file_path) . ' HTTP_USER_AGENT=' . escapeshellarg_wrap($this->ua) . ' QUERY_STRING=' . escapeshellarg_wrap($parsed['query']) . ' HTTP_HOST=' . escapeshellarg_wrap($parsed['host']) . ' ' . escapeshellcmd(find_php_path(true)) . ' ' . escapeshellarg_wrap($file_path);
+            $cmd = 'DOCUMENT_ROOT=' . cms_escapeshellarg(dirname(get_file_base())) . ' PATH_TRANSLATED=' . cms_escapeshellarg($file_path) . ' SCRIPT_NAME=' . cms_escapeshellarg($file_path) . ' HTTP_USER_AGENT=' . cms_escapeshellarg($this->ua) . ' QUERY_STRING=' . cms_escapeshellarg($parsed['query']) . ' HTTP_HOST=' . cms_escapeshellarg($parsed['host']) . ' ' . escapeshellcmd(find_php_path(true)) . ' ' . cms_escapeshellarg($file_path);
             $contents = shell_exec($cmd);
             $split_pos = strpos($contents, "\r\n\r\n");
             if ($split_pos !== false) {

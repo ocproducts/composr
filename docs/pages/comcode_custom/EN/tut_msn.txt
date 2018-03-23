@@ -312,6 +312,8 @@ sites/www/uploads/auto_thumbs
 sites/www/uploads/auto_thumbs/index.html
 sites/www/uploads/banners
 sites/www/uploads/banners/index.html
+sites/www/uploads/captcha
+sites/www/uploads/captcha/index.html
 sites/www/uploads/catalogues
 sites/www/uploads/catalogues/index.html
 sites/www/uploads/cns_avatars

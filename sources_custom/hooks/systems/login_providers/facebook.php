@@ -45,7 +45,7 @@ class Hook_login_provider_facebook
 
         // Facebook connect
         if ((get_forum_type() == 'cns') && (get_option('facebook_allow_signups') == '1')) {
-            safe_ini_set('ocproducts.type_strictness', '0');
+            cms_ini_set('ocproducts.type_strictness', '0');
 
             global $FACEBOOK_CONNECT;
             if ($FACEBOOK_CONNECT !== null) {
@@ -70,7 +70,7 @@ class Hook_login_provider_facebook
                 }
             }
 
-            safe_ini_set('ocproducts.type_strictness', '1');
+            cms_ini_set('ocproducts.type_strictness', '1');
         }
         return $member_id;
     }

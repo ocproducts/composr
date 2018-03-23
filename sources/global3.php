@@ -1296,7 +1296,8 @@ function addon_installed($addon, $check_hookless = false)
         }
 
         if ($answer) {
-            if (get_value('addon_disabled_' . $addon) === '1') {
+            global $VALUES_FULLY_LOADED;
+            if (($VALUES_FULLY_LOADED) && (get_value('addon_disabled_' . $addon) === '1')) {
                 $answer = false;
             }
         }
@@ -2043,21 +2044,39 @@ function collapse_1d_complexity($key, $list)
 }
 
 /**
+ * Used by cms_strip_tags to handle whether to strip a tag.
+ *
+ * @param  array $matches Array of matches
+ * @return string Substituted tag text
+ *
+ * @ignore
+ */
+function _cms_strip_tags_callback($matches)
+{
+    global $STRIP_TAGS_TAGS, $STRIP_TAGS_TAGS_AS_ALLOW;
+    $tag_covered = stripos($STRIP_TAGS_TAGS, '<' . $matches[1] . '>');
+    if ((($STRIP_TAGS_TAGS_AS_ALLOW) && ($tag_covered !== false)) || ((!$STRIP_TAGS_TAGS_AS_ALLOW) && ($tag_covered === false))) {
+        return $matches[0];
+    }
+    return '';
+}
+
+/**
  * Strip HTML and PHP tags from a string.
  * Equivalent to PHP's strip_tags, whose $allowable_tags parameter is expected to be deprecated in PHP 7.3 (https://wiki.php.net/rfc/deprecations_php_7_3).
  *
  * @param  string $str Subject
- * @param  string $allowable_tags Comma-separated list of allowable tags
+ * @param  string $tags Comma-separated list of tags
+ * @param  boolean $tags_as_allow Whether tags represents a whitelist (set for false to allow all by default and make $tags a blacklist)
  * @return string Result
  */
-function cms_strip_tags($str, $allowable_tags)
+function cms_strip_tags($str, $tags, $tags_as_allow = true)
 {
-    return preg_replace_callback('#</?([^\s<>]+)(\s[^<>]*)?' . '>#', function ($matches) use ($allowable_tags) {
-        if (stripos($allowable_tags, '<' . preg_quote($matches[1], '#') . '>') !== false) {
-            return $matches[0];
-        }
-        return '';
-    }, $str);
+    global $STRIP_TAGS_TAGS, $STRIP_TAGS_TAGS_AS_ALLOW;
+    $STRIP_TAGS_TAGS = $tags;
+    $STRIP_TAGS_TAGS_AS_ALLOW = $tags_as_allow;
+
+    return preg_replace_callback('#</?([^\s<>]+)(\s[^<>]*)?' . '>#', '_cms_strip_tags_callback', $str);
 }
 
 /**
@@ -3474,12 +3493,69 @@ function get_mass_import_mode()
  * @param  string $arg The argument
  * @return string Escaped
  */
-function escapeshellarg_wrap($arg)
+function cms_escapeshellarg($arg)
 {
     if (php_function_allowed('escapeshellarg')) {
         return escapeshellarg($arg);
     }
     return "'" . addslashes(str_replace(array(chr(0), "'"), array('', "'\"'\"'"), $arg)) . "'";
+}
+
+/**
+ * Run some code. Bail out on failure.
+ * We cannot always use this over 'eval' because the code will run in a separate scope.
+ *
+ * @param  string $code Code to eval
+ * @param  string $context A context, used in error messages, to help understand where errors may be
+ * @param  boolean $trigger_error Trigger fatal error; even if false an error will be attached
+ * @return mixed The error response
+ */
+function cms_eval($code, $context, $trigger_error = true)
+{
+    push_suppress_error_death(true);
+
+    if (function_exists('error_clear_last')) {
+        error_clear_last();
+    }
+    $errormsg_before = error_get_last();
+
+    try {
+        $result = eval($code);
+        $attach_manually = false;
+
+        $errormsg = cms_error_get_last();
+        if (($errormsg == '') || ($errormsg === $errormsg_before)) {
+            $errormsg = '';
+        }
+    }
+    catch (Exception $e) {
+        $result = false;
+        $attach_manually = true;
+
+        $errormsg = $e->getMessage();
+    }
+    catch (Error $e) {
+        $result = false;
+        $attach_manually = true;
+
+        $errormsg = $e->getMessage();
+    }
+
+    pop_suppress_error_death();
+
+    if (($result === false) && ($errormsg != '')) {
+        // It is possible for this to trigger incorrectly. If we've "@"d something, and explicitly returned false, the hidden error will come through.
+
+        if ($trigger_error) {
+            fatal_exit(protect_from_escaping(escape_html($context) . ': ' . $errormsg));
+        } else {
+            if (($attach_manually) && (get_option('error_handling_errors') != 'SKIP')) {
+                attach_message(protect_from_escaping(escape_html($context) . ': ' . $errormsg), 'notice'); // Won't attach naturally and won't show in a fatal error, so we must attach it
+            } // other errors will have still been attached anyway (depending on error_handling_* configuration)
+        }
+    }
+
+    return $result;
 }
 
 /**

@@ -25,7 +25,7 @@ function endpoint_script()
 {
     set_http_caching(null);
 
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     $hook_type = mixed();
     $hook = mixed();

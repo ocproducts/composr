@@ -49,7 +49,7 @@ function get_chmod_array($lang, $runtime = false)
             }
             $matches = array();
             if (preg_match('#function get_chmod_array\(\)\s*\{([^\}]*)\}#', file_get_contents($path), $matches) != 0) {
-                $extra_files = array_merge($extra_files, eval($matches[1]));
+                $extra_files = array_merge($extra_files, cms_eval($matches[1], $path));
             }
         }
     }
@@ -88,6 +88,7 @@ function get_chmod_array($lang, $runtime = false)
             'uploads/attachments_thumbs/*',
             'uploads/auto_thumbs/*',
             'uploads/banners/*',
+            'uploads/captcha/*',
             'uploads/catalogues/*',
             'uploads/cns_avatars/*',
             'uploads/cns_cpf_upload/*',
@@ -163,6 +164,7 @@ function get_chmod_array($lang, $runtime = false)
             'uploads/attachments_thumbs',
             'uploads/auto_thumbs',
             'uploads/banners',
+            'uploads/captcha',
             'uploads/catalogues',
             'uploads/cns_avatars',
             'uploads/cns_cpf_upload',

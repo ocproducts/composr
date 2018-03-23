@@ -175,7 +175,7 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
  * @param  ?boolean $can_try_url_schemes Whether we have to consider URL Schemes (null: don't know, look up)
  * @return URLPATH The encoded result
  */
-function cms_url_encode($url_part, $can_try_url_schemes = null)
+function cms_urlencode($url_part, $can_try_url_schemes = null)
 {
     // Slipstream for 99.99% of data
     $url_part_encoded = urlencode($url_part);
@@ -195,13 +195,13 @@ function cms_url_encode($url_part, $can_try_url_schemes = null)
 }
 
 /**
- * Encode a URL component, as per cms_url_encode but without slashes being encoded.
+ * Encode a URL component, as per cms_urlencode but without slashes being encoded.
  *
  * @param  URLPATH $url_part The URL to encode
  * @param  ?boolean $can_try_url_schemes Whether we have to consider URL Schemes (null: don't know, look up)
  * @return URLPATH The encoded result
  */
-function cms_url_encode_mini($url_part, $can_try_url_schemes = null)
+function cms_urlencode_mini($url_part, $can_try_url_schemes = null)
 {
     // Slipstream for 99.99% of data
     $url_part_encoded = urlencode($url_part);
@@ -209,7 +209,7 @@ function cms_url_encode_mini($url_part, $can_try_url_schemes = null)
         return $url_part_encoded;
     }
 
-    return str_replace('%3Aslash%3A', '/', cms_url_encode($url_part, $can_try_url_schemes));
+    return str_replace('%3Aslash%3A', '/', cms_urlencode($url_part, $can_try_url_schemes));
 }
 
 /**
@@ -218,7 +218,7 @@ function cms_url_encode_mini($url_part, $can_try_url_schemes = null)
  * @param  URLPATH $url_part The URL to encode
  * @return URLPATH The encoded result
  */
-function cms_url_decode_post_process($url_part)
+function cms_urldecode_post_process($url_part)
 {
     if ((strpos($url_part, ':') !== false) && (can_try_url_schemes())) {
         $url_part = str_replace(array(':uhash:', ':amp:', ':slash:'), array('#', '&', '/'), $url_part);
@@ -826,7 +826,7 @@ function _url_rewrite_params($zone_name, $vars, $force_index_php = false)
                         $key = strtoupper($key);
                         break;
                 }
-                $makeup = str_replace($key, cms_url_encode_mini($val, true), $makeup);
+                $makeup = str_replace($key, cms_urlencode_mini($val, true), $makeup);
             }
             if (!$require_full_coverage) {
                 $extra_vars += $vars;
@@ -855,14 +855,11 @@ function _url_rewrite_params($zone_name, $vars, $force_index_php = false)
                         $key = strval($key);
                     }
 
-                    $_makeup .= ($first ? '?' : '&') . $key . '=' . cms_url_encode($val, true);
+                    $_makeup .= ($first ? '?' : '&') . $key . '=' . cms_urlencode($val, true);
 
                     $first = false;
                 }
                 if ($_makeup !== '') {
-                    if ($url_scheme === 'PG') {
-                        $makeup .= '/index.php';
-                    }
                     $makeup .= $_makeup;
                 }
             }
@@ -1118,15 +1115,15 @@ function url_to_page_link($url, $abs_only = false, $perfect_only = true)
  * Given a URL or page-link, return an absolute URL.
  *
  * @param  string $url URL or page-link
- * @param  boolean $email_safe Whether to avoid keep_* parameters as it's going in an e-mail
+ * @param  boolean $skip_keep Whether to avoid keep_* parameters as it's going in an e-mail
  * @return URLPATH URL
  */
-function page_link_to_url($url, $email_safe = false)
+function page_link_to_url($url, $skip_keep = false)
 {
     $parts = array();
     if ((preg_match('#([' . URL_CONTENT_REGEXP . ']*):([' . URL_CONTENT_REGEXP . ']+|[^/]|$)((:(.*))*)#', $url, $parts) != 0) && ($parts[1] != 'mailto')) { // Specially encoded page-link. Complex regexp to make sure URLs do not match
         list($zone, $map, $hash) = page_link_decode($url);
-        $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, $email_safe, $hash));
+        $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, $skip_keep, $hash));
     } else {
         $url = qualify_url($url, get_base_url());
     }
@@ -1197,9 +1194,10 @@ function load_moniker_hooks()
                 continue;
             }
 
-            $info_function = extract_module_functions(get_file_base() . '/' . $sources_dir . '/hooks/systems/content_meta_aware/' . $hook . '.php', array('info'), array(), false, 'Hook_content_meta_aware_' . $hook);
+            $path = get_file_base() . '/' . $sources_dir . '/hooks/systems/content_meta_aware/' . $hook . '.php';
+            $info_function = extract_module_functions($path, array('info'), array(), false, 'Hook_content_meta_aware_' . $hook);
             if ($info_function[0] !== null) {
-                $ob_info = is_array($info_function[0]) ? call_user_func_array($info_function[0][0], $info_function[0][1]) : eval($info_function[0]);
+                $ob_info = is_array($info_function[0]) ? call_user_func_array($info_function[0][0], $info_function[0][1]) : cms_eval($info_function[0], $path);
 
                 if ($ob_info === null) {
                     continue;

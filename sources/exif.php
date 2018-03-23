@@ -125,7 +125,7 @@ function get_exif_image_caption($path, $filename)
     if (file_exists($csv_path)) {
         $del = ',';
 
-        safe_ini_set('auto_detect_line_endings', '1'); // TODO: Remove with #3032
+        cms_ini_set('auto_detect_line_endings', '1'); // TODO: Remove with #3032
         $csv_file_handle = fopen($csv_path, 'rb');
         // TODO: #3032
         $csv_test_line = fgetcsv($csv_file_handle, 10240, $del);

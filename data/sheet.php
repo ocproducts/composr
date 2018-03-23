@@ -55,5 +55,5 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 require($FILE_BASE . '/sources/global.php');
 
 require_code('ajax');
-safe_ini_set('ocproducts.xss_detect', '0');
+cms_ini_set('ocproducts.xss_detect', '0');
 sheet_script();

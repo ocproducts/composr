@@ -16,7 +16,7 @@
 function init__users()
 {
     if (!addon_installed('facebook_support')) {
-        return $in;
+        return;
     }
 
     require_code('facebook_connect');

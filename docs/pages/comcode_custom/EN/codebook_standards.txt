@@ -390,11 +390,11 @@ Use unique function and class names
 | If you're putting variables into the header function consider data could contain [tt]\r[/tt] or [tt]\n[/tt] symbols, so escape via the [tt]escape_header[/tt] function. If you're using eval be [b]extremely[/b] careful to validated input; there's rarely a reason to use it anyway. If you're using [tt]preg_replace[/tt] make sure to use [tt]preg_quote[/tt] and to manually escape the regular expression encapsulation character (usually [tt]#[/tt] or [tt]/[/tt]).
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-Avoid using [tt]eval[/tt], [tt]$$[/tt], [tt]create_function[/tt] or [tt]preg_replace[/tt] with [tt]/e[/tt]
+Avoid using [tt]eval[/tt], [tt]$$[/tt], [tt]create_function[/tt], or [tt]preg_replace[/tt] with [tt]/e[/tt]
 | Security
 | Product development only
 | Manually
-| It's hackerish and prone to security issues. There's rarely, if ever, a good reason to do it.
+| It's hackerish and prone to security issues. There's rarely a good reason to do it.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Long running requests should be tasks[/color]

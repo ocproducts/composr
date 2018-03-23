@@ -479,7 +479,7 @@ class Module_admin
                 foreach (array_keys($modules) as $page) {
                     $_entrypoints = extract_module_functions_page($zone, $page, array('get_entry_points'));
                     if ($_entrypoints[0] !== null) {
-                        $entry_points = is_array($_entrypoints[0]) ? call_user_func_array($_entrypoints[0][0], $_entrypoints[0][1]) : eval($_entrypoints[0]);
+                        $entry_points = is_array($_entrypoints[0]) ? call_user_func_array($_entrypoints[0][0], $_entrypoints[0][1]) : cms_eval($_entrypoints[0], $zone . ':' . $page);
                         if ($page == 'admin_themes') {
                             $entry_points['!themes'] = array('EDIT_TEMPLATES', 'menu/adminzone/style/themes/templates');
                             $entry_points['!!themes'] = array('EDIT_THEME_IMAGES', 'menu/adminzone/style/themes/theme_images');

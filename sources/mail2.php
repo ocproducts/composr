@@ -421,8 +421,6 @@ class Mail_dispatcher_manualproc extends Mail_dispatcher_base
         $worked = false;
         $error = null;
 
-        push_suppress_error_death(true);
-
         $worked = false;
         foreach ($to_emails as $i => $_to_email) {
             $additional = '';
@@ -436,14 +434,14 @@ class Mail_dispatcher_manualproc extends Mail_dispatcher_base
                 $to_line = '"' . $_to_name . '" <' . $_to_email . '>';
             }
 
+            if (function_exists('error_clear_last')) {
+                error_clear_last();
+            }
             $worked = $this->manualproc_mail($to_line, $subject_wrapped, $sending_message, $headers, $additional);
-
             if (!$worked) {
                 $error = cms_error_get_last();
             }
         }
-
-        pop_suppress_error_death();
 
         return array($worked, $error);
     }
@@ -471,7 +469,7 @@ class Mail_dispatcher_manualproc extends Mail_dispatcher_base
         }
         //$additional_flags.=' -v';     mini_sendmail puts everything onto stderr if using this https://github.com/mattrude/mini_sendmail/blob/master/mini_sendmail.c
         $command = ini_get('sendmail_path') . $additional_flags;
-        $handle = proc_open($command, $descriptorspec, $pipes);
+        $handle = @proc_open($command, $descriptorspec, $pipes);
         if ($handle !== false) {
             fprintf($pipes[0], "To: %s\n", $to);
             fprintf($pipes[0], "Subject: %s\n", $subject);

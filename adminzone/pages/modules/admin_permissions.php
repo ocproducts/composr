@@ -768,9 +768,10 @@ class Module_admin_permissions
             $all_modules += find_all_pages($zone, 'modules', 'php', false);
 
             foreach ($all_modules as $module => $module_type) {
-                $functions = extract_module_functions(zone_black_magic_filterer(get_file_base() . '/' . $zone . (($zone == '') ? '' : '/') . 'pages/' . $module_type . '/' . $module . '.php'), array('get_privilege_overrides'));
+                $path = zone_black_magic_filterer(get_file_base() . '/' . $zone . (($zone == '') ? '' : '/') . 'pages/' . $module_type . '/' . $module . '.php');
+                $functions = extract_module_functions($path, array('get_privilege_overrides'));
                 if ($functions[0] !== null) {
-                    $overrides = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
+                    $overrides = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : cms_eval($functions[0], $path);
                     foreach (array_keys($overrides) as $override) {
                         if (!array_key_exists($override, $all_module_overrides)) {
                             $all_module_overrides[$override] = array();

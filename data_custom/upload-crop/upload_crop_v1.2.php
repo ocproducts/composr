@@ -121,6 +121,10 @@ function resizeImage($image, $width, $height, $scale)
         case "image/webp":
             $source = imagecreatefromwebp($image);
             break;
+        case "image/bmp": // PHP actually returns this and probably should not
+        case "image/x-MS-bmp":
+            $source = imagecreatefrombmp($image);
+            break;
     }
     imagepalettetotruecolor($image);
 
@@ -143,6 +147,10 @@ function resizeImage($image, $width, $height, $scale)
             break;
         case "image/webp":
             imagewebp($newImage, $image);
+            break;
+        case "image/bmp": // PHP actually returns this and probably should not
+        case "image/x-MS-bmp":
+            imagebmp($newImage, $image);
             break;
     }
 
@@ -178,6 +186,10 @@ function resizeThumbnailImage($thumb_image_name, $image, $width, $height, $start
         case "image/webp":
             $source = imagecreatefromwebp($image);
             break;
+        case "image/bmp": // PHP actually returns this and probably should not
+        case "image/x-MS-bmp":
+            $source = imagecreatefrombmp($image);
+            break;
     }
     imagecopyresampled($newImage, $source, 0, 0, $start_width, $start_height, $newImageWidth, $newImageHeight, $width, $height);
     switch ($imageType) {
@@ -197,6 +209,10 @@ function resizeThumbnailImage($thumb_image_name, $image, $width, $height, $start
             break;
         case "image/webp":
             imagewebp($newImage, $thumb_image_name);
+            break;
+        case "image/bmp": // PHP actually returns this and probably should not
+        case "image/x-MS-bmp":
+            imagebmp($newImage, $thumb_image_name);
             break;
     }
     chmod($thumb_image_name, 0777);

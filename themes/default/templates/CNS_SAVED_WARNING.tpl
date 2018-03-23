@@ -10,7 +10,7 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div class="inline">
-						<input class="button-hyperlink" type="submit" value="{!LOAD} {TITLE*}" class="js-mouseover-activate-tooltip" data-vw-tooltip="{$ESCAPE*,<h2>{EXPLANATION*}</h2>{MESSAGE_HTML},NULL_ESCAPED}" />
+						<input type="submit" value="{!LOAD} {TITLE*}" class="button-hyperlink js-mouseover-activate-tooltip" data-vw-tooltip="{$ESCAPE*,<h2>{EXPLANATION*}</h2>{MESSAGE_HTML},NULL_ESCAPED}" />
 					</div>
 				</form>
 			</li>

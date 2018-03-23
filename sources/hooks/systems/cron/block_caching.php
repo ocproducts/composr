@@ -116,7 +116,7 @@ class Hook_cron_block_caching
                         $_cache_identifier = call_user_func($cache_on[0], $map);
                     } else {
                         if ($cache_on != '') {
-                            $_cache_on = eval('return ' . $cache_on . ';'); // NB: This uses $map, as $map is referenced inside $cache_on
+                            $_cache_on = cms_eval('return ' . $cache_on . ';', 'Block: ' . $codename); // NB: This uses $map, as $map is referenced inside $cache_on
                             if ($_cache_on === null) {
                                 return null;
                             }

@@ -33,7 +33,7 @@ if (php_function_allowed('set_time_limit')) {
 }
 push_db_scope_check(false);
 
-safe_ini_set('ocproducts.xss_detect', '0');
+cms_ini_set('ocproducts.xss_detect', '0');
 
 require_code('tar');
 

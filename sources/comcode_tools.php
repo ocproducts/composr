@@ -157,7 +157,7 @@ function comcode_convert_script()
     if (either_param_integer('raw_output', 0) == 0) {
         require_code('xml');
 
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
 
         $box_title = get_param_string('box_title', '', INPUT_FILTER_GET_COMPLEX);
         if (($box_title != '') && ($out != '')) {
@@ -170,7 +170,7 @@ function comcode_convert_script()
         echo xmlentities($out);
         echo '</result></request>';
     } else {
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
 
         header('Content-type: text/plain; charset=' . get_charset());
         echo $out;

@@ -108,13 +108,13 @@ class xss_test_set extends cms_test_case
         $this->found_error = null;
         $temp = set_error_handler(array($this, '_temp_handler'));
 
-        safe_ini_set('ocproducts.xss_detect', '1');
+        cms_ini_set('ocproducts.xss_detect', '1');
 
         ob_start();
         @print(get_param_string('id')); // Print an unverified input parameter, but suppress our XSS error
         ob_end_clean();
 
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
 
         set_error_handler($temp);
 
@@ -129,14 +129,14 @@ class xss_test_set extends cms_test_case
         $this->found_error = null;
         $temp = set_error_handler(array($this, '_temp_handler'));
 
-        safe_ini_set('ocproducts.xss_detect', '1');
+        cms_ini_set('ocproducts.xss_detect', '1');
 
         ob_start();
         $tpl = do_template('PARAGRAPH', array('_GUID' => '8bca69a1088b0ca260321cd3117aabbe', 'TEXT' => get_param_string('id')));
         @$tpl->evaluate_echo();
         ob_end_clean();
 
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
 
         set_error_handler($temp);
 
@@ -151,7 +151,7 @@ class xss_test_set extends cms_test_case
         $this->found_error = null;
         $temp = set_error_handler(array($this, '_temp_handler'));
 
-        safe_ini_set('ocproducts.xss_detect', '1');
+        cms_ini_set('ocproducts.xss_detect', '1');
 
         ob_start();
         $_tpl = do_template('PARAGRAPH', array('_GUID' => '809e41570771a797998d59f8e3dc7a0b', 'TEXT' => get_param_string('id')));
@@ -159,7 +159,7 @@ class xss_test_set extends cms_test_case
         @$tpl->evaluate_echo();
         ob_end_clean();
 
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
 
         set_error_handler($temp);
 
@@ -174,7 +174,7 @@ class xss_test_set extends cms_test_case
         $this->found_error = null;
         $temp = set_error_handler(array($this, '_temp_handler'));
 
-        safe_ini_set('ocproducts.xss_detect', '1');
+        cms_ini_set('ocproducts.xss_detect', '1');
 
         ob_start();
         $_tpl = new Tempcode();
@@ -183,7 +183,7 @@ class xss_test_set extends cms_test_case
         @$tpl->evaluate_echo();
         ob_end_clean();
 
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
 
         set_error_handler($temp);
 

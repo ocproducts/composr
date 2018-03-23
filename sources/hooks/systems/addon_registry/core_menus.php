@@ -161,6 +161,7 @@ class Hook_addon_registry_core_menus
             'themes/default/templates/PAGE_LINK_CHOOSER.tpl',
             'data/page_link_chooser.php',
             'themes/default/javascript/core_menus.js',
+            'sources/hooks/systems/preview/menu.php',
         );
     }
 
@@ -256,6 +257,7 @@ class Hook_addon_registry_core_menus
                 'ROOT_BRANCH' => $root_branch,
                 'TITLE' => lorem_title(),
                 'TOTAL_ITEMS' => placeholder_number(),
+                'MENU_TYPE' => 'dropdown',
             )), null, '', true),
         );
     }

@@ -587,7 +587,7 @@ function cns_cache_member_details($members)
         global $TABLE_LANG_FIELDS_CACHE;
         $member_rows_2 = $GLOBALS['FORUM_DB']->query('SELECT f.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields f WHERE ' . str_replace('m.id', 'mf_member_id', $member_or_list), null, 0, false, true, array_key_exists('f_member_custom_fields', $TABLE_LANG_FIELDS_CACHE) ? $TABLE_LANG_FIELDS_CACHE['f_member_custom_fields'] : array());
         $member_rows_3 = $GLOBALS['FORUM_DB']->query('SELECT gm_group_id,gm_member_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members WHERE gm_validated=1 AND (' . str_replace('m.id', 'gm_member_id', $member_or_list) . ')', null, 0, false, true);
-        global $MEMBER_CACHE_FIELD_MAPPINGS, $GROUP_MEMBERS_CACHE, $SIGNATURES_CACHE;
+        global $MEMBER_CACHE_FIELD_MAPPINGS, $SIGNATURES_CACHE;
         $found_groups = array();
         foreach ($member_rows as $row) {
             $GLOBALS['CNS_DRIVER']->MEMBER_ROWS_CACHED[$row['id']] = $row;
@@ -595,8 +595,7 @@ function cns_cache_member_details($members)
             if (!cns_is_ldap_member($row['id'])) {
                 // Primary
                 $pg = $GLOBALS['CNS_DRIVER']->get_member_row_field($row['id'], 'm_primary_group');
-                $found_groups[$pg] = 1;
-                $GROUP_MEMBERS_CACHE[$row['id']][false][false] = array($pg => 1);
+                $found_groups[$pg] = true;
             }
 
             // Signature
@@ -609,8 +608,7 @@ function cns_cache_member_details($members)
         }
         foreach ($member_rows_3 as $row) {
             if (!cns_is_ldap_member($row['gm_member_id'])) {
-                $GROUP_MEMBERS_CACHE[$row['gm_member_id']][false][false][$row['gm_group_id']] = 1;
-                $found_groups[$row['gm_group_id']] = 1;
+                $found_groups[$row['gm_group_id']] = true;
             }
         }
 

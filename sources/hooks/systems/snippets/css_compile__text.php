@@ -36,7 +36,7 @@ class Hook_snippet_css_compile__text
         }
 
         if (has_actual_page_access(get_member(), 'admin_themes')) {
-            safe_ini_set('ocproducts.xss_detect', '0');
+            cms_ini_set('ocproducts.xss_detect', '0');
 
             $css = post_param_string('css');
 

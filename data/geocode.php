@@ -60,7 +60,7 @@ prepare_for_known_ajax_response();
 
 header('Content-type: text/plain; charset=' . get_charset());
 
-safe_ini_set('ocproducts.xss_detect', '0');
+cms_ini_set('ocproducts.xss_detect', '0');
 
 $location = get_param_string('location', null, INPUT_FILTER_GET_COMPLEX);
 if ($location !== null) {

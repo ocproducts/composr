@@ -20,8 +20,8 @@ function unit_testing_run()
 
     @header('Content-Type: text/html');
 
-    safe_ini_set('ocproducts.type_strictness', '0');
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.type_strictness', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     require_code('_tests/simpletest/unit_tester.php');
     require_code('_tests/simpletest/web_tester.php');

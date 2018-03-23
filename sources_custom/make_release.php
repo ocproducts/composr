@@ -13,7 +13,7 @@
  * @package    composr_release_build
  */
 
-/*EXTRA FUNCTIONS: shell_exec|escapeshellarg|DOM.*|pretty_print_dom_document*/
+/*EXTRA FUNCTIONS: shell_exec|DOM.*|pretty_print_dom_document*/
 
 function init__make_release()
 {
@@ -196,7 +196,7 @@ function make_installers($skip_file_grab = false)
         @unlink($quick_zip);
 
         chdir($builds_path . '/builds/' . $version_dotted);
-        $cmd = 'zip -r -9 ' . escapeshellarg($quick_zip) . ' ' . escapeshellarg('data.cms') . ' ' . escapeshellarg('install.php');
+        $cmd = 'zip -r -9 ' . cms_escapeshellarg($quick_zip) . ' ' . cms_escapeshellarg('data.cms') . ' ' . cms_escapeshellarg('install.php');
         $cmd_result = shell_exec($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
@@ -205,7 +205,7 @@ function make_installers($skip_file_grab = false)
         $out .= do_build_archive_output($quick_zip, $output2);
 
         chdir(get_file_base() . '/data_custom/builds');
-        $cmd = 'zip -r -9 ' . escapeshellarg($quick_zip) . ' ' . escapeshellarg('readme.txt');
+        $cmd = 'zip -r -9 ' . cms_escapeshellarg($quick_zip) . ' ' . cms_escapeshellarg('readme.txt');
         $cmd_result = shell_exec($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
@@ -226,7 +226,7 @@ function make_installers($skip_file_grab = false)
 
         // Do the main work
         chdir($builds_path . '/builds/build/' . $version_branch);
-        $cmd = 'zip -r -9 ' . escapeshellarg($manual_zip) . ' *';
+        $cmd = 'zip -r -9 ' . cms_escapeshellarg($manual_zip) . ' *';
         $cmd_result = shell_exec($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
@@ -251,7 +251,7 @@ function make_installers($skip_file_grab = false)
         // Do the main work...
 
         chdir($builds_path . '/builds/build/' . $version_branch);
-        $cmd = 'tar -cvf ' . escapeshellarg($bundled) . ' *';
+        $cmd = 'tar -cvf ' . cms_escapeshellarg($bundled) . ' *';
         $cmd_result = shell_exec($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
@@ -260,7 +260,7 @@ function make_installers($skip_file_grab = false)
         //$out .= do_build_archive_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
 
         chdir(get_file_base() . '/data_custom/builds');
-        $cmd = 'tar -rvf ' . escapeshellarg($bundled) . ' readme.txt';
+        $cmd = 'tar -rvf ' . cms_escapeshellarg($bundled) . ' readme.txt';
         $cmd_result = shell_exec($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
@@ -269,7 +269,7 @@ function make_installers($skip_file_grab = false)
         //$out .= do_build_archive_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
 
         chdir($builds_path . '/builds/build/' . $version_branch);
-        $cmd = 'gzip -n ' . escapeshellarg($bundled);
+        $cmd = 'gzip -n ' . cms_escapeshellarg($bundled);
         $cmd_result = shell_exec($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             if (is_file($bundled . '.gz')) {
@@ -323,7 +323,7 @@ function make_installers($skip_file_grab = false)
 
         // Do the main work
         chdir($builds_path . '/builds/build');
-        $cmd = 'zip -r -9 -v ' . escapeshellarg($mszip) . ' composr manifest.xml parameters.xml install1.sql install2.sql install3.sql install4.sql user.sql postinstall.sql';
+        $cmd = 'zip -r -9 -v ' . cms_escapeshellarg($mszip) . ' composr manifest.xml parameters.xml install1.sql install2.sql install3.sql install4.sql user.sql postinstall.sql';
         $cmd_result = shell_exec($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
@@ -416,7 +416,7 @@ function make_installers($skip_file_grab = false)
 
         // Do the main work
         chdir($builds_path . '/builds/aps');
-        $cmd = 'zip -r -9 -v ' . escapeshellarg($aps_zip) . ' htdocs images scripts test APP-LIST.xml APP-META.xml';
+        $cmd = 'zip -r -9 -v ' . cms_escapeshellarg($aps_zip) . ' htdocs images scripts test APP-LIST.xml APP-META.xml';
         $cmd_result = shell_exec($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
@@ -440,7 +440,7 @@ function make_installers($skip_file_grab = false)
 
         // Do the main work
         chdir($builds_path . '/builds/build/' . $version_branch);
-        $cmd = 'tar --exclude=_config.php --exclude=install.php -cvf ' . escapeshellarg($omni_upgrader) . ' *';
+        $cmd = 'tar --exclude=_config.php --exclude=install.php -cvf ' . cms_escapeshellarg($omni_upgrader) . ' *';
         $cmd_result = shell_exec($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
@@ -1046,7 +1046,7 @@ function _download_latest_data_ip_country()
     fclose($myfile);
 
     $tmp_name_tar = cms_tempnam();
-    shell_exec('gunzip -c ' . escapeshellarg($tmp_name_gzip) . ' > ' . escapeshellarg($tmp_name_tar));
+    shell_exec('gunzip -c ' . cms_escapeshellarg($tmp_name_gzip) . ' > ' . cms_escapeshellarg($tmp_name_tar));
 
     $lines = explode("\n", unixify_line_format(file_get_contents($tmp_name_tar)));
     foreach ($lines as $line) {

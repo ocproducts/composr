@@ -1415,11 +1415,12 @@ abstract class Resource_fs_base
 
         $page = $cma_info['cms_page'];
         require_code('zones2');
-        $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
+        $zone = get_module_zone($page, 'modules', null, 'php', true, false);
+        $_overridables = extract_module_functions_page($zone, $page, array('get_privilege_overrides'));
         if ($_overridables[0] === null) {
             $overridables = array();
         } else {
-            $overridables = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : eval($_overridables[0]);
+            $overridables = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : cms_eval($_overridables[0], $zone . ':' . $page);
         }
 
         // Work out what privileges we need to work with
@@ -1544,11 +1545,12 @@ abstract class Resource_fs_base
 
         $page = $cma_info['cms_page'];
         require_code('zones2');
-        $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
+        $zone = get_module_zone($page, 'modules', null, 'php', true, false);
+        $_overridables = extract_module_functions_page($zone, $page, array('get_privilege_overrides'));
         if ($_overridables[0] === null) {
             $overridables = array();
         } else {
-            $overridables = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : eval($_overridables[0]);
+            $overridables = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : cms_eval($_overridables[0], $zone . ':' . $page);
         }
 
         $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();

@@ -733,6 +733,8 @@ class Hook_addon_registry_core_abstract_interfaces
             $actions = do_lorem_template('COLUMNED_TABLE_ACTION', array(
                 'GET' => true,
                 'HIDDEN' => '',
+                'ACTION_TITLE' => lorem_phrase(),
+                'ICON' => 'admin/delete',
                 'NAME' => lorem_phrase(),
                 'URL' => placeholder_url(),
                 'CONFIRM' => false,

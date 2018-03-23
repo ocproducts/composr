@@ -252,7 +252,8 @@ function get_category_permissions_for_environment($module, $category, $page = nu
 
     // Heading
     require_code('zones2');
-    $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
+    $zone = get_module_zone($page, 'modules', null, 'php', true, false);
+    $_overridables = extract_module_functions_page($zone, $page, array('get_privilege_overrides'));
     $out = new Tempcode;
     if ($_overridables[0] === null) {
         $temp = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '6789cb454688a1bc811af1b4011ede35', 'TITLE' => do_lang_tempcode('PERMISSIONS'), 'HELP' => $help, 'SECTION_HIDDEN' => true));
@@ -265,7 +266,7 @@ function get_category_permissions_for_environment($module, $category, $page = nu
             'HELP' => do_lang_tempcode('PINTERACE_HELP'),
             'SECTION_HIDDEN' => true,
         ));
-        $overridables = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : eval($_overridables[0]);
+        $overridables = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : cms_eval($_overridables[0], $zone . ':' . $page);
     }
     $out->attach($temp);
 
@@ -495,11 +496,12 @@ function set_category_permissions_from_environment($module, $category, $page = n
         $db->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id));
     }
 
-    $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
+    $zone = get_module_zone($page, 'modules', null, 'php', true, false);
+    $_overridables = extract_module_functions_page($zone, $page, array('get_privilege_overrides'));
     if ($_overridables[0] === null) {
         $overridables = array();
     } else {
-        $overridables = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : eval($_overridables[0]);
+        $overridables = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : cms_eval($_overridables[0], $zone . ':' . $page);
     }
 
     foreach ($overridables as $override => $cat_support) {

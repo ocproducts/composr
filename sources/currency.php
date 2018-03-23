@@ -119,7 +119,7 @@ function currency_convert_wrap($amount, $from_currency = null, $display_method =
  * @param  ?ID_TEXT $to_currency The end currency code (null: something appropriate for the user)
  * @param  integer $display_method A CURRENCY_DISPLAY_* constant
  * @param  ?ID_TEXT $force_via Force conversion via this API (null: no restriction)
- * @set ecb google conv_api
+ * @set ecb conv_api
  * @return mixed The new amount with the specified display method (CURRENCY_DISPLAY_RAW is a float, otherwise a string)
  */
 function currency_convert($amount, $from_currency = null, $to_currency = null, $display_method = 0, $force_via = null)
@@ -180,14 +180,6 @@ function currency_convert($amount, $from_currency = null, $to_currency = null, $
     // Case: Get from "The Free Currency Converter API"
     if (($new_amount === null) && ($force_via === null) || ($force_via == 'conv_api')) {
         $new_amount = _currency_convert__currency_conv_api($amount, $from_currency, $to_currency);
-        if ($new_amount !== null) {
-            $save_caching = true;
-        }
-    }
-
-    // Case: Get from Google
-    if (($new_amount === null) && ($force_via === null) || ($force_via == 'google')) {
-        $new_amount = _currency_convert__google($amount, $from_currency, $to_currency);
         if ($new_amount !== null) {
             $save_caching = true;
         }
@@ -298,38 +290,6 @@ function _currency_convert__currency_conv_api($amount, $from_currency, $to_curre
 
             return $rate * $amount;
         }
-    }
-    return null;
-}
-
-/**
- * Perform a currency conversion using Google.
- *
- * @param  mixed $amount The starting amount (integer or float)
- * @param  ID_TEXT $from_currency The start currency code
- * @param  ID_TEXT $to_currency The end currency code
- * @return ?float The new amount (null: could not look up)
- */
-function _currency_convert__google($amount, $from_currency, $to_currency)
-{
-    $google_url = 'http://finance.google.com/finance/converter?a=' . float_to_raw_string($amount) . '&from=' . urlencode($from_currency) . '&to=' . urlencode($to_currency);
-    $result = http_get_contents($google_url, array('trigger_error' => false));
-    if (is_string($result)) {
-        for ($i = 0; $i < strlen($result); $i++) { // bizarre unicode characters coming back from Google
-            if (ord($result[$i]) > 127) {
-                $result[$i] = ' ';
-            }
-        }
-
-        $matches = array();
-        if (preg_match('#<span class=bld>([\d\., ]+) [A-Z]+</span>#U', $result, $matches) != 0) { // e.g. <b>1400 British pounds = 2 024.4 U.S. dollars</b>
-            $_new_amount = str_replace(array(',', ' '), array('', ''), $matches[1]);
-            $new_amount = floatval($_new_amount);
-        } else {
-            return null;
-        }
-
-        return $new_amount;
     }
     return null;
 }

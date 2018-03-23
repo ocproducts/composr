@@ -60,7 +60,7 @@ function init__failure()
  */
 function suggest_fatalistic()
 {
-    if ((may_see_stack_traces()) && (get_param_integer('keep_fatalistic', 0) == 0) && (running_script('index')) && (strpos($_SERVER['SCRIPT_NAME'], '/_tests/') === false)) {
+    if ((may_see_stack_traces()) && (get_param_integer('keep_fatalistic', 0) == 0) && (running_script('index'))) {
         if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', array(), true);
             $st = do_lang_tempcode('WARN_TO_STACK_TRACE', escape_html($stack_trace_url->evaluate()));
@@ -473,7 +473,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
     if ($WANT_TEXT_ERRORS) {
         @header('Content-type: text/plain; charset=' . get_charset());
         set_http_status_code(500);
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
         @debug_print_backtrace();
         exit((is_object($text) ? strip_html($text->evaluate()) : $text) . "\n");
     }

@@ -31,7 +31,7 @@
      * @param postingFieldName
      */
     function addAttachment(startNum, postingFieldName) {
-        console.log('addAttachment()', 'startNum:', startNum, 'postingFieldName:', postingFieldName);
+        //console.log('addAttachment()', 'startNum:', startNum, 'postingFieldName:', postingFieldName);
 
         var addTo = document.getElementById('js-attachment-store');
 
@@ -70,7 +70,7 @@
      * @return { Promise }
      */
     $posting.setAttachment = function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
-        console.log('setAttachment()', 'fieldName:', fieldName, 'number:', number, 'filename:', filename, 'multi:', multi, 'uploaderSettings:', uploaderSettings);
+        //console.log('setAttachment()', 'fieldName:', fieldName, 'number:', number, 'filename:', filename, 'multi:', multi, 'uploaderSettings:', uploaderSettings);
 
         fieldName = strVal(fieldName);
         number = Number(number);

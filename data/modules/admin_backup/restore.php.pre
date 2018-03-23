@@ -27,9 +27,9 @@ if (substr($FILE_BASE, -4) == '.php') {
 
 error_reporting(E_ALL);
 
-safe_ini_set('display_errors', '1');
+cms_ini_set('display_errors', '1');
 assert_options(ASSERT_ACTIVE, 0);
-safe_ini_set('assert.active', '0');
+cms_ini_set('assert.active', '0');
 
 global $REQUIRED_BEFORE;
 $REQUIRED_BEFORE = array();
@@ -53,9 +53,9 @@ define('URL_CONTENT_REGEXP_JS', '\w\-\u0080-\uFFFF'); // JavaScript is done usin
 
 $shl = @ini_get('suhosin.memory_limit');
 if (($shl === false) || ($shl == '') || ($shl == '0')) {
-    safe_ini_set('memory_limit', '-1');
+    cms_ini_set('memory_limit', '-1');
 } else {
-    safe_ini_set('memory_limit', $shl);
+    cms_ini_set('memory_limit', $shl);
 }
 
 // Requirements check
@@ -270,7 +270,7 @@ function object_factory($class)
  * @param  string $value New value of option.
  * @return ~string                      Old value of option (false: error).
  */
-function safe_ini_set($var,$value)
+function cms_ini_set($var,$value)
 {
     if (@preg_match('#(\s|,|^)ini_set(\s|$|,)#', strtolower(ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) != 0) {
         return false;

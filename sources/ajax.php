@@ -113,7 +113,7 @@ function namelike_script()
     $id = str_replace('*', '%', get_param_string('id', false, INPUT_FILTER_GET_COMPLEX));
     $special = get_param_string('special', '');
 
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     header('Content-Type: text/xml');
     echo '<?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>';
@@ -300,7 +300,7 @@ function fractional_edit_script()
             $edited = escape_html($edited);
         }
     }
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
     echo $edited;
 
     exit(); // So auto_append_file cannot run and corrupt our output
@@ -393,7 +393,7 @@ function ajax_tree_script()
     if ($id == '') {
         $id = null;
     }
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
     $html_mask = get_param_integer('html_mask', 0) == 1;
     if (!$html_mask) {
         echo '<?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>';
@@ -423,7 +423,7 @@ function confirm_session_script()
 {
     prepare_for_known_ajax_response();
 
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     header('Content-type: text/plain; charset=' . get_charset());
     global $SESSION_CONFIRMED_CACHE;
@@ -447,7 +447,7 @@ function load_template_script()
         exit();
     }
 
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     $theme = filter_naughty(get_param_string('theme'));
     $id = filter_naughty(basename(get_param_string('id')));
@@ -480,7 +480,7 @@ function sheet_script()
 {
     prepare_for_known_ajax_response();
 
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     header('Content-Type: text/css');
     $sheet = get_param_string('sheet');
@@ -501,7 +501,7 @@ function sheet_script()
  */
 function script_script()
 {
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     @header('Content-Type: application/javascript');
     prepare_for_known_ajax_response();
@@ -534,7 +534,7 @@ function snippet_script()
         $ZONE = null;
     }
 
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     header('Content-Type: text/plain; charset=' . get_charset());
     $hook = filter_naughty_harsh(get_param_string('snippet'));

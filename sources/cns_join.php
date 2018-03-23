@@ -326,7 +326,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         $url_simple = $_url_simple->evaluate();
         $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect != '') {
-            $url .= '&redirect=' . cms_url_encode(static_evaluate_tempcode(protect_url_parameter($redirect)));
+            $url .= '&redirect=' . cms_urlencode(static_evaluate_tempcode(protect_url_parameter($redirect)));
         }
         $message = do_lang('CNS_SIGNUP_TEXT', comcode_escape(get_site_name()), comcode_escape($url), array($url_simple, $email_address, $validated_email_confirm_code), $language);
         require_code('mail');

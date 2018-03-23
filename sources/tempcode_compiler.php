@@ -18,7 +18,7 @@
  * @package    core
  */
 
-/*EXTRA FUNCTIONS: ILess_Autoloader|ILess_Parser|ILess_Cache_FileSystem|less_proxy_compile|proc_.*|escapeshellarg|stream_get_contents*/
+/*EXTRA FUNCTIONS: ILess_Autoloader|ILess_Parser|ILess_Cache_FileSystem|less_proxy_compile|proc_.*|stream_get_contents*/
 
 /**
  * Standard code module initialisation function.
@@ -511,7 +511,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         }
                         if ((may_optimise_out_symbol(trim($first_param, '"'))) && (tc_is_all_static($_opener_params))) { // Can optimise out?
                             $tpl_funcs = array();
-                            $eval = debug_eval('return ' . $new_line . ';', $tpl_funcs, array(), $cl);
+                            $eval = tempcode_compiler_eval('return ' . $new_line . ';', $tpl_funcs, array(), $cl);
 
                             $new_line = '"' . php_addslashes($eval) . '"';
                         } else {
@@ -524,7 +524,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                     }
                                 }
                                 $tpl_funcs = array();
-                                $eval = debug_eval('return ' . $new_line . ';', $tpl_funcs, array(), $cl);
+                                $eval = tempcode_compiler_eval('return ' . $new_line . ';', $tpl_funcs, array(), $cl);
                                 $new_line = '"' . php_addslashes($eval) . '"';
                                 $_GET = $tmp;
                                 $current_level_data[] = $new_line;
@@ -540,7 +540,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         $new_line = 'ecv($cl,array(' . implode(',', array_map('strval', $escaped)) . '),' . strval(TC_LANGUAGE_REFERENCE) . ',' . $first_param . ',array(' . $_opener_params . '))';
                         if (tc_is_all_static($_opener_params)) { // Optimise out for simple case?
                             $tpl_funcs = array();
-                            $looked_up = debug_eval('return ' . $new_line . ';', $tpl_funcs, array(), $cl);
+                            $looked_up = tempcode_compiler_eval('return ' . $new_line . ';', $tpl_funcs, array(), $cl);
                             if (!empty($looked_up)) {
                                 $new_line = '"' . php_addslashes($looked_up) . '"';
                             }
@@ -600,7 +600,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                 // Handle directive nesting
                 if ($past_level_mode === PARSE_DIRECTIVE) {
                     $tpl_funcs = array();
-                    $eval = debug_eval('return ' . $first_param . ';', $tpl_funcs, array(), $cl);
+                    $eval = tempcode_compiler_eval('return ' . $first_param . ';', $tpl_funcs, array(), $cl);
                     if (!is_string($eval)) {
                         $eval = '';
                     }
@@ -684,7 +684,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
 
                         // Work out name
                         $tpl_funcs = array();
-                        $eval = debug_eval('return ' . implode('.', $directive_opener_params[1]) . ';', $tpl_funcs, array(), $cl);
+                        $eval = tempcode_compiler_eval('return ' . implode('.', $directive_opener_params[1]) . ';', $tpl_funcs, array(), $cl);
                         if (!is_string($eval)) {
                             $eval = '';
                         }
@@ -739,7 +739,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 case 'IF_NON_EMPTY':
                                 case 'BOX':
                                     $tpl_funcs = array();
-                                    $eval = debug_eval('return ' . $regular_code_with_faux . ';', $tpl_funcs, array(), $cl);
+                                    $eval = tempcode_compiler_eval('return ' . $regular_code_with_faux . ';', $tpl_funcs, array(), $cl);
 
                                     if ($eval !== '') {
                                         $current_level_data[] = $directive_internal;
@@ -785,7 +785,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
 
                             case 'IF_PASSED':
                                 $tpl_funcs = array();
-                                $eval = debug_eval('return ' . $first_directive_param . ';', $tpl_funcs, array(), $cl);
+                                $eval = tempcode_compiler_eval('return ' . $first_directive_param . ';', $tpl_funcs, array(), $cl);
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
@@ -794,7 +794,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
 
                             case 'IF_NON_PASSED':
                                 $tpl_funcs = array();
-                                $eval = debug_eval('return ' . $first_directive_param . ';', $tpl_funcs, array(), $cl);
+                                $eval = tempcode_compiler_eval('return ' . $first_directive_param . ';', $tpl_funcs, array(), $cl);
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
@@ -803,7 +803,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
 
                             case 'IF_PASSED_AND_TRUE':
                                 $tpl_funcs = array();
-                                $eval = debug_eval('return ' . $first_directive_param . ';', $tpl_funcs, array(), $cl);
+                                $eval = tempcode_compiler_eval('return ' . $first_directive_param . ';', $tpl_funcs, array(), $cl);
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
@@ -812,7 +812,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
 
                             case 'IF_NON_PASSED_OR_FALSE':
                                 $tpl_funcs = array();
-                                $eval = debug_eval('return ' . $first_directive_param . ';', $tpl_funcs, array(), $cl);
+                                $eval = tempcode_compiler_eval('return ' . $first_directive_param . ';', $tpl_funcs, array(), $cl);
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
@@ -826,7 +826,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                             case 'LOOP':
                                 $current_level_data[] = 'closure_loop(array(' . $directive_params . ',\'vars\'=>$parameters),array($parameters,$cl),' . "\n" . 'recall_named_function(\'' . uniqid('', true) . '\',\'$parameters,$cl\',"extract(\$parameters,EXTR_PREFIX_ALL,\'bound\'); return ' . php_addslashes($directive_internal) . ';"))';
 
-                                $parameter = debug_eval('return ' . $first_directive_param . ';', $tpl_funcs, array(), $cl);
+                                $parameter = tempcode_compiler_eval('return ' . $first_directive_param . ';', $tpl_funcs, array(), $cl);
                                 if (!is_string($parameter)) {
                                     $parameter = '';
                                 }
@@ -847,33 +847,33 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                             case 'INCLUDE':
                                 global $FILE_ARRAY;
                                 $tpl_funcs = array();
-                                $eval = debug_eval('return ' . $first_directive_param . ';', $tpl_funcs, array(), $cl);
+                                $eval = tempcode_compiler_eval('return ' . $first_directive_param . ';', $tpl_funcs, array(), $cl);
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
                                 if (($template_name === $eval) || ($past_level_data === array('""')) && (!isset($FILE_ARRAY))) { // Simple case where no separate binding context of variables needed
-                                    $_ex = isset($directive_opener_params[1 + 1 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[1 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
+                                    $_ex = isset($directive_opener_params[1 + 1 + 2]) ? tempcode_compiler_eval('return ' . implode('.', $directive_opener_params[1 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
                                     if (!is_string($_ex)) {
                                         $_ex = '';
                                     }
                                     if ($_ex == '') {
                                         $_ex = '.tpl';
                                     }
-                                    $_td = isset($directive_opener_params[1 + 2 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[2 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
+                                    $_td = isset($directive_opener_params[1 + 2 + 2]) ? tempcode_compiler_eval('return ' . implode('.', $directive_opener_params[2 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
                                     if (!is_string($_td)) {
                                         $_td = '';
                                     }
                                     if ($_td == '') {
                                         $_td = 'templates';
                                     }
-                                    $_theme = isset($directive_opener_params[1 + 3 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[3 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
+                                    $_theme = isset($directive_opener_params[1 + 3 + 2]) ? tempcode_compiler_eval('return ' . implode('.', $directive_opener_params[3 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
                                     if (!is_string($_theme)) {
                                         $_theme = '';
                                     }
                                     if ($_theme == '') {
                                         $_theme = $theme;
                                     }
-                                    $_force_original = isset($directive_opener_params[1 + 4 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[4 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
+                                    $_force_original = isset($directive_opener_params[1 + 4 + 2]) ? tempcode_compiler_eval('return ' . implode('.', $directive_opener_params[4 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
                                     if (!is_string($_force_original)) {
                                         $_force_original = '';
                                     }
@@ -914,7 +914,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         }
                     } else {
                         $tpl_funcs = array();
-                        $eval = debug_eval('return ' . $first_param . ';', $tpl_funcs, array(), $cl);
+                        $eval = tempcode_compiler_eval('return ' . $first_param . ';', $tpl_funcs, array(), $cl);
                         if (!is_string($eval)) {
                             $eval = '';
                         }
@@ -1004,7 +1004,7 @@ function tc_eval_opener_params($_opener_params)
     $cl = fallback_lang();
 
     $tpl_funcs = array();
-    return debug_eval('return array(' . $_opener_params . ');', $tpl_funcs, array(), $cl);
+    return tempcode_compiler_eval('return array(' . $_opener_params . ');', $tpl_funcs, array(), $cl);
 }
 
 /**
@@ -1149,7 +1149,7 @@ function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix,
                 fatal_exit('Unable to find the less NPM module. Please `cd` to your Composr directory and run `npm install less` to install it.');
             }
 
-            $cmd = sprintf('%s %s --no-color %s', $SITE_INFO['nodejs_binary_path'], escapeshellarg($less_path), escapeshellarg($_path));
+            $cmd = sprintf('%s %s --no-color %s', $SITE_INFO['nodejs_binary_path'], cms_escapeshellarg($less_path), cms_escapeshellarg($_path));
             $descriptorspec = array(
                 0 => array('pipe', 'r'), // stdin
                 1 => array('pipe', 'w'), // stdout
@@ -1370,4 +1370,28 @@ function build_closure_function($myfunc, $parts)
     }
 
     return $funcdef;
+}
+
+/**
+ * Evaluate some Tempcode PHP, with ability to better debug.
+ *
+ * @param  ?string $code Code to evaluate (null: code not found)
+ * @param  ?array $tpl_funcs Evaluation code context (null: N/A)
+ * @param  ?array $parameters Evaluation parameters (null: N/A)
+ * @param  ?ID_TEXT $cl Language (null: N/A)
+ * @return mixed Result
+ *
+ * @ignore
+ */
+function tempcode_compiler_eval($code, &$tpl_funcs = null, $parameters = null, $cl = null)
+{
+    global $NO_EVAL_CACHE, $XSS_DETECT, $KEEP_TPL_FUNCS, $FULL_RESET_VAR_CODE, $RESET_VAR_CODE;
+
+    if ($code === '') {
+        return '';
+    }
+
+    $result = @eval($code); // Simple error suppressing because we totally expect this to sometimes fail. We can't always set the full Tempcode context correctly.
+
+    return $result;
 }

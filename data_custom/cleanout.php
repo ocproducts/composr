@@ -63,7 +63,7 @@ if (!addon_installed('meta_toolkit')) {
 $out = cleanup();
 if (!headers_sent()) {
     header('Content-type: text/plain; charset=' . get_charset());
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
     if ($out !== null) {
         echo is_object($out) ? $out->evaluate() : (is_bool($out) ? ($out ? 'true' : 'false') : $out);
     }
@@ -499,6 +499,7 @@ function cleanup()
     if ($log_cache_wip_cleanup) {
         deldir_contents(get_custom_file_base() . '/uploads/incoming_uploads', true);
         deldir_contents(get_custom_file_base() . '/uploads/auto_thumbs', true);
+        deldir_contents(get_custom_file_base() . '/uploads/captcha', true);
         foreach ($table_purposes as $table => $purpose) {
             if ((table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE)) && ($GLOBALS['SITE_DB']->table_exists($table))) {
                 $GLOBALS['SITE_DB']->query_delete($table);

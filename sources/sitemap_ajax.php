@@ -66,7 +66,7 @@ function sitemap_script_loading()
 
     header('Content-Type: text/xml');
     $permissions_needed = (get_param_integer('get_perms', 0) == 1); // Whether we are limiting our tree to permission-supporting
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     echo '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>';
     echo "\n" . '<request><result>';
@@ -251,9 +251,18 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
 
     $draggable = (preg_match('#^adminzone:admin_#', @strval($node['content_id'])) == 0) && (preg_match('#^\w*:\w+$#', @strval($node['content_id'])) != 0);
 
+    $serverid = $node['page_link'];
+
+    // To make it more user-friendly, show a page-link as a URL
+    if ((get_param_integer('use_urls', 0) == 1) && (!looks_like_url($serverid)) && (strpos($serverid, ':') !== false)) {
+        $id = page_link_to_url($serverid, true);
+    } else {
+        $id = uniqid('', true);
+    }
+
     echo str_replace('  ', str_repeat(' ', $recurse_level + 1), '
     <category
-     serverid="' . xmlentities($node['page_link']) . '"
+     serverid="' . xmlentities($serverid) . '"
      expanded="false"
      title="' . xmlentities(strip_html($node['title']->evaluate())) . '"
      description="' . xmlentities(strip_html(isset($node['description']) ? $node['description'] : '')) . '"
@@ -266,7 +275,7 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
      ' . ($permissions_needed ? '' : ('draggable="' . ($draggable ? 'page' : 'false') . '"')) . '
      ' . ($permissions_needed ? '' : ('droppable="' . (($type == 'zone') ? 'page' : 'false') . '"')) . '
      type="' . xmlentities(($type === null) ? '' : $type) . '"
-     id="' . xmlentities(uniqid('', true)) . '"' . $view_perms . $privilege_perms . '>
+     id="' . xmlentities($id) . '"' . $view_perms . $privilege_perms . '>
     ');
 
     if (isset($node['children'])) {
@@ -458,8 +467,9 @@ function _get_overridable_privileges_for_privilege_page($privilege_page)
         );
     }
 
-    $_overridables = extract_module_functions_page(get_module_zone($privilege_page, 'modules', null, 'php', true, false), $privilege_page, array('get_privilege_overrides'));
-    $overridable_privileges = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : eval($_overridables[0]);
+    $zone = get_module_zone($privilege_page, 'modules', null, 'php', true, false);
+    $_overridables = extract_module_functions_page($zone, $privilege_page, array('get_privilege_overrides'));
+    $overridable_privileges = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : cms_eval($_overridables[0], $zone . ':' . $privilege_page);
     if (!is_array($overridable_privileges)) {
         $overridable_privileges = array();
     }

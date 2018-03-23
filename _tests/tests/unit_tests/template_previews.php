@@ -33,7 +33,7 @@ class template_previews_test_set extends cms_test_case
         $_GET['keep_has_js'] = '0';
         push_query_limiting(false);
         $_GET['keep_query_limit'] = '0';
-        safe_ini_set('memory_limit', '-1');
+        cms_ini_set('memory_limit', '-1');
         $_GET['wide'] = '1';
         $_GET['keep_devtest'] = '1';
         $_GET['keep_has_js'] = '0';
@@ -60,8 +60,8 @@ class template_previews_test_set extends cms_test_case
             $this->assertFalse((!array_key_exists($t, $all_previews)), 'Missing preview for: ' . $t);
         }
 
-        safe_ini_set('ocproducts.type_strictness', '0');
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.type_strictness', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
     }
 
     public function testScreenPreview()
@@ -79,8 +79,8 @@ class template_previews_test_set extends cms_test_case
             $this->screen_preview_test_for_theme($theme);
         }
 
-        safe_ini_set('ocproducts.type_strictness', '0');
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.type_strictness', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
     }
 
     protected function screen_preview_test_for_theme($theme)
@@ -275,8 +275,8 @@ class template_previews_test_set extends cms_test_case
             unset($out2);
         }
 
-        safe_ini_set('ocproducts.type_strictness', '0');
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.type_strictness', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
     }
 
     protected function cleanup_varying_code($_out)
@@ -334,8 +334,8 @@ class template_previews_test_set extends cms_test_case
             unset($out1);
         }
 
-        safe_ini_set('ocproducts.type_strictness', '0');
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.type_strictness', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
     }
 
     public function testNoRedundantFunctions()
@@ -359,8 +359,8 @@ class template_previews_test_set extends cms_test_case
             }
         }
 
-        safe_ini_set('ocproducts.type_strictness', '0');
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.type_strictness', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
     }
 
     public function testNoDoublePreviews()
@@ -379,7 +379,7 @@ class template_previews_test_set extends cms_test_case
             $all_used += $used;
         }
 
-        safe_ini_set('ocproducts.type_strictness', '0');
-        safe_ini_set('ocproducts.xss_detect', '0');
+        cms_ini_set('ocproducts.type_strictness', '0');
+        cms_ini_set('ocproducts.xss_detect', '0');
     }
 }

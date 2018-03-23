@@ -1014,7 +1014,9 @@ function do_site()
         foreach (array_keys($JAVASCRIPTS) as $javascript) {
             $out->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, 'javascript/' . $javascript . '.js');
         }
-        record_template_tree_used($out);
+        if (running_script('index')) {
+            record_template_tree_used($out);
+        }
     }
 
     // Something to do now rather than output normal screen?
@@ -1070,11 +1072,11 @@ function do_site()
         // Track very basic details of what sites use Composr
         if ((!running_locally()) && (get_option('call_home') == '1')) {
             $timeout_before = ini_get('default_socket_timeout');
-            safe_ini_set('default_socket_timeout', '3');
+            cms_ini_set('default_socket_timeout', '3');
             require_code('version2');
             require_code('http');
             cache_and_carry('cms_http_request', array('http://compo.sr/uploads/website_specific/compo.sr/scripts/user.php?url=' . urlencode(static_evaluate_tempcode(protect_url_parameter(get_base_url()))) . '&name=' . urlencode(get_site_name()) . '&version=' . urlencode(get_version_dotted()), array('trigger_error' => false)), 60 * 24/*once a day*/);
-            safe_ini_set('default_socket_timeout', $timeout_before);
+            cms_ini_set('default_socket_timeout', $timeout_before);
         }
     }
 }
@@ -2084,7 +2086,8 @@ function log_stats($string, $pg_time)
     $page = $string;
     $ip = get_ip_address();
     $session_id = get_session_id();
-    $member_id = get_member();
+    global $IS_ACTUALLY;
+    $member_id = ($IS_ACTUALLY === null) ? get_member() : $IS_ACTUALLY;
     $time = time();
     $referer = cms_mb_substr($_SERVER['HTTP_REFERER'], 0, 255);
     $browser = cms_mb_substr(get_browser_string(), 0, 255);

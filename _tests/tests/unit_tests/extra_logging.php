@@ -23,6 +23,8 @@ class extra_logging_test_set extends cms_test_case
         parent::setUp();
 
         $this->establish_admin_session();
+
+        set_option('grow_template_meta_tree', '0');
     }
 
     public function testProfiler()

@@ -466,7 +466,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
                 }
 
                 foreach ($attributes as &$attribute) {
-                    $attribute = cms_url_decode_post_process(urldecode($attribute));
+                    $attribute = cms_urldecode_post_process(urldecode($attribute));
                 }
 
                 break 2;
@@ -484,7 +484,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
             $_bit = explode('=', $bit, 2);
 
             if (count($_bit) == 2) {
-                $attributes[$_bit[0]] = cms_url_decode_post_process($_bit[1]);
+                $attributes[$_bit[0]] = cms_urldecode_post_process($_bit[1]);
                 if (strpos($attributes[$_bit[0]], ':') !== false) {
                     if ($perfect_only) {
                         return ''; // Could not convert this URL to a page-link, because it contains a colon
@@ -518,7 +518,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         }
 
         if (($key != 'page') && ($key != 'type') && ($key != 'id')) {
-            $page_link .= ':' . $key . '=' . cms_url_encode($val);
+            $page_link .= ':' . $key . '=' . cms_urlencode($val);
         }
     }
 
@@ -790,21 +790,9 @@ function _generate_moniker($moniker_src)
     $max_moniker_length = intval(get_option('max_moniker_length'));
 
     // Transliteration first
-    if ((get_charset() == 'utf-8') && (get_option('moniker_transliteration') == '1')) {
-        if (function_exists('transliterator_transliterate')) {
-            $_moniker = @transliterator_transliterate('Any-Latin; Latin-ASCII; Lower()', $moniker);
-            if (!empty($_moniker)) {
-                $moniker = $_moniker;
-            }
-        } elseif ((function_exists('iconv')) && (get_value('disable_iconv') !== '1')) {
-            $_moniker = @iconv('utf-8', 'ASCII//TRANSLIT//IGNORE', $moniker);
-            if (!empty($_moniker)) {
-                $moniker = $_moniker;
-            }
-        } else {
-            // German has inbuilt transliteration
-            $moniker = str_replace(array(hex2bin('c3a4'), hex2bin('c3b6'), hex2bin('c3bc'), hex2bin('c39f')), array('ae', 'oe', 'ue', 'ss'), $moniker);
-        }
+    if (get_option('moniker_transliteration') == '1') {
+        require_code('character_sets');
+        $moniker = transliterate_string($moniker);
     }
 
     // Substitute to force it to be URL-ready

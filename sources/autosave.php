@@ -68,7 +68,7 @@ function retrieve_autosave_script()
 
     header('Content-Type: text/xml');
 
-    safe_ini_set('ocproducts.xss_detect', '0');
+    cms_ini_set('ocproducts.xss_detect', '0');
 
     echo '<?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>';
     echo '<request><result>' . "\n";
