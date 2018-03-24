@@ -107,23 +107,9 @@ function currency_convert($amount, $from_currency, $to_currency = null, $string 
         if (is_null($new_amount)) {
             $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values_elective WHERE the_name LIKE \'' . db_encode_like('currency\_%') . '\' AND date_and_time<' . strval(time() - 60 * 60 * 24 * 2)); // Cleanup
 
-            $google_url = 'http://finance.google.com/finance/converter?a=' . (is_float($amount) ? float_to_raw_string($amount) : strval($amount)) . '&from=' . urlencode($from_currency) . '&to=' . urlencode(strtoupper($to_currency));
-            $result = http_download_file($google_url, null, false);
-            if (is_string($result)) {
-                $matches = array();
-
-                for ($i = 0; $i < strlen($result); $i++) { // bizarre unicode characters coming back from Google
-                    if (ord($result[$i]) > 127) {
-                        $result[$i] = ' ';
-                    }
-                }
-                if (preg_match('#<span class=bld>([\d\., ]+) [A-Z]+</span>#U', $result, $matches) != 0) { // e.g. <b>1400 British pounds = 2 024.4 U.S. dollars</b>
-                    $new_amount = floatval(str_replace(',', '', str_replace(' ', '', $matches[1])));
-
-                    set_value($cache_key, float_to_raw_string($new_amount), true);
-                } else {
-                    return null;
-                }
+            $new_amount = _currency_convert__currency_conv_api($amount, $from_currency, $to_currency);
+            if (is_float($new_amount)) {
+                set_value($cache_key, float_to_raw_string($new_amount), true);
             } else { // no-can-do
                 $new_amount = is_integer($amount) ? floatval($amount) : $amount;
                 $to_currency = $from_currency;
@@ -143,6 +129,36 @@ function currency_convert($amount, $from_currency, $to_currency = null, $string 
     }
 
     return $new_amount;
+}
+
+/**
+ * Perform a currency conversion using "The Free Currency Converter API".
+ *
+ * @param  mixed $amount The starting amount (integer or float)
+ * @param  ID_TEXT $from_currency The start currency code
+ * @param  ID_TEXT $to_currency The end currency code
+ * @return ?float The new amount (null: could not look up)
+ */
+function _currency_convert__currency_conv_api($amount, $from_currency, $to_currency)
+{
+    $rate_key = urlencode($from_currency) . '_' . urlencode($to_currency);
+    $cache_key = 'currency_' . $rate_key;
+    $test = get_value($cache_key, null, true);
+    if ($test !== null) {
+        return floatval($test) * $amount;
+    }
+    $conv_api_url = 'https://free.currencyconverterapi.com/api/v5/convert?q=' . $rate_key . '&compact=y';
+    $result = http_download_file($conv_api_url, null, false);
+    if (is_string($result)) {
+        require_code('json');
+        $data = json_decode($result, true);
+        if (isset($data[$rate_key]['val'])) {
+            $rate = $data[$rate_key]['val'];
+            set_value($cache_key, float_to_raw_string($rate, 10, false), true); // Will be de-cached in currency_convert
+            return $rate * $amount;
+        }
+    }
+    return null;
 }
 
 /**
