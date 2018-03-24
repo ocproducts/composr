@@ -80,7 +80,7 @@ class Hook_content_meta_aware_event
 
             'feedback_type_code' => 'events',
 
-            'permissions_type_code' => null, // null if has no permissions
+            'permissions_type_code' => 'calendar', // null if has no permissions
 
             'search_hook' => 'calendar',
             'rss_hook' => 'calendar',

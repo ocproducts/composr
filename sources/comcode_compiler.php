@@ -2248,7 +2248,7 @@ function filter_html($as_admin, $source_member, $pos, &$len, &$comcode, $in_html
         $ahead = substr($comcode, $pos, $ahead_end - $pos);
 
         require_code('input_filter');
-        hard_filter_input_data__html($ahead);
+        hard_filter_input_data__html($ahead); // NB: If we have multiple HTML sections this will guard against it by closing partly open tags
 
         // Tidy up
         $comcode = substr($comcode, 0, $pos) . $ahead . substr($comcode, $ahead_end);

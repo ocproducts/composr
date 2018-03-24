@@ -323,8 +323,10 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     }
     if (stripos($message_plain, '[img') !== false) {
         if (!in_array('img', $tags_to_preserve)) {
+            $message_plain = preg_replace("#\[img[^\[\]]*\]\s*d\s*a\s*t\s*a\s*:[^\[\]]*\[/img\]#Usi", '', $message_plain);
+
             $message_plain = preg_replace("#\[img( param)?=\"([^\"]*)\"[^\[\]]*\](.*)\[/img\]#Usi", '[url="\3"]\2[/url] ', $message_plain);
-            $message_plain = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\2"]' . do_lang('VIEW') . '[/url] ', $message_plain);
+            $message_plain = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url] ', $message_plain);
         }
     }
     if (stripos($message_plain, '[email') !== false) {

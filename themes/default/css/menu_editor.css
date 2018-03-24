@@ -3,8 +3,12 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-.menu_editor_page {
-	min-height: 400px;
+.menu_editor_lh_side .field_name_column {
+	width: 11em;
+}
+
+.menu_editor_lh_side select {
+	max-width: 100%;
 }
 
 .menu_editor_page.docked #mini_form_hider {
@@ -18,10 +22,7 @@
 	width: 100%;
 	z-index: 100; /* Needed for Opera, else footer icons with 'transform' CSS property overlay (bug in Opera) */
 	padding: 0 0.5em;
-}
-
-.docked .menu_edit_main {
-	padding-bottom: 10em;
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 }
 
 .dock_button {
@@ -32,13 +33,17 @@
 }
 
 .menu_editor_lh_side {
-	margin-{!en_right}: 340px;
+	margin-{!en_right}: 470px;
+}
+
+.menu_editor_page.non_docked {
+	min-height: 400px;
 }
 
 .menu_editor_page.docked {
-	overflow-y: scroll;
-	max-height: 380px;
 	margin-right: 1em;
+	padding-right: 0.5em;
+	overflow-y: auto;
 }
 
 .docked #tree_list__root_tree_list {
@@ -49,27 +54,43 @@
 .menu_editor_rh_side {
 	float: {!en_right};
 	margin-{!en_left}: 20px;
-	width: 320px;
+	width: 450px;
 	font-size: 0.9em;
 	line-height: 1.5em;
 }
 
 .menu_editor_selected_field {
-	background-color: {$GET,native_ui_active_background};
+	background-color: {$GET,native_ui_active_background} !important;
 }
 
 .menu_editor_branch_indent {
 	padding-{!en_left}: 20px;
 }
 
+.menu_editor_root {
+	margin-right: 1px;
+}
+
+.menu_editor_branch_wrap {
+	margin-right: -1px; /* To make nested rhs borders align; this is why menu-editor-root has 1px extra margin */
+}
+
 .menu_editor_branch {
 	border: 1px solid {$GET,standard_border};
 	margin-top: -1px;
-	padding: 0.5em 0 0.5em 0.5em;
+	background-color: {$GET,area_3_background};
+}
+
+.menu_editor_branch_inner {
+	padding: 0.5em;
 }
 
 .menu_editor_branch * {
 	vertical-align: middle;
+}
+
+.menu_editor_branch .menu___generic_admin__delete {
+	float: right;
 }
 
 .menu_editor_branch_wrap {
@@ -87,8 +108,8 @@
 }
 .menu_editor_branch_wrap .actions_list li {
 	background: none;
-	padding-left: 0;
-	margin-left: 0;
+	padding-left: 0 !important;
+	margin-left: 0 !important;
 }
 
 .menu_editor_branch input[type="text"] {
@@ -101,6 +122,11 @@
 	.menu_editor_branch input[type="text"] {
 		background-image: url('{$IMG;,icons/28x28/action_small}');
 	}
+}
+
+#menu_editor_wrap input#url {
+	width: 60em;
+	max-width: calc(100% - 70px);
 }
 
 .menu_editor_branch input[type="text"]:focus {

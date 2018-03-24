@@ -487,7 +487,7 @@ class Module_banners
 
         $fields->attach(map_table_field(do_lang_tempcode('ADDED'), get_timezoned_date($myrow['add_date'])));
 
-        $expiry_date = is_null($myrow['expiry_date']) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(get_timezoned_date($myrow['expiry_date'], true)));
+        $expiry_date = is_null($myrow['expiry_date']) ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html(get_timezoned_date($myrow['expiry_date'], true)));
         $fields->attach(map_table_field(do_lang_tempcode('EXPIRY_DATE'), $expiry_date));
 
         if ($has_banner_network) {

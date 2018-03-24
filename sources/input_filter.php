@@ -48,7 +48,7 @@ function check_input_field_string($name, &$val, $posted = false)
     }
 
     // Security for URL context (not only things that are specifically known URL parameters)
-    if ((preg_match('#^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#i', $val) !== 0) && ($name !== 'value')/*Don't want autosave triggering this*/) {
+    if ((preg_match('#^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a))\s*:#i', $val) !== 0) && ($name !== 'value')/*Don't want autosave triggering this*/) {
         log_hack_attack_and_exit('SCRIPT_URL_HACK_2', $val);
     }
 
@@ -265,6 +265,25 @@ function hard_filter_input_data__dynamic_firewall($name, &$val)
 }
 
 /**
+ * Used by hard_filter_input_data__html to add rel="nofollow" to links
+ *
+ * @param  array $matches Array of matches
+ * @return string Substituted text
+ *
+ * @ignore
+ */
+function _link_nofollow_callback($matches)
+{
+    // Remove any existing rel attributes (it's too complex to play nice, e.g. what if a hacker added multiple ones and we altered the wrong one)
+    $matches[1] = preg_replace('#\srel="[^"]*"#', '', $matches[1]);
+    $matches[1] = preg_replace('#\srel=\'[^"]*\'#', '', $matches[1]);
+    $matches[1] = preg_replace('#\srel=[^\s<>\'"]*#', '', $matches[1]);
+
+    // Add in our rel attribute
+    return $matches[1] . ' rel="nofollow"' . $matches[2] . $matches[3] . $matches[4];
+}
+
+/**
  * Filter input data for safety within frontend markup, taking account of HTML/JavaScript/CSS/embed attacks.
  * Only called for non-privileged users, filters/alters rather than blocks, due to false-positive likelihood.
  *
@@ -344,6 +363,9 @@ function hard_filter_input_data__html(&$val, $lite = false)
     if ($lite) {
         return;
     }
+
+    // nofollow needs applying
+    $val = preg_replace_callback('#(<a\s[^<>]*)(>)(.*)(</a>)#Ui', '_link_nofollow_callback', $val);
 
     // Check tag balancing (we don't want to allow partial tags to compound together against separately checked chunks)
     $len = strlen($val);
@@ -599,7 +621,7 @@ class Field_restriction_loader
         if (function_exists('libxml_disable_entity_loader')) {
             libxml_disable_entity_loader();
         }
-        $xml_parser = @xml_parser_create();
+        $xml_parser = @xml_parser_create(get_charset());
         if ($xml_parser === false) {
             return; // PHP5 default build on windows comes with this function disabled, so we need to be able to escape on error
         }

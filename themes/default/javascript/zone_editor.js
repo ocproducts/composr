@@ -134,7 +134,7 @@ function ze_animate_to(ob,amount,towards_expanded,now)
 
 	/*{+START,IF,{$NOT,{$CONFIG_OPTION,enable_animations}}}*/
 		ob.style.width=(amount)+'em';
-		return;
+		if (true) return;
 	/*{+END}*/
 
 	if ((!now) && (!towards_expanded))

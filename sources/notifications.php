@@ -764,6 +764,15 @@ function enable_notifications($notification_code, $notification_category, $membe
 
     $db = (substr($notification_code, 0, 4) == 'cns_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
 
+    $map = array(
+        'l_member_id' => $member_id,
+        'l_notification_code' => substr($notification_code, 0, 80),
+        'l_code_category' => is_null($notification_category) ? '' : $notification_category,
+    );
+    if (!$reset_for_all_types) {
+        $map['l_setting'] = $setting;
+    }
+
     if (is_null($setting)) {
         $ob = _get_notification_ob_for_code($notification_code);
         if (is_null($ob)) {
@@ -773,29 +782,19 @@ function enable_notifications($notification_code, $notification_category, $membe
         if ($setting == A__STATISTICAL || !_notification_setting_available($setting, $member_id)) {
             $setting = _find_member_statistical_notification_type($member_id, $notification_code);
         }
-    } else {
+    } elseif ($setting != A_NA) {
         // Check there is actually something to do here (when saving notifications tab usually everything will be still the same)
-        $test = $db->query_select_value_if_there('notifications_enabled', 'l_setting', array(
-            'l_member_id' => $member_id,
-            'l_notification_code' => substr($notification_code, 0, 80),
-            'l_code_category' => is_null($notification_category) ? '' : $notification_category,
-        ));
+        $test = $db->query_select_value_if_there('notifications_enabled', 'l_setting', $map);
         if ($test === $setting) {
             return;
         }
     }
 
-    $map = array(
-        'l_member_id' => $member_id,
-        'l_notification_code' => substr($notification_code, 0, 80),
-        'l_code_category' => is_null($notification_category) ? '' : $notification_category,
-    );
-    if (!$reset_for_all_types) {
-        $map['l_setting'] = $setting;
-    }
     $db->query_delete('notifications_enabled', $map);
-    $map['l_setting'] = $setting;
-    $db->query_insert('notifications_enabled', $map);
+    if ($setting != A_NA) {
+        $map['l_setting'] = $setting;
+        $db->query_insert('notifications_enabled', $map);
+    }
 
     if (($notification_code == 'comment_posted') && (get_forum_type() == 'cns') && (!is_null($notification_category))) { // Sync comment_posted ones to also monitor the forum ones; no need for opposite way as comment ones already trigger forum ones
         $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $notification_category, do_lang('COMMENT'));

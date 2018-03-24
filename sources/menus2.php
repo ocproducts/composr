@@ -84,7 +84,7 @@ function import_menu_csv($file_path = null)
         }
 
         $id = ($record[0] == '' || $record[0] == 'NULL') ? null : intval($record[0]);
-        $menu = $record[1];
+        $menu_id = $record[1];
         $order = intval($record[2]);
         $parent = ($record[3] == '' || $record[3] == 'NULL') ? null : intval($record[3]);
         $caption = $record[10];
@@ -97,7 +97,7 @@ function import_menu_csv($file_path = null)
         $theme_image_code = $record[9];
         $include_sitemap = intval($record[12]);
 
-        add_menu_item($menu, $order, $parent, $caption, $url, $check_permissions, $page_only, $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap, $id);
+        add_menu_item($menu_id, $order, $parent, $caption, $url, $check_permissions, $page_only, $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap, $id);
     }
     fclose($myfile);
 
@@ -154,7 +154,7 @@ function menu_management_script()
 /**
  * Add a menu item, without giving tedious/unnecessary detail.
  *
- * @param  SHORT_TEXT $menu The name of the menu to add the item to.
+ * @param  SHORT_TEXT $menu_id The name of the menu to add the item to.
  * @param  ?mixed $parent The menu item ID of the parent branch of the menu item (AUTO_LINK) / the URL of something else on the same menu (URLPATH) (null: is on root).
  * @param  SHORT_TEXT $caption The caption.
  * @param  SHORT_TEXT $url The URL (in entry point form).
@@ -168,11 +168,11 @@ function menu_management_script()
  * @param  ?integer $order Order to use (null: automatic, after the ones that have it specified).
  * @return AUTO_LINK The ID of the newly added menu item.
  */
-function add_menu_item_simple($menu, $parent, $caption, $url = '', $expanded = 0, $check_permissions = 0, $dereference_caption = true, $caption_long = '', $new_window = 0, $theme_image_code = '', $include_sitemap = 0, $order = null)
+function add_menu_item_simple($menu_id, $parent, $caption, $url = '', $expanded = 0, $check_permissions = 0, $dereference_caption = true, $caption_long = '', $new_window = 0, $theme_image_code = '', $include_sitemap = 0, $order = null)
 {
     global $ADD_MENU_COUNTER;
 
-    $id = $GLOBALS['SITE_DB']->query_select_value_if_there('menu_items', 'id', array('i_url' => $url, 'i_menu' => $menu));
+    $id = $GLOBALS['SITE_DB']->query_select_value_if_there('menu_items', 'id', array('i_url' => $url, 'i_menu' => $menu_id));
     if (!is_null($id)) {
         return $id; // Already exists
     }
@@ -184,7 +184,7 @@ function add_menu_item_simple($menu, $parent, $caption, $url = '', $expanded = 0
     if (is_null($_caption)) {
         $_caption = $caption;
     }
-    $id = add_menu_item($menu, $ADD_MENU_COUNTER, $parent, $dereference_caption ? $_caption : $caption, $url, $check_permissions, '', $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap);
+    $id = add_menu_item($menu_id, $ADD_MENU_COUNTER, $parent, $dereference_caption ? $_caption : $caption, $url, $check_permissions, '', $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap);
 
     $ADD_MENU_COUNTER++;
 
@@ -212,7 +212,7 @@ function delete_menu_item_simple($url)
 /**
  * Add a menu item.
  *
- * @param  SHORT_TEXT $menu The name of the menu to add the item to.
+ * @param  SHORT_TEXT $menu_id The name of the menu to add the item to.
  * @param  integer $order The relative order of this item on the menu.
  * @param  ?AUTO_LINK $parent The menu item ID of the parent branch of the menu item (null: is on root).
  * @param  SHORT_TEXT $caption The caption.
@@ -227,10 +227,10 @@ function delete_menu_item_simple($url)
  * @param  ?AUTO_LINK $id The ID (null: auto-increment)
  * @return AUTO_LINK The ID of the newly added menu item.
  */
-function add_menu_item($menu, $order, $parent, $caption, $url, $check_permissions, $page_only, $expanded, $new_window, $caption_long, $theme_image_code = '', $include_sitemap = 0, $id = null)
+function add_menu_item($menu_id, $order, $parent, $caption, $url, $check_permissions, $page_only, $expanded, $new_window, $caption_long, $theme_image_code = '', $include_sitemap = 0, $id = null)
 {
     $map = array(
-        'i_menu' => $menu,
+        'i_menu' => $menu_id,
         'i_order' => $order,
         'i_parent' => $parent,
         'i_url' => $url,
@@ -248,11 +248,13 @@ function add_menu_item($menu, $order, $parent, $caption, $url, $check_permission
     }
     $id = $GLOBALS['SITE_DB']->query_insert('menu_items', $map, true);
 
-    log_it('ADD_MENU_ITEM', strval($id), $caption);
+    if ($menu_id != '_preview') {
+        log_it('ADD_MENU_ITEM', strval($id), $caption);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
-        require_code('resource_fs');
-        generate_resource_fs_moniker('menu_item', strval($id), null, null, true);
+        if ((addon_installed('commandr')) && (!running_script('install'))) {
+            require_code('resource_fs');
+            generate_resource_fs_moniker('menu_item', strval($id), null, null, true);
+        }
     }
 
     return $id;
@@ -262,7 +264,7 @@ function add_menu_item($menu, $order, $parent, $caption, $url, $check_permission
  * Edit a menu item.
  *
  * @param  AUTO_LINK $id The ID of the menu item to edit.
- * @param  SHORT_TEXT $menu The name of the menu to add the item to.
+ * @param  SHORT_TEXT $menu_id The name of the menu to add the item to.
  * @param  integer $order The relative order of this item on the menu.
  * @param  ?AUTO_LINK $parent The menu item ID of the parent branch of the menu item (null: is on root).
  * @param  SHORT_TEXT $caption The caption.
@@ -275,13 +277,13 @@ function add_menu_item($menu, $order, $parent, $caption, $url, $check_permission
  * @param  ID_TEXT $theme_image_code The theme image code.
  * @param  SHORT_INTEGER $include_sitemap An INCLUDE_SITEMAP_* constant
  */
-function edit_menu_item($id, $menu, $order, $parent, $caption, $url, $check_permissions, $page_only, $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap)
+function edit_menu_item($id, $menu_id, $order, $parent, $caption, $url, $check_permissions, $page_only, $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap)
 {
     $_caption = $GLOBALS['SITE_DB']->query_select_value('menu_items', 'i_caption', array('id' => $id));
     $_caption_long = $GLOBALS['SITE_DB']->query_select_value('menu_items', 'i_caption_long', array('id' => $id));
 
     $map = array(
-        'i_menu' => $menu,
+        'i_menu' => $menu_id,
         'i_order' => $order,
         'i_parent' => $parent,
         'i_url' => $url,
@@ -310,23 +312,26 @@ function edit_menu_item($id, $menu, $order, $parent, $caption, $url, $check_perm
  */
 function delete_menu_item($id)
 {
-    $rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('i_caption', 'i_caption_long'), array('id' => $id), '', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('i_caption', 'i_caption_long', 'i_menu'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
     $_caption = $rows[0]['i_caption'];
     $_caption_long = $rows[0]['i_caption_long'];
+    $menu_id = $rows[0]['i_menu'];
 
     $GLOBALS['SITE_DB']->query_delete('menu_items', array('id' => $id), '', 1);
     $caption = get_translated_text($_caption);
     delete_lang($_caption);
     delete_lang($_caption_long);
 
-    log_it('DELETE_MENU_ITEM', strval($id), $caption);
+    if ($menu_id != '_preview') {
+        log_it('DELETE_MENU_ITEM', strval($id), $caption);
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
-        require_code('resource_fs');
-        expunge_resource_fs_moniker('menu_item', strval($id));
+        if ((addon_installed('commandr')) && (!running_script('install'))) {
+            require_code('resource_fs');
+            expunge_resource_fs_moniker('menu_item', strval($id));
+        }
     }
 }
 
@@ -347,25 +352,27 @@ function delete_menu($menu_id)
         delete_lang($lang_code['i_caption_long']);
     }
 
-    if (get_option('header_menu_call_string') == $menu_id || get_option('header_menu_call_string') == '') {
-        // Reset option to default, for auto-managed menus
-        $GLOBALS['SITE_DB']->query_delete('config', array('c_name' => 'header_menu_call_string'), '', 1);
+    if ($menu_id != '_preview') {
+        if (get_option('header_menu_call_string') == $menu_id || get_option('header_menu_call_string') == '') {
+            // Reset option to default, for auto-managed menus
+            $GLOBALS['SITE_DB']->query_delete('config', array('c_name' => 'header_menu_call_string'), '', 1);
 
-        // Clear caches
-        require_code('caches3');
-        if (function_exists('persistent_cache_delete')) {
-            persistent_cache_delete('OPTIONS');
+            // Clear caches
+            require_code('caches3');
+            if (function_exists('persistent_cache_delete')) {
+                persistent_cache_delete('OPTIONS');
+            }
+            Self_learning_cache::erase_smart_cache();
+            erase_cached_templates(false, array('GLOBAL_HTML_WRAP')); // Config option saves into templates
         }
-        Self_learning_cache::erase_smart_cache();
-        erase_cached_templates(false, array('GLOBAL_HTML_WRAP')); // Config option saves into templates
-    }
 
-    decache('menu');
-    persistent_cache_delete(array('MENU', $menu_id));
+        decache('menu');
+        persistent_cache_delete(array('MENU', $menu_id));
 
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
-        require_code('resource_fs');
-        expunge_resource_fs_moniker('menu', $menu_id);
+        if ((addon_installed('commandr')) && (!running_script('install'))) {
+            require_code('resource_fs');
+            expunge_resource_fs_moniker('menu', $menu_id);
+        }
     }
 }
 
@@ -436,5 +443,105 @@ function _copy_from_sitemap_to_new_menu($target_menu, $node, &$order, $parent = 
 
             _copy_from_sitemap_to_new_menu($target_menu, $child, $order, $branch_id);
         }
+    }
+}
+
+/**
+ * Find all the menu items being saved.
+ *
+ * @return array A list of the menu item IDs being saved (i.e. what it is referenced as in POST)
+ */
+function menu_items_being_saved()
+{
+    // Find what we have on the menu first
+    $ids = array();
+    foreach ($_POST as $key => $val) {
+        if (is_string($val)) {
+            if (substr($key, 0, 7) == 'parent_') {
+                $ids[intval(substr($key, 7))] = $val;
+            }
+        }
+    }
+    return $ids;
+}
+
+/**
+ * Add a menu item from details in POST.
+ *
+ * @param  ID_TEXT $menu_id The name of the menu the item is on
+ * @param  integer $id The ID of the menu item (i.e. what it is referenced as in POST)
+ * @param  array $ids The map of IDs on the menu (ID=>parent)
+ * @param  ?integer $parent The ID of the parent branch (null: no parent)
+ * @param  array $old_menu_bits The map of menu id=>string language string IDs employed by items before the edit
+ * @param  integer $order The order this branch has in the editor (and due to linearly moving through, the number of branches shown assembled ready)
+ */
+function save_add_menu_item_from_post($menu_id, $id, &$ids, $parent, &$old_menu_bits, &$order)
+{
+    // Load in details of menu item
+    $caption = post_param_string('caption_' . strval($id), ''); // Default needed to workaround Opera problem
+    $caption_long = post_param_string('caption_long_' . strval($id), ''); // Default needed to workaround Opera problem
+    $page_only = post_param_string('page_only_' . strval($id), ''); // Default needed to workaround Opera problem
+    $theme_img_code = post_param_string('theme_img_code_' . strval($id), ''); // Default needed to workaround Opera problem
+    $check_permissions = post_param_integer('check_perms_' . strval($id), 0);
+    $branch_type = post_param_string('branch_type_' . strval($id), 'branch_plus'); // Default needed to workaround Opera problem
+    if ($branch_type == 'branch_plus') {
+        $expanded = 1;
+    } else {
+        $expanded = 0;
+    }
+    $new_window = post_param_integer('new_window_' . strval($id), 0);
+    $include_sitemap = post_param_integer('include_sitemap_' . strval($id), 0);
+
+    $url = post_param_string('url_' . strval($id), '');
+
+    // See if we can tidy it back to a page-link
+    if (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $url) != 0) {
+        $url = ':' . $url; // So users do not have to think about zones
+    }
+    $page_link = url_to_page_link($url, true);
+    if ($page_link != '') {
+        $url = $page_link;
+    } elseif (strpos($url, ':') === false) {
+        $url = fixup_protocolless_urls($url);
+    }
+
+    $menu_save_map = array(
+        'i_menu' => $menu_id,
+        'i_order' => $order,
+        'i_parent' => $parent,
+        'i_url' => $url,
+        'i_check_permissions' => $check_permissions,
+        'i_expanded' => $expanded,
+        'i_new_window' => $new_window,
+        'i_include_sitemap' => $include_sitemap,
+        'i_page_only' => $page_only,
+        'i_theme_img_code' => $theme_img_code,
+    );
+
+    // Save
+    if (array_key_exists($id, $old_menu_bits)) {
+        $menu_save_map += lang_remap_comcode('i_caption', $old_menu_bits[$id]['i_caption'], $caption);
+        $menu_save_map += lang_remap_comcode('i_caption_long', $old_menu_bits[$id]['i_caption_long'], $caption_long);
+        $GLOBALS['SITE_DB']->query_update('menu_items', $menu_save_map, array('id' => $id));
+
+        unset($old_menu_bits[$id]);
+        $insert_id = $id;
+    } else {
+        $menu_save_map += insert_lang_comcode('i_caption', $caption, 1);
+        $menu_save_map += insert_lang_comcode('i_caption_long', $caption_long, 1);
+        $insert_id = $GLOBALS['SITE_DB']->query_insert('menu_items', $menu_save_map, true);
+    }
+
+    // Menu item children
+    $my_kids = array();
+    foreach ($ids as $new_id => $child_parent) {
+        if (strval($id) == $child_parent) {
+            $my_kids[] = $new_id;
+        }
+    }
+
+    foreach ($my_kids as $new_id) {
+        save_add_menu_item_from_post($menu_id, $new_id, $ids, $insert_id, $old_menu_bits, $order);
+        $order++;
     }
 }

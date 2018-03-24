@@ -380,7 +380,7 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
                     }
                 }
 
-                return array($PROBATION_GROUP_CACHE => 1);
+                return array($PROBATION_GROUP_CACHE => true);
             }
         }
     }
@@ -392,8 +392,8 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
     );
 
     global $GROUP_MEMBERS_CACHE;
-    if (isset($GROUP_MEMBERS_CACHE[$member_id][$skip_secret][$handle_probation])) {
-        return $GROUP_MEMBERS_CACHE[$member_id][$skip_secret][$handle_probation];
+    if (isset($GROUP_MEMBERS_CACHE[$member_id][$skip_secret][$handle_probation][$include_implicit])) {
+        return $GROUP_MEMBERS_CACHE[$member_id][$skip_secret][$handle_probation][$include_implicit];
     }
 
     $groups = array();
@@ -406,8 +406,13 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
             $ob = object_factory('Hook_implicit_usergroups_' . $hook);
             $group_ids = $ob->get_bound_group_ids();
             foreach ($group_ids as $group_id) {
-                if ($ob->is_member_within($member_id, $group_id)) {
+                $is_exclusive = false;
+                if ($ob->is_member_within($member_id, $group_id, $is_exclusive)) {
                     $groups[$group_id] = true;
+
+                    if ($is_exclusive === true) {
+                        return $groups;
+                    }
                 }
             }
         }
@@ -434,21 +439,21 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
             $groups[$group['gm_group_id']] = true;
         }
 
-        $GROUP_MEMBERS_CACHE[$member_id][false][$handle_probation] = $groups;
+        $GROUP_MEMBERS_CACHE[$member_id][false][$handle_probation][$include_implicit] = $groups;
         $groups2 = $groups;
         foreach ($_groups as $group) { // For each secondary group
             if ($group['g_hidden'] == 1) {
                 unset($groups2[$group['gm_group_id']]);
             }
         }
-        $GROUP_MEMBERS_CACHE[$member_id][true][$handle_probation] = $groups2;
+        $GROUP_MEMBERS_CACHE[$member_id][true][$handle_probation][$include_implicit] = $groups2;
         if ($skip_secret) {
             $groups = $groups2;
         }
     } else {
         $groups = cns_get_members_groups_ldap($member_id);
-        $GROUP_MEMBERS_CACHE[$member_id][false][$handle_probation] = $groups;
-        $GROUP_MEMBERS_CACHE[$member_id][true][$handle_probation] = $groups;
+        $GROUP_MEMBERS_CACHE[$member_id][false][$handle_probation][$include_implicit] = $groups;
+        $GROUP_MEMBERS_CACHE[$member_id][true][$handle_probation][$include_implicit] = $groups;
 
         // Mirror to f_group_members table, so direct queries will also get it (we need to do listings of group members, for instance)
         $GLOBALS['FORUM_DB']->query_delete('f_group_members', array('gm_member_id' => $member_id));
