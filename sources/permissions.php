@@ -771,7 +771,7 @@ function has_privilege($member_id, $permission, $page = null, $cats = null)
     static $run_once = false;
     $where = ' AND (1=0';
     if ((isset($SMART_CACHE)) && (!$run_once)) {
-        $SMART_CACHE->append('privileges_needed', $privilege, true);
+        $SMART_CACHE->append('privileges_needed', $permission, true);
         $all_privileges_needed = $SMART_CACHE->get('privileges_needed');
         if ($all_privileges_needed === null) {
             $all_privileges_needed = array();
@@ -779,7 +779,7 @@ function has_privilege($member_id, $permission, $page = null, $cats = null)
     } else {
         $all_privileges_needed = array();
     }
-    $all_privileges_needed[$privilege] = true;
+    $all_privileges_needed[$permission] = true;
     foreach ($all_privileges_needed as $privilege_needed => $_) {
         if (is_integer($privilege_needed)) {
             $privilege_needed = strval($privilege_needed);

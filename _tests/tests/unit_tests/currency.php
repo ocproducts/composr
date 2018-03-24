@@ -38,11 +38,4 @@ class currency_test_set extends cms_test_case
         $this->assertTrue($test > 0.00);
         $this->assertTrue($test < 10.00); // GBP is worth more
     }
-
-    public function testCurrencyViaGoogle()
-    {
-        $test = currency_convert(10.00, 'MMK', 'GBP'); // ECB doesn't do MMK, so we know this will run via Google
-        $this->assertTrue($test > 0.00);
-        $this->assertTrue($test < 10.00); // GBP is worth *much* more
-    }
 }
