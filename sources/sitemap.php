@@ -196,7 +196,7 @@ function find_sitemap_object($page_link)
             $is_virtual = ($is_handled == SITEMAP_NODE_HANDLED_VIRTUALLY);
         }
         if (is_null($hook)) {
-            attach_message(do_lang_tempcode('MISSING_RESOURCE'), 'warn');
+            attach_message(do_lang_tempcode('_MISSING_RESOURCE', $page_link), 'warn');
             return null;
         }
     }
@@ -665,7 +665,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                 $cache[$this->content_type] = $cma_info;
             }
             require_code('site');
-            if (($cma_info['module'] == $page) && ($zone != '_SEARCH') && (_request_page($page, $zone) !== false)) { // Ensure the given page matches the content type, and it really does exist in the given zone
+            if (($cma_info['module'] == $page) && (($zone == '_SEARCH') || (_request_page($page, $zone) !== false))) { // Ensure the given page matches the content type, and it really does exist in the given zone
                 if ($matches[0] == $page_link) {
                     return SITEMAP_NODE_HANDLED_VIRTUALLY; // No type/ID specified
                 }

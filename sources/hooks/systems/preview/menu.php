@@ -47,6 +47,7 @@ class Hook_preview_menu
         $menu_type = get_param_string('menu_type', '');
         $menu_types = array();
         if ($menu_type == '') {
+            $matches = array();
             $dh = opendir(get_file_base() . '/themes/default/templates/');
             while (($file = readdir($dh)) !== false) {
                 if (preg_match('^MENU\_([a-z]+)\.tpl$^', $file, $matches) != 0) {

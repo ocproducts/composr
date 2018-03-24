@@ -802,6 +802,11 @@ function _webstandards_js_parse_expression_inner()
 
             break;
 
+        case 'CATCH': // May be a promises 'catch' method
+            parser_next();
+            $expression = array('VARIABLE', 'catch', array(), $GLOBALS['JS_PARSE_POSITION']);
+            break;
+
         case 'IDENTIFIER':
             $variable = _webstandards_js_parse_variable();
             if (is_null($variable)) {

@@ -33,7 +33,7 @@ These hidden options expand the scope of the CAPTCHA to also cover members:
  - [tt]captcha_member_posts[/tt] -- set this to a number if new members should continue to have CAPTCHA for this many forum posts
 
 Sample Commandr command:
-[code]
+[code="Commandr"]
 :set_value('captcha_member_days', '5'); set_value('captcha_member_posts', '5');
 [/code]
 

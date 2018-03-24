@@ -207,6 +207,7 @@ class Hook_addon_registry_core_language_editing
                 'CURRENT' => $value,
                 'ACTIONS' => $actions,
                 'PRIORITY' => lorem_word(),
+                'GOOGLE' => lorem_phrase(),
             )));
         }
 

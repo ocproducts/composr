@@ -202,7 +202,7 @@ function init__webstandards2()
     $enforce_fractional = '(-?[0-9]*(\.)[0-9]+?)';
     $enforce_inumber = '[0-9]+';
     $enforce_character = '.';
-    $enforce_color = '(black|silver|gray|white|maroon|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua|orange|red|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]))'; // orange and red aren't 'official' -- but kind of handy ;). In reality, the colour codes were never properly defined, and these two are obvious names for obviously needed ones-- they'll be supported
+    $enforce_color = '(black|silver|gray|white|maroon|purple|fuchsia|green|darkgrey|slategrey|lime|olive|yellow|navy|blue|teal|aqua|orange|red|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]))'; // orange and red aren't 'official' -- but kind of handy ;). In reality, the colour codes were never properly defined, and these two are obvious names for obviously needed ones-- they'll be supported
     $enforce_length = '((0)|(' . $enforce_number . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_fractional . ')(in|cm|mm|ex|px|em|%)))'; // |ex|pt|in|cm|mm|pc  We don't want these in our XHTML... preferably we only want em when it comes to font size!
     $enforce_ilength = '((0)|(' . $enforce_inumber . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_inumber . ')?\.' . $enforce_inumber . '(in|cm|mm|ex|em|%)))'; // |ex|pt|in|cm|mm|pc We don't want these in our XHTML... preferably we only want em when it comes to font size!
     $enforce_pixels = '[0-9]+';

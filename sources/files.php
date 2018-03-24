@@ -475,6 +475,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              // Prep for v11
                                              '_meta_tree' => '.*',
                                              'temp' => '',
+                                             'captcha' => 'uploads',
     );
 
     $ignore_extensions = array( // Case insensitive, define in lower case
