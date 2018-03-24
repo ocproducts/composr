@@ -1268,6 +1268,18 @@ where:
 			<td>{$DEV_MODE}</td>
 			<td>Whether development mode is on (adds in extra errors, to pick up on coding standard violations)</td>
 		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CSP_NONCE}</td>
+			<td>Get the CSP nonce</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CSP_NONCE_HTML}</td>
+			<td>Get the CSP nonce with html attribute (nonce="...")</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$PUBLIC_CONFIG_OPTIONS_JSON}</td>
+			<td>Outputs all the config options that are marked public as JSON. Used by $cms.configOption().</td>
+		</tr>
 	</tbody>
 </table>
 [/html]
@@ -1435,6 +1447,10 @@ where:
 		<tr style="background: #FFDDDD">
 			<td>{$GENERATE_CAPTCHA}</td>
 			<td>Force a new CAPTCHA code to generate.</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$STAFF_TOOLTIPS_URL_PATTERNS_JSON}</td>
+			<td>JSON object of staff URL patterns to apply comcode tooltips to.</td>
 		</tr>
 	</tbody>
 </table>
@@ -1716,6 +1732,10 @@ Understanding of these symbols requires an understanding of basic boolean operat
 		<tr style="background: #DDFFDD">
 			<td>{$SMART_LINK_STRIP,<a href="http://example.com/">hello</a>,3}</td>
 			<td>Remove links from the given HTML, if the member ID does not have a positive post count (a temporary measure to disincentivise spammers)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$JSON_ENCODE,{MY_ARRAY}}</td>
+			<td>Encodes the provided parameter into JSON.</td>
 		</tr>
 	</tbody>
 </table>
