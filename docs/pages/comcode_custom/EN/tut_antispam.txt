@@ -120,7 +120,7 @@ It may be a good idea to explicitly mention your policies on your join page so t
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
 We're not a fan of all anti-spam systems. Here's a run-down of what we don't do:
- - Some popular spam checking tools will run checks through a commercial third-party server. We'd rather deliver our code to you within Composr, for improved performance, realiability, and in line with our Open Source philosophy.
+ - Some popular spam checking tools will run checks through a commercial third-party server. We'd rather deliver our code to you within Composr, for improved performance, reliability, and in line with our Open Source philosophy.
  - Various alternative CAPTCHA systems (as explained above, under 'CAPTCHA')
 
 [title="2"]Making a spam report to the developers[/title]
