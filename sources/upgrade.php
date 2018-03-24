@@ -358,7 +358,7 @@ function upgrader_output_header()
         <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
 
         <title>{$upgrader_title}</title>
-        <link rel="icon" href="http://compo.sr/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="https://compo.sr/favicon.ico" type="image/x-icon" />
 
         <style>/*<![CDATA[*/
 END;
@@ -447,7 +447,7 @@ function upgrader_menu_screen()
     $tar_url = '';
     if ($news_id !== null) {
         require_code('files');
-        $fetch_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/fetch_release_details.php?format=json&news_id=' . strval($news_id) . '&from_version=' . urlencode($from_version);
+        $fetch_url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/fetch_release_details.php?format=json&news_id=' . strval($news_id) . '&from_version=' . urlencode($from_version);
         $news = http_get_contents($fetch_url, array('timeout' => 30.0));
 
         $details = json_decode($news, true);

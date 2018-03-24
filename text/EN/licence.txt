@@ -101,7 +101,7 @@ The Initial Developer of the Original Code is ocProducts. All portions of the co
 EXHIBIT B. Attribution Information
 Attribution Copyright Notice: Copyright (c) ocProducts Ltd
 Attribution Phrase (not exceeding 10 words): Built with the Composr Content Management System, derivative under license.
-Attribution URL: http://compo.sr/
+Attribution URL: https://compo.sr/
 Graphic Image as provided in the Covered Code (Composr logo in the help panel of the Admin Zone).
 Display of Attribution Information is required in any Larger Works that you distribute.
 

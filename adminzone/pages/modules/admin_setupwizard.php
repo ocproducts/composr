@@ -601,7 +601,7 @@ class Module_admin_setupwizard
                 if (array_key_exists($_mentioned_addon, $remote_addons)) {
                     $id = $remote_addons[$_mentioned_addon];
                     require_code('uploads');
-                    $_POST['url'] = 'http://compo.sr/site/dload.php?id=' . strval($id);
+                    $_POST['url'] = 'https://compo.sr/site/dload.php?id=' . strval($id);
                     get_url('url', 'file', 'imports/addons', 0, CMS_UPLOAD_ANYTHING, false, '', '', true); // Download it
                 }
             }

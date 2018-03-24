@@ -94,7 +94,7 @@ foreach ($_addons as $addon => $place) {
             'dependencies' => $dependencies['requires'],
             'tutorials' => $tutorials,
             'synonyms' => $_synonyms,
-            'tracker_url' => 'http://compo.sr/tracker/search.php?project_id=1&category=' . urlencode($addon) . '&status_id=10',
+            'tracker_url' => 'https://compo.sr/tracker/search.php?project_id=1&category=' . urlencode($addon) . '&status_id=10',
         );
     }
 }

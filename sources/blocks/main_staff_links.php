@@ -80,7 +80,7 @@ class Block_main_staff_links
             ));
 
             $default_links = array(
-                'compo.sr' => 'http://compo.sr/',
+                'compo.sr' => 'https://compo.sr/',
                 'compo.sr (topics with unread posts)' => get_brand_page_url(array('page' => 'vforums', 'type' => 'unread'), 'forum'),
             );
             foreach ($default_links as $link_title => $url) {

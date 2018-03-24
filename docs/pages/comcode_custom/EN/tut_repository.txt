@@ -24,7 +24,7 @@ Specifically, the following use-cases are served by the repository:
 
 And the following work-in-progress use-cases:
  - Making content/resource [b]import and export[/b] very easy -- we are able to code up import/export support into the repository by coding in additional views of the same data; for example, we would be able to allow automatic import of images into galleries via just copying in JPEG files
-See the [url="tracker"]http://compo.sr/tracker/[/url] for where we'd like to take this functionality.
+See the [url="tracker"]https://compo.sr/tracker/[/url] for where we'd like to take this functionality.
 
 [contents]decimal,lower-alpha[/contents]
 

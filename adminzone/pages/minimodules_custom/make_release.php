@@ -83,7 +83,7 @@ function phase_0()
     $on_disk_version_parts[$last] = strval(intval($on_disk_version_parts[$last]) - 1);
     $on_disk_version_previous = implode('.', $on_disk_version_parts);
 
-    $tracker_url = 'http://compo.sr/tracker/search.php?project_id=1';
+    $tracker_url = 'https://compo.sr/tracker/search.php?project_id=1';
     if ((intval($on_disk_version_parts[$last]) >= 0) && (substr_count($on_disk_version, '.') == 2)) {
         $tracker_url .= '&product_version=' . urlencode($on_disk_version_previous);
     }
@@ -283,7 +283,7 @@ function phase_2()
             <strong>Add to compo.sr</strong>: Run the <form target="_blank" onclick="window.setTimeout($cms.undoStaffUnloadAction,1000);" style="display: inline" action="' . escape_html($push_url) . '" method="post">' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '<input type="hidden" name="changes" value="' . escape_html($changes) . '" /><input class="hyperlink-button" type="submit" value="compo.sr setup script" /></form>. Note if you are re-releasing, this will still work &ndash; it will update existing entries appropriately.
         </li>
         <li>
-            <strong>Test</strong>: Go to <a target="_blank" href="http://compo.sr/download.htm">Composr download page</a> to ensure the right packages are there and no error messages display.
+            <strong>Test</strong>: Go to <a target="_blank" href="https://compo.sr/download.htm">Composr download page</a> to ensure the right packages are there and no error messages display.
         </li>
     ';
 
@@ -329,12 +329,12 @@ function phase_2()
 
     if ($is_substantial && !$is_bleeding_edge) {
         echo '
-            <li><strong>Tracker</strong>: <a target="_blank" href="http://compo.sr/tracker/manage_proj_edit_page.php?project_id=1">Add to tracker configuration</a> (under "Versions") and also define any new addons in tracker (although an automated test should have told you already if they are missing)</li>
+            <li><strong>Tracker</strong>: <a target="_blank" href="https://compo.sr/tracker/manage_proj_edit_page.php?project_id=1">Add to tracker configuration</a> (under "Versions") and also define any new addons in tracker (although an automated test should have told you already if they are missing)</li>
 
             <li><strong>Documentation</strong>:<ul>
                 <li>Build new addon tutorial index (<a target="_blank" href="' . get_base_url() . '/adminzone/index.php?page=doc-index-build&amp;keep_devtest=1">doc_index_build minimodule</a>)</li>
                 <li>Git: Commit/push</li>
-                <li>Create <a target="_blank" href="http://compo.sr/adminzone/admin-zones.htm?type=add">docs' . strval(intval(cms_version_number())) . ' zone</a> (Codename "docs' . strval(intval(cms_version_number())) . '", Title "Documentation (version ' . strval(intval(cms_version_number())) . ')", Theme "ocProducts", Default page "tutorials")</li>
+                <li>Create <a target="_blank" href="https://compo.sr/adminzone/admin-zones.htm?type=add">docs' . strval(intval(cms_version_number())) . ' zone</a> (Codename "docs' . strval(intval(cms_version_number())) . '", Title "Documentation (version ' . strval(intval(cms_version_number())) . ')", Theme "ocProducts", Default page "tutorials")</li>
                 <li>Do these commands in a Linux shell on the compo.sr server (before updating compo.sr for the new version!):<ul>
                     <li>Previous version docs no longer symlinked to latest docs: <kbd>rm docs' . strval(intval(cms_version_number()) - 1) . '</kbd></li>
                     <li>Archive current latest docs as the docs folder of previous version: <kbd>cp -r docs docs' . strval(intval(cms_version_number()) - 1) . '</kbd></li>
@@ -381,13 +381,13 @@ function phase_2()
             </ul>
 
             <li><strong>Addons</strong>:<ul>
-                <li>Generate the new addon set (<a target="_blank" href="http://compo.sr/adminzone/build-addons">build_addons minimodule</a>)</li>
-                <li>Add them (<a target="_blank" href="http://compo.sr/adminzone/publish-addons-as-downloads.htm?cat=Version%20&amp;' . escape_html(urlencode($version_number)) . '&amp;version_branch=' . escape_html(urlencode($version_branch)) . '">publish_addons_as_downloads</a> minimodule)</li>
+                <li>Generate the new addon set (<a target="_blank" href="https://compo.sr/adminzone/build-addons">build_addons minimodule</a>)</li>
+                <li>Add them (<a target="_blank" href="https://compo.sr/adminzone/publish-addons-as-downloads.htm?cat=Version%20&amp;' . escape_html(urlencode($version_number)) . '&amp;version_branch=' . escape_html(urlencode($version_branch)) . '">publish_addons_as_downloads</a> minimodule)</li>
             </ul></li>
 
             <li><strong>History</strong>: Update release history details on the compo.sr <kbd>vision</kbd> page</li>
 
-            <li><strong>Wikipedia</strong>: <form target="_blank" style="display: inline" action="http://compo.sr/forum/forumview.htm" method="post"><input type="hidden" name="title" value="Wikipedia listing needs updating (for version ' . strval(intval(cms_version_number())) . ')" /><input type="hidden" name="post" value="(This is a standard post we make each time a new major release comes out)&#10;&#10;As Composr version ' . strval(intval(cms_version_number())) . ' is out now, ideally someone will update the [url=&quot;Composr Wikipedia page&quot;]http://en.wikipedia.org/wiki/Composr_CMS[/url]. The developers don\'t maintain this because it\'d be inappropriate for us to maintain our own Wikipedia entry (neutrality reasons). The version details need updating, but generally it is worth reviewing the page is still accurate and up-to-date.&#10;&#10;Thanks to anyone who helps here, it\'s important we keep the outside world updated on Composr." /><input class="hyperlink-button" type="submit" value="Get someone to update our release history on Wikipedia" /></form></li>
+            <li><strong>Wikipedia</strong>: <form target="_blank" style="display: inline" action="https://compo.sr/forum/forumview.htm" method="post"><input type="hidden" name="title" value="Wikipedia listing needs updating (for version ' . strval(intval(cms_version_number())) . ')" /><input type="hidden" name="post" value="(This is a standard post we make each time a new major release comes out)&#10;&#10;As Composr version ' . strval(intval(cms_version_number())) . ' is out now, ideally someone will update the [url=&quot;Composr Wikipedia page&quot;]http://en.wikipedia.org/wiki/Composr_CMS[/url]. The developers don\'t maintain this because it\'d be inappropriate for us to maintain our own Wikipedia entry (neutrality reasons). The version details need updating, but generally it is worth reviewing the page is still accurate and up-to-date.&#10;&#10;Thanks to anyone who helps here, it\'s important we keep the outside world updated on Composr." /><input class="hyperlink-button" type="submit" value="Get someone to update our release history on Wikipedia" /></form></li>
 
             <li><strong>Syndication</strong>: Syndicate news to these sites (<a href="http://ocportal.com/tracker/view.php?id=2085" target="_blank">Passwords</a>):<ul>
                 <li>Add <a target="_blank" href="http://cmsreport.com/submit-story">news on CMS Report</a></li>
@@ -396,7 +396,7 @@ function phase_2()
                 <li>Add news on the <a target="_blank" href="http://members.opensourcecms.com/login.php">Open Source CMS site</a></li>
             </ul></li>
 
-            <li>Newsletter (<em>Optional</em>): Send <a target="_blank" href="http://compo.sr/adminzone/admin-newsletter.htm">newsletter</a></li>
+            <li>Newsletter (<em>Optional</em>): Send <a target="_blank" href="https://compo.sr/adminzone/admin-newsletter.htm">newsletter</a></li>
 
             <li><a target="_blank" href="https://compo.sr/docs/sup-professional-upgrading.htm">Upgrade users</a></li>
         ';

@@ -902,7 +902,7 @@ function find_updated_addons()
         return array();
     }
 
-    $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/addon_manifest.php?version=' . urlencode(float_to_raw_string(cms_version_number(), 2, true));
+    $url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/addon_manifest.php?version=' . urlencode(float_to_raw_string(cms_version_number(), 2, true));
     foreach (array_keys($addons) as $i => $addon) {
         $url .= '&addon_' . strval($i) . '=' . urlencode($addon);
     }

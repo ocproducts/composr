@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application xmlns="http://apstandard.com/ns/1" packaged="2018-01-10T02:07:37+00:00" version="1.2">
-  <id>http://compo.sr/</id>
+  <id>https://compo.sr/</id>
   <name>Composr</name>
   <version>11.alpha1</version>
   <release>1</release>
-  <homepage>http://compo.sr/</homepage>
+  <homepage>https://compo.sr/</homepage>
   <vendor>
     <name>Composr</name>
-    <homepage>http://compo.sr/</homepage>
+    <homepage>https://compo.sr/</homepage>
     <icon path="images/icon.png"/>
   </vendor>
   <packager>

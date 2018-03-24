@@ -9,7 +9,7 @@ The first task you will need to do is make sure you conduct a backup of your sit
 [list="1"]
 [*] Find the upgrade link for your version of Composr; to find this you will need to go to http://compo.sr
 [*] Click on the newest release link for your version of Composr.
-[*] Fill in your current version and click Generate. This will give you a URL link like this [tt]http://compo.sr/upgrades/9.0.6-9.0.7.tar[/tt].
+[*] Fill in your current version and click Generate. This will give you a URL link like this [tt]https://compo.sr/upgrades/9.0.6-9.0.7.tar[/tt].
 [*] Copy this URL into notepad (or whatever text editor your computer has) as you will need it soon.
 [*] Navigate to your upgrade page which will be the base URL of your site with upgrader.php after it e.g. [tt]http://yourbaseurl/upgrader.php[/tt]
 [*] Log in with your master password.

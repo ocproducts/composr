@@ -71,7 +71,7 @@ $urls = array();
 // Bugs list
 
 if (!$is_bleeding_edge) {
-    $urls['Bugs'] = 'http://compo.sr/tracker/search.php?project_id=1&product_version=' . urlencode($version_dotted);
+    $urls['Bugs'] = 'https://compo.sr/tracker/search.php?project_id=1&product_version=' . urlencode($version_dotted);
 }
 
 // Add downloads (assume uploaded already)
@@ -201,7 +201,7 @@ if ((!$is_bleeding_edge) && (!$is_old_tree) && (isset($all_downloads_to_add[0]['
     if ($last_version_str !== null) {
         $last_version_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('additional_details') => 'This is the latest version.'), ' AND main.id<>' . strval($all_downloads_to_add[0]['download_id']));
         if ($last_version_id != $all_downloads_to_add[0]['download_id']) {
-            $description = "A new version, {$version_pretty} is available. Upgrading to {$version_pretty} is considered {$needed} by ocProducts{$justification}. There may have been other upgrades since {$version_pretty} - see [url=\"the ocProducts news archive\" target=\"_blank\"]http://compo.sr/site/news.htm[/url].";
+            $description = "A new version, {$version_pretty} is available. Upgrading to {$version_pretty} is considered {$needed} by ocProducts{$justification}. There may have been other upgrades since {$version_pretty} - see [url=\"the ocProducts news archive\" target=\"_blank\"]https://compo.sr/site/news.htm[/url].";
             $GLOBALS['SITE_DB']->query_update('download_downloads', lang_remap_comcode('description', $last_version_str, $description), array('id' => $last_version_id), '', 1);
         }
     }

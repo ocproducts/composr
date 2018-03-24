@@ -12,7 +12,7 @@ We track functionality that has a moderate to high risk of breakage. This:
 3) Allows us to mark off unreliable functionality so that we don't need to force developers to maintain every specialist cross-cutting feature that has ever been added to Composr (sometimes things are worth keeping, but only worth actively maintaining if there's funding or a large user-base)
 4) Helps direct testing efforts
 5) Provides us a broad reminder of what needs on-going reappraisal
-Further discussion and justification may be found in and directed to the [url="original tracker issue"]http://compo.sr/tracker/view.php?id=2578[/url].
+Further discussion and justification may be found in and directed to the [url="original tracker issue"]https://compo.sr/tracker/view.php?id=2578[/url].
 
 Bugs may be reported for non-actively-maintained functionality, and it may be fixed quickly as normal, or may be left on the tracker indefinitely -- depending on developer availability, ease of fixing the issue, and our sense of priority. In most cases it will likely be resolved within a reasonable period of time regardless, it's just we can't [i]guarantee[/i] it.
 
@@ -34,4 +34,4 @@ No non-bundled addon will be put into the table [i]unless[/i] it is being offici
 
 [title="2"]Third-party software[/title]
 
-The above list does not include third-party software (such as CKEditor) that is directly integrated into Composr. We do not usually take direct responsibility for improving this software or for regularly re-synching it. Sponsors may therefore want to consider sponsoring upstream projects too, and sponsoring refreshes of those within Composr. A list of third-party software may be found on the [url="Sync with upstream"]http://compo.sr/tracker/view.php?id=651[/url] tracker issue.
+The above list does not include third-party software (such as CKEditor) that is directly integrated into Composr. We do not usually take direct responsibility for improving this software or for regularly re-synching it. Sponsors may therefore want to consider sponsoring upstream projects too, and sponsoring refreshes of those within Composr. A list of third-party software may be found on the [url="Sync with upstream"]https://compo.sr/tracker/view.php?id=651[/url] tracker issue.

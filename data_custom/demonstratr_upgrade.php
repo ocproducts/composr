@@ -22,7 +22,7 @@ You must have already run an untar:
  - Generate as normal, on the news release for the version you're upgrading
  - Run something like:
   - cd /home/cms/public_html/servers/composr.info
-  - wget -O upgrade.cms http://compo.sr/upgrades/7.1.2-9%20beta3.cms
+  - wget -O upgrade.cms https://compo.sr/upgrades/7.1.2-9%20beta3.cms
   - tar xvf upgrade.cms
   - rm upgrade.cms
 Then run this script, http://shareddemo.composr.info/data_custom/demonstratr_upgrade.php

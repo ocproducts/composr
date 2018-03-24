@@ -187,7 +187,7 @@ function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations,
         'team'=> 39268, // This is a hard-coded known value for the ocProducts organisation
         'fill_up_resources' => true,
         'homepage' => 'http://compo.sr',
-        'trans_instructions' => 'See http://compo.sr/docs/tut_intl.htm',
+        'trans_instructions' => 'See https://compo.sr/docs/tut_intl.htm',
     );
     $test = _transifex('/projects/', 'POST', json_encode($args), false);
     if ($test[1] == '201') { // If creation happened

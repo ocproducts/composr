@@ -29,7 +29,7 @@ function upgrader_file_upgrade_screen()
     $out = '';
 
     require_code('version2');
-    $personal_upgrader_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=' . urlencode(get_version_dotted());
+    $personal_upgrader_url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=' . urlencode(get_version_dotted());
     $hooks = find_all_hooks('systems', 'addon_registry');
     foreach (array_keys($hooks) as $hook) {
         if (is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $hook . '.php')) {

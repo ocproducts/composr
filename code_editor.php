@@ -80,7 +80,7 @@ function code_editor_do_header($type, $target = '_top')
 <html lang="EN">
 <head>
     <title>Composr code editor</title>
-    <link rel="icon" href="http://compo.sr/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="https://compo.sr/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="data/sheet.php?sheet=global" />
     <style>';
     echo '
@@ -200,7 +200,7 @@ END;
     </p>
     <hr />
     <ul class="actions-list" role="navigation">
-        <li><a title="ocProducts programming tutorial (this link will open in a new window)" target="_blank" href="http://compo.sr/docs/tut-programming.htm">Read the ocProducts programming tutorial</a></li>
+        <li><a title="ocProducts programming tutorial (this link will open in a new window)" target="_blank" href="https://compo.sr/docs/tut-programming.htm">Read the ocProducts programming tutorial</a></li>
 END;
     if (array_key_exists('base_url', $SITE_INFO)) {
         $_base_url = code_editor_escape_html($SITE_INFO['base_url']);

@@ -550,7 +550,7 @@ function step_3()
     }
     if (($email != '') || ($advertise_on == 1)) {
         require_code('files');
-        http_get_contents('http://compo.sr/uploads/website_specific/compo.sr/scripts/newsletter_join.php?url=' . urlencode(static_evaluate_tempcode(protect_url_parameter('http://' . get_local_hostname() . $_SERVER['SCRIPT_NAME']))) . '&email=' . urlencode($email) . '&advertise_on=' . strval($advertise_on) . '&lang=' . $INSTALL_LANG, array('trigger_error' => false));
+        http_get_contents('https://compo.sr/uploads/website_specific/compo.sr/scripts/newsletter_join.php?url=' . urlencode(static_evaluate_tempcode(protect_url_parameter('http://' . get_local_hostname() . $_SERVER['SCRIPT_NAME']))) . '&email=' . urlencode($email) . '&advertise_on=' . strval($advertise_on) . '&lang=' . $INSTALL_LANG, array('trigger_error' => false));
     }
 
     // Forum chooser

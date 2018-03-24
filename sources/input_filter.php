@@ -62,7 +62,7 @@ function check_input_field_string($name, &$val, $posted, $filters)
                 get_base_url(false) . '/',
                 get_base_url(true) . '/',
                 get_forum_base_url() . '/',
-                'http://compo.sr/',
+                'https://compo.sr/',
                 'https://compo.sr/',
             );
             $trusted_sites = get_trusted_sites(2);
