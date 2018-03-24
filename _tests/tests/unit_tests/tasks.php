@@ -180,7 +180,12 @@ class tasks_test_set extends cms_test_case
         $last_rows_after = $_last_rows_after;
         $this->clean_event_rows_for_comparison($last_rows_after);
 
-        $this->assertTrue($last_rows_before == $last_rows_after, 'Our test events changed during the export/import cycle)');
+        $ok = ($last_rows_before == $last_rows_after);
+        $this->assertTrue($ok, 'Our test events changed during the export/import cycle)');
+        if ((!$ok) && (get_param_integer('debug', 0) == 1)) {
+            @var_dump($last_rows_before);
+            @var_dump($last_rows_after);
+        }
 
         foreach ($_last_rows_after as $row) {
             delete_calendar_event($row['id']);
