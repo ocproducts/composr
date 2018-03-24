@@ -121,6 +121,8 @@ class Hook_addon_registry_core_feedback_features
             'sources/hooks/systems/preview/comments.php',
             'themes/default/images/icons/feedback/like.svg',
             'themes/default/images/icons/feedback/dislike.svg',
+            'themes/default/images/icons/feedback/like2.svg',
+            'themes/default/images/icons/feedback/dislike2.svg',
             'sources/hooks/systems/rss/comments.php',
             'themes/default/templates/COMMENTS_POSTING_FORM.tpl',
             'themes/default/templates/COMMENTS_POSTING_FORM_CAPTCHA.tpl',

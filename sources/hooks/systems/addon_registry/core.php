@@ -144,6 +144,8 @@ class Hook_addon_registry_core
             'themes/default/images/icons/content_types/video.svg',
             'themes/default/images/icons/content_types/multimedia.svg',
             'themes/default/images/icons/content_types/index.html',
+            'themes/default/images/icons/links/diaspora.svg',
+            'themes/default/images/icons/links/mastodon.svg',
             'themes/default/images/icons/links/baidu_tieba.svg',
             'themes/default/images/icons/links/dtube.svg',
             'themes/default/images/icons/links/line.svg',
