@@ -4503,7 +4503,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EDIT_CONFLICT_WARNING
         EDIT_CUSTOM_COMCODE_TAG
         EDIT_CUSTOM_FIELDS
-        EDIT_CUSTOM_PRODUCT
         EDIT_CUSTOM_PROFILE_FIELD
         EDIT_DEFAULT_THEME_WARNING
         EDIT_DESCRIPTIONS
@@ -4514,7 +4513,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EDIT_EVENT_TYPE
         EDIT_FORUM
         EDIT_FORUM_GROUPING
-        EDIT_FORWARDING_DOMAIN
         EDIT_GALLERY
         EDIT_GROUP
         EDIT_IMAGE
@@ -4546,9 +4544,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EDIT_OWN_POLL
         EDIT_OWN_QUIZ
         EDIT_PERIODIC_NEWSLETTER
-        EDIT_PERMISSION_PRODUCT
         EDIT_POLL
-        EDIT_POP3_DOMAIN
         EDIT_POST_TEMPLATE
         EDIT_PRIVATE_CALENDAR_EVENT
         EDIT_PRIVATE_THIS_CALENDAR_EVENT
@@ -7854,7 +7850,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADDRESS_DESIRED_STUB
         ADD_ATTACHMENT
         ADD_ATTACHMENTS_MEDIA_LIBRARY
-        ADD_BLOCK
         ADD_DATE
         ADD_FRIEND_ACTION_DESCRIPTION
         ADD_IMAGES

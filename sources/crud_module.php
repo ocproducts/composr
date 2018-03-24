@@ -79,8 +79,6 @@ abstract class Standard_crud_module
     protected $non_integer_id = false;
     protected $output_of_action_is_confirmation = false;
     protected $second_stage_preview = false;
-    protected $add_submit_name = null;
-    protected $edit_submit_name = null;
     protected $do_preview = true; // true or null (null means false here)
     protected $add_one_label = null;
     protected $add_one_cat_label = null;
@@ -795,10 +793,7 @@ abstract class Standard_crud_module
             return $test;
         }
 
-        $submit_name = (strpos($this->doing, ' ') !== false) ? protect_from_escaping($this->doing) : do_lang($this->doing);
-        if ($this->add_submit_name !== null) {
-            $submit_name = $this->add_submit_name;
-        }
+        $submit_name = do_lang_tempcode('ADD');
 
         $map = array('page' => '_SELF', 'type' => $this->get_screen_type_for('_add', $this->type_code));
         if (get_param_string('catalogue_name', '') != '') {

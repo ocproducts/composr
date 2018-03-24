@@ -203,7 +203,7 @@ class Module_admin_wordfilter
 
         // Do a form so people can add
         $post_url = build_url(array('page' => '_SELF', 'type' => 'add'), '_SELF');
-        $submit_name = do_lang_tempcode('ADD_WORDFILTER');
+        $submit_name = do_lang_tempcode('ADD');
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('WORD'), do_lang_tempcode('DESCRIPTION_WORD'), 'word_2', '', true));
         $fields->attach(form_input_line(do_lang_tempcode('REPLACEMENT'), do_lang_tempcode('DESCRIPTION_REPLACEMENT'), 'replacement', '', false));

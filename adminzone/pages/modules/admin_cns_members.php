@@ -286,7 +286,7 @@ class Module_admin_cns_members
 
         $text = do_lang_tempcode('_ENTER_PROFILE_DETAILS');
 
-        $submit_name = do_lang_tempcode('ADD_MEMBER');
+        $submit_name = do_lang_tempcode('ADD');
         $url = build_url(array('page' => '_SELF', 'type' => 'step2'), '_SELF');
         return do_template('FORM_SCREEN', array(
             '_GUID' => '3724dec184e27bb1bfebc5712e8faec2',

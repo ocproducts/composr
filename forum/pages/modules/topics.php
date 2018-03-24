@@ -2954,7 +2954,7 @@ END;
         }
 
         $title = get_screen_title('ADD_TOPIC_POLL');
-        $submit_name = do_lang_tempcode('ADD_TOPIC_POLL');
+        $submit_name = do_lang_tempcode('ADD');
 
         $_topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1);
         if (!array_key_exists(0, $_topic_info)) {

@@ -688,7 +688,7 @@ class Module_chat
         if (has_actual_page_access(get_member(), 'admin_chat')) {
             // The user is staff, so let him have the admin link
             $admin_url = build_url(array('page' => 'admin_chat', 'type' => '_edit', 'id' => $room_id), 'adminzone');
-            $admin_link = hyperlink($admin_url, do_lang_tempcode('EDIT_CHATROOM'), true, false);
+            $admin_link = hyperlink($admin_url, do_lang_tempcode('EDIT_THIS_CHATROOM'), true, false);
         }
 
         $download_url = build_url(array('page' => '_SELF', 'type' => 'download_logs', 'id' => $room_id), '_SELF');
@@ -844,7 +844,7 @@ class Module_chat
             }
         }
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a7e0f8368fd7f9ab09dddff27e649554', 'TITLE' => do_lang_tempcode('ADD_BLOCK'))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a7e0f8368fd7f9ab09dddff27e649554', 'TITLE' => do_lang_tempcode('ADD'))));
         $fields->attach(form_input_username(do_lang_tempcode('USERNAME'), do_lang_tempcode('BLOCK_MEMBER_MANUAL'), 'username', '', false));
 
         url_default_parameters__disable();

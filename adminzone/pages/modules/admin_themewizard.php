@@ -307,7 +307,7 @@ class Module_admin_themewizard
         $themename = get_param_string('themename');
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'step4'), '_SELF');
-        $submit_name = do_lang_tempcode('ADD_THEME');
+        $submit_name = do_lang_tempcode('ADD');
         require_code('form_templates');
         $fields = new Tempcode();
         $fields->attach(form_input_tick(do_lang_tempcode('USE_ON_ZONES'), do_lang_tempcode('DESCRIPTION_USE_ON_ZONES'), 'use_on_all', true));

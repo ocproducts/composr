@@ -717,7 +717,7 @@ class Module_admin_zones
         url_default_parameters__disable();
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_add'), '_SELF');
-        $submit_name = do_lang_tempcode('ADD_ZONE');
+        $submit_name = do_lang_tempcode('ADD');
         $text = paragraph(do_lang_tempcode('ZONE_ADD_TEXT'));
 
         require_javascript('core_zone_editor');

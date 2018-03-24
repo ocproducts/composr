@@ -356,17 +356,21 @@ class Module_admin_giftr extends Standard_crud_module
 
         $id = $GLOBALS['SITE_DB']->query_insert('giftr', array('name' => $name, 'image' => $url, 'price' => $price, 'enabled' => $enabled, 'category' => $category), true);
 
+        log_it('ADD_GIFT', strval($id), $name);
+
         return strval($id);
     }
 
     /**
      * Standard crud_module edit actualiser.
      *
-     * @param  ID_TEXT $id The entry being edited
+     * @param  ID_TEXT $_id The entry being edited
      * @return ?Tempcode Confirm message (null: continue)
      */
-    public function edit_actualisation($id)
+    public function edit_actualisation($_id)
     {
+        $id = intval($_id);
+
         $name = post_param_string('name');
         $category = post_param_string('category');
         $price = post_param_integer('price');
@@ -376,13 +380,15 @@ class Module_admin_giftr extends Standard_crud_module
         $url = post_param_image('image', 'uploads/giftr_addon', null, true, true);
 
         require_code('files2');
-        delete_upload('uploads/giftr_addon', 'giftr', 'image', 'id', intval($id), $url);
+        delete_upload('uploads/giftr_addon', 'giftr', 'image', 'id', $id, $url);
 
         $map = array('name' => $name, 'price' => $price, 'enabled' => $enabled, 'category' => $category);
         if ($url !== null) {
             $map['image'] = $url;
         }
-        $GLOBALS['SITE_DB']->query_update('giftr', $map, array('id' => intval($id)), '', 1);
+        $GLOBALS['SITE_DB']->query_update('giftr', $map, array('id' => $id), '', 1);
+
+        log_it('EDIT_GIFT', strval($id), $name);
 
         return null;
     }
@@ -392,11 +398,20 @@ class Module_admin_giftr extends Standard_crud_module
      *
      * @param  ID_TEXT $id The entry being deleted
      */
-    public function delete_actualisation($id)
+    public function delete_actualisation($_id)
     {
-        require_code('files2');
-        delete_upload('uploads/giftr_addon', 'giftr', 'image', 'id', intval($id));
+        $id = intval($_id);
 
-        $GLOBALS['SITE_DB']->query_delete('giftr', array('id' => intval($id)), '', 1);
+        $name = $GLOBALS['SITE_DB']->query_select_value_if_there('giftr', 'name', array('id' => $id));
+        if ($name === null) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+
+        require_code('files2');
+        delete_upload('uploads/giftr_addon', 'giftr', 'image', 'id', $id);
+
+        $GLOBALS['SITE_DB']->query_delete('giftr', array('id' => $id), '', 1);
+
+        log_it('DELETE_GIFT', strval($id), $name);
     }
 }

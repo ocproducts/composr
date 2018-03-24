@@ -340,6 +340,8 @@ class Module_admin_disastr extends Standard_crud_module
 
         $id = $GLOBALS['SITE_DB']->query_insert('diseases', array('name' => $name, 'image' => $url, 'cure' => $cure, 'cure_price' => $cure_price, 'immunisation' => $immunisation, 'immunisation_price' => $immunisation_price, 'spread_rate' => $spread_rate, 'points_per_spread' => $points_per_spread, 'last_spread_time' => 0, 'enabled' => $enabled), true);
 
+        log_it('ADD_DISEASE', strval($id), $name);
+
         return strval($id);
     }
 
@@ -352,6 +354,7 @@ class Module_admin_disastr extends Standard_crud_module
     public function edit_actualisation($_id)
     {
         $id = intval($_id);
+
         $name = post_param_string('name', '');
         $cure = post_param_string('cure', '');
         $cure_price = post_param_integer('cure_price', 0);
@@ -373,6 +376,8 @@ class Module_admin_disastr extends Standard_crud_module
         }
         $GLOBALS['SITE_DB']->query_update('diseases', $map, array('id' => $id), '', 1);
 
+        log_it('EDIT_DISEASE', strval($id), $name);
+
         return null;
     }
 
@@ -385,9 +390,16 @@ class Module_admin_disastr extends Standard_crud_module
     {
         $id = intval($_id);
 
+        $name = $GLOBALS['SITE_DB']->query_select_value_if_there('diseases', 'name', array('id' => $id));
+        if ($name === null) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+
         require_code('files2');
         delete_upload('uploads/disastr_addon', 'diseases', 'image', 'id', $id);
 
         $GLOBALS['SITE_DB']->query_delete('diseases', array('id' => $id), '', 1);
+
+        log_it('DELETE_DISEASE', strval($id), $name);
     }
 }

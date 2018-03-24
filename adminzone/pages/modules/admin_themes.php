@@ -637,7 +637,7 @@ class Module_admin_themes
         $fields = $this->get_theme_fields();
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_add_theme'), '_SELF');
-        $submit_name = do_lang_tempcode('ADD_THEME');
+        $submit_name = do_lang_tempcode('ADD');
 
         if (addon_installed('themewizard')) {
             $themewizard_url = build_url(array('page' => 'admin_themewizard', 'type' => 'browse'), get_module_zone('admin_themewizard'));
@@ -1042,7 +1042,7 @@ class Module_admin_themes
         $fields->attach(form_input_tick(do_lang_tempcode('USE_ALL_LANGS'), do_lang_tempcode('DESCRIPTION_USE_ALL_LANGS'), 'use_all_langs', true));
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_add_image', 'uploading' => 1), '_SELF');
-        $submit_name = do_lang_tempcode('ADD_THEME_IMAGE');
+        $submit_name = do_lang_tempcode('ADD');
 
         $text = new Tempcode();
         $text->attach(paragraph(do_lang_tempcode('DESCRIPTION_ADDING_THEME_IMAGE')));

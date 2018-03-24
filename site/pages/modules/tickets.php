@@ -1114,7 +1114,7 @@ class Module_tickets
 
         list($title) = get_ticket_meta_details($ticket_id);
 
-        $submit_name = do_lang_tempcode('EDIT_TICKET');
+        $submit_name = do_lang_tempcode('EDIT');
 
         $text = '';
 

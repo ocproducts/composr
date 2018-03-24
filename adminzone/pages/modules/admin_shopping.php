@@ -454,7 +454,7 @@ class Module_admin_shopping
 
             $submit_name = do_lang_tempcode('SEND_DISPATCH_NOTIFICATION');
         } else {
-            $submit_name = do_lang_tempcode('ADD_NOTE');
+            $submit_name = do_lang_tempcode('ADD');
         }
 
         return do_template('FORM_SCREEN', array(

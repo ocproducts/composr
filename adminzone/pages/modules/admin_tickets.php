@@ -180,7 +180,7 @@ class Module_admin_tickets
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'add'), '_SELF');
 
-        $submit_name = do_lang_tempcode('ADD_TICKET_TYPE');
+        $submit_name = do_lang_tempcode('ADD');
 
         $fields = form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TICKET_TYPE'), 'ticket_type_name_2', '', false);
         $fields->attach(form_input_tick(do_lang_tempcode('TICKET_GUEST_EMAILS_MANDATORY'), do_lang_tempcode('DESCRIPTION_TICKET_GUEST_EMAILS_MANDATORY'), 'guest_emails_mandatory', false));
