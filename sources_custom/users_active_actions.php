@@ -31,7 +31,6 @@ function handle_active_logout()
         if (function_exists('cms_ob_end_clean')) {
             cms_ob_end_clean();
         } else {
-            // LEGACY TODO: Fix in v11 that this branch is not needed
             @ob_end_clean();
         }
         echo ' ';

@@ -39,7 +39,11 @@ class Hook_choose_catalogue_category
         $catalogue_name = array_key_exists('catalogue_name', $options) ? $options['catalogue_name'] : null;
         $addable_filter = array_key_exists('addable_filter', $options) ? ($options['addable_filter']) : false;
         $compound_list = array_key_exists('compound_list', $options) ? $options['compound_list'] : false;
-        $stripped_id = ($compound_list ? preg_replace('#,.*$#', '', $id) : $id);
+        if ($id === null) {
+            $stripped_id = null;
+        } else {
+            $stripped_id = ($compound_list ? preg_replace('#,.*$#', '', $id) : $id);
+        }
 
         if (is_null($catalogue_name)) {
             $tree = array();

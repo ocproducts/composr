@@ -37,6 +37,4 @@ Add a poll block just like adding any information block in Composr, which is a s
 [*] Save your page
 [/list]
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Social,Content,Feedback features,polls,novice}{$SET,tutorial_add_date,Jul 2013}{$SET,tutorial_summary,Adding a poll to a community based site is probably one of the most common tasks you will need to complete. Polls can be a fun addition or used as a more important vote for an award or something similar.}[block]main_tutorial_rating[/block]

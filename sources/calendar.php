@@ -43,9 +43,10 @@ function init__calendar()
  * @param  ID_TEXT $zone Zone to link through to
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
+ * @param  ?Tempcode $text_summary Text summary for result (e.g. highlighted portion of actual file from search result) (null: none)
  * @return Tempcode The event box
  */
-function render_event_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
+function render_event_box($row, $zone = '_SEARCH', $give_context = true, $guid = '', $text_summary = null)
 {
     if (is_null($row)) { // Should never happen, but we need to be defensive
         return new Tempcode();
@@ -54,15 +55,20 @@ function render_event_box($row, $zone = '_SEARCH', $give_context = true, $guid =
     require_css('calendar');
     require_lang('calendar');
 
-    $just_event_row = db_map_restrict($row, array('id', 'e_content'));
-
     $url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $row['id']), $zone);
+
+    if ($text_summary === null) {
+        $just_event_row = db_map_restrict($row, array('id', 'e_content'));
+        $summary = get_translated_tempcode('calendar_events', $just_event_row, 'e_content');
+    } else {
+        $summary = $text_summary;
+    }
 
     return do_template('CALENDAR_EVENT_BOX', array(
         '_GUID' => ($guid != '') ? $guid : '0eaa10d9fab32599ff095e1121d41c43',
         'ID' => strval($row['id']),
         'TITLE' => get_translated_text($row['e_title']),
-        'SUMMARY' => get_translated_tempcode('calendar_events', $just_event_row, 'e_content'),
+        'SUMMARY' => $summary,
         'URL' => $url,
         'GIVE_CONTEXT' => $give_context,
     ));
@@ -235,7 +241,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
         $end_monthly_spec_type = 'day_of_month';
     }
     $optimise_recurrence_via_zoom = true; // This code is easy to get wrong, so found bugs are more likely in here. When debugging set to 'false' to confirm the problem is in here
-    switch ($recurrence) { // Set dif period / If a long way out of range, accelerate forward before steadedly looping forward till we might find a match (doesn't jump fully forward, due to possibility of timezones complicating things)
+    switch ($recurrence) { // Set dif period / If a long way out of range, accelerate forward before steadily looping forward till we might find a match (doesn't jump fully forward, due to possibility of timezones complicating things)
         case 'daily':
             $dif_day = 1;
             if (($dif > 60 * 60 * 24 * 10) && ($mask_len == 0) && ($optimise_recurrence_via_zoom)) {
@@ -393,7 +399,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
             }
         }
 
-        // Crossing a DST in our reference timezone? (as we store in UTC, which is DST-less, we need to specially accomodate for this)
+        // Crossing a DST in our reference timezone? (as we store in UTC, which is DST-less, we need to specially accommodate for this)
         _compensate_for_dst_change($start_hour, $start_minute, $start_day, $start_month, $start_year, $timezone, $do_timezone_conv, $dif_day, $dif_month, $dif_year);
         if (!is_null($end_hour)) {
             _compensate_for_dst_change($end_hour, $end_minute, $end_day, $end_month, $end_year, $timezone, $do_timezone_conv, $dif_day, $dif_month, $dif_year);

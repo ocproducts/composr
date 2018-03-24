@@ -62,7 +62,7 @@ class Hook_addon_registry_cns_contact_member
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_correspondance',
+            'tut_correspondence',
         );
     }
 

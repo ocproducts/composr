@@ -84,7 +84,7 @@ class Module_classifieds
             }
         }
 
-        if (($upgrade_from < 3) && ($upgrade_from !== null)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
             $GLOBALS['SITE_DB']->rename_table('classifieds_prices', 'ecom_classifieds_prices');
         }
     }

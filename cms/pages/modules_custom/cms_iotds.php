@@ -294,7 +294,7 @@ class Module_cms_iotds extends Standard_crud_module
 
         check_edit_permission(($myrow['is_current'] == 1) ? 'high' : 'mid', $myrow['submitter']);
 
-        return $this->get_form_fields($myrow['url'], $myrow['thumb_url'], $title, $caption, $myrow['is_current'], $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $myrow['notes']);
+        return $this->get_form_fields(null, $myrow['url'], $myrow['thumb_url'], $title, $caption, $myrow['is_current'], $myrow['allow_rating'], $myrow['allow_comments'], $myrow['allow_trackbacks'], $myrow['notes']);
     }
 
     /**

@@ -137,7 +137,7 @@ function cns_poll_get_results($poll_id, $request_results = true)
     }
 
     if ($request_results) {
-        // Forfeighting this by viewing results?
+        // Forfeiting this by viewing results?
         if (is_guest()) {
             $voted_already_map = array('pv_poll_id' => $poll_id, 'pv_ip' => get_ip_address());
         } else {

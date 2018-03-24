@@ -22,7 +22,7 @@ class allow_php_in_templates_test_set extends cms_test_case
     {
         require_code('tempcode_compiler');
 
-        $test = 'a<?php echo "hello"; ?>b';
+        $test = 'a<?' . 'php echo "hello"; ?' . '>b';
 
         set_value('allow_php_in_templates', '1');
         $eval = static_evaluate_tempcode(template_to_tempcode($test));

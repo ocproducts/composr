@@ -410,7 +410,7 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
         }
     }
     if (is_null($name)) {
-        if ($check_only) { // Maybe it has been appended with something else, so search deeper (we suspect this as we have been explictly asked to check the Comcode)
+        if ($check_only) { // Maybe it has been appended with something else, so search deeper (we suspect this as we have been explicitly asked to check the Comcode)
             foreach ($_POST as $key => $val) {
                 if (!is_string($val)) {
                     continue;
@@ -496,6 +496,13 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
         return new Tempcode();
     }
     if (strpos($url_full, '{$') !== false) {
+        return new Tempcode();
+    }
+
+    // Exceptions that we don't want to check (typically things we use by default)
+    if (in_array($url_full, array(
+        'https://www.google.com/webmasters/tools/home',
+    ))) {
         return new Tempcode();
     }
 
@@ -723,10 +730,10 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             if ($temp_tpl->is_empty()) {
                 if (($in_semihtml) || ($is_all_semihtml)) { // HACKHACK. Yuck. We've allowed unfiltered HTML through (as code tags have no internal filtering and the whole thing is HTML so no escaping was done): we need to pass it through proper HTML security.
                     require_code('comcode_from_html');
-                    $back_to_comcode = semihtml_to_comcode($embed->evaluate(), true); // Undo what's happened already
-                    $back_to_comcode = preg_replace('#^\[(semi)?html\]#', '', $back_to_comcode);
-                    $back_to_comcode = preg_replace('#\[/(semi)?html\]$#', '', $back_to_comcode);
-                    $embed = __comcode_to_tempcode($back_to_comcode, $source_member, $as_admin, 80, $pass_id, $connection, true, false, false, false, false, null, null, true); // Re-parse (with full security)
+                    $_embed = $embed->evaluate();
+                    $back_to_comcode = html_to_comcode($_embed);
+                    $_is_all_semihtml = false;
+                    $embed = __comcode_to_tempcode($back_to_comcode, $source_member, $as_admin, 80, $pass_id, $connection, false, false, $_is_all_semihtml, false, false, null, null, false); // Re-parse (with full security)
                 }
 
                 $_embed = $embed->evaluate();
@@ -1413,11 +1420,6 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             break;
 
         case 'title':
-            if (($semiparse_mode) && (strpos($comcode, '[contents') !== false)) {
-                $temp_tpl = make_string_tempcode(add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml), WYSIWYG_COMCODE__STANDOUT_BLOCK, $html_errors));
-                break;
-            }
-
             $level = ($attributes['param'] != '') ? intval($attributes['param']) : 1;
             if ($level == 0) {
                 $level = 1; // Stop crazy Comcode causing stack errors with the toc
@@ -1707,13 +1709,13 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 if ($rel != '') {
                     $rel .= ' ';
                 }
-                $rel .= 'noopener';
+                $rel .= 'nofollow';
             }
             if (!$as_admin) {
                 if ($rel != '') {
                     $rel .= ' ';
                 }
-                $rel .= 'nofollow';
+                $rel .= 'noopener';
             }
             if ($attributes['target'] == '_blank') {
                 $title = trim(strip_tags(is_object($caption) ? static_evaluate_tempcode($caption) : $caption) . ' ' . do_lang('LINK_NEW_WINDOW'));
@@ -1805,7 +1807,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 }
                 $ptest = _request_page($page, $zone);
                 if ($ptest !== false) {
-                    if (($page == 'topicview') && (array_key_exists('id', $_attributes))) {
+                    if (($page == 'topicview') && (get_forum_type() == 'cns') && (array_key_exists('id', $_attributes))) {
                         if (!is_numeric($_attributes['id'])) {
                             $_attributes['id'] = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => $page, 'm_moniker' => $_attributes['id']));
                         }
@@ -2317,12 +2319,18 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     $attributes[$parameter] = $default;
                 }
                 $binding[strtoupper($parameter)] = $attributes[$parameter];
-                $replace = str_replace('{' . $parameter . '}', '{' . strtoupper($parameter) . '*}', $replace);
+                if (is_string($replace)) {
+                    $replace = str_replace('{' . $parameter . '}', '{' . strtoupper($parameter) . '*}', $replace);
+                }
             }
-            $replace = str_replace('{content}', array_key_exists($tag, $GLOBALS['TEXTUAL_TAGS']) ? '{CONTENT}' : '{CONTENT*}', $replace);
-            require_code('tempcode_compiler');
-            $temp_tpl = template_to_tempcode($replace);
-            $temp_tpl = $temp_tpl->bind($binding, '(custom comcode: ' . $tag . ')');
+            if (is_string($replace)) {
+                $replace = str_replace('{content}', array_key_exists($tag, $GLOBALS['TEXTUAL_TAGS']) ? '{CONTENT}' : '{CONTENT*}', $replace);
+                require_code('tempcode_compiler');
+                $temp_tpl = template_to_tempcode($replace);
+                $temp_tpl = $temp_tpl->bind($binding, '(custom comcode: ' . $tag . ')');
+            } else {
+                $temp_tpl = call_user_func($replace, $embed, $attributes);
+            }
         }
     }
 

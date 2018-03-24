@@ -28,14 +28,14 @@ class Hook_endpoint_account_setup_push_notifications
     public function run($type, $id)
     {
         // Store a device notification token (i.e. identification of a device, so we can send notifications to it).
-    
+
         $token_type = either_param_string('device'); // iOS|android
         $member_id = either_param_integer('member', get_member());
         $token = either_param_string('token');
 
         $member_details = $GLOBALS['SITE_DB']->query_select('f_members', array('id'), array('id' => $member_id), '', 1);
         if (!isset($member_details[0])) {
-            warn_exit(do_lang_tempcode('MEMBER_NOT_EXISTS'));
+            warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
         }
 
         $GLOBALS['SITE_DB']->query_delete('device_token_details', array('member_id' => $member_id, 'token_type' => $token_type));

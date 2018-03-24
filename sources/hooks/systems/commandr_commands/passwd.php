@@ -72,7 +72,7 @@ class Hook_commandr_command_passwd
                 $update['m_pass_hash_salted'] = ratchet_hash($parameters[0], $salt);
             }
 
-            $GLOBALS['SITE_DB']->query_update('f_members', $update, array('id' => $member_id), '', 1);
+            $GLOBALS['FORUM_DB']->query_update('f_members', $update, array('id' => $member_id), '', 1);
             return array('', '', do_lang('SUCCESS'), '');
         }
     }

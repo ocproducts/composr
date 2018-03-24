@@ -362,7 +362,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 
     // Work out the actual rendering, but only for those results in our selection scope (for performance)
     foreach ($entries as $i => $entry) {
-        if (($in_db_sorting /*Only select rows were grabbed so $i is not the first entry, it is the $start entry*/) || (!$in_db_sorting /*Needs data to do manual sort*/) || ((($start === null) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select)))))) {
+        if (($in_db_sorting /*Only select rows were grabbed so $i is not the first entry, it is the $start entry*/) || (!$in_db_sorting /*Needs data to do manual sort*/) || ((($start === null) || ($i >= $start) && (($max === null) || ($i < $start + $max))) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select)))))) {
             $entries[$i]['map'] = get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root, $fields, (($display_type == C_DT_TITLELIST) && (!$is_ecomm) && ($order_by !== null)) ? array(0, intval($order_by)) : null, false, true, intval($order_by));
         }
     }
@@ -457,7 +457,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 
                 $entry = $entries[$i];
 
-                if (($max === null) || (($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
+                if (($max === null) || (($start === null) || ($in_db_sorting) || ($i >= $start) && (($max === null) || ($i < $start + $max))) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
                     $entry_buildup->attach(do_template('CATALOGUE_' . $tpl_set . '_FIELDMAP_ENTRY_WRAP', $entry['map'] + array('GIVE_CONTEXT' => false) + (array_key_exists($i, $extra_map) ? $extra_map[$i] : array()), null, false, 'CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP'));
                 }
             }
@@ -474,7 +474,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 
                 $entry = $entries[$i];
 
-                if ((($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
+                if ((($start === null) || ($in_db_sorting) || ($i >= $start) && (($max === null) || ($i < $start + $max))) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
                     $entry_buildup->attach(do_template('CATALOGUE_' . $tpl_set . '_TITLELIST_ENTRY', $entry['map'] + (array_key_exists($i, $extra_map) ? $extra_map[$i] : array()), null, false, 'CATALOGUE_DEFAULT_TITLELIST_ENTRY'));
                 }
             }
@@ -511,7 +511,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
                 }
 
                 $entry = $entries[$i];
-                if ((($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || (is_array($select)) && (in_array($entry['id'], $select)))) {
+                if ((($start === null) || ($in_db_sorting) || ($i >= $start) && (($max === null) || ($i < $start + $max))) && ((!is_array($select)) || (is_array($select)) && (in_array($entry['id'], $select)))) {
                     $tab_entry_map = $entry['map'] + (array_key_exists($i, $extra_map) ? $extra_map[$i] : array());
                     if ($has_view_screens) {
                         $url_map = array('page' => 'catalogues', 'type' => 'entry', 'id' => $entry['id']);
@@ -580,7 +580,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 
                 $entry = $entries[$i];
 
-                if (($max === null) || (($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
+                if (($max === null) || (($start === null) || ($in_db_sorting) || ($i >= $start) && (($max === null) || ($i < $start + $max))) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
                     $entry_buildup->attach(do_template('CATALOGUE_' . $tpl_set . '_GRID_ENTRY_WRAP', $entry['map'] + (array_key_exists($i, $extra_map) ? $extra_map[$i] : array()), null, false, 'CATALOGUE_DEFAULT_GRID_ENTRY_WRAP'));
                 }
             }

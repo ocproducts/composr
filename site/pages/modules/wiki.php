@@ -305,7 +305,7 @@ class Module_wiki
 
             breadcrumb_set_parents($breadcrumbs);
 
-            // Re-defined canonical URL
+            // Redefined canonical URL
             global $CANONICAL_URL, $NON_CANONICAL_PARAMS;
             $non_canonical = array();
             if (is_array($NON_CANONICAL_PARAMS)) {

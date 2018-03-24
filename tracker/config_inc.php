@@ -127,11 +127,26 @@ $g_source_control_regex = '/\b(?:bug|issue|feature|request)\s*[#]{0,1}(\d+)\b/i'
 
 $g_show_user_email_threshold = ADMINISTRATOR;
 
-$g_cookie_time_length	= 60*60*24*30;
+$g_cookie_time_length = 60*60*24*30;
 
+# --- Simplify by removing unneeded filter complexity ---
+
+$g_default_refresh_delay = 30;
 
 $g_default_bug_severity = FEATURE;
 $g_default_bug_reproducibility = 100;
+
+$g_bug_reopen_status = NEW_;
+$g_bug_feedback_status = NEW_;
+
+$g_status_enum_string = '10:non-assigned,50:assigned,80:resolved,90:closed';
+$g_status_colors		= array( 'non-assigned'			=> '#fcbdbd', // red    (scarlet red #ef2929)
+								 'feedback'		=> '#e3b7eb', // purple (plum        #75507b)
+								 'acknowledged'	=> '#ffcd85', // orange (orango      #f57900)
+								 'confirmed'	=> '#fff494', // yellow (butter      #fce94f)
+								 'assigned'		=> '#c2dfff', // blue   (sky blue    #729fcf)
+								 'resolved'		=> '#d2f5b0', // green  (chameleon   #8ae234)
+								 'closed'		=> '#c9ccc4'); // grey  (aluminum    #babdb6)
 
 // Lets make it so only website-visitors can post. Otherwise spam happens.
 $g_add_bugnote_threshold = isset($_COOKIE[$SITE_INFO['session_cookie']]) ? ANYBODY : REPORTER;

@@ -84,7 +84,7 @@ function rebuild_sitemap_set($set_number, $last_time)
     fwrite($sitemaps_out_file, $blob);
 
     // Nodes accessible by guests, and not deleted (ignore update time as we are rebuilding whole set)
-    $where = array('set_number' => $set_number, 'is_deleted' => 0);
+    $where = array('set_number' => $set_number, 'is_deleted' => 0, 'guest_access' => 0);
     $nodes = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('*'), $where);
     foreach ($nodes as $node) {
         $page_link = $node['page_link'];
@@ -116,10 +116,10 @@ function rebuild_sitemap_set($set_number, $last_time)
         $langs = find_all_langs();
         foreach (array_keys($langs) as $lang) {
             if ($lang != get_site_default_lang()) {
-                $url = _build_url($attributes + array('keep_lang' => $lang), $zone, null, false, false, true, $hash);
+                $_url = _build_url($attributes + array('keep_lang' => $lang), $zone, null, false, false, true, $hash);
 
                 $optional_details = '
-        <xhtml:link rel="alternate" hreflang="' . strtolower($lang) . '" href="' . xmlentities($url) . '" />';
+        <xhtml:link rel="alternate" hreflang="' . strtolower($lang) . '" href="' . xmlentities($_url) . '" />';
             }
         }
 
@@ -286,7 +286,7 @@ function build_sitemap_cache_table()
 
 
 /**
- * Callback for reference a Sitemap node in the cache.
+ * Callback for referencing a Sitemap node in the cache.
  *
  * @param  array $node The Sitemap node
  *

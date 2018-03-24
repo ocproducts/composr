@@ -1126,7 +1126,7 @@ For example:
  - We can assume things like critical Composr directories are present, such as [tt]sources[/tt]
  - We can't assume non-standard directories like 'lang/FR' are present, so we must either add some conditional logic, or cleanly handle the error event in an appropriate way (in this case perhaps explaining to the user that 'The French language pack is not installed').
 
-[title="4"]Supressing errors[/title]
+[title="4"]Suppressing errors[/title]
 
 Composr will react fatally on most errors unless they are suppressed. This includes [tt]PHP_NOTICE[/tt]s. To suppress errors from a PHP command, put an [tt]@[/tt] symbol before the function call. If the PHP command causing the error is buried inside a Composr API function and you want errors to be shown as 'deferred' rather than fatal, you can set the global [tt]SUPPRESS_ERROR_DEATH[/tt] variable to [tt]true[/tt] temporarily.
 
@@ -1225,7 +1225,7 @@ One common logic error that deserves to be mentioned is the false assumption tha
 
 Another common (and very remedial) logic error is assuming that a hacker won't try and bypass the UI to gain access by manipulating GET/POST variables. Security checks need implementing both in UI code and in actualiser code that carries out the actual tasks.
 
-Another common logic error is passing in secondary ID values from a form, for edit/deletion in actualiser code, and only checking permissions on a primary ID. For example, if a record has some subrecords, and there are checkboxes to delete those subrecords available on the main record's edit screen, it is easy to forget that you need to run permissions checks on the subrecords as well as the main record. As an alternative to running extra permssion checks, sometimes it is possible to construct queries on the subrecords that hard-codes the primary ID, such that the query will only execute if the subrecords referenced really do belong to the main record we checked permissions for; this is valid protection also, and usually involves less code.
+Another common logic error is passing in secondary ID values from a form, for edit/deletion in actualiser code, and only checking permissions on a primary ID. For example, if a record has some subrecords, and there are checkboxes to delete those subrecords available on the main record's edit screen, it is easy to forget that you need to run permissions checks on the subrecords as well as the main record. As an alternative to running extra permission checks, sometimes it is possible to construct queries on the subrecords that hard-codes the primary ID, such that the query will only execute if the subrecords referenced really do belong to the main record we checked permissions for; this is valid protection also, and usually involves less code.
 
 Any special and obvious hack-attack situation that you can figure out (whether real or not) should be logged using the [tt]log_hack_attack_and_die[/tt] function, so that site staff may detect when people are trying to hack or probe the site. While hackers with the source code may avoid the attack scenario you've predicted and logged, it is likely they will make mistakes and get logged anyway, which can be a huge benefit to site admins.
 

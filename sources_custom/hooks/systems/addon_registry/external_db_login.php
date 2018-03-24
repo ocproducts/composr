@@ -107,7 +107,9 @@ class Hook_addon_registry_external_db_login
     public function get_dependencies()
     {
         return array(
-            'requires' => array(),
+            'requires' => array(
+                'Conversr',
+            ),
             'recommends' => array(),
             'conflicts_with' => array()
         );

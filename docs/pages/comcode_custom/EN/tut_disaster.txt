@@ -16,9 +16,9 @@ You may view the Composr error log even if Composr won't start. Just look at the
 
 [title="2"]Clearing caches[/title]
 
-Changes in the database or to files may be obscured by cacheing. If you have a problem so severe that you cannot get into the Admin Zone, you can clear cacheing either:
+Changes in the database or to files may be obscured by caching. If you have a problem so severe that you cannot get into the Admin Zone, you can clear caching either:
 1) from the upgrader tool (accessible via [tt]http://yourbaseurl/upgrader.php[/tt])
-2) opening up a command prompt to your base directory and running [tt]sh decache.sh[/tt] (Linux/Mac only) -- this works if the upgrader won't run; it doesn't immediately clear database cacheing, but it adds a flag for Composr to do that automatically next time the site is loaded
+2) opening up a command prompt to your base directory and running [tt]sh decache.sh[/tt] (Linux/Mac only) -- this works if the upgrader won't run; it doesn't immediately clear database caching, but it adds a flag for Composr to do that automatically next time the site is loaded
 
 [title="2"]Repairing a corrupted copy of Composr[/title]
 
@@ -32,7 +32,7 @@ Instructions are provided in the [page="_SEARCH:tut_sql"]Manually editing your d
 
 If you don't have phpMyAdmin, whatever database management tool should have an equivalent feature as table repair is a standard MySQL mechanism.
 
-If you don't have any visual database management tool, you should look into getting one. However if you are technical you can use the command line using the MySQL [tt]REPAIR TABLE <tablename>[/tt] command, or the [tt]myisamchk[/tt] program to batch fix all [tt]*.MYI[/tt] files while having the MySQL server temporarily off-line.
+If you don't have any visual database management tool, you should look into getting one. However if you are technical you can use the command line using the MySQL [tt]REPAIR TABLE <tablename>[/tt] command, or the [tt]myisamchk[/tt] program to batch fix all [tt]*.MYI[/tt] files while having the MySQL server temporarily offline.
 
 [title="2"]Fixing a theme[/title]
 

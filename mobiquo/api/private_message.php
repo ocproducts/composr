@@ -150,6 +150,9 @@ function get_box_func($raw_params)
             'username' => mobiquo_val($msg['username'], 'base64'),
         );
         $display_text = $GLOBALS['FORUM_DRIVER']->get_username($msg['user_id'], true);
+        if ($display_text === null) {
+            $display_text = do_lang('UNKNOWN');
+        }
         if ($display_text != $msg['username']) {
             $arr += array(
                 'display_text' => mobiquo_val($display_text, 'base64'),
@@ -194,6 +197,9 @@ function get_message_func($raw_params)
             'username' => mobiquo_val($_msg_to['username'], 'base64'),
         );
         $display_text = $GLOBALS['FORUM_DRIVER']->get_username($_msg_to['user_id'], true);
+        if ($display_text === null) {
+            $display_text = do_lang('UNKNOWN');
+        }
         if ($display_text != $_msg_to['username']) {
             $arr += array(
                 'display_text' => mobiquo_val($display_text, 'base64'),

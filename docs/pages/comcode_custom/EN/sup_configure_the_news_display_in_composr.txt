@@ -48,6 +48,4 @@ Go to Admin Zone > Content > News > Edit news category. As you hover over each n
 
 Once you are happy click preview to ensure the block is displaying as you want it to and then click to save.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,News,Content,news,novice}{$SET,tutorial_add_date,Dec 2013}{$SET,tutorial_summary,This tutorial explains how the main_news block can be configured to show different formulations of news.}[block]main_tutorial_rating[/block]

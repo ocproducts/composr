@@ -1,5 +1,5 @@
 set user="IUSR"
-REM IIS Express will always run the above. Full IIS is configurable
+REM IIS Express will always run the above. Full IIS is configurable, but defaults to this built-in account also
 
 REM Note that wildcards are not allowed for directories, only files
 

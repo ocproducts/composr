@@ -176,7 +176,7 @@ class Block_main_activities
                     'MESSAGE' => $message,
                     'AVATAR' => $member_avatar,
                     'MEMBER_ID' => strval($row['a_member_id']),
-                    'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($row['a_member_id']),
+                    'USERNAME' => $username,
                     'MEMBER_URL' => $member_url,
                     'DATETIME' => strval($datetime),
                     'LIID' => strval($row['id']),

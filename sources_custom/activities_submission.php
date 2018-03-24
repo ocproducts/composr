@@ -165,6 +165,8 @@ function activities_ajax_submit_handler()
     $response .= '</content></response>';
 
     echo $response;
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -254,6 +256,8 @@ function activities_ajax_update_list_handler()
     }
 
     echo $response;
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -261,7 +265,7 @@ function activities_ajax_update_list_handler()
  */
 function activities_ajax_removal_handler()
 {
-    $is_guest = false; // Can't be doing with overcomplicated SQL breakages. Weed it out.
+    $is_guest = false; // Can't be doing with over-complicated SQL breakages. Weed it out.
     $guest_id = intval($GLOBALS['FORUM_DRIVER']->get_guest_id());
     $viewer_id = intval(get_member()); //We'll need this later anyway.
     if ($guest_id == $viewer_id) {
@@ -298,6 +302,8 @@ function activities_ajax_removal_handler()
     $response .= '</response>';
 
     echo $response;
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**

@@ -68,6 +68,4 @@ The two options in this section allow you to set the number of section members o
 
 The final section allows you to copy all of the members from one existing users group to this new usergroup and you can also choose to copy the permissions from an existing usergroup. The second option is if you want to create a new members group which has just a few differences to another usergroup but the other usergroup needs to stay as it is.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Members,Social,novice}{$SET,tutorial_add_date,Jul 2013}{$SET,tutorial_summary,Depending on the make-up of your Composr site there is a likelihood that you may need to create a new Composr usergroup for your members.}[block]main_tutorial_rating[/block]

@@ -266,6 +266,8 @@ class css_file_test_set extends cms_test_case
         }
 
         $exceptions = array(
+            'img_thumb_opaque',
+            'non_docked',
             'active_item',
             'thick_border',
             'access_restricted_in_list',
@@ -306,6 +308,7 @@ class css_file_test_set extends cms_test_case
             'calendar_month_day',
             'calendar_multiple',
             'calendar_year_month_day',
+            'cns_unread_topic_title',
             'chat_lobby_convos_current_tab',
             'chat_lobby_convos_tab_first',
             'chat_lobby_convos_tab_new_messages',

@@ -207,7 +207,7 @@ function config_update_value_ref($old_setting, $setting, $type)
         $ob = object_factory('Hook_config_' . filter_naughty_harsh($hook));
         $option = $ob->get_details();
         if (($option['type'] == $type) && (get_option($hook) == $old_setting)) {
-            $GLOBALS['FORUM_DB']->query_update('config', array('c_value' => $setting), array('c_name' => $hook), '', 1);
+            $GLOBALS['SITE_DB']->query_update('config', array('c_value' => $setting), array('c_name' => $hook), '', 1);
         }
     }
 }

@@ -63,7 +63,7 @@ class Hook_commandr_command_db_search
                 $fields = $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name', 'm_table'));
             }
             foreach ($fields as $field) {
-                $db = ((substr($field['m_table'], 0, 2) == 'f_') && ($GLOBALS['FORUM_DB'] !== null)) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+                $db = ((substr($field['m_table'], 0, 2) == 'f_') && ($field['m_table'] != 'f_welcome_emails') && ($GLOBALS['FORUM_DB'] !== null)) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
                 $ofs = $db->query_select($field['m_table'], array('*'), array($field['m_name'] => $value));
                 foreach ($ofs as $of) {
                     $out .= '<h2>' . escape_html($field['m_table']) . '</h2>';

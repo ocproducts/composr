@@ -45,7 +45,7 @@ function get_future_version_information()
 {
     require_lang('version');
 
-    $version_dotted = get_param_string('keep_test_version', get_version_dotted()); // E.g. ?keep_test_version=10%20RC29&keep_cache_blocks=0 to test
+    $version_dotted = get_param_string('keep_test_version', get_version_dotted()); // E.g. ?keep_test_version=10.RC29&keep_cache_blocks=0 to test
     $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/version.php?version=' . rawurlencode($version_dotted) . '&lang=' . rawurlencode(user_lang());
 
     static $data = null; // Cache
@@ -153,7 +153,7 @@ function get_version_components__from_dotted($dotted)
         if (strpos($dotted, '.' . $type) !== false) {
             $qualifier = $type;
             $qualifier_number = intval(substr($dotted, strrpos($dotted, '.' . $type) + strlen('.' . $type)));
-            $basis_dotted_number = substr($dotted, 0, strrpos($dotted, '.' . $type));
+            $basis_dotted_number = preg_replace('#(\.0)+$#', '', substr($dotted, 0, strrpos($dotted, '.' . $type)));
             break;
         }
     }
@@ -184,12 +184,12 @@ function get_version_components__from_dotted($dotted)
  * Get a pretty version number for a Composr version.
  * This pretty style is not used in Composr code per se, but is shown to users and hence Composr may need to recognise it when searching news posts, download databases, etc.
  *
- * @param  string $dotted Dotted version number
+ * @param  string $dotted Dotted version number (optionally in long-dotted format)
  * @return string Pretty version number
  */
 function get_version_pretty__from_dotted($dotted)
 {
-    return preg_replace('#\.(alpha|beta|RC)#', ' ${1}', $dotted);
+    return preg_replace('#(\.0)*\.(alpha|beta|RC)#', ' ${2}', $dotted);
 }
 
 /**
@@ -200,9 +200,16 @@ function get_version_pretty__from_dotted($dotted)
  */
 function is_substantial_release($dotted)
 {
-    list(, , , $long_dotted_number) = get_version_components__from_dotted($dotted);
+    list(, , , , , $long_dotted_number_with_qualifier) = get_version_components__from_dotted($dotted);
 
-    return (substr($long_dotted_number, -2) == '.0') || (strpos($long_dotted_number, 'beta1') !== false) || (strpos($long_dotted_number, 'RC1') !== false);
+    if (preg_match('#^\d+\.0\.0(\.beta1|\.RC1|)$#', $long_dotted_number_with_qualifier) != 0) { // e.g. 3.0.0 or 3.0.0.beta1 or 3.0.0.RC1
+        return true;
+    }
+    if (preg_match('#^\d+\.\d+\.0(\.beta1|\.RC1|)$#', $long_dotted_number_with_qualifier) != 0) { // e.g. 3.1.0 or 3.1.0.beta1 or 3.1.0.RC1
+        return true;
+    }
+
+    return false;
 }
 
 /**

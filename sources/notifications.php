@@ -553,22 +553,25 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
 {
     // Fish out some general details of the sender
     $to_name = $GLOBALS['FORUM_DRIVER']->get_username($to_member_id, true);
+    if ($to_name === null) {
+        return $no_cc;
+    }
     $from_email = '';
     $from_name = '';
     $from_member_id_shown = db_get_first_id();
     if ((!is_null($from_member_id)) && ($from_member_id >= 0)) {
         if ($use_real_from) {
             $from_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($from_member_id);
-            if ($from_email == '') {
-                $from_email = '';
-            }
             $from_name = $GLOBALS['FORUM_DRIVER']->get_username($from_member_id, true);
+            if ($from_name === null) {
+                $from_name = '';
+            }
             $from_member_id_shown = $from_member_id;
         }
     } else {
         $use_real_from = false;
     }
-    $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($to_member_id, 'm_join_time');
+    $join_time = $GLOBALS['FORUM_DRIVER']->get_member_join_timestamp($to_member_id);
 
     $db = (substr($notification_code, 0, 4) == 'cns_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
 
@@ -761,6 +764,15 @@ function enable_notifications($notification_code, $notification_category, $membe
 
     $db = (substr($notification_code, 0, 4) == 'cns_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
 
+    $map = array(
+        'l_member_id' => $member_id,
+        'l_notification_code' => substr($notification_code, 0, 80),
+        'l_code_category' => is_null($notification_category) ? '' : $notification_category,
+    );
+    if (!$reset_for_all_types) {
+        $map['l_setting'] = $setting;
+    }
+
     if (is_null($setting)) {
         $ob = _get_notification_ob_for_code($notification_code);
         if (is_null($ob)) {
@@ -770,29 +782,19 @@ function enable_notifications($notification_code, $notification_category, $membe
         if ($setting == A__STATISTICAL || !_notification_setting_available($setting, $member_id)) {
             $setting = _find_member_statistical_notification_type($member_id, $notification_code);
         }
-    } else {
+    } elseif ($setting != A_NA) {
         // Check there is actually something to do here (when saving notifications tab usually everything will be still the same)
-        $test = $db->query_select_value_if_there('notifications_enabled', 'l_setting', array(
-            'l_member_id' => $member_id,
-            'l_notification_code' => substr($notification_code, 0, 80),
-            'l_code_category' => is_null($notification_category) ? '' : $notification_category,
-        ));
+        $test = $db->query_select_value_if_there('notifications_enabled', 'l_setting', $map);
         if ($test === $setting) {
             return;
         }
     }
 
-    $map = array(
-        'l_member_id' => $member_id,
-        'l_notification_code' => substr($notification_code, 0, 80),
-        'l_code_category' => is_null($notification_category) ? '' : $notification_category,
-    );
-    if (!$reset_for_all_types) {
-        $map['l_setting'] = $setting;
-    }
     $db->query_delete('notifications_enabled', $map);
-    $map['l_setting'] = $setting;
-    $db->query_insert('notifications_enabled', $map);
+    if ($setting != A_NA) {
+        $map['l_setting'] = $setting;
+        $db->query_insert('notifications_enabled', $map);
+    }
 
     if (($notification_code == 'comment_posted') && (get_forum_type() == 'cns') && (!is_null($notification_category))) { // Sync comment_posted ones to also monitor the forum ones; no need for opposite way as comment ones already trigger forum ones
         $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $notification_category, do_lang('COMMENT'));

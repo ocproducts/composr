@@ -8,11 +8,8 @@
 {$SET,time_value,{$PAD_LEFT,{HOUR},2,0}:{$PAD_LEFT,{MINUTE},2,0}}
 <input name="{NAME*}" id="{NAME*}" type="time" size="5"{+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} value="{+START,IF_NON_EMPTY,{HOUR}}{$GET*,time_value}{+END}" />
 
-{+START,SET,comment}
-	Uncomment if you want to force jQuery-UI inputs even when there is native browser input support
-	<script>// <![CDATA[
-		add_event_listener_abstract(window,'load',function() {
-			$('#{NAME;/}').inputTime({});
-		});
-	//]]></script>
-{+END}
+<script>// <![CDATA[
+	add_event_listener_abstract(window,'load',function() {
+		$('#{NAME;/}').inputTime({});
+	});
+//]]></script>

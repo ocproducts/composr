@@ -227,8 +227,14 @@ class Module_cms_comcode_pages
 
                 $located = _request_page($page, $zone, null, $lang);
                 if ($located !== false && $located[0] != 'REDIRECT') {
+                    $_full_path = $located[count($located) - 1];
+                    $full_path = get_custom_file_base() . '/' . $_full_path;
+                    if (!is_file($full_path)) {
+                        $full_path = get_file_base() . '/' . $_full_path;
+                    }
+
                     $out[$zone . ':' . $page] = array(
-                        $located[count($located) - 1], // page path
+                        $full_path, // page path
                         null, // row
                     );
                 }
@@ -443,7 +449,7 @@ class Module_cms_comcode_pages
                 if ($located !== false && $located[0] != 'REDIRECT') {
                     $_zone = $located[count($located) - 1];
                     $page_path = get_custom_file_base() . (($_zone == '') ? '' : '/') . $_zone;
-                    if (is_file($page_path)) {
+                    if (!is_file($page_path)) {
                         $page_path = get_file_base() . (($_zone == '') ? '' : '/') . $_zone;
                     }
 
@@ -1064,6 +1070,16 @@ class Module_cms_comcode_pages
             }
         }
 
+        // Look for conflicting page names
+        $existing_page = __request_page($new_file, $zone);
+        if (($existing_page !== false) && (strpos($existing_page[0], 'COMCODE') === false)) {
+            if ($existing_page[0] == 'REDIRECT') {
+                attach_message(do_lang_tempcode('CONFLICTING_PAGE_NAME_REDIRECT'), 'warn');
+            } else {
+                attach_message(do_lang_tempcode('CONFLICTING_PAGE_NAME_MODULE', escape_html($existing_page[count($existing_page) - 1])), 'warn');
+            }
+        }
+
         // Messaging to user
         if ($validated == 0) {
             require_code('submit');
@@ -1111,14 +1127,14 @@ class Module_cms_comcode_pages
             $files_list = $this->get_comcode_files_list_disk_search(user_lang(), null, false);
             $__pages = array();
             foreach ($files_list as $page_link => $path_bits) {
-                list($_zone, $_page) = explode(':', $page_link, 2);
-                if (!is_string($_page)) {
-                    $_page = strval($_page);
+                list($_zone, $__page) = explode(':', $page_link, 2);
+                if (!is_string($__page)) {
+                    $__page = strval($__page);
                 }
 
                 $__pages[] = array(
                     'the_zone' => $_zone,
-                    'the_page' => $_page,
+                    'the_page' => $__page,
                     'p_parent_page' => '',
                     'p_validated' => 1,
                     'cc_page_title' => get_comcode_page_title_from_disk($path_bits[0]),
@@ -1252,7 +1268,7 @@ class Module_cms_comcode_pages
                 $_zone = $located[count($located) - 1];
                 if ($located !== false && $located[0] != 'REDIRECT' && isset($located[4])) {
                     $page_path = get_custom_file_base() . (($_zone == '') ? '' : '/') . $_zone;
-                    if (is_file($page_path)) {
+                    if (!is_file($page_path)) {
                         $page_path = get_file_base() . (($_zone == '') ? '' : '/') . $_zone;
                     }
                     $page_contents = file_get_contents($page_path);

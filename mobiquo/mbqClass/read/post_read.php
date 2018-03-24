@@ -93,10 +93,15 @@ class CMSPostRead
 
         $content = strip_attachments_from_comcode(get_translated_text($post['p_post'], $GLOBALS['FORUM_DB']));
 
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($post['p_poster']);
+        if ($username === null) {
+            $username = do_lang('UNKNOWN');
+        }
+
         return array(
             'post_id' => $post_id,
             'post_title' => $post['p_title'],
-            'post_username' => $GLOBALS['FORUM_DRIVER']->get_username($post['p_poster']),
+            'post_username' => $username,
             'post_content' => $content,
             'edit_reason' => $edit_reason,
             'attachments' => get_post_attachments($post_id),

@@ -148,7 +148,7 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null, $
 
     if (isset($CODE_TAGS[$tag])) {
         if (!$html_errors) {
-            if ($tag == 'staff_note') {
+            if ($tag == 'staff_note' || $tag == 'code' || $tag == 'codebox') {
                 return WYSIWYG_COMCODE__XML_BLOCK_ESCAPED;
             } else {
                 return WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED;
@@ -439,6 +439,12 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
         '<span style="font-family:\s*[\w\-\s,]+;?">',
         '<span style="font-size:\s*[\d\.]+(em|px|pt)?;?">',
         '</span>',
+        '<code>',
+        '</code>',
+
+        // Used for testing the Comcode parser
+        '<composr-test>',
+        '</composr-test>',
     );
 
     $link_terminator_strs = array(' ', "\n", ']', '[', ')', '"', '>', '<', '}', '{', ".\n", ', ', '. ', "'", '&nbsp;');
@@ -1020,7 +1026,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             $pos = $p_len;
                                             if (($ret->parameterless(0)) && ($pos < $len)) { // We want to take the language string ID reference as Comcode if it's a simple language string ID reference with no parameters
                                                 $matches = array();
-                                                if (preg_match('#\{\!([\w\:]+)(\}|$)#U', $comcode, $matches, 0, $less_pos) != 0) { // Hacky code to extract the language string ID
+                                                if (preg_match('#\{\!([\w\:]+)(\}|=|$)#U', $comcode, $matches, 0, $less_pos) != 0) { // Hacky code to extract the language string ID
                                                     $temp_lang_string = $matches[1];
                                                     $ret = new Tempcode(); // Put into new Tempcode object to attach to, as what comcode_lang_string returns may be cached yet we may append to $ret
                                                     $ret->attach(static_evaluate_tempcode(comcode_lang_string($temp_lang_string))); // Recreate as a Comcode language string
@@ -1279,7 +1285,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                             // Table syntax
                             if (!$differented && !$in_code_tag) {
-                                if (($pos < $len) && ($comcode[$pos] === '|')) {
+                                if (($pos < $len) && ($next == '{') && ($comcode[$pos] === '|')) {
                                     $end_tbl = strpos($comcode, "\n" . '|}', $pos);
                                     if ($end_tbl !== false) {
                                         $end_fst_line_pos = strpos($comcode, "\n", $pos);
@@ -1661,7 +1667,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                         if (!$semiparse_mode) {
                                             $tag_output->attach($embed_output);
                                         } else {
-                                            $tag_output->attach(escape_html($auto_link));
+                                            $tag_output->attach($in_semihtml ? $auto_link : escape_html($auto_link));
                                         }
                                         $pos += $link_end_pos - $pos;
                                         $differented = true;
@@ -1669,6 +1675,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 }
                             }
 
+                            // Output next character but with a lot of special HTML entity consideration
                             if (!$differented) {
                                 if (($stupidity_mode != '') && ($textual_area)) {
                                     if (($stupidity_mode === 'leet') && (mt_rand(0, 1) === 1)) {
@@ -1686,9 +1693,11 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                                         if (($entity) && (!$in_code_tag)) {
                                             if (($matches[1] === '') && (($in_semihtml) || (isset($ALLOWED_COMCODE_ENTITIES[$matches[2]])))) {
+                                                // Explicitly white-listed
                                                 $pos += strlen($matches[2]) + 1;
                                                 $continuation .= '&' . $matches[2] . ';';
                                             } elseif ((is_numeric($matches[2])) && ($matches[1] === '#')) {
+                                                // Implicitly white-listed
                                                 $matched_entity = intval(base_convert($matches[2], 16, 10));
                                                 if (($matched_entity < 127) && (array_key_exists(chr($matched_entity), $POTENTIAL_JS_NAUGHTY_ARRAY))) {
                                                     $continuation .= '&amp;';
@@ -1697,15 +1706,19 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                     $continuation .= '&#' . $matches[2] . ';';
                                                 }
                                             } else {
+                                                // Security
                                                 $continuation .= '&amp;';
                                             }
                                         } else {
-                                            $continuation .= '&amp;';
+                                            // Security
+                                            $continuation .= ($in_code_tag && $in_semihtml/*Will be filtered later so don't apply security now*/) ? $next : '&amp;';
                                         }
                                     } else {
-                                        $continuation .= isset($html_escape_1_strrep_inv[$next]) ? escape_html($next) : $next;
+                                        // Escaping only for character preservation
+                                        $continuation .= (isset($html_escape_1_strrep_inv[$next]) && !($in_code_tag && $in_semihtml)) ? escape_html($next) : $next;
                                     }
                                 } else {
+                                    // Simple flow through
                                     $continuation .= $next;
                                 }
                             }
@@ -2235,7 +2248,7 @@ function filter_html($as_admin, $source_member, $pos, &$len, &$comcode, $in_html
         $ahead = substr($comcode, $pos, $ahead_end - $pos);
 
         require_code('input_filter');
-        hard_filter_input_data__html($ahead);
+        hard_filter_input_data__html($ahead); // NB: If we have multiple HTML sections this will guard against it by closing partly open tags
 
         // Tidy up
         $comcode = substr($comcode, 0, $pos) . $ahead . substr($comcode, $ahead_end);

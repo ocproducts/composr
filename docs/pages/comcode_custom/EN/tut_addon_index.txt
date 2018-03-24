@@ -217,7 +217,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
             <td>Off-site e-mailing of members (more private, and may be used by guests).</td>
-            <td><a href="http://compo.sr/docs10/tut-correspondance.htm">Correspondence between members</a></td>
+            <td><a href="http://compo.sr/docs10/tut-correspondence.htm">Correspondence between members</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=cns_contact_member&amp;status_id=10">Link</a></td>
         </tr>
@@ -1320,7 +1320,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
-            <td>Automatically generate your own colour schemes using the default theme as a base. Uses the sophisticated chromographic equations built into Composr.</td>
+            <td>Automatically generate your own colour schemes using the default theme as a base. Uses the sophisticated chromagraphic equations built into Composr.</td>
             <td><a href="http://compo.sr/docs10/tut-themes.htm">Themeing your site</a><br /><br /><a href="http://compo.sr/docs10/tut-designer-themes.htm">Designer themes, implementing a clean-room design</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=themewizard&amp;status_id=10">Link</a></td>

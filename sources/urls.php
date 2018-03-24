@@ -323,8 +323,10 @@ function is_page_https($zone, $page)
         if (isset($GLOBALS['SITE_DB'])) {
             $results = $GLOBALS['SITE_DB']->query_select('https_pages', array('*'), null, '', null, null, true);
             $HTTPS_PAGES_CACHE = array();
-            foreach ($results as $r) {
-                $HTTPS_PAGES_CACHE[$r['https_page_name']] = true;
+            if ($results !== null) {
+                foreach ($results as $r) {
+                    $HTTPS_PAGES_CACHE[$r['https_page_name']] = true;
+                }
             }
             if (function_exists('persistent_cache_set')) {
                 persistent_cache_set('HTTPS_PAGES_CACHE', $HTTPS_PAGES_CACHE);
@@ -887,9 +889,6 @@ function _url_rewrite_params($zone_name, $vars, $force_index_php = false)
                     $first = false;
                 }
                 if ($_makeup !== '') {
-                    if ($url_scheme === 'PG') {
-                        $makeup .= '/index.php';
-                    }
                     $makeup .= $_makeup;
                 }
             }
@@ -1145,15 +1144,15 @@ function url_to_page_link($url, $abs_only = false, $perfect_only = true)
  * Given a URL or page-link, return an absolute URL.
  *
  * @param  string $url URL or page-link
- * @param  boolean $email_safe Whether to avoid keep_* parameters as it's going in an e-mail.
+ * @param  boolean $skip_keep Whether to skip actually putting on keep_ parameters (rarely will this skipping be desirable)
  * @return URLPATH URL
  */
-function page_link_to_url($url, $email_safe = false)
+function page_link_to_url($url, $skip_keep = false)
 {
     $parts = array();
     if ((preg_match('#([' . URL_CONTENT_REGEXP . ']*):([' . URL_CONTENT_REGEXP . ']+|[^/]|$)((:(.*))*)#', $url, $parts) != 0) && ($parts[1] != 'mailto')) { // Specially encoded page-link. Complex regexp to make sure URLs do not match
         list($zone, $map, $hash) = page_link_decode($url);
-        $url = static_evaluate_tempcode(build_url($map, $zone, null, false, false, $email_safe, $hash));
+        $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, $skip_keep, $hash));
     } else {
         $url = qualify_url($url, get_base_url());
     }
@@ -1502,7 +1501,7 @@ function check_url_exists($url, $test_freq_secs)
 
     if ((!isset($test1[0])) || ($test1[0]['url_check_time'] < time() - $test_freq_secs)) {
         $test2 = http_download_file($url, 0, false);
-        if (($test2 === null) && ($GLOBALS['HTTP_MESSAGE'] == '403')) {
+        if (($test2 === null) && (($GLOBALS['HTTP_MESSAGE'] == '401') || ($GLOBALS['HTTP_MESSAGE'] == '403') || ($GLOBALS['HTTP_MESSAGE'] == '405') || ($GLOBALS['HTTP_MESSAGE'] == '416') || ($GLOBALS['HTTP_MESSAGE'] == '500') || ($GLOBALS['HTTP_MESSAGE'] == '503') || ($GLOBALS['HTTP_MESSAGE'] == '520'))) {
             $test2 = http_download_file($url, 1, false); // Try without HEAD, sometimes it's not liked
         }
         $exists = (($test2 === null) && ($GLOBALS['HTTP_MESSAGE'] != 401)) ? 0 : 1;

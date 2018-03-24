@@ -202,7 +202,11 @@ END;
     if (function_exists('set_time_limit')) {
         @set_time_limit(0);
     }
-    $files = rd_do_dir('');
+    if ((!isset($settings['do_files'])) || ($settings['do_files'] == '1')) {
+        $files = rd_do_dir('');
+    } else {
+        $files = array();
+    }
     foreach ($files as $file) {
         if (preg_match('#^data_custom/errorlog\.php$#', $file) != 0) {
             continue;
@@ -232,7 +236,7 @@ END;
 
     $results = nl2br(htmlentities($results));
     echo <<<END
-		<p>This is the result of the scan. Please save this to your own computer somewhere secure, and if you have run this tool previously, run a diff between those results and these. It is up to you to interpret the results &ndash; basically the diff will tell you what has been added and changed, and if you see anything you cannot fully explain, you may wish to investigate. This tool has been designed to empower, and to some extent promote secure practice, but it is only really useful in expert hands (there's no point ocProducts making it easier, as the security principles and analysis involved require expert knowledge in themself).</p>
+		<p>This is the result of the scan. Please save this to your own computer somewhere secure, and if you have run this tool previously, run a diff between those results and these. It is up to you to interpret the results &ndash; basically the diff will tell you what has been added and changed, and if you see anything you cannot fully explain, you may wish to investigate. This tool has been designed to empower, and to some extent promote secure practice, but it is only really useful in expert hands (there's no point ocProducts making it easier, as the security principles and analysis involved require expert knowledge in itself).</p>
 		<div style="font-family: Courier; white-space: pre">{$results}</div>
 END;
 }

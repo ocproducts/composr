@@ -171,6 +171,7 @@ class Hook_addon_registry_core_menus
             'sources/menus2.php',
             'themes/default/templates/PAGE_LINK_CHOOSER.tpl',
             'data/page_link_chooser.php',
+            'sources/hooks/systems/preview/menu.php',
         );
     }
 

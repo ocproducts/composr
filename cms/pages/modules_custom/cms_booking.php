@@ -161,7 +161,7 @@ class Module_cms_booking extends Standard_crud_module
      * Standard crud_module table function.
      *
      * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL.
+     * @return array A quartet: The choose table, Whether reordering is supported from this screen, Search URL, Archive URL.
      */
     public function create_selection_list_choose_table($url_map)
     {
@@ -422,7 +422,7 @@ class Module_cms_booking_supplements extends Standard_crud_module
      * Standard crud_module table function.
      *
      * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL.
+     * @return array A quartet: The choose table, Whether reordering is supported from this screen, Search URL, Archive URL.
      */
     public function create_selection_list_choose_table($url_map)
     {
@@ -622,7 +622,7 @@ class Module_cms_booking_blacks extends Standard_crud_module
      * Standard crud_module table function.
      *
      * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL.
+     * @return array A quartet: The choose table, Whether reordering is supported from this screen, Search URL, Archive URL.
      */
     public function create_selection_list_choose_table($url_map)
     {
@@ -832,7 +832,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
             $orderer = $select_field;
         }
         $table = is_null($this->table) ? $this->module_type : $this->table;
-        $db = ((substr($table, 0, 2) == 'f_') && (!$force_site_db) && (get_forum_type() != 'none')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+        $db = ((substr($table, 0, 2) == 'f_') && (!$force_site_db) && (get_forum_type() == 'cns')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
         if ($force_site_db) {
             $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
             $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
@@ -895,7 +895,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
      * Standard crud_module table function.
      *
      * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL.
+     * @return array A quartet: The choose table, Whether reordering is supported from this screen, Search URL, Archive URL.
      */
     public function create_selection_list_choose_table($url_map)
     {
@@ -937,7 +937,12 @@ class Module_cms_booking_bookings extends Standard_crud_module
             $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['start_month'], $row['start_day'], $row['start_year']), false, true, true);
             $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['end_month'], $row['end_day'], $row['end_year']), false, true, false, true);
             if (get_option('member_booking_only') == '1') {
-                $fr[] = $GLOBALS['FORUM_DRIVER']->get_username($row['_rows'][0]['member_id'], true);
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($row['_rows'][0]['member_id'], true);
+                if ($username === null) {
+                    $fr[] = $row['_rows'][0]['customer_name'];
+                } else {
+                    $fr[] = $username;
+                }
             } else {
                 $fr[] = $row['_rows'][0]['customer_name'];
             }

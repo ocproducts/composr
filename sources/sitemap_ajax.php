@@ -49,6 +49,8 @@ function sitemap_script()
     } else {
         sitemap_script_loading();
     }
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**
@@ -223,7 +225,7 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
                     $lang_string = do_lang($cat_support[1]);
                 }
                 if ((strlen($lang_string) > 20) && (strpos($lang_string, '(') !== false)) {
-                    $lang_string = preg_replace('# \([^\)]*\)#', '', $lang_string); // Shortern long privilege describer
+                    $lang_string = preg_replace('# \([^\)]*\)#', '', $lang_string); // Shorten long privilege describer
                 }
                 $privilege_perms .= ' privilege_' . $overridable . '="' . xmlentities($lang_string) . '"';
                 foreach (array_keys($groups) as $group) {
@@ -249,9 +251,18 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
 
     $draggable = (preg_match('#^adminzone:admin\_#', $node['content_id']) == 0) && (preg_match('#^\w*:\w+$#', $node['content_id']) != 0);
 
+    $serverid = $node['page_link'];
+
+    // To make it more user-friendly, show a page-link as a URL
+    if ((get_param_integer('use_urls', 0) == 1) && (!looks_like_url($serverid)) && (strpos($serverid, ':') !== false)) {
+        $id = page_link_to_url($serverid, true);
+    } else {
+        $id = uniqid('', true);
+    }
+
     echo str_replace('  ', str_repeat(' ', $recurse_level + 1), '
     <category
-     serverid="' . xmlentities($node['page_link']) . '"
+     serverid="' . xmlentities($serverid) . '"
      expanded="false"
      title="' . xmlentities(strip_html($node['title']->evaluate())) . '"
      description="' . xmlentities(strip_html(isset($node['description']) ? $node['description'] : '')) . '"
@@ -264,7 +275,7 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
      ' . ($permissions_needed ? '' : ('draggable="' . ($draggable ? 'page' : 'false') . '"')) . '
      ' . ($permissions_needed ? '' : ('droppable="' . (($type == 'zone') ? 'page' : 'false') . '"')) . '
      type="' . xmlentities(is_null($type) ? '' : $type) . '"
-     id="' . xmlentities(uniqid('', true)) . '"' . $view_perms . $privilege_perms . '>
+     id="' . xmlentities($id) . '"' . $view_perms . $privilege_perms . '>
     ');
 
     if (isset($node['children'])) {

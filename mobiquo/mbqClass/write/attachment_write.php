@@ -61,7 +61,7 @@ class CMSAttachmentWrite
             $filesize = $_FILES[$filekey_orig]['size'];
         }
 
-        $attachment_id = $GLOBALS['SITE_DB']->query_insert('attachments', array(
+        $attachment_id = $GLOBALS['FORUM_DB']->query_insert('attachments', array(
             'a_member_id' => $member_id,
             'a_file_size' => $filesize,
             'a_url' => $urls[0],
@@ -179,10 +179,10 @@ class CMSAttachmentWrite
         if (!is_null($post_id)) {
             $ref_where['r_referer_id'] = strval($post_id);
         }
-        $GLOBALS['SITE_DB']->query_delete('attachment_refs', $ref_where);
+        $GLOBALS['FORUM_DB']->query_delete('attachment_refs', $ref_where);
 
         // Was that the last reference to this attachment? (if so -- delete attachment)
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $attachment_id));
+        $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $attachment_id));
         if (is_null($test)) {
             _delete_attachment($attachment_id, $GLOBALS['FORUM_DB']);
         }

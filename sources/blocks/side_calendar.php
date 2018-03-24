@@ -244,7 +244,7 @@ class Block_side_calendar
                 if (($from < $period_start) && ($date_section != do_lang('YESTERDAY'))) {
                     $date_section = do_lang('DATE_IN_PAST', $date_section);
                 }
-                $days[$day_start] = array('TIMESTAMP' => strval($day_start), 'TIME' => $date_section, 'EVENTS' => array());
+                $days[$day_start] = array('TIMESTAMP' => strval($day_start), 'DATE' => $date_section, 'EVENTS' => array());
             }
 
             $view_id = date('Y-m', $real_from);
@@ -261,19 +261,21 @@ class Block_side_calendar
             $just_event_row = db_map_restrict($event, array('id', 'e_content'));
 
             $days[$day_start]['EVENTS'][] = array(
-                'DESCRIPTION' => is_string($event['e_content']) ? protect_from_escaping($event['e_content']) : get_translated_tempcode('calendar_events', $just_event_row, 'e_content'),
-                'TIMESTAMP' => strval($real_from),
-                'TIME' => ($real_from != $from) ? do_lang('EVENT_CONTINUES') : (is_null($event['e_start_hour']) ? do_lang_tempcode('ALL_DAY_EVENT') : make_string_tempcode(get_timezoned_time($real_from, false, null, true))),
-                'TIME_RAW' => strval($real_from),
-                'FROM_DAY' => get_timezoned_date($real_from, !is_null($event['e_start_hour']), false, true),
-                'TO_DAY' => is_null($real_to) ? null : get_timezoned_date($real_to, !is_null($event['e_end_hour']), false, true),
-                'TO_DAY_RAW' => is_null($real_to) ? '' : strval($real_to),
-                'TIME_VCAL' => date('Y-m-d', $real_from) . ' ' . date('H:i:s', $real_from),
-                'TO_TIME_VCAL' => is_null($real_to) ? null : (date('Y-m-d', $real_to) . ' ' . date('H:i:s', $real_to)),
                 'T_TITLE' => array_key_exists('t_title', $event) ? (is_string($event['t_title']) ? $event['t_title'] : get_translated_text($event['t_title'])) : 'RSS',
-                'TITLE' => is_string($event['e_title']) ? protect_from_escaping($title) : make_string_tempcode($title),
+                'E_TITLE' => is_string($event['e_title']) ? protect_from_escaping($title) : make_string_tempcode($title),
                 'VIEW_URL' => $view_url,
                 'ICON' => $icon,
+                'DESCRIPTION' => is_string($event['e_content']) ? protect_from_escaping($event['e_content']) : get_translated_tempcode('calendar_events', $just_event_row, 'e_content'),
+
+                'TIME_WRITTEN' => ($real_from != $from) ? do_lang('EVENT_CONTINUES') : (is_null($event['e_start_hour']) ? do_lang_tempcode('ALL_DAY_EVENT') : make_string_tempcode(get_timezoned_time($real_from, false, null, true))),
+
+                'FROM_TIME' => get_timezoned_date($real_from, !is_null($event['e_start_hour']), false, true),
+                'FROM_TIME_RAW' => strval($real_from),
+                'FROM_TIME_VCAL' => date('Y-m-d', $real_from) . ' ' . date('H:i:s', $real_from),
+
+                'TO_TIME' => is_null($real_to) ? null : get_timezoned_date($real_to, !is_null($event['e_end_hour']), false, true),
+                'TO_TIME_RAW' => is_null($real_to) ? '' : strval($real_to),
+                'TO_TIME_VCAL' => is_null($real_to) ? null : (date('Y-m-d', $real_to) . ' ' . date('H:i:s', $real_to)),
             );
 
             $test = date('d', $to);

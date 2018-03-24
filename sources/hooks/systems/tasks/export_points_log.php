@@ -52,6 +52,9 @@ class Hook_task_export_points_log
         foreach ($members as $member) {
             $member_id = $GLOBALS['FORUM_DRIVER']->mrow_id($member);
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+            if ($username === null) {
+                $username = do_lang('UNKNOWN');
+            }
             $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
 
             $usergroups = '';

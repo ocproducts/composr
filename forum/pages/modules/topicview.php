@@ -72,6 +72,9 @@ class Module_topicview
         if ($be_deferential) {
             return array();
         }
+        if ($check_perms && is_guest($member_id)) {
+            return array();
+        }
 
         return array('!' => array('INLINE_PERSONAL_POSTS', 'menu/social/forum/inline_personal_posts'));
     }
@@ -397,7 +400,11 @@ class Module_topicview
                             $group_name = cns_get_group_name($group);
                             $rank_image_pri_only = cns_get_group_property($group, 'rank_image_pri_only');
                             if (($rank_image != '') && (($rank_image_pri_only == 0) || ($group == $GLOBALS['FORUM_DRIVER']->get_member_row_field($_postdetails['poster'], 'm_primary_group')))) {
-                                $rank_images->attach(do_template('CNS_RANK_IMAGE', array('_GUID' => '0ff7855482b901be95591964d4212c44', 'GROUP_NAME' => $group_name, 'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($_postdetails['poster']), 'IMG' => $rank_image, 'IS_LEADER' => $group_leader == $_postdetails['poster'])));
+                                $rank_username = $GLOBALS['FORUM_DRIVER']->get_username($_postdetails['poster']);
+                                if ($rank_username === null) {
+                                    $rank_username = do_lang('UNKNOWN');
+                                }
+                                $rank_images->attach(do_template('CNS_RANK_IMAGE', array('_GUID' => '0ff7855482b901be95591964d4212c44', 'GROUP_NAME' => $group_name, 'USERNAME' => $rank_username, 'IMG' => $rank_image, 'IS_LEADER' => $group_leader == $_postdetails['poster'])));
                             }
                         }
                     }
@@ -1028,7 +1035,7 @@ class Module_topicview
             }
         }
         if ((get_db_type() != 'xml') && (is_null(get_bot_type()))) {
-            if (!$GLOBALS['SITE_DB']->table_is_locked('f_topics')) {
+            if (!$GLOBALS['FORUM_DB']->table_is_locked('f_topics')) {
                 $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_num_views=(t_num_views+1) WHERE id=' . strval((integer)$this->id), 1, null, true);
             }
         }

@@ -145,7 +145,7 @@ A good test is to try running the command you end up choosing manually in a comm
 
 You should schedule Composr's [tt]cron_bridge.php[/tt] script to be loaded at least every 10 minutes.
 
-[title="4"]Sandboxes CRON[/title]
+[title="4"]Sandboxed CRON[/title]
 
 Some webhosts only allow you to execute CRON commands directly under your home directory. This means you cannot call up the PHP command directory like above.
 A workaround is to make a [tt]data/cron_bridge.sh[/tt] file (with execute permissions) containing:
@@ -168,7 +168,7 @@ The following is a Windows Vista scheduler step by step process for scheduling t
 2) Click 'Create Basic Task'
 3) Give it a name and a description
 4) Click 'Daily'
-5) Set the Time and to re-occur every 1 Day
+5) Set the Time and to reoccur every 1 Day
 6) Click 'Start a Program'
 7) Under program/script add the location of [tt]php.exe[/tt] on your system something like [tt]"C:\php\php.exe"[/tt] -- also include the double Quote Marks ("") surrounding the file location
 8) Under 'Arguments' add the location to the [tt]cron_bridge.php[/tt] file which for the example above would be [tt]"c:\sites\examplesite\www"[/tt] (note how the PHP command is split across two parameters -- step 7 having the [tt]php.exe[/tt] path and step 8 having the PHP file path) -- again surround in quote marks.

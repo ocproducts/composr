@@ -41,7 +41,7 @@ Trackbacks are described in the [page="_SEARCH:tut_adv_news"]Advanced news tutor
 
 Feedback commenting is very similar to, and actually implemented as, a forum topic being attached to a piece of content, and displayed beneath it. To allow users to comment on Composr content, in addition to site-wide commenting any commenting for the content entry being enabled, the named comment forum must exist; the default comment forum name is 'Website comment topics', but this is configurable in Admin Zone > Setup > Configuration > User interaction.
 
-Note that any commenting scenario requires a forum installed. Using the 'No forums or members' forum driver (chosen at installation), or using the in-built forum but with the [tt]cns_forum[/tt] addon not installed, will not work.
+Note that any commenting scenario requires a forum installed. Using the 'No forums or members' forum driver (chosen at installation), or using the inbuilt forum but with the [tt]cns_forum[/tt] addon not installed, will not work.
 
 [title="4"]The comments block[/title]
 
@@ -225,7 +225,7 @@ Content usually has a "Staff notes" field, which can be used to put notes intend
 [title="2"]See also[/title]
 
  - http://www.futurelab.net/blog/2012/05/1990-rule-outdated
- - [page="_SEARCH:tut_support_desk"]Running an on-line help desk with Composr[/page]
+ - [page="_SEARCH:tut_support_desk"]Running an online help desk with Composr[/page]
  - [page="_SEARCH:tut_nuances"]Nuances of forum integration[/page]
  - [page="_SEARCH:tut_adv_news"]Advanced news[/page]
  - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]

@@ -184,7 +184,7 @@ function javascript_tempcode($position = null)
         'button_realtime_rain' => true,
         'fractional_edit' => true,
         'transitions' => true,
-    ) + $JAVASCRIPT_BOTTOM; // These are all framework ones that add niceities
+    ) + $JAVASCRIPT_BOTTOM; // These are all framework ones that add niceties
     $javascripts_to_do = $JAVASCRIPTS;
     foreach ($javascripts_to_do as $j => $do_enforce) {
         if ($do_enforce === null) {

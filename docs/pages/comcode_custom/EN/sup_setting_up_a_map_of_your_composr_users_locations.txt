@@ -27,6 +27,4 @@ Choose this block and fill in the screen accordingly i.e. title etc. I usually m
 
 You can now preview the block or click "Use" and Composr will add it to your page. Click save on the page you are editing and the map should now appear.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Third Party Integration,Members,novice}{$SET,tutorial_add_date,May 2013}{$SET,tutorial_summary,This tutorial explains how to add a map of user's locations to your website.}[block]main_tutorial_rating[/block]

@@ -223,7 +223,7 @@ class Module_admin_errorlog
                 }
             }
 
-            // Put permssions into table
+            // Put permissions into table
             $permission = implode("\n", $lines);
         } else {
             $permission = '';

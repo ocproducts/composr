@@ -151,11 +151,11 @@ class Block_main_sortable_table
         if ((substr($file, -4) == '.csv') || (preg_match('#^[\w\.]+$#', $file) == 0/*Not safe as a table name*/)) {
             // Find/validate path
             if (substr($file, -4) != '.csv') {
-                return paragraph('We only accept CSV files, for security reasons.', 'red_alert');
+                return paragraph('We only accept CSV files, for security reasons.', '', 'red_alert');
             }
             $path = get_custom_file_base() . '/uploads/website_specific/' . filter_naughty($file);
             if (!is_file($path)) {
-                return paragraph('File not found (' . escape_html($file) . ').', 'red_alert');
+                return paragraph('File not found (' . escape_html($file) . ').', '', 'red_alert');
             }
 
             // Load data
@@ -234,10 +234,10 @@ class Block_main_sortable_table
                 $header_row = array_shift($_rows);
 
                 if (count($header_row) < 2) {
-                    return paragraph('We expect at least two headers. Make sure you save as a true comma-deliminated CSV file.', 'red_alert');
+                    return paragraph('We expect at least two headers. Make sure you save as a true comma-deliminated CSV file.', '', 'red_alert');
                 }
             } else {
-                return paragraph('Empty CSV file.', 'red_alert');
+                return paragraph('Empty CSV file.', '', 'red_alert');
             }
 
             // Prepare initial header templating
@@ -258,12 +258,12 @@ class Block_main_sortable_table
             // Database table...
 
             if (stripos($file, 'f_members') !== false) {
-                return paragraph('Security filter disallows display of the ' . escape_html($file) . ' table.', 'red_alert');
+                return paragraph('Security filter disallows display of the ' . escape_html($file) . ' table.', '', 'red_alert');
             }
 
             $records = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $file);
             if (count($records) == 0) {
-                return paragraph(do_lang('NO_ENTRIES'), 'red_alert');
+                return paragraph(do_lang('NO_ENTRIES'), '', 'red_alert');
             }
             $header_row = array();
             foreach ($records as $i => $record) {

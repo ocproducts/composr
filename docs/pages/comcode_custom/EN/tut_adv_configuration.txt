@@ -125,6 +125,7 @@ You may delete, and move pages using the [concept]Sitemap editor[/concept].
 If you are moving a page from one zone to another, any page-links to that page (for example, in the menus or via [tt]page[/tt] tags) will become invalid, unless they were specified as being in the zone named [tt]_SEARCH[/tt] (which is used to create a link by dynamically searching all zones for the named page). You may wish to temporarily set up a redirection from the page as named in its original zone, to the page as named in the new zone. Details of this are given in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities tutorial[/page]. Setting up a redirection is also advisable if the page being moved is already well-indexed on search engines.
 
 It is recommended that you never move default Composr pages because it complicates the upgrade process. Instead it is advisable to use the redirects feature instead (Admin Zone > Structure > Redirects).
+[/surround]
 
 [title="2"].htaccess[/title]
 
@@ -135,10 +136,10 @@ Note that the file may already exist, potentially for either of two reasons:
 1) It was already there from before Composr was installed.
 2) Composr's quick installer automatically created an optimal file for you.
 
-To try this, use FTP (or an equivalent tool) to rename the included 'recommended.htaccess' to '.htaccess' (or if the file already existed, manually copy & paste in the extra lines). Our recommended options will tighten up your security where possible, and make sure Composr has certain PHP and Apache features turned on.
+To try this, use FTP (or an equivalent tool) to rename the included [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt] (or if the file already existed, manually copy & paste in the extra lines). Our recommended options will tighten up your security where possible, and make sure Composr has certain PHP and Apache features turned on.
 There are three caveats here:
 [list="1"]
-[*] it will only work on an Apache (basically, Linux) server. Windows IIS servers are either managed from the IIS Administrative Tools, or from a webhosting control panel.
+[*] it will only work on an Apache (basically, Linux) server. Windows IIS servers are either managed from the IIS Administrative Tools, or from a webhosting control panel. For IIS the default [tt]web.config[/tt] file achieves similar results for you and should work out-of-the-box.
 [*] CGI server configurations can not use [tt].htaccess[/tt] files to configure PHP settings. On CGI servers (and note this works on IIS CGI servers), you need to create special [tt]php.ini[/tt] files. For more information, see our [page="_SEARCH:faq"]FAQ[/page] ("How do I set PHP settings on a CGI server?"). This said, you can probably still set the [i]non-PHP[/i] settings in your [tt].htaccess[/tt] (see below).
 [*] some webhosts do not allow [tt].htaccess[/tt] files to be used to change any options, resulting in an error message. To test for this try [tt]plain.htaccess[/tt] instead of [tt]recommended.htaccess[/tt]:
 [list]

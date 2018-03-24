@@ -86,9 +86,9 @@ Once created, the private chatroom will be visible in the chatrooms list for all
 
 [title="3"]Room pruning in more detail[/title]
 
-Rooms are only pruned if they are inactive longer than the "Private room deletion time" option and have an owner or a private list of allowed usernames (i.e. are a private room). Rooms created through the Admin Zone do by default not have those properties (i.e. are not private rooms), while rooms created through the public site do (i.e. are private rooms).
+Rooms are only pruned if they are inactive longer than the "Private chatroom deletion time" option and have an owner or a private list of allowed usernames (i.e. are a private room). Rooms created through the Admin Zone do by default not have those properties (i.e. are not private rooms), while rooms created through the public site do (i.e. are private rooms).
 
-Set the "Private room deletion time" option to "0" if you wish to disable room pruning entirely.
+Set the "Private chatroom deletion time" option (at Admin Zone > Setup > Configuration > Feature options > Chat system) to "0" if you wish to disable room pruning entirely.
 
 [title="2"]Moderation[/title]
 
@@ -245,6 +245,6 @@ This is one of the few cases where relying on a third party tool does not provid
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
- - [page="_SEARCH:tut_correspondance"]Correspondence between members[/page]
+ - [page="_SEARCH:tut_correspondence"]Correspondence between members[/page]
 
 {$SET,tutorial_tags,Chatrooms,chat,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr includes really cool AJAX-driven chat and instant messaging functionality. Read about the features, and see general advice.}[block]main_tutorial_rating[/block]

@@ -526,9 +526,9 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
         'e_member_id' => get_member(),
         'e_session_id' => get_session_id(),
         'e_price' => $price + $shipping_cost,
-        'e_tax_derivation' => json_encode($tax_derivation),
+        'e_tax_derivation' => json_encode($tax_derivation, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         'e_tax' => $tax,
-        'e_tax_tracking' => json_encode($tax_tracking),
+        'e_tax_tracking' => json_encode($tax_tracking, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_ip_address' => get_ip_address(),
@@ -536,7 +536,7 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
         'e_length' => null,
         'e_length_units' => '',
         'e_memo' => post_param_string('memo', ''),
-        'e_invoicing_breakdown' => json_encode($invoicing_breakdown),
+        'e_invoicing_breakdown' => json_encode($invoicing_breakdown, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
     ));
     store_shipping_address($trans_expecting_id);
 
@@ -582,9 +582,9 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $price, 
         'e_member_id' => get_member(),
         'e_session_id' => get_session_id(),
         'e_price' => $price,
-        'e_tax_derivation' => json_encode($tax_derivation),
+        'e_tax_derivation' => json_encode($tax_derivation, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         'e_tax' => $tax,
-        'e_tax_tracking' => json_encode($tax_tracking),
+        'e_tax_tracking' => json_encode($tax_tracking, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_ip_address' => get_ip_address(),
@@ -592,7 +592,7 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $price, 
         'e_length' => $length,
         'e_length_units' => $length_units,
         'e_memo' => post_param_string('memo', ''),
-        'e_invoicing_breakdown' => json_encode($invoicing_breakdown),
+        'e_invoicing_breakdown' => json_encode($invoicing_breakdown, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
     ));
     store_shipping_address($trans_expecting_id);
 
@@ -775,9 +775,9 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
         'e_member_id' => get_member(),
         'e_session_id' => get_session_id(),
         'e_price' => $price + $shipping_cost,
-        'e_tax_derivation' => json_encode($tax_derivation),
+        'e_tax_derivation' => json_encode($tax_derivation, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         'e_tax' => $tax,
-        'e_tax_tracking' => json_encode($tax_tracking),
+        'e_tax_tracking' => json_encode($tax_tracking, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_ip_address' => get_ip_address(),
@@ -785,7 +785,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
         'e_length' => $length,
         'e_length_units' => $length_units,
         'e_memo' => post_param_string('memo', ''),
-        'e_invoicing_breakdown' => json_encode($invoicing_breakdown),
+        'e_invoicing_breakdown' => json_encode($invoicing_breakdown, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
     ));
     store_shipping_address($trans_expecting_id);
 
@@ -1069,7 +1069,7 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
     $shipping_country = post_param_string('shipping_country', $shipping_country);
     $cardholder_name = post_param_string('cardholder_name', $cardholder_name);
     $card_type = post_param_string('card_type', $card_type);
-    $_card_number = post_param_string('card_number', ($card_number === null) ? '' : $card_number);
+    $_card_number = post_param_string('card_number', ($card_number === null) ? '' : strval($card_number));
     $card_number = ($_card_number == '') ? null : str_replace(array('-', ' '), array('', ''), $_card_number);
     $card_start_date_year = post_param_integer('card_start_date_year', $card_start_date_year);
     $card_start_date_month = post_param_integer('card_start_date_month', $card_start_date_month);
@@ -1343,12 +1343,12 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
 /**
  * Handle IPN's.
  *
- * @return ID_TEXT The ID of the purchase-type (meaning depends on item_name).
+ * @return ?ID_TEXT The ID of the purchase-type (meaning depends on item_name) (null: unknown).
  */
 function handle_ipn_transaction_script()
 {
-    if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (is_writable_wrap(get_file_base() . '/data_custom/ecommerce.log'))) {
-        $myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'at');
+    if ((file_exists(get_custom_file_base() . '/data_custom/ecommerce.log')) && (is_writable_wrap(get_custom_file_base() . '/data_custom/ecommerce.log'))) {
+        $myfile = fopen(get_custom_file_base() . '/data_custom/ecommerce.log', 'at');
         flock($myfile, LOCK_EX);
         fseek($myfile, 0, SEEK_END);
         fwrite($myfile, serialize($_POST) . "\n");
@@ -1364,7 +1364,12 @@ function handle_ipn_transaction_script()
 
     ob_start();
 
-    list($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id) = $payment_gateway_object->handle_ipn_transaction();
+    $result = $payment_gateway_object->handle_ipn_transaction();
+
+    if ($result === null) {
+        return null;
+    }
+    list($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id) = $result;
 
     list($type_code, $member_id) = handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, true, $parent_txn_id, $pending_reason, $memo, $period, $member_id, $payment_gateway);
 
@@ -1616,9 +1621,9 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id = null, $type
         't_pending_reason' => $pending_reason,
         't_reason' => $reason,
         't_amount' => $amount,
-        't_tax_derivation' => json_encode($expected_tax_derivation),
+        't_tax_derivation' => json_encode($expected_tax_derivation, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         't_tax' => $tax,
-        't_tax_tracking' => json_encode($expected_tax_tracking),
+        't_tax_tracking' => json_encode($expected_tax_tracking, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         't_currency' => $currency,
         't_parent_txn_id' => $parent_txn_id,
         't_time' => $sale_timestamp,
@@ -1914,7 +1919,7 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
         if ((available_points($member_id) >= $details['price_points']) || ($details['price'] === null/*has to be points as no monetary-price*/) || (has_privilege($member_id, 'give_points_self'))) {
             return array(
                 0.00,
-                0.00,
+                '0.00',
                 $details['price_points'],
                 false
             );

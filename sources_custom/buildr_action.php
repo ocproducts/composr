@@ -58,7 +58,7 @@ function add_item_wrap($member_id, $name, $price, $not_infinite, $bribable, $hea
         buildr_refresh_with_message(do_lang_tempcode('W_NO_EDIT_ACCESS_PRIVATE_REALM'), 'warn');
     }
 
-    // Make sure the item does not already exist! (people aren't allowed to arbitarily duplicate items for security reasons)
+    // Make sure the item does not already exist! (people aren't allowed to arbitrarily duplicate items for security reasons)
     $r = $GLOBALS['SITE_DB']->query_select_value_if_there('w_itemdef', 'bribable', array('name' => $name));
     if (!is_null($r)) {
         buildr_refresh_with_message(do_lang_tempcode('W_DUPE_ITEM'), 'warn');

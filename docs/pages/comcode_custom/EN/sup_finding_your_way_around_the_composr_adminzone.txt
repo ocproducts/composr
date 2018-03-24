@@ -87,6 +87,4 @@ In this section you also have a link to all of the pages on your site and the ab
 
 The last part of the menu is a link to the Documents section of the main Composr website which includes a range of tutorials (like this one!) including basic installation and more advanced tasks. I suggest exploring this section of the Composr site and familiarising yourself with the different sections of your own sites Admin Zone before jumping in at the deep end!
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Introduction,Administration,Configuration,Content,novice}{$SET,tutorial_add_date,Apr 2013}{$SET,tutorial_summary,One of Composr's biggest strengths is its large amount of features. However, to a new user the Admin Zone may initially look a little overwhelming. This tutorial is a brief walk through it.}[block]main_tutorial_rating[/block]

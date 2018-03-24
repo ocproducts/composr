@@ -202,7 +202,7 @@ function init__webstandards2()
     $enforce_fractional = '(-?[0-9]*(\.)[0-9]+?)';
     $enforce_inumber = '[0-9]+';
     $enforce_character = '.';
-    $enforce_color = '(black|silver|gray|white|maroon|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua|orange|red|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]))'; // orange and red aren't 'official' -- but kind of handy ;). In reality, the colour codes were never properly defined, and these two are obvious names for obviously needed ones-- they'll be supported
+    $enforce_color = '(black|silver|gray|white|maroon|purple|fuchsia|green|darkgrey|slategrey|lime|olive|yellow|navy|blue|teal|aqua|orange|red|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]))'; // orange and red aren't 'official' -- but kind of handy ;). In reality, the colour codes were never properly defined, and these two are obvious names for obviously needed ones-- they'll be supported
     $enforce_length = '((0)|(' . $enforce_number . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_fractional . ')(in|cm|mm|ex|px|em|%)))'; // |ex|pt|in|cm|mm|pc  We don't want these in our XHTML... preferably we only want em when it comes to font size!
     $enforce_ilength = '((0)|(' . $enforce_inumber . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_inumber . ')?\.' . $enforce_inumber . '(in|cm|mm|ex|em|%)))'; // |ex|pt|in|cm|mm|pc We don't want these in our XHTML... preferably we only want em when it comes to font size!
     $enforce_pixels = '[0-9]+';
@@ -379,7 +379,7 @@ function init__webstandards2()
         'transition-timing-function' => $enforce_transition_timing_function,
         'transition-delay' => $enforce_time,
         'transition' => $enforce_transition . '(\s*,\s*' . $enforce_transition . ')*',
-        'background-origin' => '(border-box|content-box)', // padding-box not widely supported yet; may be droped from spec
+        'background-origin' => '(border-box|content-box)', // padding-box not widely supported yet; may be dropped from spec
         'transform' => '(none|\w+\([^\(\)]+\))',
         'transform-origin' => $enforce_transform_origin . '( ' . $enforce_transform_origin . '( ' . $enforce_transform_origin . ')?)?',
         'transform-style' => $enforce_transform_style,
@@ -951,7 +951,7 @@ function init__webstandards2()
  */
 function __check_tag($tag, $attributes, $self_close, $close, $errors)
 {
-    global $XML_CONSTRAIN, $TAG_STACK, $ATT_STACK, $TABS_SEEN, $KEYS_SEEN, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_RANGES;
+    global $XML_CONSTRAIN, $TAG_STACK, $ATT_STACK, $TABS_SEEN, $KEYS_SEEN, $IDS_SO_FAR, $ANCESTOR_BLOCK, $ANCESTOR_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_RANGES;
 
     // Dodgy mouse events.
     if ((isset($attributes['onclick'])) && (strpos($attributes['onclick'], '/*Access-note: checked*/') === false) && (strpos($attributes['onclick'], '/*Access-note: code has other activation*/') === false) && ((!isset($attributes['onmouseover'])) || (strpos($attributes['onmouseover'], 'activate_rich_semantic_tooltip') === false)) && (!isset($attributes['onkeypress'])) && (!isset($attributes['onkeydown'])) && (!isset($attributes['onkeyup'])) && (!in_array($tag, array('a', 'input', 'textarea', 'select', 'button')))) {
@@ -1340,7 +1340,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
  */
 function _check_blockyness($tag, $attributes, $self_close, $close)
 {
-    global $THE_DOCTYPE, $BLOCK_CONSTRAIN, $XML_CONSTRAIN, $TAGS_DEPRECATE_ALLOW, $PARENT_TAG, $TAGS_INLINE, $TAGS_BLOCK, $TAGS_NORMAL, $TAGS_INLINE_DEPRECATED, $TAGS_BLOCK_DEPRECATED, $TAGS_NORMAL_DEPRECATED, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $UNDER_XMLNS;
+    global $THE_DOCTYPE, $BLOCK_CONSTRAIN, $XML_CONSTRAIN, $TAGS_DEPRECATE_ALLOW, $PARENT_TAG, $TAGS_INLINE, $TAGS_BLOCK, $TAGS_NORMAL, $TAGS_INLINE_DEPRECATED, $TAGS_BLOCK_DEPRECATED, $TAGS_NORMAL_DEPRECATED, $IDS_SO_FAR, $ANCESTOR_BLOCK, $ANCESTOR_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $UNDER_XMLNS;
 
     $errors = array();
 
@@ -1349,24 +1349,24 @@ function _check_blockyness($tag, $attributes, $self_close, $close)
         $dif = 0;
     }
     if ((isset($TAGS_BLOCK[$tag])) || (isset($TAGS_BLOCK_DEPRECATED[$tag]))) {
-        if (($ANCESTER_INLINE != 0) && ($BLOCK_CONSTRAIN)) {
-            $errors[] = array('XHTML_ANCESTER_BLOCK_INLINE', $tag);
+        if (($ANCESTOR_INLINE != 0) && ($BLOCK_CONSTRAIN)) {
+            $errors[] = array('XHTML_ANCESTOR_BLOCK_INLINE', $tag);
         }
-        $ANCESTER_BLOCK += $dif;
+        $ANCESTOR_BLOCK += $dif;
         if (isset($TAGS_BLOCK_DEPRECATED[$tag])) {
             $errors[] = array($TAGS_DEPRECATE_ALLOW ? 'XHTML_DEPRECATED_TAG' : 'XHTML_UNKNOWN_TAG', $tag);
         }
     } elseif ((isset($TAGS_INLINE[$tag])) || (isset($TAGS_INLINE_DEPRECATED[$tag]))) {
-        //if (($BLOCK_CONSTRAIN) && ($PARENT_TAG != 'span') && ((isset($TAGS_NORMAL[$PARENT_TAG])) || ((isset($TAGS_NORMAL_DEPRECATED[$PARENT_TAG]))))) $errors[] = array('XHTML_ANCESTER_INLINE_NORMAL', $tag); This restriction isn't really a proper one, some checkers seem to have it but it is not used anymore (XHTML5+) and pretty silly
+        //if (($BLOCK_CONSTRAIN) && ($PARENT_TAG != 'span') && ((isset($TAGS_NORMAL[$PARENT_TAG])) || ((isset($TAGS_NORMAL_DEPRECATED[$PARENT_TAG]))))) $errors[] = array('XHTML_ANCESTOR_INLINE_NORMAL', $tag); This restriction isn't really a proper one, some checkers seem to have it but it is not used anymore (XHTML5+) and pretty silly
         if ($tag != 'label') {
-            $ANCESTER_INLINE += $dif;
+            $ANCESTOR_INLINE += $dif;
         }
         if (isset($TAGS_INLINE_DEPRECATED[$tag])) {
             $errors[] = array($TAGS_DEPRECATE_ALLOW ? 'XHTML_DEPRECATED_TAG' : 'XHTML_UNKNOWN_TAG', $tag);
         }
     } elseif ((isset($TAGS_NORMAL[$tag])) || (isset($TAGS_NORMAL_DEPRECATED[$tag]))) {
         if ($tag == 'title') {
-            $ANCESTER_BLOCK += $dif;
+            $ANCESTOR_BLOCK += $dif;
         }
         if (($tag == 'iframe') && (($THE_DOCTYPE == DOCTYPE_XHTML_STRICT) || ($THE_DOCTYPE == DOCTYPE_XHTML_11))) {
             $errors[] = array('XHTML_UNKNOWN_TAG', $tag);
@@ -1395,7 +1395,7 @@ function _check_blockyness($tag, $attributes, $self_close, $close)
  */
 function _check_attributes($tag, $attributes, $self_close, $close)
 {
-    global $PSPELL_LINK, $THE_LANGUAGE, $XML_CONSTRAIN, $TAGS_DEPRECATE_ALLOW, $THE_DOCTYPE, $HYPERLINK_URLS, $CRAWLED_URLS, $EMBED_URLS, $TAGS_INLINE, $TAGS_BLOCK, $TAGS_NORMAL, $TAGS_INLINE_DEPRECATED, $TAGS_BLOCK_DEPRECATED, $TAGS_NORMAL_DEPRECATED, $TAG_ATTRIBUTES, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_ATTRIBUTES_REQUIRED;
+    global $PSPELL_LINK, $THE_LANGUAGE, $XML_CONSTRAIN, $TAGS_DEPRECATE_ALLOW, $THE_DOCTYPE, $HYPERLINK_URLS, $CRAWLED_URLS, $EMBED_URLS, $TAGS_INLINE, $TAGS_BLOCK, $TAGS_NORMAL, $TAGS_INLINE_DEPRECATED, $TAGS_BLOCK_DEPRECATED, $TAGS_NORMAL_DEPRECATED, $TAG_ATTRIBUTES, $IDS_SO_FAR, $ANCESTOR_BLOCK, $ANCESTOR_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_ATTRIBUTES_REQUIRED;
 
     $errors = array();
 
@@ -1537,7 +1537,7 @@ function _check_externals($tag, $attributes, $self_close, $close)
     unset($self_close);
     unset($close);
 
-    global $VALIDATED_ALREADY, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG;
+    global $VALIDATED_ALREADY, $IDS_SO_FAR, $ANCESTOR_BLOCK, $ANCESTOR_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG;
 
     $errors = array();
 
@@ -1612,7 +1612,7 @@ function _check_externals($tag, $attributes, $self_close, $close)
  */
 function _check_link_accessibility($tag, $attributes, $self_close, $close)
 {
-    global $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_RANGES, $WEBSTANDARDS_MANUAL;
+    global $IDS_SO_FAR, $ANCESTOR_BLOCK, $ANCESTOR_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_RANGES, $WEBSTANDARDS_MANUAL;
 
     $errors = array();
 
@@ -1683,7 +1683,7 @@ function _check_link_accessibility($tag, $attributes, $self_close, $close)
  */
 function _check_labelling($tag, $attributes, $self_close, $close)
 {
-    global $TAG_STACK, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG;
+    global $TAG_STACK, $IDS_SO_FAR, $ANCESTOR_BLOCK, $ANCESTOR_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG;
 
     $errors = array();
 
@@ -1730,7 +1730,7 @@ function _check_labelling($tag, $attributes, $self_close, $close)
  * Checks a CSS style sheet (high level).
  *
  * @param  string $data The data of the style sheet
- * @return ?map Error information (null: no error)
+ * @return array Parse information
  */
 function check_css($data)
 {

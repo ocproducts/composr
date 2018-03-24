@@ -171,14 +171,17 @@ function get_chatroom_fields($id = null, $is_made_by_me = false, $room_name = ''
                         $group_members = cns_get_group_members_raw($key);
                         $group_member_usernames = '';
                         foreach ($group_members as $group_member) {
-                            if ($group_member_usernames != '') {
-                                $group_member_usernames = do_lang('LIST_SEP');
+                            $username = $GLOBALS['FORUM_DRIVER']->get_username($group_member);
+                            if ($username !== null) {
+                                if ($group_member_usernames != '') {
+                                    $group_member_usernames = do_lang('LIST_SEP');
+                                }
+                                $group_member_usernames .= $username;
                             }
-                            $group_member_usernames .= $GLOBALS['FORUM_DRIVER']->get_username($group_member);
                         }
                         $val = do_lang('GROUP_MEMBERS_SPECIFIC', $val, $group_member_usernames);
                     } else {
-                        $val = do_lang('GROUP_MEMBERS', $val, number_format($num_members));
+                        $val = do_lang('GROUP_MEMBERS', $val, integer_format($num_members));
                     }
                 }
                 $usergroup_list->attach(form_input_list_entry(strval($key), ($allow2_groups == '*') || count(array_intersect(array($key), ($allow2_groups == '') ? array() : explode(',', $allow2_groups))) != 0, $val));
@@ -201,14 +204,17 @@ function get_chatroom_fields($id = null, $is_made_by_me = false, $room_name = ''
                         $group_members = cns_get_group_members_raw($key);
                         $group_member_usernames = '';
                         foreach ($group_members as $group_member) {
-                            if ($group_member_usernames != '') {
-                                $group_member_usernames = do_lang('LIST_SEP');
+                            $username = $GLOBALS['FORUM_DRIVER']->get_username($group_member);
+                            if ($username !== null) {
+                                if ($group_member_usernames != '') {
+                                    $group_member_usernames = do_lang('LIST_SEP');
+                                }
+                                $group_member_usernames .= $username;
                             }
-                            $group_member_usernames .= $GLOBALS['FORUM_DRIVER']->get_username($group_member);
                         }
                         $val = do_lang('GROUP_MEMBERS_SPECIFIC', $val, $group_member_usernames);
                     } else {
-                        $val = do_lang('GROUP_MEMBERS', $val, number_format($num_members));
+                        $val = do_lang('GROUP_MEMBERS', $val, integer_format($num_members));
                     }
                 }
                 $usergroup_list->attach(form_input_list_entry(strval($key), ($disallow2_groups == '*') || count(array_intersect(array($key), ($disallow2_groups == '') ? array() : explode(',', $disallow2_groups))) != 0, $val));
@@ -347,7 +353,7 @@ function add_chatroom($welcome, $room_name, $room_owner, $allow2, $allow2_groups
 
     if ($is_im == 0) {
         require_code('sitemap_xml');
-        notify_sitemap_node_add('SEARCH:chat:room:' . strval($id), time(), null, SITEMAP_IMPORTANCE_MEDIUM, 'never', ($allow2 == '') && ($allow2_groups == ''));
+        notify_sitemap_node_add('_SEARCH:chat:room:' . strval($id), time(), null, SITEMAP_IMPORTANCE_MEDIUM, 'never', ($allow2 == '') && ($allow2_groups == ''));
     }
 
     return $id;

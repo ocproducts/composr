@@ -31,17 +31,16 @@ The concept of a chain is crucial to proper understanding of the Wiki+ system. P
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
+ * @param  ?Tempcode $text_summary Text summary for result (e.g. highlighted portion of actual file from search result) (null: none)
  * @return Tempcode A box for it, linking to the full page
  */
-function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
+function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '', $text_summary = null)
 {
     if (is_null($row)) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
     require_lang('wiki');
-
-    $just_wiki_post_row = db_map_restrict($row, array('id', 'the_message'));
 
     $map = array('page' => 'wiki', 'type' => 'browse', 'id' => $row['page_id']);
     if (!is_null($root)) {
@@ -60,12 +59,19 @@ function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $in
         $title = do_lang_tempcode('WIKI_POST');
     }
 
+    if ($text_summary === null) {
+        $just_wiki_post_row = db_map_restrict($row, array('id', 'the_message'));
+        $summary = get_translated_tempcode('wiki_posts', $just_wiki_post_row, 'the_message');
+    } else {
+        $summary = $text_summary;
+    }
+
     return do_template('SIMPLE_PREVIEW_BOX', array(
         '_GUID' => ($guid != '') ? $guid : 'f271c035af57eb45b7f3b37e437baf3c',
         'ID' => strval($row['id']),
         'TITLE' => $title,
         'BREADCRUMBS' => $breadcrumbs,
-        'SUMMARY' => get_translated_tempcode('wiki_posts', $just_wiki_post_row, 'the_message'),
+        'SUMMARY' => $summary,
         'URL' => $url,
         'RESOURCE_TYPE' => 'wiki_post',
     ));
@@ -80,19 +86,16 @@ function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $in
  * @param  boolean $include_breadcrumbs Whether to include breadcrumbs (if there are any)
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
+ * @param  ?Tempcode $text_summary Text summary for result (e.g. highlighted portion of actual file from search result) (null: none)
  * @return Tempcode A box for it, linking to the full page
  */
-function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
+function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '', $text_summary = null)
 {
     if (is_null($row)) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
     require_lang('wiki');
-
-    $just_wiki_page_row = db_map_restrict($row, array('id', 'description'));
-
-    $content = get_translated_tempcode('wiki_pages', $just_wiki_page_row, 'description');
 
     $map = array('page' => 'wiki', 'type' => 'browse', 'id' => $row['id']);
     if (!is_null($root)) {
@@ -112,12 +115,19 @@ function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $in
         }
     }
 
+    if ($text_summary === null) {
+        $just_wiki_page_row = db_map_restrict($row, array('id', 'description'));
+        $summary = get_translated_tempcode('wiki_pages', $just_wiki_page_row, 'description');
+    } else {
+        $summary = $text_summary;
+    }
+
     return do_template('SIMPLE_PREVIEW_BOX', array(
         '_GUID' => ($guid != '') ? $guid : 'd2c37a1f68e684dc4ac85e3d4e4bf959',
         'ID' => strval($row['id']),
         'TITLE' => $title,
         'BREADCRUMBS' => $breadcrumbs,
-        'SUMMARY' => $content,
+        'SUMMARY' => $summary,
         'URL' => $url,
         'RESOURCE_TYPE' => 'wiki_page',
     ));
@@ -444,7 +454,7 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member_id = n
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:wiki:browse:' . strval($page_id), null, $edit_date, ($page_id == db_get_first_id()) ? SITEMAP_IMPORTANCE_HIGH : SITEMAP_IMPORTANCE_MEDIUM, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'wiki', strval($page_id)));
+    notify_sitemap_node_add('_SEARCH:wiki:browse:' . strval($page_id), null, $edit_date, ($page_id == db_get_first_id()) ? SITEMAP_IMPORTANCE_HIGH : SITEMAP_IMPORTANCE_MEDIUM, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'wiki', strval($page_id)));
 
     return $page_id;
 }
@@ -479,7 +489,7 @@ function wiki_edit_page($page_id, $title, $description, $notes, $hide_posts, $me
     $_description = $page['description'];
     $_title = $page['title'];
 
-    $log_id = log_it('WIKI_EDIT_PAGE', strval($page_id), $_title);
+    $log_id = log_it('WIKI_EDIT_PAGE', strval($page_id), get_translated_text($_title));
     if (addon_installed('actionlog')) {
         require_code('revisions_engine_database');
         $revision_engine = new RevisionEngineDatabase();
@@ -670,7 +680,11 @@ function wiki_breadcrumbs($chain, $current_title = null, $final_link = false, $l
             $id = intval($token);
         } else {
             $url_moniker_where = array('m_resource_page' => 'wiki', 'm_moniker' => $token);
-            $id = intval($GLOBALS['SITE_DB']->query_select_value('url_id_monikers', 'm_resource_id', $url_moniker_where));
+            $_id = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', $url_moniker_where);
+            if ($_id === null) {
+                return array();
+            }
+            $id = intval($_id);
         }
 
         $page_link = build_page_link(array('page' => 'wiki', 'type' => 'browse', 'id' => $link_id) + (($this_link_virtual_root && ($next_token === false)) ? array('keep_wiki_root' => $id) : array()), get_module_zone('wiki'));

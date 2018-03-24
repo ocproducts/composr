@@ -110,6 +110,10 @@ function init__lang()
     require_lang('critical_error');
     require_lang('global');
 
+    /** Keywords parsed from an active search.
+     *
+     * @global boolean $SEARCH__CONTENT_BITS
+     */
     global $SEARCH__CONTENT_BITS;
     $SEARCH__CONTENT_BITS = null;
 }
@@ -196,7 +200,7 @@ function user_lang()
     }
 
     // Quick exit: No Internationalisation enabled
-    if ((function_exists('get_option')) && (get_option('allow_international') != '1')) {
+    if ((function_exists('get_option')) && (get_option('allow_international') === '0')) {
         $USER_LANG_CACHED = get_site_default_lang();
         return $USER_LANG_CACHED;
     }

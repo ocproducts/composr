@@ -1337,7 +1337,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
 
         $addon_files = collapse_2d_complexity('filename', 'addon_name', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename', 'addon_name')));
         list($alien, $addon) = check_alien($addon_files, file_exists(get_file_base() . '/data/files_previous.dat') ? unserialize(file_get_contents(get_file_base() . '/data/files_previous.dat')) : array(), $master_data, get_file_base() . '/');
-        if (($moved != '') || ($alien != '')) {
+        if (($alien != '') || ($addon != '')) {
             $ret_str .= '<div>';
             if ($alien != '') {
                 $ret_str .= do_lang('WARNING_FILE_ALIEN', $alien);
@@ -2139,7 +2139,7 @@ function cns_upgrade()
         require_code('cns_install');
         install_cns($version_database_cns);
 
-        set_value('cns_version', float_to_raw_string($version_files));
+        set_value('cns_version', float_to_raw_string($version_files, 10, true));
 
         return true;
     }
@@ -2607,8 +2607,10 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
                 }
                 if (array_key_exists($templates_file, $templates_rename)) {
                     if (!$test_run) {
-                        @rename($templates_dir . $templates_file, $templates_dir . $templates_rename[$templates_file]) or intelligent_write_error($templates_dir . $templates_rename[$templates_file]);
-                        $successes[] = do_lang_tempcode('TEMPLATE_RENAMED', escape_html($templates_file), escape_html($templates_rename[$templates_file]));
+                        if (!file_exists($templates_dir . $templates_rename[$templates_file])) {
+                            @rename($templates_dir . $templates_file, $templates_dir . $templates_rename[$templates_file]) or intelligent_write_error($templates_dir . $templates_rename[$templates_file]);
+                            $successes[] = do_lang_tempcode('TEMPLATE_RENAMED', escape_html($templates_file), escape_html($templates_rename[$templates_file]));
+                        }
                     }
                     $templates_file = $templates_rename[$templates_file];
                 }

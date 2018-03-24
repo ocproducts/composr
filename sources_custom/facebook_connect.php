@@ -60,7 +60,7 @@ function handle_facebook_connection_login($current_logged_in_member)
         return $current_logged_in_member;
     }
     try {
-        $details = $FACEBOOK_CONNECT->api('/me', array('fields' => 'id,name,email,about,website,currency,first_name,last_name,gender,location,hometown'));
+        $details = $FACEBOOK_CONNECT->api('/me', array('fields' => 'id,name,email,about,website,currency,first_name,last_name,gender,location,hometown,picture,timezone,locale,birthday'));
     } catch (Exception $e) {
         header('Facebook-Error: ' . escape_header($e->getMessage()));
 

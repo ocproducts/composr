@@ -97,9 +97,9 @@ class comcode_wysiwyg_test_set extends cms_test_case
         $this->assertTrue($out == $got);
     }
 
-    public function testCodeTag() // WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED
+    public function testCodeTag() // WYSIWYG_COMCODE__XML_BLOCK_ESCAPED
     {
-        $this->assertTrue(wysiwyg_comcode_markup_style('code') == WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED);
+        $this->assertTrue(wysiwyg_comcode_markup_style('code') == WYSIWYG_COMCODE__XML_BLOCK_ESCAPED);
 
         // Not semihtml...
 

@@ -77,21 +77,21 @@ function find_shopping_catalogue_fields($catalogue_name = 'products')
             foreach ($fields as $i => $field) {
                 switch ($key) {
                     case 'product_title':
-                        if (($fields['cf_type'] == 'short_trans') || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
+                        if (($field['cf_type'] == 'short_trans') || (get_translated_text($field['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
                     case 'sku':
-                        if (($fields['cf_type'] == 'codename') || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
+                        if (($field['cf_type'] == 'codename') || (get_translated_text($field['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
                     case 'price':
-                        if ((($fields['cf_type'] == 'float') && (strpos($fields['cf_options'], 'price') !== false)) || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
+                        if ((($field['cf_type'] == 'float') && (strpos($field['cf_options'], 'price') !== false)) || (get_translated_text($field['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
@@ -104,28 +104,28 @@ function find_shopping_catalogue_fields($catalogue_name = 'products')
                     case 'length':
                     case 'width':
                     case 'height':
-                        if (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key)) {
+                        if (get_translated_text($field['cf_name']) == do_lang('ECOM_CAT_' . $key)) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
                     case 'tax_code':
-                        if (($fields['cf_type'] == 'tax_code') || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
+                        if (($field['cf_type'] == 'tax_code') || (get_translated_text($field['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
                     case 'image':
-                        if (($fields['cf_type'] == 'picture') || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
+                        if (($field['cf_type'] == 'picture') || (get_translated_text($field['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
                     case 'description':
-                        if ((in_array($fields['cf_type'], array('long_trans', 'long_text', 'posting_field'))) || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
+                        if ((in_array($field['cf_type'], array('long_trans', 'long_text', 'posting_field'))) || (get_translated_text($field['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
@@ -178,7 +178,7 @@ function add_to_cart($type_code, $purchase_id = '', $quantity = 1)
 
     if ($product_object->is_available($type_code, get_member(), 1) != ECOMMERCE_PRODUCT_AVAILABLE) {
         require_lang('shopping');
-        warn_exit(do_lang_tempcode('PRODUCT_UNAVAILABLE_WARNING', escape_html($type_code['item_name'])));
+        warn_exit(do_lang_tempcode('PRODUCT_UNAVAILABLE_WARNING', escape_html($details['item_name'])));
     }
 
     $where = array('type_code' => $type_code);
@@ -465,7 +465,7 @@ function copy_shopping_cart_to_order()
         'member_id' => get_member(),
         'session_id' => get_session_id(),
         'total_price' => $total_price,
-        'total_tax_derivation' => json_encode($total_tax_derivation),
+        'total_tax_derivation' => json_encode($total_tax_derivation, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         'total_tax' => $total_tax,
         'total_tax_tracking' => $total_tax_tracking,
         'total_shipping_cost' => $total_shipping_cost,
@@ -606,9 +606,9 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
         'e_member_id' => get_member(),
         'e_session_id' => get_session_id(),
         'e_price' => $price + $shipping_cost,
-        'e_tax_derivation' => json_encode($tax_derivation),
+        'e_tax_derivation' => json_encode($tax_derivation, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         'e_tax' => $tax,
-        'e_tax_tracking' => json_encode($tax_tracking),
+        'e_tax_tracking' => json_encode($tax_tracking, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_ip_address' => get_ip_address(),
@@ -616,7 +616,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
         'e_length' => null,
         'e_length_units' => '',
         'e_memo' => post_param_string('memo', ''),
-        'e_invoicing_breakdown' => json_encode($invoicing_breakdown),
+        'e_invoicing_breakdown' => json_encode($invoicing_breakdown, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
     ));
 
     return $payment_gateway_object->make_cart_transaction_button($trans_expecting_id, $items, $shipping_cost, $currency, $order_id);
@@ -694,7 +694,7 @@ function recalculate_order_costs($order_id)
 
     $GLOBALS['SITE_DB']->query_update('shopping_orders', array(
         'total_price' => $total_price,
-        'total_tax_derivation' => json_encode($total_tax_derivation),
+        'total_tax_derivation' => json_encode($total_tax_derivation, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
         'total_tax' => $total_tax,
         'total_tax_tracking' => $total_tax_tracking,
         'total_shipping_cost' => $total_shipping_cost,

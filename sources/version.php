@@ -19,7 +19,7 @@
  */
 
 /*
-The version numbers here are not for interchange. sources/version2.php provides a way to turn these into the 'dotted' interchange format that the Composr platform recognises programatically.
+The version numbers here are not for interchange. sources/version2.php provides a way to turn these into the 'dotted' interchange format that the Composr platform recognises programmatically.
 */
 
 /**

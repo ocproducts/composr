@@ -43,7 +43,7 @@ function render_author_box($row, $zone = '_SEARCH', $give_context = true, $guid 
         '_GUID' => ($guid != '') ? $guid : 'e597aef1818f5610402d6e5f478735a1',
         'ID' => $row['author'],
         'TITLE' => $title,
-        'SUMMARY' => get_translated_tempcode('author', $row, 'description'),
+        'SUMMARY' => get_translated_tempcode('authors', $row, 'description'),
         'URL' => $url,
         'RESOURCE_TYPE' => 'author',
     ));
@@ -174,7 +174,7 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
         }
 
         require_code('sitemap_xml');
-        notify_sitemap_node_add('SEARCH:authors:browse:' . $author, null, null, SITEMAP_IMPORTANCE_LOW, 'yearly', false);
+        notify_sitemap_node_add('_SEARCH:authors:browse:' . $author, null, null, SITEMAP_IMPORTANCE_LOW, 'yearly', false);
     }
 
     require_code('seo2');

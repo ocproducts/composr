@@ -176,7 +176,7 @@ There are a lot of 'widgets' out there for blogging platforms and there's nothin
 The default news archive screen shows just the news headlines. By adding [tt]:inline=1[/tt] to the page-link you can make it show like the news block does.
 
 [concepts
- 1_key="Blog"        1_value="A contraction of web-log: the popular term for an on-line journal"
+ 1_key="Blog"        1_value="A contraction of web-log: the popular term for an online journal"
  2_key="Blogger"     2_value="Someone who runs a blog"
  3_key="RSS"         3_value="Really simple syndication: a family of news feed formats"
  4_key="Atom"        4_value="A news feed format made official by a standards body"

@@ -1259,7 +1259,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
                     if (!db_has_subqueries($db->connection_read)) {
                         $_query .= '(SELECT COUNT(*) FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : (' WHERE ' . $where_clause_3)) . ')';
-                    } else { // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendence can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
+                    } else { // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendance can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
                         $tmp_subquery = 'SELECT 1 AS x FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : (' WHERE ' . $where_clause_3));
                         $GLOBALS['SITE_DB']->static_ob->apply_sql_limit_clause($tmp_subquery, MAXIMUM_RESULT_COUNT_POINT);
 
@@ -1320,7 +1320,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                 list($_where, $_operator) = $search_clause_set;
 
                 foreach ($_where as $__where) {
-                    // See if we have a combined fulltext index coveraging multiple columns
+                    // See if we have a combined fulltext index covering multiple columns
                     $has_combined_index_coverage = false;
                     foreach ($indices_for_table as $index) {
                         if (substr($index['i_name'], 0, 1) == '#') {
@@ -1427,7 +1427,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             } else {
                 if (!db_has_subqueries($db->connection_read)) {
                     $_count_query_main_search = 'SELECT COUNT(*) ' . $query;
-                } else { // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendence can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
+                } else { // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendance can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
                     $tmp_subquery = 'SELECT 1 AS x' . $query;
                     $GLOBALS['SITE_DB']->static_ob->apply_sql_limit_clause($tmp_subquery, MAXIMUM_RESULT_COUNT_POINT);
 
@@ -1544,9 +1544,6 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
  */
 function _boolean_search_prepare($search_filter)
 {
-    $search_filter = str_replace('?', '_', $search_filter);
-    $search_filter = str_replace('*', '%', $search_filter);
-
     $content_explode = explode(' ', $search_filter);
 
     $body_words = array();
@@ -1656,8 +1653,6 @@ function in_memory_search_match($filter, $title, $post = null)
  */
 function build_content_where($content, $boolean_search, &$boolean_operator, $full_coverage = false)
 {
-    $content = str_replace('?', '', $content);
-
     list($body_words, $include_words, $disclude_words) = _boolean_search_prepare($content);
 
     $under_radar = false;
@@ -1716,6 +1711,9 @@ function build_content_where($content, $boolean_search, &$boolean_operator, $ful
  */
 function db_like_assemble($content, $boolean_operator = 'AND', $full_coverage = false)
 {
+    $content = str_replace('?', '_', $content);
+    $content = str_replace('*', '%', $content);
+
     list($body_words, $include_words, $disclude_words) = _boolean_search_prepare($content);
 
     $fc_before = $full_coverage ? '' : '%';

@@ -98,7 +98,7 @@ class Block_main_members
     public function run($map)
     {
         if (get_forum_type() != 'cns') {
-            return paragraph(do_lang_tempcode('NO_CNS'), 'red_alert');
+            return paragraph(do_lang_tempcode('NO_CNS'), '', 'red_alert');
         }
 
         require_code('cns_members');
@@ -191,7 +191,7 @@ class Block_main_members
                 } else {
                     $group_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $_usergroup));
                     if (is_null($group_id)) {
-                        return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'group'), 'red_alert');
+                        return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'group'), '', 'red_alert');
                     }
                 }
                 if ($has_exists) {
@@ -511,7 +511,9 @@ class Block_main_members
         // Optimisation, as the member structure is much heavier than you'd think, due to lots of nested templates, including a member box tooltip for each member row in the results table
         $results_table = apply_quick_caching($results_table);
 
-        return do_template('BLOCK_MAIN_MEMBERS', array(
+        $tpl = ($display_mode == 'listing') ? 'BLOCK_MAIN_MEMBERS' : 'BLOCK_MAIN_MEMBERS_COMPLEX';
+
+        return do_template($tpl, array(
             '_GUID' => $guid,
             'BLOCK_ID' => $block_id,
             'START' => strval($start),

@@ -220,7 +220,7 @@ class Module_admin_sitemap
             return redirect_screen($this->title, $url, do_lang_tempcode('NO_JS_ADVANCED_SCREEN_SITEMAP'));
         }
 
-        if (count($GLOBALS['SITE_DB']->query_select_value('zones', 'COUNT(*)')) >= 300) {
+        if ($GLOBALS['SITE_DB']->query_select_value('zones', 'COUNT(*)') >= 300) {
             attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(50))), 'warn');
         }
 

@@ -23,7 +23,7 @@ class config_options_in_templates_test_set extends cms_test_case
         global $GFILE_ARRAY;
 
         $addon_data = array();
-        $hooks = find_all_hooks('systems', 'addon_registry'); // TODO: Fix in v11
+        $hooks = find_all_hooks('systems', 'addon_registry');
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/systems/addon_registry/' . $hook);
             $ob = object_factory('Hook_addon_registry_' . $hook);

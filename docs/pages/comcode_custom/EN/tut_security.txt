@@ -118,7 +118,7 @@ More information about suEXEC is provided in the [page="_SEARCH:tut_webhosting"]
 
 [title="3"]Is suEXEC really safe?[/title]
 
-You may find claims that [url="suEXEC is a security concern"]http://forum.odin.com/threads/suexec-serious-security-concerns.257429/[/url].
+You may find claims that [url="suEXEC is a security concern"]https://talk.plesk.com/threads/suexec-serious-security-concerns.257429/[/url].
 The fact that suEXEC is now extremely common-place, without disaster having unfolded, disputes this quite well.
 
 However, here's my more serious rebuttal...
@@ -394,6 +394,17 @@ RewriteCond %{REQUEST_METHOD} !POST
 RewriteRule ^.*/pg/.*$ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
 [/code]
 
+On IIS you can add another rewrite rule to [tt]web.config[/tt]:
+[code="XML"]
+<rule name="HTTP/S to HTTPS Redirect" enabled="true" stopProcessing="true">
+	<match url="(.*)" />
+	<conditions logicalGrouping="MatchAny">
+		<add input="{SERVER_PORT_SECURE}" pattern="^0$" />
+	</conditions>
+	<action type="Redirect" url="https://{HTTP_HOST}{REQUEST_URI}" redirectType="Permanent" appendQueryString="false" />
+</rule>
+[/code]
+
 Don't just redirect HTTP traffic to the root of the domain because that could hurt your SEO.
 
 [title="3"]Secured zones[/title]
@@ -473,6 +484,29 @@ Follows are sample access rules for an Apache [tt].htaccess[/tt] file to provide
 	Deny from all
 </FilesMatch>
 [/code]
+
+For IIS, the [tt]web.config[/tt] file's [tt]hiddenSegments[/tt] can be extended:
+[code="XML"]
+<hiddenSegments>
+	<add segment="caches" />
+	<add segment="safe_mode_temp" />
+	<add segment="errorlog.php" />
+	<add segment="permissioncheckslog.php" />
+	<add segment="ecommerce.log" />
+	<add segment="queries.log" />
+	<add segment="big_query_screens.log" />
+	<add segment="profiling*.log" />
+	<add segment="resource_fs.log" />
+
+	<add segment="rootkit_detection.php" />
+	<add segment="upgrader.php" />
+	<add segment="uninstall.php" />
+	<add segment="upgrader2.php" />
+	<add segment="config_editor.php" />
+	<add segment="code_editor.php" />
+</hiddenSegments>
+[/code]
+
 You should test these rules are working correctly after applying them.
 
 [title="3"]Denial Of Service prevention[/title]
@@ -488,7 +522,7 @@ There is a special script ([tt]rootkit_detection.php[/tt]) that will help detect
 [title="3"]HTTP authentication[/title]
 
 There is nothing stopping you using HTTP authentication served by your web server on top of the website if you want some extra security.
-For example, it is possible to use HTTP Authentication to deny access to the whole of Composr to anyone without a pre-allocated HTTP-Auth password. For more information on this, see 'related topics'.
+For example, it is possible to use HTTP Authentication to deny access to the whole of Composr to anyone without a preallocated HTTP-Auth password. For more information on this, see 'related topics'.
 
 However, you should let requests from the web server itself through that without needing to authenticate so that it can read its own URLs (otherwise you could have some problems, such as security errors when editing theme images).
 

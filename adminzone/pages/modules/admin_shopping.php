@@ -431,7 +431,10 @@ class Module_admin_shopping
             $res = $GLOBALS['SITE_DB']->query_select('shopping_orders', array('*'), array('id' => $id), '', 1);
             $order_details = $res[0];
 
-            $member_name = $GLOBALS['FORUM_DRIVER']->get_username($order_details['member_id']);
+            $member_name = $GLOBALS['FORUM_DRIVER']->get_username($order_details['c_member']);
+            if ($member_name === null) {
+                $member_name = do_lang('UNKNOWN');
+            }
 
             $message = do_lang('ORDER_DISPATCHED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($member_name), array(strval($id)), get_lang($order_details['member_id']));
 

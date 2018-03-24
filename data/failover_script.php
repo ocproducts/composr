@@ -85,6 +85,10 @@ function handle_failover_auto_switching($iteration = 0)
 {
     global $SITE_INFO;
 
+    if (function_exists('set_time_limit')) {
+        @set_time_limit(1000);
+    }
+
     // Check URLs
     if (!empty($SITE_INFO['failover_check_urls'])) {
         $context = stream_context_create(array(
@@ -99,8 +103,12 @@ function handle_failover_auto_switching($iteration = 0)
             $max_retries = 1;
             $time_between_retries = 5;
 
-            $full_url = $SITE_INFO['base_url'] . '/' . $url;
-            extend_url($full_url, 'keep_failover=0');
+            if (strpos($url, '://') === false) {
+                $full_url = $SITE_INFO['base_url'] . '/' . $url;
+            } else {
+                $full_url = $url;
+            }
+            $full_url .= ((strpos($full_url, '?') === false) ? '?' : '&') . 'keep_failover=0';
 
             do {
                 $time_before = microtime(true);
@@ -152,7 +160,9 @@ function handle_failover_auto_switching($iteration = 0)
                         continue;
                     }
                 }
-            } while (false);
+
+                break;
+            } while (true);
         }
     }
 
@@ -263,14 +273,12 @@ function set_failover_mode($new_mode)
         return;
     }
 
-    require_code('files');
-
-    cms_file_put_contents_safe($path, $config_contents, FILE_WRITE_FIX_PERMISSIONS);
+    file_put_contents($path, $config_contents);
 
     $SITE_INFO['failover_mode'] = $new_mode;
 
     if ((!empty($SITE_INFO['failover_apache_rewritemap_file'])) && (is_file($FILE_BASE . '/data_custom/failover_rewritemap.txt'))) {
-        $htaccess_contents = cms_file_get_contents_safe($FILE_BASE . '/.htaccess');
+        $htaccess_contents = file_get_contents($FILE_BASE . '/.htaccess');
 
         $htaccess_contents = preg_replace('#^RewriteMap.*\n+#s', '', $htaccess_contents);
 
@@ -322,6 +330,6 @@ function set_failover_mode($new_mode)
 
         $htaccess_contents = preg_replace('/#FAILOVER STARTS.*#FAILOVER ENDS\n+/s', $new_code, $htaccess_contents);
 
-        cms_file_put_contents_safe($FILE_BASE . '/.htaccess', $htaccess_contents, FILE_WRITE_FIX_PERMISSIONS);
+        file_put_contents($FILE_BASE . '/.htaccess', $htaccess_contents);
     }
 }

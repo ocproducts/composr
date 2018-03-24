@@ -12,6 +12,10 @@
  * @copyright  ocProducts Ltd
  * @package    giftr
  */
+
+/**
+ * Hook class.
+ */
 class Hook_page_groupings_giftr
 {
     /**

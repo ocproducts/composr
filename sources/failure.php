@@ -60,7 +60,7 @@ function init__failure()
  */
 function suggest_fatalistic()
 {
-    if ((may_see_stack_dumps()) && (get_param_integer('keep_fatalistic', 0) == 0) && (running_script('index'))) {
+    if ((may_see_stack_dumps()) && (get_param_integer('keep_fatalistic', 0) == 0) && (running_script('index')) && (strpos(cms_srv('SCRIPT_NAME'), '/_tests/') === false)) {
         if (cms_srv('REQUEST_METHOD') != 'POST') {
             $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', null, true);
             $st = do_lang_tempcode('WARN_TO_STACK_TRACE', escape_html($stack_trace_url->evaluate()));
@@ -393,7 +393,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         exit((is_object($text) ? strip_html($text->evaluate()) : $text) . "\n");
     }
 
-    if ((get_param_integer('keep_fatalistic', 0) == 1) || (running_script('commandr'))) {
+    if (get_param_integer('keep_fatalistic', 0) == 1) {
         fatal_exit($text);
     }
 
@@ -441,9 +441,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
     if ((get_forum_type() == 'cns') && (get_db_type() != 'xml') && (isset($GLOBALS['FORUM_DRIVER']))) {
         require_code('cns_groups');
         $restrict_answer = cns_get_best_group_property($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()), 'flood_control_submit_secs');
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
-        $GLOBALS['SITE_DB']->query_update('f_members', array('m_last_submit_time' => time() - $restrict_answer - 1), array('id' => get_member()), '', 1);
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
+        $GLOBALS['FORUM_DB']->query_update('f_members', array('m_last_submit_time' => time() - $restrict_answer - 1), array('id' => get_member()), '', 1);
     }
 
     if (($template == 'INFORM_SCREEN') && (is_object($GLOBALS['DISPLAYED_TITLE']))) {
@@ -1092,6 +1090,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'marked as crashed and should be repaired') === false) &&
         (strpos($text, 'connect to') === false) &&
         (strpos($text, 'Access denied for') === false) &&
+        (strpos($text, 'command denied for') === false) && // MySQL
         (strpos($text, 'Unknown database') === false) &&
         (strpos($text, 'headers already sent') === false) &&
         (strpos($text, 'Your TaxCloud API trial period has expired') === false) &&

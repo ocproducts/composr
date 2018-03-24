@@ -39,7 +39,7 @@ droppablesLoop: for ( i = 0; i < m.length; i++ ) { }                            
  */
 function init__webstandards_js_parse()
 {
-    // In precendence order. Note REFERENCE==BW_AND (it gets converted, for clarity). Ditto QUESTION==TERNARY_IF
+    // In precedence order. Note REFERENCE==BW_AND (it gets converted, for clarity). Ditto QUESTION==TERNARY_IF
     global $JS_OPS;
     $JS_OPS = array('QUESTION', 'TERNARY_IF', 'BOOLEAN_OR', 'BOOLEAN_AND', 'BW_OR', 'BW_XOR', 'OBJECT_OPERATOR', 'BW_AND', 'IS_EQUAL', 'IS_NOT_EQUAL', 'IS_IDENTICAL', 'IS_NOT_IDENTICAL', 'IS_SMALLER', 'IS_SMALLER_OR_EQUAL', 'IS_GREATER', 'IS_GREATER_OR_EQUAL', 'SL', 'SR', 'ZSR', 'ADD', 'SUBTRACT', 'MULTIPLY', 'DIVIDE', 'REMAINDER', 'INSTANCEOF', 'IN');
 }
@@ -800,6 +800,11 @@ function _webstandards_js_parse_expression_inner()
                 $expression = _webstandards_js_parse_identify_chain($expression);
             }
 
+            break;
+
+        case 'CATCH': // May be a promises 'catch' method
+            parser_next();
+            $expression = array('VARIABLE', 'catch', array(), $GLOBALS['JS_PARSE_POSITION']);
             break;
 
         case 'IDENTIFIER':

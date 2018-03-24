@@ -31,6 +31,8 @@ function tar_open($path, $mode)
     if (is_null($path)) {
         $myfile = mixed();
         $exists = false;
+
+        cms_ob_end_clean();
     } else {
         $exists = file_exists($path) && (strpos($mode, 'a') !== false);
         $myfile = @fopen($path, $mode);
@@ -687,6 +689,10 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
         }
     }
     $resource['end'] += $block_size + 512;
+
+    if ($myfile === null) {
+        flush();
+    }
 
     return $offset + 512;
 }

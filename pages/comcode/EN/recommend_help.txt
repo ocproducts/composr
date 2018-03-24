@@ -1,4 +1,4 @@
-[title sub="Recommending {$SITE_NAME}"]Help[/title]
+[title sub="Recommending {$SITE_NAME*}"]Help[/title]
 
 When you recommend our site or a piece of content on our site, you can either:
 [list="a"]

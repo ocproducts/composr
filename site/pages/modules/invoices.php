@@ -85,7 +85,7 @@ class Module_invoices
             ));
         }
 
-        if (($upgrade_from < 3) && ($upgrade_from !== null)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
             $GLOBALS['SITE_DB']->rename_table('invoices', 'ecom_invoices');
             $GLOBALS['SITE_DB']->alter_table_field('ecom_invoices', 'i_amount', 'REAL');
             $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax_code', 'ID_TEXT', '0%');

@@ -26,6 +26,17 @@ In other words, Composr's default CAPTCHA tries to be both highly secure, and re
 
 We have an audio option for the CAPTCHA which is important for users with visual impairments. You can also remove the distortion effects from the CAPTCHA, which makes readability easier, but makes it much easier for a spammer to crack it.
 
+[title="3"]Hidden options (advanced)[/title]
+
+These hidden options expand the scope of the CAPTCHA to also cover members:
+ - [tt]captcha_member_days[/tt] -- set this to a number if new members should continue to have CAPTCHA for this many days
+ - [tt]captcha_member_posts[/tt] -- set this to a number if new members should continue to have CAPTCHA for this many forum posts
+
+Sample Commandr command:
+[code="Commandr"]
+:set_value('captcha_member_days', '5'); set_value('captcha_member_posts', '5');
+[/code]
+
 [title="2"]Remote Block Lists (RBLs)[/title]
 
 Remote Block Lists (RBLs) are a technique whereby Composr checks third-party lists of known spammers, via special RBL-protocols, based on DNS. You don't need to know the technical details other than that Composr can be configured to use an RBL service.
@@ -60,6 +71,15 @@ Other options include:
  - Specifying how long spam results are cached for
  - Specifying how long to trust reports of a spammer that were assigned a "last spam activity" date
 
+[title="2"]Privileges[/title]
+
+Absence of the "Post links that search engines will follow" privilege disincentivises users from posting links. Without this privilege all links will have [tt]rel="nofollow"[/tt].
+
+[title="2"]Links on member profiles[/title]
+
+We entirely block the presence of links on Composr member profiles for members with no posts. The links will automatically reappear once a member has a post, and disappear again if their post(s) are deleted. If the [tt]cns_forum[/tt] addon is not installed then this functionality is not active.
+This is to disincentivise spammers from flagging your site as an easy way to get links that won't even get moderated away.
+
 [title="2"]Black hole[/title]
 
 [media width="150" description="The black hole in a form's HTML" float="right"]data_custom/images/docs/tut_antispam/blackhole.png[/media]
@@ -75,12 +95,25 @@ You need to specifically configure the options for Honey Pot -- it requires you 
 If someone spams on the forum (assuming you are running [concept]Conversr[/concept]) then they can use the 'report post' feature to alert the staff to the spammer activity.
 This is described in the [page="_SEARCH:tut_censor"]Policing a community site tutorial[/page].
 
+[title="2"]Guest posting[/title]
+
+You may simply want to deny guest posting permissions, which will raise the effort spammers have to go to. This may be enough to deter them.
+
+You may want to also disable permission for Guests to report content.
+
+[title="2"]Per-site Q&A / Probation / Shadow-banning (advanced)[/title]
+
+There is a developer addon, [tt]antispam_question[/tt], which checks the value of a custom profile field to see if it matches a pre-defined setting. If it does not, it puts the member in the Probation usergroup only.
+
+You could then then configure your forum permissions so there is only a single forum these members see, that normal members don't. This effectively works as a shadow-ban. You can then move people out of Probation manually if you need to.
+
+The developer addon hard-codes the CPF ID being checked against, and the expected value, and the ID of the usergroup to put failing members in (the default Probation usergroup). It would be fairly easy to customise with minimal coding skills, although ideally we'd add a [url="more extensive configurable feature"]https://compo.sr/tracker/view.php?id=1579[/url].
+
 [title="2"]What we don't do[/title]
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
 We're not a fan of all anti-spam systems. Here's a run-down of what we don't do:
  - Some popular spam checking tools will run checks through a commercial third-party server. We'd rather deliver our code to you within Composr, for improved performance, and in line with our Open Source philosophy.
- - We don't try and use pattern-analysis to detect spammers, because it would be so easy for a spammer to adjust their spam-bots to get past our filters.
  - Various alternative CAPTCHA systems (as explained above, under 'CAPTCHA')
 
 [title="2"]Making a spam report to the developers[/title]
@@ -95,6 +128,8 @@ Include:
 [*] The spammer's user-agent
 [*] The time of the incident
 [*] Whether the spam was by a guest (and if so, if you have guest posting permissions configured)
+[*] An audit trail of pages the spammer went through (to help us identify if it is a bot)
+[*] What is on the spammers member profile (if appropriate)
 [/list]
 
 Avoid being anecdotal or emotional -- give clear and concise facts.
@@ -112,6 +147,10 @@ Once you've made your report hopefully someone can then tell you what case categ
  3_key="Spam-bot"          3_value="A malicious program a spammer runs, to automatically submit spam to websites. It is often written using techniques similar to that of a search engine crawler (to find targets), and then tries to simulate humans but while posting spam. Some spam-bots run on infected PCs, which is why it can be hard to directly block known spammers."
  4_key="Honey Pot"         4_value="A hidden link of area where spam-bots may get to, but a human never would. An effective way for detecting spam-bots."
 ]Concepts[/concepts]
+
+[title="2"]Additional future techniques[/title]
+
+Fighting spam is an ongoing challenge. Actual humans are paid to post spam, and increasingly will try and hide spam behind legitimate activity. Ideas for fighting spammer are categorised under the [url="Type: Spam"]https://compo.sr/tracker/tag_view_page.php?tag_id=52[/url] tracker tag.
 
 [title="2"]See also[/title]
 

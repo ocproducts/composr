@@ -154,7 +154,7 @@ function is_plupload($fake_prepopulation = false)
         }
 
         if ((preg_match('#^hidFileID\_#i', $key) != 0) && ($value != '-1')) {
-            // Get the incoming uploads appropiate database table row
+            // Get the incoming uploads appropriate database table row
             if (substr($value, -4) == '.dat') { // By .dat name
                 $filename = post_param_string(str_replace('hidFileID', 'hidFileName', $key), '');
                 if ($filename == '') {
@@ -289,7 +289,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
 
         // ID of the upload from the incoming uploads database table
         if (!is_null($row_id_file_value)) { // plupload was used
-            // Get the incoming upload's appropiate DB table row
+            // Get the incoming upload's appropriate DB table row
             if ((substr($row_id_file_value, -4) == '.dat') && (strpos($row_id_file_value, ':') === false)) {
                 $path = 'uploads/incoming/' . filter_naughty($row_id_file_value);
                 if (file_exists(get_custom_file_base() . '/' . $path)) {
@@ -921,8 +921,7 @@ function get_upload_filearray($name, &$filearrays)
 
         for ($i = 0; $i < $num_files; $i++) {
             $filearray = array();
-            foreach ($_FILES[$name] as $key => $value) // Goes through keys like 'name', 'tmp_name' etc
-            {
+            foreach ($_FILES[$name] as $key => $value) { // Goes through keys like 'name', 'tmp_name' etc
                 $filearray[$key] = $value[$i];
             }
             $_name = $matches[1] . strval($i + $base_num) . $matches[3];
@@ -943,6 +942,12 @@ function get_upload_filearray($name, &$filearrays)
  */
 function shorten_urlencoded_filename($filename, $length = 226)
 {
+    if ((stripos(PHP_OS, 'WIN') === 0) && (version_compare(PHP_VERSION, '7.2', '<'))) {
+        // Older versions of PHP on Windows cannot handle utf-8 filenames
+        require_code('character_sets');
+        $filename = transliterate_string($filename);
+    }
+
     // Default length is... maxDBFieldSize - maxUploadDirSize - suffixingLeeWay = 255 - (7 + 1 + 23 + 1) - 6 = 230
     // (maxUploadDirSize is LEN('uploads') + LEN('/') + LEN(maxUploadSubdirSize) + LEN('/')
     // Suffixing leeway is so we can have up to ~99999 different files with the same base filename, varying by auto-generated suffixes

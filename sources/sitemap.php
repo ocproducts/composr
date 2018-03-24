@@ -21,7 +21,7 @@
 /*
 Notes:
  - We cannot/do-not fully recurse the Sitemap with arbitrary permissions or as an arbitrary user.
-   We do collect permission data, but this is collected for the Permission Tree Editor, not for node availability meta processing.
+   We do collect permission data, but this is collected for the Permissions Tree Editor, not for node availability meta processing.
    Node availability (of view access) is checked automatically as a part of the sitemap crawl.
    This isn't for no good reason - the Sitemap is intrinsicly variable on a user-to-user basis, it is not necessarily shared.
  - When get_node is called, it is assumed that the node object really can handle the requested page-link.
@@ -93,6 +93,7 @@ function init__sitemap()
         define('SITEMAP_GEN_KEEP_FULL_STRUCTURE', 64); // Avoid merging structure together to avoid page-link duplication.
         define('SITEMAP_GEN_COLLAPSE_ZONES', 128); // Simulate zone collapse in the Sitemap.
         define('SITEMAP_GEN_CHECK_PERMS', 256); // Check permissions when building up nodes.
+        define('SITEMAP_GEN_USE_PAGE_GROUPINGS_SUPPRESS', 512); // Unset SITEMAP_GEN_USE_PAGE_GROUPINGS for one recursion only.
 
         // Defining how the content-selection list should be put together
         define('CSL_PERMISSION_VIEW', 0);
@@ -195,7 +196,7 @@ function find_sitemap_object($page_link)
             $is_virtual = ($is_handled == SITEMAP_NODE_HANDLED_VIRTUALLY);
         }
         if (is_null($hook)) {
-            attach_message(do_lang_tempcode('MISSING_RESOURCE'), 'warn');
+            attach_message(do_lang_tempcode('_MISSING_RESOURCE', $page_link), 'warn');
             return null;
         }
     }
@@ -664,7 +665,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                 $cache[$this->content_type] = $cma_info;
             }
             require_code('site');
-            if (($cma_info['module'] == $page) && ($zone != '_SEARCH') && (_request_page($page, $zone) !== false)) { // Ensure the given page matches the content type, and it really does exist in the given zone
+            if (($cma_info['module'] == $page) && (($zone == '_SEARCH') || (_request_page($page, $zone) !== false))) { // Ensure the given page matches the content type, and it really does exist in the given zone
                 if ($matches[0] == $page_link) {
                     return SITEMAP_NODE_HANDLED_VIRTUALLY; // No type/ID specified
                 }
@@ -973,7 +974,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                 $cma_entry_ob = get_content_object($entry_content_type);
                 $cma_entry_info = $cma_entry_ob->info();
 
-                if ((!$require_permission_support) || (!is_null($cma_entry_info['permissions_type_code']))) {
+                if ((!$require_permission_support) || (($cma_entry_info['permissions_type_code'] !== null) && ($cma_entry_info['is_category']/*Unlikely to be true!*/) && (!$cma_entry_info['is_entry']))) {
                     $child_hook_ob = $this->_get_sitemap_object($entry_sitetree_hook);
 
                     $children_entries = array();

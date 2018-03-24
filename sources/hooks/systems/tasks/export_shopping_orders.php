@@ -62,7 +62,7 @@ class Hook_task_export_shopping_orders
 
             $order[do_lang('ORDER_STATUS')] = do_lang($_order['order_status']);
 
-            $order[do_lang('PRICE')] = $_order['total_price'];
+            $order[do_lang('PRICE')] = float_format($_order['total_price']);
 
             $order[do_lang(get_option('tax_system'))] = float_format($_order['total_tax']);
 

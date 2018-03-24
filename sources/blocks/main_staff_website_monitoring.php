@@ -127,120 +127,6 @@ class Block_main_staff_website_monitoring
         return array($rank, $links, $speed);
     }
 
-    //convert a string to a 32-bit integer
-    public function StrToNum($str, $check, $magic)
-    {
-        $int_32_unit = 4294967296.0;  // 2^32
-
-        $length = strlen($str);
-        for ($i = 0; $i < $length; $i++) {
-            $check *= $magic;
-            //If the float is beyond the boundaries of integer (usually +/- 2.15e+9=2^31),
-            //  the result of converting to integer is undefined
-            //  refer to http://php.net/manual/en/language.types.integer.php
-            if ((is_integer($check) && floatval($check) >= $int_32_unit) ||
-                (is_float($check) && $check >= $int_32_unit)
-            ) {
-                $check = ($check - $int_32_unit * intval($check / $int_32_unit));
-                //if the check less than -2^31
-                $check = ($check < -2147483648.0) ? ($check + $int_32_unit) : $check;
-                if (is_float($check)) {
-                    $check = intval($check);
-                }
-            }
-            $check += ord($str[$i]);
-        }
-        return is_integer($check) ? $check : intval($check);
-    }
-
-    //genearate a hash for a url
-    public function HashURL($string)
-    {
-        $check1 = $this->StrToNum($string, 0x1505, 0x21);
-        $check2 = $this->StrToNum($string, 0, 0x1003F);
-
-        $check1 = $check1 >> 2;
-        $check1 = (($check1 >> 4) & 0x3FFFFC0) | ($check1 & 0x3F);
-        $check1 = (($check1 >> 4) & 0x3FFC00) | ($check1 & 0x3FF);
-        $check1 = (($check1 >> 4) & 0x3C000) | ($check1 & 0x3FFF);
-
-        $t1 = (((($check1 & 0x3C0) << 4) | ($check1 & 0x3C)) << 2) | ($check2 & 0xF0F);
-        $t2 = @(((($check1 & 0xFFFFC000) << 4) | ($check1 & 0x3C00)) << 0xA) | ($check2 & 0xF0F0000);
-
-        return ($t1 | $t2);
-    }
-
-    //generate a checksum for the hash string
-    public function CheckHash($hashnum)
-    {
-        $check_byte = 0;
-        $flag = 0;
-
-        $hashstr = sprintf('%u', $hashnum);
-        $length = strlen($hashstr);
-
-        for ($i = $length - 1; $i >= 0; $i--) {
-            $re = intval($hashstr[$i]);
-            if (1 === ($flag % 2)) {
-                $re += $re;
-                $re = intval($re / 10) + ($re % 10);
-            }
-            $check_byte += $re;
-            $flag++;
-        }
-
-        $check_byte = $check_byte % 10;
-        if (0 !== $check_byte) {
-            $check_byte = 10 - $check_byte;
-            if (1 === ($flag % 2)) {
-                if (1 === ($check_byte % 2)) {
-                    $check_byte += 9;
-                }
-
-                $check_byte = $check_byte >> 1;
-            }
-        }
-
-        return '7' . strval($check_byte) . $hashstr;
-    }
-
-    //return the pagerank checksum hash
-    public function getch($url)
-    {
-        return $this->CheckHash($this->HashURL($url));
-    }
-
-    //return the pagerank figure
-    public function getpr($url)
-    {
-        $ch = $this->getch($url);
-        $errno = '0';
-        $errstr = '';
-        $data = http_download_file('http://toolbarqueries.google.com/tbr?client=navclient-auto&ch=' . urlencode($ch) . '&features=Rank&q=info:' . $url, null, false, false, 'Composr', null, null, null, null, null, null, null, null, 1.0);
-        if (is_null($data)) {
-            return '';
-        }
-        $pos = strpos($data, "Rank_");
-        if ($pos === false) {
-        } else {
-            $pr = substr($data, $pos + 9);
-            $pr = trim($pr);
-            $pr = str_replace("\n", '', $pr);
-            return $pr;
-        }
-        return null;
-    }
-
-    //return the pagerank figure
-    public function getPageRank($url)
-    {
-        if (preg_match('/^(https?:\/\/)?([^\/]+)/i', $url) == 0) {
-            $url = 'http://' . $url;
-        }
-        $pr = $this->getpr($url);
-        return $pr;
-    }
-
     /**
      * Execute the block.
      *
@@ -249,8 +135,6 @@ class Block_main_staff_website_monitoring
      */
     public function run($map)
     {
-        define('GOOGLE_MAGIC', 0xE6359A60);
-
         $links = post_param_string('website_monitoring_list_edit', null);
         if (!is_null($links)) {
             $GLOBALS['SITE_DB']->query_delete('staff_website_monitoring');
@@ -291,13 +175,11 @@ class Block_main_staff_website_monitoring
             foreach ($rows as $r) {
                 $alex = $this->getAlexaRank(($r['site_url']));
                 $sites_being_watched[$r['site_url']] = $r['site_name'];
-                $google_ranking = integer_format(intval($this->getPageRank($r['site_url'])));
                 $alexa_ranking = $alex[0];
                 $alexa_traffic = $alex[1];
 
                 $grid_data[] = array(
                     'URL' => $r['site_url'],
-                    'GOOGLE_RANKING' => $google_ranking,
                     'ALEXA_RANKING' => $alexa_ranking,
                     'ALEXA_TRAFFIC' => $alexa_traffic,
                     'SITE_NAME' => $r['site_name'],

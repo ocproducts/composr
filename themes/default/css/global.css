@@ -192,12 +192,16 @@ body, .email_body, textarea, input, td, th {
 tt, kbd, samp {
 	font-weight: bold;
 	font-size: 1.15em;
+	word-wrap: break-word;
 }
 
 abbr {
 	border-bottom: 1px dotted; /* For Safari, which does not have it by default */
 	text-decoration: none;
 	cursor: help;
+}
+a abbr {
+	cursor: pointer;
 }
 
 /* Give all browsers a 'q' tag with smart quotes */
@@ -208,7 +212,7 @@ q:after {
 	content: "\201d";
 }
 
-/* Re-apply default styles non-HTML5-aware browsers */
+/* Reapply default styles non-HTML5-aware browsers */
 details, aside, header, footer, nav, article, section, figure, figcaption {
 	display: block;
 }
@@ -850,11 +854,6 @@ body.popup_spacer h2 {
 		margin-{!en_right}: 13em;
 		padding-{!en_right}: 3.5em;
 	}
-	/*{+START,IF,{$CONFIG_OPTION,collapse_user_zones}}*/
-		.zone_running_ #panel_right:first-child ~ .global_middle { /* If no left panel on welcome zone, lets give some extra space */
-			margin-{!en_right}: 16em;
-		}
-	/*{+END}*/
 /*{+END}*/
 
 .global_side_panel h2 {
@@ -1116,7 +1115,7 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 	margin: 1.5em;
 	margin-{!en_left}: 10px !important;
 	background-image: url('{$IMG_INLINE;,1x/cannot_show}');
-	background-position: {!en_left} 5px;
+	background-position: {!en_left} center;
 	background-repeat: no-repeat;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
@@ -1428,9 +1427,12 @@ th.metadata_title {
 	max-width: 100%;
 	height: auto;
 }
-.img_thumb:hover, body.touch_enabled .img_thumb {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+.img_thumb:hover, body.touch_enabled .img_thumb, .img_thumb_opaque .img_thumb {
+	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;}
 	{$BETA_CSS_PROPERTY,transition: opacity 0.2s linear !important;}
+}
+.img_thumb_opaque .img_thumb {
+	{$BETA_CSS_PROPERTY,transition: none !important;}
 }
 
 /*
@@ -3338,7 +3340,7 @@ input.magic_image_edit_link {
 	background-color: {$GET,lgrad};
 	background-repeat: no-repeat;
 	background-position: 96% 3px; /*fallback*/
-	background-position: right 7px top 3px;
+	background-position: right 7px center;
 	color: {$GET,box_title_text} !important;
 	text-decoration: none !important;
 	-webkit-appearance: none;
@@ -3362,7 +3364,7 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 }
 .buttons__previous.button_screen, .buttons__previous_none.button_screen {
 	padding: 6px 7px 7px 39px !important;
-	background-position: 7px 3px !important;
+	background-position: 7px center !important;
 }
 .button_screen_item {
 	padding: 3px 30px 4px 5px;
@@ -3439,6 +3441,10 @@ div.proceed_button_left_2 {
 	border: 1px solid {$GET,standard_border};
 	margin-{!en_left}: 2em;
 	margin-top: 1px; /* To get it past a possible overflow:hidden (may be a browser bug) */
+}
+.mass_select_marker input {
+	width: 25px;
+	height: 25px;
 }
 
 .global_button_ref_point {
@@ -4421,7 +4427,7 @@ a[rel="lightbox"] {
 }
 
 .attachment_details .actions_list_strong {
-	background-position: left 4px;
+	background-position: left center;
 }
 
 .attachment_left {

@@ -173,6 +173,9 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
 
         $label = $this->_default_property_str($properties, 'label');
         $parent_id = $this->_integer_category($category);
+        if (($resource_id != db_get_first_id()) && ($parent_id === null)) {
+            $parent_id = db_get_first_id();
+        }
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
         $rep_image = $this->_default_property_urlpath($properties, 'rep_image', true);

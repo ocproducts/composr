@@ -65,7 +65,7 @@ foreach ($release_tree as $other_version_dotted => $download_row) { // As $relea
     list(, $other_qualifier, $other_qualifier_number, $other_long_dotted_number, , $other_long_dotted_number_with_qualifier) = get_version_components__from_dotted($other_version_dotted);
 
     if (version_compare($long_dotted_number_with_qualifier, $other_long_dotted_number_with_qualifier, '>=')) {
-        continue;
+        continue; // Disconsider because our branch is the same or older
     }
 
     // Ok it's newer...
@@ -73,6 +73,14 @@ foreach ($release_tree as $other_version_dotted => $download_row) { // As $relea
     $differs_at = find_biggest_branch_differ_position($long_dotted_number_with_qualifier, $other_long_dotted_number_with_qualifier);
     if ($differs_at === null) {
         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
+    if (($other_qualifier !== null) && ($qualifier === null)) {
+        continue; // It's an alpha or beta or RC and we are not
+    }
+
+    if (($other_qualifier !== null) && ($qualifier !== null) && ($differs_at != 3)) {
+        continue; // It's an alpha or beta or RC and we are, but it's a different branch (assumption is user wants to upgrade to final version of current branch)
     }
 
     $other_version_pretty = get_version_pretty__from_dotted($other_version_dotted);
@@ -141,6 +149,7 @@ function find_biggest_branch_differ_position($long_dotted_number_with_qualifier,
     $parts = explode('.', $long_dotted_number_with_qualifier);
     $other_parts = explode('.', $other_long_dotted_number_with_qualifier);
 
+    // Add in last component if one has it but the other does not (this is the qualifier component, i.e. alpha/beta/RC)
     if (count($parts) > count($other_parts)) {
         $other_parts[] = '0';
     } elseif (count($other_parts) > count($parts)) {

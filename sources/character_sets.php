@@ -21,6 +21,33 @@
 /*EXTRA FUNCTIONS: iconv\_.+*/
 
 /**
+ * Transliterate a string (convert it to latin script).
+ *
+ * @param  string $str String to transliterate
+ * @return string Transliterated string
+ */
+function transliterate_string($str)
+{
+    if (get_charset() == 'utf-8') {
+        if (function_exists('transliterator_transliterate')) {
+            $_str = @transliterator_transliterate('Any-Latin; Latin-ASCII; Lower()', $str);
+            if (!empty($_str)) {
+                $str = $_str;
+            }
+        } elseif ((function_exists('iconv')) && (get_value('disable_iconv') !== '1')) {
+            $_str = @iconv('utf-8', 'ASCII//TRANSLIT//IGNORE', $str);
+            if (!empty($_str)) {
+                $str = $_str;
+            }
+        } else {
+            // German has inbuilt transliteration
+            $str = str_replace(array('ä', 'ö', 'ü', 'ß'), array('ae', 'oe', 'ue', 'ss'), $str);
+        }
+    }
+    return $str;
+}
+
+/**
  * Performs lots of magic to make sure data encodings are converted correctly. Input, and output too (as often stores internally in UTF or performs automatic dynamic conversions from internal to external charsets).
  *
  * @param  boolean $known_utf8 Whether we know we are working in utf-8. This is the case for AJAX calls.

@@ -35,7 +35,7 @@ class _installer_test_set extends cms_test_case
         $_GET['skip_mszip'] = '0';
 
         if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(300);
+            @set_time_limit(1000);
         }
 
         require_code('version2');
@@ -100,7 +100,7 @@ class _installer_test_set extends cms_test_case
         }
         foreach ($tables as $table) {
             if (substr($table['Tables_in_' . $database], 0, strlen($table_prefix)) == $table_prefix) {
-                $GLOBALS['SITE_DB']->query('DROP TABLE ' . $database . '.' . $table['Tables_in_' . $database]);
+                $GLOBALS['SITE_DB']->query('DROP TABLE IF EXISTS ' . $database . '.' . $table['Tables_in_' . $database]);
             }
         }
 
@@ -109,7 +109,7 @@ class _installer_test_set extends cms_test_case
         require_code('install_headless');
         for ($i = 0; $i < 2; $i++) { // 1st trial is clean DB, 2nd trial is dirty DB
             $success = do_install_to($database, (strpos(get_db_site(), 'mysql') === false) ? get_db_site_user() : 'root', isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '', $table_prefix, $safe_mode);
-            $fail_message = 'Failed on trial #' . strval($i + 1);
+            $fail_message = 'Failed on trial #' . strval($i + 1) . ' ';
             $fail_message .= ($safe_mode ? '(safe mode)' : '(no safe mode)');
             if (!isset($_GET['debug'])) {
                 $fail_message .= ' -- append &debug=1 to the URL to get debug output';

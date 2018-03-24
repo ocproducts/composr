@@ -173,7 +173,7 @@ class Hook_health_check_upkeep extends Hook_Health_Check
 
         require_code('blocks/main_staff_checklist');
 
-        $_hooks = find_all_hooks('blocks', 'main_staff_checklist'); // TODO: Change in v11
+        $_hooks = find_all_hooks('blocks', 'main_staff_checklist');
         foreach (array_keys($_hooks) as $hook) {
             require_code('hooks/blocks/main_staff_checklist/' . filter_naughty_harsh($hook));
             $object = object_factory('Hook_checklist_' . filter_naughty_harsh($hook), true);
@@ -187,7 +187,7 @@ class Hook_health_check_upkeep extends Hook_Health_Check
 
                 if ($seconds_due_in !== null) {
                     $ok = ($seconds_due_in >= 0);
-                    $this->assert_true($ok, 'Staff checklist items for [tt]' . $hook . '[/tt] due ' . display_time_period($seconds_due_in) . ' ago');
+                    $this->assert_true($ok, 'Staff checklist items for [tt]' . $hook . '[/tt] due ' . (($seconds_due_in == -1) ? '(ASAP)' : display_time_period($seconds_due_in)) . ' ago');
                     break;
                 }
 

@@ -55,6 +55,4 @@ The final section deals with the Search Engine Optimisation options if you are c
 
 You can now link this quiz to your site in the usual way on whichever page you need to. Once you have added the quiz you can click try quiz which will give you the URL of your new survey.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Feedback features,Content,novice}{$SET,tutorial_add_date,Jul 2013}{$SET,tutorial_summary,Surveys make up an important part of many website types. They can be used to obtain feedback and information from your community members. A business can get important feedback.}[block]main_tutorial_rating[/block]

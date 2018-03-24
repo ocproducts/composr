@@ -12,6 +12,10 @@
  * @copyright  ocProducts Ltd
  * @package    extended_media_rendering
  */
+
+/**
+ * Hook class.
+ */
 class Hook_media_rendering_video_cnn extends Media_renderer_with_fallback
 {
     /**

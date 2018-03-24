@@ -198,7 +198,9 @@ The Composr code hints what image to use for Open Graph. There are 3 possibiliti
 
 For catalogues you'll need to delete [tt]uploads/catalogues/.htaccess[/tt] for the image sharing to work. Deleting this file is safe so long as you don't have any files in there protected by catalogue permissions that you do not want to be directly accessible.
 
-You may want to just simplify everything and make your own theme image for Open Graph and reference that. This will probably also end up looking nicer because Facebook recommends a 1.91:1 aspect ratio on your image (to avoid cropping) which is unlikely to be close to true for automatically chosen images.
+You may want to just simplify everything and make your own theme image for Open Graph and reference that. This will probably also end up looking nicer because Facebook:
+a) recommends a 1.91:1 aspect ratio on your image (to avoid cropping) which is unlikely to be close to true for automatically chosen images.
+b) there is a bare minimum of 200x200 (more information is included on https://developers.facebook.com/docs/sharing/best-practices#images)
 
 [title="4"]Special case: If you use huge thumbnails[/title]
 
@@ -284,7 +286,7 @@ You could increase the Composr session length to prevent these regular refreshes
 
 As described in the previous section, the Composr page has to refresh itself when it detects a Facebook session is available but the Composr member is not yet logged in.
 
-When it refreshes for the first time it appends [tt]&refreshed_once=1[/tt]/[tt]?refreshed_once=1[/tt] to the URL, as a marker so our JavaScript knows it has made an attempt. If it has failed to make the login connection it refreshes again with [tt]&keep_refreshed_once=1[/tt]/[tt]?keep_refreshed_once=1[/tt]. It tries no further attempts. It does it like this (only up to two re-attempts) because various kinds of connectivity problem, authorisation problem, or problems on Facebook, could otherwise lead to infinite refreshing.
+When it refreshes for the first time it appends [tt]&refreshed_once=1[/tt]/[tt]?refreshed_once=1[/tt] to the URL, as a marker so our JavaScript knows it has made an attempt. If it has failed to make the login connection it refreshes again with [tt]&keep_refreshed_once=1[/tt]/[tt]?keep_refreshed_once=1[/tt]. It tries no further attempts. It does it like this (only up to two reattempts) because various kinds of connectivity problem, authorisation problem, or problems on Facebook, could otherwise lead to infinite refreshing.
 
 When testing log in, make sure you're not starting a login from a URL with any of the above described  [tt]&refreshed_once=1[/tt]/[tt]?refreshed_once=1[/tt]/[tt]&keep_refreshed_once=1[/tt]/[tt]?keep_refreshed_once=1[/tt] markers in it. Also never use such URLs for sharing or putting in your navigation.
 

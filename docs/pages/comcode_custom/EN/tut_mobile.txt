@@ -83,7 +83,7 @@ If you do not want certain pages to use mobile mode at all then you can edit the
 
 [title="2"]Using responsive design techniques[/title]
 
-Responsive design is straight-forward to implement for anyone familar with CSS. Rules are coded into the CSS under media queries such as:
+Responsive design is straight-forward to implement for anyone familiar with CSS. Rules are coded into the CSS under media queries such as:
 [code="CSS"]
 @media screen and (max-width:999px) {
 	* {

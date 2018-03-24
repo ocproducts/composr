@@ -19,7 +19,7 @@ function facebook_init(app_id,channel_url,just_logged_out,serverside_fbuid,home_
 				if ((response.status=='connected') && (response.authResponse))
 				{
 					// If Composr is currently logging out, tell FB connect to disentangle
-					// Must have JS FB login before can instruct to logout. Will not re-auth -- we know we have authed due to FB_CONNECT_LOGGED_OUT being set
+					// Must have JS FB login before can instruct to logout. Will not re-auth -- we know we have auth'd due to FB_CONNECT_LOGGED_OUT being set
 					if (just_logged_out)
 					{
 						window.FB.logout(function(response) {

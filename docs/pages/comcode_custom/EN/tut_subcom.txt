@@ -3,7 +3,7 @@
 Composr is designed to be able to support large websites, and a common features of the largest sites is to have subsites and/or subcommunities within the larger website. There are a number of features in Composr to support this, including:
  - [b]Zones[/b] (different zones may be created for each subsite, located under a URL beneath the main site, with their own set of pages)
  - [b]Redirects[/b] (using redirects, common modules, such as the download module, may be made to appear as if they are running from individual zones)
- - [b]Categories, and virtual roots[/b] (using a combination of separate categories [and sub-branches there-of] for different subsites, and the 'virtual root' system, it can be made to appear that each subsite has their own catalogue/download/gallery
+ - [b]Categories, and virtual roots[/b] (using a combination of separate categories [and sub-branches there-of] for different subsites, and the 'virtual root' system, it can be made to appear that each subsite has their own catalogue/download/gallery)
  - [b]Comcode pages, Chatrooms, Polls[/b] (all these support individual creating and referencing, such that different instances can be presented to different subcommunities)
  - [b]Banners, Calendar[/b] (all these support category based referencing such that a division between subcommunity interests can be created)
  - [b]Sub-forums[/b] (different communities can be given their own branch of the discussion forums, with the [concept]Conversr[/concept] 'Clubs' feature providing special support for this)
@@ -133,7 +133,7 @@ Disadvantages to using a multi-site network:
 [title="2"]Virtual roots[/title]
 
 [surround]
-[media width="150" description="The virtualed download category" float="right"]data_custom/images/docs/tut_subcom/subcom_virtualed.png[/media]
+[media width="150" description="The virtualised download category" float="right"]data_custom/images/docs/tut_subcom/subcom_virtualised.png[/media]
 [media width="150" description="Viewing the download category we added, we can find the virtualisation URL" float="right"]data_custom/images/docs/tut_subcom/subcom_cat_view.png[/media]
 [media width="150" description="Adding a download category for the NewTown Parish subcommunity" float="right"]data_custom/images/docs/tut_subcom/subcom_cat_add.png[/media]
 A number of Composr modules contain categories organised into a tree structure, including:
@@ -235,7 +235,7 @@ Now we have the [tt]downloads[/tt] module running from the [tt]staff[/tt] zone. 
 
 Obviously the above is not much of a trick because it allows users to then navigate up via the breadcrumbs. Fortunately we have another trick to adjust the breadcrumbs...
 
-You need to edit the breadcrumbs XML file (documented in the [page="_SEARCH:tut_structure"]Composr site structure tutorial[/page]) through "Adminzone > Structure > Breadcrumb Overrides" so that [tt]site:downloads:browse:5[/tt] maps straight back to the [tt]staff[/tt] zone front page. Do this by adding in a new substitution rule:
+You need to edit the breadcrumbs XML file (documented in the [page="_SEARCH:tut_structure"]Composr site structure tutorial[/page]) through "Admin Zone > Structure > Breadcrumb Overrides" so that [tt]site:downloads:browse:5[/tt] maps straight back to the [tt]staff[/tt] zone front page. Do this by adding in a new substitution rule:
 [code="XML"]
 <substitution match_key="site:downloads:browse:5">
 	<link label="Staff">staff:</link>

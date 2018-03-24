@@ -204,7 +204,7 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:catalogues:index:' . $name, $add_time, null, SITEMAP_IMPORTANCE_MEDIUM, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'catalogues_catalogue', $name));
+    notify_sitemap_node_add('_SEARCH:catalogues:index:' . $name, $add_time, null, SITEMAP_IMPORTANCE_MEDIUM, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'catalogues_catalogue', $name));
 
     return $name;
 }
@@ -453,8 +453,8 @@ function actual_delete_catalogue($name)
     $GLOBALS['SITE_DB']->query_delete('group_privileges', array('module_the_name' => 'catalogues_catalogue', 'category_name' => $name));
 
     // Update field references
-    $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'at_catalogue_entry'), array('cf_type' => 'ck_' . $name));
-    $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'ax_catalogue_entry'), array('cf_type' => 'cx_' . $name));
+    $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'short_text'), array('cf_type' => 'ck_' . $name));
+    $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'short_text'), array('cf_type' => 'cx_' . $name));
 
     update_catalogue_content_ref('catalogue', $name, '');
 
@@ -659,7 +659,7 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
 }
 
 /**
- * Re-build the efficient catalogue category tree structure ancestry cache.
+ * Rebuild the efficient catalogue category tree structure ancestry cache.
  */
 function rebuild_catalogue_cat_treecache()
 {

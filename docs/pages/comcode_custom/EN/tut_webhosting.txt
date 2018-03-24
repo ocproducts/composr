@@ -49,17 +49,6 @@ Webhosts generally fit into 3 categories:
 
 Keep making sure you have your own backups so that you are able to always make a swift move if it becomes necessary.
 
-[staff_note][title="2"]Recommended webhost[/title]
-
-We recommend Arvixe for Composr hosting. Arvixe have worked with the Composr developers to ensure the hosting is perfectly tuned for Composr, and the Composr developers intend to make sure this remains the case across Composr versions. Arvixe is an established company, a friend to Open Source software, and provides good value and great quality servers. We maintain a good working relationship with the management of the company.
-
-You can even buy hosting with Arvixe and have Composr automatically installed for you from the get go: [url="Arvixe Composr hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].
-
-A bit of advice if you choose to not use our recommended host and go purely on a price comparison:
-Most companies competing on price may appear to be good if you compare features/limits but fail in the most important area -- quality of service. Composr is progressive software, and the price squeezed service we have seen from cheap webhosts are only suitable for those with very basic needs.
-
-[semihtml]<a class="link_exempt" href="http://arvixe.evyy.net/c/302199/279421/3370" target="_blank" title="Composr hosting (this link will open in a new window)"><img src="{$IMG*,468.60.composr}" alt="" /></a>[/semihtml]
-[/staff_note]
 [title="2"]Requirements and recommendations[/title]
 
 When choosing a webhost, you need to make sure that they meet all the requirements of Composr. Composr is intentionally designed to have very low requirements, but like when making virtually any choice in life, there are various different kinds of product that companies may try and sell.
@@ -83,7 +72,10 @@ The remainder of this section details Composr's requirements. If you have troubl
   - no other explicit disabling of standard functionality that we require. Commonly webhosts do this using ModSecurity, Suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
   - memory limit of at least 32MB (bare minimum -- you may see errors if caches are disabled, while caches fill, if you are doing imports, if you are doing Admin Zone searches, or if you are a programmer with dev mode on).
  - At least 50MB of disk space, plus your needs for space for downloads, images, etc. No maximum file size limit under 25MB or file type whitelists (some free webhosts will impose these limits -- which explains why [tt]data.cms[/tt] might disappear when you try to upload it)
- - A web server that runs MySQL (*), version 5.5.3 (&dagger;) or higher. MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data. Often webhosts will quote a number of databases that webhosting comes with: Composr only requires a single MySQL database to function. At least 5MB of database storage space is required, which should be available on any reputable webhost
+ - A web server that runs MySQL (*), version 5.5.3 (&dagger;) or higher:
+   - MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data.
+   - Often webhosts will quote a number of databases that webhosting comes with: Composr only requires a single MySQL database to function. At least 5MB of database storage space is required, which should be available on any reputable webhost.
+   - The [tt]max_allowed_packet[/tt] server system setting must be at least [tt]16M[/tt].
  - A web server running Apache (the common Linux web server) or IIS7+ (the Microsoft web server). It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported (for example nginx should work, but you would need significant expertise to get the URL schemes functionality working)
   - If running Windows, you should use an NTFS partition not a FAT32 partition, as FAT32 cannot support file locking
   - If running Apache using a [tt]mod_php[/tt] (as opposed to a CGI version of PHP), the server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security)
@@ -123,11 +115,13 @@ Composr recommends:
 [title="3"]Requirements for specific features[/title]
 
 If you want automatic thumbnail generation and transcoding you need a server with FFMPEG on it. It must be accessible via PHP either via the PHP extension (thumbnails only, not transcoding), or the ability for [tt]shell_exec[/tt] to run from PHP (both thumbnails and transcoding).
-It is best, however, to transcode manually off-line/off-server to avoid resource over-use.
+It is best, however, to transcode manually offline/off-server to avoid resource over-use.
 
 Do not try and install Composr on an ad-sponsored free webhost. The banners and tracking they inject will interfere with the mechanisms of Composr.
 
 If LDAP integration is required (for corporate network authentication integration), the PHP LDAP extension is required.
+
+If Tornevall integration is required, the PHP SOAP extension is required.
 
 If you need to be able to easily remove 'bounce' e-mails from newsletter subscriber lists, you will need the PHP IMAP extension. If your IMAP server requires SSL (like gmail) then you will need to have IMAP-SSL support inside PHP (or you will get "invalid remote specification" errors).
 
@@ -210,11 +204,93 @@ If you have installed forums, you will likely wish to create a comments forum. T
 
 You may also wish to create a non-public forum called 'Website support tickets' if you wish to enable the support ticket feature.
 
+[title="2"]Configuring MySQL (advanced)[/title]
+
+Server variables may be set in the MySQL config -- either the main config file (e.g. [tt]/etc/my.cnf[/tt]), or included files (e.g. from [tt]/etc/my.cnf.d[/tt]) -- or in the startup parameters -- or via setting the server variable at run-time. If they are not set anywhere then MySQL will use hard-coded defaults.
+
+To find which config file(s) MySQL uses, run this command (Linux and MacOS):
+[code="Bash"]
+mysql --help | grep "Default options" -A 1
+[/code]
+
+In the config file it will look something like this (example for setting [tt]max_allowed_packet[/tt], which is probably what you want):
+[code="Bash"]
+[mysqld]
+...
+max_allowed_packet = 16M
+...
+[/code]
+
+To find if a setting is set in startup parameters (Linux and MacOS) run:
+[code="Bash"]
+ps -Af | grep mysqld
+[/code]
+If it is, you'll see it in the command. This may be set in an init file such as [tt]/etc/init.d/mysqld[/tt], but it varies considerably by Linux distribution.
+
+If you are changing a config file, or a startup parameter, you naturally need to reset MySQL for it to take effect, e.g. with:
+[code="Bash"]
+/etc/init.d/mysqld restart
+[/code]
+or:
+[code="Bash"]
+service mysqld restart
+[/code]
+Again it varies a lot by distribution. On Windows you'd use the Services application to restart the service.
+
+When a MySQL session is started, certain server variables are cloned into the session (e.g. [tt]max_allowed_packet[/tt]). These variables may then be read and written as either server or session variables (actually [tt]max_allowed_packet[/tt] is read-only as a session variable -- an exception described further below). If you set a global variable then the current session is not affected, but new sessions will be. Sessions are thrown out when connections are closed, e.g. when a Composr page is fully served.
+
+To find the values of a variable you can use these MySQL queries (example for [tt]max_allowed_packet[/tt]):
+[code="MySQL"]
+SHOW GLOBAL VARIABLES LIKE 'max_allowed_packet';
+SHOW SESSION VARIABLES LIKE 'max_allowed_packet';
+[/code]
+
+There are lots of equivalent terms and syntaxes in MySQL which can make it confusing when trying to understand the documentation and third party solutions. Here is a guide:
+ - Types of variable:
+  - "Server" = "Global"
+  - "Session" = "Local" = "Connection"
+ - Commands for setting variables:
+  - Server variables, all equivalent:
+   - [tt]SET @@global.whatever=something[/tt]
+   - [tt]SET GLOBAL whatever=something[/tt]
+  - Session variables, all equivalent:
+   - [tt]SET whatever=something[/tt]
+   - [tt]SET @@whatever=something[/tt]
+   - [tt]SET @@session.whatever=something[/tt]
+   - [tt]SET SESSION whatever=something[/tt]
+   - [tt]SET @@local.whatever=something[/tt]
+   - [tt]SET LOCAL whatever=something[/tt]
+ - Commands for getting variables:
+  - Server variables, all equivalent:
+   - [tt]SHOW GLOBAL VARIABLES LIKE 'whatever'[/tt]
+   - [tt]SELECT @@global.whatever[/tt]
+  - Session variables, all equivalent:
+   - [tt]SHOW VARIABLES LIKE 'whatever'[/tt]
+   - [tt]SHOW LOCAL VARIABLES LIKE 'whatever'[/tt]
+   - [tt]SHOW SESSION VARIABLES LIKE 'whatever'[/tt]
+   - [tt]SELECT @@local.whatever[/tt]
+   - [tt]SELECT @@session.whatever[/tt]
+
+The rest of this section will deal with the specifics of the [tt]max_allowed_packet[/tt] setting, which is the only variable that a server administrator usually needs to set.
+
+[tt]max_allowed_packet[/tt] exists as separate server-side and client-side settings; this is totally different from the concept of server and session variables (which are both server-side) and should not be confused.
+
+[tt]max_allowed_packet[/tt] defaults to 1MB server-side if not configured at all (i.e. this is the hard-coded default). Most web hosts will have a higher default value and Composr defines a minimum requirement of 16MB (we define a higher limit in case large Comcode pages are being cached).
+[tt]max_allowed_packet[/tt]'s session variable exists but is read-only. Attempts to change it will give an error message. You therefore must configure the server variable correctly.
+Only MySQL users with the [tt]SUPER[/tt] privilege may set the server variable. Typically only the [tt]root[/tt] user has this.
+
+[tt]max_allowed_packet[/tt] defaults to 1GB client-side (e.g. PHP), except in official client applications like [tt]mysql[/tt] (16MB) and [tt]mysqldump[/tt] (24MB) (which may be configured in the MySQL configuration, the client configuration sections).
+Therefore for the Composr application the client-side setting is irrelevant, but you may come up with it when doing MySQL dumps for example.
+
+[tt]max_allowed_packet[/tt] can be set with "M" syntax, not just with exact bytes. So you can set it to [tt]16M[/tt] or [tt]16777216[/tt], that's your choice. Once parsed MySQL will show it in bytes.
+
+The absolute maximum [tt]max_allowed_packet[/tt] setting (both server-side and client-side, as it relates to the protocol implementation) is 1GB.
+
 [title="2"]Domain names[/title]
 
 Most websites prefer to have a short and memorable Internet address, direct to their front page. In order to achieve this, you will need to pay for control of a domain name. A very large number of companies will provide these domains, and the facility to bind these names to your web-server, for a very low fee.
 
-It is important to note that domain names are licenced on a temporary basis, and therefore you will need to renew your domain names. The length of the licence varies, but is typically between 1 and 5 years.
+It is important to note that domain names are licensed on a temporary basis, and therefore you will need to renew your domain names. The length of the licence varies, but is typically between 1 and 5 years.
 
 [title="2"]Ongoing maintenance responsibilities[/title]
 

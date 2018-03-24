@@ -134,7 +134,7 @@ class Module_purchase
             require_code('currency');
             $cpf = array('currency' => array(3, 'list'));
             foreach ($cpf as $f => $l) {
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 0, 'CURRENCY');
+                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 0, 'default=CURRENCY');
             }
 
             $cpf = array(
@@ -172,7 +172,7 @@ class Module_purchase
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 6)) {
-            $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
+            $GLOBALS['SITE_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
 
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'purchase_id', 'ID_TEXT', 't_purchase_id');
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'status', 'SHORT_TEXT', 't_status');
@@ -223,14 +223,16 @@ class Module_purchase
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 7)) {
-            require_code('cns_members');
-            $cf_id = find_cms_cpf_field_id('cms_payment_card_issue_number');
-            if ($cf_id !== null) {
-                $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'integer'), array('id' => $cf_id));
-                $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf_ft_' . strval($cf_id));
-                $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => '0'), array('field_' . strval($cf_id) => ''));
-                $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($cf_id), '?INTEGER');
-                $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => null), array('field_' . strval($cf_id) => 0));
+            if (get_forum_type() == 'cns') {
+                require_code('cns_members');
+                $cf_id = find_cms_cpf_field_id('cms_payment_card_issue_number');
+                if ($cf_id !== null) {
+                    $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'integer'), array('id' => $cf_id));
+                    $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf_ft_' . strval($cf_id));
+                    $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => '0'), array('field_' . strval($cf_id) => ''));
+                    $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($cf_id), '?INTEGER');
+                    $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => null), array('field_' . strval($cf_id) => 0));
+                }
             }
 
             rename_config_option('ipn', 'payment_gateway_username');
@@ -280,6 +282,7 @@ class Module_purchase
                 $GLOBALS['SITE_DB']->alter_table_field('ecom_prods_permissions', 'p_cost', '?INTEGER', 'p_price_points');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_permissions', 'p_price', '?REAL', null);
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_permissions', 'p_tax_code', 'ID_TEXT', '0%');
+                $GLOBALS['SITE_DB']->query_update('ecom_prods_permissions', array('p_hours' => null), array('p_hours' => 40000));
 
                 $GLOBALS['SITE_DB']->rename_table('sales', 'ecom_sales');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'txn_id', 'ID_TEXT', '');
@@ -1093,9 +1096,9 @@ class Module_purchase
                     's_state' => 'new',
                     's_amount' => $price,
                     's_tax_code' => $details['tax_code'],
-                    's_tax_derivation' => json_encode($tax_derivation),
+                    's_tax_derivation' => json_encode($tax_derivation, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
                     's_tax' => $tax,
-                    's_tax_tracking' => json_encode($tax_tracking),
+                    's_tax_tracking' => json_encode($tax_tracking, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
                     's_currency' => $currency,
                     's_purchase_id' => $purchase_id,
                     's_time' => time(),

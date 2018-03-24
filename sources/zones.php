@@ -834,6 +834,10 @@ function find_all_zones($search = false, $get_titles = false, $force_all = false
                     continue;
                 }
 
+                if ((get_forum_type() != 'cns') && ($file == 'forum')) {
+                    continue;
+                }
+
                 $out[] = $file;
 
                 if ((!$force_all) && (count($out) == $max)) {
@@ -881,6 +885,10 @@ function find_all_zones($search = false, $get_titles = false, $force_all = false
     $zones = array();
     foreach ($rows as $zone) {
         if (($collapse_user_zones) && ($zone['zone_name'] == 'site')) {
+            continue;
+        }
+
+        if ((get_forum_type() != 'cns') && ($zone['zone_name'] == 'forum')) {
             continue;
         }
 

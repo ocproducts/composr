@@ -557,7 +557,7 @@ function get_country()
 
     if (!is_guest()) {
         $country = get_cms_cpf('country');
-        if (!empty($country)) {
+        if ((!empty($country)) && (strpos($country, '|') === false)) {
             return $country;
         }
     }

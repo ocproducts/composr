@@ -22,7 +22,7 @@ class addon_guards_test_set extends cms_test_case
     {
         $files_in_addons = array();
 
-        $addons = find_all_hooks('systems', 'addon_registry'); // TODO: Fix in v11
+        $addons = find_all_hooks('systems', 'addon_registry');
         foreach (array_keys($addons) as $addon) {
             require_code('hooks/systems/addon_registry/' . $addon);
             $ob = object_factory('Hook_addon_registry_' . $addon);
@@ -59,6 +59,7 @@ class addon_guards_test_set extends cms_test_case
                 if ((substr($file, -4) == '.php') && (preg_match('#(^\_tests/|^data\_custom/stress\_test\_loader\.php$|^sources/hooks/modules/admin\_import/)#', $file) == 0)) {
                     $c = file_get_contents(get_file_base() . '/' . $file);
 
+                    $matches = array();
                     $num_matches = preg_match_all('#(require\_lang|require\_code|require\_css|require\_javascript|do\_template)\(\'([^\']*)\'[\),]#', $c, $matches);
                     for ($i = 0; $i < $num_matches; $i++) {
                         $include = $matches[2][$i];

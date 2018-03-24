@@ -252,7 +252,7 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
         $this_ref->static_ob->db_query($sql, $this_ref->connection_write);
     }
 
-    // Considering tabes in a DB reference may be in multiple (if they point to same actual DB's), make sure all our DB objects have their cache cleared
+    // Considering tables in a DB reference may be in multiple (if they point to same actual DB's), make sure all our DB objects have their cache cleared
     if (isset($GLOBALS['SITE_DB'])) {
         unset($GLOBALS['SITE_DB']->table_exists_cache[$table_name]);
     }
@@ -496,6 +496,8 @@ function _helper_drop_table_if_exists($this_ref, $table)
     if (function_exists('persistent_cache_delete')) {
         persistent_cache_delete('TABLE_LANG_FIELDS_CACHE');
     }
+
+    unset($this_ref->table_exists_cache[$table]);
 }
 
 /**
@@ -622,7 +624,9 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
             $sub_name = $name . '__' . $_sub_name;
             $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name . ' ADD ' . $sub_name . ' ' . $type_remap[$sub_type];
             if ($_sub_name == 'text_parsed') {
-                //$query .= ' DEFAULT \'\''; Gives "BLOB, TEXT, GEOMETRY or JSON column 'xxx__text_parsed' can't have a default value"
+                if (strpos(get_db_type(), 'mysql') === false) {
+                    $query .= ' DEFAULT \'\'';
+                }
             } elseif ($_sub_name == 'source_user') {
                 $query .= ' DEFAULT ' . strval(db_get_first_id());
             }

@@ -103,12 +103,6 @@ class Hook_health_check_security_hackattack extends Hook_Health_Check
         $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'hackattack WHERE date_and_time>' . strval(time() - 60 * 60 * 24);
         $num_failed = $GLOBALS['SITE_DB']->query_value_if_there($sql);
         $this->assert_true($num_failed < 100, integer_format($num_failed) . ' hack-attack alerts happened today');
-
-        // TODO: For v11 add a 'percentage_score' field to the hackattack table
-        //  insert rows in enforce_captcha with a low score
-        //  insert rows before warn_exit(do_lang_tempcode('STOPPED_BY_ANTISPAM' in antispam.php with a zero score
-        //  consider the score in any threshold tests (including automatic banning)
-        //  filter out any lower scores from the admin_security module with a threshold input field that defaults to 80%
     }
 
     /**

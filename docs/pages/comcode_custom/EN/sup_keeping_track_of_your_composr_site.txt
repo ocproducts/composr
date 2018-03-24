@@ -38,6 +38,4 @@ There are also a range of other logs such as:
 
 It is important you keep on top of your site to avoid any issues building up and by utilising the tools above Composr will allow you to do this quickly and easily.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Administration,Analytics,Security,novice}{$SET,tutorial_add_date,Aug 2014}{$SET,tutorial_summary,This tutorial covers some regular and irregular maintenance tasks you'll want to perform.}[block]main_tutorial_rating[/block]

@@ -83,7 +83,7 @@ Errors in messages on the Internet are corrected in a very similar way. The mess
 
 In actual fact, it is often possible to logically estimate with reasonable accuracy what was wrong with a message without requiring resending.
 
-Error detection and correction can never be perfect, as the message and "summing up" part could be coincidently messed-up so that they falsely indicate nothing went wrong. The theory is based off storing a big enough "summing up" part so that this unfortunate possibility is so unlikely that it can be safely ignored.
+Error detection and correction can never be perfect, as the message and "summing up" part could be coincidentally messed-up so that they falsely indicate nothing went wrong. The theory is based off storing a big enough "summing up" part so that this unfortunate possibility is so unlikely that it can be safely ignored.
 
 Reliable message transfer on the Internet is done via 'TCP'. You may have heard the term 'TCP/IP': this is just the normal combination of 'IP' and 'TCP', and is used for almost all Internet communication. IP is fundamental to the Internet, but TCP is not -- there are in fact other 'protocols' that may be used that I won't be covering.
 

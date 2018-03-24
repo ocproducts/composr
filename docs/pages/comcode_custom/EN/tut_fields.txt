@@ -13,7 +13,7 @@ Note that text fields will sort using a text sort algorithm. For example, "10" c
 [title="3"]short_trans[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A brief line of translatable/Comcode text
 |-
 ! Storage format (for programmer reference)
@@ -35,7 +35,7 @@ Note that text fields will sort using a text sort algorithm. For example, "10" c
 [title="3"]short_trans_multi[/title]
 
 {| 15em wide
-! Title
+! Type label
 | Multiple brief lines of translatable/Comcode text
 |-
 ! Storage format (for programmer reference)
@@ -61,7 +61,7 @@ Note that text fields will sort using a text sort algorithm. For example, "10" c
 [title="3"]short_text[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A brief line of text (no Comcode support)
 |-
 ! Storage format (for programmer reference)
@@ -83,7 +83,7 @@ Note that text fields will sort using a text sort algorithm. For example, "10" c
 [title="3"]short_text_multi[/title]
 
 {| 15em wide
-! Title
+! Type label
 | Multiple brief lines of text (no Comcode support)
 |-
 ! Storage format (for programmer reference)
@@ -109,7 +109,7 @@ Note that text fields will sort using a text sort algorithm. For example, "10" c
 [title="3"]long_trans[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A paragraph(s) of translatable/Comcode text
 |-
 ! Storage format (for programmer reference)
@@ -137,7 +137,7 @@ Note that text fields will sort using a text sort algorithm. For example, "10" c
 [title="3"]long_text[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A paragraph(s) of text (no Comcode support)
 |-
 ! Storage format (for programmer reference)
@@ -160,7 +160,7 @@ Note that text fields will sort using a text sort algorithm. For example, "10" c
 [media description="Huge widget" framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__long_text__huge.png[/media]
 |-
 ! Front-end UI
-| [media description="Textdescription="Huge widget"  widget" framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__long_text.png[/media]
+| [media description="Text widget" framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__long_text.png[/media]
 [media description="Huge widget" framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__long_text__huge.png[/media]
 |}
 
@@ -169,7 +169,7 @@ Note that text fields will sort using a text sort algorithm. For example, "10" c
 Note that you are only allowed one [tt]posting_field[/tt] field per catalogue.
 
 {| 15em wide
-! Title
+! Type label
 | A paragraph(s) of Comcode, with attachment support
 |-
 ! Storage format (for programmer reference)
@@ -191,7 +191,7 @@ Note that you are only allowed one [tt]posting_field[/tt] field per catalogue.
 [title="3"]codename[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A codename (short sequence of numbers and letters, no spaces)
 |-
 ! Storage format (for programmer reference)
@@ -214,7 +214,7 @@ Note that you are only allowed one [tt]posting_field[/tt] field per catalogue.
 [title="3"]password[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A password (i.e. masked input)
 |-
 ! Storage format (for programmer reference)
@@ -236,7 +236,7 @@ Note that you are only allowed one [tt]posting_field[/tt] field per catalogue.
 [title="3"]email[/title]
 
 {| 15em wide
-! Title
+! Type label
 | An e-mail address
 |-
 ! Storage format (for programmer reference)
@@ -260,7 +260,7 @@ Note that you are only allowed one [tt]posting_field[/tt] field per catalogue.
 [title="3"]integer[/title]
 
 {| 15em wide
-! Title
+! Type label
 | An integer (whole number, e.g. 5)
 |-
 ! Storage format (for programmer reference)
@@ -283,7 +283,7 @@ NB: When adding there is no UI if 'AUTO_INCREMENT' was used.
 [title="3"]float[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A float (decimal number, e.g. 3.2)
 |-
 ! Storage format (for programmer reference)
@@ -311,7 +311,7 @@ NB: When adding there is no UI if 'AUTO_INCREMENT' was used.
 [title="3"]list[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A value chosen from a list
 |-
 ! Storage format (for programmer reference)
@@ -368,7 +368,7 @@ A pathname relative to a [tt].csv[/tt] file (relative to base directory), if the
 [title="3"]list_multi[/title]
 
 {| 15em wide
-! Title
+! Type label
 | Multiple values chosen from a list
 |-
 ! Storage format (for programmer reference)
@@ -474,7 +474,7 @@ By default a 'region' is the same as a 'country', but it may be overridden by ad
 [title="3"]tick[/title]
 
 {| 15em wide
-! Title
+! Type label
 | Checkbox ('Yes' or 'No')
 |-
 ! Storage format (for programmer reference)
@@ -504,7 +504,7 @@ The first image-like field will be injected into screen metadata (i.e. will come
 [title="3"]upload[/title]
 
 {| 15em wide
-! Title
+! Type label
 | An uploaded file
 |-
 ! Storage format (for programmer reference)
@@ -526,7 +526,7 @@ The first image-like field will be injected into screen metadata (i.e. will come
 [title="3"]upload_multi[/title]
 
 {| 15em wide
-! Title
+! Type label
 | Multiple uploaded files
 |-
 ! Storage format (for programmer reference)
@@ -550,7 +550,7 @@ The first image-like field will be injected into screen metadata (i.e. will come
 [title="3"]picture[/title]
 
 {| 15em wide
-! Title
+! Type label
 | An uploaded picture
 |-
 ! Storage format (for programmer reference)
@@ -574,7 +574,7 @@ The first image-like field will be injected into screen metadata (i.e. will come
 [title="3"]picture_multi[/title]
 
 {| 15em wide
-! Title
+! Type label
 | Multiple uploaded pictures
 |-
 ! Storage format (for programmer reference)
@@ -598,7 +598,7 @@ The first image-like field will be injected into screen metadata (i.e. will come
 [title="3"]video[/title]
 
 {| 15em wide
-! Title
+! Type label
 | An uploaded video
 |-
 ! Storage format (for programmer reference)
@@ -622,7 +622,7 @@ The first image-like field will be injected into screen metadata (i.e. will come
 [title="3"]video_multi[/title]
 
 {| 15em wide
-! Title
+! Type label
 | Multiple uploaded videos
 |-
 ! Storage format (for programmer reference)
@@ -647,7 +647,7 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 [title="3"]url[/title]
 
 {| 15em wide
-! Title
+! Type label
 | An URL
 |-
 ! Storage format (for programmer reference)
@@ -669,7 +669,7 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 [title="3"]url_multi[/title]
 
 {| 15em wide
-! Title
+! Type label
 | Multiple URLs
 |-
 ! Storage format (for programmer reference)
@@ -691,7 +691,7 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 [title="3"]page_link[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A page-link (i.e. in-site link)
 |-
 ! Storage format (for programmer reference)
@@ -713,7 +713,7 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 [title="3"]theme_image[/title]
 
 {| 15em wide
-! Title
+! Type label
 | An image from the xxx directory of theme images
 |-
 ! Storage format (for programmer reference)
@@ -742,7 +742,7 @@ If you have manually added new theme images and are not seeing field types for t
 [title="3"]guid[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A GUID (Globally-Unique Identifier)
 |-
 ! Storage format (for programmer reference)
@@ -766,7 +766,7 @@ If you have manually added new theme images and are not seeing field types for t
 [title="3"]isbn[/title]
 
 {| 15em wide
-! Title
+! Type label
 | ISBN code
 |-
 ! Storage format (for programmer reference)
@@ -788,7 +788,7 @@ If you have manually added new theme images and are not seeing field types for t
 [title="3"]reference[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A reference to a catalogue entry in xxx catalogue
 |-
 ! Storage format (for programmer reference)
@@ -812,7 +812,7 @@ If you have manually added new theme images and are not seeing field types for t
 [title="3"]reference_multi[/title]
 
 {| 15em wide
-! Title
+! Type label
 | Multiple references to a catalogue entry in xxx catalogue
 |-
 ! Storage format (for programmer reference)
@@ -836,7 +836,7 @@ If you have manually added new theme images and are not seeing field types for t
 [title="3"]content_link[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A link to an item of 'xxx' content
 |-
 ! Storage format (for programmer reference)
@@ -861,7 +861,7 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 [title="3"]content_link_multi[/title]
 
 {| 15em wide
-! Title
+! Type label
 | Multiple links to an item of 'xxx' content
 |-
 ! Storage format (for programmer reference)
@@ -886,7 +886,7 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 [title="3"]member[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A member ID
 |-
 ! Storage format (for programmer reference)
@@ -908,7 +908,7 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 [title="3"]member_multi[/title]
 
 {| 15em wide
-! Title
+! Type label
 | Multiple member IDs
 |-
 ! Storage format (for programmer reference)
@@ -930,7 +930,7 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 [title="3"]author[/title]
 
 {| 15em wide
-! Title
+! Type label
 | An author configured on the system
 |-
 ! Storage format (for programmer reference)
@@ -954,7 +954,7 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 [title="3"]color[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A colour
 |-
 ! Storage format (for programmer reference)
@@ -977,7 +977,7 @@ NB: There is no special styling by default: this field exists so as to provide a
 [title="3"]date[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A date/time
 |-
 ! Storage format (for programmer reference)
@@ -1003,7 +1003,7 @@ NB: There is no special styling by default: this field exists so as to provide a
 [title="3"]just_date[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A date
 |-
 ! Storage format (for programmer reference)
@@ -1029,7 +1029,7 @@ NB: There is no special styling by default: this field exists so as to provide a
 [title="3"]just_time[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A time
 |-
 ! Storage format (for programmer reference)
@@ -1051,7 +1051,7 @@ NB: There is no special styling by default: this field exists so as to provide a
 [title="3"]tel[/title]
 
 {| 15em wide
-! Title
+! Type label
 | A telephone number
 |-
 ! Storage format (for programmer reference)

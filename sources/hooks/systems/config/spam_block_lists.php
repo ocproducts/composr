@@ -51,6 +51,9 @@ class Hook_config_spam_block_lists
      */
     public function get_default()
     {
-        return ''; // Not listing "*.opm.tornevall.org" by default, because it keeps IPs for over 365 days, which is okay for blocking e-mail servers/proxies, but not for normal dynamic web IPs
+        return '';
+        // Not listing "*.dnsbl.tornevall.org" by default, because it keeps IPs for over 365 days, which is okay for blocking e-mail servers/proxies, but not for normal dynamic web IPs
+        // Not listing HTTP:BL because it needs an API key
+        // Not listing *.rbl.efnetrbl.org because it is quite broad, e.g. blocking TOR
     }
 }

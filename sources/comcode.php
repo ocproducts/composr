@@ -111,12 +111,14 @@ function comcode_escape($in)
  */
 function html_to_comcode($html, $force = true)
 {
-    // First we don't allow this to be semi-html
+    // As this is not semi-html, but will be converted as if it is, we need to fiddle any Comcode trigger characters into neutered entities
     $html = str_replace('[', '&#091;', $html);
+    $html = str_replace('{', '&#123;', $html);
 
+    // Do it
     require_code('comcode_from_html');
-
-    return semihtml_to_comcode($html, $force);
+    $ret = semihtml_to_comcode($html, $force);
+    return $ret;
 }
 
 /**
@@ -179,7 +181,7 @@ function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false,
             $attachments = true;
         }
     }
-    if ((!$attachments || ($GLOBALS['IN_MINIKERNEL_VERSION'])) && (preg_match('#^[\w\-\(\) \.,:;/"\!\?]*$#'/*NB: No apostophes allowed in here, as they get changed by escape_html and can interfere then with apply_emoticons*/, $comcode) != 0) && (strpos($comcode, '  ') === false) && (strpos($comcode, '://') === false) && (strpos($comcode, '--') === false) && (get_page_name() != 'search')) {
+    if ((!$attachments || ($GLOBALS['IN_MINIKERNEL_VERSION'])) && (preg_match('#^[\w\-\(\) \.,:;/"\!\?]*$#'/*NB: No apostrophes allowed in here, as they get changed by escape_html and can interfere then with apply_emoticons*/, $comcode) != 0) && (strpos($comcode, '  ') === false) && (strpos($comcode, '://') === false) && (strpos($comcode, '--') === false) && (get_page_name() != 'search')) {
         if (running_script('stress_test_loader')) {
             return make_string_tempcode(escape_html($comcode));
         }

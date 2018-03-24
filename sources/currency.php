@@ -70,7 +70,7 @@ function get_currency()
     if ($currency === null) {
         // a specially named custom profile field for the currency.
         $currency = get_cms_cpf('currency');
-        if ($currency === '') {
+        if ($currency === '' || $currency === 'CURRENCY') {
             $currency = null;
         }
         if ($currency === null) {
@@ -81,6 +81,9 @@ function get_currency()
                 $currency = get_option('currency');
             } else {
                 $currency = country_to_currency($country);
+                if ($currency === null) {
+                    $currency = get_option('currency');
+                }
             }
         }
     }
@@ -172,14 +175,6 @@ function currency_convert($amount, $from_currency = null, $to_currency = null, $
         }
     }
 
-    // Case: Get from Google
-    if ($new_amount === null) {
-        $new_amount = _currency_convert__google($amount, $from_currency, $to_currency);
-        if ($new_amount !== null) {
-            $save_caching = true;
-        }
-    }
-
     // Case: Fallback
     if ($new_amount === null) {
         attach_message(do_lang_tempcode('CURRENCY_CONVERSION_FAILED', escape_html(float_format($amount)), escape_html($from_currency), escape_html($to_currency))); // TODO: Error mail in v11
@@ -251,38 +246,6 @@ function _currency_convert__ecb($amount, $from_currency, $to_currency, $cache_mi
         }
     }
 
-    return null;
-}
-
-/**
- * Perform a currency conversion using Google.
- *
- * @param  mixed $amount The starting amount (integer or float).
- * @param  ID_TEXT $from_currency The start currency code.
- * @param  ID_TEXT $to_currency The end currency code.
- * @return ?float The new amount (null: could not look up).
- */
-function _currency_convert__google($amount, $from_currency, $to_currency)
-{
-    $google_url = 'http://finance.google.com/finance/converter?a=' . float_to_raw_string($amount) . '&from=' . urlencode($from_currency) . '&to=' . urlencode($to_currency);
-    $result = http_download_file($google_url, null, false);
-    if (is_string($result)) {
-        for ($i = 0; $i < strlen($result); $i++) { // bizarre unicode characters coming back from Google
-            if (ord($result[$i]) > 127) {
-                $result[$i] = ' ';
-            }
-        }
-
-        $matches = array();
-        if (preg_match('#<span class=bld>([\d\., ]+) [A-Z]+</span>#U', $result, $matches) != 0) { // e.g. <b>1400 British pounds = 2 024.4 U.S. dollars</b>
-            $_new_amount = str_replace(array(',', ' '), array('', ''), $matches[1]);
-            $new_amount = floatval($_new_amount);
-        } else {
-            return null;
-        }
-
-        return $new_amount;
-    }
     return null;
 }
 

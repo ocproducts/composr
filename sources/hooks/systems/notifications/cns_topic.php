@@ -68,7 +68,7 @@ class Hook_notification_cns_topic extends Hook_Notification
             $id = substr($id, 6);
         }
 
-        $_page_links = cns_get_forum_tree(null, is_null($id) ? null : intval($id), '', null, null, false, ($id === null) ? 0 : 1);
+        $_page_links = cns_get_forum_tree(null, is_null($id) ? null : intval($id), '', null, null, false, 1, true);
 
         $page_links = array();
         foreach ($_page_links as $p) {
@@ -85,7 +85,7 @@ class Hook_notification_cns_topic extends Hook_Notification
 
         if (is_null($id)) { // On root level add monitored topics too
             $max_topic_rows = max(0, 200 - $total);
-            $types2 = $GLOBALS['SITE_DB']->query_select('notifications_enabled', array('l_code_category'), array('l_notification_code' => 'cns_topic', 'l_member_id' => get_member()), 'ORDER BY id DESC', $max_topic_rows/*reasonable limit*/);
+            $types2 = $GLOBALS['FORUM_DB']->query_select('notifications_enabled', array('l_code_category'), array('l_notification_code' => 'cns_topic', 'l_member_id' => get_member()), 'ORDER BY id DESC', $max_topic_rows/*reasonable limit*/);
             if (count($types2) == $max_topic_rows) {
                 $types2 = array(); // Too many to consider
             }

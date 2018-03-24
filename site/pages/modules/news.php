@@ -309,7 +309,7 @@ class Module_news
                     $news_cat_rows = $GLOBALS['SITE_DB']->query_select('news_categories', array('nc_title'), array('id' => intval($select)), '', 1);
                     if (array_key_exists(0, $news_cat_rows)) {
                         $news_cat_rows[0]['_nc_title'] = get_translated_text($news_cat_rows[0]['nc_title']);
-                        $parent_title = make_string_tempcode(escape_html($news_cat_rows[0]['_nc_title']));
+                        $parent_title = protect_from_escaping(escape_html($news_cat_rows[0]['_nc_title']));
                     } else {
                         $parent_title = do_lang_tempcode('NEWS_ARCHIVE');
                     }

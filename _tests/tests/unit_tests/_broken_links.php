@@ -43,6 +43,10 @@ class _broken_links_test_set extends cms_test_case
 
     public function testTutorials()
     {
+        set_option('is_on_comcode_page_cache', '1');
+
+        @set_time_limit(10000);
+
         $path = get_file_base() . '/docs/pages/comcode_custom/' . fallback_lang();
         $files = get_directory_contents($path, $path);
         foreach ($files as $file) {
@@ -123,10 +127,30 @@ class _broken_links_test_set extends cms_test_case
         if (empty($url)) {
             return;
         }
+        if (preg_match('#^http://www\.stumbleupon\.com/submit\?url=#', $url) != 0) {
+            return;
+        }
+        if (preg_match('#^http://digg\.com/submit\?phase=2&url=#', $url) != 0) {
+            return;
+        }
         if (preg_match('#^http://december.com/html/4/element/#', $url) != 0) {
             return;
         }
+        if (preg_match('#^http://shareddemo.composr.info/#', $url) != 0) {
+            return;
+        }
+        if (preg_match('#^http://compo.sr/docs10/#', $url) != 0) {
+            return;
+        }
+        if (in_array($url, array('https://cloud.google.com/console', 'https://www.google.com/webmasters/tools/home', 'https://console.developers.google.com/project', 'https://itouchmap.com/latlong.html', 'https://www.techsmith.com/jing-tool.html'))) {
+            return;
+        }
 
-        $this->assertTrue(check_url_exists($url, 60 * 60 * 24 * 100), 'Broken URL: ' . str_replace('%', '%%', $url));
+        $exists = check_url_exists($url, 60 * 60 * 24 * 100);
+        if (!$exists) {
+            $exists = check_url_exists($url, 0); // Re-try without caching, maybe we fixed a scanner bug or it's erratic
+        }
+
+        $this->assertTrue($exists, 'Broken URL: ' . str_replace('%', '%%', $url));
     }
 }

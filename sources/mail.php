@@ -260,7 +260,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     if ((strpos($message_plain, '[code') === false) && (strpos($message_plain, '[no_parse') === false) && (strpos($message_plain, '[tt') === false)) {
         // Change username links to plain username namings
         if (stripos($message_plain, '{{') !== false) {
-            $message_plain = preg_replace('#\{\{([^\}\{]*)\}\}#', '\1', $message_plain);
+            $message_plain = preg_replace('#\{\{([^|\}\{]*)\}\}#', '\1', $message_plain);
         }
 
         $message_plain = str_replace('{$SITE_NAME}', get_site_name(), $message_plain);
@@ -270,7 +270,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
             // Remove directives etc
             do {
                 $before = $message_plain;
-                $message_plain = preg_replace('#\{([^\}\{]*)\}#', '', $message_plain);
+                $message_plain = preg_replace('#\{([^|\}\{]*)\}#', '', $message_plain);
             } while ($message_plain != $before);
         }
 
@@ -323,8 +323,10 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     }
     if (stripos($message_plain, '[img') !== false) {
         if (!in_array('img', $tags_to_preserve)) {
+            $message_plain = preg_replace("#\[img[^\[\]]*\]\s*d\s*a\s*t\s*a\s*:[^\[\]]*\[/img\]#Usi", '', $message_plain);
+
             $message_plain = preg_replace("#\[img( param)?=\"([^\"]*)\"[^\[\]]*\](.*)\[/img\]#Usi", '[url="\3"]\2[/url] ', $message_plain);
-            $message_plain = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\2"]' . do_lang('VIEW') . '[/url] ', $message_plain);
+            $message_plain = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url] ', $message_plain);
         }
     }
     if (stripos($message_plain, '[email') !== false) {
@@ -600,14 +602,16 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         return false;
     }
 
-    if ($priority != 1 && $to_email !== null) {
-        foreach ($to_email as $key => $email) {
-            if ($GLOBALS['FORUM_DRIVER']->is_banned($GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email))) {
-                unset($to_email[$key]);
-            }
+    if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) {
+        if ($priority != 1 && $to_email !== null) {
+            foreach ($to_email as $key => $email) {
+                if ($GLOBALS['FORUM_DRIVER']->is_banned($GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email))) {
+                    unset($to_email[$key]);
+                }
 
-            if (count($to_email) == 0) {
-                return true;
+                if (count($to_email) == 0) {
+                    return true;
+                }
             }
         }
     }
@@ -772,7 +776,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         require_code('mail_dkim');
     }
 
-    // We use the boundary to seperate message parts
+    // We use the boundary to separate message parts
     $_boundary = uniqid('Composr', true);
     $boundary = $_boundary . '_1';
     $boundary2 = $_boundary . '_2';

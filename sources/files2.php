@@ -1313,7 +1313,6 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 }
                                             }
                                             if (!is_null($post_params)) {
-                                                $curl_headers[] = 'Expect:';
                                                 if ($put !== null) {
                                                     fclose($put);
                                                     $put = fopen($put_path, 'rb');
@@ -1463,6 +1462,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                             }
                                                             break;
                                                         case '400':
+                                                        case '429':
                                                         case '500':
                                                             if ($trigger_error) {
                                                                 warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url)));
@@ -1805,6 +1805,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                 }
                                 return null;
                             case '400':
+                            case '429':
                             case '500':
                                 if ($ignore_http_status) {
                                     break;

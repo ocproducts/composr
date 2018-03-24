@@ -51,7 +51,7 @@ class Tempcode_test_set extends cms_test_case
 	Hello\n World
 </p>
 <p>
-	\[html]
+	\[html]\[/html]
 </p>
 <p>
 	foo%3Dbar
@@ -127,15 +127,15 @@ class Tempcode_test_set extends cms_test_case
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>+COUNT,SIMPLE_ARRAY</td>
+		<td>+START,COUNT,SIMPLE_ARRAY+END</td>
 		<td>3</td>
 	</tr>
 	<tr>
-		<td>+IMPLODE, ,SIMPLE_ARRAY</td>
+		<td>+START,IMPLODE, ,SIMPLE_ARRAY+END</td>
 		<td>1 2 3</td>
 	</tr>
 	<tr>
-		<td>+OF,SIMPLE_ARRAY,1</td>
+		<td>+START,OF,SIMPLE_ARRAY,1+END</td>
 		<td>2</td>
 	</tr>
 </tbody></table>

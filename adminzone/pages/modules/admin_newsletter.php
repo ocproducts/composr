@@ -722,16 +722,17 @@ class Module_admin_newsletter extends Standard_crud_module
         $start = 0;
         do {
             if (substr($id, 0, 1) == 'g') {
+                // TODO: Make this more accurate #3554
                 if (strpos(get_db_type(), 'mysql') !== false) {
-                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email', 'COUNT(*) as cnt'), array('m_allow_emails' => 1, 'm_primary_group' => intval(substr($id, 1))), 'GROUP BY SUBSTRING_INDEX(m_email_address,\'@\',-1)'); // Far less PHP processing
+                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email', 'COUNT(*) as cnt'), array('m_allow_emails_from_staff' => 1, 'm_primary_group' => intval(substr($id, 1))), 'GROUP BY SUBSTRING_INDEX(m_email_address,\'@\',-1)'); // Far less PHP processing
                 } else {
-                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email'), array('m_allow_emails' => 1, 'm_primary_group' => intval(substr($id, 1))), '', 500, $start);
+                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email'), array('m_allow_emails_from_staff' => 1, 'm_primary_group' => intval(substr($id, 1))), '', 500, $start);
                 }
             } elseif ($id == '-1') {
                 if (strpos(get_db_type(), 'mysql') !== false) {
-                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email', 'COUNT(*) as cnt'), array('m_allow_emails' => 1), 'GROUP BY SUBSTRING_INDEX(m_email_address,\'@\',-1)'); // Far less PHP processing
+                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email', 'COUNT(*) as cnt'), array('m_allow_emails_from_staff' => 1), 'GROUP BY SUBSTRING_INDEX(m_email_address,\'@\',-1)'); // Far less PHP processing
                 } else {
-                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email'), array('m_allow_emails' => 1), '', 500, $start);
+                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email'), array('m_allow_emails_from_staff' => 1), '', 500, $start);
                 }
             } else {
                 $where = array('newsletter_id' => $id, 'code_confirm' => 0);
@@ -1186,7 +1187,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $in_full = post_param_integer('in_full', 0);
         $chosen_categories = post_param_string('chosen_categories', '');
 
-        // Newsletter message (complex, as will depend if an automatic periodicial being made, meaning no message defined now)
+        // Newsletter message (complex, as will depend if an automatic periodical being made, meaning no message defined now)
         $comcode_given = ($_existing != '') && (strpos($_existing, '<html') !== false);
         $_existing = post_param_string('message', $_existing);
         if ($_existing == '') {
@@ -1532,7 +1533,7 @@ class Module_admin_newsletter extends Standard_crud_module
         } else {
             $comcode_version = comcode_to_tempcode($message, get_member(), true);
             $_preview = do_template(
-                'MAIL',
+                $template,
                 array(
                     '_GUID' => 'b081cf9104748b090f63b6898027985e',
                     'TITLE' => $subject,
@@ -1561,7 +1562,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $preview = do_template('NEWSLETTER_CONFIRM_WRAP', array('_GUID' => '02bd5a782620141f8589e647e2c6d90b', 'TEXT_PREVIEW' => $text_preview, 'PREVIEW' => $_preview, 'SUBJECT' => $subject));
         pop_media_mode();
 
-        mail_wrap($preview_subject, ($html_only == 1) ? $_preview->evaluate() : $message, array($address), $username/*do_lang('NEWSLETTER_SUBSCRIBER_DEFAULT_NAME',get_site_name())*/, $from_email, $from_name, 3, null, true, null, true, $in_html, true);
+        mail_wrap($preview_subject, ($html_only == 1) ? $_preview->evaluate() : $message, array($address), $username/*do_lang('NEWSLETTER_SUBSCRIBER_DEFAULT_NAME',get_site_name())*/, $from_email, $from_name, 3, null, true, null, true, $in_html, true, $template);
 
         require_code('templates_confirm_screen');
         return confirm_screen($this->title, $preview, 'send', get_param_string('old_type', 'new'), $extra_post_data);
@@ -1754,7 +1755,7 @@ class Module_admin_newsletter extends Standard_crud_module
      * Standard crud_module table function.
      *
      * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A pair: The choose table, Whether re-ordering is supported from this screen.
+     * @return array A pair: The choose table, Whether reordering is supported from this screen.
      */
     public function create_selection_list_choose_table($url_map)
     {

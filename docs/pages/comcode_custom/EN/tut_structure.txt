@@ -69,10 +69,10 @@ Composr comes with dozens of modules as standard. Most Composr pages are actuall
 
 [i]Information for programmers only...[/i]
 
-Modules/blocks that are not locked may be un-installed and re-installed from a module management page that is buried underneath the addon management page. We do not recommended working on a module level but if you are a programmer it is sometimes useful to be able to uninstall/reinstall your own modules during testing.
+Modules/blocks that are not locked may be uninstalled and reinstalled from a module management page that is buried underneath the addon management page. We do not recommended working on a module level but if you are a programmer it is sometimes useful to be able to uninstall/reinstall your own modules during testing.
 
 [box="Note" width="25em" float="right"]
-Re-installing or un-installing a module will generally delete all data associated with it, including uploads and entries.
+Reinstalling or uninstalling a module will generally delete all data associated with it, including uploads and entries.
 [/box]
 If a module has been upgraded (i.e. The on-disk file has been replaced with a newer version), you may upgrade it (to upgrade/create on-disk and on-database data) in 3 ways:
 1) Simply use the module, and it will upgrade itself
@@ -370,7 +370,7 @@ Information about redirects and virtual roots is covered in the [page="_SEARCH:t
  3_key="Page"           3_value="A Composr site consists of pages, and some pages (mainly modules) consist of multiple screens"
  4_key="Screen"         4_value="An actual screen that could be roughly categorised distinctly from all other screens (e.g. the backup system has a screen to start a backup, and a screen to view the results)"
  5_key="Module"         5_value="A Composr page that is written in PHP to a very strict structure"
- 6_key="Mini-module"    6_value="A module that is easier to write, but less powerful (it has no installation support, for example)"
+ 6_key="Mini-module"    6_value="A module that is easier to write, but less powerful (it has no installation support, for example); it has full access to Composr's API but not having to follow any particular structure (to output just [tt]echo[/tt] or [tt]return[/tt]); the block equivalent of a mini-module is a mini-block"
  7_key="Zone editor"    7_value="A unified zone and panel editor"
  8_key="Sitemap editor" 8_value="A frontend for viewing and manipulating all content on the website"
 ]Concepts[/concepts]

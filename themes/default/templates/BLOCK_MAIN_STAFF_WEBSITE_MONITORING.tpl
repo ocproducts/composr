@@ -15,7 +15,6 @@
 				<thead>
 					<tr>
 						<th>{!config:SITE_NAME}</th>
-						<th>Google Rank</th>
 						<th>Alexa Rank</th>
 						<th>Alexa Traffic</th>
 						<th>archive.org</th>
@@ -26,7 +25,6 @@
 					{+START,LOOP,GRID_DATA}
 						<tr>
 							<td>{SITE_NAME*}</td>
-							<td>{GOOGLE_RANKING*}/10</td>
 							<td>{ALEXA_RANKING`}</td>
 							<td>{ALEXA_TRAFFIC`}</td>
 							<td><a class="suggested_link" href="http://web.archive.org/web/*/{URL*}">{!VIEW}</a></td>

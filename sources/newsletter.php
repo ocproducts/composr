@@ -147,7 +147,7 @@ function actual_send_newsletter($message, $subject, $language, $send_details, $h
  * @param  LANGUAGE_NAME $language The language
  * @param  integer $start Start position in result set (results are returned in parallel for each category of result)
  * @param  integer $max Maximum records to return from each category
- * @param  boolean $get_raw_rows Whether to get raw rows rather than mailer-ready correspondance lists
+ * @param  boolean $get_raw_rows Whether to get raw rows rather than mailer-ready correspondence lists
  * @param  string $csv_data Serialized CSV data to also consider
  * @param  boolean $strict_level Whether to do exact level matching, rather than "at least" matching
  * @return array Returns a tuple of corresponding detail lists, emails,hashes,usernames,forenames,surnames,ids, and a record count for levels (depending on requests: csv, 1, <newsletterID>, g<groupID>) [record counts not returned if $start is not zero, for performance reasons]
@@ -222,12 +222,12 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
                 $id = intval(substr($_id, 1));
                 $query = 'SELECT xxxxx  FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members g ON m.id=g.gm_member_id AND g.gm_validated=1 WHERE ' . db_string_not_equal_to('m_email_address', '') . ' AND ' . $where_lang . 'm_validated=1 AND gm_group_id=' . strval($id);
                 if (get_option('allow_email_from_staff_disable') == '1') {
-                    $query .= ' AND m_allow_emails=1';
+                    $query .= ' AND m_allow_emails_from_staff=1';
                 }
                 $query .= ' AND m_is_perm_banned=0';
                 $query .= ' UNION SELECT xxxxx FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m WHERE ' . db_string_not_equal_to('m_email_address', '') . ' AND ' . $where_lang . 'm_validated=1 AND m_primary_group=' . strval($id);
                 if (get_option('allow_email_from_staff_disable') == '1') {
-                    $query .= ' AND m_allow_emails=1';
+                    $query .= ' AND m_allow_emails_from_staff=1';
                 }
                 $query .= ' AND m_is_perm_banned=0';
                 $_rows = $GLOBALS['FORUM_DB']->query(str_replace('xxxxx', 'm.id,m.m_email_address,m.m_username', $query) . ' ORDER BY id', $max, $start, false, true);
@@ -256,7 +256,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
         if (array_key_exists('-1', $send_details) ? $send_details['-1'] : 0 == 1) {
             $query = ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . db_string_not_equal_to('m_email_address', '') . ' AND ' . $where_lang . 'm_validated=1';
             if (get_option('allow_email_from_staff_disable') == '1') {
-                $query .= ' AND m_allow_emails=1';
+                $query .= ' AND m_allow_emails_from_staff=1';
             }
             $query .= ' AND m_is_perm_banned=0';
             $_rows = $GLOBALS['FORUM_DB']->query('SELECT id,m_email_address,m_username' . $query, $max, $start);

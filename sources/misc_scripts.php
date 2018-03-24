@@ -259,6 +259,12 @@ function cron_bridge_script($caller)
         exit();
     }
 
+    // Upgrade pending?
+    $version_files = float_to_raw_string(cms_version_number(), 10, true);
+    if ((get_value('version') != $version_files) || (get_value('cns_version') != $version_files)) {
+        return;
+    }
+
     // For multi-site installs, run for each install
     global $CURRENT_SHARE_USER, $SITE_INFO;
     if ((is_null($CURRENT_SHARE_USER)) && (!empty($SITE_INFO['custom_share_domain']))) {

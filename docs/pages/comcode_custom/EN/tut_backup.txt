@@ -1,6 +1,6 @@
 [title sub="Written by Steven Gilson, and Chris Graham (ocProducts)"]Composr Tutorial: Backing up your site[/title]
 
-This tutorial will describe and explain Composr's in-built backup addon, including all its features, and the necessity of backups.
+This tutorial will describe and explain Composr's inbuilt backup addon, including all its features, and the necessity of backups.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -23,7 +23,7 @@ A good backup strategy will automatically and regularly backup all, or all chang
 [title="2"]The Composr backup addon[/title]
 
 [surround]
-The backup addon provided by Composr is a system where the website makes a backup of itself when instructed to do so. You may set up the addon to perform backups on a schedule, or activate themself yourself manually.
+The backup addon provided by Composr is a system where the website makes a backup of itself when instructed to do so. You may set up the addon to perform backups on a schedule, or activate them yourself manually.
 
 Access the backup addon from: Admin Zone > Tools > Backups
 
@@ -64,7 +64,7 @@ If your server supports 'gzip' then you will get a [tt].tar.gz[/tt] version of y
 
 [title="2"]Restoration, Did it work?[/title]
 
-You may extract the [tt].tar.gz[/tt] file using any good extraction program, including the free 7-zip program. Alternatively, webhosting control panels should be able to extract it. The backup contains a set of backed up files and a [tt]restore.php[/tt] file which can re-create your database tables. It is very much like the Composr installer in that it represents the files and a PHP script to create the database.
+You may extract the [tt].tar.gz[/tt] file using any good extraction program, including the free 7-zip program. Alternatively, webhosting control panels should be able to extract it. The backup contains a set of backed up files and a [tt]restore.php[/tt] file which can recreate your database tables. It is very much like the Composr installer in that it represents the files and a PHP script to create the database.
 
 You can use the backup archive as a means of restoring single files, or you can use it much like the installation package you originally installed with, except that the backup's installer will restore the site to the operational state from when the backup was taken.
 
@@ -91,12 +91,12 @@ This is fine, and personally, I would actually use an alternative strategy mysel
 
 Most webhosting control panels come with a backup feature that runs as 'system software', and hence has a higher reliability than a web-server script ever could. Make sure that you backup both files and database, as both are crucial to the running of your website, and user data is stored in both places. All Composr files are stored underneath the actual main Composr directory.
 
-Database backups are normally in the form of a '.sql' file, that is essentially a collection of database queries that re-create your database in a similar vein to how it would be built when in actual usage. You should test database backups made with your chosen backup settings actually restore properly, as they are not always reliable (although I have observed they have improved in recent years).
+Database backups are normally in the form of a '.sql' file, that is essentially a collection of database queries that recreate your database in a similar vein to how it would be built when in actual usage. You should test database backups made with your chosen backup settings actually restore properly, as they are not always reliable (although I have observed they have improved in recent years).
 If you only wish to backup a database, then for those who have access to phpMyAdmin, there is a powerful 'export' feature available in it.
 
 [title="2"]File permissions[/title]
 
-It is important to understand that file permissions are not backed up in archives alongside the files. Therefore upon restoration of your site, such permissions would need re-setting. Please see the [page="_SEARCH:tut_moving"]Moving sites tutorial[/page] for more information on this.
+It is important to understand that file permissions are not backed up in archives alongside the files. Therefore upon restoration of your site, such permissions would need resetting. Please see the [page="_SEARCH:tut_moving"]Moving sites tutorial[/page] for more information on this.
 
 [concepts
  1_key="Incremental backup"   1_value="A backup where only new or changed files (since the last backup) are backed up"

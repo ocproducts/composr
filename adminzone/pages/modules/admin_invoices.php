@@ -259,9 +259,9 @@ class Module_admin_invoices
             'i_state' => 'new',
             'i_amount' => $amount,
             'i_tax_code' => $tax_code,
-            'i_tax_derivation' => json_encode($tax_derivation),
+            'i_tax_derivation' => json_encode($tax_derivation, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
             'i_tax' => $tax,
-            'i_tax_tracking' => json_encode($tax_tracking),
+            'i_tax_tracking' => json_encode($tax_tracking, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0),
             'i_currency' => $currency,
             'i_special' => post_param_string('special'),
             'i_time' => time(),
@@ -289,6 +289,9 @@ class Module_admin_invoices
             $invoice_title = do_lang('CUSTOM_PRODUCT_' . $row['i_type_code']);
             $time = get_timezoned_date($row['i_time']);
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['i_member_id']);
+            if ($username === null) {
+                $username = do_lang('UNKNOWN');
+            }
             $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['i_member_id'], false, true);
             $invoices[] = array(
                 'INVOICE_TITLE' => $invoice_title,
@@ -324,6 +327,9 @@ class Module_admin_invoices
             $invoice_title = do_lang('CUSTOM_PRODUCT_' . $row['i_type_code']);
             $time = get_timezoned_date($row['i_time']);
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['i_member_id']);
+            if ($username === null) {
+                $username = do_lang('UNKNOWN');
+            }
             $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['i_member_id'], false, true);
             $invoices[] = array(
                 'INVOICE_TITLE' => $invoice_title,

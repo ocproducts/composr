@@ -44,13 +44,25 @@ class Hook_snippet_block
             return new Tempcode();
         }
 
-        $auth_key = get_param_integer('auth_key');
+        $pass = false;
 
-        // Check permissions
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('temp_block_permissions', 'p_block_constraints', array('p_session_id' => get_session_id(), 'id' => $auth_key));
-        if ((is_null($test)) || (!block_signature_check(block_params_str_to_arr($test), $map))) {
-            require_lang('permissions');
-            return paragraph(do_lang_tempcode('ACCESS_DENIED__ACCESS_DENIED', escape_html($map['block'])));
+        $_whitelisted_blocks = get_value('whitelisted_blocks');
+        if (!empty($_whitelisted_blocks)) {
+            $whitelisted_blocks = explode(',', $_whitelisted_blocks);
+            if (in_array($map['block'], $whitelisted_blocks)) {
+                $pass = true;
+            }
+        }
+
+        if (!$pass) {
+            $auth_key = get_param_integer('auth_key');
+
+            // Check permissions
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('temp_block_permissions', 'p_block_constraints', array('p_session_id' => get_session_id(), 'id' => $auth_key));
+            if ((is_null($test)) || (!block_signature_check(block_params_str_to_arr($test), $map))) {
+                require_lang('permissions');
+                return paragraph(do_lang_tempcode('ACCESS_DENIED__ACCESS_DENIED', escape_html($map['block'])));
+            }
         }
 
         // Cleanup

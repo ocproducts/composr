@@ -38,7 +38,7 @@
 						<div><em>{!BANNED}, {$LCASE,{IP_BANNED*}}</em>{+START,IF_PASSED,IP_BAN_LINK} {IP_BAN_LINK}{+END}</div>
 
 						{+START,IF_NON_EMPTY,{$CONFIG_OPTION,stopforumspam_api_key}{$CONFIG_OPTION,tornevall_api_username}}
-							<div><span class="associated_link"><a href="{$PAGE_LINK*,_SEARCH:admin_actionlog:syndicate_ip_ban:ip={IP}:member_id={ID}:reason={!MANUAL}:redirect={$SELF_URL&}}">{!SYNDICATE_TO_STOPFORUMSPAM}</a></span></div>
+							<div><span class="associated_link"><a href="{$PAGE_LINK*,_SEARCH:admin_ip_ban:syndicate_ip_ban:ip={IP}:member_id={ID}:reason={!MANUAL}:redirect={$SELF_URL&}}">{!SYNDICATE_TO_STOPFORUMSPAM}</a></span></div>
 						{+END}
 					</div>
 				</td>
@@ -77,10 +77,9 @@
 					<!-- If you like new windows, add this... title="{!LINK_NEW_WINDOW}" target="_blank"  -->
 					<nav>
 						<ul class="actions_list">
-							<li><a rel="external" href="http://whatismyipaddress.com/ip/{IP*}">Reverse-DNS/WHOIS</a></li>
-							<li><a rel="external" href="http://network-tools.com/default.asp?prog=ping&amp;Netnic=whois.arin.net&amp;host={IP*}">Ping</a></li>
-							<li><a rel="external" href="http://network-tools.com/default.asp?prog=trace&amp;Netnic=whois.arin.net&amp;host={IP*}">Tracert</a></li>
-							<li><a rel="external" href="http://www.infosniper.net/index.php?ip_address={IP*}">Geo-Lookup</a></li>
+							<li><a rel="external" href="http://whatismyipaddress.com/ip/{IP*}">Reverse-DNS/WHOIS/Geo-Lookup</a></li>
+							<li><a rel="external" href="https://ping.eu/ping/?host={IP*}">Ping</a></li>
+							<li><a rel="external" href="https://ping.eu/traceroute/?host={IP*}">Tracert</a></li>
 						</ul>
 					</nav>
 				</td>

@@ -192,7 +192,7 @@ function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, 
     dispatch_member_mention_notifications('event', strval($id), $submitter);
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:calendar:view:' . strval($id), $add_time, $edit_time, SITEMAP_IMPORTANCE_HIGH, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'calendar', strval($type)));
+    notify_sitemap_node_add('_SEARCH:calendar:view:' . strval($id), $add_time, $edit_time, SITEMAP_IMPORTANCE_HIGH, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'calendar', strval($type)));
 
     return $id;
 }
@@ -511,7 +511,7 @@ function add_event_type($title, $logo, $external_feed = '')
     dispatch_member_mention_notifications('calendar_type', strval($id));
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:calendar:browse:int_' . strval($id) . '=1', null, null, SITEMAP_IMPORTANCE_MEDIUM, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'calendar', strval($id)));
+    notify_sitemap_node_add('_SEARCH:calendar:browse:int_' . strval($id) . '=1', null, null, SITEMAP_IMPORTANCE_MEDIUM, 'weekly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'calendar', strval($id)));
 
     return $id;
 }

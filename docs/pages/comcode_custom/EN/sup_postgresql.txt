@@ -155,7 +155,7 @@ The main complexities of Postgres support, for MySQL developers are:
 
  - http://www.psequel.com/ (a free MacOS Postgres GUI)
  - https://www.heidisql.com/ (a free Windows Postgres GUI)
- - http://phppgadmin.sourceforge.net/ (a free web-based Postgres GUI)
+ - http://phppgadmin.sourceforge.net/doku.php (a free web-based Postgres GUI)
  - http://dbeaver.jkiss.org/ (a free cross-platform Postgres GUI)
  - http://squirrel-sql.sourceforge.net/ (a free cross-platform Postgres GUI)
  - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]

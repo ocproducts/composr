@@ -84,7 +84,7 @@ class Hook_fields_isbn
             return '';
         }
 
-        return hyperlink('http://isbndb.com/search-all.html?kw=' . urlencode($ev), $ev, true, true);
+        return hyperlink('https://www.bookfinder.com/search/?isbn=' . urlencode($ev) . '&mode=isbn&st=sr&ac=qr', $ev, true, true);
     }
 
     // ======================

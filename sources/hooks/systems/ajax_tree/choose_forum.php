@@ -38,7 +38,11 @@ class Hook_choose_forum
 
         $compound_list = array_key_exists('compound_list', $options) ? $options['compound_list'] : false;
         $addable_filter = array_key_exists('addable_filter', $options) ? ($options['addable_filter']) : false;
-        $stripped_id = ($compound_list ? preg_replace('#,.*$#', '', $id) : $id);
+        if ($id === null) {
+            $stripped_id = null;
+        } else {
+            $stripped_id = ($compound_list ? preg_replace('#,.*$#', '', $id) : $id);
+        }
 
         $tree = cns_get_forum_tree(null, is_null($id) ? null : intval($id), '', null, null, $compound_list, 1, true);
 

@@ -1023,7 +1023,7 @@ class Module_cms_galleries extends Standard_crud_module
      * Kills Composr if someone is trying to add an image to a gallery that does not support images.
      *
      * @param  ID_TEXT $cat The gallery
-     * @param  boolean $tolerate_non_exist Whether to tolerate the non-existance of the gallery
+     * @param  boolean $tolerate_non_exist Whether to tolerate the non-existence of the gallery
      * @return ?integer Number allowed remaining (null: no limit)
      */
     public function check_images_allowed($cat, $tolerate_non_exist = false)
@@ -1520,7 +1520,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
      * Kills Composr if someone is trying to add a video to a gallery that does not support videos.
      *
      * @param  ID_TEXT $cat The gallery
-     * @param  boolean $tolerate_non_exist Whether to tolerate the non-existance of the gallery
+     * @param  boolean $tolerate_non_exist Whether to tolerate the non-existence of the gallery
      * @return ?integer Number allowed remaining (null: no limit)
      */
     public function check_videos_allowed($cat, $tolerate_non_exist = false)

@@ -358,7 +358,7 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
     }
 
     // Our Comcode tag start/end markers
-    $array_html_preg_replace[] = array('#^<kbd class="(cms_keep|cms_keep_block)"[^>]*>(.*)</kbd>$#siU', "\${2}");
+    $array_html_preg_replace[] = array('#^<kbd [^>]*class="(cms_keep|cms_keep_block)"[^>]*>(.*)</kbd>$#siU', "\${2}");
     $semihtml = array_html_preg_replace('kbd', $array_html_preg_replace, $semihtml);
 
     // Our wrapper tags
@@ -382,9 +382,10 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
  * Convert HTML headers to Comcode titles
  *
  * @param  string $semihtml Semi-HTML
+ * @param  boolean $forceful Whether to force conversion on all header tags, even if they don't match Comcode-style/simple headers exactly
  * @return string Semi-HTML, with headers converted to titles
  */
-function convert_html_headers_to_titles($semihtml)
+function convert_html_headers_to_titles($semihtml, $forceful)
 {
     if (stripos($semihtml, '<h') !== false) {
         $array_html_preg_replace = array();
@@ -395,12 +396,18 @@ function convert_html_headers_to_titles($semihtml)
         $array_html_preg_replace[] = array('#^\s*<h1 class="screen_title"[^<>]*>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
         $array_html_preg_replace[] = array('#^\s*<h1 id="screen_title" class="screen_title"[^<>]*>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
         $array_html_preg_replace[] = array('#^\s*<h1>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
+        if ($forceful) {
+            $array_html_preg_replace[] = array('#^\s*<h1[^<>]*>(.*)</h1>\s*$#siU', '[title="1"]${1}[/title]' . "\n");
+        }
         $semihtml = array_html_preg_replace('h1', $array_html_preg_replace, $semihtml);
         $semihtml = preg_replace('#^\s*<h1[^>]+>(.*)</h1>\s*#siU', '[title="1"]${1}[/title]' . "\n", $semihtml);
         for ($i = 2; $i <= 4; $i++) {
             $array_html_preg_replace = array();
             $array_html_preg_replace[] = array('#^\s*<h' . strval($i) . '><span class="inner">(.*)</span></h' . strval($i) . '>\s*$#siU', '[title="' . strval($i) . '"]${1}[/title]' . "\n");
             $array_html_preg_replace[] = array('#^\s*<h' . strval($i) . '>(.*)</h' . strval($i) . '>\s*$#siU', '[title="' . strval($i) . '"]${1}[/title]' . "\n");
+            if ($forceful) {
+                $array_html_preg_replace[] = array('#^\s*<h' . strval($i) . '[^<>]*>(.*)</h' . strval($i) . '>\s*$#siU', '[title="' . strval($i) . '"]${1}[/title]' . "\n");
+            }
             $semihtml = array_html_preg_replace('h' . strval($i) . '', $array_html_preg_replace, $semihtml);
         }
     }
@@ -480,7 +487,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     }
 
     $decoded = html_entity_decode($semihtml, ENT_QUOTES, get_charset());
-    if (strpos($semihtml, '<') === false && strpos($semihtml, '[') === false && strpos($semihtml, '{') === false && strpos($decoded, '&') === false) {
+    if ((strpos($decoded, '<') === false) && (strpos($decoded, '[') === false) && (strpos($decoded, '{') === false) && (strpos($decoded, '&') === false)) {
         return $decoded;
     }
 
@@ -525,7 +532,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
         $semihtml = array_html_preg_replace('kbd', $array_html_preg_replace, $semihtml);
 
         if (strpos($semihtml, '[contents') !== false) { // Contents tag needs proper Comcode titles
-            $semihtml = convert_html_headers_to_titles($semihtml);
+            $semihtml = convert_html_headers_to_titles($semihtml, true);
         }
 
         // Is it really simple? It is if $count is zero (i.e. nothing fancy)...
@@ -679,7 +686,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
         $semihtml = comcode_preg_replace($tag, '#^(\[' . $tag . '\])(.*)(\[/' . $tag . '\])$#si', array('comcode_strip_html_tags'), $semihtml);
     }
 
-    // Cleanup how blocks are converted into a line break model. We need to clean up the case where inline leads onto block, by adding a linebreak inbetween. Note that this kind of break does not go *between* blocks, which is the reason we can't arbitrarily place it later on.
+    // Cleanup how blocks are converted into a line break model. We need to clean up the case where inline leads onto block, by adding a linebreak in-between. Note that this kind of break does not go *between* blocks, which is the reason we can't arbitrarily place it later on.
     $semihtml = preg_replace('#([^\s<>]|</(' . implode('|', $inline_elements) . ')>)(<(div|p))#', '${1}<br />${3}', $semihtml);
 
     // Reorder XHTML attributes alphabetically, so our regexp's match better
@@ -698,7 +705,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     } while ($semihtml != $old_semihtml);
 
     // Perform lots of conversions. We can't convert everything. Sometimes we reverse-convert what Comcode forward-converts; sometimes we match generic HTML; sometimes we match Microsoft Word or Open Office; sometimes we do lossy match
-    $semihtml = convert_html_headers_to_titles($semihtml);
+    $semihtml = convert_html_headers_to_titles($semihtml, strpos($semihtml, '[contents') !== false);
     $array_html_preg_replace = array();
     $array_html_preg_replace[] = array('#^<span>(.*)</span>$#siU', '${1}');
     $array_html_preg_replace[] = array('#^<span( charset="[^"]*")?( content="[^"]*")?( name="[^"]*")?' . '>(.*)</span>$#siU', '${4}');
@@ -905,7 +912,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
             }
         }
         $semihtml = preg_replace('#(&nbsp;|</CDATA\_\_space>|\s)*<br\s*/>#i', '<br />', $semihtml); // Spaces on end of line -> (Remove)
-    } while (preg_replace('#\s#', '', $semihtml) != preg_replace('#\s#', '', $old_semihtml));
+    } while (preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $semihtml) != preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $old_semihtml));
 
     // Undone center tagging
     $semihtml = comcode_preg_replace('left', '#^\[left\]\[center\](.*)\[/center\]\[/left\]$#si', '[left]${1}[/left]', $semihtml);
@@ -1065,10 +1072,11 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     }
 
     // Then, if there is no HTML left, we can avoid the 'semihtml' tag
-    if (strpos($semihtml2, '<') === false) {
+    if ((strpos($semihtml2, '<') === false) && (strpos($semihtml2, '&nbsp;') === false) && (strpos($semihtml2, '&#091;') === false) && (strpos($semihtml2, '&#123;') === false)) {
         //$semihtml2 = str_replace(array('&lt;', '&gt;', '&amp;'), array('___lt___', '___gt___', '___amp___'), $semihtml2);
         $semihtml2 = @html_entity_decode($semihtml2, ENT_QUOTES, get_charset());
         //$semihtml2 = str_replace(array('___lt___', '___gt___', '___amp___'), array('&lt;', '&gt;', '&amp;'), $semihtml2);
+        $semihtml2 = str_replace(chr(hexdec('C2')) . chr(hexdec('A0')), '&nbsp;', $semihtml2); // Make nbsp legible as an entity again, as otherwise we'll have portability issues with this very common non-ASCII entity
         return $semihtml2;
     }
 
@@ -1159,7 +1167,7 @@ function comcode_preg_replace($element, $pattern, $replacement, $semihtml)
                 }
             }
         }
-    } while (preg_replace('#\s#', '', $semihtml) != preg_replace('#\s#', '', $old_semihtml));
+    } while (preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $semihtml) != preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $old_semihtml));
 
     return $semihtml;
 }
@@ -1282,7 +1290,7 @@ function array_html_preg_replace($element, $array, $semihtml)
             }
             unset($array[$index]); // If we are going to recurse, we don't want extra work -- let's record that this one completed
         }
-    } while (preg_replace('#\s#', '', $semihtml) != preg_replace('#\s#', '', $old_semihtml));
+    } while (preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $semihtml) != preg_replace('#(\s|<br[^<>]*>|&nbsp;)#i', '', $old_semihtml));
 
     return $semihtml;
 }

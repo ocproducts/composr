@@ -47,6 +47,8 @@ function tempcode_tester_script()
     } else {
         echo $out;
     }
+
+    exit(); // So auto_append_file cannot run and corrupt our output
 }
 
 /**

@@ -65,7 +65,7 @@ function init__global3()
     if (!defined('STRING_MAGIC_NULL')) {
         define('STRING_MAGIC_NULL', '!--:)abcUNLIKELY');
     }
-    // This is similar, but for integers. As before, it should only be used when null and -1 aren't appropiate OR as the "ignore this field" indicator.
+    // This is similar, but for integers. As before, it should only be used when null and -1 aren't appropriate OR as the "ignore this field" indicator.
     if (!defined('INTEGER_MAGIC_NULL')) {
         define('INTEGER_MAGIC_NULL', 1634817353); // VERY unlikely to occur, but is both a 32bit unsigned and a 32 bit signed number
     }
@@ -242,11 +242,14 @@ function fix_permissions($path, $perms = null)
  * Get the contents of a file, with locking support.
  *
  * @param  PATH $path File path.
- * @return string File contents.
+ * @return ~string File contents (false: error)
  */
 function cms_file_get_contents_safe($path)
 {
     $tmp = fopen($path, 'rb');
+    if ($tmp === false) {
+        return false;
+    }
     flock($tmp, LOCK_SH);
     $contents = file_get_contents($path);
     flock($tmp, LOCK_UN);
@@ -1146,7 +1149,7 @@ function has_no_forum()
 /**
  * Check to see if an addon is installed.
  *
- * @param  ID_TEXT $addon The module name
+ * @param  ID_TEXT $addon The addon name
  * @param  boolean $non_bundled_too Whether to check non-bundled addons (ones without an addon_registry hook)
  * @return boolean Whether it is
  */
@@ -1855,6 +1858,42 @@ function collapse_1d_complexity($key, $list)
     }
 
     return $new_array;
+}
+
+/**
+ * Used by cms_strip_tags to handle whether to strip a tag.
+ *
+ * @param  array $matches Array of matches
+ * @return string Substituted tag text
+ *
+ * @ignore
+ */
+function _cms_strip_tags_callback($matches)
+{
+    global $STRIP_TAGS_TAGS, $STRIP_TAGS_TAGS_AS_ALLOW;
+    $tag_covered = stripos($STRIP_TAGS_TAGS, '<' . $matches[1] . '>');
+    if ((($STRIP_TAGS_TAGS_AS_ALLOW) && ($tag_covered !== false)) || ((!$STRIP_TAGS_TAGS_AS_ALLOW) && ($tag_covered === false))) {
+        return $matches[0];
+    }
+    return '';
+}
+
+/**
+ * Strip HTML and PHP tags from a string.
+ * Equivalent to PHP's strip_tags, whose $allowable_tags parameter is expected to be deprecated in PHP 7.3 (https://wiki.php.net/rfc/deprecations_php_7_3).
+ *
+ * @param  string $str Subject
+ * @param  string $tags Comma-separated list of tags
+ * @param  boolean $tags_as_allow Whether tags represents a whitelist (set for false to allow all by default and make $tags a blacklist)
+ * @return string Result
+ */
+function cms_strip_tags($str, $tags, $tags_as_allow = true)
+{
+    global $STRIP_TAGS_TAGS, $STRIP_TAGS_TAGS_AS_ALLOW;
+    $STRIP_TAGS_TAGS = $tags;
+    $STRIP_TAGS_TAGS_AS_ALLOW = $tags_as_allow;
+
+    return preg_replace_callback('#</?([^\s<>]+)(\s[^<>]*)?' . '>#', '_cms_strip_tags_callback', $str);
 }
 
 /**
@@ -2666,23 +2705,32 @@ function is_mobile($user_agent = null, $truth = false)
 /**
  * Get the name of a webcrawler bot, or null if no bot detected
  *
+ * @param ?string $agent User agent (null: read from environment)
  * @return ?string Webcrawling bot name (null: not a bot)
  */
-function get_bot_type()
+function get_bot_type($agent = null)
 {
-    global $BOT_TYPE_CACHE;
-    if ($BOT_TYPE_CACHE !== false) {
-        return $BOT_TYPE_CACHE;
+    $agent_given = ($agent !== null);
+
+    if (!$agent_given) {
+        global $BOT_TYPE_CACHE;
+        if ($BOT_TYPE_CACHE !== false) {
+            return $BOT_TYPE_CACHE;
+        }
+
+        $agent = cms_srv('HTTP_USER_AGENT');
     }
 
-    $agent = cms_srv('HTTP_USER_AGENT');
     if (strpos($agent, 'WebKit') !== false || strpos($agent, 'Trident') !== false || strpos($agent, 'MSIE') !== false || strpos($agent, 'Firefox') !== false || strpos($agent, 'Opera') !== false) {
         if (strpos($agent, 'bot') === false) {
             // Quick exit path
-            $BOT_TYPE_CACHE = null;
+            if (!$agent_given) {
+                $BOT_TYPE_CACHE = null;
+            }
             return null;
         }
     }
+
     $agent = strtolower($agent);
 
     global $BOT_MAP_CACHE, $SITE_INFO;
@@ -2719,10 +2767,14 @@ function get_bot_type()
             continue;
         }
         if (strpos($agent, $id) !== false) {
-            $BOT_TYPE_CACHE = $name;
+            if (!$agent_given) {
+                $BOT_TYPE_CACHE = $name;
+            }
+
             return $name;
         }
     }
+
     if ((strpos($agent, 'bot') !== false) || (strpos($agent, 'spider') !== false)) {
         $to_a = strpos($agent, ' ');
         if ($to_a === false) {
@@ -2732,10 +2784,20 @@ function get_bot_type()
         if ($to_b === false) {
             $to_b = strlen($agent);
         }
-        $BOT_TYPE_CACHE = substr($agent, 0, min($to_a, $to_b));
-        return $agent;
+
+        $name = substr($agent, 0, min($to_a, $to_b));
+
+        if (!$agent_given) {
+            $BOT_TYPE_CACHE = $name;
+        }
+
+        return $name;
     }
-    $BOT_TYPE_CACHE = null;
+
+    if (!$agent_given) {
+        $BOT_TYPE_CACHE = null;
+    }
+
     return null;
 }
 
@@ -3123,8 +3185,11 @@ function make_fractionable_editable($content_type, $id, $title)
 
     $parameters = array(
         is_object($title) ? $title->evaluate() : $title,
-        array_key_exists('edit_page_link_field', $info) ? $info['edit_page_link_field'] : preg_replace('#^\w\w?_#', '', array_key_exists('title_field_post', $info) ? $info['title_field_post'] : $info['title_field']),
-        array_key_exists('edit_page_link_pattern_post', $info) ? str_replace('_WILD', is_integer($id) ? strval($id) : $id, $info['edit_page_link_pattern_post']) : preg_replace('#:_(.*)#', ':__${1}', str_replace('_WILD', is_integer($id) ? strval($id) : $id, $info['edit_page_link_pattern'])),
+        array_key_exists('edit_page_link_field', $info) ? $info['edit_page_link_field'] : preg_replace('#^\w\w?_#', '',
+        array_key_exists('title_field_post', $info) ? $info['title_field_post'] : $info['title_field']),
+        array_key_exists('edit_page_link_pattern_post', $info) ? str_replace('_WILD', is_integer($id) ? strval($id) : $id,
+        $info['edit_page_link_pattern_post']) : preg_replace('#:_(.*)#', ':__${1}', str_replace('_WILD',
+        is_integer($id) ? strval($id) : $id, $info['edit_page_link_pattern'])),
         (array_key_exists('title_field_supports_comcode', $info) && $info['title_field_supports_comcode']) ? '1' : '0',
     );
     return directive_tempcode('FRACTIONAL_EDITABLE', is_object($title) ? $title : escape_html($title), $parameters);
@@ -3161,6 +3226,7 @@ function strip_html($in)
     if (get_charset() != 'utf-8') {
         $in = str_replace(array('&ndash;', '&mdash;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '|', '"', '"', "'", "'"), $in);
     }
+    $in = str_replace('><', '> <', $in);
     $in = strip_tags($in);
     return @html_entity_decode($in, ENT_QUOTES, get_charset());
 }

@@ -94,7 +94,7 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
             fatal_exit(do_lang('CONNECT_DB_ERROR'));
         }
 
-        odbc_exec($db, 'SET TEXTSIZE 300000');
+        odbc_exec($db, 'SET TEXTSIZE 20000000');
 
         $this->cache_db[$db_name][$db_host] = $db;
         return $db;

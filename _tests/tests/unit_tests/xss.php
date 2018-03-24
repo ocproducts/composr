@@ -75,6 +75,11 @@ class xss_test_set extends cms_test_case
         global $FORCE_INPUT_FILTER_FOR_ALL;
         $FORCE_INPUT_FILTER_FOR_ALL = true;
 
+        global $MEMBER_CACHED;
+        $MEMBER_CACHED = 1;
+        global $PRIVILEGE_CACHE;
+        $PRIVILEGE_CACHE[get_member()]['unfiltered_input'][''][''][''] = 0;
+
         $_GET['foo'] = '_config.php';
         $this->assertTrue(strpos(get_param_string('foo'), '_config.php') === false);
 
@@ -102,7 +107,7 @@ class xss_test_set extends cms_test_case
         safe_ini_set('ocproducts.xss_detect', '1');
 
         ob_start();
-        @print(get_param_string('id')); // Print an unverified input parameter, but surpress our XSS error
+        @print(get_param_string('id')); // Print an unverified input parameter, but suppress our XSS error
         ob_end_clean();
 
         safe_ini_set('ocproducts.xss_detect', '0');

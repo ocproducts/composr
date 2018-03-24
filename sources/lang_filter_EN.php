@@ -405,7 +405,9 @@ class LangFilter_EN extends LangFilter
                     $is_vowel = $specific !== '' && isset($this->vowels[$specific[0]]);
                     $article_word = $is_vowel ? 'an' : 'a';
 
-                    if (preg_match('#[^aeiou]y$#', $specific) != 0) {
+                    if ($specific == 'quiz') {
+                        $specific_plural = 'quizzes';
+                    } elseif (preg_match('#[^aeiou]y$#', $specific) != 0) {
                         $specific_plural = substr($specific, 0, strlen($specific) - 1) . 'ies';
                     } else {
                         $specific_plural = $specific . 's';

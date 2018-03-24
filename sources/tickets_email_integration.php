@@ -391,7 +391,7 @@ function _imap_get_part($stream, $msg_number, $mime_type, &$attachments, &$attac
         if (($disposition == 'ATTACHMENT') || (($structure->type != 1) && ($structure->type != 2) && (isset($structure->bytes)) && ($part_mime_type != 'TEXT/PLAIN') && ($part_mime_type != 'TEXT/HTML'))) {
             $filename = $structure->parameters[0]->value;
 
-            if ($attachment_size_total + $structure->bytes < 1024 * 1024 * 20/*20MB is quite enough, thankyou*/) {
+            if ($attachment_size_total + $structure->bytes < 1024 * 1024 * 20/*20MB is quite enough, thank you*/) {
                 $filedata = imap_fetchbody($stream, $msg_number, $part_number);
                 if ($structure->encoding == 3) {
                     $filedata = imap_base64($filedata);
@@ -528,7 +528,11 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
             'email_address' => $from_email,
         ));
         if (is_null($member_id)) {
-            $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($from_email);
+            if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) {
+                $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($from_email);
+            } else {
+                $member_id = null;
+            }
             if (is_null($member_id)) {
                 if (is_null($existing_ticket)) {
                     // E-mail back, saying user not found

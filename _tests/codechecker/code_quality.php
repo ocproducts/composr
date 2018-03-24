@@ -1269,6 +1269,11 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
                 if (($t === 'float') && ($function === 'strval')) {
                     log_warning('Floats should not be used with strval, use float_to_raw_string or float_format', $c_pos);
                 }
+                if (isset($GLOBALS['CHECKS'])) {
+                    if (($t === 'mixed') && ($function === 'count') && (strpos($c[2][0][1], 'rows') === false)) {
+                        log_warning('Make sure that count parameter is definitely counting an array', $c_pos);
+                    }
+                }
                 if ($passes) {
                     infer_expression_type_to_variable_type($param['type'], $c[2][$i]);
                 }
@@ -1343,7 +1348,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
         return $ret['type'];
     }
     if (!$found) {
-        if (count($FUNCTION_SIGNATURES['__global']['functions']) == 0) {
+        if ((isset($FUNCTION_SIGNATURES['__global'])) && (count($FUNCTION_SIGNATURES['__global']['functions']) == 0)) {
             static $warned_missing_api_once = false;
             if (!$warned_missing_api_once) {
                 log_warning('No API function metabase available', $c_pos);
@@ -1877,6 +1882,10 @@ function check_variable($variable, $reference = false, $function_guard = '')
             }
             check_expression($next[1]);
             $passes = ensure_type(array('array', 'string'), $type, $variable[3], 'Variable must be an array/string due to dereferencing');
+            if (ensure_type(array('string'), $type, $variable[3], '', true, true) == 'string') {
+                $type_2 = check_expression($variable[2][1]);
+                $passes = ensure_type(array('integer'), $type_2, $variable[3], 'String character extraction must use an integer');
+            }
             //if ($passes) infer_expression_type_to_variable_type('array', $next[1]);
             $type = 'mixed'; // We don't know the array data types
 
@@ -2051,13 +2060,13 @@ function infer_expression_type_to_variable_type($type, $expression)
     }*/
 }
 
-function ensure_type($_allowed_types, $actual_type, $pos, $alt_error = null, $extra_strict = false)
+function ensure_type($_allowed_types, $actual_type, $pos, $alt_error = null, $extra_strict = false, $mixed_as_fail = false)
 {
     if (is_array($actual_type)) {
         $actual_type = $actual_type[0];
     }
 
-    if (ltrim($actual_type, '~?') == 'mixed') {
+    if ((ltrim($actual_type, '~?') == 'mixed') && (!$mixed_as_fail)) {
         return true; // We can't check it
     }
 
@@ -2151,6 +2160,9 @@ function ensure_type($_allowed_types, $actual_type, $pos, $alt_error = null, $ex
         }
     }
 
-    log_warning(is_null($alt_error) ? 'Type mismatch' : $alt_error, $pos);
+    if ($alt_error != '') {
+        log_warning(is_null($alt_error) ? 'Type mismatch' : $alt_error, $pos);
+    }
+
     return false;
 }

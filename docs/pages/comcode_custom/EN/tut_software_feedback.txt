@@ -81,7 +81,7 @@ If reporting a security hole (or suspected hole), make sure the tracker issue is
 
 [title="2"]Reporting performance problems[/title]
 
-[media width="64" thumb="0" float="right" framed="0" framed="0"]themes/default/images/icons/64x64/menu/adminzone/tools.png[/media]
+[media width="64" thumb="0" float="right" framed="0"]themes/default/images/icons/64x64/menu/adminzone/tools.png[/media]
 On shared hosting it is always possible that a webhost can come along and say you are using too much resource.
 
 Shared hosts fit many sites onto the same server, and depending on the price and reputability of the webhost, you may be allowed to use more or less server resource.
@@ -123,7 +123,7 @@ No Composr user has ever reported that a webhost has reported excessive disk I/O
 
 [title="3"]Memory usage[/title]
 
-[media width="64" thumb="0" float="right" framed="0" framed="0"]themes/default/images/icons/64x64/menu/cms/cms.png[/media]
+[media width="64" thumb="0" float="right" framed="0"]themes/default/images/icons/64x64/menu/cms/cms.png[/media]
 Normally Composr requests are explicitly limited to a [i]maximum[/i] of 64MB, which is very small compared to the amount of RAM a server has (4GB is fairly typical nowadays). There are a very small number of one-off admin tasks where Composr raises or removes the limit, but its very unlikely to be a problem.
 
 If a webhost complains about memory usage they are probably looking at an aggregate figure.
@@ -185,7 +185,7 @@ Please don't ask for free professional/official support (except when reporting b
 
 [title="3"]Reporting and avoiding emergency problems[/title]
 
-[media width="100" thumb="0" float="right" framed="0" framed="0"]themes/default/images/messageicons/warn_large.png[/media]
+[media width="100" thumb="0" float="right" framed="0"]themes/default/images/messageicons/warn_large.png[/media]
 This section describes how to report emergency problems.
 
 It is about:
@@ -240,7 +240,7 @@ In Composr it can happen if the base URL has changed. One possibility is if it i
 
 [title="3"]Referral scheme for free support[/title]
 
-[media width="64" thumb="0" float="right" framed="0" framed="0"]themes/default/images/icons/64x64/menu/adminzone/style.png[/media]
+[media width="64" thumb="0" float="right" framed="0"]themes/default/images/icons/64x64/menu/adminzone/style.png[/media]
 We know a lot of users would benefit from some advanced professional support on occasion, but that it's hard to find/justify the money if your website is not part of a successful business. The community helps, but sometimes only a programmer has the answer.
 
 Of course after making a great product for free the last thing ocProducts can afford is free individual tuition too.
@@ -363,7 +363,7 @@ If you would like us to consider including your code, mention when you post your
 
 [title="2"]Providing design feedback[/title]
 
-[media width="250" thumb="0" float="right" framed="0" framed="0"]data_custom/images/docs/tut_software_feedback/feedback_general.png[/media]
+[media width="250" thumb="0" float="right" framed="0"]data_custom/images/docs/tut_software_feedback/feedback_general.png[/media]
 The Composr community occasionally sees feedback that we should improve the design of the default theme. Usually, however, this feedback is given in very vague terms and is hard to act on. This section will explain how to give design feedback in a clear constructive way, and also give some background on the design constraints that we work within to make Composr.
 
 [title="3"]What not to do[/title]
@@ -416,7 +416,7 @@ Usually this is more of an issue of a specific configuration of Composr looking 
 
 [title="3"]How to give constructive criticism[/title]
 
-[media width="100" thumb="0" float="right" framed="0" framed="0"]themes/default/images/messageicons/inform_large.png[/media]
+[media width="100" thumb="0" float="right" framed="0"]themes/default/images/messageicons/inform_large.png[/media]
 This is best shown by example. Recently (at the time of writing) we got some very vague feedback, mentioned in passing in our chatroom. It was not mentioned, but we were able to guess that this related to some display issues on the Composr demo, and analysis (read: second guessing) led to some bug reports, that we could then resolve:
  - http://compo.sr/tracker/view.php?id=1169
  - http://compo.sr/tracker/view.php?id=1170
@@ -439,7 +439,7 @@ So, if you're a designer reading this, there's a very good chance you could make
 
 [title="3"]Further product design reflection[/title]
 
-[media width="64" thumb="0" float="right" framed="0" framed="0"]themes/default/images/icons/64x64/menu/adminzone/setup.png[/media]
+[media width="64" thumb="0" float="right" framed="0"]themes/default/images/icons/64x64/menu/adminzone/setup.png[/media]
 This is not directly related to the process of reporting design issues, but may result in further insight into the Composr design process.
 
 [b]Fashion[/b]: there is a saying that "good design is timeless". This is largely true, but it is of course undeniable that:
@@ -481,7 +481,7 @@ Feedback feedback feedback feedback.
 
 [title="2"]Business models, Composr funding, and budgets[/title]
 
-[media width="64" thumb="0" float="right" framed="0" framed="0"]themes/default/images/icons/64x64/menu/adminzone/structure.png[/media]
+[media width="64" thumb="0" float="right" framed="0"]themes/default/images/icons/64x64/menu/adminzone/structure.png[/media]
 Composr is primarily sponsored/maintained by ocProducts Ltd, a company led by the main original developer / current lead developer (Chris Graham). In fact, we have a hybrid model for Composr -- ocProducts takes overall responsibility for keeping the project going to professional standards, as a free Open Source community project.
 
 This section explains how the commercial aspect of our company operates, and the nature of the services we offer. Specifically: how they are priced, and who they are intended for.
@@ -509,7 +509,7 @@ Please be aware also that ocProducts doesn't take payment-in-kind, such as payme
 
 [title="3"]Don't start over over-optimistic, then end up leaning on the developers[/title]
 
-[media width="64" thumb="0" float="right" framed="0" framed="0"]themes/default/images/icons/64x64/menu/adminzone/start.png[/media]
+[media width="64" thumb="0" float="right" framed="0"]themes/default/images/icons/64x64/menu/adminzone/start.png[/media]
 Despite [page="_SEARCH:antifeatures"]attempts to accurately describe[/page] what Composr can do, many people see Composr as a way of achieving the equivalent to what high-funded Silicon Valley companies achieve, but for free. Whenever there are roadblocks to that, people often end up trying to lean on the developers to get closer to it.
 
 This can be very frustrating for the developers, who are probably as squeezed for time as anyone around (often already working 15 hour days, 7 days a week). Building and maintaining Composr is a huge effort, and if individual users take more resources from the project than they provide financially, it makes it unsustainable.
@@ -548,7 +548,7 @@ It is an unfortunate but inevitable fact that computer software has bugs. Compos
 
 [title="3"]Flaw policy[/title]
 
-[media width="64" thumb="0" float="right" framed="0" framed="0"]themes/default/images/icons/64x64/menu/adminzone/audit.png[/media]
+[media width="64" thumb="0" float="right" framed="0"]themes/default/images/icons/64x64/menu/adminzone/audit.png[/media]
 Bugs and security issues are both classified as 'flaws'. There are two classifications of flaw:
  - [b]Major[/b]. A major security or integrity issue, or a bug so significant that it cuts off major functionality.
  - [b]Minor[/b]. Any flaw that is not major.
@@ -586,7 +586,7 @@ If a minor flaw was found that exists in 10.x.x, 9.x.x, 8.x.x, then ocProducts w
 
 [title="3"]Security policy[/title]
 
-[media width="64" thumb="0" float="right" framed="0" framed="0"]themes/default/images/icons/64x64/menu/adminzone/security.png[/media]
+[media width="64" thumb="0" float="right" framed="0"]themes/default/images/icons/64x64/menu/adminzone/security.png[/media]
 ocProducts believes in being open about how we treat security issues. By explaining how we deal with security issues and why we deal with them in the way we do, we hope that you can better understand how to keep your site patched up. Unfortunately it is virtually impossible to write computer code that doesn't have security issues, because even the smallest mistake or unintended-consequence can lead to them -- ocProducts has very strong standards for writing code to minimalise security holes, as well as in-house developed automatic scanning technology, and layers of redundant security built in to Composr itself. Even with all this though, problems will inevitably by found.
 
 There is a security philosophy known as 'full disclosure'. The basis of this is that vulnerabilities are specified in the open soon after they are found. While implementing this would be an act of openness from us, we have decided to not implement it because we have large numbers of users who do not have the expertise and funds to rapidly react to such public disclosures. By not giving full details of security holes, we make it harder for hackers to find them -- reducing the threat by increasing the investment a hacker needs to make. However, we strongly encourage users to keep up to date with all patch releases, because we may have fixed vulnerabilities. The idea is that we make it harder for hackers by not disclosing vulnerabilities, but we quickly release patches and thus don't leave conscientious users vulnerable to persistent hackers. If less-conscientious users don't patch then at least the vulnerabilities aren't disclosed, and if they were disclosed the users would not likely have patched anyway and therefore be in even greater danger. We never sit on vulnerabilities.
@@ -595,7 +595,7 @@ Security researchers sometimes find vulnerabilities, and usually they do follow 
 
 ocProducts reacts to vulnerabilities different depending on whether we classify them as 'major' or 'minor'.
  - Major vulnerabilities are considered a 'major flaw', and hence new versions for [b]supported[/b], [b]stable[/b] and [b]beta[/b] are released quickly after the flaw is found. The vulnerabilities are mentioned as existing (along with the severity) in the notes accompanying a new release, the 'version notes' for the prior version, and in a newsletter; there is one exception to this: if the vulnerability is obscure enough to only affect a small proportion of users, it may not be mentioned (keep reading this section for more details on this).
- - Minor vulnerabilities either have a low risk or are so inherently commonplace in all similar software that making new releases to fix each of them is unfeasible. These vulnerabilities are silently fixed, and if there are enough of them or if they are borderline cases, the next minor release mentions their existance. Sometimes a minor vulnerability will be treated as a major one if it has already been disclosed by a third-party (due to an elevated risk).
+ - Minor vulnerabilities either have a low risk or are so inherently commonplace in all similar software that making new releases to fix each of them is unfeasible. These vulnerabilities are silently fixed, and if there are enough of them or if they are borderline cases, the next minor release mentions their existence. Sometimes a minor vulnerability will be treated as a major one if it has already been disclosed by a third-party (due to an elevated risk).
 
 As stated, we will not always disclose the existence of low-risk vulnerabilities. We appreciate that some might consider this a 'cover up' on ocProduct's part, but the reality is that the decision is made for two reasons:
  - to avoid alarming users

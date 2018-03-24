@@ -286,7 +286,8 @@ class Hook_profiles_tabs_about
         $time_for_them_raw = tz_time(time(), $users_timezone);
         $time_for_them = get_timezoned_time(time(), true, $member_id_of);
 
-        $banned = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_is_perm_banned') == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
+        $is_banned = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_is_perm_banned') == 1);
+        $banned = do_lang_tempcode($is_banned ? 'YES' : 'NO');
 
         $last_submit_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_last_submit_time');
         $submit_days_ago = intval(floor(floatval(time() - $last_submit_time) / 60.0 / 60.0 / 24.0));
@@ -298,6 +299,9 @@ class Hook_profiles_tabs_about
         $member_row = $GLOBALS['FORUM_DRIVER']->get_member_row($member_id_of);
         $just_member_row = db_map_restrict($member_row, array('id', 'm_signature'));
         $signature = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);
+        if (($is_banned) && (!$GLOBALS['FORUM_DRIVER']->is_super_admin($member_id_viewing))) {
+            $signature = new Tempcode(); // Spammers may use signatures as a way to justify even accounts that will get banned
+        }
 
         $last_visit_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_last_visit_time');
         require_code('users2');

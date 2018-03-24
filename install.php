@@ -1007,7 +1007,7 @@ function step_4()
         if ($specific['name'] == 'clear_existing_forums_on_install') {
             $hidden->attach(form_input_hidden('clear_existing_forums_on_install', 'yes'));
         } elseif (($specific['name'] != 'cns_table_prefix') || ($use_msn == 1)) {
-            $forum_options->attach(make_option(is_object($specific['title']) ? $specific['title'] : make_string_tempcode($specific['title']), is_object($specific['description']) ? $specific['description'] : make_string_tempcode($specific['description']), $specific['name'], array_key_exists($specific['name'], $SITE_INFO) ? $SITE_INFO[$specific['name']] : $specific['default'], strpos($specific['name'], 'password') !== false));
+            $forum_options->attach(make_option(is_object($specific['title']) ? $specific['title'] : make_string_tempcode($specific['title']), is_object($specific['description']) ? $specific['description'] : make_string_tempcode($specific['description']), $specific['name'], !empty($SITE_INFO[$specific['name']]) ? $SITE_INFO[$specific['name']] : $specific['default'], strpos($specific['name'], 'password') !== false, array_key_exists('required', $specific) ? $specific['required'] : false));
         }
     }
 
@@ -1033,9 +1033,10 @@ function step_4()
         $options->attach(make_tick(do_lang_tempcode('USE_PERSISTENT'), example('', 'USE_PERSISTENT_TEXT'), 'use_persistent', $use_persistent ? 1 : 0));
     }*/
 
+    $title = do_lang_tempcode((($forum_type == 'cns' || $forum_type == 'none') && $use_msn == 0) ? 'DATABASE_SETTINGS' : 'COMPOSR_SETTINGS');
     if (($use_msn == 0) && ($forum_type != 'cns')) { // Merge into one set of options
         $forum_options->attach($options);
-        $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => '48a122b54d68d9893533ece7237ea5e0', 'HIDDEN' => $hidden, 'TITLE' => $forum_title, 'TEXT' => $forum_text, 'OPTIONS' => $forum_options)));
+        $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => '48a122b54d68d9893533ece7237ea5e0', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $forum_text, 'OPTIONS' => $forum_options)));
     } else {
         if (GOOGLE_APPENGINE) {
             $title = do_lang_tempcode('DEV_DATABASE_SETTINGS');
@@ -1064,7 +1065,6 @@ function step_4()
                 gae_application.onchange();
             ');
         } else {
-            $title = do_lang_tempcode((($forum_type == 'cns' || $forum_type == 'none') && $use_msn == 0) ? 'DATABASE_SETTINGS' : 'COMPOSR_SETTINGS');
             if (!$forum_options->is_empty()) {
                 $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => '232b69a995f384275c1cd9269a42c3b8', 'HIDDEN' => '', 'TITLE' => $forum_title, 'TEXT' => $forum_text, 'OPTIONS' => $forum_options)));
             }
@@ -2775,6 +2775,9 @@ function example($example, $description = '')
 {
     if ($example == '') {
         return do_lang_tempcode($description);
+    }
+    if ($description == '') {
+        return do_lang_tempcode($example);
     }
     $it = new Tempcode();
     if ($description != '') {

@@ -61,7 +61,7 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
             }
 
             $redirect = get_self_url(true, true);
-            $_add_url = build_url(array('page' => 'admin_menus', 'type' => 'edit', 'id' => $menu, 'redirect' => $redirect), 'adminzone');
+            $_add_url = build_url(array('page' => 'admin_menus', 'type' => 'edit', 'id' => $menu, 'menu_type' => $type, 'redirect' => $redirect), 'adminzone');
             $add_url = $_add_url->evaluate();
 
             $content = do_template('INLINE_WIP_MESSAGE', array('_GUID' => '276e6600571b8b4717ca742b6e9da17a', 'MESSAGE' => do_lang_tempcode('MISSING_MENU', escape_html($menu), escape_html($add_url))));
@@ -86,6 +86,7 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
             $page_link .= ':' . $root['content_id'];
         }
         $page_link .= ':clickable_sections=' . strval((($type == 'popup') || ($type == 'dropdown')) ? 1 : 0);
+        $page_link .= ':menu_type=' . urlencode($type);
         $page_link .= ':redirect=';
         $_page_link = make_string_tempcode($page_link);
         $self_url = symbol_tempcode('SELF_URL', array('1'));
@@ -631,15 +632,19 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
     } else { // URL
         // Carefully translate symbols in the URL
         $_url = $branch['url'];
-        $url = new Tempcode();
-        if ($_url !== null) {
-            $sym_pos = mixed();
-            $sym_pos = strpos($_url, '{$');
-            if ($sym_pos !== false) { // Specially encoded $ symbols
-                require_code('tempcode_compiler');
-                $url = template_to_tempcode($url->evaluate());
-            } else {
-                $url = make_string_tempcode($_url);
+        if (is_object($_url)) {
+            $url = $_url;
+        } else {
+            $url = new Tempcode();
+            if ($_url !== null) {
+                $sym_pos = mixed();
+                $sym_pos = strpos($_url, '{$');
+                if ($sym_pos !== false) { // Specially encoded $ symbols
+                    require_code('tempcode_compiler');
+                    $url = template_to_tempcode($url->evaluate());
+                } else {
+                    $url = make_string_tempcode($_url);
+                }
             }
         }
     }

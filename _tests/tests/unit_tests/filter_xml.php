@@ -163,7 +163,7 @@ class filter_xml_test_set extends cms_test_case
         ';
         cms_file_put_contents_safe(get_file_base() . '/data_custom/xml_config/fields.xml', $test_xml);
 
-        $rnd = strval(mt_rand(1,100000));
+        $rnd = strval(mt_rand(1, 100000));
         $title = 'EXAMPLE' . $rnd;
 
         $post = array(
@@ -252,7 +252,7 @@ class filter_xml_test_set extends cms_test_case
         $this->assertTrue(get_translated_text($row['title']) == 'This Is A Test');
     }
 
-    function testAppend()
+    public function testAppend()
     {
         $test_xml = '
             <fieldRestrictions>
@@ -286,7 +286,7 @@ class filter_xml_test_set extends cms_test_case
         $this->assertTrue(get_translated_text($row['title']) == 'foobarEXAMPLEfoobar');
     }
 
-    function testReplace()
+    public function testReplace()
     {
         $test_xml = '
             <fieldRestrictions>
@@ -319,7 +319,7 @@ class filter_xml_test_set extends cms_test_case
         $this->assertTrue(get_translated_text($row['title']) == 'foobar');
     }
 
-    function testDeepClean()
+    public function testDeepClean()
     {
         $test_xml = '
             <fieldRestrictions>
@@ -352,7 +352,7 @@ class filter_xml_test_set extends cms_test_case
         $this->assertTrue(get_translated_text($row['title']) == 'blah');
     }
 
-    function testDefaultFields()
+    public function testDefaultFields()
     {
         $test_xml = '
             <fieldRestrictions>
@@ -383,7 +383,7 @@ class filter_xml_test_set extends cms_test_case
         $this->assertTrue(substr_count($result, ' value="foobar"') == 1);
     }
 
-    function testMinLength()
+    public function testMinLength()
     {
         $test_xml = '
             <fieldRestrictions>
@@ -425,7 +425,7 @@ class filter_xml_test_set extends cms_test_case
         }
     }
 
-    function testPossibilitySet()
+    public function testPossibilitySet()
     {
         $test_xml = '
             <fieldRestrictions>
@@ -464,7 +464,7 @@ class filter_xml_test_set extends cms_test_case
         }
     }
 
-    function testDisallowedWord()
+    public function testDisallowedWord()
     {
         $test_xml = '
             <fieldRestrictions>
@@ -503,7 +503,7 @@ class filter_xml_test_set extends cms_test_case
         }
     }
 
-    function testDisallowedSubstring()
+    public function testDisallowedSubstring()
     {
         $test_xml = '
             <fieldRestrictions>
@@ -543,7 +543,7 @@ class filter_xml_test_set extends cms_test_case
         }
     }
 
-    function testShun()
+    public function testShun()
     {
         $test_xml = '
             <fieldRestrictions>
@@ -582,7 +582,7 @@ class filter_xml_test_set extends cms_test_case
         }
     }
 
-    function testPattern()
+    public function testPattern()
     {
         $test_xml = '
             <fieldRestrictions>

@@ -432,7 +432,7 @@ This catalogue has some hard-coded fields:
 The fields are semantically tied into the system via the [tt]ecommerce_tag[/tt] field option. If [tt]ecommerce_tag[/tt] is not set then it will still try and match the fields using either the field types or the field names.
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
-You may add additional fields, such as extra product images or specifications. However do [b]not[/b] delete any of the default fields. If an eCommerce catalogue is not correctly configured errors will occur.
+You may add additional fields, such as extra product images or specifications. However do [b]not[/b] reorder the original fields (or delete, or change the field type), as the system uses the order of these fields internally to know what they refer to. If you wish to change how they are shown do it via template editing.
 
 [title="4"]Multiple shopping catalogues (advanced)[/title]
 
@@ -636,7 +636,7 @@ Shippo is free because they make money helping you print shipping labels. We don
 
 [title="3"]Shipping addresses[/title]
 
-Some custom profile fields are pre-installed to allow members to set their shipping address in their regular profile settings (instead of having to define it each time when they pay on the payment gateway).
+Some custom profile fields are preinstalled to allow members to set their shipping address in their regular profile settings (instead of having to define it each time when they pay on the payment gateway). However by default these fields are not enabled, so you would need to edit them to enable 'Owner viewable' and 'Owner settable' for each field.
 
 There are configuration options to define whether the fields are enabled, in Admin Zone > Setup > Configuration > User/usergroup options > Special CPFs to show.
 

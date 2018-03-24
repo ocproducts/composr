@@ -249,7 +249,7 @@ Downloads may be used to release information indirectly, essentially via storing
 		</tr>
 		<tr class="zebra_0">
 			<td>
-				<p>Easy to re-organise</p>
+				<p>Easy to reorganise</p>
 			</td>
 			<td>
 				<p>No</p>

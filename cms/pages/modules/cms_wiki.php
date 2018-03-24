@@ -646,7 +646,7 @@ class Module_cms_wiki
             }
         }
 
-        log_it('WIKI_EDIT_TREE', strval($id), $page_title);
+        log_it('WIKI_EDIT_TREE', strval($id), get_translated_text($page_title));
 
         // Show it worked / Refresh
         $url = get_param_string('redirect');

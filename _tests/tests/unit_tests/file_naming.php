@@ -39,7 +39,7 @@ class file_naming_test_set extends cms_test_case
             'data_custom/modules/docs/',
             'data_custom/sitemaps/',
             'data_custom/upload-crop/',
-            'docs/standards-checklist.xls', // TODO: Remove in v10
+            'docs/standards-checklist.xls',
             'mobiquo/',
             'sources_custom/geshi/',
             'sources_custom/getid3/',
@@ -48,7 +48,7 @@ class file_naming_test_set extends cms_test_case
             'sources_custom/programe/',
             'sources_custom/sabredav/',
             'sources_custom/spout/',
-            'sources_custom/Swift-4.1.1/', // TODO: Change in v11
+            'sources_custom/Swift-4.1.1/',
             'sources_custom/user_sync__customise.php.example',
             'themes/default/images/jquery_ui/',
             'themes/default/images/realtime_rain/',
@@ -61,7 +61,7 @@ class file_naming_test_set extends cms_test_case
             '_tests/codechecker/codechecker.app/',
             '_tests/codechecker/netbeans/',
 
-            'themes/default/images/cns_default_avatars/default_set/cartoons/half-life.jpg', // TODO: Rename in v11 and remove this rule
+            'themes/default/images/cns_default_avatars/default_set/cartoons/half-life.jpg'
         );
 
         $ignore_substrings = array(
@@ -71,6 +71,10 @@ class file_naming_test_set extends cms_test_case
 
         $files = get_directory_contents(get_file_base());
         foreach ($files as $file) {
+            if (preg_match('#^themes/_unnamed_/#', $file) != 0) {
+                continue;
+            }
+
             if (should_ignore_file($file, IGNORE_USER_CUSTOMISE | IGNORE_UPLOADS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_REVISION_FILES | IGNORE_EDITFROM_FILES)) {
                 continue;
             }

@@ -83,7 +83,7 @@ $language_data = array (
             )
         ),
     'URLS' => array(
-        1 => 'http://www.robotstxt.org/wc/norobots.html'
+        1 => 'http://www.robotstxt.org/'
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(

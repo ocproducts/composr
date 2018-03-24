@@ -95,7 +95,7 @@ Take note:
  - emptying the cache on admin actions is fine because they are relatively rare, compared to total hits a site gets; while it is preferable to be able to delete specific objects, that's not always possible (e.g. with Comcode pages, they are cached against theme, but having a load of loop code to selectively choose what to decache would be excessive)
  - that it is not just one site per server, usually -- we want to increase the number of users the server can take on average, not individual sites: memory is finite
  - you must assume the cache might never remember a thing even if it is on -- things get chucked out to make space, don't assume anything
- - that it is okay if things keep getting lost from the cache -- if something is re-made every 5 minutes (the default TTL), then that means it persists for potentially hundreds/thousands of requests: a regeneration rate of 0.3% is hardly bad is it? Of course, if we are on a server with many sites, so things get re-generated after hardly being used, this is non-optimal: but we would not have had the memory to store it all anyway!
+ - that it is okay if things keep getting lost from the cache -- if something is remade every 5 minutes (the default TTL), then that means it persists for potentially hundreds/thousands of requests: a regeneration rate of 0.3% is hardly bad is it? Of course, if we are on a server with many sites, so things get regenerated after hardly being used, this is non-optimal: but we would not have had the memory to store it all anyway!
 
 [title="3"]Core APIs[/title]
 

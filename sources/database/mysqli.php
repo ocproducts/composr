@@ -114,7 +114,6 @@ class Database_Static_mysqli extends Database_super_mysql
         }
         @mysqli_query($db, 'SET wait_timeout=28800');
         @mysqli_query($db, 'SET sql_big_selects=1');
-        @mysqli_query($db, 'SET max_allowed_packet=104857600');
         if ((get_forum_type() == 'cns') && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
             @mysqli_query($db, 'SET sql_mode=\'STRICT_ALL_TABLES\'');
         } else {
@@ -215,8 +214,6 @@ class Database_Static_mysqli extends Database_super_mysql
                 return null;
             }
             if (intval($test_result[0]['Value']) < intval(strlen($query) * 1.2)) {
-                /*@mysql_query('SET max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
-
                 if ($get_insert_id) {
                     fatal_exit(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html($query), escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))));
                 } else {

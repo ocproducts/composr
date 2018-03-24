@@ -57,7 +57,7 @@ function lookup_member_page($member, &$name, &$id, &$ip)
         if (is_null($ip)) {
             $ip = '127.0.0.1';
         }
-    } elseif (is_email_address($member)) {
+    } elseif ((is_email_address($member)) && (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address'))) {
         // From e-mail address
         $id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($member);
         $name = $GLOBALS['FORUM_DRIVER']->get_username($id);
@@ -172,7 +172,7 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
             if (strpos($page_converted, ':') !== false) {
                 $get = str_replace('<param>page=' . substr($page_converted, strpos($page_converted, ':') + 1) . '</param>' . "\n", '', $get);
             }
-            $data = escape_html($get) . (($myrow['post'] == '') ? '' : ', ') . escape_html($myrow['post']);
+            $data = escape_html($get) . escape_html($myrow['post']);
             $data = str_replace('&lt;param&gt;', '', str_replace('&lt;/param&gt;', ', ', $data));
             if (substr($data, -3) == ', ' . "\n") {
                 $data = substr($data, 0, strlen($data) - 3);

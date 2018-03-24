@@ -108,7 +108,8 @@ function init__site()
         exit();
     }
 
-    if (running_script('index')) {
+    $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
+    if ((running_script('index')) && (!$cli)) {
         $access_host = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
 
         // Detect bad access domain
@@ -127,6 +128,13 @@ function init__site()
                     exit();
                 }
             }
+        }
+
+        // Detect bad access protocol
+        if ((get_value('access_protocol_redirect') === '1') && ((substr(get_base_url(), 0, 8) == 'https://') && (!tacit_https()) || (substr(get_base_url(), 0, 7) == 'http://') && (tacit_https()))) {
+            set_http_status_code('301');
+            header('Location: ' . escape_header(get_self_url(true, false)));
+            exit();
         }
 
         if (get_value('disable_cookie_checks') !== '1') {
@@ -162,7 +170,10 @@ function init__site()
             foreach ($_comcode_pages_needed as $_comcode_page_needed => $_) {
                 $comcode_pages_needed[] = unserialize($_comcode_page_needed);
             }
-            _load_comcodes_page_from_cache($comcode_pages_needed);
+
+            if (count($comcode_pages_needed) < 20) {
+                _load_comcodes_page_from_cache($comcode_pages_needed);
+            }
         }
     }
 }
@@ -1069,7 +1080,7 @@ function save_static_caching($out, $mime_type = 'text/html')
         if ((($bot_type !== null) || ($supports_failover_mode) || ($supports_guest_caching)) && (can_static_cache())) {
             $url = static_cache_current_url();
             $fast_cache_path = get_custom_file_base() . '/caches/guest_pages/' . md5($url);
-            $fast_cache_path_static_cache = $fast_cache_path;
+            $fast_cache_path_failover_mode = $fast_cache_path;
             if ($bot_type === null) {
                 $fast_cache_path .= '__non-bot';
             }
@@ -1078,8 +1089,9 @@ function save_static_caching($out, $mime_type = 'text/html')
             }
             if (is_mobile()) {
                 $fast_cache_path .= '__mobile';
-                $fast_cache_path_static_cache = '__mobile';
+                $fast_cache_path_failover_mode .= '__mobile';
             }
+            $fast_cache_path_failover_mode .= '__failover_mode';
 
             if (is_object($out)) {
                 $out_evaluated = $out->evaluate(null);
@@ -1106,7 +1118,7 @@ function save_static_caching($out, $mime_type = 'text/html')
                 }
 
                 if ($supports_failover_mode) {
-                    if (!is_file($fast_cache_path_static_cache . '__failover_mode' . $file_extension) || filemtime($fast_cache_path_static_cache . '__failover_mode' . $file_extension) < time() - 60 * 60 * 5) {
+                    if (!is_file($fast_cache_path_failover_mode . $file_extension) || filemtime($fast_cache_path_failover_mode . $file_extension) < time() - 60 * 60 * 5) {
                         // Add failover messages
                         if (!empty($SITE_INFO['failover_message_place_after'])) {
                             $static_cache = str_replace($SITE_INFO['failover_message_place_after'], $SITE_INFO['failover_message_place_after'] . $SITE_INFO['failover_message'], $static_cache);
@@ -1118,7 +1130,7 @@ function save_static_caching($out, $mime_type = 'text/html')
                         // Disable all form controls
                         $static_cache = preg_replace('#<(textarea|input|select|button)#', '<$1 disabled="disabled"', $static_cache);
 
-                        write_static_cache_file($fast_cache_path_static_cache . '__failover_mode' . $file_extension, $static_cache, false);
+                        write_static_cache_file($fast_cache_path_failover_mode . $file_extension, $static_cache, false);
                     }
 
                     if (!empty($SITE_INFO['failover_apache_rewritemap_file'])) {
@@ -1127,9 +1139,9 @@ function save_static_caching($out, $mime_type = 'text/html')
                         $url_stem = str_replace(get_base_url(false) . '/', '', $url_stem);
                         if (preg_match('#^' . $SITE_INFO['failover_apache_rewritemap_file'] . '$#', $url_stem) != 0) {
                             if (is_mobile()) {
-                                $rewritemap_file = get_file_base() . '/data_custom/failover_rewritemap__mobile.txt';
+                                $rewritemap_file = get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt';
                             } else {
-                                $rewritemap_file = get_file_base() . '/data_custom/failover_rewritemap.txt';
+                                $rewritemap_file = get_custom_file_base() . '/data_custom/failover_rewritemap.txt';
                             }
                             $rewritemap_file_contents = cms_file_get_contents_safe($rewritemap_file);
                             if (strpos($rewritemap_file_contents, "\n" . $url_stem . ' ') === false) {
@@ -1155,10 +1167,9 @@ function save_static_caching($out, $mime_type = 'text/html')
 function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip)
 {
     require_code('files');
+    cms_file_put_contents_safe($fast_cache_path, $out_evaluated, FILE_WRITE_FIX_PERMISSIONS);
     if ((function_exists('gzencode')) && (php_function_allowed('ini_set')) && ($support_gzip)) {
-        cms_file_put_contents_safe($fast_cache_path, gzencode($out_evaluated, 9), FILE_WRITE_FIX_PERMISSIONS);
-    } else {
-        cms_file_put_contents_safe($fast_cache_path, $out_evaluated, FILE_WRITE_FIX_PERMISSIONS);
+        cms_file_put_contents_safe($fast_cache_path . '.gz', gzencode($out_evaluated, 9), FILE_WRITE_FIX_PERMISSIONS);
     }
 }
 
@@ -2052,7 +2063,8 @@ function log_stats($string, $pg_time)
     $page = $string;
     $ip = get_ip_address();
     $session_id = get_session_id();
-    $member_id = get_member();
+    global $IS_ACTUALLY;
+    $member_id = ($IS_ACTUALLY === null) ? get_member() : $IS_ACTUALLY;
     $time = time();
     $referer = cms_mb_substr(cms_srv('HTTP_REFERER'), 0, 255);
     $browser = cms_mb_substr(get_browser_string(), 0, 255);

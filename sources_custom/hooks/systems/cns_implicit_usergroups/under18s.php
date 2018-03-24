@@ -25,7 +25,7 @@ class Hook_implicit_usergroups_under18s
      */
     public function get_bound_group_ids()
     {
-        return array(10); // Probation on standard install; customise as required
+        return array(db_get_first_id() + 9); // Probation on standard install; customise as required
     }
 
     protected function _where()
@@ -61,9 +61,10 @@ class Hook_implicit_usergroups_under18s
      *
      * @param  MEMBER $member_id The member ID.
      * @param  GROUP $group_id The group ID to check (if only one group supported by the hook, can be ignored).
+     * @param  ?boolean $is_exclusive Return-by-reference if the member should *only* be in this usergroup (null: initially unset).
      * @return boolean Whether they are.
      */
-    public function is_member_within($member_id, $group_id)
+    public function is_member_within($member_id, $group_id, &$is_exclusive = null)
     {
         if ($member_id == get_member()) {
             // IDEA: Support timezones, decide age based on user's own timezone

@@ -66,8 +66,6 @@ class Hook_health_check_performance_server extends Hook_Health_Check
         } else {
             $this->state_check_skipped('PHP disk_free_space function not available');
         }
-
-        // TODO: In v11 remove page-load request, "Little disk space check" and it's independent notification
     }
 
     /**
@@ -365,7 +363,7 @@ class Hook_health_check_performance_server extends Hook_Health_Check
             } elseif (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
                 $data = shell_exec('wmic OS get FreePhysicalMemory /Value');
                 if (preg_match('#FreePhysicalMemory=(\d+)#m', $data, $matches) != 0) {
-                    $bytes_free = intval($matches[1]);
+                    $bytes_free = intval($matches[1]) * 1024;
                 }
             } else {
                 $this->state_check_skipped('No implementation for finding free RAM on this platform');

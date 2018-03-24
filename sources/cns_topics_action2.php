@@ -589,7 +589,7 @@ function send_pt_notification($post_id, $subject, $topic_id, $to_id, $from_id = 
         $post_comcode = get_translated_text($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_post', array('id' => $post_id)), $GLOBALS['FORUM_DB']);
     }
 
-    $emphasised = ($GLOBALS['SITE_DB']->query_select_value('f_posts', 'p_is_emphasised', array('id' => $post_id)) == 1);
+    $emphasised = ($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_is_emphasised', array('id' => $post_id)) == 1);
 
     require_code('notifications');
     $msubject = do_lang('NEW_PRIVATE_TOPIC_SUBJECT', $subject, null, null, get_lang($to_id));

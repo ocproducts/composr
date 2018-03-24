@@ -48,7 +48,7 @@ switch (get_param_string('type')) {
         break;
 
     case 'http_status_check':
-        http_download_file(get_param_string('url')/*TODO: Correct URL read syntax in v11*/, 0); // TODO: Fix in v11
+        http_download_file(get_param_string('url'), 0);
         $result = $GLOBALS['HTTP_MESSAGE'];
         break;
 

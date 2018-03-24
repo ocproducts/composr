@@ -39,7 +39,7 @@ class Hook_sw_cns_forum
         require_lang('cns_special_cpf');
 
         if (!is_cns_satellite_site()) {
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('f_groups', 'id', array('id' => db_get_first_id() + 7));
+            $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array('id' => db_get_first_id() + 7));
             $settings['have_default_rank_set'] = is_null($test) ? '0' : '1';
 
             $sql = 'SELECT * FROM ' . get_table_prefix() . 'f_emoticons WHERE 1=1';
@@ -47,13 +47,13 @@ class Hook_sw_cns_forum
             $sql .= ' AND ' . db_string_not_equal_to('e_code', ';)');
             $sql .= ' AND ' . db_string_not_equal_to('e_code', ':)');
             $sql .= ' AND ' . db_string_not_equal_to('e_code', ':\'(');
-            $test = $GLOBALS['SITE_DB']->query($sql);
+            $test = $GLOBALS['FORUM_DB']->query($sql);
             $settings['have_default_full_emoticon_set'] = (count($test) != 0) ? '1' : '0';
 
             $have_default_cpf_set = false;
             $fields_l = array('im_jabber', 'im_skype', 'interests', 'location', 'occupation', 'sn_google', 'sn_facebook', 'sn_twitter');
             foreach ($fields_l as $field) {
-                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
+                $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
                 if (!is_null($test)) {
                     $have_default_cpf_set = true;
                     break;
@@ -115,22 +115,22 @@ class Hook_sw_cns_forum
         require_lang('cns');
         if (!is_cns_satellite_site()) {
             if (post_param_integer('have_default_rank_set', 0) == 0) {
-                $group_rows = $GLOBALS['SITE_DB']->query_select('f_groups', array('id'), array('id' => db_get_first_id() + 8));
+                $group_rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id'), array('id' => db_get_first_id() + 8));
                 if (array_key_exists(0, $group_rows)) {
                     $promotion_target = cns_get_group_property(db_get_first_id() + 8, 'promotion_target');
                     if (!is_null($promotion_target)) {
-                        $GLOBALS['SITE_DB']->query_update('f_groups', array('g_promotion_target' => null, 'g_promotion_threshold' => null, 'g_rank_image' => ''), array('id' => db_get_first_id() + 8), '', 1);
+                        $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_promotion_target' => null, 'g_promotion_threshold' => null, 'g_rank_image' => ''), array('id' => db_get_first_id() + 8), '', 1);
                         for ($i = db_get_first_id() + 4; $i < db_get_first_id() + 8; $i++) {
                             require_code('cns_groups_action');
                             require_code('cns_groups_action2');
                             cns_delete_group($i);
                         }
                     }
-                    $GLOBALS['SITE_DB']->query_update('f_groups', lang_remap('g_name', $group_rows[0]['id'], do_lang('MEMBER')), array('id' => db_get_first_id() + 8), '', 1);
+                    $GLOBALS['FORUM_DB']->query_update('f_groups', lang_remap('g_name', $group_rows[0]['id'], do_lang('MEMBER')), array('id' => db_get_first_id() + 8), '', 1);
                 }
             }
             if (post_param_integer('have_default_full_emoticon_set', 0) == 0) {
-                $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'f_emoticons WHERE e_code<>\':P\' AND e_code<>\';)\' AND e_code<>\':)\' AND e_code<>\':)\' AND e_code<>\':\\\'(\'');
+                $GLOBALS['FORUM_DB']->query('DELETE FROM ' . get_table_prefix() . 'f_emoticons WHERE e_code<>\':P\' AND e_code<>\';)\' AND e_code<>\':)\' AND e_code<>\':)\' AND e_code<>\':\\\'(\'');
             }
             if (post_param_integer('have_default_cpf_set', 0) == 0) {
                 $fields = array('im_skype', 'interests', 'location', 'occupation');
@@ -147,7 +147,7 @@ class Hook_sw_cns_forum
     /**
      * Run function for blocks in the setup wizard.
      *
-     * @return array Map of block names, to display types.
+     * @return array A pair: Main blocks and Side blocks (each is a map of block names to display types).
      */
     public function get_blocks()
     {

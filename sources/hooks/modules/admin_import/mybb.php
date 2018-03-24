@@ -522,7 +522,7 @@ class Hook_mybb
             $perm_banned = false;
 
             if ($ban_period == '---') {
-                //permanantly banned
+                //permanently banned
                 $perm_banned = true;
             } else {
                 //calculate the ban period

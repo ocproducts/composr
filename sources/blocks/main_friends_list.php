@@ -107,6 +107,9 @@ class Block_main_friends_list
 
             if (($f_id == $row['member_likes']) || (!in_array($f_id, $blocked))) {
                 $friend_username = $GLOBALS['FORUM_DRIVER']->get_username($f_id);
+                if ($friend_username === null) {
+                    continue;
+                }
 
                 if (($friends_search != '') && ($msn) && (strpos($friend_username, $friends_search) === false)) {
                     continue;

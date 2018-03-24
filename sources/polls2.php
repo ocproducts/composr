@@ -160,7 +160,7 @@ function add_poll($question, $a1, $a2, $a3 = '', $a4 = '', $a5 = '', $a6 = '', $
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:polls:view:' . strval($id), $time, $edit_date, SITEMAP_IMPORTANCE_LOW, 'yearly', true);
+    notify_sitemap_node_add('_SEARCH:polls:view:' . strval($id), $time, $edit_date, SITEMAP_IMPORTANCE_LOW, 'yearly', true);
 
     return $id;
 }

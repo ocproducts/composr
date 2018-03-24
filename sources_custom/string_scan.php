@@ -3055,6 +3055,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFLICTING_PAGE_NAME
         CONFLICTING_ZONE_NAME
         CONFLICTING_ZONE_NAME__PAGE
+        CONFLICTING_PAGE_NAME_MODULE
+        CONFLICTING_PAGE_NAME_REDIRECT
         CONNECT_DB_ERROR
         CONNECT_ERROR
         CONTACT_US_MESSAGING
@@ -5274,6 +5276,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MODULES
         MODULE_MANAGEMENT
         MODULE_TRANS_NAME_admin
+        MODULE_TRANS_NAME_admin_shopping
         MODULE_TRANS_NAME_admin_actionlog
         MODULE_TRANS_NAME_admin_addons
         MODULE_TRANS_NAME_admin_awards
@@ -5358,7 +5361,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MOVE_UP
         MSG_JS_NEEDED
         MSN_FORUM_DB_NOT_CNS_ALREADY
-        MULTILANG_OFF
+        MULTILANG_OFF_OPTION
+        MULTILANG_OFF_PRACTICAL
         MULTILANG_OFF_CONTENT
         MULTI_LANG_CONTENT
         MULTI_LANG_CONTENT_TEXT
@@ -6971,8 +6975,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         WRITE_ERROR_MISSING_DIRECTORY
         WRONG_RESET_SESSION
         WROTE_CONFIGURATION
-        XHTML_ANCESTER_BLOCK_INLINE
-        XHTML_ANCESTER_INLINE_NORMAL
+        XHTML_ANCESTOR_BLOCK_INLINE
+        XHTML_ANCESTOR_INLINE_NORMAL
         XHTML_A_NAME
         XHTML_A_SPACES
         XHTML_BAD_ATTRIBUTE_VALUE
@@ -7001,7 +7005,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         XHTML_IE_ONCHANGE
         XHTML_KEYWORDS
         XHTML_LOCAL_BROKEN_URL
-        XHTML_MISSING_ANCESTER
+        XHTML_MISSING_ANCESTOR
         XHTML_MISSING_ATTRIBUTE
         XHTML_MISSING_TAG
         XHTML_NAME_ID_DEPRECATED
@@ -8890,6 +8894,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PAID_SUBSCRIPTION_STARTED
         PARTICIPANTS
         PASSED
+        LINKS_STRIPPED
         PASSWORD
         PASSWORD_ALREADY_RESET
         PASSWORD_CHANGED_MAIL_BODY

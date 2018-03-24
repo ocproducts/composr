@@ -123,7 +123,7 @@ This product includes:
   - Sound effects from Asterisk (Copyright Allison Smith, Creative Commons Attribution License)
   - Sound effects (Copyright 2008 bns <banasio@o2.pl>, Creative Commons Attribution License)
  - Backend code used under licence:
-  - Diff (LGPL licence, ocProducts modifications also therefore are also licenced under the LGPL)
+  - Diff (LGPL licence, ocProducts modifications also therefore are also licensed under the LGPL)
   - FirePHP (BSD-like licence)
   - SabreDAV (BSD-like licence)
   - m-zip (Francesco M. Munafo', liberal custom licence)

@@ -24,34 +24,70 @@
  * @param  ID_TEXT $codename The language string ID
  * @param  ?LANGUAGE_NAME $lang The language to use (null: users language)
  */
-function inline_language_editing($codename, $lang)
+function inline_language_editing(&$codename, $lang)
 {
     global $LANGS_REQUESTED, $LANGUAGE_STRINGS_CACHE;
 
-    // Find loaded file with smallest levenstein distance to current page
-    $best = mixed();
-    $best_for = null;
-    foreach (array_keys($LANGS_REQUESTED) as $possible) {
-        $dist = levenshtein(get_page_name(), $possible);
-        if ((is_null($best)) || ($best > $dist)) {
-            $best = $dist;
-            $best_for = $possible;
+    $pos = strpos($codename, ':');
+    if ($pos !== false) {
+        $lang_file = substr($codename, 0, $pos);
+        $codename = substr($codename, $pos + 1);
+    } else {
+        // Find loaded file with smallest levenshtein distance to current page
+        $best = null;
+        $best_for = 'global';
+        foreach (array_keys($LANGS_REQUESTED) as $possible) {
+            $dist = levenshtein(get_page_name(), $possible);
+            if (($best === null) || ($best > $dist)) {
+                $best = $dist;
+                $best_for = $possible;
+            }
         }
+
+        $lang_file = $best_for;
     }
-    $save_path = get_file_base() . '/lang/' . fallback_lang() . '/' . $best_for . '.ini';
+
+    // Where to save to
+    $save_path = get_file_base() . '/lang/' . fallback_lang() . '/' . $lang_file . '.ini';
     if (!is_file($save_path)) {
-        $save_path = get_file_base() . '/lang_custom/' . fallback_lang() . '/' . $best_for . '.ini';
+        $save_path = get_file_base() . '/lang_custom/' . fallback_lang() . '/' . $lang_file . '.ini';
     }
+    if (!is_file($save_path)) {
+        $save_path = get_custom_file_base() . '/lang_custom/' . fallback_lang() . '/' . $lang_file . '.ini';
+    }
+
     // Tack language strings onto this file
     list($codename, $value) = explode('=', $codename, 2);
-    $myfile = fopen($save_path, 'at');
-    flock($myfile, LOCK_EX);
-    fseek($myfile, 0, SEEK_END);
-    fwrite($myfile, "\n" . $codename . '=' . $value);
+    if (!is_file($save_path)) {
+        $myfile = fopen($save_path, 'ab');
+        flock($myfile, LOCK_EX);
+        fwrite($myfile, "[strings]\n");
+
+        $has_terminating_line = true;
+        $write_needed = true;
+    } else {
+        $c = cms_file_get_contents_safe($save_path);
+        $has_terminating_line = (substr($c, -1) == "\n");
+        $write_needed = (strpos($c, "\n" . $codename . '=' . $value . "\n") === false);
+
+        $myfile = fopen($save_path, 'ab');
+        flock($myfile, LOCK_EX);
+    }
+    if ($write_needed) {
+        fseek($myfile, 0, SEEK_END);
+        if (!$has_terminating_line) {
+            fwrite($myfile, "\n");
+        }
+        fwrite($myfile, $codename . '=' . $value . "\n");
+    }
     flock($myfile, LOCK_UN);
     fclose($myfile);
+    sync_file($save_path);
+    fix_permissions($save_path);
+
     // Fake-load the string
     $LANGUAGE_STRINGS_CACHE[$lang][$codename] = $value;
+
     // Go through all required files, doing a string replace if needed
     $included_files = get_included_files();
     foreach ($included_files as $inc) {
@@ -146,7 +182,7 @@ function find_lang_content_names($ids)
     $ret = array();
 
     foreach ($langidfields as $field) {
-        $db = $GLOBALS[((substr($field['m_table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB')];
+        $db = $GLOBALS[(((substr($field['m_table'], 0, 2) == 'f_') && ($field['m_table'] != 'f_welcome_emails') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB')];
         if (is_null($db)) {
             continue; // None forum driver
         }
