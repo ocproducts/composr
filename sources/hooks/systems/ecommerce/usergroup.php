@@ -83,7 +83,7 @@ class Hook_ecommerce_usergroup
                 'type' => ($sub['s_auto_recur'] == 1) ? PRODUCT_SUBSCRIPTION : PRODUCT_PURCHASE, // Technically a non-recurring usergroup subscription is NOT a subscription (i.e. conflicting semantics here...)
                 'type_special_details' => array('length' => $sub['s_length'], 'length_units' => $sub['s_length_units']),
 
-                'price' => floatval($sub['s_price']),
+                'price' => $sub['s_price'],
                 'currency' => get_option('currency'),
                 'price_points' => null,
                 'discount_points__num_points' => null,

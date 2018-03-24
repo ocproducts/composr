@@ -62,7 +62,7 @@ class Module_purchase
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 7;
+        $info['version'] = 8;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -279,7 +279,6 @@ class Module_purchase
                 $GLOBALS['SITE_DB']->alter_table_field('ecom_prods_permissions', 'p_cost', '?INTEGER', 'p_price_points');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_permissions', 'p_price', '?REAL', null);
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_permissions', 'p_tax_code', 'ID_TEXT', '0%');
-                $GLOBALS['SITE_DB']->query_update('ecom_prods_permissions', array('p_hours' => null), array('p_hours' => 40000));
 
                 $GLOBALS['SITE_DB']->rename_table('sales', 'ecom_sales');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'txn_id', 'ID_TEXT', '');
@@ -337,6 +336,12 @@ class Module_purchase
                     $GLOBALS['SITE_DB']->query_update('ecom_sales', array('txn_id' => $txn_id), array('id' => $sale['id']), '', 1);
                 }
                 $GLOBALS['SITE_DB']->delete_table_field('ecom_sales', 'purchasetype');
+            }
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 8) { // LEGACY
+            if ($GLOBALS['SITE_DB']->table_exists('ecom_prods_prices')) {
+                $GLOBALS['SITE_DB']->query_update('ecom_prods_permissions', array('p_hours' => null), array('p_hours' => 40000));
             }
         }
 
