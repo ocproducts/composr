@@ -125,7 +125,12 @@ class tasks_test_set extends cms_test_case
         $_last_rows_after = $last_rows_after;
         $this->cleanEventRowsForComparison($last_rows_after);
 
-        $this->assertTrue($last_rows_before == $last_rows_after);
+        $ok = ($last_rows_before == $last_rows_after);
+        $this->assertTrue($ok);
+        if ((!$ok) && (get_param_integer('debug', 0) == 1)) {
+            @var_dump($last_rows_before);
+            @var_dump($last_rows_after);
+        }
 
         foreach ($_last_rows_after as $row) {
             delete_calendar_event($row['id']);
@@ -141,6 +146,8 @@ class tasks_test_set extends cms_test_case
             unset($row['e_add_date']);
             $row['e_title'] = get_translated_text($row['e_title']);
             $row['e_content'] = get_translated_text($row['e_content']);
+            unset($row['e_title__text_parsed']);
+            unset($row['e_content__text_parsed']);
         }
     }
 

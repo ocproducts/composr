@@ -311,7 +311,7 @@ function generate_captcha()
     $GLOBALS['SITE_DB']->query_insert('captchas', array('si_session_id' => $session, 'si_time' => time(), 'si_code' => $si_code), false, true);
 
     require_code('files');
-    cms_file_put_contents_safe(get_custom_file_base() . '/uploads/auto_thumbs/' . $session . '.wav', captcha_audio($si_code)); // TODO: Change auto_thumbs to something else in v11
+    cms_file_put_contents_safe(get_custom_file_base() . '/uploads/auto_thumbs/' . $session . '.wav', captcha_audio($si_code));
 
     require_javascript('ajax');
 }

@@ -3,17 +3,6 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-.menu_editor_page::-webkit-scrollbar {
-	width: 0.5em;
-}
-.menu_editor_page::-webkit-scrollbar-track {
-	box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-}
-.menu_editor_page::-webkit-scrollbar-thumb {
-	background-color: darkgrey;
-	outline: 1px solid slategrey;
-}
-
 .menu_editor_lh_side .field_name_column {
 	width: 11em;
 }

@@ -20,8 +20,8 @@ class special_links_test_set extends cms_test_case
 {
     public function testISBN()
     {
-        $this->assertTrue(strpos(http_download_file('https://isbndb.com/search/books/0241968984', null, false), 'No Place to Hide') !== false, 'External link not working, fix test and use within Composr (separate)');
-        $this->assertTrue(strpos(http_download_file('https://isbndb.com/search/books/978-0241968987', null, false), 'No Place to Hide') !== false, 'External link not working, fix test and use within Composr (separate)');
+        $this->assertTrue(strpos(http_download_file('https://www.bookfinder.com/search/?isbn=0241968984&mode=isbn&st=sr&ac=qr', null, false), 'No Place to Hide') !== false, 'External link not working, fix test and use within Composr (separate)');
+        $this->assertTrue(strpos(http_download_file('https://www.bookfinder.com/search/?isbn=978-0241968987&mode=isbn&st=sr&ac=qr', null, false), 'No Place to Hide') !== false, 'External link not working, fix test and use within Composr (separate)');
     }
 
     public function testChicklets()

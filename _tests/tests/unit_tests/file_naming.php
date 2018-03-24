@@ -71,6 +71,10 @@ class file_naming_test_set extends cms_test_case
 
         $files = get_directory_contents(get_file_base());
         foreach ($files as $file) {
+            if (preg_match('#^themes/_unnamed_/#', $file) != 0) {
+                continue;
+            }
+
             if (should_ignore_file($file, IGNORE_USER_CUSTOMISE | IGNORE_UPLOADS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_REVISION_FILES | IGNORE_EDITFROM_FILES)) {
                 continue;
             }

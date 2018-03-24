@@ -266,6 +266,8 @@ class css_file_test_set extends cms_test_case
         }
 
         $exceptions = array(
+            'img_thumb_opaque',
+            'non_docked',
             'active_item',
             'thick_border',
             'access_restricted_in_list',

@@ -3167,6 +3167,16 @@ class _lang_spelling_test_set extends cms_test_case
             'yahooapis',
             'yql',
             'yt',
+            'autoplay',
+            'bookfinder',
+            'deprecations',
+            'disconsider',
+            'disincentivise',
+            'disincentivises',
+            'ipnpb',
+            'pagelet',
+            'portlet',
+            'targetable',
         );
 
         $pspell_link = pspell_new('en');
