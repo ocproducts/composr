@@ -134,12 +134,12 @@ foreach ($addons as $name => $place) {
         $mtimes
     );
 
-    $done_addon = true;
-
     clearstatcache();
     $new_time = @filemtime(get_custom_file_base() . '/exports/addons/' . $file);
 
     if ($old_time !== $new_time) {
+        $done_addon = true;
+
         if ($old_time === false) {
             echo '<p>New addon with description:</p><div class="whitespace-visible">' . escape_html(generate_addon_description($addon_info)) . '</div>';
 
