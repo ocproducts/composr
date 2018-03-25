@@ -77,3 +77,31 @@
 
 .screen-actions .google-plusone {
 }
+
+.screen-actions .linkedin {
+	background-image: url('{$IMG_INLINE;,icons/links/linkedin}');
+}
+
+.screen-actions .pinterest {
+	background-image: url('{$IMG_INLINE;,icons/links/pinterest}');
+}
+
+.screen-actions .tumblr {
+	background-image: url('{$IMG_INLINE;,icons/links/tumblr}');
+}
+
+.screen-actions .vk {
+	background-image: url('{$IMG_INLINE;,icons/links/vk}');
+}
+
+.screen-actions .sina-weibo {
+	background-image: url('{$IMG_INLINE;,icons/links/sina_weibo}');
+}
+
+.screen-actions .tencent-weibo {
+	background-image: url('{$IMG_INLINE;,icons/links/tencent_weibo}');
+}
+
+.screen-actions .qzone {
+	background-image: url('{$IMG_INLINE;,icons/links/qzone}');
+}

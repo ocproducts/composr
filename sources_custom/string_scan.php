@@ -7868,6 +7868,13 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADD_TO_FACEBOOK
         ADD_TO_STUMBLEUPON
         ADD_TO_TWITTER
+        ADD_TO_LINKEDIN
+        ADD_TO_PINTEREST
+        ADD_TO_TUMBLR
+        ADD_TO_VK
+        ADD_TO_SINA_WEIBO
+        ADD_TO_TENCENT_WEIBO
+        ADD_TO_QZONE
         ADD_WIKI_PAGE_BODY
         ADD_WIKI_PAGE_SUBJECT
         ADD_WIKI_POST_BODY

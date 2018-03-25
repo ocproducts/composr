@@ -49,6 +49,34 @@
         $dom.on(container, 'click', '.js-click-action-add-to-digg', function (e, link) {
             $cms.gaTrack(null,'social__digg');
         });
+
+        $dom.on(container, 'click', '.js-click-action-add-to-linkedin', function (e, link) {
+            $cms.gaTrack(null,'social__linkedin');
+        });
+
+        $dom.on(container, 'click', '.js-click-action-add-to-pinterest', function (e, link) {
+            $cms.gaTrack(null,'social__pinterest');
+        });
+
+        $dom.on(container, 'click', '.js-click-action-add-to-tumblr', function (e, link) {
+            $cms.gaTrack(null,'social__tumblr');
+        });
+
+        $dom.on(container, 'click', '.js-click-action-add-to-vk', function (e, link) {
+            $cms.gaTrack(null,'social__vk');
+        });
+
+        $dom.on(container, 'click', '.js-click-action-add-to-sina-weibo', function (e, link) {
+            $cms.gaTrack(null,'social__sina_weibo');
+        });
+
+        $dom.on(container, 'click', '.js-click-action-add-to-tencent-weibo', function (e, link) {
+            $cms.gaTrack(null,'social__tencent_weibo');
+        });
+
+        $dom.on(container, 'click', '.js-click-action-add-to-qzone', function (e, link) {
+            $cms.gaTrack(null,'social__qzone');
+        });
     };
 
     $cms.functions.abstractFileManagerGetAfmForm = function abstractFileManagerGetAfmForm() {

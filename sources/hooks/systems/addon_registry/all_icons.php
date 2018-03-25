@@ -436,7 +436,6 @@ class Hook_addon_registry_all_icons
             'themes/default/images/icons/links/telegram.svg',
             'themes/default/images/icons/links/tumblr.svg',
             'themes/default/images/icons/links/contact_member.svg',
-            'themes/default/images/icons/links/digg.svg',
             'themes/default/images/icons/links/discord.svg',
             'themes/default/images/icons/links/download_as_archive.svg',
             'themes/default/images/icons/links/dropbox.svg',

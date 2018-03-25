@@ -170,12 +170,23 @@ class _broken_links_test_set extends cms_test_case
         if (empty($url)) {
             return;
         }
+
         if (preg_match('#^http://www\.stumbleupon\.com/submit\?url=#', $url) != 0) {
             return;
         }
-        if (preg_match('#^http://digg\.com/submit\?phase=2&url=#', $url) != 0) {
+        if (preg_match('#^https://www\.linkedin\.com/shareArticle\?url=', $url) != 0) {
             return;
         }
+        if (preg_match('#^http://tumblr\.com/widgets/share/tool\?canonicalUrl=', $url) != 0) {
+            return;
+        }
+        if (preg_match('#^https://vk\.com/share\.php\?url=', $url) != 0) {
+            return;
+        }
+        if (preg_match('#^http://v\.t\.qq\.com/share/share\.php\?url=', $url) != 0) {
+            return;
+        }
+
         if (preg_match('#^http://december\.com/html/4/element/#', $url) != 0) {
             return;
         }
