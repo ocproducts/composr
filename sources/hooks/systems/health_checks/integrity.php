@@ -86,6 +86,7 @@ class Hook_health_check_integrity extends Hook_Health_Check
         }
 
         if (strpos(get_db_type(), 'mysql') === false) {
+            $this->stateCheckSkipped('Can only check when running MySQL');
             return;
         }
 

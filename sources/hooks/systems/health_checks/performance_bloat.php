@@ -37,7 +37,8 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
      */
     public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        $this->process_checks_section('testTableSize', 'Table size', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testTableSize', 'Table size (row count)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testDatabaseSize', 'Database size', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testDirectorySize', 'Directory size', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testLogSize', 'Log size', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
@@ -84,6 +85,37 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
                 $cnt = $GLOBALS['SITE_DB']->query_select_value($table, 'COUNT(*)');
                 $this->assertTrue($cnt < $max_threshold, 'Volatile-defined table [tt]' . $table . '[/tt] is very large @ ' . integer_format($cnt) . ' records');
             }
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testDatabaseSize($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        if (strpos(get_db_type(), 'mysql') === false) {
+            $this->stateCheckSkipped('Can only check when running MySQL');
+            return;
+        }
+
+        $query = 'SELECT sum(data_length)+sum(index_length) AS db_size FROM information_schema.TABLES WHERE ' . db_string_equal_to('table_schema', get_db_site()) . ' AND table_name LIKE \'' . db_encode_like(get_table_prefix() . '%') . '\'';
+        $db_size = $GLOBALS['SITE_DB']->query_value_if_there($query, true);
+        if ($db_size === null) {
+            $this->stateCheckSkipped('Failed to check database size, possible lack of permissions');
+        } else {
+            $db_size = @intval($db_size);
+            require_code('files');
+            $max_threshold = intval(get_option('hc_database_threshold'));
+            $this->assertTrue($db_size < $max_threshold * 1024 * 1024, 'Database is very large @ ' . clean_file_size($db_size));
         }
     }
 

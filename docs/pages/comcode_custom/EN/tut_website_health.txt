@@ -34,9 +34,10 @@ The Health Check can be run manually, or regularly run in the background (requir
 
 At the time of writing the list of check sections is:
  - Backups \ Backups
+ - Bloated data \ Database size
  - Bloated data \ Directory size
  - Bloated data \ Log size
- - Bloated data \ Table size
+ - Bloated data \ Table size (row count)
  - Build mistakes \ Broken links
  - Build mistakes \ Broken web POST forms
  - Build mistakes \ Default icons
