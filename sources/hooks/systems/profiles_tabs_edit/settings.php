@@ -290,7 +290,7 @@ class Hook_profiles_tabs_edit_settings
 
         $script = find_script('username_check');
         $javascript = "
-            var form=document.getElementById('email_address').form;
+            var form=document.getElementById('main_form');
             form.prior_profile_edit_submit=form.onsubmit;
             form.onsubmit=function() {
                 if (typeof form.elements['edit_password']!='undefined')
