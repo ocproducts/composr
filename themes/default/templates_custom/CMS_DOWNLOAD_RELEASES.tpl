@@ -46,7 +46,7 @@
 			It {$?,{$IN_STR,{BLEEDINGQUICK_VERSION},alpha},<strong>will not be stable</strong> like,<strong>may not be as stable</strong> as} our main version{+START,IF_PASSED,QUICK_VERSION} (v{QUICK_VERSION*}){+END}.</p>
 
 			<!-- LEGACY -->
-			{+START,IF,{$EQ,{BLEEDINGQUICK_VERSION},10.1 beta7}}
+			{+START,IF,{$EQ,{BLEEDINGQUICK_VERSION},10.1 beta8,10.1 beta9,10.1 beta10,10.1 beta11,10.1 beta12,10.1 beta13,10.1 beta14}}
 				<p>Warning: We decided to discontinue the v10.1 branch before it was release-ready, the functionality here will now be delivered in a longer-term branch, v11. Use v10.1 only for early testing of selected new functionality.</p>
 			{+END}
 
