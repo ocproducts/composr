@@ -339,7 +339,7 @@ class Hook_import_vb3
 
                 $custom_fields = array();
                 if ($row['homepage'] != '') {
-                    $custom_fields[cns_make_boiler_custom_field('website')] = (strlen($row['homepage']) > 0) ? ('[url]' . $row['homepage'] . '[/url]') : '';
+                    $custom_fields[cns_make_predefined_content_field('website')] = (strlen($row['homepage']) > 0) ? ('[url]' . $row['homepage'] . '[/url]') : '';
                 }
 
                 $signature = $row['signature'];

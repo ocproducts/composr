@@ -265,7 +265,7 @@ function handle_facebook_connection_login($current_logged_in_member)
             }
             $member_id = cns_member_external_linker($username, $facebook_uid, 'facebook', false, $email_address, $dob_day, $dob_month, $dob_year, $timezone, $language, $avatar_url, $photo_url, $photo_thumb_url);
 
-            // Custom profile fields should be filled, as possible
+            // Custom Profile Fields should be filled, as possible
             $changes = array();
             require_lang('cns_special_cpf');
             $mappings = array(

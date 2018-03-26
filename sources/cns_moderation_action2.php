@@ -19,15 +19,15 @@
  */
 
 /**
- * Edit a multi moderation.
+ * Edit a Multi Moderation.
  *
- * @param  AUTO_LINK $id The ID of the multi moderation we are editing
- * @param  SHORT_TEXT $name The name of the multi moderation
+ * @param  AUTO_LINK $id The ID of the Multi Moderation we are editing
+ * @param  SHORT_TEXT $name The name of the Multi Moderation
  * @param  LONG_TEXT $post_text The default post text to add when applying (may be blank)
  * @param  ?AUTO_LINK $move_to The forum to move the topic when applying (null: do not move)
  * @param  ?BINARY $pin_state The pin state after applying (null: unchanged)
  * @param  ?BINARY $open_state The open state after applying (null: unchanged)
- * @param  SHORT_TEXT $forum_multi_code The forum multi code for where this multi moderation may be applied
+ * @param  SHORT_TEXT $forum_multi_code The forum multi code for where this Multi Moderation may be applied
  * @param  SHORT_TEXT $title_suffix The title suffix
  */
 function cns_edit_multi_moderation($id, $name, $post_text, $move_to, $pin_state, $open_state, $forum_multi_code, $title_suffix)
@@ -58,9 +58,9 @@ function cns_edit_multi_moderation($id, $name, $post_text, $move_to, $pin_state,
 }
 
 /**
- * Delete a multi moderation.
+ * Delete a Multi Moderation.
  *
- * @param  AUTO_LINK $id The ID of the multi moderation we are deleting
+ * @param  AUTO_LINK $id The ID of the Multi Moderation we are deleting
  */
 function cns_delete_multi_moderation($id)
 {
@@ -85,11 +85,11 @@ function cns_delete_multi_moderation($id)
 }
 
 /**
- * Perform a multi moderation.
+ * Perform a Multi Moderation.
  *
- * @param  AUTO_LINK $id The ID of the multi moderation we are performing
- * @param  AUTO_LINK $topic_id The ID of the topic we are performing the multi moderation on
- * @param  LONG_TEXT $reason The reason for performing the multi moderation (may be blank)
+ * @param  AUTO_LINK $id The ID of the Multi Moderation we are performing
+ * @param  AUTO_LINK $topic_id The ID of the topic we are performing the Multi Moderation on
+ * @param  LONG_TEXT $reason The reason for performing the Multi Moderation (may be blank)
  * @param  LONG_TEXT $post_text The post text for a post to be added to the topic (blank: do not add a post)
  * @param  BINARY $is_emphasised Whether the post is marked emphasised
  * @param  BINARY $skip_sig Whether to skip showing the posters signature in the post

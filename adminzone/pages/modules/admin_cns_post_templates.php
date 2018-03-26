@@ -363,10 +363,10 @@ class Module_admin_cns_post_templates extends Standard_crud_module
     }
 
     /**
-     * Get Tempcode for a post template adding/editing form.
+     * Get Tempcode for a Post Template adding/editing form.
      *
-     * @param  SHORT_TEXT $title The title (name) of the post template
-     * @param  LONG_TEXT $text The actual post template text
+     * @param  SHORT_TEXT $title The title (name) of the Post Template
+     * @param  LONG_TEXT $text The actual Post Template text
      * @param  SHORT_TEXT $forum_multi_code Multi-code identifying forums it is applicable to
      * @param  BINARY $use_default_forums Whether to use as the default post for applicable forums
      * @return array A pair: The input fields, Hidden fields

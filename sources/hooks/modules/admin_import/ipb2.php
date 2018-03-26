@@ -643,18 +643,18 @@ class Hook_import_ipb2
                 if (array_key_exists(0, $rows2)) {
                     $row2 = $rows2[0];
 
-                    $custom_fields[cns_make_boiler_custom_field('about')] = @html_entity_decode($row2['bio'], ENT_QUOTES);
+                    $custom_fields[cns_make_predefined_content_field('about')] = @html_entity_decode($row2['bio'], ENT_QUOTES);
                     $notes = $row2['notes'];
 
                     cns_over_msn();
                     $signature = html_to_comcode($this->clean_ipb_post_2($row2['signature']));
                     cns_over_local();
                     $custom_fields = array(
-                        cns_make_boiler_custom_field('interests') => $row2['interests'],
-                        cns_make_boiler_custom_field('location') => $row2['location'],
+                        cns_make_predefined_content_field('interests') => $row2['interests'],
+                        cns_make_predefined_content_field('location') => $row2['location'],
                     );
                     if ($row2['website'] != '') {
-                        $custom_fields[cns_make_boiler_custom_field('website')] = (strlen($row2['website']) > 0) ? ('[url]' . $row2['website'] . '[/url]') : '';
+                        $custom_fields[cns_make_predefined_content_field('website')] = (strlen($row2['website']) > 0) ? ('[url]' . $row2['website'] . '[/url]') : '';
                     }
                 }
                 $validated = 1;

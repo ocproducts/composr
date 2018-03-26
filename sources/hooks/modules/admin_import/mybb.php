@@ -353,7 +353,7 @@ class Hook_import_mybb
 
                 $custom_fields = array();
                 if ($row['website'] != '') {
-                    $custom_fields[cns_make_boiler_custom_field('website')] = (strlen($row['website']) > 0) ? ('[url]' . $row['website'] . '[/url]') : '';
+                    $custom_fields[cns_make_predefined_content_field('website')] = (strlen($row['website']) > 0) ? ('[url]' . $row['website'] . '[/url]') : '';
                 }
 
                 $signature = $this->fix_links($row['signature'], $db, $table_prefix);

@@ -14,11 +14,11 @@ Lets imagine we are going to create a Composr forum for dog lovers, typical info
 [*] Dogs Gender
 [/list]
 
-Everything we do will be in Admin Zone > Tools > Members > Custom profile fields.
+Everything we do will be in Admin Zone > Tools > Members > Custom Profile Fields.
 
-[media thumb="0" description="Add a custom profile field"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/f4de0ce6ba1cefe7152660f0846786ce.png[/media]
+[media thumb="0" description="Add a Custom Profile Field"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/f4de0ce6ba1cefe7152660f0846786ce.png[/media]
 
-We will edit an existing Custom profile field (Location) and create new ones for the dogs name, breed, age and gender. Existing CPFs can be edited or deleted and new fields added easily.
+We will edit an existing Custom Profile Field (Location) and create new ones for the dogs name, breed, age and gender. Existing CPFs can be edited or deleted and new fields added easily.
 
 [title="2"]Location[/title]
 
@@ -37,7 +37,7 @@ Scroll to the bottom of the page and click to save.
 
 In this instance, we need to Add a Custom Profile Field.
 
-[media thumb="0" description="Add custom profile field icon"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/3873b15b479052840b7b95c8dd187805.png[/media]
+[media thumb="0" description="Add Custom Profile Field icon"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/3873b15b479052840b7b95c8dd187805.png[/media]
 
 Give your new CPF a name -- &ldquo;Dogs Name&rdquo; -- and a description &ldquo;What is the name of your dog?&rdquo;
 
@@ -59,7 +59,7 @@ The information we want to collect here is of a slightly different type. We know
 
 Click to Add a Custom Profile Field and give it a Name -- &ldquo;Dog Breed &rdquo; -- and a Description -- &ldquo;What breed is your dog?&rdquo;
 
-[media thumb="0" description="Add a new custom profile field"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/c53189e6acdd9def154333a00c24df64.png[/media]
+[media thumb="0" description="Add a new Custom Profile Field"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/c53189e6acdd9def154333a00c24df64.png[/media]
 
 From the &ldquo;Type&rdquo; dropdown list there are lots of options but we want to select &ldquo;A value chosen from a list&rdquo;.
 
@@ -69,7 +69,7 @@ From the &ldquo;Type&rdquo; dropdown list there are lots of options but we want 
 
 The &ldquo;Default value&rdquo; field is where we create our list of choices. Each choice is separated by a pipe ([tt]|[/tt]) character which is usually found on the backslash key on your keyboard simple hit shift and the pipe/backslash keys together.
 
-[media thumb="0" description="Create a list of choices for your custom profile field"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/45ca431ff2b26a84c2d2b8a1c07626f5.png[/media]
+[media thumb="0" description="Create a list of choices for your Custom Profile Field"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/45ca431ff2b26a84c2d2b8a1c07626f5.png[/media]
 
 Make sure you check the &ldquo;Required field&rdquo; and &ldquo;Show on join form&rdquo; checkboxes.
 
@@ -93,13 +93,13 @@ For &ldquo;Type&rdquo; select &ldquo;A Value chosen from a list&rdquo;.
 
 Make sure you check the &ldquo;Required field&rdquo; and &ldquo;Show on join form&rdquo; checkboxes.
 
-[media thumb="0" description="Default values to your custom profile field"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/2f095dc08d39e9f1353ee849834f1c34.png[/media]
+[media thumb="0" description="Default values to your Custom Profile Field"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/2f095dc08d39e9f1353ee849834f1c34.png[/media]
 
 Scroll to the bottom of the page and click Add Custom Profile Field.
 
 [title="2"]Gender[/title]
 
-Finally we can create our Custom profile field for the gender of the dog.
+Finally we can create our Custom Profile Field for the gender of the dog.
 
 Click &ldquo;Add a Custom Profile Field&rdquo;
 
@@ -111,7 +111,7 @@ In the &ldquo;Default value&rdquo; type our two options [tt]Male|Female[/tt]. Do
 
 Make sure you check the &ldquo;Required field&rdquo; and &ldquo;Show on join form&rdquo; checkboxes.
 
-[media thumb="0" description="Use radio buttons on your custom profile fields"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/3de49f568191c94aade219f1e412b844.png[/media]
+[media thumb="0" description="Use radio buttons on your Custom Profile Fields"]data_custom/images/docs/sup_composr_custom_profile_fields_cpf/3de49f568191c94aade219f1e412b844.png[/media]
 
 Scroll to the bottom of the page and click Add Custom Profile Field.
 

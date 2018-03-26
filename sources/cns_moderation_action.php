@@ -19,16 +19,16 @@
  */
 
 /**
- * Add a multi moderation to the system.
+ * Add a Multi Moderation to the system.
  *
- * @param  SHORT_TEXT $name The name of the multi moderation
+ * @param  SHORT_TEXT $name The name of the Multi Moderation
  * @param  LONG_TEXT $post_text The post text to add when applying (blank: don't add a post)
  * @param  ?AUTO_LINK $move_to The forum to move the topic when applying (null: do not move)
  * @param  ?BINARY $pin_state The pin state after applying (null: unchanged)
  * @param  ?BINARY $open_state The open state after applying (null: unchanged)
- * @param  SHORT_TEXT $forum_multi_code The forum multi code for where this multi moderation may be applied
+ * @param  SHORT_TEXT $forum_multi_code The forum multi code for where this Multi Moderation may be applied
  * @param  SHORT_TEXT $title_suffix The title suffix
- * @return AUTO_LINK The ID of the multi moderation just added
+ * @return AUTO_LINK The ID of the Multi Moderation just added
  */
 function cns_make_multi_moderation($name, $post_text, $move_to, $pin_state, $open_state, $forum_multi_code = '*', $title_suffix = '')
 {

@@ -8304,26 +8304,116 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEFAULT_CPF_about_DESCRIPTION
         DEFAULT_CPF_gender_DESCRIPTION
         DEFAULT_CPF_gender_NAME
-        DEFAULT_CPF_im_jabber_DESCRIPTION
-        DEFAULT_CPF_im_jabber_NAME
-        DEFAULT_CPF_im_skype_DESCRIPTION
-        DEFAULT_CPF_im_skype_NAME
         DEFAULT_CPF_interests_DESCRIPTION
         DEFAULT_CPF_interests_NAME
         DEFAULT_CPF_location_DESCRIPTION
         DEFAULT_CPF_location_NAME
         DEFAULT_CPF_occupation_DESCRIPTION
         DEFAULT_CPF_occupation_NAME
+        DEFAULT_CPF_staff_notes_DESCRIPTION
+        DEFAULT_CPF_staff_notes_NAME
+        DEFAULT_CPF_website_DESCRIPTION
+        DEFAULT_CPF_website_NAME
+        DEFAULT_CPF_im_jabber_DESCRIPTION
+        DEFAULT_CPF_im_jabber_NAME
+        DEFAULT_CPF_im_skype_DESCRIPTION
+        DEFAULT_CPF_im_skype_NAME
         DEFAULT_CPF_sn_facebook_DESCRIPTION
         DEFAULT_CPF_sn_facebook_NAME
         DEFAULT_CPF_sn_google_DESCRIPTION
         DEFAULT_CPF_sn_google_NAME
         DEFAULT_CPF_sn_twitter_DESCRIPTION
         DEFAULT_CPF_sn_twitter_NAME
-        DEFAULT_CPF_staff_notes_DESCRIPTION
-        DEFAULT_CPF_staff_notes_NAME
-        DEFAULT_CPF_website_DESCRIPTION
-        DEFAULT_CPF_website_NAME
+        DEFAULT_CPF_amazon_NAME
+        DEFAULT_CPF_amazon_DESCRIPTION
+        DEFAULT_CPF_bandcamp_NAME
+        DEFAULT_CPF_bandcamp_DESCRIPTION
+        DEFAULT_CPF_dailymotion_NAME
+        DEFAULT_CPF_dailymotion_DESCRIPTION
+        DEFAULT_CPF_im_discord_NAME
+        DEFAULT_CPF_im_discord_DESCRIPTION
+        DEFAULT_CPF_dropbox_NAME
+        DEFAULT_CPF_dropbox_DESCRIPTION
+        DEFAULT_CPF_flattr_NAME
+        DEFAULT_CPF_flattr_DESCRIPTION
+        DEFAULT_CPF_github_NAME
+        DEFAULT_CPF_github_DESCRIPTION
+        DEFAULT_CPF_hacker_news_NAME
+        DEFAULT_CPF_hacker_news_DESCRIPTION
+        DEFAULT_CPF_sn_instagram_NAME
+        DEFAULT_CPF_sn_instagram_DESCRIPTION
+        DEFAULT_CPF_sn_linkedin_NAME
+        DEFAULT_CPF_sn_linkedin_DESCRIPTION
+        DEFAULT_CPF_sn_minds_NAME
+        DEFAULT_CPF_sn_minds_DESCRIPTION
+        DEFAULT_CPF_patreon_NAME
+        DEFAULT_CPF_patreon_DESCRIPTION
+        DEFAULT_CPF_paypal_NAME
+        DEFAULT_CPF_paypal_DESCRIPTION
+        DEFAULT_CPF_sn_pinterest_NAME
+        DEFAULT_CPF_sn_pinterest_DESCRIPTION
+        DEFAULT_CPF_quora_NAME
+        DEFAULT_CPF_quora_DESCRIPTION
+        DEFAULT_CPF_sn_reddit_NAME
+        DEFAULT_CPF_sn_reddit_DESCRIPTION
+        DEFAULT_CPF_slashdot_NAME
+        DEFAULT_CPF_slashdot_DESCRIPTION
+        DEFAULT_CPF_sn_snapchat_NAME
+        DEFAULT_CPF_sn_snapchat_DESCRIPTION
+        DEFAULT_CPF_soundcloud_NAME
+        DEFAULT_CPF_soundcloud_DESCRIPTION
+        DEFAULT_CPF_spotify_NAME
+        DEFAULT_CPF_spotify_DESCRIPTION
+        DEFAULT_CPF_stack_exchange_NAME
+        DEFAULT_CPF_stack_exchange_DESCRIPTION
+        DEFAULT_CPF_stack_overflow_NAME
+        DEFAULT_CPF_stack_overflow_DESCRIPTION
+        DEFAULT_CPF_sn_stumbleupon_NAME
+        DEFAULT_CPF_sn_stumbleupon_DESCRIPTION
+        DEFAULT_CPF_im_telegram_NAME
+        DEFAULT_CPF_im_telegram_DESCRIPTION
+        DEFAULT_CPF_sn_tumblr_NAME
+        DEFAULT_CPF_sn_tumblr_DESCRIPTION
+        DEFAULT_CPF_sn_twitch_NAME
+        DEFAULT_CPF_sn_twitch_DESCRIPTION
+        DEFAULT_CPF_vimeo_NAME
+        DEFAULT_CPF_vimeo_DESCRIPTION
+        DEFAULT_CPF_im_whatsapp_NAME
+        DEFAULT_CPF_im_whatsapp_DESCRIPTION
+        DEFAULT_CPF_youtube_NAME
+        DEFAULT_CPF_youtube_DESCRIPTION
+        DEFAULT_CPF_sn_vk_NAME
+        DEFAULT_CPF_sn_vk_DESCRIPTION
+        DEFAULT_CPF_sn_baidu_tieba_NAME
+        DEFAULT_CPF_sn_baidu_tieba_DESCRIPTION
+        DEFAULT_CPF_sn_sina_weibo_NAME
+        DEFAULT_CPF_sn_sina_weibo_DESCRIPTION
+        DEFAULT_CPF_sn_tencent_weibo_NAME
+        DEFAULT_CPF_sn_tencent_weibo_DESCRIPTION
+        DEFAULT_CPF_im_line_NAME
+        DEFAULT_CPF_im_line_DESCRIPTION
+        DEFAULT_CPF_im_viber_NAME
+        DEFAULT_CPF_im_viber_DESCRIPTION
+        DEFAULT_CPF_im_wechat_NAME
+        DEFAULT_CPF_im_wechat_DESCRIPTION
+        DEFAULT_CPF_sn_qzone_NAME
+        DEFAULT_CPF_sn_qzone_DESCRIPTION
+        DEFAULT_CPF_playstation_network_NAME
+        DEFAULT_CPF_playstation_network_DESCRIPTION
+        DEFAULT_CPF_xbox_live_NAME
+        DEFAULT_CPF_xbox_live_DESCRIPTION
+        DEFAULT_CPF_steam_NAME
+        DEFAULT_CPF_steam_DESCRIPTION
+        DEFAULT_CPF_sn_steemit_NAME
+        DEFAULT_CPF_sn_steemit_DESCRIPTION
+        DEFAULT_CPF_dtube_NAME
+        DEFAULT_CPF_dtube_DESCRIPTION
+        DEFAULT_CPF_sn_mastodon_NAME
+        DEFAULT_CPF_sn_mastodon_DESCRIPTION
+        DEFAULT_CPF_sn_diaspora_NAME
+        DEFAULT_CPF_sn_diaspora_DESCRIPTION
+        DEFAULT_CPF_bitcoin_NAME
+        DEFAULT_CPF_bitcoin_DESCRIPTION
         DEFAULT_FORUM_TITLE
         DEFAULT_GROUPING_TITLE
         DEFAULT_RANK_0
@@ -9028,7 +9118,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MESSAGE_POSTED
         MESSAGE_POSTING_ERROR
         MESSAGE_SENT
-        MESSAGE_THEM
+        PREDEFINED_CONTENT
+        PREDEFINED_CONTENT_DESCRIPTION
+        PREDEFINED_FIELDS
+        PREDEFINED_FIELDS_DESCRIPTION
         MINIMUM_SELECTIONS
         MINUTE
         MINUTES
@@ -9421,7 +9514,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PGE_S
         PGE_T
         PGE_V
-        PHONE_THEM_UP
         PHOTO
         PHOTO_CHANGE
         PHP_CODE

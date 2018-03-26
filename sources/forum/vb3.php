@@ -79,7 +79,7 @@ class Forum_driver_vb3 extends Forum_driver_base
     }
 
     /**
-     * Add the specified custom field to the forum (some forums implemented this using proper custom profile fields, others through adding a new field).
+     * Add the specified custom field to the forum (some forums implemented this using proper Custom Profile Fields, others through adding a new field).
      *
      * @param  string $name The name of the new custom field
      * @param  integer $length The length of the new custom field
@@ -826,7 +826,7 @@ class Forum_driver_vb3 extends Forum_driver_base
     }
 
     /**
-     * Set a custom profile field's value, if the custom field exists. Only works on specially-named (titled) fields.
+     * Set a Custom Profile Field's value, if the custom field exists. Only works on specially-named (titled) fields.
      *
      * @param  MEMBER $member The member ID
      * @param  string $field The field name (e.g. "firstname" for the CPF with a title of "cms_firstname")
@@ -850,10 +850,10 @@ class Forum_driver_vb3 extends Forum_driver_base
     }
 
     /**
-     * Get custom profile fields values for all 'cms_' prefixed keys.
+     * Get Custom Profile Fields values for all 'cms_' prefixed keys.
      *
      * @param  MEMBER $member The member ID
-     * @return ?array A map of the custom profile fields, key_suffix=>value (null: no fields)
+     * @return ?array A map of the Custom Profile Fields, key_suffix=>value (null: no fields)
      */
     public function get_custom_fields($member)
     {

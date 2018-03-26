@@ -23,7 +23,7 @@ If you are a commercial entity, or if you hold sensitive personal data, you are 
 There is a default [tt]privacy[/tt] page (to hold a [concept]privacy policy[/concept]), which should be edited to correctly detail all the personal data that is collected into your systems, either by request, or by automated means. The page should say every use for this data, especially when the data is available to people outside your organisation, or used actively within your organisation in a non-administrative sense (for marketing, for instance).
 
 Composr (out of the box) can hold the following personal data:
- - Member profiles, including custom profile fields. Profiles are likely visible to any visitor to the site (depending on your zone access configuration), and you can define whether custom profile fields are visible.
+ - Member profiles, including Custom Profile Fields. Profiles are likely visible to any visitor to the site (depending on your zone access configuration), and you can define whether Custom Profile Fields are visible.
  - The 'online status' of all members. This is publicly visible.
  - Access statistics that allow you to see where-ever users have been on your site. This is not publicly visible.
  - Logs of user interactivity with the site. This is mostly not publicly visible, except for submitted and edited content.
@@ -110,7 +110,7 @@ There is a US law, [concept]COPPA[/concept] (Children's Online Privacy Protectio
 Australia has a similar law that you can use the same system for, COPA. If you are targeting COPA, adjust the [tt]COPPA_MAIL[/tt] language string to reflect this.
 
 If COPPA support is configured in [concept]Conversr[/concept], then when visitors try to join they will be added as non-validated if they are too young, with a notice to send in a COPPA form to you via mail or fax.
-In addition to Composr's COPPA support, you should also add your real-world contact details to your privacy policy, along with thorough details about what custom profile fields may be filled in, how the information is used, how it is disclosed (if at all), and specification of various parent rights (which are listed on the COPPA website).
+In addition to Composr's COPPA support, you should also add your real-world contact details to your privacy policy, along with thorough details about what Custom Profile Fields may be filled in, how the information is used, how it is disclosed (if at all), and specification of various parent rights (which are listed on the COPPA website).
 
 In order to enable COPPA you need to turn on "COPPA enabled", and configure your fax number and postal address.
 

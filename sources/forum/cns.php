@@ -146,7 +146,7 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Add the specified custom field to the forum (some forums implemented this using proper custom profile fields, others through adding a new field).
+     * Add the specified custom field to the forum (some forums implemented this using proper Custom Profile Fields, others through adding a new field).
      *
      * @param  string $name The name of the new custom field
      */
@@ -160,7 +160,7 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Add the specified custom field to the forum (some forums implemented this using proper custom profile fields, others through adding a new field).
+     * Add the specified custom field to the forum (some forums implemented this using proper Custom Profile Fields, others through adding a new field).
      *
      * @param  string $name The name of the new custom field
      * @param  integer $length The length of the new custom field (ignored for Conversr, $type used instead)
@@ -173,12 +173,15 @@ class Forum_driver_cns extends Forum_driver_base
      * @param  BINARY $encrypted Whether the field is encrypted
      * @param  ?string $default Default field value (null: standard for field type)
      * @param  SHORT_TEXT $options Field options
+     * @param  ID_TEXT $icon Whether it is required that every member have this field filled in
+     * @param  ID_TEXT $section Whether it is required that every member have this field filled in
+     * @param  LONG_TEXT $tempcode Whether it is required that every member have this field filled in
      * @return boolean Whether the custom field was created successfully
      */
-    public function install_create_custom_field($name, $length, $locked = 1, $viewable = 0, $settable = 0, $required = 0, $description = '', $type = 'long_text', $encrypted = 0, $default = null, $options = '')
+    public function install_create_custom_field($name, $length, $locked = 1, $viewable = 0, $settable = 0, $required = 0, $description = '', $type = 'long_text', $encrypted = 0, $default = null, $options = '', $icon = '', $section = '', $tempcode = '')
     {
         require_code('cns_forum_driver_helper_install');
-        return _helper_install_create_custom_field($this, $name, $length, $locked, $viewable, $settable, $required, $description, $type, $encrypted, $default, $options);
+        return _helper_install_create_custom_field($this, $name, $length, $locked, $viewable, $settable, $required, $description, $type, $encrypted, $default, $options, $icon, $section, $tempcode);
     }
 
     /**
@@ -410,7 +413,7 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Set a custom profile field's value, if the custom field exists. Only works on specially-named (titled) fields.
+     * Set a Custom Profile Field's value, if the custom field exists. Only works on specially-named (titled) fields.
      *
      * @param  MEMBER $member The member ID
      * @param  string $field The field name (e.g. "firstname" for the CPF with a title of "cms_firstname") (e.g. "firstname" for the CPF with a title of "cms_firstname")
@@ -437,10 +440,10 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Get custom profile fields values for all 'cms_' prefixed keys.
+     * Get Custom Profile Fields values for all 'cms_' prefixed keys.
      *
      * @param  MEMBER $member The member ID
-     * @return ?array A map of the custom profile fields, key_suffix=>value (null: no fields)
+     * @return ?array A map of the Custom Profile Fields, key_suffix=>value (null: no fields)
      */
     public function get_custom_fields($member)
     {
@@ -1738,7 +1741,7 @@ class Forum_driver_cns extends Forum_driver_base
             return $this->MEMBER_ROWS_CACHED[$member];
         }
 
-        $rows = $this->db->query_select('f_members', array('*'), array('id' => $member), '', 1);
+        $rows = $this->db->query_select('f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields c ON c.mf_member_id=m.id', array('*'), array('id' => $member), '', 1);
         if (!array_key_exists(0, $rows)) {
             $this->MEMBER_ROWS_CACHED[$member] = null;
             return null;

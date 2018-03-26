@@ -19,9 +19,9 @@
  */
 
 /**
- * Edit a post template.
+ * Edit a Post Template.
  *
- * @param  AUTO_LINK $id The ID of the post template to edit
+ * @param  AUTO_LINK $id The ID of the Post Template to edit
  * @param  SHORT_TEXT $title The title for the template
  * @param  LONG_TEXT $text The text of the template
  * @param  SHORT_TEXT $forum_multi_code The multi code specifying which forums this is applicable in
@@ -45,9 +45,9 @@ function cns_edit_post_template($id, $title, $text, $forum_multi_code, $use_defa
 }
 
 /**
- * Delete a post template.
+ * Delete a Post Template.
  *
- * @param  AUTO_LINK $id The ID of the post template to delete
+ * @param  AUTO_LINK $id The ID of the Post Template to delete
  */
 function cns_delete_post_template($id)
 {

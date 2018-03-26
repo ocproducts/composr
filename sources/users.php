@@ -561,7 +561,7 @@ function cms_admirecookie($name, $default = null)
 }
 
 /**
- * Get the value of a special 'cms_' custom profile field. For Conversr it can also do it for a pure field title, e.g. "Example Field".
+ * Get the value of a special 'cms_' Custom Profile Field. For Conversr it can also do it for a pure field title, e.g. "Example Field".
  *
  * @param  ID_TEXT $cpf The CPF name stem
  * @param  ?MEMBER $member_id Member to lookup for (null: current member)

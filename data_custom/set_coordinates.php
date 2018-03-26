@@ -75,7 +75,7 @@ function set_coordinates()
 
     $longitude_cpf_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => 'cms_longitude'));
 
-    // Are there latitude and longtitude custom profile fields ?
+    // Are there latitude and longtitude Custom Profile Fields ?
     if (($longitude_cpf_id === null) || ($latitude_cpf_id === null)) {
         return;
     }

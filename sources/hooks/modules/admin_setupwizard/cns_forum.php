@@ -48,7 +48,7 @@ class Hook_sw_cns_forum
             $settings['have_default_full_emoticon_set'] = (count($test) != 0) ? '1' : '0';
 
             $have_default_cpf_set = false;
-            $fields_l = array('im_jabber', 'im_skype', 'interests', 'location', 'occupation', 'sn_google', 'sn_facebook', 'sn_twitter');
+            $fields_l = array('interests', 'location', 'occupation');
             foreach ($fields_l as $field) {
                 $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
                 if ($test !== null) {
@@ -125,10 +125,10 @@ class Hook_sw_cns_forum
                 $GLOBALS['FORUM_DB']->query('DELETE FROM ' . get_table_prefix() . 'f_emoticons WHERE e_code<>\':P\' AND e_code<>\';)\' AND e_code<>\':)\' AND e_code<>\':)\' AND e_code<>\':\\\'(\'');
             }
             if (post_param_integer('have_default_cpf_set', 0) == 0) {
-                $fields = array('im_skype', 'interests', 'location', 'occupation');
+                $fields = array('interests', 'location', 'occupation');
                 foreach ($fields as $field) {
                     require_code('cns_members_action2');
-                    cns_delete_boiler_custom_field($field);
+                    cns_delete_predefined_content_field($field);
                 }
             }
         }

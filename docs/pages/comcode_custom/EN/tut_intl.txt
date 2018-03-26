@@ -541,7 +541,7 @@ to:
 	{+END}
 	{+START,IF_NON_EMPTY,{RANK_IMAGES}}<div class="cns-topic-poster-rank-images">{RANK_IMAGES}</div>{+END}
 [/code]
-This assumes we have created a custom profile field titled "Gender" with the options of "Mâle" and "Femelle". If filled in, it will remap their usergroup's title to either "Un mâle" or "Une femelle" accordingly. If not set, it will just use the regular usergroup title.
+This assumes we have created a Custom Profile Field titled "Gender" with the options of "Mâle" and "Femelle". If filled in, it will remap their usergroup's title to either "Un mâle" or "Une femelle" accordingly. If not set, it will just use the regular usergroup title.
 Of course this system is hard-coding gender-specific labels into a template, so it is not perfect. However, sites could use more elaborate Tempcode if they need to preserve the feature of having different labels for different usergroups. We'll give such an example in the next section.
 
 Alternatively, you could just remove [tt]{+START,IF_NON_EMPTY,{POSTER_TITLE}}<div class="cns-topic-poster-title">{POSTER_TITLE*}</div>{+END}[/tt] entirely if you don't require the feature at all.

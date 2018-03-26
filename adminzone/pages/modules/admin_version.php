@@ -859,7 +859,7 @@ class Module_admin_version
 
             add_privilege('SUBMISSION', 'edit_meta_fields');
             add_privilege('SUBMISSION', 'perform_webstandards_check_by_default');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('smart_topic_notification', 20, 1, 0, 1, 1, '', 'tick', 0, '0');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('smart_topic_notification', 20, 1, 0, 1, 1, '', 'tick', 0, '0', '', 'icons/tool_buttons/notifications');
 
             $GLOBALS['SITE_DB']->create_table('email_bounces', array(
                 'id' => '*AUTO',

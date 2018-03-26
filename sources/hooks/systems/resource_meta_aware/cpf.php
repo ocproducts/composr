@@ -39,7 +39,7 @@ class Hook_resource_meta_aware_cpf
             'support_custom_fields' => false,
 
             'content_type_label' => 'cns:CUSTOM_PROFILE_FIELD',
-            'content_type_universal_label' => 'Custom profile field',
+            'content_type_universal_label' => 'Custom Profile Field',
 
             'db' => get_db_for('f_custom_fields'),
             'table' => 'f_custom_fields',

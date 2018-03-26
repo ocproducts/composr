@@ -19,10 +19,10 @@
  */
 
 /**
- * Get a list of post templates that apply to a certain forum.
+ * Get a list of Post Templates that apply to a certain forum.
  *
  * @param  AUTO_LINK $forum_id The ID of the forum
- * @return array The list of applicable post templates
+ * @return array The list of applicable Post Templates
  */
 function cns_get_post_templates($forum_id)
 {

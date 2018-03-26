@@ -145,7 +145,7 @@ You can also use square brackets to specify the ticket type to log as. Composr "
 
 [title="2"]Discussion Forums[/title]
 
-The Discussion Forum (our own Conversr, at least) is designed to be an extremely efficient multi-purpose working environment: forums are at their heart an interactive communication medium. There are also a number of special features, such as post templates, and multi moderations, that make the forums particularly appropriate for use to provide support.
+The Discussion Forum (our own Conversr, at least) is designed to be an extremely efficient multi-purpose working environment: forums are at their heart an interactive communication medium. There are also a number of special features, such as Post Templates, and Multi Moderations, that make the forums particularly appropriate for use to provide support.
 
 [title="3"]Approach to support functions[/title]
 
@@ -195,23 +195,23 @@ The Discussion Forum (our own Conversr, at least) is designed to be an extremely
 </table>
 [/html]
 
-[title="3"]Post templates[/title]
+[title="3"]Post Templates[/title]
 
 [surround]
-[media width="150" description="The screen to select post templates for use in a post" float="right"]data_custom/images/docs/tut_support_desk/forum_helpdesk_using_post_template.png[/media]
-[media width="150" description="Adding a post template" float="right"]data_custom/images/docs/tut_support_desk/forum_helpdesk_add_post_template.png[/media]
+[media width="150" description="The screen to select Post Templates for use in a post" float="right"]data_custom/images/docs/tut_support_desk/forum_helpdesk_using_post_template.png[/media]
+[media width="150" description="Adding a Post Template" float="right"]data_custom/images/docs/tut_support_desk/forum_helpdesk_add_post_template.png[/media]
 {!cns_post_templates:DOC_POST_TEMPLATES}
 
-[title="4"]Adding a post template[/title]
+[title="4"]Adding a Post Template[/title]
 
-To add a post template, just open up the 'Add post template' screen in the Admin Zone (Go to Admin Zone > Structure > Forums > Post Templates), and fill in the forms.
-You can delete a post template from the bottom of its edit form.
+To add a Post Template, just open up the 'Add Post Template' screen in the Admin Zone (Go to Admin Zone > Structure > Forums > Post Templates), and fill in the forms.
+You can delete a Post Template from the bottom of its edit form.
 
-Composr provides useful features such as limiting the use of a post template to certain forums, making the post template the default post in the specified forums, and limiting use of the template to members of a certain minimum status.
+Composr provides useful features such as limiting the use of a Post Template to certain forums, making the Post Template the default post in the specified forums, and limiting use of the template to members of a certain minimum status.
 
-[title="4"]Using a post template[/title]
+[title="4"]Using a Post Template[/title]
 
-To use a post template, simply submit a new topic or post using the verbose posting form (i.e. not the quick-reply box). On this form, if any post templates are defined for the current forum, a post template drop-down list will appear. Using this list, you can select a post template to use. If a post template has been marked as the default post for the current forum, the post field will already contain that post template.
+To use a Post Template, simply submit a new topic or post using the verbose posting form (i.e. not the quick-reply box). On this form, if any Post Templates are defined for the current forum, a Post Template drop-down list will appear. Using this list, you can select a Post Template to use. If a Post Template has been marked as the default post for the current forum, the post field will already contain that Post Template.
 [/surround]
 
 [title="2"]The Feedback system[/title]
@@ -281,7 +281,7 @@ Support tickets can work as a basic private issue management system, using Post 
 [concepts
  1_key="Support desk"     1_value="A virtual support desk is the virtual equivalent to a companies real-world help-desk/support-department/reception/call centre."
  2_key="Support ticket"   2_value="A ticket is an issue placed the support ticket system created for private discussion between the placer and the staff"
- 3_key="Post template"    3_value="A predefined body of text that can be used as a template for new posts"
+ 3_key="Post Template"    3_value="A predefined body of text that can be used as a template for new posts"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

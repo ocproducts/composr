@@ -323,8 +323,8 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
     /**
      * Get Tempcode for adding/editing form.
      *
-     * @param  SHORT_TEXT $name The name of the multi moderation
-     * @param  LONG_TEXT $post_text The text to place as a post in the topic when the multi moderation is performed
+     * @param  SHORT_TEXT $name The name of the Multi Moderation
+     * @param  LONG_TEXT $post_text The text to place as a post in the topic when the Multi Moderation is performed
      * @param  ?AUTO_LINK $move_to Move the topic to this forum (null: don't move)
      * @param  ?BINARY $pin_state What to change the pin state to (null: don't change)
      * @param  ?BINARY $open_state What to change the open state to (null: don't change)

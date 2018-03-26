@@ -206,11 +206,14 @@ class Hook_profiles_tabs_about
 
             if ((get_option('show_empty_cpfs') == '1') || (((!is_object($value)) && ($value != '')) || ((is_object($value)) && (!$value->is_empty())))) {
                 $custom_field = array(
-                    'RAW_VALUE' => $value,
-                    'VALUE' => $rendered_value,
+                    'NAME_FULL' => $name,
+                    'RAW' => $value,
+                    'RENDERED' => $rendered_value,
                     'ENCRYPTED_VALUE' => $encrypted_value,
+                    'ICON' => $_value['ICON'],
+                    'SECTION' => $_value['SECTION'],
                     'FIELD_ID' => $_value['FIELD_ID'],
-                    'FIELD_TYPE' => $_value['TYPE'],
+                    'FIELD_TYPE' => $_value['FIELD_TYPE'],
                     'EDITABILITY' => $_value['EDITABILITY'],
                     'EDIT_TYPE' => $_value['EDIT_TYPE'],
                 );

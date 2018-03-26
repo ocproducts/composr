@@ -50,7 +50,7 @@ class Forum_driver_base
     public $EMOTICON_CACHE = null;
 
     /**
-     * Add the specified custom field to the forum (some forums implemented this using proper custom profile fields, others through adding a new field).
+     * Add the specified custom field to the forum (some forums implemented this using proper Custom Profile Fields, others through adding a new field).
      *
      * @param  string $name The name of the new custom field
      */

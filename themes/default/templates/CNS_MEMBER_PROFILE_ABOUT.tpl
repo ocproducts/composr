@@ -20,16 +20,15 @@
 		<div class="cns-account-links">
 			{+START,IF,{VIEW_PROFILES}}
 				{+START,LOOP,CUSTOM_FIELDS}
-					{$SET,is_messenger_field,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_im_skype_NAME},{!cns_special_cpf:DEFAULT_CPF_im_jabber_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_twitter_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_facebook_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_google_NAME}}}
-					{+START,IF,{$GET,is_messenger_field}}
-						{+START,SET,messenger_fields}{+START,IF_NON_EMPTY,{RAW_VALUE}}
-							{$GET,messenger_fields}
-							{+START,IF,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_im_skype_NAME}}}<li><img alt="" width="24" height="24" src="{$IMG*,icons/links/skype}" /> <a title="{!PHONE_THEM_UP} {!LINK_NEW_WINDOW}" href="skype:{RAW_VALUE*}?call">{!PHONE_THEM_UP}</a> (Skype)</li>{+END}
-							{+START,IF,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_im_jabber_NAME}}}<li><img alt="" width="24" height="24" src="{$IMG*,icons/links/xmpp}" /> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="xmpp:{RAW_VALUE*}">{!MESSAGE_THEM}</a> (Jabber/XMPP)</li>{+END}
-							{+START,IF,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_sn_twitter_NAME}}}<li><img alt="" width="24" height="24" src="{$IMG*,icons/links/twitter}" /> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="http://twitter.com/{RAW_VALUE*}" rel="me">@{RAW_VALUE*}</a> (Twitter)</li>{+END}
-							{+START,IF,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_sn_facebook_NAME}}}<li><img alt="" width="24" height="24" src="{$IMG*,icons/links/facebook}" /> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="{RAW_VALUE*}" rel="me">Facebook</a></li>{+END}
-							{+START,IF,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_sn_google_NAME}}}<li><img alt="" width="24" height="24" src="{$IMG*,icons/links/google_plus}" /> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="{RAW_VALUE*}" rel="me">Google+</a></li>{+END}
-						{+END}{+END}
+					{+START,IF,{$EQ,{SECTION},contact}}
+						{+START,IF_NON_EMPTY,{RAW}}
+							{+START,SET,messenger_fields}
+								{$GET,messenger_fields}
+								<li>
+									{+START,INCLUDE,CNS_MEMBER_PROFILE_FIELD}{+END}
+								</li>
+							{+END}
+						{+END}
 					{+END}
 				{+END}
 			{+END}
@@ -121,34 +120,7 @@
 					<tbody>
 						{+START,IF,{VIEW_PROFILES}}
 							{+START,LOOP,CUSTOM_FIELDS}
-								{$SET,is_point_field,{$EQ,{NAME},{!SPECIAL_CPF__cms_points_used},{!SPECIAL_CPF__cms_gift_points_used},{!SPECIAL_CPF__cms_points_gained_chat},{!SPECIAL_CPF__cms_points_gained_given},{!SPECIAL_CPF__cms_points_gained_visiting},{!SPECIAL_CPF__cms_points_gained_rating},{!SPECIAL_CPF__cms_points_gained_voting},{!SPECIAL_CPF__cms_points_gained_wiki}}}
-								{$SET,is_messenger_field,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_im_skype_NAME},{!cns_special_cpf:DEFAULT_CPF_im_jabber_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_twitter_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_facebook_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_google_NAME}}}
-
-								{+START,IF,{$NOR,{$GET,is_point_field},{$GET,is_messenger_field}}}
-									<tr id="cpf-{NAME|*}" class="cpf-{$REPLACE,_,-,{FIELD_ID|*}}">
-										<th class="de-th">
-											{NAME*}:
-										</th>
-
-										<td>
-											<span>
-												{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
-													{+START,IF_PASSED,EDITABILITY}
-														{$SET,edit_type,{EDIT_TYPE}}
-														{+START,FRACTIONAL_EDITABLE,{RAW_VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{$SMART_LINK_STRIP,{VALUE},{MEMBER_ID}}{+END}
-													{+END}
-													{+START,IF_NON_PASSED,EDITABILITY}
-														{$SMART_LINK_STRIP,{VALUE},{MEMBER_ID}}
-													{+END}
-												{+END}
-												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
-													{!encryption:DATA_ENCRYPTED} <a href="#!" class="js-click-member-profile-about-decrypt-data" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>
-												{+END}
-												<!-- {$,Break out of non-terminated comments in CPF} -->
-											</span>
-										</td>
-									</tr>
-								{+END}
+								{+START,INCLUDE,CNS_MEMBER_PROFILE_FIELDS}{+END}
 							{+END}
 						{+END}
 
@@ -184,35 +156,7 @@
 
 							<tbody>
 								{+START,LOOP,CUSTOM_FIELDS_SECTION}
-									<tr id="cpf-{NAME|*}">
-										<th class="de-th">
-											{NAME*}:
-										</th>
-
-										<td>
-											<span>
-												{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
-													{+START,IF,{$EQ,{!ADDRESS}: {NAME},{!cns_special_cpf:SPECIAL_CPF__cms_country}}}
-														{$COUNTRY_CODE_TO_NAME,{RAW_VALUE}}
-													{+END}
-
-													{+START,IF,{$NEQ,{!ADDRESS}: {NAME},{!cns_special_cpf:SPECIAL_CPF__cms_country}}}
-														{+START,IF_PASSED,EDITABILITY}
-															{$SET,edit_type,{EDIT_TYPE}}
-															{+START,FRACTIONAL_EDITABLE,{RAW_VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{$SMART_LINK_STRIP,{VALUE},{MEMBER_ID}}{+END}
-														{+END}
-														{+START,IF_NON_PASSED,EDITABILITY}
-															{$SMART_LINK_STRIP,{VALUE},{MEMBER_ID}}
-														{+END}
-													{+END}
-												{+END}
-												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
-													{!encryption:DATA_ENCRYPTED} <a href="#!" class="js-click-member-profile-about-decrypt-data" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>
-												{+END}
-												<!-- {$,Break out of non-terminated comments in CPF} -->
-											</span>
-										</td>
-									</tr>
+									{+START,INCLUDE,CNS_MEMBER_PROFILE_FIELDS}{+END}
 								{+END}
 							</tbody>
 						</table>

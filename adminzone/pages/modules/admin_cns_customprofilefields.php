@@ -63,6 +63,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
 
         $ret += array(
             'stats' => array('CUSTOM_PROFILE_FIELD_STATS', 'menu/adminzone/tools/users/custom_profile_fields'),
+            'predefined_content' => array('PREDEFINED_FIELDS', 'admin/import'),
         );
 
         if (!$be_deferential && !$support_crosslinks) {
@@ -102,19 +103,33 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
 
         breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS'))));
 
+        $ret = parent::pre_run($top_level);
+
         if ($type == 'stats') {
             breadcrumb_set_parents(array());
         }
 
         if ($type == '_stats') {
-            breadcrumb_set_parents(array(array('_SEARCH:_SELF:stats', do_lang_tempcode('CUSTOM_PROFILE_FIELD_STATS'))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:stats', do_lang_tempcode('CUSTOM_PROFILE_FIELD_STATS'))));
+        }
+
+        if ($type == 'predefined_content') {
+        }
+
+        if ($type == '_predefined_content') {
+            breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS')), array('_SELF:_SELF:browse', do_lang_tempcode('CUSTOM_PROFILE_FIELDS')), array('_SELF:_SELF:predefined_content', do_lang_tempcode('PREDEFINED_FIELDS'))));
+            breadcrumb_set_self(do_lang_tempcode('DONE'));
         }
 
         if ($type == 'stats' || $type == '_stats') {
             $this->title = get_screen_title('CUSTOM_PROFILE_FIELD_STATS');
         }
 
-        return parent::pre_run($top_level);
+        if ($type == 'predefined_content' || $type == '_predefined_content') {
+            $this->title = get_screen_title('PREDEFINED_FIELDS');
+        }
+
+        return $ret;
     }
 
     /**
@@ -130,6 +145,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         require_code('cns_members_action');
         require_code('cns_members_action2');
         require_lang('fields');
+        require_lang('cns_special_cpf');
 
         $this->add_one_label = do_lang_tempcode('ADD_CUSTOM_PROFILE_FIELD');
         $this->edit_this_label = do_lang_tempcode('EDIT_THIS_CUSTOM_PROFILE_FIELD');
@@ -143,6 +159,12 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         }
         if ($type == '_stats') {
             return $this->_stats();
+        }
+        if ($type == 'predefined_content') {
+            return $this->predefined_content();
+        }
+        if ($type == '_predefined_content') {
+            return $this->_predefined_content();
         }
         return new Tempcode();
     }
@@ -161,6 +183,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             array(
                 array('admin/add', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_CUSTOM_PROFILE_FIELD')),
                 array('admin/edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_CUSTOM_PROFILE_FIELD')),
+                array('admin/install', array('_SELF', array('type' => 'predefined_content'), '_SELF'), do_lang('PREDEFINED_FIELDS')),
             ),
             do_lang('CUSTOM_PROFILE_FIELDS')
         );
@@ -169,7 +192,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     /**
      * Get Tempcode for adding/editing form.
      *
-     * @param  SHORT_TEXT $name The name of the custom profile field
+     * @param  SHORT_TEXT $name The name of the Custom Profile Field
      * @param  LONG_TEXT $description The description of the field
      * @param  LONG_TEXT $default The default value of the field
      * @param  BINARY $public_view Whether the field is publicly viewable
@@ -182,13 +205,16 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
      * @param  BINARY $show_on_join_form Whether the field is to be shown on the join form
      * @param  BINARY $show_in_posts Whether the field is shown in posts
      * @param  BINARY $show_in_post_previews Whether the field is shown in post previews
-     * @param  ?integer $order The order the field is given relative to the order of the other custom profile fields (null: last)
+     * @param  ?integer $order The order the field is given relative to the order of the other Custom Profile Fields (null: last)
      * @param  LONG_TEXT $only_group The usergroups that this field is confined to (comma-separated list)
      * @param  BINARY $locked Whether the field is locked
      * @param  SHORT_TEXT $options Field options
+     * @param  ID_TEXT $icon Whether it is required that every member have this field filled in
+     * @param  ID_TEXT $section Whether it is required that every member have this field filled in
+     * @param  LONG_TEXT $tempcode Whether it is required that every member have this field filled in
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($name = '', $description = '', $default = '', $public_view = 1, $owner_view = 1, $owner_set = 1, $encrypted = 0, $type = 'long_text', $required = 0, $show_on_join_form = 0, $show_in_posts = 0, $show_in_post_previews = 0, $order = null, $only_group = '', $locked = 0, $options = '')
+    public function get_form_fields($name = '', $description = '', $default = '', $public_view = 1, $owner_view = 1, $owner_set = 1, $encrypted = 0, $type = 'long_text', $required = 0, $show_on_join_form = 0, $show_in_posts = 0, $show_in_post_previews = 0, $order = null, $only_group = '', $locked = 0, $options = '', $icon = '', $section = '', $tempcode = '')
     {
         $fields = new Tempcode();
         $hidden = new Tempcode();
@@ -250,6 +276,18 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         } else {
             $hidden->attach(form_input_hidden('only_group', ''));
         }
+
+        require_code('themes2');
+        $ids = get_all_image_ids_type('icons');
+        $fields->attach(form_input_theme_image(do_lang_tempcode('IMAGE'), '', 'icon', $ids, null, $icon, null, true));
+
+        $sections = new Tempcode();
+        foreach (array('' => do_lang_tempcode('NA_EM'), 'contact' => do_lang_tempcode('menus:CONTACT')) as $_section => $section_label) {
+            $sections->attach(form_input_list_entry($_section, $section == $_section, $section_label));
+        }
+        $fields->attach(form_input_list(do_lang_tempcode('SECTION'), '', 'section', $sections));
+
+        $fields->attach(form_input_line(do_lang_tempcode('CODE'), '', 'tempcode', $tempcode, false, null, null, 'text', null, null, null, 130));
 
         return array($fields, $hidden);
     }
@@ -477,8 +515,13 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             $myrow = $rows[0];
         }
         $show_on_join_form = $myrow['cf_show_on_join_form'];
+        $locked = $myrow['cf_locked'];
+        $options = $myrow['cf_options'];
+        $icon = $myrow['cf_icon'];
+        $section = $myrow['cf_section'];
+        $tempcode = $myrow['cf_tempcode'];
 
-        return $this->get_form_fields($name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $type, $required, $show_on_join_form, $show_in_posts, $show_in_post_previews, $order, $only_group, $myrow['cf_locked'], $myrow['cf_options']);
+        return $this->get_form_fields($name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $type, $required, $show_on_join_form, $show_in_posts, $show_in_post_previews, $order, $only_group, $locked, $options, $icon, $section, $tempcode);
     }
 
     /**
@@ -506,6 +549,9 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             $only_group,
             post_param_integer('show_on_join_form', 0),
             post_param_string('options'),
+            post_param_string('icon'),
+            post_param_string('section'),
+            post_param_string('tempcode'),
             false
         );
         return strval($id);
@@ -535,7 +581,10 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             $only_group,
             post_param_string('type'),
             post_param_integer('show_on_join_form', 0),
-            post_param_string('options')
+            post_param_string('options'),
+            post_param_string('icon'),
+            post_param_string('section'),
+            post_param_string('tempcode')
         );
     }
 
@@ -550,7 +599,119 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     }
 
     /**
-     * Show value statistics for a custom profile field (choose).
+     * UI for install/uninstall of predefined content.
+     *
+     * @return Tempcode The UI
+     */
+    public function predefined_content()
+    {
+        $fields = _cns_predefined_custom_field_details();
+
+        require_lang('fields');
+
+        require_code('templates_columned_table');
+        $header_row = columned_table_header_row(array(
+            do_lang_tempcode('IMAGE'),
+            do_lang_tempcode('TITLE'),
+            do_lang_tempcode('SECTION'),
+            do_lang_tempcode('TYPE'),
+            do_lang_tempcode('CHOOSE'),
+        ));
+
+        $_existing_fields = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_name'));
+        $existing_fields = array();
+        foreach ($_existing_fields as $field) {
+            $existing_fields[get_translated_text($field['cf_name'])] = $field['id'];
+        }
+
+        foreach (array_keys($fields) as $field_code) {
+            $fields[$field_code]['title'] = do_lang('DEFAULT_CPF_' . $field_code . '_NAME');
+        }
+        sort_maps_by($fields, 'title', false, true);
+
+        $rows = new Tempcode();
+        foreach ($fields as $field_code => $details) {
+            if ($details['icon'] == '') {
+                $icon = '';
+            } else {
+                $icon = '<img width="24" height="24" alt="" src="' . escape_html(find_theme_image($details['icon'])) . '" />';
+            }
+
+            $title = escape_html($details['title']);
+
+            if ($details['section'] == '') {
+                $section = do_lang_tempcode('NA');
+            } else {
+                $section = do_lang_tempcode('menus:CONTACT');
+            }
+
+            $type = do_lang_tempcode('FIELD_TYPE_' . $details['type']);
+
+            $choose_action = do_template('COLUMNED_TABLE_ROW_CELL_TICK', array(
+                'LABEL' => do_lang_tempcode('CHOOSE'),
+                'NAME' => 'select__' . $field_code,
+                'VALUE' => '1',
+                'HIDDEN' => '',
+                'TICKED' => isset($existing_fields[$details['title']]),
+            ));
+
+            $rows->attach(columned_table_row(array(
+                $icon,
+                $title,
+                $section,
+                $type,
+                $choose_action,
+            ), false));
+        }
+
+        $table = do_template('COLUMNED_TABLE', array('HEADER_ROW' => $header_row, 'ROWS' => $rows));
+
+        return do_template('COLUMNED_TABLE_SCREEN', array(
+            'TITLE' => $this->title,
+            'TEXT' => do_lang_tempcode('PREDEFINED_FIELDS_DESCRIPTION'),
+            'TABLE' => $table,
+            'SUBMIT_ICON' => 'buttons--save',
+            'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
+            'POST_URL' => build_url(array('page' => '_SELF', 'type' => '_predefined_content'), '_SELF'),
+        ));
+    }
+
+    /**
+     * Actualise install/uninstall of predefined content.
+     *
+     * @return Tempcode The UI
+     */
+    public function _predefined_content()
+    {
+        $fields = _cns_predefined_custom_field_details();
+
+        $_existing_fields = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_name'));
+        $existing_fields = array();
+        foreach ($_existing_fields as $field) {
+            $existing_fields[get_translated_text($field['cf_name'])] = $field['id'];
+        }
+
+        foreach (array_keys($fields) as $field_code) {
+            $ticked = (post_param_integer('select__' . $field_code, 0) == 1);
+
+            $_title = do_lang('DEFAULT_CPF_' . $field_code . '_NAME');
+
+            if ($ticked) {
+                if (!isset($existing_fields[$_title])) {
+                    cns_make_predefined_content_field($field_code);
+                }
+            } else {
+                if (isset($existing_fields[$_title])) {
+                    cns_delete_custom_field($existing_fields[$_title]);
+                }
+            }
+        }
+
+        return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
+    }
+
+    /**
+     * Show value statistics for a Custom Profile Field (choose).
      *
      * @return Tempcode The UI
      */
@@ -605,7 +766,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     }
 
     /**
-     * Show value statistics for a custom profile field (show).
+     * Show value statistics for a Custom Profile Field (show).
      *
      * @return Tempcode The statistics
      */

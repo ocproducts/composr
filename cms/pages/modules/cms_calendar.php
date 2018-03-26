@@ -1260,7 +1260,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
     protected $is_chained_with_parent_browse = true;
 
     /**
-     * Get Tempcode for a post template adding/editing form.
+     * Get Tempcode for a Post Template adding/editing form.
      *
      * @param  ?AUTO_LINK $id ID of category (null: new category)
      * @param  SHORT_TEXT $title The title

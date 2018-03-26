@@ -730,7 +730,7 @@ class Module_tickets
             $set_ticket_extra_access_url = build_url(array('page' => '_SELF', 'type' => 'set_ticket_extra_access', 'id' => $ticket_id), '_SELF');
         }
 
-        // Post templates...
+        // Post Templates...
 
         $post_templates = new Tempcode();
         if (($has_staff_only) && (addon_installed('cns_post_templates')) && (get_forum_type() == 'cns')) {

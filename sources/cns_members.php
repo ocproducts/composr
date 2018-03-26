@@ -252,7 +252,6 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
 
     $editable_with_comcode = array('long_text' => 1, 'long_trans' => 1, 'short_trans' => 1);
     $editable_without_comcode = array('list' => 1, 'short_text' => 1, 'codename' => 1, 'url' => 1, 'integer' => 1, 'float' => 1, 'email' => 1);
-
     foreach ($fields_to_show as $i => $field_to_show) {
         $key = 'field_' . strval($field_to_show['id']);
         if (!array_key_exists($key, $member_mappings)) {
@@ -366,14 +365,27 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
                 $edit_type = 'textarea';
             }
 
-            $custom_fields[$field_to_show['trans_name']] = array(
+            $bindings = array(
+                'NAME_FULL' => $field_to_show['trans_name'],
+                'NAME' => preg_replace('#^.*: #', '', $field_to_show['trans_name']),
                 'RAW' => $member_value_raw, // Always a string or NULL
                 'RENDERED' => $rendered_value,
+                'ICON' => $field_to_show['cf_icon'],
+                'SECTION' => $field_to_show['cf_section'],
                 'FIELD_ID' => strval($field_to_show['id']),
+                'FIELD_TYPE' => $field_to_show['cf_type'],
                 'EDITABILITY' => $editability, // 1 for Comcode, 0 otherwise
-                'TYPE' => $field_to_show['cf_type'],
                 'EDIT_TYPE' => $edit_type,
             );
+
+            if ($field_to_show['cf_tempcode'] != '') {
+                require_code('tempcode_compiler');
+                $_rendered_value = template_to_tempcode($field_to_show['cf_tempcode']);
+                $rendered_value = $_rendered_value->bind($bindings, 'CPF');
+                $bindings['RENDERED'] = protect_from_escaping($rendered_value->evaluate());
+            }
+
+            $custom_fields[$field_to_show['trans_name']] = $bindings;
         }
     }
 
@@ -443,7 +455,7 @@ function cns_get_custom_field_mappings($member_id)
     if (!isset($MEMBER_CACHE_FIELD_MAPPINGS[$member_id])) {
         $row = array('mf_member_id' => $member_id);
 
-        $query = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields', array('*'), $row, '', 1);
+        $query = $GLOBALS['FORUM_DB']->query_select('f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields c ON c.mf_member_id=m.id', array('*'), $row, '', 1);
         if (!isset($query[0])) { // Repair
             $value = null;
             $row = array();

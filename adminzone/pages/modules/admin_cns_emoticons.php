@@ -254,7 +254,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
     }
 
     /**
-     * Get Tempcode for a post template adding/editing form.
+     * Get Tempcode for a Post Template adding/editing form.
      *
      * @param  SHORT_TEXT $code The emoticon code
      * @param  SHORT_TEXT $theme_img_code The theme image code

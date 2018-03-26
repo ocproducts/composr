@@ -288,7 +288,7 @@ function cns_member_external_linker($username, $password, $type, $email_check = 
 }
 
 /**
- * Read in the custom profile field POST data.
+ * Read in the Custom Profile Field POST data.
  *
  * @param  array $custom_fields The CPF field rows that we'll be reading in the member's values for
  * @param  ?MEMBER $member_id Member involved (null: new member)
@@ -919,7 +919,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
         }
     }
 
-    // Set custom profile field values
+    // Set Custom Profile Field values
     $all_fields_types = collapse_2d_complexity('id', 'cf_type', $all_fields);
     $changes = array();
     foreach ($custom_fields as $field_id => $value) {
@@ -1164,7 +1164,7 @@ function cns_delete_member($member_id)
 
     require_code('fields');
 
-    // Delete custom profile fields
+    // Delete Custom Profile Fields
     $cpfs = $GLOBALS['FORUM_DB']->query_select('f_custom_fields');
     $fields_row = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields', array('*'), array('mf_member_id' => $member_id), '', 1);
     if (array_key_exists(0, $fields_row)) {
@@ -1283,9 +1283,9 @@ function cns_unban_member($member_id)
 }
 
 /**
- * Edit a custom profile field.
+ * Edit a Custom Profile Field.
  *
- * @param  AUTO_LINK $id The ID of the custom profile field
+ * @param  AUTO_LINK $id The ID of the Custom Profile Field
  * @param  SHORT_TEXT $name Name of the field
  * @param  SHORT_TEXT $description Description of the field
  * @param  LONG_TEXT $default The default value for the field
@@ -1302,8 +1302,11 @@ function cns_unban_member($member_id)
  * @set    short_text long_text short_trans long_trans integer upload picture url list tick float
  * @param  BINARY $show_on_join_form Whether it is required that every member have this field filled in
  * @param  SHORT_TEXT $options Field options
+ * @param  ID_TEXT $icon Whether it is required that every member have this field filled in
+ * @param  ID_TEXT $section Whether it is required that every member have this field filled in
+ * @param  LONG_TEXT $tempcode Whether it is required that every member have this field filled in
  */
-function cns_edit_custom_field($id, $name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options)
+function cns_edit_custom_field($id, $name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options, $icon, $section, $tempcode)
 {
     if ($only_group == '-1') {
         $only_group = '';
@@ -1326,6 +1329,9 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
         'cf_type' => $type,
         'cf_show_on_join_form' => $show_on_join_form,
         'cf_options' => $options,
+        'cf_icon' => $icon,
+        'cf_section' => $section,
+        'cf_tempcode' => $tempcode,
     );
     $map += lang_remap('cf_name', $_name, $name, $GLOBALS['FORUM_DB']);
     $map += lang_remap('cf_description', $_description, $description, $GLOBALS['FORUM_DB']);
@@ -1365,9 +1371,9 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
 }
 
 /**
- * Delete a custom profile field.
+ * Delete a Custom Profile Field.
  *
- * @param  AUTO_LINK $id The ID of the custom profile field
+ * @param  AUTO_LINK $id The ID of the Custom Profile Field
  */
 function cns_delete_custom_field($id)
 {
@@ -1405,7 +1411,7 @@ function cns_delete_custom_field($id)
 }
 
 /**
- * Set a custom profile field for a member.
+ * Set a Custom Profile Field for a member.
  *
  * @param  MEMBER $member_id The member
  * @param  AUTO_LINK $field_id The field being set
@@ -1969,11 +1975,11 @@ function update_member_username_caching($member_id, $username)
 }
 
 /**
- * Delete a custom profile field from one of the predefined templates (this is often used by importers).
+ * Delete a Custom Profile Field from one of the predefined templates (this is often used by importers).
  *
- * @param  ID_TEXT $field The identifier of the boiler custom profile field
+ * @param  ID_TEXT $field The identifier of the predefined Custom Profile Field
  */
-function cns_delete_boiler_custom_field($field)
+function cns_delete_predefined_content_field($field)
 {
     require_lang('cns_special_cpf');
 

@@ -409,7 +409,7 @@ Most content types in Composr allow you to choose custom fields for them. This i
 [title="3"]Upload security[/title]
 
 Note that upload security (for file, picture, and video fields) is not perfect for custom fields. The security is checked when accessing a file field if it is a catalogue entry, but there is no mechanism to check the permissions of the content for which custom fields are attached.
-A similar caveat holds true for custom profile fields, which share the same field types.
+A similar caveat holds true for Custom Profile Fields, which share the same field types.
 
 [title="2"]Special kinds of catalogues[/title]
 

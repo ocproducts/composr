@@ -32,9 +32,9 @@ Conversr may be administered from an M.S.N. site, although some very minor restr
 
 If you are upgrading to a new major release then you will need to upgrade all the sites together, starting with the central site.
 
-[title="2"]Custom profile fields[/title]
+[title="2"]Custom Profile Fields[/title]
 
-As custom profile fields are saved to the central site, the central site will need to have any custom profile fields associated to modules that need to save data for them.
+As Custom Profile Fields are saved to the central site, the central site will need to have any Custom Profile Fields associated to modules that need to save data for them.
 
 For example, if a site uses points, it'll store them in special CPFs. If the central site has had the points addon removed, then the CPF will no longer exist and sites will not be able to save. Therefore it is best to not remove any addons (especially points) from the central site if you intend to use those addons on some of your other sites.
 
@@ -89,7 +89,7 @@ To share banners across your network, simply add all banners to the central site
 [media width="150" description="Managing staff" float="right"]data_custom/images/docs/tut_msn/msn_staff_2.png[/media]
 As permissions are set separately on each M.S.N. site (except for forum access permissions), it is possible to assign different staff access to key functions on different sites by usergroup. However, assigning staff is more than a permissive issue, it is also a presentation issue: for the [tt]staff[/tt] module to work, there needs to be some way for Composr to actually list staff other than merely by usergroup permission. This is done via the 'staff filter' feature, available under security/usergroup configuration.
 
-The staff filter works by storing 'staff on' lists under all member profiles that would be staff if the filter was off. These are comma-separated lists of site-names the member is staff-on, and are stored as a hidden Composr custom profile field.
+The staff filter works by storing 'staff on' lists under all member profiles that would be staff if the filter was off. These are comma-separated lists of site-names the member is staff-on, and are stored as a hidden Composr Custom Profile Field.
 [/surround]
 
 [title="2"]Domain structuring[/title]

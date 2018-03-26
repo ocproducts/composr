@@ -82,7 +82,7 @@ Users/Members:
  - Cookie logins
  - Alternative login types
  - Display names
- - Custom profile fields
+ - Custom Profile Fields
  - Forum driver object initialisation and driver binding and driver
  - Detecting and actioning logins
 Processing:

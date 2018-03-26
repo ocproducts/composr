@@ -68,7 +68,7 @@ function get_currency()
     // keep_currency
     $currency = get_param_string('keep_currency', null);
     if ($currency === null) {
-        // a specially named custom profile field for the currency.
+        // a specially named Custom Profile Field for the currency.
         $currency = get_cms_cpf('currency');
         if ($currency === '' || $currency === 'CURRENCY') {
             $currency = null;

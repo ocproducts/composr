@@ -1068,7 +1068,7 @@ class Module_topics
     }
 
     /**
-     * The actualiser to run multi moderations.
+     * The actualiser to run Multi Moderations.
      *
      * @return Tempcode The UI
      */
@@ -1527,9 +1527,9 @@ class Module_topics
     }
 
     /**
-     * The form element for choosing a post template.
+     * The form element for choosing a Post Template.
      *
-     * @param  AUTO_LINK $forum_id The forum ID we are looking for post templates active in
+     * @param  AUTO_LINK $forum_id The forum ID we are looking for Post Templates active in
      * @return array A pair: The form element (Tempcode) and the default post to make
      */
     public function post_templates($forum_id)
@@ -4027,7 +4027,7 @@ END;
     }
 
     /**
-     * The actualiser to run a multi moderation.
+     * The actualiser to run a Multi Moderation.
      *
      * @return Tempcode The UI
      */

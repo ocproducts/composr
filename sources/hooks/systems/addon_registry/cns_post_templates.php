@@ -51,7 +51,7 @@ class Hook_addon_registry_cns_post_templates
      */
     public function get_description()
     {
-        return 'Post templates for the Conversr forum.';
+        return 'Post Templates for the Conversr forum.';
     }
 
     /**

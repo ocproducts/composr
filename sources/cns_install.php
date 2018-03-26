@@ -214,6 +214,7 @@ function install_cns($upgrade_from = null)
         ));
         $GLOBALS['FORUM_DB']->create_index('f_password_history', 'p_member_id', array('p_member_id'));
     }
+
     if (($upgrade_from !== null) && ($upgrade_from < 11.0)) { // LEGACY
         $GLOBALS['FORUM_DB']->delete_table_field('f_multi_moderations', 'mm_sink_state');
         $GLOBALS['FORUM_DB']->delete_table_field('f_topics', 't_sunk');
@@ -225,7 +226,12 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'date_time'), array('cf_type' => 'date'));
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'date'), array('cf_type' => 'just_date'));
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'time'), array('cf_type' => 'just_time'));
+
+        $GLOBALS['FORUM_DB']->add_table_field('f_custom_fields', 'cf_icon', 'ID_TEXT');
+        $GLOBALS['FORUM_DB']->add_table_field('f_custom_fields', 'cf_section', 'ID_TEXT');
+        $GLOBALS['FORUM_DB']->add_table_field('f_custom_fields', 'cf_tempcode', 'LONG_TEXT');
     }
+
     if (($upgrade_from !== null) && ($upgrade_from < 10.0)) { // LEGACY
         delete_config_option('no_dob_ask');
 
@@ -342,6 +348,7 @@ function install_cns($upgrade_from = null)
             build_cpf_indices($id, $index, $type, $_type);
         }
     }
+
     if (($upgrade_from !== null) && ($upgrade_from < 11.0)) { // LEGACY
         add_privilege('FORUMS_AND_MEMBERS', 'appear_under_birthdays', true);
 
@@ -397,18 +404,13 @@ function install_cns($upgrade_from = null)
             'mf_member_id' => '*MEMBER',
         ));
 
-        cns_make_boiler_custom_field('about');
-        cns_make_boiler_custom_field('interests');
-        cns_make_boiler_custom_field('occupation');
-        cns_make_boiler_custom_field('staff_notes');
+        cns_make_predefined_content_field('about');
+        cns_make_predefined_content_field('interests');
+        cns_make_predefined_content_field('occupation');
+        cns_make_predefined_content_field('staff_notes');
         if (!addon_installed('user_mappr')) {
-            cns_make_boiler_custom_field('location');
+            cns_make_predefined_content_field('location');
         }
-        //cns_make_boiler_custom_field('im_jabber'); Old-school, although XMPP is still popular for some, so we won't remove entirely
-        cns_make_boiler_custom_field('im_skype');
-        cns_make_boiler_custom_field('sn_facebook');
-        cns_make_boiler_custom_field('sn_google');
-        cns_make_boiler_custom_field('sn_twitter');
 
         $GLOBALS['FORUM_DB']->create_table('f_invites', array(
             'id' => '*AUTO',

@@ -217,7 +217,7 @@ Downloads may be used to release information indirectly, essentially via storing
 				<p>No</p>
 			</td>
 			<td>
-				<p>Moderately (via post templates)</p>
+				<p>Moderately (via Post Templates)</p>
 			</td>
 			<td>
 				<p>Any file type can be presented for

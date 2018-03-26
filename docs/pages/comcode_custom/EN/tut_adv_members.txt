@@ -52,21 +52,21 @@ There is also a usergroup setting, "Open membership", that defines whether membe
 {!cns:DOC_MERGE_MEMBERS}
 It is possible that some reassignments will not be possible, in which case, records may be dropped; for example, if both members share a secondary usergroup, Composr would fail [due to database key constraints] to assign both membership records to the same user, and hence drop one of them. You do not need to worry as this is handled automatically.
 
-[title="2"]Custom profile fields[/title]
+[title="2"]Custom Profile Fields[/title]
 
 [surround]
-[media width="150" description="Custom profile fields are edited by editing member profiles.
+[media width="150" description="Custom Profile Fields are edited by editing member profiles.
 
 Side note: If you (as staff) edit the profile of another member then none of the CPFs will be set as required regardless of how they are configured, as the assumption is that you should not have to fill in unknown fields of a member that you are editing." float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf_edit.png[/media]
-[media width="150" description="Custom profile fields are optionally shown where members post" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf_space_1.png[/media]
-[media width="150" description="Custom profile fields are all shown in member profiles (those that the viewer has permission to view)" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf_space_2.png[/media]
-[media width="150" description="Adding a custom profile field" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf.png[/media]
-{!cns:DOC_CUSTOM_PROFILE_FIELDS} A 'locked' custom profile field can not be edited or deleted.
+[media width="150" description="Custom Profile Fields are optionally shown where members post" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf_space_1.png[/media]
+[media width="150" description="Custom Profile Fields are all shown in member profiles (those that the viewer has permission to view)" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf_space_2.png[/media]
+[media width="150" description="Adding a Custom Profile Field" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf.png[/media]
+{!cns:DOC_CUSTOM_PROFILE_FIELDS} A 'locked' Custom Profile Field can not be edited or deleted.
 
 You can manage Custom Profile Fields from: Admin Zone > Tools > Members > Custom Profile Fields.
 You can delete a Custom Profile Field from the bottom of its edit form.
 
-There are a number of custom profile field options that you may set that allow CPFs to function for a number of different purposes, including:
+There are a number of Custom Profile Field options that you may set that allow CPFs to function for a number of different purposes, including:
  - Storing hidden details on member (for example, a list of rule infractions, such as to aid decisions on cumulative punishment)
  - Allowing members to specify details about themselves (for example, their occupation)
  - Forcing members to specify certain additional details (for example, on a forum for staff of a company, you could make members enter their job role, so as to reduce the chance of a non-employee from joining and remaining an active member)
@@ -83,7 +83,7 @@ Additionally, you could run into problems with large numbers of CPFs on some ser
 
 [title="3"]Display rules[/title]
 
-It is possible to configure where a value for a custom profile field for members will be displayed. The field will always be visible from their profile screen, but also:
+It is possible to configure where a value for a Custom Profile Field for members will be displayed. The field will always be visible from their profile screen, but also:
  - if 'show in posts' is selected, it will also be visible on their forum posts, and their member galleries and member gallery images/videos
  - if 'show in post previews' is selected, it will also be visible when displaying a member sub-gallery in a list of sub-galleries
 
@@ -148,7 +148,7 @@ Some CPFS are only activated by certain addons. They are preinstalled as they ma
 
 [title="3"]{$IS_MAINTAINED,cpf_encryption,Encrypted CPFs} (advanced)[/title]
 
-When creating a custom profile field, it is possible to mark it as encrypted inside the database. If you have the OpenSSL PHP extension installed and configured, Composr can automatically encrypt the contents of such CPFs, such that their sensitive data would not be revealed if the server were to be compromised.
+When creating a Custom Profile Field, it is possible to mark it as encrypted inside the database. If you have the OpenSSL PHP extension installed and configured, Composr can automatically encrypt the contents of such CPFs, such that their sensitive data would not be revealed if the server were to be compromised.
 
 [title="4"]Configuring the functionality[/title]
 
@@ -185,7 +185,7 @@ Admin Zone > Audit > Custom Profile Field statistics
 The following fields usually need filling in:
  - E-mail address
  - Date of birth
- - Any custom profile field set to required
+ - Any Custom Profile Field set to required
 
 However, there are a selection of privileges to soften this a bit. There are 3 common scenarios that show why we might want to soften the requirements:
 1) A staff-member adding an account on someone else's behalf, and not knowing the full details
@@ -193,8 +193,8 @@ However, there are a selection of privileges to soften this a bit. There are 3 c
 3) A field was enabled or set to required after members joined, and you don't want to force them to fill it in next time they go to edit their account for some other purpose (potentially annoying!)
 
 The privileges are:
- - Bypass filling-in required custom profile fields
- - Bypass filling-in required custom profile fields on existing accounts
+ - Bypass filling-in required Custom Profile Fields
+ - Bypass filling-in required Custom Profile Fields on existing accounts
  - Bypass filling-in e-mail address account options
  - Bypass filling-in e-mail address account options on existing accounts
  - Bypass filling-in date of birth account options
@@ -202,8 +202,8 @@ The privileges are:
 
 Note that there are effectively two sets of privileges:
 [list="a"]
-[*] Wholesale bypass of requirement (e.g. Bypass filling-in required custom profile fields)
-[*] Bypass of requirement on existing accounts (e.g. Bypass filling-in required custom profile fields on existing accounts)
+[*] Wholesale bypass of requirement (e.g. Bypass filling-in required Custom Profile Fields)
+[*] Bypass of requirement on existing accounts (e.g. Bypass filling-in required Custom Profile Fields on existing accounts)
 [/list]
 
 The wholesale bypass would typically be granted to staff and mainly exists for scenario 1. If lets staff add new accounts without having to fill everything in that would usually be required. It also is useful to generally remove the required-field status for date of birth and/or e-mail address fields (CPFs have individual required statuses so it is less useful for those).
@@ -277,7 +277,7 @@ Follow this process to do an import:
 
 Further notes follow...
 
-There is full support for auto-creation of usergroups and custom profile fields as required to get the data imported.
+There is full support for auto-creation of usergroups and Custom Profile Fields as required to get the data imported.
 i.e. Any column that does not correspond to an existing field will result in a new field being auto-created. Any referenced usergroup that does not correspond to an existing usergroup will result in the usergroup being auto-created.
 The importer will tell you when it does this.
 
@@ -301,7 +301,7 @@ If a row in the spreadsheet represents an existing member rather than a new memb
 
 All default parts of the Composr member record will be replaced. If certain Composr member record fields are not supplied, those will go to the Composr default.
 Password is the one exception. If no new password, or hash, is supplied, then the old password remains. That's treated separately as the raw passwords are not saved within Composr, and hashes may not be understood or confidential, so to support reimporting exported records cleanly without the old passwords getting lost we need to be able to skip changing them.
-Custom profile fields get individually saved, so any missing custom profile field in the import will not result in that field getting reset to the default.
+Custom Profile Fields get individually saved, so any missing Custom Profile Field in the import will not result in that field getting reset to the default.
 
 [title="2"]Implicit usergroups and external usergroup listings (advanced)[/title]
 
@@ -346,4 +346,4 @@ UPDATE cms_f_members SET m_password_compat_scheme='temporary' WHERE m_password_c
  - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
  - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
 
-{$SET,tutorial_tags,Members,welcome_emails,cns_cpfs,core_cns,Social,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to create custom profile fields, manually add members, and set up welcome e-mails for new members.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Members,welcome_emails,cns_cpfs,core_cns,Social,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to create Custom Profile Fields, manually add members, and set up welcome e-mails for new members.}[block]main_tutorial_rating[/block]

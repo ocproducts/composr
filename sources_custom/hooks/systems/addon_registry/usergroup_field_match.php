@@ -86,7 +86,7 @@ class Hook_addon_registry_usergroup_field_match
      */
     public function get_description()
     {
-        return 'Puts members in a usergroup if they have a custom profile field chosen list value that matches the name of an open usergroup. A developer could tighten up the rules a bit if more specificity is required.';
+        return 'Puts members in a usergroup if they have a Custom Profile Field chosen list value that matches the name of an open usergroup. A developer could tighten up the rules a bit if more specificity is required.';
     }
 
     /**

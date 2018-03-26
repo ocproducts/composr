@@ -95,7 +95,7 @@ class Hook_commandr_fs_members
                 );
             }
         } elseif (count($meta_dir) == 1) {
-            // We're listing the profile fields and custom profile fields of the specified member
+            // We're listing the profile fields and Custom Profile Fields of the specified member
             $username = $meta_dir[0];
             $_member_data = $GLOBALS['FORUM_DB']->query_select('f_members', array('*'), array('m_username' => $username), '', 1);
             if (!array_key_exists(0, $_member_data)) {
@@ -119,7 +119,7 @@ class Hook_commandr_fs_members
                 $member_data['m_join_time'],
             );
 
-            // Custom profile fields
+            // Custom Profile Fields
             $_member_custom_fields = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields', array('*'), array('mf_member_id' => $member_data['id']), '', 1);
             if (!array_key_exists(0, $_member_custom_fields)) {
                 return false;

@@ -19,7 +19,7 @@
  */
 
 /**
- * Make a post template.
+ * Make a Post Template.
  *
  * @param  SHORT_TEXT $title The title for the template
  * @param  LONG_TEXT $text The text of the template

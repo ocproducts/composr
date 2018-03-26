@@ -228,7 +228,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
-            <td>Custom profile fields, so members may save additional details. If this is uninstalled any existing custom profile fields will remain in the system.</td>
+            <td>Custom Profile Fields, so members may save additional details. If this is uninstalled any existing Custom Profile Fields will remain in the system.</td>
             <td><a href="https://compo.sr/docs10/tut-adv-members.htm">Advanced Composr member system</a></td>
             <td></td>
             <td><a href="https://compo.sr/tracker/search.php?project_id=1&amp;category=cns_cpfs&amp;status_id=10">Link</a></td>
@@ -300,7 +300,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <kbd>cns_forum</kbd>
             </td>
-            <td>Post templates for the Conversr forum.</td>
+            <td>Post Templates for the Conversr forum.</td>
             <td><a href="https://compo.sr/docs10/tut-support-desk.htm">Running a virtual support desk</a></td>
             <td></td>
             <td><a href="https://compo.sr/tracker/search.php?project_id=1&amp;category=cns_post_templates&amp;status_id=10">Link</a></td>

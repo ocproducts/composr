@@ -51,7 +51,7 @@ class Hook_addon_registry_cns_cpfs
      */
     public function get_description()
     {
-        return 'Custom profile fields, so members may save additional details. If this is uninstalled any existing custom profile fields will remain in the system.';
+        return 'Custom Profile Fields, so members may save additional details. If this is uninstalled any existing Custom Profile Fields will remain in the system.';
     }
 
     /**

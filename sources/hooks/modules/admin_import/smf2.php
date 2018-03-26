@@ -368,10 +368,10 @@ class Hook_import_smf2
                 }
 
                 $custom_fields = array(
-                    cns_make_boiler_custom_field('cms_firstname') => $row['real_name'],
+                    cns_make_predefined_content_field('cms_firstname') => $row['real_name'],
                 );
                 if ($row['website_url'] != '') {
-                    $custom_fields[cns_make_boiler_custom_field('website')] = $row['website_url'];
+                    $custom_fields[cns_make_predefined_content_field('website')] = $row['website_url'];
                 }
                 $signature = str_replace(array('[html]', '[/html]'), array('', ''), html_to_comcode($row['signature']));
                 $signature = $this->fix_links($signature, $db, $table_prefix, $file_base);

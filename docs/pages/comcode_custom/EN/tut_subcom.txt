@@ -9,7 +9,7 @@ Composr is designed to be able to support large websites, and a common features 
  - [b]Sub-forums[/b] (different communities can be given their own branch of the discussion forums, with the [concept]Conversr[/concept] 'Clubs' feature providing special support for this)
  - [b]Themes[/b] (different themes may be applied to different zones, giving subsites individual looks)
  - [b]Usergroups and access privileges[/b] (members of subcommunities may be grouped by usergroup, and permissions assigned accordingly)
- - [b]Custom profile fields[/b] [[concept]Conversr[/concept] users only] (custom profile fields can be made so that they only apply to a single usergroup: thus allowing specification of user data that applies only to specific subcommunities)
+ - [b]Custom Profile Fields[/b] [[concept]Conversr[/concept] users only] (Custom Profile Fields can be made so that they only apply to a single usergroup: thus allowing specification of user data that applies only to specific subcommunities)
  - [i]More advanced techniques discussed in the [page="_SEARCH:tut_msn"]Advanced techniques for multi-site-networks[/page] tutorial[/i]
 
 [contents]decimal,lower-alpha[/contents]

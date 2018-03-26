@@ -138,7 +138,7 @@ Tapatalk does not support the following Composr forum features:
  - Normal signatures (there is Tapatalk signature support, but it works via cut-down signatures saved into posts via the Tapatalk app -- normal Composr signatures won\'t display [except in cut-down form when viewing users directly], and shouldn\'t due to space considerations)
  - Forced rule acceptance when creating private topics with another member (the recipients rules)
  - Complex HTML posts (posts are simplified down); for example, image-links are specifically prohibited, and no HTML requiring CSS or JavaScript will function
- - Post templates
+ - Post Templates
  - Polls (we will say when there is a poll, but won\'t show the results and can\'t allow voting)
  - Rank images
  - Per-forum rules

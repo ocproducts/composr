@@ -436,39 +436,372 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
 }
 
 /**
- * Make a custom profile field from one of the predefined templates (this is often used by importers).
+ * Get details of predefined templated fields.
+ *
+ * @return array List of predefined templated fields, each being a map
+ */
+function _cns_predefined_custom_field_details()
+{
+    return array(
+        'sn_twitter' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/twitter',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="http://twitter.com/{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'im_skype' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/skype',
+            'section' => 'contact',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="skype:{RAW*}?call">{NAME*}</a>',
+        ),
+        'im_jabber' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/jabber',
+            'section' => 'contact',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="xmpp:{RAW*}">{NAME*}</a>',
+        ),
+        'im_discord' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/discord',
+            'section' => 'contact',
+            'tempcode' => '{NAME*}: {RAW*}',
+        ),
+        'github' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/github',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://github.com/{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_instagram' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/instagram',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://www.instagram.com/{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_minds' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/minds',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://www.minds.com/{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_pinterest' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/pinterest',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://www.pinterest.com/{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_snapchat' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/snapchat',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://snapchat.com/add/{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'soundcloud' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/soundcloud',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://soundcloud.com/{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'im_telegram' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/telegram',
+            'section' => 'contact',
+            'tempcode' => '{NAME*}: {RAW*}',
+        ),
+        'sn_tumblr' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/tumblr',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://{RAW*}.tumblr.com" rel="me">{NAME*}</a>',
+        ),
+        'sn_twitch' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/twitch',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://www.twitch.tv/{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'im_whatsapp' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/whatsapp',
+            'section' => 'contact',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="whatsapp://send?phone={RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_sina_weibo' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/sina_weibo',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="http://weibo.com/{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_tencent_weibo' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/tencent_weibo',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="http://t.qq.com/{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'im_wechat' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/wechat',
+            'section' => 'contact',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="http://weixin.qq.com/r/{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'playstation_network' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/playstation_network',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://secure.eu.playstation.com/psn/{RAW*}/" rel="me">{NAME*}</a>',
+        ),
+        'xbox_live' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/xbox_live',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="http://live.xbox.com/en-US/Profile?gamertag={RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'steam' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/steam',
+            'section' => '',
+            'tempcode' => '{NAME*}: {RAW*}',
+        ),
+        'sn_steemit' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/steemit',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://steemit.com/@{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'dtube' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/dtube',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="https://d.tube/c/{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'im_line' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/line',
+            'section' => 'contact',
+            'tempcode' => '{NAME*}: {RAW*}',
+        ),
+        'im_viber' => array(
+            'type' => 'codename',
+            'icon' => 'icons/links/viber',
+            'section' => 'contact',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="viber://add?number={RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_facebook' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/facebook',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_google_plus' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/google_plus',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'amazon' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/amazon',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'bandcamp' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/bandcamp',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'dailymotion' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/dailymotion',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'dropbox' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/dropbox',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'flattr' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/flattr',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'hacker_news' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/hacker_news',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_linkedin' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/linkedin',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'patreon' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/patreon',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'quora' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/quora',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_reddit' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/reddit',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'slashdot' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/slashdot',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'spotify' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/spotify',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'stack_exchange' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/stack_exchange',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'stack_overflow' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/stack_overflow',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_stumbleupon' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/stumbleupon',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'vimeo' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/vimeo',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'youtube' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/youtube',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_vk' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/vk',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_baidu_tieba' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/baidu_tieba',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_qzone' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/qzone',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'bitcoin' => array(
+            'type' => 'url',
+            'icon' => 'icons/links/bitcoin',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'website' => array(
+            'type' => 'url',
+            'icon' => 'icons/menu/home',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'gender' => array(
+            'type' => 'short_text',
+            'icon' => '',
+            'section' => '',
+            'tempcode' => '',
+        ),
+        'location' => array(
+            'type' => 'short_text',
+            'icon' => '',
+            'section' => '',
+            'tempcode' => '',
+        ),
+        'occupation' => array(
+            'type' => 'short_text',
+            'icon' => '',
+            'section' => '',
+            'tempcode' => '',
+        ),
+        'paypal' => array(
+            'type' => 'email',
+            'icon' => 'icons/links/paypal',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
+        ),
+        'sn_mastodon' => array(
+            'type' => 'email',
+            'icon' => 'icons/links/mastodon',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{$PREG_REPLACE*,(.*)@(.*),https://$2/@$1,{RAW}}" rel="me">{NAME*}</a>',
+        ),
+        'sn_diaspora' => array(
+            'type' => 'email',
+            'icon' => 'icons/links/diaspora',
+            'section' => '',
+            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{$PREG_REPLACE*,(.*)@(.*),https://$2/@$1,{RAW}}" rel="me">{NAME*}</a>',
+        ),
+        'about' => array(
+            'type' => 'long_trans',
+            'icon' => '',
+            'section' => '',
+            'tempcode' => '',
+        ),
+        'staff_notes' => array(
+            'type' => 'long_trans',
+            'icon' => '',
+            'section' => '',
+            'tempcode' => '',
+        ),
+        'interests' => array(
+            'type' => 'long_trans',
+            'icon' => '',
+            'section' => '',
+            'tempcode' => '',
+        ),
+    );
+}
+
+/**
+ * Make a Custom Profile Field from one of the predefined templates (this is often used by importers).
  * Also see the cpf_install source file.
  *
- * @param  ID_TEXT $type The identifier of the boiler custom profile field
- * @return AUTO_LINK The ID of the new custom profile field
+ * @param  ID_TEXT $type The identifier of the predefined Custom Profile Field
+ * @return AUTO_LINK The ID of the new Custom Profile Field
  */
-function cns_make_boiler_custom_field($type)
+function cns_make_predefined_content_field($type)
 {
-    $_type = 'long_trans';
-
-    if (substr($type, 0, 3) == 'im_' || substr($type, 0, 3) == 'sn_') {
-        switch ($type) {
-            case 'sn_twitter':
-            case 'im_skype':
-                $_type = 'codename';
-                break;
-
-            case 'sn_facebook':
-            case 'sn_google':
-                $_type = 'url';
-                break;
-
-            default:
-                $_type = 'short_text';
-                break;
-        }
-    } elseif ($type == 'location') {
-        $_type = 'short_text';
-    } elseif ($type == 'occupation') {
-        $_type = 'short_text';
-    } elseif ($type == 'website') {
-        $_type = 'url';
-    }
+    $details = _cns_predefined_custom_field_details();
+    $_type = $details[$type]['type'];
+    $icon = $details[$type]['icon'];
+    $section = $details[$type]['section'];
+    $tempcode = $details[$type]['tempcode'];
 
     $public_view = 1;
     $owner_view = 1;
@@ -498,7 +831,7 @@ function cns_make_boiler_custom_field($type)
         $description = do_lang('DEFAULT_CPF_' . $type . '_DESCRIPTION');
     }
 
-    return cns_make_custom_field($title, 0, $description, '', $public_view, $owner_view, $owner_set, 0, $_type, $required, $show_in_posts, $show_in_post_previews, null, '', 0, '', true);
+    return cns_make_custom_field($title, 0, $description, '', $public_view, $owner_view, $owner_set, 0, $_type, $required, $show_in_posts, $show_in_post_previews, null, '', 0, '', $icon, $section, $tempcode, true);
 }
 
 /**
@@ -568,7 +901,7 @@ function get_cpf_storage_for($type, $encrypted = 0, $__default = '')
 }
 
 /**
- * Make a custom profile field.
+ * Make a Custom Profile Field.
  *
  * @param  SHORT_TEXT $name Name of the field
  * @param  BINARY $locked Whether the field is locked (i.e. cannot be deleted from the system).
@@ -587,10 +920,13 @@ function get_cpf_storage_for($type, $encrypted = 0, $__default = '')
  * @param  LONG_TEXT $only_group The usergroups that this field is confined to (comma-separated list)
  * @param  BINARY $show_on_join_form Whether the field is to be shown on the join form
  * @param  SHORT_TEXT $options Field options
+ * @param  ID_TEXT $icon Whether it is required that every member have this field filled in
+ * @param  ID_TEXT $section Whether it is required that every member have this field filled in
+ * @param  LONG_TEXT $tempcode Whether it is required that every member have this field filled in
  * @param  boolean $no_name_dupe Whether to check that no field has this name already
- * @return AUTO_LINK The ID of the new custom profile field
+ * @return AUTO_LINK The ID of the new Custom Profile Field
  */
-function cns_make_custom_field($name, $locked = 0, $description = '', $default = '', $public_view = 0, $owner_view = 0, $owner_set = 0, $encrypted = 0, $type = 'long_text', $required = 0, $show_in_posts = 0, $show_in_post_previews = 0, $order = null, $only_group = '', $show_on_join_form = 0, $options = '', $no_name_dupe = false)
+function cns_make_custom_field($name, $locked = 0, $description = '', $default = '', $public_view = 0, $owner_view = 0, $owner_set = 0, $encrypted = 0, $type = 'long_text', $required = 0, $show_in_posts = 0, $show_in_post_previews = 0, $order = null, $only_group = '', $show_on_join_form = 0, $options = '', $icon = '', $section = '', $tempcode = '', $no_name_dupe = false)
 {
     require_code('global4');
     prevent_double_submit('ADD_CUSTOM_PROFILE_FIELD', null, $name);
@@ -635,6 +971,9 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
         'cf_order' => $order,
         'cf_only_group' => $only_group,
         'cf_show_on_join_form' => $show_on_join_form,
+        'cf_icon' => $icon,
+        'cf_section' => $section,
+        'cf_tempcode' => $tempcode,
     );
 
     // LEGACY
@@ -681,7 +1020,7 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
 }
 
 /**
- * Make custom profile field indices.
+ * Make Custom Profile Field indices.
  *
  * @param  AUTO_LINK $id CPF ID
  * @param  boolean $index Whether an index is needed for search purposes (there may be other reasons though)

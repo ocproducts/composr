@@ -39,7 +39,7 @@ class Hook_resource_meta_aware_post_template
             'support_custom_fields' => false,
 
             'content_type_label' => 'cns_post_templates:POST_TEMPLATE',
-            'content_type_universal_label' => 'Post template',
+            'content_type_universal_label' => 'Post Template',
 
             'db' => get_db_for('f_post_templates'),
             'table' => 'f_post_templates',

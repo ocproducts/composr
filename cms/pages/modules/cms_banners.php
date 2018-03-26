@@ -700,7 +700,7 @@ class Module_cms_banners_cat extends Standard_crud_module
     }
 
     /**
-     * Get Tempcode for a post template adding/editing form.
+     * Get Tempcode for a Post Template adding/editing form.
      *
      * @param  ?ID_TEXT $id The ID of the banner type (null: new)
      * @param  BINARY $is_textual Whether this is a textual banner

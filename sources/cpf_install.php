@@ -18,7 +18,7 @@
  * @package    core
  */
 
-/* Also see the cns_make_boiler_custom_field function, which makes fields that are not integrated with anything */
+/* Also see the cns_make_predefined_content_field function, which makes fields that are not integrated with anything */
 
 /**
  * Remove CPF fields for GPS.
@@ -130,5 +130,5 @@ function uninstall_mobile_phone_field()
 function install_mobile_phone_field()
 {
     require_lang('cns_special_cpf');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('mobile_phone_number', 30, 0, 0, 1, 0, do_lang('SPECIAL_CPF__cms_mobile_phone_number_DESCRIPTION'), 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('mobile_phone_number', 30, 0, 0, 1, 0, do_lang('SPECIAL_CPF__cms_mobile_phone_number_DESCRIPTION'), 'short_text', 0, null, '', 'icons/contact_methods/telephone');
 }

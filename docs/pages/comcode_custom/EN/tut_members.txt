@@ -18,7 +18,7 @@ Information about testing permissions is available in the [page="_SEARCH:tut_per
 
 [title="2"]Usernames and display names[/title]
 
-Composr supports both usernames and display names. By default they are the same thing, but there's a "Display name generator" configuration option (Admin Zone > Setup > Configuration > User/usergroup options > Usernames and passwords) that lets you generate display names from custom profile fields (such as by combining the first name and last name).
+Composr supports both usernames and display names. By default they are the same thing, but there's a "Display name generator" configuration option (Admin Zone > Setup > Configuration > User/usergroup options > Usernames and passwords) that lets you generate display names from Custom Profile Fields (such as by combining the first name and last name).
 
 Display names are useful for large social-networking style sites, where you want normal human names, but can't rely on those being unique.
 
@@ -110,7 +110,7 @@ Member profiles contain information on the member, including:
  - Their photo
  - Their time
  - Their online status
- - Custom profile fields
+ - Custom Profile Fields
  - Their IP address when they joined (only viewable by those with privileges)
  - Their date of birth
  - Whether they are banned
@@ -160,7 +160,7 @@ Of course a member can only edit their account, unless they have special privile
 
 [title="3"]Edit profile[/title]
 
-Profile settings, mainly custom profile fields, may be edited on the edit profile sub-tab.
+Profile settings, mainly Custom Profile Fields, may be edited on the edit profile sub-tab.
 
 [title="3"]Edit settings[/title]
 
@@ -273,7 +273,7 @@ If an admin account is deleted you may wish to add that account's username to th
 
 [title="3"]Privacy[/title]
 
-Privacy allows you to specify what custom profile fields will be visible to whom. It is controlled via the "Member privacy controls" configuration option.
+Privacy allows you to specify what Custom Profile Fields will be visible to whom. It is controlled via the "Member privacy controls" configuration option.
 
 If the "Extended privacy option control" configuration option (Admin Zone > Setup > Configuration > Privacy options > Members) is enabled then it can be set in low-level detail. Otherwise it works via simple access levels for each field.
 

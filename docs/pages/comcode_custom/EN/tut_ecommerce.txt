@@ -636,7 +636,7 @@ Shippo is free because they make money helping you print shipping labels. We don
 
 [title="3"]Shipping addresses[/title]
 
-Some custom profile fields are pre-installed to allow members to set their shipping address in their regular profile settings (instead of having to define it each time when they pay on the payment gateway).
+Some Custom Profile Fields are pre-installed to allow members to set their shipping address in their regular profile settings (instead of having to define it each time when they pay on the payment gateway).
 
 There are configuration options to define whether the fields are enabled, in Admin Zone > Setup > Configuration > User/usergroup options > Special CPFs to show.
 

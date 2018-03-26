@@ -86,7 +86,7 @@ class Hook_addon_registry_nested_cpf_csv_lists
      */
     public function get_description()
     {
-        return 'Allows complex chained dropdown choices of custom profile fields.
+        return 'Allows complex chained dropdown choices of Custom Profile Fields.
 
 Set Custom Profile Field list fields to have a default value like [tt]countries.csv|country[/tt] to source list options from CSV files under [tt]/private_data[/tt]. You can set up chained list fields (e.g. chain a state field to a country field), via a syntax like [tt]countries.csv|state|countries.csv|country[/tt]. You can use this with multiple CSV files to essentially use CSV files like normalised database tables (hence why countries.csv is repeated twice in the example). The first line in the CSV file is for the header names (which [tt]country[/tt] and [tt]state[/tt] reference in these examples).';
     }

@@ -1,4 +1,4 @@
-<div class="radio-list-picture{+START,IF_EMPTY,{CODE}} radio-list-picture-na{+END}{+START,IF_PASSED_AND_TRUE,LINEAR} linear{+END}" id="w-{NAME|*}-{CODE|*}" data-tpl="formScreenInputThemeImageEntry" data-tpl-params="{+START,PARAMS_JSON,NAME,CODE}{_*}{+END}">
+<div class="radio-list-picture{+START,IF,{CHECKED}} selected{+END}{+START,IF_EMPTY,{CODE}} radio-list-picture-na{+END}{+START,IF_PASSED_AND_TRUE,LINEAR} linear{+END}" id="w-{NAME|*}-{CODE|*}" data-tpl="formScreenInputThemeImageEntry" data-tpl-params="{+START,PARAMS_JSON,NAME,CODE}{_*}{+END}">
 	<img
 		class="selectable-theme-image" src="{URL*}"
 		{+START,IF_PASSED,WIDTH}width="{WIDTH*}"{+END}{+START,IF_PASSED,HEIGHT} height="{HEIGHT*}"{+END}{+START,IF_NON_PASSED,WIDTH}{+START,IF_NON_PASSED,HEIGHT}{+START,IF,{VECTOR}}width="80"{+END}{+END}{+END}
