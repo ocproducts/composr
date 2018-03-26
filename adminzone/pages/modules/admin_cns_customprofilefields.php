@@ -280,7 +280,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         }
 
         require_code('themes2');
-        $ids = get_all_image_ids_type('icons');
+        $ids = get_all_image_ids_type('icons', true);
         $fields->attach(form_input_theme_image(do_lang_tempcode('IMAGE'), '', 'icon', $ids, null, $icon, null, true));
 
         $sections = new Tempcode();

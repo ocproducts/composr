@@ -650,6 +650,8 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
     }
 
     if (!$dirs_only) {
+        $expected_slashes = substr_count($type, '/') + 1;
+
         $query = 'SELECT DISTINCT id,path,theme FROM ' . $db->get_table_prefix() . 'theme_images WHERE ';
         if (!$db_only) {
             $query .= 'path NOT LIKE \'' . db_encode_like('themes/default/images/%') . '\' AND ' . db_string_not_equal_to('path', 'themes/default/images/blank.gif') . ' AND ';
@@ -665,6 +667,10 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
                 if (preg_match('#(^|/)' . preg_quote($s, '#') . '(/|$)#', $row['path']) != 0) {
                     continue 2;
                 }
+            }
+
+            if ((!$recurse) && (substr_count($row['path'], '/') > $expected_slashes)) {
+                continue;
             }
 
             if ((url_is_local($row['path'])) && (!file_exists(((substr($row['path'], 0, 15) == 'themes/default/') ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($row['path'])))) {
