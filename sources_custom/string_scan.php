@@ -431,6 +431,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CREDIT_CARD_CLEANUP_DAYS
         CONFIG_OPTION_credit_card_cleanup_days
         STORE_CREDIT_CARD_NUMBERS
+        DESCRIPTION_CPF_CODE
+        DESCRIPTION_CPF_SECTION
         CONFIG_OPTION_store_credit_card_numbers
         RSS
         PGE_M

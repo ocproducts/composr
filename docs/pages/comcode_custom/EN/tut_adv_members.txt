@@ -61,7 +61,7 @@ Side note: If you (as staff) edit the profile of another member then none of the
 [media width="150" description="Custom Profile Fields are optionally shown where members post" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf_space_1.png[/media]
 [media width="150" description="Custom Profile Fields are all shown in member profiles (those that the viewer has permission to view)" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf_space_2.png[/media]
 [media width="150" description="Adding a Custom Profile Field" float="right"]data_custom/images/docs/tut_adv_members/adv_members_cpf.png[/media]
-{!cns:DOC_CUSTOM_PROFILE_FIELDS} A 'locked' Custom Profile Field can not be edited or deleted.
+{!cns:DOC_CUSTOM_PROFILE_FIELDS} A 'locked' Custom Profile Field can not be edited or deleted, as it is used by Composr's own code.
 
 You can manage Custom Profile Fields from: Admin Zone > Tools > Members > Custom Profile Fields.
 You can delete a Custom Profile Field from the bottom of its edit form.
@@ -73,6 +73,8 @@ There are a number of Custom Profile Field options that you may set that allow C
  - Allowing members of a certain sub-communities (via their usergroup) to specify details appropriate to that sub-community (for example, those in the 'Football' usergroup of a school discussion forum could specify the position they play, while those in the 'Music' usergroup could specify the instrument they play).
 
 For details about the actual field types you can use, see the [page="_SEARCH:tut_fields"]Custom fields[/page] tutorial.
+
+There is a large selection of predefined fields for you to select, most of which have icons. These for example cover the most popular Instant Messaging systems, Social Networks.
 [/surround]
 
 [title="3"]Limitations (don't go nuts!)[/title]

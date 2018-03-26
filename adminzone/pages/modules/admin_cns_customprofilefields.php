@@ -263,6 +263,8 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POSTS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POSTS'), 'show_in_posts', $show_in_posts == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POST_PREVIEWS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POST_PREVIEWS'), 'show_in_post_previews', $show_in_post_previews == 1));
 
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => $tempcode == '' && $section == '' && $icon == '', 'TITLE' => do_lang_tempcode('ADVANCED'))));
+
         $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_is_super_admin'), array('g_is_private_club' => 0));
         if ($locked == 0 || $allow_full_edit) {
             $groups = new Tempcode();
@@ -285,9 +287,9 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         foreach (array('' => do_lang_tempcode('NA_EM'), 'contact' => do_lang_tempcode('menus:CONTACT')) as $_section => $section_label) {
             $sections->attach(form_input_list_entry($_section, $section == $_section, $section_label));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('SECTION'), '', 'section', $sections));
+        $fields->attach(form_input_list(do_lang_tempcode('SECTION'), do_lang_tempcode('DESCRIPTION_CPF_SECTION'), 'section', $sections));
 
-        $fields->attach(form_input_line(do_lang_tempcode('CODE'), '', 'tempcode', $tempcode, false, null, null, 'text', null, null, null, 130));
+        $fields->attach(form_input_line(do_lang_tempcode('CODE'), do_lang_tempcode('DESCRIPTION_CPF_CODE'), 'tempcode', $tempcode, false, null, null, 'text', null, null, null, 130));
 
         return array($fields, $hidden);
     }
@@ -612,7 +614,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         require_code('templates_columned_table');
         $header_row = columned_table_header_row(array(
             do_lang_tempcode('IMAGE'),
-            do_lang_tempcode('TITLE'),
+            do_lang_tempcode('NAME'),
             do_lang_tempcode('SECTION'),
             do_lang_tempcode('TYPE'),
             do_lang_tempcode('CHOOSE'),
