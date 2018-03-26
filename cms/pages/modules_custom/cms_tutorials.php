@@ -277,6 +277,8 @@ class Module_cms_tutorials extends Standard_crud_module
             ));
         }
 
+        log_it('ADD_TUTORIAL', strval($id), $title);
+
         @unlink(get_custom_file_base() . '/uploads/website_specific/tutorial_sigs.dat');
 
         return strval($id);
@@ -324,6 +326,8 @@ class Module_cms_tutorials extends Standard_crud_module
             ));
         }
 
+        log_it('EDIT_TUTORIAL', strval($id), $title);
+
         @unlink(get_custom_file_base() . '/uploads/website_specific/tutorial_sigs.dat');
     }
 
@@ -336,8 +340,15 @@ class Module_cms_tutorials extends Standard_crud_module
     {
         $id = intval($_id);
 
+        $title = $GLOBALS['SITE_DB']->query_select_value_if_there('tutorials_external', 'title', array('id' => $id));
+        if ($title === null) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+
         $GLOBALS['SITE_DB']->query_delete('tutorials_external', array('id' => $id), '', 1);
         $GLOBALS['SITE_DB']->query_delete('tutorials_external_tags', array('t_id' => $id));
+
+        log_it('DELETE_TUTORIAL', strval($id), $title);
 
         @unlink(get_custom_file_base() . '/uploads/website_specific/tutorial_sigs.dat');
     }
