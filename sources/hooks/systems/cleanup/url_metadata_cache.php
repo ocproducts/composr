@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    stats
+ * @package    core_cleanup_tools
  */
 
 /**
  * Hook class.
  */
-class Hook_cleanup_stats
+class Hook_cleanpu_url_metadata_cache
 {
     /**
      * Find details about this cleanup hook.
@@ -30,17 +30,9 @@ class Hook_cleanup_stats
      */
     public function info()
     {
-        if (!addon_installed('stats')) {
-            return null;
-        }
-
-        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
-            return null;
-        }
-
         $info = array();
-        $info['title'] = do_lang_tempcode('STATS_CACHE');
-        $info['description'] = do_lang_tempcode('DESCRIPTION_STATS_CACHE');
+        $info['title'] = do_lang_tempcode('URL_METADATA_CACHE');
+        $info['description'] = do_lang_tempcode('DESCRIPTION_URL_METADATA_CACHE');
         $info['type'] = 'cache';
 
         return $info;
@@ -53,15 +45,8 @@ class Hook_cleanup_stats
      */
     public function run()
     {
-        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
-            return new Tempcode();
-        }
-
-        $hooks = find_all_hooks('systems', 'disposable_values');
-        foreach (array_keys($hooks) as $hook) {
-            $GLOBALS['SITE_DB']->query_delete('values', array('the_name' => $hook), '', 1);
-        }
-        persistent_cache_delete('VALUES');
+        $GLOBALS['SITE_DB']->query_delete('url_title_cache');
+        $GLOBALS['SITE_DB']->query_delete('urls_checked');
 
         return new Tempcode();
     }

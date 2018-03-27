@@ -133,7 +133,6 @@ class Hook_addon_registry_stats
             'data/modules/admin_stats/IP_Country.txt', // http://geolite.maxmind.com/download/geoip/database/
             'data_custom/modules/admin_stats/index.html',
             'lang/EN/stats.ini',
-            'sources/hooks/systems/cleanup/stats.php',
             'sources/svg.php',
             'sources/hooks/systems/config/bot_stats.php',
             'sources/hooks/systems/tasks/install_geolocation_data.php',

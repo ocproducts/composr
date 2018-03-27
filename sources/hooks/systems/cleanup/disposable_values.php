@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    catalogues
+ * @package    core_cleanup_tools
  */
 
 /**
  * Hook class.
  */
-class Hook_cleanup_catalogues
+class Hook_cleanup_disposable_values
 {
     /**
      * Find details about this cleanup hook.
@@ -30,15 +30,17 @@ class Hook_cleanup_catalogues
      */
     public function info()
     {
-        if (!addon_installed('catalogues')) {
+        if (!addon_installed('stats')) {
             return null;
         }
 
-        require_lang('catalogues');
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
+            return null;
+        }
 
         $info = array();
-        $info['title'] = do_lang_tempcode('CATALOGUES');
-        $info['description'] = do_lang_tempcode('DESCRIPTION_CATALOGUES_CACHE');
+        $info['title'] = do_lang_tempcode('DISPOSABLE_VALUES_CACHE');
+        $info['description'] = do_lang_tempcode('DESCRIPTION_DISPOSABLE_VALUES_CACHE');
         $info['type'] = 'cache';
 
         return $info;
@@ -51,9 +53,16 @@ class Hook_cleanup_catalogues
      */
     public function run()
     {
-        require_lang('catalogues');
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
+            return new Tempcode();
+        }
 
-        require_code('tasks');
-        return call_user_func_array__long_task(do_lang('CACHE_CATALOGUES'), null, 'catalogues_recache');
+        $hooks = find_all_hooks('systems', 'disposable_values');
+        foreach (array_keys($hooks) as $hook) {
+            $GLOBALS['SITE_DB']->query_delete('values', array('the_name' => $hook), '', 1);
+        }
+        persistent_cache_delete('VALUES');
+
+        return new Tempcode();
     }
 }

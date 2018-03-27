@@ -44,7 +44,7 @@ class Hook_cleanup_cns_members
 
         $info = array();
         $info['title'] = do_lang_tempcode('MEMBERS');
-        $info['description'] = do_lang_tempcode('DESCRIPTION_CACHE_MEMBERS');
+        $info['description'] = do_lang_tempcode('DESCRIPTION_MEMBERS_CACHE');
         $info['type'] = 'cache';
 
         return $info;

@@ -1,8 +1,6 @@
 #!/bin/bash
 
-rm -f themes/*/templates_cached/*/*.tcd
 rm -f themes/*/templates_cached/*/*.tcp
-rm -f themes/*/templates_cached/*/*.cache
 rm -f themes/*/templates_cached/*/*.js
 rm -f themes/*/templates_cached/*/*.css
 rm -f themes/*/templates_cached/*/*.gz
@@ -22,9 +20,7 @@ if [ -e "_config.php" ]; then
 fi
 
 if [ -e "sites" ]; then
-	find sites -name "*.tcd" -exec rm -f {} \;
 	find sites -name "*.tcp" -exec rm -f {} \;
-	find sites -name "*.cache" -exec rm -f {} \;
 	find sites -name "*.js" -path "*cache*" -exec rm -f {} \;
 	find sites -name "*.css" -path "*cache*" -exec rm -f {} \;
 	find sites -name "*.gz" -path "*cache*" -exec rm -f {} \;

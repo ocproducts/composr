@@ -201,8 +201,23 @@ function erase_thumb_cache()
             continue;
         }
 
+        $start = 0;
+        $max = 500;
+        do {
+            $rows = $GLOBALS['SITE_DB']->query_select($field['m_table'], array($field['m_name']), array(), '', $max, $start);
+            foreach ($rows as $row) {
+                $thumb_url = $row[$field['m_name']];
+                if (($thumb_url != '') && (url_is_local($thumb_url))) {
+                    @unlink(get_custom_file_base() . '/' . rawurldecode($thumb_url));
+                }
+            }
+            $start += $max;
+        }
+        while (count($rows) > 0);
+
         $GLOBALS['SITE_DB']->query_update($field['m_table'], array($field['m_name'] => ''));
     }
+
     $full = get_custom_file_base() . '/uploads/auto_thumbs';
     $dh = @opendir($full);
     if ($dh !== false) {

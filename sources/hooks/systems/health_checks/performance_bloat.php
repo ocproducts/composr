@@ -142,6 +142,7 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
             'caches/persistent' => 500,
             'caches/self_learning' => 500,
             'uploads/incoming' => 500,
+            'uploads/captcha' => 5000,
             'temp' => 500,
             'themes/' . $GLOBALS['FORUM_DRIVER']->get_theme('') . '/templates_cached' => 20,
         );

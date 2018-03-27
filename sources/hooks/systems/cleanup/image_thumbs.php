@@ -35,8 +35,8 @@ class Hook_cleanup_image_thumbs
         }
 
         $info = array();
-        $info['title'] = do_lang_tempcode('IMAGE_THUMBNAILS');
-        $info['description'] = do_lang_tempcode('DESCRIPTION_IMAGE_THUMBNAILS');
+        $info['title'] = do_lang_tempcode('IMAGE_THUMBS');
+        $info['description'] = do_lang_tempcode('DESCRIPTION_IMAGE_THUMBS');
         $info['type'] = 'optimise';
 
         return $info;
@@ -51,6 +51,8 @@ class Hook_cleanup_image_thumbs
     {
         erase_thumb_cache();
         erase_comcode_cache();
+
+        // We don't actually call 'directory_thumb_mirror' as it's too slow - better to just let things gradually repopulate
 
         return new Tempcode();
     }

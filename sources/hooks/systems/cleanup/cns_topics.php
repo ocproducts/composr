@@ -44,7 +44,7 @@ class Hook_cleanup_cns_topics
 
         $info = array();
         $info['title'] = do_lang_tempcode('FORUM_TOPICS');
-        $info['description'] = do_lang_tempcode('DESCRIPTION_CACHE_TOPICS');
+        $info['description'] = do_lang_tempcode('DESCRIPTION_TOPICS_CACHE');
         $info['type'] = 'cache';
 
         return $info;

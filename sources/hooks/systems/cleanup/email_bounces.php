@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    catalogues
+ * @package    core_cleanup_tools
  */
 
 /**
  * Hook class.
  */
-class Hook_cleanup_catalogues
+class Hook_cleanup_email_bounces
 {
     /**
      * Find details about this cleanup hook.
@@ -30,15 +30,9 @@ class Hook_cleanup_catalogues
      */
     public function info()
     {
-        if (!addon_installed('catalogues')) {
-            return null;
-        }
-
-        require_lang('catalogues');
-
         $info = array();
-        $info['title'] = do_lang_tempcode('CATALOGUES');
-        $info['description'] = do_lang_tempcode('DESCRIPTION_CATALOGUES_CACHE');
+        $info['title'] = do_lang_tempcode('EMAIL_BOUNCES');
+        $info['description'] = do_lang_tempcode('DESCRIPTION_EMAIL_BOUNCES');
         $info['type'] = 'cache';
 
         return $info;
@@ -51,9 +45,8 @@ class Hook_cleanup_catalogues
      */
     public function run()
     {
-        require_lang('catalogues');
+        $GLOBALS['SITE_DB']->query_select('email_bounces');
 
-        require_code('tasks');
-        return call_user_func_array__long_task(do_lang('CACHE_CATALOGUES'), null, 'catalogues_recache');
+        return new Tempcode();
     }
 }

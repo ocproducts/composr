@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_cleanup_admin_theme_images
+class Hook_cleanup_template_usage
 {
     /**
      * Find details about this cleanup hook.
@@ -31,8 +31,8 @@ class Hook_cleanup_admin_theme_images
     public function info()
     {
         $info = array();
-        $info['title'] = do_lang_tempcode('themes:THEME_IMAGES');
-        $info['description'] = do_lang_tempcode('DESCRIPTION_THEME_IMAGES_CACHE');
+        $info['title'] = do_lang_tempcode('TEMPLATE_USAGE');
+        $info['description'] = do_lang_tempcode('DESCRIPTION_TEMPLATE_USAGE');
         $info['type'] = 'cache';
 
         return $info;
@@ -45,7 +45,18 @@ class Hook_cleanup_admin_theme_images
      */
     public function run()
     {
-        erase_theme_images_cache();
+        $GLOBALS['SITE_DB']->query_delete('theme_screen_tree');
+        $GLOBALS['SITE_DB']->query_delete('theme_template_relations');
+
+        require_code('files');
+
+        $themes = find_all_themes();
+        foreach ($themes as $theme) {
+            $meta_dir = 'themes/' . $theme . '/_meta_tree';
+            if (is_dir($meta_dir)) {
+                deldir_contents($meta_dir);
+            }
+        }
 
         return new Tempcode();
     }

@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_cleanup_tags
+class Hook_cleanup_orphaned_tags
 {
     /**
      * Find details about this cleanup hook.

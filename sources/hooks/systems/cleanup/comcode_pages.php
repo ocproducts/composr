@@ -34,7 +34,7 @@ class Hook_cleanup_comcode_pages
 
         $info = array();
         $info['title'] = do_lang_tempcode('COMCODE_PAGES');
-        $info['description'] = do_lang_tempcode('DESCRIPTION_COMCODE_PAGE_CACHE');
+        $info['description'] = do_lang_tempcode('DESCRIPTION_COMCODE_PAGES_CACHE');
         $info['type'] = 'cache';
 
         return $info;

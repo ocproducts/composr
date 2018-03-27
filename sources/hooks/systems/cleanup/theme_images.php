@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_cleanup_urls
+class Hook_cleanup_theme_images
 {
     /**
      * Find details about this cleanup hook.
@@ -31,8 +31,8 @@ class Hook_cleanup_urls
     public function info()
     {
         $info = array();
-        $info['title'] = do_lang_tempcode('URLS_CACHE');
-        $info['description'] = do_lang_tempcode('DESCRIPTION_URLS_CACHE');
+        $info['title'] = do_lang_tempcode('themes:THEME_IMAGES');
+        $info['description'] = do_lang_tempcode('DESCRIPTION_THEME_IMAGES_CACHE');
         $info['type'] = 'cache';
 
         return $info;
@@ -45,8 +45,7 @@ class Hook_cleanup_urls
      */
     public function run()
     {
-        $GLOBALS['SITE_DB']->query_delete('url_title_cache');
-        $GLOBALS['SITE_DB']->query_delete('urls_checked');
+        erase_theme_images_cache();
 
         return new Tempcode();
     }
