@@ -2862,7 +2862,7 @@ END;
 
         require_code('cns_polls_action');
         require_code('cns_polls_action2');
-        cns_vote_in_poll($poll_id, $votes, null, $topic_info);
+        cns_vote_in_poll($poll_id, $votes, null, $_topic_info);
 
         return $this->redirect_to('VOTE_IN_POLL', $topic_id, do_lang_tempcode('THANKYOU_VOTING'));
     }
@@ -2935,8 +2935,7 @@ END;
         // Find polls we can grab
         require_code('cns_forums');
         $or_list = get_forum_access_sql('t.t_forum_id');
-        $polls = $GLOBALS['FORUM_DB']->query('SELECT p.*,t_cache_first_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls p ON p.id=t.t_poll_id WHERE (' . $or_list . ') AND p.id IS NOT NULL ORDER BY p_time DESC',
-            30);
+        $polls = $GLOBALS['FORUM_DB']->query('SELECT p.*,t_cache_first_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls p ON p.id=t.t_poll_id WHERE (' . $or_list . ') AND p.id IS NOT NULL ORDER BY p.id DESC', 30);
         $js_function_calls = array();
         if (count($polls) !== 0) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER',

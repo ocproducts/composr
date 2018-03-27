@@ -43,6 +43,10 @@ class Hook_notification_cns_birthday extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (get_forum_type() != 'cns') {
+            return array();
+        }
+
         $list = array();
         if (get_option('enable_birthdays') != '0') {
             $list['cns_birthday'] = array(do_lang('MEMBERS'), do_lang('cns:NOTIFICATION_TYPE_cns_birthday'));

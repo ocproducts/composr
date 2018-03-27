@@ -43,6 +43,10 @@ class Hook_notification_cns_new_member extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (get_forum_type() != 'cns') {
+            return array();
+        }
+
         $list = array();
         $list['cns_new_member'] = array(do_lang('MEMBERS'), do_lang('cns:NOTIFICATION_TYPE_cns_new_member'));
         return $list;

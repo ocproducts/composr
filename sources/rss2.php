@@ -185,6 +185,9 @@ function rss_backend_script()
             // Try and get a better feed title
             require_code('selectcode');
             $_content = $object->run('', time(), 'ATOM_', '', 0);
+            if ($_content === null) {
+                continue;
+            }
             if (is_array($_content)) {
                 list(, $feed_title) = $_content;
             }

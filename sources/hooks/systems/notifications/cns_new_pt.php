@@ -46,6 +46,10 @@ class Hook_notification_cns_new_pt extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (get_forum_type() != 'cns') {
+            return array();
+        }
+
         if (!addon_installed('cns_forum')) {
             return array();
         }

@@ -43,6 +43,10 @@ class Hook_notification_cns_group_join_request_staff extends Hook_notification__
      */
     public function list_handled_codes()
     {
+        if (get_forum_type() != 'cns') {
+            return array();
+        }
+
         $list = array();
         $list['cns_group_join_request_staff'] = array(do_lang('USERGROUPS'), do_lang('cns:NOTIFICATION_TYPE_cns_group_join_request_staff'));
         return $list;

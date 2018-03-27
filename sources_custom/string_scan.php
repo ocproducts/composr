@@ -10166,6 +10166,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         VIDEO_DETAILS
         VIDEO_NOTIFICATION_MAIL
         VIDEO_NOTIFICATION_MAIL_SUBJECT
+        POLL_VOTE_MAIL_SUBJECT
+        POLL_VOTE_MAIL_BODY
         VIEW
         VIEWING_POINTS_PROFILE_OF
         VIEWING_SLIDE

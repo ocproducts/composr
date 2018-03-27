@@ -43,6 +43,10 @@ class Hook_notification_cns_choose_signature extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (get_forum_type() != 'cns') {
+            return array();
+        }
+
         if (!addon_installed('cns_signatures')) {
             return array();
         }

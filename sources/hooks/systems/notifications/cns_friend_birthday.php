@@ -31,6 +31,10 @@ class Hook_notification_cns_friend_birthday extends Hook_Notification
      */
     public function list_handled_codes()
     {
+        if (get_forum_type() != 'cns') {
+            return array();
+        }
+
         if (!addon_installed('chat')) {
             return array();
         }

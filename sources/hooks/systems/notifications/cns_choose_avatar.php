@@ -43,6 +43,10 @@ class Hook_notification_cns_choose_avatar extends Hook_notification__Staff
      */
     public function list_handled_codes()
     {
+        if (get_forum_type() != 'cns') {
+            return array();
+        }
+
         if (!addon_installed('cns_member_avatars')) {
             return array();
         }

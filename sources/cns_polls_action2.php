@@ -175,20 +175,22 @@ function cns_vote_in_poll($poll_id, $votes, $member_id = null, $topic_info = nul
     }
 
     // Check their vote is valid
-    $rows = $GLOBALS['FORUM_DB']->query_select('f_polls', array('po_is_open', 'po_minimum_selections', 'po_maximum_selections', 'po_requires_reply'), array('id' => $poll_id), '', 1);
+    $rows = $GLOBALS['FORUM_DB']->query_select('f_polls', array('po_is_open', 'po_minimum_selections', 'po_maximum_selections', 'po_requires_reply', 'po_question', 'po_is_private'), array('id' => $poll_id), '', 1);
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
     if ((count($votes) < $rows[0]['po_minimum_selections']) || (count($votes) > $rows[0]['po_maximum_selections']) || ($rows[0]['po_is_open'] == 0)) {
         warn_exit(do_lang_tempcode('VOTE_CHEAT'));
     }
-    $answers = collapse_1d_complexity('id', $GLOBALS['FORUM_DB']->query_select('f_poll_answers', array('id'), array('pa_poll_id' => $poll_id)));
+    $answers = collapse_2d_complexity('id', 'pa_answer', $GLOBALS['FORUM_DB']->query_select('f_poll_answers', array('id', 'pa_answer'), array('pa_poll_id' => $poll_id)));
     if (($rows[0]['po_requires_reply'] == 1) && (!cns_has_replied_topic($topic_id, $member_id))) {
         warn_exit(do_lang_tempcode('POLL_REQUIRES_REPLY'));
     }
 
+    // Insert votes
+    $answer = '';
     foreach ($votes as $vote) {
-        if (!in_array($vote, $answers)) {
+        if (!array_key_exists($vote, $answers)) {
             warn_exit(do_lang_tempcode('VOTE_CHEAT'));
         }
 
@@ -200,6 +202,23 @@ function cns_vote_in_poll($poll_id, $votes, $member_id = null, $topic_info = nul
         ));
 
         $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_poll_answers SET pa_cache_num_votes=(pa_cache_num_votes+1) WHERE id=' . strval($vote), 1);
+
+        if ($answer != '') {
+            $answer .= ', ';
+        }
+        $answer .= $answers[$vote];
     }
     $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls SET po_cache_total_votes=(po_cache_total_votes+1) WHERE id=' . strval($poll_id), 1);
+
+    // Send notification if not private (if private then it would be too revealing to say when votes come in, as you could just look at who is online when you get the notification)
+    if ($rows[0]['po_is_private'] == 0) {
+        $poll_title = $rows[0]['po_question'];
+        $topic_title = $topic_info[0]['t_cache_first_title'];
+        $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($topic_id);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+        $subject = do_lang('POLL_VOTE_MAIL_SUBJECT', $username, $answer, array($poll_title, $topic_title, $topic_url), get_lang($member_id));
+        $mail = do_lang('POLL_VOTE_MAIL_BODY', $username, $answer, array($poll_title, $topic_title, $topic_url), get_lang($member_id));
+        require_code('notifications');
+        dispatch_notification('cns_topic', strval($topic_id), $subject, $mail, array($member_id));
+    }
 }
