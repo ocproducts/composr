@@ -49,6 +49,7 @@ class Hook_cleanup_template_usage
         $GLOBALS['SITE_DB']->query_delete('theme_template_relations');
 
         require_code('files');
+        require_code('themes');
 
         $themes = find_all_themes();
         foreach ($themes as $theme) {
