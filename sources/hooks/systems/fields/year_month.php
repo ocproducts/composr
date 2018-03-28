@@ -157,6 +157,9 @@ class Hook_fields_year_month
         $default_month = null;
         if (!empty($actual_value)) {
             $date_components = explode('/', $actual_value, 2);
+            if (!array_key_exists(1, $date_components)) {
+                $date_components[1] = date('m');
+            }
             $default_year = intval($date_components[0]);
             $default_month = intval($date_components[1]);
         }

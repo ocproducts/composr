@@ -91,7 +91,7 @@ class Hook_ecommerce_banners
         }
         $total_importance = $GLOBALS['SITE_DB']->query_value_if_there($sql);
         if ($total_importance === null) {
-            $total_importance = 0;
+            $total_importance = 1;
         }
         $current_importance = 0;
         $current_hits = 0;
