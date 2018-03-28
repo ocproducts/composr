@@ -245,7 +245,7 @@ class Module_cms_tutorials extends Standard_crud_module
         $url = post_param_string('url');
         $title = post_param_string('title');
         $summary = post_param_string('summary');
-        $icon = find_theme_image(post_param_string('icon'));
+        $icon = post_param_string('icon');
         $media_type = post_param_string('media_type');
         $difficulty_level = post_param_string('difficulty_level');
         $pinned = post_param_integer('pinned', 0);
@@ -296,7 +296,7 @@ class Module_cms_tutorials extends Standard_crud_module
         $url = post_param_string('url');
         $title = post_param_string('title');
         $summary = post_param_string('summary');
-        $icon = find_theme_image(post_param_string('icon'));
+        $icon = post_param_string('icon');
         $media_type = post_param_string('media_type');
         $difficulty_level = post_param_string('difficulty_level');
         $pinned = post_param_integer('pinned', 0);
@@ -340,7 +340,7 @@ class Module_cms_tutorials extends Standard_crud_module
     {
         $id = intval($_id);
 
-        $title = $GLOBALS['SITE_DB']->query_select_value_if_there('tutorials_external', 'title', array('id' => $id));
+        $title = $GLOBALS['SITE_DB']->query_select_value_if_there('tutorials_external', 't_title', array('id' => $id));
         if ($title === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
