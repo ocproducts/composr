@@ -12,6 +12,7 @@
 		<li>We block links by default in member profiles, so stealth outbound links will not be effective</li>
 		<li>Any link you have will be <kbd>rel=nofollow</kbd>, so will not help SEO at all</li>
 		<li>Banned spammer accounts are reporting automatically to StopForumSpam, which will ban your IP address across many online forums
+		<li>We will contact the owner of any site spammers have been linking to, to warn them what disreputable companies have been doing in their name</li>
 		<li>Spam posts are always deleted in under a day, so very few people will ever see them</li>
 		<li>Suspicious new accounts are automatically shadow-banned with high accuracy, until manually approved</li>
 		<li>You'll still need to solve CAPTCHAs for a while after joining, and bots will be effectively detected and publicly reported in multiple ways (Project HoneyPot, blackholes, ...)</li>
