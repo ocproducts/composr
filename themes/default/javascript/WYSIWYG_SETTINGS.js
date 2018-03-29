@@ -67,7 +67,8 @@ var editorSettings = {
     comcodeXMLInlineTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}',
     magicline_everywhere: true,
     autoGrow_onStartup: true,
-    sourceAreaTabSize: 4
+    sourceAreaTabSize: 4,
+    font_names: '{$REPLACE;,\,,;,{$FONTS}}'
 };
 
 if ($cms.configOption('wysiwyg_font_units') === 'em') {

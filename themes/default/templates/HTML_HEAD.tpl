@@ -1,8 +1,5 @@
 {$, - Note you will need to empty the template cache manually if you change this file manually due to the way it is included - }
 
-{$,Want a nice Google font? Try uncommenting the below}
-{$,<link href="//fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet" />}
-
 {$,The character set of the page}
 <meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />
 
@@ -87,7 +84,6 @@
 {+START,IF,{$EQ,{$METADATA,type},Profile}}
 	{+START,IF_NON_EMPTY,{$METADATA,creator}}<meta name="profile:username" content="{$METADATA*,creator}" />{+END}
 {+END}
-
 {$,Define the Microformats we support}
 {+START,COMMENT,Commented out by default to save bandwidth}
 	<link rel="profile" href="http://www.w3.org/2003/g/data-view" />
@@ -121,6 +117,11 @@
 
 {$,JavaScript code (usually) from Composr page}
 {$EXTRA_HEAD}
+
+{$,Google fonts}
+{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_fonts}}
+	<link href="//fonts.googleapis.com/css?family={+START,LOOP,={$CONFIG_OPTION,google_fonts}}{+START,IF_NON_EMPTY,{_loop_key}}|{+END}{_loop_var&}{+END}:400,400i,600,600i" rel="stylesheet" />
+{+END}
 
 {$,CSS includes from Composr page}
 {$CSS_TEMPCODE}

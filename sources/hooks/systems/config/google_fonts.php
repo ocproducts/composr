@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    chat
+ * @package    core_configuration
  */
 
 /**
  * Hook class.
  */
-class Hook_config_chat_default_post_font
+class Hook_config_google_fonts
 {
     /**
      * Gets the details relating to the config option.
@@ -31,18 +31,18 @@ class Hook_config_chat_default_post_font
     public function get_details()
     {
         return array(
-            'human_name' => 'CHAT_OPTIONS_TEXT_NAME',
-            'type' => 'list',
-            'category' => 'FEATURE',
-            'group' => 'SECTION_CHAT',
-            'explanation' => 'CONFIG_OPTION_chat_default_post_font',
+            'human_name' => 'GOOGLE_FONTS',
+            'type' => 'line',
+            'category' => 'THEME',
+            'group' => 'FONTS',
+            'explanation' => 'CONFIG_OPTION_google_fonts',
             'shared_hosting_restricted' => '0',
-            'list_options' => str_replace('|', ',', get_option('fonts')),
+            'list_options' => '',
             'required' => true,
 
             'public' => false,
 
-            'addon' => 'chat',
+            'addon' => 'core_configuration',
         );
     }
 
@@ -53,10 +53,6 @@ class Hook_config_chat_default_post_font
      */
     public function get_default()
     {
-        if (!addon_installed('chat')) {
-            return null;
-        }
-
-        return 'Verdana';
+        return 'Open Sans';
     }
 }

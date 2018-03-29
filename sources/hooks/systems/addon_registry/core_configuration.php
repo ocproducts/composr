@@ -153,6 +153,8 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/oauth/index.html',
             'lang/EN/oauth.ini',
             'themes/default/templates/OAUTH_SCREEN.tpl',
+            'sources/hooks/systems/config/fonts.php',
+            'sources/hooks/systems/config/google_fonts.php',
             'sources/hooks/systems/config/edit_under.php',
             'sources/hooks/systems/config/enable_animations.php',
             'sources/hooks/systems/config/breadcrumb_crop_length.php',

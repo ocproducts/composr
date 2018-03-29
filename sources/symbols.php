@@ -6012,6 +6012,37 @@ function ecv_CSP_NONCE_HTML($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string The result
  */
+function ecv_FONTS($lang, $escaped, $param)
+{
+    $value = '';
+
+    $fonts = array_map('trim', explode(',', get_option('fonts')));
+    $google_fonts = array_map('trim', explode(',', get_option('google_fonts')));
+    $all_fonts = array_merge($fonts, $google_fonts);
+    sort($all_fonts, SORT_NATURAL | SORT_FLAG_CASE);
+    foreach ($all_fonts as $font) {
+        if ($font != '') {
+            $value .= ',';
+        }
+        $value .= $font;
+    }
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result
+ */
 function ecv_PROTECT_URL_PARAMETER($lang, $escaped, $param)
 {
     $value = '';
@@ -6374,23 +6405,27 @@ function ecv_LOOP(&$value, $lang, $escaped, $param)
     // (no need to keep re-binding, as closure_loop runs at a lower level)
 
     if (isset($param[0])) {
-        if (!array_key_exists($param[0]->evaluate(), $param['vars'])) {
-            trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $param[0]->evaluate(), '???'), E_USER_NOTICE);
-            return;
-        }
-
         $array_key = $param[0]->evaluate();
-        if ((is_numeric($array_key)) || (strpos($array_key, ',') !== false)) {
+        if ((is_numeric($array_key)) || (strpos($array_key, ',') !== false) || (strpos($array_key, '=') !== false)) {
             $array = array();
             foreach (explode(',', $array_key) as $x) {
                 if (strpos($x, '=') !== false) {
                     list($key, $val) = explode('=', $x, 2);
-                    $array[$key] = $val;
+                    if ($key === '' && isset($array[$key])) {
+                        $array[] = $val; // Empty keys: which are done to allow "="s in strings by putting in an empty key OR to force list mode
+                    } else {
+                        $array[$key] = $val;
+                    }
                 } else {
                     $array[] = $x;
                 }
             }
         } else {
+            if (!array_key_exists($param[0]->evaluate(), $param['vars'])) {
+                trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $param[0]->evaluate(), '???'), E_USER_NOTICE);
+                return;
+            }
+
             $array = array_key_exists($array_key, $param['vars']) ? $param['vars'][$array_key] : array();
             if (!is_array($array)) {
                 $array = array();

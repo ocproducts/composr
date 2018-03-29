@@ -105,7 +105,7 @@
 						</p>
 						<p>
 							<select class="js-select-click-font-change js-select-change-font-chage" id="font_name" name="font_name">
-								{+START,LOOP,Arial\,Courier\,Georgia\,Impact\,Times\,Trebuchet\,Verdana\,Tahoma\,Geneva\,Helvetica}
+								{+START,LOOP,={$FONTS}}
 									<option {$?,{$EQ,{FONT_NAME_DEFAULT},{_loop_var}},selected="selected" ,}value="{_loop_var*}" style="font-family: '{_loop_var;*}'">{_loop_var*}</option>
 								{+END}
 							</select>

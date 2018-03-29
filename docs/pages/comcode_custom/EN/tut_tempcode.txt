@@ -1278,7 +1278,11 @@ where:
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$PUBLIC_CONFIG_OPTIONS_JSON}</td>
-			<td>Outputs all the config options that are marked public as JSON. Used by $cms.configOption().</td>
+			<td>Outputs all the config options that are marked public as JSON. Used by <kbd>$cms.configOption()</kbd>.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FONTS}</td>
+			<td>A comma-separated list of fonts that have been configured</td>
 		</tr>
 	</tbody>
 </table>

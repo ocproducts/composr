@@ -16,16 +16,9 @@
 
 			<select id="f_face" name="f_face">
 				<option value="/">[{!FONT}]</option>
-				<option value="Arial" style="font-family: 'Arial'">Arial</option>
-				<option value="Courier" style="font-family: 'Courier'">Courier</option>
-				<option value="Georgia" style="font-family: 'Georgia'">Georgia</option>
-				<option value="Impact" style="font-family: 'Impact'">Impact</option>
-				<option value="Times" style="font-family: 'Times'">Times</option>
-				<option value="Trebuchet" style="font-family: 'Trebuchet'">Trebuchet</option>
-				<option value="Verdana" style="font-family: 'Verdana'">Verdana</option>
-				<option value="Tahoma" style="font-family: 'Tahoma'">Tahoma</option>
-				<option value="Geneva" style="font-family: 'Geneva'">Geneva</option>
-				<option value="Helvetica" style="font-family: 'Helvetica'">Helvetica</option>
+				{+START,LOOP,={$FONTS}}
+					<option value="{_loop_var*}" style="font-family: '{_loop_var;*}'">{_loop_var*}</option>
+				{+END}
 			</select>
 			<select id="f_size" name="f_size">
 				<option value="">[{!SIZE}]</option>

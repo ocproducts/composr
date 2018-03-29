@@ -420,7 +420,7 @@ function closure_loop($param, $args, $main_function)
                         ocp_mark_as_escaped($val);
                     }
                     if ($key === '' && isset($array[$key])) {
-                        $array[] = $val; // Empty keys: which are done to allow "="s in strings by putting in an empty key
+                        $array[] = $val; // Empty keys: which are done to allow "="s in strings by putting in an empty key OR to force list mode
                     } else {
                         $array[$key] = $val;
                     }
