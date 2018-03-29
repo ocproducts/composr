@@ -1764,7 +1764,7 @@ class Forum_driver_cns extends Forum_driver_base
             return $this->MEMBER_ROWS_CACHED[$member];
         }
 
-        $rows = $this->connection->query_select('f_members', array('*'), array('id' => $member), '', 1);
+        $rows = $this->connection->query_select('f_members m LEFT JOIN ' . $this->connection->get_table_prefix() . 'f_member_custom_fields c ON c.mf_member_id=m.id', array('*'), array('id' => $member), '', 1);
         if (!array_key_exists(0, $rows)) {
             $this->MEMBER_ROWS_CACHED[$member] = null;
             return null;

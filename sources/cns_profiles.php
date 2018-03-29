@@ -84,6 +84,8 @@ function render_profile_tabset($title, $member_id_of, $member_id_viewing = null,
         'posting',
         'tree_list',
         'modernizr',
+        'jquery',
+        'jquery_ui',
         'widget_color',
         'widget_date',
     );

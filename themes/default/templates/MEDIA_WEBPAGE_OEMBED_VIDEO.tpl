@@ -10,6 +10,6 @@
 	{+END}
 
 	<p class="shunted_button">
-		<a class="button_screen_item buttons__more" href="{URL*}"><span>{!VIEW}</span></a>
+		<a class="button_screen_item buttons__more" href="{URL*}"{+START,IF_PASSED,REL} rel="{REL*}"{+END}><span>{!VIEW}</span></a>
 	</p>
 </div></section>
