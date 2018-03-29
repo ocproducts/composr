@@ -30,7 +30,7 @@ class Hook_preview_wiki_page
      */
     public function applies()
     {
-        $applies = (!addon_installed('wiki')) && (get_page_name() == 'cms_wiki');
+        $applies = (addon_installed('wiki')) && (get_page_name() == 'cms_wiki');
         return array($applies, 'wiki_page', false);
     }
 }

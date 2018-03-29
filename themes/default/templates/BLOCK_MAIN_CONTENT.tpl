@@ -5,7 +5,7 @@
 		{$SET,eval_content,{CONTENT}}{$,Force early evaluation, to get title}
 		{+START,IF_NON_EMPTY,{TITLE}}
 			<h2>
-				{TITLE*}{+START,IF_NON_EMPTY,{$GET,content_box_title}}: {$GET,content_box_title}{+END}
+				<a class="subtle-link" href="{URL*}">{TITLE*}{+START,IF_NON_EMPTY,{$GET,content_box_title}}: {$GET,content_box_title}{+END}</a>
 			</h2>
 		{+END}
 		{$SET,skip_content_box_title,0}

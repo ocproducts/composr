@@ -89,7 +89,7 @@ class Hook_preview_iotd
             'EDIT_URL' => $edit_url,
             'DELETE_URL' => $delete_url,
             'CHOOSE_URL' => $choose_url,
-            'TITLE' => $title,
+            'I_TITLE' => $title,
             'CAPTION' => $caption,
             'SUBMITTER' => strval($submitter),
             'USERNAME' => $username,

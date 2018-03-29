@@ -1445,11 +1445,18 @@ body input.button-hyperlink, body input.button-hyperlink:hover {
 /* Makes a link tag (a) look like it's not anything special (we use these tags as tab points sometimes) */
 .non-link,
 .non-link:visited,
-.non-link:hover {
+.non-link:hover,
+.subtle-link,
+.subtle-link:visited,
+.subtle-link:hover {
 	color: inherit !important;
 	text-decoration: none !important;
-	cursor: inherit !important;
 	font-size: 1em !important;
+}
+.non-link,
+.non-link:visited,
+.non-link:hover {
+	cursor: inherit !important;
 }
 
 /* Used e.g. for "paginating" through the calendar (i.e. infinite pagination left/right) */

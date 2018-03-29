@@ -22,13 +22,13 @@
 		{+END}
 	{+END}
 	{+START,IF,{$NOT,{$GET,skip_content_box_title}}}
-		<h3>{$GET,content_box_title}</h3>
+		<h3><a class="subtle-link" href="{FULL_URL*}">{$GET,content_box_title}</a></h3>
 	{+END}
 
 	{+START,IF,{$AND,{$NOT,{BLOG}},{$IS_NON_EMPTY,IMG}}}{+START,IF,{$DESKTOP}}
 		<div class="newscat-img newscat-img-author block-desktop">
 			{+START,IF_NON_EMPTY,{CATEGORY}}
-				<img width="100" height="100" src="{$ENSURE_PROTOCOL_SUITABILITY*,{IMG}}" alt="" />
+				<a href="{FULL_URL*}"><img width="100" height="100" src="{$ENSURE_PROTOCOL_SUITABILITY*,{IMG}}" alt="" /></a>
 			{+END}
 		</div>
 	{+END}{+END}
@@ -36,7 +36,7 @@
 	{+START,IF,{$NAND,{$NOT,{BLOG}},{$IS_NON_EMPTY,{IMG}}}}{+START,IF,{$DESKTOP}}
 		<div class="newscat-img newscat-img-member block-desktop">
 			{+START,IF_NON_EMPTY,{$AVATAR,{SUBMITTER}}}
-				<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{$AVATAR,{SUBMITTER}}}" title="{!AVATAR}" alt="{!AVATAR}" />
+				<a href="{FULL_URL*}"><img src="{$ENSURE_PROTOCOL_SUITABILITY*,{$AVATAR,{SUBMITTER}}}" title="{!AVATAR}" alt="{!AVATAR}" /></a>
 			{+END}
 
 			{+START,IF,{$CNS}}{+START,IF_NON_EMPTY,{$CNS_RANK_IMAGE,{SUBMITTER}}}

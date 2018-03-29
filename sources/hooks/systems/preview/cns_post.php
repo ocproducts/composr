@@ -30,7 +30,7 @@ class Hook_preview_cns_post
      */
     public function applies()
     {
-        $applies = (!addon_installed('cns_forum')) && ((get_page_name() == 'topics') && (in_array(get_param_string('type'), array('birthday', 'edit_post', 'new_post', 'edit_topic', 'new_pt', 'new_topic', 'multimod')))) || (get_page_name() == 'topicview');
+        $applies = (addon_installed('cns_forum')) && ((get_page_name() == 'topics') && (in_array(get_param_string('type'), array('birthday', 'edit_post', 'new_post', 'edit_topic', 'new_pt', 'new_topic', 'multimod')))) || (get_page_name() == 'topicview');
         return array($applies, 'cns_post', true);
     }
 

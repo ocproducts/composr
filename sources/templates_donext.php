@@ -188,6 +188,7 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
             $entry_passed_2[] = $map;
         }
     }
+    $entry_passed_2 = array_merge($entry_passed_2, $entry_extras);
     $sections->attach(_do_next_section($entry_passed_2, ($entries_title === null) ? do_lang_tempcode('ENTRIES') : (is_object($entries_title) ? $entries_title : make_string_tempcode($entries_title)), $entry_content_type, $category_content_type));
 
     // Category stuff

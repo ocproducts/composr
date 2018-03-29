@@ -30,7 +30,7 @@ class Hook_preview_setupwizard
      */
     public function applies()
     {
-        $applies = (!addon_installed('setupwizard')) && (get_page_name() == 'admin_setupwizard') && (get_param_string('type', '') == 'step8');
+        $applies = (addon_installed('setupwizard')) && (get_page_name() == 'admin_setupwizard') && (get_param_string('type', '') == 'step8');
         return array($applies, null, false);
     }
 

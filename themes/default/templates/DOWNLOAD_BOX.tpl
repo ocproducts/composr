@@ -14,7 +14,7 @@
 		{+END}
 	{+END}
 	{+START,IF,{$NOT,{$GET,skip_content_box_title}}}
-		<h3>{$GET,content_box_title}</h3>
+		<h3><a class="subtle-link" href="{URL*}">{$GET,content_box_title}</a></h3>
 	{+END}
 
 	<div class="meta-details" role="note">

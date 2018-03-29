@@ -30,7 +30,7 @@ class Hook_preview_newsletter_whatsnew
      */
     public function applies()
     {
-        $applies = (!addon_installed('newsletter')) && (get_page_name() == 'admin_newsletter') && ((get_param_string('type', 'browse') == 'whatsnew') || (get_param_string('type', 'browse') == 'whatsnew_2'));
+        $applies = (addon_installed('newsletter')) && (get_page_name() == 'admin_newsletter') && ((get_param_string('type', 'browse') == 'whatsnew') || (get_param_string('type', 'browse') == 'whatsnew_2'));
         return array($applies, null, false);
     }
 

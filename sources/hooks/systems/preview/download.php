@@ -30,7 +30,7 @@ class Hook_preview_download
      */
     public function applies()
     {
-        $applies = (!addon_installed('downloads')) && (get_page_name() == 'cms_downloads') && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
+        $applies = (addon_installed('downloads')) && (get_page_name() == 'cms_downloads') && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
         return array($applies, null, false);
     }
 

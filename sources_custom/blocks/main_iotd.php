@@ -152,6 +152,7 @@ class Block_main_iotd
             'IMAGE' => $image,
             'ARCHIVE_URL' => $archive_url,
             'SUBMIT_URL' => $submit_url,
+            'GIVE_CONTEXT' => true,
         );
         if ((get_option('is_on_comments') == '1') && (get_forum_type() != 'none') && ($myrow['allow_comments'] >= 1)) {
             $map2['COMMENT_COUNT'] = '1';
