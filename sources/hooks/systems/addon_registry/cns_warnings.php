@@ -113,6 +113,7 @@ class Hook_addon_registry_cns_warnings
             'site/warnings_browse.php',
             'sources/hooks/systems/profiles_tabs/warnings.php',
             'themes/default/templates/CNS_MEMBER_PROFILE_WARNINGS.tpl',
+            'themes/default/templates/CNS_WARN_SPAM_URLS.tpl',
             'sources/hooks/systems/commandr_fs_extended_member/warnings.php',
         );
     }
@@ -127,7 +128,8 @@ class Hook_addon_registry_cns_warnings
         return array(
             'templates/CNS_SAVED_WARNING.tpl' => 'cns_saved_warning',
             'templates/CNS_WARNING_HISTORY_SCREEN.tpl' => 'administrative__cns_warning_history_screen',
-            'templates/CNS_MEMBER_PROFILE_WARNINGS.tpl' => 'cns_member_profile_warnings'
+            'templates/CNS_MEMBER_PROFILE_WARNINGS.tpl' => 'cns_member_profile_warnings',
+            'templates/CNS_WARN_SPAM_URLS.tpl' => 'cns_warn_spam_urls',
         );
     }
 
@@ -159,6 +161,7 @@ class Hook_addon_registry_cns_warnings
     public function tpl_preview__cns_saved_warning()
     {
         require_css('cns');
+
         return array(
             lorem_globalise(do_lorem_template('CNS_SAVED_WARNING', array(
                 'MESSAGE' => lorem_phrase(),
@@ -190,6 +193,37 @@ class Hook_addon_registry_cns_warnings
                 'VIEW_PROFILE_URL' => placeholder_url(),
                 'ADD_WARNING_URL' => placeholder_url(),
                 'RESULTS_TABLE' => placeholder_table(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__cns_warn_spam_urls()
+    {
+        $spam_urls = array(
+            array(
+                'DOMAIN' => 'example.com',
+                'URLS' => array(
+                    array('I' => 0, 'URL' => 'http://example.com/'),
+                    array('I' => 1, 'URL' => 'http://example.com/test'),
+                ),
+                'POSTS' => array(
+                    array('I' => 0, 'POST_TITLE' => lorem_phrase(), 'POST' => lorem_paragraph()),
+                    array('I' => 1, 'POST_TITLE' => lorem_phrase(), 'POST' => lorem_paragraph()),
+                ),
+            ),
+        );
+
+        return array(
+            lorem_globalise(do_lorem_template('CNS_WARN_SPAM_URLS', array(
+                'USERNAME' => lorem_phrase(),
+                'SPAM_URLS' => $spam_urls,
             )), null, '', true)
         );
     }

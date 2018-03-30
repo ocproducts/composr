@@ -191,7 +191,7 @@ function cns_has_replied_topic($topic_id, $member_id = null)
 /**
  * Find whether a member may edit topics in a certain forum.
  *
- * @param  AUTO_LINK $forum_id The forum the topic would be in.
+ * @param  ?AUTO_LINK $forum_id The forum the topic would be in (null: privvate topics).
  * @param  MEMBER $member_id The member checking access for.
  * @param  MEMBER $resource_owner The member that owns this resource
  * @return boolean The answer.
@@ -212,7 +212,7 @@ function cns_may_edit_topics_by($forum_id, $member_id, $resource_owner)
 /**
  * Find whether a member may delete topics in a certain forum.
  *
- * @param  AUTO_LINK $forum_id The forum the topic would be in.
+ * @param  ?AUTO_LINK $forum_id The forum the topic would be in (null: privvate topics).
  * @param  MEMBER $member_id The member checking access for.
  * @param  MEMBER $resource_owner The member that owns this resource
  * @return boolean The answer.
