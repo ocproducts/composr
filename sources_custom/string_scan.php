@@ -3075,6 +3075,20 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CNS_WAITING_CONFIRM_MAIL_COPPA
         COPPA_JOIN_SUBJECT
         COPPA_MAIL
+        PREPARE_EMAIL
+        PREPARE_EMAIL_DESCRIPTION
+        PREPARE_EMAIL_SUBJECT
+        PREPARE_EMAIL_BODY
+        HANDLE_POST__POST_STANDALONE_AT_END
+        HANDLE_POST__POST_STANDALONE_IN_MIDDLE
+        HANDLE_POST__POST_AS_TOPIC_FULL
+        HANDLE_POST__POST_AS_TOPIC_STARTER
+        HANDLE_POST__NOTHING
+        HANDLE_POST__DELETE_POST
+        HANDLE_POST__DELETE_POST_WITH_GAP
+        HANDLE_POST__DELETE_POST_AND_FOLLOWING
+        HANDLE_POST__DELETE_TOPIC
+        HANDLE_POST__DELETE_TOPIC_WITH_REPLIES
         CONFIG_OPTION_is_on_emoticon_choosers
         CONFIG_OPTION_is_on_forw_buy
         CONFIG_OPTION_is_on_gambling_buy
@@ -7384,6 +7398,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         WARNING_UNINSTALL
         WARNING_UNINSTALL_GENERAL
         WARN_MEMBER
+        WARN_MEMBER_AS_SPAMMER
         WARN_TO_STACK_TRACE
         WARN_TO_STACK_TRACE_2
         WARN_TO_STACK_TRACE_3

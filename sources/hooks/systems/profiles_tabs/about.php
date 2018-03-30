@@ -91,6 +91,7 @@ class Hook_profiles_tabs_about
         if ((has_privilege($member_id_viewing, 'warn_members')) && (has_actual_page_access($member_id_viewing, 'warnings')) && (addon_installed('cns_warnings'))) {
             $redir_url = get_self_url(true);
             $modules[] = array('audit', do_lang_tempcode('WARN_MEMBER'), build_url(array('page' => 'warnings', 'type' => 'add', 'member_id' => $member_id_of, 'redirect' => protect_url_parameter($redir_url)), get_module_zone('warnings')), 'links/warning_add');
+            $modules[] = array('audit', do_lang_tempcode('WARN_MEMBER_AS_SPAMMER'), build_url(array('page' => 'warnings', 'type' => 'add', 'member_id' => $member_id_of, 'spam' => 1, 'redirect' => $redir_url), get_module_zone('warnings')), 'buttons/report');
             $modules[] = array('audit', do_lang_tempcode('PUNITIVE_HISTORY'), build_url(array('page' => 'warnings', 'type' => 'history', 'id' => $member_id_of), get_module_zone('warnings')), 'menu/social/warnings');
         }
         if ((addon_installed('actionlog')) && (has_privilege($member_id_viewing, 'view_revisions')) && (has_actual_page_access($member_id_viewing, 'admin_revisions'))) {

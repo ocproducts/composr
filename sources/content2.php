@@ -451,6 +451,7 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = array(), 
                     $type = '';
                     $_content_id = $zone;
 
+                    // Update ID of existing moniker(s)
                     if ($new_content_id !== null) {
                         $GLOBALS['SITE_DB']->query_update('url_id_monikers', array(
                             'm_resource_page' => $new_content_id,
@@ -462,6 +463,7 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = array(), 
                     $type = $attributes['type'];
                     $_content_id = $content_id;
 
+                    // Update ID of existing moniker(s)
                     if ($new_content_id !== null) {
                         $GLOBALS['SITE_DB']->query_update('url_id_monikers', array(
                             'm_resource_id' => $new_content_id,

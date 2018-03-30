@@ -11,7 +11,9 @@
 		{!FILTER_BY_ZONE}:
 	</p>
 	<ul>
-		<li><a href="{$PAGE_LINK*,_SELF:_SELF:generate_page_sitemap}">{!NONE_EM}</a></li>
+		{+START,IF,{$NEQ,{$GET,filter,none},none}}
+			<li><a href="{$PAGE_LINK*,_SELF:_SELF:generate_page_sitemap}">{!NONE_EM}</a></li>
+		{+END}
 		{+START,LOOP,ZONES}
 			<li><a href="{$PAGE_LINK*,_SELF:_SELF:generate_page_sitemap:filter={_loop_key}}">{_loop_var*}</a></li>
 		{+END}

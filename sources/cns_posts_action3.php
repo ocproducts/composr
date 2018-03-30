@@ -363,10 +363,10 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
         // Update caching
         require_code('cns_posts_action2');
         cns_force_update_topic_caching($topic_id, -$num_posts_counted, true, true);
-    }
-    if ($forum_id !== null) {
-        require_code('cns_posts_action2');
-        cns_force_update_forum_caching($forum_id, 0, -$num_posts_counted);
+        if ($forum_id !== null) {
+            require_code('cns_posts_action2');
+            cns_force_update_forum_caching($forum_id, 0, -$num_posts_counted);
+        }
     }
 
     require_code('cns_posts_action');

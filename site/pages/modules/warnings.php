@@ -407,6 +407,8 @@ class Module_warnings extends Standard_crud_module
      */
     public function get_form_fields($new = true, $explanation = '', $is_warning = 0, $member_id = null)
     {
+        $spam_mode = (get_param_integer('spam', 0) == 1);
+
         if ($member_id === null) {
             $member_id = get_param_integer('member_id', get_member());
         }
@@ -424,6 +426,8 @@ class Module_warnings extends Standard_crud_module
         if (is_object($profile_url)) {
             $profile_url = $profile_url->evaluate();
         }
+
+        $this->add_text = new Tempcode();
 
         // Information about their history, and the rules - to educate the warner/punisher
         if ($new) {
@@ -447,6 +451,67 @@ class Module_warnings extends Standard_crud_module
         // Punitive actions...
 
         if ($new) {
+            define('POST_STANDALONE_AT_END', 0);
+            define('POST_STANDALONE_IN_MIDDLE', 1);
+            define('POST_AS_TOPIC_FULL', 2);
+            define('POST_AS_TOPIC_STARTER', 3);
+
+            $posts_deletable = array();
+            if (has_delete_permission('mid', get_member(), $member_id, 'topics')) {
+                $first_post_time = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'MIN(p_time)', array('p_poster' => $member_id));
+                if ($first_post_time > time() - 60 * 60 * 24 * 14) { // i.e. a recent spammer, not a normal member being punished
+                    $where = array('p_poster' => $member_id);
+                    $sup = 'ORDER BY p_time';
+                    if (!has_privilege(get_member(), 'view_other_pt')) {
+                        $sup = ' AND p_forum_id IS NOT NULL ' . $sup;
+                    }
+                    $posts_by_member = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('p.*', 't_cache_first_post_id', 't_cache_last_post_id', 't_cache_num_posts', 't_cache_first_title'), $where, $sup);
+                    $spam_urls = array();
+                    foreach ($posts_by_member as $post) {
+                        $just_post_row = db_map_restrict($post, array('id', 'p_post'));
+                        $post_text = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['FORUM_DB']);
+                        $matches = array();
+                        $num_matches = preg_match_all('#<a\s[^<>]*href=["\']([^"\']*)["\']#', $post_text->evaluate(), $matches);
+                        for ($i = 0; $i < $num_matches; $i++) {
+                            $spam_url = $matches[1][$i];
+                            if (!url_is_local($spam_url)) {
+                                $domain = parse_url($spam_url, PHP_URL_HOST);
+                                if ($domain != get_domain()) {
+                                    if (!isset($spam_urls[$domain])) {
+                                        require_code('mail');
+                                        $spam_urls[$domain] = array('DOMAIN' => $domain, 'URLS' => array(), 'POSTS' => array());
+                                    }
+                                    if (!isset($spam_urls[$domain]['URLS'][$spam_url])) {
+                                        $spam_urls[$domain]['URLS'][$spam_url] = array('I' => strval(count($spam_urls[$domain]['URLS'])), 'URL' => $spam_url);
+                                    }
+                                    if (!isset($spam_urls[$domain]['POSTS'][$post['id']])) {
+                                        $spam_urls[$domain]['POSTS'][$post['id']] = array('I' => strval(count($spam_urls[$domain]['POSTS'])), 'POST_TITLE' => $post['p_title'], 'POST' => strip_html($post_text->evaluate()));
+                                    }
+                                }
+                            }
+                        }
+
+                        if ($post['t_cache_first_post_id'] == $post['id']) {
+                            if ($post['t_cache_num_posts'] == 1) {
+                                $post_context = POST_AS_TOPIC_STARTER;
+                            } else {
+                                $post_context = POST_AS_TOPIC_FULL;
+                            }
+                        } else {
+                            if ($post['t_cache_last_post_id'] == $post['id']) {
+                                $post_context = POST_STANDALONE_AT_END;
+                            } else {
+                                $post_context = POST_STANDALONE_IN_MIDDLE;
+                            }
+                        }
+                        $posts_deletable[$post['id']] = array($post_context, $post['id'], $post['p_topic_id'], $post['t_cache_first_title'], $post['p_time']);
+                    }
+                    if (count($spam_urls) > 0) {
+                        $this->add_text->attach(paragraph(do_template('CNS_WARN_SPAM_URLS', array('USERNAME' => $username, 'SPAM_URLS' => $spam_urls))));
+                    }
+                }
+            }
+
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '322a026b7a56a3e4e9ac58e4979add35', 'TITLE' => do_lang_tempcode('PUNITIVE_ACTIONS'))));
 
             if (addon_installed('securitylogging')) {
@@ -531,19 +596,53 @@ class Module_warnings extends Standard_crud_module
         }
 
         // Moderation actions
-        if ((addon_installed('commandr')) && ($new)) {
-            $content = $this->find_member_content($member_id);
-            if (count($content) > 0) {
-                $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c7eb70b13be74d8f3bd1f1c5e739d9ab', 'TITLE' => do_lang_tempcode('DELETE'), 'HELP' => do_lang_tempcode('DESCRIPTION_DELETE_CONTENT'))));
+        if ($new) {
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c7eb70b13be74d8f3bd1f1c5e739d9ab', 'TITLE' => do_lang_tempcode('DELETE'), 'HELP' => do_lang_tempcode('DESCRIPTION_DELETE_CONTENT'))));
 
-                foreach ($content as $content_details) {
-                    list($content_type_title, $content_type, $content_id, $content_title, $content_url, $content_timestamp, $auto_selected) = $content_details;
-                    if (is_object($content_url)) {
-                        $content_url = $content_url->evaluate();
+            foreach ($posts_deletable as $post_id => $_post_deletable) {
+                list($post_context, $post_id, $topic_id, $topic_title, $post_time) = $_post_deletable;
+
+                $list_options = new Tempcode();
+                $list_options->attach(form_input_list_entry('', !$spam_mode, do_lang_tempcode('HANDLE_POST__NOTHING')));
+                switch ($post_context) {
+                    case POST_STANDALONE_AT_END:
+                        $handle_label = do_lang_tempcode('HANDLE_POST__POST_STANDALONE_AT_END', escape_html($topic_title), escape_html(integer_format($post_id)), array(escape_html(integer_format($topic_id))));
+                        $list_options->attach(form_input_list_entry('delete_post', $spam_mode, do_lang_tempcode('HANDLE_POST__DELETE_POST', escape_html($topic_title), escape_html(integer_format($post_id)), array(escape_html(integer_format($topic_id))))));
+                        break;
+
+                    case POST_STANDALONE_IN_MIDDLE:
+                        $num_replies = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($topic_id) . ' AND p_time>' . strval($post_time));
+                        $handle_label = do_lang_tempcode('HANDLE_POST__POST_STANDALONE_IN_MIDDLE', escape_html($topic_title), escape_html(integer_format($post_id)), array(escape_html(integer_format($topic_id)), escape_html(integer_format($num_replies))));
+                        $list_options->attach(form_input_list_entry('delete_post', $spam_mode, do_lang_tempcode('HANDLE_POST__DELETE_POST_WITH_GAP', escape_html($topic_title), escape_html(integer_format($post_id)), array(escape_html(integer_format($topic_id)), escape_html(integer_format($num_replies))))));
+                        $list_options->attach(form_input_list_entry('delete_post_and_following', false, do_lang_tempcode('HANDLE_POST__DELETE_POST_AND_FOLLOWING', escape_html($topic_title), escape_html(integer_format($post_id)), array(escape_html(integer_format($topic_id)), escape_html(integer_format($num_replies))))));
+                        break;
+
+                    case POST_AS_TOPIC_FULL:
+                        $num_replies = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($topic_id) . ' AND p_time>' . strval($post_time));
+                        $handle_label = do_lang_tempcode('HANDLE_POST__POST_AS_TOPIC_FULL', escape_html($topic_title), escape_html(integer_format($post_id)), array(escape_html(integer_format($topic_id)), escape_html(integer_format($num_replies))));
+                        $list_options->attach(form_input_list_entry('delete_post_and_following', $spam_mode, do_lang_tempcode('HANDLE_POST__DELETE_TOPIC_WITH_REPLIES', escape_html($topic_title), escape_html(integer_format($post_id)), array(escape_html(integer_format($topic_id)), escape_html(integer_format($num_replies))))));
+                        break;
+
+                    case POST_AS_TOPIC_STARTER:
+                        $handle_label = do_lang_tempcode('HANDLE_POST__POST_AS_TOPIC_STARTER', escape_html($topic_title), escape_html(integer_format($post_id)), array(escape_html(integer_format($topic_id))));
+                        $list_options->attach(form_input_list_entry('delete_post_and_following', $spam_mode, do_lang_tempcode('HANDLE_POST__DELETE_TOPIC', escape_html($topic_title), escape_html(integer_format($post_id)), array(escape_html(integer_format($topic_id))))));
+                        break;
+                }
+                $fields->attach(form_input_list($handle_label, '', 'handle_post__' . strval($post_id), $list_options, null, false, false));
+            }
+
+            if (addon_installed('commandr')) {
+                $content = $this->find_member_content($member_id);
+                if (count($content) > 0) {
+                    foreach ($content as $content_details) {
+                        list($content_type_title, $content_type, $content_id, $content_title, $content_url, $content_timestamp, $auto_selected) = $content_details;
+                        if (is_object($content_url)) {
+                            $content_url = $content_url->evaluate();
+                        }
+                        $content_description = do_lang_tempcode('DESCRIPTION_DELETE_THIS', escape_html($content_title), escape_html(get_timezoned_date_time($content_timestamp)), array(escape_html($content_url), do_lang($content_type_title)));
+
+                        $fields->attach(form_input_tick($content_title, $content_description, 'delete__' . $content_type . '_' . $content_id, $auto_selected));
                     }
-                    $content_description = do_lang_tempcode('DESCRIPTION_DELETE_THIS', escape_html($content_title), escape_html(get_timezoned_date_time($content_timestamp)), array(escape_html($content_url), do_lang($content_type_title)));
-
-                    $fields->attach(form_input_tick($content_title, $content_description, 'delete__' . $content_type . '_' . $content_id, $auto_selected));
                 }
             }
         }
@@ -553,7 +652,7 @@ class Module_warnings extends Standard_crud_module
         $keep = symbol_tempcode('KEEP');
         $load_url = find_script('warnings_browse') . '?type=load' . $keep->evaluate();
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c7eb70b13be74d8f3bd1f1c5e739d9aa', 'TITLE' => do_lang_tempcode('EXPLANATORY_TEXT'), 'HELP' => do_lang_tempcode('LOAD_SAVED_WARNING', escape_html($load_url)))));
-        if ($explanation == '') {
+        if (($explanation == '') && ($spam_mode)) {
             $explanation = do_lang('SPAM');
         }
         $fields->attach(form_input_line_comcode(do_lang_tempcode('REASON'), do_lang_tempcode('DESCRIPTION_REASON'), 'explanation', $explanation, true));
@@ -689,53 +788,10 @@ class Module_warnings extends Standard_crud_module
 
         require_code('content');
 
-        $post_id = get_param_integer('post_id', null);
-
         $content = array();
 
         if (is_guest($member_id)) {
-            // For guests we can at least try and get a specific topic/post being warned for...
-
-            if ($post_id !== null) {
-                $post_rows = $GLOBALS['FORUM_DB']->query_select(
-                    'f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id',
-                    array('*', 'p.id AS post_id', 't.id AS topic_id'),
-                    array('p.id' => $post_id)
-                );
-                if (count($post_rows) != 0) {
-                    $row = $post_rows[0];
-
-                    $content_url = $GLOBALS['FORUM_DRIVER']->post_url($post_id, $row['t_forum_id'], true);
-                    $content_title = $row['p_title'];
-                    if ($content_title == '') {
-                        $content_title = do_lang('cns:FORUM_POST_NUMBERED', strval($post_id));
-                    }
-                    $content[] = array(
-                        do_lang('cns:FORUM_POST'),
-                        'post',
-                        strval($post_id),
-                        $content_title,
-                        $content_url,
-                        $row['p_time'],
-                        true,
-                    );
-
-                    if ($row['t_cache_first_post_id'] == $post_id) {
-                        $content_url = $GLOBALS['FORUM_DRIVER']->topic_url($post_id, $row['t_forum_id'], true);
-                        $content_title = $row['t_cache_first_title'];
-                        $content[] = array(
-                            do_lang('cns:FORUM_TOPIC'),
-                            'topic',
-                            strval($row['topic_id']),
-                            $content_title,
-                            $content_url,
-                            $row['t_cache_first_time'],
-                            true,
-                        );
-                    }
-                }
-                return $content;
-            }
+            return $content;
         }
 
         // All content using hooks...
@@ -743,7 +799,14 @@ class Module_warnings extends Standard_crud_module
         $hooks = find_all_hook_obs('systems', 'content_meta_aware', 'Hook_content_meta_aware_');
         foreach ($hooks as $hook => $ob) {
             $cma_info = $ob->info();
-            if (($hook != 'member') && ($cma_info['table'] !== null) && ($cma_info['submitter_field'] !== null) && (($cma_info['id_field'] !== null) && (strpos($cma_info['submitter_field'], ':') === false)) && ($cma_info['commandr_filesystem_hook'] !== null)) {
+            if (
+                (!in_array($hook, array('member', 'topic', 'post'/*topics and posts handled with special support elsewhere*/))) &&
+                ($cma_info['table'] !== null) &&
+                ($cma_info['submitter_field'] !== null) &&
+                (($cma_info['id_field'] !== null) &&
+                (strpos($cma_info['submitter_field'], ':') === false)) &&
+                ($cma_info['commandr_filesystem_hook'] !== null)
+            ) {
                 $start = 0;
                 $max = 100;
 
@@ -764,14 +827,6 @@ class Module_warnings extends Standard_crud_module
                         list($zone, $url_bits, $hash) = page_link_decode(str_replace('_WILD', $content_id, $cma_info['view_page_link_pattern']));
                         $content_url = build_url($url_bits, $zone, array(), false, false, false, $hash);
 
-                        $auto_selected = false;
-                        if (($hook == 'post') && ($post_id !== null) && ($content_id == strval($post_id))) {
-                            $auto_selected = true;
-                        }
-                        if (($hook == 'topic') && ($post_id !== null) && ($row['t_cache_first_post_id'] == $post_id)) {
-                            $auto_selected = true;
-                        }
-
                         $content[] = array(
                             $cma_info['content_type_label'],
                             $hook,
@@ -779,7 +834,7 @@ class Module_warnings extends Standard_crud_module
                             $content_title,
                             $content_url,
                             $row[$cma_info['add_time_field']],
-                            $auto_selected
+                            false
                         );
                     }
 
@@ -905,6 +960,40 @@ class Module_warnings extends Standard_crud_module
             ));
         } else {
             $silence_from_forum = null;
+        }
+
+        // Post deletion
+        if (has_delete_permission('mid', get_member(), $member_id, 'topics')) {
+            $where = array('p_poster' => $member_id);
+            $sup = 'ORDER BY p_time';
+            if (!has_privilege(get_member(), 'view_other_pt')) {
+                $sup = ' AND p_forum_id IS NOT NULL ' . $sup;
+            }
+            $posts_already_deleted = array();
+            $posts_by_member = $GLOBALS['FORUM_DB']->query_select('f_posts', array('id', 'p_topic_id', 'p_time'), $where, $sup);
+            foreach ($posts_by_member as $post) {
+                if (isset($posts_already_deleted[$post['id']])) {
+                    continue;
+                }
+                require_code('cns_posts_action3');
+                $post_action = post_param_string('handle_post__' . strval($post['id']), '');
+                $posts = array();
+                switch ($post_action) {
+                    case 'delete_post':
+                        $posts[] = $post['id'];
+                        $posts_already_deleted[$post['id']] = true;
+                        break;
+                    case 'delete_post_and_following':
+                        $posts[] = $post['id'];
+                        $further_posts = $GLOBALS['FORUM_DB']->query_select('f_posts', array('id'), array('p_topic_id' => $post['p_topic_id']), 'AND p_time>' . strval($post['p_time']));
+                        foreach ($further_posts as $_post) {
+                            $posts[] = $_post['id'];
+                            $posts_already_deleted[$_post['id']] = true;
+                        }
+                        break;
+                }
+                cns_delete_posts_topic($post['p_topic_id'], $posts, $explanation, false);
+            }
         }
 
         // Probation

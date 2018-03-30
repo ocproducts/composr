@@ -20,6 +20,8 @@ class Hook_symbol_FB_CONNECT_UID
 {
     public function run($param)
     {
+        // The symbol connects direct to the Facebook API, which won't be running if the base user is not running on Facebook. The results using SU are going to be unreliable, because it's always going to get the result from the Facebook API (if running) and not the Composr database.
+
         if (!addon_installed('facebook_support')) {
             return '';
         }

@@ -31,6 +31,11 @@ class special_links_test_set extends cms_test_case
         $this->assertTrue(strpos(http_get_contents('https://ping.eu/traceroute/?host=12.34.56.78', array('trigger_error' => false)), 'Traceroute') !== false, 'External link not working, fix test and use within Composr (separate) [LOOKUP_SCREEN.tpl, COMMANDR_WHOIS.tpl]');
     }
 
+    public function testWhoIsLink()
+    {
+        $this->assertTrue(strpos(http_download_file('http://whois.domaintools.com/compo.sr', null, false), 'Whois Record') !== false, 'External link not working, fix test and use within Composr (separate) [WARN_SPAM_URLS.tpl]');
+    }
+
     public function testHealthCheckLinks()
     {
         $urls = array(

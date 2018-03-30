@@ -255,7 +255,7 @@ class Module_cms_tutorials extends Standard_crud_module
         $url = post_param_string('url', false, INPUT_FILTER_URL_GENERAL);
         $title = post_param_string('title');
         $summary = post_param_string('summary');
-        $icon = find_theme_image(post_param_string('icon'));
+        $icon = post_param_string('icon');
         $media_type = post_param_string('media_type');
         $difficulty_level = post_param_string('difficulty_level');
         $pinned = post_param_integer('pinned', 0);
@@ -287,6 +287,8 @@ class Module_cms_tutorials extends Standard_crud_module
             ));
         }
 
+        log_it('ADD_TUTORIAL', strval($id), $title);
+
         @unlink(get_custom_file_base() . '/uploads/website_specific/tutorial_sigs.dat');
 
         return strval($id);
@@ -304,7 +306,7 @@ class Module_cms_tutorials extends Standard_crud_module
         $url = post_param_string('url', false, INPUT_FILTER_URL_GENERAL);
         $title = post_param_string('title');
         $summary = post_param_string('summary');
-        $icon = find_theme_image(post_param_string('icon'));
+        $icon = post_param_string('icon');
         $media_type = post_param_string('media_type');
         $difficulty_level = post_param_string('difficulty_level');
         $pinned = post_param_integer('pinned', 0);
@@ -334,6 +336,8 @@ class Module_cms_tutorials extends Standard_crud_module
             ));
         }
 
+        log_it('EDIT_TUTORIAL', strval($id), $title);
+
         @unlink(get_custom_file_base() . '/uploads/website_specific/tutorial_sigs.dat');
     }
 
@@ -346,8 +350,15 @@ class Module_cms_tutorials extends Standard_crud_module
     {
         $id = intval($_id);
 
+        $title = $GLOBALS['SITE_DB']->query_select_value_if_there('tutorials_external', 't_title', array('id' => $id));
+        if ($title === null) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+
         $GLOBALS['SITE_DB']->query_delete('tutorials_external', array('id' => $id), '', 1);
         $GLOBALS['SITE_DB']->query_delete('tutorials_external_tags', array('t_id' => $id));
+
+        log_it('DELETE_TUTORIAL', strval($id), $title);
 
         @unlink(get_custom_file_base() . '/uploads/website_specific/tutorial_sigs.dat');
     }
