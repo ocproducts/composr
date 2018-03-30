@@ -397,6 +397,9 @@ function install_cns($upgrade_from = null)
             'cf_encrypted' => 'BINARY',
             'cf_show_on_join_form' => 'BINARY',
             'cf_options' => 'SHORT_TEXT',
+            'cf_icon' => 'ID_TEXT',
+            'cf_section' => 'ID_TEXT',
+            'cf_tempcode' => 'LONG_TEXT',
         ));
 
         // These don't need to be filled in. We just use default from custom field if they aren't
