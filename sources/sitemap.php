@@ -316,6 +316,11 @@ abstract class Hook_sitemap_base
                 $zone = $matches[1]; // $page_link was known, $zone was known, but mismatch so assume $zone was wrong
             } // else change nothing ($page_link was known, $zone was known)
         }
+
+        if (($zone == 'site') && (get_option('collapse_user_zones') == '1')) {
+            $zone = '';
+        }
+
         // Correct the page-link from the zone
         $page_link = preg_replace('#^_SEARCH(:|$)#', $zone . '${1}', $page_link);
 

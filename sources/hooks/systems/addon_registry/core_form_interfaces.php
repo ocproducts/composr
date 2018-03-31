@@ -1627,7 +1627,7 @@ class Hook_addon_registry_core_form_interfaces
                 'SECTION_TITLE' => $_option[2],
                 'EXPANDED' => $_option[1],
                 'SIMPLE_STYLE' => false,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CUSTOM_ACCEPT_MULTIPLE' => false,
                 'CUSTOM_NAME' => placeholder_random_id(),
                 'CUSTOM_VALUE' => '',

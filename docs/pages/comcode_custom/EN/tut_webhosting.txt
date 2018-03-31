@@ -132,6 +132,7 @@ We require:
  - Key functions may not be disabled with [tt]disable_functions[/tt] (PHP can be stripped down heavily by disreputable webhosts) -- the installer will warn if any critical functions have been.
  - No other explicit disabling of standard functionality that we require via third-party PHP modification. Commonly webhosts do this using ModSecurity, Suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
  - Memory limit of at least 128MB (as this is PHP's default memory limit since 2009).
+ - If you are running on Windows, and a PHP version below 7.2, and are using non-latin characters in codenames, you need to install the [tt]transliteration[/tt] addon (basically due to a PHP bug reading and write non-latin filenames)
 
 [title="3"]Database[/title]
 

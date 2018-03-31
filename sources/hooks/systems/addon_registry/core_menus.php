@@ -309,7 +309,7 @@ class Hook_addon_registry_core_menus
                 'POSITION' => '1',
                 'FIRST' => false,
                 'LAST' => false,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));
@@ -332,7 +332,7 @@ class Hook_addon_registry_core_menus
                 'POSITION' => '2',
                 'FIRST' => false,
                 'LAST' => false,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));
@@ -392,7 +392,7 @@ class Hook_addon_registry_core_menus
                 'POSITION' => '1',
                 'FIRST' => false,
                 'LAST' => false,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));
@@ -415,7 +415,7 @@ class Hook_addon_registry_core_menus
                 'POSITION' => '2',
                 'FIRST' => false,
                 'LAST' => false,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));
@@ -475,7 +475,7 @@ class Hook_addon_registry_core_menus
                 'POSITION' => '1',
                 'FIRST' => false,
                 'LAST' => false,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));
@@ -504,7 +504,7 @@ class Hook_addon_registry_core_menus
                 'POSITION' => '2',
                 'FIRST' => false,
                 'LAST' => false,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));
@@ -551,7 +551,7 @@ class Hook_addon_registry_core_menus
                 'POSITION' => '1',
                 'FIRST' => false,
                 'LAST' => false,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));
@@ -574,7 +574,7 @@ class Hook_addon_registry_core_menus
                 'POSITION' => '2',
                 'FIRST' => false,
                 'LAST' => false,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));
@@ -634,7 +634,7 @@ class Hook_addon_registry_core_menus
                 'POSITION' => '1',
                 'FIRST' => false,
                 'LAST' => false,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));
@@ -657,7 +657,7 @@ class Hook_addon_registry_core_menus
                 'POSITION' => '2',
                 'FIRST' => false,
                 'LAST' => false,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));
@@ -717,7 +717,7 @@ class Hook_addon_registry_core_menus
                 'POSITION' => '1',
                 'FIRST' => false,
                 'LAST' => false,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));
@@ -740,7 +740,7 @@ class Hook_addon_registry_core_menus
                 'POSITION' => '2',
                 'FIRST' => false,
                 'LAST' => false,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));
@@ -800,7 +800,7 @@ class Hook_addon_registry_core_menus
                 'POSITION' => strval($k),
                 'FIRST' => $k === 0,
                 'LAST' => $k === 2,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));
@@ -823,7 +823,7 @@ class Hook_addon_registry_core_menus
                 'POSITION' => strval($k),
                 'FIRST' => $k === 0,
                 'LAST' => $k === 2,
-                'BRETHREN_COUNT' => '3',
+                'SIBLINGS' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));

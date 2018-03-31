@@ -74,7 +74,7 @@ function has_post_access($post_id, $member_id = null, $post_details = null)
 /**
  * Find whether a member may post in a certain topic.
  *
- * @param  AUTO_LINK $forum_id The forum ID of the forum the topic is in
+ * @param  ?AUTO_LINK $forum_id The forum ID of the forum the topic is in (null: private topics)
  * @param  AUTO_LINK $topic_id The topic ID is in
  * @param  ?MEMBER $last_member_id The last poster in the topic (null: do not check for double posting)
  * @param  boolean $closed Whether this topic is closed
