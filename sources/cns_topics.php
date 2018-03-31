@@ -184,7 +184,7 @@ function cns_check_make_private_topic()
 /**
  * Find whether a member may post a topic in a certain forum.
  *
- * @param  AUTO_LINK $forum_id The forum the topic would be in
+ * @param  ?AUTO_LINK $forum_id The forum the topic would be in (null: private topics)
  * @param  ?MEMBER $member_id The member (null: current member)
  * @return boolean The answer
  */

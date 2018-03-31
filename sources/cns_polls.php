@@ -21,7 +21,7 @@
 /**
  * Find whether a member can alter a poll owned by a certain member in a certain forum.
  *
- * @param  AUTO_LINK $forum_id The forum
+ * @param  ?AUTO_LINK $forum_id The forum (null: private topics)
  * @param  MEMBER $poll_owner The poll owner
  * @param  ?MEMBER $member_id The member we are checking for (null: current member)
  * @return boolean The answer
@@ -93,7 +93,7 @@ function cns_may_attach_poll($topic_id, $topic_owner = null, $has_poll_already =
 /**
  * Find whether a member can delete a poll owned by a certain member in a certain forum.
  *
- * @param  AUTO_LINK $forum_id The forum
+ * @param  ?AUTO_LINK $forum_id The forum (null: private topics)
  * @param  MEMBER $poll_owner The poll owner
  * @param  ?MEMBER $member_id The member we are checking for (null: current member)
  * @return boolean The answer
