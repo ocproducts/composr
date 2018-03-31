@@ -1,5 +1,5 @@
-# Always convert line endings to LF on checkout
-text eol=lf
+# Autodetect most text files, always convert line endings to LF on checkout
+* text=auto eol=lf
 
 # Text formats we allow web access to
 *.1st text
