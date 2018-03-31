@@ -173,6 +173,7 @@ class Block_main_forum_news
             if ($news === null) {
                 $news = '';
             }
+            require_code('lorem');
             $full_url = $GLOBALS['FORUM_DRIVER']->topic_url($id, '', true);
             $news_text->attach(do_template('NEWS_BOX', array(
                 '_GUID' => '12fa98717a768ccbe28884bdbae0313b',
