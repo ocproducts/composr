@@ -144,6 +144,10 @@ For example:
 		width: auto;
 	}
 
+	.dropdown-menu li.toplevel.first.brethren_1 {
+		width: 50%; /* Otherwise it looks ugly */
+	}
+
 	.dropdown-menu li.toplevel.menu-spacer {
 		height: 1.15em;
 		width: 4em;
