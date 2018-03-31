@@ -471,7 +471,7 @@ function _render_menu($menu, $source_member, $type, $as_admin = false, $apply_hi
                 'POSITION' => strval($i),
                 'FIRST' => $i == 0,
                 'LAST' => $i == $num - 1,
-                'BRETHREN_COUNT' => strval($num),
+                'SIBLINGS' => strval($num),
                 'MENU' => $codename,
             ), null, false, 'MENU_BRANCH_tree'));
         }
@@ -672,7 +672,7 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
                 'POSITION' => strval($i),
                 'FIRST' => $i == 0,
                 'LAST' => $i == $num - 1,
-                'BRETHREN_COUNT' => strval($num),
+                'SIBLINGS' => strval($num),
                 'MENU' => $codename,
             ), null, false, 'MENU_BRANCH_tree'));
         }

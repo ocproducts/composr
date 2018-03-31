@@ -144,7 +144,7 @@ For example:
 		width: auto;
 	}
 
-	.dropdown-menu li.toplevel.first.brethren_1 {
+	.dropdown-menu li.toplevel.first.siblings-1 {
 		width: 50%; /* Otherwise it looks ugly */
 	}
 

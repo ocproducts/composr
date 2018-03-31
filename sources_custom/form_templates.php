@@ -85,7 +85,7 @@ function form_input_various_ticks($options, $description, $_tabindex = null, $_p
             'SECTION_TITLE' => $_option[2],
             'EXPANDED' => $_option[1],
             'SIMPLE_STYLE' => $simple_style,
-            'BRETHREN_COUNT' => strval(count($out)),
+            'SIBLINGS' => strval(count($out)),
             'OUT' => $out,
         )));
     }
