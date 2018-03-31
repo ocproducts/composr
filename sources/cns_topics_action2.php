@@ -604,7 +604,7 @@ function send_pt_notification($post_id, $subject, $topic_id, $to_id, $from_id = 
 /**
  * If necessary, send out a support ticket reply
  *
- * @param  AUTO_LINK $forum_id Forum ID
+ * @param  ?AUTO_LINK $forum_id Forum ID (null: private topics)
  * @param  AUTO_LINK $topic_id Topic ID
  * @param  SHORT_TEXT $topic_title Topic title
  * @param  LONG_TEXT $post Post made

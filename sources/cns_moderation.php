@@ -21,7 +21,7 @@
 /**
  * List all the multi moderations that may be used in a certain forum.
  *
- * @param  AUTO_LINK $forum_id The forum we are listing for.
+ * @param  ?AUTO_LINK $forum_id The forum we are listing for (null: private topics).
  * @return array List of multi moderations.
  */
 function cns_list_multi_moderations($forum_id)
@@ -71,7 +71,7 @@ function cns_list_multi_moderations($forum_id)
 /**
  * Whether a certain member may perform multi moderations in a certain forum.
  *
- * @param  AUTO_LINK $forum_id The forum.
+ * @param  ?AUTO_LINK $forum_id The forum (null: private topics).
  * @param  ?MEMBER $member_id The member (null: current member).
  * @return boolean Answer.
  */
