@@ -306,8 +306,6 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
     require_code('uploads');
     $is_upload = (is_plupload()) || (array_key_exists($file_param_name, $_FILES)) && (array_key_exists('tmp_name', $_FILES[$file_param_name]) && (is_uploaded_file($_FILES[$file_param_name]['tmp_name'])));
 
-    require_code('uploads');
-
     $url = '';
 
     // Find banner type details
@@ -354,24 +352,15 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
             if ((function_exists('imagetypes')) && (substr($test_url, -4) != '.swf')) {
                 require_code('images');
                 if (is_image($test_url)) {
-                    require_code('files');
-                    $img_res = @imagecreatefromstring($data);
-                    if ($img_res === false) {
+                    $test = cms_getimagesizefromstring($data, get_file_extension($test_url));
+                    if (!$test) {
                         if (url_is_local($test_url)) {
                             @unlink(get_custom_file_base() . '/' . rawurldecode($test_url));
                             sync_file(rawurldecode($test_url));
                         }
                         warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($test_url)));
                     }
-
-                    if (get_file_extension($test_url) == 'gif') {
-                        $header = unpack('@6/' . 'vwidth/' . 'vheight', $data);
-                        $sx = $header['width'];
-                        $sy = $header['height'];
-                    } else {
-                        $sx = imagesx($img_res);
-                        $sy = imagesy($img_res);
-                    }
+                    list($sx, $sy) = $test;
 
                     if ((get_option('banner_autosize') != '1') && (($sx != $banner_type_row['t_image_width']) || ($sy != $banner_type_row['t_image_height']))) {
                         if (url_is_local($test_url)) {

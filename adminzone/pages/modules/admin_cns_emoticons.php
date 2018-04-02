@@ -104,6 +104,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
 
         require_lang('dearchive');
         require_code('images');
+        require_code('uploads');
 
         if (get_forum_type() != 'cns') {
             warn_exit(do_lang_tempcode('NO_CNS'));
@@ -211,7 +212,6 @@ class Module_admin_cns_emoticons extends Standard_crud_module
     {
         post_param_string('test'); // To pick up on max file size exceeded errors
 
-        require_code('uploads');
         require_code('images');
         is_plupload(true);
 
@@ -333,6 +333,10 @@ class Module_admin_cns_emoticons extends Standard_crud_module
             $image_code = 'cns_emoticons/' . $emoticon_code;
         }
         $url_path = 'themes/default/images_custom/' . rawurlencode(basename($path));
+
+        // Images cleanup pipeline
+        $full_path = get_custom_file_base() . '/' . $path;
+        handle_images_cleanup_pipeline($full_path);
 
         $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $image_code));
         $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $image_code, 'theme' => 'default', 'path' => $url_path, 'lang' => get_site_default_lang()));

@@ -53,27 +53,15 @@ function _symbol_image_dims($param)
 
         $base_url = get_custom_base_url();
 
-        if ((function_exists('getimagesize')) && (strpos($path, '.php') === false) && (substr($path, 0, strlen($base_url)) == $base_url) && (is_image($path))) {
-            $details = @getimagesize(get_custom_file_base() . '/' . urldecode(substr($path, strlen($base_url) + 1)));
-            if ($details !== false) {
-                $value = array(strval($details[0]), strval($details[1]));
-            }
+        if ((strpos($path, '.php') === false) && (substr($path, 0, strlen($base_url)) == $base_url) && (is_image($path))) {
+            $details = cms_getimagesize(get_custom_file_base() . '/' . urldecode(substr($path, strlen($base_url) + 1)));
         } else {
             $from_file = http_download_file($path, 1024 * 1024 * 20/*reasonable limit*/, false);
-            $source = @imagecreatefromstring($from_file);
-            if ($source !== false) {
-                if (get_file_extension($path) == 'gif') { // Workaround problem with animated gifs
-                    $header = unpack('@6/' . 'vwidth/' . 'vheight', $from_file);
-                    $sx = $header['width'];
-                    $sy = $header['height'];
-                } else {
-                    $sx = imagesx($source);
-                    $sy = imagesy($source);
-                }
+            $details = cms_getimagesizefromstring($from_file, get_file_extension($path));
+        }
 
-                $value = array(strval($sx), strval($sy));
-                imagedestroy($source);
-            }
+        if ($details !== false) {
+            $value = array(strval($details[0]), strval($details[1]));
         }
 
         if ($cacheable) {
@@ -200,7 +188,7 @@ function _symbol_thumbnail($param)
                 // Find dimensions of the source
                 $converted_to_path = convert_url_to_path($orig_url);
                 if (!is_null($converted_to_path)) {
-                    $sizes = @getimagesize($converted_to_path);
+                    $sizes = cms_getimagesize($converted_to_path);
                     if ($sizes === false) {
                         if (($fallback != '') && ($fallback != $param[0])) {
                             $param[0] = $fallback;
@@ -212,7 +200,7 @@ function _symbol_thumbnail($param)
                     }
                     list($source_x, $source_y) = $sizes;
                 } else {
-                    $source = @imagecreatefromstring(http_download_file($orig_url, null, false));
+                    $source = cms_imagecreatefromstring(http_download_file($orig_url, null, false), get_file_extension($orig_url));
                     if ($source === false) {
                         if (($fallback != '') && ($fallback != $param[0])) {
                             $param[0] = $fallback;
@@ -302,6 +290,73 @@ function _symbol_thumbnail($param)
     }
 
     return $value;
+}
+
+/**
+ * Find image dimensions. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
+ *
+ * @param  string $path The path to the image file
+ * @param  ?string $ext File extension (null: get from path, even if not detected this function will mostly work)
+ * @return ~array The width and height (false: error)
+ */
+function cms_getimagesize($path, $ext = null)
+{
+    if ($ext === null) {
+        $ext = get_file_extension($path);
+    }
+
+    if ($ext == 'gif') {
+        $data = @cms_file_get_contents_safe($path);
+        if ($data === false) {
+            return false;
+        }
+        return cms_getimagesizefromstring($data, $ext);
+    }
+
+    if (function_exists('getimagesize')) {
+        $details = @getimagesize($path);
+        if ($details !== false) {
+            return array($details[0], $details[1]);
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Find image dimensions from a string. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
+ *
+ * @param  string $data The image file data
+ * @param  ?string $ext File extension (null: unknown)
+ * @return ~array The width and height (false: error)
+ */
+function cms_getimagesizefromstring($data, $ext)
+{
+    if ($ext === 'gif') { // Workaround problem with animated gifs
+        $header = unpack('@6/' . 'vwidth/' . 'vheight', $data);
+        $sx = $header['width'];
+        $sy = $header['height'];
+        return array($sx, $sy);
+    }
+
+    if (function_exists('getimagesizefromstring')) {
+        $details = @getimagesizefromstring($data);
+        if ($details !== false) {
+            return array($details[0], $details[1]);
+        }
+    } else {
+        $img_res = cms_imagecreatefromstring($data, $ext);
+        if ($img_res !== false) {
+            $sx = imagesx($img_res);
+            $sy = imagesy($img_res);
+
+            imagedestroy($img_res);
+
+            return array($sx, $sy);
+        }
+    }
+
+    return false;
 }
 
 /**
@@ -654,4 +709,154 @@ function get_allowed_audio_file_types()
 {
     $supported = str_replace(' ', '', get_option('valid_audios'));
     return $supported;
+}
+
+/**
+ * Load a GD image resource from a path.
+ *
+ * @param  PATH $path Path to load from
+ * @param  ?string $ext File extension (null: get from path, even if not detected this function will mostly work)
+ * @return ~resource Image resource (false: error)
+ */
+function cms_imagecreatefrom($path, $ext = null)
+{
+    if ($ext === null) {
+        $ext = get_file_extension($path);
+    }
+
+    if ((function_exists('imagecreatefromgif')) && ($ext == 'gif')) {
+        $image = @imagecreatefromgif($path);
+    } elseif ($ext == 'jpg' || $ext == 'jpeg') {
+        $image = @imagecreatefromjpeg($path);
+    } elseif ($ext == 'png') {
+        $image = @imagecreatefrompng($path);
+        if ($image !== false) {
+            _fix_corrupt_png_alpha($image, $path);
+        }
+    } else {
+        return cms_imagecreatefromstring(cms_file_get_contents_safe($path), null); // Maybe it can be autodetected
+    }
+
+    return $image;
+}
+
+/**
+ * Load a GD image resource from a string.
+ *
+ * @param  string $data String to load from
+ * @param  ?string $ext File extension (null: unknown)
+ * @return ~resource Image resource (false: error)
+ */
+function cms_imagecreatefromstring($data, $ext)
+{
+    if (!function_exists('imagecreatefromstring')) {
+        return false;
+    }
+
+    $image = @imagecreatefromstring($data);
+
+    if ($ext === 'png') {
+        if ($image !== false) {
+            if (_will_fix_corrupt_png_alpha($image)) {
+                $path = cms_tempnam();
+                file_put_contents($path, $data);
+
+                _fix_corrupt_png_alpha($image, $path);
+
+                unlink($path);
+            }
+        }
+    }
+
+    return $image;
+}
+
+/**
+ * GD may have a bug with not loading up non-alpha transparency properly. Find if we need to fix that.
+ *
+ * @param  resource $image Image resource
+ * @return boolean Whether we need to do a fix
+ */
+function _will_fix_corrupt_png_alpha($image)
+{
+    if ((function_exists('imageistruecolor')) && (function_exists('imagecreatetruecolor'))) {
+        if ((php_function_allowed('shell_exec')) && (php_function_allowed('escapeshellarg'))) {
+            if (!imageistruecolor($image)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+/**
+ * GD may have a bug with not loading up non-alpha transparency properly. Fix that.
+ *
+ * @param  resource $image Image resource
+ * @param  PATH $path Path to PNG file
+ */
+function _fix_corrupt_png_alpha(&$image, $path)
+{
+    if (_will_fix_corrupt_png_alpha($image)) {
+        $imagemagick = find_imagemagick();
+        if ($imagemagick !== null) {
+            if ((php_function_allowed('shell_exec')) && (php_function_allowed('escapeshellarg'))) {
+                $tempnam = cms_tempnam();
+                shell_exec($imagemagick . ' -depth 32 ' . escapeshellarg($path) . ' PNG32:' . $tempnam);
+                if (is_file($tempnam)) {
+                    $image = @imagecreatefrompng($tempnam);
+                    @unlink($tempnam);
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Save a GD image.
+ *
+ * @param  resource $image Image resource
+ * @param  PATH $path Path to save to
+ * @param  ?string $ext File extension (null: get from path)
+ * @param  boolean $lossy Allow optional lossy compression
+ * @param  ?boolean $unknown_format Returned by reference as true if the file format was unknown (null: not passed)
+ * @return ~resource Image resource (false: error)
+ */
+function cms_imagesave($image, $path, $ext = null, $lossy = false, &$unknown_format = null)
+{
+    if ($ext === null) {
+        $ext = get_file_extension($path);
+    }
+
+    imagealphablending($image, false);
+    if (function_exists('imagesavealpha')) {
+        imagesavealpha($image, true);
+    }
+
+    if ((function_exists('imagepng')) && ($ext == 'png')) {
+        $test = @imagepng($image, $path, 9);
+        if ($test !== false) {
+            require_code('images_cleanup_pipeline');
+            png_compress($path, $lossy);
+        }
+    } elseif ((function_exists('imagejpeg')) && (($ext == 'jpg') || ($ext == 'jpeg'))) {
+        $test = @imagejpeg($image, $path, intval(get_option('jpeg_quality')));
+    } elseif ((function_exists('imagegif')) && ($ext == 'gif')) {
+        $test = @imagegif($image, $path);
+    } elseif ((function_exists('imagebmp')) && ($ext == 'bmp')) {
+        $test = @imagebmp($image, $path);
+    } elseif ((function_exists('imagewebp')) && ($ext == 'webp')) {
+        $test = @imagewebp($image, $path);
+    } else {
+        $unknown_format = true;
+        $test = false;
+    }
+
+    if ($test) {
+        sync_file($path);
+        fix_permissions($path);
+    }
+
+    return $test;
 }

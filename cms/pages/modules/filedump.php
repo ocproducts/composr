@@ -408,11 +408,9 @@ class Module_filedump
 
                 $width = mixed();
                 $height = mixed();
-                if (is_saveable_image($_full)) {
-                    $dims = @getimagesize($_full);
-                    if ($dims !== false) {
-                        list($width, $height) = $dims;
-                    }
+                $dims = cms_getimagesize($_full);
+                if ($dims !== false) {
+                    list($width, $height) = $dims;
                 }
 
                 $file += array(
@@ -921,7 +919,7 @@ class Module_filedump
 
         $image_sizes = mixed();
         if (is_saveable_image($file)) {
-            $size = @getimagesize($path);
+            $size = cms_getimagesize($path);
             if ($size !== false) {
                 $ratio = floatval($size[1]) / floatval($size[0]);
 

@@ -402,6 +402,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/cpfs.php',
             '_tests/tests/unit_tests/addon_guards.php',
             '_tests/tests/unit_tests/config.php',
+            '_tests/tests/unit_tests/images.php',
             '_tests/tests/unit_tests/downloads.php',
             '_tests/tests/unit_tests/downloads_category.php',
             '_tests/tests/unit_tests/antispam.php',

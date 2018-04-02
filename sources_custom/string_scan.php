@@ -4909,6 +4909,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         JAVASCRIPT_EXECUTED
         JAVASCRIPT_REQUIRED
         JPEG_QUALITY
+        REPAIR_IMAGES
+        CONFIG_OPTION_repair_images
         JSON_ONLY
         JS_CAPTCHA
         JS_OVERLAYS

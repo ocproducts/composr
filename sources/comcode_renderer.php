@@ -2118,8 +2118,13 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
                     // Grab actual file
                     require_code('uploads');
+                    require_code('images');
                     is_plupload(true);
-                    $urls = get_url('', 'file' . $_id, 'uploads/attachments', 2, CMS_UPLOAD_ANYTHING, ((!array_key_exists('thumb', $attributes)) || ($attributes['thumb'] != '0')) && ($attributes['thumb_url'] == ''), '', '', true, true, true, true, $source_member);
+                    $enforce_type = CMS_UPLOAD_ANYTHING;
+                    if (((empty($attributes['type'])) || ($attributes['type'] == 'image_websafe')) && (array_key_exists('file' . $_id, $_FILES)) && (is_image($_FILES['file' . $_id]['name']))) {
+                        $enforce_type = CMS_UPLOAD_IMAGE; // Images cleanup pipeline
+                    }
+                    $urls = get_url('', 'file' . $_id, 'uploads/attachments', 2, $enforce_type, ((!array_key_exists('thumb', $attributes)) || ($attributes['thumb'] != '0')) && ($attributes['thumb_url'] == ''), '', '', true, true, true, true, $source_member);
                     if ($urls[0] == '') {
                         return new Tempcode();
                     }//warn_exit(do_lang_tempcode('ERROR_UPLOADING'));  Can't do this, because this might not be post-calculated if something went wrong once
@@ -2131,13 +2136,6 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
                     require_code('upload_syndication');
                     $urls[0] = handle_upload_syndication('file' . $_id, '', array_key_exists('description', $attributes) ? $attributes['description'] : '', $urls[0], $original_filename, true);
-
-                    // Special code to re-orientate JPEG images if required (browsers cannot do this)
-                    if ((is_saveable_image($urls[0])) && (url_is_local($urls[0])) && ((empty($attributes['type'])) || (empty($attributes['image_websafe'])))) {
-                        require_code('images');
-                        $attachment_path = get_custom_file_base() . '/' . rawurldecode($urls[0]);
-                        convert_image($attachment_path, $attachment_path, -1, -1, 100000/*Impossibly large size, so no resizing happens*/, false, null, true, true);
-                    }
                 } else { // Should not get here
                     $temp_tpl = do_template('WARNING_BOX', array('_GUID' => 'f7c0ead08bf7e19f3b78a536c755d6a5', 'WARNING' => do_lang_tempcode('comcode:INVALID_ATTACHMENT')));
                     break;
