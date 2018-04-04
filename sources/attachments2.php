@@ -204,11 +204,12 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $db)
             if (strpos($comcode, $matches[0][$i]) !== false) { // Check still here (if we have same image in multiple places, may have already been attachment-ified)
                 $data = @base64_decode($matches[1][$i]);
                 if (($data !== false) && (function_exists('imagepng'))) {
-                    $image = @imagecreatefromstring($data);
+                    require_code('images');
+                    $image = cms_imagecreatefromstring($data, null);
                     if ($image !== false) {
                         require_code('urls2');
                         list($new_path, $new_url, $new_filename) = find_unique_path('uploads/attachments', null, true);
-                        imagepng($image, $new_path, 9);
+                        cms_imagesave($image, $new_path) or intelligent_write_error($new_path);
                         imagedestroy($image);
 
                         fix_permissions($new_path);

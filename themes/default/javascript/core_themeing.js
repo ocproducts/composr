@@ -170,7 +170,7 @@
                 }
             });
         },
-        
+
         loadContextualCssEditor: function loadContextualCssEditor(file, fileId) {
             var ui = document.getElementById('selectors-' + fileId);
             ui.style.display = 'block'; // Un-hide it
@@ -493,7 +493,7 @@
 
         return true;
     }
-    
+
     $cms.functions.adminThemesEditTheme = function () {
         var themee = document.getElementById('theme'),
             themet = document.getElementById('title'),
@@ -578,7 +578,7 @@
                 valueParts = dropdown.value.split('__'),
                 value = valueParts[0],
                 arity = valueParts[1];
-            
+
             if (value === '---') {
                 return;
             }
@@ -594,7 +594,7 @@
                 });
                 return;
             }
-            
+
             // Number of required parameters to be entered
             var definiteGets = 0;
             if (arity === '1') {
@@ -616,10 +616,10 @@
             } else if (arity === '1+') {
                 definiteGets = 1;
             }
-            
+
             _getParameterParameters(definiteGets, arity, 0, '', function (params) {
                 var text;
-                
+
                 if (dropdownName.endsWith('_DIRECTIVE')) {
                     text = '{' + '+START,' + value + params + '}{' + '+END}';
                 } else {
@@ -637,7 +637,7 @@
 
             function _getParameterParameters(definiteGets, arity, numDone, params, callback) {
                 var parameter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
-                
+
                 if (numDone < definiteGets) {
                     $cms.ui.prompt('{!themes:INPUT_NECESSARY_PARAMETER;^}' + ', ' + parameter[numDone], '', null, '{!themes:INSERT_PARAMETER;^}').then(function (v) {
                         if (v !== null) {

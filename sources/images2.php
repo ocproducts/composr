@@ -278,7 +278,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         if ($ext == 'svg') { // SVG is pass-through
             return $from;
         }
-        $from_file = @file_get_contents($from);
+        $from_file = @cms_file_get_contents_safe($from);
         $exif = function_exists('exif_read_data') ? @exif_read_data($from) : false;
     } else {
         $file_path_stub = convert_url_to_path($from);
@@ -289,7 +289,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
             if ($ext == 'svg') { // SVG is pass-through
                 return $from;
             }
-            $from_file = @file_get_contents($file_path_stub);
+            $from_file = @cms_file_get_contents_safe($file_path_stub);
             $exif = function_exists('exif_read_data') ? @exif_read_data($file_path_stub) : false;
         } else {
             $from_file = http_get_contents($from, array('trigger_error' => false, 'byte_limit' => 1024 * 1024 * 20/*reasonable limit*/));
@@ -317,7 +317,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         return $from;
     }
 
-    $source = @imagecreatefromstring($from_file);
+    $source = cms_imagecreatefromstring($from_file, $ext);
     if ($source === false) {
         if ($exit_on_error) {
             warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($from)), false, true);
@@ -328,6 +328,8 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
     }
     imagepalettetotruecolor($source);
 
+    // We need to do some pipeline cleanup. Most of the pipeline cleanup will automatically happen during the thumbnailing process (and probably have already run for the source image anyway)
+    require_code('images_cleanup_pipeline');
     list($source, $reorientated) = adjust_pic_orientation($source, $exif);
 
     //$source = remove_white_edges($source);    Not currently enabled, as PHP seems to have problems with alpha transparency reading
@@ -607,41 +609,29 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         $ext2 = 'png';
     }
 
-    if ((function_exists('imagepng')) && ($ext2 == 'png')) {
-        if (strtolower(substr($to, -4)) != '.png') {
-            $to .= '.png';
-        }
-        $test = @imagepng($dest, $to, 9);
-        if ($test) {
-            require_code('images_png');
-            png_compress($to, $width <= 300 && $width !== null || $height <= 300 && $height !== null || $box_width <= 300 && $box_width !== null);
-        }
-    } elseif ((function_exists('imagejpeg')) && (($ext2 == 'jpg') || ($ext2 == 'jpeg'))) {
-        $test = @imagejpeg($dest, $to, intval(get_option('jpeg_quality')));
-    } elseif ((function_exists('imagegif')) && ($ext2 == 'gif')) {
-        $test = @imagegif($dest, $to);
-    } elseif ((function_exists('imagewebp')) && ($ext2 == 'webp')) {
-        $test = @imagewebp($dest, $to);
-    } elseif ((function_exists('imagebmp')) && ($ext2 == 'bmp')) {
-        $test = @imagebmp($dest, $to);
-    } else {
-        if ($exit_on_error) {
-            warn_exit(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext2)), false, true);
-        }
-        require_code('site');
-        attach_message(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext2)), 'warn', false, true);
-        return $from;
+    if (strtolower(substr($to, -4)) != '.png') {
+        $to .= '.png';
     }
 
-    if ($test) {
-        fix_permissions($to);
-        sync_file($to);
-    } else {
-        if ($exit_on_error) {
-            warn_exit(do_lang_tempcode('ERROR_IMAGE_SAVE', cms_error_get_last()), false, true);
+    $lossy = ($width <= 300 && $width !== null || $height <= 300 && $height !== null || $box_width <= 300 && $box_width !== null);
+
+    $unknown_format = false;
+    $test = cms_imagesave($dest, $to, $ext2, $lossy, $unknown_format);
+
+    if (!$test) {
+        if ($unknown_format) {
+            if ($exit_on_error) {
+                warn_exit(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext2)), false, true);
+            }
+            require_code('site');
+            attach_message(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext2)), 'warn', false, true);
+        } else {
+            if ($exit_on_error) {
+                warn_exit(do_lang_tempcode('ERROR_IMAGE_SAVE', cms_error_get_last()), false, true);
+            }
+            require_code('site');
+            attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', cms_error_get_last()), 'warn', false, true);
         }
-        require_code('site');
-        attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', cms_error_get_last()), 'warn', false, true);
         return $from;
     }
 
@@ -756,86 +746,6 @@ function find_imagemagick()
         return null;
     }
     return $imagemagick;
-}
-
-/**
- * Adjust an image to take into account EXIF rotation.
- *
- * Based on a comment in:
- * http://stackoverflow.com/questions/3657023/how-to-detect-shot-angle-of-photo-and-auto-rotate-for-website-display-like-desk.
- *
- * @param  resource $source GD image resource
- * @param  ~array $exif EXIF details (false: could not load)
- * @return array A pair: Adjusted GD image resource, Whether a change was made
- */
-function adjust_pic_orientation($source, $exif)
-{
-    if ((function_exists('imagerotate')) && ($exif !== false) && (isset($exif['Orientation']))) {
-        $orientation = $exif['Orientation'];
-        if ($orientation != 1) {
-            $mirror = false;
-            $deg = 0;
-
-            switch ($orientation) {
-                case 2:
-                    $mirror = true;
-                    break;
-                case 3:
-                    $deg = 180;
-                    break;
-                case 4:
-                    $deg = 180;
-                    $mirror = true;
-                    break;
-                case 5:
-                    $deg = 270;
-                    $mirror = true;
-                    break;
-                case 6:
-                    $deg = 270;
-                    break;
-                case 7:
-                    $deg = 90;
-                    $mirror = true;
-                    break;
-                case 8:
-                    $deg = 90;
-                    break;
-            }
-
-            if ($deg != 0) {
-                $dest = imagerotate($source, floatval($deg), 0);
-                imagedestroy($source);
-                $source = $dest;
-            }
-
-            if ($mirror) {
-                imagepalettetotruecolor($source);
-
-                $width = imagesx($source);
-                $height = imagesy($source);
-
-                $src_x = $width - 1;
-                $src_y = 0;
-                $src_width = -$width;
-                $src_height = $height;
-
-                $dest = imagecreatetruecolor($width, $height);
-                imagealphablending($dest, false);
-                if (function_exists('imagesavealpha')) {
-                    imagesavealpha($dest, true);
-                }
-
-                if (imagecopyresampled($dest, $source, 0, 0, $src_x, $src_y, $width, $height, $src_width, $src_height)) {
-                    imagedestroy($source);
-                    $source = $dest;
-                }
-            }
-
-            return array($source, true);
-        }
-    }
-    return array($source, false);
 }
 
 /**

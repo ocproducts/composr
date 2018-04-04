@@ -339,7 +339,7 @@ class Module_purchase
             }
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 8) { // LEGACY
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) { // LEGACY
             if ($GLOBALS['SITE_DB']->table_exists('ecom_prods_prices')) {
                 $GLOBALS['SITE_DB']->query_update('ecom_prods_permissions', array('p_hours' => null), array('p_hours' => 40000));
             }

@@ -95,7 +95,7 @@ require_all_core_cms_code();
 
 // Integrity check only?
 if (get_param_integer('integrity', 0) == 1) {
-    $integrity_check_output = strip_tags(run_integrity_check(), '<input>', false);
+    $integrity_check_output = cms_strip_tags(run_integrity_check(), '<input>', false);
     inform_exit(protect_from_escaping($integrity_check_output));
 }
 

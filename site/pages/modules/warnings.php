@@ -416,6 +416,9 @@ class Module_warnings extends Standard_crud_module
         $hidden = new Tempcode();
         $fields = new Tempcode();
 
+        $post_id = get_param_integer('post_id', null);
+        $ip_address = ($post_id === null) ? null : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_ip_address', array('id' => $post_id));
+
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
         $num_warnings = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_cache_warnings');
         $_rules_url = build_url(array('page' => 'rules'));
@@ -432,9 +435,6 @@ class Module_warnings extends Standard_crud_module
         }
 
         $this->add_text = new Tempcode();
-
-        $post_id = get_param_integer('post_id', null);
-        $ip_address = ($post_id === null) ? null : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_ip_address', array('id' => $post_id));
 
         // Information about their history, and the rules - to educate the warner/punisher
         if ($new) {

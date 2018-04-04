@@ -1104,9 +1104,17 @@ function _symbol_image_dims($param)
             }
         }
 
-        $test = cms_getimagesize($path);
-        if ($test !== false) {
-            $value = array(strval($test[0]), strval($test[1]));
+        $base_url = get_custom_base_url();
+
+        if ((strpos($path, '.php') === false) && (substr($path, 0, strlen($base_url)) == $base_url)) {
+            $details = cms_getimagesize(get_custom_file_base() . '/' . urldecode(substr($path, strlen($base_url) + 1)));
+        } else {
+            $from_file = http_get_contents($path, array('byte_limit' => 1024 * 1024 * 20/*reasonable limit*/, 'trigger_error' => false));
+            $details = cms_getimagesizefromstring($from_file, get_file_extension($path));
+        }
+
+        if ($details !== false) {
+            $value = array(strval($details[0]), strval($details[1]));
         }
 
         if ($cacheable) {

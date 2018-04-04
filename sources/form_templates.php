@@ -1996,6 +1996,8 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
 
     $tabindex = get_form_field_tabindex($tabindex);
 
+    require_code('images');
+
     $selected_code = filter_form_field_default($name, ($selected_code === null) ? '' : $selected_code);
     if ($selected_code == '') {
         $selected_code = null;
@@ -2103,9 +2105,9 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
 
             $file_path = convert_url_to_path($url);
             if ($file_path !== null) {
-                $test = @getimagesize($file_path);
+                $test = cms_getimagesize($file_path);
             } else {
-                $test = @getimagesize($url);
+                $test = false;
             }
             if ($test !== false) {
                 list($width, $height) = $test;

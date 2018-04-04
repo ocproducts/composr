@@ -57,6 +57,7 @@ class Block_main_custom_gfx
         // Loads up correct hook and returns rendering
 
         require_lang('custom_comcode');
+        require_code('images');
 
         $type_id = empty($map['param']) ? 'rollover_button' : $map['param'];
 
@@ -103,8 +104,8 @@ class Block_main_custom_gfx
                 $file_base = get_file_base() . '/data/fonts/';
             }
 
-            $file_contents = file_get_contents(((strpos($img_path, '/default/images/') !== false) ? get_file_base() : get_custom_file_base()) . '/' . $img_path);
-            $img = @imagecreatefromstring($file_contents);
+            $path = ((strpos($img_path, '/default/images/') !== false) ? get_file_base() : get_custom_file_base()) . '/' . $img_path;
+            $img = cms_imagecreatefrom($path);
             if ($img === false) {
                 return paragraph(do_lang_tempcode('CORRUPT_FILE', escape_html($img_path)), 'h8b1p9evu0ibhnjl0ze2ny4x0gxgcpwq', 'red-alert');
             }
@@ -153,12 +154,8 @@ class Block_main_custom_gfx
                 $pos_y += ($ry1 - $ry2) + 5;
             }
 
-            imagepng($img, $thumb_path, 9);
+            cms_imagesave($img, $thumb_path);
             imagedestroy($img);
-            require_code('images_png');
-            png_compress($thumb_path);
-            fix_permissions($thumb_path);
-            sync_file($thumb_path);
         }
 
         $url = get_custom_base_url() . '/uploads/auto_thumbs/' . $cache_id . '.png';

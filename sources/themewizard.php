@@ -18,8 +18,6 @@
  * @package    themewizard
  */
 
-/*EXTRA FUNCTIONS: imagecreatefromwebp|imagecreatefrombmp*/
-
 /**
  * Standard code module initialisation function.
  *
@@ -280,7 +278,7 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
         } else {
             $data = http_get_contents($url);
         }
-        $img = @imagecreatefromstring($data);
+        $img = cms_imagecreatefromstring($data, get_file_extension($url));
         if ($img === false) {
             warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($url)), false, true);
         }
@@ -488,12 +486,8 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
                                 if (($pos !== false) || (strpos($orig_path, '/' . fallback_lang() . '/') !== false)) {
                                     afm_make_directory($composite . substr($image_code, 0, $pos), true, true);
                                 }
-                                @imagepng($image, $saveat, 9) or intelligent_write_error($saveat);
+                                cms_imagesave($image, $saveat) or intelligent_write_error($saveat);
                                 imagedestroy($image);
-                                fix_permissions($saveat);
-                                sync_file($saveat);
-                                require_code('images_png');
-                                png_compress($saveat);
                                 actual_edit_theme_image($image_code, $theme_name, $lang, $image_code, $saveat_url, true);
                             }
                         } else { // Still need to do the edit, as currently it'll have been mapped to the default theme when this theme was added
@@ -605,17 +599,17 @@ function themewizard_script()
             exit();
         }
 
-        header('Content-type: image/png');
-        require_code('images_png');
         $saveat = cms_tempnam();
-        @imagepng($image, $saveat, 9) or intelligent_write_error($saveat);
+        cms_imagesave($image, $saveat, 'png') or intelligent_write_error($saveat);
+
         imagedestroy($image);
-        fix_permissions($saveat);
-        sync_file($saveat);
-        require_code('images_png');
-        png_compress($saveat);
+
         cms_ob_end_clean();
+
+        header('Content-type: image/png');
+
         readfile($saveat);
+
         @unlink($saveat);
     }
 }
@@ -1362,18 +1356,8 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
     $val_dif = $seed_v - $composr_v;
 
     if (is_string($path)) {
-        if (substr($path, -4) == '.gif') {
-            $image = @imagecreatefromgif($path);
-        } elseif (substr($path, -4) == '.jpg') {
-            $image = @imagecreatefromjpeg($path);
-        } elseif (function_exists('imagecreatefromwebp') && substr($path, -5) == '.webp') {
-            $image = @imagecreatefromwebp($path);
-        } elseif (function_exists('imagecreatefrombmp') && substr($path, -4) == '.bmp') {
-            $image = @imagecreatefrombmp($path);
-        } else {
-            $image = @imagecreatefrompng($path);
-        }
-        if ($image === false) {
+        $_image = cms_imagecreatefrom($path);
+        if ($_image === false) {
             warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($path)), false, true);
         }
     } else {
@@ -1514,18 +1498,8 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
     }
 
     if (is_string($path)) {
-        if (substr($path, -4) == '.gif') {
-            $image = @imagecreatefromgif($path);
-        } elseif (substr($path, -4) == '.jpg') {
-            $image = @imagecreatefromjpeg($path);
-        } elseif (substr($path, -5) == '.webp') {
-            $image = @imagecreatefromwebp($path);
-        } elseif (substr($path, -4) == '.bmp') {
-            $image = @imagecreatefrombmp($path);
-        } else {
-            $image = @imagecreatefrompng($path);
-        }
-        if ($image === false) {
+        $_image = cms_imagecreatefrom($path);
+        if ($_image === false) {
             warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($path)), false, true);
         }
     } else {

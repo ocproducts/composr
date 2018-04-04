@@ -356,12 +356,8 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
                             $image = calculate_theme($seed, 'default', 'equations', $new, $dark, $colours, $landscape, $lang);
                             if ($image !== null) {
                                 if (!$test_run) {
-                                    @imagepng($image, get_custom_file_base() . '/' . $new_path, 9) or intelligent_write_error(get_custom_file_base() . '/' . $new_path);
+                                    cms_imagesave($image, get_custom_file_base() . '/' . $new_path) or intelligent_write_error(get_custom_file_base() . '/' . $new_path);
                                     imagedestroy($image);
-                                    fix_permissions(get_custom_file_base() . '/' . $new_path);
-                                    sync_file(get_custom_file_base() . '/' . $new_path);
-                                    require_code('images_png');
-                                    png_compress(get_custom_file_base() . '/' . $new_path);
 
                                     $successes[] = do_lang_tempcode('THEME_IMAGE_NEW', escape_html($new));
                                 }

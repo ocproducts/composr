@@ -285,8 +285,6 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
     require_code('uploads');
     $is_upload = (is_plupload()) || (array_key_exists($file_param_name, $_FILES)) && (array_key_exists('tmp_name', $_FILES[$file_param_name]) && (is_uploaded_file($_FILES[$file_param_name]['tmp_name'])));
 
-    require_code('uploads');
-
     $url = '';
 
     // Find banner type details
@@ -333,7 +331,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
             if (function_exists('imagetypes')) {
                 require_code('images');
                 if (is_image($test_url, IMAGE_CRITERIA_GD_READ)) {
-                    $test = cms_getimagesize($test_url);
+                    $test = cms_getimagesize($test_url, get_file_extension($test_url));
 
                     if ($test === false) {
                         if (url_is_local($url)) {

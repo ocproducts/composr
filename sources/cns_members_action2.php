@@ -1462,6 +1462,8 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
 
     static $done_one_posting_field = false;
 
+    $ret = null;
+
     if (strpos($storage_type, '_trans') !== false) {
         if (is_integer($value)) {
             $value = get_translated_text($value, $GLOBALS['FORUM_DB']);
@@ -1525,7 +1527,7 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
         if (!$defer) {
             $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', $change, array('mf_member_id' => $member_id), '', 1);
         }
-        return $change;
+        $ret = $change;
     }
 
     if (function_exists('delete_cache_entry')) {
@@ -1777,27 +1779,31 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
             warn_exit(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext)));
         }
         $stub = url_is_local($avatar_url) ? (get_complex_base_url($avatar_url) . '/') : '';
-        if (function_exists('imagetypes')) {
-            $test = cms_getimagesize($stub . $avatar_url);
-            if ($test !== null) { // If we can get a size (if we can't it could mean many things - e.g. vector, missing, corrupt)
-                list($sx, $sy) = $test;
+        $file_path_stub = convert_url_to_path($stub . $avatar_url);
+        if ($file_path_stub !== null) {
+            $from_file = @strval(file_get_contents($file_path_stub));
+        } else {
+            $from_file = http_get_contents($stub . $avatar_url, array('byte_limit' => 1024 * 1024 * 4/*reasonable limit*/, 'triger_error' => false));
+        }
+        $test = cms_getimagesizefromstring($from_file, get_file_extension($avatar_url));
+        if ($test !== null) { // If we can get a size (if we can't it could mean many things - e.g. vector, missing, corrupt)
+            list($sx, $sy) = $test;
 
-                require_code('cns_groups');
-                $width = cns_get_member_best_group_property($member_id, 'max_avatar_width');
-                $height = cns_get_member_best_group_property($member_id, 'max_avatar_height');
-                if (($sx > $width) || ($sy > $height)) {
-                    // Size down, if possible
-                    require_code('images');
-                    if ((!is_image($avatar_url, IMAGE_CRITERIA_GD_WRITE)) || (!url_is_local($avatar_url))) {
-                        if ((url_is_local($avatar_url)) && (substr($avatar_url, 0, 20) == 'uploads/cns_avatars/')) {
-                            unlink(get_custom_file_base() . '/' . rawurldecode($avatar_url));
-                            sync_file(get_custom_file_base() . '/' . rawurldecode($avatar_url));
-                        }
-                        warn_exit(do_lang_tempcode('IMAGE_BAD_DIMENSIONS', strval($width) . 'x' . strval($height), strval($sx) . 'x' . strval($sy)));
+            require_code('cns_groups');
+            $width = cns_get_member_best_group_property($member_id, 'max_avatar_width');
+            $height = cns_get_member_best_group_property($member_id, 'max_avatar_height');
+            if (($sx > $width) || ($sy > $height)) {
+                // Size down, if possible
+                require_code('images');
+                if ((!is_image($avatar_url, IMAGE_CRITERIA_GD_WRITE)) || (!url_is_local($avatar_url))) {
+                    if ((url_is_local($avatar_url)) && (substr($avatar_url, 0, 20) == 'uploads/cns_avatars/')) {
+                        unlink(get_custom_file_base() . '/' . rawurldecode($avatar_url));
+                        sync_file(get_custom_file_base() . '/' . rawurldecode($avatar_url));
                     }
-                    $file_path = get_custom_file_base() . '/' . rawurldecode($avatar_url);
-                    $avatar_url = convert_image($file_path, $file_path, $width, $height, null, false, get_file_extension($file_path), true, true);
+                    warn_exit(do_lang_tempcode('IMAGE_BAD_DIMENSIONS', strval($width) . 'x' . strval($height), strval($sx) . 'x' . strval($sy)));
                 }
+                $file_path = get_custom_file_base() . '/' . rawurldecode($avatar_url);
+                $avatar_url = convert_image($file_path, $file_path, $width, $height, null, false, get_file_extension($file_path), true, true);
             }
         }
 

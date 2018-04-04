@@ -104,31 +104,7 @@ function output_inventory_screen($member_id)
         $bribable = $item_row['bribable'];
         $healthy = $item_row['healthy'];
 
-        $width = '';
-        if ($pic_url != '') {
-            $ext = strtolower(substr($pic_url, strlen($pic_url) - 4));
-            $mypic = false;
-            if (($ext == 'jpeg') || ($ext == '.jpg')) {
-                $mypic = @imagecreatefromjpeg($pic_url);
-            }
-            if ($ext == '.png') {
-                $mypic = @imagecreatefrompng($pic_url);
-            }
-            if ($ext == '.gif') {
-                $mypic = @imagecreatefromgif($pic_url);
-            }
-            if ($ext == 'webp') {
-                $mypic = @imagecreatefromwebp($pic_url);
-            }
-            if ($ext == 'bmp') {
-                $mypic = @imagecreatefrombmp($pic_url);
-            }
-            if (($mypic === false) || (imagesx($mypic) > 200)) {
-                $width = 'width: 200px';
-            }
-        }
-
-        $inventory->attach(do_template('W_INVENTORY_ITEM', array('_GUID' => '6850866532d2e5a65ca1b74f5ed8e49a', 'HEALTHY' => $healthy == 1, 'BRIBABLE' => $bribable == 1, 'WIDTH' => $width, 'PIC_URL' => $pic_url, 'ITEM_NAME' => $myrow['item_name'], 'DESCRIPTION' => $description, 'ITEM_COUNT' => integer_format($myrow['item_count']))));
+        $inventory->attach(do_template('W_INVENTORY_ITEM', array('_GUID' => '6850866532d2e5a65ca1b74f5ed8e49a', 'HEALTHY' => $healthy == 1, 'BRIBABLE' => $bribable == 1, 'PIC_URL' => $pic_url, 'ITEM_NAME' => $myrow['item_name'], 'DESCRIPTION' => $description, 'ITEM_COUNT' => integer_format($myrow['item_count']))));
     }
 
     return do_template('W_INVENTORY_SCREEN', array(
@@ -207,29 +183,6 @@ function output_room_screen($member_id)
         $editable = ((has_privilege($member_id, 'administer_buildr')) || ($myrow['owner'] == $member_id));
 
         $portals->attach(do_template('W_MAIN_PORTAL', array('_GUID' => 'f5582c18b71be98d74dfb8d2b777afc0', 'NAME' => $myrow['name'], 'EDITABLE' => $editable, 'DEST_REALM' => strval($dest_realm))));
-    }
-    $width = '';
-    if ($pic_url != '') {
-        $ext = strtolower(substr($pic_url, strlen($pic_url) - 4));
-        $mypic = false;
-        if (($ext == 'jpeg') || ($ext == '.jpg')) {
-            $mypic = @imagecreatefromjpeg($pic_url);
-        }
-        if ($ext == '.png') {
-            $mypic = @imagecreatefrompng($pic_url);
-        }
-        if ($ext == '.gif') {
-            $mypic = @imagecreatefromgif($pic_url);
-        }
-        if ($ext == 'webp') {
-            $mypic = @imagecreatefromwebp($pic_url);
-        }
-        if ($ext == 'bmp') {
-            $mypic = @imagecreatefrombmp($pic_url);
-        }
-        if (($mypic === false) || (imagesx($mypic) > 430)) {
-            $width = 'width: 430px';
-        }
     }
 
     $other_person = post_param_integer('tmember', -1);
@@ -443,7 +396,6 @@ function output_room_screen($member_id)
         'ITEMS_OWNED' => $items_owned,
         'ITEMS_OWNED_2' => $items_owned_2,
         'ITEMS_HELD' => $items_held,
-        'WIDTH' => $width,
         'IS_ROOM_OWNER' => $is_room_owner,
         'IS_REALM_OWNER' => $is_realm_owner,
         'EMOTICON_CHOOSER' => $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser(),

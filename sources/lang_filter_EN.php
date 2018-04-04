@@ -126,7 +126,6 @@ class LangFilter_EN extends LangFilter
                 'labelling' => 'labeling',
 
                 'licence' => 'license',
-                'licencing' => 'licensing',
 
                 'maximise' => 'maximize',
                 'maximising' => 'maximizing',

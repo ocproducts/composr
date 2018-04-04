@@ -18,7 +18,7 @@
  * @package    core
  */
 
-/*EXTRA FUNCTIONS: shell_exec*/
+/*EXTRA FUNCTIONS: shell_exec|imagecreatefromwebp|imagecreatefrombmp*/
 
 /**
  * Standard code module initialisation function.
@@ -40,45 +40,64 @@ function init__images()
 /**
  * Find image dimensions. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
  *
- * @param  string $path Either a filesystem path or an absolute URL
+ * @param  string $path The path to the image file
+ * @param  ?string $ext File extension (null: get from path, even if not detected this function will mostly work)
  * @return ~array The width and height (false: error)
- *
- * @ignore
  */
-function cms_getimagesize($path)
+function cms_getimagesize($path, $ext = null)
 {
-    if (looks_like_url($path)) {
-        $_path = convert_url_to_path($path);
-    } else {
-        $_path = $path;
+    if ($ext === null) {
+        $ext = get_file_extension($path);
     }
 
-    if ($_path === null) {
-        $data = http_get_contents($path, array('trigger_error' => false, 'byte_limit' => 1024 * 1024 * 20/*reasonable limit*/));
-    } else {
-        if (function_exists('getimagesize')) {
-            $details = @getimagesize($_path);
-            if ($details !== false) {
-                return array($details[0], $details[1]);
-            }
+    if ($ext == 'gif') {
+        $data = @cms_file_get_contents_safe($path);
+        if ($data === false) {
             return false;
         }
+        return cms_getimagesizefromstring($data, $ext);
+    }
 
-        // Should never actually get here
-        $data = file_get_contents($_path);
+    if (function_exists('getimagesize')) {
+        $details = @getimagesize($path);
+        if ($details !== false) {
+            return array($details[0], $details[1]);
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Find image dimensions from a string. Better than PHP's built-in getimagesize as it gets the correct size for animated gifs.
+ *
+ * @param  string $data The image file data
+ * @param  ?string $ext File extension (null: unknown)
+ * @return ~array The width and height (false: error)
+ */
+function cms_getimagesizefromstring($data, $ext)
+{
+    if ($ext === 'gif') { // Workaround problem with animated gifs
+        $header = unpack('@6/' . 'vwidth/' . 'vheight', $data);
+        $sx = $header['width'];
+        $sy = $header['height'];
+        return array($sx, $sy);
     }
 
     if (function_exists('getimagesizefromstring')) {
-        if (get_file_extension($path) == 'gif') { // Workaround problem with animated gifs
-            $header = unpack('@6/' . 'vwidth/' . 'vheight', $data);
-            $sx = $header['width'];
-            $sy = $header['height'];
-            return array($sx, $sy);
-        }
-
         $details = @getimagesizefromstring($data);
         if ($details !== false) {
             return array($details[0], $details[1]);
+        }
+    } else {
+        $img_res = cms_imagecreatefromstring($data, $ext);
+        if ($img_res !== false) {
+            $sx = imagesx($img_res);
+            $sy = imagesy($img_res);
+
+            imagedestroy($img_res);
+
+            return array($sx, $sy);
         }
     }
 
@@ -301,16 +320,19 @@ function is_image($name, $criteria, $as_admin = false, $mime_too = false)
         $found = false;
         if (function_exists('imagetypes')) {
             $gd = imagetypes();
-            if (($ext == 'gif') && (($gd & IMG_GIF) != 0) && (function_exists('imagecreatefromgif'))) {
+            if (($ext == 'png') && (($gd & IMG_PNG) != 0)) {
                 $found = true;
             }
             if ((($ext == 'jpg') || ($ext == 'jpeg') || ($ext == 'jpe')) && (($gd & IMG_JPEG) != 0)) {
                 $found = true;
             }
-            if (($ext == 'png') && (($gd & IMG_PNG) != 0)) {
+            if (($ext == 'gif') && (($gd & IMG_GIF) != 0) && (function_exists('imagecreatefromgif'))) {
                 $found = true;
             }
             if (($ext == 'webp') && (function_exists('imagecreatefromwebp')/* https://bugs.php.net/bug.php?id=72596 */)) {
+                $found = true;
+            }
+            if (($ext == 'bmp') && (defined('IMG_BMP')) && (($gd & IMG_BMP) != 0)) {
                 $found = true;
             }
         } else {
@@ -326,16 +348,19 @@ function is_image($name, $criteria, $as_admin = false, $mime_too = false)
         $found = false;
         if (function_exists('imagetypes')) {
             $gd = imagetypes();
-            if (($ext == 'gif') && (($gd & IMG_GIF) != 0) && (function_exists('imagegif'))) {
+            if (($ext == 'png') && (($gd & IMG_PNG) != 0)) {
                 $found = true;
             }
             if ((($ext == 'jpg') || ($ext == 'jpeg') || ($ext == 'jpe')) && (($gd & IMG_JPEG) != 0)) {
                 $found = true;
             }
-            if (($ext == 'png') && (($gd & IMG_PNG) != 0)) {
+            if (($ext == 'gif') && (($gd & IMG_GIF) != 0) && (function_exists('imagegif'))) {
                 $found = true;
             }
             if (($ext == 'webp') && (function_exists('imagewebp')/* https://bugs.php.net/bug.php?id=72596 */)) {
+                $found = true;
+            }
+            if (($ext == 'bmp') && (defined('IMG_BMP')) && (($gd & IMG_BMP) != 0)) {
                 $found = true;
             }
         } else {
@@ -484,4 +509,166 @@ function get_allowed_audio_file_types()
 {
     $supported = str_replace(' ', '', get_option('valid_audios'));
     return $supported;
+}
+
+/**
+ * Load a GD image resource from a path.
+ *
+ * @param  PATH $path Path to load from
+ * @param  ?string $ext File extension (null: get from path, even if not detected this function will mostly work)
+ * @return ~resource Image resource (false: error)
+ */
+function cms_imagecreatefrom($path, $ext = null)
+{
+    if ($ext === null) {
+        $ext = get_file_extension($path);
+    }
+
+    if ($ext == 'png') {
+        $image = @imagecreatefrompng($path);
+        if ($image !== false) {
+            _fix_corrupt_png_alpha($image, $path);
+        }
+    } elseif ($ext == 'jpg' || $ext == 'jpeg') {
+        $image = @imagecreatefromjpeg($path);
+    } elseif ((function_exists('imagecreatefromgif')) && ($ext == 'gif')) {
+        $image = @imagecreatefromgif($path);
+    } elseif ($ext == 'webp') {
+        $image = @imagecreatefromwebp($path);
+    } elseif ($ext == 'bmp') {
+        $image = @imagecreatefrombmp($path);
+    } else {
+        return cms_imagecreatefromstring(cms_file_get_contents_safe($path), null); // Maybe it can be autodetected
+    }
+
+    if ($image !== false) {
+        imagepalettetotruecolor($image);
+    }
+
+    return $image;
+}
+
+/**
+ * Load a GD image resource from a string.
+ *
+ * @param  string $data String to load from
+ * @param  ?string $ext File extension (null: unknown)
+ * @return ~resource Image resource (false: error)
+ */
+function cms_imagecreatefromstring($data, $ext)
+{
+    if (!function_exists('imagecreatefromstring')) {
+        return false;
+    }
+
+    $image = @imagecreatefromstring($data);
+
+    if ($image !== false) {
+        imagepalettetotruecolor($image);
+    }
+
+    if ($ext === 'png') {
+        if ($image !== false) {
+            if (_will_fix_corrupt_png_alpha($image)) {
+                $path = cms_tempnam();
+                file_put_contents($path, $data);
+
+                _fix_corrupt_png_alpha($image, $path);
+
+                unlink($path);
+            }
+        }
+    }
+
+    return $image;
+}
+
+/**
+ * GD may have a bug with not loading up non-alpha transparency properly. Find if we need to fix that.
+ *
+ * @param  resource $image Image resource
+ * @return boolean Whether we need to do a fix
+ */
+function _will_fix_corrupt_png_alpha($image)
+{
+    if ((function_exists('imageistruecolor')) && (function_exists('imagecreatetruecolor'))) {
+        if ((php_function_allowed('shell_exec')) && (php_function_allowed('escapeshellarg'))) {
+            if (!imageistruecolor($image)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+/**
+ * GD may have a bug with not loading up non-alpha transparency properly. Fix that.
+ *
+ * @param  resource $image Image resource
+ * @param  PATH $path Path to PNG file
+ */
+function _fix_corrupt_png_alpha(&$image, $path)
+{
+    if (_will_fix_corrupt_png_alpha($image)) {
+        $imagemagick = find_imagemagick();
+        if ($imagemagick !== null) {
+            if ((php_function_allowed('shell_exec')) && (php_function_allowed('escapeshellarg'))) {
+                $tempnam = cms_tempnam();
+                shell_exec($imagemagick . ' -depth 32 ' . escapeshellarg($path) . ' PNG32:' . $tempnam);
+                if (is_file($tempnam)) {
+                    $image = @imagecreatefrompng($tempnam);
+                    @unlink($tempnam);
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Save a GD image.
+ *
+ * @param  resource $image Image resource
+ * @param  PATH $path Path to save to
+ * @param  ?string $ext File extension (null: get from path)
+ * @param  boolean $lossy Allow optional lossy compression
+ * @param  ?boolean $unknown_format Returned by reference as true if the file format was unknown (null: not passed)
+ * @return ~resource Image resource (false: error)
+ */
+function cms_imagesave($image, $path, $ext = null, $lossy = false, &$unknown_format = null)
+{
+    if ($ext === null) {
+        $ext = get_file_extension($path);
+    }
+
+    imagealphablending($image, false);
+    if (function_exists('imagesavealpha')) {
+        imagesavealpha($image, true);
+    }
+
+    if ((function_exists('imagepng')) && ($ext == 'png')) {
+        $test = @imagepng($image, $path, 9);
+        if ($test !== false) {
+            require_code('images_cleanup_pipeline');
+            png_compress($path, $lossy);
+        }
+    } elseif ((function_exists('imagejpeg')) && (($ext == 'jpg') || ($ext == 'jpeg'))) {
+        $test = @imagejpeg($image, $path, intval(get_option('jpeg_quality')));
+    } elseif ((function_exists('imagegif')) && ($ext == 'gif')) {
+        $test = @imagegif($image, $path);
+    } elseif ((function_exists('imagewebp')) && ($ext == 'webp')) {
+        $test = @imagewebp($image, $path);
+    } elseif ((function_exists('imagebmp')) && ($ext == 'bmp')) {
+        $test = @imagebmp($image, $path);
+    } else {
+        $unknown_format = true;
+        $test = false;
+    }
+
+    if ($test) {
+        sync_file($path);
+        fix_permissions($path);
+    }
+
+    return $test;
 }

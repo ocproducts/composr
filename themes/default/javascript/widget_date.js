@@ -64,6 +64,8 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
         return date_arr.join('');
       };
       increment = function(hiddenField, dateBtn, calendarDiv) {
+        if (hiddenField.disabled) return;
+
         var $hiddenField, max, step, value;
         $hiddenField = $(hiddenField);
         value = readDate($hiddenField.val());
@@ -84,6 +86,8 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
         return null;
       };
       decrement = function(hiddenField, dateBtn, calendarDiv) {
+        if (hiddenField.disabled) return;
+
         var $hiddenField, min, step, value;
         $hiddenField = $(hiddenField);
         value = readDate($hiddenField.val());
@@ -173,6 +177,7 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
           max: max,
           step: step
         });
+        if ($this[0].disabled) $hiddenField[0].disabled = true;
         value = stepNormalize(value, hiddenField);
         $hiddenField.attr('value', makeDateString(value));
         calendarContainer = document.createElement('span');
@@ -465,6 +470,8 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
         return time_arr.join('');
       };
       increment = function(hiddenField, timeField) {
+        if (timeField.disabled) return;
+
         var $hiddenField, max, step, value;
         $hiddenField = $(hiddenField);
         value = readTime($hiddenField.val());
@@ -483,6 +490,8 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
         return null;
       };
       decrement = function(hiddenField, timeField) {
+        if (timeField.disabled) return;
+
         var $hiddenField, min, step, value;
         $hiddenField = $(hiddenField);
         value = readTime($hiddenField.val());
