@@ -719,7 +719,7 @@ class Module_cms_galleries extends Standard_crud_module
 
                         // Images cleanup pipeline
                         $maximum_dimension = intval(get_option('maximum_image_size'));
-                        $watermark = (post_param_integer('watermark', 0) == 1);
+                        $watermark = (post_param_integer('ss_watermark', 0) == 1);
                         $watermarks = $watermark ? find_gallery_watermarks($cat) : null;
                         if (url_is_local($url)) {
                             handle_images_cleanup_pipeline(get_custom_file_base() . '/' . rawurldecode($url), null, IMG_RECOMPRESS_LOSSLESS, $maximum_dimension, $watermarks);
