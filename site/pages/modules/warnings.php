@@ -410,7 +410,7 @@ class Module_warnings extends Standard_crud_module
 
         $this->add_text = new Tempcode();
 
-        $post_id = get_param_integer('post_id', null);
+        $post_id = $spam_mode ? null : get_param_integer('post_id', null);
         $ip_address = ($post_id === null) ? null : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_ip_address', array('id' => $post_id));
 
         // Information about their history, and the rules - to educate the warner/punisher
@@ -555,7 +555,8 @@ class Module_warnings extends Standard_crud_module
             }
             if (addon_installed('securitylogging')) {
                 if (has_actual_page_access(get_member(), 'admin_ip_ban')) {
-                    $fields->attach(form_input_tick(do_lang_tempcode('WHETHER_BANNED_IP'), do_lang_tempcode('DESCRIPTION_WHETHER_BANNED_IP'), 'banned_ip', $spam_mode));
+                    $already_banned_ip = ip_banned($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_ip_address'));
+                    $fields->attach(form_input_tick(do_lang_tempcode('WHETHER_BANNED_IP'), do_lang_tempcode('DESCRIPTION_WHETHER_BANNED_IP'), 'banned_ip', $spam_mode || $already_banned_ip, null, '1', $already_banned_ip));
                 }
 
                 $stopforumspam_api_key = get_option('stopforumspam_api_key');
@@ -571,7 +572,8 @@ class Module_warnings extends Standard_crud_module
                 }
             }
             if (has_privilege(get_member(), 'member_maintenance')) {
-                $fields->attach(form_input_tick(do_lang_tempcode('BAN_MEMBER'), do_lang_tempcode('DESCRIPTION_BANNED_MEMBER'), 'banned_member', $spam_mode));
+                $already_banned = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_is_perm_banned') == 1);
+                $fields->attach(form_input_tick(do_lang_tempcode('BAN_MEMBER'), do_lang_tempcode('DESCRIPTION_BANNED_MEMBER'), 'banned_member', $spam_mode || $already_banned, null, '1', $already_banned));
 
                 $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), array('g_is_private_club' => 0));
                 $groups = new Tempcode();

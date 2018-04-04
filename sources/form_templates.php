@@ -1289,13 +1289,13 @@ function form_input_password($pretty_name, $description, $name, $required, $tabi
  * @param  ID_TEXT $value The value the checkbox passes when ticked
  * @return Tempcode The input field
  */
-function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex = null, $value = '1')
+function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex = null, $value = '1', $disabled = false)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
     $ticked = (filter_form_field_default($name, $ticked ? '1' : '0') == '1');
 
-    $input = do_template('FORM_SCREEN_INPUT_TICK', array('_GUID' => '340a68c271b838d327f042d101df27eb', 'VALUE' => $value, 'CHECKED' => $ticked, 'TABINDEX' => strval($tabindex), 'NAME' => $name));
+    $input = do_template('FORM_SCREEN_INPUT_TICK', array('_GUID' => '340a68c271b838d327f042d101df27eb', 'VALUE' => $value, 'CHECKED' => $ticked, 'TABINDEX' => strval($tabindex), 'NAME' => $name, 'DISABLED' => $disabled));
     return _form_input($name, $pretty_name, $description, $input, false, false, $tabindex);
 }
 
