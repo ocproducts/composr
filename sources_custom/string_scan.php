@@ -1657,6 +1657,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_menu_PARAM_type_TITLE
         BLOCK_menu_USE
         INDEX_DOWNLOAD
+        SPAM_URLS
         BLOCK_side_calendar_DESCRIPTION
         BLOCK_side_calendar_PARAM_as_guest
         BLOCK_side_calendar_PARAM_as_guest_TITLE

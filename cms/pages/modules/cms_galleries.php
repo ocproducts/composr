@@ -581,7 +581,7 @@ class Module_cms_galleries extends Standard_crud_module
                         if ($length === null) {
                             $length = 0;
                         }
-                        $exif = get_exif_data(get_custom_file_base() . '/' . rawurldecode($url), $file);
+                        $exif = url_is_local($url) ? get_exif_data(get_custom_file_base() . '/' . rawurldecode($url), $file) : array();
                         $id = add_video($exif['UserComment'], $cat, '', $url, '', 1, post_param_integer('ss_allow_rating', 0), post_param_integer('ss_allow_reviews', post_param_integer('ss_allow_comments', 0)), post_param_integer('ss_allow_trackbacks', 0), '', $length, $width, $height);
                         store_exif('video', strval($id), $exif);
 
@@ -606,9 +606,11 @@ class Module_cms_galleries extends Standard_crud_module
                     $maximum_dimension = intval(get_option('maximum_image_size'));
                     $watermark = (post_param_integer('watermark', 0) == 1);
                     $watermarks = $watermark ? find_gallery_watermarks($cat) : null;
-                    handle_images_cleanup_pipeline(get_custom_file_base() . '/' . rawurldecode($url), null, IMG_RECOMPRESS_LOSSLESS, $maximum_dimension, $watermarks);
+                    if (url_is_local($url)) {
+                        handle_images_cleanup_pipeline(get_custom_file_base() . '/' . rawurldecode($url), null, IMG_RECOMPRESS_LOSSLESS, $maximum_dimension, $watermarks);
+                    }
 
-                    $exif = get_exif_data(get_custom_file_base() . '/' . rawurldecode($url), $file);
+                    $exif = url_is_local($url) ? get_exif_data(get_custom_file_base() . '/' . rawurldecode($url), $file) : array();
                     $id = add_image($exif['UserComment'], $cat, '', $url, $thumb_url, 1, post_param_integer('ss_allow_rating', 0), post_param_integer('ss_allow_reviews', post_param_integer('ss_allow_comments', 0)), post_param_integer('ss_allow_trackbacks', 0), '');
                     store_exif('image', strval($id), $exif);
 
@@ -684,7 +686,7 @@ class Module_cms_galleries extends Standard_crud_module
 
         if (!is_image($url, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
             $thumb_url = create_video_thumb($url);
-            $ret = get_video_details(get_custom_file_base() . '/' . rawurldecode($url), $file, true);
+            $ret = url_is_local($url) ? get_video_details(get_custom_file_base() . '/' . rawurldecode($url), $file, true) : false;
             if ($ret !== false) {
                 list($width, $height, $length) = $ret;
                 if ($width === null) {
@@ -696,7 +698,7 @@ class Module_cms_galleries extends Standard_crud_module
                 if ($length === null) {
                     $length = 0;
                 }
-                $exif = get_exif_data(get_custom_file_base() . '/' . rawurldecode($url), $file);
+                $exif = url_is_local($url) ? get_exif_data(get_custom_file_base() . '/' . rawurldecode($url), $file) : array();
                 $id = add_video($exif['UserComment'], $cat, '', $url, '', 1, post_param_integer('allow_rating', 0), post_param_integer('allow_reviews', post_param_integer('allow_comments', 0)), post_param_integer('allow_trackbacks', 0), post_param_string('notes', ''), $length, $width, $height, null, $time);
                 store_exif('video', strval($id), $exif);
                 if (addon_installed('content_privacy')) {
@@ -724,13 +726,15 @@ class Module_cms_galleries extends Standard_crud_module
             $thumb_path = get_custom_file_base() . '/' . rawurldecode($thumb_url);
             $thumb_url = convert_image($url, $thumb_path, null, null, intval(get_option('thumb_width')), true);
 
-            $exif = get_exif_data(get_custom_file_base() . '/' . rawurldecode($url), $file);
+            $exif = url_is_local($url) ? get_exif_data(get_custom_file_base() . '/' . rawurldecode($url), $file) : array();
 
             // Images cleanup pipeline
             $maximum_dimension = intval(get_option('maximum_image_size'));
             $watermark = (post_param_integer('watermark', 0) == 1);
             $watermarks = $watermark ? find_gallery_watermarks($cat) : null;
-            handle_images_cleanup_pipeline(get_custom_file_base() . '/' . rawurldecode($url), null, IMG_RECOMPRESS_LOSSLESS, $maximum_dimension, $watermarks);
+            if (url_is_local($url)) {
+                handle_images_cleanup_pipeline(get_custom_file_base() . '/' . rawurldecode($url), null, IMG_RECOMPRESS_LOSSLESS, $maximum_dimension, $watermarks);
+            }
 
             $id = add_image($exif['UserComment'], $cat, '', $url, $thumb_url, 1, post_param_integer('allow_rating', 0), post_param_integer('allow_reviews', post_param_integer('allow_comments', 0)), post_param_integer('allow_trackbacks', 0), post_param_string('notes', ''), null, $time);
             store_exif('image', strval($id), $exif);

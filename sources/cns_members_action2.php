@@ -1462,8 +1462,6 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
 
     static $done_one_posting_field = false;
 
-    $ret = null;
-
     if (strpos($storage_type, '_trans') !== false) {
         if (is_integer($value)) {
             $value = get_translated_text($value, $GLOBALS['FORUM_DB']);
@@ -1494,6 +1492,8 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
 
             $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', $map, array('mf_member_id' => $member_id), '', 1);
         }
+
+        $ret = null;
     } else {
         $change = array();
 
@@ -1527,6 +1527,7 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
         if (!$defer) {
             $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', $change, array('mf_member_id' => $member_id), '', 1);
         }
+
         $ret = $change;
     }
 
@@ -1539,7 +1540,7 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
         unset($MEMBER_CACHE_FIELD_MAPPINGS[$member_id]);
     }
 
-    return null;
+    return $ret;
 }
 
 /**

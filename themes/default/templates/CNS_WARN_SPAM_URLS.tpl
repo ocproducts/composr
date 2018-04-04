@@ -1,5 +1,5 @@
-<p>The following URLs have been posted by the member:</p>
-<div class="wide_table_wrap"><table class="columned-table wide-table results-table autosized-table responsive-table">
+<p>{!SPAM_URLS}:</p>
+<div class="wide-table-wrap"><table class="columned-table wide-table results-table autosized-table responsive-table">
 	<thead>
 		<tr>
 			<th>{!DOMAIN}</th>
