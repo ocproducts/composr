@@ -1,4 +1,4 @@
-<p>The following URLs have been posted by the member:</p>
+<p>{!SPAM_URLS}:</p>
 <div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table">
 	<thead>
 		<tr>

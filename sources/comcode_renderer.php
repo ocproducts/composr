@@ -2227,7 +2227,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 // Width/height auto-detection
                 if ((addon_installed('galleries')) && (is_video($original_filename, $as_admin)) && (url_is_local($url))) {
                     require_code('galleries2');
-                    $vid_details = get_video_details(get_custom_file_base() . '/' . rawurldecode($url), $original_filename, true);
+                    $vid_details = url_is_local($url) ? get_video_details(get_custom_file_base() . '/' . rawurldecode($url), $original_filename, true) : false;
                     if ($vid_details !== false) {
                         list($_width, $_height,) = $vid_details;
                         if ((!array_key_exists('width', $attributes)) || ($attributes['width'] == '')) {
