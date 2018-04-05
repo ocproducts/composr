@@ -805,6 +805,7 @@ class Module_admin_themes
             require_code('themes3');
             set_live_theme($theme);
 
+            require_code('site');
             attach_message(do_lang_tempcode('THEME_MADE_LIVE'), 'inform');
         }
 

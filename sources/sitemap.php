@@ -317,7 +317,7 @@ abstract class Hook_sitemap_base
             } // else change nothing ($page_link was known, $zone was known)
         }
 
-        if (($zone == 'site') && (get_option('collapse_user_zones') == '1')) {
+        if (($zone == 'site') && (get_option('single_public_zone') == '1')) {
             $zone = '';
         }
 
