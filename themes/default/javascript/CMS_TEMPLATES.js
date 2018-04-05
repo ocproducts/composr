@@ -538,14 +538,38 @@
 
     $cms.templates.buttonScreenItem = function buttonScreenItem(params, btn) {
         var onclickCallFunctions = params.onclickCallFunctions;
+        var onmousedownCallFunctions = params.onmousedownCallFunctions;
 
         if (onclickCallFunctions != null) {
             $dom.on(btn, 'click', function (e) {
                 e.preventDefault();
+
+                onclickCallFunctions.forEach(function (func) {
+                    func.push(e);
+                });
+
                 $cms.executeJsFunctionCalls(onclickCallFunctions, btn);
             });
         }
+
+        if (onmousedownCallFunctions != null) {
+            $dom.on(btn, 'mousedown', function (e) {
+                e.preventDefault();
+
+                onmousedownCallFunctions.forEach(function (func) {
+                    func.push(e);
+                });
+
+                $cms.executeJsFunctionCalls(onmousedownCallFunctions, btn);
+            });
+        }
     };
+
+    $cms.functions.spamWarning = function (e) {
+        if (e.which == 2/*middle button*/) {
+            this.href += '&spam=1';
+        }
+    }
 
     $cms.templates.cropTextMouseOver = function (params, el) {
         var textLarge = $cms.filter.nl(params.textLarge);

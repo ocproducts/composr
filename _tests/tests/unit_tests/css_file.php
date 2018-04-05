@@ -334,6 +334,8 @@ class css_file_test_set extends cms_test_case
             'block-main-members--media',
             'block-main-members--photos',
             'blue',
+            'siblings-1',
+            'digg',
             'clearfix',
             'box---block-main-content',
             'box---block-menu-embossed',

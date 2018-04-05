@@ -93,7 +93,9 @@
                 } else {
                     url += '&date_time=' + encodeURIComponent(startTime.value);
                 }
-                url += '&do_timezone_conv=' + (doTimezoneConv.checked ? '1' : '0');
+                if (doTimezoneConv) {
+                    url += '&do_timezone_conv=' + (doTimezoneConv.checked ? '1' : '0');
+                }
                 url += '&all_day_event=' + (allDayEvent.checked ? '1' : '0');
 
                 $cms.loadSnippet(url).then(function (newData) {

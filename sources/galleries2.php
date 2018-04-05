@@ -1147,23 +1147,13 @@ function delete_video($id, $delete_full = true)
 }
 
 /**
- * Watermarks an image with the appropriate gallery watermarks.
+ * Find how to apply gallery watermarks.
  *
  * @param  ID_TEXT $gallery The name of the gallery for the image
- * @param  PATH $file_path The path to the image file
- * @param  string $filename The original file name of the image
+ * @return ?array A quartet of watermark images suitable for handle_images_cleanup_pipeline (null: no watermark images)
  */
-function watermark_gallery_image($gallery, $file_path, $filename)
+function find_gallery_watermarks($gallery)
 {
-    // We can't watermark an image we can't save
-    require_code('images');
-    if (!function_exists('imagetypes')) {
-        return;
-    }
-    if (!is_image($filename, IMAGE_CRITERIA_GD_READ | IMAGE_CRITERIA_GD_WRITE)) {
-        return;
-    }
-
     // We need to find the most applicable gallery watermarks
     $watermark_top_left = '';
     $watermark_top_right = '';
@@ -1171,7 +1161,7 @@ function watermark_gallery_image($gallery, $file_path, $filename)
     $watermark_bottom_right = '';
     do {
         if ($gallery == '') {
-            return; // We couldn't find any matermarks
+            return null; // We couldn't find any matermarks
         }
 
         $_gallery = $GLOBALS['SITE_DB']->query_select('galleries', array('parent_id', 'watermark_top_left', 'watermark_top_right', 'watermark_bottom_left', 'watermark_bottom_right'), array('name' => $gallery), '', 1);
@@ -1182,47 +1172,18 @@ function watermark_gallery_image($gallery, $file_path, $filename)
         $gallery = $_gallery[0]['parent_id'];
     } while (($watermark_top_left == '') && ($watermark_top_right == '') && ($watermark_bottom_left == '') && ($watermark_bottom_right == ''));
 
-    // Now we must apply the watermarks
-    $ext = get_file_extension($filename);
-    $source = @imagecreatefromstring(file_get_contents($file_path));
-    if ($source === false) {
-        return; // We couldn't load it for some reason
+    if ($watermark_top_left . $watermark_top_right . $watermark_bottom_left . $watermark_bottom_right == '') {
+        return null;
     }
 
-    // Apply the watermarks
-    _watermark_corner($source, $watermark_top_left, 0, 0);
-    _watermark_corner($source, $watermark_top_right, 1, 0);
-    _watermark_corner($source, $watermark_bottom_left, 0, 1);
-    _watermark_corner($source, $watermark_bottom_right, 1, 1);
-
-    // Save
-    imagealphablending($source, false);
-    if (function_exists('imagesavealpha')) {
-        imagesavealpha($source, true);
-    }
-    if ((function_exists('imagepng')) && ($ext == 'png')) {
-        imagepng($source, $file_path, 9);
-        require_code('images_png');
-        png_compress($file_path);
-    } elseif ((function_exists('imagejpeg')) && (($ext == 'jpg') || ($ext == 'jpeg'))) {
-        imagejpeg($source, $file_path, intval(get_option('jpeg_quality')));
-    } elseif ((function_exists('imagegif')) && ($ext == 'gif')) {
-        imagegif($source, $file_path);
-    } elseif ((function_exists('imagewebp')) && ($ext == 'webp')) {
-        imagewebp($source, $file_path);
-    } elseif ((function_exists('imagebmp')) && ($ext == 'bmp')) {
-        imagebmp($source, $file_path);
-    }
-
-    // Clean up
-    imagedestroy($source);
+    return array($watermark_top_left, $watermark_top_right, $watermark_bottom_left, $watermark_bottom_right);
 }
 
 /**
  * Watermark the corner of an image.
  *
  * @param  resource $source The image resource being watermarked
- * @param  URLPATH $watermark_url The (local) URL to the watermark file
+ * @param  URLPATH $watermark_url The URL to the watermark file
  * @param  BINARY $x Whether a right hand side corner is being watermarked
  * @param  BINARY $y Whether a bottom edge corner is being watermarked
  *
@@ -1231,7 +1192,11 @@ function watermark_gallery_image($gallery, $file_path, $filename)
 function _watermark_corner($source, $watermark_url, $x, $y)
 {
     if ($watermark_url != '') {
-        $watermark = @imagecreatefromstring(file_get_contents(rawurldecode($watermark_url)));
+        $_watermark_url = rawurldecode($watermark_url);
+        if (url_is_local($_watermark_url)) {
+            $_watermark_url = get_custom_base_url() . '/' . $_watermark_url;
+        }
+        $watermark = cms_imagecreatefrom($_watermark_url);
         if ($watermark !== false) {
             imagecolortransparent($watermark, imagecolorallocate($watermark, 255, 0, 255));
             if ($x == 1) {
@@ -1244,24 +1209,6 @@ function _watermark_corner($source, $watermark_url, $x, $y)
             imagedestroy($watermark);
         }
     }
-}
-
-/**
- * Make sure the detailed image file is not bigger than the defined box width.
- *
- * @param  PATH $file_path The path to the image file
- * @param  string $filename The original filename of the image
- * @param  integer $box_width The box width
- */
-function constrain_gallery_image_to_max_size($file_path, $filename, $box_width)
-{
-    // We can't watermark an image we can't save
-    require_code('images');
-    if (!is_image($filename, IMAGE_CRITERIA_GD_READ | IMAGE_CRITERIA_GD_WRITE)) {
-        return;
-    }
-
-    convert_image($file_path, $file_path, null, null, $box_width, false, get_file_extension($filename), true, true);
 }
 
 /**

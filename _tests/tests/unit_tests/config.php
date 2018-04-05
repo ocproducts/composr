@@ -246,7 +246,7 @@ class config_test_set extends cms_test_case
                     continue;
                 }
 
-                $this->assertTrue(in_array($default, $list));
+                $this->assertTrue(in_array($default, $list), 'Inconsistent list default in ' . $hook);
             }
         }
     }

@@ -461,7 +461,9 @@ class Module_cms_calendar extends Standard_crud_module
             $fields2->attach(form_input_username(do_lang_tempcode('MEMBER_CALENDAR'), do_lang_tempcode('DESCRIPTION_MEMBER_CALENDAR'), 'member_calendar', $_member_calendar, !has_privilege(get_member(), 'add_public_events')));
         }
 
-        $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'fd78d3298730d0cb157b20f1b3dd6ae1', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('TIMEZONE'))));
+        if ((get_option('enable_timezones') !== '0') || (get_option('filter_regions') == '1')) {
+            $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'fd78d3298730d0cb157b20f1b3dd6ae1', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('TIMEZONE'))));
+        }
 
         // More date stuff
         if (get_option('enable_timezones') !== '0') {

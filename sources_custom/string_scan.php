@@ -849,7 +849,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCKS_TYPE_bottom
         BLOCKS_TYPE_main
         BLOCKS_TYPE_side
-        BLOCKS_CACHE
+        BLOCK_CACHE
         BLOCK_CONFIGURATION__PANEL_LEFT
         BLOCK_CONFIGURATION__PANEL_NO
         BLOCK_CONFIGURATION__PANEL_NONE
@@ -1657,6 +1657,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_menu_PARAM_type_TITLE
         BLOCK_menu_USE
         INDEX_DOWNLOAD
+        SPAM_URLS
         BLOCK_side_calendar_DESCRIPTION
         BLOCK_side_calendar_PARAM_as_guest
         BLOCK_side_calendar_PARAM_as_guest_TITLE
@@ -5346,6 +5347,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         JAVASCRIPT_ERROR
         JAVASCRIPT_EXECUTED
         JPEG_QUALITY
+        REPAIR_IMAGES
+        CONFIG_OPTION_repair_images
         JSON_ONLY
         JS_CAPTCHA
         JS_OVERLAYS
@@ -7048,7 +7051,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TEMPLATES_WITH_HTML_COMMENT_MARKERS
         TEMPLATES_XML
         TEMPLATE_ALTERED
-        TEMPLATES_CACHE
+        TEMPLATE_CACHE
         TEMPLATE_RENAMED
         TEMPLATE_TREE
         TEMPLATE_WILL_NEED_RESTORING

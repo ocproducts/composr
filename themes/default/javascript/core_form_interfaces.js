@@ -1212,11 +1212,18 @@
     };
 
     $cms.templates.formScreenInputDate = function formScreenInputDate(params) {
-        window.jQuery('#' + params.name).inputDate({});
+        if (!Modernizr.inputtypes.date) {
+            window.jQuery('#' + params.name).inputDate({});
+        }
+        if (!Modernizr.inputtypes.time) {
+            window.jQuery('#' + params.name).inputTime({});
+        }
     };
 
     $cms.templates.formScreenInputTime = function formScreenInputTime(params) {
-        window.jQuery('#' + params.name).inputTime({});
+        if (!Modernizr.inputtypes.time) {
+            window.jQuery('#' + params.name).inputTime({});
+        }
     };
 
     /**

@@ -110,7 +110,7 @@
 				<em>{ROOM_TEXT}</em>
 			</p>
 			{+START,IF_NON_EMPTY,{PIC_URL}}
-				<img alt="{!W_ROOM_PICTURE}" style="{WIDTH*}" src="{PIC_URL*}" />
+				<img alt="{!W_ROOM_PICTURE}" style="max-width: 430px" src="{PIC_URL*}" />
 			{+END}
 
 			{+START,IF_NON_EMPTY,{PORTALS}}

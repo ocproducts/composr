@@ -416,6 +416,9 @@ class Module_warnings extends Standard_crud_module
         $hidden = new Tempcode();
         $fields = new Tempcode();
 
+        $post_id = $spam_mode ? null : get_param_integer('post_id', null);
+        $ip_address = ($post_id === null) ? null : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_ip_address', array('id' => $post_id));
+
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
         $num_warnings = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_cache_warnings');
         $_rules_url = build_url(array('page' => 'rules'));
@@ -432,9 +435,6 @@ class Module_warnings extends Standard_crud_module
         }
 
         $this->add_text = new Tempcode();
-
-        $post_id = get_param_integer('post_id', null);
-        $ip_address = ($post_id === null) ? null : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_ip_address', array('id' => $post_id));
 
         // Information about their history, and the rules - to educate the warner/punisher
         if ($new) {
@@ -529,7 +529,8 @@ class Module_warnings extends Standard_crud_module
 
             if (addon_installed('securitylogging')) {
                 if (has_actual_page_access(get_member(), 'admin_ip_ban')) {
-                    $fields->attach(form_input_tick(do_lang_tempcode('WHETHER_BANNED_IP'), do_lang_tempcode('DESCRIPTION_WHETHER_BANNED_IP'), 'banned_ip', false));
+                    $already_banned_ip = ip_banned($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_ip_address'));
+                    $fields->attach(form_input_tick(do_lang_tempcode('WHETHER_BANNED_IP'), do_lang_tempcode('DESCRIPTION_WHETHER_BANNED_IP'), 'banned_ip', $spam_mode || $already_banned_ip, null, '1', false, $already_banned_ip));
                 }
 
                 $stopforumspam_api_key = get_option('stopforumspam_api_key');
@@ -542,12 +543,13 @@ class Module_warnings extends Standard_crud_module
                 }
                 if ($stopforumspam_api_key . $tornevall_api_username != '') {
                     require_lang('submitban');
-                    $fields->attach(form_input_tick(do_lang_tempcode('SYNDICATE_TO_STOPFORUMSPAM'), do_lang_tempcode('DESCRIPTION_SYNDICATE_TO_STOPFORUMSPAM'), 'stopforumspam', false));
+                    $fields->attach(form_input_tick(do_lang_tempcode('SYNDICATE_TO_STOPFORUMSPAM'), do_lang_tempcode('DESCRIPTION_SYNDICATE_TO_STOPFORUMSPAM'), 'stopforumspam', $spam_mode));
                 }
             }
 
             if (has_privilege(get_member(), 'member_maintenance')) {
-                $fields->attach(form_input_tick(do_lang_tempcode('BAN_MEMBER'), do_lang_tempcode('DESCRIPTION_BANNED_MEMBER'), 'banned_member', false));
+                $already_banned = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_is_perm_banned') == 1);
+                $fields->attach(form_input_tick(do_lang_tempcode('BAN_MEMBER'), do_lang_tempcode('DESCRIPTION_BANNED_MEMBER'), 'banned_member', $spam_mode || $already_banned, null, '1', false, $already_banned));
             }
 
             if (has_privilege(get_member(), 'member_maintenance')) {

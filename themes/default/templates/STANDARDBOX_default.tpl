@@ -1,4 +1,4 @@
-<div data-toggleable-tray="{ {+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}save: true{+END} }" {+START,IF_NON_EMPTY,{TITLE}} id="{TITLE|}"{+END} class="box box---standardbox-default{+START,IF_PASSED,CLASS} {CLASS*}{+END}"{+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}>
+<div data-toggleable-tray="{ {+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}save: true{+END} }"{+START,IF_NON_EMPTY,{TITLE}} id="{TITLE|}"{+END} class="box box---standardbox-default{+START,IF_PASSED,CLASS} {CLASS*}{+END}"{+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}>
 	{+START,IF_NON_EMPTY,{TITLE}}
 		{+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}
 			<h3 class="toggleable-tray-title js-tray-header">

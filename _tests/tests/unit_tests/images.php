@@ -123,7 +123,17 @@ class images_test_set extends cms_test_case
             @unlink($temp);
         }
 
-
         @unlink($temp_bak);
+    }
+
+    public function testIsAnimated()
+    {
+        require_code('images_cleanup_pipeline');
+
+        $this->assertTrue(is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/under_construction_animated.gif'), 'gif'));
+        $this->assertTrue(!is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/flags/ZM.gif'), 'gif'));
+
+        //$this->assertTrue(is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/TODO'), 'png'));  TODO: Enable in v11 with an APNG
+        $this->assertTrue(!is_animated_image(file_get_contents(get_file_base() . '/themes/default/images/video_thumb.png'), 'png'));
     }
 }

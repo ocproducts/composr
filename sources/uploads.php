@@ -33,6 +33,35 @@ function init__uploads()
     }
 
     require_code('urls2');
+    require_code('images_cleanup_pipeline');
+
+    reset_images_cleanup_pipeline_settings();
+}
+
+/**
+ * Reset the images cleanup pipeline settings.
+ */
+function reset_images_cleanup_pipeline_settings()
+{
+    global $ICPS__RECOMPRESS_MODE, $ICPS__MAXIMUM_DIMENSION, $ICPS__WATERMARKS;
+    $ICPS__RECOMPRESS_MODE = IMG_RECOMPRESS_LOSSLESS;
+    $ICPS__MAXIMUM_DIMENSION = null;
+    $ICPS__WATERMARKS = null;
+}
+
+/**
+ * Set the images cleanup pipeline settings.
+ *
+ * @param  integer $recompress_mode How to recompress, an IMG_RECOMPRESS_* constant
+ * @param  ?integer $maximum_dimension The size of the bounding box (null: none)
+ * @param  ?array $watermarks Watermark corners (top-left, top-right, bottom-left, bottom-right) (null: none)
+ */
+function set_images_cleanup_pipeline_settings($recompress_mode = 0, $maximum_dimension = null, $watermarks = null)
+{
+    global $ICPS__RECOMPRESS_MODE, $ICPS__MAXIMUM_DIMENSION, $ICPS__WATERMARKS;
+    $ICPS__RECOMPRESS_MODE = $recompress_mode;
+    $ICPS__MAXIMUM_DIMENSION = $maximum_dimension;
+    $ICPS__WATERMARKS = $watermarks;
 }
 
 /**
@@ -349,7 +378,8 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
     } else {
         $max_size = get_max_image_size(false);
     }
-    if (($attach_name != '') && (array_key_exists($attach_name, $filearrays)) && ((is_uploaded_file($filearrays[$attach_name]['tmp_name'])) || ($plupload_uploaded))) { // If we uploaded
+    $is_uploaded = ($attach_name != '') && (array_key_exists($attach_name, $filearrays)) && ((is_uploaded_file($filearrays[$attach_name]['tmp_name'])) || ($plupload_uploaded));
+    if ($is_uploaded) { // If we uploaded
         if (!has_privilege($member_id, 'exceed_filesize_limit')) {
             if ($filearrays[$attach_name]['size'] > $max_size) {
                 if ($accept_errors) {
@@ -549,6 +579,14 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         }
         if ($thumb !== null) {
             $out[1] = $thumb;
+        }
+    }
+
+    // Images cleanup pipeline
+    if ((($enforce_type & CMS_UPLOAD_IMAGE) != 0) && ($enforce_type != CMS_UPLOAD_ANYTHING)) {
+        if (($is_uploaded) && ($out[0] != '') && (url_is_local($out[0]))) {
+            global $ICPS__RECOMPRESS_MODE, $ICPS__MAXIMUM_DIMENSION, $ICPS__WATERMARKS;
+            handle_images_cleanup_pipeline(get_custom_file_base() . '/' . rawurldecode($out[0]), $out[2], $ICPS__RECOMPRESS_MODE, $ICPS__MAXIMUM_DIMENSION, $ICPS__WATERMARKS);
         }
     }
 
@@ -837,17 +875,6 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
  */
 function handle_upload_post_processing($enforce_type, $path, $upload_folder, $filename, $obfuscate = 0, $accept_errors = false)
 {
-    // Image filtering
-    require_code('images');
-    if ((($enforce_type & CMS_UPLOAD_ANYTHING) == 0) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (is_image($path, IMAGE_CRITERIA_WEBSAFE | IMAGE_CRITERIA_GD_WRITE, has_privilege(get_member(), 'comcode_dangerous')))) {
-        // Special code to re-orientate JPEG images if required (browsers cannot do this)
-        convert_image($path, $path, null, null, 100000/*Impossibly large size, so no resizing happens*/, false, null, true, true);
-
-        // Compress PNG files
-        require_code('images_png');
-        png_compress($path);
-    }
-
     // Is a CDN transfer hook going to kick in?
     $hooks = find_all_hook_obs('systems', 'cdn_transfer', 'Hook_cdn_transfer_');
     foreach ($hooks as $object) {

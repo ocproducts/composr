@@ -164,6 +164,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/call_home.php',
             'sources/hooks/systems/config/cleanup_files.php',
             'sources/hooks/systems/config/jpeg_quality.php',
+            'sources/hooks/systems/config/repair_images.php',
             'sources/hooks/systems/config/mail_queue.php',
             'sources/hooks/systems/config/mail_queue_debug.php',
             'sources/hooks/systems/config/modal_user.php',
