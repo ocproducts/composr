@@ -247,7 +247,7 @@
     };
 
     $cms.functions.hookProfilesTabsEditSettingsRenderTab = function hookProfilesTabsEditSettingsRenderTab() {
-        var form = document.getElementById('main_form'),
+        var form = document.getElementById('main-form'),
             submitBtn = document.getElementById('submit-button'),
             validValue;
 
