@@ -2800,7 +2800,7 @@ class Hook_import_cms_merge
             if ($id_new === null) {
                 $title = $this->get_lang_string($db, $row['g_title']);
 
-                $row['g_rank_image'] = str_replace('ocf_', 'cns_', $row['g_rank_image']);
+                $row['g_rank_image'] = $row['g_rank_image'];
 
                 $id_new = cns_make_group($name, $row['g_is_default'], $row['g_is_super_admin'], $row['g_is_super_moderator'], $title, '', $row['g_promotion_target'], $row['g_promotion_threshold'], -$row['g_group_leader'], $row['g_flood_control_submit_secs'], $row['g_flood_control_access_secs'], $row['g_max_daily_upload_mb'], $row['g_max_attachments_per_post'], $row['g_max_avatar_width'], $row['g_max_avatar_height'], $row['g_max_post_length_comcode'], $row['g_max_sig_length_comcode'], $row['g_gift_points_base'], $row['g_gift_points_per_day'], $row['g_enquire_on_new_ips'], $row['g_is_presented_at_install'], $row['g_hidden'], $row['g_order'], $row['g_rank_image_pri_only'], $row['g_open_membership'], $row['g_is_private_club']);
             }
@@ -2856,7 +2856,7 @@ class Hook_import_cms_merge
 
                     $timezone = $row['m_timezone_offset'];
 
-                    $row['m_avatar_url'] = str_replace('ocf_', 'cns_', $row['m_avatar_url']);
+                    $row['m_avatar_url'] = $row['m_avatar_url'];
 
                     $id_new = cns_make_member($row['m_username'], $row['m_pass_hash_salted'], $row['m_email_address'], null, $row['m_dob_day'], $row['m_dob_month'], $row['m_dob_year'], $custom_fields, $timezone, $primary_group, $row['m_validated'], $row['m_join_time'], $row['m_last_visit_time'], $row['m_theme'], $row['m_avatar_url'], $this->get_lang_string($db, $row['m_signature']), $row['m_is_perm_banned'], $row['m_preview_posts'], $row['m_reveal_age'], $row['m_title'], $row['m_photo_url'], $row['m_photo_thumb_url'], $row['m_views_signatures'], $row['m_auto_monitor_contrib_content'], $row['m_language'], $row['m_allow_emails'], $row['m_allow_emails_from_staff'], $row['m_ip_address'], $row['m_validated_email_confirm_code'], false, $row['m_password_compat_scheme'], $row['m_pass_salt'], $row['m_last_submit_time'], $id, $row['m_highlighted_name'], $row['m_pt_allow'], $this->get_lang_string($db, $row['m_pt_rules_text']), $row['m_on_probation_until'], $row['m_auto_mark_read'], $row['m_profile_views'], $row['m_total_sessions']);
                     $rows2 = $db->query_select('f_member_custom_fields', array('*'), array('mf_member_id' => $row['id']), '', 1);
@@ -3209,7 +3209,7 @@ class Hook_import_cms_merge
 
                 $id = (get_param_integer('keep_preserve_ids', 0) == 0) ? null : $row['id'];
 
-                $row['t_emoticon'] = str_replace('ocf_', 'cns_', $row['t_emoticon']);
+                $row['t_emoticon'] = $row['t_emoticon'];
 
                 $id_new = cns_make_topic($forum_id, $row['t_description'], $row['t_emoticon'], $row['t_validated'], $row['t_is_open'], $row['t_pinned'], $row['t_cascading'], $t_pt_from, $t_pt_to, false, $row['t_num_views'], $id);
 
@@ -3407,7 +3407,7 @@ class Hook_import_cms_merge
         foreach ($rows as $row) {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_emoticons', 'e_code', array('e_code' => $row['e_code']));
             if ($test === null) {
-                $row['e_theme_img_code'] = str_replace('ocf_', 'cns_', $row['e_theme_img_code']);
+                $row['e_theme_img_code'] = $row['e_theme_img_code'];
 
                 $GLOBALS['FORUM_DB']->query_insert('f_emoticons', $row);
             }
