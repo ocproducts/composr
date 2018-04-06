@@ -56,6 +56,6 @@ class Hook_config_mailing_list_style_notifications_default
             return null;
         }
 
-        return '0';
+        return '1';
     }
 }

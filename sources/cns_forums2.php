@@ -25,7 +25,7 @@
  */
 function cns_has_mailing_list_style()
 {
-    $sql = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE f_imap_username IS NOT NULL';
+    $sql = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE f_imap_username IS NOT NULL AND f_imap_email_address IS NOT NULL';
     $test = $GLOBALS['FORUM_DB']->query_value_if_there($sql);
     return ($test !== null);
 }

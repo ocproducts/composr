@@ -51,7 +51,7 @@ class Hook_config_ticket_mail_on
      */
     public function get_default()
     {
-        if (GOOGLE_APPENGINE) {
+        if (!function_exists('imap_open')) {
             return null;
         }
 
