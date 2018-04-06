@@ -3021,7 +3021,53 @@ class Hook_cms_merge
 
                     $row['m_avatar_url'] = str_replace('ocf_', 'cns_', $row['m_avatar_url']);
 
-                    $id_new = cns_make_member($row['m_username'], $row['m_pass_hash_salted'], $row['m_email_address'], null, $row['m_dob_day'], $row['m_dob_month'], $row['m_dob_year'], $custom_fields, $timezone, $primary_group, $row['m_validated'], $row['m_join_time'], $row['m_last_visit_time'], $row['m_theme'], $row['m_avatar_url'], $this->get_lang_string($db, $row['m_signature']), $row['m_is_perm_banned'], $row['m_preview_posts'], $row['m_reveal_age'], $row['m_title'], $row['m_photo_url'], $row['m_photo_thumb_url'], $row['m_views_signatures'], $row['m_auto_monitor_contrib_content'], $row['m_language'], $row['m_allow_emails'], array_key_exists('m_allow_emails_from_staff', $row) ? $row['m_allow_emails_from_staff'] : $row['m_allow_emails'], $row['m_ip_address'], $row['m_validated_email_confirm_code'], false, array_key_exists('m_password_compat_scheme', $row) ? $row['m_password_compat_scheme'] : $row['m_password_compatibility_scheme'], $row['m_pass_salt'], $row['m_last_submit_time'], $id, array_key_exists('m_highlighted_name', $row) ? $row['m_highlighted_name'] : 0, array_key_exists('m_pt_allow', $row) ? $row['m_pt_allow'] : '*', array_key_exists('m_pt_rules_text', $row) ? $this->get_lang_string($db, $row['m_pt_rules_text']) : '', $row['m_on_probation_until'], isset($row['m_auto_mark_read']) ? $row['m_auto_mark_read'] : 1, isset($row['m_profile_views']) ? $row['m_profile_views'] : 0, isset($row['m_total_sessions']) ? $row['m_total_sessions'] : 0);
+                    $id_new = cns_make_member(
+                        $row['m_username'], // username
+                        $row['m_pass_hash_salted'], // password
+                        $row['m_email_address'], // email_address
+                        $primary_group, // primary_group
+                        null, // secondary_groups
+                        $row['m_dob_day'], // dob_day
+                        $row['m_dob_month'], // dob_month
+                        $row['m_dob_year'], // dob_year
+                        $custom_fields, // custom_fields
+                        $timezone, // timezone
+                        $row['m_language'], // language
+                        $row['m_theme'], // theme
+                        $row['m_title'], // title
+                        $row['m_photo_url'], // photo_url
+                        $row['m_photo_thumb_url'], // photo_thumb_url
+                        $row['m_avatar_url'], // avatar_url
+                        $this->get_lang_string($db, $row['m_signature']), // signature
+                        $row['m_preview_posts'], // preview_posts
+                        $row['m_reveal_age'], // reveal_age
+                        $row['m_views_signatures'], // views_signatures
+                        $row['m_auto_monitor_contrib_content'], // auto_monitor_contrib_content
+                        $row['m_smart_topic_notification'], // smart_topic_notification
+                        $row['m_mailing_list_style_notifications'], // mailing_list_style_notifications
+                        $row['m_auto_mark_read'], // auto_mark_read
+                        $row['m_sound_enabled'], // sound_enabled
+                        $row['m_allow_emails'], // allow_emails
+                        $row['m_allow_emails_from_staff'], // allow_emails_from_staff
+                        $row['m_pt_allow'], // pt_allow
+                        $this->get_lang_string($db, $row['m_pt_rules_text']), // pt_rules_text
+                        $row['m_highlighted_name'], // highlighted_name
+                        $row['m_validated'], // validated
+                        $row['m_validated_email_confirm_code'], // validated_email_confirm_code
+                        $row['m_on_probation_until'], // on_probation_until
+                        $row['m_is_perm_banned'], // is_perm_banned
+                        false, // check_correctness
+                        $row['m_ip_address'], // ip_address
+                        $row['m_password_compat_scheme'], // password_compatibility_scheme
+                        $row['m_pass_salt'], // salt
+                        $row['m_join_time'], // join_time
+                        $row['m_last_visit_time'], // last_visit_time
+                        $row['m_last_submit_time'], // last_submit_time
+                        $row['m_profile_views'], // profile_views
+                        $row['m_total_sessions'], // total_sessions
+                        $id // id
+                    );
+
                     $rows2 = $db->query('SELECT * FROM ' . $table_prefix . 'f_member_custom_fields WHERE mf_member_id=' . strval($row['id']), 1);
                     $this->_fix_comcode_ownership($rows2);
                     if (array_key_exists(0, $rows2)) {

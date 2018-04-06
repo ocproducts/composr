@@ -195,9 +195,14 @@ class Module_admin_cns_forums extends Standard_crud_module
      * @param  ID_TEXT $order The order the topics are shown in, by default.
      * @param  BINARY $is_threaded Whether the forum is threaded.
      * @param  BINARY $allows_anonymous_posts Whether anonymous posts are allowed
+     * @param  SHORT_TEXT $imap_host IMAP host (blank: not set / use centrally configured)
+     * @param  ?integer $imap_port IMAP port (null: not set / use centrally configured)
+     * @param  SHORT_TEXT $imap_username (blank: not set)
+     * @param  SHORT_TEXT $imap_password (blank: not set / use centrally configured)
+     * @param  SHORT_TEXT $imap_folder (blank: not set / use centrally configured)
      * @return array A pair: The input fields, Hidden fields
      */
-    public function get_form_fields($id = null, $name = '', $description = '', $forum_grouping_id = null, $parent_forum = null, $position = null, $post_count_increment = 1, $order_sub_alpha = 0, $intro_question = '', $intro_answer = '', $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 1)
+    public function get_form_fields($id = null, $name = '', $description = '', $forum_grouping_id = null, $parent_forum = null, $position = null, $post_count_increment = 1, $order_sub_alpha = 0, $intro_question = '', $intro_answer = '', $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 1, $imap_host = '', $imap_port = null, $imap_username = '', $imap_password = '', $imap_folder = '')
     {
         if (is_null($forum_grouping_id)) {
             $forum_grouping_id = get_param_integer('forum_grouping_id', db_get_first_id());
@@ -234,6 +239,16 @@ class Module_admin_cns_forums extends Standard_crud_module
         $fields->attach(form_input_tick(do_lang_tempcode('IS_THREADED'), do_lang_tempcode('DESCRIPTION_IS_THREADED'), 'is_threaded', $is_threaded == 1));
         if (get_option('is_on_anonymous_posts') == '1') {
             $fields->attach(form_input_tick(do_lang_tempcode('ALLOWS_ANONYMOUS_POSTS'), do_lang_tempcode('DESCRIPTION_ALLOWS_ANONYMOUS_POSTS'), 'allows_anonymous_posts', $allows_anonymous_posts == 1));
+        }
+
+        if (function_exists('imap_open')) {
+            require_lang('config');
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'ab47ed06695dc2cd99211772fe4c5643', 'SECTION_HIDDEN' => $imap_username != '', 'TITLE' => do_lang_tempcode('MAILING_LIST'), 'DESCRIPTION' => do_lang_tempcode('DESCRIPTION_MAILING_LIST'))));
+            $fields->attach(form_input_line(do_lang_tempcode('HOST'), do_lang_tempcode('CONFIG_OPTION_imap_host'), 'imap_host', $imap_host, false));
+            $fields->attach(form_input_integer(do_lang_tempcode('PORT'), do_lang_tempcode('CONFIG_OPTION_imap_port'), 'imap_port', $imap_port, false));
+            $fields->attach(form_input_line(do_lang_tempcode('USERNAME'), do_lang_tempcode('CONFIG_OPTION_imap_username'), 'imap_username', $imap_username, false));
+            $fields->attach(form_input_line(do_lang_tempcode('PASSWORD'), do_lang_tempcode('CONFIG_OPTION_imap_password'), 'imap_password', $imap_password, false));
+            $fields->attach(form_input_line(do_lang_tempcode('MAIL_FOLDER'), do_lang_tempcode('CONFIG_OPTION_imap_folder'), 'imap_folder', $imap_folder, false));
         }
 
         $fields->attach(metadata_get_fields('forum', is_null($id) ? null : strval($id)));
@@ -517,7 +532,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         }
         $r = $m[0];
 
-        $fields = $this->get_form_fields($r['id'], $r['f_name'], get_translated_text($r['f_description'], $GLOBALS['FORUM_DB']), $r['f_forum_grouping_id'], $r['f_parent_forum'], $r['f_position'], $r['f_post_count_increment'], $r['f_order_sub_alpha'], get_translated_text($r['f_intro_question'], $GLOBALS['FORUM_DB']), $r['f_intro_answer'], $r['f_redirection'], $r['f_order'], $r['f_is_threaded'], $r['f_allows_anonymous_posts']);
+        $fields = $this->get_form_fields($r['id'], $r['f_name'], get_translated_text($r['f_description'], $GLOBALS['FORUM_DB']), $r['f_forum_grouping_id'], $r['f_parent_forum'], $r['f_position'], $r['f_post_count_increment'], $r['f_order_sub_alpha'], get_translated_text($r['f_intro_question'], $GLOBALS['FORUM_DB']), $r['f_intro_answer'], $r['f_redirection'], $r['f_order'], $r['f_is_threaded'], $r['f_allows_anonymous_posts'], $r['f_imap_host'], $r['f_imap_port'], $r['f_imap_username'], $r['f_imap_password'], $r['f_imap_folder']);
 
         $delete_fields = new Tempcode();
         if (intval($id) != db_get_first_id()) {
@@ -545,7 +560,28 @@ class Module_admin_cns_forums extends Standard_crud_module
 
         $metadata = actual_metadata_get_fields('forum', null);
 
-        $id = strval(cns_make_forum($name, post_param_string('description'), post_param_integer('forum_grouping_id'), null, $parent_forum, post_param_order_field(), post_param_integer('post_count_increment', 0), post_param_integer('order_sub_alpha', 0), post_param_string('intro_question'), post_param_string('intro_answer'), post_param_string('redirection'), post_param_string('topic_order'), post_param_integer('is_threaded', 0), post_param_integer('allows_anonymous_posts', 0)));
+        $_id = cns_make_forum(
+            $name,
+            post_param_string('description'),
+            post_param_integer('forum_grouping_id'),
+            null,
+            $parent_forum,
+            post_param_order_field(),
+            post_param_integer('post_count_increment', 0),
+            post_param_integer('order_sub_alpha', 0),
+            post_param_string('intro_question'),
+            post_param_string('intro_answer'),
+            post_param_string('redirection'),
+            post_param_string('topic_order'),
+            post_param_integer('is_threaded', 0),
+            post_param_integer('allows_anonymous_posts', 0),
+            post_param_string('imap_host', ''),
+            post_param_integer('imap_port', null),
+            post_param_string('imap_username', ''),
+            post_param_string('imap_password', ''),
+            post_param_string('imap_folder', '')
+        );
+        $id = strval($_id);
 
         set_url_moniker('forum', $id);
 
@@ -619,6 +655,11 @@ class Module_admin_cns_forums extends Standard_crud_module
             post_param_string('topic_order', STRING_MAGIC_NULL),
             post_param_integer('is_threaded', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('allows_anonymous_posts', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
+            post_param_string('imap_host', ''),
+            post_param_integer('imap_port', null),
+            post_param_string('imap_username', ''),
+            post_param_string('imap_password', ''),
+            post_param_string('imap_folder', ''),
             post_param_integer('reset_intro_acceptance', 0) == 1
         );
 

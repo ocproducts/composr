@@ -125,7 +125,6 @@ function display_alert(notification)
 	// Play sound, if requested
 	var sound=notification.getAttribute('sound');
 	if (!sound) sound=(window.parseInt(notification.getAttribute('priority'))<3)?'on':'off';
-	if (read_cookie('sound','off')==='off') sound='off';
 	var notification_code=notification.getAttribute('notification_code');
 	if (sound=='on' && typeof window.detect_change=='undefined' || notification_code!='ticket_reply' && notification_code!='ticket_reply_staff')
 	{

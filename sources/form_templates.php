@@ -1287,6 +1287,7 @@ function form_input_password($pretty_name, $description, $name, $required, $tabi
  * @param  boolean $ticked Whether this is ticked by default
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  ID_TEXT $value The value the checkbox passes when ticked
+ * @param  boolean $disabled Whether this is disabled
  * @return Tempcode The input field
  */
 function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex = null, $value = '1', $disabled = false)

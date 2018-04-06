@@ -19,6 +19,18 @@
  */
 
 /**
+ * Find if we have at least one mailing-list-style forum.
+ *
+ * @return boolean Whether we do
+ */
+function cns_has_mailing_list_style()
+{
+    $sql = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE f_imap_username IS NOT NULL';
+    $test = $GLOBALS['FORUM_DB']->query_value_if_there($sql);
+    return ($test !== null);
+}
+
+/**
  * Get a nice list for selection from the forum groupings.
  *
  * @param  ?AUTO_LINK $avoid Category to avoid putting in the list (null: don't avoid any).

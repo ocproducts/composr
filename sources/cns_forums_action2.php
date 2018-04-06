@@ -97,9 +97,14 @@ function cns_delete_forum_grouping($forum_grouping_id, $target_forum_grouping_id
  * @param  ID_TEXT $order The order the topics are shown in, by default.
  * @param  BINARY $is_threaded Whether the forum is threaded.
  * @param  BINARY $allows_anonymous_posts Whether anonymous posts are allowed
+ * @param  SHORT_TEXT $imap_host IMAP host (blank: not set / use centrally configured)
+ * @param  ?integer $imap_port IMAP port (null: not set / use centrally configured)
+ * @param  SHORT_TEXT $imap_username (blank: not set)
+ * @param  SHORT_TEXT $imap_password (blank: not set / use centrally configured)
+ * @param  SHORT_TEXT $imap_folder (blank: not set / use centrally configured)
  * @param  boolean $reset_intro_acceptance Whether to force forum rules to be re-agreed to, if they've just been changed.
  */
-function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new_parent, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 0, $reset_intro_acceptance = false)
+function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new_parent, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 0, $imap_host = '', $imap_port = null, $imap_username = '', $imap_password = '', $imap_folder = '', $reset_intro_acceptance = false)
 {
     if ($forum_grouping_id == -1) {
         $forum_grouping_id = null;
@@ -150,6 +155,11 @@ function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new
         'f_order' => $order,
         'f_is_threaded' => $is_threaded,
         'f_allows_anonymous_posts' => $allows_anonymous_posts,
+        'f_imap_host' => $imap_host,
+        'f_imap_port' => $imap_port,
+        'f_imap_username' => $imap_username,
+        'f_imap_password' => $imap_password,
+        'f_imap_folder' => $imap_folder,
     );
     $map += lang_remap_comcode('f_description', $forum_info[0]['f_description'], $description, $GLOBALS['FORUM_DB']);
     $map += lang_remap_comcode('f_intro_question', $forum_info[0]['f_intro_question'], $intro_question, $GLOBALS['FORUM_DB']);

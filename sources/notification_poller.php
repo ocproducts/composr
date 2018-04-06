@@ -286,7 +286,8 @@ function web_notification_to_xml($row)
         'CODE_CATEGORY' => $row['d_code_category'],
     ));
 
-    //sound="' . (($row['d_priority'] < 3) ? 'on' : 'off') . '"
+    $sound = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_sound_enabled') == 1);
+
     return '
         <web_notification
             id="' . strval($row['id']) . '"
@@ -302,7 +303,7 @@ function web_notification_to_xml($row)
             date_written_time="' . escape_html(get_timezoned_date($row['d_date_and_time'])) . '"
             notification_code="' . escape_html($row['d_notification_code']) . '"
             code_category="' . escape_html($row['d_code_category']) . '"
-            sound="on"
+            sound="' . ($sound ? 'on' : 'off') . '"
         />
     ';
 }

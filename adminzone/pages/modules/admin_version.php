@@ -856,7 +856,6 @@ class Module_admin_version
 
             add_privilege('SUBMISSION', 'edit_meta_fields');
             add_privilege('SUBMISSION', 'perform_webstandards_check_by_default');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('smart_topic_notification', 20, 1, 0, 1, 1, '', 'tick', 0, '0');
 
             $GLOBALS['SITE_DB']->create_table('email_bounces', array(
                 'id' => '*AUTO',
@@ -991,6 +990,10 @@ class Module_admin_version
                 'usage_tally' => 'INTEGER',
             ));
             $GLOBALS['SITE_DB']->create_index('post_tokens', 'generation_time', array('generation_time'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 18)) {
+            $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('smart_topic_notification');
         }
     }
 

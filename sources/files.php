@@ -325,7 +325,7 @@ function better_parse_ini_file($filename, $file = null)
         if (@is_array($FILE_ARRAY)) {
             $file = file_array_get($filename);
         } else {
-            $file = cms_file_get_contents_safe($filename);
+            $file = function_exists('cms_file_get_contents_safe') ? cms_file_get_contents_safe($filename) : file_get_contents($filename);
         }
     }
 

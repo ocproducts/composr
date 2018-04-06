@@ -71,11 +71,20 @@
 	</p>
 {+END}
 
-{+START,IF_PASSED,SMART_TOPIC_NOTIFICATION_CONTENT}
+{+START,IF_PASSED,SMART_TOPIC_NOTIFICATION}
 	<h2>{!cns:SMART_TOPIC_NOTIFICATION}</h2>
 
 	<p class="simple_neat_checkbox">
-		<input{+START,IF,{SMART_TOPIC_NOTIFICATION_CONTENT}} checked="checked"{+END} type="checkbox" id="smart_topic_notification_content" name="smart_topic_notification_content" value="1" />
+		<input{+START,IF,{SMART_TOPIC_NOTIFICATION}} checked="checked"{+END} type="checkbox" id="smart_topic_notification_content" name="smart_topic_notification_content" value="1" />
 		<label for="smart_topic_notification_content"><span>{!cns:DESCRIPTION_SMART_TOPIC_NOTIFICATION}</span></label>
+	</p>
+{+END}
+
+{+START,IF_PASSED,MAILING_LIST_STYLE_NOTIFICATIONS}
+	<h2>{!cns:MAILING_LIST_STYLE_NOTIFICATIONS}</h2>
+
+	<p class="simple_neat_checkbox">
+		<input{+START,IF,{MAILING_LIST_STYLE_NOTIFICATIONS}} checked="checked"{+END} type="checkbox" id="mailing_list_style_notifications" name="mailing_list_style_notifications" value="1" />
+		<label for="mailing_list_style_notifications"><span>{!cns:DESCRIPTION_MAILING_LIST_STYLE_NOTIFICATIONS}</span></label>
 	</p>
 {+END}

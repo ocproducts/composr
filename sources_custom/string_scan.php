@@ -7839,7 +7839,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD
         DISABLE_COMMENT_NOTIFICATIONS
         DISABLE_NOTIFICATIONS
-        DISABLE_NOTIFICATION_SOUND
         DISABLE_WYSIWYG
         DISALLOW_LIST
         DISALLOW_LIST_GROUPS
@@ -7948,7 +7947,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ENABLE_NOTIFICATIONS_WEEKLY_EMAIL_DIGEST
         ENABLE_NOTIFICATIONS__CHOICE
         ENABLE_NOTIFICATIONS__STATISTICAL
-        ENABLE_NOTIFICATION_SOUND
         ENABLE_POPUPS
         ENABLE_WYSIWYG
         END_CHAT
@@ -8615,7 +8613,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NOTIFICATION_PT_MESSAGE_WRAP_DIRECT_REPLY
         NOTIFICATION_PT_SUBJECT_WRAP
         NOTIFICATION_SMS_COMPLETE_WRAP
-        NOTIFICATION_SOUND
         NOTIFICATION_SUBJECT_invited_content
         NOTIFICATION_TYPE_calendar_event
         NOTIFICATION_TYPE_calendar_reminder
@@ -9235,7 +9232,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SPECIAL_CPF__cms_post_code
         SPECIAL_CPF__cms_role
         SPECIAL_CPF__cms_sites
-        SPECIAL_CPF__cms_smart_topic_notification
         SPECIAL_CPF__cms_state
         SPECIAL_CPF__cms_street_address
         SPECIAL_REGISTRATION_FIELDS

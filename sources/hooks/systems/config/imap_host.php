@@ -51,6 +51,10 @@ class Hook_config_imap_host
      */
     public function get_default()
     {
+        if (!function_exists('imap_open')) {
+            return null;
+        }
+
         return 'localhost';
     }
 }

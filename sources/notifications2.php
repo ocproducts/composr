@@ -207,13 +207,19 @@ function notifications_ui($member_id_of)
         }
     }
 
-    $auto_monitor_contrib_content = mixed();
+    $auto_monitor_contrib_content = null;
+    $smart_topic_notification = null;
+    $mailing_list_style_notifications = null;
     if (get_forum_type() == 'cns') {
-        $auto_monitor_contrib_content = strval($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_auto_monitor_contrib_content'));
+        $auto_monitor_contrib_content = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_auto_monitor_contrib_content') == 1);
+        $smart_topic_notification = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_smart_topic_notification') == 1);
+        if (addon_installed('cns_forum')) {
+            require_code('cns_forums2');
+            if (cns_has_mailing_list_style()) {
+                $mailing_list_style_notifications = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'mailing_list_style_notifications') == 1);
+            }
+        }
     }
-
-    $custom_fields = $GLOBALS['FORUM_DRIVER']->get_custom_fields($member_id_of);
-    $smart_topic_notification_content = (array_key_exists('smart_topic_notification', $custom_fields)) && ($custom_fields['smart_topic_notification'] == '1');
 
     return do_template('NOTIFICATIONS_MANAGE', array(
         '_GUID' => '838165ca739c45c2dcf994bed6fefe3e',
@@ -221,7 +227,8 @@ function notifications_ui($member_id_of)
         'AUTO_NOTIFICATION_CONTRIB_CONTENT' => $auto_monitor_contrib_content,
         'NOTIFICATION_TYPES_TITLES' => $notification_types_titles,
         'NOTIFICATION_SECTIONS' => $notification_sections,
-        'SMART_TOPIC_NOTIFICATION_CONTENT' => $smart_topic_notification_content,
+        'SMART_TOPIC_NOTIFICATION' => $smart_topic_notification,
+        'MAILING_LIST_STYLE_NOTIFICATIONS' => $mailing_list_style_notifications,
         'MEMBER_ID' => strval($member_id_of),
     ));
 }

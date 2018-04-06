@@ -64,9 +64,14 @@ function cns_make_forum_grouping($title, $description, $expanded_by_default = 1)
  * @param  ID_TEXT $order The order the topics are shown in, by default.
  * @param  BINARY $is_threaded Whether the forum is threaded.
  * @param  BINARY $allows_anonymous_posts Whether anonymous posts are allowed
+ * @param  SHORT_TEXT $imap_host IMAP host (blank: not set / use centrally configured)
+ * @param  ?integer $imap_port IMAP port (null: not set / use centrally configured)
+ * @param  SHORT_TEXT $imap_username (blank: not set)
+ * @param  SHORT_TEXT $imap_password (blank: not set / use centrally configured)
+ * @param  SHORT_TEXT $imap_folder (blank: not set / use centrally configured)
  * @return AUTO_LINK The ID of the newly created forum.
  */
-function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping, $parent_forum, $position = 1, $post_count_increment = 1, $order_sub_alpha = 0, $intro_question = '', $intro_answer = '', $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 0)
+function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping, $parent_forum, $position = 1, $post_count_increment = 1, $order_sub_alpha = 0, $intro_question = '', $intro_answer = '', $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 0, $imap_host = '', $imap_port = null, $imap_username = '', $imap_password = '', $imap_folder = '')
 {
     require_code('global4');
     prevent_double_submit('ADD_FORUM', null, $name);
@@ -107,6 +112,11 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
         'f_order' => $order,
         'f_is_threaded' => $is_threaded,
         'f_allows_anonymous_posts' => $allows_anonymous_posts,
+        'f_imap_host' => $imap_host,
+        'f_imap_port' => $imap_port,
+        'f_imap_username' => $imap_username,
+        'f_imap_password' => $imap_password,
+        'f_imap_folder' => $imap_folder,
     );
     $map += insert_lang_comcode('f_description', $description, 2, $GLOBALS['FORUM_DB']);
     $map += insert_lang_comcode('f_intro_question', $intro_question, 3, $GLOBALS['FORUM_DB']);

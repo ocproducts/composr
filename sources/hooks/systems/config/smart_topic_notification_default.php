@@ -1,3 +1,4 @@
+
 <?php /*
 
  Composr
@@ -15,13 +16,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_configuration
+ * @package    cns_forum
  */
 
 /**
  * Hook class.
  */
-class Hook_config_imap_password
+class Hook_config_smart_topic_notification_default
 {
     /**
      * Gets the details relating to the config option.
@@ -31,16 +32,15 @@ class Hook_config_imap_password
     public function get_details()
     {
         return array(
-            'human_name' => 'PASSWORD',
-            'type' => 'line',
-            'category' => 'SERVER',
-            'group' => 'IMAP',
-            'explanation' => 'CONFIG_OPTION_imap_password',
-            'shared_hosting_restricted' => '1',
+            'human_name' => 'SMART_TOPIC_NOTIFICATION',
+            'type' => 'tick',
+            'category' => 'USERS',
+            'group' => 'MEMBER_DEFAULT_SETTINGS',
+            'explanation' => 'CONFIG_OPTION_smart_topic_notification_default',
+            'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 5,
 
-            'addon' => 'core_configuration',
+            'addon' => 'cns_forum',
         );
     }
 
@@ -51,10 +51,7 @@ class Hook_config_imap_password
      */
     public function get_default()
     {
-        if (!function_exists('imap_open')) {
-            return null;
-        }
-
-        return '';
+        return '0';
     }
 }
+

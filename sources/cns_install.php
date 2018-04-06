@@ -332,6 +332,17 @@ function install_cns($upgrade_from = null)
             build_cpf_indices($id, $index, $type, $_type);
         }
     }
+    if (($upgrade_from === null) || ($upgrade_from < 11.0)) {
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_imap_host', 'SHORT_TEXT');
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_imap_port', '?INTEGER');
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_imap_username', 'SHORT_TEXT');
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_imap_password', 'SHORT_TEXT');
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_imap_folder', 'SHORT_TEXT');
+
+        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_smart_topic_notification', 'BINARY');
+        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_mailing_list_style_notifications', 'BINARY');
+        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_sound_enabled', 'BINARY');
+    }
 
     // If we have the forum installed to this db already, leave
     if (is_null($upgrade_from)) {
@@ -410,48 +421,66 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->create_index('f_group_members', 'gm_group_id', array('gm_group_id'));
 
         $GLOBALS['FORUM_DB']->create_table('f_members', array(
+            // Basic details
             'id' => '*AUTO',
             'm_username' => 'ID_TEXT',
             'm_pass_hash_salted' => 'SHORT_TEXT', // Not MD5 type because it could store different things according to password_compatibility_scheme
             'm_pass_salt' => 'SHORT_TEXT',
-            'm_theme' => 'ID_TEXT', // Blank means default
-            'm_avatar_url' => 'URLPATH', // Blank means no avatar
-            'm_validated' => 'BINARY',
-            'm_validated_email_confirm_code' => 'SHORT_TEXT',
-            'm_cache_num_posts' => 'INTEGER',
-            'm_cache_warnings' => 'INTEGER',
-            'm_join_time' => 'TIME',
-            'm_timezone_offset' => 'SHORT_TEXT',
+            'm_password_change_code' => 'SHORT_TEXT',
+            'm_password_compat_scheme' => 'ID_TEXT',
+            'm_email_address' => 'SHORT_TEXT',
             'm_primary_group' => 'GROUP',
-            'm_last_visit_time' => 'TIME', // This field is generally kept up-to-date, while the cookie 'last_visit' refers to the previous browsing session's time
-            'm_last_submit_time' => 'TIME',
-            'm_signature' => 'LONG_TRANS__COMCODE',
-            'm_is_perm_banned' => 'BINARY',
-            'm_preview_posts' => 'BINARY',
             'm_dob_day' => '?SHORT_INTEGER',
             'm_dob_month' => '?SHORT_INTEGER',
             'm_dob_year' => '?INTEGER',
-            'm_reveal_age' => 'BINARY',
-            'm_email_address' => 'SHORT_TEXT',
+
+            // Selections
+            'm_timezone_offset' => 'SHORT_TEXT',
+            'm_language' => 'ID_TEXT',
+            'm_theme' => 'ID_TEXT', // Blank means default
+
+            // Rich data
             'm_title' => 'SHORT_TEXT', // Blank means use title
             'm_photo_url' => 'URLPATH', // Blank means no photo
             'm_photo_thumb_url' => 'URLPATH', // Blank means no photo
+            'm_avatar_url' => 'URLPATH', // Blank means no avatar
+            'm_signature' => 'LONG_TRANS__COMCODE',
+
+            // Settings
+            'm_preview_posts' => 'BINARY',
+            'm_reveal_age' => 'BINARY',
             'm_views_signatures' => 'BINARY',
             'm_auto_monitor_contrib_content' => 'BINARY',
-            'm_language' => 'ID_TEXT',
-            'm_ip_address' => 'IP',
+            'm_smart_topic_notification' => 'BINARY',
+            'm_mailing_list_style_notifications' => 'BINARY',
+            'm_auto_mark_read' => 'BINARY',
+            'm_sound_enabled' => 'BINARY',
             'm_allow_emails' => 'BINARY',
             'm_allow_emails_from_staff' => 'BINARY',
             'm_highlighted_name' => 'BINARY',
             'm_pt_allow' => 'SHORT_TEXT',
             'm_pt_rules_text' => 'LONG_TRANS__COMCODE',
-            'm_max_email_attach_size_mb' => 'INTEGER',
-            'm_password_change_code' => 'SHORT_TEXT',
-            'm_password_compat_scheme' => 'ID_TEXT',
+
+            // Security
+            'm_validated' => 'BINARY',
+            'm_validated_email_confirm_code' => 'SHORT_TEXT',
             'm_on_probation_until' => '?TIME',
+            'm_is_perm_banned' => 'BINARY',
+
+            // Auto-generated values
+            'm_ip_address' => 'IP',
+            'm_join_time' => 'TIME',
+            'm_last_visit_time' => 'TIME', // This field is generally kept up-to-date, while the cookie 'last_visit' refers to the previous browsing session's time
+            'm_last_submit_time' => 'TIME',
             'm_profile_views' => 'UINTEGER',
             'm_total_sessions' => 'UINTEGER',
-            'm_auto_mark_read' => 'BINARY',
+
+            // Cached values
+            'm_cache_num_posts' => 'INTEGER',
+            'm_cache_warnings' => 'INTEGER',
+
+            // No editing interface for the below, but may be edited in Commandr
+            'm_max_email_attach_size_mb' => 'INTEGER',
         ));
         $GLOBALS['FORUM_DB']->create_index('f_members', '#search_user', array('m_username'));
         $GLOBALS['FORUM_DB']->create_index('f_members', 'user_list', array('m_username'));
@@ -648,6 +677,11 @@ function install_cns($upgrade_from = null)
             'f_order' => 'ID_TEXT',
             'f_is_threaded' => 'BINARY',
             'f_allows_anonymous_posts' => 'BINARY',
+            'f_imap_host' => 'SHORT_TEXT',
+            'f_imap_port' => '?INTEGER',
+            'f_imap_username' => 'SHORT_TEXT',
+            'f_imap_password' => 'SHORT_TEXT',
+            'f_imap_folder' => 'SHORT_TEXT',
         ));
         $GLOBALS['FORUM_DB']->create_index('f_forums', 'cache_num_posts', array('f_cache_num_posts')); // Used to find active forums
         $GLOBALS['FORUM_DB']->create_index('f_forums', 'subforum_parenting', array('f_parent_forum'));
@@ -857,11 +891,119 @@ function install_cns($upgrade_from = null)
 
         // NB: post_param_string's will return default's if Conversr is being installed but not used yet (e.g. IPB forum driver chosen at installation)
         // Make guest
-        cns_make_member(do_lang('GUEST'), '', '', null, null, null, null, array(), null, $guest_group, 1, time(), time(), '', null, '', 0, 1, 1, '', '', '', 1, 0, '', 1, 1, null, '', false);
+        cns_make_member(
+            do_lang('GUEST'), // username
+            '', // password
+            '', // email_address
+            $guest_group, // primary_group
+            null, // secondary_groups
+            null, // dob_day
+            null, // dob_month
+            null, // dob_year
+            array(), // custom_fields
+            null, // timezone
+            '', // language
+            '', // theme
+            '', // title
+            '', // photo_url
+            '', // photo_thumb_url
+            null, // avatar_url
+            '', // signature
+            null, // preview_posts
+            1, // reveal_age
+            1, // views_signatures
+            null, // auto_monitor_contrib_content
+            null, // smart_topic_notification
+            null, // mailing_list_style_notifications
+            1, // auto_mark_read
+            null, // sound_enabled
+            1, // allow_emails
+            1, // allow_emails_from_staff
+            0, // highlighted_name
+            '*', // pt_allow
+            '', // pt_rules_text
+            1, // validated
+            '', // validated_email_confirm_code
+            null, // on_probation_until
+            0, // is_perm_banned
+            false // check_correctness
+        );
         // Make admin user
-        cns_make_member(post_param_string('admin_username', 'admin'), post_param_string('cns_admin_password', 'admin'), '', null, null, null, null, array(), null, $administrator_group, 1, time(), time(), '', 'themes/default/images/cns_default_avatars/default_set/cool_flare.png', '', 0, 0, 1, '', '', '', 1, 1, '', 1, 1, null, '', false);
+        cns_make_member(
+            post_param_string('admin_username', 'admin'), // username
+            post_param_string('cns_admin_password', 'admin'), // password
+            '', // email_address
+            $administrator_group, // primary_group
+            null, // secondary_groups
+            null, // dob_day
+            null, // dob_month
+            null, // dob_year
+            array(), // custom_fields
+            null, // timezone
+            '', // language
+            '', // theme
+            '', // title
+            '', // photo_url
+            '', // photo_thumb_url
+            'themes/default/images/cns_default_avatars/default_set/cool_flare.png', // avatar_url
+            '', // signature
+            null, // preview_posts
+            1, // reveal_age
+            1, // views_signatures
+            null, // auto_monitor_contrib_content
+            null, // smart_topic_notification
+            null, // mailing_list_style_notifications
+            1, // auto_mark_read
+            null, // sound_enabled
+            1, // allow_emails
+            1, // allow_emails_from_staff
+            0, // highlighted_name
+            '*', // pt_allow
+            '', // pt_rules_text
+            1, // validated
+            '', // validated_email_confirm_code
+            null, // on_probation_until
+            0, // is_perm_banned
+            false // check_correctness
+        );
         // Make test user
-        cns_make_member('test', post_param_string('cns_admin_password', 'admin'), '', null, null, null, null, array(), null, $member_group_0, 1, time(), time(), '', null, '', 0, 0, 1, '', '', '', 1, 0, '', 1, 1, null, '', false);
+        cns_make_member(
+            'test', // username
+            post_param_string('cns_admin_password', 'admin'), // password
+            '', // email_address
+            $member_group_0, // primary_group
+            null, // secondary_groups
+            null, // dob_day
+            null, // dob_month
+            null, // dob_year
+            array(), // custom_fields
+            null, // timezone
+            '', // language
+            '', // theme
+            '', // title
+            '', // photo_url
+            '', // photo_thumb_url
+            null, // avatar_url
+            '', // signature
+            null, // preview_posts
+            1, // reveal_age
+            1, // views_signatures
+            null, // auto_monitor_contrib_content
+            null, // smart_topic_notification
+            null, // mailing_list_style_notifications
+            1, // auto_mark_read
+            null, // sound_enabled
+            1, // allow_emails
+            1, // allow_emails_from_staff
+            0, // highlighted_name
+            '*', // pt_allow
+            '', // pt_rules_text
+            1, // validated
+            '', // validated_email_confirm_code
+            null, // on_probation_until
+            0, // is_perm_banned
+            false // check_correctness
+        );
 
         $GLOBALS['FORUM_DB']->create_table('f_read_logs', array(
             'l_member_id' => '*MEMBER',

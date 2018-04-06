@@ -279,7 +279,48 @@ class Hook_aef
                 $type = 'aef';
                 $salt = $row['salt'];
 
-                $id_new = cns_make_member($row['username'], $password, $row['email'], null, $bday_day, $bday_month, $bday_year, $custom_fields, strval($row['timezone']), $primary_group, $validated, $row['r_time'], $row['lastlogin_1'], '', $avatar_url, $signature, ($row['temp_ban'] != 0) ? 1 : 0, $preview_posts, $reveal_age, $title, $photo_url, $photo_thumb_url, $views_signatures, $track_posts, $language, 1, 1, '', '', false, $type, $salt, 1);
+                $id_new = cns_make_member(
+                    $row['username'], // username
+                    $password, // password
+                    $row['email'], // email_address
+                    $primary_group, // primary_group
+                    null, // secondary_groups
+                    $bday_day, // dob_day
+                    $bday_month, // dob_month
+                    $bday_year, // dob_year
+                    $custom_fields, // custom_fields
+                    strval($row['timezone']), // timezone
+                    $language, // language
+                    '', // theme
+                    $title, // title
+                    $photo_url, // photo_url
+                    $photo_thumb_url, // photo_thumb_url
+                    $avatar_url, // avatar_url
+                    $signature, // signature
+                    $preview_posts, // preview_posts
+                    $reveal_age, // reveal_age
+                    $views_signatures, // views_signatures
+                    $track_posts, // auto_monitor_contrib_content
+                    null, // smart_topic_notification
+                    null, // mailing_list_style_notifications
+                    1, // auto_mark_read
+                    null, // sound_enabled
+                    1, // allow_emails
+                    1, // allow_emails_from_staff
+                    0, // highlighted_name
+                    '*', // pt_allow
+                    '', // pt_rules_text
+                    $validated, // validated
+                    '', // validated_email_confirm_code
+                    null, // on_probation_until
+                    ($row['temp_ban'] != 0) ? 1 : 0, // is_perm_banned
+                    false, // check_correctness
+                    '', // ip_address
+                    $type, // password_compatibility_scheme
+                    $salt, // salt
+                    $row['r_time'], // join_time
+                    $row['lastlogin_1'] // last_visit_time
+                );
 
                 // Fix group leadership
                 $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_group_leader' => $id_new), array('g_group_leader' => -$row['id']));
