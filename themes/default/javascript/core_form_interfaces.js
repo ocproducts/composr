@@ -1212,16 +1212,16 @@
     };
 
     $cms.templates.formScreenInputDate = function formScreenInputDate(params) {
-        if (!Modernizr.inputtypes.date) {
+        if (!$dom.support.inputTypes.date) {
             window.jQuery('#' + params.name).inputDate({});
         }
-        if (!Modernizr.inputtypes.time) {
+        if (!$dom.support.inputTypes.time) {
             window.jQuery('#' + params.name).inputTime({});
         }
     };
 
     $cms.templates.formScreenInputTime = function formScreenInputTime(params) {
-        if (!Modernizr.inputtypes.time) {
+        if (!$dom.support.inputTypes.time) {
             window.jQuery('#' + params.name).inputTime({});
         }
     };
