@@ -351,7 +351,7 @@ You may copy themes between sites, or duplicate them, but make sure you empty th
 
 There are a couple of limitations if you wish to run multiple themes at once:
 1) When Comcode is compiled, it is compiled against the active theme. So don't try and customise Comcode templates differently for different themes as it will be 'arbitrary' which template is shown to an end-user.
-2) When e-mails are sent to multiple recipients at once, or unknown recipients, it will use the site's default configured theme (it won't separately style things for each individual recipient). The theme affects the [tt]MAIL[/tt] template chosen, the theme images used, and the CSS.
+2) When e-mails are sent to multiple recipients at once, or unknown recipients, it will use the site's default configured theme (it won't separately style things for each individual recipient). The theme affects the [tt]MAIL[/tt] template chosen, the theme images used, and the CSS. Note that it is very rare for Composr to actually mail multiple recipients at once, because the notification system itself generates e-mails separately for each member being e-mailed.
 
 [title="2"]See also[/title]
 
