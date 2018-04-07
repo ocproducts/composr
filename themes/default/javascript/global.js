@@ -1,14 +1,14 @@
-/*{+START,INCLUDE,polyfill_fetch,.js,javascript}*//*{+END}*/
+/*{+START,INCLUDE,POLYFILL_FETCH,.js,javascript}*//*{+END}*/
 
-/*{+START,INCLUDE,polyfill_general,.js,javascript}*//*{+END}*/
+/*{+START,INCLUDE,POLYFILL_GENERAL,.js,javascript}*//*{+END}*/
 
-/*{+START,INCLUDE,polyfill_keyboardevent_key,.js,javascript}*//*{+END}*/
+/*{+START,INCLUDE,POLYFILL_KEYBOARDEVENT_KEY,.js,javascript}*//*{+END}*/
 
-/*{+START,INCLUDE,polyfill_url,.js,javascript}*//*{+END}*/
+/*{+START,INCLUDE,POLYFILL_URL,.js,javascript}*//*{+END}*/
 
-/*{+START,INCLUDE,polyfill_web_animations,.js,javascript}*//*{+END}*/
+/*{+START,INCLUDE,POLYFILL_WEB_ANIMATIONS,.js,javascript}*//*{+END}*/
 
-/*{+START,INCLUDE,json5,.js,javascript}*//*{+END}*/
+/*{+START,INCLUDE,JSON5,.js,javascript}*//*{+END}*/
 
 /*{+START,INCLUDE,UTIL,.js,javascript}*//*{+END}*/
 
