@@ -36,7 +36,6 @@ class Module_cms_quiz extends Standard_crud_module
     protected $content_type = 'quiz';
     protected $view_entry_point = '_SEARCH:quiz:do:_ID';
     protected $archive_entry_point = '_SEARCH:quiz:browse';
-    protected $functions = 'moduleCmsQuiz';
     protected $menu_label = 'QUIZZES';
     protected $table = 'quizzes';
     protected $orderer = 'q_add_date';
@@ -45,6 +44,8 @@ class Module_cms_quiz extends Standard_crud_module
     protected $donext_type = null;
     protected $donext_entry_content_type = 'quiz';
     protected $donext_category_content_type = null;
+
+    public $js_function_calls = array('moduleCmsQuiz');
 
     /**
      * Find privileges defined as overridable by this module.

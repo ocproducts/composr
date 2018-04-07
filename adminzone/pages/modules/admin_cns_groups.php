@@ -28,7 +28,6 @@ class Module_admin_cns_groups extends Standard_crud_module
 {
     protected $lang_type = 'GROUP';
     protected $select_name = 'NAME';
-    protected $functions = 'moduleAdminCnsGroups';
     protected $content_type = 'group';
     protected $possibly_some_kind_of_upload = true;
     protected $output_of_action_is_confirmation = true;
@@ -41,6 +40,8 @@ class Module_admin_cns_groups extends Standard_crud_module
     protected $title_is_multi_lang = true;
     protected $donext_entry_content_type = 'group';
     protected $donext_category_content_type = null;
+
+    public $js_function_calls = array('moduleAdminCnsGroups');
 
     /**
      * Find entry-points available within this module.

@@ -36,11 +36,12 @@ class Module_admin_cns_forums extends Standard_crud_module
     protected $privilege_page = 'topics';
     protected $permission_module = 'forums';
     protected $content_type = 'forum';
-    protected $functions = 'moduleAdminCnsForums';
     protected $menu_label = 'SECTION_FORUMS';
     protected $do_preview = null;
     protected $donext_entry_content_type = 'forum';
     protected $donext_category_content_type = null;
+
+    public $js_function_calls = array('moduleAdminCnsForums');
 
     /**
      * Find entry-points available within this module.

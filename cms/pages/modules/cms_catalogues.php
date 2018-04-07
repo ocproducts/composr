@@ -1140,7 +1140,6 @@ class Module_cms_catalogues_cat extends Standard_crud_module
     protected $catalogue = true;
     protected $content_type = 'catalogue_category';
     protected $upload = 'image';
-    protected $functions = 'moduleCmsCataloguesCat';
     protected $menu_label = 'CATALOGUES';
     protected $table = 'catalogue_categories';
     protected $title_is_multi_lang = false;
@@ -1148,6 +1147,8 @@ class Module_cms_catalogues_cat extends Standard_crud_module
     protected $is_chained_with_parent_browse = true;
 
     protected $donext_catalogue_name;
+
+    public $js_function_calls = array('moduleCmsCataloguesCat');
 
     /**
      * Standard crud_module table function.
@@ -1552,9 +1553,9 @@ class Module_cms_catalogues_alt extends Standard_crud_module
     protected $is_tree_catalogue = false; // Set for usage by do-next-manager
     protected $menu_label = 'CATALOGUES';
     protected $table = 'catalogues';
-    protected $functions = 'moduleCmsCataloguesAlt';
     protected $is_chained_with_parent_browse = true;
 
+    public $js_function_calls = array('moduleCmsCataloguesAlt');
     /**
      * Standard crud_module list function.
      *

@@ -33,13 +33,14 @@ class Module_cms_downloads extends Standard_crud_module
     protected $user_facing = true;
     protected $seo_type = 'downloads_download';
     protected $upload = 'file';
-    protected $functions = 'moduleCmsDownloads';
     protected $content_type = 'download';
     protected $menu_label = 'SECTION_DOWNLOADS';
     protected $table = 'download_downloads';
     protected $supports_mass_delete = true;
 
     protected $donext_type = null;
+
+    public $js_function_calls = array('moduleCmsDownloads');
 
     /**
      * Find entry-points available within this module.

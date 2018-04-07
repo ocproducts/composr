@@ -36,7 +36,7 @@ class Module_admin_ecommerce extends Standard_crud_module
     protected $donext_entry_content_type = 'usergroup_subscription';
     protected $donext_category_content_type = null;
 
-    protected $functions = 'moduleAdminEcommerce';
+    public $js_function_calls = array('moduleAdminEcommerce');
 
     /**
      * Find details of the module.

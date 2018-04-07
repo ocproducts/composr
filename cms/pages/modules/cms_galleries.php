@@ -1940,8 +1940,9 @@ class Module_cms_galleries_cat extends Standard_crud_module
     protected $content_type = 'gallery';
     protected $menu_label = 'GALLERIES';
     protected $table = 'galleries';
-    protected $functions = 'moduleCmsGalleriesCat';
     protected $is_chained_with_parent_browse = true;
+
+    public $js_function_calls = array('moduleCmsGalleriesCat');
 
     /**
      * Standard crud_module list function.

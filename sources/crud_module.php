@@ -67,12 +67,6 @@ abstract class Standard_crud_module
     protected $posting_form_text_parsed = null;
     protected $posting_form_tabindex = null;
     protected $support_wysiwyg = true;
-    protected $javascript = null;
-    protected $js_function_calls = array();
-    protected $functions = null;
-    protected $javascript_for_choose = null;
-    protected $js_function_calls_for_choose = array();
-    protected $functions_for_choose = null;
     protected $form_id = 'selection_table';
     protected $type_code = '';
     protected $catalogue = false;
@@ -116,6 +110,9 @@ abstract class Standard_crud_module
     protected $orderer_is_multi_lang = null;
     protected $orderer = null;
     protected $table = null; // Actually, this is used by choose_feedback_fields_statistically also
+
+    public $js_function_calls = array();
+    public $js_function_calls_for_choose = array();
 
     /**
      * Find details of the module.
