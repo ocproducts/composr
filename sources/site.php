@@ -802,7 +802,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                         $deprecated = $monikers[0]['m_deprecated'] == 1;
                         if (($deprecated) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_integer('keep_failover', null) !== 0)) {
                             $correct_moniker = find_id_moniker(array('page' => $page, 'type' => get_param_string('type', 'browse'), 'id' => $monikers[0]['m_resource_id']), $zone);
-                            if ($correct_moniker != $url_id) { // Just in case database corruption means ALL are deprecated
+                            if (($correct_moniker !== null) && ($correct_moniker != $url_id)) { // Just in case database corruption means ALL are deprecated
                                 set_http_status_code('301');
                                 $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
                                 $new_url = $_new_url->evaluate();

@@ -1153,15 +1153,14 @@ function cal_get_start_utctime_for_event($timezone, $year, $month, $day, $monthl
             $timestamp_day_start += 60 * 60 * 24;
         }
 
-        if (!$show_in_users_timezone) {
+        if ((!$show_in_users_timezone) || (get_option('allow_international') === '0')) {
             return $timestamp_day_start;
         }
 
         return $timestamp_day_start + ($timestamp_day_end - $timezoned_day_end_timestamp);
     }
 
-    if (!$show_in_users_timezone) // Move into timezone, as if that is UTC, as it won't get converted later
-    {
+    if ((!$show_in_users_timezone) || (get_option('allow_international') === '0') ) { // Move into timezone, as if that is UTC, as it won't get converted later
         $timestamp = tz_time($timestamp, $timezone);
     }
 
@@ -1225,15 +1224,14 @@ function cal_get_end_utctime_for_event($timezone, $year, $month, $day, $monthly_
             $timestamp_day_end += 60 * 60 * 24;
         }
 
-        if (!$show_in_users_timezone) {
+        if ((!$show_in_users_timezone) || (get_option('allow_international') === '0')) {
             return $timestamp_day_end;
         }
 
         return $timestamp_day_end + ($timestamp_day_start - $timezoned_day_start_timestamp);
     }
 
-    if (!$show_in_users_timezone) // Move into timezone, as if that is UTC, as it won't get converted later
-    {
+    if ((!$show_in_users_timezone) || (get_option('allow_international') === '0')) { // Move into timezone, as if that is UTC, as it won't get converted later
         $timestamp = tz_time($timestamp, $timezone);
     }
 
@@ -1250,7 +1248,7 @@ function cal_get_end_utctime_for_event($timezone, $year, $month, $day, $monthly_
  */
 function cal_utctime_to_usertime($utc_timestamp, $default_timezone, $show_in_users_timezone)
 {
-    if (!$show_in_users_timezone) {
+    if ((!$show_in_users_timezone) || (get_option('allow_international') === '0')) {
         return $utc_timestamp;
     }
     return tz_time($utc_timestamp, get_users_timezone());

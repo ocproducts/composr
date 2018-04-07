@@ -204,13 +204,7 @@ class Module_cms_calendar extends Standard_crud_module
                     {
                         url+='&date_time='+window.encodeURIComponent(start_time.value);
                     }
-        ";
-        if (get_option('allow_international') !== '0') {
-            $this->javascript = "
-                    url+='&do_timezone_conv='+(do_timezone_conv.checked?'1':'0');
-            ";
-        }
-        $this->javascript = "
+                    url+='&do_timezone_conv='+(do_timezone_conv && do_timezone_conv.checked?'1':'0');
                     url+='&all_day_event='+(all_day_event.checked?'1':'0');
                     var new_data=load_snippet(url);
                     var tr=form.elements['monthly_spec_type'][0];
