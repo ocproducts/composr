@@ -686,6 +686,8 @@ function delete_image($id, $delete_full = true)
     decache('main_image_fader');
     decache('main_image_slider');
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'galleries', 'm_resource_type' => 'image', 'm_resource_id' => strval($id)));
+
     log_it('DELETE_IMAGE', strval($id), get_translated_text($title));
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -1188,6 +1190,8 @@ function delete_video($id, $delete_full = true)
         }
     }
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'galleries', 'm_resource_type' => 'video', 'm_resource_id' => strval($id)));
+
     log_it('DELETE_VIDEO', strval($id), get_translated_text($title));
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -1603,6 +1607,8 @@ function delete_gallery($name)
 
     decache('side_galleries');
     decache('main_personal_galleries_list');
+
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'galleries', 'm_resource_type' => 'browse', 'm_resource_id' => $name));
 
     log_it('DELETE_GALLERY', $name, get_translated_text($rows[0]['fullname']));
 

@@ -332,6 +332,8 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
         expunge_resource_fs_moniker('topic', strval($topic_id));
     }
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'topicview', 'm_resource_type' => 'browse', 'm_resource_id' => strval($topic_id)));
+
     require_code('sitemap_xml');
     notify_sitemap_node_delete('SEARCH:topicview:id=' . strval($topic_id));
 

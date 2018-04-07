@@ -181,6 +181,8 @@ function delete_news_category($id)
 
     decache('side_news_categories');
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'news', 'm_resource_type' => 'browse', 'm_resource_id' => strval($id)));
+
     log_it('DELETE_NEWS_CATEGORY', strval($id), $old_title);
 
     // Sync meta keywords, if we have auto-sync for these
@@ -692,6 +694,8 @@ function delete_news($id)
     if (addon_installed('catalogues')) {
         update_catalogue_content_ref('news', strval($id), '');
     }
+
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'news', 'm_resource_type' => 'view', 'm_resource_id' => strval($id)));
 
     log_it('DELETE_NEWS', strval($id), $_title);
 

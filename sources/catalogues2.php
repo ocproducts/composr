@@ -888,6 +888,8 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
     $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($id)));
     $GLOBALS['SITE_DB']->query_delete('group_privileges', array('module_the_name' => 'catalogues_category', 'category_name' => strval($id)));
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'catalogues', 'm_resource_type' => 'category', 'm_resource_id' => strval($id)));
+
     calculate_category_child_count_cache($old_parent_id);
 
     log_it('DELETE_CATALOGUE_CATEGORY', strval($id), $_title);
@@ -1346,6 +1348,8 @@ function actual_delete_catalogue_entry($id)
     seo_meta_erase_storage('catalogue_entry', strval($id));
 
     calculate_category_child_count_cache($old_category_id);
+
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'catalogues', 'm_resource_type' => 'entry', 'm_resource_id' => strval($id)));
 
     decache('main_cc_embed');
 

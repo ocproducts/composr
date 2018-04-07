@@ -439,7 +439,6 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $ne
                 // Test for conflicts
                 $conflict_test_map = array(
                     'm_moniker' => $url_moniker,
-                    'm_deprecated' => 0
                 );
                 if (substr($url_moniker, 0, 1) != '/') { // Can narrow the conflict-check scope if it's relative to a module rather than a zone ('/' prefix)
                     $conflict_test_map += array(
@@ -447,36 +446,25 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $ne
                         'm_resource_type' => $type,
                     );
                 }
-                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', $conflict_test_map);
-                if (($test !== null) && ($test !== $_content_id)) {
-                    $test_page = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_page', $conflict_test_map);
-                    if ($content_type == 'comcode_page') {
-                        if (_request_page($test_page, $test, null, get_site_default_lang(), true) !== false) {
-                            $ok = false;
-                        } else { // Deleted, so clean up
-                            $GLOBALS['SITE_DB']->query_delete('url_id_monikers', $conflict_test_map);
-                        }
-                    } else {
-                        $test2 = content_get_details(convert_composr_type_codes('module', $test_page, 'content_type'), $test);
-                        if ($test2[0] !== null) {
-                            $ok = false;
-                        } else { // Deleted, so clean up
-                            $GLOBALS['SITE_DB']->query_delete('url_id_monikers', $conflict_test_map);
-                        }
-                    }
-                    if (!$ok) {
+                $test = $GLOBALS['SITE_DB']->query_select('url_id_monikers', array('*'), $conflict_test_map);
+                if ((array_key_exists(0, $test)) && ($test[0]['m_resource_id'] !== $_content_id)) {
+                    if ($test[0]['m_deprecated'] == 0) {
+                        $ok = false;
+
                         if ($content_type == 'comcode_page') {
-                            $competing_page_link = $test . ':' . $page;
+                            $competing_page_link = $test[0]['m_resource_id'] . ':' . $test[0]['m_resource_page'];
                         } else {
-                            $competing_page_link = '_WILD' . ':' . $page;
-                            if ($type != '' || $test != '') {
-                                $competing_page_link .= ':' . $type;
+                            $competing_page_link = '_WILD' . ':' . $test[0]['m_resource_page'];
+                            if ($test[0]['m_resource_type']) {
+                                $competing_page_link .= ':' . $test[0]['m_resource_type'];
                             }
-                            if ($test != '') {
-                                $competing_page_link .= ':' . $test;
+                            if ($test[0]['m_resource_id'] != '') {
+                                $competing_page_link .= ':' . $test[0]['m_resource_id'];
                             }
                         }
                         attach_message(do_lang_tempcode('URL_MONIKER_TAKEN', escape_html($competing_page_link), escape_html($url_moniker)), 'warn');
+                    } else { // Deprecated, so we can claim it
+                        $GLOBALS['SITE_DB']->query_delete('url_id_monikers', $conflict_test_map);
                     }
                 }
 

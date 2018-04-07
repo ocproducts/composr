@@ -432,6 +432,8 @@ function delete_chatroom($id)
         log_it('DELETE_CHATROOM', strval($id), $rows[0]['room_name']);
     }
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'chat', 'm_resource_type' => 'room', 'm_resource_id' => strval($id)));
+
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('chat', strval($id));

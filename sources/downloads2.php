@@ -470,6 +470,8 @@ function delete_download_category($category_id)
     $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($category_id)));
     $GLOBALS['SITE_DB']->query_delete('group_privileges', array('module_the_name' => 'downloads', 'category_name' => strval($category_id)));
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'downloads', 'm_resource_type' => 'browse', 'm_resource_id' => strval($category_id)));
+
     log_it('DELETE_DOWNLOAD_CATEGORY', strval($category_id), get_translated_text($category));
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -1250,6 +1252,8 @@ function delete_download($id, $leave = false)
             delete_gallery($name);
         }
     }
+
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'downloads', 'm_resource_type' => 'view', 'm_resource_id' => strval($id)));
 
     log_it('DELETE_DOWNLOAD', strval($id), get_translated_text($myrow['name']));
 
