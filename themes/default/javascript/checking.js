@@ -604,9 +604,9 @@
 
             // Find whether field is required and value of it
             if (theElement.type === 'radio') {
-                required = (theForm.elements['require__' + theElement.name] !== undefined) && (theForm.elements['require__' + theElement.name].value === '1');
+                required = (theForm.elements['require__' + theElement.name] != null) && (theForm.elements['require__' + theElement.name].value === '1');
             } else {
-                required = theElement.className.includes('_required');
+                required = theElement.className.includes('-required') || theElement.className.includes('_required');
             }
 
             myValue = $cms.form.cleverFindValue(theForm, theElement);
