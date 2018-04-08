@@ -430,22 +430,31 @@ function post_param_date($stub, $get_also = false, $do_timezone_conversion = tru
  * For a UTC timestamp, find the equivalent virtualised local timestamp.
  *
  * @param  TIME $time UTC time
- * @param  string $zone Timezone (boring style)
+ * @param  string $zone Timezone
  * @return TIME Virtualised local time
  */
 function tz_time($time, $zone)
 {
+    return $time + find_timezone_offset($time, $zone);
+}
+
+/**
+ * For a UTC timestamp and timezone, find the timezone offset.
+ *
+ * @param  TIME $time UTC time
+ * @param  string $zone Timezone
+ * @return integer Timezone offset in seconds
+ */
+function find_timezone_offset($time, $zone)
+{
     if ($zone == '') {
         $zone = get_server_timezone();
     }
-    static $zone_offsets = array();
-    //if (!isset($zone_offsets[$zone])) {  Actually, cannot do this, as $time is not constant
+
     @date_default_timezone_set($zone);
-    $zone_offsets[$zone] = intval(60.0 * 60.0 * floatval(date('O', $time)) / 100.0);
+    $offset = intval(60.0 * 60.0 * floatval(date('O', $time)) / 100.0);
     date_default_timezone_set('UTC');
-    //}
-    $ret = $time + $zone_offsets[$zone];
-    return $ret;
+    return $offset;
 }
 
 /**

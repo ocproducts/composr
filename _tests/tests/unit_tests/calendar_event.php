@@ -30,6 +30,11 @@ class calendar_event_test_set extends cms_test_case
 
     public function testAllDayInAheadTimeZone()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testAllDayInAheadTimeZone')) {
+            return;
+        }
+
         // Amsterdam-timezone event, which is *ahead* of UTC, so potentially could cause problems if we make a mistake (as it starts the previous day from the UTC perspective)
 
         $period_start = mktime(0, 0, 0, 4, 6, 2015);
@@ -38,14 +43,14 @@ class calendar_event_test_set extends cms_test_case
         // Check in USA
         $_period_start = 2 * $period_start - tz_time($period_start, 'America/New_York');
         $_period_end = 2 * $period_end - tz_time($period_end, 'America/New_York');
-        $periods = find_periods_recurrence('Europe/Amsterdam', 0, 2015, 4, 6, 'day_of_month', null, null, null, null, null, 'day_of_month', null, null, 'none', null, $_period_start, $_period_end);
+        $periods = find_periods_recurrence('Europe/Amsterdam', 0, 2015/*year*/, 4/*month*/, 6/*day*/, 'day_of_month', null, null, null, null, null, 'day_of_month', null, null, 'none', null, $_period_start, $_period_end);
         $this->assertTrue(count($periods) == 1); // We expect to see it as it starts this day in USA point of view
 
         // Check in Amsterdam
         $_period_start = 2 * $period_start - tz_time($period_start, 'Europe/Amsterdam');
         $_period_end = 2 * $period_end - tz_time($period_end, 'Europe/Amsterdam');
-        $periods = find_periods_recurrence('Europe/Amsterdam', 0, 2015, 4, 6, 'day_of_month', null, null, null, null, null, 'day_of_month', null, null, 'none', null, $_period_start, $_period_end);
-        $this->assertTrue(count($periods) == 0); // We expect to *not* see it, as the day is actually different
+        $periods = find_periods_recurrence('Europe/Amsterdam', 0, 2015/*year*/, 4/*month*/, 6/*day*/, 'day_of_month', null, null, null, null, null, 'day_of_month', null, null, 'none', null, $_period_start, $_period_end);
+        $this->assertTrue(count($periods) == 0); // We expect to *not* see it, as it started before $_period_start (UTC is ahead) and we thus don't even pick up the event in our find_periods_recurrence loop
 
         $period_start = mktime(0, 0, 0, 4, 7, 2015);
         $period_end = mktime(23, 59, 0, 4, 7, 2015);
@@ -53,18 +58,23 @@ class calendar_event_test_set extends cms_test_case
         // Check in USA
         $_period_start = 2 * $period_start - tz_time($period_start, 'America/New_York');
         $_period_end = 2 * $period_end - tz_time($period_end, 'America/New_York');
-        $periods = find_periods_recurrence('Europe/Amsterdam', 0, 2015, 4, 6, 'day_of_month', null, null, null, null, null, 'day_of_month', null, null, 'none', null, $_period_start, $_period_end);
-        $this->assertTrue(count($periods) == 1); // We expect to see it because it hasn't finished yet
+        $periods = find_periods_recurrence('Europe/Amsterdam', 0, 2015/*year*/, 4/*month*/, 6/*day*/, 'day_of_month', null, null, null, null, null, 'day_of_month', null, null, 'none', null, $_period_start, $_period_end);
+        $this->assertTrue(count($periods) == 0); // We expect to *not* see it, as it's the next day and USA is behind too
 
         // Check in Amsterdam
         $_period_start = 2 * $period_start - tz_time($period_start, 'Europe/Amsterdam');
         $_period_end = 2 * $period_end - tz_time($period_end, 'Europe/Amsterdam');
-        $periods = find_periods_recurrence('Europe/Amsterdam', 0, 2015, 4, 6, 'day_of_month', null, null, null, null, null, 'day_of_month', null, null, 'none', null, $_period_start, $_period_end);
+        $periods = find_periods_recurrence('Europe/Amsterdam', 0, 2015/*year*/, 4/*month*/, 6/*day*/, 'day_of_month', null, null, null, null, null, 'day_of_month', null, null, 'none', null, $_period_start, $_period_end);
         $this->assertTrue(count($periods) == 1); // We expect to see it
     }
 
     public function testApiShiftRecurrence()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testApiShiftRecurrence')) {
+            return;
+        }
+
         // Given an event shifted to a different recurrence, ensure the dates do shift correctly...
 
         $event = array(
@@ -143,6 +153,11 @@ class calendar_event_test_set extends cms_test_case
 
     public function testDstBoundaryShift()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testDstBoundaryShift')) {
+            return;
+        }
+
         list($hours, $minutes) = dst_boundary_difference_for_recurrence(2012, 3, 10, 2012, 8, 10, 'Europe/London');
         $this->assertTrue($hours == -1);
         $this->assertTrue($minutes == 0);
@@ -150,6 +165,11 @@ class calendar_event_test_set extends cms_test_case
 
     public function testApiWeekNumbersConsistent()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testApiWeekNumbersConsistent')) {
+            return;
+        }
+
         foreach (array('0', '1') as $ssw) {
             require_code('database_action');
             set_option('ssw', $ssw);
@@ -174,6 +194,11 @@ class calendar_event_test_set extends cms_test_case
 
     public function testApiDayOfWeek()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testApiDayOfWeek')) {
+            return;
+        }
+
         $days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
 
         // The dates (2012/1/1, 2012/1/8, and 2012/1/9) found from looking at an actual calendar
@@ -184,37 +209,78 @@ class calendar_event_test_set extends cms_test_case
         $this->assertTrue(find_abstract_day(2011, 1, 9, 'dow_of_month') == array_search('Sunday', $days) + 7);
 
         // Converting from dow_of_month to calendar (i.e. the reverse)
-        $this->assertTrue(find_concrete_day_of_month(2011, 1, array_search('Saturday', $days), 'dow_of_month', 0, 0, 'UTC', false) == 1);
-        $this->assertTrue(find_concrete_day_of_month(2011, 1, array_search('Saturday', $days) + 7, 'dow_of_month', 0, 0, 'UTC', false) == 8);
-        $this->assertTrue(find_concrete_day_of_month(2011, 1, array_search('Sunday', $days) + 7, 'dow_of_month', 0, 0, 'UTC', false) == 9);
+        $year = 2011;
+        $month = 1;
+        $hour = 0;
+        $minute = 0;
+        $this->assertTrue(find_concrete_day_of_month($year, $month, array_search('Saturday', $days), 'dow_of_month', $hour, $minute, 'UTC', false) == 1);
+        $year = 2011;
+        $month = 1;
+        $hour = 0;
+        $minute = 0;
+        $this->assertTrue(find_concrete_day_of_month($year, $month, array_search('Saturday', $days) + 7, 'dow_of_month', $hour, $minute, 'UTC', false) == 8);
+        $year = 2011;
+        $month = 1;
+        $hour = 0;
+        $minute = 0;
+        $this->assertTrue(find_concrete_day_of_month($year, $month, array_search('Sunday', $days) + 7, 'dow_of_month', $hour, $minute, 'UTC', false) == 9);
     }
 
     public function testApiFindsCorrectTimezonedStart()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testApiFindsCorrectTimezonedStart')) {
+            return;
+        }
+
         $timestamp = cal_get_start_utctime_for_event('Europe/London'/*i.e. BST/DTC*/, 2012, 8, 10, 'day_of_month', null, null, true);
         $this->assertTrue(mktime(23, 0, 0, 8, 10, 2012) == $timestamp);
     }
 
     public function testApiFindsCorrectTimezonedEnd()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testApiFindsCorrectTimezonedEnd')) {
+            return;
+        }
+
         $timestamp = cal_get_end_utctime_for_event('Europe/London'/*i.e. BST/DTC*/, 2012, 8, 10, 'day_of_month', null, null, true);
-        $this->assertTrue(mktime(22, 59, 0, 8, 11, 2012) == $timestamp);
+        $this->assertTrue(mktime(22, 59, 0, 8, 10, 2012) == $timestamp);
     }
 
     public function testApiFindsCorrectTimezonedStart2()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testApiFindsCorrectTimezonedStart2')) {
+            return;
+        }
+
+        // DST
         $this->assertTrue(23 == find_timezone_start_hour_in_utc('Europe/London', 2012, 8, 10, 'day_of_month'));
+
+        // No DST
         $this->assertTrue(0 == find_timezone_start_minute_in_utc('Europe/London', 2012, 8, 10, 'day_of_month'));
     }
 
     public function testApiFindsCorrectTimezonedEnd2()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testApiFindsCorrectTimezonedEnd2')) {
+            return;
+        }
+
+        // DST
         $this->assertTrue(22 == find_timezone_end_hour_in_utc('Europe/London', 2012, 8, 10, 'day_of_month'));
         $this->assertTrue(59 == find_timezone_end_minute_in_utc('Europe/London', 2012, 8, 10, 'day_of_month'));
     }
 
     public function testApiDaysBetween()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testApiDaysBetween')) {
+            return;
+        }
+
         $days = get_days_between(1, 1, 2011, 1, 1, 2012);
         $this->assertTrue($days == 365);
 
@@ -225,6 +291,11 @@ class calendar_event_test_set extends cms_test_case
 
     public function testWindowBinding()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testWindowBinding')) {
+            return;
+        }
+
         // The time window for a long running event is cut correctly
         $timezone = 'UTC';
         $do_timezone_conv = 0;
@@ -255,6 +326,11 @@ class calendar_event_test_set extends cms_test_case
 
     public function testRecurrenceSimpleMonthly()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testRecurrenceSimpleMonthly')) {
+            return;
+        }
+
         // Recurrences work for simple monthly recurrences
         $timezone = 'UTC';
         $do_timezone_conv = 0;
@@ -285,6 +361,11 @@ class calendar_event_test_set extends cms_test_case
 
     public function testRecurrenceSimpleYearly()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testRecurrenceSimpleYearly')) {
+            return;
+        }
+
         // Recurrences work for simple yearly recurrences
         $timezone = 'UTC';
         $do_timezone_conv = 0;
@@ -315,6 +396,11 @@ class calendar_event_test_set extends cms_test_case
 
     public function testRecurrenceSimpleWeekly()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testRecurrenceSimpleWeekly')) {
+            return;
+        }
+
         // Recurrences work for simple weekly recurrences
         $timezone = 'UTC';
         $do_timezone_conv = 0;
@@ -332,8 +418,8 @@ class calendar_event_test_set extends cms_test_case
         $end_minute = 0;
         $recurrence = 'weekly';
         $recurrences = null;
-        $period_start = mktime(0, 0, 0, 2, 10 + 7 * 3, 2009);
-        $period_end = mktime(23, 59, 0, 2, 10 + 7 * 3, 2009);
+        $period_start = mktime(0, 0, 0, 2/*month*/, 10 + 7 * 3/*day*/, 2009/*year*/);
+        $period_end = mktime(23, 59, 0, 2/*month*/, 10 + 7 * 3/*day*/, 2009/*year*/);
         $_recurrences = find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $period_start, $period_end);
         $this->assertTrue(count($_recurrences) == 1);
         foreach ($_recurrences as $_recurrence) {
@@ -345,6 +431,11 @@ class calendar_event_test_set extends cms_test_case
 
     public function testRecurrenceSimpleStopAtN()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testRecurrenceSimpleStopAtN')) {
+            return;
+        }
+
         // Only have exact number of recurrences specified
         $timezone = 'UTC';
         $do_timezone_conv = 0;
@@ -370,6 +461,11 @@ class calendar_event_test_set extends cms_test_case
 
     public function testRecurrenceNthDayOfWeek()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testRecurrenceNthDayOfWeek')) {
+            return;
+        }
+
         // Recurrence by reference to the nth day of week within a month works
         $timezone = 'UTC';
         $do_timezone_conv = 0;
@@ -390,13 +486,18 @@ class calendar_event_test_set extends cms_test_case
         $period_start = mktime(0, 0, 0, 2, 1, 2009);
         $period_end = mktime(23, 59, 0, 2, 31, 2009);
         $_recurrences = find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $period_start, $period_end);
-        $this->assertTrue(date('D', $_recurrences[0][2]) == 'Tue');
-        $this->assertTrue(date('D', $_recurrences[1][2]) == 'Tue');
+        $this->assertTrue(date('D', $_recurrences[0][2]) == 'Tue'); // Tue 3rd Feb 2009
+        $this->assertTrue(date('D', $_recurrences[1][2]) == 'Tue'); // Tue 10th Feb 2009
         $this->assertTrue($_recurrences[1][2] > $_recurrences[0][2]);
     }
 
     public function testRecurrenceNthDayOfWeekTimezones()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testRecurrenceNthDayOfWeekTimezones')) {
+            return;
+        }
+
         /*
         This is a really complex case. The dates are stored relative to the timezone. The times are not - they are UTC.
         Times must be UTC for consistency with other code. Dates must be in the timezone due to non-regularity.
@@ -414,7 +515,7 @@ class calendar_event_test_set extends cms_test_case
         $start_minute = 45;
         $end_year = 2013;
         $end_month = 6;
-        $end_day = 0; // 1st Monday (date is next day in UTC, but we [have to] store in native timezone for DOW)
+        $end_day = 1;
         $end_monthly_spec_type = 'dow_of_month';
         $end_hour = 1;
         $end_minute = 45;
@@ -423,15 +524,20 @@ class calendar_event_test_set extends cms_test_case
         $period_start = mktime(0, 0, 0, 5, 1, 2013);
         $period_end = mktime(23, 59, 0, 7, 31, 2013);
         $recurrences = find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $period_start, $period_end);
-        $this->assertTrue(date('D', $recurrences[0][2]) == 'Mon');
-        $this->assertTrue(date('D', $recurrences[0][3]) == 'Mon');
-        $this->assertTrue(date('D', $recurrences[1][2]) == 'Mon');
-        $this->assertTrue(date('D', $recurrences[1][3]) == 'Mon');
+        $this->assertTrue(date('D', $recurrences[0][2]) == 'Mon'); // Mon 3rd June 2013
+        $this->assertTrue(date('D', $recurrences[0][3]) == 'Mon'); // Mon 3rd June 2013
+        $this->assertTrue(date('D', $recurrences[1][2]) == 'Mon'); // Mon 10th June 2013
+        $this->assertTrue(date('D', $recurrences[1][3]) == 'Mon'); // Mon 10th June 2013
         $this->assertTrue($recurrences[0][3] > $recurrences[0][2]);
     }
 
     public function testDayGap()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testDayGap')) {
+            return;
+        }
+
         // For some dow start and dow end time, that naively seems non-consecutive/negative, ensure it does actually compute with the consistent and expected day gap
 
         $timezone = 'UTC';
@@ -459,6 +565,11 @@ class calendar_event_test_set extends cms_test_case
 
     public function testRecurrenceFastForward()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testRecurrenceFastForward')) {
+            return;
+        }
+
         // Jumping forward 10 years for a monthly occurring event, it still displays with the expected date
         $timezone = 'UTC';
         $do_timezone_conv = 0;
@@ -487,6 +598,11 @@ class calendar_event_test_set extends cms_test_case
 
     public function testRecurrenceMasks()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testRecurrenceMasks')) {
+            return;
+        }
+
         // Test recurrence masks work
         $timezone = 'UTC';
         $do_timezone_conv = 0;
@@ -514,19 +630,46 @@ class calendar_event_test_set extends cms_test_case
 
     public function testAddCalendarEvent()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testAddCalendarEvent')) {
+            return;
+        }
+
         $this->event_id = add_calendar_event(8, 'none', null, 0, 'test_event', '', 3, 2010, 1, 10, 'day_of_month', 10, 15, null, null, null, 'day_of_month', null, null, null, 1, null, 1, 1, 1, 1, '', null, 0, null, null, null);
         $this->assertTrue('test_event' == get_translated_text($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'e_title', array('id' => $this->event_id))));
     }
 
     public function testEditCalendarEvent()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testEditCalendarEvent')) {
+            return;
+        }
+
         edit_calendar_event($this->event_id, 8, 'none', null, 0, 'test_event1', '', 3, 2010, 1, 10, 'day_of_month', 10, 15, null, null, null, 'day_of_month', null, null, get_users_timezone(), 1, null, '', '', 1, 1, 1, 1, '');
         $this->assertTrue('test_event1' == get_translated_text($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'e_title', array('id' => $this->event_id))));
     }
 
     public function testDeleteCalendarEvent()
     {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testDeleteCalendarEvent')) {
+            return;
+        }
+
         delete_calendar_event($this->event_id);
+    }
+
+    public function testNormaliseTimeArray()
+    {
+        $only = get_param_string('only', null);
+        if (($only !== null) && ($only != 'testNormaliseTimeArray')) {
+            return;
+        }
+
+        $this->assertTrue(normalise_time_array(array(-10, 1, 1, 2, 2017), 'Europe/London') == array(50, 0, 1, 2, 2017)); // Roll-backward via time
+
+        $this->assertTrue(normalise_time_array(array(null, null, 13, 1, 2017), 'Europe/London') == array(null, null, 1, 1, 2018)); // Roll-forward, no time
     }
 }
 
