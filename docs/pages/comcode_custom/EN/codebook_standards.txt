@@ -432,6 +432,13 @@ Avoid using [tt]eval[/tt], [tt]$$[/tt], [tt]create_function[/tt], or [tt]preg_re
 | 
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
+[tt]kebab-case[/tt] should be used for CSS ID and class names
+| Consistency
+| Composr development +
+| Manually
+| IDs should use kebab-case EXCEPT when mirroring (or closely mirroring) a name attribute.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
 Support minimum PHP version
 | Portability
 | Product development only
