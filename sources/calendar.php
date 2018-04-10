@@ -1039,7 +1039,7 @@ function detect_conflicts($member_id, $skip_id, $start_year, $start_month, $star
  * @set day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards
  * @return integer Hour
  */
-function find_timezone_start_hour_in_utc($timezone, $year, $month, $day, $monthly_spec_type, $with_rollover = true)
+function find_timezone_start_hour_in_utc($timezone, $year, $month, $day, $monthly_spec_type)
 {
     $_hour = 0;
     $_minute = 0;
