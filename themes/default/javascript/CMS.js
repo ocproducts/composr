@@ -275,9 +275,9 @@
 
         switch (modeName) {
             case 'mobile':
-                return mobileModeMql.matches;
+                return $cms.isMobile() || mobileModeMql.matches;
             case 'desktop':
-                return desktopModeMql.matches;
+                return !$cms.isMobile() && desktopModeMql.matches;
         }
 
         return false;

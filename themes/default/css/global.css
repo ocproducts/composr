@@ -436,6 +436,14 @@ iframe {
 		white-space: normal !important;
 		word-wrap: break-word !important;
 	}
+	
+	.display-desktop {
+		display: none !important;
+	}
+	
+	.display-mobile {
+		display: initial !important;;
+	}
 
 	.inline-desktop {
 		display: none !important;
@@ -480,6 +488,14 @@ iframe {
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
+	.display-desktop {
+		display: initial !important;
+	}
+	
+	.display-mobile {
+		display: none !important;;
+	}
+
 	.inline-desktop {
 		display: inline !important;
 	}
