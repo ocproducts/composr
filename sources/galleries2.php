@@ -1678,7 +1678,7 @@ function get_potential_gallery_title($cat)
         $parent_id = $parts[2];
         $_parent_info = $GLOBALS['SITE_DB']->query_select('galleries', array('accept_images', 'accept_videos', 'flow_mode_interface', 'fullname'), array('name' => $parent_id), '', 1);
         if (!array_key_exists(0, $_parent_info)) {
-            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
         $parent_info = $_parent_info[0];
 
