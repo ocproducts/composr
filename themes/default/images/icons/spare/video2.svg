@@ -6,7 +6,6 @@
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48">
 <defs>
 </defs>
-<rect opacity="0" fill="#FFFFFF" width="48" height="48"/>
 <rect x="1.791" y="1.851" fill="#52CAF5" width="44.417" height="44.299"/>
 <path fill="#419FC1" d="M1.791,4.539v41.397h26.91c0.26-1.772,0.397-3.586,0.397-5.429C29.099,23.361,17.539,8.923,1.791,4.539z"/>
 <rect x="1.791" y="8.333" fill="#3588A6" width="44.417" height="31.255"/>

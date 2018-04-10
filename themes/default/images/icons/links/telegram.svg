@@ -7,7 +7,6 @@
 	 x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48">
 <defs>
 </defs>
-<rect opacity="0" fill="#FFFFFF" width="48" height="48"/>
 <path fill="#0696B8" d="M18.684,39.856c-1.278,0-1.072-0.487-1.505-1.7L13.41,25.757L42.4,8.548L18.684,39.856z"/>
 <path fill="#027593" d="M18.684,39.856c0.997,0,1.43-0.443,1.971-0.996l5.274-5.122l-6.573-3.975L18.684,39.856z"/>
 <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="-279.5864" y1="274.2217" x2="-279.5612" y2="274.1736" gradientTransform="matrix(326.2318 0 0 -273.624 91238.7031 75056.3516)">

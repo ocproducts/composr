@@ -28,7 +28,6 @@
 
 (function ($cms, $util, $dom) {
     'use strict';
-
     
     $dom.ready.then(function () {
         // Allow form submissions by removing this listener attached early in dom_init.js

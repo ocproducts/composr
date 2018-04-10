@@ -7,7 +7,6 @@
 	 x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48">
 <defs>
 </defs>
-<rect opacity="0" fill="#FFFFFF" width="48" height="48"/>
 <rect x="2.293" y="24.898" fill="#D1D3D4" width="30.472" height="18.661"/>
 <polygon fill="#E6E7E8" points="13.068,24.898 2.293,24.898 2.293,43.559 22.819,43.559 "/>
 <path fill="#3588A6" d="M32.737,24.392H2.283c-0.25,0-0.453,0.203-0.453,0.455V44.04c0,0.25,0.204,0.453,0.453,0.453h1.965v1.135
