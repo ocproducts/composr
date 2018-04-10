@@ -318,7 +318,8 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                 $i = 2;
                 // Hunt with sensible names until we don't get a conflict
                 while (file_exists($place)) {
-                    $_file = strval($i) . basename($entry['path']);
+                    $ext = '.' . get_file_extension($entry['path']);
+                    $_file = basename($entry['path'], $ext) . '_' . strval($i) . $ext;
                     $place = get_custom_file_base() . '/uploads/attachments/' . $_file;
                     $i++;
                 }
@@ -332,7 +333,8 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                 $place_thumb = get_custom_file_base() . '/uploads/attachments_thumbs/' . $_file_thumb;
                 // Hunt with sensible names until we don't get a conflict
                 while (file_exists($place_thumb)) {
-                    $_file_thumb = strval($i) . basename($entry['path']);
+                    $ext = '.' . get_file_extension($entry['path']);
+                    $_file_thumb = basename($entry['path'], $ext) . '_' . strval($i) . $ext;
                     $place_thumb = get_custom_file_base() . '/uploads/attachments_thumbs/' . $_file_thumb;
                     $i++;
                 }

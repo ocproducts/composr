@@ -553,11 +553,12 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
                 } else {
                     $ext = '';
                 }
-                $thumb_filename = preg_replace('#[^' . URL_CONTENT_REGEXP . '\.]#', 'x', basename($url[0]));
+                $thumb_filename = basename(preg_replace('#[^' . URL_CONTENT_REGEXP . '\.]#', 'x', $url[0]));
                 $place = $thumb_folder_full . '/' . $thumb_filename . $ext;
                 $i = 2;
                 while (file_exists($place)) {
-                    $thumb_filename = strval($i) . preg_replace('#[^' . URL_CONTENT_REGEXP . '\.]#', 'x', basename($url[0]));
+                    $ext = '.' . get_file_extension($url[0]);
+                    $thumb_filename = basename(preg_replace('#[^' . URL_CONTENT_REGEXP . '\.]#', 'x', $url[0]), $ext) . '_' . strval($i) . $ext;
                     $place = $thumb_folder_full . '/' . $thumb_filename . $ext;
                     $i++;
                 }
@@ -860,7 +861,8 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
             // Hunt with sensible names until we don't get a conflict
             $i = 2;
             while (file_exists($place)) {
-                $filename = strval($i) . preg_replace('#\..*\.#', '.', $file);
+                $ext = '.' . get_file_extension($file);
+                $filename = basename(preg_replace('#\..*\.#', '.', $file), $ext) . '_' . strval($i) . $ext;
                 $place = $upload_folder_full . '/' . $filename;
                 $i++;
             }

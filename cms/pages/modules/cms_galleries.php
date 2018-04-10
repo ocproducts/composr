@@ -765,7 +765,8 @@ class Module_cms_galleries extends Standard_crud_module
         $i = 2;
         $_file = filter_naughty($file);
         while (file_exists($place)) {
-            $_file = strval($i) . $file;
+            $ext = '.' . get_file_extension($file);
+            $_file = basename($file, $ext) . '_' . strval($i) . $ext;
             $place = get_custom_file_base() . '/uploads/galleries/' . $_file;
             $i++;
         }
@@ -777,7 +778,8 @@ class Module_cms_galleries extends Standard_crud_module
         $i = 2;
         $_file_thumb = filter_naughty($file);
         while (file_exists($place_thumb)) {
-            $_file_thumb = strval($i) . $file;
+            $ext = '.' . get_file_extension($file);
+            $_file_thumb = basename($file, $ext) . '_' . strval($i) . $ext;
             $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $_file_thumb;
             $i++;
         }
@@ -825,7 +827,8 @@ class Module_cms_galleries extends Standard_crud_module
                 $i = 2;
                 $_file_thumb = $file;
                 while (file_exists($place_thumb)) {
-                    $_file_thumb = strval($i) . $file;
+                    $ext = '.' . get_file_extension($file);
+                    $_file_thumb = basename($file, $ext) . '_' . strval($i) . $ext;
                     $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $_file_thumb;
                     $i++;
                 }
