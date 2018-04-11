@@ -116,6 +116,11 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
     $field_url = $name . '__url';
     $url = post_param_string($field_url, '');
     if ($url != '') {
+        // We should use compliant encoding
+        require_code('urls_simplifier');
+        $coder_ob = new HarmlessURLCoder();
+        $url = $coder_ob->encode($url);
+
         $filename = urldecode(preg_replace('#\?.*#', '', basename($url)));
 
         // Get thumbnail
@@ -643,9 +648,13 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
 {
     // Security check against naughty url's
     $url = array();
-    $url[0] = /*filter_naughty*/
-        (post_param_string($specify_name));
+    $url[0] = /*filter_naughty*/(post_param_string($specify_name));
     $url[1] = rawurldecode(basename($url[0]));
+
+    // We should use compliant encoding
+    require_code('urls_simplifier');
+    $coder_ob = new HarmlessURLCoder();
+    $url[0] = $coder_ob->encode($url[0]);
 
     // If this is a relative URL then it may be downloaded through a PHP script.
     //  So lets check we are allowed to download it!

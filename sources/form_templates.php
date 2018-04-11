@@ -1431,7 +1431,11 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     $field_url = $set_name . '__url';
 
-    $field_set->attach(form_input_url(do_lang_tempcode('URL'), do_lang_tempcode('DESCRIPTION_ALTERNATE_URL'), $field_url, $default, $required));
+    require_code('urls_simplifier');
+    $coder_ob = new HarmlessURLCoder();
+    $_default = $coder_ob->decode($default);
+
+    $field_set->attach(form_input_url(do_lang_tempcode('URL'), do_lang_tempcode('DESCRIPTION_ALTERNATE_URL'), $field_url, $_default, $required));
 
     // Filedump
     // --------
