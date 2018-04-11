@@ -34,12 +34,12 @@
 				</td>
 
 				<td class="form-table-field-input">
-					<input class="button-micro js-click-permissions-toggle" type="button" value="+/-" title="{!MASS_PERMISSION_SETTING}" />
+					<button class="button-micro js-click-permissions-toggle" type="button" title="{!MASS_PERMISSION_SETTING}">+/-</button>
 				</td>
 
 				{+START,LOOP,OVERRIDES}
 					<td class="form-table-field-input">
-						<input class="button-micro js-click-permissions-toggle" type="button" value="+/-" title="{!MASS_PERMISSION_SETTING}" />
+						<button class="button-micro js-click-permissions-toggle" type="button" title="{!MASS_PERMISSION_SETTING}">+/-</button>
 					</td>
 				{+END}
 

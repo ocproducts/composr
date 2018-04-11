@@ -15,8 +15,8 @@
 	</ul>
 
 	<p class="proceed-button">
-		<input class="button-screen buttons--back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
+		<button class="button-screen buttons--back" type="button" data-cms-btn-go-back="1">{!GO_BACK}</button>
 
-		<input accesskey="u" data-disable-on-click="1" class="button-screen buttons--proceed" type="submit" value="{!PROCEED}" />
+		<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--proceed" type="submit">{!PROCEED}</button>
 	</p>
 </form>

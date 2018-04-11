@@ -5,7 +5,7 @@
 
 	{+START,IF,{IMMEDIATE}}
 		<form data-tpl="buttonScreenItem" title="{TITLE*}" class="inline" action="{URL*}"{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END} method="post" autocomplete="off">
-			{+START,IF_PASSED,HIDDEN}{$INSERT_SPAMMER_BLACKHOLE}{HIDDEN}{+END}<input class="{IMG*} button-screen-item" type="submit" value="{TITLE*}" title="{FULL_TITLE*}" />
+			{+START,IF_PASSED,HIDDEN}{$INSERT_SPAMMER_BLACKHOLE}{HIDDEN}{+END}<button class="{IMG*} button-screen-item" type="submit" title="{FULL_TITLE*}">{TITLE*}</button>
 		</form>
 	{+END}
 {+END}

@@ -26,7 +26,7 @@
 				<div><label for="staff_links_edit" class="accessibility-hidden">{!EDIT}</label><textarea cols="100" rows="30" id="staff_links_edit" name="staff_links_edit" class="wide-field">{+START,LOOP,UNFORMATTED_LINKS}{LINKS*}&#10;&#10;{+END}</textarea></div>
 
 				<div class="buttons-group">
-					<input data-disable-on-click="1" class="button-screen-item buttons--save {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-form-submit-headless{+END}" type="submit" value="{!SAVE}" />
+					<button data-disable-on-click="1" class="button-screen-item buttons--save {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-form-submit-headless{+END}" type="submit">{!SAVE}</button>
 				</div>
 			</form>
 		</div>

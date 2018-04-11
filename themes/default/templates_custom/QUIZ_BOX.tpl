@@ -26,7 +26,7 @@
 
 	<div class="shunted-button">
 		<form title="{!START} {!QUIZ}: {NAME*}" method="post" action="{URL*}" autocomplete="off">
-			<input class="button-screen-item buttons--more" type="submit" value="{!START}" />
+			<button class="button-screen-item buttons--more" type="submit">{!START}</button>
 		</form>
 	</div>
 

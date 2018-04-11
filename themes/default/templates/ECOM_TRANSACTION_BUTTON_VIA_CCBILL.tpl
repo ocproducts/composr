@@ -21,6 +21,6 @@
 	{+END}
 
 	<div class="purchase-button">
-		<input data-disable-on-click="1" type="submit" value="{!MAKE_PAYMENT}" />
+		<button data-disable-on-click="1" type="submit">{!MAKE_PAYMENT}</button>
 	</div>
 </form>

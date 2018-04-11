@@ -62,7 +62,7 @@
 					</select>
 				</label>
 
-				<input class="button-micro buttons--filter" type="submit" value="{!FILTER}" />
+				<button class="button-micro buttons--filter" type="submit">{!FILTER}</button>
 			</p>
 		</form>
 	{+END}

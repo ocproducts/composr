@@ -231,7 +231,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
                 $comcode_title = do_lang('comcode:COMCODE_EDITABLE_TAG', escape_html($tag));
             }
             $raw_comcode = $raw_comcode_start . $_embed_inner . $raw_comcode_end;
-            return '<input class="cms-keep-ui-controlled" size="45" title="' . escape_html($raw_comcode) . '" type="button" value="' . $comcode_title . '" />';
+            return '<button class="cms-keep-ui-controlled" size="45" title="' . escape_html($raw_comcode) . '" type="button">' . $comcode_title . '</button>';
 
         case WYSIWYG_COMCODE__XML_BLOCK:
         case WYSIWYG_COMCODE__XML_INLINE:

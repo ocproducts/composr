@@ -658,7 +658,7 @@ Our submission button. We use the existing 'proceed-button' CSS class
 as we try to standardise styles in Composr, for consistency.
 -->
 <p class="proceed-button">
-<input type="submit" value="Submit form" />
+<button type="submit">Submit form</button>
 </p>
 </form>
 [/code]

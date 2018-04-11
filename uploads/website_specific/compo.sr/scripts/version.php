@@ -213,7 +213,7 @@ function display_version_upgrade_path($higher_version)
             (function() {
                 var span = document.getElementById('link-pos-<?= strval($i) ?>');
                 var upgraderLink = $util.rel(<?= json_encode($upgrade_script) ?>);
-                var html = '<form style="display: inline" action="' + $cms.filter.html(upgraderLink) + '" target="_blank" method="post"><input class="menu-adminzone-tools-upgrade button-micro" type="submit" title="Upgrade to <?= escape_html($higher_version['version_pretty']) ?>" value="Launch upgrader" /></form>';
+                var html = '<form style="display: inline" action="' + $cms.filter.html(upgraderLink) + '" target="_blank" method="post"><button class="menu-adminzone-tools-upgrade button-micro" type="submit" title="Upgrade to <?= escape_html($higher_version['version_pretty']) ?>">Launch upgrader</button></form>';
                 span.innerHTML = html;
             }());
         </script>
@@ -227,7 +227,7 @@ function display_version_upgrade_path($higher_version)
     <!-- Noscript version -->
     <noscript>
         <form style="display: inline" action="../<?= escape_html($upgrade_script) ?>" target="_blank" method="post">
-            <input class="menu-adminzone-tools-upgrade button-screen-item" type="submit" title="Upgrade to <?= escape_html($higher_version['version_pretty']) ?>" value="Launch upgrader" />
+            <button class="menu-adminzone-tools-upgrade button-screen-item" type="submit" title="Upgrade to <?= escape_html($higher_version['version_pretty']) ?>">Launch upgrader</button>
         </form>
     </noscript>
     <?php

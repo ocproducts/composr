@@ -193,7 +193,7 @@ foreach (array_reverse($releases) as $version => $release_details) {
 echo '</select>';
 echo '</div>';
 
-echo '<input style="margin-left: 8px; margin-top: 15px" type="submit" value="Filter" class="button-screen buttons--proceed" />';
+echo '<button style="margin-left: 8px; margin-top: 15px" type="submit" class="button-screen buttons--proceed">Filter</button>';
 echo '</form>';
 echo '</div>';
 

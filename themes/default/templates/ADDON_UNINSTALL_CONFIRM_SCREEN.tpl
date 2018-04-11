@@ -16,9 +16,9 @@
 		<input type="hidden" name="name" value="{NAME*}" />
 
 		<p>
-			<input class="button-screen buttons--back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
+			<button class="button-screen buttons--back" type="button" data-cms-btn-go-back="1">{!GO_BACK}</button>
 
-			<input class="button-screen admin--delete3" type="submit" value="{!PROCEED}" />
+			<button class="button-screen admin--delete3" type="submit">{!PROCEED}</button>
 		</p>
 	</form>
 </div>

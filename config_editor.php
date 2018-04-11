@@ -137,7 +137,7 @@ function ce_do_login()
     echo '
         <label for="given_password">Master Password: <input type="password" name="given_password" id="given_password" /></label>
 
-        <p><input class="button-screen menu--site-meta--user-actions--login" type="submit" value="Log in" /></p>
+        <p><button class="button-screen menu--site-meta--user-actions--login" type="submit">Log in</button></p>
     ';
 }
 
@@ -316,7 +316,7 @@ function do_access($given_password)
 
     echo '
         <p class="proceed-button" style="text-align: center">
-            <input class="button-screen buttons--save" type="submit" value="Save" onclick="return checkPasswords(this.form);" />
+            <button class="button-screen buttons--save" type="submit" onclick="return checkPasswords(this.form);">Save</button>
         </p>
 
         <input type="hidden" name="given_password" value="' . htmlentities($given_password) . '" />

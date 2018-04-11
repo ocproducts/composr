@@ -17,7 +17,7 @@
 			</div>
 
 			<p class="proceed-button">
-				<input type="submit" value="{!SEND_MESSAGE}" class="button-screen-item buttons--send" />
+				<button type="submit" class="button-screen-item buttons--send">{!SEND_MESSAGE}</button>
 			</p>
 		</form>
 	</div></section>

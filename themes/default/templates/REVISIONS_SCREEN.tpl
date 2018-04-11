@@ -41,7 +41,7 @@
 				</div>
 
 				<div class="revisions-filter-item-button">
-					<input data-disable-on-click="1" accesskey="u" class="button-screen-item buttons--filter" type="submit" value="{!FILTER}" />
+					<button data-disable-on-click="1" accesskey="u" class="button-screen-item buttons--filter" type="submit">{!FILTER}</button>
 				</div>
 			</form>
 		</div></div>

@@ -1,5 +1,5 @@
 <p>
-	<input id="poll-vote-button" class="button-micro menu--social--polls" type="submit" value="{!VOTE}" />
+	<button id="poll-vote-button" class="button-micro menu--social--polls" type="submit">{!VOTE}</button>
 </p>
 
 <p>

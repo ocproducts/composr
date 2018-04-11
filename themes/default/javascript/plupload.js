@@ -14494,8 +14494,8 @@
             '<div id="sub-div-' + name + '" class="vertical-alignment">' +
             // This input field shows the file name(s) of the uploading/uploaded file to the user
             '<input type="text" id="txt_filename_' + name + '" name="txt_filename_' + name + '" class="upload-response-field" size="24" disabled value="">' +
-            '<input type="button" id="upload-button-' + name + '" class="buttons--upload button-micro" value="{!BROWSE;^*}">' +
-            '<input type="button" id="fs-clear-' + name + '" class="buttons--clear button-micro clear-button" alt="{!CLEAR;^*}" value="{!CLEAR;^*}">' +
+            '<button type="button" id="upload-button-' + name + '" class="buttons--upload button-micro">{!BROWSE;^*}</button>' +
+            '<button type="button" id="fs-clear-' + name + '" class="buttons--clear button-micro clear-button" alt="{!CLEAR;^*}">{!CLEAR;^*}</button>' +
             '</div>' +
             '<div id="fs-upload-progress-' + name + '" class="progress-bars"></div>' +
             // This hidden input field holds the server-side upload_id after upload is finished

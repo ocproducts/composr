@@ -203,7 +203,7 @@
 						<div class="proceed-button buttons-group {$?,{$GET,has_preview_button},contains-preview-button,contains-no-preview-button}">
 							{+START,IF,{$DESKTOP}}
 								{+START,IF,{$GET,has_preview_button}}
-									<input id="preview-button" accesskey="p" tabindex="250" class="buttons--preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} desktop-inline" type="button" value="{!PREVIEW}" />
+									<button id="preview-button" accesskey="p" tabindex="250" class="buttons--preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} desktop-inline" type="button">{!PREVIEW}</button>
 								{+END}
 							{+END}
 
@@ -213,7 +213,7 @@
 
 							{+START,IF_PASSED,ATTACHMENTS}
 								{+START,IF,{$AND,{TRUE_ATTACHMENT_UI},{$BROWSER_MATCHES,simplified_attachments_ui}}}
-									<input tabindex="7" id="js-attachment-upload-button" class="for-field-post buttons--thumbnail {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item}" type="button" value="{!comcode:ADD_IMAGES}" />
+									<button tabindex="7" id="js-attachment-upload-button" class="for-field-post buttons--thumbnail {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item}" type="button">{!comcode:ADD_IMAGES}</button>
 								{+END}
 							{+END}
 

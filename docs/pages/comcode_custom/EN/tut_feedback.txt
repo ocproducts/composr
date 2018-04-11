@@ -149,7 +149,7 @@ Here is an example blob of HTML+Tempcode to demonstrate the functionality:
 
     <input type="hidden" name="redirect" value="{$PROTECT_URL_PARAMETER*,{$PAGE_LINK,:thanks}}" />
 
-    <input type="submit" value="Send message" />
+    <button type="submit">Send message</button>
 
     {$INSERT_SPAMMER_BLACKHOLE}
 </form>

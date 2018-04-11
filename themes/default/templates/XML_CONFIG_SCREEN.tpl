@@ -12,7 +12,7 @@
 		</div>
 
 		<p class="proceed-button">
-			<input class="button-screen buttons--save" id="submit-button" accesskey="u" type="submit" value="{!SAVE}" />
+			<button class="button-screen buttons--save" id="submit-button" accesskey="u" type="submit">{!SAVE}</button>
 		</p>
 	</form>
 </div>

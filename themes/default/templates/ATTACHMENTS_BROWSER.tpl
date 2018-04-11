@@ -7,7 +7,7 @@
 			{LIST}
 		</select></label>
 
-		<input data-disable-on-click="1" class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
+		<button data-disable-on-click="1" class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
 	</form>
 
 	<hr class="spaced-rule" />
@@ -23,7 +23,7 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<input type="hidden" name="delete_{ID*}" value="1" />
-					<input data-cms-confirm-click="{!ARE_YOU_SURE_DELETE*}" type="submit" class="button-screen-item admin--delete3" value="{!DELETE}" />
+					<button data-cms-confirm-click="{!ARE_YOU_SURE_DELETE*}" type="submit" class="button-screen-item admin--delete3">{!DELETE}</button>
 				</form>
 			{+END}
 		</div>

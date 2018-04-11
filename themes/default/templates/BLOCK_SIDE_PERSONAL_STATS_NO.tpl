@@ -31,7 +31,7 @@
 				{+END}
 
 				<p class="proceed-button">
-					<input class="button-screen-item menu--site-meta--user-actions--login" type="submit" value="{!_LOGIN}" />
+					<button class="button-screen-item menu--site-meta--user-actions--login" type="submit">{!_LOGIN}</button>
 				</p>
 			</div>
 		</form>

@@ -159,7 +159,7 @@
 		</div>
 
 		<p class="proceed-button">
-			<input class="button-screen buttons--proceed" type="submit" value="{!PROCEED}" />
+			<button class="button-screen buttons--proceed" type="submit">{!PROCEED}</button>
 		</p>
 	</form>
 {+END}

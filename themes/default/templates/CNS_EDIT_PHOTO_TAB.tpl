@@ -19,7 +19,7 @@
 
 				<p>
 					<input type="hidden" name="delete_photo" value="1" />
-					{!YOU_CAN_DELETE_PHOTO,<input class="button-hyperlink" type="submit" value="{!DELETE_PHOTO}" />}
+					{!YOU_CAN_DELETE_PHOTO,<button class="button-hyperlink" type="submit">{!DELETE_PHOTO}</button>}
 				</p>
 			</form>
 		{+END}

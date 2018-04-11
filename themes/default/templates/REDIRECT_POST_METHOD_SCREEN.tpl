@@ -11,7 +11,7 @@
 				{TEXT}
 
 				<p>
-					{!PROCEED_TEXT,<input accesskey="c" class="button-hyperlink" type="submit" value="{!HERE}" />}
+					{!PROCEED_TEXT,<button accesskey="c" class="button-hyperlink" type="submit">{!HERE}</button>}
 				</p>
 
 				{POST}

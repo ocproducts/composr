@@ -8,6 +8,6 @@
 	</div>
 
 	<p class="proceed-button">
-		<input data-disable-on-click="1" value="{!EDIT_TEMPLATES}" class="button-screen admin--edit" type="submit" />
+		<button data-disable-on-click="1" class="button-screen admin--edit" type="submit">{!EDIT_TEMPLATES}</button>
 	</p>
 </form>

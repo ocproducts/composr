@@ -33,7 +33,7 @@
 			{+END}
 
 			<p class="proceed-button">
-				<input class="button-screen-item buttons--search" type="submit" value="{!SEARCH}" />
+				<button class="button-screen-item buttons--search" type="submit">{!SEARCH}</button>
 			</p>
 
 			{+START,LOOP,LIMIT_TO}

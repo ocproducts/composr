@@ -16,7 +16,7 @@
 				<p class="cns-member-column-title">{!WELCOME_BACK,<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>}</p>
 				{+START,IF,{$NOT,{$IS_HTTPAUTH_LOGIN}}}
 					<div class="inline-desktop">
-						<form class="inline associated-link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}" autocomplete="off"><input class="button-hyperlink" type="submit" value="{!LOGOUT}" /></form>
+						<form class="inline associated-link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}" autocomplete="off"><button class="button-hyperlink" type="submit">{!LOGOUT}</button></form>
 					</div>
 				{+END}
 

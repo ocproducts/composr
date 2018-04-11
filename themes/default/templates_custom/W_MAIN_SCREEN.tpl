@@ -29,7 +29,7 @@
 								{+START,IF,{HAS_UP_ROOM}}
 									<div>
 										&uarr;<br />
-										<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="up" /><input class="button-hyperlink" type="submit" value="{UP_ROOM*}" /></form>
+										<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="up" /><button class="button-hyperlink" type="submit">{UP_ROOM*}</button></form>
 									</div>
 								{+END}
 								{+START,IF,{$NOT,{HAS_UP_ROOM}}}
@@ -48,7 +48,7 @@
 						<td>
 							{+START,IF,{HAS_LEFT_ROOM}}
 								<div style="text-align: right">
-									&larr;&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="left" /><input class="button-hyperlink" type="submit" value="{LEFT_ROOM*}" /></form>
+									&larr;&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="left" /><button class="button-hyperlink" type="submit">{LEFT_ROOM*}</button></form>
 								</div>
 							{+END}
 							{+START,IF,{$NOT,{HAS_LEFT_ROOM}}}
@@ -63,7 +63,7 @@
 						<td>
 							{+START,IF,{HAS_RIGHT_ROOM}}
 								<div style="text-align: left">
-									&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="right" /><input class="button-hyperlink" type="submit" value="{RIGHT_ROOM*}" /></form>&nbsp;&rarr;
+									&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="right" /><button class="button-hyperlink" type="submit">{RIGHT_ROOM*}</button></form>&nbsp;&rarr;
 								</div>
 							{+END}
 							{+START,IF,{$NOT,{HAS_RIGHT_ROOM}}}
@@ -81,7 +81,7 @@
 							<div style="text-align: center">
 								{+START,IF,{HAS_DOWN_ROOM}}
 									<div>
-										<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="down" /><input class="button-hyperlink" type="submit" value="{DOWN_ROOM*}" /></form><br />
+										<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="down" /><button class="button-hyperlink" type="submit">{DOWN_ROOM*}</button></form><br />
 										<div class="buildr-arrow">
 											&darr;
 										</div>
@@ -139,7 +139,7 @@
 						<option value="0">
 							{!W_EVERYONE}
 						</option>
-					</select> <input class="button-screen-item buttons--send" type="submit" value="{!SEND_MESSAGE}" /></div>
+					</select> <button class="button-screen-item buttons--send" type="submit">{!SEND_MESSAGE}</button></div>
 				</form>
 			</div>
 
@@ -298,7 +298,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="drop" />
-									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -317,7 +317,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="give" />
-									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -336,7 +336,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="btype" value="pickpocket" />
-									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -355,7 +355,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="use" />
-									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -374,7 +374,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="btype" value="delete-message-by-person" />
-									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
 								</td>
 							</tr>
 						{+END}
@@ -394,7 +394,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="findperson" />
-								<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
+								<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
 							</td>
 						</tr>
 
@@ -414,7 +414,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="teleport-person" />
-									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -433,7 +433,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="imprison-person" />
-									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -452,7 +452,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="hurt-person" />
-									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -471,7 +471,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="dehurt-person" />
-									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -490,7 +490,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="ban-person" />
-									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -509,7 +509,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="unban-person" />
-									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -528,7 +528,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="take-from-person" />
-									<input class="button-screen-item buttons--proceed" type="submit" value="{!PROCEED}" />
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
 								</td>
 							</tr>
 						{+END}
@@ -580,15 +580,15 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<label for="item">{!W_ITEMS}</label>: {ITEMS_OWNED} <input type="hidden" name="type" value="edititem" />
-						<input class="js-click-set-type-edititem button-screen-item admin--edit" type="submit" value="{!W_EDIT_ITEM}" />
-						<input class="js-click-set-type-confirm button-screen-item admin--delete3" type="submit" value="{!W_DELETE_ITEM}" />
+						<button class="js-click-set-type-edititem button-screen-item admin--edit" type="submit">{!W_EDIT_ITEM}</button>
+						<button class="js-click-set-type-confirm button-screen-item admin--delete3" type="submit">{!W_DELETE_ITEM}</button>
 					</div></form>
 
 					{+START,IF,{IS_STAFF}}
 						<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off"><div>
 							{$INSERT_SPAMMER_BLACKHOLE}
 
-							<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <input class="button-screen-item admin--merge" type="submit" value="{!W_MERGE_ITEMS}" />
+							<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <button class="button-screen-item admin--merge" type="submit">{!W_MERGE_ITEMS}</button>
 						</div></form>
 					{+END}
 				{+END}

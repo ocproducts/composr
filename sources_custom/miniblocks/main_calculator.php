@@ -41,6 +41,6 @@ foreach ($map as $key => $val) {
 }
 ?>
 <p class="proceed-button">
-    <input data-click-pd class="buttons--calculate button-screen-item js-btn-click-calculate-sum" type="submit" value="Calculate" />
+    <button data-click-pd class="buttons--calculate button-screen-item js-btn-click-calculate-sum" type="submit">Calculate</button>
 </p>
 </form>

@@ -12,11 +12,11 @@
 			<div class="buttons-group cart-update-buttons" itemprop="significantLinks">
 				{$,Put first, so it associates with the enter key}
 				{+START,IF_NON_EMPTY,{TYPE_CODES}}
-					<input id="cart-update-button" class="buttons--cart-update button-screen button-faded js-click-btn-cart-update" type="submit" name="update" title="{!UPDATE_CART}" value="{!_UPDATE_CART}" />
+					<button id="cart-update-button" class="buttons--cart-update button-screen button-faded js-click-btn-cart-update" type="submit" name="update" title="{!UPDATE_CART}">{!_UPDATE_CART}</button>
 				{+END}
 
 				{+START,IF_NON_EMPTY,{EMPTY_CART_URL*}}
-					<input class="button-screen-item buttons--cart-empty js-click-btn-cart-empty" type="submit" value="{!EMPTY_CART}" />
+					<button class="button-screen-item buttons--cart-empty js-click-btn-cart-empty" type="submit">{!EMPTY_CART}</button>
 				{+END}
 			</div>
 
@@ -61,7 +61,7 @@
 		{+END}
 
 		<p class="purchase-button">
-			<input id="proceed-button" class="button-screen buttons--proceed js-click-do-cart-form-submit" accesskey="u" type="button" value="{!CHECKOUT}" />
+			<button id="proceed-button" class="button-screen buttons--proceed js-click-do-cart-form-submit" accesskey="u" type="button">{!CHECKOUT}</button>
 		</p>
 	</form>
 </div>

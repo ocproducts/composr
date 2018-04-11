@@ -195,7 +195,7 @@
 				</table></div>
 
 				<p class="proceed-button">
-					<input data-disable-on-click="1" accesskey="u" class="button-screen buttons--search" type="submit" value="{!SEARCH_TITLE}" />
+					<button data-disable-on-click="1" accesskey="u" class="button-screen buttons--search" type="submit">{!SEARCH_TITLE}</button>
 				</p>
 			</form>
 		</div>

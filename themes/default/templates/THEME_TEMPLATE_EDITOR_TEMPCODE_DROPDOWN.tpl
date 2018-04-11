@@ -9,6 +9,6 @@
 		</select>
 	</div>
 	<div class="right">
-		<input class="button-micro admin--add js-click-template-insert-parameter" type="button" value="{LANG*}" />
+		<button class="button-micro admin--add js-click-template-insert-parameter" type="button">{LANG*}</button>
 	</div>
 </div>

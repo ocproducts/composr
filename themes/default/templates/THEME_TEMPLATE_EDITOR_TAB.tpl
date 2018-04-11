@@ -469,16 +469,16 @@
 {$,Buttons}
 
 <div class="float-surrounder buttons-group">
-	<input data-disable-on-click="1" class="button-screen buttons--save js-btn-save-content" type="submit" value="{!SAVE}" />
+	<button data-disable-on-click="1" class="button-screen buttons--save js-btn-save-content" type="submit">{!SAVE}</button>
 
 	{+START,SET,preview_buttons}
 		{+START,IF_PASSED,LIVE_PREVIEW_URL}
 			<!-- Preview in live rendering -->
-			<input class="button-screen buttons--preview js-btn-live-preview" type="submit" value="{!LIVE_PREVIEW}" />
+			<button class="button-screen buttons--preview js-btn-live-preview" type="submit">{!LIVE_PREVIEW}</button>
 		{+END}
 		{+START,IF_PASSED,SCREEN_PREVIEW_URL}
 			<!-- Preview in screen preview (Lorem ipsum) -->
-			<input class="button-screen buttons--preview js-btn-screen-preview" type="submit" value="{!LOREM_PREVIEW}" />
+			<button class="button-screen buttons--preview js-btn-screen-preview" type="submit">{!LOREM_PREVIEW}</button>
 		{+END}
 	{+END}
 	{+START,IF_NON_EMPTY,{$TRIM,{$GET,preview_buttons}}}
@@ -566,7 +566,7 @@
 			<label for="css-equation-{FILE_ID*}">{!CSS_EQUATION_HELPER}</label>
 			<input name="css_equation" id="css-equation-{FILE_ID*}" type="text" value="100% seed" />
 
-			<input class="button-screen-item buttons--calculate js-btn-equation-helper" type="submit" value="{!CALCULATE}" />
+			<button class="button-screen-item buttons--calculate js-btn-equation-helper" type="submit">{!CALCULATE}</button>
 
 			&rarr;
 

@@ -16,7 +16,7 @@
 
 	{+START,IF_NON_EMPTY,{URL}}
 		<p class="purchase-button">
-			<input id="proceed-button" class="button-screen {ICON*} js-click-do-form-submit" accesskey="u" type="button" value="{SUBMIT_NAME*}" />
+			<button id="proceed-button" class="button-screen {ICON*} js-click-do-form-submit" accesskey="u" type="button">{SUBMIT_NAME*}</button>
 		</p>
 	</form>
 	{+END}

@@ -81,7 +81,7 @@
 						</div>
 
 						<p class="proceed-button">
-							<input data-disable-on-click="1" class="button-screen buttons--choose" type="submit" value="{!INTERESTS}" />
+							<button data-disable-on-click="1" class="button-screen buttons--choose" type="submit">{!INTERESTS}</button>
 						</p>
 					</form>
 				</div></section></div>
@@ -100,7 +100,7 @@
 						</div>
 
 						<p class="proceed-button">
-							<input data-disable-on-click="1" class="button-screen buttons--filter" type="submit" value="{!FILTER}" />
+							<button data-disable-on-click="1" class="button-screen buttons--filter" type="submit">{!FILTER}</button>
 						</p>
 					</form>
 				</div></section></div>

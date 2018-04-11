@@ -11,7 +11,7 @@
 
 	{+START,IF_NON_EMPTY,{REORDER_URL}}
 		<p class="proceed-button">
-			<input accesskey="u" data-disable-on-click="1" class="button-screen buttons--proceed" type="submit" value="{!REORDER_FORUMS}" />
+			<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--proceed" type="submit">{!REORDER_FORUMS}</button>
 		</p>
 	{+END}
 </form>

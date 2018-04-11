@@ -33,7 +33,7 @@
 						<!-- List put in here -->
 					</div>
 
-					<p><input data-disable-on-click="1" data-click-pd="1" class="button-screen-item admin--add js-click-btn-add-template" type="submit" title="{!ADD_TEMPLATE_HELP}" value="{!ADD_TEMPLATE}" /></p>
+					<p><button data-disable-on-click="1" data-click-pd="1" class="button-screen-item admin--add js-click-btn-add-template" type="submit" title="{!ADD_TEMPLATE_HELP}">{!ADD_TEMPLATE}</button></p>
 				</div>
 			</div>
 

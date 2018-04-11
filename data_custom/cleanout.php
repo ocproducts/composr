@@ -83,7 +83,7 @@ function cleanup()
 
     $password = post_param_string('password', null, INPUT_FILTER_NONE);
     if ($password === null) {
-        @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><input class="admin--delete3 button-screen" type="submit" value="Delete programmed data" /></form>');
+        @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><button class="admin--delete3 button-screen" type="submit">Delete programmed data</button></form>');
     }
     require_code('crypt_master');
     if (!check_master_password($password)) {

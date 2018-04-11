@@ -5,7 +5,7 @@
 		<form id="feed-remove-{LIID*}" class="activities-remove js-submit-confirm-update-remove" action="{$PAGE_LINK*,:}" method="post" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
-			<input class="remove-button" type="submit" value="{!REMOVE}" />
+			<button class="remove-button" type="submit">{!REMOVE}</button>
 		</form>
 	{+END}
 

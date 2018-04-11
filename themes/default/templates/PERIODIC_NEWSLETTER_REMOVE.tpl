@@ -14,7 +14,7 @@
 
 		<div>
 			<div class="proceed-button">
-				<input class="button-screen buttons--proceed js-click-btn-disable-self" accesskey="u" type="submit" value="{!PROCEED}" />
+				<button class="button-screen buttons--proceed js-click-btn-disable-self" accesskey="u" type="submit">{!PROCEED}</button>
 			</div>
 		</div>
 	</form>

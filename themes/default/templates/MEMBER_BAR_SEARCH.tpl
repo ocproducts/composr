@@ -6,7 +6,10 @@
 				{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,_SEARCH:search:results:cns_own_pt,1}}
 
 				<div class="vertical-alignment">
-					<label class="accessibility-hidden" for="member-bar-search">{!_SEARCH_PRIVATE_TOPICS}</label><input maxlength="255" type="text" name="content" id="member-bar-search" placeholder="{!_SEARCH_PRIVATE_TOPICS}" /><input class="button-micro buttons--search" type="submit" data-disable-on-click="1" value="{!SEARCH}" /> <a class="associated-link" href="{$PAGE_LINK*,_SEARCH:search:browse:cns_own_pt}" title="{!MORE}: {!search:SEARCH_OPTIONS}">{!MORE}</a>
+					<label class="accessibility-hidden" for="member-bar-search">{!_SEARCH_PRIVATE_TOPICS}</label>
+					<input maxlength="255" type="text" name="content" id="member-bar-search" placeholder="{!_SEARCH_PRIVATE_TOPICS}" />
+					<button class="button-micro buttons--search" type="submit" data-disable-on-click="1">{!SEARCH}</button>
+					<a class="associated-link" href="{$PAGE_LINK*,_SEARCH:search:browse:cns_own_pt}" title="{!MORE}: {!search:SEARCH_OPTIONS}">{!MORE}</a>
 				</div>
 			</form>
 		</div>
@@ -17,7 +20,10 @@
 				{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,_SEARCH:search:results:cns_posts:search_under={$_GET,id},1}}
 
 				<div class="vertical-alignment">
-					<label class="accessibility-hidden" for="member-bar-search">{!SEARCH_FORUM_POSTS}</label><input maxlength="255" type="text" name="content" id="member-bar-search" placeholder="{!SEARCH_FORUM_POSTS}" /><input class="button-micro buttons--search" type="submit" data-disable-on-click="1" value="{!SEARCH}" /> <a class="associated-link" href="{$PAGE_LINK*,_SEARCH:search:browse:cns_posts:search_under={$_GET,id}}" title="{!MORE}: {!search:SEARCH_OPTIONS}">{!MORE}</a>
+					<label class="accessibility-hidden" for="member-bar-search">{!SEARCH_FORUM_POSTS}</label>
+					<input maxlength="255" type="text" name="content" id="member-bar-search" placeholder="{!SEARCH_FORUM_POSTS}" />
+					<button class="button-micro buttons--search" type="submit" data-disable-on-click="1">{!SEARCH}</button>
+					<a class="associated-link" href="{$PAGE_LINK*,_SEARCH:search:browse:cns_posts:search_under={$_GET,id}}" title="{!MORE}: {!search:SEARCH_OPTIONS}">{!MORE}</a>
 				</div>
 			</form>
 		</div>
@@ -31,7 +37,10 @@
 			{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,_SEARCH:search:results:cns_within_topic:search_under={$_GET,id}}}
 
 			<div class="vertical-alignment">
-				<label class="accessibility-hidden" for="member-bar-search">{!SEARCH_POSTS_WITHIN_TOPIC}</label><input maxlength="255" type="text" name="content" id="member-bar-search" placeholder="{!SEARCH_POSTS_WITHIN_TOPIC}" /><input class="button-micro buttons--search" type="submit" data-disable-on-click="1" value="{!SEARCH}" /> <a class="associated-link" href="{$PAGE_LINK*,_SEARCH:search:browse:cns_within_topic:search_under={$_GET,id}}" title="{!MORE}: {!search:SEARCH_OPTIONS}">{!MORE}</a>
+				<label class="accessibility-hidden" for="member-bar-search">{!SEARCH_POSTS_WITHIN_TOPIC}</label>
+				<input maxlength="255" type="text" name="content" id="member-bar-search" placeholder="{!SEARCH_POSTS_WITHIN_TOPIC}" />
+				<button class="button-micro buttons--search" type="submit" data-disable-on-click="1">{!SEARCH}</button>
+				<a class="associated-link" href="{$PAGE_LINK*,_SEARCH:search:browse:cns_within_topic:search_under={$_GET,id}}" title="{!MORE}: {!search:SEARCH_OPTIONS}">{!MORE}</a>
 			</div>
 		</form>
 	</div>
@@ -44,7 +53,10 @@
 			{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,_SEARCH:search:results}}
 
 			<div class="vertical-alignment">
-				<label class="accessibility-hidden" for="member-bar-search">{!SEARCH}</label><input maxlength="255" type="text" name="content" id="member-bar-search" placeholder="{!SEARCH}" /><input class="button-micro buttons--search" type="submit" data-disable-on-click="1" value="{!SEARCH}" /> <a class="associated-link" href="{$PAGE_LINK*,_SEARCH:search:browse}" title="{!MORE}: {!search:SEARCH_OPTIONS}">{!MORE}</a>
+				<label class="accessibility-hidden" for="member-bar-search">{!SEARCH}</label>
+				<input maxlength="255" type="text" name="content" id="member-bar-search" placeholder="{!SEARCH}" />
+				<button class="button-micro buttons--search" type="submit" data-disable-on-click="1">{!SEARCH}</button>
+				<a class="associated-link" href="{$PAGE_LINK*,_SEARCH:search:browse}" title="{!MORE}: {!search:SEARCH_OPTIONS}">{!MORE}</a>
 			</div>
 		</form>
 	</div>

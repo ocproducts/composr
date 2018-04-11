@@ -102,7 +102,7 @@ require_lang('backups');
 // Start button if not post
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     $msg = '';
-    $msg .= '<form action="restore.php" method="post"><input id="proceed-button" class="button-screen buttons--proceed" type="submit" value="' . escape_html(do_lang('START')) . '" onclick="this.disabled=true; this.form.submit();" /></form>';
+    $msg .= '<form action="restore.php" method="post"><button id="proceed-button" class="button-screen buttons--proceed" type="submit" onclick="this.disabled=true; this.form.submit();">' . escape_html(do_lang('START')) . '</button></form>';
     finish_restorer_output($msg);
 }
 
@@ -173,7 +173,7 @@ while (($line = fgets($data_file)) !== false) {
             $refresh_url = 'restore.php?start_offset=' . strval($offset);
 
             $msg = '';
-            $msg .= '<form action="' . escape_html($refresh_url) . '" method="post"><input id="proceed-button" class="button-screen buttons--proceed" type="submit" value="' . escape_html(do_lang('CONTINUE_RESTORATION')) . '" onclick="this.disabled=true; this.form.submit();" /></form>';
+            $msg .= '<form action="' . escape_html($refresh_url) . '" method="post"><button id="proceed-button" class="button-screen buttons--proceed" type="submit" onclick="this.disabled=true; this.form.submit();">' . escape_html(do_lang('CONTINUE_RESTORATION')) . '</button></form>';
             $msg .= '<script>var button=document.getElementById(\'proceed-button\'); button.disabled=true; button.form.submit();</script>';
             finish_restorer_output($msg);
         }

@@ -16,7 +16,7 @@
 		{TRACKBACKS}
 		{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,_SEARCH:admin_trackbacks}}
 			<p class="proceed-button">
-				<input data-disable-on-click="1" class="button-screen admin--delete3" type="submit" value="{!MANAGE_TRACKBACKS}" />
+				<button data-disable-on-click="1" class="button-screen admin--delete3" type="submit">{!MANAGE_TRACKBACKS}</button>
 			</p>
 		</form>
 		{+END}

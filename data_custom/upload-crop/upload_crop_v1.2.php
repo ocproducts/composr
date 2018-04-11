@@ -305,7 +305,7 @@ if (strlen($large_photo_exists) > 0) {
                     <input size="5" type="text" name="thumb_width" value="<?= $thumb_width ?>" id="thumb_width"/>
                     &times;
                     <input size="5" type="text" name="thumb_height" value="<?= $thumb_height ?>" id="thumb_height"/>
-                    <input type="submit" name="change_size" value="Change thumbnail size" id="change_size"/>
+                    <button type="submit" name="change_size" id="change_size">Change thumbnail size</button>
                 </p>
             </form>
             <form style="margin-right: 400px" onsubmit="document.getElementById('message').innerHTML='...';" action="<?= htmlentities($_SERVER["SCRIPT_NAME"] . '?' . $_SERVER['QUERY_STRING']) ?>" method="post">
@@ -318,7 +318,7 @@ if (strlen($large_photo_exists) > 0) {
                 <input type="hidden" name="w" value="" id="w"/>
                 <input type="hidden" name="h" value="" id="h"/>
 
-                <p><input type="submit" name="upload_thumbnail" value="Save Thumbnail" id="save_thumb"/></p>
+                <p><button type="submit" name="upload_thumbnail" id="save_thumb">Save Thumbnail</button></p>
             </form>
         </div>
     <?php } ?>

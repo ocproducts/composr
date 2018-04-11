@@ -48,7 +48,7 @@ function upgrader_file_upgrade_screen()
         $out .= '<p><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" /></p>';
         $out .= '<script ' . csp_nonce_html() . '>var url=document.getElementById(\'url\'); url.addEventListener(\'change\', function() { document.getElementById(\'upload\').disabled=url.value!=\'\'; });</script>';
     }
-    $out .= '<p><input class="buttons--proceed button-screen" type="submit" value="' . do_lang('PROCEED') . '" /></p>';
+    $out .= '<p><button class="buttons--proceed button-screen" type="submit">' . do_lang('PROCEED') . '</button></p>';
     $out .= '</form>';
 
     return $out;

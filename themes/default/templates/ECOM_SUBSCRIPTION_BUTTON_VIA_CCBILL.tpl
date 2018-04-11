@@ -25,6 +25,6 @@
 	<input type="hidden" name="formRebills" value="99" /> {$,An integer representing the total times the subscription will rebill. Passing a value of 99 will cause the subscription to rebill indefinitely}
 
 	<div class="purchase-button">
-		<input id="purchase-button" data-disable-on-click="1" class="button-screen menu--rich-content--ecommerce--purchase" type="submit" value="{!MAKE_PAYMENT}" />
+		<button id="purchase-button" data-disable-on-click="1" class="button-screen menu--rich-content--ecommerce--purchase" type="submit">{!MAKE_PAYMENT}</button>
 	</div>
 </form>

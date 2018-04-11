@@ -54,6 +54,6 @@
 	{+END}
 
 	<div class="purchaseBtn">
-		<input type="submit" value="Purchase" />
+		<button type="submit">Purchase</button>
 	</div>
 </form>

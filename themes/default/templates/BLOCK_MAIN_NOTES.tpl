@@ -21,7 +21,7 @@
 				</div>
 
 				<div class="buttons-group">
-					<input data-disable-on-click="1" class="button-screen-item buttons--save js-hover-disable-textarea-size-change {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-headless-submit{+END}" type="submit" value="{!SAVE}" />
+					<button data-disable-on-click="1" class="button-screen-item buttons--save js-hover-disable-textarea-size-change {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-headless-submit{+END}" type="submit">{!SAVE}</button>
 				</div>
 			</form>
 		</div>

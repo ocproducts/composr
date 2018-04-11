@@ -25,7 +25,7 @@
 			{+START,IF,{$NOT,{$ADDON_INSTALLED,chat}}}
 				<input type="hidden" name="privacy" value="{!PUBLIC}" />
 			{+END}
-			<input data-disable-on-click="1" type="submit" class="button-screen-item buttons--save js-btn-submit-update" name="button" id="button" value="{!UPDATE}" />
+			<button data-disable-on-click="1" type="submit" class="button-screen-item buttons--save js-btn-submit-update" name="button" id="button">{!UPDATE}</button>
 			<p id="activities-update-notify" class="activities-update-success js-el-activities-update-notification">254 {!activities:CHARACTERS_LEFT}</p> {$,Do not remove; the AJAX notifications are inserted here.}
 		</div>
 

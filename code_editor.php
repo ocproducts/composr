@@ -196,7 +196,7 @@ END;
         <tr><th>FTP Password</th><td><input size="50" type="password" name="ftp_password" /></td></tr>
     </table>
     <p>
-        <input class="button-screen menu--site-meta--user-actions--login" type="submit" value="Log in" />
+        <button class="button-screen menu--site-meta--user-actions--login" type="submit">Log in</button>
     </p>
     <hr />
     <ul class="actions-list" role="navigation">
@@ -280,7 +280,7 @@ END;
         OR, existing file: <select name="path">{$paths}</select>
     </p>
     <p class="proceed-button">
-        <input class="button-screen buttons--save" type="submit" value="Edit file" />
+        <button class="button-screen buttons--save" type="submit">Edit file</button>
     </p>
 END;
 }
@@ -411,7 +411,7 @@ END;
     file.scrollTop=Math.round((file.scrollHeight/{$lines})*{$line});
 </script>
 <p>
-    Jump to (line number or search phrase): <input name="jmp" type="text" value="" /> <input onclick="var val=form.elements['jmp'].value; if (!(window.parseInt(val)>0)) val=file.value.substr(0,file.value.indexOf(val)).split('\\n').length-1; file.scrollTop=Math.round((file.scrollHeight/{$lines})*window.parseInt(val)); return false;" type="submit" value="Jump" />
+    Jump to (line number or search phrase): <input name="jmp" type="text" value="" /> <button onclick="var val=form.elements['jmp'].value; if (!(window.parseInt(val)>0)) val=file.value.substr(0,file.value.indexOf(val)).split('\\n').length-1; file.scrollTop=Math.round((file.scrollHeight/{$lines})*window.parseInt(val)); return false;" type="submit">Jump</button>
 </p>
 END;
         if (strpos($path, '_custom/') !== false) {
@@ -429,7 +429,7 @@ END;
         }
         echo <<<END
 <p class="proceed-button">
-<input type="submit" value="Edit" />
+<button type="submit">Edit</button>
 </p>
 <iframe name="results" src="" style="display: none"></iframe>
 END;

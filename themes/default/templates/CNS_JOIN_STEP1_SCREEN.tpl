@@ -35,7 +35,7 @@
 		<p>
 			<button type="button" data-disable-on-click="1" class="button-screen buttons--no js-click-set-top-location" data-tp-top-location="{$PAGE_LINK*,:}">{!I_DISAGREE}</button>
 
-			<input accesskey="u" data-disable-on-click="1" class="button-screen buttons--yes" type="submit" value="{!PROCEED}" disabled="disabled" id="proceed-button" />
+			<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--yes" type="submit" disabled="disabled" id="proceed-button">{!PROCEED}</button>
 		</p>
 	</form>
 </div>

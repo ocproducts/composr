@@ -17,6 +17,6 @@
 	</th>
 	{CELLS}
 	<td>
-		<input title="{!SET_ALL_PERMISSIONS_ON_ROW}" class="button-micro js-click-input-toggle-value" type="button" value="{$?,{HAS},-,+}" data-click-eval="{CODE*}" />
+		<button title="{!SET_ALL_PERMISSIONS_ON_ROW}" class="button-micro js-click-input-toggle-value" type="button" data-click-eval="{CODE*}">{$?,{HAS},-,+}</button>
 	</td>
 </tr>

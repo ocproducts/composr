@@ -324,7 +324,7 @@ echo <<<END
     </fieldset>
 
     <p style="margin-left: 440px;">
-        <input class="buttons--proceed button-screen" type="submit" value="Submit fix" />
+        <button class="buttons--proceed button-screen" type="submit">Submit fix</button>
     </p>
 
     <p>
@@ -484,7 +484,7 @@ function make_call($call, $params, $file = null)
             }
         }
         echo '
-                    <input class="buttons--proceed button-screen" type="submit" value="Action failed: Try manually" />
+                    <button class="buttons--proceed button-screen" type="submit">Action failed: Try manually</button>
             </form>
         ';
         $result = '';

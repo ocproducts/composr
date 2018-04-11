@@ -9,6 +9,6 @@
 	</td>
 	{CELLS}
 	<td>
-		<input class="button-micro js-click-btn-toggle-value" type="button" value="{+START,IF,{ALL_OFF}}+{+END}{+START,IF,{$NOT,{ALL_OFF}}}-{+END}" data-click-eval="{CODE*}" />
+		<button class="button-micro js-click-btn-toggle-value" type="button" data-click-eval="{CODE*}">{+START,IF,{ALL_OFF}}+{+END}{+START,IF,{$NOT,{ALL_OFF}}}-{+END}</button>
 	</td>
 </tr>

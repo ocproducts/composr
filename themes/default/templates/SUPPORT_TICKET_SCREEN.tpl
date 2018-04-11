@@ -32,7 +32,7 @@
 							<form title="{!_ASSIGNED_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:unassign:ticket_id={ID}:member_id={_loop_key}}" method="post" class="inline vertical-alignment" autocomplete="off">
 								{$INSERT_SPAMMER_BLACKHOLE}
 
-								<input class="button-micro admin--delete3" type="submit" value="{!REMOVE}" />
+								<button class="button-micro admin--delete3" type="submit">{!REMOVE}</button>
 							</form>
 						{+END}
 					</li>
@@ -51,7 +51,7 @@
 
 						<label for="assign-username" class="accessibility-hidden">{!USERNAME}</label>
 						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="input-username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign-username" name="username" value="{$USERNAME*}" />
-						<input class="button-micro buttons--proceed" type="submit" value="{!ASSIGN_TO}" />
+						<button class="button-micro buttons--proceed" type="submit">{!ASSIGN_TO}</button>
 					</form>
 				</li>
 			{+END}

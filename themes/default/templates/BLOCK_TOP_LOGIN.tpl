@@ -15,7 +15,7 @@
 						<input title="{!REMEMBER_ME}"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-confirm-remember-me{+END}" type="checkbox" value="1" id="s-remember" name="remember" />
 					{+END}
 
-					<input class="button-screen-item menu--site-meta--user-actions--login" type="submit" value="{!_LOGIN}" />
+					<button class="button-screen-item menu--site-meta--user-actions--login" type="submit">{!_LOGIN}</button>
 				</div>
 			{+END}
 

@@ -11,7 +11,7 @@
 		{TRACKBACKS}
 
 		<p class="proceed-button">
-			<input data-disable-on-click="1" class="button-screen admin--delete3" type="submit" value="{!DELETE}" />
+			<button data-disable-on-click="1" class="button-screen admin--delete3" type="submit">{!DELETE}</button>
 		</p>
 	</form>
 {+END}

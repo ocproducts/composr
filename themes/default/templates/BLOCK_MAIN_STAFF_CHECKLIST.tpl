@@ -35,7 +35,7 @@
 				<label class="accessibility-hidden" for="recur-interval">{!TASK_LENGTH}</label>
 				<label class="accessibility-hidden" for="recur_every">{!TASK_LENGTH_UNITS}</label>
 				{!RECUR_EVERY,<input maxlength="8" type="number" id="recur-interval" name="recur_interval" size="3" />,<select id="recur_every" name="recur_every"><option value="mins">{!dates:DPLU_MINUTES}</option><option value="hours">{!dates:DPLU_HOURS}</option><option value="days">{!dates:DPLU_DAYS}</option><option value="months">{!dates:DPLU_MONTHS}</option></select>}
-				<input class="button-micro admin--add" type="submit" name="save" title="{!ADD} ({!CUSTOM_TASKS})" value="{!ADD}" />
+				<button class="button-micro admin--add" type="submit" name="save" title="{!ADD} ({!CUSTOM_TASKS})">{!ADD}</button>
 			</div>
 			<div>
 				<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img class="vertical-alignment" alt="{!COMCODE_MESSAGE,Comcode}" width="16" height="16" src="{$IMG*,icons/editor/comcode}" /></a>

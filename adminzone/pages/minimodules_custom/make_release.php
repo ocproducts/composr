@@ -140,7 +140,7 @@ function phase_0()
             <input type="checkbox" name="bleeding_edge" ' . (((strpos($release_description, 'patch release') === false) && (strpos($release_description, 'gold') === false)) ? 'checked="checked" ' : '') . 'id="bleeding_edge" value="1" /><label for="bleeding_edge">Bleeding-edge release</label>
             <input type="checkbox" name="old_tree" id="old_tree" value="1" /><label for="old_tree">Older-tree maintenance release</label>
             <input type="checkbox" name="make_omni_upgrader" id="make_omni_upgrader" value="1" /><label for="make_omni_upgrader">Make omni-upgrader archive (for easy upgrader testing)</label>
-            <p><input type="submit" class="buttons--proceed button-screen" value="Shake it baby" /></p>
+            <p><button type="submit" class="buttons--proceed button-screen">Shake it baby</button></p>
         </fieldset>
     </form>
     ';
@@ -179,7 +179,7 @@ function phase_1_pre()
         ';
     }
     echo '
-            <input class="buttons--yes button-screen" type="submit" value="Okay, I\'ve done these" />
+            <button class="buttons--yes button-screen" type="submit">Okay, I\'ve done these</button>
         </form>
     ';
 }
@@ -230,7 +230,7 @@ function phase_1()
             <input type="hidden" name="changes" value="' . escape_html($changes) . '" />
             <input type="hidden" name="descrip" value="' . escape_html($descrip) . '" />
 
-            <input type="submit" class="buttons--proceed button-screen" value="Move on to instructions about how to release this" />
+            <button type="submit" class="buttons--proceed button-screen">Move on to instructions about how to release this</button>
         </form>
     ';
 }
@@ -280,7 +280,7 @@ function phase_2()
             Tag the release with <kbd>git commit -a -m "New build"; git push; git tag ' . escape_html(str_replace(' ', '-', $version_dotted)) . ' ; git push origin ' . escape_html(str_replace(' ', '-', $version_dotted)) . '</kbd>
         </li>
         <li>
-            <strong>Add to compo.sr</strong>: Run the <form target="_blank" onclick="window.setTimeout($cms.undoStaffUnloadAction,1000);" style="display: inline" action="' . escape_html($push_url) . '" method="post">' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '<input type="hidden" name="changes" value="' . escape_html($changes) . '" /><input class="hyperlink-button" type="submit" value="compo.sr setup script" /></form>. Note if you are re-releasing, this will still work &ndash; it will update existing entries appropriately.
+            <strong>Add to compo.sr</strong>: Run the <form target="_blank" onclick="window.setTimeout($cms.undoStaffUnloadAction,1000);" style="display: inline" action="' . escape_html($push_url) . '" method="post">' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '<input type="hidden" name="changes" value="' . escape_html($changes) . '" /><button class="hyperlink-button" type="submit">compo.sr setup script</button></form>. Note if you are re-releasing, this will still work &ndash; it will update existing entries appropriately.
         </li>
         <li>
             <strong>Test</strong>: Go to <a target="_blank" href="https://compo.sr/download.htm">Composr download page</a> to ensure the right packages are there and no error messages display.
@@ -387,7 +387,7 @@ function phase_2()
 
             <li><strong>History</strong>: Update release history details on the compo.sr <kbd>vision</kbd> page</li>
 
-            <li><strong>Wikipedia</strong>: <form target="_blank" style="display: inline" action="https://compo.sr/forum/forumview.htm" method="post"><input type="hidden" name="title" value="Wikipedia listing needs updating (for version ' . strval(intval(cms_version_number())) . ')" /><input type="hidden" name="post" value="(This is a standard post we make each time a new major release comes out)&#10;&#10;As Composr version ' . strval(intval(cms_version_number())) . ' is out now, ideally someone will update the [url=&quot;Composr Wikipedia page&quot;]http://en.wikipedia.org/wiki/Composr_CMS[/url]. The developers don\'t maintain this because it\'d be inappropriate for us to maintain our own Wikipedia entry (neutrality reasons). The version details need updating, but generally it is worth reviewing the page is still accurate and up-to-date.&#10;&#10;Thanks to anyone who helps here, it\'s important we keep the outside world updated on Composr." /><input class="hyperlink-button" type="submit" value="Get someone to update our release history on Wikipedia" /></form></li>
+            <li><strong>Wikipedia</strong>: <form target="_blank" style="display: inline" action="https://compo.sr/forum/forumview.htm" method="post"><input type="hidden" name="title" value="Wikipedia listing needs updating (for version ' . strval(intval(cms_version_number())) . ')" /><input type="hidden" name="post" value="(This is a standard post we make each time a new major release comes out)&#10;&#10;As Composr version ' . strval(intval(cms_version_number())) . ' is out now, ideally someone will update the [url=&quot;Composr Wikipedia page&quot;]http://en.wikipedia.org/wiki/Composr_CMS[/url]. The developers don\'t maintain this because it\'d be inappropriate for us to maintain our own Wikipedia entry (neutrality reasons). The version details need updating, but generally it is worth reviewing the page is still accurate and up-to-date.&#10;&#10;Thanks to anyone who helps here, it\'s important we keep the outside world updated on Composr." /><button class="hyperlink-button" type="submit">Get someone to update our release history on Wikipedia</button></form></li>
 
             <li><strong>Syndication</strong>: Syndicate news to these sites (<a href="http://ocportal.com/tracker/view.php?id=2085" target="_blank">Passwords</a>):<ul>
                 <li>Add <a target="_blank" href="http://cmsreport.com/submit-story">news on CMS Report</a></li>

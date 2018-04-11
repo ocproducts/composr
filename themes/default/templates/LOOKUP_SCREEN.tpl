@@ -101,7 +101,7 @@
 			{IP_LIST}
 		</ul>
 
-		<input data-disable-on-click="1" class="button-screen buttons--save" type="submit" value="{!SET}" />
+		<button data-disable-on-click="1" class="button-screen buttons--save" type="submit">{!SET}</button>
 	</form>
 {+END}
 {+START,IF_EMPTY,{IP_LIST}}

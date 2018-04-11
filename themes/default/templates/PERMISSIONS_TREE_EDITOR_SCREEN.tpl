@@ -69,7 +69,7 @@
 						<em>{!PERMISSIONS_TREE_EDITOR_NONE_SELECTED}</em>
 					</p>
 					<div>
-						<input type="button" class="button-screen-item buttons--save js-click-set-permissions" id="selection-button" disabled="disabled" value="{!SET}" />
+						<button type="button" class="button-screen-item buttons--save js-click-set-permissions" id="selection-button" disabled="disabled">{!SET}</button>
 					</div>
 				</div>
 			</form>

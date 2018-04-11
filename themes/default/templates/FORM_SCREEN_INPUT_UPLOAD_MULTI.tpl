@@ -25,7 +25,7 @@
 			{+END}
 		{+END}
 
-		<input class="button-micro buttons--clear js-click-clear-name-stub-input" type="button" id="clear-button-{NAME_STUB*}_{I*}" value="{!CLEAR}" />
+		<button class="button-micro buttons--clear js-click-clear-name-stub-input" type="button" id="clear-button-{NAME_STUB*}_{I*}">{!CLEAR}</button>
 
 		<!--Additional uploaders will auto-append here-->
 	</div>

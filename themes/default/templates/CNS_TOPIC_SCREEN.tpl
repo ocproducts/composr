@@ -89,7 +89,7 @@
 							<select class="dropdown-actions" id="tma-type" name="type">
 								<option value="browse">-</option>
 								{MODERATOR_ACTIONS}
-							</select><input class="button-micro buttons--proceed js-click-require-tma-type-selection" type="submit" value="{!PROCEED}" />
+							</select><button class="button-micro buttons--proceed js-click-require-tma-type-selection" type="submit">{!PROCEED}</button>
 						</div>
 					</form>
 				{+END}
@@ -106,7 +106,7 @@
 										<option value="browse">-</option>
 									{+END}
 									{MARKED_POST_ACTIONS}
-								</select><input class="button-micro buttons--proceed js-click-check-marked-form-and-submit" type="submit" value="{!PROCEED}" />
+								</select><button class="button-micro buttons--proceed js-click-check-marked-form-and-submit" type="submit">{!PROCEED}</button>
 							</div>
 						</form>
 					{+END}
@@ -125,7 +125,7 @@
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},average_rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},compound_rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
 							</select>
-							<input type="submit" value="{!SORT}" class="button-micro buttons--sort" />
+							<button type="submit" class="button-micro buttons--sort">{!SORT}</button>
 						</div>
 					</form>
 				{+END}
