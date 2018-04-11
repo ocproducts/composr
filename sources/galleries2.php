@@ -463,6 +463,8 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
         $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'image', 'content_id' => strval($id), 'region' => $region));
     }
 
+    reorganise_uploads__gallery_images(array('id' => $id));
+
     log_it('ADD_IMAGE', strval($id), $title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -611,6 +613,8 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
         dispatch_notification('gallery_entry', $cat, $subject, $mail, $privacy_limits);
     }
 
+    reorganise_uploads__gallery_images(array('id' => $id));
+
     log_it('EDIT_IMAGE', strval($id), $title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -687,6 +691,10 @@ function delete_image($id, $delete_full = true)
     decache('main_image_slider');
 
     $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'galleries', 'm_resource_type' => 'image', 'm_resource_id' => strval($id)));
+
+    require_code('uploads2');
+    clean_empty_upload_directories('uploads/galleries');
+    clean_empty_upload_directories('uploads/galleries_thumbs');
 
     log_it('DELETE_IMAGE', strval($id), get_translated_text($title));
 
@@ -945,6 +953,8 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
     require_code('transcoding');
     transcode_video($url, 'videos', $id, 'id', 'url', null, 'video_width', 'video_height');
 
+    reorganise_uploads__gallery_videos(array('id' => $id));
+
     log_it('ADD_VIDEO', strval($id), $title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -1107,6 +1117,8 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
         dispatch_notification('gallery_entry', $cat, $subject, $mail, $privacy_limits);
     }
 
+    reorganise_uploads__gallery_videos(array('id' => $id));
+
     log_it('EDIT_VIDEO', strval($id), $title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -1191,6 +1203,10 @@ function delete_video($id, $delete_full = true)
     }
 
     $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'galleries', 'm_resource_type' => 'video', 'm_resource_id' => strval($id)));
+
+    require_code('uploads2');
+    clean_empty_upload_directories('uploads/galleries');
+    clean_empty_upload_directories('uploads/galleries_thumbs');
 
     log_it('DELETE_VIDEO', strval($id), get_translated_text($title));
 
@@ -1339,6 +1355,8 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
     $map += insert_lang_comcode('description', $description, 2);
     $map += insert_lang_comcode('fullname', $fullname, 1);
     $GLOBALS['SITE_DB']->query_insert('galleries', $map);
+
+    reorganise_uploads__galleries(array('name' => $name));
 
     log_it('ADD_GALLERY', $name, $fullname);
 
@@ -1517,6 +1535,8 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
 
     $GLOBALS['SITE_DB']->query_update('galleries', $update_map, array('name' => $old_name), '', 1);
 
+    reorganise_uploads__galleries(array('name' => $name));
+
     log_it('EDIT_GALLERY', $name, $fullname);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -1610,6 +1630,10 @@ function delete_gallery($name)
 
     $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'galleries', 'm_resource_type' => 'browse', 'm_resource_id' => $name));
 
+    require_code('uploads2');
+    clean_empty_upload_directories('uploads/repimages');
+    clean_empty_upload_directories('uploads/watermarks');
+
     log_it('DELETE_GALLERY', $name, get_translated_text($rows[0]['fullname']));
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -1696,4 +1720,41 @@ function get_potential_gallery_title($cat)
         // Does exist
         return get_translated_text($test);
     }
+}
+
+/**
+ * Reorganise the gallery uploads.
+ *
+ * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ */
+function reorganise_uploads__galleries($where = null) // TODO: Change to array() in v11
+{
+    require_code('uploads2');
+    reorganise_uploads('gallery', 'uploads/repimages', 'rep_image', $where, null, true);
+    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_top_left', $where);
+    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_top_right', $where);
+    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_bottom_left', $where);
+    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_bottom_right', $where);
+}
+/**
+ * Reorganise the gallery image uploads.
+ *
+ * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ */
+function reorganise_uploads__gallery_images($where = null) // TODO: Change to array() in v11
+{
+    require_code('uploads2');
+    reorganise_uploads('image', 'uploads/galleries', 'url', $where);
+    reorganise_uploads('image', 'uploads/galleries_thumbs', 'thumb_url', $where);
+}
+/**
+ * Reorganise the gallery video uploads.
+ *
+ * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ */
+function reorganise_uploads__gallery_videos($where = null) // TODO: Change to array() in v11
+{
+    require_code('uploads2');
+    reorganise_uploads('video', 'uploads/galleries', 'url', $where);
+    reorganise_uploads('video', 'uploads/galleries_thumbs', 'thumb_url', $where);
 }

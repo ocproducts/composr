@@ -316,6 +316,7 @@ function _sync_file_move($old, $new)
 
 /**
  * Delete all the contents of a directory, and any subdirectories of that specified directory (recursively).
+ * Does not delete the directory itself.
  *
  * @param  PATH $dir The pathname to the directory to delete
  * @param  boolean $default_preserve Whether to preserve files there by default

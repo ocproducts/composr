@@ -124,6 +124,7 @@ class Hook_addon_registry_catalogues
             'themes/default/images/icons/48x48/menu/rich_content/catalogues/links.png',
             'themes/default/images/icons/48x48/menu/rich_content/catalogues/products.png',
             'themes/default/images/icons/48x48/menu/rich_content/catalogues/projects.png',
+            'sources/hooks/systems/reorganise_uploads/catalogues.php',
             'sources/hooks/systems/snippets/exists_catalogue.php',
             'sources/hooks/systems/module_permissions/catalogues_catalogue.php',
             'sources/hooks/systems/module_permissions/catalogues_category.php',

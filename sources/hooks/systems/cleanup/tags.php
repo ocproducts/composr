@@ -33,7 +33,7 @@ class Hook_cleanup_tags
         $info = array();
         $info['title'] = do_lang_tempcode('ORPHANED_TAGS');
         $info['description'] = do_lang_tempcode('DESCRIPTION_ORPHANED_TAGS');
-        $info['type'] = 'cache';
+        $info['type'] = 'optimise';
 
         return $info;
     }

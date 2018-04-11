@@ -658,6 +658,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]access_protocol_redirect[/tt] -- set this to '1' if you want to redirect if the wrong access protocol (e.g. HTTP instead of HTTPS) is used to access the site. Note that this option won't apply when pages are served from the static cache, so it is still a good idea to configure the web server to do this directly. Sample code is in the [page="_SEARCH:tut_security"]Security tutorial[/page] (Migrating HTTP websites).
   - [tt]captcha_member_days[/tt] -- set this to a number if new members should continue to have CAPTCHA for this many days
   - [tt]captcha_member_posts[/tt] -- set this to a number if new members should continue to have CAPTCHA for this many forum posts
+  - [tt]reorganise_uploads[/tt] -- set this to '2' for various upload directories to have a hierarchical structure of subdirectories to organise your files based on category; set this to '1' for a flat structure; set this to '0' to disable it completely; to retroactively move things run the "Organise uploads" cleanup tool that will then appear.
 
 [title="4"]Hidden 'keep' parameters[/title]
 

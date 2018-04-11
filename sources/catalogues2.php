@@ -561,6 +561,8 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
 
     calculate_category_child_count_cache($parent_id);
 
+    reorganise_uploads__catalogue_categories(array('id' => $id));
+
     log_it('ADD_CATALOGUE_CATEGORY', strval($id), get_translated_text($map['cc_title']));
 
     require_code('seo2');
@@ -794,6 +796,8 @@ function actual_edit_catalogue_category($id, $title, $description, $notes, $pare
         calculate_category_child_count_cache($parent_id);
     }
 
+    reorganise_uploads__catalogue_categories(array('id' => $id));
+
     log_it('EDIT_CATALOGUE_CATEGORY', strval($id), $title);
 
     decache('main_cc_embed');
@@ -891,6 +895,9 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
     $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'catalogues', 'm_resource_type' => 'category', 'm_resource_id' => strval($id)));
 
     calculate_category_child_count_cache($old_parent_id);
+
+    require_code('uploads2');
+    clean_empty_upload_directories('uploads/repimages');
 
     log_it('DELETE_CATALOGUE_CATEGORY', strval($id), $_title);
 
@@ -1073,6 +1080,8 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
             generate_resource_fs_moniker('catalogue_entry', strval($id), null, null, true);
         }
     }
+
+    reorganise_uploads__catalogue_entries(array('ce_id' => $id));
 
     decache('main_cc_embed');
 
@@ -1262,6 +1271,8 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
         }
     }
 
+    reorganise_uploads__catalogue_entries(array('ce_id' => $id));
+
     require_code('feedback');
     update_spacer_post(
         $allow_comments != 0,
@@ -1353,6 +1364,9 @@ function actual_delete_catalogue_entry($id)
 
     decache('main_cc_embed');
 
+    require_code('uploads2');
+    clean_empty_upload_directories('uploads/catalogues');
+
     if ($catalogue_name[0] != '_') {
         log_it('DELETE_CATALOGUE_ENTRY', strval($id), $title);
     }
@@ -1366,4 +1380,48 @@ function actual_delete_catalogue_entry($id)
     notify_sitemap_node_delete('SEARCH:catalogues:entry:' . strval($id));
 
     @ignore_user_abort(false);
+}
+
+/**
+ * Reorganise the catalogue uploads.
+ *
+ * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ */
+function reorganise_uploads__catalogue_categories($where = null) // TODO: Change to array() in v11
+{
+    require_code('uploads2');
+    reorganise_uploads('catalogue_category', 'uploads/repimages', 'rep_image', $where, null, true);
+}
+
+/**
+ * Reorganise the catalogue uploads.
+ *
+ * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ */
+function reorganise_uploads__catalogue_entries($where = null) // TODO: Change to array() in v11
+{
+    if ($where === null) {
+        $where = array(); // TODO: Remove in v11
+    }
+
+    require_code('uploads2');
+    $fake_cma_info = array(
+        'table' => 'catalogue_efv_short d',
+        'table_extended' => 'catalogue_efv_short d JOIN ' . get_table_prefix() . 'catalogue_entries e ON e.id=d.ce_id JOIN ' . get_table_prefix() . 'catalogue_fields f ON f.id=d.cf_id',
+        'connection' => $GLOBALS['SITE_DB'], // TODO: Change in v11
+        'id_field' => 'd.id',
+        'parent_category_field' => 'cc_id',
+        'title_field' => null,
+        'title_field_dereference' => null,
+        'parent_spec__table_name' => 'catalogue_categories',
+        'parent_spec__field_name' => 'id',
+        'parent_spec__parent_name' => 'cc_parent_id',
+    );
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'upload'), $fake_cma_info);
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'picture'), $fake_cma_info);
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'video'), $fake_cma_info);
+    $fake_cma_info['table'] = 'catalogue_efv_long';
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'upload_multi'), $fake_cma_info);
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'picture_multi'), $fake_cma_info);
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'video_multi'), $fake_cma_info);
 }
