@@ -1405,7 +1405,10 @@ a.fancy-user-link:hover {
 }
 
 /* A button styled to look like a link */
-body input.button-hyperlink, body input.button-hyperlink:hover {
+body input.button-hyperlink, 
+body button.button-hyperlink, 
+body input.button-hyperlink:hover,
+body button.button-hyperlink:hover {
 	border-style: none !important;
 	background-color: transparent !important;
 	background-image: none !important;
@@ -2819,8 +2822,8 @@ div.ajax-loading, p.ajax-loading {
 }
 
 .ajax-tree-expand-icon {
-	width: 11px;
-	height: 11px;
+	display: inline-block;
+	cursor: pointer;
 }
 
 .ajax-tree-cat-icon {

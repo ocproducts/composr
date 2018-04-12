@@ -1,3 +1,4 @@
+/* globals $editing */
 /* Form editing code (mostly stuff only used on posting forms) */
 (function ($cms, $util, $dom) {
     'use strict';

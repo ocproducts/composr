@@ -23,8 +23,8 @@
 			<option value="branch_plus">{!EXPANDED_BRANCH}</option>
 		</select>
 
-		<input type="image" height="12" src="{$IMG*,results/sortablefield_desc}" id="down_{I*}" alt="{!MOVE_DOWN}" data-click-pd="1" class="horiz-field-sep js-click-btn-move-down-handle-ordering">
-		<input type="image" height="12" src="{$IMG*,results/sortablefield_asc}" id="up_{I*}" alt="{!MOVE_UP}" data-click-pd="1" class="js-click-btn-move-up-handle-ordering">
+		<a href="#!" id="down_{I*}" class="horiz-field-sep js-click-btn-move-down-handle-ordering"><img height="12" src="{$IMG*,results/sortablefield_desc}"alt="{!MOVE_DOWN}"></a>
+		<a href="#!" id="up_{I*}" class="js-click-btn-move-up-handle-ordering"><img height="12" src="{$IMG*,results/sortablefield_asc}" alt="{!MOVE_UP}"></a>
 
 		<button class="admin--delete3 button-micro horiz-field-sep js-click-delete-menu-branch" type="button" id="del_{I*}" name="del_{I*}">{!DELETE}</button>
 	</div>
