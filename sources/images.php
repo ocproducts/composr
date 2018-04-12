@@ -30,11 +30,11 @@
  */
 function _symbol_image_dims($param)
 {
-    if (!function_exists('imagecreatefromstring')) {
-        return array('', '');
-    }
-
     $value = array('', '');
+
+    if (!function_exists('imagecreatefromstring')) {
+        return $value;
+    }
 
     if (running_script('install')) {
         return $value;
@@ -42,6 +42,10 @@ function _symbol_image_dims($param)
 
     if (isset($param[0])) {
         $path = $param[0];
+        if ($path == '') {
+            return $value;
+        }
+
         $cacheable = (isset($param[1]) && $param[1] == '1');
 
         if ($cacheable) {
