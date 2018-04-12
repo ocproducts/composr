@@ -138,6 +138,8 @@ function _reorganise_content_row_upload($row, $content_type, $upload_directory, 
 
     $current_disk_path = get_custom_file_base() . '/' . rawurldecode($current_upload_url);
     if (!is_file($current_disk_path)) {
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($current_disk_path)));
+
         return null; // Error, could not find the file
     }
 
@@ -173,7 +175,7 @@ function _reorganise_content_row_upload($row, $content_type, $upload_directory, 
         if (preg_match('#^\d+(' . preg_quote($content_title, '#') . ')$#', $optimal_filename_stub, $matches) != 0) {
             $optimal_filename_stub = $matches[1]; // LEGACY: Old style prefixing of what we can see are based on content titles
         } elseif (preg_match('#^(.*)_\d+$#', $optimal_filename_stub, $matches) != 0) {
-            $optimal_filename_stub = $matches[1] . $ext;
+            $optimal_filename_stub = $matches[1];
         }
     }
 
@@ -182,7 +184,7 @@ function _reorganise_content_row_upload($row, $content_type, $upload_directory, 
     do {
         $filename = $optimal_filename_stub . (($i == 1) ? '' : ('_' . strval($i))) . $ext;
         $new_upload_url = $new_upload_path . '/' . rawurlencode($filename);
-        if ($current_upload_url == $new_upload_url) {
+        if (($current_upload_url == $new_upload_url) || (rawurldecode($current_upload_url) == rawurldecode($new_upload_url))) {
             return null; // It's already where it should be
         }
         $new_disk_path = get_custom_file_base() . '/' . rawurldecode($new_upload_url);
@@ -190,6 +192,10 @@ function _reorganise_content_row_upload($row, $content_type, $upload_directory, 
         $i++;
     }
     while (is_file($new_disk_path));
+
+    if (strlen($new_upload_url) > 255) {
+        return null; // Too long, so we'll store in the root
+    }
 
     // Make directory tree
     $_new_disk_path = get_custom_file_base() . '/' . rawurldecode($new_upload_path);
@@ -234,7 +240,7 @@ function _get_upload_tree_path($content_type, $parent_id, $cma_info, $upload_dir
         $this_level = $parent_id;
         $this_level_str = (is_string($parent_id) ? $parent_id : strval($parent_id));
         $path = rawurlencode($this_level_str);
-        return $upload_directory . (($path == '') ? '' : ('/' . $path));
+        return cms_rawurlrecode($upload_directory . (($path == '') ? '' : ('/' . $path)));
     }
 
     $select = array(
@@ -282,7 +288,7 @@ function _get_upload_tree_path($content_type, $parent_id, $cma_info, $upload_dir
     }
     while (true);
 
-    return $upload_directory . (($path == '') ? '' : ('/' . $path));
+    return cms_rawurlrecode($upload_directory . (($path == '') ? '' : ('/' . $path)));
 }
 
 /**

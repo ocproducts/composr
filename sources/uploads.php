@@ -34,6 +34,7 @@ function init__uploads()
     }
 
     require_code('images_cleanup_pipeline');
+    require_code('urls_simplifier');
 
     reset_images_cleanup_pipeline_settings();
 }
@@ -117,7 +118,6 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
     $url = post_param_string($field_url, '');
     if ($url != '') {
         // We should use compliant encoding
-        require_code('urls_simplifier');
         $coder_ob = new HarmlessURLCoder();
         $url = $coder_ob->encode($url);
 
@@ -657,7 +657,6 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
     $url[1] = rawurldecode(basename($url[0]));
 
     // We should use compliant encoding
-    require_code('urls_simplifier');
     $coder_ob = new HarmlessURLCoder();
     $url[0] = $coder_ob->encode($url[0]);
 
@@ -978,64 +977,4 @@ function get_upload_filearray($name, &$filearrays)
     }
 
     $filearrays[$name] = $_FILES[$name];
-}
-
-/**
- * Shorten a filename so it will fit in the database.
- * Also see cms_rawurlrecode.
- *
- * @param  string $filename The filename
- * @param  integer $length The length
- * @return string The shortened filename
- */
-function shorten_urlencoded_filename($filename, $length = 226)
-{
-    if ((stripos(PHP_OS, 'WIN') === 0) && (version_compare(PHP_VERSION, '7.2', '<'))) {
-        // Older versions of PHP on Windows cannot handle utf-8 filenames
-        require_code('character_sets');
-        $filename = transliterate_string($filename);
-    }
-
-    // Default length is... maxDBFieldSize - maxUploadDirSize - suffixingLeeWay = 255 - (7 + 1 + 23 + 1) - 6 = 230
-    // (maxUploadDirSize is LEN('uploads') + LEN('/') + LEN(maxUploadSubdirSize) + LEN('/')
-    // Suffixing leeway is so we can have up to ~99999 different files with the same base filename, varying by auto-generated suffixes
-
-    $matches = array();
-    if (preg_match('#^(.*)\.(.*)$#', $filename, $matches) != 0) {
-        $filename_suffix = $matches[2];
-        $_filename_stem = $matches[1];
-
-        $i = 0;
-        $mb_len = cms_mb_strlen($_filename_stem);
-        $filename_stem = '';
-        do {
-            $next_mb_char = cms_mb_substr($_filename_stem, $i, 1);
-            if (strlen(cms_rawurlrecode(urlencode($filename_stem . $next_mb_char . '.' . $filename_suffix))) > $length) {
-                break;
-            }
-            $filename_stem .= $next_mb_char;
-            $i++;
-        }
-        while ($i < $mb_len);
-
-        $filename = $filename_stem . '.' . $filename_suffix;
-    }
-    return $filename;
-}
-
-/**
- * Remove unnecessarily paranoid URL-encoding if needed, so the given URL will fit in the database.
- *
- * @param  URLPATH $url The URL
- * @param  boolean $force Whether to force a conversion even if the URL is not that long
- * @return URLPATH The shortened URL
- */
-function cms_rawurlrecode($url, $force = false)
-{
-    if ((strlen($url) > 255) || ($force)) {
-        require_code('urls_simplifier');
-        $url = _cms_rawurlrecode($url, true);
-    }
-
-    return $url;
 }

@@ -236,7 +236,7 @@ class Hook_task_import_catalogue
 
                     if ($value != '') {
                         if ((strpos($value, '\\') === false) && (strpos($value, '/') === false)) {
-                            $value = 'uploads/catalogues/' . rawurlencode($value);
+                            $value = cms_rawurlrecode('uploads/catalogues/' . rawurlencode($value));
                         }
                     }
                 } else {

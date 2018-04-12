@@ -1996,7 +1996,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 $pos = strpos($selected_url, '/' . $id);
                 $selected = false;
                 if ($id != '') {
-                    $selected = (find_theme_image($id, false, false, null, null, $db) == $selected_url) || (find_theme_image($id, false, true, null, null, $db) == $selected_url);
+                    $selected = (cms_rawurlrecode(find_theme_image($id, false, false, null, null, $db)) == cms_rawurlrecode($selected_url)) || (cms_rawurlrecode(find_theme_image($id, false, true, null, null, $db)) == cms_rawurlrecode($selected_url));
                 }
                 if ($selected) {
                     $selected_code = $id;

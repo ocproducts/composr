@@ -19,12 +19,56 @@
  */
 
 /**
+ * Shorten a filename so it will fit in the database.
+ * Also see cms_rawurlrecode.
+ *
+ * @param  string $filename The filename
+ * @param  integer $length The length
+ * @return string The shortened filename
+ */
+function shorten_urlencoded_filename($filename, $length = 226)
+{
+    if ((stripos(PHP_OS, 'WIN') === 0) && (version_compare(PHP_VERSION, '7.2', '<'))) {
+        // Older versions of PHP on Windows cannot handle utf-8 filenames
+        require_code('character_sets');
+        $filename = transliterate_string($filename);
+    }
+
+    // Default length is... maxDBFieldSize - maxUploadDirSize - suffixingLeeWay = 255 - (7 + 1 + 23 + 1) - 6 = 230
+    // (maxUploadDirSize is LEN('uploads') + LEN('/') + LEN(maxUploadSubdirSize) + LEN('/')
+    // Suffixing leeway is so we can have up to ~99999 different files with the same base filename, varying by auto-generated suffixes
+
+    $matches = array();
+    if (preg_match('#^(.*)\.(.*)$#', $filename, $matches) != 0) {
+        $filename_suffix = $matches[2];
+        $_filename_stem = $matches[1];
+
+        $i = 0;
+        $mb_len = cms_mb_strlen($_filename_stem);
+        $filename_stem = '';
+        do {
+            $next_mb_char = cms_mb_substr($_filename_stem, $i, 1);
+            if (cms_mb_strlen(cms_rawurlrecode(urlencode($filename_stem . $next_mb_char . '.' . $filename_suffix), false, true)) > $length) {
+                break;
+            }
+            $filename_stem .= $next_mb_char;
+            $i++;
+        }
+        while ($i < $mb_len);
+
+        $filename = $filename_stem . '.' . $filename_suffix;
+    }
+    return $filename;
+}
+
+/**
  * Remove unnecessarily parnoid URL-encoding if needed, so the given URL will fit in the database.
  *
  * @param  URLPATH $url The URL
+ * @param  boolean $tolerate_errors If this is set to false then an error message will be shown if the URL is still too long after we do what we can; set to true if we have someway of further shortening the URL after this function is called
  * @return URLPATH The shortened URL
  */
-function _cms_rawurlrecode($url)
+function _cms_rawurlrecode($url, $tolerate_errors)
 {
     $recoded = '';
 
@@ -38,6 +82,12 @@ function _cms_rawurlrecode($url)
             } else {
                 $recoded .= rawurldecode($parts[$i]);
             }
+        }
+    }
+
+    if (!$tolerate_errors) {
+        if (cms_mb_strlen($recoded) > 255) {
+            warn_exit(do_lang_tempcode('FILENAME_TOO_LONG'));
         }
     }
 

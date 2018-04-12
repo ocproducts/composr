@@ -220,7 +220,7 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $connection)
                         $attachment_id = $db->query_insert('attachments', array(
                             'a_member_id' => get_member(),
                             'a_file_size' => strlen($data),
-                            'a_url' => 'uploads/attachments/' . rawurlencode($new_filename),
+                            'a_url' => cms_rawurlrecode('uploads/attachments/' . rawurlencode($new_filename)),
                             'a_thumb_url' => '',
                             'a_original_filename' => basename($new_filename),
                             'a_num_downloads' => 0,
@@ -400,7 +400,7 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                 handle_images_cleanup_pipeline($place);
 
                 // Create new attachment from extracted file
-                $url = 'uploads/attachments/' . rawurlencode($_file);
+                $url = cms_rawurlrecode('uploads/attachments/' . rawurlencode($_file));
                 $attachment_id = $connection->query_insert('attachments', array(
                     'a_member_id' => get_member(),
                     'a_file_size' => $file_details['size'],

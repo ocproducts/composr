@@ -59,7 +59,7 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
         intelligent_write_error($thumb_path);
     }
     sync_file($thumb_path);
-    $thumb_url = 'uploads/' . $thumb_dir . '_thumbs/' . rawurlencode($file) . '.' . $ext;
+    $thumb_url = cms_rawurlrecode('uploads/' . $thumb_dir . '_thumbs/' . rawurlencode($file) . '.' . $ext);
     if ((substr($table, 0, 2) == 'f_') && (get_forum_type() == 'cns')) {
         $GLOBALS['FORUM_DB']->query_update($table, array($thumb_field_name => $thumb_url), array('id' => $id), '', 1);
     } else {

@@ -212,6 +212,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ANTISPAM_RESPONSE_SKIP
         CORRUPT_ATTACHMENT
         ATTACHMENT_REFERENCES
+        FILENAME_TOO_LONG
         MERGE_SUPPORT_TICKETS
         NO_PARAMETER_SENT
         CONFIRM_MERGE_TICKETS

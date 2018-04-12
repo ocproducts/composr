@@ -510,7 +510,7 @@ function find_images_do_dir($theme, $subdir, $langs)
                             $_subdir = str_replace('/' . $lang . '/', '/', $_subdir);
                         }
                         $_subdir = preg_replace('#(^|/)images(\_custom)?/#', '', $_subdir);
-                        $out[$_subdir . $_file[0]] = 'themes/' . rawurlencode($theme) . '/' . $subdir . rawurlencode($file);
+                        $out[$_subdir . $_file[0]] = cms_rawurlrecode('themes/' . rawurlencode($theme) . '/' . $subdir . rawurlencode($file));
                     }
                 }
             }
@@ -736,7 +736,7 @@ function get_image_paths($base_url, $base_path)
                 $this_path = $base_path . $file;
                 if (is_file($this_path)) {
                     if (is_image($file)) {
-                        $this_url = $base_url . rawurlencode($file);
+                        $this_url = cms_rawurlrecode($base_url . rawurlencode($file));
                         $out[$this_path] = $this_url;
                     }
                 } elseif ((strlen($file) != 2) || (strtoupper($file) != $file)) {

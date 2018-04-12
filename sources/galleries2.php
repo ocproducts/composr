@@ -785,7 +785,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
                 $expected_output_path = get_custom_file_base() . '/uploads/galleries/' . $filename;
             }
             if (file_exists($expected_output_path)) {
-                return 'uploads/galleries/' . rawurlencode(basename($expected_output_path));
+                return cms_rawurlrecode('uploads/galleries/' . rawurlencode(basename($expected_output_path)));
             }
 
             $movie = @(new ffmpeg_movie($src_file, false));
@@ -810,7 +810,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
                         convert_image($expected_output_path, $expected_output_path, -1, -1, intval(get_option('thumb_width')), true, null, true);
                     }
 
-                    return 'uploads/galleries/' . rawurlencode(basename($expected_output_path));
+                    return cms_rawurlrecode('uploads/galleries/' . rawurlencode(basename($expected_output_path)));
                 }
             }
         }
@@ -825,7 +825,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
             }
 
             if ((file_exists($dest_file)) && (is_null(post_param_integer('thumbnail_auto_position', null)))) {
-                return 'uploads/galleries/' . rawurlencode(basename($expected_output_path));
+                return cms_rawurlrecode('uploads/galleries/' . rawurlencode(basename($expected_output_path)));
             }
             @unlink($dest_file); // So "if (@filesize($expected_output_path)) break;" will definitely fail if error
 
@@ -856,7 +856,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
                     sync_file($expected_output_path);
                 }
 
-                return 'uploads/galleries/' . rawurlencode(basename($expected_output_path));
+                return cms_rawurlrecode('uploads/galleries/' . rawurlencode(basename($expected_output_path)));
             }
         }
     }
