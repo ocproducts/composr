@@ -27,8 +27,9 @@
  * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
  * @param  ?array $cma_info Fake content-meta-aware info (null: load real info from $content_type)
  * @param  boolean $append_content_type_to_upload_dir "$upload_directory" should become "$upload_directory/$content_type"
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
  */
-function reorganise_uploads($content_type, $upload_directory, $upload_field, $where = null, $cma_info = null, $append_content_type_to_upload_dir = false) // TODO: Change to array() in v11
+function reorganise_uploads($content_type, $upload_directory, $upload_field, $where = null, $cma_info = null, $append_content_type_to_upload_dir = false, $tolerate_errors = false) // TODO: Change to array() in v11
 {
     if ($where === null) {
         $where = array(); // TODO: Remove in v11
@@ -85,7 +86,7 @@ function reorganise_uploads($content_type, $upload_directory, $upload_field, $wh
                 $parts = explode("\n", $current_upload_url);
                 $new_upload_url = '';
                 foreach ($parts as $current_part) {
-                    $new_part = _reorganise_content_row_upload(array($upload_field => $current_part) + $row, $content_type, $upload_directory, $upload_field, $cma_info, $flat, $append_content_type_to_upload_dir);
+                    $new_part = _reorganise_content_row_upload(array($upload_field => $current_part) + $row, $content_type, $upload_directory, $upload_field, $cma_info, $flat, $append_content_type_to_upload_dir, $tolerate_errors);
 
                     if ($current_part != '') {
                         $new_upload_url .= "\n";
@@ -95,7 +96,7 @@ function reorganise_uploads($content_type, $upload_directory, $upload_field, $wh
             } else {
                 // Single-line...
 
-                $new_upload_url = _reorganise_content_row_upload($row, $content_type, $upload_directory, $upload_field, $cma_info, $flat, $append_content_type_to_upload_dir);
+                $new_upload_url = _reorganise_content_row_upload($row, $content_type, $upload_directory, $upload_field, $cma_info, $flat, $append_content_type_to_upload_dir, $tolerate_errors);
             }
 
             // Update database
@@ -126,9 +127,10 @@ function reorganise_uploads($content_type, $upload_directory, $upload_field, $wh
  * @param  array $cma_info Content-meta-aware info
  * @param  boolean $flat Whether to just have a simple flat organisational scheme
  * @param  boolean $append_content_type_to_upload_dir "$upload_directory" should become "$upload_directory/$content_type"
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
  * @return ?URLPATH New URL (null: no change)
  */
-function _reorganise_content_row_upload($row, $content_type, $upload_directory, $upload_field, $cma_info, $flat, $append_content_type_to_upload_dir)
+function _reorganise_content_row_upload($row, $content_type, $upload_directory, $upload_field, $cma_info, $flat, $append_content_type_to_upload_dir, $tolerate_errors)
 {
     $current_upload_url = $row[$upload_field];
 
@@ -141,7 +143,9 @@ function _reorganise_content_row_upload($row, $content_type, $upload_directory, 
 
     $current_disk_path = get_custom_file_base() . '/' . rawurldecode($current_upload_url);
     if (!is_file($current_disk_path)) {
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($current_disk_path)));
+        if (!$tolerate_errors) {
+            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($current_disk_path)));
+        }
 
         return null; // Error, could not find the file
     }

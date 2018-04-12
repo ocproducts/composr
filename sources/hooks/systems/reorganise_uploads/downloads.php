@@ -33,7 +33,7 @@ class Hook_reorganise_uploads_downloads
         }
 
         require_code('downloads2');
-        reorganise_uploads__download_categories();
-        reorganise_uploads__downloads();
+        reorganise_uploads__download_categories(null, true);
+        reorganise_uploads__downloads(null, true);
     }
 }

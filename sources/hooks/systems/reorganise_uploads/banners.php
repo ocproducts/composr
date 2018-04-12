@@ -33,6 +33,6 @@ class Hook_reorganise_uploads_banners
         }
 
         require_code('banners2');
-        reorganise_uploads__banners();
+        reorganise_uploads__banners(null, true);
     }
 }

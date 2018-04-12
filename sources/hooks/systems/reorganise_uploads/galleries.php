@@ -33,8 +33,8 @@ class Hook_reorganise_uploads_galleries
         }
 
         require_code('galleries2');
-        reorganise_uploads__galleries();
-        reorganise_uploads__gallery_images();
-        reorganise_uploads__gallery_videos();
+        reorganise_uploads__galleries(null, true);
+        reorganise_uploads__gallery_images(null, true);
+        reorganise_uploads__gallery_videos(null, true);
     }
 }

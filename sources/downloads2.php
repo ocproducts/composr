@@ -1376,20 +1376,22 @@ function log_download($id, $size, $got_before)
  * Reorganise the download uploads.
  *
  * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
  */
-function reorganise_uploads__download_categories($where = null) // TODO: Change to array() in v11
+function reorganise_uploads__download_categories($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
 {
     require_code('uploads2');
-    reorganise_uploads('download_category', 'uploads/repimages', 'rep_image', $where, null, true);
+    reorganise_uploads('download_category', 'uploads/repimages', 'rep_image', $where, null, true, $tolerate_errors);
 }
 
 /**
  * Reorganise the download uploads.
  *
  * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
  */
-function reorganise_uploads__downloads($where = null) // TODO: Change to array() in v11
+function reorganise_uploads__downloads($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
 {
     require_code('uploads2');
-    reorganise_uploads('download', 'uploads/downloads', 'url', $where);
+    reorganise_uploads('download', 'uploads/downloads', 'url', $where, null, false, $tolerate_errors);
 }

@@ -953,9 +953,10 @@ function _news_import_grab_image(&$data, $url)
  * Reorganise the news category uploads.
  *
  * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
  */
-function reorganise_uploads__news_categories($where = null) // TODO: Change to array() in v11
+function reorganise_uploads__news_categories($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
 {
     require_code('uploads2');
-    reorganise_uploads('news_category', 'uploads/repimages', 'nc_img', $where, null, true);
+    reorganise_uploads('news_category', 'uploads/repimages', 'nc_img', $where, null, true, $tolerate_errors);
 }

@@ -796,9 +796,10 @@ function delete_banner_type($id)
  * Reorganise the banner uploads.
  *
  * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
  */
-function reorganise_uploads__banners($where = null) // TODO: Change to array() in v11
+function reorganise_uploads__banners($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
 {
     require_code('uploads2');
-    reorganise_uploads('banner', 'uploads/banners', 'img_url', $where);
+    reorganise_uploads('banner', 'uploads/banners', 'img_url', $where, null, false, $tolerate_errors);
 }

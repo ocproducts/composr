@@ -1726,35 +1726,38 @@ function get_potential_gallery_title($cat)
  * Reorganise the gallery uploads.
  *
  * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
  */
-function reorganise_uploads__galleries($where = null) // TODO: Change to array() in v11
+function reorganise_uploads__galleries($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
 {
     require_code('uploads2');
-    reorganise_uploads('gallery', 'uploads/repimages', 'rep_image', $where, null, true);
-    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_top_left', $where);
-    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_top_right', $where);
-    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_bottom_left', $where);
-    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_bottom_right', $where);
+    reorganise_uploads('gallery', 'uploads/repimages', 'rep_image', $where, null, true, $tolerate_errors);
+    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_top_left', $where, null, false, $tolerate_errors);
+    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_top_right', $where, null, false, $tolerate_errors);
+    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_bottom_left', $where, null, false, $tolerate_errors);
+    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_bottom_right', $where, null, false, $tolerate_errors);
 }
 /**
  * Reorganise the gallery image uploads.
  *
  * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
  */
-function reorganise_uploads__gallery_images($where = null) // TODO: Change to array() in v11
+function reorganise_uploads__gallery_images($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
 {
     require_code('uploads2');
-    reorganise_uploads('image', 'uploads/galleries', 'url', $where);
-    reorganise_uploads('image', 'uploads/galleries_thumbs', 'thumb_url', $where);
+    reorganise_uploads('image', 'uploads/galleries', 'url', $where, null, false, $tolerate_errors);
+    reorganise_uploads('image', 'uploads/galleries_thumbs', 'thumb_url', $where, null, false, $tolerate_errors);
 }
 /**
  * Reorganise the gallery video uploads.
  *
  * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
  */
-function reorganise_uploads__gallery_videos($where = null) // TODO: Change to array() in v11
+function reorganise_uploads__gallery_videos($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
 {
     require_code('uploads2');
-    reorganise_uploads('video', 'uploads/galleries', 'url', $where);
-    reorganise_uploads('video', 'uploads/galleries_thumbs', 'thumb_url', $where);
+    reorganise_uploads('video', 'uploads/galleries', 'url', $where, null, false, $tolerate_errors);
+    reorganise_uploads('video', 'uploads/galleries_thumbs', 'thumb_url', $where, null, false, $tolerate_errors);
 }

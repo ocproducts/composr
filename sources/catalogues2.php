@@ -1386,19 +1386,21 @@ function actual_delete_catalogue_entry($id)
  * Reorganise the catalogue uploads.
  *
  * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
  */
-function reorganise_uploads__catalogue_categories($where = null) // TODO: Change to array() in v11
+function reorganise_uploads__catalogue_categories($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
 {
     require_code('uploads2');
-    reorganise_uploads('catalogue_category', 'uploads/repimages', 'rep_image', $where, null, true);
+    reorganise_uploads('catalogue_category', 'uploads/repimages', 'rep_image', $where, null, true, $tolerate_errors);
 }
 
 /**
  * Reorganise the catalogue uploads.
  *
  * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
  */
-function reorganise_uploads__catalogue_entries($where = null) // TODO: Change to array() in v11
+function reorganise_uploads__catalogue_entries($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
 {
     if ($where === null) {
         $where = array(); // TODO: Remove in v11
@@ -1417,11 +1419,11 @@ function reorganise_uploads__catalogue_entries($where = null) // TODO: Change to
         'parent_spec__field_name' => 'id',
         'parent_spec__parent_name' => 'cc_parent_id',
     );
-    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'upload'), $fake_cma_info);
-    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'picture'), $fake_cma_info);
-    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'video'), $fake_cma_info);
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'upload'), $fake_cma_info, false, $tolerate_errors);
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'picture'), $fake_cma_info, false, $tolerate_errors);
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'video'), $fake_cma_info, false, $tolerate_errors);
     $fake_cma_info['table'] = 'catalogue_efv_long';
-    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'upload_multi'), $fake_cma_info);
-    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'picture_multi'), $fake_cma_info);
-    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'video_multi'), $fake_cma_info);
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'upload_multi'), $fake_cma_info, false, $tolerate_errors);
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'picture_multi'), $fake_cma_info, false, $tolerate_errors);
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'video_multi'), $fake_cma_info, false, $tolerate_errors);
 }
