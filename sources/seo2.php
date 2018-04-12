@@ -376,7 +376,7 @@ function _seo_meta_find_data($keyword_sources, $description = '')
 
     require_code('xhtml');
     $description = strip_comcode($description, true);
-    $description = trim(preg_replace('#\n(-+|=+)\n#', "\n", $description));
+    $description = trim(preg_replace('#\n(-+|=+)(\n|$)#', ":$2", $description));
     $description = trim(preg_replace('#\s+---+\s+#', ' ', $description));
     $description = preg_replace('#\n+#', ' ', $description);
 
