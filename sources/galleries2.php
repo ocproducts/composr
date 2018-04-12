@@ -422,8 +422,10 @@ function _get_mov_details_do_atom_list($file, $atom_size = null)
  */
 function add_image($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '', $regions = null)
 {
-    require_code('global4');
-    prevent_double_submit('ADD_IMAGE', null, $title);
+    if (get_param_string('type', null) !== '__import') {
+        require_code('global4');
+        prevent_double_submit('ADD_IMAGE', null, $title);
+    }
 
     if (is_null($regions)) {
         $regions = array();
@@ -906,8 +908,10 @@ function create_video_thumb($src_url, $expected_output_path = null)
  */
 function add_video($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '', $regions = null)
 {
-    require_code('global4');
-    prevent_double_submit('ADD_VIDEO', null, $title);
+    if (get_param_string('type', null) !== '__import') {
+        require_code('global4');
+        prevent_double_submit('ADD_VIDEO', null, $title);
+    }
 
     if (is_null($regions)) {
         $regions = array();

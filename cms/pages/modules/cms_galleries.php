@@ -331,6 +331,7 @@ class Module_cms_galleries extends Standard_crud_module
         }
 
         require_code('form_templates');
+        require_code('files');
         require_lang('trackbacks');
 
         // To choose to batch import from an attached TAR or ZIP file (ZIP file only supported if ZIP module running on php install)
@@ -378,7 +379,7 @@ class Module_cms_galleries extends Standard_crud_module
             $there = array();
             $_dir = opendir(get_custom_file_base() . '/uploads/galleries/');
             while (false !== ($file = readdir($_dir))) {
-                if (($file != 'index.html') && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $file)) && ((is_image($file)) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
+                if ((!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS)) && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $file)) && ((is_image($file)) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
                     $there[$file] = filemtime(get_custom_file_base() . '/uploads/galleries/' . $file);
                 }
             }
@@ -386,7 +387,7 @@ class Module_cms_galleries extends Standard_crud_module
             $_dir = @opendir(get_custom_file_base() . '/uploads/galleries/' . filter_naughty($cat));
             if ($_dir !== false) {
                 while (false !== ($file = readdir($_dir))) {
-                    if (($file != 'index.html') && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $cat . '/' . $file)) && ((is_image($file)) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
+                    if ((!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS)) && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $cat . '/' . $file)) && ((is_image($file)) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
                         $there[$cat . '/' . $file] = filemtime(get_custom_file_base() . '/uploads/galleries/' . $cat . '/' . $file);
                     }
                 }
@@ -445,6 +446,10 @@ class Module_cms_galleries extends Standard_crud_module
      */
     public function __import()
     {
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(1000);
+        }
+
         $cat = get_param_string('cat');
 
         require_code('images');

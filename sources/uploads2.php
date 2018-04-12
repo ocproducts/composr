@@ -179,7 +179,7 @@ function _reorganise_content_row_upload($row, $content_type, $upload_directory, 
 
         // Simplify filename back of its suffixing
         $matches = array();
-        if (preg_match('#^\d+(' . preg_quote($content_title, '#') . ')$#', $optimal_filename_stub, $matches) != 0) {
+        if (($content_title != '') && (preg_match('#^\d+(' . preg_quote($content_title, '#') . ')$#', $optimal_filename_stub, $matches) != 0)) {
             $optimal_filename_stub = $matches[1]; // LEGACY: Old style prefixing of what we can see are based on content titles
         } elseif (preg_match('#^(.*)_\d+$#', $optimal_filename_stub, $matches) != 0) {
             $optimal_filename_stub = $matches[1];
