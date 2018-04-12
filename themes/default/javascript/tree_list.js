@@ -168,7 +168,7 @@
                                 $dom.$('#choose_' + that.name).click();
                             }
 
-                            that.handleTreeClick(null, true, el);
+                            that.handleTreeClick(true, el);
                         }
                     } else {
                         // Now try against serverid
@@ -183,7 +183,7 @@
                                         $dom.$('#choose_' + that.name).click();
                                     }
 
-                                    that.handleTreeClick(null, true, el);
+                                    that.handleTreeClick(true, el);
                                 }
                             }
                         }
@@ -256,7 +256,7 @@
                             $dom.$('#choose_' + that.name).click();
                         }
 
-                        that.handleTreeClick(e, false, expandButton);
+                        that.handleTreeClick(false, expandButton);
                     });
 
                     label = nodeSelf.querySelector('label');
@@ -268,7 +268,7 @@
                                 $dom.$('#choose_' + that.name).click();
                             }
 
-                            that.handleTreeClick(event, false, expandButton);
+                            that.handleTreeClick(false, expandButton);
                         }
                     };
                     label.oncontextmenu = function () { return false; };
@@ -326,7 +326,7 @@
                             $dom.$('#choose_' + that.name).click();
                         }
 
-                        that.handleTreeClick(null, false, expandButton);
+                        that.handleTreeClick(false, expandButton);
                     }
                 } else { // Assume <entry>
                     newHtml = null;
@@ -478,7 +478,7 @@
             }
         },
 
-        handleTreeClick: function handleTreeClick(asdf, automated, target) {
+        handleTreeClick: function handleTreeClick(automated, target) {
             var element = $dom.$id(this.name),
                 xmlNode;
             if (element.disabled || this.busy) {
