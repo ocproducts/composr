@@ -506,6 +506,11 @@ class Module_catalogues
 
         $ret = array();
         if (!$support_crosslinks) { // Too low level if doing a full Sitemap
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'id');
+            if ($test === null) {
+                return null;
+            }
+
             $ret['browse'] = array('CATALOGUES', 'menu/rich_content/catalogues/catalogues');
         }
 
@@ -783,11 +788,16 @@ class Module_catalogues
         foreach ($rows as $myrow) {
             $first_category = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'MIN(id)', array('c_name' => $myrow['c_name'], 'cc_parent_id' => null));
             if (is_null($first_category)) {
-                continue;
+                continue; // No categories
             }
 
             if (!has_category_access(get_member(), 'catalogues_catalogue', $myrow['c_name'])) {
-                continue;
+                continue; // No access
+            }
+
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'id', array('c_name' => $myrow['c_name']));
+            if ($test === null) {
+                continue; // No entries
             }
 
             $out->attach(render_catalogue_box($myrow, '_SELF', false));
