@@ -1,5 +1,5 @@
 /* Form editing code (mostly stuff only used on posting forms) */
-(function ($cms, $util, $dom, $editing) {
+(function ($cms, $util, $dom) {
     'use strict';
 
     var $posting = window.$posting = {};
@@ -1164,4 +1164,4 @@
     function getAutosaveName(fieldName) {
         return getAutosaveUrlStem() + ':' + fieldName;
     }
-}(window.$cms, window.$util, window.$dom, window.$editing));
+}(window.$cms, window.$util, window.$dom));
