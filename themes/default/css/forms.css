@@ -594,6 +594,11 @@ span.validated-checkbox+input[name="validated"].input-tick {
 	}
 /*{+END}*/
 
+.comcode-button,
+.comcode-micro-button {
+	display: inline-block;
+}
+
 .posting-form-main-comcode-button {
 	float: right;
 	margin-top: 1em;
