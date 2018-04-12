@@ -107,7 +107,7 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
         }
         $filename = $urls[2];
 
-        return $urls[0];
+        return cms_rawurlrecode($urls[0]);
     }
 
     // URL
@@ -129,7 +129,7 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
             $thumb_url = $urls[1];
         }
 
-        return $url;
+        return cms_rawurlrecode($url);
     }
 
     // Filedump
@@ -147,7 +147,7 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
                 $thumb_url = $urls[1];
             }
 
-            return $url;
+            return cms_rawurlrecode($url);
         }
     }
 
@@ -625,6 +625,11 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         $_POST[$thumb_specify_name] = $out[1];
     }
 
+    $out[0] = cms_rawurlrecode($out[0]);
+    if (array_key_exists(2, $out)) {
+        $out[2] = cms_rawurlrecode($out[2]);
+    }
+
     if (count($filearrays) != 0) {
         cms_profile_end_for('get_url', $attach_name);
     }
@@ -977,6 +982,7 @@ function get_upload_filearray($name, &$filearrays)
 
 /**
  * Shorten a filename so it will fit in the database.
+ * Also see cms_rawurlrecode.
  *
  * @param  string $filename The filename
  * @param  integer $length The length
@@ -1004,7 +1010,7 @@ function shorten_urlencoded_filename($filename, $length = 226)
         $filename_stem = '';
         do {
             $next_mb_char = cms_mb_substr($_filename_stem, $i, 1);
-            if (strlen(urlencode($filename_stem . $next_mb_char . '.' . $filename_suffix)) > $length) {
+            if (strlen(cms_rawurlrecode(urlencode($filename_stem . $next_mb_char . '.' . $filename_suffix))) > $length) {
                 break;
             }
             $filename_stem .= $next_mb_char;
@@ -1015,4 +1021,21 @@ function shorten_urlencoded_filename($filename, $length = 226)
         $filename = $filename_stem . '.' . $filename_suffix;
     }
     return $filename;
+}
+
+/**
+ * Remove unnecessarily paranoid URL-encoding if needed, so the given URL will fit in the database.
+ *
+ * @param  URLPATH $url The URL
+ * @param  boolean $force Whether to force a conversion even if the URL is not that long
+ * @return URLPATH The shortened URL
+ */
+function cms_rawurlrecode($url, $force = false)
+{
+    if ((strlen($url) > 255) || ($force)) {
+        require_code('urls_simplifier');
+        $url = _cms_rawurlrecode($url, true);
+    }
+
+    return $url;
 }

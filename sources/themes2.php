@@ -351,6 +351,8 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
  */
 function post_param_image($name = 'image', $upload_to = null, $theme_image_type = null, $required = true, $is_edit = false, &$filename = null, &$thumb_url = null)
 {
+    require_code('uploads');
+
     $thumb_specify_name = $name . '__thumb__url';
     $test = post_param_string($thumb_specify_name, '');
     if ($test == '') {
@@ -370,7 +372,6 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
         }
     }
 
-    require_code('uploads');
     $field_file = $name . '__upload';
     $thumb_attach_name = $name . '__thumb__upload';
     if ((is_plupload()) || (((array_key_exists($field_file, $_FILES)) && (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
@@ -385,7 +386,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
         }
         $filename = $urls[2];
 
-        return $urls[0];
+        return cms_rawurlrecode($urls[0]);
     }
 
     // URL
@@ -407,7 +408,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
             $thumb_url = $urls[1];
         }
 
-        return $url;
+        return cms_rawurlrecode($url);
     }
 
     // Filedump
@@ -425,7 +426,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
                 $thumb_url = $urls[1];
             }
 
-            return $url;
+            return cms_rawurlrecode($url);
         }
     }
 
@@ -446,7 +447,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
             $thumb_url = $urls[1];
         }
 
-        return $url;
+        return cms_rawurlrecode($url);
     }
 
     // ---

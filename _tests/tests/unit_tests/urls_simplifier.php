@@ -13,6 +13,9 @@
  * @package    testing_platform
  */
 
+/*EXTRA FUNCTIONS: hex2bin*/
+// TODO: Remove above in v11
+
 /**
  * Composr test case class (unit testing).
  */
@@ -24,8 +27,18 @@ class urls_simplifier_test_set extends cms_test_case
     {
         parent::setUp();
 
+        require_code('uploads');
+
         require_code('urls_simplifier');
         $this->ob = new HarmlessURLCoder();
+    }
+
+    public function testRecode()
+    {
+        $from = 'x%20%D0%B8%D1%81%D0%BF%D1%8B%D1%82%D0%B0%D0%BD%D0%B8%D0%B5';
+        $got = cms_rawurlrecode($from, true);
+        $expected = 'x%20' . hex2bin('D0B8D181D0BFD18BD182D0B0D0BDD0B8D0B5');
+        $this->assertTrue($got == $expected, str_replace('%', '%%', 'Got ' . $got . '; expected ' . $expected));
     }
 
     public function testProceedAsExpected()

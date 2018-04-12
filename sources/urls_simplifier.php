@@ -19,6 +19,32 @@
  */
 
 /**
+ * Remove unnecessarily parnoid URL-encoding if needed, so the given URL will fit in the database.
+ *
+ * @param  URLPATH $url The URL
+ * @return URLPATH The shortened URL
+ */
+function _cms_rawurlrecode($url)
+{
+    $recoded = '';
+
+    $parts = preg_split('#(%[\dA-F]{1,2})#i', $url, null, PREG_SPLIT_DELIM_CAPTURE);
+    foreach ($parts as $i => $part) {
+        if ($i % 2 == 0) {
+            $recoded .= $parts[$i];
+        } else {
+            if (hexdec(substr($parts[$i], 1)) < 128) {
+                $recoded .= $parts[$i];
+            } else {
+                $recoded .= rawurldecode($parts[$i]);
+            }
+        }
+    }
+
+    return $recoded;
+}
+
+/**
  * Class to encode/decode URLs to make them valid/readable. It is a safe operation in each direction, no amount of random conversions back/forth can corrupt.
  */
 class HarmlessURLCoder
@@ -76,7 +102,7 @@ class HarmlessURLCoder
         $decoded = '';
 
         $str = str_replace('+', ' ', $str);
-        $parts = preg_split('#(%[\dA-F]+)#i', $str, null, PREG_SPLIT_DELIM_CAPTURE);
+        $parts = preg_split('#(%[\dA-F]{1,2})#i', $str, null, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($parts as $i => $part) {
             if ($i % 2 == 0) {
                 $decoded .= $parts[$i];
