@@ -111,6 +111,7 @@ class Hook_addon_registry_core_html_abstractions
             'themes/default/templates/SPAN.tpl',
             'themes/default/templates/PARAGRAPH.tpl',
             'themes/default/templates/FLOATER.tpl',
+            'themes/default/templates/ICON.tpl',
             'themes/default/templates/BASIC_HTML_WRAP.tpl',
             'themes/default/templates/STANDALONE_HTML_WRAP.tpl',
             'themes/default/templates/HTML_HEAD.tpl',

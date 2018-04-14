@@ -1424,6 +1424,16 @@ body button.button-hyperlink:hover {
 	text-decoration: underline;
 }
 
+.icon-img,
+.icon-svg {
+	width: 1em;
+	height: 1em;
+}
+
+.icon-svg {
+	fill: currentColor;
+}
+
 /* Used to make a button look more like an icon - i.e. undoes button-face styling */
 .button-icon {
 	background: none;

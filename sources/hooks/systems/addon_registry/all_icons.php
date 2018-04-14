@@ -98,6 +98,7 @@ class Hook_addon_registry_all_icons
     {
         return array(
             'sources/hooks/systems/addon_registry/all_icons.php',
+            'themes/default/images/icons/sprite.svg',
             'themes/default/images/icons/spare/activity.svg',
             'themes/default/images/icons/spare/administration.svg',
             'themes/default/images/icons/spare/advice_and_guidance.svg',

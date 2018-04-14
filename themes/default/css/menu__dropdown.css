@@ -47,13 +47,13 @@ For example:
 	width: 20px;
 }
 
-.dropdown-menu-item-img,
+.dropdown-menu-item-icon,
 .dropdown-menu-item-caption {
 	vertical-align: middle;
 }
 
-.dropdown-menu-item-img {
-	margin-right: 0.5em;
+.dropdown-menu-item-icon {
+	margin-right: 0.3em;
 }
 
 /*{+START,CSS_MODE,mobile}*/
@@ -138,7 +138,7 @@ For example:
 
 	.dropdown-menu a.toplevel-link,
 	.dropdown-menu a.nlevel-link {
-		padding: 0.3em 0.4em !important;
+		padding: 0.5em !important;
 	}
 
 	.dropdown-menu li.toplevel.first {

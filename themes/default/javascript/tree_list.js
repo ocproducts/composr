@@ -527,7 +527,7 @@
                     expandBtnImg.src = $util.srl('{$IMG;,icons/tree_field/collapse}');
                     expandBtnImg.alt = expandBtnImg.alt.replace('{!EXPAND;^}', '{!CONTRACT;^}');
                 } else if (expandBtnUse) {
-                    expandBtnUse.setAttribute('xlink:href', $util.srl('{$IMG;,icons/tree_field/collapse}'));
+                    // @TODO: Salman
                 }
             } else {
                 xmlNode = this.getElementByIdHack(clickedId, 'c');
@@ -540,7 +540,7 @@
                     expandBtnImg.src = $util.srl('{$IMG;,icons/tree_field/expand}');
                     expandBtnImg.alt = expandBtnImg.alt.replace('{!CONTRACT;^}', '{!EXPAND;^}');
                 } else if (expandBtnUse) {
-                    expandBtnUse.setAttribute('xlink:href', $util.srl('{$IMG;,icons/tree_field/expand}'));
+                    // @TODO: Salman
                 }
             }
 

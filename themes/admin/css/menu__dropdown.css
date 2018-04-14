@@ -12,7 +12,7 @@ For example:
  "nlevel" has the image to the left of the anchor, like with most of the other menu types.
 */
 
-.dropdown-menu li.toplevel {
+.dropdown-menu-item.toplevel {
 	border-left: 1px solid #cacaca;
 	margin-bottom: 0;
 	transition: color,background-color 0.5s linear;
@@ -32,12 +32,12 @@ For example:
 	width: 20px;
 }
 
-.dropdown-menu-item-img,
+.dropdown-menu-item-icon,
 .dropdown-menu-item-caption {
 	vertical-align: middle;
 }
 
-.dropdown-menu-item-img {
+.dropdown-menu-item-icon {
 	margin-right: 0.5em;
 }
 
@@ -129,7 +129,7 @@ For example:
 
 	.dropdown-menu a.toplevel-link,
 	.dropdown-menu a.nlevel-link {
-		padding: 0.3em 0.4em !important;
+		padding: 0.5em !important;
 	}
 
 	.dropdown-menu li.toplevel.first {
@@ -180,9 +180,9 @@ For example:
 		text-decoration: none;
 	}
 
-	.dropdown-menu .toplevel-link img {
+	.dropdown-menu-item.toplevel > .dropdown-menu-item-a > .dropdown-menu-item-icon {
+		font-size: 32px;
 		margin-right: 0;
-		margin-bottom: 0.75em;
 	}
 
 	.dropdown-menu ul.nlevel,
