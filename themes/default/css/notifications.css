@@ -5,7 +5,8 @@
 
 /* Web UI */
 
-#web-notifications-button, #pts-button {
+#web-notifications-button, 
+#pts-button {
 	color: {$GET,heading_text};
 	display: inline-block;
 	position: relative;
@@ -17,16 +18,6 @@
 	vertical-align: middle;
 	background-repeat: no-repeat;
 	outline: 0;
-}
-#web-notifications-button {
-	background-image: url('{$IMG;,icons/tool_buttons/notifications}');
-	background-position: 2px 2px;
-	background-size: 24px 24px;
-}
-#pts-button {
-	background-image: url('{$IMG;,icons/tool_buttons/inbox}');
-	background-position: 3px 3px;
-	background-size: 24px 24px;
 }
 
 #web-notifications-button span, #pts-button span {

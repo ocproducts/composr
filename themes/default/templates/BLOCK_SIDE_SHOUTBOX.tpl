@@ -17,7 +17,7 @@
 			</div>
 
 			<p class="proceed-button">
-				<button type="submit" class="button-screen-item buttons--send">{!SEND_MESSAGE}</button>
+				<button type="submit" class="button-screen-item buttons--send">{+START,INCLUDE,ICON}NAME=buttons/send{+END}{!SEND_MESSAGE}</button>
 			</p>
 		</form>
 	</div></section>

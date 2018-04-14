@@ -40,8 +40,8 @@
 
     function loadCommandr() {
         if (!document.getElementById('commandr-img-loader')) {
-            var img = document.getElementById('commandr-img');
-            img.className = 'footer-button-loading';
+            var img = document.querySelector('.commandr-img');
+            img.classList.add('footer-button-loading');
             var tmpEl = document.createElement('img');
             tmpEl.id = 'commandr-img-loader';
             tmpEl.src = $util.srl('{$IMG;,loading}');
@@ -94,7 +94,7 @@
 
         function doCommandrBox() {
             var commandrBox = document.getElementById('commandr-box'),
-                img = document.getElementById('commandr-img'),
+                img = document.querySelector('.commandr-img'),
                 bi, cmdLine;
 
             if ($dom.notDisplayed(commandrBox)) { // Showing Commandr again
@@ -102,7 +102,7 @@
 
                 if (img) {
                     img.src = $util.srl('{$IMG;,icons/tool_buttons/commandr_off}');
-                    img.className = '';
+                    img.classList.remove('footer-button-loading');
                 }
 
                 $dom.smoothScroll(0, null, null, function () {

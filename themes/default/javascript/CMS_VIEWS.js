@@ -1212,7 +1212,7 @@
             if (box) {
                 box.parentNode.removeChild(box);
 
-                img = $dom.$('#software-chat-img');
+                img = $dom.$('.software-chat-img');
                 img.style.opacity = 1;
             } else {
                 var width = 950,
@@ -1239,7 +1239,7 @@
 
                 $dom.smoothScroll(0);
 
-                img = $dom.$('#software-chat-img');
+                img = $dom.$('.software-chat-img');
                 img.style.opacity = 0.5;
             }
         },

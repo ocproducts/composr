@@ -34,7 +34,7 @@
 					<form title="{SUBMIT_VALUE*}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
-						<button type="button" class="button-micro buttons--send js-click-post-chat-message">{SUBMIT_VALUE*}</button>
+						<button type="button" class="button-micro buttons--send js-click-post-chat-message">{+START,INCLUDE,ICON}NAME=buttons/send{+END}{SUBMIT_VALUE*}</button>
 					</form>
 					{+START,IF,{$DESKTOP}}
 						<span class="inline-desktop">

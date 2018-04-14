@@ -19,7 +19,7 @@
 						<input type="hidden" name="_send_document" value="1" />
 
 						<p class="proceed-button">
-							<button class="button-screen-item buttons--send" type="submit">{!DOWNLOAD_WHITEPAPER}</button>
+							<button class="button-screen-item buttons--send" type="submit">{+START,INCLUDE,ICON}NAME=buttons/send{+END}{!DOWNLOAD_WHITEPAPER}</button>
 						</p>
 					</form>
 				{+END}

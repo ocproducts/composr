@@ -183,6 +183,7 @@ For example:
 	.dropdown-menu-item.toplevel > .dropdown-menu-item-a > .dropdown-menu-item-icon {
 		font-size: 32px;
 		margin-right: 0;
+		margin-bottom: 5px;
 	}
 
 	.dropdown-menu ul.nlevel,

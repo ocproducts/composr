@@ -120,7 +120,7 @@
                 }
             } else { // Appending
                 xml = this.getElementByIdHack(expandingId, 'c');
-                if (xml.children.length != 0) {
+                if (xml.children.length !== 0) {
                     // User was likely clicking like mad, or had connection issues - as we already rendered this
                 } else {
                     for (i = 0; i < ajaxResult.childNodes.length; i++) {

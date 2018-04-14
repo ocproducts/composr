@@ -33,7 +33,7 @@
 			{+END}
 
 			<p class="proceed-button">
-				<button class="button-screen-item buttons--search" type="submit">{!SEARCH}</button>
+				<button class="button-screen-item buttons--search" type="submit">{+START,INCLUDE,ICON}NAME=buttons/search{+END} {!SEARCH}</button>
 			</p>
 
 			{+START,LOOP,LIMIT_TO}

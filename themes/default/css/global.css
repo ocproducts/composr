@@ -1428,6 +1428,7 @@ body button.button-hyperlink:hover {
 .icon-svg {
 	width: 1em;
 	height: 1em;
+	vertical-align: middle;
 }
 
 .icon-svg {
@@ -3851,8 +3852,7 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 	background-position: 7px center !important;
 }
 .button-screen-item {
-	padding: 3px 30px 4px 5px;
-	background-size: 18px 18px !important;
+	padding: 5px 10px;
 	font-size: 13px;
 }
 /*{+START,CSS_MODE,mobile}*/
@@ -4978,9 +4978,7 @@ a[rel="lightbox"] {
 
 /*{+START,IF,{$ADDON_INSTALLED,recommend}}*/
 	.print-icon {
-		background: url('{$IMG;,icons/links/print}') no-repeat left top !important;
-		background-size: 24px 24px !important;
-		padding: 0 0 5px 32px !important;
+		padding: 0 0 5px 0 !important;
 		display: inline-block;
 	}
 /*{+END}*/

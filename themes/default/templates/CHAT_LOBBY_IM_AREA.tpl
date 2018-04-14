@@ -13,7 +13,7 @@
 					<a rel="nofollow" class="horiz-field-sep js-click-open-chat-emoticons-popup" href="#!" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}"><img alt="{!EMOTICONS_POPUP}" width="16" height="16" src="{$IMG*,icons/editor/insert_emoticons}" /></a>
 				{+END}
 
-				<button class="button-micro buttons--send js-click-chatroom-chat-post" type="button">{!MAKE_POST_SHORT}</button>
+				<button class="button-micro buttons--send js-click-chatroom-chat-post" type="button">{+START,INCLUDE,ICON}NAME=buttons/send{+END}{!MAKE_POST_SHORT}</button>
 			</div>
 		{+END}
 

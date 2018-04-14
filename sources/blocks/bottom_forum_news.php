@@ -69,7 +69,7 @@ class Block_bottom_forum_news
         }
 
         if (!addon_installed('news_shared')) {
-            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')), 'jhmazz9b50kv3de1drxujlw7p5haozvo', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'jhmazz9b50kv3de1drxujlw7p5haozvo', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('news_shared'))));
         }
 
         if (has_no_forum()) {

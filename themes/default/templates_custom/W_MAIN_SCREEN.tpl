@@ -139,7 +139,7 @@
 						<option value="0">
 							{!W_EVERYONE}
 						</option>
-					</select> <button class="button-screen-item buttons--send" type="submit">{!SEND_MESSAGE}</button></div>
+					</select> <button class="button-screen-item buttons--send" type="submit">{+START,INCLUDE,ICON}NAME=buttons/send{+END}{!SEND_MESSAGE}</button></div>
 				</form>
 			</div>
 

@@ -665,6 +665,7 @@ class Hook_addon_registry_core
             'themes/default/templates/CSS_NEED_INLINE.tpl',
             'themes/default/javascript/tree_list.js',
             'themes/default/javascript/xsl_mopup.js',
+            'themes/default/templates/RED_ALERT.tpl',
             'themes/default/templates/BLOCK_SIDE_PERSONAL_STATS.tpl',
             'themes/default/templates/BLOCK_SIDE_PERSONAL_STATS_LINE.tpl',
             'themes/default/templates/BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX.tpl',

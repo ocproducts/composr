@@ -9,7 +9,7 @@
 			<span class="faux-h2 {+START,IF_NON_PASSED_OR_FALSE,FORCE_OPEN} toggleable-tray-button js-click-toggle-subord-fields js-keypress-toggle-subord-fields{+END}">{TITLE*}</span>
 
 			{+START,IF,{$EQ,{TITLE},{!ADDRESS}}}
-				<button class="button-micro buttons--search js-click-geolocate-address-fields" type="button">{!locations:FIND_ME}</button>
+				<button class="button-micro buttons--search js-click-geolocate-address-fields" type="button">{+START,INCLUDE,ICON}NAME=buttons/search{+END} {!locations:FIND_ME}</button>
 			{+END}
 		{+END}
 

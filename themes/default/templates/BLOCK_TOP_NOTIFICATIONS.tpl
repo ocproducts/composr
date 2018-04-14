@@ -22,7 +22,13 @@
 			</ul>
 		</div></div>
 	</div>
-	<a title="{!notifications:NOTIFICATIONS}" id="web-notifications-button" class="count-{NUM_UNREAD_WEB_NOTIFICATIONS%} js-click-toggle-web-notifications" href="{$PAGE_LINK*,_SEARCH:notifications:browse}"><span aria-label="{!COUNT_TOTAL} {!notifications:NOTIFICATIONS}">{NUM_UNREAD_WEB_NOTIFICATIONS*}</span></a>
+	<a title="{!notifications:NOTIFICATIONS}" id="web-notifications-button" class="count-{NUM_UNREAD_WEB_NOTIFICATIONS%} js-click-toggle-web-notifications" href="{$PAGE_LINK*,_SEARCH:notifications:browse}">
+		<span aria-label="{!COUNT_TOTAL} {!notifications:NOTIFICATIONS}">{NUM_UNREAD_WEB_NOTIFICATIONS*}</span>
+		{+START,INCLUDE,ICON}
+			NAME=tool_buttons/notifications
+			SIZE=24
+		{+END}
+	</a>
 
 	{+START,IF,{$NOT,{$CONFIG_OPTION,pt_notifications_as_web}}}{+START,IF,{$CNS}}
 		<div class="global-button-ref-point" id="pts-rel" style="display: none">
@@ -42,6 +48,12 @@
 				</ul>
 			</div></div>
 		</div>
-		<a title="{!cns:PRIVATE_TOPICS}" id="pts-button" class="count-{NUM_UNREAD_PTS%} js-click-toggle-pts" href="{$PAGE_LINK*,_SEARCH:members:view#tab--pts}"><span aria-label="{!COUNT_TOTAL} {!cns:PRIVATE_TOPICS}">{NUM_UNREAD_PTS*}</span></a>
+		<a title="{!cns:PRIVATE_TOPICS}" id="pts-button" class="count-{NUM_UNREAD_PTS%} js-click-toggle-pts" href="{$PAGE_LINK*,_SEARCH:members:view#tab--pts}">
+			<span aria-label="{!COUNT_TOTAL} {!cns:PRIVATE_TOPICS}">{NUM_UNREAD_PTS*}</span>
+			{+START,INCLUDE,ICON}
+				NAME=tool_buttons/inbox
+				SIZE=24
+			{+END}
+		</a>
 	{+END}{+END}
 </div>

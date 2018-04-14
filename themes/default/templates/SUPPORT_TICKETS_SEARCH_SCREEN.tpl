@@ -12,6 +12,6 @@
 	{POST_FIELDS}
 
 	<p class="proceed-button">
-		<button data-disable-on-click="1" class="button-screen buttons--send" type="submit">{!MAKE_POST}</button>
+		<button data-disable-on-click="1" class="button-screen buttons--send" type="submit">{+START,INCLUDE,ICON}NAME=buttons/send{+END}{!MAKE_POST}</button>
 	</p>
 </form>

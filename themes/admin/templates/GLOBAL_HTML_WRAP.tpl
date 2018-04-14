@@ -141,10 +141,30 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 						{+END}{+END}{+END}{+END}
 						{+START,IF,{$HAS_ZONE_ACCESS,adminzone}}
 							{+START,IF,{$ADDON_INSTALLED,commandr}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_commandr}}{+START,IF,{$CONFIG_OPTION,bottom_show_commandr_button,1}}{+START,IF,{$NEQ,{$ZONE}:{$PAGE},adminzone:admin_commandr}}
-								<li><a id="commandr-button" accesskey="o"{+START,IF,{$DESKTOP}} data-btn-load-commandr="{}" {+END} href="{$PAGE_LINK*,adminzone:admin_commandr}"><img id="commandr-img" title="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" alt="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" width="24" height="24" src="{$IMG*,icons/tool_buttons/commandr_on}" /></a></li>
+								<li>
+									<a id="commandr-button" accesskey="o"{+START,IF,{$DESKTOP}} data-btn-load-commandr="{}" {+END} href="{$PAGE_LINK*,adminzone:admin_commandr}">
+										{+START,INCLUDE,ICON}
+											NAME=tool_buttons/commandr_on
+											CLASS=commandr-img
+											TITLE={!commandr:COMMANDR_DESCRIPTIVE_TITLE}
+											DESCRIPTION={!commandr:COMMANDR_DESCRIPTIVE_TITLE}
+											SIZE=24
+										{+END}
+									</a>
+								</li>
 							{+END}{+END}{+END}{+END}
 							{+START,IF,{$DESKTOP}}{+START,IF,{$EQ,{$BRAND_NAME},Composr}}
-								<li><a id="software-chat-button" accesskey="-" href="#!" class="js-global-click-load-software-chat"><img id="software-chat-img" title="{!SOFTWARE_CHAT}" alt="{!SOFTWARE_CHAT}" width="24" height="24" src="{$IMG*,icons/tool_buttons/software_chat}" /></a></li>
+								<li>
+									<a id="software-chat-button" accesskey="-" href="#!" class="js-global-click-load-software-chat">
+										{+START,INCLUDE,ICON}
+											NAME=tool_buttons/software_chat
+											CLASS=software-chat-img
+											TITLE={!SOFTWARE_CHAT}
+											DESCRIPTION={!SOFTWARE_CHAT}
+											SIZE=24
+										{+END}
+									</a>
+								</li>
 							{+END}{+END}
 						{+END}
 					{+END}
