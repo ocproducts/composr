@@ -123,7 +123,7 @@ foreach ($_catalogues as $_catalogue) {
 $ret = do_template('CLASSIFIEDS_PRICING_SCREEN', array(
     '_GUID' => '8fd97a8bc88dfdd5c8455d41d290ae56',
     'TITLE' => $title,
-    'SUBMIT_ICON' => 'buttons--save',
+    'SUBMIT_ICON' => 'buttons/save',
     'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
     'CATALOGUES' => $catalogues,
     'PRICES' => $prices,

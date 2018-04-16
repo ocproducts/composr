@@ -72,7 +72,7 @@ class Block_main_image_fader_news
         }
 
         if (!addon_installed('news_shared')) {
-            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')), 'rj087xxp2oo40zaibz8iyzwsxm8a6jok', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'rj087xxp2oo40zaibz8iyzwsxm8a6jok', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('news_shared'))));
         }
 
         require_lang('news');

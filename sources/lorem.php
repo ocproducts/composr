@@ -260,7 +260,7 @@ function placeholder_form_with_field($field_name)
     require_code('form_templates');
     $hidden = form_input_hidden($field_name, '0');
 
-    $form = do_lorem_template('FORM', array('TABINDEX' => placeholder_number(), 'HIDDEN' => $hidden, 'TEXT' => $text, 'FIELDS' => placeholder_fields(), 'URL' => placeholder_url(), 'SUBMIT_ICON' => 'buttons--proceed', 'SUBMIT_NAME' => 'proceed'));
+    $form = do_lorem_template('FORM', array('TABINDEX' => placeholder_number(), 'HIDDEN' => $hidden, 'TEXT' => $text, 'FIELDS' => placeholder_fields(), 'URL' => placeholder_url(), 'SUBMIT_ICON' => 'buttons/proceed', 'SUBMIT_NAME' => 'proceed'));
 
     return $form;
 }

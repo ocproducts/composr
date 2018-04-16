@@ -241,7 +241,7 @@ class Module_cms_downloads extends Standard_crud_module
             'HIDDEN' => '',
             'TEXT' => paragraph(do_lang_tempcode('DESCRIPTION_LOAD_FTP_FILES')),
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin--import',
+            'SUBMIT_ICON' => 'admin/import',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -289,7 +289,7 @@ class Module_cms_downloads extends Standard_crud_module
             'HIDDEN' => '',
             'TEXT' => paragraph(do_lang_tempcode('DESCRIPTION_LOAD_FILESYSTEM_FILES')),
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin--import',
+            'SUBMIT_ICON' => 'admin/import',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));

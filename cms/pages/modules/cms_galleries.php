@@ -313,7 +313,7 @@ class Module_cms_galleries extends Standard_crud_module
             'TEXT' => '',
             'FIELDS' => $fields,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }
@@ -371,7 +371,7 @@ class Module_cms_galleries extends Standard_crud_module
             '_GUID' => '05de2bc134ed0b1ab703ac8bfbfabce4',
             'TABINDEX' => strval(get_form_field_tabindex()),
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin--import',
+            'SUBMIT_ICON' => 'admin/import',
             'SUBMIT_NAME' => do_lang_tempcode('BATCH_IMPORT_ARCHIVE_CONTENTS'),
             'URL' => $post_url,
             'TEXT' => $text,
@@ -439,7 +439,7 @@ class Module_cms_galleries extends Standard_crud_module
                     'SECONDARY_FORM' => true,
                     'TABINDEX' => strval(get_form_field_tabindex()),
                     'FIELDS' => $fields_2,
-                    'SUBMIT_ICON' => 'admin--import',
+                    'SUBMIT_ICON' => 'admin/import',
                     'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
                     'URL' => $add_url,
                     'TEXT' => '',

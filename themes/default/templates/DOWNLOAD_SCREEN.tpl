@@ -2,10 +2,7 @@
 	{TITLE}
 
 	{+START,IF_NON_EMPTY,{OUTMODE_URL}}
-		<p class="red-alert">
-			
-			<a href="{OUTMODE_URL*}">{!OUTMODED}</a>
-		</p>
+		{+START,INCLUDE,RED_ALERT}TEXT=<a href="{OUTMODE_URL*}">{!OUTMODED}</a>{+END}
 	{+END}
 
 	{WARNING_DETAILS}

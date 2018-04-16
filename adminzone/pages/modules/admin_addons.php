@@ -581,7 +581,7 @@ class Module_admin_addons
             'SKIP_WEBSTANDARDS' => true,
             'HIDDEN' => $hidden,
             'TITLE' => $this->title,
-            'SUBMIT_ICON' => 'admin--import',
+            'SUBMIT_ICON' => 'admin/import',
             'SUBMIT_NAME' => $submit_name,
             'FIELDS' => $fields,
             'TEXT' => $text,
@@ -1285,7 +1285,7 @@ class Module_admin_addons
             '_GUID' => 'dd8bea111b0dfc7df7ddc7e2246f0ef9',
             'HIDDEN' => $hidden,
             'TITLE' => $this->title,
-            'SUBMIT_ICON' => 'admin--export',
+            'SUBMIT_ICON' => 'admin/export',
             'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields,
             'TEXT' => '',
             'URL' => $post_url,
@@ -1366,7 +1366,7 @@ class Module_admin_addons
             'TEXT' => do_lang_tempcode('CHOOSE_ZONE_OF_MODULES'),
             'FIELDS' => $fields,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

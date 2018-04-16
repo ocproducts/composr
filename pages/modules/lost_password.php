@@ -165,7 +165,7 @@ class Module_lost_password
             'HIDDEN' => '',
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'menu--site-meta--user-actions--lost-password',
+            'SUBMIT_ICON' => 'menu/site_meta/user_actions/lost_password',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -202,7 +202,7 @@ class Module_lost_password
                 'URL' => $_url,
                 'FIELDS' => $fields,
                 'TEXT' => do_lang_tempcode('ENTER_CODE_FROM_EMAIL'),
-                'SUBMIT_ICON' => 'menu--site-meta--user-actions--lost-password',
+                'SUBMIT_ICON' => 'menu/site_meta/user_actions/lost_password',
                 'SUBMIT_NAME' => $submit_name,
             ));
         }
@@ -235,7 +235,7 @@ class Module_lost_password
                 'URL' => get_self_url(false, false, array(), false, true),
                 'FIELDS' => $fields,
                 'TEXT' => do_lang_tempcode('MISSING_CONFIRM_CODE'),
-                'SUBMIT_ICON' => 'buttons-menu--site-meta--user-actions--lost-password-proceed',
+                'SUBMIT_ICON' => 'buttons/proceed',
                 'SUBMIT_NAME' => $submit_name,
             ));
         }

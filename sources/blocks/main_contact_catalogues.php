@@ -236,7 +236,7 @@ class Block_main_contact_catalogues
             '_GUID' => $guid,
             'FIELDS' => $fields,
             'HIDDEN' => $hidden,
-            'SUBMIT_ICON' => 'buttons--send',
+            'SUBMIT_ICON' => 'buttons/send',
             'SUBMIT_NAME' => do_lang_tempcode('SEND'),
             'URL' => $url,
             'TEXT' => $text,

@@ -1049,10 +1049,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	float: left;
 }
 .global-message>span, .global-message>p {
-	margin-left: 22px;
-	padding-left: 0.5em;
 	padding-top: 3px;
-	display: block;
 }
 .global-message>p {
 	margin-top: 0.6em;
@@ -1568,11 +1565,11 @@ span.red-alert, a.red-alert, strong.red-alert, em.red-alert {
 }
 div.red-alert, p.red-alert, .inline-wip-message {
 	border-radius: 5px;
-	padding: 1em 1em 1em 40px;
+	padding: 1em;
 }
 div.red-alert, p.red-alert {
 	border: 1px solid {$GET,light_error_border};
-	background: url('{$IMG;,icons/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
+	background-color: {$GET,light_error_background};
 	background-size: 24px 24px;
 	overflow: hidden;
 }
@@ -4028,9 +4025,6 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 }
 .admin--edit {
 	background-image: url('{$IMG,icons/admin/edit}') !important;
-}
-.buttons--more {
-	background-image: url('{$IMG,icons/buttons/more}') !important;
 }
 .admin--move {
 	background-image: url('{$IMG,icons/admin/move}') !important;

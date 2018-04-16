@@ -312,7 +312,7 @@ class Module_admin_ecommerce_logs
             return do_template('FORM_SCREEN', array(
                 '_GUID' => 'a2fe914c23e378c493f6e1dad0dc11eb',
                 'TITLE' => $this->title,
-                'SUBMIT_ICON' => 'buttons--proceed',
+                'SUBMIT_ICON' => 'buttons/proceed',
                 'SUBMIT_NAME' => $submit_name,
                 'FIELDS' => $fields,
                 'TEXT' => $text,
@@ -352,7 +352,7 @@ class Module_admin_ecommerce_logs
                 return do_template('FORM_SCREEN', array(
                     '_GUID' => '90ee397ac24dcf0b3a0176da9e9c9741',
                     'TITLE' => $this->title,
-                    'SUBMIT_ICON' => 'buttons--proceed',
+                    'SUBMIT_ICON' => 'buttons/proceed',
                     'SUBMIT_NAME' => $submit_name,
                     'FIELDS' => $needed_fields,
                     'TEXT' => $text,
@@ -394,7 +394,7 @@ class Module_admin_ecommerce_logs
         return do_template('FORM_SCREEN', array(
             '_GUID' => '990d955cb14b6681685ec9e1d1448d9d',
             'TITLE' => $this->title,
-            'SUBMIT_ICON' => 'menu--rich-content--ecommerce--purchase',
+            'SUBMIT_ICON' => 'menu/rich_content/ecommerce/purchase',
             'SUBMIT_NAME' => $submit_name,
             'FIELDS' => $fields,
             'TEXT' => $text,
@@ -779,7 +779,7 @@ class Module_admin_ecommerce_logs
             '_GUID' => '0d0e9f85a2e3d7b456b843ebaeb54c14',
             'SKIP_WEBSTANDARDS' => true,
             'TITLE' => $this->title,
-            'SUBMIT_ICON' => 'admin--export-csv',
+            'SUBMIT_ICON' => 'admin/export_csv',
             'SUBMIT_NAME' => do_lang_tempcode('EXPORT_TRANSACTIONS'),
             'TEXT' => paragraph(do_lang_tempcode('EXPORT_TRANSACTIONS_TEXT')),
             'URL' => build_url(array('page' => '_SELF', 'type' => '_export_transactions'), '_SELF'),
@@ -842,7 +842,7 @@ class Module_admin_ecommerce_logs
             'TEXT' => '',
             'HIDDEN' => '',
             'URL' => get_self_url(false, false, array(), false, true),
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
         ));
     }

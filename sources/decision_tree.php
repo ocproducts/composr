@@ -331,7 +331,7 @@ class DecisionTree
             'FIELDS' => $fields,
             'GET' => ($form_method == 'GET'),
             'URL' => $next_url,
-            'SUBMIT_ICON' => 'buttons--next',
+            'SUBMIT_ICON' => 'buttons/next',
             'SUBMIT_NAME' => do_lang_tempcode('NEXT'),
             'TEXT' => $text,
             'BACK_URL' => $back_url,

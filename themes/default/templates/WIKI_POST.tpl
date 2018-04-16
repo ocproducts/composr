@@ -45,7 +45,7 @@
 							URL={$PAGE_LINK,_SEARCH:report_content:content_type=wiki_post:content_id={ID}:redirect={$SELF_URL&}}
 							TITLE={!report_content:REPORT_THIS}
 							FULL_TITLE={!report_content:REPORT_THIS}
-							IMG=buttons--report
+							IMG=buttons/report
 							IMMEDIATE=0
 							REL=report
 						{+END}

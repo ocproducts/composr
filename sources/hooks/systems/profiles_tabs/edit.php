@@ -182,7 +182,7 @@ class Hook_profiles_tabs_edit
             'JS_FUNCTION_CALLS' => $js_function_calls,
             'HIDDEN' => $hidden,
             'URL' => $url,
-            'SUBMIT_ICON' => 'buttons--save',
+            'SUBMIT_ICON' => 'buttons/save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
             'SKIP_WEBSTANDARDS' => true,
             'TABS' => $_tabs,

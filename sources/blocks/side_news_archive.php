@@ -69,7 +69,7 @@ class Block_side_news_archive
         }
 
         if (!addon_installed('news_shared')) {
-            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')), 'jgoer1lzlefihrpu4tank2j9e7uwmf17', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'jgoer1lzlefihrpu4tank2j9e7uwmf17', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('news_shared'))));
         }
 
         require_lang('news');
@@ -93,7 +93,7 @@ class Block_side_news_archive
         $rows = array_reverse($rows);
 
         if (count($rows) == 0) {
-            return paragraph(do_lang_tempcode('NO_ENTRIES'), '2kkpdv5vq2zbhuu4j4n6gteucgi1mee1', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => '2kkpdv5vq2zbhuu4j4n6gteucgi1mee1', 'TEXT' => do_lang_tempcode('NO_ENTRIES')));
         }
         $first = $rows[0]['date_and_time'];
         $last = $rows[count($rows) - 1]['date_and_time'];

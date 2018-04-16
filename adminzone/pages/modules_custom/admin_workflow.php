@@ -469,7 +469,7 @@ class Module_admin_workflow extends Standard_crud_module
             'TEXT' => '',
             'HIDDEN' => $hidden,
             'URL' => $self_url,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
         ));
     }

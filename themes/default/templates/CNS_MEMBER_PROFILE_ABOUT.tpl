@@ -100,9 +100,10 @@
 
 	<div class="cns-profile-main">
 		{+START,IF,{$NOT,{VIEW_PROFILES}}}
-			<p class="red-alert" role="alert">
-				{!ACCESS_DENIED}
-			</p>
+			{+START,INCLUDE,RED_ALERT}
+				ROLE=alert
+				TEXT={!ACCESS_DENIED}
+			{+END}
 		{+END}
 
 		{+START,IF,{$OR,{$AND,{VIEW_PROFILES},{$IS_NON_EMPTY,{CUSTOM_FIELDS}}},{$IS_NON_EMPTY,{$TRIM,{SIGNATURE}}}}}

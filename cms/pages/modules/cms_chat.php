@@ -532,7 +532,7 @@ class Module_cms_chat
             'TEXT' => '',
             'FIELDS' => $fields,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons--save',
+            'SUBMIT_ICON' => 'buttons/save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
         ));
     }
@@ -703,7 +703,7 @@ class Module_cms_chat
             'TITLE' => $this->title,
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin--delete3',
+            'SUBMIT_ICON' => 'admin/delete3',
             'SUBMIT_NAME' => $submit_name,
             'TEXT' => $text,
         ));

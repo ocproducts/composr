@@ -170,7 +170,7 @@
 		{+START,IF_PASSED,SET_TICKET_EXTRA_ACCESS_URL}
 			{+START,INCLUDE,BUTTON_SCREEN}
 				TITLE={!_SET_TICKET_EXTRA_ACCESS}
-				IMG=menu--adminzone--security--permissions--privileges
+				IMG=menu/adminzone/security/permissions/privileges
 				URL={SET_TICKET_EXTRA_ACCESS_URL}
 				IMMEDIATE=0
 			{+END}
@@ -179,7 +179,7 @@
 		{+START,IF_PASSED,EDIT_URL}
 			{+START,INCLUDE,BUTTON_SCREEN}
 				TITLE={!EDIT_TICKET}
-				IMG=buttons--save
+				IMG=buttons/save
 				URL={EDIT_URL}
 				IMMEDIATE=0
 			{+END}
@@ -188,7 +188,7 @@
 		{+START,IF_PASSED,TOGGLE_TICKET_CLOSED_URL}
 			{+START,INCLUDE,BUTTON_SCREEN}
 				TITLE={$?,{CLOSED},{!OPEN_TICKET},{!CLOSE_TICKET}}
-				IMG={$?,{CLOSED},buttons--closed,buttons--undo}
+				IMG={$?,{CLOSED},buttons/closed,buttons/undo}
 				IMMEDIATE=1
 				URL={TOGGLE_TICKET_CLOSED_URL}
 			{+END}

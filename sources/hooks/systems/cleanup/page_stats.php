@@ -80,7 +80,7 @@ class Hook_cleanup_page_stats
                 'TEXT' => do_lang_tempcode('DELETE_DATA_AVAILABLE'),
                 'URL' => $post_url,
                 'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'buttons--proceed',
+                'SUBMIT_ICON' => 'buttons/proceed',
                 'SUBMIT_NAME' => $submit_name,
             ));
             $echo = globalise($tpl, null, '', true);

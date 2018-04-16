@@ -111,7 +111,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
                 'TEXT' => '',
                 'URL' => $post_url,
                 'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'buttons--search',
+                'SUBMIT_ICON' => 'buttons/search',
                 'SUBMIT_NAME' => $submit_name,
             ));
         }

@@ -233,7 +233,7 @@ class Module_admin_themewizard
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => $hidden,
         ));
@@ -334,7 +334,7 @@ class Module_admin_themewizard
             'TEXT' => do_lang_tempcode('REFRESH_TO_FINISH'),
             'FIELDS' => $fields,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => $hidden,
         ));
@@ -499,7 +499,7 @@ class Module_admin_themewizard
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => '',
         ));

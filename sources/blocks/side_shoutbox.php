@@ -80,13 +80,13 @@ class Block_side_shoutbox
         if ($room_id === null) {
             $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0/*, 'room_language' => user_lang()*/));
             if ($room_id === null) {
-                return paragraph(do_lang_tempcode('NO_CATEGORIES', 'chat'), 'se6lmjeorpaovd8hromb19ybjtecunl5', 'red-alert');
+                return do_template('RED_ALERT',array('_GUID' => 'se6lmjeorpaovd8hromb19ybjtecunl5', 'TEXT' => do_lang_tempcode('NO_CATEGORIES', 'chat')));
             }
         }
 
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_check)) {
-            return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'chat'), 'njeb9nhifmr6bfc3u3c09s5qkoejk21z', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'njeb9nhifmr6bfc3u3c09s5qkoejk21z', 'TEXT' => do_lang_tempcode('MISSING_RESOURCE', 'chat')));
         }
         require_code('chat');
         if (!check_chatroom_access($room_check[0], true)) {

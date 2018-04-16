@@ -109,6 +109,6 @@ class Hook_preview_quiz
 
         $preview = render_quiz($questions);
 
-        return array(do_template('FORM', array('_GUID' => '671da928305bee72d7508beb7687d6df', 'SUBMIT_ICON' => 'buttons--proceed', 'SUBMIT_NAME' => '', 'TEXT' => '', 'URL' => '', 'HIDDEN' => '', 'FIELDS' => $preview)), null);
+        return array(do_template('FORM', array('_GUID' => '671da928305bee72d7508beb7687d6df', 'SUBMIT_ICON' => 'buttons/proceed', 'SUBMIT_NAME' => '', 'TEXT' => '', 'URL' => '', 'HIDDEN' => '', 'FIELDS' => $preview)), null);
     }
 }

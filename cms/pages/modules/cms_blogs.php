@@ -673,7 +673,7 @@ class Module_cms_blogs extends Standard_crud_module
             'TEXT' => '',
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin--import',
+            'SUBMIT_ICON' => 'admin/import',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $xml_post_url,
         ));
@@ -715,7 +715,7 @@ class Module_cms_blogs extends Standard_crud_module
             'TEXT' => '',
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin--import',
+            'SUBMIT_ICON' => 'admin/import',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $db_post_url,
         ));

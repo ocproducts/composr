@@ -67,7 +67,7 @@ class Block_top_login
         }
 
         if (get_forum_type() == 'none') {
-            return paragraph(do_lang_tempcode('NO_FORUM_INSTALLED'), '8wj7a899zxqp7vnxaio4hamm6p3j651d', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => '8wj7a899zxqp7vnxaio4hamm6p3j651d', 'TEXT' => do_lang_tempcode('NO_FORUM_INSTALLED')));
         }
 
         require_css('personal_stats');

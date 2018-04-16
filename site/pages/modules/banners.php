@@ -450,7 +450,7 @@ class Module_banners
             'TITLE' => $this->title,
             'TEXT' => $text,
             'TABLE' => $table,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => null,
             'POST_URL' => get_self_url(),
         ));

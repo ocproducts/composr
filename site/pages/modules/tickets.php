@@ -1050,7 +1050,7 @@ class Module_tickets
             'HIDDEN' => '',
             'TEXT' => $text,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'menu--adminzone--security--permissions--privileges',
+            'SUBMIT_ICON' => 'menu/adminzone/security/permissions/privileges',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -1139,7 +1139,7 @@ class Module_tickets
             'HIDDEN' => '',
             'TEXT' => $text,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons--save',
+            'SUBMIT_ICON' => 'buttons/save',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));

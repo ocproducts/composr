@@ -464,7 +464,7 @@ class Module_admin_shopping
             'HIDDEN' => '',
             'FIELDS' => $fields,
             'URL' => $update_url,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
             'SUPPORT_AUTOSAVE' => true,
         ));
@@ -602,7 +602,7 @@ class Module_admin_shopping
             '_GUID' => 'e2e5097798c963f4977ba22b50ddf2f3',
             'SKIP_WEBSTANDARDS' => true,
             'TITLE' => $this->title,
-            'SUBMIT_ICON' => 'admin--export-csv',
+            'SUBMIT_ICON' => 'admin/export_csv',
             'SUBMIT_NAME' => do_lang_tempcode('EXPORT_ORDER_LIST'),
             'TEXT' => paragraph(do_lang_tempcode('EXPORT_ORDER_LIST_TEXT')),
             'URL' => build_url(array('page' => '_SELF', 'type' => '_export_orders'), '_SELF'),

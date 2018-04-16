@@ -42,7 +42,7 @@
 
 	{+START,IF_PASSED,URL}
 		<p class="shunted-button">
-			<a class="button-screen-item buttons--more" href="{URL*}"><span>{!VIEW}</span></a>
+			<a class="button-screen-item buttons--more" href="{URL*}"><span>{!VIEW}</span> {+START,INCLUDE,ICON}NAME=buttons/more{+END}</a>
 		</p>
 	{+END}
 </div></section>

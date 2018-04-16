@@ -85,6 +85,7 @@ class Block_side_network
                 'CONTENT' => $if_network,
             ));
         }
-        return paragraph(do_lang_tempcode('NO_OF_THIS', escape_html('config:NETWORK_LINKS')), '9gqq7bq3o09zkpt1i81x7exwo4ny6lve', 'red-alert');
+
+        return do_template('RED_ALERT',array('_GUID' => '9gqq7bq3o09zkpt1i81x7exwo4ny6lve', 'TEXT' => do_lang_tempcode('NO_OF_THIS', escape_html('config:NETWORK_LINKS'))));
     }
 }

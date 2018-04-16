@@ -656,7 +656,7 @@ class Module_admin_themes
             'URL' => $post_url,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'admin--add',
+            'SUBMIT_ICON' => 'admin/add',
             'SUBMIT_NAME' => $submit_name,
             'SUPPORT_AUTOSAVE' => true,
         ));
@@ -726,7 +726,7 @@ class Module_admin_themes
             'TEXT' => do_lang_tempcode('DESCRIPTION_EDIT_THEME', $date),
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin--edit-this',
+            'SUBMIT_ICON' => 'admin/edit_this',
             'SUBMIT_NAME' => $submit_name,
             'SUPPORT_AUTOSAVE' => true,
         ));
@@ -1024,7 +1024,7 @@ class Module_admin_themes
             'GET' => true,
             'URL' => $post_url,
             'FIELD' => $fields,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => new Tempcode(), // We don't want a button because clicking on images takes you through
         ));
 
@@ -1069,7 +1069,7 @@ class Module_admin_themes
             'URL' => $post_url,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'admin--add',
+            'SUBMIT_ICON' => 'admin/add',
             'SUBMIT_NAME' => $submit_name,
         ));
     }
@@ -1191,7 +1191,7 @@ class Module_admin_themes
             'URL' => $post_url,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'admin--edit-this',
+            'SUBMIT_ICON' => 'admin/edit_this',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

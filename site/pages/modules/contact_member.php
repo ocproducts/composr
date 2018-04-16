@@ -252,7 +252,7 @@ class Module_contact_member
             'JS_FUNCTION_CALLS' => ((function_exists('captcha_ajax_check_function')) && (captcha_ajax_check_function() != '')) ? array(captcha_ajax_check_function()) : array(),
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons--send',
+            'SUBMIT_ICON' => 'buttons/send',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
             'SUPPORT_AUTOSAVE' => true,

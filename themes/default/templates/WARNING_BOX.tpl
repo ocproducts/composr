@@ -1,7 +1,9 @@
 {+START,SET,warning_box}
-	<p class="red-alert{+START,IF_PASSED_AND_TRUE,INLINE} inline{+END}" role="error">
-		{WARNING}
-	</p>
+	{+START,INCLUDE,RED_ALERT}
+		ROLE=error
+		TEXT={WARNING}
+		INLINE={INLINE}
+	{+END}
 	{+START,IF_PASSED_AND_TRUE,INLINE}&nbsp;{+END}
 {+END}
 

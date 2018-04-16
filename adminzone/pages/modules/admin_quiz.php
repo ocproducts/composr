@@ -251,7 +251,7 @@ class Module_admin_quiz
             'TEXT' => do_lang_tempcode('EXPORT_QUIZ_TEXT'),
             'HIDDEN' => '',
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin--export-csv',
+            'SUBMIT_ICON' => 'admin/export_csv',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
             'POST' => true,
@@ -302,7 +302,7 @@ class Module_admin_quiz
             'TEXT' => $text,
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }
@@ -449,7 +449,7 @@ class Module_admin_quiz
             'TEXT' => '',
             'URL' => $post_url,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

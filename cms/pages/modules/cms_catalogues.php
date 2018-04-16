@@ -976,7 +976,7 @@ class Module_cms_catalogues extends Standard_crud_module
     {
         check_privilege('mass_import');
 
-        $catalogue_select = $this->choose_catalogue($this->title, 'admin--import-csv');
+        $catalogue_select = $this->choose_catalogue($this->title, 'admin/import_csv');
 
         if ($catalogue_select !== null) {
             return $catalogue_select;
@@ -1031,7 +1031,7 @@ class Module_cms_catalogues extends Standard_crud_module
             'TEXT' => do_lang_tempcode('CATALOGUE_IMPORT_TEXT'),
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin--import-csv',
+            'SUBMIT_ICON' => 'admin/import_csv',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
         ));
@@ -1101,7 +1101,7 @@ class Module_cms_catalogues extends Standard_crud_module
             access_denied('I_ERROR');
         }
 
-        $catalogue_select = $this->choose_catalogue($this->title, 'admin--export-csv');
+        $catalogue_select = $this->choose_catalogue($this->title, 'admin/export_csv');
 
         if ($catalogue_select !== null) {
             return $catalogue_select;

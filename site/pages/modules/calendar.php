@@ -763,7 +763,7 @@ class Module_calendar
             'TEXT' => do_lang_tempcode('DESCRIPTION_FEEDS_TO_OVERLAY'),
             'URL' => get_self_url(),
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
         ));
 
@@ -1692,7 +1692,7 @@ class Module_calendar
             'TEXT' => '',
             'FIELDS' => $fields,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

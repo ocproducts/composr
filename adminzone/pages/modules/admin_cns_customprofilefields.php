@@ -672,7 +672,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             'TITLE' => $this->title,
             'TEXT' => do_lang_tempcode('PREDEFINED_FIELDS_DESCRIPTION'),
             'TABLE' => $table,
-            'SUBMIT_ICON' => 'buttons--save',
+            'SUBMIT_ICON' => 'buttons/save',
             'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
             'POST_URL' => build_url(array('page' => '_SELF', 'type' => '_predefined_content'), '_SELF'),
         ));
@@ -762,7 +762,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             'FIELDS' => $fields,
             'TEXT' => '',
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

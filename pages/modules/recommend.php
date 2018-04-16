@@ -345,7 +345,7 @@ class Module_recommend
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons--send',
+            'SUBMIT_ICON' => 'buttons/send',
             'SUBMIT_NAME' => $submit_name,
             'TEXT' => $text,
             'SUPPORT_AUTOSAVE' => true,
@@ -595,7 +595,7 @@ class Module_recommend
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'menu--site-meta--recommend',
+            'SUBMIT_ICON' => 'menu/site_meta/recommend',
             'SUBMIT_NAME' => $submit_name,
             'TEXT' => $text,
         ));

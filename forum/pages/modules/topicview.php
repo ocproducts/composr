@@ -545,10 +545,10 @@ class Module_topicview
             if (get_option('threaded_buttons') == '1') {
                 if ($threaded) {
                     $view_as_linear_url = get_self_url(false, false, array('threaded' => 0));
-                    $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('_VIEW_AS_LINEAR'), 'url' => $view_as_linear_url, 'img' => 'buttons--linear');
+                    $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('_VIEW_AS_LINEAR'), 'url' => $view_as_linear_url, 'img' => 'buttons/linear');
                 } else {
                     $view_as_threaded_url = get_self_url(false, false, array('threaded' => 1));
-                    $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('_VIEW_AS_THREADED'), 'url' => $view_as_threaded_url, 'img' => 'buttons--threaded');
+                    $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('_VIEW_AS_THREADED'), 'url' => $view_as_threaded_url, 'img' => 'buttons/threaded');
                 }
             }
 
@@ -569,7 +569,7 @@ class Module_topicview
                         $map['threaded'] = $test_threaded;
                     }
                     $mark_read_url = build_url($map, get_module_zone('topics'));
-                    $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_READ'), 'url' => $mark_read_url, 'img' => 'buttons--mark-read-topic');
+                    $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_READ'), 'url' => $mark_read_url, 'img' => 'buttons/mark_read_topic');
                 } else {
                     if ((get_option('enable_mark_topic_unread') === '1') && !$too_old) {
                         $map = array('page' => 'topics', 'type' => 'mark_unread_topic', 'id' => $id);
@@ -582,7 +582,7 @@ class Module_topicview
                             $map['threaded'] = $test_threaded;
                         }
                         $mark_unread_url = build_url($map, get_module_zone('topics'));
-                        $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_UNREAD'), 'url' => $mark_unread_url, 'img' => 'buttons--mark-unread-topic');
+                        $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_UNREAD'), 'url' => $mark_unread_url, 'img' => 'buttons/mark_unread_topic');
                     }
                 }
             }
@@ -610,7 +610,7 @@ class Module_topicview
                             $map['threaded'] = $test_threaded;
                         }
                         $new_post_url = build_url($map, get_module_zone('topics'));
-                        $button_array[] = array('immediate' => false, 'rel' => 'add', 'title' => do_lang_tempcode('TICKET_STAFF_ONLY_REPLY'), 'url' => $new_post_url, 'img' => 'buttons--new-reply-staff-only');
+                        $button_array[] = array('immediate' => false, 'rel' => 'add', 'title' => do_lang_tempcode('TICKET_STAFF_ONLY_REPLY'), 'url' => $new_post_url, 'img' => 'buttons/new_reply_staff_only');
                     }
                 }
 
@@ -626,7 +626,7 @@ class Module_topicview
                             $map['threaded'] = $test_threaded;
                         }
                         $new_post_url = build_url($map, get_module_zone('topics'));
-                        $button_array[] = array('immediate' => false, 'rel' => 'add', 'title' => do_lang_tempcode($topic_info['is_open'] ? '_REPLY' : 'CLOSED'), 'url' => $new_post_url, 'img' => $topic_info['is_open'] ? 'buttons--new-reply' : 'buttons--closed');
+                        $button_array[] = array('immediate' => false, 'rel' => 'add', 'title' => do_lang_tempcode($topic_info['is_open'] ? '_REPLY' : 'CLOSED'), 'url' => $new_post_url, 'img' => $topic_info['is_open'] ? 'buttons/new_reply' : 'buttons/closed');
                     }
                 } else {
                     unset($topic_info['may_use_quick_reply']);
@@ -643,19 +643,19 @@ class Module_topicview
                     $map['threaded'] = $test_threaded;
                 }
                 $new_post_url = build_url($map, get_module_zone('topics'));
-                $button_array[] = array('immediate' => false, 'rel' => 'edit', 'title' => do_lang_tempcode('LAST_POST'), 'url' => $new_post_url, 'img' => 'admin--edit');
+                $button_array[] = array('immediate' => false, 'rel' => 'edit', 'title' => do_lang_tempcode('LAST_POST'), 'url' => $new_post_url, 'img' => 'admin/edit');
             }
 
             if ($topic_info['forum_id'] !== null) {
                 if (get_option('enable_add_topic_btn_in_topic') == '1') {
                     if (cns_may_post_topic($topic_info['forum_id'], get_member())) {
                         $new_topic_url = build_url(array('page' => 'topics', 'type' => 'new_topic', 'id' => $topic_info['forum_id']), get_module_zone('topics'));
-                        $button_array[] = array('immediate' => false, 'rel' => 'add', 'title' => do_lang_tempcode('ADD_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons--add-topic');
+                        $button_array[] = array('immediate' => false, 'rel' => 'add', 'title' => do_lang_tempcode('ADD_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons/add_topic');
                     }
                 }
             } else {
                 $invite_url = build_url(array('page' => 'topics', 'type' => 'invite_member', 'id' => $id), get_module_zone('topics'));
-                $button_array[] = array('immediate' => false, 'title' => do_lang_tempcode('_INVITE_MEMBER_TO_PT'), 'url' => $invite_url, 'img' => 'admin--add-to-category');
+                $button_array[] = array('immediate' => false, 'title' => do_lang_tempcode('_INVITE_MEMBER_TO_PT'), 'url' => $invite_url, 'img' => 'admin/add_to_category');
             }
         }
         $buttons = cns_button_screen_wrap($button_array);

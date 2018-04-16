@@ -312,7 +312,7 @@ class Module_admin_chat extends Standard_crud_module
             'HIDDEN' => '',
             'TITLE' => $this->title,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin--delete3',
+            'SUBMIT_ICON' => 'admin/delete3',
             'SUBMIT_NAME' => $posting_name,
             'URL' => $posting_url,
             'TEXT' => $text,

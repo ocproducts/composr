@@ -707,7 +707,7 @@ abstract class Standard_crud_module
      * @param  string $icon The icon to use
      * @return ?Tempcode The Tempcode for the catalogue chooser (null: already chosen)
      */
-    public function choose_catalogue($title, $icon = 'buttons--proceed')
+    public function choose_catalogue($title, $icon = 'buttons/proceed')
     {
         if (!$this->catalogue) {
             return null;
@@ -899,7 +899,7 @@ abstract class Standard_crud_module
 
         url_default_parameters__disable();
 
-        $submit_icon = ($this->type_code == 'category') ? 'admin--add-one-category' : 'admin--add';
+        $submit_icon = ($this->type_code == 'category') ? 'admin/add_one_category' : 'admin/add';
 
         $cancel_url = build_url(array('page' => '_SELF', 'clear_autosave' => 1), '_SELF');
         if (get_param_string('type', 'add') == 'add_catalogue') {
@@ -930,7 +930,7 @@ abstract class Standard_crud_module
                 'URL' => $post_url,
                 'FIELDS' => $fields->evaluate()/*FUDGE*/,
                 'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
-                'SUBMIT_ICON' => 'menu--cms--catalogues--add-one-catalogue',
+                'SUBMIT_ICON' => 'menu/cms/catalogues/add_one_catalogue',
                 'SUBMIT_NAME' => $submit_name,
                 'JS_FUNCTION_CALLS' => $this->js_function_calls,
             ) + $extra_tpl_params);
@@ -1222,7 +1222,7 @@ abstract class Standard_crud_module
                 'FORM_ID' => $this->form_id,
                 'TEXT' => $text,
                 'TABLE' => $table,
-                'SUBMIT_ICON' => 'buttons--sort',
+                'SUBMIT_ICON' => 'buttons/sort',
                 'SUBMIT_NAME' => $has_ordering ? do_lang_tempcode('SORT') : null,
                 'POST_URL' => get_self_url(),
                 'JS_FUNCTION_CALLS' => $this->js_function_calls_for_choose,
@@ -1278,7 +1278,7 @@ abstract class Standard_crud_module
             'TEXT' => $text,
             'URL' => $post_url,
             'FIELDS' => $fields->evaluate()/*FUDGE*/,
-            'SUBMIT_ICON' => 'admin--edit-this',
+            'SUBMIT_ICON' => 'admin/edit_this',
             'SUBMIT_NAME' => $submit_name,
             'SKIP_WEBSTANDARDS' => true,
             'EXTRA_BUTTONS' => $extra_buttons,
@@ -1505,7 +1505,7 @@ abstract class Standard_crud_module
                 'FIELDS' => $fields->evaluate()/*FUDGE*/,
                 'FIELDS_EXISTING' => $fields_existing->evaluate()/*FUDGE*/,
                 'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
-                'SUBMIT_ICON' => 'menu--cms--catalogues--edit-this-catalogue',
+                'SUBMIT_ICON' => 'menu/cms/catalogues/edit_this_catalogue',
                 'SUBMIT_NAME' => $submit_name,
                 'JS_FUNCTION_CALLS' => $this->js_function_calls,
             ) + $extra_tpl_params);
@@ -1513,7 +1513,7 @@ abstract class Standard_crud_module
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
-        $submit_icon = ($this->type_code == 'category') ? 'admin--edit-one-category' : 'admin--edit';
+        $submit_icon = ($this->type_code == 'category') ? 'admin/edit_one_category' : 'admin/edit';
 
         $cancel_url = build_url(array('page' => '_SELF', 'clear_autosave' => 1), '_SELF');
         if ($this->posting_form_title !== null) {

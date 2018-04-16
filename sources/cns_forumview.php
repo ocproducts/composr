@@ -371,19 +371,19 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
     if ((!is_guest()) && ($type != 'pt')) {
         if (get_option('enable_mark_forum_read') == '1') {
             $read_url = build_url(array('page' => 'topics', 'type' => 'mark_read', 'id' => $id), get_module_zone('topics'));
-            $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_READ'), 'url' => $read_url, 'img' => 'buttons--mark-read-forum');
+            $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_READ'), 'url' => $read_url, 'img' => 'buttons/mark_read_forum');
         }
     }
     if ($type != 'pt') {
         if (addon_installed('search')) {
             $search_url = build_url(array('page' => 'search', 'type' => 'browse', 'id' => 'cns_posts', 'search_under' => $id), get_module_zone('search'));
-            $button_array[] = array('immediate' => false, 'rel' => 'search', 'title' => do_lang_tempcode('SEARCH'), 'url' => $search_url, 'img' => 'buttons--search');
+            $button_array[] = array('immediate' => false, 'rel' => 'search', 'title' => do_lang_tempcode('SEARCH'), 'url' => $search_url, 'img' => 'buttons/search');
         }
         $new_topic_url = build_url(array('page' => 'topics', 'type' => 'new_topic', 'id' => $id), get_module_zone('topics'));
     } else {
         if (addon_installed('search')) {
             $search_url = build_url(array('page' => 'search', 'type' => 'browse', 'id' => 'cns_own_pt'), get_module_zone('search'));
-            $button_array[] = array('immediate' => false, 'rel' => 'search', 'title' => do_lang_tempcode('SEARCH'), 'url' => $search_url, 'img' => 'buttons--search');
+            $button_array[] = array('immediate' => false, 'rel' => 'search', 'title' => do_lang_tempcode('SEARCH'), 'url' => $search_url, 'img' => 'buttons/search');
         }
         $new_topic_url = build_url(array('page' => 'topics', 'type' => 'new_pt', 'id' => get_member()), get_module_zone('topics'));
     }
@@ -396,10 +396,10 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         if ($type == 'pt') {
             //if ($of_member_id!==get_member())    Actually we'll leave the "send message" button in your inbox, as a way for being able to type in who to send it to
             {
-                $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_PRIVATE_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons--send');
+                $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_PRIVATE_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons/send');
             }
         } else {
-            $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons--add-topic');
+            $button_array[] = array('immediate' => false, 'rel' => 'add nofollow', 'title' => do_lang_tempcode('ADD_TOPIC'), 'url' => $new_topic_url, 'img' => 'buttons/add_topic');
         }
     }
     $buttons = cns_button_screen_wrap($button_array);

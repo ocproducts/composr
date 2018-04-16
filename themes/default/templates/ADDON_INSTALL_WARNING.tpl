@@ -1,1 +1,4 @@
-<p class="red-alert" role="alert">{WARNING*}</p>
+{+START,INCLUDE,RED_ALERT}
+	ROLE=alert
+	TEXT={WARNING*}
+{+END}

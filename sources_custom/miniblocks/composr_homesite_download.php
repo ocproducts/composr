@@ -84,11 +84,11 @@ if (!function_exists('do_release')) {
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 if (!addon_installed('composr_homesite')) {
-    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')), 'o107q0s4tzjnq3djhc3e38wwfdywx1h7', 'red-alert');
+    return do_template('RED_ALERT',array('_GUID' => 'o107q0s4tzjnq3djhc3e38wwfdywx1h7', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite'))));
 }
 
 if (!addon_installed('downloads')) {
-    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')), 'gal8hu40ptk3dlran4bwiodqrpb41jqs', 'red-alert');
+    return do_template('RED_ALERT',array('_GUID' => 'gal8hu40ptk3dlran4bwiodqrpb41jqs', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('downloads'))));
 }
 
 require_lang('composr_homesite');

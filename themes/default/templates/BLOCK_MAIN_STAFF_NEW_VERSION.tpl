@@ -10,9 +10,7 @@
 			{VERSION_TABLE}
 
 			{+START,IF,{HAS_UPDATED_ADDONS}}
-				<p class="red-alert">
-					{!addons:SOME_ADDONS_UPDATED,{$PAGE_LINK*,_SEARCH:admin_addons}}
-				</p>
+				{+START,INCLUDE,RED_ALERT}TEXT={!addons:SOME_ADDONS_UPDATED,{$PAGE_LINK*,_SEARCH:admin_addons}}{+END}
 			{+END}
 
 			<div class="img-wrap">

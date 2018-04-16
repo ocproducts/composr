@@ -2,7 +2,10 @@
 
 {$REQUIRE_CSS,messages}
 
-<p class="red-alert" role="alert">{$?,{$IS_NON_EMPTY,{ANSWER}},{!FORUM_INTRO_QUESTION_TEXT},{!FORUM_INTRO_QUESTION_TEXT_ALT}}</p>
+{+START,INCLUDE,RED_ALERT}
+	ROLE=alert
+	TEXT={$?,{$IS_NON_EMPTY,{ANSWER}},{!FORUM_INTRO_QUESTION_TEXT},{!FORUM_INTRO_QUESTION_TEXT_ALT}}
+{+END}
 
 <div class="box box---cns-forum-intro-question-screen"><div class="box-inner">
 	{+START,IF_NON_EMPTY,{ANSWER}}

@@ -52,10 +52,10 @@ class Block_main_facebook_like
         }
 
         if (!function_exists('curl_init')) {
-            return paragraph(do_lang_tempcode('NO_CURL_ON_SERVER'), '5ldkzkb0bo25j30gmw653k5t7keqb1nv', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => '5ldkzkb0bo25j30gmw653k5t7keqb1nv', 'TEXT' => do_lang_tempcode('NO_CURL_ON_SERVER')));
         }
         if (!function_exists('session_status')) {
-            return paragraph('PHP session extension missing', '2kii599c4uz2g43k69ogp53wob87650o', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => '2kii599c4uz2g43k69ogp53wob87650o', 'TEXT' => 'PHP session extension missing'));
         }
 
         require_code('facebook_connect');
@@ -64,7 +64,7 @@ class Block_main_facebook_like
 
         $appid = get_option('facebook_appid');
         if ($appid == '') {
-            return paragraph(do_lang_tempcode('API_NOT_CONFIGURED', 'Facebook'), 'k3k28zaoxf1llhy49dvuihh0ptemcmd8', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'k3k28zaoxf1llhy49dvuihh0ptemcmd8', 'TEXT' => do_lang_tempcode('API_NOT_CONFIGURED', 'Facebook')));
         }
 
         return do_template('BLOCK_MAIN_FACEBOOK_LIKE', array(

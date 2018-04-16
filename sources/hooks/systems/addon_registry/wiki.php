@@ -226,7 +226,7 @@ class Hook_addon_registry_wiki
             'URL' => placeholder_url(),
             'TITLE' => do_lang_tempcode('EDIT'),
             'FULL_TITLE' => do_lang_tempcode('EDIT'),
-            'IMG' => 'admin--edit',
+            'IMG' => 'admin/edit',
         ));
         $extra->attach(do_lorem_template('BUTTON_SCREEN_ITEM', array(
             'REL' => 'move',
@@ -234,7 +234,7 @@ class Hook_addon_registry_wiki
             'URL' => placeholder_url(),
             'TITLE' => do_lang_tempcode('MOVE'),
             'FULL_TITLE' => do_lang_tempcode('MOVE'),
-            'IMG' => 'admin--move',
+            'IMG' => 'admin/move',
         )));
 
         $all_rating_criteria = array();
@@ -330,7 +330,7 @@ class Hook_addon_registry_wiki
             'EXTRA' => '',
             'POST_COMMENT' => lorem_phrase(),
             'EMOTICON_CHOOSER' => lorem_phrase(),
-            'SUBMIT_ICON' => 'admin--add',
+            'SUBMIT_ICON' => 'admin/add',
             'SUBMIT_NAME' => lorem_word(),
             'HIDDEN_FIELDS' => '',
             'URL' => placeholder_url(),

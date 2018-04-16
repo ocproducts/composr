@@ -44,7 +44,7 @@ function approve_ip_script()
             'URL' => $url,
             'FIELDS' => $fields,
             'TEXT' => do_lang_tempcode('MISSING_CONFIRM_CODE'),
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
         $echo = globalise($middle, null, '', true, true);

@@ -381,7 +381,7 @@ class Module_newsletter
             'JS_FUNCTION_CALLS' => array('newsletterNewsletterForm'),
             'HIDDEN' => '',
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
             'TITLE' => $this->title,

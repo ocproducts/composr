@@ -161,7 +161,15 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 									</a>
 								</li>
 							{+END}{+END}{+END}{+END}
-							<li><a href="{$PAGE_LINK*,adminzone:,,,,keep_theme}"><img title="{!ADMIN_ZONE}" alt="{!ADMIN_ZONE}" width="24" height="24" src="{$IMG*,icons/menu/adminzone/adminzone}" /></a></li>
+							<li>
+								<a href="{$PAGE_LINK*,adminzone:,,,,keep_theme}">
+									{+START,INCLUDE,ICON}
+										NAME=menu/adminzone/adminzone
+										TITLE={!ADMIN_ZONE}
+										SIZE=24
+									{+END}
+								</a>
+							</li>
 							{+START,IF,{$DESKTOP}}{+START,IF,{$EQ,{$BRAND_NAME},Composr}}
 								<li>
 									<a id="software-chat-button" accesskey="-" href="#!" class="js-global-click-load-software-chat">

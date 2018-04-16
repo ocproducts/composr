@@ -146,7 +146,7 @@ class Module_admin_unvalidated
                     'SKIP_REQUIRED' => true,
                     'GET' => true,
                     'HIDDEN' => '',
-                    'SUBMIT_ICON' => 'buttons--save',
+                    'SUBMIT_ICON' => 'buttons/save',
                     'SUBMIT_NAME' => do_lang_tempcode('EDIT'),
                     'FIELDS' => $fields,
                     'URL' => $post_url,

@@ -108,7 +108,7 @@ function get_afm_form()
         'JS_FUNCTION_CALLS' => array('abstractFileManagerGetAfmForm'),
         'SKIP_WEBSTANDARDS' => true,
         'HIDDEN' => $hidden,
-        'SUBMIT_ICON' => 'buttons--proceed',
+        'SUBMIT_ICON' => 'buttons/proceed',
         'SUBMIT_NAME' => $submit_name,
         'TITLE' => $title,
         'FIELDS' => $fields,

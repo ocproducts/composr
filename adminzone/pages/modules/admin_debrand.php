@@ -173,7 +173,7 @@ class Module_admin_debrand
             'URL' => $post_url,
             'FIELDS' => $fields,
             'TEXT' => do_lang_tempcode('WARNING_SUPER_DEBRAND_MAJOR_CHANGES'),
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

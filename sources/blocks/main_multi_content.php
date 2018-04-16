@@ -168,7 +168,7 @@ class Block_main_multi_content
         $select = isset($map['select']) ? $map['select'] : '';
         $select_b = isset($map['select_b']) ? $map['select_b'] : '';
         if ($select_b == '*') {
-            return paragraph(do_lang_tempcode('INTERNAL_ERROR'), 'nktad4b52ustiuhzvqzin9htz4g26vow', 'red-alert'); // Indicates some kind of referencing error, probably caused by Tempcode pre-processing - skip execution
+            return do_template('RED_ALERT',array('_GUID' => 'nktad4b52ustiuhzvqzin9htz4g26vow', 'TEXT' => do_lang_tempcode('INTERNAL_ERROR'))); // Indicates some kind of referencing error, probably caused by Tempcode pre-processing - skip execution
         }
         $filter = isset($map['filter']) ? $map['filter'] : '';
         $zone = isset($map['zone']) ? $map['zone'] : '_SEARCH';
@@ -180,14 +180,14 @@ class Block_main_multi_content
         $include_breadcrumbs = (isset($map['include_breadcrumbs']) ? $map['include_breadcrumbs'] : '0') == '1';
 
         if ((!file_exists(get_file_base() . '/sources/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true) . '.php')) && (!file_exists(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true) . '.php'))) {
-            return paragraph(do_lang_tempcode('NO_SUCH_CONTENT_TYPE', escape_html($content_type)), 'tbt2956j6oneq4j22bap5rbftytfigyg', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'tbt2956j6oneq4j22bap5rbftytfigyg', 'TEXT' => do_lang_tempcode('NO_SUCH_CONTENT_TYPE', escape_html($content_type))));
         }
 
         require_code('content');
         $object = get_content_object($content_type);
         $info = $object->info($zone, ($select_b == '') ? null : $select_b);
         if ($info === null) {
-            return paragraph(do_lang_tempcode('IMPOSSIBLE_TYPE_USED'), 'tfvwtgk7hc76qnc54y4t8ckdwf2my0d7', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'tfvwtgk7hc76qnc54y4t8ckdwf2my0d7', 'TEXT' => do_lang_tempcode('IMPOSSIBLE_TYPE_USED')));
         }
 
         $submit_url = $info['add_url'];

@@ -159,7 +159,7 @@ class Block_main_contact_simple
             'FIRST_POST' => '',
             'COMMENT_URL' => $comment_url,
             'SUBMIT_NAME' => do_lang_tempcode('SEND'),
-            'SUBMIT_ICON' => 'buttons--send',
+            'SUBMIT_ICON' => 'buttons/send',
             'SKIP_PREVIEW' => true,
             'ANALYTIC_EVENT_CATEGORY' => do_lang('CONTACT_US'),
         ));

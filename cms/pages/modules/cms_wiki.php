@@ -315,7 +315,7 @@ class Module_cms_wiki
             $fields2->attach(get_award_fields('wiki_page'));
         }
 
-        $posting_form = get_posting_form(do_lang('WIKI_ADD_PAGE'), 'admin--add-one-category', '', $add_url, $hidden, $fields, null, '', $fields2);
+        $posting_form = get_posting_form(do_lang('WIKI_ADD_PAGE'), 'admin/add_one_category', '', $add_url, $hidden, $fields, null, '', $fields2);
 
         url_default_parameters__disable();
 
@@ -395,7 +395,7 @@ class Module_cms_wiki
             'SKIP_WEBSTANDARDS' => true,
             'TITLE' => $this->title,
             'HIDDEN' => '',
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
             'TEXT' => $text,
             'FIELDS' => $fields,
@@ -461,7 +461,7 @@ class Module_cms_wiki
             $revisions = new Tempcode();
         }
 
-        $posting_form = get_posting_form(do_lang('SAVE'), 'admin--edit-this-category', $description, $edit_url, new Tempcode(), $fields, do_lang_tempcode('PAGE_TEXT'), '', $fields2, $_description, array(), null, false);
+        $posting_form = get_posting_form(do_lang('SAVE'), 'admin/edit_this_category', $description, $edit_url, new Tempcode(), $fields, do_lang_tempcode('PAGE_TEXT'), '', $fields2, $_description, array(), null, false);
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
@@ -587,7 +587,7 @@ class Module_cms_wiki
             'URL' => $post_url,
             'HIDDEN' => '',
             'TEXT' => '',
-            'SUBMIT_ICON' => 'buttons--save',
+            'SUBMIT_ICON' => 'buttons/save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
             'SUPPORT_AUTOSAVE' => true,
         ));

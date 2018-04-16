@@ -294,7 +294,7 @@ class Module_admin_cns_members
             'TITLE' => $this->title,
             'FIELDS' => $fields,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'menu--site-meta--user-actions--join',
+            'SUBMIT_ICON' => 'menu/site_meta/user_actions/join',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $url,
         ));
@@ -504,7 +504,7 @@ class Module_admin_cns_members
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }
@@ -719,7 +719,7 @@ class Module_admin_cns_members
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'admin--export-csv',
+            'SUBMIT_ICON' => 'admin/export_csv',
             'SUBMIT_NAME' => $submit_name,
             'TARGET' => '_blank',
             'JS_FUNCTION_CALLS' => $js_function_calls,
@@ -772,7 +772,7 @@ class Module_admin_cns_members
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'SUBMIT_ICON' => 'admin--import-csv',
+            'SUBMIT_ICON' => 'admin/import_csv',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

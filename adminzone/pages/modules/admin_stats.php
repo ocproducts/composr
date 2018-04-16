@@ -424,7 +424,7 @@ class Module_admin_stats
             'TEXT' => $message,
             'HIDDEN' => '',
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => do_lang_tempcode('CHOOSE'),
         ));
     }
@@ -1305,7 +1305,7 @@ class Module_admin_stats
             '_GUID' => '82f3410d45e4d9ea53b2c033792a3207',
             'SKIP_WEBSTANDARDS' => true,
             'TITLE' => $this->title,
-            'SUBMIT_ICON' => 'buttons--clear',
+            'SUBMIT_ICON' => 'buttons/clear',
             'SUBMIT_NAME' => do_lang_tempcode('CLEAR_STATISTICS'),
             'TEXT' => paragraph(do_lang_tempcode('DESCRIPTION_CLEAR_STATISTICS')),
             'URL' => build_url(array('page' => '_SELF', 'type' => '_clear'), '_SELF'),
@@ -1399,7 +1399,7 @@ class Module_admin_stats
         $query = 'SELECT id,date_and_time FROM ' . get_table_prefix() . 'stats WHERE (' . $where . ')' . $ip_filter . ' AND date_and_time>' . strval(time() - ($total * 60 * 60)) . ' AND date_and_time<=' . strval(time()) . ' ORDER BY ' . $sortable . ' ' . $sort_order;
         $rows = $GLOBALS['SITE_DB']->query($query, 10000/*reasonable limit*/);
         if ((count($rows) < 1) || (count($rows) == 10000)) {
-            $list = paragraph(do_lang_tempcode('TOO_MUCH_DATA'), '', 'red-alert');
+            $list = do_template('RED_ALERT',array('TEXT' => do_lang_tempcode('TOO_MUCH_DATA')));
             $graph = new Tempcode();
             return array($graph, $list);
         }

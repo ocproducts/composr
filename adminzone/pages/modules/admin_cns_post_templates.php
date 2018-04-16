@@ -195,7 +195,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
             '_GUID' => '7089deefe20d3917020610768e0f7f24',
             'TITLE' => $this->title,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin--import',
+            'SUBMIT_ICON' => 'admin/import',
             'SUBMIT_NAME' => do_lang_tempcode('IMPORT_STOCK_RESPONSES_PT'),
             'URL' => $post_url,
             'TEXT' => $text,

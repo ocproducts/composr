@@ -613,7 +613,7 @@ class Module_filedump
                 'TEXT' => $text,
                 'FIELDS' => $fields,
                 'SUBMIT_NAME' => $submit_name,
-                'SUBMIT_ICON' => 'admin--add',
+                'SUBMIT_ICON' => 'admin/add',
                 'URL' => $post_url,
             ));
         } else {
@@ -641,7 +641,7 @@ class Module_filedump
                 'TEXT' => '',
                 'FIELDS' => $fields,
                 'SUBMIT_NAME' => $submit_name,
-                'SUBMIT_ICON' => 'admin--add-one-category',
+                'SUBMIT_ICON' => 'admin/add_one_category',
                 'URL' => $post_url,
             ));
         } else {
@@ -933,7 +933,7 @@ class Module_filedump
             'TEXT' => '',
             'URL' => get_self_url(),
             'SUBMIT_NAME' => do_lang_tempcode('GENERATE_COMCODE'),
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'TARGET' => '_self',
         ));
 
@@ -1421,7 +1421,7 @@ class Module_filedump
             'URL' => $url,
             'TEXT' => '',
             'SUBMIT_NAME' => do_lang_tempcode('FIX_BROKEN_FILEDUMP_LINKS'),
-            'SUBMIT_ICON' => 'menu-adminzone-tools-cleanup',
+            'SUBMIT_ICON' => 'menu/adminzone/tools/cleanup',
         ));
     }
 

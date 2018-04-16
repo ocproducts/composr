@@ -16,7 +16,7 @@
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 if (!addon_installed('downloads_carousel')) {
-    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('downloads_carousel')), 'hu3oqghv6805h85kfm5tvmwnohi7c6m6', 'red-alert');
+    return do_template('RED_ALERT',array('_GUID' => 'hu3oqghv6805h85kfm5tvmwnohi7c6m6', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('downloads_carousel'))));
 }
 
 if (!isset($map['id'])) {

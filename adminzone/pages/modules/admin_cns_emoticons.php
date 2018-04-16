@@ -183,7 +183,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
             '_GUID' => '1910e01ec183392f6b254671dc7050a3',
             'TITLE' => $this->title,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin--import',
+            'SUBMIT_ICON' => 'admin/import',
             'SUBMIT_NAME' => do_lang_tempcode('BATCH_IMPORT_ARCHIVE_CONTENTS'),
             'URL' => $post_url,
             'TEXT' => $text,

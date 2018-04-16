@@ -64,7 +64,7 @@ class Block_main_google_map_users
         }
 
         if (get_forum_type() != 'cns') {
-            return paragraph(do_lang_tempcode('NO_CNS'), 'rly9gj7499putj5n2emik09qx1h3w1kg', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'rly9gj7499putj5n2emik09qx1h3w1kg', 'TEXT' => do_lang_tempcode('NO_CNS')));
         }
 
         require_lang('google_map_users');

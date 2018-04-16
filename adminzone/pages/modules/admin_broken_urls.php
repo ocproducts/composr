@@ -175,7 +175,7 @@ class Module_admin_broken_urls
             'URL' => $url,
             'FIELDS' => $fields,
             'TEXT' => '',
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }
@@ -289,7 +289,7 @@ class Module_admin_broken_urls
             'URL' => $url,
             'FIELDS' => $fields,
             'TEXT' => '',
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
 

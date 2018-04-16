@@ -182,7 +182,7 @@ class Module_admin_menus
             'TEXT' => do_lang_tempcode('CHOOSE_EDIT_LIST'),
             'FIELDS' => $fields,
             'URL' => $post_url,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }

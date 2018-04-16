@@ -980,7 +980,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
                     'TEXT' => '',
                     'URL' => $post_url,
                     'FIELDS' => $fields,
-                    'SUBMIT_ICON' => 'buttons--proceed',
+                    'SUBMIT_ICON' => 'buttons/proceed',
                     'SUBMIT_NAME' => $submit_name,
                 ));
             }

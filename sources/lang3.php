@@ -77,7 +77,7 @@ function _choose_language($title, $tip = false, $allow_all_selection = false)
         '_GUID' => '1a2823d450237aa299c095bf9c689a2a',
         'SKIP_WEBSTANDARDS' => true,
         'HIDDEN' => $hidden,
-        'SUBMIT_ICON' => 'buttons--proceed',
+        'SUBMIT_ICON' => 'buttons/proceed',
         'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
         'TITLE' => $title,
         'FIELDS' => $fields,

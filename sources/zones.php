@@ -1851,13 +1851,13 @@ function _check_block_installation_status($object, $codename)
                 (($installed_hack_version < $this_hack_version) && (array_key_exists('hack_require_upgrade', $info)))
             ) {
                 $error_msg = do_lang_tempcode('OUTDATED_ADDON_REMEDIES', escape_html($codename), escape_html(find_script('upgrader')));
-                return div($error_msg, '7jsfqaeaaf07kawlhnvteul10wm34bcu', 'red-alert');
+                return do_template('RED_ALERT',array('_GUID' => '7jsfqaeaaf07kawlhnvteul10wm34bcu', 'TEXT' => $error_msg));
             }
         } else {
             $_error_msg = do_lang('MISSING_BLOCK', escape_html($codename));
             $addon_manage_url = build_url(array('page' => 'admin_addons'), 'adminzone');
             $error_msg = do_lang_tempcode('BROKEN_ADDON_REMEDIES', $_error_msg, escape_html(find_script('upgrader')), escape_html(static_evaluate_tempcode($addon_manage_url)));
-            return div($error_msg, 'bolznyf0jx9omujol6xbmqetlcuo7d6b', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'bolznyf0jx9omujol6xbmqetlcuo7d6b', 'TEXT' => $error_msg));
         }
     }
 

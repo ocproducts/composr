@@ -237,7 +237,7 @@ class Module_sites
             'URL' => $post_url,
             'FIELDS' => $fields,
             'TEXT' => do_lang_tempcode('CMS_COPYWAIT'),
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => $submit_name,
         ));
     }
@@ -367,7 +367,7 @@ class Module_sites
             'URL' => $post_url,
             'FIELDS' => $fields,
             'TEXT' => '',
-            'SUBMIT_ICON' => 'buttons--upload',
+            'SUBMIT_ICON' => 'buttons/upload',
             'SUBMIT_NAME' => $submit_name,
         ));
     }
@@ -459,7 +459,7 @@ class Module_sites
         return do_template('FORM_SCREEN', array(
             '_GUID' => '0ed12af5b64c65a673b9837bd47a80b1',
             'TITLE' => $this->title,
-            'SUBMIT_ICON' => 'buttons--proceed',
+            'SUBMIT_ICON' => 'buttons/proceed',
             'SUBMIT_NAME' => do_lang('PROCEED'),
             'FIELDS' => $fields,
             'URL' => $post_url,

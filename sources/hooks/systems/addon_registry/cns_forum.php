@@ -565,7 +565,7 @@ class Hook_addon_registry_cns_forum
         $buttons = do_lorem_template('BUTTON_SCREEN_ITEM', array(
             'REL' => lorem_word(),
             'IMMEDIATE' => false,
-            'IMG' => 'buttons--proceed',
+            'IMG' => 'buttons/proceed',
             'URL' => placeholder_url(),
             'FULL_TITLE' => lorem_phrase(),
             'TITLE' => lorem_word(),
@@ -993,7 +993,7 @@ class Hook_addon_registry_cns_forum
             $buttons->attach(do_lorem_template('BUTTON_SCREEN', array(
                 'REL' => lorem_word(),
                 'URL' => placeholder_url(),
-                'IMG' => 'buttons--proceed',
+                'IMG' => 'buttons/proceed',
                 'TITLE' => lorem_word(),
                 'IMMEDIATE' => false,
             )));
@@ -1598,7 +1598,7 @@ class Hook_addon_registry_cns_forum
                     'REL' => lorem_word(),
                     'IMMEDIATE' => null,
                     'URL' => placeholder_url(),
-                    'IMG' => 'buttons--proceed',
+                    'IMG' => 'buttons/proceed',
                     'TITLE' => lorem_word(),
                 )));
             }
@@ -1673,7 +1673,7 @@ class Hook_addon_registry_cns_forum
                     'REL' => lorem_word(),
                     'IMMEDIATE' => '',
                     'URL' => placeholder_url(),
-                    'IMG' => 'buttons--proceed',
+                    'IMG' => 'buttons/proceed',
                     'FULL_TITLE' => lorem_phrase(),
                     'TITLE' => lorem_word(),
                 )));
@@ -1716,7 +1716,7 @@ class Hook_addon_registry_cns_forum
                 'REL' => lorem_word(),
                 'IMMEDIATE' => '',
                 'URL' => placeholder_url(),
-                'IMG' => 'buttons--proceed',
+                'IMG' => 'buttons/proceed',
                 'TITLE' => lorem_word(),
             )));
         }

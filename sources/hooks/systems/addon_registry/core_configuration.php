@@ -423,7 +423,7 @@ class Hook_addon_registry_core_configuration
                 'TITLE' => lorem_title(),
                 'URL' => placeholder_url(),
                 'GROUPS' => $groups,
-                'SUBMIT_ICON' => 'buttons--save',
+                'SUBMIT_ICON' => 'buttons/save',
                 'SUBMIT_NAME' => lorem_word(),
             )), null, '', true)
         );

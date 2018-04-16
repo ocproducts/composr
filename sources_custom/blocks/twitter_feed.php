@@ -63,11 +63,11 @@ class Block_twitter_feed
         }
 
         if (!addon_installed('twitter_support')) {
-            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('twitter_support')), '59lmyuy3bgj51mngrgsqxnmq8sfqv0k9', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => '59lmyuy3bgj51mngrgsqxnmq8sfqv0k9', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('twitter_support'))));
         }
 
         if (!function_exists('curl_init')) {
-            return paragraph(do_lang_tempcode('NO_CURL_ON_SERVER'), 'k7gu1s34g0hv67kahaq850b6a16926q9', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'k7gu1s34g0hv67kahaq850b6a16926q9', 'TEXT' => do_lang_tempcode('NO_CURL_ON_SERVER')));
         }
 
         $block_id = get_block_id($map);
@@ -78,12 +78,12 @@ class Block_twitter_feed
         $api_key = get_option('twitter_api_key');
         $api_secret = get_option('twitter_api_secret');
         if ($api_key == '' || $api_secret == '') {
-            return paragraph(do_lang_tempcode('API_NOT_CONFIGURED'), 'l7gu1s34g0hv67kahaq850b6a16926q9', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'l7gu1s34g0hv67kahaq850b6a16926q9', 'TEXT' => do_lang_tempcode('API_NOT_CONFIGURED')));
         }
         $token = get_value('twitter_oauth_token', null, true);
         $token_secret = get_value('twitter_oauth_token_secret', null, true);
         if ($token === null || $token_secret === null) {
-            return paragraph(do_lang_tempcode('API_NOT_CONFIGURED_OAUTH'), 'm7gu1s34g0hv67kahaq850b6a16926q9', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'm7gu1s34g0hv67kahaq850b6a16926q9', 'TEXT' => do_lang_tempcode('API_NOT_CONFIGURED_OAUTH')));
         }
         $twitter_name = array_key_exists('screen_name', $map) ? $map['screen_name'] : 'coolweens';
         $twitter_title = array_key_exists('title', $map) ? $map['title'] : 'Twitter Feed';

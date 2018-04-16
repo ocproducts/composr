@@ -267,7 +267,7 @@ class Module_admin_revisions
                 'URL' => $delete_url,
                 'FULL_TITLE' => do_lang_tempcode('DELETE_REVISION'),
                 'TITLE' => do_lang_tempcode('DELETE'),
-                'IMG' => 'admin--delete3',
+                'IMG' => 'admin/delete3',
             ));
             $_revision[] = $delete;
         }
@@ -281,7 +281,7 @@ class Module_admin_revisions
                 'URL' => $undo_url,
                 'FULL_TITLE' => do_lang_tempcode('UNDO_REVISION'),
                 'TITLE' => do_lang_tempcode('UNDO'),
-                'IMG' => 'buttons--undo',
+                'IMG' => 'buttons/undo',
             ));
             $_revision[] = $delete;
         }*/

@@ -73,7 +73,7 @@ class Block_bottom_forum_news
         }
 
         if (has_no_forum()) {
-            return paragraph(do_lang_tempcode('NO_FORUM_INSTALLED'), '5oomi6o1lipy2tch6rkgd7k9p3a6h2c8', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => '5oomi6o1lipy2tch6rkgd7k9p3a6h2c8', 'TEXT' => do_lang_tempcode('NO_FORUM_INSTALLED')));
         }
 
         $block_id = get_block_id($map);

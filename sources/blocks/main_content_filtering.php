@@ -67,7 +67,7 @@ class Block_main_content_filtering
             $content_type = $map['content_type'];
 
             if ((!file_exists(get_file_base() . '/sources/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type) . '.php')) && (!file_exists(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type) . '.php'))) {
-                return paragraph(do_lang_tempcode('NO_SUCH_CONTENT_TYPE', escape_html($content_type)), 'ljl05pjv55kfvezcsdjqeumi2299wysq', 'red-alert');
+                return do_template('RED_ALERT',array('_GUID' => 'ljl05pjv55kfvezcsdjqeumi2299wysq', 'TEXT' => do_lang_tempcode('NO_SUCH_CONTENT_TYPE', escape_html($content_type))));
             }
         }
 
@@ -89,7 +89,7 @@ class Block_main_content_filtering
             'FIELDS' => $fields,
             'ACTIVE_FILTER' => $filter,
             'LINKS' => $links,
-            'SUBMIT_ICON' => 'buttons--filter',
+            'SUBMIT_ICON' => 'buttons/filter',
         ));
     }
 

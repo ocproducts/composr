@@ -730,7 +730,7 @@ class Hook_addon_registry_catalogues
                 'URL' => placeholder_url(),
                 'FIELDS' => placeholder_fields(),
                 'FIELDS_NEW' => placeholder_form(),
-                'SUBMIT_ICON' => 'admin--add',
+                'SUBMIT_ICON' => 'admin/add',
                 'SUBMIT_NAME' => lorem_word(),
             )), null, '', true)
         );
@@ -756,7 +756,7 @@ class Hook_addon_registry_catalogues
                 'FIELDS' => placeholder_fields(),
                 'FIELDS_EXISTING' => placeholder_form(),
                 'FIELDS_NEW' => placeholder_form(),
-                'SUBMIT_ICON' => 'admin--edit-this',
+                'SUBMIT_ICON' => 'admin/edit_this',
                 'SUBMIT_NAME' => lorem_word(),
             )), null, '', true)
         );

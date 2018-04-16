@@ -218,8 +218,8 @@
 							{+END}
 
 							{+START,SET,button_title}{+START,IF_PASSED,SUBMIT_NAME}{SUBMIT_NAME*}{+END}{+START,IF_NON_PASSED,SUBMIT_NAME}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}{+END}{+START,IF_EMPTY,{TITLE}}{!SEND}{+END}{+END}{+END}
-							{+START,SET,button_icon}{+START,IF_PASSED,SUBMIT_ICON}{SUBMIT_ICON*}{+END}{+START,IF_NON_PASSED,SUBMIT_ICON}{+START,IF_NON_PASSED,MORE_URL}buttons--new-comment{+END}{+START,IF_PASSED,MORE_URL}buttons--new-reply{+END}{+END}{+END}
-							<button tabindex="8" accesskey="u" id="submit-button" class="{$GET,button_icon} {$?,{$GET,has_preview_button},near-preview-button,not-near-preview-button} {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} js-btn-submit-comments" type="button">{+START,IF,{$DESKTOP}}<span class="inline-desktop">{$GET,button_title}</span>{+END}<span class="inline-mobile">{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}}</span></button>
+							{+START,SET,button_icon}{+START,IF_PASSED,SUBMIT_ICON}{SUBMIT_ICON}{+END}{+START,IF_NON_PASSED,SUBMIT_ICON}{+START,IF_NON_PASSED,MORE_URL}buttons/new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons/new_reply{+END}{+END}{+END}
+							<button tabindex="8" accesskey="u" id="submit-button" class="{$?,{$GET,has_preview_button},near-preview-button,not-near-preview-button} {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} js-btn-submit-comments" type="button">{+START,INCLUDE,ICON}NAME={$GET,button_icon}{+END} {+START,IF,{$DESKTOP}}<span class="inline-desktop">{$GET,button_title}</span>{+END}<span class="inline-mobile">{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}}</span></button>
 						</div>
 					</div>
 				</div>

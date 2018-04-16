@@ -577,7 +577,7 @@ class Module_booking
                 'TEXT' => do_lang_tempcode('A_FEW_DETAILS'),
                 'HIDDEN' => $hidden,
                 'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'buttons--proceed',
+                'SUBMIT_ICON' => 'buttons/proceed',
                 'SUBMIT_NAME' => $submit_name,
                 'URL' => $url,
             ));

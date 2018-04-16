@@ -195,7 +195,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
             '_GUID' => 'bd30d8b0077567e3caf9239ed64204e5',
             'TITLE' => $this->title,
             'FIELDS' => $fields,
-            'SUBMIT_ICON' => 'admin--import',
+            'SUBMIT_ICON' => 'admin/import',
             'SUBMIT_NAME' => do_lang_tempcode('IMPORT_STOCK_RESPONSES'),
             'URL' => $post_url,
             'TEXT' => $text,

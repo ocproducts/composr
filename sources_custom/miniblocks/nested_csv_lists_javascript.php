@@ -16,7 +16,7 @@
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 if (!addon_installed('nested_cpf_csv_lists')) {
-    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('nested_cpf_csv_lists')), 'u31142oyccwcex2ojn8a35yy2k04j98i', 'red-alert');
+    return do_template('RED_ALERT',array('_GUID' => 'u31142oyccwcex2ojn8a35yy2k04j98i', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('nested_cpf_csv_lists'))));
 }
 
 require_code('nested_csv');

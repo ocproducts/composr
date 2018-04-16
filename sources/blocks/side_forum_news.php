@@ -69,11 +69,11 @@ class Block_side_forum_news
         }
 
         if (!addon_installed('news_shared')) {
-            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news_shared')), 'b4w69dc3o41hpa6uypivb8ag6xkgrown', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'b4w69dc3o41hpa6uypivb8ag6xkgrown', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('news_shared'))));
         }
 
         if (has_no_forum()) {
-            return paragraph(do_lang_tempcode('NO_FORUM_INSTALLED'), 'zgjxqjszggspvsjqhu2rbj21p145laoe', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'zgjxqjszggspvsjqhu2rbj21p145laoe', 'TEXT' => do_lang_tempcode('NO_FORUM_INSTALLED')));
         }
 
         require_css('news');

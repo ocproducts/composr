@@ -1,8 +1,8 @@
 <!-- CC-error -->
-
-<p class="red-alert" role="error">
-	{!CCP_ERROR,{LINE*},{MESSAGE*}}
-</p>
+{+START,INCLUDE,RED_ALERT}
+	ROLE=error
+	TEXT={!CCP_ERROR,{LINE*},{MESSAGE*}}
+{+END}
 
 <h2>{!SOURCE}</h2>
 

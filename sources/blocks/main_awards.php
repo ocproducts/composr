@@ -89,7 +89,7 @@ class Block_main_awards
         $award_description = get_translated_text($award_type_row['a_description']);
 
         if ((!file_exists(get_file_base() . '/sources/hooks/systems/content_meta_aware/' . filter_naughty_harsh($award_type_row['a_content_type']) . '.php')) && (!file_exists(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/' . filter_naughty_harsh($award_type_row['a_content_type']) . '.php'))) {
-            return paragraph(do_lang_tempcode('NO_SUCH_CONTENT_TYPE', $award_type_row['a_content_type']), '2ynzlkmrjkdpo76e5htq9t8bwl2q6jia', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => '2ynzlkmrjkdpo76e5htq9t8bwl2q6jia', 'TEXT' => do_lang_tempcode('NO_SUCH_CONTENT_TYPE', $award_type_row['a_content_type'])));
         }
 
         require_code('content');

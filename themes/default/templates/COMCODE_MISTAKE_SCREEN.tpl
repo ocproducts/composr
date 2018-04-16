@@ -4,10 +4,10 @@
 
 <div class="box box---comcode-mistake-screen"><div class="box-inner">
 	<h2>{!COMCODE_ERROR_TITLE}</h2>
-
-	<p class="red-alert" role="error">
-		{!COMCODE_ERROR,<a href="#errorat" target="_self">{MESSAGE}</a>,{LINE*}}
-	</p>
+	{+START,INCLUDE,RED_ALERT}
+		ROLE=error
+		TEXT={!COMCODE_ERROR,<a href="#errorat" target="_self">{MESSAGE}</a>,{LINE*}}
+	{+END}
 
 	<div class="float-surrounder">
 		<div class="comcode-error-help-div">

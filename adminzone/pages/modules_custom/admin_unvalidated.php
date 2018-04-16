@@ -147,7 +147,7 @@ class Module_admin_unvalidated
                     'SKIP_REQUIRED' => true,
                     'GET' => true,
                     'HIDDEN' => '',
-                    'SUBMIT_ICON' => 'admin--edit-this',
+                    'SUBMIT_ICON' => 'admin/edit_this',
                     'SUBMIT_NAME' => do_lang_tempcode('EDIT'),
                     'FIELDS' => $fields,
                     'URL' => $post_url,

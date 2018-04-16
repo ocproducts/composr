@@ -327,7 +327,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => do_lang_tempcode('CONTEXTUAL_EDITING_SCREEN'),
-            'SUBMIT_ICON' => 'buttons--save',
+            'SUBMIT_ICON' => 'buttons/save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
             'MODSECURITY_WORKAROUND' => true,
         ));
@@ -417,7 +417,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => do_lang_tempcode('CONTEXTUAL_EDITING_SCREEN'),
-            'SUBMIT_ICON' => 'buttons--save',
+            'SUBMIT_ICON' => 'buttons/save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
             'MODSECURITY_WORKAROUND' => true,
         ));

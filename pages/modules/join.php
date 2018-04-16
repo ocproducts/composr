@@ -244,7 +244,7 @@ class Module_join
                 'URL' => get_self_url(false, false, array(), false, true),
                 'FIELDS' => $fields,
                 'TEXT' => do_lang_tempcode('MISSING_CONFIRM_CODE'),
-                'SUBMIT_ICON' => 'buttons--proceed',
+                'SUBMIT_ICON' => 'buttons/proceed',
                 'SUBMIT_NAME' => $submit_name,
             ));
         }

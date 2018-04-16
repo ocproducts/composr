@@ -52,7 +52,7 @@ class Block_main_google_map
         }
 
         if (!addon_installed('catalogues')) {
-            return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('catalogues')), 'xulrf07ih9l80h4vjwdi4uxjgfg41hor', 'red-alert');
+            return do_template('RED_ALERT',array('_GUID' => 'xulrf07ih9l80h4vjwdi4uxjgfg41hor', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('catalogues'))));
         }
 
         require_code('catalogues');

@@ -167,7 +167,7 @@ class Module_admin_points
             'TEXT' => '',
             'HIDDEN' => '',
             'URL' => get_self_url(false, false, array(), false, true),
-            'SUBMIT_ICON' => 'admin--export-csv',
+            'SUBMIT_ICON' => 'admin/export_csv',
             'SUBMIT_NAME' => do_lang_tempcode('EXPORT'),
         ));
     }

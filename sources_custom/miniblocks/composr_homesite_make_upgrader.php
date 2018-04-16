@@ -16,14 +16,14 @@
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 if (!addon_installed('composr_homesite')) {
-    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite')), '0q6vvpwtbrnqw5y6wmpzn7kqechhxkv9', 'red-alert');
+    return do_template('RED_ALERT',array('_GUID' => '0q6vvpwtbrnqw5y6wmpzn7kqechhxkv9', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite'))));
 }
 
 if (!addon_installed('downloads')) {
-    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('downloads')), '033cdc5wtl2new7j2degs0lo2n2gbhwy', 'red-alert');
+    return do_template('RED_ALERT',array('_GUID' => '033cdc5wtl2new7j2degs0lo2n2gbhwy', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('downloads'))));
 }
 if (!addon_installed('news')) {
-    return paragraph(do_lang_tempcode('MISSING_ADDON', escape_html('news')), 'c39eg9wtj29jb07b15zkmno460d6712y', 'red-alert');
+    return do_template('RED_ALERT',array('_GUID' => 'c39eg9wtj29jb07b15zkmno460d6712y', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('news'))));
 }
 
 if (!function_exists('mu_ui')) {

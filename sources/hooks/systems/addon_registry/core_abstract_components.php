@@ -182,7 +182,7 @@ class Hook_addon_registry_core_abstract_components
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_word(),
                 'FULL_TITLE' => lorem_phrase(),
-                'IMG' => 'admin--edit',
+                'IMG' => 'admin/edit',
             )), null, '', true)
         );
     }
@@ -273,7 +273,7 @@ class Hook_addon_registry_core_abstract_components
                 'IMMEDIATE' => true,
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_word(),
-                'IMG' => 'buttons--proceed',
+                'IMG' => 'buttons/proceed',
             )), null, '', true)
         );
     }
