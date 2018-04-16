@@ -347,6 +347,7 @@ function get_default_gallery_max()
 
 /**
  * Find whether a certain gallery has any content (images, videos, or subgalleries).
+ * Doesn't do a recursive search.
  *
  * @param  ID_TEXT $name The name of the gallery
  * @return boolean The answer
@@ -362,11 +363,11 @@ function gallery_has_content($name)
         $GALLERY_ENTRIES_CATS_USED_CACHE = array();
         $images_cats = $GLOBALS['SITE_DB']->query_select('images', array('DISTINCT cat'), ($num_galleries < intval(get_option('general_safety_listing_limit'))) ? array('validated' => 1) : array('validated' => 1, 'cat' => $name));
         foreach ($images_cats as $images_cat) {
-            $GALLERY_ENTRIES_CATS_USED_CACHE[$images_cat['cat']] = 1;
+            $GALLERY_ENTRIES_CATS_USED_CACHE[$images_cat['cat']] = true;
         }
         $videos_cats = $GLOBALS['SITE_DB']->query_select('videos', array('DISTINCT cat'), ($num_galleries < intval(get_option('general_safety_listing_limit'))) ? array('validated' => 1) : array('validated' => 1, 'cat' => $name));
         foreach ($videos_cats as $videos_cat) {
-            $GALLERY_ENTRIES_CATS_USED_CACHE[$videos_cat['cat']] = 1;
+            $GALLERY_ENTRIES_CATS_USED_CACHE[$videos_cat['cat']] = true;
         }
     }
     if (array_key_exists($name, $GALLERY_ENTRIES_CATS_USED_CACHE)) {
