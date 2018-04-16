@@ -334,7 +334,7 @@ function cms_getimagesize($path, $ext = null)
  * @param  ?string $ext File extension (null: unknown)
  * @return ~array The width and height (false: error)
  */
-function cms_getimagesizefromstring($data, $ext)
+function cms_getimagesizefromstring($data, $ext = null)
 {
     if ($ext === 'gif') { // Workaround problem with animated gifs
         $header = unpack('@6/' . 'vwidth/' . 'vheight', $data);
@@ -751,7 +751,7 @@ function cms_imagecreatefrom($path, $ext = null)
  * @param  ?string $ext File extension (null: unknown)
  * @return ~resource Image resource (false: error)
  */
-function cms_imagecreatefromstring($data, $ext)
+function cms_imagecreatefromstring($data, $ext = null)
 {
     if (!function_exists('imagecreatefromstring')) {
         return false;
