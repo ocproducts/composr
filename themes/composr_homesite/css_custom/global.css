@@ -973,6 +973,9 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 	opacity: 0; /* So browser doesn't waste resources rendering (cannot use visibility, Mac Voiceover will not pick up on it) */
 	display: block; /* stops browser bugs where it interacts with the layout flow incorrectly */
 }
+.email_body .accessibility_hidden {
+	display: none;
+}
 
 .non_accessibility_redundancy { /* Contents should be skipped by screen readers */
 	/*{+START,IF,{$MOBILE}}*/
@@ -2468,6 +2471,9 @@ div.ajax_loading, p.ajax_loading {
 }
 .rating_star_highlight {
 	{$BETA_CSS_PROPERTY,opacity: 1.0;} display: inline-block;/*Needed for IE8*/
+}
+.email_body .rating_star {
+	display: none;
 }
 
 .rating_likers a+a {

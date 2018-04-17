@@ -272,6 +272,9 @@ div.cns_table_footer>div>div {
 	padding: 0.3em;
 	vertical-align: middle;
 }
+.email_body .cns_topic>div>div>div:first-child {
+	width: 70px;
+}
 
 .cns_post_box .cns_topic>div>div>div {
 	border: 0;
