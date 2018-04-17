@@ -398,11 +398,11 @@ class Database_super_mysql
     {
         switch ($type) {
             case 'CHAR':
-                $_type = $type;
+                $_type = $type . '(255)';
                 break;
 
             case 'INT':
-                $_type = 'SIGNED';
+                $_type = 'SIGNED INTEGER';
                 break;
 
             case 'FLOAT':

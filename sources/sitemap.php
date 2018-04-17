@@ -318,6 +318,11 @@ abstract class Hook_sitemap_base
                 $zone = $matches[1]; // $page_link was known, $zone was known, but mismatch so assume $zone was wrong
             } // else change nothing ($page_link was known, $zone was known)
         }
+
+        if (($zone == 'site') && (get_option('collapse_user_zones') == '1')) {
+            $zone = '';
+        }
+
         // Correct the page-link from the zone
         $page_link = preg_replace('#^_SEARCH(:|$)#', $zone . '${1}', $page_link);
 
@@ -1074,6 +1079,14 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                 do {
                     $rows = $cma_info['connection']->query_select($table, $select, $where, (is_null($explicit_order_by_subcategories) ? '' : ('ORDER BY ' . $explicit_order_by_subcategories)), SITEMAP_MAX_ROWS_PER_LOOP, $start, false, $lang_fields);
                     foreach ($rows as $child_row) {
+                        // FUDGE
+                        if (($table == 'galleries r') && (addon_installed('galleries')) && (get_option('show_empty_galleries') == '0')) {
+                            require_code('galleries');
+                            if (!gallery_has_content($child_row['name'])) {
+                                continue;
+                            }
+                        }
+
                         if ($this->content_type == 'comcode_page') {
                             $child_page_link = $zone . ':' . $child_row['the_page'];
                         } else {

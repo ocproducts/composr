@@ -296,6 +296,12 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
             }
         }
 
+        if ((!$as_admin) && (!has_privilege(($source_member === null) ? get_member() : $source_member, 'search_engine_links'))) {
+            $rel = 'nofollow';
+        } else {
+            $rel = null;
+        }
+
         switch ($data['type']) {
             case 'photo':
                 $map = array(
@@ -342,6 +348,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
                     'WIDTH' => array_key_exists('width', $data) ? $data['width'] : '',
                     'HEIGHT' => array_key_exists('height', $data) ? $data['height'] : '',
                     'URL' => $url,
+                    'REL' => $rel,
                 ));
 
             case 'link':
@@ -359,6 +366,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
                     'URL' => $url,
                     'WIDTH' => ((array_key_exists('thumbnail_width', $attributes)) && ($attributes['thumbnail_width'] != '')) ? $attributes['thumbnail_width'] : get_option('thumb_width'),
                     'HEIGHT' => ((array_key_exists('thumbnail_height', $attributes)) && ($attributes['thumbnail_height'] != '')) ? $attributes['thumbnail_height'] : get_option('thumb_width'),
+                    'REL' => $rel,
                 ));
         }
 

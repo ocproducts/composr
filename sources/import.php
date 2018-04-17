@@ -161,7 +161,8 @@ function find_derivative_filename($dir, $file, $shun_gif = false)
     $i = 2;
     // Hunt with sensible names until we don't get a conflict
     while (file_exists($place)) {
-        $_file = strval($i) . $file;
+        $ext = '.' . get_file_extension($file);
+        $_file = basename($file, $ext) . '_' . strval($i) . $ext;
         $place = get_file_base() . '/' . $dir . '/' . $_file;
         $i++;
     }

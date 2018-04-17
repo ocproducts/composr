@@ -377,12 +377,15 @@ class Forum_driver_cns extends Forum_driver_base
      * Try to find the theme that the logged-in/guest member is using, and map it to a Composr theme.
      * The themes/map.ini file functions to provide this mapping between forum themes, and Composr themes, and has a slightly different meaning for different forum drivers. For example, some drivers map the forum themes theme directory to the Composr theme name, while others made the humanly readeable name.
      *
-     * @param  boolean $skip_member_specific Whether to avoid member-specific lookup
+     * @param  boolean $skip_member_specific Whether to avoid member-specific lookup (i.e. find via what forum theme is currently configured as the default)
+     * @param  ?MEMBER $member The member to find for (null: current member)
      * @return ID_TEXT The theme
      */
-    public function _get_theme($skip_member_specific = false)
+    public function _get_theme($skip_member_specific = false, $member = null)
     {
-        $member = get_member();
+        if ($member === null) {
+            $member = get_member();
+        }
         $theme = '';
         if (!$skip_member_specific) {
             if ($member != $this->get_guest_id()) {
@@ -1764,7 +1767,7 @@ class Forum_driver_cns extends Forum_driver_base
             return $this->MEMBER_ROWS_CACHED[$member];
         }
 
-        $rows = $this->connection->query_select('f_members', array('*'), array('id' => $member), '', 1);
+        $rows = $this->connection->query_select('f_members m LEFT JOIN ' . $this->connection->get_table_prefix() . 'f_member_custom_fields c ON c.mf_member_id=m.id', array('*'), array('id' => $member), '', 1);
         if (!array_key_exists(0, $rows)) {
             $this->MEMBER_ROWS_CACHED[$member] = null;
             return null;

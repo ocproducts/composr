@@ -431,8 +431,8 @@ function cns_get_custom_field_mappings($member_id)
     if (!isset($MEMBER_CACHE_FIELD_MAPPINGS[$member_id])) {
         $row = array('mf_member_id' => $member_id);
 
-        $query = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields', array('*'), $row, '', 1);
-        if (!isset($query[0])) { // Repair
+        $query = $GLOBALS['FORUM_DB']->query_select('f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields c ON c.mf_member_id=m.id', array('*'), $row, '', 1);
+        if (!isset($query[0]['mf_member_id'])) { // Repair
             $value = mixed();
             $row = array();
 
@@ -462,8 +462,11 @@ function cns_get_custom_field_mappings($member_id)
                 }
             }
             $row = array('mf_member_id' => $member_id) + $row;
-            $GLOBALS['FORUM_DB']->query_insert('f_member_custom_fields', $row);
-            $query = array($row);
+            $GLOBALS['FORUM_DB']->query_insert('f_member_custom_fields', $row, false, true);
+            if (!isset($query[0])) {
+                $query[0] = array();
+            }
+            $query[0] += array($row);
         }
         $MEMBER_CACHE_FIELD_MAPPINGS[$member_id] = $query[0];
     }

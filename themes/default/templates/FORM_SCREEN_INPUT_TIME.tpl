@@ -10,6 +10,6 @@
 
 <script>// <![CDATA[
 	add_event_listener_abstract(window,'load',function() {
-		$('#{NAME;/}').inputTime({});
+		if (!Modernizr.inputtypes.time) $('#{NAME;/}').inputTime({});
 	});
 //]]></script>
