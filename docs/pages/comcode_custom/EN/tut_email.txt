@@ -23,6 +23,11 @@ If you wish to change your password to something more memorable you can do so by
 
 You can see it is fed with various parameters, and is written in [page="_SEARCH:tut_comcode"]Comcode[/page].
 
+[box="Remember mobile devices"]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tip.png[/media]
+When designing an e-mail layout, make sure it will look okay on a narrow smartphone screen in portrait mode.
+[/box]
+
 [title="2"]Configuration options[/title]
 
 Configuration options warranting particular discussion are:

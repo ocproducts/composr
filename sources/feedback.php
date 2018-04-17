@@ -591,7 +591,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
                     $cma_content_row = content_get_row($content_id, $cma_ob->info());
                     if (!is_null($cma_content_row)) {
                         push_no_keep_context();
-                        $rendered = static_evaluate_tempcode($cma_ob->run($cma_content_row, '_SEARCH', true, true));
+                        $rendered = static_evaluate_tempcode($cma_ob->run($cma_content_row, '_SEARCH', $real_content_type != 'post'/*FUDGE - to conserve space*/, true));
                         pop_no_keep_context();
                     }
                 }
