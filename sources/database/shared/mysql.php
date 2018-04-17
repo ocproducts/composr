@@ -398,7 +398,7 @@ class Database_super_mysql
     {
         switch ($type) {
             case 'CHAR':
-                $_type = $type.'(255)';
+                $_type = $type . '(255)';
                 break;
 
             case 'INT':

@@ -1080,7 +1080,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                     $rows = $cma_info['connection']->query_select($table, $select, $where, (is_null($explicit_order_by_subcategories) ? '' : ('ORDER BY ' . $explicit_order_by_subcategories)), SITEMAP_MAX_ROWS_PER_LOOP, $start, false, $lang_fields);
                     foreach ($rows as $child_row) {
                         // FUDGE
-                        if (($table == 'galleries r') && (get_option('show_empty_galleries') == '0')) {
+                        if (($table == 'galleries r') && (addon_installed('galleries')) && (get_option('show_empty_galleries') == '0')) {
                             require_code('galleries');
                             if (!gallery_has_content($child_row['name'])) {
                                 continue;

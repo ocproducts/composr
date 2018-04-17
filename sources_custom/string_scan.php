@@ -162,6 +162,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ACCEPTED_MEDIA_TYPES
         WORDFILTER
         AUDIT
+        DESCRIPTION_REORGANISE_UPLOADS
+        REORGANISE_UPLOADS
         KA_CHING
         PLEASE_STATE
         VIDEO_WAS_AUTO_IMPORTED

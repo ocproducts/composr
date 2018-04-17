@@ -96,6 +96,8 @@ function _cms_rawurlrecode($url, $tolerate_errors)
 
 /**
  * Class to encode/decode URLs to make them valid/readable. It is a safe operation in each direction, no amount of random conversions back/forth can corrupt.
+ *
+ * @package        core
  */
 class HarmlessURLCoder
 {

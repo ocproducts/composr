@@ -30,7 +30,7 @@ class Hook_task_reorganise_uploads
      */
     public function run()
     {
-        $hooks = find_all_hooks('systems', 'reorganise_uploads'); // TODO: change in v11
+        $hooks = find_all_hooks('systems', 'reorganise_uploads'); // TODO: Fix in v11
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/systems/reorganise_uploads/' . $hook);
             $ob = object_factory('Hook_reorganise_uploads_' . $hook);
