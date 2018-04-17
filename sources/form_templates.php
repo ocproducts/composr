@@ -1287,15 +1287,16 @@ function form_input_password($pretty_name, $description, $name, $required, $tabi
  * @param  boolean $ticked Whether this is ticked by default
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  ID_TEXT $value The value the checkbox passes when ticked
+ * @param  boolean $disabled Whether this is disabled
  * @return Tempcode The input field
  */
-function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex = null, $value = '1')
+function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex = null, $value = '1', $disabled = false)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
     $ticked = (filter_form_field_default($name, $ticked ? '1' : '0') == '1');
 
-    $input = do_template('FORM_SCREEN_INPUT_TICK', array('_GUID' => '340a68c271b838d327f042d101df27eb', 'VALUE' => $value, 'CHECKED' => $ticked, 'TABINDEX' => strval($tabindex), 'NAME' => $name));
+    $input = do_template('FORM_SCREEN_INPUT_TICK', array('_GUID' => '340a68c271b838d327f042d101df27eb', 'VALUE' => $value, 'CHECKED' => $ticked, 'TABINDEX' => strval($tabindex), 'NAME' => $name, 'DISABLED' => $disabled));
     return _form_input($name, $pretty_name, $description, $input, false, false, $tabindex);
 }
 
@@ -1430,7 +1431,11 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     $field_url = $set_name . '__url';
 
-    $field_set->attach(form_input_url(do_lang_tempcode('URL'), do_lang_tempcode('DESCRIPTION_ALTERNATE_URL'), $field_url, $default, $required));
+    require_code('urls_simplifier');
+    $coder_ob = new HarmlessURLCoder();
+    $_default = $coder_ob->decode($default);
+
+    $field_set->attach(form_input_url(do_lang_tempcode('URL'), do_lang_tempcode('DESCRIPTION_ALTERNATE_URL'), $field_url, $_default, $required));
 
     // Filedump
     // --------
@@ -1914,6 +1919,8 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
 
     $tabindex = get_form_field_tabindex($tabindex);
 
+    require_code('images');
+
     $selected_code = filter_form_field_default($name, is_null($selected_code) ? '' : $selected_code);
     if ($selected_code == '') {
         $selected_code = null;
@@ -1989,7 +1996,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 $pos = strpos($selected_url, '/' . $id);
                 $selected = false;
                 if ($id != '') {
-                    $selected = (find_theme_image($id, false, false, null, null, $db) == $selected_url) || (find_theme_image($id, false, true, null, null, $db) == $selected_url);
+                    $selected = (cms_rawurlrecode(find_theme_image($id, false, false, null, null, $db)) == cms_rawurlrecode($selected_url)) || (cms_rawurlrecode(find_theme_image($id, false, true, null, null, $db)) == cms_rawurlrecode($selected_url));
                 }
                 if ($selected) {
                     $selected_code = $id;
@@ -2020,9 +2027,9 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
 
             $file_path = convert_url_to_path($url);
             if (!is_null($file_path)) {
-                $test = @getimagesize($file_path);
+                $test = cms_getimagesize($file_path);
             } else {
-                $test = @getimagesize($url);
+                $test = false;
             }
             if ($test !== false) {
                 list($width, $height) = $test;

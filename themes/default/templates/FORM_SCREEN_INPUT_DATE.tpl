@@ -18,7 +18,7 @@
 
 <script>// <![CDATA[
 	add_event_listener_abstract(window,'load',function() {
-		$('#{NAME;/}').inputDate({});
-		$('#{NAME;/}_time').inputTime({});
+		if (!Modernizr.inputtypes.date) $('#{NAME;/}').inputDate({});
+		if (!Modernizr.inputtypes.time) $('#{NAME;/}_time').inputTime({});
 	});
 //]]></script>

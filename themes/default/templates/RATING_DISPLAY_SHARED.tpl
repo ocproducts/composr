@@ -16,9 +16,14 @@
 	</span>
 
 	{+START,IF_NON_PASSED_OR_FALSE,NO_PEOPLE_SHOWN}{+START,IF,{LIKES}}{+START,IF_PASSED,LIKED_BY}{+START,IF_NON_EMPTY,{LIKED_BY}}
+<<<<<<< HEAD
 		<span class="rating_likers">
 			{$SET,done_one_liker,0}
 			{+START,LOOP,LIKED_BY}{+START,IF_NON_EMPTY,{$AVATAR,{MEMBER_ID}}}{+START,IF,{$NOT,{$GET,done_one_liker,0}}}({+END}<a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}"><img width="10" height="10" src="{$ENSURE_PROTOCOL_SUITABILITY*,{$AVATAR,{MEMBER_ID}}}" title="{!LIKED_BY} {USERNAME*}" alt="{!LIKED_BY} {$DISPLAYED_USERNAME*,{USERNAME}}" /></a>{$SET,done_one_liker,1}{+END}{+END}{+START,IF,{$GET,done_one_liker,0}}){+END}
 		</span>
+=======
+		{$SET,done_one_liker,0}
+		{+START,LOOP,LIKED_BY}{+START,IF_NON_EMPTY,{$AVATAR,{MEMBER_ID}}}{+START,IF,{$NOT,{$GET,done_one_liker,0}}}({+END}<a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}"><img width="10" height="10" style="width: 10px; height: 10px"{$,LEGACY- fixes display issues on Mac OS Mail app} src="{$ENSURE_PROTOCOL_SUITABILITY*,{$AVATAR,{MEMBER_ID}}}" title="{!LIKED_BY} {USERNAME*}" alt="{!LIKED_BY} {$DISPLAYED_USERNAME*,{USERNAME}}" /></a>{$SET,done_one_liker,1}{+END}{+END}{+START,IF,{$GET,done_one_liker,0}}){+END}
+>>>>>>> master
 	{+END}{+END}{+END}{+END}
 {+END}

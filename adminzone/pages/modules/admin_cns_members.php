@@ -343,32 +343,33 @@ class Module_admin_cns_members
         $pt_rules_text = post_param_string('pt_rules_text', '');
         $auto_mark_read = post_param_integer('auto_mark_read', 0);
 
-        // Add member
-        $password_compatibility_scheme = ((post_param_integer('temporary_password', 0) == 1) ? 'temporary' : '');
-        $id = cns_make_member($username, $password, $email_address, null, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $primary_group, $validated, time(), null, '', null, '', 0, $preview_posts, $reveal_age, '', '', '', $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, '', '', true, $password_compatibility_scheme, '', null, null, post_param_integer('highlighted_name', 0), $pt_allow, $pt_rules_text, null, $auto_mark_read);
-
-        if (addon_installed('content_reviews')) {
-            require_code('content_reviews2');
-            content_review_set('member', strval($id));
-        }
-
         // Secondary groups
+        $members_groups = array();
         if (array_key_exists('secondary_groups', $_POST)) {
-            require_code('cns_groups_action2');
-            $members_groups = array();
             $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
             $groups = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), ($group_count > 200) ? array('g_is_private_club' => 0) : null));
             foreach ($_POST['secondary_groups'] as $group_id) {
                 $group = $groups[intval($group_id)];
 
-                if (($group['g_hidden'] == 1) && (!in_array($group['id'], $members_groups)) && (!has_privilege(get_member(), 'see_hidden_groups'))) {
+                if ((!has_privilege(get_member(), 'see_hidden_groups')) && ($group['g_hidden'] == 1)) {
                     continue;
                 }
 
-                if ((in_array($group['id'], $members_groups)) || (has_privilege(get_member(), 'assume_any_member')) || ($group['g_open_membership'] == 1)) {
-                    cns_add_member_to_group($id, $group['id']);
+                if ((!has_privilege(get_member(), 'assume_any_member')) && ($group['g_open_membership'] == 0)) {
+                    continue;
                 }
+
+                $members_groups[] = $group['id'];
             }
+        }
+
+        // Add member
+        $password_compatibility_scheme = ((post_param_integer('temporary_password', 0) == 1) ? 'temporary' : '');
+        $id = cns_make_member($username, $password, $email_address, $members_groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $primary_group, $validated, time(), null, '', null, '', 0, $preview_posts, $reveal_age, '', '', '', $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, '', '', true, $password_compatibility_scheme, '', null, null, post_param_integer('highlighted_name', 0), $pt_allow, $pt_rules_text, null, $auto_mark_read);
+
+        if (addon_installed('content_reviews')) {
+            require_code('content_reviews2');
+            content_review_set('member', strval($id));
         }
 
         $special_links = array();

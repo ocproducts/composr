@@ -891,7 +891,8 @@ function remap_portable_as_urlpath($portable_data, $ignore_conflicts = false)
                 break;
             }
 
-            $filename = strval($i) . preg_replace('#\..*\.#', '.', basename(urldecode($urlpath)));
+            $ext = '.' . get_file_extension($urlpath);
+            $filename = basename(preg_replace('#\..*\.#', '.', urldecode($urlpath)), $ext) . '_' . strval($i) . $ext;
             $place = get_custom_file_base() . '/' . dirname(urldecode($urlpath)) . '/' . $filename;
             $urlpath = dirname($urlpath) . '/' . urlencode($filename);
             $i++;

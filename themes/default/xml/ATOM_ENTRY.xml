@@ -1,7 +1,7 @@
 	<entry>
 		<title type="html">{TITLE}</title>
 		<link rel="alternate" href="{VIEW_URL*}" />
-		<id>{VIEW_URL*}#{ID*}</id>
+		<id>{VIEW_URL*}#{ID|*}</id>
 		{+START,IF_NON_EMPTY,{DATE}}
 			<published>{DATE*}</published>
 		{+END}

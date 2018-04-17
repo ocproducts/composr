@@ -1523,3 +1523,21 @@ function check_url_exists($url, $test_freq_secs)
 
     return ($exists == 1);
 }
+
+/**
+ * Remove unnecessarily paranoid URL-encoding if needed, so the given URL will fit in the database.
+ *
+ * @param  URLPATH $url The URL
+ * @param  boolean $force Whether to force a conversion even if the URL is not that long
+ * @param  boolean $tolerate_errors If this is set to false then an error message will be shown if the URL is still too long after we do what we can; set to true if we have someway of further shortening the URL after this function is called
+ * @return URLPATH The shortened URL
+ */
+function cms_rawurlrecode($url, $force = false, $tolerate_errors = false)
+{
+    if ((cms_mb_strlen($url) > 255) || ($force)) {
+        require_code('urls_simplifier');
+        $url = _cms_rawurlrecode($url, $tolerate_errors);
+    }
+
+    return $url;
+}

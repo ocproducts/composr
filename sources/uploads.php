@@ -32,6 +32,37 @@ function init__uploads()
         define('CMS_UPLOAD_SWF', 8); // Banners
         define('CMS_UPLOAD_ANYTHING', 15);
     }
+
+    require_code('images_cleanup_pipeline');
+    require_code('urls_simplifier');
+
+    reset_images_cleanup_pipeline_settings();
+}
+
+/**
+ * Reset the images cleanup pipeline settings.
+ */
+function reset_images_cleanup_pipeline_settings()
+{
+    global $ICPS__RECOMPRESS_MODE, $ICPS__MAXIMUM_DIMENSION, $ICPS__WATERMARKS;
+    $ICPS__RECOMPRESS_MODE = IMG_RECOMPRESS_LOSSLESS;
+    $ICPS__MAXIMUM_DIMENSION = null;
+    $ICPS__WATERMARKS = null;
+}
+
+/**
+ * Set the images cleanup pipeline settings.
+ *
+ * @param  integer $recompress_mode How to recompress, an IMG_RECOMPRESS_* constant
+ * @param  ?integer $maximum_dimension The size of the bounding box (null: none)
+ * @param  ?array $watermarks Watermark corners (top-left, top-right, bottom-left, bottom-right) (null: none)
+ */
+function set_images_cleanup_pipeline_settings($recompress_mode = 0, $maximum_dimension = null, $watermarks = null)
+{
+    global $ICPS__RECOMPRESS_MODE, $ICPS__MAXIMUM_DIMENSION, $ICPS__WATERMARKS;
+    $ICPS__RECOMPRESS_MODE = $recompress_mode;
+    $ICPS__MAXIMUM_DIMENSION = $maximum_dimension;
+    $ICPS__WATERMARKS = $watermarks;
 }
 
 /**
@@ -77,7 +108,7 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
         }
         $filename = $urls[2];
 
-        return $urls[0];
+        return cms_rawurlrecode($urls[0]);
     }
 
     // URL
@@ -86,6 +117,10 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
     $field_url = $name . '__url';
     $url = post_param_string($field_url, '');
     if ($url != '') {
+        // We should use compliant encoding
+        $coder_ob = new HarmlessURLCoder();
+        $url = $coder_ob->encode($url);
+
         $filename = urldecode(preg_replace('#\?.*#', '', basename($url)));
 
         // Get thumbnail
@@ -94,7 +129,7 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
             $thumb_url = $urls[1];
         }
 
-        return $url;
+        return cms_rawurlrecode($url);
     }
 
     // Filedump
@@ -112,7 +147,7 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
                 $thumb_url = $urls[1];
             }
 
-            return $url;
+            return cms_rawurlrecode($url);
         }
     }
 
@@ -345,7 +380,8 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
     } else {
         $max_size = get_max_image_size(false);
     }
-    if (($attach_name != '') && (array_key_exists($attach_name, $filearrays)) && ((is_uploaded_file($filearrays[$attach_name]['tmp_name'])) || ($plupload_uploaded))) { // If we uploaded
+    $is_uploaded = ($attach_name != '') && (array_key_exists($attach_name, $filearrays)) && ((is_uploaded_file($filearrays[$attach_name]['tmp_name'])) || ($plupload_uploaded));
+    if ($is_uploaded) { // If we uploaded
         if (!has_privilege($member_id, 'exceed_filesize_limit')) {
             if ($filearrays[$attach_name]['size'] > $max_size) {
                 if ($accept_errors) {
@@ -522,11 +558,12 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
                 } else {
                     $ext = '';
                 }
-                $thumb_filename = preg_replace('#[^' . URL_CONTENT_REGEXP . '\.]#', 'x', basename($url[0]));
+                $thumb_filename = basename(preg_replace('#[^' . URL_CONTENT_REGEXP . '\.]#', 'x', $url[0]));
                 $place = $thumb_folder_full . '/' . $thumb_filename . $ext;
                 $i = 2;
                 while (file_exists($place)) {
-                    $thumb_filename = strval($i) . preg_replace('#[^' . URL_CONTENT_REGEXP . '\.]#', 'x', basename($url[0]));
+                    $ext = '.' . get_file_extension($url[0]);
+                    $thumb_filename = basename(preg_replace('#[^' . URL_CONTENT_REGEXP . '\.]#', 'x', $url[0]), $ext) . '_' . strval($i) . $ext;
                     $place = $thumb_folder_full . '/' . $thumb_filename . $ext;
                     $i++;
                 }
@@ -572,12 +609,25 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         }
     }
 
+    // Images cleanup pipeline
+    if ((($enforce_type & CMS_UPLOAD_IMAGE) != 0) && ($enforce_type != CMS_UPLOAD_ANYTHING)) {
+        if (($is_uploaded) && ($out[0] != '') && (url_is_local($out[0]))) {
+            global $ICPS__RECOMPRESS_MODE, $ICPS__MAXIMUM_DIMENSION, $ICPS__WATERMARKS;
+            handle_images_cleanup_pipeline(get_custom_file_base() . '/' . rawurldecode($out[0]), $out[2], $ICPS__RECOMPRESS_MODE, $ICPS__MAXIMUM_DIMENSION, $ICPS__WATERMARKS);
+        }
+    }
+
     // For reentrance of previews
     if ($specify_name != '') {
         $_POST[$specify_name] = $out[0];
     }
     if ($thumb_specify_name != '') {
         $_POST[$thumb_specify_name] = $out[1];
+    }
+
+    $out[0] = cms_rawurlrecode($out[0]);
+    if (array_key_exists(2, $out)) {
+        $out[2] = cms_rawurlrecode($out[2]);
     }
 
     if (count($filearrays) != 0) {
@@ -603,9 +653,12 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
 {
     // Security check against naughty url's
     $url = array();
-    $url[0] = /*filter_naughty*/
-        (post_param_string($specify_name));
+    $url[0] = /*filter_naughty*/(post_param_string($specify_name));
     $url[1] = rawurldecode(basename($url[0]));
+
+    // We should use compliant encoding
+    $coder_ob = new HarmlessURLCoder();
+    $url[0] = $coder_ob->encode($url[0]);
 
     // If this is a relative URL then it may be downloaded through a PHP script.
     //  So lets check we are allowed to download it!
@@ -821,7 +874,8 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
             // Hunt with sensible names until we don't get a conflict
             $i = 2;
             while (file_exists($place)) {
-                $filename = strval($i) . preg_replace('#\..*\.#', '.', $file);
+                $ext = '.' . get_file_extension($file);
+                $filename = basename(preg_replace('#\..*\.#', '.', $file), $ext) . '_' . strval($i) . $ext;
                 $place = $upload_folder_full . '/' . $filename;
                 $i++;
             }
@@ -880,14 +934,6 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
     fix_permissions($place);
     sync_file($place);
 
-    // Special code to re-orientate JPEG images if required (browsers cannot do this)
-    if ((($enforce_type & CMS_UPLOAD_ANYTHING) == 0) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (is_image($place))) {
-        if (function_exists('imagepng')) {
-            require_code('images');
-            convert_image($place, $place, -1, -1, 100000/*Impossibly large size, so no resizing happens*/, false, null, true, true);
-        }
-    }
-
     $url = array();
     $url[0] = $upload_folder . '/' . rawurlencode($filename);
     $url[1] = $file;
@@ -931,46 +977,4 @@ function get_upload_filearray($name, &$filearrays)
     }
 
     $filearrays[$name] = $_FILES[$name];
-}
-
-/**
- * Shorten a filename so it will fit in the database.
- *
- * @param  string $filename The filename
- * @param  integer $length The length
- * @return string The shortened filename
- */
-function shorten_urlencoded_filename($filename, $length = 226)
-{
-    if ((stripos(PHP_OS, 'WIN') === 0) && (version_compare(PHP_VERSION, '7.2', '<'))) {
-        // Older versions of PHP on Windows cannot handle utf-8 filenames
-        require_code('character_sets');
-        $filename = transliterate_string($filename);
-    }
-
-    // Default length is... maxDBFieldSize - maxUploadDirSize - suffixingLeeWay = 255 - (7 + 1 + 23 + 1) - 6 = 230
-    // (maxUploadDirSize is LEN('uploads') + LEN('/') + LEN(maxUploadSubdirSize) + LEN('/')
-    // Suffixing leeway is so we can have up to ~99999 different files with the same base filename, varying by auto-generated suffixes
-
-    $matches = array();
-    if (preg_match('#^(.*)\.(.*)$#', $filename, $matches) != 0) {
-        $filename_suffix = $matches[2];
-        $_filename_stem = $matches[1];
-
-        $i = 0;
-        $mb_len = cms_mb_strlen($_filename_stem);
-        $filename_stem = '';
-        do {
-            $next_mb_char = cms_mb_substr($_filename_stem, $i, 1);
-            if (strlen(urlencode($filename_stem . $next_mb_char . '.' . $filename_suffix)) > $length) {
-                break;
-            }
-            $filename_stem .= $next_mb_char;
-            $i++;
-        }
-        while ($i < $mb_len);
-
-        $filename = $filename_stem . '.' . $filename_suffix;
-    }
-    return $filename;
 }

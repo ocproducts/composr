@@ -45,6 +45,10 @@ For example:
 	width: auto;
 }
 
+.menu_type__dropdown li.toplevel.first.brethren_1 {
+	width: 50%; /* Otherwise it looks ugly */
+}
+
 .menu_type__dropdown li.toplevel.menu_spacer {
 	height: 1.15em;
 	width: 4em;

@@ -584,6 +584,10 @@ class Module_groups
             $max_rows = cns_get_group_members_raw_count($id, true, true, false, false);
             $primary_members = new Tempcode();
             foreach ($_primary_members as $i => $primary_member) {
+                if ($this->filter_out($primary_member)) {
+                    continue;
+                }
+
                 $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($primary_member['gm_member_id'], false, true);
                 $temp = do_template('CNS_VIEW_GROUP_MEMBER', array(
                     '_GUID' => 'b96b674ac713e9790ecb78c15af1baab',
@@ -610,6 +614,10 @@ class Module_groups
         $s_max_rows = cns_get_group_members_raw_count($id, false, false, false);
         $d_max_rows = cns_may_control_group($id, get_member()) ? cns_get_group_members_raw_count($id, false, true, false) : 0;
         foreach ($_secondary_members as $secondary_member) {
+            if ($this->filter_out($GLOBALS['FORUM_DRIVER']->get_member_row($secondary_member['gm_member_id']))) {
+                continue;
+            }
+
             $m_username = $GLOBALS['FORUM_DRIVER']->get_member_row_field($secondary_member['gm_member_id'], 'm_username');
             if (is_null($m_username)) {
                 continue;
@@ -696,6 +704,36 @@ class Module_groups
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);
+    }
+
+    /**
+     * Whether to filter out a member row from those displayed.
+     *
+     * @param  array $member_row The member row
+     * @return boolean Filter out
+     */
+    public function filter_out($member_row)
+    {
+        // Some special non-documented filters to help find likely spammers
+        if ((get_param_integer('with_sig', 0) == 1) && ($member_row['m_signature'] == '')) {
+            return true;
+        }
+        if ((get_param_integer('with_posts', 0) == 1) && ($member_row['m_cache_num_posts'] == 0)) {
+            return true;
+        }
+        if ((get_param_integer('without_posts', 0) == 1) && ($member_row['m_cache_num_posts'] > 0)) {
+            return true;
+        }
+        if ((get_param_integer('is_banned', 0) == 1) && ($member_row['m_is_perm_banned'] == 0)) {
+            return true;
+        }
+        if ((get_param_integer('is_not_banned', 0) == 1) && ($member_row['m_is_perm_banned'] == 1)) {
+            return true;
+        }
+        if ((get_param_integer('with_links', 0) == 1) && (strpos(serialize($member_row), '<a') === false) && (strpos(serialize($member_row), '[url') === false)) {
+            return true;
+        }
+        return false;
     }
 
     /**

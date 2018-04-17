@@ -208,11 +208,16 @@ class Hook_search_cns_members extends FieldsSearchHook
                 $non_trans_fields++;
             }
         }
-        $index_issue = (get_param_integer('force_like', 0) == 0) && ($non_trans_fields > 16);
+        $index_issue = (get_param_integer('force_like', 0) == 0) && ($non_trans_fields > 16); // MySQL limit for fulltext index querying. We'll therefore not throw EVERY searchable field into the search query (only core ones, and ones we're explicitly filtering on)
+        if ($index_issue) {
+            $boolean_search = true;
+            list($content_where) = build_content_where($content, $boolean_search, $boolean_operator); // Rebuilding $content_where from what was passed to this function
+        }
         foreach ($rows as $i => $row) {
             $ob = get_fields_hook($row['cf_type']);
             list(, , $storage_type) = $ob->get_field_value_row_bits($row);
 
+            // Filter form
             $param = get_param_string('option_' . strval($row['id']), '');
             if ($param != '') {
                 $where_clause .= ' AND ';
@@ -224,37 +229,36 @@ class Hook_search_cns_members extends FieldsSearchHook
                 } elseif ($storage_type == 'list') {
                     $temp = db_string_equal_to('?', $param);
                 } elseif (
-                    (array_key_exists('field_' . strval($row['id']), $indexes)) &&
-                    ($indexes['field_' . strval($row['id'])][0] == '#') &&
+                    (array_key_exists('field_' . strval($row['id']), $indexes)) && ($indexes['field_' . strval($row['id'])][0] == '#') &&
                     (db_has_full_text($GLOBALS['SITE_DB']->connection_read)) &&
-                    (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_full_text_boolean')) &&
-                    ($GLOBALS['SITE_DB']->static_ob->db_has_full_text_boolean()) &&
+                    ((method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_full_text_boolean')) && ($GLOBALS['SITE_DB']->static_ob->db_has_full_text_boolean()) || (!$boolean_search)) &&
                     (!is_under_radar($param))
                 ) {
                     $temp = db_full_text_assemble('"' . $param . '"', true);
                 } else {
                     list($temp,) = db_like_assemble($param);
                 }
-                if ((($row['cf_type'] == 'short_trans') || ($row['cf_type'] == 'long_trans')) && (multi_lang_content())) {
+                if ((($row['cf_type'] == 'short_trans') || ($row['cf_type'] == 'long_trans') || ($row['cf_type'] == 'posting_field') || ($row['cf_type'] == 'short_trans_multi')) && (multi_lang_content())) {
+                    // Goes through translate table
                     $where_clause .= preg_replace('#\?#', 't' . strval(count($trans_fields) + 2/*for the 2 fields prepended to $trans_fields in the get_search_rows call*/) . '.text_original', $temp);
                 } else {
-                    if ($index_issue) { // MySQL limit for fulltext index querying
-                        list($temp,) = db_like_assemble($param);
-                    }
+                    // Direct field access
                     $where_clause .= preg_replace('#\?#', 'field_' . strval($row['id']), $temp);
                 }
             }
-            if (strpos($storage_type, '_trans') === false) {
-                if (!$index_issue) { // MySQL limit for fulltext index querying
-                    $raw_fields[] = 'field_' . strval($row['id']);
+
+            // Standard search
+            if (((array_key_exists('field_' . strval($row['id']), $indexes)) && ($indexes['field_' . strval($row['id'])][0] == '#')) || ($boolean_search)) {
+                if (strpos($storage_type, '_trans') === false) {
+                    if ((!$index_issue) || ($boolean_search)) {
+                        $raw_fields[] = 'field_' . strval($row['id']);
+                    }
+                } else {
+                    if ((!$index_issue) || ($boolean_search) || (multi_lang_content())) { // MySQL limit for fulltext index querying
+                        $trans_fields['field_' . strval($row['id'])] = 'LONG_TRANS__COMCODE';
+                    }
                 }
-            } else {
-                $trans_fields['field_' . strval($row['id'])] = 'LONG_TRANS__COMCODE';
             }
-        }
-        if ($index_issue) {
-            $boolean_search = true;
-            list($content_where) = build_content_where($content, $boolean_search, $boolean_operator);
         }
         $age_range = get_param_string('option__age_range', get_param_string('option__age_range_from', '') . '-' . get_param_string('option__age_range_to', ''));
         if (($age_range != '') && ($age_range != '-')) {

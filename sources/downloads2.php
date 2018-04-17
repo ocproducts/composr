@@ -336,6 +336,8 @@ function add_download_category($category, $parent_id, $description, $notes = '',
     }
     $id = $GLOBALS['SITE_DB']->query_insert('download_categories', $map, true);
 
+    reorganise_uploads__download_categories(array('id' => $id));
+
     log_it('ADD_DOWNLOAD_CATEGORY', strval($id), $category);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -420,6 +422,8 @@ function edit_download_category($category_id, $category, $parent_id, $descriptio
     require_code('seo2');
     seo_meta_set_for_explicit('downloads_category', strval($category_id), $meta_keywords, $meta_description);
 
+    reorganise_uploads__download_categories(array('id' => $category_id));
+
     log_it('EDIT_DOWNLOAD_CATEGORY', strval($category_id), $category);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -469,6 +473,11 @@ function delete_download_category($category_id)
 
     $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($category_id)));
     $GLOBALS['SITE_DB']->query_delete('group_privileges', array('module_the_name' => 'downloads', 'category_name' => strval($category_id)));
+
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'downloads', 'm_resource_type' => 'browse', 'm_resource_id' => strval($category_id)));
+
+    require_code('uploads2');
+    clean_empty_upload_directories('uploads/repimages');
 
     log_it('DELETE_DOWNLOAD_CATEGORY', strval($category_id), get_translated_text($category));
 
@@ -979,6 +988,8 @@ function add_download($category_id, $name, $url, $description, $author, $additio
         dispatch_notification('download', strval($category_id), $subject, $mail, $privacy_limits);
     }
 
+    reorganise_uploads__downloads(array('id' => $id));
+
     log_it('ADD_DOWNLOAD', strval($id), $name);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -1170,6 +1181,8 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         dispatch_notification('download', strval($category_id), $subject, $mail, $privacy_limits);
     }
 
+    reorganise_uploads__downloads(array('id' => $id));
+
     log_it('EDIT_DOWNLOAD', strval($id), get_translated_text($myrow['name']));
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -1250,6 +1263,11 @@ function delete_download($id, $leave = false)
             delete_gallery($name);
         }
     }
+
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'downloads', 'm_resource_type' => 'view', 'm_resource_id' => strval($id)));
+
+    require_code('uploads2');
+    clean_empty_upload_directories('uploads/downloads');
 
     log_it('DELETE_DOWNLOAD', strval($id), get_translated_text($myrow['name']));
 
@@ -1352,4 +1370,28 @@ function log_download($id, $size, $got_before)
     if ($size != 0) {
         $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_value=' . db_cast('(' . db_cast('the_value', 'INT') . '+' . strval($size) . ')', 'CHAR') . ' WHERE the_name=\'download_bandwidth\'', 1, null, true);
     }
+}
+
+/**
+ * Reorganise the download uploads.
+ *
+ * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
+ */
+function reorganise_uploads__download_categories($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
+{
+    require_code('uploads2');
+    reorganise_uploads('download_category', 'uploads/repimages', 'rep_image', $where, null, true, $tolerate_errors);
+}
+
+/**
+ * Reorganise the download uploads.
+ *
+ * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
+ */
+function reorganise_uploads__downloads($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
+{
+    require_code('uploads2');
+    reorganise_uploads('download', 'uploads/downloads', 'url', $where, null, false, $tolerate_errors);
 }

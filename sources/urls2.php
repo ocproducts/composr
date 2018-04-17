@@ -711,9 +711,8 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
     $GLOBALS['SITE_DB']->query_delete('url_id_monikers', array(    // It's possible we're re-activating a deprecated one
                                                                    'm_resource_page' => $page,
                                                                    'm_resource_type' => $type,
-                                                                   'm_resource_id' => $id,
                                                                    'm_moniker' => $moniker,
-    ), '', 1);
+    ));
     $GLOBALS['SITE_DB']->query_insert('url_id_monikers', array(
         'm_resource_page' => $page,
         'm_resource_type' => $type,
@@ -777,6 +776,7 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
             $dupe_sql .= ' OR m_moniker_reversed LIKE \'' . db_encode_like(strrev('%/' . $moniker)) . '\'';
         }
         $dupe_sql .= ')';
+        $dupe_sql .= ' AND m_deprecated=0';
         $test = $GLOBALS['SITE_DB']->query_value_if_there($dupe_sql, false, true);
         if (!is_null($test)) { // Oh dear, will pass to next iteration, but trying a new moniker
             $next_num++;
