@@ -172,6 +172,7 @@ class Hook_health_check_network extends Hook_Health_Check
 
             if ($data === null) {
                 $ok = false;
+                $megabits_per_second = 0.0;
                 sleep(5);
 
                 continue;

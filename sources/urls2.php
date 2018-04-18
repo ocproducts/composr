@@ -507,12 +507,12 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         }
     }
 
+    $page = fix_page_name_dashing($zone, $attributes['page']);
+
     require_code('site');
-    if (_request_page($attributes['page'], $zone) === false) {
+    if (_request_page($page, $zone) === false) {
         return '';
     }
-
-    $page = fix_page_name_dashing($zone, $attributes['page']);
 
     // Put it together
     $page_link = $zone . ':' . $page;
@@ -522,6 +522,13 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         $page_link .= ':';
     }
     if (array_key_exists('id', $attributes)) {
+        if (!is_numeric($attributes['id'])) {
+            $moniker_id = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => $page, 'm_resource_type' => isset($attributes['type']) ? $attributes['type'] : 'browse', 'm_moniker' => $attributes['id']));
+            if ($moniker_id !== null) {
+                $attributes['id'] = $moniker_id;
+            }
+        }
+
         $page_link .= ':' . $attributes['id'];
     }
     foreach ($attributes as $key => $val) {

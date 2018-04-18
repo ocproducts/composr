@@ -18,7 +18,7 @@
 				</p>
 
 				<p>
-					<a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}" onfocus="this.parentNode.onmouseover(event);" onblur="this.parentNode.onmouseout(event);">{$USERNAME*,{MEMBER_ID}}</a>
+					<a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}" onfocus="this.parentNode.parentNode.onmouseover(event);" onblur="this.parentNode.parentNode.onmouseout(event);">{$USERNAME*,{MEMBER_ID}}</a>
 				</p>
 			</div>
 
@@ -37,7 +37,7 @@
 
 						<ul class="horizontal_links associated_links_block_group">
 							<li>
-								<a onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{BOX;^*}','auto');" href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}" onfocus="this.parentNode.onmouseover(event);" onblur="this.parentNode.onmouseout(event);">{$USERNAME*,{MEMBER_ID}}</a>
+								<a onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{BOX;^*}','auto');" href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}" onfocus="this.onmouseover(event);" onblur="this.onmouseout(event);">{$USERNAME*,{MEMBER_ID}}</a>
 							</li>
 						</ul>
 					</div></div>

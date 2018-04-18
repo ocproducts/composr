@@ -828,7 +828,7 @@ class Module_calendar
             if (intval($down) < 3) {
                 $description = new Tempcode();
             } else {
-                if ((!is_string($event['e_content'])) && (!isset($event['e_content__text_parsed']))) {
+                if ((!is_string($event['e_content'])) || (isset($event['e_content__text_parsed']))) {
                     $just_event_row = db_map_restrict($event, array('id', 'e_content'));
                     $description = get_translated_tempcode('calendar_events', $just_event_row, 'e_content');
                 } else {
@@ -1512,7 +1512,7 @@ class Module_calendar
         // Work out all our various dates
         $day = get_param_string('day', '');
         if ($day != '') {
-            $event = adjust_event_dates_for_a_recurrence($day, $event, get_users_timezone());
+            $event = adjust_event_dates_for_a_recurrence($day, $event, ($event['e_do_timezone_conv'] == 1) ? get_users_timezone() : $event['e_timezone']);
         }
         list($time_raw, $from) = find_event_start_timestamp($event);
         $day_formatted = cms_strftime(do_lang('calendar_date_verbose'), $from);
