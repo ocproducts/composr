@@ -6495,9 +6495,10 @@ function ecv_LOOP(&$value, $lang, $escaped, $param)
  * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
-function ecv_FILE_GET_CONTENTS($lang, $escaped, $param) {
+function ecv_ICONS_SVG_SPRITE_CONTENTS($lang, $escaped, $param) {
     // @TODO: Add caching?
-    $value = file_get_contents($param[0]);
+    require_code('themes');
+    $value = file_get_contents(find_theme_image('icons/sprite'));
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
