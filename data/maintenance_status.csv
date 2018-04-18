@@ -130,3 +130,8 @@ tapatalk,Tapatalk,ocProducts,,Could potentially break due to third-party changes
 google_maps,"Google maps (DataMappr, UserMappr)",ocProducts,,Could potentially break due to third-party changes.,Yes,
 twitter,Twitter syndication,ocProducts,,Could potentially break due to third-party changes.,Yes,
 webdav,WebDav access for The Repository,ocProducts,,Could potentially break due to third-party changes.,Yes,
+os_windows,Windows servers,ocProducts,ocProducts,,No,
+os_linux,Linux servers,ocProducts,ocProducts,,No,
+os_macos,MacOS servers,ocProducts,ocProducts,,No,
+os_solaris,Solaris servers,,,Will largely work due to Linux and MacOS X support,No,
+os_bsd,BSD servers,,,Will largely work due to Linux and MacOS X support,No,
