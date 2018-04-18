@@ -86,11 +86,11 @@
 
 								<div class="friend-actions">
 									{+START,IF,{CAN_IM}}
-										<button class="button-screen-item admin--add-to-category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite-ongoing-im-button" type="button">{!INVITE_CURRENT_IM}</button>
+										<button class="button-screen-item admin--add-to-category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite-ongoing-im-button" type="button">{+START,INCLUDE,ICON}NAME=admin/add_to_category{+END} {!INVITE_CURRENT_IM}</button>
 										<button class="button-screen-item menu--social--chat--chat js-click-btn-im-start-ticked-people" type="button">{!START_IM}</button>
 									{+END}
 									{+START,IF_NON_EMPTY,{URL_REMOVE_FRIENDS}}
-										<button data-click-pd="1" class="button-screen-item admin--delete3 js-click-btn-dump-friends-confirm" type="submit">{!DUMP_FRIENDS}</button>
+										<button data-click-pd="1" class="button-screen-item admin--delete3 js-click-btn-dump-friends-confirm" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DUMP_FRIENDS}</button>
 									{+END}
 								</div>
 							</form>
@@ -104,7 +104,7 @@
 
 								<label class="accessibility-hidden" for="friend_username">{!USERNAME}: </label>
 								<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="18" maxlength="80" class="js-keyup-input-update-ajax-member-list" type="text" placeholder="{!USERNAME}" id="friend_username" name="friend_username" />
-								<button class="button-micro admin--add" type="submit">{!ADD}</button>
+								<button class="button-micro admin--add" type="submit">{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD}</button>
 							</form>
 						{+END}
 

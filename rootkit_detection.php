@@ -74,8 +74,9 @@ END;
 END;
     }
 
+    $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
     echo <<<END
-            <button class="buttons--proceed button-screen" type="submit">Begin</button>
+            <button class="buttons--proceed button-screen" type="submit">Begin {$proceed_icon}</button>
         </div>
 END;
 } else {

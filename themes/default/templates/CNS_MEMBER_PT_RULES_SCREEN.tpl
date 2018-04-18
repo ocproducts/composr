@@ -12,6 +12,6 @@
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<p class="proceed-button">
-		<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--proceed" type="submit">{!PROCEED}</button>
+		<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 	</p>
 </form>

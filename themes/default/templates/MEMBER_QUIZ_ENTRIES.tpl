@@ -104,7 +104,7 @@
 								<td colspan="5"></td>
 
 								<td>
-									<button class="button-screen-item admin--delete3" type="submit">{!DELETE}</button>
+									<button class="button-screen-item admin--delete3" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</button>
 								</td>
 							</tr>
 						</tfoot>

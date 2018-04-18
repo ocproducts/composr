@@ -118,7 +118,7 @@
 				</p>
 
 				<p>
-					<button class="button-screen-item buttons--save" data-cms-confirm-click="{!SAVE_COMPUTER_USING_COOKIE*}" type="submit">{$STRIP_TAGS,{!CHAT_CHANGE_OPTIONS}}</button>
+					<button class="button-screen-item buttons--save" data-cms-confirm-click="{!SAVE_COMPUTER_USING_COOKIE*}" type="submit">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {$STRIP_TAGS,{!CHAT_CHANGE_OPTIONS}}</button>
 				</p>
 			</div>
 

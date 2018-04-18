@@ -61,7 +61,7 @@
 		{+END}
 
 		<p class="purchase-button">
-			<button id="proceed-button" class="button-screen buttons--proceed js-click-do-cart-form-submit" accesskey="u" type="button">{!CHECKOUT}</button>
+			<button id="proceed-button" class="button-screen buttons--proceed js-click-do-cart-form-submit" accesskey="u" type="button">{!CHECKOUT} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 		</p>
 	</form>
 </div>

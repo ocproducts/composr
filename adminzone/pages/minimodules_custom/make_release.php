@@ -101,6 +101,8 @@ function phase_0()
         <li>Run the <a href="' . escape_html(get_base_url() . '/_tests') . '">automated tests</a><!--, with dev mode on, on the custom Composr PHP version-->.</li>
     </ul>';
 
+
+    $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
     echo '
     <form method="post" action="' . escape_html($post_url) . '">
         ' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '
@@ -140,7 +142,7 @@ function phase_0()
             <input type="checkbox" name="bleeding_edge" ' . (((strpos($release_description, 'patch release') === false) && (strpos($release_description, 'gold') === false)) ? 'checked="checked" ' : '') . 'id="bleeding_edge" value="1" /><label for="bleeding_edge">Bleeding-edge release</label>
             <input type="checkbox" name="old_tree" id="old_tree" value="1" /><label for="old_tree">Older-tree maintenance release</label>
             <input type="checkbox" name="make_omni_upgrader" id="make_omni_upgrader" value="1" /><label for="make_omni_upgrader">Make omni-upgrader archive (for easy upgrader testing)</label>
-            <p><button type="submit" class="buttons--proceed button-screen">Shake it baby</button></p>
+            <p><button type="submit" class="buttons--proceed button-screen">Shake it baby ' . $proceed_icon . '</button></p>
         </fieldset>
     </form>
     ';
@@ -218,6 +220,7 @@ function phase_1()
 
     $post_url = static_evaluate_tempcode(get_self_url(false, false, array('type' => '2')));
 
+    $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
     echo '
         <form action="' . escape_html($post_url) . '" method="post">
             ' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '
@@ -230,7 +233,7 @@ function phase_1()
             <input type="hidden" name="changes" value="' . escape_html($changes) . '" />
             <input type="hidden" name="descrip" value="' . escape_html($descrip) . '" />
 
-            <button type="submit" class="buttons--proceed button-screen">Move on to instructions about how to release this</button>
+            <button type="submit" class="buttons--proceed button-screen">Move on to instructions about how to release this ' . $proceed_icon . '</button>
         </form>
     ';
 }

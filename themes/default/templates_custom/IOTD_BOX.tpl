@@ -41,7 +41,7 @@
 				{+END}
 				<a class="button-screen-item admin--edit" rel="edit" href="{EDIT_URL*}">{+START,INCLUDE,ICON}NAME=admin/edit{+END} <span>{!EDIT}: {!IOTD} #{ID*}</span></a>
 				<form class="inline js-submit-confirm-iotd-deletion" title="{!DELETE} {!IOTD} #{ID*}" action="{DELETE_URL*}" method="post" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="id" value="{ID*}" />
-					<button class="button-screen-item admin--delete3" type="submit" value="{!DELETE}">{!DELETE} {!IOTD} #{ID*}</button>
+					<button class="button-screen-item admin--delete3" type="submit" value="{!DELETE}">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE} {!IOTD} #{ID*}</button>
 				</form>
 			</div>
 		{+END}{+END}{+END}

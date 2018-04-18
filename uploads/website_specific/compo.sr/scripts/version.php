@@ -208,14 +208,13 @@ function display_version_upgrade_path($higher_version)
         <!-- Version number -->
         <span class="version-number"> <?= escape_html($higher_version['version_pretty']) ?></span>
         <!-- Output upgrader link -->
-        <span class="version-button" id="link-pos-<?= strval($i) ?>"></span>
+        <span class="version-button" id="link-pos-<?= strval($i) ?>">
+            <form style="display: inline" action="../<?= escape_html($upgrade_script) ?>" target="_blank" method="post">
+                <button class="menu--adminzone--tools--upgrade button-screen-item" type="submit" title="Upgrade to <?= escape_html($higher_version['version_pretty']) ?>"><?= do_template('ICON', array('NAME' => 'menu/adminzone/tools/upgrade')) ?> Launch upgrader</button>
+            </form>
+        </span>
         <script>
-            (function() {
-                var span = document.getElementById('link-pos-<?= strval($i) ?>');
-                var upgraderLink = $util.rel(<?= json_encode($upgrade_script) ?>);
-                var html = '<form style="display: inline" action="' + $cms.filter.html(upgraderLink) + '" target="_blank" method="post"><button class="menu-adminzone-tools-upgrade button-micro" type="submit" title="Upgrade to <?= escape_html($higher_version['version_pretty']) ?>">Launch upgrader</button></form>';
-                span.innerHTML = html;
-            }());
+            document.querySelector('#link-pos-<?= strval($i) ?> form').action = $util.rel(<?= json_encode($upgrade_script) ?>);
         </script>
         <!-- Version News link -->
         <span class="version-news-link">[ <a onclick="window.open(this.href,null,'status=yes,toolbar=no,location=no,menubar=no,resizable=yes,scrollbars=yes,width=976,height=600'); return false;" target="_blank" title="<?= escape_html($higher_version['version_pretty']) ?> news post (this link will open in a new window)" href="<?= escape_html($upgrade_url) ?>">view news post</a> ]</span>
@@ -224,11 +223,5 @@ function display_version_upgrade_path($higher_version)
         <span class="version-note"><?= $note ?></span>
         <img class="version-help-icon" onmouseout="$cms.ui.deactivateTooltip(this);" onmousemove="$cms.ui.repositionTooltip(this,event);" onmouseover="if (this.parentNode.title != null) { this.parentNode.title = ''; } $cms.ui.activateTooltip(this, event, <?= escape_html(json_encode($tooltip->evaluate())) ?>, '600px', null, null, false, true);" alt="Help" src="<?= escape_html(find_theme_image('icons/help')) ?>" />
     </p>
-    <!-- Noscript version -->
-    <noscript>
-        <form style="display: inline" action="../<?= escape_html($upgrade_script) ?>" target="_blank" method="post">
-            <button class="menu-adminzone-tools-upgrade button-screen-item" type="submit" title="Upgrade to <?= escape_html($higher_version['version_pretty']) ?>">Launch upgrader</button>
-        </form>
-    </noscript>
     <?php
 }

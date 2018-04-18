@@ -469,16 +469,16 @@
 {$,Buttons}
 
 <div class="float-surrounder buttons-group">
-	<button data-disable-on-click="1" class="button-screen buttons--save js-btn-save-content" type="submit">{!SAVE}</button>
+	<button data-disable-on-click="1" class="button-screen buttons--save js-btn-save-content" type="submit">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {!SAVE}</button>
 
 	{+START,SET,preview_buttons}
 		{+START,IF_PASSED,LIVE_PREVIEW_URL}
 			<!-- Preview in live rendering -->
-			<button class="button-screen buttons--preview js-btn-live-preview" type="submit">{!LIVE_PREVIEW}</button>
+			<button class="button-screen buttons--preview js-btn-live-preview" type="submit">{+START,INCLUDE,ICON}NAME=buttons/preview{+END} {!LIVE_PREVIEW}</button>
 		{+END}
 		{+START,IF_PASSED,SCREEN_PREVIEW_URL}
 			<!-- Preview in screen preview (Lorem ipsum) -->
-			<button class="button-screen buttons--preview js-btn-screen-preview" type="submit">{!LOREM_PREVIEW}</button>
+			<button class="button-screen buttons--preview js-btn-screen-preview" type="submit">{+START,INCLUDE,ICON}NAME=buttons/preview{+END} {!LOREM_PREVIEW}</button>
 		{+END}
 	{+END}
 	{+START,IF_NON_EMPTY,{$TRIM,{$GET,preview_buttons}}}

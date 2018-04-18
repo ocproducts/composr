@@ -7,7 +7,7 @@
 		{SECTIONS}
 
 		<p class="proceed-button">
-			<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--save" type="submit">{!SAVE}</button>
+			<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--save" type="submit">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {!SAVE}</button>
 		</p>
 	</div>
 </form>

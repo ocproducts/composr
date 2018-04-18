@@ -29,7 +29,7 @@
 			<input type="hidden" name="answer" value="" />
 
 			<p class="proceed-button">
-				<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--proceed" type="submit">{!PROCEED}</button>
+				<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 			</p>
 		</div>
 	{+END}

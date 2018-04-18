@@ -210,14 +210,14 @@ function upgrader_link($url, $text, $disabled = false, $js = '')
     if (get_param_integer('keep_show_loading', 0) == 1) {
         $url .= '&keep_show_loading=1';
     }
-    $class = 'buttons--proceed';
+    $icon = 'buttons/proceed';
     if ($text == do_lang('MORE_OPTIONS')) {
-        $class = 'buttons--back';
+        $icon = 'buttons/back';
     }
 
     $ret = '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">';
     $ret .= $hidden;
-    $ret .= '<button ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="' . $class . ' button-screen-item" type="submit">' . escape_html($text) . '</button>';
+    $ret .= '<button ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="button-screen-item" type="submit">' . do_template('ICON', array('NAME' => $icon)) . ' ' . escape_html($text) . '</button>';
     $ret .= '</form>';
     return $ret;
 }
@@ -323,9 +323,10 @@ function upgrader_output_login($message = null)
         ";
     }
 
+    $login_icon = do_template('ICON', array('NAME' => 'menu/site_meta/user_actions/login'));
     echo "
     <p>
-        <input class=\"menu--site-meta--user-actions--login button-screen\" type=\"submit\" value=\"{$l_login}\" />
+        <button class=\"menu--site-meta--user-actions--login button-screen\" type=\"submit\">{$login_icon} {$l_login}</button>
     </p>
     </form>
     ";

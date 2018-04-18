@@ -72,7 +72,13 @@
 	{+START,IF_PASSED,ID}
 		<div class="non-accessibility-redundancy">
 			<nav class="breadcrumbs" itemprop="breadcrumb">
-				<img class="breadcrumbs-img" width="20" height="20" src="{$IMG*,icons/breadcrumbs}" alt="&gt; " title="{!YOU_ARE_HERE}" />
+				{+START,INCLUDE,ICON}
+					NAME=breadcrumbs
+					TITLE={!YOU_ARE_HERE}
+					DESCRIPTION={!YOU_ARE_HERE}
+					SIZE=20
+					CLASS=breadcrumbs-img
+				{+END}
 				{BREADCRUMBS}
 			</nav>
 		</div>

@@ -1151,11 +1151,11 @@ class Module_purchase
                     $confirmation_box = do_lang_tempcode('BUYING_FOR_POINTS_CONFIRMATION', escape_html($item_name), escape_html(integer_format($points_for_discount)));
 
                     require_css('points');
-                    $icon = 'menu--social--points';
+                    $icon = 'menu/social/points';
                 } else {
                     $confirmation_box = do_lang_tempcode('BUYING_FOR_FREE_CONFIRMATION', escape_html($item_name));
 
-                    $icon = 'buttons--proceed';
+                    $icon = 'buttons/proceed';
                 }
             }
 
@@ -1223,7 +1223,7 @@ class Module_purchase
             $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'pay');
             $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'type_code' => $type_code), '_SELF', array('include_message' => null), true);
             $submit_name = do_lang_tempcode('MAKE_PAYMENT');
-            $icon = 'menu--rich-content--ecommerce--purchase';
+            $icon = 'menu/rich_content/ecommerce/purchase';
 
         } else { // Pass through to the gateway's HTTP server
             if ($confirmation_box === null) {

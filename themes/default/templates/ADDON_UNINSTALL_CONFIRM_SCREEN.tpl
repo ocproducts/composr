@@ -18,7 +18,7 @@
 		<p>
 			<button class="button-screen buttons--back" type="button" data-cms-btn-go-back="1">{+START,INCLUDE,ICON}NAME=buttons/back{+END} {!GO_BACK}</button>
 
-			<button class="button-screen admin--delete3" type="submit">{!PROCEED}</button>
+			<button class="button-screen admin--delete3" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!PROCEED}</button>
 		</p>
 	</form>
 </div>

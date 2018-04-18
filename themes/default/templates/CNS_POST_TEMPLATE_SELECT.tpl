@@ -5,5 +5,5 @@
 	<select {+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} id="post_template" name="post_template">
 		{LIST}
 	</select>
-	<button class="button-screen-item buttons--proceed js-click-reset-and-insert-textbox" data-click-pd="1" type="submit">{!USE}</button>
+	<button class="button-screen-item buttons--proceed js-click-reset-and-insert-textbox" data-click-pd="1" type="submit">{!USE} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 </div>

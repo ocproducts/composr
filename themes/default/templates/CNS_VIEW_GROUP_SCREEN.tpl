@@ -39,7 +39,7 @@
 					<div>
 						<label for="vga-username">{!USERNAME}: </label>
 						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="80" class="js-input-add-member-username" alt="{!USERNAME}" type="text" id="vga-username" name="username" />
-						<button class="button-screen-item admin--add" type="submit">{!ADD}</button>
+						<button class="button-screen-item admin--add" type="submit">{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD}</button>
 					</div>
 				</form>
 			</div></div>

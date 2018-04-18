@@ -49,7 +49,7 @@
 			</table></div>
 
 			<p class="proceed-button">
-				<button accesskey="u" class="button-screen buttons--proceed" type="submit">{!SUBMIT}</button>
+				<button accesskey="u" class="button-screen buttons--proceed" type="submit">{!SUBMIT} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 			</p>
 		</div>
 	</form>

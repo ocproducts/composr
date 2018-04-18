@@ -84,7 +84,13 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				{$,Breadcrumbs}
 				{+START,IF,{$IN_STR,{$BREADCRUMBS},<a }}{+START,IF,{$SHOW_HEADER}}
 					<nav class="global-breadcrumbs breadcrumbs" itemprop="breadcrumb" id="global-breadcrumbs">
-						<img class="breadcrumbs-img" width="24" height="24" src="{$IMG*,icons/breadcrumbs}" title="{!YOU_ARE_HERE}" alt="{!YOU_ARE_HERE}" />
+						{+START,INCLUDE,ICON}
+							NAME=breadcrumbs
+							TITLE={!YOU_ARE_HERE}
+							DESCRIPTION={!YOU_ARE_HERE}
+							SIZE=24
+							CLASS=breadcrumbs-img
+						{+END}
 						{$BREADCRUMBS}
 					</nav>
 				{+END}{+END}
@@ -198,7 +204,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 							<div class="inline">
 								<div class="accessibility-hidden"><label for="su">{!SU}</label></div>
 								<input title="{!SU_2}" class="js-global-input-su-keypress-enter-submit-form" accesskey="w" size="10" type="text"{+START,IF_NON_EMPTY,{$_GET,keep_su}} placeholder="{$USERNAME*}"{+END} value="{+START,IF_NON_EMPTY,{$_GET,keep_su}}{$USERNAME*}{+END}" id="su" name="keep_su" />
-								<button data-disable-on-click="1" class="button-micro menu--site-meta--user-actions--login" type="submit">{!SU}</button>
+								<button data-disable-on-click="1" class="button-micro menu--site-meta--user-actions--login" type="submit">{+START,INCLUDE,ICON}NAME=menu/site_meta/user_actions/login{+END} {!SU}</button>
 							</div>
 						</form>
 					{+END}
@@ -210,7 +216,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 							<div class="inline">
 								<p class="accessibility-hidden"><label for="special-page-type">{!SCREEN_DEV_TOOLS}</label></p>
 								<select id="special-page-type" name="special_page_type">{$STAFF_ACTIONS}</select>
-								<button class="button-micro buttons--proceed" type="submit">{!PROCEED_SHORT}</button>
+								<button class="button-micro buttons--proceed" type="submit">{!PROCEED_SHORT} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 							</div>
 						</form>
 					{+END}{+END}{+END}

@@ -144,12 +144,3 @@ footer .global-minilinks {
 	float: right;
 }
 
-/*
-=========================
-=========Buttons=========
-=========================
-*/
-
-.menu-adminzone-tools-upgrade {
-	background-image: url('{$IMG,icons/menu/adminzone/tools/upgrade}') !important;
-}

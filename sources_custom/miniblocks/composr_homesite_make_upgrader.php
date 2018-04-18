@@ -30,7 +30,7 @@ if (!function_exists('mu_ui')) {
     function mu_ui()
     {
         $spammer_blackhole = static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE'));
-
+        $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
         echo <<<END
 <p>
     You can generate an upgrader from any version of Composr to any other version. If you access this upgrade post via the version information box on your Admin Zone dashboard then we'll automatically know what version you're running.
@@ -58,7 +58,7 @@ if (!function_exists('mu_ui')) {
     </p>
     <p>(example above is for upgrading from 10.0.0 beta1)</p>
     <p>
-        <button class="buttons--proceed button-screen-item" id="make-upgrader-button" type="submit">Generate</button>
+        <button class="buttons--proceed button-screen-item" id="make-upgrader-button" type="submit">Generate {$proceed_icon}</button>
     </p>
 </form>
 END;

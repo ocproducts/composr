@@ -298,7 +298,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="drop" />
-									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 								</td>
 							</tr>
 
@@ -317,7 +317,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="give" />
-									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 								</td>
 							</tr>
 
@@ -336,7 +336,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="btype" value="pickpocket" />
-									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 								</td>
 							</tr>
 
@@ -355,7 +355,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="use" />
-									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 								</td>
 							</tr>
 
@@ -374,7 +374,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="btype" value="delete-message-by-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 								</td>
 							</tr>
 						{+END}
@@ -394,7 +394,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="findperson" />
-								<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
+								<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 							</td>
 						</tr>
 
@@ -414,7 +414,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="teleport-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 								</td>
 							</tr>
 
@@ -433,7 +433,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="imprison-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 								</td>
 							</tr>
 
@@ -452,7 +452,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="hurt-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 								</td>
 							</tr>
 
@@ -471,7 +471,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="dehurt-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 								</td>
 							</tr>
 
@@ -490,7 +490,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="ban-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 								</td>
 							</tr>
 
@@ -509,7 +509,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="unban-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 								</td>
 							</tr>
 
@@ -528,7 +528,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="take-from-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED}</button>
+									<button class="button-screen-item buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 								</td>
 							</tr>
 						{+END}

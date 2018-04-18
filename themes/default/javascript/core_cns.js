@@ -398,10 +398,11 @@
         proceedDiv.appendChild(button);
 
         // Submit button
+        /*{$SET,proceed_icon,{+START,INCLUDE,ICON}NAME=buttons/proceed{+END}}*/
         button = document.createElement('button');
         button.type = 'submit';
         button.className = 'buttons--proceed button-screen-item';
-        $dom.html(button, '{!encryption:DECRYPT;^}');
+        $dom.html(button, '{!encryption:DECRYPT;^} {$GET;^,proceed_icon}');
         // Hide the form upon submission
         button.addEventListener('click', function () {
             container.style.display = 'none';

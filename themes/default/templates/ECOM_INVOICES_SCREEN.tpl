@@ -46,7 +46,7 @@
 					{+END}
 					{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_invoices}}
 						<ul class="horizontal-links horiz-field-sep">
-							<li><a class="button-screen-item admin--delete3" href="{$PAGE_LINK*,adminzone:admin_invoices:delete:{INVOICE_ID}}"><span>{!DELETE}: #{INVOICE_ID}</span></a></li>
+							<li><a class="button-screen-item admin--delete3" href="{$PAGE_LINK*,adminzone:admin_invoices:delete:{INVOICE_ID}}"><span>{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}: #{INVOICE_ID}</span></a></li>
 							{+START,IF,{FULFILLABLE}}
 								<li><a title="{!MARK_AS_FULFILLED}: #{INVOICE_ID}" href="{$PAGE_LINK*,adminzone:admin_invoices:fulfill:{INVOICE_ID}}">{!FULFILL}</a></li>
 							{+END}

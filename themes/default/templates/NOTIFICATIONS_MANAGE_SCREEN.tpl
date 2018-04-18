@@ -10,7 +10,7 @@
 			{INTERFACE}
 
 			<p class="proceed-button">
-				<button type="submit" class="button-screen buttons--save">{!SAVE}</button>
+				<button type="submit" class="button-screen buttons--save">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {!SAVE}</button>
 			</p>
 		</div>
 	</form>

@@ -3,12 +3,3 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
-/*
-=========================
-=========Buttons=========
-=========================
-*/
-
-.menu-adminzone-tools-upgrade {
-	background-image: url('{$IMG,icons/menu/adminzone/tools/upgrade}') !important;
-}

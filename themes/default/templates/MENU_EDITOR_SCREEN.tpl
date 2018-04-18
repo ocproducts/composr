@@ -38,8 +38,8 @@
 					</div>
 
 					<p class="proceed-button">
-						<button accesskey="p" class="button-screen buttons--preview js-click-preview-menu" type="submit">{!PREVIEW}</button>
-						<button accesskey="u" class="button-screen buttons--save js-click-save-menu" type="submit">{!SAVE}</button>
+						<button accesskey="p" class="button-screen buttons--preview js-click-preview-menu" type="submit">{+START,INCLUDE,ICON}NAME=buttons/preview{+END} {!PREVIEW}</button>
+						<button accesskey="u" class="button-screen buttons--save js-click-save-menu" type="submit">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {!SAVE}</button>
 					</p>
 				</div>
 
@@ -103,7 +103,7 @@
 							<input type="hidden" name="confirm" value="1" />
 							<input type="hidden" name="delete_confirm" value="1" />
 
-							<button class="button-screen-item admin--delete3" type="submit" data-cms-confirm-click="{!CONFIRM_DELETE*,{MENU_NAME}}">{!DELETE}</button>
+							<button class="button-screen-item admin--delete3" type="submit" data-cms-confirm-click="{!CONFIRM_DELETE*,{MENU_NAME}}">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</button>
 						</p>
 					</form>
 				</div>

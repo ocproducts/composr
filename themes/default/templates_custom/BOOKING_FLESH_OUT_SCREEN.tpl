@@ -73,7 +73,7 @@
 		</div></div>
 
 		<p class="proceed-button">
-			<button class="button-screen buttons--proceed" type="submit">{$?,{$IS_GUEST},{!PROCEED},{!BOOK}}</button>
+			<button class="button-screen buttons--proceed" type="submit">{$?,{$IS_GUEST},{!PROCEED},{!BOOK}} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 		</p>
 	</form>
 

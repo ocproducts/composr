@@ -14,6 +14,6 @@
 	</p>
 
 	<p class="proceed-button">
-		<button class="button-screen buttons--proceed" type="submit">{!PROCEED}</button>
+		<button class="button-screen buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 	</p>
 </form>

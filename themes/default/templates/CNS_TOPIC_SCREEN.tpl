@@ -89,7 +89,7 @@
 							<select class="dropdown-actions" id="tma-type" name="type">
 								<option value="browse">-</option>
 								{MODERATOR_ACTIONS}
-							</select><button class="button-micro buttons--proceed js-click-require-tma-type-selection" type="submit">{!PROCEED}</button>
+							</select><button class="button-micro buttons--proceed js-click-require-tma-type-selection" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 						</div>
 					</form>
 				{+END}
@@ -106,7 +106,7 @@
 										<option value="browse">-</option>
 									{+END}
 									{MARKED_POST_ACTIONS}
-								</select><button class="button-micro buttons--proceed js-click-check-marked-form-and-submit" type="submit">{!PROCEED}</button>
+								</select><button class="button-micro buttons--proceed js-click-check-marked-form-and-submit" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 							</div>
 						</form>
 					{+END}
@@ -156,7 +156,13 @@
 				{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}
 					<div class="non-accessibility-redundancy left"><nav class="breadcrumbs" itemprop="breadcrumb">
 						<p class="breadcrumbs">
-							<img class="breadcrumbs-img" width="20" height="20" src="{$IMG*,icons/breadcrumbs}" alt="&gt; " title="{!YOU_ARE_HERE}" />
+							{+START,INCLUDE,ICON}
+								NAME=breadcrumbs
+								TITLE={!YOU_ARE_HERE}
+								DESCRIPTION={!YOU_ARE_HERE}
+								SIZE=20
+								CLASS=breadcrumbs-img
+							{+END}
 							{BREADCRUMBS}
 						</p>
 					</nav></div>

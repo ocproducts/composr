@@ -12,7 +12,7 @@
 
 {+START,SET,BUTTONS}
 	{+START,IF_NON_EMPTY,{ADD_URL}}
-		<a class="button-screen admin--add" rel="add" href="{ADD_URL*}"><span>{!ADD_NEW_PAGE}</span></a>
+		<a class="button-screen admin--add" rel="add" href="{ADD_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_NEW_PAGE}</span></a>
 	{+END}
 
 	{+START,IF_PASSED,ADD_REDIRECT_URL}

@@ -36,7 +36,7 @@
 					<button class="button-screen buttons--back" type="button" data-cms-btn-go-back="1">{+START,INCLUDE,ICON}NAME=buttons/back{+END} {!GO_BACK}</button>
 				{+END}
 
-				<button data-disable-on-click="1" accesskey="u" class="button-screen buttons--proceed" type="submit">{!PROCEED}</button>
+				<button data-disable-on-click="1" accesskey="u" class="button-screen buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 			</p>
 		</div>
 	</form>

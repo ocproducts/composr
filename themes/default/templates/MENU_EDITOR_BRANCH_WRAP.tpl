@@ -26,7 +26,7 @@
 		<a href="#!" id="down_{I*}" class="horiz-field-sep js-click-btn-move-down-handle-ordering"><img height="12" src="{$IMG*,results/sortablefield_desc}"alt="{!MOVE_DOWN}"></a>
 		<a href="#!" id="up_{I*}" class="js-click-btn-move-up-handle-ordering"><img height="12" src="{$IMG*,results/sortablefield_asc}" alt="{!MOVE_UP}"></a>
 
-		<button class="admin--delete3 button-micro horiz-field-sep js-click-delete-menu-branch" type="button" id="del_{I*}" name="del_{I*}">{!DELETE}</button>
+		<button class="admin--delete3 button-micro horiz-field-sep js-click-delete-menu-branch" type="button" id="del_{I*}" name="del_{I*}">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</button>
 	</div>
 
 	<div class="menu-editor-branch-indent" id="branch-{I*}-follow-1" style="{DISPLAY*}">

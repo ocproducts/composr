@@ -59,7 +59,7 @@
 				</div>
 
 				<p class="proceed-button">
-					<button class="button-screen menu--site-meta--user-actions--login" type="submit">{!_LOGIN}</button>
+					<button class="button-screen menu--site-meta--user-actions--login" type="submit">{+START,INCLUDE,ICON}NAME=menu/site_meta/user_actions/login{+END} {!_LOGIN}</button>
 				</p>
 			</div>
 		</form>

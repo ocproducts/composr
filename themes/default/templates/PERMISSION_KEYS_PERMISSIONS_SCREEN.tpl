@@ -60,7 +60,7 @@
 			</table></div>
 
 			<p class="proceed-button">
-				<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--save js-btn-hover-toggle-disable-size-change" type="submit">{!SAVE}</button>
+				<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--save js-btn-hover-toggle-disable-size-change" type="submit">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {!SAVE}</button>
 			</p>
 		</div>
 	</form>

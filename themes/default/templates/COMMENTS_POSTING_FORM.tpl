@@ -203,7 +203,7 @@
 						<div class="proceed-button buttons-group {$?,{$GET,has_preview_button},contains-preview-button,contains-no-preview-button}">
 							{+START,IF,{$DESKTOP}}
 								{+START,IF,{$GET,has_preview_button}}
-									<button id="preview-button" accesskey="p" tabindex="250" class="buttons--preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} desktop-inline" type="button">{!PREVIEW}</button>
+									<button id="preview-button" accesskey="p" tabindex="250" class="buttons--preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} desktop-inline" type="button">{+START,INCLUDE,ICON}NAME=buttons/preview{+END} {!PREVIEW}</button>
 								{+END}
 							{+END}
 

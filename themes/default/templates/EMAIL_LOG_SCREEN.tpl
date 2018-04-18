@@ -7,7 +7,7 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="inline">
-			<button class="button-screen admin--delete3" type="submit">{!DELETE_ALL}</button>
+			<button class="button-screen admin--delete3" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE_ALL}</button>
 		</div>
 	</form>
 	<form title="{!SEND_ALL}" class="right" action="{MASS_SEND_URL*}" method="post" autocomplete="off">
