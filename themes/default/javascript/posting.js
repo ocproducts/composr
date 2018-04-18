@@ -541,7 +541,7 @@
 
             return $cms.ui.generateQuestionUi(
                 '{!javascript:THUMB_OR_IMG_2;^}',
-                { 'buttons--thumbnail': '{!THUMBNAIL;^}', 'buttons--full-size': '{!IMAGE;^}' },
+                { 'buttons/thumbnail': '{!THUMBNAIL;^}', 'buttons/full-size': '{!IMAGE;^}' },
                 '{!comcode:INPUT_COMCODE_img;^}'
             );
         }).then(function (_answer) {

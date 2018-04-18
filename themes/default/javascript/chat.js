@@ -1195,7 +1195,7 @@
                 if (roomId) {
                     $cms.ui.generateQuestionUi(
                         '{!chat:HOW_REMOVE_CHAT_NOTIFICATION;^}',
-                        {/*'buttons--cancel': '{!INPUTSYSTEM_CANCEL;^}',*/'buttons--proceed': '{!CLOSE;^}', 'buttons--ignore': '{!HIDE;^}'},
+                        {/*'buttons/cancel': '{!INPUTSYSTEM_CANCEL;^}',*/'buttons/proceed': '{!CLOSE;^}', 'buttons/ignore': '{!HIDE;^}'},
                         '{!chat:REMOVE_CHAT_NOTIFICATION;^}',
                         null,
                         function (answer) {
@@ -1409,7 +1409,7 @@
         /*{+START,IF,{$OR,{$NOT,{$ADDON_INSTALLED,cns_forum}},{$NOT,{$CNS}}}}*/
         $cms.ui.generateQuestionUi(
             '{!chat:WANT_TO_DOWNLOAD_LOGS*;^}',
-            { 'buttons--cancel': '{!INPUTSYSTEM_CANCEL*;^}', 'buttons--yes': '{!YES*;^}', 'buttons--no': '{!NO*;^}' },
+            { 'buttons/cancel': '{!INPUTSYSTEM_CANCEL*;^}', 'buttons/yes': '{!YES*;^}', 'buttons/no': '{!NO*;^}' },
             '{!chat:CHAT_DOWNLOAD_LOGS*;^}',
             null,
             function (logs) {

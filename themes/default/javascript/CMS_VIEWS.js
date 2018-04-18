@@ -487,6 +487,10 @@
                 }
             });
 
+            /*{$SET,icon_proceed,{+START,INCLUDE,ICON}NAME=buttons/proceed{+END}}*/
+            /*{$SET,icon_yes,{+START,INCLUDE,ICON}NAME=buttons/yes{+END}}*/
+            /*{$SET,icon_no,{+START,INCLUDE,ICON}NAME=buttons/no{+END}}*/
+            
             switch (this.type) {
                 case 'iframe':
                     var iframeWidth = (this.width.match(/^[\d\.]+$/) !== null) ? ((this.width - 14) + 'px') : this.width,
@@ -551,7 +555,7 @@
                     if (this.yes) {
                         button = $dom.create('button', {
                             'type': 'button',
-                            'html': this.yesButton,
+                            'html': '{$GET;^,icon_proceed} ' + this.yesButton,
                             'className': 'buttons--proceed button-screen-item js-onclick-do-option-yes'
                         });
 
@@ -576,14 +580,14 @@
                 case 'confirm':
                     button = $dom.create('button', {
                         'type': 'button',
-                        'html': this.yesButton,
+                        'html': '{$GET;^,icon_yes} ' + this.yesButton,
                         'className': 'buttons--yes button-screen-item js-onclick-do-option-yes',
                         'style': 'font-weight: bold;'
                     });
                     this.buttonContainerEl.appendChild(button);
                     button = $dom.create('button', {
                         'type': 'button',
-                        'html': this.noButton,
+                        'html': '{$GET;^,icon_no} ' + this.noButton,
                         'className': 'buttons--no button-screen-item js-onclick-do-option-no'
                     });
                     this.buttonContainerEl.appendChild(button);
@@ -630,9 +634,10 @@
             // Cancel button handled either via button in corner (if there's no other buttons) or another button in the panel (if there's other buttons)
             if (this.cancelButton) {
                 if (this.buttonContainerEl.firstElementChild) {
+                    /*{$SET,icon_cancel,{+START,INCLUDE,ICON}NAME=buttons/cancel{+END}}*/
                     button = $dom.create('button', {
                         'type': 'button',
-                        'html': this.cancelButton,
+                        'html': '{$GET;^,icon_cancel} ' + this.cancelButton,
                         'className': 'button-screen-item buttons--cancel ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
                     });
                     this.buttonContainerEl.appendChild(button);

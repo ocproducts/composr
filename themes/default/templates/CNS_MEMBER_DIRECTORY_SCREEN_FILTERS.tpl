@@ -14,7 +14,7 @@
 
 				<div class="search-fields float-surrounder">
 					<div class="search-button">
-						<button data-disable-on-click="1" accesskey="u" class="button-screen-item buttons--filter" type="submit">{!FILTER}{+START,IF_NON_EMPTY,{FILTERS_ROW_B}} &#9745;{+END}</button>
+						<button data-disable-on-click="1" accesskey="u" class="button-screen-item buttons--filter" type="submit">{+START,INCLUDE,ICON}NAME=buttons/filter{+END} {!FILTER}{+START,IF_NON_EMPTY,{FILTERS_ROW_B}} &#9745;{+END}</button>
 					</div>
 
 					{+START,LOOP,{FILTERS_ROW_A}}
@@ -29,7 +29,7 @@
 				{+START,IF_NON_EMPTY,{FILTERS_ROW_B}}
 					<div class="search-fields float-surrounder">
 						<div class="search-button">
-							<button data-cms-href="{$PAGE_LINK*,_SELF:_SELF}" class="button-screen-item buttons--clear" type="button">{$,{!RESET_FILTER} }&#9746;</button>
+							<button data-cms-href="{$PAGE_LINK*,_SELF:_SELF}" class="button-screen-item buttons--clear" type="button">{+START,INCLUDE,ICON}NAME=buttons/clear{+END} {$,{!RESET_FILTER} }&#9746;</button>
 						</div>
 
 						{+START,LOOP,{FILTERS_ROW_B}}

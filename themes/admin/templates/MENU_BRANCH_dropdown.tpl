@@ -5,10 +5,10 @@
 	{$SET,RAND,{$RAND}}
 	{$SET,img,{$?,{$AND,{$IS_EMPTY,{IMG}},{$LT,{THE_LEVEL},3}},{$IMG,icons/content_types/page},{IMG}}}
 	{$SET,img_html,<img class="icon-img" alt="" src="{$GET*,img}" />}
-	
+
 	{+START,IF,{$PREG_MATCH,^{$BASE_URL}/themes/[^/]+/images/icons/,{$GET,img}}}
-	{$SET,img_name,{$PREG_REPLACE,\.(png|gif|svg)$,,{$PREG_REPLACE,^{$BASE_URL}/themes/[^/]+/images/icons/,,{$GET,img}}}}
-	{$SET,img_html,{+START,INCLUDE,ICON}NAME={$GET,img_name}{+END}}
+		{$SET,img_name,{$PREG_REPLACE,\.(png|gif|svg)$,,{$PREG_REPLACE,^{$BASE_URL}/themes/[^/]+/images/icons/,,{$GET,img}}}}
+		{$SET,img_html,{+START,INCLUDE,ICON}NAME={$GET,img_name}{+END}}
 	{+END}
 
 	{+START,IF,{TOP_LEVEL}}
@@ -18,7 +18,9 @@
 				<span class="dropdown-menu-item-caption">{CAPTION}</span>
 			</a>
 			{+START,IF,{$GET,HAS_CHILDREN}}{+START,IF,{$DESKTOP}}
-				<ul aria-haspopup="true" class="dropdown-menu-items nlevel js-mouseover-set-active-menu js-mouseout-unset-active-menu" id="{MENU|*}-dexpand-{$GET*,RAND}" style="display: none">{CHILDREN}</ul>
+				<ul aria-haspopup="true" class="dropdown-menu-items nlevel js-mouseover-set-active-menu js-mouseout-unset-active-menu" id="{MENU|*}-dexpand-{$GET*,RAND}" style="display: none">
+					{CHILDREN}
+				</ul>
 			{+END}{+END}
 		</li>
 	{+END}

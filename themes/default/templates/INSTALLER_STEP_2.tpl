@@ -22,6 +22,6 @@
 	</div>
 
 	<p class="proceed-button">
-		<button class="button-screen buttons--yes" data-disable-on-click="1" type="submit">{!I_AGREE}</button>
+		<button class="button-screen buttons--yes" data-disable-on-click="1" type="submit">{+START,INCLUDE,ICON}NAME=buttons/yes{+END} {!I_AGREE}</button>
 	</p>
 </form>

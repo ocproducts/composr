@@ -14488,14 +14488,16 @@
         rep.name = name + '_old';
         rep.id = name + '_old';
 
+        /*{$SET,icon_upload,{+START,INCLUDE,ICON}NAME=buttons/upload{+END}}*/
+        /*{$SET,icon_clear,{+START,INCLUDE,ICON}NAME=buttons/clear{+END}}*/
         $dom.append(
             rep.parentNode,
             '<div id="main-div-' + name + '" style="display: inline-block;">' +
             '<div id="sub-div-' + name + '" class="vertical-alignment">' +
             // This input field shows the file name(s) of the uploading/uploaded file to the user
             '<input type="text" id="txt_filename_' + name + '" name="txt_filename_' + name + '" class="upload-response-field" size="24" disabled value="">' +
-            '<button type="button" id="upload-button-' + name + '" class="buttons--upload button-micro">{!BROWSE;^*}</button>' +
-            '<button type="button" id="fs-clear-' + name + '" class="buttons--clear button-micro clear-button" alt="{!CLEAR;^*}">{!CLEAR;^*}</button>' +
+            '<button type="button" id="upload-button-' + name + '" class="buttons--upload button-micro">{$GET;^,icon_upload} {!BROWSE;^*}</button>' +
+            '<button type="button" id="fs-clear-' + name + '" class="buttons--clear button-micro clear-button">{$GET;^,icon_clear} {!CLEAR;^*}</button>' +
             '</div>' +
             '<div id="fs-upload-progress-' + name + '" class="progress-bars"></div>' +
             // This hidden input field holds the server-side upload_id after upload is finished

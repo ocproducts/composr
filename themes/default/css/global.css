@@ -3843,11 +3843,6 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 	font-size: 13px;
 	min-width: 8em;
 }
-.buttons--previous.button-screen,
-.buttons--previous-none.button-screen {
-	padding: 6px 7px 7px 39px !important;
-	background-position: 7px center !important;
-}
 .button-screen-item {
 	padding: 5px 10px;
 	font-size: 13px;
@@ -3978,121 +3973,11 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .help {
 	background-image: url('{$IMG,icons/help}') !important;
 }
-.buttons--back {
-	background-image: url('{$IMG,icons/buttons/back}') !important;
-}
-.buttons--filter {
-	background-image: url('{$IMG,icons/buttons/filter}') !important;
-}
-.buttons--sort {
-	background-image: url('{$IMG,icons/buttons/sort}') !important;
-}
-.buttons--all {
-	background-image: url('{$IMG,icons/buttons/all}') !important;
-}
-.buttons--all2 {
-	background-image: url('{$IMG,icons/buttons/all2}') !important;
-}
-.buttons--convert {
-	background-image: url('{$IMG,icons/buttons/convert}') !important;
-}
-.buttons--thumbnail {
-	background-image: url('{$IMG,icons/buttons/thumbnail}') !important;
-}
-.buttons--full-size {
-	background-image: url('{$IMG,icons/buttons/full_size}') !important;
-}
-.buttons--calculate {
-	background-image: url('{$IMG,icons/buttons/calculate}') !important;
-}
-.buttons--choose {
-	background-image: url('{$IMG,icons/buttons/choose}') !important;
-}
-.buttons--clear {
-	background-image: url('{$IMG,icons/buttons/clear}') !important;
-}
-.buttons--ignore {
-	background-image: url('{$IMG,icons/buttons/ignore}') !important;
-}
-.buttons--closed {
-	background-image: url('{$IMG,icons/buttons/closed}') !important;
-}
-.buttons--notifications-enable {
-	background-image: url('{$IMG,icons/buttons/notifications_enable}') !important;
-}
-.buttons--notifications-disable {
-	background-image: url('{$IMG,icons/buttons/notifications_disable}') !important;
-}
-.admin--edit {
-	background-image: url('{$IMG,icons/admin/edit}') !important;
-}
-.admin--move {
-	background-image: url('{$IMG,icons/admin/move}') !important;
-}
-.buttons--no {
-	background-image: url('{$IMG,icons/buttons/no}') !important;
-}
-.buttons--yes {
-	background-image: url('{$IMG,icons/buttons/yes}') !important;
-}
 .buttons--proceed {
 	background-image: url('{$IMG,icons/buttons/proceed}') !important;
 }
-.menu-adminzone-tools-cleanup {
-	background-image: url('{$IMG,icons/menu/adminzone/tools/cleanup}') !important;
-}
-.buttons--copy {
-	background-image: url('{$IMG,icons/buttons/copy}') !important;
-}
-.buttons--skip {
-	background-image: url('{$IMG,icons/buttons/skip}') !important;
-}
-.buttons--cancel {
-	background-image: url('{$IMG,icons/buttons/cancel}') !important;
-}
-.buttons--previous {
-	background-image: url('{$IMG,icons/buttons/previous}') !important;
-}
-.buttons--previous-none {
-	background-image: url('{$IMG,icons/buttons/previous_none}') !important;
-}
-.buttons--next {
-	background-image: url('{$IMG,icons/buttons/next}') !important;
-}
-.buttons--next-none {
-	background-image: url('{$IMG,icons/buttons/next_none}') !important;
-}
-.buttons--new-comment {
-	background-image: url('{$IMG,icons/buttons/new_comment}') !important;
-}
-.buttons--new-reply {
-	background-image: url('{$IMG,icons/buttons/new_reply}') !important;
-}
-.buttons--redirect {
-	background-image: url('{$IMG,icons/buttons/redirect}') !important;
-}
-.buttons--report {
-	background-image: url('{$IMG,icons/buttons/report}') !important;
-}
-.buttons--undo {
-	background-image: url('{$IMG,icons/buttons/undo}') !important;
-}
-/*{+START,IF,{$ADDON_INSTALLED,actionlog}}*/
-	.admin--revisions {
-		background-image: url('{$IMG,icons/admin/revisions}') !important;
-	}
-/*{+END}*/
 .buttons--save {
 	background-image: url('{$IMG,icons/buttons/save}') !important;
-}
-.buttons--search {
-	background-image: url('{$IMG,icons/buttons/search}') !important;
-}
-.buttons--send {
-	background-image: url('{$IMG,icons/buttons/send}') !important;
-}
-.buttons--upload {
-	background-image: url('{$IMG,icons/buttons/upload}') !important;
 }
 .buttons--preview {
 	background-image: url('{$IMG,icons/buttons/preview}') !important;
@@ -4117,9 +4002,6 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 }
 .admin--delete3 {
 	background-image: url('{$IMG,icons/admin/delete3}') !important;
-}
-.admin--edit {
-	background-image: url('{$IMG,icons/admin/edit}') !important;
 }
 .admin--edit-one-category {
 	background-image: url('{$IMG,icons/admin/edit_one_category}') !important;

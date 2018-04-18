@@ -13,7 +13,7 @@
 
 			<label class="accessibility-hidden" for="friends_search">{!SEARCH}</label>
 			<input autocomplete="off" maxlength="255" class="js-input-friends-search" type="search" id="friends_search" name="friends_search" value="{$_GET*,friends_search}" />
-			<button class="button-micro buttons--filter" type="submit">{!FILTER}</button>
+			<button class="button-micro buttons--filter" type="submit">{+START,INCLUDE,ICON}NAME=buttons/filter{+END} {!FILTER}</button>
 		</form>
 
 		<p>{!DESCRIPTION_FRIENDS,{$USERNAME*,{MEMBER_ID},1}}</p>

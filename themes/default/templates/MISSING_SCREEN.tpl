@@ -17,7 +17,7 @@
 
 	{+START,IF_PASSED,ADD_REDIRECT_URL}
 		{+START,IF_NON_EMPTY,{ADD_REDIRECT_URL}}
-			<a class="button-screen buttons--redirect" href="{ADD_REDIRECT_URL*}"><span>{!redirects:NEW_REDIRECT}</span></a>
+			<a class="button-screen buttons--redirect" href="{ADD_REDIRECT_URL*}">{+START,INCLUDE,ICON}NAME=buttons/redirect{+END} <span>{!redirects:NEW_REDIRECT}</span></a>
 		{+END}
 	{+END}
 {+END}

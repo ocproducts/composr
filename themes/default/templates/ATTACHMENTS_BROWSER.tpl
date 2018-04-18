@@ -16,7 +16,7 @@
 		{TPL}
 
 		<div class="buttons-group">
-			<a class="button-screen-item buttons--choose js-click-do-attachment-and-close" href="#!"><span>{!CHOOSE}</span></a>
+			<a class="button-screen-item buttons--choose js-click-do-attachment-and-close" href="#!">{+START,INCLUDE,ICON}NAME=buttons/choose{+END} <span>{!CHOOSE}</span></a>
 
 			{+START,IF,{MAY_DELETE}}
 				<form title="{!DELETE}" class="inline" method="post" action="{DELETE_URL*}" autocomplete="off">

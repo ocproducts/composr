@@ -42,15 +42,15 @@
 
 	<p class="proceed-button{+START,IF_PASSED,SUBMIT_BUTTON_CLASS} {SUBMIT_BUTTON_CLASS*}{+END}">
 		{+START,IF_PASSED_AND_TRUE,BACK}
-			<button class="button-screen buttons--back" type="button" data-cms-btn-go-back="1">{!GO_BACK}</button>
+			<button class="button-screen buttons--back" type="button" data-cms-btn-go-back="1">{+START,INCLUDE,ICON}NAME=buttons/back{+END} {!GO_BACK}</button>
 		{+END}
 		{+START,IF_PASSED,BACK_URL}
-			<button class="button-screen buttons--back js-click-btn-go-back" type="button">{!GO_BACK}</button>
+			<button class="button-screen buttons--back js-click-btn-go-back" type="button">{+START,INCLUDE,ICON}NAME=buttons/back{+END} {!GO_BACK}</button>
 		{+END}
 
 		{+START,IF_PASSED,EXTRA_BUTTONS}{EXTRA_BUTTONS}{+END}
 		{+START,IF_PASSED,CANCEL_URL}
-			<button class="button-screen buttons--cancel js-click-do-form-cancel" type="button">{!INPUTSYSTEM_CANCEL}</button>
+			<button class="button-screen buttons--cancel js-click-do-form-cancel" type="button">{+START,INCLUDE,ICON}NAME=buttons/cancel{+END} {!INPUTSYSTEM_CANCEL}</button>
 		{+END}
 		{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$CONFIG_OPTION,enable_previews}}
 			<button class="button-screen buttons--preview js-click-do-form-preview" id="preview-button" accesskey="p" tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button">{!PREVIEW}</button>

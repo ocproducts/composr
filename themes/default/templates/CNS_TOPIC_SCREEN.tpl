@@ -125,7 +125,7 @@
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},average_rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},compound_rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
 							</select>
-							<button type="submit" class="button-micro buttons--sort">{!SORT}</button>
+							<button type="submit" class="button-micro buttons--sort">{+START,INCLUDE,ICON}NAME=buttons/sort{+END} {!SORT}</button>
 						</div>
 					</form>
 				{+END}

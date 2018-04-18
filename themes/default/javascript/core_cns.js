@@ -385,10 +385,11 @@
         proceedDiv.style.marginTop = '1em';
 
         // Cancel button
-        var button = document.createElement('input');
+        /*{$SET,icon_cancel,{+START,INCLUDE,ICON}NAME=buttons/cancel{+END}}*/
+        var button = document.createElement('button');
         button.type = 'button';
         button.className = 'buttons--cancel button-screen-item';
-        button.value = '{!INPUTSYSTEM_CANCEL;^}';
+        $dom.html(button, '{$GET;^,icon_cancel} {!INPUTSYSTEM_CANCEL;^}');
         // Remove the form when it's cancelled
         button.addEventListener('click', function () {
             document.body.removeChild(container);
@@ -397,10 +398,10 @@
         proceedDiv.appendChild(button);
 
         // Submit button
-        button = document.createElement('input');
+        button = document.createElement('button');
         button.type = 'submit';
         button.className = 'buttons--proceed button-screen-item';
-        button.value = '{!encryption:DECRYPT;^}';
+        $dom.html(button, '{!encryption:DECRYPT;^}');
         // Hide the form upon submission
         button.addEventListener('click', function () {
             container.style.display = 'none';

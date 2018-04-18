@@ -7,6 +7,6 @@
 		<select id="r-{$GET*,RAND_PAGINATION_PER_PAGE}" name="{MAX_NAME*}">
 			{SELECTORS}
 		</select>
-		<button data-disable-on-click="1" class="button-micro buttons--filter" type="submit" title="{!PER_PAGE}{+START,IF_NON_EMPTY,{$GET,TEXT_ID}}: {$GET*,TEXT_ID}{+END}">{!PER_PAGE}</button>
+		<button data-disable-on-click="1" class="button-micro buttons--filter" type="submit" title="{!PER_PAGE}{+START,IF_NON_EMPTY,{$GET,TEXT_ID}}: {$GET*,TEXT_ID}{+END}">{+START,INCLUDE,ICON}NAME=buttons/filter{+END} {!PER_PAGE}</button>
 	</div>
 </form>

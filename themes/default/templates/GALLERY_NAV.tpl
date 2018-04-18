@@ -18,10 +18,10 @@
 		<div class="trinav-left">
 			{$,Back}
 			{+START,IF_NON_EMPTY,{BACK_URL}}
-				<a class="button-screen buttons--previous {+START,IF,{SLIDESHOW}}js-click-slideshow-backward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="prev" accesskey="j" href="{BACK_URL*}"><span>{!PREVIOUS}</span></a>
+				<a class="button-screen buttons--previous {+START,IF,{SLIDESHOW}}js-click-slideshow-backward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="prev" accesskey="j" href="{BACK_URL*}">{+START,INCLUDE,ICON}NAME=buttons/previous{+END} <span>{!PREVIOUS}</span></a>
 			{+END}
 			{+START,IF_EMPTY,{BACK_URL}}
-				<span class="button-screen buttons--previous-none"><span>{!PREVIOUS}</span></span>
+				<span class="button-screen buttons--previous-none">{+START,INCLUDE,ICON}NAME=buttons/previous_none{+END}  <span>{!PREVIOUS}</span></span>
 			{+END}
 		</div>
 
@@ -37,10 +37,10 @@
 
 			{$,Next}
 			{+START,IF_NON_EMPTY,{NEXT_URL}}
-				<a class="button-screen buttons--next {+START,IF,{SLIDESHOW}}js-click-slideshow-forward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="next" accesskey="k" href="{NEXT_URL*}"><span>{!NEXT}</span></a>
+				<a class="button-screen buttons--next {+START,IF,{SLIDESHOW}}js-click-slideshow-forward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="next" accesskey="k" href="{NEXT_URL*}"><span>{!NEXT}</span> {+START,INCLUDE,ICON}NAME=buttons/next{+END}</a>
 			{+END}
 			{+START,IF_EMPTY,{NEXT_URL}}
-				<span class="button-screen buttons--next-none"><span>{!NEXT}</span></span>
+				<span class="button-screen buttons--next-none"><span>{!NEXT}</span> {+START,INCLUDE,ICON}NAME=buttons/next_none{+END}</span>
 			{+END}
 		</div>
 

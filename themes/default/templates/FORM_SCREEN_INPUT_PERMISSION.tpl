@@ -36,7 +36,7 @@
 
 	{+START,IF,{$OR,{FORCE_PRESETS},{$IS_NON_EMPTY,{OVERRIDES}}}}
 		<td class="form-table-field-input">
-			<button class="buttons--copy button-screen-item button-micro-tall js-click-perm-repeating" type="button" id="copy-button-access-{GROUP_ID*}">{!REPEAT_PERMISSION}</button>
+			<button class="buttons--copy button-screen-item button-micro-tall js-click-perm-repeating" type="button" id="copy-button-access-{GROUP_ID*}">{+START,INCLUDE,ICON}NAME=buttons/copy{+END} {!REPEAT_PERMISSION}</button>
 		</td>
 	{+END}
 </tr>

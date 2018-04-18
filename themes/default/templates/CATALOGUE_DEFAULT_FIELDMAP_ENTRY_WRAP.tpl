@@ -45,7 +45,7 @@
 			{+END}
 			{+START,IF_EMPTY,{VIEW_URL}}{+START,IF_NON_EMPTY,{EDIT_URL}}
 				<p class="{$?,{GIVE_CONTEXT},shunted-button,right}">
-					<a class="button-screen-item admin--edit" href="{EDIT_URL*}" title="{!EDIT}{+START,IF_PASSED,FIELD_0}: {$STRIP_TAGS*,{FIELD_0}}{+END}"><span>{!EDIT}</span></a>
+					<a class="button-screen-item admin--edit" href="{EDIT_URL*}" title="{!EDIT}{+START,IF_PASSED,FIELD_0}: {$STRIP_TAGS*,{FIELD_0}}{+END}">{+START,INCLUDE,ICON}NAME=admin/edit{+END} <span>{!EDIT}</span></a>
 				</p>
 			{+END}{+END}
 		</div>

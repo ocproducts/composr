@@ -29,7 +29,7 @@
 					</div>
 
 					<div class="inline spaced filter-button">
-						<button data-disable-on-click="1" class="button-screen-item buttons--filter" type="submit">{!FILTER}</button>
+						<button data-disable-on-click="1" class="button-screen-item buttons--filter" type="submit">{+START,INCLUDE,ICON}NAME=buttons/filter{+END} {!FILTER}</button>
 					</div>
 				</div>
 			</form>

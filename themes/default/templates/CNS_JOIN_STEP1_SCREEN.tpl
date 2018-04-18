@@ -33,9 +33,9 @@
 		{+END}
 
 		<p>
-			<button type="button" data-disable-on-click="1" class="button-screen buttons--no js-click-set-top-location" data-tp-top-location="{$PAGE_LINK*,:}">{!I_DISAGREE}</button>
+			<button type="button" data-disable-on-click="1" class="button-screen buttons--no js-click-set-top-location" data-tp-top-location="{$PAGE_LINK*,:}">{+START,INCLUDE,ICON}NAME=buttons/no{+END} {!I_DISAGREE}</button>
 
-			<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--yes" type="submit" disabled="disabled" id="proceed-button">{!PROCEED}</button>
+			<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--yes" type="submit" disabled="disabled" id="proceed-button">{+START,INCLUDE,ICON}NAME=buttons/yes{+END} {!PROCEED}</button>
 		</p>
 	</form>
 </div>

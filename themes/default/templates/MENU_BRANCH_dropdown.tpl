@@ -6,7 +6,7 @@
 	{$SET,img,{$?,{$AND,{$IS_EMPTY,{IMG}},{$LT,{THE_LEVEL},3}},{$IMG,icons/content_types/page},{IMG}}}
 	{$SET,img_html,<img class="icon-img" alt="" src="{$GET*,img}" />}
 
-	{+START,IF,{$PREG_MATCH,^blah{$BASE_URL}/themes/[^/]+/images/icons/,{$GET,img}}}
+	{+START,IF,{$PREG_MATCH,^{$BASE_URL}/themes/[^/]+/images/icons/,{$GET,img}}}
 		{$SET,img_name,{$PREG_REPLACE,\.(png|gif|svg)$,,{$PREG_REPLACE,^{$BASE_URL}/themes/[^/]+/images/icons/,,{$GET,img}}}}
 		{$SET,img_html,{+START,INCLUDE,ICON}NAME={$GET,img_name}{+END}}
 	{+END}
@@ -14,7 +14,8 @@
 	{+START,IF,{TOP_LEVEL}}
 		<li class="dropdown-menu-item {$?,{CURRENT},current,non-current}{$?,{$GET,HAS_CHILDREN}, has-children}{+START,IF,{$AND,{$NOT,{$GET,HAS_CHILDREN}},{LAST}}} last{+END}{+START,IF,{FIRST}} first{+END} toplevel {+START,IF,{$GET,HAS_CHILDREN}}js-mousemove-timer-pop-up-menu js-mouseout-clear-pop-up-timer{+END}" data-vw-rand="{$GET*,RAND}">
 			<a {+START,INCLUDE,MENU_LINK_PROPERTIES}{+END} class="dropdown-menu-item-a {+START,IF_EMPTY,{URL}}non-link {+END}toplevel-link{+START,IF,{LAST}} last{+END}{+START,IF,{FIRST}} first{+END} {$?,{$GET,HAS_CHILDREN},js-focus-pop-up-menu js-click-unset-active-menu js-click-toggle-sub-menu}"{$?,{$GET,HAS_CHILDREN}, data-vw-sub-menu-id="{MENU|*}-dexpand-{$GET*,RAND}"} data-vw-rand="{$GET*,RAND}">
-				{+START,IF_NON_EMPTY,{$GET,img}}<span class="dropdown-menu-item-icon">{$GET,img_html}</span>{+END}<span class="dropdown-menu-item-caption">{CAPTION}</span>
+				{+START,IF_NON_EMPTY,{$GET,img}}<span class="dropdown-menu-item-icon">{$GET,img_html}</span>{+END}
+				<span class="dropdown-menu-item-caption">{CAPTION}</span>
 			</a>
 			{+START,IF,{$GET,HAS_CHILDREN}}{+START,IF,{$DESKTOP}}
 				<ul aria-haspopup="true" class="dropdown-menu-items nlevel js-mouseover-set-active-menu js-mouseout-unset-active-menu" id="{MENU|*}-dexpand-{$GET*,RAND}" style="display: none">
@@ -30,6 +31,7 @@
 				{+START,IF_NON_EMPTY,{$GET,img}}<span class="dropdown-menu-item-icon">{$GET,img_html}</span>{+END}
 				<span class="dropdown-menu-item-caption">{CAPTION}</span>
 			</a>
+			
 			{+START,IF,{$GET,HAS_CHILDREN}}
 				<ul aria-haspopup="true" class="dropdown-menu-items nlevel js-mouseover-set-active-menu js-mouseout-unset-active-menu" id="{MENU|*}-dexpand-{$GET*,RAND}" style="display: none">
 					{+START,IF_NON_EMPTY,{URL}}{$,Add duplicate parent link in child items that can be opened when using the hamburger menu (parent itself will toggle the child items)}

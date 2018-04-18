@@ -213,7 +213,7 @@
 
 							{+START,IF_PASSED,ATTACHMENTS}
 								{+START,IF,{$AND,{TRUE_ATTACHMENT_UI},{$BROWSER_MATCHES,simplified_attachments_ui}}}
-									<button tabindex="7" id="js-attachment-upload-button" class="for-field-post buttons--thumbnail {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item}" type="button">{!comcode:ADD_IMAGES}</button>
+									<button tabindex="7" id="js-attachment-upload-button" class="for-field-post buttons--thumbnail {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item}" type="button">{+START,INCLUDE,ICON}NAME=buttons/thumbnail{+END} {!comcode:ADD_IMAGES}</button>
 								{+END}
 							{+END}
 

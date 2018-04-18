@@ -17,7 +17,7 @@
 	</div></div>
 
 	<p class="proceed-button">
-		<button class="button-screen buttons--back" data-cms-btn-go-back="1" type="button">{!GO_BACK}</button>
+		<button class="button-screen buttons--back" data-cms-btn-go-back="1" type="button">{+START,INCLUDE,ICON}NAME=buttons/back{+END} {!GO_BACK}</button>
 
 		<button data-disable-on-click="1" class="button-screen buttons--proceed" type="submit">{!PROCEED}</button>
 	</p>

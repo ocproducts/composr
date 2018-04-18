@@ -37,9 +37,9 @@
 				{+START,IF,{$NOT,{IS_CURRENT}}}
 					<form title="{!CHOOSE} {!IOTD} #{ID*}" class="inline" action="{CHOOSE_URL*}" method="post" autocomplete="off">
 						<input type="hidden" name="id" value="{ID*}" />
-						<button class="button-screen-item buttons--choose" type="submit" title="{!CHOOSE} {!IOTD} #{ID*}">{!CHOOSE}</button></form>
+						<button class="button-screen-item buttons--choose" type="submit" title="{!CHOOSE} {!IOTD} #{ID*}">{+START,INCLUDE,ICON}NAME=buttons/choose{+END} {!CHOOSE}</button></form>
 				{+END}
-				<a class="button-screen-item admin--edit" rel="edit" href="{EDIT_URL*}"><span>{!EDIT}: {!IOTD} #{ID*}</span></a>
+				<a class="button-screen-item admin--edit" rel="edit" href="{EDIT_URL*}">{+START,INCLUDE,ICON}NAME=admin/edit{+END} <span>{!EDIT}: {!IOTD} #{ID*}</span></a>
 				<form class="inline js-submit-confirm-iotd-deletion" title="{!DELETE} {!IOTD} #{ID*}" action="{DELETE_URL*}" method="post" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="id" value="{ID*}" />
 					<button class="button-screen-item admin--delete3" type="submit" value="{!DELETE}">{!DELETE} {!IOTD} #{ID*}</button>
 				</form>

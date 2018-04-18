@@ -566,7 +566,7 @@
 			<label for="css-equation-{FILE_ID*}">{!CSS_EQUATION_HELPER}</label>
 			<input name="css_equation" id="css-equation-{FILE_ID*}" type="text" value="100% seed" />
 
-			<button class="button-screen-item buttons--calculate js-btn-equation-helper" type="submit">{!CALCULATE}</button>
+			<button class="button-screen-item buttons--calculate js-btn-equation-helper" type="submit">{+START,INCLUDE,ICON}NAME=buttons/calculate{+END} {!CALCULATE}</button>
 
 			&rarr;
 

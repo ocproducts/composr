@@ -150,9 +150,6 @@ footer .global-minilinks {
 =========================
 */
 
-.menu-adminzone-tools-cleanup {
-	background-image: url('{$IMG,icons/menu/adminzone/tools/cleanup}') !important;
-}
 .menu-adminzone-tools-upgrade {
 	background-image: url('{$IMG,icons/menu/adminzone/tools/upgrade}') !important;
 }

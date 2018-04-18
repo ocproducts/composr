@@ -39,10 +39,10 @@
 
 <div class="trinav-wrap nograd">
 	<div class="trinav-left">
-		<a class="button-screen buttons--previous" href="{PREVIOUS_URL*}" rel="{+START,IF,{PREVIOUS_NO_FOLLOW}}nofollow {+END}prev" accesskey="j"><span>{!PREVIOUS}</span></a>
+		<a class="button-screen buttons--previous" href="{PREVIOUS_URL*}" rel="{+START,IF,{PREVIOUS_NO_FOLLOW}}nofollow {+END}prev" accesskey="j">{+START,INCLUDE,ICON}NAME=buttons/previous{+END} <span>{!PREVIOUS}</span></a>
 	</div>
 	<div class="trinav-right">
-		<a class="button-screen buttons--next" href="{NEXT_URL*}" rel="{+START,IF,{NEXT_NO_FOLLOW}}nofollow {+END}next" accesskey="k"><span>{!NEXT}</span></a>
+		<a class="button-screen buttons--next" href="{NEXT_URL*}" rel="{+START,IF,{NEXT_NO_FOLLOW}}nofollow {+END}next" accesskey="k"><span>{!NEXT}</span> {+START,INCLUDE,ICON}NAME=buttons/next{+END}</a>
 	</div>
 	<div class="trinav-mid block-desktop">
 		{+START,IF_NON_EMPTY,{ADD_URL}}
@@ -81,7 +81,7 @@
 						</div>
 
 						<p class="proceed-button">
-							<button data-disable-on-click="1" class="button-screen buttons--choose" type="submit">{!INTERESTS}</button>
+							<button data-disable-on-click="1" class="button-screen buttons--choose" type="submit">{+START,INCLUDE,ICON}NAME=buttons/choose{+END} {!INTERESTS}</button>
 						</p>
 					</form>
 				</div></section></div>
@@ -100,7 +100,7 @@
 						</div>
 
 						<p class="proceed-button">
-							<button data-disable-on-click="1" class="button-screen buttons--filter" type="submit">{!FILTER}</button>
+							<button data-disable-on-click="1" class="button-screen buttons--filter" type="submit">{+START,INCLUDE,ICON}NAME=buttons/filter{+END} {!FILTER}</button>
 						</p>
 					</form>
 				</div></section></div>

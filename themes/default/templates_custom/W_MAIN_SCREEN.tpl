@@ -580,7 +580,7 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<label for="item">{!W_ITEMS}</label>: {ITEMS_OWNED} <input type="hidden" name="type" value="edititem" />
-						<button class="js-click-set-type-edititem button-screen-item admin--edit" type="submit">{!W_EDIT_ITEM}</button>
+						<button class="js-click-set-type-edititem button-screen-item admin--edit" type="submit">{+START,INCLUDE,ICON}NAME=admin/edit{+END} {!W_EDIT_ITEM}</button>
 						<button class="js-click-set-type-confirm button-screen-item admin--delete3" type="submit">{!W_DELETE_ITEM}</button>
 					</div></form>
 

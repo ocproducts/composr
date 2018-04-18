@@ -47,10 +47,11 @@
             submitButton.disabled = true;
         });
 
-        var button = document.createElement('input');
+        var button = document.createElement('button');
         button.type = 'button';
         button.className = 'button-micro buttons--calculate';
-        button.value = '{!backups:CALCULATE_SIZE;^}';
+        /*{$SET,icon_calculate,{+START,INCLUDE,ICON}NAME=buttons/calculate{+END}}*/
+        $dom.html(button, '{$GET;^,icon_calculate} {!backups:CALCULATE_SIZE;^}');
         submitButton.parentNode.insertBefore(button, submitButton);
         button.addEventListener('click', function () {
             var progressTicker = document.createElement('img');
@@ -61,7 +62,7 @@
             progressTicker.style.marginRight = '20px';
             button.parentNode.insertBefore(progressTicker);
 
-            $cms.loadSnippet('backup_size&max_size=' + encodeURIComponent(maxSizeField.value), null, true).then(function (size) {
+            $cms.loadSnippet('backup_size&max_size=' + encodeURIComponent(maxSizeField.value)).then(function (size) {
                 $cms.ui.alert($util.format('{!backups:CALCULATED_SIZE;^}', [size]));
                 button.parentNode.removeChild(progressTicker);
             });

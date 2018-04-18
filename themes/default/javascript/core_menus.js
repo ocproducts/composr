@@ -258,7 +258,7 @@
             var id = ob.id.substring(4, ob.id.length);
 
             if (((window.showModalDialog !== undefined) || $cms.configOption('js_overlays')) || (ob.form.elements['branch_type_' + id] !== 'page')) {
-                var choices = { 'buttons--cancel': '{!INPUTSYSTEM_CANCEL;^}', 'admin--delete3': '{!DELETE;^}', 'admin--move': '{!menus:MOVETO_MENU;^}' };
+                var choices = { 'buttons/cancel': '{!INPUTSYSTEM_CANCEL;^}', 'admin/delete3': '{!DELETE;^}', 'admin/move': '{!menus:MOVETO_MENU;^}' };
                 $cms.ui.generateQuestionUi(
                     '{!menus:CONFIRM_DELETE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
                     choices,
@@ -268,9 +268,9 @@
                     if (result.toLowerCase() === '{!DELETE;^}'.toLowerCase()) {
                         deleteBranch('branch-wrap-' + ob.name.substr(4, ob.name.length));
                     } else if (result.toLowerCase() === '{!menus:MOVETO_MENU;^}'.toLowerCase()) {
-                        var choices = { 'buttons--cancel': '{!INPUTSYSTEM_CANCEL;^}' };
+                        var choices = { 'buttons/cancel': '{!INPUTSYSTEM_CANCEL;^}' };
                         for (var i = 0; i < window.allMenus.length; i++) {
-                            choices['buttons--choose---' + i] = window.allMenus[i];
+                            choices['no_icon_' + i] = window.allMenus[i];
                         }
                         return $cms.ui.generateQuestionUi(
                             '{!menus:CONFIRM_MOVE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),

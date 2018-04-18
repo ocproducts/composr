@@ -38,7 +38,8 @@ For example:
 }
 
 .dropdown-menu-item-icon {
-	margin-right: 0.5em;
+	margin-right: 0.3em;
+	text-decoration: none !important;
 }
 
 /*{+START,CSS_MODE,mobile}*/

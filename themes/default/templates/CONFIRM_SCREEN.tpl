@@ -33,7 +33,7 @@
 
 			<p class="proceed-button">
 				{+START,IF_NON_PASSED,BACK_URL}
-					<button class="button-screen buttons--back" type="button" data-cms-btn-go-back="1">{!GO_BACK}</button>
+					<button class="button-screen buttons--back" type="button" data-cms-btn-go-back="1">{+START,INCLUDE,ICON}NAME=buttons/back{+END} {!GO_BACK}</button>
 				{+END}
 
 				<button data-disable-on-click="1" accesskey="u" class="button-screen buttons--proceed" type="submit">{!PROCEED}</button>
