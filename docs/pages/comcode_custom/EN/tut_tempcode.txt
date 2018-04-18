@@ -1626,6 +1626,14 @@ Understanding of these symbols requires an understanding of basic boolean operat
 			<td>Find the position of a string substring (first parameter is the search string, second parameter is the substring, returns Tempcode number)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
+			<td>{$STARTS_WITH,something,hi}</td>
+			<td>Find whether a string starts with a substring (first parameter is the search string, second parameter is the substring)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$ENDS_WITH,something,hi}</td>
+			<td>Find whether a string ends with a substring (first parameter is the search string, second parameter is the substring)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
 			<td>{$IN_STR,something,in}</td>
 			<td>Find whether a substring is in a string (first parameter is the search string, second parameter is the substring, returns Tempcode boolean)</td>
 		</tr>
