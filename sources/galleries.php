@@ -634,9 +634,9 @@ function get_gallery_tree($gallery = 'root', $breadcrumbs = '', $gallery_info = 
     $title = get_translated_text($gallery_info['fullname']);
     $breadcrumbs .= $title;
 
-    $is_member_synched = $gallery_info['is_member_synched'] == 1;
-    $accept_images = $gallery_info['accept_images'] == 1;
-    $accept_videos = $gallery_info['accept_videos'] == 1;
+    $is_member_synched = ($gallery_info['is_member_synched'] == 1);
+    $accept_images = ($gallery_info['accept_images'] == 1);
+    $accept_videos = ($gallery_info['accept_videos'] == 1);
 
     $children = array();
     $sub = false;
@@ -661,8 +661,8 @@ function get_gallery_tree($gallery = 'root', $breadcrumbs = '', $gallery_info = 
         $children[0]['id'] = $gallery;
         $children[0]['title'] = $title;
         $children[0]['breadcrumbs'] = $breadcrumbs;
-        $children[0]['accept_images'] = $gallery_info['accept_images'];
-        $children[0]['accept_videos'] = $gallery_info['accept_videos'];
+        $children[0]['accept_images'] = $accept_images;
+        $children[0]['accept_videos'] = $accept_videos;
         $children[0]['is_member_synched'] = $gallery_info['is_member_synched'];
         if ($addable_filter) {
             $children[0]['addable'] = (can_submit_to_gallery($gallery, $gallery_info) !== false) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_galleries', array('galleries', $gallery)));

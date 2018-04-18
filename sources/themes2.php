@@ -882,24 +882,26 @@ function find_all_themes($full_details = false)
     require_code('files');
 
     $themes = array();
-    $_dir = opendir(get_file_base() . '/themes/');
-    while (false !== ($file = readdir($_dir))) {
-        $ini_file = get_file_base() . '/themes/' . $file . '/theme.ini';
-        if ((strpos($file, '.') === false) && (is_dir(get_file_base() . '/themes/' . $file)) && (file_exists($ini_file))) {
-            $details = better_parse_ini_file($ini_file);
-            if (!array_key_exists('title', $details)) {
-                $details['title'] = '?';
+    $_dir = @opendir(get_file_base() . '/themes/');
+    if ($_dir !== false) {
+        while (false !== ($file = readdir($_dir))) {
+            $ini_file = get_file_base() . '/themes/' . $file . '/theme.ini';
+            if ((strpos($file, '.') === false) && (is_dir(get_file_base() . '/themes/' . $file)) && (file_exists($ini_file))) {
+                $details = better_parse_ini_file($ini_file);
+                if (!array_key_exists('title', $details)) {
+                    $details['title'] = '?';
+                }
+                if (!array_key_exists('description', $details)) {
+                    $details['description'] = '?';
+                }
+                if (!array_key_exists('author', $details)) {
+                    $details['author'] = '?';
+                }
+                $themes[$file] = $full_details ? $details : $details['title'];
             }
-            if (!array_key_exists('description', $details)) {
-                $details['description'] = '?';
-            }
-            if (!array_key_exists('author', $details)) {
-                $details['author'] = '?';
-            }
-            $themes[$file] = $full_details ? $details : $details['title'];
         }
+        closedir($_dir);
     }
-    closedir($_dir);
     if (get_custom_file_base() != get_file_base()) {
         $_dir = @opendir(get_custom_file_base() . '/themes/');
         if ($_dir !== false) {

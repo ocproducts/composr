@@ -991,6 +991,7 @@ class Module_warnings extends Standard_crud_module
         if ((get_param_string('redirect', '') == '') || ($deleted_all)) {
             require_code('site2');
             assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true, true), 0.0);
+            unset($_GET['redirect']);
         }
 
         return strval($warning_id);

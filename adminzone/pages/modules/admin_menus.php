@@ -384,7 +384,7 @@ class Module_admin_menus
                 }
 
                 // To make it more user-friendly, show a page-link as a URL
-                if ((!looks_like_url($url)) && (strpos($url, ':') !== false) && (strpos($url, '{') === false)) {
+                if ((!looks_like_url($url)) && (strpos($url, ':') !== false) && (strpos($url, '{') === false) && (get_value('show_menu_items_as_url') === '1')) {
                     $url = page_link_to_url($url, true);
                 }
 

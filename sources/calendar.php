@@ -150,7 +150,8 @@ function date_from_week_of_year($year, $week)
 
     $basis = strval($year) . '-' . str_pad(strval($week), 2, '0', STR_PAD_LEFT);
     $time = mktime(12, 0, 0, 1, 1, $year);
-    for ($i = ($week == 52) ? 350/*conditional to stop it finding week as previous year overlap week of same number*/ : -7; $i < 365 + 7; $i++) {
+    $days_in_year = intval(date('z', mktime(0, 0, 0, 12, 31, $year))) + 1;
+    for ($i = ($week == 52) ? 350/*conditional to stop it finding week as previous year overlap week of same number*/ : -7; $i < $days_in_year + 7; $i++) {
         $new_time = $time + 60 * 60 * 24 * $i;
         $w = intval(date('w', $new_time));
         if ((($ssw) && ($w == 0)) || ((!$ssw) && ($w == 1))) {
@@ -238,7 +239,8 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
         $dif_days = get_days_between($initial_start_month, $day_of_month, $initial_start_year, $initial_end_month, $end_day_of_month, $initial_end_year);
     }
 
-    $dif = utctime_to_usertime($period_start) - utctime_to_usertime(mktime($_start_hour, $_start_minute, 0, $start_month, $day_of_month, $start_year));
+    $start_timestamp = mktime($_start_hour, $_start_minute, 0, $start_month, $day_of_month, $start_year);
+    $dif = $period_start - utctime_to_usertime($start_timestamp);
     $start_day_of_month = $day_of_month;
     if ($recurrence != 'monthly') { // Defensiveness (this should be automatic)
         $start_monthly_spec_type = 'day_of_month';
@@ -295,7 +297,8 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
         case 'yearly':
             $dif_year = 1;
             if (($dif > 60 * 60 * 24 * 365 * 10) && ($mask_len == 0) && ($optimise_recurrence_via_zoom)) {
-                $zoom = $dif_year * intval(floor(floatval($dif) / (60.0 * 60.0 * 24.0 * 365.0))) - 1;
+                $days_in_year = intval(date('z', mktime(0, 0, 0, 12, 31, $start_year))) + 1;
+                $zoom = $dif_year * intval(floor(floatval($dif) / (60.0 * 60.0 * 24.0 * floatval($days_in_year)))) - 1;
                 $start_year += $zoom;
                 if (!is_null($end_year)) {
                     $end_year += $zoom;
@@ -319,7 +322,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
         } else {
             $end_day = $start_day_of_month;
         }
-        if (find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) > 0) {
+        if (find_timezone_offset($start_timestamp, $timezone) > 0) {
             $end_day++;
         }
         $end_month = $start_month;
@@ -1529,7 +1532,8 @@ function adjust_event_dates_for_a_recurrence($day, $event, $timezone)
         $shifted_incident_timestamp = tz_time($incident_timestamp, $timezone);
         $day_dif_due_to_timezone = intval(date('z', $incident_timestamp)) - intval(date('z', $shifted_incident_timestamp));
         if ($day_dif_due_to_timezone > 182) {
-            $day_dif_due_to_timezone = (365 - intval(date('L', $incident_timestamp))) - $day_dif_due_to_timezone;
+            $days_in_year = intval(date('z', mktime(0, 0, 0, 12, 31, $recurrence_start_year))) + 1;
+            $day_dif_due_to_timezone = ($days_in_year - intval(date('L', $incident_timestamp))) - $day_dif_due_to_timezone;
         }
         $recurrence_start_day += $day_dif_due_to_timezone;
 
