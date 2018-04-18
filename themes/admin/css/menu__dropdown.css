@@ -38,6 +38,7 @@ For example:
 }
 
 .dropdown-menu-item-icon {
+	font-size: 16px;
 	margin-right: 0.3em;
 	text-decoration: none !important;
 }
@@ -48,6 +49,11 @@ For example:
 		color: {$GET,WB} !important;
 		position: absolute;
 		padding: 0.75em;
+	}
+
+	.dropdown-menu-toggle-btn .icon {
+		width: 24px;
+		height: 24px;
 	}
 
 	.dropdown-menu-toggle-btn:hover {

@@ -603,8 +603,7 @@ hr.cns-sig-barrier {
 	margin-left: 0.5em;
 }
 
-.cns-forum-grouping-toggleable-tray-button .toggleable-tray-button .icon-img,
-.cns-forum-grouping-toggleable-tray-button .toggleable-tray-button .icon-svg {
+.cns-forum-grouping-toggleable-tray-button .toggleable-tray-button .icon {
 	padding-right: 0 !important;
 }
 

@@ -21,6 +21,11 @@
 	text-decoration: none;
 }
 
+#web-notifications-button .icon,
+#pts-button .icon {
+	width: 24px;
+	height: 24px;
+}
 #web-notifications-button span, #pts-button span {
 	visibility: hidden;
 }

@@ -18,8 +18,7 @@
 	float: left;
 }
 
-.box---block-side-news-archive .toggleable-tray-button .icon-img,
-.box---block-side-news-archive .toggleable-tray-button .icon-svg {
+.box---block-side-news-archive .toggleable-tray-button .icon {
 	padding-left: 0em !important;
 	padding-right: 0.5em !important;
 }

@@ -123,9 +123,9 @@ table.cns-profile-about-section .associated-details {
 	padding-top: 4px;
 }
 
-.cns-account-links .toggleable-tray-button .icon-img,
-.cns-account-links .toggleable-tray-button .icon-svg {
+.cns-account-links .toggleable-tray-button .icon {
 	width: 15px;
+	height: 15px;
 }
 
 .cns-account-links .toggleable-tray img {
