@@ -1,6 +1,11 @@
 <section id="tray-{!MEMBER|}" data-toggleable-tray="{ save: true }" class="box cns-information-bar-outer">
 	<h2 class="toggleable-tray-title js-tray-header">
-		<a class="toggleable-tray-button js-tray-onclick-toggle-tray inline-desktop" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MEMBER}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,icons/trays/contract}" /></a>
+		<a class="toggleable-tray-button js-tray-onclick-toggle-tray inline-desktop" href="#!" title="{!CONTRACT}">
+			{+START,INCLUDE,ICON}
+				NAME=trays/contract
+				SIZE=24
+			{+END}
+		</a>
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!MEMBER_INFORMATION,{$USERNAME*,{$MEMBER},1}}{+START,IF,{$ADDON_INSTALLED,search}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}} / {!SEARCH}{+END}{+END}</a>
 	</h2>
 

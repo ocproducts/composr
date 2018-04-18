@@ -1909,26 +1909,32 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	cursor: pointer;
 }
 
-.toggleable-tray-button img {
+.toggleable-tray-button .icon-img,
+.toggleable-tray-button .icon-svg {
 	float: right;
 	margin: 0 0 0 0.3em !important;
-}
-.box .toggleable-tray-button img {
-	margin-right: 0.5em;
-}
-.toggleable-tray-button img {
+	height: 24px;
 	width: 24px;
 }
-.box .toggleable-tray-title .toggleable-tray-button img {
+.box .toggleable-tray-button .icon-img,
+.box .toggleable-tray-button .icon-svg {
+	margin-right: 0.5em;
+}
+.box .toggleable-tray-title .toggleable-tray-button .icon-img,
+.box .toggleable-tray-title .toggleable-tray-button .icon-svg {
+	height: 20px;
 	width: 20px;
 }
-h3 .toggleable-tray-button img {
+h3 .toggleable-tray-button .icon-img,
+h3 .toggleable-tray-button .icon-svg {
+	height: 18px;
 	width: 18px;
 }
 .ttb-left-spaced, .ttb-left-spaced div {
 	margin-top: 0.3em;
 }
-.toggleable-tray-button.ttb-left img {
+.toggleable-tray-button.ttb-left .icon-img,
+.toggleable-tray-button.ttb-left .icon-svg {
 	float: left;
 	padding-left: 0 !important;
 }
@@ -3868,7 +3874,11 @@ div .button-micro {
 	border-radius: 1px;
 }
 
-.button-screen, .button-screen-item, .button-micro, .toggleable-tray-button img {
+.button-screen, 
+.button-screen-item, 
+.button-micro, 
+.toggleable-tray-button .icon-img,
+.toggleable-tray-button .icon-svg {
 	opacity: 0.85;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	display: inline-block;
@@ -3878,9 +3888,19 @@ div .button-micro {
 	opacity: 0.85 !important;
 	cursor: not-allowed;
 }
-.button-micro:hover, .button-screen:hover, .button-screen-item:hover,
-.button-screen:hover, .button-screen-item:hover, .button-micro:hover, .toggleable-tray-button:hover img,
-body.touch-enabled .button-screen, body.touch-enabled .button-screen-item, body.touch-enabled .button-micro, body.touch-enabled .toggleable-tray-button img {
+.button-micro:hover, 
+.button-screen:hover, 
+.button-screen-item:hover,
+.button-screen:hover, 
+.button-screen-item:hover, 
+.button-micro:hover, 
+.toggleable-tray-button:hover .icon-img,
+.toggleable-tray-button:hover .icon-svg,
+body.touch-enabled .button-screen, 
+body.touch-enabled .button-screen-item, 
+body.touch-enabled .button-micro, 
+body.touch-enabled .toggleable-tray-button .icon-img,
+body.touch-enabled .toggleable-tray-button .icon-svg {
 	opacity: 1.0;
 }
 .button-micro:disabled, .button-screen:disabled, .button-screen-item:disabled {

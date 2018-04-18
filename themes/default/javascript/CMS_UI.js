@@ -11,14 +11,12 @@
      * @return {boolean} - true when it is opened, false when it is closed
      */
     $cms.ui.toggleableTray = function toggleableTray(el, animate) {
-        var $IMG_expand = $util.srl('{$IMG;,icons/trays/expand}'),
-            $IMG_contract = $util.srl('{$IMG;,icons/trays/contract}');
-
         el = $dom.elArg(el);
         animate = $cms.configOption('enable_animations') ? boolVal(animate, true) : false;
 
-        var iconImg = $dom.$(el.parentNode, '.toggleable-tray-button img') || $dom.$('img#e-' + el.id),
-            isThemeWizard = Boolean(iconImg && iconImg.src && iconImg.src.includes('/themewizard.php')),
+        var icon = $dom.$(el.parentNode, '.toggleable-tray-button .icon-img') || $dom.$(el.parentNode, '.toggleable-tray-button .icon-svg') || $dom.$('img#e-' + el.id),
+            iconAnchor = $dom.parent(icon, 'a'),
+            isThemeWizard = Boolean(icon && icon.src && icon.src.includes('/themewizard.php')),
             expanding = $dom.notDisplayed(el);
 
         el.setAttribute('aria-expanded', expanding ? 'true' : 'false');
@@ -39,20 +37,18 @@
             }
         }
 
-        if (iconImg) {
+        if (icon) {
             if (expanding) {
-                setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract);
-                iconImg.alt = iconImg.alt.replace('{!EXPAND;^}', '{!CONTRACT;^}');
-                iconImg.title = '{!CONTRACT;^}';
-                if (iconImg.cmsTooltipTitle !== undefined) {
-                    iconImg.cmsTooltipTitle = '{!CONTRACT;^}';
+                setTrayThemeImage('expand', 'contract', '{$IMG;,icons/trays/expand}', '{$IMG;,icons/trays/contract}');
+                iconAnchor.title = '{!CONTRACT;^}';
+                if (iconAnchor.cmsTooltipTitle !== undefined) {
+                    iconAnchor.cmsTooltipTitle = '{!CONTRACT;^}';
                 }
             } else {
-                setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand);
-                iconImg.alt = iconImg.alt.replace('{!CONTRACT;^}', '{!EXPAND;^}');
-                iconImg.title = '{!EXPAND;^}';
-                if (iconImg.cmsTooltipTitle !== undefined) {
-                    iconImg.cmsTooltipTitle = '{!EXPAND;^}';
+                setTrayThemeImage('contract', 'expand', '{$IMG;,icons/trays/contract}', '{$IMG;,icons/trays/expand}');
+                iconAnchor.title = '{!EXPAND;^}';
+                if (iconAnchor.cmsTooltipTitle !== undefined) {
+                    iconAnchor.cmsTooltipTitle = '{!EXPAND;^}';
                 }
             }
         }
@@ -63,10 +59,12 @@
 
         // Execution ends here
         function setTrayThemeImage(beforeThemeImg, afterThemeImg, beforeUrl, afterUrl) {
-            if (isThemeWizard) {
-                iconImg.src = iconImg.src.replace(beforeThemeImg, afterThemeImg);
+            if (icon.localName === 'svg') {
+                icon.querySelector('use').setAttribute('xlink:href', icon.querySelector('use').getAttribute('xlink:href').replace(beforeThemeImg, afterThemeImg));
+            } else if (isThemeWizard) {
+                icon.src = icon.src.replace(beforeThemeImg, afterThemeImg);
             } else {
-                iconImg.src = $util.srl(afterUrl);
+                icon.src = $util.srl(afterUrl);
             }
         }
     };

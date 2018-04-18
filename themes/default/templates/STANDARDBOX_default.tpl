@@ -3,10 +3,20 @@
 		{+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}
 			<h3 class="toggleable-tray-title js-tray-header">
 				{+START,IF_IN_ARRAY,OPTIONS,tray_open}
-					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,icons/trays/contract}" /></a>
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!CONTRACT}">
+						{+START,INCLUDE,ICON}
+							NAME=trays/contract
+							SIZE=24
+						{+END}
+					</a>
 				{+END}
 				{+START,IF_IN_ARRAY,OPTIONS,tray_closed}
-					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,icons/trays/expand}" /></a>
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
+						{+START,INCLUDE,ICON}
+							NAME=trays/expand
+							SIZE=24
+						{+END}
+					</a>
 				{+END}
 
 				{+START,IF_NON_EMPTY,{TOP_LINKS}}

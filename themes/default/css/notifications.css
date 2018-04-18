@@ -18,6 +18,7 @@
 	vertical-align: middle;
 	background-repeat: no-repeat;
 	outline: 0;
+	text-decoration: none;
 }
 
 #web-notifications-button span, #pts-button span {

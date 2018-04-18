@@ -5,7 +5,12 @@
 		<a href="#!" id="checklist-show-all-link" class="top-left-toggle js-click-disable-task-hiding" title="{!SHOW_ALL}: {!CHECK_LIST}">{!SHOW_ALL}</a>
 		<a href="#!" id="checklist-hide-done-link" class="top-left-toggle js-click-enable-task-hiding">{!HIDE_DONE}</a>
 
-		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!CHECK_LIST}}" title="{!CONTRACT}" width="24" height="24" src="{$IMG*,icons/trays/contract}" /></a>
+		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!CONTRACT}">
+			{+START,INCLUDE,ICON}
+				NAME=trays/contract
+				SIZE=24
+			{+END}
+		</a>
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!CHECK_LIST}</a>
 	</h3>
 
