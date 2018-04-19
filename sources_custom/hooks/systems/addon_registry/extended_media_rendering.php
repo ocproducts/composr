@@ -46,7 +46,7 @@ class Hook_addon_registry_extended_media_rendering
      */
     public function get_category()
     {
-        return 'New Features';
+        return 'Development';
     }
 
     /**
@@ -86,7 +86,7 @@ class Hook_addon_registry_extended_media_rendering
      */
     public function get_description()
     {
-        return 'A collection of additional media renderers. Currently, this only includes CNN video -- however, further renderers that don\'t belong in the Composr core will be added to this addon as they are developed.';
+        return 'A collection of additional media renderers. Currently, this only includes CNN video (which is actually broken) -- however, further renderers that don\'t belong in the Composr core will be added to this addon as they are developed.';
     }
 
     /**

@@ -126,6 +126,7 @@ inline_editing,Inline Editing,ocProducts,,"Not regularly Tested, and themes are 
 download_pdf_indexing,Download PDF search indexing,ocProducts,,Not regularly Tested.,No,
 oembed,Default oEmbed configuration,ocProducts,,Not regularly Tested.,No,oembed automated test.
 facebook,Facebook login integration and syndication,ocProducts,ocProducts,Could potentially break due to third-party changes.,Yes,
+facebook_media,Facebook media (video embed),ocProducts,,Could potentially break due to third-party changes.,Yes,
 tapatalk,Tapatalk,ocProducts,,Could potentially break due to third-party changes.,Yes,
 google_maps,"Google maps (DataMappr, UserMappr)",ocProducts,,Could potentially break due to third-party changes.,Yes,
 twitter,Twitter syndication,ocProducts,,Could potentially break due to third-party changes.,Yes,
