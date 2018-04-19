@@ -28,7 +28,7 @@ There is a huge amount of bundled addons which make up the most common component
 [*] A theme wizard allowing you to change the base colour of your theme in less than a minute
 [*] Support for rich media presentation
 [*] Built in template and CSS editor
-[*] Support for short URLs, XML sitemaps and a range of other tools to aid your Search Engine optimisation
+[*] Support for short URLs, XML Sitemaps and a range of other tools to aid your Search Engine optimisation
 [*] Fantastic security including CAPTCHA images
 [*] Full web standards support
 [*] Inbuilt support for sending e-mail newsletters to your members

@@ -400,7 +400,7 @@ There is a constant battle between abstraction, and intuitive interfaces. Not ev
 [title="4"]Why doesn't Composr just use blocks for everything?[/title]
 
 Some people might also wonder why we have modules to display categories at all. Why is it not entirely fluid, done through putting the blocks where you want them? There are three main answers to this:
-1) Content needs a 'home' URL that the system knows, for many reasons (e.g. RSS linkage, XML sitemaps, notification URLs, ...). It can't reliably second guess this via looking where blocks are.
+1) Content needs a 'home' URL that the system knows, for many reasons (e.g. RSS linkage, XML Sitemaps, notification URLs, ...). It can't reliably second guess this via looking where blocks are.
 2) Simplicity! Composr is about having a good website quick, you shouldn't have to understand how to lay out your own skeleton, or do it for each project. Power should be something that is available, but the defaults should be simple.
 3) It is difficult to see how blocks could be used to navigate a category tree -- the architecture for this would be really quite complex, considering there is no direct/easy association between URL and the parameters a block takes.
 

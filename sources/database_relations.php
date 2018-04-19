@@ -337,7 +337,7 @@ function get_table_descriptions()
         'seo_meta' => 'stores meta descriptions for all kinds of content',
         'seo_meta_keywords' => 'stores meta keywords for all kinds of content',
         'sessions' => 'stores user sessions, for guests and members (session ID\'s are treated with high security)',
-        'sitemap_cache' => 'a cache of all addressable sitemap nodes for building out the full XML sitemaps across multiple files iteratively, which is extremely intensive on large sites',
+        'sitemap_cache' => 'a cache of all addressable sitemap nodes for building out the full XML Sitemaps across multiple files iteratively, which is extremely intensive on large sites',
         'sms_log' => 'logs what SMS messages were sent out on behalf of what users and when',
         'staff_tips_dismissed' => 'stores what webmaster tips (Admin Zone dashboard) have been read so far',
         'trackbacks' => 'stores trackbacks for all kinds of content',

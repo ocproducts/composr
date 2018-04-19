@@ -121,6 +121,7 @@ class Hook_addon_registry_core_cleanup_tools
             'sources/hooks/systems/cleanup/lost_disk_content.php',
             'sources/hooks/systems/cleanup/theme_images.php',
             'sources/hooks/systems/cleanup/blocks.php',
+            'sources/hooks/systems/cleanup/sitemap.php',
             'sources/hooks/systems/cleanup/image_thumbs.php',
             'sources/hooks/systems/cleanup/index.html',
             'sources_custom/hooks/systems/cleanup/index.html',

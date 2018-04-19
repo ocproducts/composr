@@ -26,13 +26,19 @@ class Hook_task_sitemap
     /**
      * Run the task hook.
      *
+     * @param  boolean $full_regenerate Whether to do a full sitemap rebuild
      * @return ?array A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message)
      */
-    public function run()
+    public function run($full_regenerate = false)
     {
         set_value('sitemap_building_in_progress', '1', true);
 
         require_code('sitemap_xml');
+
+        if ($full_regenerate) {
+            build_sitemap_cache_table();
+        }
+
         sitemap_xml_build(array($this, 'log'));
 
         set_value('sitemap_building_in_progress', '0', true);
