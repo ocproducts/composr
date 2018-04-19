@@ -43,7 +43,7 @@
 	font-weight: bold;
 }
 
-.menu-type--sitemap>ul>li>span>a.toggleable-tray-button img {
+.menu-type--sitemap>ul>li>span>a.toggleable-tray-button .icon {
 	margin-top: 4px !important;
 }
 
@@ -62,7 +62,7 @@
 	margin-left: 25px;
 }
 
-.menu-type--sitemap>ul>li>ul>li>span>a.toggleable-tray-button img {
+.menu-type--sitemap>ul>li>ul>li>span>a.toggleable-tray-button .icon {
 	margin-top: 3px;
 }
 

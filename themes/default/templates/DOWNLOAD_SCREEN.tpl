@@ -17,7 +17,12 @@
 					</p>
 
 					<div class="toggleable-tray-title js-tray-header">
-						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!I_AGREE}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,icons/trays/expand}" /></a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
+							{+START,INCLUDE,ICON}
+								NAME=trays/expand
+								SIZE=24
+							{+END}
+						</a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!I_AGREE}</a>
 					</div>
 

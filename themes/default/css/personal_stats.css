@@ -23,11 +23,10 @@
 	height: 23px;
 	display: inline-block;
 }
-.top-buttons #top-personal-stats-button .icon-svg,
-.top-buttons #top-personal-stats-button .icon-img {
+.top-buttons #top-personal-stats-button .icon {
 	padding: 0 5px; /* This is needed for spacing, but also to ensure a consistent width compared to the notification/inbox buttons */
 	width: 20px;
-	vertical-align: middle;
+	height: 20px;
 }
 
 .global-button-ref-point .personal-stats-avatar {

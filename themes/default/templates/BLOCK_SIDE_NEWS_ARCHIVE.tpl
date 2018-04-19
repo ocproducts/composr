@@ -14,7 +14,12 @@
 
 				{+START,IF_NON_EMPTY,{TIMES}}
 					<li class="accordion-trayitem js-tray-accordion-item">
-						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!"><img {+START,IF,{$NOT,{$GET,is_current_year}}} alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" width="20" height="20" src="{$IMG*,icons/trays/expand}"{+END}{+START,IF,{$GET,is_current_year}} alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" width="20" height="20" src="{$IMG*,icons/trays/contract}"{+END} /></a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!" title="{$?,{$GET,is_current_year},{!CONTRACT},{!EXPAND}}">
+							{+START,INCLUDE,ICON}
+								NAME=trays/{$?,{$GET,is_current_year},contract,expand}
+								SIZE=20
+							{+END}
+						</a>
 
 						<span class="js-tray-onclick-toggle-accordion"><strong>{YEAR}</strong></span>:
 

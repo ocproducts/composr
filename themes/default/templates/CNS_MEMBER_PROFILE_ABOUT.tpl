@@ -35,7 +35,12 @@
 			{+START,IF_NON_EMPTY,{ACTIONS_contact}{$GET,messenger_fields}}
 				<div data-toggleable-tray="{}">
 					<h2 class="js-tray-header">
-						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!CONTRACT}: {!menus:CONTACT}" title="{!CONTRACT}" width="20" height="20" src="{$IMG*,icons/trays/contract}" /></a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!CONTRACT}">
+							{+START,INCLUDE,ICON}
+								NAME=trays/contract
+								SIZE=20
+							{+END}
+						</a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!menus:CONTACT}</a>
 					</h2>
 
@@ -51,7 +56,12 @@
 			{+START,IF_NON_EMPTY,{ACTIONS_content}}
 				<div data-toggleable-tray="{}">
 					<h2 class="js-tray-header">
-						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!CONTENT}" title="{!EXPAND}" width="20" height="20" src="{$IMG*,icons/trays/expand}" /></a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
+							{+START,INCLUDE,ICON}
+								NAME=trays/expand
+								SIZE=20
+							{+END}
+						</a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!CONTENT}</a>
 					</h2>
 
@@ -66,7 +76,12 @@
 			{+START,IF_NON_EMPTY,{ACTIONS_views}{ACTIONS_profile}}
 				<div data-toggleable-tray="{}">
 					<h2 class="js-tray-header">
-						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!ACCOUNT}" title="{!EXPAND}" width="20" height="20" src="{$IMG*,icons/trays/expand}" /></a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
+							{+START,INCLUDE,ICON}
+								NAME=trays/expand
+								SIZE=20
+							{+END}
+						</a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!ACCOUNT}</a>
 					</h2>
 
@@ -82,7 +97,12 @@
 			{+START,IF_NON_EMPTY,{ACTIONS_audit}}
 				<div data-toggleable-tray="{}">
 					<h2 class="js-tray-header">
-						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!AUDIT}" title="{!EXPAND}" width="20" height="20" src="{$IMG*,icons/trays/expand}" /></a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
+							{+START,INCLUDE,ICON}
+								NAME=trays/expand
+								SIZE=20
+							{+END}
+						</a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!AUDIT}</a>
 					</h2>
 

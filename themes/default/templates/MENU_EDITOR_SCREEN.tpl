@@ -89,7 +89,12 @@
 
 			<div class="box box---menu-editor-screen" data-toggleable-tray="{}">
 				<h2 class="toggleable-tray-title">
-					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img alt="{!EXPAND}: {!DELETE_MENU}" title="{!EXPAND}" width="24" height="24" src="{$IMG*,icons/trays/expand}" /></a>
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
+						{+START,INCLUDE,ICON}
+							NAME=trays/expand
+							SIZE=24
+						{+END}
+					</a>
 					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!DELETE_MENU}</a>
 				</h2>
 

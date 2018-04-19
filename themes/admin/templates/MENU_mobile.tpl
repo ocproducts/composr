@@ -2,7 +2,7 @@
 {$REQUIRE_JAVASCRIPT,core_menus}
 {$SET,menu_id,r-{MENU|}-mobile-d}
 
-<a data-tpl="menuMobile" data-tpl-params="{+START,PARAMS_JSON,menu_id}{_*}{+END}" href="{$PAGE_LINK*,:sitemap}" class="mobile-menu-button js-click-toggle-{$GET,menu_id}-content"><img width="24" height="24" src="{$IMG*,icons/menus/mobile_menu}" alt="{!MENU}" />	<span>{!MENU}</span></a>
+<a data-tpl="menuMobile" data-tpl-params="{+START,PARAMS_JSON,menu_id}{_*}{+END}" href="{$PAGE_LINK*,:sitemap}" class="mobile-menu-button js-click-toggle-{$GET,menu_id}-content">{+START,INCLUDE,ICON}NAME=menus/mobile_menu{+END}	<span>{!MENU}</span></a>
 
 {+START,IF_NON_EMPTY,{CONTENT}}
 	<nav class="menu-type--mobile" style="display: none" aria-expanded="false" data-view="MobileMenu" data-view-params="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING,menu_id}{_*}{+END}">

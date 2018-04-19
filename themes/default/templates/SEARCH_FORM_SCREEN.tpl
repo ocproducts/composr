@@ -29,7 +29,12 @@
 			<h2 class="toggleable-tray-title js-tray-header">
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!SETTINGS}</a>
 				{+START,IF_NON_EMPTY,{RESULTS}}
-					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!"><img width="24" height="24" src="{$IMG*,icons/trays/expand}" alt="{!SHOW_SEARCH_FORM}" title="{!SHOW_SEARCH_FORM}" /></a>
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!SHOW_SEARCH_FORM}">
+						{+START,INCLUDE,ICON}
+							NAME=trays/expand
+							SIZE=24
+						{+END}
+					</a>
 				{+END}
 			</h2>
 		{+END}

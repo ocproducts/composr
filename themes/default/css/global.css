@@ -398,6 +398,16 @@ iframe {
 	border: 0;
 }
 
+.icon {
+	width: 1em;
+	height: 1em;
+	vertical-align: middle;
+}
+
+svg.icon {
+	fill: currentColor;
+}
+
 /*input[type="text"],textarea {  So Comcode can be typed
 	unicode-bidi: bidi-override;
 	direction: ltr;
@@ -699,7 +709,7 @@ header h1 {
 	border-bottom: 1px solid {$GET,standard_border};
 	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
 	color: {$GET,WB};
-	min-height: 3.4em;
+	min-height: 3.5em;
 }
 /*{+START,CSS_MODE,mobile}*/
 	.global-navigation {
@@ -847,6 +857,8 @@ header h1 {
 
 .breadcrumbs-img {
 	margin-right: 4px;
+	width: 24px;
+	height: 24px;
 }
 
 .breadcrumbs-img, .breadcrumbs span .breadcrumbs-img a {
@@ -1101,8 +1113,14 @@ footer .global-footer-left .horizontal-buttons {
 	width: auto;
 	white-space: nowrap;
 	margin-top: 0;
-	font-size: 0; /* Fixes wrapping problem */
+	font-size: 0;  /*Fixes wrapping problem */
 }
+
+footer .global-footer-left .horizontal-buttons .icon {
+	width: 24px;
+	height: 24px;
+}
+
 /*{+START,CSS_MODE,mobile}*/
 	footer .global-footer-left .horizontal-buttons {
 		float: left;
@@ -1419,17 +1437,6 @@ body button.button-hyperlink:hover {
 	vertical-align: baseline !important;
 	/*color: inherit !important;*/
 	text-decoration: underline;
-}
-
-.icon-img,
-.icon-svg {
-	width: 1em;
-	height: 1em;
-	vertical-align: middle;
-}
-
-.icon-svg {
-	fill: currentColor;
 }
 
 /* Used to make a button look more like an icon - i.e. undoes button-face styling */
@@ -1909,26 +1916,27 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	cursor: pointer;
 }
 
-.toggleable-tray-button img {
+.toggleable-tray-button .icon {
 	float: right;
 	margin: 0 0 0 0.3em !important;
-}
-.box .toggleable-tray-button img {
-	margin-right: 0.5em;
-}
-.toggleable-tray-button img {
+	height: 24px;
 	width: 24px;
 }
-.box .toggleable-tray-title .toggleable-tray-button img {
+.box .toggleable-tray-button .icon {
+	margin-right: 0.5em;
+}
+.box .toggleable-tray-title .toggleable-tray-button .icon {
+	height: 20px;
 	width: 20px;
 }
-h3 .toggleable-tray-button img {
+h3 .toggleable-tray-button .icon {
+	height: 18px;
 	width: 18px;
 }
 .ttb-left-spaced, .ttb-left-spaced div {
 	margin-top: 0.3em;
 }
-.toggleable-tray-button.ttb-left img {
+.toggleable-tray-button.ttb-left .icon {
 	float: left;
 	padding-left: 0 !important;
 }
@@ -3443,6 +3451,12 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 	width: auto;
 	font-size: 1em;
 }
+
+.staff-actions ul.horizontal-links .icon {
+	width: 20px;
+	height: 20px;
+}
+
 /*{+START,CSS_MODE,mobile}*/
 	.staff-actions ul.horizontal-links {
 		display: block !important;
@@ -3837,16 +3851,27 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 }
 
 .button-screen {
-	background-size: 22px 22px !important;
-	padding: 6px 39px 7px 7px;
+	padding: 7px;
 	border-width: 2px;
 	font-size: 13px;
 	min-width: 8em;
 }
+
+.button-screen .icon {
+	width: 22px;
+	height: 22px;
+}
+
 .button-screen-item {
-	padding: 5px 10px;
+	padding: 5px 7px;
 	font-size: 13px;
 }
+
+.button-screen-item .icon {
+	width: 18px;
+	height: 18px;
+}
+
 /*{+START,CSS_MODE,mobile}*/
 	.button-screen-item {
 		margin: 0.25em 0.1em !important;
@@ -3864,11 +3889,17 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 	}
 /*{+END}*/
 div .button-micro {
-	background-image: none !important; /* Too loud for such a small space */
 	border-radius: 1px;
 }
 
-.button-screen, .button-screen-item, .button-micro, .toggleable-tray-button img {
+div .button-micro .icon {
+	display: none; /* Too loud for such a small space */
+}
+
+.button-screen, 
+.button-screen-item, 
+.button-micro, 
+.toggleable-tray-button .icon {
 	opacity: 0.85;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	display: inline-block;
@@ -3878,9 +3909,17 @@ div .button-micro {
 	opacity: 0.85 !important;
 	cursor: not-allowed;
 }
-.button-micro:hover, .button-screen:hover, .button-screen-item:hover,
-.button-screen:hover, .button-screen-item:hover, .button-micro:hover, .toggleable-tray-button:hover img,
-body.touch-enabled .button-screen, body.touch-enabled .button-screen-item, body.touch-enabled .button-micro, body.touch-enabled .toggleable-tray-button img {
+.button-micro:hover, 
+.button-screen:hover, 
+.button-screen-item:hover,
+.button-screen:hover, 
+.button-screen-item:hover, 
+.button-micro:hover, 
+.toggleable-tray-button:hover .icon,
+body.touch-enabled .button-screen, 
+body.touch-enabled .button-screen-item, 
+body.touch-enabled .button-micro, 
+body.touch-enabled .toggleable-tray-button .icon {
 	opacity: 1.0;
 }
 .button-micro:disabled, .button-screen:disabled, .button-screen-item:disabled {
