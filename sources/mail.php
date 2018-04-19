@@ -999,12 +999,10 @@ abstract class Mail_dispatcher_base
         }
 
         // Filter our e-mails of banned members
-        if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) {
-            if ($this->priority != 1 && $to_emails !== null) {
-                foreach ($to_emails as $key => $email) {
-                    if ($GLOBALS['FORUM_DRIVER']->is_banned($GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email))) {
-                        unset($to_emails[$key]);
-                    }
+        if ($this->priority != 1 && $to_emails !== null) {
+            foreach ($to_emails as $key => $email) {
+                if ($GLOBALS['FORUM_DRIVER']->is_banned($GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email))) {
+                    unset($to_emails[$key]);
                 }
             }
         }
@@ -1063,7 +1061,7 @@ abstract class Mail_dispatcher_base
         // Language
         if (!isset($to_emails[0]) || $to_emails[0] != $staff_address) {
             $lang = user_lang();
-            if (isset($to_emails[0]) && method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) {
+            if (isset($to_emails[0])) {
                 $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($to_emails[0]);
                 if ($member_id !== null) {
                     $lang = get_lang($member_id);

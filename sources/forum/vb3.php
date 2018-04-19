@@ -887,6 +887,17 @@ class Forum_driver_vb3 extends Forum_driver_base
     }
 
     /**
+     * Get a member ID from the given member's e-mail address.
+     *
+     * @param  SHORT_TEXT $email_address The member email address
+     * @return ?MEMBER The member ID (null: not found)
+     */
+    public function get_member_from_email_address($email_address)
+    {
+        return $this->db->query_select_value_if_there('user', 'userid', array('email' => $email_address), 'ORDER BY joindate DESC');
+    }
+
+    /**
      * Get a first known IP address of the given member.
      *
      * @param  MEMBER $member The member ID

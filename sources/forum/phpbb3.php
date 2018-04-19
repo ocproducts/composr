@@ -1250,6 +1250,17 @@ class Forum_driver_phpbb3 extends Forum_driver_base
     }
 
     /**
+     * Get a member ID from the given member's e-mail address.
+     *
+     * @param  SHORT_TEXT $email_address The member email address
+     * @return ?MEMBER The member ID (null: not found)
+     */
+    public function get_member_from_email_address($email_address)
+    {
+        return $this->db->query_select_value_if_there('users', 'user_id', array('user_email' => $email_address), 'ORDER BY user_regdate DESC');
+    }
+
+    /**
      * Get the IDs of the admin usergroups.
      *
      * @return array The admin usergroup IDs

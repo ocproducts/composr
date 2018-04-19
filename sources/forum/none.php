@@ -52,6 +52,16 @@ class Forum_driver_none extends Forum_driver_base
     }
 
     /**
+     * Get the forums' table prefix for the database.
+     *
+     * @return string The forum database table prefix
+     */
+    public function get_drivered_table_prefix()
+    {
+        return get_table_prefix();
+    }
+
+    /**
      * Attempt to to find the member's language from their forum profile. It converts between language-identifiers using a map (lang/map.ini).
      *
      * @param  MEMBER $member The member who's language needs to be fetched
@@ -210,6 +220,16 @@ class Forum_driver_none extends Forum_driver_base
         uksort($this->EMOTICON_CACHE, '_strlen_sort');
         $this->EMOTICON_CACHE = array_reverse($this->EMOTICON_CACHE);
         return $this->EMOTICON_CACHE;
+    }
+
+    /**
+     * Pin a topic.
+     *
+     * @param  AUTO_LINK $id The topic ID
+     * @param  boolean $pin True: pin it, False: unpin it
+     */
+    public function pin_topic($id, $pin = true)
+    {
     }
 
     /**
@@ -790,6 +810,20 @@ class Forum_driver_none extends Forum_driver_base
         }
         if ($name == do_lang('GUEST')) {
             return 0;
+        }
+        return 0;
+    }
+
+    /**
+     * Get a member ID from the given member's e-mail address.
+     *
+     * @param  SHORT_TEXT $email_address The member email address
+     * @return ?MEMBER The member ID (null: not found)
+     */
+    public function get_member_from_email_address($email_address)
+    {
+        if ($email_address == get_option('staff_address')) {
+            return 1;
         }
         return 0;
     }

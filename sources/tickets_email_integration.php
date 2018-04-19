@@ -531,11 +531,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
             'email_address' => $from_email,
         ));
         if ($member_id === null) {
-            if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) {
-                $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($from_email);
-            } else {
-                $member_id = null;
-            }
+            $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($from_email);
             if ($member_id === null) {
                 if ($existing_ticket_id === null) {
                     // E-mail back, saying user not found

@@ -50,9 +50,7 @@ class Hook_upon_query_add_mentor
         //if ((strpos($query, $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members') !== false) && (strpos($query, 'BY RAND') == false)) // to test without registration
         if (strpos($query, 'INTO ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members') !== false) {
             load_user_stuff();
-            if (method_exists($GLOBALS['FORUM_DRIVER'], 'forum_layer_initialise')) {
-                $GLOBALS['FORUM_DRIVER']->forum_layer_initialise();
-            }
+            $GLOBALS['FORUM_DRIVER']->forum_layer_initialise();
 
             $mentor_usergroup = get_option('mentor_usergroup');
             if ($mentor_usergroup == '') {

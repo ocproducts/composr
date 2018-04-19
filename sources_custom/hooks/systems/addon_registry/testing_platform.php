@@ -406,6 +406,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/wiki.php',
             '_tests/tests/unit_tests/web_platform.php',
             '_tests/tests/unit_tests/cma_hooks.php',
+            '_tests/tests/unit_tests/forum_drivers.php',
             '_tests/tests/unit_tests/_database_integrity.php',
             '_tests/tests/unit_tests/database_misc.php',
             '_tests/tests/unit_tests/comment_encapsulation.php',

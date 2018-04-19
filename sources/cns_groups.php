@@ -416,9 +416,7 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
     require_code('cns_members');
     if ((!function_exists('cns_is_ldap_member')/*can happen if said in safe mode and detecting safe mode when choosing whether to avoid a custom file via admin permission which requires this function to run*/) || (!cns_is_ldap_member($member_id))) {
         if (!isset($GLOBALS['CNS_DRIVER'])) { // We didn't init fully (MICRO_BOOTUP), but now we dug a hole - get out of it
-            if (method_exists($GLOBALS['FORUM_DRIVER'], 'forum_layer_initialise')) {
-                $GLOBALS['FORUM_DRIVER']->forum_layer_initialise();
-            }
+            $GLOBALS['FORUM_DRIVER']->forum_layer_initialise();
         }
         $primary_group = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_primary_group');
         if ($primary_group === null) {
