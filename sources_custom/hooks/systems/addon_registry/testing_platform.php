@@ -423,6 +423,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/xhtml_substr.php',
             '_tests/tests/unit_tests/blocks.php',
             '_tests/tests/unit_tests/css_beta.php',
+            '_tests/tests/unit_tests/phpdoc.php',
             '_tests/tests/unit_tests/feeds_and_podcasts.php',
             '_tests/tests/unit_tests/config_lang_strings.php',
             '_tests/tests/unit_tests/_cqc__function_sigs.php',

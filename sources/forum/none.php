@@ -249,10 +249,10 @@ class Forum_driver_none extends Forum_driver_base
     }
 
     /**
-     * Get a member row.
+     * Gets a whole member row from the database.
      *
-     * @param  AUTO_LINK $id The member ID
-     * @return array The profile-row
+     * @param  MEMBER $member The member ID
+     * @return ?array The member row (null: no such member)
      */
     public function get_member_row($id)
     {
@@ -260,11 +260,11 @@ class Forum_driver_none extends Forum_driver_base
     }
 
     /**
-     * Get a member row.
+     * Gets a named field of a member row from the database.
      *
-     * @param  AUTO_LINK $id The member ID
-     * @param  ID_TEXT $field The field
-     * @return ?array The result (null: unknown)
+     * @param  MEMBER $member The member ID
+     * @param  string $field The field identifier
+     * @return mixed The field
      */
     public function get_member_row_field($id, $field)
     {

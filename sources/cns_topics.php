@@ -102,7 +102,7 @@ function cns_get_topic_where($topic_id, $member_id = null)
 }
 
 /**
- * Find whether a member can access a particular post.
+ * Find whether a member can access a particular topic.
  *
  * @param  AUTO_LINK $topic_id Topic ID
  * @param  ?MEMBER $member_id Member involved (null: current member)

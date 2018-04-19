@@ -467,7 +467,7 @@ function create_selection_list_download_category_tree($it = null, $use_compound_
 }
 
 /**
- * Get a list of maps containing all the subcategories, and path information, of the specified category - and those beneath it, recursively.
+ * Get a list of maps containing all the subcategories, and path information, of the specified download category - and those beneath it, recursively.
  *
  * @param  ?AUTO_LINK $category_id The category being at the root of our recursion (null: true root category)
  * @param  ?string $breadcrumbs The breadcrumbs up to this point in the recursion (null: blank, as we are starting the recursion)
@@ -570,7 +570,7 @@ function create_selection_list_download_licences($it = null, $allow_na = false)
 }
 
 /**
- * Get a formatted XHTML string of the route back to the specified root, from the specified category.
+ * Get a formatted XHTML string of the route back to the specified root, from the specified download category.
  *
  * @param  AUTO_LINK $category_id The category we are finding for
  * @param  ?AUTO_LINK $root The root of the tree (null: the true root)

@@ -622,7 +622,7 @@ class Module_admin_email_log
     }
 
     /**
-     * Actualiser to do a mass send.
+     * Actualiser to do a mass delete.
      *
      * @return Tempcode The result of execution
      */

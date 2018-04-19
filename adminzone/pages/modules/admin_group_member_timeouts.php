@@ -220,7 +220,7 @@ class Module_admin_group_member_timeouts
     }
 
     /**
-     * Save group member timeouts.
+     * Save a group member timeout.
      *
      * @param  ?GROUP $old_group_id The usergroup ID before edit (null: N/A)
      * @param  GROUP $group_id The usergroup ID

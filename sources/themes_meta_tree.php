@@ -413,7 +413,7 @@ function find_template_tree_nice($metadata, &$collected_templates)
 }
 
 /**
- * Sitemap node type base class.
+ * Class to build meta-trees (template relationships).
  *
  * @package        core_themeing
  */
@@ -540,7 +540,7 @@ class Meta_tree_builder
     }
 
     /**
-     * Put in an screen template/page hierarchy under a path.
+     * Put in a screen template/page hierarchy under a path.
      *
      * @param  PATH $path The path
      * @param  ID_TEXT $theme The theme
@@ -609,7 +609,7 @@ class Meta_tree_builder
     }
 
     /**
-     * Put in an screen template/page hierarchy under a path.
+     * Put in a screen template/page under a path.
      *
      * @param  PATH $path The path
      * @param  array $node The tree node

@@ -1018,7 +1018,7 @@ function form_input_text_multi($pretty_name, $description, $name, $default_array
 }
 
 /**
- * Get the Tempcode for a username input line.
+ * Get the Tempcode for a multi-username input widget.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field

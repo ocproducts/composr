@@ -89,7 +89,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
     }
 
     /**
-     * preg callback.
+     * preg callback for removing hex entities.
      *
      * @param  array $matches Matches
      * @return string Replacement
@@ -104,7 +104,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
     }
 
     /**
-     * preg callback.
+     * preg callback for removing decimal entities.
      *
      * @param  array $matches Matches
      * @return string Replacement

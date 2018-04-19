@@ -831,7 +831,7 @@ class Module_cms_galleries extends Standard_crud_module
     }
 
     /**
-     * Standard crud_module list function.
+     * Standard crud_module tree-list function.
      *
      * @return array A triple: The tree field (Tempcode), Search URL, Archive URL
      */
@@ -1454,7 +1454,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
     }
 
     /**
-     * Standard crud_module list function.
+     * Standard crud_module tree-list function.
      *
      * @return array A triple: The tree field (Tempcode), Search URL, Archive URL
      */
@@ -1945,7 +1945,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
     public $js_function_calls = array('moduleCmsGalleriesCat');
 
     /**
-     * Standard crud_module list function.
+     * Standard crud_module tree-list function.
      *
      * @return array A triple: The tree field (Tempcode), Search URL, Archive URL
      */

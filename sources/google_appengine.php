@@ -168,7 +168,7 @@ function init__google_appengine()
 }
 
 /**
- * Find whether the current user is an admin, from the perspective of the Google Console.
+ * Parse a URL scheme into GET variables / a normal query string. Does the normal job of mod_rewrite.
  *
  * @param  array $matches URL segments matched
  * @param  string $to Redirect pattern

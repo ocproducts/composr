@@ -128,7 +128,7 @@ namespace webdav_commandr_fs {
         }
 
         /**
-         * Returns the last modification time, as a unix timestamp
+         * Returns a directory listing
          *
          * @param array $parsedPath Directory listing
          * @return array

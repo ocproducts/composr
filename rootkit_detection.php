@@ -271,7 +271,7 @@ function rd_do_dir($dir)
 }
 
 /**
- * Output the config editors page header.
+ * Output the rootkit detector's page header.
  */
 function rd_do_header()
 {
@@ -297,7 +297,7 @@ END;
 }
 
 /**
- * Output the config editors page footer.
+ * Output the rootkit detector's page footer.
  */
 function rd_do_footer()
 {

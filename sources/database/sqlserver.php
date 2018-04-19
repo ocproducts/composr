@@ -27,7 +27,7 @@ require_code('database/shared/sqlserver');
 // See tut_sqlserver tutorial for documentation on using SQL Server.
 
 /**
- * Database Driver.
+ * Database driver class.
  *
  * @package    core_database_drivers
  */

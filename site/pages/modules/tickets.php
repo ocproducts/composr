@@ -1098,7 +1098,7 @@ class Module_tickets
     }
 
     /**
-     * UI for editing a ticket type.
+     * UI for editing a ticket.
      *
      * @return Tempcode The UI
      */
@@ -1146,7 +1146,7 @@ class Module_tickets
     }
 
     /**
-     * Actualiser for setting ticket access.
+     * Actualiser for editing a ticket.
      *
      * @return Tempcode The UI
      */

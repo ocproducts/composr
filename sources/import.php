@@ -156,7 +156,7 @@ function i_force_refresh()
 }
 
 /**
- * Load lots that the importer needs to run.
+ * Cleanup after an import has finished.
  */
 function post_import_cleanup()
 {

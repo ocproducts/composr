@@ -15,6 +15,7 @@
 
 /**
  * Add a banner to the database, and return the new ID of that banner in the database.
+ * Simpler than add_banner, as it returns if the banner already exists, and saves less data.
  *
  * @param  ID_TEXT $name The name of the banner
  * @param  URLPATH $imgurl The URL to the banner image

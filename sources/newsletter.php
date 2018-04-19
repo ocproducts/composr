@@ -19,7 +19,7 @@
  */
 
 /**
- * Script to read in an e-mailed ticket/reply.
+ * Script to read in a bounced e-mail.
  */
 function incoming_bounced_email_script()
 {
@@ -1037,7 +1037,7 @@ function add_newsletter_subscriber($email, $join_time, $code_confirm, $password,
 }
 
 /**
- * Add a newsletter subscriber to the system (not to any particular newsletters though).
+ * Edit a newsletter subscriber.
  *
  * @param  AUTO_LINK $id Subscriber ID
  * @param  ?EMAIL $email The email address of the subscriber (null: don't change)
@@ -1086,7 +1086,7 @@ function edit_newsletter_subscriber($id, $email = null, $join_time = null, $code
 }
 
 /**
- * Add a newsletter subscriber to the system (not to any particular newsletters though).
+ * Delete a newsletter subscriber.
  *
  * @param  AUTO_LINK $id Subscriber ID
  */

@@ -39,7 +39,7 @@ function init__database__ibm()
 }
 
 /**
- * Database Driver.
+ * Database driver class.
  *
  * @package    core_database_drivers
  */

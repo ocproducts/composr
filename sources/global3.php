@@ -397,7 +397,7 @@ function handle_file_bom($path, $handle_charset_conversion_automatically = true)
 
 // TODO: #3467 Assess calls and apply BOM and unixify_line_format cleanup as required
 /**
- * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
+ * Return the contents of the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
  *
  * @param  URLPATH $url The URL to download
  * @param  array $options Map of options (see the properties of the HttpDownloader class for what you may set)

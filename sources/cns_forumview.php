@@ -19,7 +19,7 @@
  */
 
 /**
- * Get the active forum sort order from a URL specifier.
+ * Get the active forum sort order from a URL specifier. Doesn't consider cascading/pinned status.
  *
  * @param  string $_sort Sort order keyword
  * @return array A tuple: Sort order in SQL form, keyset pagination field pattern, keyset pagination field

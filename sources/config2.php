@@ -212,7 +212,7 @@ function config_update_value_ref($old_setting, $setting, $type)
 }
 
 /**
- * Update a reference stored in a config option.
+ * Get a URL to where to edit a config option.
  *
  * @param  ID_TEXT $name The config option name
  * @return ?URLPATH URL to set the config option (null: no such option exists)

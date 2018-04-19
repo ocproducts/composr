@@ -373,7 +373,7 @@ class CMSAccountWrite
     }
 
     /**
-     * Update member password.
+     * Update member password, based on giving old password.
      *
      * @param  string $old_password Old password
      * @param  string $new_password New password
@@ -400,7 +400,7 @@ class CMSAccountWrite
     }
 
     /**
-     * Update member password.
+     * Update member password, based on already being logged in.
      *
      * @param  string $new_password New password
      * @param  string $token Session token

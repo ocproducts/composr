@@ -86,7 +86,7 @@ function selectcode_to_idlist_using_memory($filter, $ids_and_parents, $parent_sp
 }
 
 /**
- * Turn an Selectcode (a filter specifying which records to match) into a list of ID numbers.
+ * Turn an Selectcode (a filter specifying which records to match) into a list of ID numbers, using a callback.
  *
  * @param  string $filter The filter
  * @param  mixed $ids_and_parents_callback A call_user_func_array specifier to a function that will give a map between record-set IDs and record-set parent-category-IDs. We pass a call_user_func_array specifier because we don't want to have to generate it unless we need to (if we need to do 'avoiding' matches or 'subtree' matches)
@@ -232,7 +232,7 @@ function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_nam
 }
 
 /**
- * Turn an Selectcode (a filter specifying which records to match) into a list of ID numbers, relying on the database to extract the record-set.
+ * Turn an Selectcode (a filter specifying which records to match) into a list of ID numbers.
  *
  * @param  string $filter The filter
  * @param  ?string $field_name The database's ID field for the record-set we're matching (null: use a different lookup method)
@@ -539,7 +539,7 @@ function _selectcode_subtree_fetch($look_under, $table_name, $parent_name, $fiel
 }
 
 /**
- * Helper function to fetch a subtree from the database.
+ * Load up all category ID/parent relationships.
  *
  * @param  string $field_name The ID field name in the record-set
  * @param  string $table_name The table name of the record-set

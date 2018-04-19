@@ -103,7 +103,7 @@ function define_comcode_page_structure($structure, $zone = '', $parent = '', $ov
 }
 
 /**
- * Define a Comcode page structure programmatically.
+ * Define a redirect structure programmatically.
  * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
  *
  * @param  array $redirects Simple redirect map between page names (see function code for an example)

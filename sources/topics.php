@@ -444,7 +444,7 @@ class CMS_Topic
     }
 
     /**
-     * Render a topic.
+     * Render a topic's posts.
      *
      * @param  ?integer $num_to_show_limit Number of posts to show initially (null: no limit)
      * @param  integer $max_thread_depth Maximum thread depth

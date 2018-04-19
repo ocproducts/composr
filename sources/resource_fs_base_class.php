@@ -358,7 +358,7 @@ abstract class Resource_fs_base
     */
 
     /**
-     * Find a default property, defaulting to blank.
+     * Find a default string property, defaulting to blank.
      *
      * @param  array $properties The properties
      * @param  ID_TEXT $property The property
@@ -370,7 +370,7 @@ abstract class Resource_fs_base
     }
 
     /**
-     * Find a default property, defaulting to null.
+     * Find a default string property, defaulting to null.
      *
      * @param  array $properties The properties
      * @param  ID_TEXT $property The property
@@ -403,7 +403,7 @@ abstract class Resource_fs_base
     }
 
     /**
-     * Find a default property, defaulting to null.
+     * Find an integer default property, defaulting to null.
      *
      * @param  array $properties The properties
      * @param  ID_TEXT $property The property
@@ -445,7 +445,7 @@ abstract class Resource_fs_base
     }
 
     /**
-     * Find a default property, defaulting to null.
+     * Find a default float property, defaulting to null.
      *
      * @param  array $properties The properties
      * @param  ID_TEXT $property The property
@@ -1097,7 +1097,7 @@ abstract class Resource_fs_base
     }
 
     /**
-     * Reset resource privileges on the resource for all usergroups.
+     * Reset view access permissions on the resource for all usergroups.
      *
      * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
      * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)
@@ -1253,7 +1253,7 @@ abstract class Resource_fs_base
     }
 
     /**
-     * Set resource view access on the resource.
+     * Set member resource view access on the resource.
      *
      * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
      * @param  array $members A mapping from member ID to view access
@@ -1313,7 +1313,7 @@ abstract class Resource_fs_base
     }
 
     /**
-     * Get resource view access on the resource.
+     * Get resource member view access on the resource.
      *
      * @param  ?ID_TEXT $filename Resource filename (assumed to be of a folder type) (null: $resource_type & $category specified instead)
      * @param  ?ID_TEXT $resource_type The resource type (null: $filename specified instead)

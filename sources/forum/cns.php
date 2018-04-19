@@ -146,7 +146,7 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Add the specified custom field to the forum (some forums implemented this using proper Custom Profile Fields, others through adding a new field).
+     * Delete the specified custom field from the forum.
      *
      * @param  string $name The name of the new custom field
      */
@@ -1335,7 +1335,7 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Get a member ID from the given member's username.
+     * Get a member ID from the given member's e-mail address.
      *
      * @param  SHORT_TEXT $email_address The member email address
      * @return ?MEMBER The member ID (null: not found)

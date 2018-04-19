@@ -78,7 +78,7 @@ function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $in
 }
 
 /**
- * Get Tempcode for a Wiki+ post 'feature box' for the given row.
+ * Get Tempcode for a Wiki+ page 'feature box' for the given row.
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -134,7 +134,7 @@ function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $in
 }
 
 /**
- * Edit a Wiki+ post.
+ * Add a Wiki+ post.
  *
  * @param  AUTO_LINK $page_id The page ID
  * @param  string $message The new post

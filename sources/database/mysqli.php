@@ -23,7 +23,7 @@
 require_code('database/shared/mysql');
 
 /**
- * Database Driver.
+ * Database driver class.
  *
  * @package    core_database_drivers
  */

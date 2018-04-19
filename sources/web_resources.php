@@ -202,7 +202,7 @@ function javascript_tempcode()
 }
 
 /**
- * Get Tempcode to tie in (to the HTML, in <head>) for an individual CSS file.
+ * Get Tempcode to tie in (to the HTML, in <head>) for an individual JavaScript file.
  *
  * @param  ID_TEXT $j The javascript file required
  * @param  Tempcode $js Tempcode object (will be written into if appropriate)

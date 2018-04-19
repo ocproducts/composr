@@ -2868,7 +2868,7 @@ END;
     }
 
     /**
-     * Get Tempcode for a poll adding/editing form.
+     * Get Tempcode for a topic poll adding/editing form.
      *
      * @param  SHORT_TEXT $question The poll question
      * @param  array $answers A list of current answers for the poll

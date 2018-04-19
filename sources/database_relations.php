@@ -356,7 +356,7 @@ function get_table_descriptions()
 }
 
 /**
- * Get a map of foreign key relations.
+ * Get a map of foreign key relations, for a specific table.
  *
  * @param  string $table A particular table
  * @return array Map of foreign key relations

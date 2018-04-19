@@ -922,7 +922,7 @@ function _give_moniker_scope($page, $type, $id, $zone, $main)
 }
 
 /**
- * Take a moniker and it's page-link details, and make a full path from it.
+ * Find the ID from a content-type & moniker combination.
  *
  * @param  ID_TEXT $content_type The content type
  * @param  SHORT_TEXT $url_moniker The URL moniker

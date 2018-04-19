@@ -1415,7 +1415,7 @@ function imagesy($image)
 }
 
 /**
- * Give the bounding box of a text using TrueType fonts.
+ * Draw a vertical string.
  *
  * @param  resource $image The image handle
  * @param  integer $font The loaded font
@@ -1443,7 +1443,7 @@ function imagettfbbox($size, $angle, $fontfile, $text)
 }
 
 /**
- * Give the bounding box of a text using TrueType fonts.
+ * Draw a string.
  *
  * @param  resource $handle The image handle
  * @param  float $size The font size in pixels
@@ -2067,7 +2067,7 @@ function move_uploaded_file($filename, $destination)
 }
 
 /**
- * Get largest possible random value.
+ * Get largest possible random value (better generator).
  *
  * @return integer The value
  */
@@ -3880,7 +3880,7 @@ function var_dump($expression)
 }
 
 /**
- * Output a formatted string.
+ * Output a formatted string (similar to printf, but takes an array of arguments).
  *
  * @param  string $format Formatting string
  * @param  array $args Arguments
@@ -3892,7 +3892,7 @@ function vprintf($format, $args)
 }
 
 /**
- * Return a formatted string.
+ * Return a formatted string (similar to sprintf, but takes an array of arguments).
  *
  * @param  string $format Formatting string
  * @param  array $args Arguments
@@ -4961,7 +4961,7 @@ function memory_get_peak_usage($real_usage = false)
 }
 
 /**
- * Parse a binary IPTC block into single tags..
+ * Parse a binary IPTC block into single tags.
  *
  * @param  string $iptcblock A binary IPTC block
  * @return array Returns an array using the tagmarker as an index and the value as the value. It returns FALSE on error or if no IPTC data was found.
@@ -4972,7 +4972,7 @@ function iptcparse($iptcblock)
 }
 
 /**
- * Creates a stream context.
+ * Embed an IPTC block in a JPEG file.
  *
  * @param  string $iptcdata The data to be written
  * @param  PATH $jpeg_file_name Path to the JPEG image

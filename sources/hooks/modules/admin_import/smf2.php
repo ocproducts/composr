@@ -1487,7 +1487,7 @@ class Hook_import_smf2
     }
 
     /**
-     * Used to set view access to Forums.
+     * Used to set permissions for Forums.
      *
      * @param  array $arr The static array map built from static_perm_arr
      * @param  integer $forum_id The Forum ID to set
@@ -1521,7 +1521,7 @@ class Hook_import_smf2
     }
 
     /**
-     * Used to Set Forum Permissions.
+     * Set Forum Permissions.
      *
      * @param  integer $group_id The Group ID to set
      * @param  string $forum_id The Forum ID to set

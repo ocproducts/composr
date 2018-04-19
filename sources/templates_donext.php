@@ -19,7 +19,7 @@
  */
 
 /**
- * Get the Tempcode for a do next manager. A do next manager is a series of linked icons that are presented after performing an action. Modules that do not use do-next pages, usually use REFRESH_PAGE's.
+ * Get the Tempcode for a do next manager, using hooks. A do next manager is a series of linked icons that are presented after performing an action. Modules that do not use do-next pages, usually use REFRESH_PAGE's.
  *
  * @param  ID_TEXT $title The title of what we are doing (a language string)
  * @param  ?mixed $text The language string ID for the docs of the hook defined do-next manager that we're creating OR Tempcode for it (null: none)
@@ -290,7 +290,7 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
 }
 
 /**
- * Get the Tempcode for a do next manager. A do next manager is a series of linked icons that are presented after performing an action. Modules that do not use do-next pages, usually use REFRESH_PAGE's.
+ * Get the Tempcode for a do next manager section.
  *
  * @param  array $list A list of items (each item is a pair or a triple: <option,url[,field name=do_lang(option)]> ; url is a pair or a triple or a quarto also: <page,map[,zone[,warning]]>)
  * @param  Tempcode $title The title for the section

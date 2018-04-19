@@ -52,7 +52,7 @@ function notification_script()
 }
 
 /**
- * Notification entry script.
+ * Notification entry script: mark all read.
  */
 function notification_mark_all_read_script()
 {
@@ -62,7 +62,7 @@ function notification_mark_all_read_script()
 }
 
 /**
- * Notification entry script.
+ * Notification entry script: display notifications.
  */
 function notification_display_script()
 {
@@ -76,7 +76,7 @@ function notification_display_script()
 }
 
 /**
- * Notification entry script.
+ * Notification entry script: poll for new notifications.
  */
 function notification_poller_script()
 {

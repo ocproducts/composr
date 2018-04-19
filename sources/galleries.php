@@ -541,7 +541,7 @@ function only_member_galleries_of_id($cat, $member_id, $child_count)
 }
 
 /**
- * Gets a gallery selection tree list, extending deeper from the given gallery, showing all sub(sub...)galleries.
+ * Get a nice, formatted, XHTML list of the galleries, extending deeper from the given gallery, showing all sub(sub...)galleries.
  *
  * @param  ?ID_TEXT $it The gallery to select by default (null: no specific default)
  * @param  ?string $filter A function name to filter galleries with (null: no filter)

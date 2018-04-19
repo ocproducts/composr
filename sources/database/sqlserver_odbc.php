@@ -35,7 +35,7 @@ function init__database__sqlserver_odbc()
 }
 
 /**
- * Database Driver.
+ * Database driver class.
  *
  * @package    core_database_drivers
  */
@@ -135,7 +135,7 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
 
         $sub = substr(ltrim($query), 0, 4);
         if (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results !== false) && ($results !== true)) {
-            return $this->db_get_query_rows($results, $query, $start);
+            return $this->get_query_rows($results, $query, $start);
         }
 
         if ($get_insert_id) {
@@ -162,7 +162,7 @@ class Database_Static_sqlserver_odbc extends Database_super_sqlserver
      * @param  ?integer $start Where to start reading from (null: irrelevant)
      * @return array A list of row maps
      */
-    public function db_get_query_rows($results, $query, $start = null)
+    public function get_query_rows($results, $query, $start = null)
     {
         $out = array();
         if ($start === null) {

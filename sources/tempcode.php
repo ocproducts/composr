@@ -361,7 +361,7 @@ function directive_tempcode($directive, $content, $parameters = array())
 }
 
 /**
- * Perform a simple loop, that can be inlined in an expression.
+ * Perform a simple while loop, that can be inlined in an expression.
  *
  * @param  array $args The template bound parameters
  * @param  array $control_function The loop control function
@@ -627,7 +627,7 @@ function escape_html_tempcode($data)
 }
 
 /**
- * Apply whatever escaping is requested to the given value.
+ * Apply whatever escaping is requested to the given value (by reference).
  *
  * @param  array $escaped A list of escaping to do
  * @param  string $value The string to apply the escapings to
@@ -680,7 +680,7 @@ function apply_tempcode_escaping($escaped, &$value)
 }
 
 /**
- * Apply whatever escaping is requested to the given value.
+ * Apply whatever escaping is requested to the given value (by return).
  *
  * @param  array $escaped A list of escaping to do
  * @param  string $value The string to apply the escapings to
@@ -2220,7 +2220,8 @@ class Tempcode
     }
 
     /**
-     * Parses the current Tempcode object, then return the parsed string.
+     * Convert the object into a string, using ->evaluate().
+     * This is implemented for newbie coders. Don't rely on this as it leads to ambiguous code.
      *
      * @return string The evaluated thing
      */
@@ -2399,7 +2400,7 @@ class Tempcode
 }
 
 /**
- * A template has not been structurally cached, so compile it and store in the cache.
+ * Get a closure for a particular call, with caching support via a named map (as many things may end up adopting this closure).
  *
  * @param  string $id A randomised unique ID
  * @param  string $parameters Parameters

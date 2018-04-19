@@ -32,7 +32,7 @@ One user booking becomes a lot of separate bookings for separate things when it 
 */
 
 /**
- * Standard code module init function.
+ * Standard code module initialisation function.
  */
 function init__booking()
 {

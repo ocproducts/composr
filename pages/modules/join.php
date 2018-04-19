@@ -204,7 +204,7 @@ class Module_join
     }
 
     /**
-     * The actualiser for adding a member.
+     * The actualiser for joining.
      *
      * @return Tempcode The UI
      */

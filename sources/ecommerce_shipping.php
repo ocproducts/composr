@@ -284,7 +284,7 @@ function get_shipping_address_fields($shipping_email, $shipping_phone, $shipping
 }
 
 /**
- * Get form fields for a shipping/invoice address.
+ * Get form fields for a shipping/invoice name.
  *
  * @param  string $shipping_firstname First name
  * @param  string $shipping_lastname Last name
@@ -302,7 +302,7 @@ function get_shipping_name_fields($shipping_firstname, $shipping_lastname, $requ
 }
 
 /**
- * Get form fields for a shipping/invoice address.
+ * Get form fields for shipping/invoice contact details.
  *
  * @param  string $shipping_email E-mail address
  * @param  string $shipping_phone Phone number

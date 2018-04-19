@@ -265,7 +265,7 @@ function get_timezone_list()
 }
 
 /**
- * Get a nice formatted date from the specified Unix timestamp.
+ * Get a nice formatted date&time from the specified Unix timestamp.
  *
  * @param  TIME $timestamp Input timestamp
  * @param  boolean $use_contextual_dates Whether contextual dates will be used
@@ -293,7 +293,7 @@ function get_timezoned_date($timestamp, $use_contextual_dates = true, $utc_time 
 }
 
 /**
- * Get a nice formatted date from the specified Unix timestamp.
+ * Get a nice formatted date/time from the specified Unix timestamp.
  *
  * @param  boolean $include_time Whether to include the time in the output
  * @param  TIME $timestamp Input timestamp

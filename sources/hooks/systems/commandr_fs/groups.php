@@ -98,7 +98,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
     }
 
     /**
-     * Convert properties to variables for adding/editing members.
+     * Convert properties to variables for adding/editing usergroups.
      *
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)

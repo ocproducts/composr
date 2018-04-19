@@ -158,7 +158,7 @@ class Module_notifications
     }
 
     /**
-     * Show an overall notifications UI.
+     * UI to show a notification.
      *
      * @return Tempcode The result of execution
      */
