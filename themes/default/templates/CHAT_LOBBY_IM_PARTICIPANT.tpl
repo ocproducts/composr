@@ -14,10 +14,10 @@
 		<nav>
 			<ul class="actions-list-super-compact">
 				<li id="friend--{ID*}">
-					<a class="js-click-hide-self" target="_blank" title="{!MAKE_FRIEND} {!LINK_NEW_WINDOW}" href="{MAKE_FRIEND_URL*}">{!MAKE_FRIEND}</a>
+					{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a class="js-click-hide-self" target="_blank" title="{!MAKE_FRIEND} {!LINK_NEW_WINDOW}" href="{MAKE_FRIEND_URL*}">{!MAKE_FRIEND}</a>
 				</li>
 				<li id="block--{ID*}">
-					<a target="_blank" title="{!BLOCK_MEMBER} {!LINK_NEW_WINDOW}" href="{BLOCK_MEMBER_URL*}">{!BLOCK_MEMBER}</a>
+					{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a target="_blank" title="{!BLOCK_MEMBER} {!LINK_NEW_WINDOW}" href="{BLOCK_MEMBER_URL*}">{!BLOCK_MEMBER}</a>
 				</li>
 			</ul>
 		</nav>

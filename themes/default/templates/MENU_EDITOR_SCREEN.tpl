@@ -61,7 +61,7 @@
 
 						<nav>
 							<ul class="actions-list">
-								<li><a href="#!" class="js-click-menu-editor-add-new-page">{!SPECIFY_NEW_PAGE}</a></li>
+								<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="#!" class="js-click-menu-editor-add-new-page">{!SPECIFY_NEW_PAGE}</a></li>
 							</ul>
 						</nav>
 					</div>

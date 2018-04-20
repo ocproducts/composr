@@ -20,19 +20,19 @@
 					<nav>
 						<ul class="actions-list">
 							{+START,IF_NON_EMPTY,{ADD_CHATROOM_URL}}
-								<li class="icon-14-add"><a href="{ADD_CHATROOM_URL*}" rel="add">{!ADD_CHATROOM}</a></li>
+								<li>{+START,INCLUDE,ICON}NAME=admin/add{+END} <a href="{ADD_CHATROOM_URL*}" rel="add">{!ADD_CHATROOM}</a></li>
 							{+END}
 							{+START,IF_NON_EMPTY,{PRIVATE_CHATROOM}}
-								<li class="icon-14-proceed">{PRIVATE_CHATROOM}</li>
+								<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} {PRIVATE_CHATROOM}</li>
 							{+END}
 							{+START,IF_NON_EMPTY,{BLOCKING_LINK}}
-								<li class="icon-14-ban">{BLOCKING_LINK}</li>
+								<li>{+START,INCLUDE,ICON}NAME=admin/remove{+END} {BLOCKING_LINK}</li>
 							{+END}
 							{+START,IF_NON_EMPTY,{MOD_LINK}}
-								<li class="icon-14-tools">{MOD_LINK}</li>
+								<li>{+START,INCLUDE,ICON}NAME=checklist/toggle{+END} {MOD_LINK}</li>
 							{+END}
 							{+START,IF_NON_EMPTY,{SETEFFECTS_LINK}}
-								<li class="icon-14-sound-effects">{SETEFFECTS_LINK}</li>
+								<li>{+START,INCLUDE,ICON}NAME=buttons/sound_effects{+END} {SETEFFECTS_LINK}</li>
 							{+END}
 						</ul>
 					</nav>
@@ -45,7 +45,7 @@
 				{+START,IF_NON_EMPTY,{CHATROOMS}}
 					<ul class="actions-list">
 						{+START,LOOP,CHATROOMS}
-							<li><a href="{URL*}">{NAME*}</a> <em class="associated-details">({$?,{PRIVATE},{!CHATROOM_STATUS_PRIVATE},{!CHATROOM_STATUS_PUBLIC}})</em><span class="associated-details">({!STATIC_USERS_ONLINE,{$TIME*},{USERNAMES}})</span></li>
+							<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{URL*}">{NAME*}</a> <em class="associated-details">({$?,{PRIVATE},{!CHATROOM_STATUS_PRIVATE},{!CHATROOM_STATUS_PUBLIC}})</em><span class="associated-details">({!STATIC_USERS_ONLINE,{$TIME*},{USERNAMES}})</span></li>
 						{+END}
 					</ul>
 

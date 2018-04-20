@@ -10,7 +10,7 @@
 	</form>
 
 	<ul class="actions-list">
-		<li>{!GOTO_CHAT_LOBBY_FOR_MORE,{$PAGE_LINK*,_SEARCH:chat}}</li>
+		<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} {!GOTO_CHAT_LOBBY_FOR_MORE,{$PAGE_LINK*,_SEARCH:chat}}</li>
 	</ul>
 
 	{CHAT_SOUND}

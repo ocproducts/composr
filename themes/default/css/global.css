@@ -3342,17 +3342,8 @@ ul.actions-list {
 }
 ul.actions-list > li, 
 .attachment ul.actions-list > li /*for higher precedence for attachments within docs zone*/ {
-	padding: 2px 0 2px 18px !important;
+	padding: 2px 0 !important;
 	margin: 0 !important;
-}
-ul.actions-list-compact > li, ul.actions-list-super-compact > li {
-	padding: 0 0 0 18px;
-}
-ul.actions-list > li, 
-ul.actions-list-compact > li, 
-ul.actions-list-super-compact > li {
-	background: url('{$IMG;,icons/buttons/proceed2}') left 4px no-repeat;
-	background-size: 14px 14px;
 }
 ul.actions-list > li, 
 ul.actions-list-compact > li, 
@@ -3360,6 +3351,12 @@ ul.actions-list-super-compact > li {
 	margin: 0;
 	list-style-type: none;
 	list-style-image: none;
+}
+ul.actions-list > li > .icon,
+ul.actions-list-compact > li > .icon,
+ul.actions-list-super-compact > li > .icon {
+	width: 14px;
+	height: 14px;
 }
 ul.actions-list h4 {
 	display: inline;

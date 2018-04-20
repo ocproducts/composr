@@ -696,7 +696,7 @@ class Module_chat
 
         $seteffects_link = hyperlink(build_url(array('page' => '_SELF', 'type' => 'set_effects'/*, 'redirect' => protect_url_parameter(SELF_REDIRECT)*/), '_SELF'), do_lang_tempcode('CHAT_SET_EFFECTS'), true, false);
 
-        $links = array('edit2' => $admin_link, 'tools' => $mod_link, 'export' => $download_link, 'sound-effects' => $seteffects_link);
+        $links = array('admin/edit2' => $admin_link, 'checklist/toggle' => $mod_link, 'admin/export' => $download_link, 'buttons/sound_effects' => $seteffects_link);
 
         return do_template('CHAT_ROOM_SCREEN', array(
             '_GUID' => '867a0b050c050c81d33482d131783eb0',

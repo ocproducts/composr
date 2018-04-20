@@ -5,7 +5,7 @@
 
 	{$,<div class="box box---block-side-friends"><div class="box-inner">
 		<ul class="actions-list">
-			<li><a href="{$PAGE_LINK*,_SEARCH:popup_blockers}" data-open-as-overlay="\{\}">{!ENABLE_POPUPS}</a></li>
+			<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{$PAGE_LINK*,_SEARCH:popup_blockers}" data-open-as-overlay="\{\}">{!ENABLE_POPUPS}</a></li>
 		</ul>
 	</div></div>}
 </div></div></div>

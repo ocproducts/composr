@@ -26,8 +26,8 @@
 
 <nav>
 	<ul class="actions-list">
-		<li class="actions-list-strong"><a href="{STAGE3_URL*}">{!THEMEWIZARD_2_USE}</a></li>
+		<li class="actions-list-strong">{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{STAGE3_URL*}">{!THEMEWIZARD_2_USE}</a></li>
 
-		<li><a target="_blank" title="{!PREVIEW} {!LINK_NEW_WINDOW}" href="{$PAGE_LINK*,::keep_theme_seed={SEED#}:keep_theme_dark={DARK#}:keep_theme_source={SOURCE_THEME#}:keep_theme={SOURCE_THEME#}:keep_theme_algorithm={ALGORITHM#}}">{!PREVIEW}</a></li>
+		<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a target="_blank" title="{!PREVIEW} {!LINK_NEW_WINDOW}" href="{$PAGE_LINK*,::keep_theme_seed={SEED#}:keep_theme_dark={DARK#}:keep_theme_source={SOURCE_THEME#}:keep_theme={SOURCE_THEME#}:keep_theme_algorithm={ALGORITHM#}}">{!PREVIEW}</a></li>
 	</ul>
 </nav>

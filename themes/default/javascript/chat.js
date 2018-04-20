@@ -1246,6 +1246,7 @@
         //div.style.left=($dom.getWindowWidth()/2-140)+'px';
         div.style.right = '1em';
         div.style.bottom = ((document.body.querySelectorAll('.im-event').length) * 185 + 20) + 'px';
+        /*{$SET,icon_buttons_proceed2,{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END}}*/
         var links = document.createElement('ul');
         links.className = 'actions-list';
 
@@ -1282,6 +1283,7 @@
             });
             $dom.html(aPopupOpen, '{!chat:OPEN_IM_POPUP;^}');
             var liPopupOpen = document.createElement('li');
+            $dom.html(liPopupOpen, '{$GET;^,icon_buttons_proceed2} ');
             liPopupOpen.appendChild(aPopupOpen);
             links.appendChild(liPopupOpen);
         }
@@ -1293,6 +1295,7 @@
         $dom.on(aGotoLobby, 'click', closePopup);
         $dom.html(aGotoLobby, '{!chat:GOTO_CHAT_LOBBY;^}');
         var liGotoLobby = document.createElement('li');
+        $dom.html(liGotoLobby, '{$GET;^,icon_buttons_proceed2} ');
         liGotoLobby.appendChild(aGotoLobby);
         links.appendChild(liGotoLobby);
 

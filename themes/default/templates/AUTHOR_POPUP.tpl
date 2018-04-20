@@ -21,7 +21,7 @@
 
 		<nav>
 			<ul class="actions-list">
-				<li><a title="{!MORE}: {!AUTHORS}" href="{NEXT_URL*}">{!MORE}</a></li>
+				<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a title="{!MORE}: {!AUTHORS}" href="{NEXT_URL*}">{!MORE}</a></li>
 			</ul>
 		</nav>
 	{+END}

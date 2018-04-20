@@ -33,7 +33,7 @@
 			<hr class="spaced-rule" />
 
 			<ul class="actions-list">
-				<li><a href="{$PAGE_LINK*,adminzone:admin_config:category:SITE#group_ERROR_HANDLING}">{!CHANGE_ERROR_HANDLING_SETTINGS}</a></li>
+				<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{$PAGE_LINK*,adminzone:admin_config:category:SITE#group_ERROR_HANDLING}">{!CHANGE_ERROR_HANDLING_SETTINGS}</a></li>
 			</ul>
 		{+END}
 	{+END}

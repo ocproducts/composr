@@ -26,8 +26,8 @@
 
 	<nav class="installer-completed-calltoaction">
 		<ul class="actions-list">
-			<li class="actions-list-strong"><a href="{$BASE_URL*}/adminzone/index.php?page=admin_setupwizard&amp;type=browse{+START,IF,{$_GET,keep_safe_mode}}&amp;keep_safe_mode=1{+END}&amp;came_from_installer=1">{!CONFIGURE}</a> ({!RECOMMENDED})</li>
-			<li><a href="{$BASE_URL*}/index.php?came_from_installer=1{+START,IF,{$_GET,keep_safe_mode}}&amp;keep_safe_mode=1{+END}">{!GO}</a></li>
+			<li class="actions-list-strong">{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{$BASE_URL*}/adminzone/index.php?page=admin_setupwizard&amp;type=browse{+START,IF,{$_GET,keep_safe_mode}}&amp;keep_safe_mode=1{+END}&amp;came_from_installer=1">{!CONFIGURE}</a> ({!RECOMMENDED})</li>
+			<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{$BASE_URL*}/index.php?came_from_installer=1{+START,IF,{$_GET,keep_safe_mode}}&amp;keep_safe_mode=1{+END}">{!GO}</a></li>
 		</ul>
 	</nav>
 

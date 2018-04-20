@@ -134,7 +134,7 @@
 					<ul class="actions-list">
 						{+START,LOOP,LINKS}
 							{+START,IF_NON_EMPTY,{_loop_var}}
-								<li class="icon-14-{_loop_key*}">{_loop_var}</li>
+								<li>{+START,INCLUDE,ICON}NAME={_loop_key}{+END} {_loop_var}</li>
 							{+END}
 						{+END}
 					</ul>
