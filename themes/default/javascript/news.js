@@ -100,7 +100,9 @@
                 fpAnimationNewsImg.style.top = ((fpAnimationNewsImg.parentNode.offsetHeight - fpAnimationNewsImg.offsetHeight) / 2) + 'px';
             }, 0);
 
-            $dom.$('#pause-button-' + rand).classList.remove('button_depressed');
+            if (document.getElementById('pause-button-' + rand)) {
+                document.getElementById('pause-button-' + rand).classList.remove('button-depressed');
+            }
 
             // Set up timer for next time
             if (cycleTimerId) {
@@ -120,10 +122,14 @@
                 // Pause
                 clearTimeout(cycleTimerId);
                 cycleTimerId = null;
-                $dom.$('#pause-button-' + rand).classList.add('button_depressed');
+                if (document.getElementById('pause-button-' + rand)) {
+                    document.getElementById('pause-button-' + rand).classList.add('button-depressed');
+                }
             } else {
                 // Unpause
-                $dom.$('#pause-button-' + rand).classList.remove('button_depressed');
+                if (document.getElementById('pause-button-' + rand)) {
+                    document.getElementById('pause-button-' + rand).classList.remove('button-depressed');
+                }
 
                 if (milliseconds && (news.length > 1)) {
                     cycleTimerId = setTimeout(function () {

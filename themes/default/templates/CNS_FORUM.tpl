@@ -74,10 +74,10 @@
 			<nav class="breadcrumbs" itemprop="breadcrumb">
 				{+START,INCLUDE,ICON}
 					NAME=breadcrumbs
-					TITLE={!YOU_ARE_HERE}
-					DESCRIPTION={!YOU_ARE_HERE}
-					SIZE=20
-					CLASS=breadcrumbs-img
+					ICON_TITLE={!YOU_ARE_HERE}
+					ICON_DESCRIPTION={!YOU_ARE_HERE}
+					ICON_SIZE=20
+					ICON_CLASS=breadcrumbs-img
 				{+END}
 				{BREADCRUMBS}
 			</nav>

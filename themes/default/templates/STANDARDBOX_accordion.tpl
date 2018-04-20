@@ -7,7 +7,7 @@
 				<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!" title="{!EXPAND}">
 					{+START,INCLUDE,ICON}
 						NAME=trays/expand
-						SIZE=24
+						ICON_SIZE=24
 					{+END}
 				</a>
 			{+END}
@@ -15,7 +15,7 @@
 				<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!" title="{!CONTRACT}">
 					{+START,INCLUDE,ICON}
 						NAME=trays/contract
-						SIZE=24
+						ICON_SIZE=24
 					{+END}
 				</a>
 			{+END}

@@ -1585,6 +1585,13 @@ div.red-alert, p.red-alert {
 	background-size: 24px 24px;
 	overflow: hidden;
 }
+
+.red-alert-icon .icon {
+	width: 24px;
+	height: 24px;
+	margin-right: 0.3em;
+}
+
 .inline-wip-message {
 	border: 1px solid {$GET,dark_border};
 	background: url('{$IMG;,icons/status/notice}') 0.6em 0.75em no-repeat {$GET,area_background};
@@ -3333,18 +3340,23 @@ ul.actions-list {
 	padding: 0;
 	margin: 0;
 }
-ul.actions-list>li, .attachment ul.actions-list>li /*for higher precedence for attachments within docs zone*/ {
+ul.actions-list > li, 
+.attachment ul.actions-list > li /*for higher precedence for attachments within docs zone*/ {
 	padding: 2px 0 2px 18px !important;
 	margin: 0 !important;
 }
-ul.actions-list-compact>li, ul.actions-list-super-compact>li {
+ul.actions-list-compact > li, ul.actions-list-super-compact > li {
 	padding: 0 0 0 18px;
 }
-ul.actions-list>li, ul.actions-list-compact>li, ul.actions-list-super-compact>li {
+ul.actions-list > li, 
+ul.actions-list-compact > li, 
+ul.actions-list-super-compact > li {
 	background: url('{$IMG;,icons/buttons/proceed2}') left 4px no-repeat;
 	background-size: 14px 14px;
 }
-ul.actions-list>li, ul.actions-list-compact>li, ul.actions-list-super-compact>li {
+ul.actions-list > li, 
+ul.actions-list-compact > li, 
+ul.actions-list-super-compact > li {
 	margin: 0;
 	list-style-type: none;
 	list-style-image: none;
@@ -4828,6 +4840,12 @@ a[rel="lightbox"] {
 	.print-icon {
 		padding: 0 0 5px 0 !important;
 		display: inline-block;
+	}
+
+	.print-icon .icon {
+		width: 24px;
+		height: 24px;
+		margin-right: 0.3em;
 	}
 /*{+END}*/
 

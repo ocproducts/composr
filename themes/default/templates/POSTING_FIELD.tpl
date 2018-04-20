@@ -128,7 +128,7 @@
 			<a class="toggleable-tray-button js-click-pf-toggle-subord-fields" id="fes-attachments" href="#!" title="{!EXPAND}">
 				{+START,INCLUDE,ICON}
 					NAME=trays/expand
-					SIZE=20
+					ICON_SIZE=20
 				{+END}
 			</a>
 

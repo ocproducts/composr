@@ -3,7 +3,7 @@
 		<a class="toggleable-tray-button" data-click-tray-toggle="#tray-{TITLE|}" href="#!" title="{!CONTRACT}">
 			{+START,INCLUDE,ICON}
 				NAME=trays/contract
-				SIZE=24
+				ICON_SIZE=24
 			{+END}
 		</a>
 

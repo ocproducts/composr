@@ -86,10 +86,10 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 					<nav class="global-breadcrumbs breadcrumbs" itemprop="breadcrumb" id="global-breadcrumbs">
 						{+START,INCLUDE,ICON}
 							NAME=breadcrumbs
-							TITLE={!YOU_ARE_HERE}
-							DESCRIPTION={!YOU_ARE_HERE}
-							SIZE=24
-							CLASS=breadcrumbs-img
+							ICON_TITLE={!YOU_ARE_HERE}
+							ICON_DESCRIPTION={!YOU_ARE_HERE}
+							ICON_SIZE=24
+							ICON_CLASS=breadcrumbs-img
 						{+END}
 						{$BREADCRUMBS}
 					</nav>
@@ -159,10 +159,10 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 									<a id="commandr-button" accesskey="o"{+START,IF,{$DESKTOP}} data-btn-load-commandr="{}" {+END} href="{$PAGE_LINK*,adminzone:admin_commandr}">
 										{+START,INCLUDE,ICON}
 											NAME=tool_buttons/commandr_on
-											CLASS=commandr-img
-											TITLE={!commandr:COMMANDR_DESCRIPTIVE_TITLE}
-											DESCRIPTION={!commandr:COMMANDR_DESCRIPTIVE_TITLE}
-											SIZE=24
+											ICON_CLASS=commandr-img
+											ICON_TITLE={!commandr:COMMANDR_DESCRIPTIVE_TITLE}
+											ICON_DESCRIPTION={!commandr:COMMANDR_DESCRIPTIVE_TITLE}
+											ICON_SIZE=24
 										{+END}
 									</a>
 								</li>
@@ -171,8 +171,8 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 								<a href="{$PAGE_LINK*,adminzone:,,,,keep_theme}">
 									{+START,INCLUDE,ICON}
 										NAME=menu/adminzone/adminzone
-										TITLE={!ADMIN_ZONE}
-										SIZE=24
+										ICON_TITLE={!ADMIN_ZONE}
+										ICON_SIZE=24
 									{+END}
 								</a>
 							</li>
@@ -181,10 +181,10 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 									<a id="software-chat-button" accesskey="-" href="#!" class="js-global-click-load-software-chat">
 										{+START,INCLUDE,ICON}
 											NAME=tool_buttons/software_chat
-											CLASS=software-chat-img
-											TITLE={!SOFTWARE_CHAT}
-											DESCRIPTION={!SOFTWARE_CHAT}
-											SIZE=24
+											ICON_CLASS=software-chat-img
+											ICON_TITLE={!SOFTWARE_CHAT}
+											ICON_DESCRIPTION={!SOFTWARE_CHAT}
+											ICON_SIZE=24
 										{+END}
 									</a>
 								</li>

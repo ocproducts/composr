@@ -6,7 +6,7 @@
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{$?,{EXPANDED},{!CONTRACT},{!EXPAND}}">
 				{+START,INCLUDE,ICON}
 					NAME=trays/{$?,{EXPANDED},contract,expand}
-					SIZE=20
+					ICON_SIZE=20
 				{+END}
 			</a>
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{SECTION_TITLE*}</a>

@@ -31,7 +31,7 @@
 						{+START,INCLUDE,ICON}
 							ID=e-chat-comcode-panel
 							NAME=trays/expand
-							SIZE=20
+							ICON_SIZE=20
 						{+END}
 					</a>
 				</div>

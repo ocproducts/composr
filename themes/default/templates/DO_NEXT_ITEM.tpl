@@ -8,8 +8,8 @@
 		<a href="{URL*}" class="js-click-confirm-warning"{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END}>
 			{+START,INCLUDE,ICON}
 				NAME={PICTURE}
-				DESCRIPTION={$STRIP_TAGS,{DESCRIPTION}}
-				SIZE=48
+				ICON_DESCRIPTION={$STRIP_TAGS,{DESCRIPTION}}
+				ICON_SIZE=48
 			{+END}
 		</a>
 	</div>

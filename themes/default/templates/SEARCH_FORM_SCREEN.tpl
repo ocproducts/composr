@@ -32,7 +32,7 @@
 					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!SHOW_SEARCH_FORM}">
 						{+START,INCLUDE,ICON}
 							NAME=trays/expand
-							SIZE=24
+							ICON_SIZE=24
 						{+END}
 					</a>
 				{+END}

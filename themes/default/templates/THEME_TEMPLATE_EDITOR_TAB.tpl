@@ -12,7 +12,7 @@
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
 				{+START,INCLUDE,ICON}
 					NAME=trays/expand
-					SIZE=20
+					ICON_SIZE=20
 				{+END}
 			</a>
 			<a class="non-link js-tray-onclick-toggle-tray" href="#!">{!CSS_EDITING_TOOLS}</a>
@@ -26,7 +26,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!" title="{!EXPAND}">
 							{+START,INCLUDE,ICON}
 								NAME=trays/expand
-								SIZE=20
+								ICON_SIZE=20
 							{+END}
 						</a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Background Properties</a>
@@ -72,7 +72,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!" title="{!EXPAND}">
 							{+START,INCLUDE,ICON}
 								NAME=trays/expand
-								SIZE=20
+								ICON_SIZE=20
 							{+END}
 						</a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Border Properties</a>
@@ -133,7 +133,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!" title="{!EXPAND}">
 							{+START,INCLUDE,ICON}
 								NAME=trays/expand
-								SIZE=20
+								ICON_SIZE=20
 							{+END}
 						</a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Dimension Properties</a>
@@ -184,7 +184,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!" title="{!EXPAND}">
 							{+START,INCLUDE,ICON}
 								NAME=trays/expand
-								SIZE=20
+								ICON_SIZE=20
 							{+END}
 						</a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">List Properties</a>
@@ -215,7 +215,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" title="{!EXPAND}">
 							{+START,INCLUDE,ICON}
 								NAME=trays/expand
-								SIZE=20
+								ICON_SIZE=20
 							{+END}
 						</a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion">Margin/Padding Properties</a>
@@ -286,7 +286,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!" title="{!EXPAND}">
 							{+START,INCLUDE,ICON}
 								NAME=trays/expand
-								SIZE=20
+								ICON_SIZE=20
 							{+END}
 						</a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Positioning Properties</a>
@@ -362,7 +362,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!" title="{!EXPAND}">
 							{+START,INCLUDE,ICON}
 								NAME=trays/expand
-								SIZE=20
+								ICON_SIZE=20
 							{+END}
 						</a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!">Text/Font Properties</a>
@@ -484,7 +484,7 @@
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
 				{+START,INCLUDE,ICON}
 					NAME=trays/expand
-					SIZE=20
+					ICON_SIZE=20
 				{+END}
 			</a>
 			<a class="non-link js-tray-onclick-toggle-tray" href="#!">{!SYMBOLS_AND_DIRECTIVES}</a>
@@ -541,7 +541,7 @@
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
 				{+START,INCLUDE,ICON}
 					NAME=trays/expand
-					SIZE=20
+					ICON_SIZE=20
 				{+END}
 			</a>
 			<a class="non-link js-tray-onclick-toggle-tray" href="#!">{!TEMPLATE_GUIDS}</a>
@@ -588,7 +588,7 @@
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
 				{+START,INCLUDE,ICON}
 					NAME=trays/expand
-					SIZE=20
+					ICON_SIZE=20
 				{+END}
 			</a>
 			<a class="non-link js-tray-onclick-toggle-tray" href="#!">{!RELATED_TEMPLATES}</a>

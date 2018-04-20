@@ -3,7 +3,7 @@
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
 			{+START,INCLUDE,ICON}
 				NAME=trays/expand
-				SIZE=20
+				ICON_SIZE=20
 			{+END}
 		</a>
 		<span class="js-tray-onclick-toggle-tray">{!GIFTR_TITLE}</span>

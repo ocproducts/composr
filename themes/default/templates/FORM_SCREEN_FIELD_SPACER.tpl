@@ -5,9 +5,9 @@
 			{+START,IF_NON_PASSED_OR_FALSE,FORCE_OPEN}
 				<a class="toggleable-tray-button js-click-toggle-subord-fields js-keypress-toggle-subord-fields" id="fes{TITLE|}" href="#!" title="{!CONTRACT}">
 					{+START,INCLUDE,ICON}
-						CLASS=right
 						NAME=trays/contract
-						SIZE=20
+						ICON_CLASS=right
+						ICON_SIZE=20
 					{+END}
 				</a>
 			{+END}

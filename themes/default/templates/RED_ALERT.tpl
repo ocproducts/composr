@@ -2,7 +2,7 @@
 	<span class="red-alert-icon">
 		{+START,INCLUDE,ICON}
 			NAME=status/notice
-			SIZE=24
+			ICON_SIZE=24
 		{+END}
 	</span>
 	<span class="red-alert-message">{TEXT}</span>
