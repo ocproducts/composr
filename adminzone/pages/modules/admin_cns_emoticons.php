@@ -319,7 +319,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
     }
 
     /**
-     * Standard crud_module list function.
+     * Standard crud_module radio-list function.
      *
      * @return Tempcode The selection list
      */

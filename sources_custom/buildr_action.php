@@ -271,7 +271,7 @@ function add_room_wrap($member_id, $relative, $name, $text, $password_question, 
 }
 
 /**
- * Actualiser to edit a room.
+ * Actualiser to add a room.
  *
  * @param  string $name Name for the room
  * @param  AUTO_LINK $realm The room's realm
@@ -404,7 +404,7 @@ function add_realm_wrap($member_id, $name, $troll_name, $jail_name, $jail_text, 
 }
 
 /**
- * Output a room screen.
+ * Add a realm.
  *
  * @param  AUTO_LINK $id The ID of the realm (this is not an auto-increment)
  * @param  string $name Name for the realm

@@ -996,7 +996,7 @@ function js_scan_extractive_expressions($variable)
 }
 
 /**
- * Get the type of a variable.
+ * Get the type of a JavaScript variable.
  *
  * @param  array $variable The variable
  * @return string The type

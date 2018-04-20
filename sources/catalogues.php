@@ -65,7 +65,7 @@ function load_catalogue_row($catalogue_name, $fail_ok = false)
 }
 
 /**
- * Render a catalogue box.
+ * Render a catalogue entry box.
  *
  * @param  array $row Catalogue row
  * @param  ID_TEXT $zone Zone to link through to
@@ -1452,7 +1452,7 @@ function create_selection_list_catalogue_category_tree($catalogue_name, $it = nu
 }
 
 /**
- * Get a list of maps containing all the subcategories, and path information, of the specified category - and those beneath it, recursively.
+ * Get a list of maps containing all the subcategories, and path information, of the specified catalogue category - and those beneath it, recursively.
  *
  * @param  ID_TEXT $catalogue_name The catalogue name
  * @param  ?AUTO_LINK $category_id The category being at the root of our recursion (null: true root category)
@@ -1696,7 +1696,7 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
 }
 
 /**
- * Get a formatted XHTML string of the route back to the specified root, from the specified category.
+ * Get a formatted XHTML string of the route back to the specified root, from the specified catalogue category.
  *
  * @param  AUTO_LINK $category_id The category we are finding for
  * @param  ?AUTO_LINK $root The root of the tree (null: the true root)

@@ -913,7 +913,7 @@ function handle_position_in_workflow_auto($validated, $content_type, $id, $categ
 }
 
 /**
- * Handle content position in a workflow and show via an attach_message. This is for new content.
+ * Handle content position in a workflow and show via an attach_message. This is for edited content.
  *
  * @param  integer $validated Whether the content is validated
  * @param  string $content_type The type of the content, as defined in the workflow_content table

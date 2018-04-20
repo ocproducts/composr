@@ -110,7 +110,7 @@ function member_get_csv_headings()
 }
 
 /**
- * Get a list of timezones.
+ * Get a nice, formatted, XHTML list of all the timezones.
  *
  * @param  ?string $timezone Current timezone to select (null: server default)
  * @return Tempcode List of timezones
@@ -321,7 +321,7 @@ function cns_read_in_custom_fields($custom_fields, $member_id = null)
 }
 
 /**
- * Get form fields for adding/editing/finishing a member profile.
+ * Get form fields for adding/editing/finishing a member account.
  *
  * @param  boolean $mini_mode Whether we are only handling the essential details of a profile
  * @param  ?MEMBER $member_id The ID of the member we are handling (null: new member)
@@ -373,7 +373,7 @@ function cns_get_member_fields($mini_mode = true, $member_id = null, $groups = n
 }
 
 /**
- * Get form fields for adding/editing/finishing a member profile.
+ * Get form fields for adding/editing/finishing a member profile: settings only.
  *
  * @param  boolean $mini_mode Whether we are only handling the essential details of a profile
  * @param  ?MEMBER $member_id The ID of the member we are handling (null: new member)
@@ -686,7 +686,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
 }
 
 /**
- * Get form fields for adding/editing/finishing a member profile.
+ * Get form fields for adding/editing/finishing a member profile: profile fields only.
  *
  * @param  boolean $mini_mode Whether we are only handling the essential details of a profile
  * @param  ?MEMBER $member_id The ID of the member we are handling (null: new member)

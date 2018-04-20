@@ -422,7 +422,7 @@ class BrokenURLScanner
     }
 
     /**
-     * Enumerate the backlinks Google has found and considered broken at last check.
+     * Enumerate the backlinks Google has found and considered broken at last check: missing permisions.
      *
      * @param  array $live_base_urls The live base URL(s)
      * @param  integer $maximum_api_results Maximum results to query from APIs
@@ -434,7 +434,7 @@ class BrokenURLScanner
     }
 
     /**
-     * Enumerate the backlinks Google has found and considered broken at last check.
+     * Enumerate the backlinks Google has found and considered broken at last check: not found.
      *
      * @param  array $live_base_urls The live base URL(s)
      * @param  integer $maximum_api_results Maximum results to query from APIs
@@ -446,7 +446,7 @@ class BrokenURLScanner
     }
 
     /**
-     * Enumerate the backlinks Google has found and considered broken at last check.
+     * Enumerate the backlinks Google has found and considered broken at last check: server error.
      *
      * @param  array $live_base_urls The live base URL(s)
      * @param  integer $maximum_api_results Maximum results to query from APIs
@@ -458,7 +458,7 @@ class BrokenURLScanner
     }
 
     /**
-     * Enumerate the backlinks Google has found and considered broken at last check.
+     * Enumerate the backlinks Google has found and considered broken at last check: not found with explicit 404.
      *
      * @param  array $live_base_urls The live base URL(s)
      * @param  integer $maximum_api_results Maximum results to query from APIs

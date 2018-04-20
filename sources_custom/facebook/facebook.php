@@ -288,7 +288,7 @@ abstract class BaseFacebook
   }
 
   /**
-   * Set the App Secret.
+   * Set the API Secret.
    *
    * @param string $apiSecret The App Secret
    *
@@ -314,7 +314,7 @@ abstract class BaseFacebook
   }
 
   /**
-   * Get the App Secret.
+   * Get the API Secret.
    *
    * @return string the App Secret
    *

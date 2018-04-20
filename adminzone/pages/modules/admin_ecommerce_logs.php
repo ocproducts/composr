@@ -611,7 +611,7 @@ class Module_admin_ecommerce_logs
     }
 
     /**
-     * The UI to view all point transactions ordered by date.
+     * The UI to view all eCommerce transactions ordered by date.
      *
      * @return Tempcode The UI
      */
@@ -789,7 +789,7 @@ class Module_admin_ecommerce_logs
     }
 
     /**
-     * Actualiser to build CSV from the selected filters.
+     * Actualiser to build logs CSV from the selected filters.
      *
      * @return Tempcode The result of execution
      */

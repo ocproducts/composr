@@ -52,6 +52,16 @@ class Forum_driver_none extends Forum_driver_base
     }
 
     /**
+     * Get the forums' table prefix for the database.
+     *
+     * @return string The forum database table prefix
+     */
+    public function get_drivered_table_prefix()
+    {
+        return get_table_prefix();
+    }
+
+    /**
      * Attempt to to find the member's language from their forum profile. It converts between language-identifiers using a map (lang/map.ini).
      *
      * @param  MEMBER $member The member who's language needs to be fetched
@@ -213,6 +223,16 @@ class Forum_driver_none extends Forum_driver_base
     }
 
     /**
+     * Pin a topic.
+     *
+     * @param  AUTO_LINK $id The topic ID
+     * @param  boolean $pin True: pin it, False: unpin it
+     */
+    public function pin_topic($id, $pin = true)
+    {
+    }
+
+    /**
      * Set a Custom Profile Field's value, if the custom field exists. Only works on specially-named (titled) fields.
      *
      * @param  MEMBER $member The member ID
@@ -249,10 +269,10 @@ class Forum_driver_none extends Forum_driver_base
     }
 
     /**
-     * Get a member row.
+     * Gets a whole member row from the database.
      *
-     * @param  AUTO_LINK $id The member ID
-     * @return array The profile-row
+     * @param  MEMBER $member The member ID
+     * @return ?array The member row (null: no such member)
      */
     public function get_member_row($id)
     {
@@ -260,11 +280,11 @@ class Forum_driver_none extends Forum_driver_base
     }
 
     /**
-     * Get a member row.
+     * Gets a named field of a member row from the database.
      *
-     * @param  AUTO_LINK $id The member ID
-     * @param  ID_TEXT $field The field
-     * @return ?array The result (null: unknown)
+     * @param  MEMBER $member The member ID
+     * @param  string $field The field identifier
+     * @return mixed The field
      */
     public function get_member_row_field($id, $field)
     {
@@ -790,6 +810,20 @@ class Forum_driver_none extends Forum_driver_base
         }
         if ($name == do_lang('GUEST')) {
             return 0;
+        }
+        return 0;
+    }
+
+    /**
+     * Get a member ID from the given member's e-mail address.
+     *
+     * @param  SHORT_TEXT $email_address The member email address
+     * @return ?MEMBER The member ID (null: not found)
+     */
+    public function get_member_from_email_address($email_address)
+    {
+        if ($email_address == get_option('staff_address')) {
+            return 1;
         }
         return 0;
     }

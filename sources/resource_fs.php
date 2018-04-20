@@ -276,7 +276,7 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
 }
 
 /**
- * Generate, and save, a resource-fs moniker.
+ * Delete a resource-fs moniker.
  *
  * @param  ID_TEXT $resource_type The resource type
  * @param  ID_TEXT $resource_id The resource ID
@@ -1090,7 +1090,7 @@ function remap_trans_as_portable($db_row, $field, $db)
 }
 
 /**
- * Find all translated strings for a language string ID. This is used as an intermediate step in creating multi-language portings.
+ * Save translations for a portable resource. The inverse of remap_trans_as_portable.
  *
  * @param  array $portable_data Portable data
  * @param  string $field Database field

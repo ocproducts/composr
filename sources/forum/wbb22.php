@@ -873,6 +873,17 @@ class Forum_driver_wbb22 extends Forum_driver_base
     }
 
     /**
+     * Get a member ID from the given member's e-mail address.
+     *
+     * @param  SHORT_TEXT $email_address The member email address
+     * @return ?MEMBER The member ID (null: not found)
+     */
+    public function get_member_from_email_address($email_address)
+    {
+        return $this->db->query_select_value_if_there('users', 'userid', array('email' => $email_address), 'ORDER BY regdate DESC');
+    }
+
+    /**
      * Find if the given member ID and password is valid. If username is null, then the member ID is used instead.
      * All authorisation, cookies, and form-logins, are passed through this function.
      * Some forums do cookie logins differently, so a Boolean is passed in to indicate whether it is a cookie login.

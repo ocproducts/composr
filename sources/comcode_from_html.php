@@ -185,7 +185,7 @@ function _codetag_protect($matches)
 }
 
 /**
- * Apply temporary ad hoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback.
+ * Remove temporary ad hoc-escaping to a code tags. preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text

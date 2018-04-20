@@ -394,9 +394,7 @@ function init__global2()
 
     // Initialise members
     if (!$MICRO_BOOTUP) {
-        if (method_exists($GLOBALS['FORUM_DRIVER'], 'forum_layer_initialise')) {
-            $GLOBALS['FORUM_DRIVER']->forum_layer_initialise();
-        }
+        $GLOBALS['FORUM_DRIVER']->forum_layer_initialise();
     }
 
     // More things to initialise

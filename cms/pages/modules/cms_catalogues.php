@@ -387,7 +387,7 @@ class Module_cms_catalogues extends Standard_crud_module
     }
 
     /**
-     * Standard crud_module list function.
+     * Standard crud_module tree-list function.
      *
      * @return ?array A triple: The tree field (Tempcode), Search URL, Archive URL (null: nothing here)
      */
@@ -1205,7 +1205,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
     }
 
     /**
-     * Standard crud_module list function.
+     * Standard crud_module tree-list function.
      *
      * @return ?array A triple: The tree field (Tempcode), Search URL, Archive URL (null: nothing here)
      */

@@ -59,7 +59,7 @@ if ((array_key_exists('given_password', $_POST))) {
 ce_do_footer();
 
 /**
- * Output the config editors page header.
+ * Output the config editor's page header.
  */
 function ce_do_header()
 {
@@ -102,7 +102,7 @@ function ce_do_header()
 }
 
 /**
- * Output the config editors page footer.
+ * Output the config editor's page footer.
  */
 function ce_do_footer()
 {

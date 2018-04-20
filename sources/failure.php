@@ -353,7 +353,7 @@ function _warn_screen($title, $text, $provide_back = true, $support_match_key_me
 }
 
 /**
- * Do a terminal execution on a defined page type.
+ * Strip privileged data from an error message.
  *
  * @param  string $text The error message
  * @return string Sanitised error message

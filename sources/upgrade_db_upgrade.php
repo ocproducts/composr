@@ -76,7 +76,7 @@ function upgrader_db_upgrade_screen()
 }
 
 /**
- * Do upgrader screen: database upgrade.
+ * Do upgrader screen: Conversr database upgrade.
  *
  * @ignore
  * @return string Output messages

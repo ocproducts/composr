@@ -373,6 +373,7 @@ function build_forum_breadcrumbs($forum_id)
 
 /**
  * Get an SQL 'WHERE' clause for the posts in a topic.
+ * Unlike cns_get_topic_where, does not support guest checks.
  *
  * @param  AUTO_LINK $topic_id The ID of the topic we are getting details of.
  * @param  ?MEMBER $member_id The member ID (null: current member).

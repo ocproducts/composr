@@ -325,7 +325,7 @@ function _sitemap_cache_node($node)
  * @param  float $priority The sitemap priority, a SITEMAP_IMPORTANCE_* constant
  * @param  ID_TEXT $refreshfreq The refresh frequency
  * @set always hourly daily weekly monthly yearly never
- * @param  boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML sitemap, but we'll keep tabs of it for other possible uses)
+ * @param  boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML Sitemap, but we'll keep tabs of it for other possible uses)
  */
 function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $refreshfreq, $guest_access)
 {
@@ -379,7 +379,7 @@ function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $
  * For renames instead call notify_sitemap_node_delete then notify_sitemap_node_add.
  *
  * @param  SHORT_TEXT $page_link The page-link
- * @param  boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML sitemap, but we'll keep tabs of it for other possible uses)
+ * @param  boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML Sitemap, but we'll keep tabs of it for other possible uses)
  */
 function notify_sitemap_node_edit($page_link, $guest_access)
 {
@@ -402,7 +402,7 @@ function notify_sitemap_node_edit($page_link, $guest_access)
 
 /**
  * Mark a row from our sitemap cache as for deletion.
- * It won't be immediately deleted, as we use this as a signal that the XML sitemap will need updating too.
+ * It won't be immediately deleted, as we use this as a signal that the XML Sitemap will need updating too.
  * Updates are done in batch, via the system scheduler.
  * This may be called on page-links that may not actually be in the sitemap cache.
  *

@@ -21,7 +21,7 @@
 /*EXTRA FUNCTIONS: shell_exec*/
 
 /**
- * Farm out the files for downloads.
+ * Interstitial page for downloads.
  */
 function download_gateway_script()
 {
@@ -69,7 +69,7 @@ function download_gateway_script()
 }
 
 /**
- * Farm out the files for downloads.
+ * Farm out the files for download.
  */
 function dload_script()
 {

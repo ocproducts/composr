@@ -317,7 +317,7 @@ class Module_cms_downloads extends Standard_crud_module
     }
 
     /**
-     * Standard crud_module list function.
+     * Standard crud_module tree-list function.
      *
      * @return array A triple: The tree field (Tempcode), Search URL, Archive URL
      */
@@ -893,7 +893,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
     protected $is_chained_with_parent_browse = true;
 
     /**
-     * Standard crud_module list function.
+     * Standard crud_module tree-list function.
      *
      * @return array A triple: The tree field (Tempcode), Search URL, Archive URL
      */

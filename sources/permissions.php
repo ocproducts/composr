@@ -911,7 +911,7 @@ function has_submit_permission($range, $member_id, $ip, $page, $cats = null)
 }
 
 /**
- * Check to see if a member has permission to edit an item. If it doesn't, an error message is outputted.
+ * Check to see if a member has permission to edit any of an item. If it doesn't, an error message is outputted.
  *
  * @param  string $range The range of privilege we are checking to see if they have; these ranges are like trust levels
  * @set    low mid high cat_low cat_mid cat_high

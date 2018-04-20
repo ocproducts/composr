@@ -446,7 +446,7 @@ function is_video($name, $as_admin, $must_be_true_video = false)
 }
 
 /**
- * Find whether the video specified is actually a 'video', based on file extension.
+ * Find whether the video specified is actually audio, based on file extension.
  *
  * @param  string $name A URL or file path to the video
  * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types (client-side risk only)
@@ -461,7 +461,7 @@ function is_audio($name, $as_admin)
 }
 
 /**
- * Find whether the video specified is actually a 'video', based on file extension.
+ * Find whether the video specified is actually media, based on file extension.
  *
  * @param  string $name A URL or file path to the video
  * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types (client-side risk only)
@@ -475,7 +475,7 @@ function is_media($name, $as_admin)
 }
 
 /**
- * Get a comma-separated list of allowed file types for audio upload.
+ * Get a comma-separated list of allowed file types for image upload.
  *
  * @return string Allowed file types
  */

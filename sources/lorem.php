@@ -74,7 +74,7 @@ function lorem_title()
 }
 
 /**
- * Get suitable placeholder text: title.
+ * Get suitable placeholder text.
  *
  * @return string Place holder text
  */
@@ -778,7 +778,7 @@ function find_html()
 }
 
 /**
- * Find the template/screen previews.
+ * Find the template/screen previews: by template.
  *
  * @return array The map of previews (template to a tuple of preview details)
  */
@@ -802,7 +802,7 @@ function find_all_previews__by_template()
 }
 
 /**
- * Find the template/screen previews.
+ * Find the template/screen previews: by screen.
  *
  * @return array The map of previews (screen to a list of templates)
  */

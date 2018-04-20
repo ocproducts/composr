@@ -676,7 +676,7 @@ class Module_filedump
     }
 
     /**
-     * Find whether a file matches the search filter. If there is no filter, anything will match.
+     * Find what matches the search filter. If there is no filter, anything will match.
      *
      * @param  PATH $place Folder path
      * @param  string $description Folder description
@@ -787,7 +787,7 @@ class Module_filedump
     }
 
     /**
-     * The main user interface for the file dump.
+     * The embed user interface for the file dump.
      *
      * @return Tempcode The UI
      */

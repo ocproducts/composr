@@ -25,7 +25,7 @@ For: php_oci8.dll
 */
 
 /**
- * Database Driver.
+ * Database driver class.
  *
  * @package    core_database_drivers
  */

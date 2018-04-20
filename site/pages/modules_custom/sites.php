@@ -210,7 +210,7 @@ class Module_sites
     }
 
     /**
-     * The UI to choose a path.
+     * The UI to choose an FTP server.
      *
      * @return Tempcode The UI
      */
@@ -243,7 +243,7 @@ class Module_sites
     }
 
     /**
-     * Worker function to do an FTP import.
+     * Worker function to do an FTP copy.
      *
      * @param  resource $conn_id The FTP connection
      * @param  PATH $directory The directory we are scanning

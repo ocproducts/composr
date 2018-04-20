@@ -408,7 +408,7 @@ function load_redirect_cache()
 }
 
 /**
- * Find the zone a page is in.
+ * Find the zone a module is in.
  *
  * @param  ID_TEXT $module_name The page name to find
  * @param  ID_TEXT $type The type of the page we are looking for

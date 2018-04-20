@@ -37,9 +37,8 @@ class Hook_upon_query_banner_click_points
 
         if (strpos($query, 'INTO ' . get_table_prefix() . 'banner_clicks') !== false) {
             load_user_stuff();
-            if (method_exists($GLOBALS['FORUM_DRIVER'], 'forum_layer_initialise')) {
-                $GLOBALS['FORUM_DRIVER']->forum_layer_initialise();
-            }
+            $GLOBALS['FORUM_DRIVER']->forum_layer_initialise();
+
             global $FORCE_INVISIBLE_GUEST, $MEMBER_CACHED;
             $FORCE_INVISIBLE_GUEST = false;
             $MEMBER_CACHED = null;

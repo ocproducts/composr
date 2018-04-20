@@ -89,7 +89,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
     }
 
     /**
-     * preg callback.
+     * preg callback for removing hex entities.
      *
      * @param  array $matches Matches
      * @return string Replacement
@@ -104,7 +104,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
     }
 
     /**
-     * preg callback.
+     * preg callback for removing decimal entities.
      *
      * @param  array $matches Matches
      * @return string Replacement
@@ -245,7 +245,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
      */
     public function mrow_email($r)
     {
-        return $this->ipb_unescape($r['email']);
+        return $r['email'];
     }
 
     /**
@@ -376,7 +376,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
      */
     protected function _get_member_email_address($member)
     {
-        return $this->ipb_unescape($this->get_member_row_field($member, 'email'));
+        return $this->get_member_row_field($member, 'email');
     }
 
     /**
@@ -577,7 +577,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
      */
     public function get_displayname($username)
     {
-        return $this->db->query_select_value_if_there('members', 'members_display_name', array('name' => $username));
+        return $this->db->query_select_value_if_there('members', 'members_display_name', array('name' => $this->ipb_escape($username)));
     }
 
     /**
@@ -611,7 +611,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
      */
     public function get_matching_members($pattern, $limit = null)
     {
-        $query = 'SELECT * FROM ' . $this->db->get_table_prefix() . 'members WHERE name LIKE \'' . db_encode_like($pattern) . '\' AND member_id<>' . strval($this->get_guest_id()) . ' ORDER BY last_post DESC';
+        $query = 'SELECT * FROM ' . $this->db->get_table_prefix() . 'members WHERE name LIKE \'' . db_encode_like($this->ipb_escape($pattern)) . '\' AND member_id<>' . strval($this->get_guest_id()) . ' ORDER BY last_post DESC';
         $rows = $this->db->query($query, $limit);
         sort_maps_by($rows, 'name');
         return $rows;
@@ -625,7 +625,18 @@ class Forum_driver_ipb3 extends Forum_driver_base
      */
     public function get_member_from_username($name)
     {
-        return $this->db->query_select_value_if_there('members', 'member_id', array('name' => $name));
+        return $this->db->query_select_value_if_there('members', 'member_id', array('name' => $this->ipb_escape($name)));
+    }
+
+    /**
+     * Get a member ID from the given member's e-mail address.
+     *
+     * @param  SHORT_TEXT $email_address The member email address
+     * @return ?MEMBER The member ID (null: not found)
+     */
+    public function get_member_from_email_address($email_address)
+    {
+        return $this->db->query_select_value_if_there('members', 'member_id', array('email' => $email_address), 'ORDER BY member_banned, joined DESC');
     }
 
     /**
@@ -1486,8 +1497,8 @@ class Forum_driver_ipb3 extends Forum_driver_base
             $rows = array();
             $rows[0] = array();
             $rows[0]['member_id'] = 0;
-            $rows[0]['name'] = do_lang('GUEST');
-            $rows[0]['members_display_name'] = do_lang('GUEST');
+            $rows[0]['name'] = $this->ipb_escape(do_lang('GUEST'));
+            $rows[0]['members_display_name'] = $this->ipb_escape(do_lang('GUEST'));
             $rows[0]['member_group_id'] = 2;
             $rows[0]['language'] = null;
         } else {

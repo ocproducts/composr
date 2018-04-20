@@ -467,7 +467,7 @@ function entity_utf8_decode($data, $internal_charset)
 }
 
 /**
- * Convert a unicode character number to a utf-8 HTML-entity enabled string. Callback for preg_replace.
+ * Convert a unicode character hex-number to a utf-8 HTML-entity enabled string. Callback for preg_replace.
  *
  * @param  array $matches Regular expression match array
  * @return ~string Converted data (false: could not convert)

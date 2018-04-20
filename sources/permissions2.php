@@ -579,7 +579,7 @@ function get_page_permissions_for_environment($zone, $page, $help = null)
 }
 
 /**
- * Assuming that permission details are POSTed, set the permissions for the specified category, in the current page.
+ * Assuming that permission details are POSTed, set the permissions for the specified page.
  *
  * @param  ID_TEXT $zone The ID code for the zone
  * @param  ID_TEXT $page The ID code for the page

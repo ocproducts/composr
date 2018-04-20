@@ -57,7 +57,7 @@ function init__forum__cns()
 class Forum_driver_cns extends Forum_driver_base
 {
     /**
-     * Initialise LDAP. To see if LDAP is running we check LDAP_CONNECTION for null. ldap_is_enabled is not good enough - we don't want Composr to bomb out under faulty LDAP settings, hence making it unfixable.
+     * Run whatever initialisation code we need to run. Not used within minikernel (i.e. installer).
      */
     public function forum_layer_initialise()
     {
@@ -69,6 +69,7 @@ class Forum_driver_cns extends Forum_driver_base
         $CNS_DRIVER = null;
         $GLOBALS['CNS_DRIVER'] = &$this; // Done like this to workaround that PHP can't put a reference in a global'd variable
 
+        // Initialise LDAP. To see if LDAP is running we check LDAP_CONNECTION for null. ldap_is_enabled is not good enough - we don't want Composr to bomb out under faulty LDAP settings, hence making it unfixable.
         if ((addon_installed('ldap')) && (function_exists('ldap_connect')) && (get_option('ldap_is_enabled', true) == '1')) {
             require_code('cns_members');
             require_code('cns_groups');
@@ -146,7 +147,7 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Add the specified custom field to the forum (some forums implemented this using proper Custom Profile Fields, others through adding a new field).
+     * Delete the specified custom field from the forum.
      *
      * @param  string $name The name of the new custom field
      */
@@ -1335,7 +1336,7 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Get a member ID from the given member's username.
+     * Get a member ID from the given member's e-mail address.
      *
      * @param  SHORT_TEXT $email_address The member email address
      * @return ?MEMBER The member ID (null: not found)

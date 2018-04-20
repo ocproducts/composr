@@ -1016,6 +1016,17 @@ class Forum_driver_smf2 extends Forum_driver_base
     }
 
     /**
+     * Get a member ID from the given member's e-mail address.
+     *
+     * @param  SHORT_TEXT $email_address The member email address
+     * @return ?MEMBER The member ID (null: not found)
+     */
+    public function get_member_from_email_address($email_address)
+    {
+        return $this->db->query_select_value_if_there('members', 'id_member', array('email_address' => $email_address), 'ORDER BY date_registered DESC');
+    }
+
+    /**
      * Get the IDs of the admin usergroups.
      *
      * @return array The admin usergroup ids

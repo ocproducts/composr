@@ -612,7 +612,7 @@ class Module_admin_shopping
     }
 
     /**
-     * Actualiser to build CSV from the selected filters.
+     * Actualiser to build orders CSV from the selected filters.
      *
      * @return Tempcode The result of execution
      */

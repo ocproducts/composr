@@ -73,7 +73,7 @@ class Hook_ecommerce_email
     }
 
     /**
-     * Get fields for adding one of these.
+     * Get fields for adding an e-mail forwarder.
      *
      * @return Tempcode The fields
      */
@@ -90,7 +90,7 @@ class Hook_ecommerce_email
     }
 
     /**
-     * Get fields for adding one of these.
+     * Get fields for adding a pop3 account.
      *
      * @return Tempcode The fields
      */

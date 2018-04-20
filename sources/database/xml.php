@@ -140,7 +140,7 @@ function _get_sql_keywords()
 }
 
 /**
- * Database Driver.
+ * Database driver class.
  *
  * @package    core_database_drivers
  */
@@ -1288,7 +1288,7 @@ class Database_Static_xml extends DatabaseDriver
     }
 
     /**
-     * Write a record to an XML file.
+     * Delete a record (delete the XML file).
      *
      * @param  PATH $path The file path
      * @param  array $db Database connection
@@ -1392,7 +1392,7 @@ class Database_Static_xml extends DatabaseDriver
     }
 
     /**
-     * Execute a DROP query.
+     * Parse a DROP query.
      *
      * @param  array $tokens Tokens
      * @param  string $query Query that was executed
@@ -1588,7 +1588,7 @@ class Database_Static_xml extends DatabaseDriver
     }
 
     /**
-     * Execute a CREATE query.
+     * Parse a CREATE query.
      *
      * @param  array $tokens Tokens
      * @param  string $query Query that was executed

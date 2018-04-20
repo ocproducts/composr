@@ -49,8 +49,15 @@ class Forum_driver_base
 
     public $EMOTICON_CACHE = null;
 
+     /**
+      * Run whatever initialisation code we need to run. Not used within minikernel (i.e. installer).
+      */
+     public function forum_layer_initialise()
+     {
+     }
+
     /**
-     * Add the specified custom field to the forum (some forums implemented this using proper Custom Profile Fields, others through adding a new field).
+     * Delete the specified custom field from the forum.
      *
      * @param  string $name The name of the new custom field
      */

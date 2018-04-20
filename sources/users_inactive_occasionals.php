@@ -253,9 +253,7 @@ function try_su_login($member_id)
     $ks = get_param_string('keep_su', '');
 
     require_code('permissions');
-    if (method_exists($GLOBALS['FORUM_DRIVER'], 'forum_layer_initialise')) {
-        $GLOBALS['FORUM_DRIVER']->forum_layer_initialise();
-    }
+    $GLOBALS['FORUM_DRIVER']->forum_layer_initialise();
     if (has_privilege($member_id, 'assume_any_member')) {
         if ($ks == do_lang('GUEST', null, null, null, fallback_lang())) {
             $ks = do_lang('GUEST');

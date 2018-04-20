@@ -23,7 +23,7 @@
 // See tut_postgresql tutorial for documentation on using PostgreSQL.
 
 /**
- * Database Driver.
+ * Database driver class.
  *
  * @package    core_database_drivers
  */

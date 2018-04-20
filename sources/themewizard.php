@@ -1256,7 +1256,7 @@ function hsv_to_rgb($h, $s, $v)
 }
 
 /**
- * Rewrite some CSS code according to a CSS landscape.
+ * Rewrite a CSS file's code according to a CSS landscape.
  *
  * @param  ID_TEXT $sheet CSS filename of source file
  * @param  array $landscape The colour expression landscape which we'll make substitutions using

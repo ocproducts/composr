@@ -19,7 +19,7 @@
  */
 
 /**
- * Standard code module init function.
+ * Standard code module initialisation function.
  */
 function init__calendar()
 {

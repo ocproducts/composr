@@ -200,7 +200,7 @@ END;
 }
 
 /**
- * Output the upgrader page footer.
+ * Output the upgrader extract frame's page footer.
  */
 function up2_do_footer()
 {

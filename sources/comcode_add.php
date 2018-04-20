@@ -330,7 +330,7 @@ function comcode_helper_script()
 }
 
 /**
- * Render a step of the Comcode tag helper dialog.
+ * Render a step of the Comcode tag helper dialog: add/edit/delete over existing Comcode.
  *
  * @return Tempcode The step UI
  */
@@ -409,7 +409,7 @@ function comcode_helper_script_replace()
 }
 
 /**
- * Render a step of the Comcode tag helper dialog.
+ * Render a step of the Comcode tag helper dialog: step 1.
  *
  * @return Tempcode The step UI
  */
@@ -464,7 +464,7 @@ function comcode_helper_script_step1()
 }
 
 /**
- * Render a step of the Comcode tag helper dialog.
+ * Render a step of the Comcode tag helper dialog: step 2.
  *
  * @return Tempcode The step UI
  */
@@ -728,7 +728,7 @@ function _find_comcode_tag_embed_required($tag)
 }
 
 /**
- * See if we have specialisation code for a Comcode tag parameter input.
+ * See if we have specialisation code for a Comcode tag parameter input: for tag as a whole.
  *
  * @param  ID_TEXT $tag Tag being read
  * @param  ID_TEXT $actual_tag Actual tag being read
@@ -861,7 +861,7 @@ function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields,
 }
 
 /**
- * See if we have specialisation code for a Comcode tag parameter input.
+ * See if we have specialisation code for a Comcode tag parameter input: for individual parameters.
  *
  * @param  ID_TEXT $tag Tag being read
  * @param  ID_TEXT $actual_tag Actual tag being read
@@ -1052,7 +1052,7 @@ page=URL';
 }
 
 /**
- * Render a step of the Comcode tag helper dialog.
+ * Render a step of the Comcode tag helper dialog: step 3.
  *
  * @return Tempcode The step UI
  */
