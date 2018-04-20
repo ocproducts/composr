@@ -371,7 +371,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
     if ((!is_guest()) && ($type != 'pt')) {
         if (get_option('enable_mark_forum_read') == '1') {
             $read_url = build_url(array('page' => 'topics', 'type' => 'mark_read', 'id' => $id), get_module_zone('topics'));
-            $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_READ'), 'url' => $read_url, 'img' => 'buttons/mark_read_forum');
+            $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_READ'), 'url' => $read_url, 'img' => 'buttons/mark_read');
         }
     }
     if ($type != 'pt') {

@@ -766,6 +766,11 @@ header h1 {
 	text-decoration: underline;
 }
 
+.global-navigation .top-login .horizontal-links a .icon {
+	width: 24px;
+	height: 24px;
+}
+
 /* This is applied to the screen title, which is specially included on each screen; in the case of Comcode pages it is the first level 1 title. The screen title is by default an h1, but we define the styles separately so we can style this special title independently (there are lots of cool things we could do to it) */
 .screen-title {
 	margin-top: 0.35em;
@@ -3336,7 +3341,7 @@ ul.actions-list-compact>li, ul.actions-list-super-compact>li {
 	padding: 0 0 0 18px;
 }
 ul.actions-list>li, ul.actions-list-compact>li, ul.actions-list-super-compact>li {
-	background: url('{$IMG_INLINE;,icons/buttons/proceed2}') left 4px no-repeat;
+	background: url('{$IMG;,icons/buttons/proceed2}') left 4px no-repeat;
 	background-size: 14px 14px;
 }
 ul.actions-list>li, ul.actions-list-compact>li, ul.actions-list-super-compact>li {
@@ -3855,6 +3860,7 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 	border-width: 2px;
 	font-size: 13px;
 	min-width: 8em;
+	text-align: center;
 }
 
 .button-screen .icon {
@@ -3865,6 +3871,7 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 .button-screen-item {
 	padding: 5px 7px;
 	font-size: 13px;
+	text-align: center;
 }
 
 .button-screen-item .icon {

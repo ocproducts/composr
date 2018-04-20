@@ -133,10 +133,9 @@ function ce_do_login()
     if (@$_POST['given_password']) {
         echo '<p><strong>Invalid password</strong></p>';
     }
-    $login_icon = do_template('ICON', array('NAME' => 'menu/site_meta/user_actions/login'));
     echo "
         <label for=\"given_password\">Master Password: <input type=\"password\" name=\"given_password\" id=\"given_password\" /></label>
-        <p><button class=\"button-screen menu--site-meta--user-actions--login\" type=\"submit\">{$login_icon} Log in</button></p>
+        <p><button class=\"button-screen menu--site-meta--user-actions--login\" type=\"submit\">Log in</button></p>
     ";
 }
 
@@ -313,10 +312,9 @@ function do_access($given_password)
         }
     }
 
-    $save_icon = do_template('ICON', array('NAME' => 'buttons/save'));
     echo '
         <p class="proceed-button" style="text-align: center">
-            <button class="button-screen buttons--save" type="submit" onclick="return checkPasswords(this.form);">' . $save_icon . ' Save</button>
+            <button class="button-screen buttons--save" type="submit" onclick="return checkPasswords(this.form);">Save</button>
         </p>
 
         <input type="hidden" name="given_password" value="' . htmlentities($given_password) . '" />

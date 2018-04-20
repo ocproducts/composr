@@ -183,7 +183,6 @@ END;
     $_ftp_domain = code_editor_escape_html($ftp_domain);
     $_ftp_folder = code_editor_escape_html($ftp_folder);
     $_ftp_username = code_editor_escape_html($ftp_username);
-    $login_icon = do_template('ICON', array('NAME' => 'menu/site_meta/user_actions/login'));
     echo <<<END
     <p>
         <label for="given_password">Master Password: <input type="password" name="given_password" id="given_password" /></label>
@@ -197,7 +196,7 @@ END;
         <tr><th>FTP Password</th><td><input size="50" type="password" name="ftp_password" /></td></tr>
     </table>
     <p>
-        <button class="button-screen menu--site-meta--user-actions--login" type="submit">{$login_icon} Log in</button>
+        <button class="button-screen menu--site-meta--user-actions--login" type="submit">Log in</button>
     </p>
     <hr />
     <ul class="actions-list" role="navigation">
@@ -272,7 +271,6 @@ function do_get_path($given_password)
 <input type="hidden" name="{$_key}" value="{$_val}" />
 END;
     }
-    $save_icon = do_template('ICON', array('NAME' => 'buttons/save'));
     echo <<<END
     <h1 class="screen-title">Composr Code Editor</h1>
     <p>
@@ -282,7 +280,7 @@ END;
         OR, existing file: <select name="path">{$paths}</select>
     </p>
     <p class="proceed-button">
-        <button class="button-screen buttons--save" type="submit">{$save_icon} Edit file</button>
+        <button class="button-screen buttons--save" type="submit">Edit file</button>
     </p>
 END;
 }

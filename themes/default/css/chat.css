@@ -545,6 +545,11 @@ ul.icon-links-block-group>li {
 	min-height: 15px;
 }
 
+ul.icon-links-block-group > li .icon {
+	width: 14px;
+	height: 14px;
+}
+
 .icon-14-add {
 	background-image: url('{$IMG,icons/admin/add}') !important;
 	background-size: 14px 14px;
