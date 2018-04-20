@@ -79,13 +79,13 @@ class Block_main_comcode_page_children
             $qmap['p_validated'] = 1;
         }
         $children = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_page', 'the_zone', 'p_order'), $qmap, 'ORDER BY p_order,the_page');
-        foreach ($children as $i => $child) {
-            if (($child['the_page'] == $page) && ($child['the_zone'] == $zone)) {
+        foreach ($children as $i => $_child) {
+            if (($_child['the_page'] == $page) && ($_child['the_zone'] == $zone)) {
                 unset($children[$i]);
                 continue; // Be safe
             }
 
-            $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'cc_page_title', array('the_page' => $child['the_page'], 'the_zone' => $child['the_zone']));
+            $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'cc_page_title', array('the_page' => $_child['the_page'], 'the_zone' => $_child['the_zone']));
             if ($_title !== null) {
                 $title = get_translated_text($_title, null, null, true);
                 if ($title === null) {
@@ -98,15 +98,15 @@ class Block_main_comcode_page_children
                     // Virtualised state, so that any nested main_comcode_page_children blocks execute correctly
                     require_code('urls2');
                     list($old_get, $old_zone, $old_current_script) = set_execution_context(
-                        array('page' => $child['the_page']),
-                        $child['the_zone']
+                        array('page' => $_child['the_page']),
+                        $_child['the_zone']
                     );
 
                     // Execute child page and get its title
                     push_output_state();
-                    request_page($child['the_page'], false, $child['the_zone'], null, true);
+                    request_page($_child['the_page'], false, $_child['the_zone'], null, true);
                     restore_output_state();
-                    $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'cc_page_title', array('the_page' => $child['the_page'], 'the_zone' => $child['the_zone']));
+                    $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'cc_page_title', array('the_page' => $_child['the_page'], 'the_zone' => $_child['the_zone']));
                     if ($_title !== null) {
                         $title = get_translated_text($_title);
                     }
@@ -122,13 +122,14 @@ class Block_main_comcode_page_children
             }
 
             if ($title == '') {
-                $title = titleify($child['the_page']);
+                $title = titleify($_child['the_page']);
             }
 
+            $child = array();
             $child['TITLE'] = $title;
-            $child['PAGE'] = $child['the_page'];
-            $child['ZONE'] = get_comcode_zone($child['the_page'], false);
-            $child['ORDER'] = $child['p_order'];
+            $child['PAGE'] = $_child['the_page'];
+            $child['ZONE'] = get_comcode_zone($_child['the_page'], false);
+            $child['ORDER'] = strval($_child['p_order']);
 
             if (($child['ZONE'] === null) || ($child['PAGE'] === null)) {
                 unset($children[$i]);
