@@ -25,11 +25,14 @@
 
 .screen-actions div {
 	margin-right: 1.25em;
-	background-repeat: no-repeat;
-	background-size: 20px 20px !important;
 	width: 20px;
 	height: 20px;
 	float: left;
+}
+
+.screen-actions .icon {
+	width: 20px;
+	height: 20px;
 }
 
 .screen-actions div:last-child {
@@ -49,59 +52,4 @@
 .screen-actions .facebook-like {
 	margin-right: 0;
 	min-width: 90px; /* Facebook is absolute'ing out of its space so we need to reserve extra space */
-}
-
-.screen-actions .print {
-	background-image: url('{$IMG_INLINE;,icons/links/print}');
-}
-
-.screen-actions .recommend {
-	background-image: url('{$IMG_INLINE;,icons/menu/site_meta/recommend}');
-}
-
-.screen-actions .facebook {
-	background-image: url('{$IMG_INLINE;,icons/links/facebook}');
-}
-
-.screen-actions .twitter {
-	background-image: url('{$IMG_INLINE;,icons/links/twitter}');
-}
-
-.screen-actions .stumbleupon {
-	background-image: url('{$IMG_INLINE;,icons/links/stumbleupon}');
-}
-
-.screen-actions .digg {
-	background-image: url('{$IMG_INLINE;,icons/links/digg}');
-}
-
-.screen-actions .google-plusone {
-}
-
-.screen-actions .linkedin {
-	background-image: url('{$IMG_INLINE;,icons/links/linkedin}');
-}
-
-.screen-actions .pinterest {
-	background-image: url('{$IMG_INLINE;,icons/links/pinterest}');
-}
-
-.screen-actions .tumblr {
-	background-image: url('{$IMG_INLINE;,icons/links/tumblr}');
-}
-
-.screen-actions .vk {
-	background-image: url('{$IMG_INLINE;,icons/links/vk}');
-}
-
-.screen-actions .sina-weibo {
-	background-image: url('{$IMG_INLINE;,icons/links/sina_weibo}');
-}
-
-.screen-actions .tencent-weibo {
-	background-image: url('{$IMG_INLINE;,icons/links/tencent_weibo}');
-}
-
-.screen-actions .qzone {
-	background-image: url('{$IMG_INLINE;,icons/links/qzone}');
 }

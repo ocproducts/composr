@@ -49,7 +49,7 @@
 								{+END}
 							</select>
 
-							<button class="button-screen-item menu--social--chat--sound js-click-require-sound-selection" data-tp-select-id="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" type="button" title="{EFFECT_TITLE*}">{!TEST_SOUND}</button>
+							<button class="button-screen-item menu--social--chat--sound js-click-require-sound-selection" data-tp-select-id="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" type="button" title="{EFFECT_TITLE*}">{+START,INCLUDE,ICON}NAME=menu/social/chat/sound{+END} {!TEST_SOUND}</button>
 						</td>
 					</tr>
 

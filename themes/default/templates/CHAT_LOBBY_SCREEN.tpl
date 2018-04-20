@@ -49,7 +49,7 @@
 						{+END}
 					</ul>
 
-					<p class="chat-multi-tab">{!OPEN_CHATROOMS_IN_TABS}</p>
+					<p class="chat-multi-tab">{+START,INCLUDE,ICON}NAME=help{+END} {!OPEN_CHATROOMS_IN_TABS}</p>
 				{+END}
 				{+START,IF_EMPTY,{CHATROOMS}}
 					<p class="nothing-here">{!NO_CATEGORIES,chat}</p>
@@ -87,7 +87,7 @@
 								<div class="friend-actions">
 									{+START,IF,{CAN_IM}}
 										<button class="button-screen-item admin--add-to-category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite-ongoing-im-button" type="button">{+START,INCLUDE,ICON}NAME=admin/add_to_category{+END} {!INVITE_CURRENT_IM}</button>
-										<button class="button-screen-item menu--social--chat--chat js-click-btn-im-start-ticked-people" type="button">{!START_IM}</button>
+										<button class="button-screen-item menu--social--chat--chat js-click-btn-im-start-ticked-people" type="button">{+START,INCLUDE,ICON}NAME=menu/social/chat/chat{+END} {!START_IM}</button>
 									{+END}
 									{+START,IF_NON_EMPTY,{URL_REMOVE_FRIENDS}}
 										<button data-click-pd="1" class="button-screen-item admin--delete3 js-click-btn-dump-friends-confirm" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DUMP_FRIENDS}</button>

@@ -38,9 +38,13 @@ For example:
 }
 
 .dropdown-menu-item-icon {
-	font-size: 16px;
 	margin-right: 0.3em;
 	text-decoration: none !important;
+}
+
+.dropdown-menu-item-icon .icon {
+	width: 16px;
+	height: 16px;
 }
 
 /*{+START,CSS_MODE,mobile}*/
@@ -188,9 +192,13 @@ For example:
 	}
 
 	.dropdown-menu-item.toplevel > .dropdown-menu-item-a > .dropdown-menu-item-icon {
-		font-size: 32px;
 		margin-right: 0;
 		margin-bottom: 5px;
+	}
+
+	.dropdown-menu-item.toplevel > .dropdown-menu-item-a > .dropdown-menu-item-icon > .icon {
+		width: 32px;
+		height: 32px;
 	}
 
 	.dropdown-menu ul.nlevel,

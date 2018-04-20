@@ -37,9 +37,6 @@
 }
 
 .chat-multi-tab {
-	background: url('{$IMG;,icons/help}') no-repeat;
-	background-size: 16px 16px;
-	padding-left: 20px;
 	margin: 21px 0 8px 4px;
 	font-size: 0.9em;
 	width: 70%;
@@ -506,19 +503,6 @@
 
 /*
 =========================
-=========Buttons=========
-=========================
-*/
-
-.menu--social--chat--chat {
-	background-image: url('{$IMG,icons/menu/social/chat/chat}') !important;
-}
-.menu--social--chat--sound {
-	background-image: url('{$IMG,icons/menu/social/chat/sound}') !important;
-}
-
-/*
-=========================
 ==========Icons==========
 =========================
 */
@@ -542,7 +526,7 @@ ul.icon-links-block-group > li {
 	min-height: 15px;
 }
 
-ul.icon-links-block-group > li .icon {
+ul.icon-links-block-group > li > .icon {
 	width: 14px;
 	height: 14px;
 }

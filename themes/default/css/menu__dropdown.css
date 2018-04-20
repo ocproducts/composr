@@ -53,12 +53,16 @@ For example:
 }
 
 .dropdown-menu-item-icon {
-	font-size: 16px;
 	margin-right: 0.3em;
 	text-decoration: none !important;
 }
 
-/*{+START,CSS_MODE,mobile}*/
+.dropdown-menu-item-icon .icon {
+	width: 16px;
+	height: 16px;
+}
+
+	/*{+START,CSS_MODE,mobile}*/
 	.dropdown-menu-toggle-btn {
 		text-decoration: none;
 		color: {$GET,WB} !important;

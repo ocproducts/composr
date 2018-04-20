@@ -961,7 +961,7 @@
             } else if ((messages[i].nodeName.toLowerCase() === 'chat_invite') && (window.imParticipantTemplate !== undefined)) { // INVITES
                 roomId = messages[i].textContent;
 
-                if ((!document.getElementById('room_' + roomId)) && ((window.openedPopups['room_' + roomId] === undefined) || (window.openedPopups['room_' + roomId].isShutdown))) {
+                if ((!document.getElementById('room-' + roomId)) && ((window.openedPopups['room_' + roomId] === undefined) || (window.openedPopups['room_' + roomId].isShutdown))) {
                     roomName = messages[i].getAttribute('room_name');
                     avatarUrl = messages[i].getAttribute('avatar_url');
                     participants = messages[i].getAttribute('participants');
@@ -1440,7 +1440,7 @@
         var element, participants = null;
         var tabs = document.getElementById('chat-lobby-convos-tabs');
         if (tabs) {
-            element = document.getElementById('room_' + roomId);
+            element = document.getElementById('room-' + roomId);
             if (!element) { // Probably already been clicked once, lag
                 return;
             }
@@ -1516,12 +1516,12 @@
         for (i = 0; i < chatLobbyConvosTabs.children.length; i++) {
             if (chatLobbyConvosTabs.children[i].classList.contains('chat-lobby-convos-current-tab')) {
                 chatLobbyConvosTabs.children[i].className = ((chatLobbyConvosTabs.children[i].classList.contains('chat-lobby-convos-tab-first')) ? 'chat-lobby-convos-tab-first ' : '') + 'chat-lobby-convos-tab-uptodate';
-                document.getElementById('room_' + chatLobbyConvosTabs.children[i].id.substr(4)).style.display = 'none';
+                document.getElementById('room-' + chatLobbyConvosTabs.children[i].id.substr(4)).style.display = 'none';
                 break;
             }
         }
 
-        document.getElementById('room_' + element.id.substr(4)).style.display = 'block';
+        document.getElementById('room-' + element.id.substr(4)).style.display = 'block';
         try {
             document.getElementById('post_' + element.id.substr(4)).focus();
         } catch (ignore) {}
