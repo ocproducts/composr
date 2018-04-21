@@ -116,11 +116,42 @@
 										</th>
 
 										<td>
-											<img id="review-bar-1--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="2" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-											<img id="review-bar-2--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="4" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-											<img id="review-bar-3--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="6" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-											<img id="review-bar-4--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="8" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-											<img id="review-bar-5--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="10" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-1--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="2"
+											{+END}
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-2--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="4"
+											{+END}
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-3--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="6"
+											{+END}
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-4--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="8"
+											{+END}
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-5--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="10"
+											{+END}
+											
 											<input id="review-rating--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="js-inp-review-rating" type="hidden" name="review_rating__{REVIEW_TITLE|*}" value="" />
 										</td>
 									</tr>
