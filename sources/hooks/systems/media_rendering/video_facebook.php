@@ -65,16 +65,16 @@ class Hook_media_rendering_video_facebook extends Media_renderer_with_fallback
     {
         // (Also see patterns defined in render)
 
-        if (preg_match('#^https?://www\.facebook\.com/video/video\.php\?v=(\w+)#', $url) != 0) {
+        if (preg_match('#^https?://www\.facebook\.com/video/video\.php\?v=(\d+)#', $url) != 0) {
             return MEDIA_RECOG_PRECEDENCE_HIGH;
         }
-        if (preg_match('#^https?://www\.facebook\.com/video\.php\?v=(\w+)#', $url) != 0) {
+        if (preg_match('#^https?://www\.facebook\.com/video\.php\?v=(\d+)#', $url) != 0) {
             return MEDIA_RECOG_PRECEDENCE_HIGH;
         }
         if (preg_match('#^https?://www\.facebook\.com/.*/videos/(.*/)?(\d+)/#', $url) != 0) {
             return MEDIA_RECOG_PRECEDENCE_HIGH;
         }
-        if (preg_match('#^https?://www\.facebook\.com/photo\.php\?v=(\w+)#', $url) != 0) {
+        if (preg_match('#^https?://www\.facebook\.com/photo\.php\?v=(\d+)#', $url) != 0) {
             return MEDIA_RECOG_PRECEDENCE_HIGH;
         }
         return MEDIA_RECOG_PRECEDENCE_NONE;
@@ -89,12 +89,20 @@ class Hook_media_rendering_video_facebook extends Media_renderer_with_fallback
     public function get_video_thumbnail($src_url)
     {
         if ($this->recognises_url($src_url)) {
-            $contents = http_get_contents($src_url);
+            $id = null;
 
             $matches = array();
-            if (preg_match('#addVariable\("thumb_url", "([^"]*)"\);#', $contents, $matches) != 0) {
-                return rawurldecode(str_replace('\u0025', '%', $matches[1]));
+            if (preg_match('#^https?://www\.facebook\.com/video/video\.php\?v=(\d+)#', $src_url, $matches) != 0) {
+                $id = $matches[1];
+            } elseif (preg_match('#^https?://www\.facebook\.com/video\.php\?v=(\d+)#', $src_url, $matches) != 0) {
+                $id = $matches[1];
+            } elseif (preg_match('#^https?://www\.facebook\.com/.*/videos/(.*/)?(\d+)/#', $src_url, $matches) != 0) {
+                $id = $matches[2];
+            } elseif (preg_match('#^https?://www\.facebook\.com/photo\.php\?v=(\d+)#', $src_url, $matches) != 0) {
+                $id = $matches[1];
             }
+
+            return 'https://graph.facebook.com/' . $id . '/picture';
         }
         return null;
     }

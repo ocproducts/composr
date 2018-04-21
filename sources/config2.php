@@ -123,6 +123,10 @@ function set_option($name, $value, $will_be_formally_set = 1)
 {
     global $CONFIG_OPTIONS_CACHE;
 
+    if ($will_be_formally_set == 1) {
+        $previous_value = get_option($name);
+    }
+
     require_code('hooks/systems/config/' . filter_naughty_harsh($name));
     $ob = object_factory('Hook_config_' . filter_naughty_harsh($name), true);
     if ($ob === null) {
@@ -178,7 +182,7 @@ function set_option($name, $value, $will_be_formally_set = 1)
     }
 
     // Log it
-    if ((function_exists('log_it')) && ($will_be_formally_set == 1)) {
+    if ((function_exists('log_it')) && ($will_be_formally_set == 1) && ($previous_value != $value)) {
         require_lang('config');
         log_it('CONFIGURATION', $name, $value);
     }

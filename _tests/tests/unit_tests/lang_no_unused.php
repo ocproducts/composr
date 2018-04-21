@@ -114,6 +114,8 @@ class lang_no_unused_test_set extends cms_test_case
         $skip_prefixes_regexp = '#^(' . implode('|', $skip_prefixes) . ')#';
 
         $skip = array_flip(array(
+            'PREDEFINED_CONTENT', // TODO: Can remove once used
+            'PREDEFINED_CONTENT_DESCRIPTION', // TODO: Can remove once used
             'CONTINUE_RESTORATION',
             'ADD_PRIVATE_CALENDAR_EVENT',
             'EDIT_PRIVATE_CALENDAR_EVENT',

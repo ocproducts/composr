@@ -31,7 +31,7 @@
 				{+START,IF_NON_EMPTY,{$GET,img}}<span class="dropdown-menu-item-icon">{$GET,img_html}</span>{+END}
 				<span class="dropdown-menu-item-caption">{CAPTION}</span>
 			</a>
-			
+
 			{+START,IF,{$GET,HAS_CHILDREN}}
 				<ul aria-haspopup="true" class="dropdown-menu-items nlevel js-mouseover-set-active-menu js-mouseout-unset-active-menu" id="{MENU|*}-dexpand-{$GET*,RAND}" style="display: none">
 					{+START,IF_NON_EMPTY,{URL}}{$,Add duplicate parent link in child items that can be opened when using the hamburger menu (parent itself will toggle the child items)}

@@ -80,6 +80,10 @@ class theme_images_test_set extends cms_test_case
 
             $files2 = array();
             foreach ($files as $path) {
+                if ($path == get_file_base() . '/themes/default/images/icons/sprite.svg') {
+                    continue;
+                }
+
                 if (substr($path, -4) == '.svg') {
                     $c = file_get_contents($path);
                     $matches = array();

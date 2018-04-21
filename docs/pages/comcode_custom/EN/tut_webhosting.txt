@@ -97,6 +97,11 @@ We require:
 If running Windows:
  - You should use an NTFS partition not a FAT32 partition, as FAT32 cannot support file locking.
 
+[title="3"]Operating System[/title]
+
+We require:
+ - The web server may be running Windows, Linux, or Mac OS. Other operating systems such as Solaris or OpenBSD are not officially supported, although bug fixes may be made.
+
 [title="3"]Web Server[/title]
 
 We require:

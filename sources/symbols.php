@@ -730,6 +730,233 @@ function ecv($lang, $escaped, $type, $name, $param)
 }
 
 /**
+ * Evaluate a particular Tempcode directive.
+ *
+ * @ignore
+ *
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ */
+function ecv_IF(&$value, $lang, $escaped, $param)
+{
+    if (isset($param[1])) {
+        $_p = $param[0]->evaluate();
+        if (($_p == '1') || ($_p == '1')) {
+            $value = $param[1]->evaluate();
+        }
+    }
+}
+
+/**
+ * Evaluate a particular Tempcode directive.
+ *
+ * @ignore
+ *
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ */
+function ecv_IF_EMPTY(&$value, $lang, $escaped, $param)
+{
+    if (isset($param[1])) {
+        if ($param[0]->is_empty()) {
+            $value = $param[1]->evaluate();
+        }
+    }
+}
+
+/**
+ * Evaluate a particular Tempcode directive.
+ *
+ * @ignore
+ *
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ */
+function ecv_IF_NON_EMPTY(&$value, $lang, $escaped, $param)
+{
+    if (isset($param[1])) {
+        if (!$param[0]->is_empty()) {
+            $value = $param[1]->evaluate();
+        }
+    }
+}
+
+/**
+ * Evaluate a particular Tempcode directive.
+ *
+ * @ignore
+ *
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ */
+function ecv_IF_PASSED(&$value, $lang, $escaped, $param)
+{
+    if (isset($param[1])) {
+        $t = $param[0]->evaluate();
+        if (isset($param['vars'][$t])) {
+            $value = $param[1]->evaluate();
+        }
+    }
+}
+
+/**
+ * Evaluate a particular Tempcode directive.
+ *
+ * @ignore
+ *
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ */
+function ecv_IF_NON_PASSED(&$value, $lang, $escaped, $param)
+{
+    if (isset($param[1])) {
+        $t = $param[0]->evaluate();
+        if (!isset($param['vars'][$t])) {
+            $value = $param[1]->evaluate();
+        }
+    }
+}
+
+/**
+ * Evaluate a particular Tempcode directive.
+ *
+ * @ignore
+ *
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ */
+function ecv_IF_PASSED_AND_TRUE(&$value, $lang, $escaped, $param)
+{
+    if (isset($param[1])) {
+        $t = $param[0]->evaluate();
+        if ((isset($param['vars'][$t])) && ($param['vars'][$t] !== false) && ($param['vars'][$t] !== '0') && ($param['vars'][$t] !== '')) {
+            $value = $param[1]->evaluate();
+        }
+    }
+}
+
+/**
+ * Evaluate a particular Tempcode directive.
+ *
+ * @ignore
+ *
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ */
+function ecv_IF_NON_PASSED_OR_FALSE(&$value, $lang, $escaped, $param)
+{
+    if (isset($param[1])) {
+        $t = $param[0]->evaluate();
+        if ((!isset($param['vars'][$t])) || ($param['vars'][$t] === false) || ($param['vars'][$t] === '0') || ($param['vars'][$t] === '')) {
+            $value = $param[1]->evaluate();
+        }
+    }
+}
+
+/**
+ * Evaluate a particular Tempcode directive.
+ *
+ * @ignore
+ *
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ */
+function ecv_LOOP(&$value, $lang, $escaped, $param)
+{
+    // This code is mostly defunct, as the closure_loop function is normally used for performance reasons
+    // (no need to keep re-binding, as closure_loop runs at a lower level)
+
+    if (isset($param[0])) {
+        $array_key = $param[0]->evaluate();
+        if ((is_numeric($array_key)) || (strpos($array_key, ',') !== false) || (strpos($array_key, '=') !== false)) {
+            $array = array();
+            foreach (explode(',', $array_key) as $x) {
+                if (strpos($x, '=') !== false) {
+                    list($key, $val) = explode('=', $x, 2);
+                    if ($key === '' && isset($array[$key])) {
+                        $array[] = $val; // Empty keys: which are done to allow "="s in strings by putting in an empty key OR to force list mode
+                    } else {
+                        $array[$key] = $val;
+                    }
+                } else {
+                    $array[] = $x;
+                }
+            }
+        } else {
+            if (!array_key_exists($param[0]->evaluate(), $param['vars'])) {
+                trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $param[0]->evaluate(), '???'), E_USER_NOTICE);
+                return;
+            }
+
+            $array = array_key_exists($array_key, $param['vars']) ? $param['vars'][$array_key] : array();
+            if (!is_array($array)) {
+                $array = array();
+            }
+        }
+
+        $value = '';
+        if (array_key_exists(1 + 1, $param)) {
+            $columns = $param[1]->evaluate();
+            $row_starter = array_key_exists(2 + 1, $param) ? $param[2]->evaluate() : '<tr>';
+            $row_terminator = array_key_exists(3 + 1, $param) ? $param[3]->evaluate() : '</tr>';
+            $value .= $row_starter;
+
+            // Sorting
+            if (array_key_exists(4 + 1, $param)) {
+                $sort_key = $param[4]->evaluate();
+
+                $rev = ((array_key_exists(5 + 1, $param)) && ($param[5]->evaluate() == 'DESC'));
+                if ($sort_key != '') {
+                    sort_maps_by($array, $sort_key);
+                }
+                if ($rev) {
+                    $array = array_reverse($array);
+                }
+            }
+        }
+        $last = count($param) - 2;
+        $col = 0;
+        $first = true;
+        foreach ($array as $go_key => $go) {
+            if (!is_array($go)) {
+                $go = array('_loop_key' => make_string_tempcode(is_integer($go_key) ? strval($go_key) : $go_key), '_loop_var' => make_string_tempcode($go)); // In case it's not a list of maps, but just a list
+            }
+
+            if ((isset($param[2])) && ($col % $columns == 0) && ($col != 0)) {
+                $value .= $row_starter;
+            }
+            $ps = $go + $param['vars'] + array('_loop_key' => make_string_tempcode(is_integer($go_key) ? strval($go_key) : $go_key), '_i' => strval($col), '_first' => $first, '_last' => $col == count($array) - 1);
+            $bound = $param[$last]->bind($ps, '');
+            $value .= $bound->evaluate();
+            ++$col;
+            if ((isset($param[3])) && ($col % $columns == 0)) {
+                $value .= $row_terminator;
+            }
+            $first = false;
+        }
+        if ((isset($param[2])) && ($col % $columns != 0)) {
+            $value .= $row_terminator;
+        }
+    }
+}
+
+/**
  * Evaluate a particular Tempcode symbol.
  *
  * @ignore
@@ -1095,6 +1322,10 @@ function _symbol_image_dims($param)
 
     if (isset($param[0])) {
         $path = $param[0];
+        if ($path == '') {
+            return $value;
+        }
+
         $cacheable = (isset($param[1]) && $param[1] == '1');
 
         if ($cacheable) {
@@ -6260,242 +6491,17 @@ function ecv_DECIMAL_POINT($lang, $escaped, $param)
 }
 
 /**
- * Evaluate a particular Tempcode directive.
+ * Evaluate a particular Tempcode symbol.
  *
  * @ignore
  *
- * @param  string $value Value to write into
  * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
  * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result
  */
-function ecv_IF(&$value, $lang, $escaped, $param)
+function ecv_ICONS_SVG_SPRITE_CONTENTS($lang, $escaped, $param)
 {
-    if (isset($param[1])) {
-        $_p = $param[0]->evaluate();
-        if (($_p == '1') || ($_p == '1')) {
-            $value = $param[1]->evaluate();
-        }
-    }
-}
-
-/**
- * Evaluate a particular Tempcode directive.
- *
- * @ignore
- *
- * @param  string $value Value to write into
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
- * @param  array $escaped Array of escaping operations
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- */
-function ecv_IF_EMPTY(&$value, $lang, $escaped, $param)
-{
-    if (isset($param[1])) {
-        if ($param[0]->is_empty()) {
-            $value = $param[1]->evaluate();
-        }
-    }
-}
-
-/**
- * Evaluate a particular Tempcode directive.
- *
- * @ignore
- *
- * @param  string $value Value to write into
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
- * @param  array $escaped Array of escaping operations
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- */
-function ecv_IF_NON_EMPTY(&$value, $lang, $escaped, $param)
-{
-    if (isset($param[1])) {
-        if (!$param[0]->is_empty()) {
-            $value = $param[1]->evaluate();
-        }
-    }
-}
-
-/**
- * Evaluate a particular Tempcode directive.
- *
- * @ignore
- *
- * @param  string $value Value to write into
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
- * @param  array $escaped Array of escaping operations
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- */
-function ecv_IF_PASSED(&$value, $lang, $escaped, $param)
-{
-    if (isset($param[1])) {
-        $t = $param[0]->evaluate();
-        if (isset($param['vars'][$t])) {
-            $value = $param[1]->evaluate();
-        }
-    }
-}
-
-/**
- * Evaluate a particular Tempcode directive.
- *
- * @ignore
- *
- * @param  string $value Value to write into
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
- * @param  array $escaped Array of escaping operations
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- */
-function ecv_IF_NON_PASSED(&$value, $lang, $escaped, $param)
-{
-    if (isset($param[1])) {
-        $t = $param[0]->evaluate();
-        if (!isset($param['vars'][$t])) {
-            $value = $param[1]->evaluate();
-        }
-    }
-}
-
-/**
- * Evaluate a particular Tempcode directive.
- *
- * @ignore
- *
- * @param  string $value Value to write into
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
- * @param  array $escaped Array of escaping operations
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- */
-function ecv_IF_PASSED_AND_TRUE(&$value, $lang, $escaped, $param)
-{
-    if (isset($param[1])) {
-        $t = $param[0]->evaluate();
-        if ((isset($param['vars'][$t])) && ($param['vars'][$t] !== false) && ($param['vars'][$t] !== '0') && ($param['vars'][$t] !== '')) {
-            $value = $param[1]->evaluate();
-        }
-    }
-}
-
-/**
- * Evaluate a particular Tempcode directive.
- *
- * @ignore
- *
- * @param  string $value Value to write into
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
- * @param  array $escaped Array of escaping operations
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- */
-function ecv_IF_NON_PASSED_OR_FALSE(&$value, $lang, $escaped, $param)
-{
-    if (isset($param[1])) {
-        $t = $param[0]->evaluate();
-        if ((!isset($param['vars'][$t])) || ($param['vars'][$t] === false) || ($param['vars'][$t] === '0') || ($param['vars'][$t] === '')) {
-            $value = $param[1]->evaluate();
-        }
-    }
-}
-
-/**
- * Evaluate a particular Tempcode directive.
- *
- * @ignore
- *
- * @param  string $value Value to write into
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
- * @param  array $escaped Array of escaping operations
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- */
-function ecv_LOOP(&$value, $lang, $escaped, $param)
-{
-    // This code is mostly defunct, as the closure_loop function is normally used for performance reasons
-    // (no need to keep re-binding, as closure_loop runs at a lower level)
-
-    if (isset($param[0])) {
-        $array_key = $param[0]->evaluate();
-        if ((is_numeric($array_key)) || (strpos($array_key, ',') !== false) || (strpos($array_key, '=') !== false)) {
-            $array = array();
-            foreach (explode(',', $array_key) as $x) {
-                if (strpos($x, '=') !== false) {
-                    list($key, $val) = explode('=', $x, 2);
-                    if ($key === '' && isset($array[$key])) {
-                        $array[] = $val; // Empty keys: which are done to allow "="s in strings by putting in an empty key OR to force list mode
-                    } else {
-                        $array[$key] = $val;
-                    }
-                } else {
-                    $array[] = $x;
-                }
-            }
-        } else {
-            if (!array_key_exists($param[0]->evaluate(), $param['vars'])) {
-                trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $param[0]->evaluate(), '???'), E_USER_NOTICE);
-                return;
-            }
-
-            $array = array_key_exists($array_key, $param['vars']) ? $param['vars'][$array_key] : array();
-            if (!is_array($array)) {
-                $array = array();
-            }
-        }
-
-        $value = '';
-        if (array_key_exists(1 + 1, $param)) {
-            $columns = $param[1]->evaluate();
-            $row_starter = array_key_exists(2 + 1, $param) ? $param[2]->evaluate() : '<tr>';
-            $row_terminator = array_key_exists(3 + 1, $param) ? $param[3]->evaluate() : '</tr>';
-            $value .= $row_starter;
-
-            // Sorting
-            if (array_key_exists(4 + 1, $param)) {
-                $sort_key = $param[4]->evaluate();
-
-                $rev = ((array_key_exists(5 + 1, $param)) && ($param[5]->evaluate() == 'DESC'));
-                if ($sort_key != '') {
-                    sort_maps_by($array, $sort_key);
-                }
-                if ($rev) {
-                    $array = array_reverse($array);
-                }
-            }
-        }
-        $last = count($param) - 2;
-        $col = 0;
-        $first = true;
-        foreach ($array as $go_key => $go) {
-            if (!is_array($go)) {
-                $go = array('_loop_key' => make_string_tempcode(is_integer($go_key) ? strval($go_key) : $go_key), '_loop_var' => make_string_tempcode($go)); // In case it's not a list of maps, but just a list
-            }
-
-            if ((isset($param[2])) && ($col % $columns == 0) && ($col != 0)) {
-                $value .= $row_starter;
-            }
-            $ps = $go + $param['vars'] + array('_loop_key' => make_string_tempcode(is_integer($go_key) ? strval($go_key) : $go_key), '_i' => strval($col), '_first' => $first, '_last' => $col == count($array) - 1);
-            $bound = $param[$last]->bind($ps, '');
-            $value .= $bound->evaluate();
-            ++$col;
-            if ((isset($param[3])) && ($col % $columns == 0)) {
-                $value .= $row_terminator;
-            }
-            $first = false;
-        }
-        if ((isset($param[2])) && ($col % $columns != 0)) {
-            $value .= $row_terminator;
-        }
-    }
-}
-
-/**
- * Evaluate a particular Tempcode directive.
- *
- * @ignore
- *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
- * @param  array $escaped Array of escaping operations
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- */
-function ecv_ICONS_SVG_SPRITE_CONTENTS($lang, $escaped, $param) {
     // @TODO: Add caching?
     require_code('themes');
     $value = file_get_contents(find_theme_image('icons/sprite'));

@@ -150,7 +150,7 @@ class Hook_fields_list extends ListFieldHook
         switch ($widget) {
             case 'radio':
                 $list_tpl = new Tempcode();
-                if (($field['cf_required'] == 0) && (!array_key_exists('', $list))) {
+                if (($field['cf_required'] == 0) && (!array_key_exists('', $list)) && ($custom_values != 'on')) {
                     $list_tpl->attach(form_input_radio_entry($input_name, '', !$selected, do_lang_tempcode('NA_EM')));
                 }
 
@@ -181,7 +181,7 @@ class Hook_fields_list extends ListFieldHook
                 if ($custom_values == 'on') {
                     $list_tpl = new Tempcode();
 
-                    if (($field['cf_required'] == 0) || (!$selected) && (!array_key_exists('', $list))) {
+                    if (($field['cf_required'] == 0) || (!$selected) && (!array_key_exists('', $list)) && ($custom_values != 'on')) {
                         $list_tpl->attach(form_input_list_entry('', !$selected, do_lang_tempcode('NA_EM')));
                     }
 
@@ -195,11 +195,11 @@ class Hook_fields_list extends ListFieldHook
 
                     $required = $field['cf_required'] == 1;
 
-                    return form_input_combo($_cf_name, $_cf_description, $input_name, $custom_value ? $actual_value : '', $list_tpl, null, $required);
+                    return form_input_combo($_cf_name, $_cf_description, $input_name, $actual_value, $list_tpl, null, $required);
                 } else {
                     $list_tpl = new Tempcode();
 
-                    if ((($field['cf_required'] == 0) || ($actual_value === '') || ($actual_value === null)) && (!array_key_exists('', $list))) {
+                    if ((($field['cf_required'] == 0) || ($actual_value === '') || ($actual_value === null)) && (!array_key_exists('', $list)) && ($custom_values != 'on')) {
                         $list_tpl->attach(form_input_list_entry('', true, do_lang_tempcode('NA_EM')));
                     }
 
@@ -243,7 +243,6 @@ class Hook_fields_list extends ListFieldHook
                 return $test;
             }
         }
-
         return post_param_string($tmp_name, $editing ? STRING_MAGIC_NULL : '');
     }
 }

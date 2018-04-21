@@ -73,7 +73,7 @@ class Block_main_countdown
         } else {
             $target = @strtotime($_target);
             if ($target === false) {
-                return do_template('RED_ALERT',array('_GUID' => '6wdxknuqmjvqbg1jxifeljakzg10ghou', 'TEXT' => do_lang_tempcode('OUT_OF_BOUNDS_TIME')));
+                return do_template('RED_ALERT', array('_GUID' => '6wdxknuqmjvqbg1jxifeljakzg10ghou', 'TEXT' => do_lang_tempcode('OUT_OF_BOUNDS_TIME')));
             }
         }
 

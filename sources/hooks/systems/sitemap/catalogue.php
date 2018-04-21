@@ -117,6 +117,11 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
             $rows = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), $map, '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
                 if (substr($row['c_name'], 0, 1) != '_') {
+                    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'id', array('c_name' => $row['c_name']));
+                    if ($test === null) {
+                        continue; // No entries
+                    }
+
                     // Index
                     $child_page_link = $zone . ':' . $page . ':index:' . $row['c_name'];
                     $node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);

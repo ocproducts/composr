@@ -83,7 +83,7 @@ class Block_main_content
         }
         $content_id = isset($map['id']) ? $map['id'] : null;
         if ($content_id === '') {
-            return do_template('RED_ALERT',array('_GUID' => 'rt44x3hfhc4frhbenjk01ka042716x6g', 'TEXT' => do_lang_tempcode('NO_PARAMETER_SENT', escape_html('id')))); // Might have happened due to some bad chaining in a template
+            return do_template('RED_ALERT', array('_GUID' => 'rt44x3hfhc4frhbenjk01ka042716x6g', 'TEXT' => do_lang_tempcode('NO_PARAMETER_SENT', escape_html('id')))); // Might have happened due to some bad chaining in a template
         }
         $randomise = ($content_id === null);
         $zone = isset($map['zone']) ? $map['zone'] : '_SEARCH';
@@ -94,14 +94,14 @@ class Block_main_content
         $include_breadcrumbs = (isset($map['include_breadcrumbs']) ? $map['include_breadcrumbs'] : '0') == '1';
 
         if ((!file_exists(get_file_base() . '/sources/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true) . '.php')) && (!file_exists(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true) . '.php'))) {
-            return do_template('RED_ALERT',array('_GUID' => 'qt44x3hfhc4frhbenjk01ka042716x6g', 'TEXT' => do_lang_tempcode('NO_SUCH_CONTENT_TYPE', escape_html($content_type))));
+            return do_template('RED_ALERT', array('_GUID' => 'qt44x3hfhc4frhbenjk01ka042716x6g', 'TEXT' => do_lang_tempcode('NO_SUCH_CONTENT_TYPE', escape_html($content_type))));
         }
 
         require_code('content');
         $object = get_content_object($content_type);
         $info = $object->info();
         if ($info === null) {
-            return do_template('RED_ALERT',array('_GUID' => 'agcqadouhjf6yfynwluv02fjy17e1vw9', 'TEXT' => do_lang_tempcode('IMPOSSIBLE_TYPE_USED')));
+            return do_template('RED_ALERT', array('_GUID' => 'agcqadouhjf6yfynwluv02fjy17e1vw9', 'TEXT' => do_lang_tempcode('IMPOSSIBLE_TYPE_USED')));
         }
         if ($title === null) {
             if ($content_id === null) {
@@ -114,7 +114,7 @@ class Block_main_content
             list(, $resource_page, $resource_type) = explode(':', $info['view_page_link_pattern']);
             $content_id = $info['db']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => $resource_page, 'm_resource_type' => $resource_type, 'm_moniker' => $content_id));
             if ($content_id === null) {
-                return do_template('RED_ALERT',array('_GUID' => 'wqehgloobwa1s6ibn9tmgweefw8aiogt', 'TEXT' => do_lang_tempcode('MISSING_RESOURCE')));
+                return do_template('RED_ALERT', array('_GUID' => 'wqehgloobwa1s6ibn9tmgweefw8aiogt', 'TEXT' => do_lang_tempcode('MISSING_RESOURCE')));
             }
         }
 
@@ -266,7 +266,7 @@ class Block_main_content
                 $result = request_page(array_key_exists(1, $bits) ? $bits[1] : get_comcode_zone($bits[0]), false, $bits[0], 'comcode_custom', true);
                 restore_output_state();
                 if ($result === null || $result->is_empty()) {
-                    return do_template('RED_ALERT',array('_GUID' => 'txon5apczl07u2gq77ags8mfu8bra1e7', 'TEXT' => do_lang_tempcode('MISSING_RESOURCE')));
+                    return do_template('RED_ALERT', array('_GUID' => 'txon5apczl07u2gq77ags8mfu8bra1e7', 'TEXT' => do_lang_tempcode('MISSING_RESOURCE')));
                 }
             }
 

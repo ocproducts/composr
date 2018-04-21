@@ -237,7 +237,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
         } else {
             $image_code = 'cns_emoticons/' . $emoticon_code;
         }
-        $url_path = 'themes/default/images_custom/' . rawurlencode(basename($path));
+        $url_path = cms_rawurlrecode('themes/default/images_custom/' . rawurlencode(basename($path)));
 
         // Images cleanup pipeline
         $full_path = get_custom_file_base() . '/' . $path;

@@ -109,6 +109,7 @@ class Hook_addon_registry_galleries
             'themes/default/images/icons/menu/cms/galleries/index.html',
             'themes/default/images/icons/buttons/slideshow.svg',
             'sources/hooks/systems/config/ffmpeg_path.php',
+            'sources/hooks/systems/reorganise_uploads/galleries.php',
             'sources/hooks/systems/notifications/gallery_entry.php',
             'sources/hooks/systems/snippets/exists_gallery.php',
             'sources/hooks/modules/admin_setupwizard_installprofiles/portfolio.php',

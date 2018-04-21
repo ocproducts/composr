@@ -142,6 +142,9 @@ class Hook_addon_registry_core_cleanup_tools
             'sources/hooks/systems/cleanup/template_usage.php',
             'sources/hooks/systems/cleanup/url_metadata_cache.php',
             'sources/hooks/systems/cleanup/disposable_values.php',
+            'sources/hooks/systems/cleanup/reorganise_uploads.php',
+            'sources/hooks/systems/tasks/reorganise_uploads.php',
+            'sources/hooks/systems/reorganise_uploads/index.html',
         );
     }
 

@@ -444,7 +444,7 @@ svg.icon {
 		white-space: normal !important;
 		word-wrap: break-word !important;
 	}
-	
+
 	.display-desktop {
 		display: none !important;
 	}
@@ -1281,6 +1281,9 @@ body .accessibility-hidden { /* Contents should be made visible (or interpreted)
 	opacity: 0; /* So browser doesn't waste resources rendering (cannot use visibility, Mac Voiceover will not pick up on it) */
 	display: block; /* stops browser bugs where it interacts with the layout flow incorrectly */
 }
+.email-body .accessibility-hidden { /* E-mail CSS may be less sophisticated */
+	display: none;
+}
 
 /*{+START,CSS_MODE,mobile}*/
 	.non-accessibility-redundancy { /* Contents should be skipped by screen-readers */
@@ -1423,8 +1426,8 @@ a.fancy-user-link:hover {
 }
 
 /* A button styled to look like a link */
-body input.button-hyperlink, 
-body button.button-hyperlink, 
+body input.button-hyperlink,
+body button.button-hyperlink,
 body input.button-hyperlink:hover,
 body button.button-hyperlink:hover {
 	border-style: none !important;
@@ -2997,6 +3000,9 @@ div.ajax-loading, p.ajax-loading {
 	opacity: 1.0;
 	padding-right: 3px;
 }
+.email-body .rating-star {
+	display: none;
+}
 
 .rating-likers a+a {
 	padding-left: 2px;
@@ -3910,9 +3916,9 @@ div .button-micro .icon {
 	display: none; /* Too loud for such a small space */
 }
 
-.button-screen, 
-.button-screen-item, 
-.button-micro, 
+.button-screen,
+.button-screen-item,
+.button-micro,
 .toggleable-tray-button .icon {
 	opacity: 0.85;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
@@ -3923,16 +3929,16 @@ div .button-micro .icon {
 	opacity: 0.85 !important;
 	cursor: not-allowed;
 }
-.button-micro:hover, 
-.button-screen:hover, 
+.button-micro:hover,
+.button-screen:hover,
 .button-screen-item:hover,
-.button-screen:hover, 
-.button-screen-item:hover, 
-.button-micro:hover, 
+.button-screen:hover,
+.button-screen-item:hover,
+.button-micro:hover,
 .toggleable-tray-button:hover .icon,
-body.touch-enabled .button-screen, 
-body.touch-enabled .button-screen-item, 
-body.touch-enabled .button-micro, 
+body.touch-enabled .button-screen,
+body.touch-enabled .button-screen-item,
+body.touch-enabled .button-micro,
 body.touch-enabled .toggleable-tray-button .icon {
 	opacity: 1.0;
 }

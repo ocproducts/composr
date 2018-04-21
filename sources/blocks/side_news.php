@@ -72,7 +72,7 @@ class Block_side_news
         }
 
         if (!addon_installed('news_shared')) {
-            return do_template('RED_ALERT',array('_GUID' => '2xrvldyykmd1p8qonelxje3rgzstfpwt', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('news_shared'))));
+            return do_template('RED_ALERT', array('_GUID' => '2xrvldyykmd1p8qonelxje3rgzstfpwt', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('news_shared'))));
         }
 
         require_lang('news');

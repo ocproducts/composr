@@ -374,7 +374,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
                 'SECTION' => $field_to_show['cf_section'],
                 'FIELD_ID' => strval($field_to_show['id']),
                 'FIELD_TYPE' => $field_to_show['cf_type'],
-                'EDITABILITY' => $editability, // 1 for Comcode, 0 otherwise
+                'EDITABILITY' => $editability, // null not editable. 1 for Comcode, 0 otherwise
                 'EDIT_TYPE' => $edit_type,
             );
 

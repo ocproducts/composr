@@ -4,7 +4,7 @@
 			NAME=status/{TYPE}
 			ICON_SIZE=24
 		{+END}
-		
+
 		{+START,IF,{$IN_STR,{MESSAGE},<p}}
 			{MESSAGE}
 		{+END}

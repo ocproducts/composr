@@ -423,21 +423,29 @@ class Forum_driver_base
      * Get the current member's theme identifier.
      *
      * @param  ?ID_TEXT $zone_for The zone we are getting the theme for (null: current zone)
+     * @param  ?MEMBER $member_id The member we are getting the theme for (null: current user)
      * @return ID_TEXT The theme identifier
      */
-    public function get_theme($zone_for = null)
+    public function get_theme($zone_for = null, $member_id = null)
     {
         global $SITE_INFO, $ZONE, $USER_THEME_CACHE;
 
+        if ($member_id === null) {
+            $member_id = get_member();
+            $is_current_member = true;
+        } else {
+            $is_current_member = (get_member() == $member_id);
+        }
+
         if ($zone_for === null) {
-            if ($USER_THEME_CACHE !== null) {
+            if (($USER_THEME_CACHE !== null) && ($is_current_member)) {
                 return $USER_THEME_CACHE;
             }
 
             $zone_for = get_zone_name();
-            $specific_zone_requested = false;
+            $current_zone_requested = true;
         } else {
-            $specific_zone_requested = true;
+            $current_zone_requested = (get_zone_name() == $zone_for);
         }
 
         global $IN_MINIKERNEL_VERSION;
@@ -446,17 +454,17 @@ class Forum_driver_base
         }
 
         // Try hardcoded in URL
-        $theme = filter_naughty(get_param_string('keep_theme', get_param_string('utheme', '-1')));
+        $theme = $is_current_member ? '-1' : filter_naughty(get_param_string('keep_theme', get_param_string('utheme', '-1')));
         if ($theme != '-1') {
-            if ((!is_dir(get_file_base() . '/themes/' . $theme)) && (!is_dir(get_custom_file_base() . '/themes/' . $theme))) {
+            if ((!is_dir(get_file_base() . '/themes/' . $theme)) && (!is_dir(get_custom_file_base() . '/themes/' . $theme))) { // Sanity check
                 require_code('site');
                 attach_message(do_lang_tempcode('NO_SUCH_THEME', escape_html($theme)), 'warn');
             } else {
-                $zone_theme = ($ZONE === null || $specific_zone_requested) ? $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_theme', array('zone_name' => $zone_for)) : $ZONE['zone_theme'];
+                $zone_theme = ($ZONE === null || !$current_zone_requested) ? $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_theme', array('zone_name' => $zone_for)) : $ZONE['zone_theme'];
 
                 require_code('permissions');
-                if (($theme == 'default') || ($theme == $zone_theme) || (has_category_access(get_member(), 'theme', $theme))) {
-                    if (!$specific_zone_requested) {
+                if (($theme == 'default') || ($theme == $zone_theme) || (has_category_access($member_id, 'theme', $theme))) { // Permissions check (but only if it's not what the zone setting says it should be anyway)
+                    if (($current_zone_requested) && ($is_current_member)) {
                         $USER_THEME_CACHE = $theme;
                     }
                     return $theme;
@@ -469,8 +477,8 @@ class Forum_driver_base
             }
         }
 
-        // Try hardcoded in Composr
-        $zone_theme = ($ZONE === null || $specific_zone_requested) ? $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_theme', array('zone_name' => $zone_for)) : $ZONE['zone_theme'];
+        // Try hardcoded in Composr zone settings
+        $zone_theme = ($ZONE === null || !$current_zone_requested) ? $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_theme', array('zone_name' => $zone_for)) : $ZONE['zone_theme'];
         $default_theme = ((get_page_name() == 'login') && (get_option('root_zone_login_theme') == '1') && ($zone_for != '')) ? $GLOBALS['SITE_DB']->query_select_value('zones', 'zone_theme', array('zone_name' => '')) : $zone_theme;
         if (empty($default_theme)) { // Cleanup bad data
             $default_theme = '-1';
@@ -484,7 +492,7 @@ class Forum_driver_base
         }
         if ($default_theme != '-1') {
             $theme = $default_theme;
-            if (!$specific_zone_requested) {
+            if (($current_zone_requested) && ($is_current_member)) {
                 $USER_THEME_CACHE = $theme;
             }
             return $theme;
@@ -492,19 +500,24 @@ class Forum_driver_base
 
         // Get from member setting
         require_code('permissions');
-        $theme = filter_naughty($this->_get_theme());
+        $theme = filter_naughty($this->_get_theme($member_id));
         if (empty($theme)) { // Cleanup bad data
             $theme = '-1';
         }
-        if (
+        if ( // Sanity/permissions check
             ($theme == '-1') ||
             (($theme != 'default') && (!is_dir(get_custom_file_base() . '/themes/' . $theme))) ||
-            (!has_category_access(get_member(), 'theme', $theme))
+            (!has_category_access($member_id, 'theme', $theme))
         ) {
+            if (!is_guest($member_id)) {
+                // Load what a guest would see if there's something broken about a member's choice
+                return $this->get_theme(null, $GLOBALS['FORUM_DRIVER']->get_guest_id());
+            }
+
+            // If even the guest setting is broken (and if nothing is hardcoded into Composr zone settings), return the software default
             $theme = 'default';
         }
-
-        if (!$specific_zone_requested) {
+        if (($current_zone_requested) && ($is_current_member)) {
             $USER_THEME_CACHE = $theme;
         }
         return $theme;

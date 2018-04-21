@@ -64,6 +64,11 @@ class tasks_test_set extends cms_test_case
 
         if (!addon_installed('catalogues')) {
             $this->assertTrue(false, 'Cannot run test without catalogues addon');
+        }
+
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'links'));
+        if ($test === null) {
+            $this->assertTrue(false, 'links catalogue not available, test cannot run');
             return;
         }
 
@@ -73,12 +78,13 @@ class tasks_test_set extends cms_test_case
 
         require_code('hooks/systems/tasks/import_catalogue');
         $ob_import = new Hook_task_import_catalogue();
-        $ob_import->run('links', 'Title', 'add', 'leave', 'skip', '', '', '', true, true, true, $tmp_path);
+        $import_result = $ob_import->run('links', 'Title', 'add', 'leave', 'skip', '', '', '', true, true, true, $tmp_path);
 
         require_code('hooks/systems/tasks/export_catalogue');
         $ob_export = new Hook_task_export_catalogue();
         $results = $ob_export->run('links');
-        $this->assertTrue(strpos(cms_file_get_contents_safe($results[1][1]), 'TestingABC') !== false);
+        $c = cms_file_get_contents_safe($results[1][1]);
+        $this->assertTrue(strpos($c, 'TestingABC') !== false, 'Did not see our TestingABC record in: ' . $c . "\n\n" . serialize($import_result));
 
         $ob_import->run('links', 'Title', 'add', 'leave', 'skip', '', '', '', true, true, true, $results[1][1]);
     }
@@ -87,6 +93,7 @@ class tasks_test_set extends cms_test_case
     {
         $only = get_param_string('only', null);
         $debugging = (get_param_integer('debug', 0) == 1);
+
         if (($only !== null) && ($only != 'testCalendarICal')) {
             return;
         }

@@ -890,11 +890,6 @@ abstract class Mail_dispatcher_base
         foreach ($this->attachments as $path => $filename) {
             $mime_type = get_mime_type(get_file_extension($filename), has_privilege($this->as, 'comcode_dangerous'));
 
-            $sending_message .= '--' . $boundary . $this->line_term;
-            $sending_message .= 'Content-Type: ' . get_mime_type(get_file_extension($filename), has_privilege($this->as, 'comcode_dangerous')) . $this->line_term; // . '; name="' . clean_parameter($filename).'"'   http://www.imc.org/ietf-822/old-archive2/msg02121.html
-            $sending_message .= 'Content-Transfer-Encoding: base64' . $this->line_term;
-            $sending_message .= 'Content-Disposition: attachment; filename="' . escape_header($filename) . '"' . $this->line_term . $this->line_term;
-
             if ((strpos($path, '://') === false) && (substr($path, 0, 5) != 'gs://')) {
                 if (!is_file($path)) {
                     continue;
@@ -908,18 +903,27 @@ abstract class Mail_dispatcher_base
                     'temp' => false,
                 );
             } else {
-                $contents = http_get_contents($path, array('trigger_error' => false));
-                if ($contents === null) {
+                $result = cms_http_request($path, array('trigger_error' => false));
+                if ($result->data === null) {
                     continue;
+                }
+                if ($result->mime_type !== null) {
+                    $mime_type = $result->download_mime_type;
                 }
 
                 $real_attachment = array(
                     'mime' => $mime_type,
                     'filename' => $filename,
-                    'contents' => $contents,
+                    'contents' => $result->data,
                     'temp' => false,
                 );
             }
+
+            $sending_message .= '--' . $boundary . $this->line_term;
+            $sending_message .= 'Content-Type: ' . $mime_type . $this->line_term; // . '; name="' . clean_parameter($filename).'"'   http://www.imc.org/ietf-822/old-archive2/msg02121.html
+            $sending_message .= 'Content-Transfer-Encoding: base64' . $this->line_term;
+            $sending_message .= 'Content-Disposition: attachment; filename="' . escape_header($filename) . '"' . $this->line_term . $this->line_term;
+
             $sending_message .= chunk_split(base64_encode($contents), 76, $this->line_term);
 
             $sf_prefix = get_custom_file_base() . '/temp/';
@@ -1058,21 +1062,33 @@ abstract class Mail_dispatcher_base
         }
         escape_header($from_name);
 
+        $member_id = null;
+        if (count($to_emails) == 1) {
+            $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($to_emails[0]);
+        }
+        if (($member_id === null) && (count($to_emails) > 1)) {
+            $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+        }
+
         // Language
-        if (!isset($to_emails[0]) || $to_emails[0] != $staff_address) {
+        if ($member_id === null) {
             $lang = user_lang();
-            if (isset($to_emails[0])) {
-                $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($to_emails[0]);
-                if ($member_id !== null) {
-                    $lang = get_lang($member_id);
-                }
-            }
+        } else {
+            $lang = get_lang($member_id);
         }
 
         // Theme
-        $theme = method_exists($GLOBALS['FORUM_DRIVER'], 'get_theme') ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
-        if ($theme == 'default' || $theme == 'admin') { // Sucks, probably due to sending from Admin Zone...
-            $theme = $GLOBALS['FORUM_DRIVER']->get_theme(''); // ... So get theme of welcome zone
+        $_theme = get_value('mail_theme');
+        if ($_theme !== null) {
+            $theme = $_theme;
+        } else {
+            if ($member_id === null) {
+                $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id(); // As there's no browser-settings involved (as for user_lang()) we just want to set for what a guest would see
+            }
+            $theme = method_exists($GLOBALS['FORUM_DRIVER'], 'get_theme') ? $GLOBALS['FORUM_DRIVER']->get_theme(null, $member_id) : 'default';
+            if ($theme == 'default' || $theme == 'admin') { // Sucks, probably due to sending from Admin Zone...
+                $theme = $GLOBALS['FORUM_DRIVER']->get_theme('', $member_id); // ... So get theme of welcome zone
+            }
         }
     }
 
@@ -1190,6 +1206,7 @@ abstract class Mail_dispatcher_base
             require_code('attachments');
             if ((preg_match('#^' . preg_quote(find_script('attachment'), '#') . '\?id=(\d+)&amp;thumb=(0|1)#', $img, $matches) != 0) && (strpos($img, 'forum_db=1') === false)) {
                 $rows = $GLOBALS['SITE_DB']->query_select('attachments', array('*'), array('id' => intval($matches[1])), 'ORDER BY a_add_time DESC');
+                require_code('attachments');
                 if ((array_key_exists(0, $rows)) && (has_attachment_access($as, intval($matches[1])))) {
                     $myrow = $rows[0];
 

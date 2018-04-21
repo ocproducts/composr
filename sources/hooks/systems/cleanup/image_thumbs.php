@@ -37,7 +37,7 @@ class Hook_cleanup_image_thumbs
         $info = array();
         $info['title'] = do_lang_tempcode('IMAGE_THUMBS');
         $info['description'] = do_lang_tempcode('DESCRIPTION_IMAGE_THUMBS');
-        $info['type'] = 'optimise';
+        $info['type'] = 'cache';
 
         return $info;
     }

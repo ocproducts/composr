@@ -244,9 +244,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         $list->attach(form_input_list_entry('title', $order == 'title', do_lang_tempcode('FORUM_ORDER_BY_TITLE')));
         $fields->attach(form_input_list(do_lang_tempcode('TOPIC_ORDER'), do_lang_tempcode('DESCRIPTION_TOPIC_ORDER'), 'topic_order', $list));
         $fields->attach(form_input_tick(do_lang_tempcode('IS_THREADED'), do_lang_tempcode('DESCRIPTION_IS_THREADED'), 'is_threaded', $is_threaded == 1));
-        if (get_option('is_on_anonymous_posts') == '1') {
-            $fields->attach(form_input_tick(do_lang_tempcode('ALLOWS_ANONYMOUS_POSTS'), do_lang_tempcode('DESCRIPTION_ALLOWS_ANONYMOUS_POSTS'), 'allows_anonymous_posts', $allows_anonymous_posts == 1));
-        }
+        $fields->attach(form_input_tick(do_lang_tempcode('ALLOWS_ANONYMOUS_POSTS'), do_lang_tempcode('DESCRIPTION_ALLOWS_ANONYMOUS_POSTS'), 'allows_anonymous_posts', $allows_anonymous_posts == 1));
 
         $fields->attach(metadata_get_fields('forum', ($id === null) ? null : strval($id)));
 
@@ -284,7 +282,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         if ($huge) {
             $all_forums = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id', 'f_name', 'f_position', 'f_forum_grouping_id', 'f_order_sub_alpha', 'f_parent_forum'), array('f_parent_forum' => $id), 'ORDER BY f_parent_forum,f_position', intval(get_option('general_safety_listing_limit')));
             if (count($all_forums) == intval(get_option('general_safety_listing_limit'))) {
-                return do_template('RED_ALERT',array('_GUID' => 'tozu1if5yx6og9lmfx7jc0eczhnzahx1', 'TEXT' => do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM')));
+                return do_template('RED_ALERT', array('_GUID' => 'tozu1if5yx6og9lmfx7jc0eczhnzahx1', 'TEXT' => do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM')));
             }
         } else {
             if (count($all_forums) == 0) {

@@ -295,12 +295,16 @@ class css_file_test_set extends cms_test_case
         }
 
         $exceptions = array(
+            'comcode-button',
+            'display-mobile',
+            'display-desktop',
             'help',
             'forceful',
             'contains-preview-button',
             'near-preview-button',
             'active-item',
             'thick-border',
+            'breadcrumbs-img',
             'access-restricted-in-list',
             'activated-quote-button',
             'activities-content--remove-failure',

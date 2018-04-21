@@ -146,6 +146,7 @@ class Hook_addon_registry_banners
             'data/images/placeholder_leaderboard.jpg',
             'sources/hooks/systems/block_ui_renderers/banners.php',
             'themes/default/javascript/banners.js',
+            'sources/hooks/systems/reorganise_uploads/banners.php',
         );
     }
 

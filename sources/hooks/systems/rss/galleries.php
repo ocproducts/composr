@@ -123,10 +123,16 @@ class Hook_rss_galleries
                 require_code('images');
                 $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', $row['type'] . 's', $row['id']);
                 $enclosure_url = $row['url'];
-                if (url_is_local($enclosure_url)) {
-                    $enclosure_url = get_custom_base_url() . '/' . $enclosure_url;
+                if ((url_is_local($enclosure_url)) || ($row['type'] == 'image')) {
+                    if (url_is_local($enclosure_url)) {
+                        $enclosure_url = get_custom_base_url() . '/' . $enclosure_url;
+                    }
+                    list($enclosure_length, $enclosure_type) = get_enclosure_details($row['url'], $enclosure_url);
+                } else {
+                    $enclosure_url = null;
+                    $enclosure_length = null;
+                    $enclosure_type = null;
                 }
-                list($enclosure_length, $enclosure_type) = get_enclosure_details($row['url'], $enclosure_url);
 
                 $meta = seo_meta_get_for($row['type'], $id);
                 $keywords = trim($meta[0], ', ');

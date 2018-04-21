@@ -104,6 +104,7 @@ class Hook_addon_registry_news
         return array(
             'themes/default/images/icons/menu/rich_content/news.svg',
             'themes/default/images/icons/menu/cms/blog.svg',
+            'sources/hooks/systems/reorganise_uploads/news.php',
             'sources/hooks/systems/notifications/news_entry.php',
             'sources/hooks/modules/admin_setupwizard_installprofiles/blog.php',
             'sources/hooks/systems/realtime_rain/news.php',

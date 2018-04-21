@@ -21,7 +21,7 @@ It is recommended that you do not 'jump over' major releases (e.g. v2 to v4, jum
 [title="2"]Some words of caution[/title]
 
 The developers cannot make any guarantees about the speed of which any new bugs might be patched, for any upgrade. It is your own responsibility to make and test a full website backup (files and database) before you upgrade, for use in the unlikely event of you wanting to revert your upgrade.
-Some users may wish to test upgrades (and pre-fix any theme compatibility problems that could occur) on a staging site (a private mirror of their live site).
+Some users may wish to test upgrades (and pre-fix any theme compatibility problems that could occur) on a staging/clone site (a private mirror of their live site).
 
 [title="3"]Special note: multi-site-networks[/title]
 

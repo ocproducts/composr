@@ -243,6 +243,8 @@ function cns_delete_group($group_id, $target_group = null)
         update_catalogue_content_ref('group', strval($group_id), '');
     }
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'groups', 'm_resource_type' => 'view', 'm_resource_id' => strval($group_id)));
+
     log_it('DELETE_GROUP', strval($group_id), $name);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {

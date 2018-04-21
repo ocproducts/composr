@@ -196,6 +196,7 @@ function cms_urlencode($url_part, $can_try_url_schemes = null)
 
 /**
  * Encode a URL component, as per cms_urlencode but without slashes being encoded.
+ * Only used if URL monikers are enabled.
  *
  * @param  URLPATH $url_part The URL to encode
  * @param  ?boolean $can_try_url_schemes Whether we have to consider URL Schemes (null: don't know, look up)
@@ -1541,4 +1542,22 @@ function _protect_url_parameter($parameter)
     }
 
     return $parameter;
+}
+
+/**
+ * Remove unnecessarily paranoid URL-encoding if needed, so the given URL will fit in the database.
+ *
+ * @param  URLPATH $url The URL
+ * @param  boolean $force Whether to force a conversion even if the URL is not that long
+ * @param  boolean $tolerate_errors If this is set to false then an error message will be shown if the URL is still too long after we do what we can; set to true if we have someway of further shortening the URL after this function is called
+ * @return URLPATH The shortened URL
+ */
+function cms_rawurlrecode($url, $force = false, $tolerate_errors = false)
+{
+    if ((cms_mb_strlen($url) > 255) || ($force)) {
+        require_code('urls_simplifier');
+        $url = _cms_rawurlrecode($url, $tolerate_errors);
+    }
+
+    return $url;
 }

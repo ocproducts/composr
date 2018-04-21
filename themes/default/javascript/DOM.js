@@ -2629,14 +2629,17 @@
         if (!window.parent || !window.parent.document) {
             return;
         }
-        var i, iframes = window.parent.document.querySelectorAll('iframe');
+        var i, iframes;
 
-        for (i = 0; i < iframes.length; i++) {
-            if ((iframes[i].src === window.location.href) || (iframes[i].contentWindow === window) || ((iframes[i].id !== '') && (window.parent.frames[iframes[i].id] !== undefined) && (window.parent.frames[iframes[i].id] === window))) {
-                if (iframes[i].style.height === '900px') {
-                    iframes[i].style.height = 'auto';
+        if (window.parent != window) {
+            iframes = window.parent.document.querySelectorAll('iframe');
+            for (i = 0; i < iframes.length; i++) {
+                if ((iframes[i].src === window.location.href) || (iframes[i].contentWindow === window) || ((iframes[i].id !== '') && (window.parent.frames[iframes[i].id] !== undefined) && (window.parent.frames[iframes[i].id] === window))) {
+                    if (iframes[i].style.height === '900px') {
+                        iframes[i].style.height = 'auto';
+                    }
+                    window.parent.$dom.resizeFrame(iframes[i].name);
                 }
-                window.parent.$dom.resizeFrame(iframes[i].name);
             }
         }
 

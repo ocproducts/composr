@@ -708,6 +708,7 @@ function should_ignore_file($path, $bitmask = 0)
 
 /**
  * Delete all the contents of a directory, and any subdirectories of that specified directory (recursively).
+ * Does not delete the directory itself.
  *
  * @param  PATH $dir The pathname to the directory to delete
  * @param  boolean $default_preserve Whether to preserve files there by default

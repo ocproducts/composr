@@ -967,8 +967,13 @@ class Hook_addon_registry_core_cns
             'CUSTOM_FIELDS' => array(
                 array(
                     'FIELD_ID' => placeholder_id(),
+                    'NAME_FULL' => lorem_phrase(),
                     'NAME' => lorem_phrase(),
-                    'VALUE' => lorem_phrase(),
+                    'RENDERED' => lorem_phrase(),
+                    'RAW' => lorem_phrase(),
+                    'FIELD_TYPE' => 'short_text',
+                    'EDITABILITY' => null,
+                    'EDIT_TYPE' => 'line',
                     'ENCRYPTED_VALUE' => '',
                     'ICON' => '',
                     'SECTION' => '',

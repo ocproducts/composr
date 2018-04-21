@@ -256,6 +256,9 @@ div.cns-table-footer>div>div {
 		width: 80px;
 	}
 /*{+END}*/
+.email-body .cns-topic .cns-topic-section > div:first-child {
+	width: 70px;
+}
 
 .cns-post-box .cns-topic .cns-topic-section > div {
 	border: 0;

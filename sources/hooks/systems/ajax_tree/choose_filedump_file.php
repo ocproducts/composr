@@ -61,7 +61,7 @@ class Hook_ajax_tree_choose_filedump_file
             foreach ($files as $f) {
                 $description = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => basename($f), 'path' => $id . '/'));
 
-                $entry_id = 'uploads/filedump/' . (($id == '') ? '' : (str_replace('%2F', '/', rawurlencode($id)) . '/')) . str_replace('%2F', '/', rawurlencode($f));
+                $entry_id = cms_rawurlrecode('uploads/filedump/' . (($id == '') ? '' : (str_replace('%2F', '/', rawurlencode($id)) . '/')) . str_replace('%2F', '/', rawurlencode($f)));
 
                 if (is_dir($full_path . '/' . $f)) {
                     $has_children = (count(get_directory_contents($full_path . '/' . $f, '', IGNORE_ACCESS_CONTROLLERS, false)) > 0);

@@ -217,7 +217,8 @@ function upgrader_link($url, $text, $disabled = false, $js = '')
 
     $ret = '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">';
     $ret .= $hidden;
-    $ret .= '<button ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="button-screen-item" type="submit">' . do_template('ICON', array('NAME' => $icon)) . ' ' . escape_html($text) . '</button>';
+    $icon = do_template('ICON', array('NAME' => $icon));
+    $ret .= '<button ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="button-screen-item" type="submit">' . $icon->evaluate() . ' ' . escape_html($text) . '</button>';
     $ret .= '</form>';
     return $ret;
 }

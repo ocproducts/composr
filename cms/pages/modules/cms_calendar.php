@@ -409,12 +409,52 @@ class Module_cms_calendar extends Standard_crud_module
 
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
 
-        // Dates
+        // Dates...
+
         $fields->attach(form_input_tick(do_lang_tempcode('ALL_DAY_EVENT'), do_lang_tempcode('DESCRIPTION_ALL_DAY_EVENT'), 'all_day_event', ($start_hour === null)));
-        $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, ($start_hour === null) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour, ($start_minute === null) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, $timezone, $do_timezone_conv == 1);
-        $fields->attach(form_input_date(do_lang_tempcode('DATE_TIME'), '', 'start', true, false, true, array(($start_minute === null) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, ($start_hour === null) ? (find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) + 9) : $start_hour, $start_month, $start_day_of_month, $start_year), 120, intval(date('Y')) - 100, null, true, $timezone, get_param_string('date', '') == ''));
-        $end_day_of_month = find_concrete_day_of_month($end_year, $end_month, $end_day, $end_monthly_spec_type, ($end_hour === null) ? find_timezone_end_hour_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_hour, ($end_minute === null) ? find_timezone_end_minute_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_minute, $timezone, $do_timezone_conv == 1);
-        $fields->attach(form_input_date(do_lang_tempcode('END_DATE_TIME'), do_lang_tempcode('DESCRIPTION_END_DATE_TIME'), 'end', false, ($end_year === null), true, array(($end_minute === null) ? find_timezone_end_minute_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_minute, ($end_hour === null) ? find_timezone_end_hour_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_hour, $end_month, $end_day_of_month, $end_year), 120, intval(date('Y')) - 100, null, true, $timezone));
+
+        $_start_hour = ($start_hour === null) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour;
+        $_start_minute = ($start_minute === null) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute;
+        $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, $_start_hour, $_start_minute, $timezone, $do_timezone_conv == 1);
+        $_start_time = normalise_time_array(array($_start_minute, $_start_hour, $start_month, $start_day_of_month, $start_year), $timezone);
+        $_start_date_field = form_input_date(
+            do_lang_tempcode('DATE_TIME'), // $pretty_name
+            '', // $description
+            'start', // $name
+            true, // $required
+            false, // $null_default
+            true, // $do_time
+            $_start_time, // $default_time
+            120, // $total_years_to_show
+            intval(date('Y')) - 100, // $year_start
+            null, // $tabindex
+            true, // $do_date
+            $timezone, // $timezone
+            get_param_string('date', '') == '' // $handle_timezone
+        );
+        $fields->attach($_start_date_field);
+        $_end_hour = ($end_hour === null) ? find_timezone_end_hour_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_hour;
+        $_end_minute = ($end_minute === null) ? find_timezone_end_minute_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_minute;
+        $end_day_of_month = find_concrete_day_of_month($end_year, $end_month, $end_day, $end_monthly_spec_type, $_end_hour, $_end_minute, $timezone, $do_timezone_conv == 1);
+        $_end_time = normalise_time_array(array($_end_minute, $_end_hour, $end_month, $end_day_of_month, $end_year), $timezone);
+        $_end_date_field = form_input_date(
+            do_lang_tempcode('END_DATE_TIME'), // $pretty_name
+            do_lang_tempcode('DESCRIPTION_END_DATE_TIME'), // $description
+            'end', // $name
+            false, // $required
+            $end_year === null, // $null_default
+            true, // $do_time
+            $_end_time, // $default_time
+            120, // $total_years_to_show
+            intval(date('Y')) - 100, // $year_start
+            null, // $tabindex
+            true, // $do_date
+            $timezone, // $timezone
+            get_param_string('date', '') == '' // $handle_timezone
+        );
+        $fields->attach($_end_date_field);
+
+        // ---
 
         // Type
         if ($type == db_get_first_id()) {
@@ -474,8 +514,13 @@ class Module_cms_calendar extends Standard_crud_module
             $fields2->attach(form_input_list(do_lang_tempcode('TIMEZONE'), do_lang_tempcode('DESCRIPTION_EVENT_TIMEZONE'), 'timezone', make_string_tempcode($list)));
             $fields2->attach(form_input_tick(do_lang_tempcode('DO_TIMEZONE_CONV'), do_lang_tempcode('DESCRIPTION_DO_TIMEZONE_CONV'), 'do_timezone_conv', $do_timezone_conv == 1));
         } else {
+            /*
+            This causes severe confusion
             $hidden->attach(form_input_hidden('timezone', $timezone));
             $hidden->attach(form_input_hidden('do_timezone_conv', strval($do_timezone_conv)));
+            */
+            $hidden->attach(form_input_hidden('timezone', get_site_timezone()));
+            $hidden->attach(form_input_hidden('do_timezone_conv', '0'));
         }
 
         if (get_option('filter_regions') == '1') {
@@ -897,7 +942,9 @@ class Module_cms_calendar extends Standard_crud_module
         regenerate_event_reminder_jobs($id);
 
         $this->donext_type = $type;
-        $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, ($start_hour === null) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour, ($start_minute === null) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, $timezone, $do_timezone_conv == 1);
+        $_start_hour = ($start_hour === null) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour;
+        $_start_minute = ($start_minute === null) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute;
+        $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, $_start_hour, $_start_minute, $timezone, $do_timezone_conv == 1);
         $this->donext_date = strval($start_year) . '-' . strval($start_month) . '-' . strval($start_day_of_month);
 
         if (addon_installed('content_privacy')) {
@@ -1089,7 +1136,9 @@ class Module_cms_calendar extends Standard_crud_module
         }
 
         $this->donext_type = $type;
-        $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, ($start_hour === null) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour, ($start_minute === null) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, $timezone, $do_timezone_conv == 1);
+        $_start_hour = ($start_hour === null) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour;
+        $_start_minute = ($start_minute === null) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute;
+        $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, $_start_hour, $_start_minute, $timezone, $do_timezone_conv == 1);
         $this->donext_date = strval($start_year) . '-' . strval($start_month) . '-' . strval($start_day_of_month);
 
         if (addon_installed('content_reviews')) {

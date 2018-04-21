@@ -16,25 +16,25 @@
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 if (!addon_installed('composr_homesite_support_credits')) {
-    return do_template('RED_ALERT',array('_GUID' => '4y9qesedhhw6peuc11wfmnu4eq5zioa1', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite_support_credits'))));
+    return do_template('RED_ALERT', array('_GUID' => '4y9qesedhhw6peuc11wfmnu4eq5zioa1', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite_support_credits'))));
 }
 
 if (!addon_installed('tickets')) {
-    return do_template('RED_ALERT',array('_GUID' => 'xxuw4d79s9qmq2jgaris712w3nj95ce0', 'TEXT' =>do_lang_tempcode('MISSING_ADDON', escape_html('tickets'))));
+    return do_template('RED_ALERT', array('_GUID' => 'xxuw4d79s9qmq2jgaris712w3nj95ce0', 'TEXT' =>do_lang_tempcode('MISSING_ADDON', escape_html('tickets'))));
 }
 if (!addon_installed('ecommerce')) {
-    return do_template('RED_ALERT',array('_GUID' => 'z9wzu51gk1qa89j52xdc7ccwpq6l3soz', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce'))));
+    return do_template('RED_ALERT', array('_GUID' => 'z9wzu51gk1qa89j52xdc7ccwpq6l3soz', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce'))));
 }
 if (!addon_installed('points')) {
-    return do_template('RED_ALERT',array('_GUID' => 'l56duwk68ywo099433j2st5472a25mqd', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('points'))));
+    return do_template('RED_ALERT', array('_GUID' => 'l56duwk68ywo099433j2st5472a25mqd', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('points'))));
 }
 
 if (get_forum_type() != 'cns') {
-    return do_template('RED_ALERT',array('_GUID' => '5v7eclbf681s79gdkminmik8ykk7abgy', 'TEXT' => do_lang_tempcode('NO_CNS')));
+    return do_template('RED_ALERT', array('_GUID' => '5v7eclbf681s79gdkminmik8ykk7abgy', 'TEXT' => do_lang_tempcode('NO_CNS')));
 }
 
 if (strpos(get_db_type(), 'mysql') !== false) {
-    return do_template('RED_ALERT',array('_GUID' => 'uyjdizierysgbisjrrmbipait8lxfyen', 'TEXT' => 'This works with MySQL only'));
+    return do_template('RED_ALERT', array('_GUID' => 'uyjdizierysgbisjrrmbipait8lxfyen', 'TEXT' => 'This works with MySQL only'));
 }
 
 require_css('tracker');

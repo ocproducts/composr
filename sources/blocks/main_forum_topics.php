@@ -69,11 +69,11 @@ class Block_main_forum_topics
         }
 
         if (!addon_installed('news_shared')) {
-            return do_template('RED_ALERT',array('_GUID' => 'towk6iuyuq0g4rt2trkq14g0e0idbw1x', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('news_shared'))));
+            return do_template('RED_ALERT', array('_GUID' => 'towk6iuyuq0g4rt2trkq14g0e0idbw1x', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('news_shared'))));
         }
 
         if (has_no_forum()) {
-            return do_template('RED_ALERT',array('_GUID' => 'u2ij585bcl5tq7snyxqgh3fjn90i11q8', 'TEXT' => do_lang_tempcode('NO_FORUM_INSTALLED')));
+            return do_template('RED_ALERT', array('_GUID' => 'u2ij585bcl5tq7snyxqgh3fjn90i11q8', 'TEXT' => do_lang_tempcode('NO_FORUM_INSTALLED')));
         }
 
         require_css('news');

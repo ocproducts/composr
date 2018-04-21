@@ -1,0 +1,74 @@
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2018
+
+ See text/EN/licence.txt for full licensing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    testing_platform
+ */
+
+/**
+ * Composr test case class (unit testing).
+ */
+class urls_simplifier_test_set extends cms_test_case
+{
+    protected $ob;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        require_code('uploads');
+
+        require_code('urls_simplifier');
+        $this->ob = new HarmlessURLCoder();
+    }
+
+    public function testRecode()
+    {
+        $from = 'x%20%D0%B8%D1%81%D0%BF%D1%8B%D1%82%D0%B0%D0%BD%D0%B8%D0%B5';
+        $got = cms_rawurlrecode($from, true);
+        $expected = 'x%20' . hex2bin('D0B8D181D0BFD18BD182D0B0D0BDD0B8D0B5');
+        $this->assertTrue($got == $expected, str_replace('%', '%%', 'Got ' . $got . '; expected ' . $expected));
+    }
+
+    public function testProceedAsExpected()
+    {
+        $tests = array(
+            // encoded -> decoded
+            'http://example.com/foo.jpg' => 'http://example.com/foo.jpg', // No changes desirable
+            'http://example.com/foo%20bar.jpg' => 'http://example.com/foo bar.jpg', // We can decode spaces
+            'http://example.com/foo%27s.jpg' => 'http://example.com/foo\'s.jpg', // We can decode "'"
+            'http://example.com/foo.jpg#blah' => 'http://example.com/foo.jpg#blah', // We cannot decode "#"
+            'http://example.com/foo%25.jpg' => 'http://example.com/foo%25.jpg', // We cannot decode percentages
+        );
+
+        foreach ($tests as $from => $expected) {
+            $got = $this->ob->decode($from);
+            $this->assertTrue($got == $expected, str_replace('%', '%%', 'Incorrectly decoded ' . $from . '; got ' . $got . '; expected ' . $expected));
+
+            if ($got == $expected) {
+                // Try double decoding
+                $got = $this->ob->decode($expected);
+                $this->assertTrue($got == $expected, str_replace('%', '%%', 'Double decoding failed ' . $from));
+            }
+        }
+
+        foreach ($tests as $expected => $from) {
+            $got = $this->ob->encode($from);
+            $this->assertTrue($got == $expected, str_replace('%', '%%', 'Incorrectly encoded ' . $from . '; got ' . $got . '; expected ' . $expected));
+
+            if ($got == $expected) {
+                // Try double encoding
+                $got = $this->ob->encode($expected);
+                $this->assertTrue($got == $expected, str_replace('%', '%%', 'Double encoding failed ' . $from));
+            }
+        }
+    }
+}

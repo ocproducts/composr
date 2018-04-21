@@ -67,7 +67,7 @@
                     '{!facebook:HOW_TO_SYNDICATE_DESCRIPTION;^}',
                     {
                         'no_icon_1': '{!INPUTSYSTEM_CANCEL;^}',
-                        'no_icon_2': '{!facebook:FACEBOOK_PAGE;^}', 
+                        'no_icon_2': '{!facebook:FACEBOOK_PAGE;^}',
                         'no_icon_3': '{!facebook:FACEBOOK_WALL;^}'
                     },
                     '{!facebook:HOW_TO_SYNDICATE;^}',

@@ -95,7 +95,7 @@ class Block_main_staff_actions
     public function run($map)
     {
         if (!addon_installed('actionlog')) {
-            return do_template('RED_ALERT',array('_GUID' => 'kimazz9b50kv3de1drxujlw7p5haozvo', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('actionlog'))));
+            return do_template('RED_ALERT', array('_GUID' => 'kimazz9b50kv3de1drxujlw7p5haozvo', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('actionlog'))));
         }
 
         require_all_lang();

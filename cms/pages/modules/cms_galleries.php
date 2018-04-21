@@ -385,7 +385,7 @@ class Module_cms_galleries extends Standard_crud_module
             $there = array();
             $_dir = opendir(get_custom_file_base() . '/uploads/galleries/');
             while (false !== ($file = readdir($_dir))) {
-                if (($file != 'index.html') && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $file)) && ((is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
+                if ((!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS)) && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $file)) && ((is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
                     $there[$file] = filemtime(get_custom_file_base() . '/uploads/galleries/' . $file);
                 }
             }
@@ -393,7 +393,7 @@ class Module_cms_galleries extends Standard_crud_module
             $_dir = @opendir(get_custom_file_base() . '/uploads/galleries/' . filter_naughty($cat));
             if ($_dir !== false) {
                 while (false !== ($file = readdir($_dir))) {
-                    if (($file != 'index.html') && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $cat . '/' . $file)) && ((is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
+                    if ((!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS)) && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $cat . '/' . $file)) && ((is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
                         $there[$cat . '/' . $file] = filemtime(get_custom_file_base() . '/uploads/galleries/' . $cat . '/' . $file);
                     }
                 }
@@ -411,7 +411,7 @@ class Module_cms_galleries extends Standard_crud_module
                         $file = strval($file);
                     }
 
-                    if ((!in_array('uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file)), $test1)) && (!in_array('uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file)), $test2))) {
+                    if ((!in_array(cms_rawurlrecode('uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file))), $test1)) && (!in_array(cms_rawurlrecode('uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file))), $test2))) {
                         $orphaned_content->attach(form_input_list_entry($file, ($time >= $last_time - 60 * 60 * 3) || (strpos($file, '/') !== false), $file));
                     }
                 }
@@ -462,6 +462,10 @@ class Module_cms_galleries extends Standard_crud_module
      */
     public function __import()
     {
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(1000);
+        }
+
         $cat = get_param_string('cat');
 
         check_privilege('mass_import'/*Not currently scoped to categories, array('galleries', $cat)*/);
@@ -566,7 +570,7 @@ class Module_cms_galleries extends Standard_crud_module
 
         if (array_key_exists('ss_files', $_POST)) {
             foreach ($_POST['ss_files'] as $file) {
-                $url = 'uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file));
+                $url = cms_rawurlrecode('uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file)));
                 if (!is_image($url, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
                     $ret = get_video_details(get_custom_file_base() . '/uploads/galleries/' . filter_naughty($file), $file, true);
                     if ($ret !== false) {
@@ -600,7 +604,7 @@ class Module_cms_galleries extends Standard_crud_module
                     }
                 } else {
                     $thumb_path = get_custom_file_base() . '/uploads/galleries_thumbs/' . rawurldecode($file);
-                    $thumb_url = convert_image($url, $thumb_path, null, null, intval(get_option('thumb_width')), false);
+                    $thumb_url = cms_rawurlrecode(convert_image($url, $thumb_path, null, null, intval(get_option('thumb_width')), false));
 
                     // Images cleanup pipeline
                     $maximum_dimension = intval(get_option('maximum_image_size'));
@@ -652,7 +656,7 @@ class Module_cms_galleries extends Standard_crud_module
             }
 
             if (substr($x, 0, 5) == 'file_') {
-                $aurl = 'uploads/galleries/' . rawurlencode($file);
+                $aurl = cms_rawurlrecode('uploads/galleries/' . rawurlencode($file));
 
                 list(, $thumb_url) = find_unique_path('uploads/galleries_thumbs', filter_naughty($file), true);
 
@@ -1385,6 +1389,11 @@ class Module_cms_galleries_alt extends Standard_crud_module
                 if ($url == '') {
                     return array(null, null, null);
                 }
+
+                // We should use compliant encoding
+                require_code('urls_simplifier');
+                $coder_ob = new HarmlessURLCoder();
+                $url = $coder_ob->encode($url);
 
                 $_video_width = null;
                 $_video_height = null;

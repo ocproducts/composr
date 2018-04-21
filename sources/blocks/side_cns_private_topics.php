@@ -73,7 +73,7 @@ class Block_side_cns_private_topics
         }
 
         if (get_forum_type() != 'cns') {
-            return do_template('RED_ALERT',array('_GUID' => '0g2we1y689cd9211nq5i3830v32cqsjh', 'TEXT' => do_lang_tempcode('NO_CNS')));
+            return do_template('RED_ALERT', array('_GUID' => '0g2we1y689cd9211nq5i3830v32cqsjh', 'TEXT' => do_lang_tempcode('NO_CNS')));
         }
 
         if (is_guest()) {

@@ -367,7 +367,7 @@ class Module_admin_actionlog
                 }
 
                 require_code('templates_interfaces');
-                $_a = tpl_crop_text_mouse_over($a, 8);
+                $_a = tpl_crop_text_mouse_over($a, 12);
                 $_b = tpl_crop_text_mouse_over($b, 15);
 
                 $type_str = do_lang($myrow['the_type'], $_a, $_b, null, null, false);

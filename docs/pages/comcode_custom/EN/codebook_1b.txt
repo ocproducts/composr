@@ -403,6 +403,27 @@ The specific ones relating to URL monikers are...
 'view_page_link_pattern' => '_SEARCH:downloads:entry:_WILD', // The URL pattern we support the monikers on
 [/code]
 
+[title="4"]URL and moniker encodings[/title]
+
+There are a number of different functions we use for encoding/decoding URLs:
+ - [tt]rawurlencode[/tt] / [tt]rawurldecode[/tt] -- PHP function for standardised URL encoding.
+ - [tt]urlencode[/tt] / [tt]urldecode[/tt] -- PHP function for URL encoding specifically for GET parameters. It's the same as [tt]rawurlencode[/tt] except spaces become [tt]+[/tt] rather than [tt]%20[/tt].
+ - [tt]cms_urlencode[/tt] / [tt]cms_urldecode[/tt] -- A layer around [tt]urlencode[/tt] / [tt]urldecode[/tt] that provides Composr-specific encoding that stops Apache's [tt]mod_rewrite[/tt] from corrupting certain special characters during its "smart" processing.
+ - [tt]cms_rawurlrecode[/tt] -- Shortens URLs that are too long for the database (255 character limit) by intelligently cheating in our encoding. The URLs are technically non-compliant but will work.
+ - [tt]HarmlessURLCoder[/tt] -- Simplifies/desimplifies URLs, trading human-readablity for non-compliance. Similar to what browsers do in their address bars. It is a non-destructive operation that doesn't allow for double encoding or double decoding. Non-latin characters in URLs encodes with HarmlessURLCoder are much easier to use.
+
+[title="4"]Unicode[/title]
+
+Here is our Unicode-support status on various kinds of URL-related ID:
+ - Domain name: Composr has no explicit [url="Punycode"]https://en.wikipedia.org/wiki/Punycode[/url] support, although Composr won't break it
+ - Moniker: Unicode or Transliteration may be used, depending on configuration, although ASCII symbolic characters are not allowed
+ - Codename: Unicode may be used, although ASCII symbolic characters are not allowed
+ - E-mail addresses: non-ASCII e-mails, or e-mails including ASCII symbolic characters (other than [tt]+[/tt]) are not allowed (there is a standard for non-ASCII e-mail, but use is rare, and enabling support would weaken our detection of mistyped e-mail addresses)
+ - Filenames: Unicode may be used, except on Windows servers with PHP version 7.2 or lower[staff_note]LEGACY[/staff_note]; transliteration will be used if it was enabled for monikers
+ - Directory names: Transliteration will be used, as Unicode directory names are more problematic than Unicode filenames
+
+However, the Unicode will get heavily percent-encoded for the URLs generated (unless [tt]HarmlessURLCoder[/tt] or [tt]cms_rawurlrecode[/tt] is active), because non-ASCII characters are not permitted in URLs.
+
 [title="3"]Breadcrumbs[/title]
 
 If you are making a new module you are likely to want to implement breadcrumbs.

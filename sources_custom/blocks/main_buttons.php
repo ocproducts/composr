@@ -120,7 +120,7 @@ class Block_main_buttons
         }
 
         if (!addon_installed('banners')) {
-            return do_template('RED_ALERT',array('_GUID' => 'j05vou1q81t19l4untjdfy6v9wcib4ig', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('banners'))));
+            return do_template('RED_ALERT', array('_GUID' => 'j05vou1q81t19l4untjdfy6v9wcib4ig', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('banners'))));
         }
 
         require_css('banners');
