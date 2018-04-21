@@ -51,19 +51,19 @@
 				<nav>
 					<ul class="actions-list">
 						{+START,IF_PASSED,PROFILE_URL}
-							<li><a href="{PROFILE_URL*}">{!VIEW_PROFILE}</a></li>
+							<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{PROFILE_URL*}">{!VIEW_PROFILE}</a></li>
 						{+END}
 						{+START,IF_PASSED,ACTIONLOG_URL}
-							<li><a href="{ACTIONLOG_URL*}">{!actionlog:VIEW_ACTIONLOGS}</a></li>
+							<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{ACTIONLOG_URL*}">{!actionlog:VIEW_ACTIONLOGS}</a></li>
 						{+END}
 						{+START,IF_PASSED,POINTS_URL}
-							<li><a href="{POINTS_URL*}">{!POINTS}</a></li>
+							<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{POINTS_URL*}">{!POINTS}</a></li>
 						{+END}
 						{+START,IF_PASSED,AUTHOR_URL}
-							<li><a href="{AUTHOR_URL*}">{!VIEW_AUTHOR}</a></li>
+							<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{AUTHOR_URL*}">{!VIEW_AUTHOR}</a></li>
 						{+END}
 						{+START,IF_PASSED,SEARCH_URL}
-							<li><a rel="search" href="{SEARCH_URL*}">{!SEARCH}</a></li>
+							<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a rel="search" href="{SEARCH_URL*}">{!SEARCH}</a></li>
 						{+END}
 					</ul>
 				</nav>
@@ -77,9 +77,9 @@
 					<!-- If you like new windows, add this... title="{!LINK_NEW_WINDOW}" target="_blank" -->
 					<nav>
 						<ul class="actions-list">
-							<li><a rel="external" href="http://whatismyipaddress.com/ip/{IP*}">Reverse-DNS/WHOIS/Geo-Lookup</a></li>
-							<li><a rel="external" href="https://ping.eu/ping/?host={IP*}">Ping</a></li>
-							<li><a rel="external" href="https://ping.eu/traceroute/?host={IP*}">Tracert</a></li>
+							<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a rel="external" href="http://whatismyipaddress.com/ip/{IP*}">Reverse-DNS/WHOIS/Geo-Lookup</a></li>
+							<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a rel="external" href="https://ping.eu/ping/?host={IP*}">Ping</a></li>
+							<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a rel="external" href="https://ping.eu/traceroute/?host={IP*}">Tracert</a></li>
 						</ul>
 					</nav>
 				</td>

@@ -22,7 +22,7 @@
 <nav>
 	<ul class="actions-list">
 		<li class="actions-list-strong">
-			<a href="{$PAGE_LINK*,_SELF:_SELF:export_transactions}">{!EXPORT_TRANSACTIONS}</a>
+			{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{$PAGE_LINK*,_SELF:_SELF:export_transactions}">{!EXPORT_TRANSACTIONS}</a>
 		</li>
 	</ul>
 </nav>

@@ -12,7 +12,7 @@
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{$?,{OPEN_DEFAULT},{!CONTRACT},{!EXPAND}}">
 			{+START,INCLUDE,ICON}
 				NAME=trays/{$?,{OPEN_DEFAULT},contract,expand}
-				SIZE=20
+				ICON_SIZE=20
 			{+END}
 		</a>
 	</div>

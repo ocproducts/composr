@@ -17,7 +17,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-accordion" href="#!" title="{$?,{$GET,is_current_year},{!CONTRACT},{!EXPAND}}">
 							{+START,INCLUDE,ICON}
 								NAME=trays/{$?,{$GET,is_current_year},contract,expand}
-								SIZE=20
+								ICON_SIZE=20
 							{+END}
 						</a>
 

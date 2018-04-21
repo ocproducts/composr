@@ -80,7 +80,7 @@
 				<span class="field-name">{!ACTIONS}:</span>
 			</p>
 			<ul class="actions-list">
-				<li><a title="{!EDIT_IN_FULL_PAGE_EDITOR}: {ID*} {!LINK_NEW_WINDOW}" target="_blank" href="{EDIT_URL*}">{!EDIT_IN_FULL_PAGE_EDITOR}</a></li>
+				<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a title="{!EDIT_IN_FULL_PAGE_EDITOR}: {ID*} {!LINK_NEW_WINDOW}" target="_blank" href="{EDIT_URL*}">{!EDIT_IN_FULL_PAGE_EDITOR}</a></li>
 			</ul>
 		{+END}
 

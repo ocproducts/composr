@@ -26,7 +26,7 @@
 		<span aria-label="{!COUNT_TOTAL} {!notifications:NOTIFICATIONS}">{NUM_UNREAD_WEB_NOTIFICATIONS*}</span>
 		{+START,INCLUDE,ICON}
 			NAME=tool_buttons/notifications
-			SIZE=24
+			ICON_SIZE=24
 		{+END}
 	</a>
 
@@ -52,7 +52,7 @@
 			<span aria-label="{!COUNT_TOTAL} {!cns:PRIVATE_TOPICS}">{NUM_UNREAD_PTS*}</span>
 			{+START,INCLUDE,ICON}
 				NAME=tool_buttons/inbox
-				SIZE=24
+				ICON_SIZE=24
 			{+END}
 		</a>
 	{+END}{+END}

@@ -9,7 +9,7 @@
 
 	{+START,IF_NON_EMPTY,{MESSY_URL}}
 		<ul class="actions-list">
-			<li>{!WEBSTANDARDS_MESSAGE,{MESSY_URL*}}</li>
+			<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} {!WEBSTANDARDS_MESSAGE,{MESSY_URL*}}</li>
 		</ul>
 	{+END}
 

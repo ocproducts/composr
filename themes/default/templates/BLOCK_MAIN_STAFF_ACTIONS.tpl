@@ -8,7 +8,7 @@
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!CONTRACT}">
 			{+START,INCLUDE,ICON}
 				NAME=trays/contract
-				SIZE=24
+				ICON_SIZE=24
 			{+END}
 		</a>
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!MODULE_TRANS_NAME_admin_actionlog}</a> <span class="associated-details">(<a title="{!MODULE_TRANS_NAME_admin_actionlog}" href="{$PAGE_LINK*,adminzone:admin_actionlog}">{$LCASE,{!MORE}}</a>)</span>

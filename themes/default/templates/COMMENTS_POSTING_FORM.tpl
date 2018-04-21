@@ -38,7 +38,7 @@
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}">
 							{+START,INCLUDE,ICON}
 								NAME=trays/{EXPAND_TYPE}
-								SIZE=24
+								ICON_SIZE=24
 							{+END}
 						</a>
 						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{TITLE*}</a>

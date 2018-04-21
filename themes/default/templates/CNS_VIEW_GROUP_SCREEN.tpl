@@ -49,7 +49,7 @@
 	{+START,IF_NON_EMPTY,{APPLY_URL}}
 		<nav>
 			<ul class="force-margin actions-list">
-				<li><a href="{APPLY_URL*}">{APPLY_TEXT*}</a></li>
+				<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{APPLY_URL*}">{APPLY_TEXT*}</a></li>
 			</ul>
 		</nav>
 	{+END}

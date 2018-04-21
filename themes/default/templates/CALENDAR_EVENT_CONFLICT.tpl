@@ -2,7 +2,7 @@
 	<div class="global-message" role="alert">
 		{+START,INCLUDE,ICON}
 			NAME=status/notice
-			SIZE=24
+			ICON_SIZE=24
 		{+END}
 		{!EVENT_CONFLICT_DETECTED,<a href="{URL*}" title="{TITLE*}: #{ID*}">{TITLE*}</a>}
 	</div>

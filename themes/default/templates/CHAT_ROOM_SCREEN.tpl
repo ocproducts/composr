@@ -31,7 +31,7 @@
 						{+START,INCLUDE,ICON}
 							ID=e-chat-comcode-panel
 							NAME=trays/expand
-							SIZE=20
+							ICON_SIZE=20
 						{+END}
 					</a>
 				</div>
@@ -134,7 +134,7 @@
 					<ul class="actions-list">
 						{+START,LOOP,LINKS}
 							{+START,IF_NON_EMPTY,{_loop_var}}
-								<li class="icon-14-{_loop_key*}">{_loop_var}</li>
+								<li>{+START,INCLUDE,ICON}NAME={_loop_key}{+END} {_loop_var}</li>
 							{+END}
 						{+END}
 					</ul>

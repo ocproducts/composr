@@ -35,7 +35,7 @@
 	<nav>
 		<ul class="actions-list">
 			<li class="actions-list-strong">
-				<a href="{$PAGE_LINK*,_SELF:_SELF:order_export}">{!EXPORT_ORDER_LIST}</a>
+				{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="{$PAGE_LINK*,_SELF:_SELF:order_export}">{!EXPORT_ORDER_LIST}</a>
 			</li>
 		</ul>
 	</nav>

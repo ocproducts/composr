@@ -5,7 +5,7 @@
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray inline-desktop" href="#!" title="{!CONTRACT}">
 			{+START,INCLUDE,ICON}
 				NAME=trays/contract
-				SIZE=24
+				ICON_SIZE=24
 			{+END}
 		</a>
 
@@ -50,8 +50,8 @@
 			<nav class="cns-guest-column cns-member-column-d">
 				{$,<p class="cns-member-column-title">{!VIEW}:</p>}
 				<ul class="actions-list">
-					<li><a data-open-as-overlay="{}" href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
-					<li><a data-open-as-overlay="{}" href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
+					<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a data-open-as-overlay="{}" href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
+					<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a data-open-as-overlay="{}" href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
 				</ul>
 			</nav>
 		</div>

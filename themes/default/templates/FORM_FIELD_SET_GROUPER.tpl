@@ -3,7 +3,7 @@
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{+START,IF_PASSED_AND_TRUE,VISIBLE}{!CONTRACT}{+END}{+START,IF_NON_PASSED_OR_FALSE,VISIBLE}{!EXPAND}{+END}">
 			{+START,INCLUDE,ICON}
 				NAME=trays/{+START,IF_PASSED_AND_TRUE,VISIBLE}contract{+END}{+START,IF_NON_PASSED_OR_FALSE,VISIBLE}expand{+END}
-				SIZE=20
+				ICON_SIZE=20
 			{+END}
 		</a>
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{NAME*}</a>

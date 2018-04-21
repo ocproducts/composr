@@ -766,6 +766,11 @@ header h1 {
 	text-decoration: underline;
 }
 
+.global-navigation .top-login .horizontal-links a .icon {
+	width: 24px;
+	height: 24px;
+}
+
 /* This is applied to the screen title, which is specially included on each screen; in the case of Comcode pages it is the first level 1 title. The screen title is by default an h1, but we define the styles separately so we can style this special title independently (there are lots of cool things we could do to it) */
 .screen-title {
 	margin-top: 0.35em;
@@ -1583,6 +1588,13 @@ div.red-alert, p.red-alert {
 	background-size: 24px 24px;
 	overflow: hidden;
 }
+
+.red-alert-icon .icon {
+	width: 24px;
+	height: 24px;
+	margin-right: 0.3em;
+}
+
 .inline-wip-message {
 	border: 1px solid {$GET,dark_border};
 	background: url('{$IMG;,icons/status/notice}') 0.6em 0.75em no-repeat {$GET,area_background};
@@ -3334,21 +3346,23 @@ ul.actions-list {
 	padding: 0;
 	margin: 0;
 }
-ul.actions-list>li, .attachment ul.actions-list>li /*for higher precedence for attachments within docs zone*/ {
-	padding: 2px 0 2px 18px !important;
+ul.actions-list > li, 
+.attachment ul.actions-list > li /*for higher precedence for attachments within docs zone*/ {
+	padding: 2px 0 !important;
 	margin: 0 !important;
 }
-ul.actions-list-compact>li, ul.actions-list-super-compact>li {
-	padding: 0 0 0 18px;
-}
-ul.actions-list>li, ul.actions-list-compact>li, ul.actions-list-super-compact>li {
-	background: url('{$IMG_INLINE;,icons/buttons/proceed2}') left 4px no-repeat;
-	background-size: 14px 14px;
-}
-ul.actions-list>li, ul.actions-list-compact>li, ul.actions-list-super-compact>li {
+ul.actions-list > li, 
+ul.actions-list-compact > li, 
+ul.actions-list-super-compact > li {
 	margin: 0;
 	list-style-type: none;
 	list-style-image: none;
+}
+ul.actions-list > li > .icon,
+ul.actions-list-compact > li > .icon,
+ul.actions-list-super-compact > li > .icon {
+	width: 14px;
+	height: 14px;
 }
 ul.actions-list h4 {
 	display: inline;
@@ -3861,6 +3875,7 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 	border-width: 2px;
 	font-size: 13px;
 	min-width: 8em;
+	text-align: center;
 }
 
 .button-screen .icon {
@@ -3871,6 +3886,7 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 .button-screen-item {
 	padding: 5px 7px;
 	font-size: 13px;
+	text-align: center;
 }
 
 .button-screen-item .icon {
@@ -4827,6 +4843,12 @@ a[rel="lightbox"] {
 	.print-icon {
 		padding: 0 0 5px 0 !important;
 		display: inline-block;
+	}
+
+	.print-icon .icon {
+		width: 24px;
+		height: 24px;
+		margin-right: 0.3em;
 	}
 /*{+END}*/
 

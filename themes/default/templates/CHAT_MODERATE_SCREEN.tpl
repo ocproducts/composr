@@ -22,7 +22,7 @@
 		<nav>
 			<ul class="actions-list">
 				{+START,LOOP,LINKS}
-					<li>{_loop_var}</li>
+					<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} {_loop_var}</li>
 				{+END}
 			</ul>
 		</nav>

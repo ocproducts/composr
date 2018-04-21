@@ -429,7 +429,6 @@ class css_file_test_set extends cms_test_case
             'nlevel-link',
             'hover',
             'hover__dark',
-            'icon-14-export',
             'im-event',
             'im-popup-avatar',
             'im-popup-close-button',

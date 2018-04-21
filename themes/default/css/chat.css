@@ -535,49 +535,14 @@ ul.icon-links-block-group {
 	}
 /*{+END}*/
 
-ul.icon-links-block-group>li {
+ul.icon-links-block-group > li {
 	list-style-type: none;
 	margin: 0 0 0 1em;
-	padding: 0 0 0 17px;
 	display: inline-block;
-	background-repeat: no-repeat;
-	background-position: 0 2px;
 	min-height: 15px;
 }
 
-.icon-14-add {
-	background-image: url('{$IMG,icons/admin/add}') !important;
-	background-size: 14px 14px;
-}
-.icon-14-edit {
-	background-image: url('{$IMG,icons/admin/edit2}') !important;
-	background-size: 14px 14px;
-}
-.icon-14-export {
-	background-image: url('{$IMG,icons/admin/export}') !important;
-	background-size: 14px 14px;
-}
-.icon-14-proceed {
-	background-image: url('{$IMG,icons/buttons/proceed2}') !important;
-	background-size: 14px 14px;
-}
-.icon-14-ban {
-	background-image: url('{$IMG,icons/admin/remove}') !important;
-	background-size: 14px 14px;
-}
-.icon-14-unban {
-	background-image: url('{$IMG,icons/buttons/clear}') !important;
-	background-size: 14px 14px;
-}
-.icon-14-delete {
-	background-image: url('{$IMG,icons/admin/delete3}') !important;
-	background-size: 14px 14px;
-}
-.icon-14-sound-effects {
-	background-image: url('{$IMG,icons/buttons/sound_effects}') !important;
-	background-size: 14px 14px;
-}
-.icon-14-tools {
-	background-image: url('{$IMG,icons/checklist/toggle}') !important;
-	background-size: 14px 14px;
+ul.icon-links-block-group > li .icon {
+	width: 14px;
+	height: 14px;
 }

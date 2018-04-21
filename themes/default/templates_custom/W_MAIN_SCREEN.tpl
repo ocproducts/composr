@@ -251,7 +251,7 @@
 				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
 					{+START,INCLUDE,ICON}
 						NAME=trays/expand
-						SIZE=24
+						ICON_SIZE=24
 					{+END}
 				</a>
 			</h2>
@@ -549,7 +549,7 @@
 					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
 						{+START,INCLUDE,ICON}
 							NAME=trays/expand
-							SIZE=24
+							ICON_SIZE=24
 						{+END}
 					</a>
 				</h2>
@@ -584,7 +584,7 @@
 				<a class="js-click-set-hidemod-cookie toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
 					{+START,INCLUDE,ICON}
 						NAME=trays/expand
-						SIZE=24
+						ICON_SIZE=24
 					{+END}
 				</a>
 			</h2>

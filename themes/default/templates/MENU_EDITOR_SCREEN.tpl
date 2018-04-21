@@ -61,7 +61,7 @@
 
 						<nav>
 							<ul class="actions-list">
-								<li><a href="#!" class="js-click-menu-editor-add-new-page">{!SPECIFY_NEW_PAGE}</a></li>
+								<li>{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END} <a href="#!" class="js-click-menu-editor-add-new-page">{!SPECIFY_NEW_PAGE}</a></li>
 							</ul>
 						</nav>
 					</div>
@@ -92,7 +92,7 @@
 					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
 						{+START,INCLUDE,ICON}
 							NAME=trays/expand
-							SIZE=24
+							ICON_SIZE=24
 						{+END}
 					</a>
 					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!DELETE_MENU}</a>

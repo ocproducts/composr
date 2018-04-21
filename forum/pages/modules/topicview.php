@@ -569,7 +569,7 @@ class Module_topicview
                         $map['threaded'] = $test_threaded;
                     }
                     $mark_read_url = build_url($map, get_module_zone('topics'));
-                    $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_READ'), 'url' => $mark_read_url, 'img' => 'buttons/mark_read_topic');
+                    $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_READ'), 'url' => $mark_read_url, 'img' => 'buttons/mark_read');
                 } else {
                     if ((get_option('enable_mark_topic_unread') === '1') && !$too_old) {
                         $map = array('page' => 'topics', 'type' => 'mark_unread_topic', 'id' => $id);
@@ -582,7 +582,7 @@ class Module_topicview
                             $map['threaded'] = $test_threaded;
                         }
                         $mark_unread_url = build_url($map, get_module_zone('topics'));
-                        $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_UNREAD'), 'url' => $mark_unread_url, 'img' => 'buttons/mark_unread_topic');
+                        $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_UNREAD'), 'url' => $mark_unread_url, 'img' => 'buttons/mark_unread');
                     }
                 }
             }
