@@ -867,7 +867,7 @@
                                 break;
                             }
                             $dom.html(tmpElement, '{!chat:INACTIVE;^}');
-                            document.getElementById('friend-img-' + memberId).className = 'friend_inactive';
+                            document.getElementById('friend-img-' + memberId).className = 'friend-inactive';
                             friendBeingTracked = true;
                         }
 

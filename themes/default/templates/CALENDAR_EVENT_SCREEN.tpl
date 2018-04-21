@@ -46,7 +46,12 @@
 					{+END}
 
 					<ul class="horizontal-links associated-links-block-group">
-						<li><img alt="" width="24" height="24" src="{$IMG*,icons/buttons/notifications_enable}" /> <a href="{SUBSCRIBE_URL*}">{!SUBSCRIBE_EVENT}</a></li>
+						<li>
+							{+START,INCLUDE,ICON}
+								NAME=buttons/notifications_enable
+								ICON_SIZE=24
+							{+END}  
+							<a href="{SUBSCRIBE_URL*}">{!SUBSCRIBE_EVENT}</a></li>
 					</ul>
 				</div></div>
 			</div>

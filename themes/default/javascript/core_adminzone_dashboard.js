@@ -8,7 +8,7 @@
     function BlockMainStaffChecklistCustomTask() {
         BlockMainStaffChecklistCustomTask.base(this, 'constructor', arguments);
 
-        this.imgChecklistStatus = this.$('.js-img-checklist-status');
+        this.iconChecklistStatus = this.$('.js-icon-checklist-status');
     }
 
     $util.inherits(BlockMainStaffChecklistCustomTask, $cms.View, /**@lends BlockMainStaffChecklistCustomTask#*/{
@@ -31,14 +31,14 @@
             if (this.$closest(e.target, '.js-click-confirm-delete')) {
                 return;
             }
-
+            
             if (data.vwTaskDone === 'checklist_todo') {
                 $cms.loadSnippet('checklist_task_manage', 'type=mark_done&id=' + id);
-                this.imgChecklistStatus.src = $util.srl('{$IMG;,icons/checklist/checklist_done}');
+                $cms.setIcon(this.iconChecklistStatus, 'checklist__checklist_done', '{$IMG;,icons/checklist/checklist_done}');
                 data.vwTaskDone = 'checklist_done';
             } else {
                 $cms.loadSnippet('checklist_task_manage', 'type=mark_undone&id=' + id);
-                this.imgChecklistStatus.src = $util.srl('{$IMG;,icons/checklist/checklist_todo}');
+                $cms.setIcon(this.iconChecklistStatus, 'checklist__checklist_todo', '{$IMG;,icons/checklist/checklist_todo}');
                 data.vwTaskDone = 'checklist_todo';
             }
         },

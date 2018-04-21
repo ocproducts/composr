@@ -1600,7 +1600,8 @@
             var show = $dom.notDisplayed(this.contentsEl),
                 panelRight = $dom.$('#panel-right'),
                 helperPanelContents = $dom.$('#helper-panel-contents'),
-                helperPanelToggle = $dom.$('#helper-panel-toggle');
+                helperPanelToggle = $dom.$('#helper-panel-toggle'),
+                helperPanelToggleIcon = helperPanelToggle.querySelector('.icon');
 
             if (show) {
                 panelRight.classList.remove('helper-panel-hidden');
@@ -1612,7 +1613,8 @@
                     $cms.setCookie('hide_helper_panel', '0', 100);
                 }
 
-                helperPanelToggle.firstElementChild.src = $util.srl('{$IMG;,icons/helper_panel/hide}');
+                helperPanelToggle.title = '{!HELP_OR_ADVICE}: {!HIDE}';
+                $cms.setIcon(helperPanelToggleIcon, 'helper_panel__hide', '{$IMG;,icons/helper_panel/hide}');
             } else {
                 if ($cms.readCookie('hide_helper_panel') === '') {
                     $cms.ui.confirm('{!CLOSING_HELP_PANEL_CONFIRM;^}', function (answer) {
@@ -1631,7 +1633,8 @@
                 helperPanelContents.setAttribute('aria-expanded', 'false');
                 helperPanelContents.style.display = 'none';
                 $cms.setCookie('hide_helper_panel', '1', 100);
-                helperPanelToggle.firstElementChild.src = $util.srl('{$IMG;,icons/helper_panel/show}');
+                helperPanelToggle.title = '{!HELP_OR_ADVICE}: {!SHOW}';
+                $cms.setIcon(helperPanelToggleIcon, 'helper_panel__show', '{$IMG;,icons/helper_panel/show}');
             }
         }
     });

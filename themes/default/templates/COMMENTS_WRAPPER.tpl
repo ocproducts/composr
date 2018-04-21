@@ -7,7 +7,11 @@
 			{+START,IF_NON_EMPTY,{REVIEW_RATING}}
 				{+START,IF_EMPTY,{REVIEW_TITLE}}
 					{+START,WHILE,{$LT,{$GET,rating_loop},{$ROUND,{$DIV_FLOAT,{REVIEW_RATING},2}}}}
-						<img width="14" height="14" src="{$IMG*,icons/feedback/rating}" alt="{$ROUND,{$DIV_FLOAT,{REVIEW_RATING},2}}" />
+						{+START,INCLUDE,ICON}
+							NAME=feedback/rating
+							ICON_SIZE=14
+							ICON_DESCRIPTION={$ROUND,{$DIV_FLOAT,{REVIEW_RATING},2}}
+						{+END}
 						{$INC,rating_loop}
 					{+END}
 				{+END}
@@ -61,7 +65,11 @@
 							<strong>{REVIEW_TITLE*}:</strong>
 							{$SET,rating_loop,0}
 							{+START,WHILE,{$LT,{$GET,rating_loop},{$ROUND,{$DIV_FLOAT,{REVIEW_RATING},2}}}}
-								<img width="14" height="14" src="{$IMG*,icons/feedback/rating}" alt="{$ROUND,{$DIV_FLOAT,{REVIEW_RATING},2}}" />
+								{+START,INCLUDE,ICON}
+									NAME=feedback/rating
+									ICON_SIZE=14
+									ICON_DESCRIPTION={$ROUND,{$DIV_FLOAT,{REVIEW_RATING},2}}
+								{+END}
 								{$INC,rating_loop}
 							{+END}
 						</p>

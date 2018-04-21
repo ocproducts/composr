@@ -60,7 +60,13 @@
 				</table>
 
 				<ul class="horizontal-links associated-links-block-group">
-					<li><img width="24" height="24" src="{$IMG*,icons/feedback/comment}" alt="" /> <a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a></li>
+					<li>
+						{+START,INCLUDE,ICON}
+							NAME=feedback/comment
+							ICON_SIZE=24
+						{+END}
+						<a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a>
+					</li>
 				</ul>
 
 				{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}

@@ -3,7 +3,11 @@
 {$GET,whisper_screen_text}
 
 <div class="cns-whisper-lead-in">
-	<img width="48" height="48" src="{$IMG*,icons/buttons/add_topic}" alt="" class="right" />
+	{+START,INCLUDE,ICON}
+		NAME=buttons/add_topic
+		ICON_SIZE=48
+		ICON_CLASS=right
+	{+END}
 
 	{+START,IF,{$HAS_PRIVILEGE,use_pt}}<p>{!WHISPER_TEXT}</p>{+END}
 </div>
@@ -54,5 +58,10 @@
 </div>
 
 <p class="back-button">
-	<a href="#!" data-cms-btn-go-back="1"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" width="48" height="48" src="{$IMG*,icons/admin/back}" /></a>
+	<a href="#!" data-cms-btn-go-back="1" title="{!NEXT_ITEM_BACK}">
+		{+START,INCLUDE,ICON}
+			NAME=admin/back
+			ICON_SIZE=48
+		{+END}
+	</a>
 </p>

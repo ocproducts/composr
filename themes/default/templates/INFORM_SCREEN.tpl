@@ -16,7 +16,12 @@
 
 	<div>
 		{+START,IF_PASSED,FIELDS}{FIELDS}{+END}
-		<button class="button-icon" type="submit"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" width="48" height="48" src="{$IMG*,icons/admin/back}" /></button>
+		<button class="button-icon" type="submit" title="{!NEXT_ITEM_BACK}">
+			{+START,INCLUDE,ICON}
+				NAME=admin/back
+				ICON_SIZE=48
+			{+END}
+		</button>
 	</div>
 </form>
 {+END}

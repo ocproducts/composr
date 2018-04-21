@@ -999,6 +999,21 @@
     };
 
     /**
+     * @param iconEl
+     * @param symbolId
+     * @param imageSrc
+     */
+    $cms.setIcon = function setIcon(iconEl, symbolId, imageSrc) {
+        var use;
+        if (iconEl.localName === 'svg') {
+            use = iconEl.querySelector('use');
+            use.setAttribute('xlink:href', use.getAttribute('xlink:href').replace(/#\w+$/, '#' + symbolId));
+        } else {
+            iconEl.src = $util.srl(imageSrc);
+        }
+    };
+
+    /**
      * @memberof $cms
      * @param functionCallsArray
      * @param [thisRef]

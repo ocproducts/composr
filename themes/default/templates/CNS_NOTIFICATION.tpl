@@ -19,7 +19,17 @@
 			</div>
 
 			<ul class="horizontal-links associated-links-block-group force-margin">
-				<li><span><a href="{TOPIC_URL*}" title="{!VIEW}: {!FORUM_POST} #{ID*}">{!VIEW}</a></span>{+START,IF,{$NEQ,{_ADDITIONAL_POSTS},0}} <img data-cms-rich-tooltip="{}" title="{!cns:ADDITIONAL_PT_POSTS,{ADDITIONAL_POSTS}}" alt="{!HELP}" width="24" height="24" src="{$IMG*,icons/help}" class="top-vertical-alignment help-icon" />{+END}</li>
+				<li>
+					<span><a href="{TOPIC_URL*}" title="{!VIEW}: {!FORUM_POST} #{ID*}">{!VIEW}</a></span>
+					{+START,IF,{$NEQ,{_ADDITIONAL_POSTS},0}} 
+						<a class="top-vertical-alignment help-icon" data-cms-rich-tooltip="{}" title="{!cns:ADDITIONAL_PT_POSTS,{ADDITIONAL_POSTS}}" href="#!">
+							{+START,INCLUDE,ICON}
+								NAME=help
+								ICON_SIZE=24
+							{+END}
+						</a>
+					{+END}
+				</li>
 				<li><a href="{REPLY_URL*}" title="{!REPLY}: {!FORUM_POST} #{ID*}">{!REPLY}</a></li>
 				<li><a class="js-click-ignore-notification" data-click-pd="1" href="{IGNORE_URL*}" title="{!MARK_READ}: {!FORUM_POST} #{ID*}">{!IGNORE}</a></li>
 			</ul>

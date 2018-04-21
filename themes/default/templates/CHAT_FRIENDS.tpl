@@ -47,7 +47,11 @@
 			{+START,LOOP,FRIENDS}
 				<tr>
 					<td>
-						<img {+START,IF,{SIMPLER}} title="{ONLINE_TEXT*}"{+END} id="friend-img-{MEMBER_ID*}" alt="" width="24" height="24" src="{$IMG*,icons/menu/social/members}" />
+						<a {+START,IF,{SIMPLER}} title="{ONLINE_TEXT*}"{+END}>{+START,INCLUDE,ICON}
+							NAME=menu/social/members
+							ICON_ID=friend-img-{MEMBER_ID*}
+							ICON_SIZE=24 
+						{+END}</a>
 					</td>
 
 					<td>

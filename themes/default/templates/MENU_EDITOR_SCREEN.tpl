@@ -45,7 +45,12 @@
 
 				<div id="mini-form-hider" style="display: none" class="float-surrounder">
 					<div class="menu-editor-rh-side">
-						<img class="dock-button js-img-click-toggle-docked-field-editing" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" width="13" height="13" src="{$IMG*,icons/arrow_box/arrow_box_hover}" />
+						<a title="{!TOGGLE_DOCKED_FIELD_EDITING}" class="dock-button js-click-toggle-docked-field-editing">
+							{+START,INCLUDE,ICON}
+								NAME=arrow_box/arrow_box_hover
+								ICON_SIZE=13
+							{+END}
+						</a>
 
 						<h2>{!CHOOSE_ENTRY_POINT}</h2>
 

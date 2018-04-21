@@ -11,7 +11,8 @@
 				<ul class="menu-links">
 					{+START,LOOP,MENU_PATHS}
 						<li>
-							<img class="vertical-alignment" alt="" width="16" height="16" src="{$IMG*,icons/menus/menu}" /> <kbd><a href="{MENU_URL*}">{MENU*}</a></kbd> (<span class="breadcrumbs"><span>{+START,IMPLODE,</span> <span class="sep"><span class="accessibility-hidden"> &rarr;</span></span> <span>,MENU_PATH_COMPONENTS,0,1}{+END}</span></span>)
+							{+START,INCLUDE,ICON} NAME=menus/menu{+END}
+							<kbd><a href="{MENU_URL*}">{MENU*}</a></kbd> (<span class="breadcrumbs"><span>{+START,IMPLODE,</span> <span class="sep"><span class="accessibility-hidden"> &rarr;</span></span> <span>,MENU_PATH_COMPONENTS,0,1}{+END}</span></span>)
 						</li>
 					{+END}
 				</ul>

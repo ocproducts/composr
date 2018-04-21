@@ -27,7 +27,10 @@
 
 {+START,IF,{$IN_STR,{ENTRIES},<img}}
 	<p class="vertical-alignment">
-		<img alt="{!HELP}" width="24" height="24" src="{$IMG*,icons/help}" />
+		{+START,INCLUDE,ICON}
+			NAME=help
+			ICON_SIZE=24
+		{+END}
 		<span>{!HOVER_FOR_FULL}</span>
 	</p>
 {+END}

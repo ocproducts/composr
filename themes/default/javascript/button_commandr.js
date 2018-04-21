@@ -101,7 +101,7 @@
                 $dom.show(commandrBox);
 
                 if (img) {
-                    img.src = $util.srl('{$IMG;,icons/tool_buttons/commandr_off}');
+                    $cms.setIcon(img, 'tool_buttons__commandr_off', '{$IMG;,icons/tool_buttons/commandr_off}');
                     img.classList.remove('footer-button-loading');
                 }
 
@@ -122,7 +122,7 @@
                 document.getElementById('commandr-command').focus();
             } else { // Hiding Commandr
                 if (img) {
-                    img.src = $util.srl('{$IMG;,icons/tool_buttons/commandr_on}');
+                    $cms.setIcon(img, 'tool_buttons__commandr_on', '{$IMG;,icons/tool_buttons/commandr_on}');
                     img.style.opacity = 1.0;
                 }
 

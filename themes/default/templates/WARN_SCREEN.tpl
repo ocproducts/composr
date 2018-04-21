@@ -46,7 +46,12 @@
 
 	{+START,IF,{PROVIDE_BACK}}{+START,IF,{$NOT,{$RUNNING_SCRIPT,preview}}}
 		<p class="back-button">
-			<a href="#!" data-cms-btn-go-back="1"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" width="48" height="48" src="{$IMG*,icons/admin/back}" /></a>
+			<a href="#!" data-cms-btn-go-back="1" title="{!NEXT_ITEM_BACK}">
+				{+START,INCLUDE,ICON}
+					NAME=admin/back
+					ICON_SIZE=48
+				{+END}
+			</a>
 		</p>
 	{+END}{+END}
 </div>

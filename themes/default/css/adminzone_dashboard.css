@@ -7,15 +7,20 @@
 
 a.top-left-toggle {
 	color: {$GET,inverted_text};
-	padding: 1px 0 5px 40px !important;
+	padding: 1px 0 5px 10px !important;
 	font-size: 0.8em;
 	float: left;
-	background: url('{$IMG;,icons/checklist/toggle}') no-repeat 10px -4px !important;
-	background-size: 24px 24px !important;
 	opacity: 0.7;
 }
+
 a.top-left-toggle:hover {
 	opacity: 1.0;
+}
+
+a.top-left-toggle .icon {
+	width: 20px;
+	height: 20px;
+	margin-right: 0.3em;
 }
 
 .checklist-header {

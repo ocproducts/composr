@@ -36,14 +36,16 @@
 			{+START,IF,{$AND,{IS_PANEL},{$THEME_OPTION,enable_edit_page_panel_buttons}}}
 				{+START,IF,{$EQ,{NAME},panel_left,panel_right}}
 					<p class="quick-self-edit-link associated-link">
-						<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" width="16" height="16" src="{$IMG*,icons/editor/comcode}" /></a>
+						<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}">{+START,INCLUDE,ICON}NAME=editor/comcode{+END}</a>
 						<a href="{EDIT_URL*}" title="{$?,{$HAS_ZONE_ACCESS,adminzone},{!EDIT_ZONE_EDITOR},{!EDIT_PAGE}}: {NAME*} ({!IN,&quot;{$?,{$IS_EMPTY,{$ZONE}},{!_WELCOME},{$ZONE*}}&quot;})"><span>{$?,{$HAS_ZONE_ACCESS,adminzone},{!EDIT_ZONE_EDITOR},{!EDIT_PAGE}}</span></a>
 					</p>
 				{+END}
 
 				{+START,IF,{$EQ,{NAME},panel_top,panel_bottom}}
 					<div>
-						<a class="edit-page-link-inline" href="{EDIT_URL*}"><img title="{!EDIT_PAGE}: {NAME*}" alt="{!EDIT_PAGE}: {NAME*}" width="16" height="16" src="{$IMG*,icons/editor/comcode}" /></a>
+						<a class="edit-page-link-inline" href="{EDIT_URL*}" title="{!EDIT_PAGE}: {NAME*}">
+							{+START,INCLUDE,ICON}NAME=editor/comcode{+END}
+						</a>
 					</div>
 				{+END}
 			{+END}

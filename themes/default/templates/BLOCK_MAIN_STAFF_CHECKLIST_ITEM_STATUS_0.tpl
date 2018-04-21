@@ -1,1 +1,4 @@
-<img data-click-alert="{!SYSTEM_CONTROLLED*}" width="12" height="12" src="{$IMG*,icons/checklist/checklist_todo}" title="{!NOT_COMPLETED}" alt="{!NOT_COMPLETED}" />
+<a data-click-alert="{!SYSTEM_CONTROLLED*}" title="{!NOT_COMPLETED}" href="#!">{+START,INCLUDE,ICON}
+		NAME=checklist/checklist_todo
+		ICON_SIZE=12 
+{+END}</a>

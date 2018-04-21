@@ -3,7 +3,14 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{CATEGORIES}}
-	<p><img class="activate-rich-semantic-tooltip help-icon vertical-alignment" alt="" width="24" height="24" src="{$IMG*,icons/help}" /> {!HELP_THRESHOLDS}</p>
+	<p>
+		{+START,INCLUDE,ICON}
+			NAME=help
+			ICON_CLASS=help-icon
+			ICON_SIZE=24
+		{+END}
+		{!HELP_THRESHOLDS}
+	</p>
 
 	{+START,LOOP,CATEGORIES}
 		<h2>{_loop_key*}</h2>

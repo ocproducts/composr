@@ -17,11 +17,17 @@
 				<div class="cns-forum-topic-title-bits">
 					<span class="cns-forum-topic-title-bits-left">
 						{+START,LOOP,TOPIC_ROW_LINKS}
-							<a rel="nofollow" href="{URL*}"><img class="vertical-alignment" width="14" height="14" src="{$IMG*,icons/cns_topic_modifiers/{IMG}}" title="{$STRIP_TAGS,{ALT}}" alt="{$STRIP_TAGS,{ALT}}" /></a>
+							<a rel="nofollow" href="{URL*}" title="{$STRIP_TAGS,{ALT}}">{+START,INCLUDE,ICON}
+								NAME=cns_topic_modifiers/{IMG}
+								ICON_SIZE=14
+							{+END}</a>
 						{+END}
 
 						{+START,LOOP,TOPIC_ROW_MODIFIERS}
-							<img class="vertical-alignment" width="14" height="14" src="{$IMG*,icons/cns_topic_modifiers/{IMG}}" title="{ALT*}" alt="{ALT*}" />
+							<a title="{ALT*}">{+START,INCLUDE,ICON}
+								NAME=cns_topic_modifiers/{IMG}
+								ICON_SIZE=14
+							{+END}</a>
 						{+END}
 					</span>
 
@@ -63,11 +69,17 @@
 
 			<div class="cns-forum-topic-title-bits-left">
 				{+START,LOOP,TOPIC_ROW_LINKS}
-					<a rel="nofollow" href="{URL*}"><img class="vertical-alignment" width="14" height="14" src="{$IMG*,icons/cns_topic_modifiers/{IMG}}" title="{$STRIP_TAGS,{ALT}}" alt="{$STRIP_TAGS,{ALT}}" /></a>
+					<a rel="nofollow" href="{URL*}" title="{$STRIP_TAGS,{ALT}}">{+START,INCLUDE,ICON}
+						NAME=cns_topic_modifiers/{IMG}
+						ICON_SIZE=14
+					{+END}</a>
 				{+END}
 
 				{+START,LOOP,TOPIC_ROW_MODIFIERS}
-					<img class="vertical-alignment" width="14" height="14" src="{$IMG*,icons/cns_topic_modifiers/{IMG}}" title="{ALT*}" alt="{ALT*}" />
+					<a title="{ALT*}">{+START,INCLUDE,ICON}
+						NAME=cns_topic_modifiers/{IMG}
+						ICON_SIZE=14
+					{+END}</a>
 				{+END}
 			</div>
 		</div>

@@ -36,7 +36,12 @@
 	</td>
 	<td>
 		{+START,IF,{$NEQ,{I},new}}
-			<a href="#!" class="js-click-confirm-container-deletion"><img width="14" height="14" src="{$IMG*,icons/admin/delete}" alt="{!DELETE}" title="{!DELETE}" /></a>
+			<a href="#!" class="js-click-confirm-container-deletion" title="{!DELETE}">
+				{+START,INCLUDE,ICON}
+					NAME=admin/delete
+					ICON_SIZE=14
+				{+END}
+			</a>
 		{+END}
 	</td>
 </tr>

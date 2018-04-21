@@ -43,7 +43,13 @@
 
 			<ul class="horizontal-links associated-links-block-group">
 				<li>{SORTING}</li>
-				<li><img width="24" height="24" src="{$IMG*,icons/buttons/proceed}" alt="" /> <a {+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!_SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{$PAGE_LINK*,_SELF:galleries:{FIRST_ENTRY_ID*}:slideshow=1:wide_high=1}">{!_SLIDESHOW}</a></li>
+				<li>
+					{+START,INCLUDE,ICON}
+						NAME=buttons/proceed
+						ICON_SIZE=24
+					{+END}
+					<a {+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!_SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{$PAGE_LINK*,_SELF:galleries:{FIRST_ENTRY_ID*}:slideshow=1:wide_high=1}">{!_SLIDESHOW}</a>
+				</li>
 			</ul>
 
 			{+START,INCLUDE,MASS_SELECT_DELETE_FORM}

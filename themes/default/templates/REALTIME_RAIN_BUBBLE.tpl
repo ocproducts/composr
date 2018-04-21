@@ -8,7 +8,12 @@
 			<div class="float-surrounder">
 				<div class="special-icon">
 					{+START,IF_PASSED,SPECIAL_ICON}
-						<img width="36" height="36" src="{$IMG*,icons/realtime_rain/{SPECIAL_ICON}}" alt="{SPECIAL_TOOLTIP*}" title="{SPECIAL_TOOLTIP*}" />
+						<a title="{SPECIAL_TOOLTIP*}">
+							{+START,INCLUDE,ICON}
+								NAME=realtime_rain/{SPECIAL_ICON}
+								ICON_SIZE=36
+							{+END}
+						</a>
 					{+END}
 				</div>
 

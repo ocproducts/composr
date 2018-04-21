@@ -76,18 +76,18 @@
             doMenuSave(e, button);
         });
 
-        $dom.on(container, 'click', '.js-img-click-toggle-docked-field-editing', toggleDockedFieldEditing);
+        $dom.on(container, 'click', '.js-click-toggle-docked-field-editing', toggleDockedFieldEditing);
         $dom.on(container, 'keypress', '.js-img-keypress-toggle-docked-field-editing', toggleDockedFieldEditing);
 
-        function toggleDockedFieldEditing(e, img) {
+        function toggleDockedFieldEditing(e, clicked) {
             if (!menuEditorWrapEl.classList.contains('docked')) {
                 menuEditorWrapEl.classList.add('docked');
                 menuEditorWrapEl.classList.remove('docked');
-                img.src = $util.srl('{$IMG;*,icons/arrow_box/arrow_box_hover}');
+                $cms.setIcon(clicked.querySelector('.icon'), 'arrow_box__arrow_box_hover', '{$IMG;^,icons/arrow_box/arrow_box_hover}');
             } else {
                 menuEditorWrapEl.classList.add('non-docked');
                 menuEditorWrapEl.classList.remove('docked');
-                img.src = $util.srl('{$IMG;*,icons/arrow_box/arrow_box}');
+                $cms.setIcon(clicked.querySelector('.icon'), 'arrow_box__arrow_box', '{$IMG;^,icons/arrow_box/arrow_box}');
             }
 
             adjustPaneHeights();

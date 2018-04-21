@@ -34,7 +34,13 @@
 		<div class="float-surrounder">
 			{+START,IF,{$NOT,{GIVE_CONTEXT}}}
 				<p class="left">
-					<a rel="back_to_top" target="_self" href="#"><img class="back-to-top-by-buttons" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" width="24" height="24" src="{$IMG*,icons/tool_buttons/top}" /></a>
+					<a rel="back_to_top" target="_self" href="#" title="{!BACK_TO_TOP}">
+						{+START,INCLUDE,ICON}
+							NAME=tool_buttons/top
+							ICON_CLASS=back-to-top-by-buttons
+							ICON_SIZE=24
+						{+END}
+					</a>
 				</p>
 			{+END}
 

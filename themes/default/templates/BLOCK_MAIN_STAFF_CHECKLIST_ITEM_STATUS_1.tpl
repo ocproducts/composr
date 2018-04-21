@@ -1,1 +1,4 @@
-<img width="12" height="12" src="{$IMG*,icons/checklist/checklist_done}" title="{!COMPLETED}" alt="{!COMPLETED}" />
+<a title="{!COMPLETED}">{+START,INCLUDE,ICON}
+	NAME=checklist/checklist_done
+	ICON_SIZE=12
+{+END}</a>

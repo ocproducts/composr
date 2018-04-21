@@ -132,7 +132,9 @@
 									{$SET,needs_msg_label,{$OR,{$GET,GET_NAME},{GET_EMAIL},{GET_TITLE}}}
 									{+START,IF,{$GET,needs_msg_label}}
 										<div class="vertical-alignment">
-											<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" width="16" height="16" src="{$IMG*,icons/editor/comcode}" /></a>
+											<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}">
+												{+START,INCLUDE,ICON}NAME=editor/comcode{+END}
+											</a>
 											<label for="post">{!POST_COMMENT}:</label>
 										</div>
 									{+END}
@@ -151,7 +153,9 @@
 
 									{+START,IF,{$NOT,{$GET,needs_msg_label}}}
 										<div>
-											<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="{!COMCODE_MESSAGE,Comcode}" width="16" height="16" src="{$IMG*,icons/editor/comcode}" class="vertical-alignment" /></a>
+											<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}">
+												{+START,INCLUDE,ICON}NAME=editor/comcode{+END}
+											</a>
 											<label for="post" class="vertical-alignment">{!POST_COMMENT}:</label>
 										</div>
 									{+END}

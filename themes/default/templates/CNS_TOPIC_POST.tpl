@@ -130,11 +130,19 @@
 						{$,is on/offline}
 						{+START,IF,{$NOT,{$VALUE_OPTION,disable_member_tracking}}}
 							{+START,IF_PASSED,POSTER_ONLINE}
-								<img title="{!ONLINE_NOW}: {$?,{POSTER_ONLINE},{!YES},{!NO}}" alt="{!ONLINE_NOW}: {$?,{POSTER_ONLINE},{!YES},{!NO}}" width="14" height="14" src="{$IMG*,icons/cns_general/{$?,{POSTER_ONLINE},is_on,is_off}}" />
+								<a title="{!ONLINE_NOW}: {$?,{POSTER_ONLINE},{!YES},{!NO}}">{+START,INCLUDE,ICON}
+									NAME=cns_general/{$?,{POSTER_ONLINE},is_on,is_off}
+									ICON_SIZE=14
+								{+END}</a>
 							{+END}
 						{+END}
 
-						<a href="#" rel="back_to_top"><img title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" width="24" height="24" src="{$IMG*,icons/tool_buttons/top}" /></a>
+						<a href="#" rel="back_to_top" title="{!BACK_TO_TOP}">
+							{+START,INCLUDE,ICON}
+								NAME=tool_buttons/top
+								ICON_SIZE=24
+							{+END}
+						</a>
 					</div>
 				{+END}{+END}
 			{+END}

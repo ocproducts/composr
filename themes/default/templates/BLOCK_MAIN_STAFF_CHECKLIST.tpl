@@ -2,8 +2,8 @@
 
 <section id="tray-{!CHECK_LIST|}" class="box box---block-main-staff-checklist" data-toggleable-tray="{ save: true }" data-tpl="blockMainStaffChecklist">
 	<h3 class="toggleable-tray-title js-tray-header">
-		<a href="#!" id="checklist-show-all-link" class="top-left-toggle js-click-disable-task-hiding" title="{!SHOW_ALL}: {!CHECK_LIST}">{!SHOW_ALL}</a>
-		<a href="#!" id="checklist-hide-done-link" class="top-left-toggle js-click-enable-task-hiding">{!HIDE_DONE}</a>
+		<a href="#!" id="checklist-show-all-link" class="top-left-toggle js-click-disable-task-hiding" title="{!SHOW_ALL}: {!CHECK_LIST}">{+START,INCLUDE,ICON}NAME=checklist/toggle{+END}{!SHOW_ALL}</a>
+		<a href="#!" id="checklist-hide-done-link" class="top-left-toggle js-click-enable-task-hiding">{+START,INCLUDE,ICON}NAME=checklist/toggle{+END}{!HIDE_DONE}</a>
 
 		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!CONTRACT}">
 			{+START,INCLUDE,ICON}
@@ -43,7 +43,7 @@
 				<button class="button-micro admin--add" type="submit" name="save" title="{!ADD} ({!CUSTOM_TASKS})">{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD}</button>
 			</div>
 			<div>
-				<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img class="vertical-alignment" alt="{!COMCODE_MESSAGE,Comcode}" width="16" height="16" src="{$IMG*,icons/editor/comcode}" /></a>
+				<a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}">{+START,INCLUDE,ICON}NAME=editor/comcode{+END}</a>
 				<label class="accessibility-hidden" for="new_task">{!DESCRIPTION}</label>
 				<input maxlength="255" type="text" id="new_task" name="new_task" size="32" />
 			</div>
