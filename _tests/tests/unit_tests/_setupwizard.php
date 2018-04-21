@@ -92,7 +92,7 @@ class _setupwizard_test_set extends cms_test_case
             'closed' => 'This site is currently closed because it is still being created. The webmaster(s) will open it up when they are ready.',
             'pre_f_closed' => '1',
             'require__closed' => '0',
-            'security_level' => 'medium',
+            'security_level' => 'low',
         );
         require_code('csrf_filter');
         $post_params['csrf_token'] = generate_csrf_token();

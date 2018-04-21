@@ -308,6 +308,8 @@ function delete_poll($id)
 
     $GLOBALS['SITE_DB']->query_delete('poll', array('id' => $id), '', 1);
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'polls', 'm_resource_type' => 'view', 'm_resource_id' => strval($id)));
+
     log_it('DELETE_POLL', strval($id), $question);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {

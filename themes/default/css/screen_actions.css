@@ -71,10 +71,6 @@
 	background-image: url('{$IMG_INLINE;,icons/links/stumbleupon}');
 }
 
-.screen-actions .digg {
-	background-image: url('{$IMG_INLINE;,icons/links/digg}');
-}
-
 .screen-actions .google-plusone {
 }
 

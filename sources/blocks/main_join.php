@@ -58,7 +58,7 @@ class Block_main_join
     public function run($map)
     {
         if (get_forum_type() != 'cns') {
-            return do_template('RED_ALERT',array('_GUID' => 'm0f7is0vysmap7v6uiz8po92kg5ek1bd', 'TEXT' => do_lang_tempcode('NO_CNS')));
+            return do_template('RED_ALERT', array('_GUID' => 'm0f7is0vysmap7v6uiz8po92kg5ek1bd', 'TEXT' => do_lang_tempcode('NO_CNS')));
         }
 
         cns_require_all_forum_stuff();

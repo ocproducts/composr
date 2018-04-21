@@ -431,6 +431,7 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
         $validated = 1;
     }
     $map = array(
+        'name' => $name,
         'title_text' => $title_text,
         'direct_code' => $direct_code,
         'b_type' => $b_type,
@@ -439,7 +440,6 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
         'expiry_date' => $expiry_date,
         'deployment_agreement' => $deployment_agreement,
         'submitter' => $submitter,
-        'name' => $name,
         'img_url' => $imgurl,
         'campaign_remaining' => $campaign_remaining,
         'site_url' => $site_url,
@@ -464,6 +464,8 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
 
     delete_cache_entry('main_banner_wave');
     delete_cache_entry('main_top_sites');
+
+    reorganise_uploads__banners(array('name' => $name));
 
     log_it('ADD_BANNER', $name, $caption);
 
@@ -540,8 +542,6 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
     require_code('files2');
     delete_upload('uploads/banners', 'banners', 'img_url', 'name', $old_name, $imgurl);
 
-    log_it('EDIT_BANNER', $name);
-
     delete_cache_entry('main_banner_wave');
     delete_cache_entry('main_top_sites');
 
@@ -590,6 +590,10 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
         $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'banner', 'content_id' => $name, 'region' => $region));
     }
 
+    reorganise_uploads__banners(array('name' => $name));
+
+    log_it('EDIT_BANNER', $name);
+
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
         generate_resource_fs_moniker('banner', $name);
@@ -628,6 +632,9 @@ function delete_banner($name)
 
     $GLOBALS['SITE_DB']->query_delete('banners_types', array('name' => $name));
     $GLOBALS['SITE_DB']->query_delete('content_regions', array('content_type' => 'banner', 'content_id' => $name));
+
+    require_code('uploads2');
+    clean_empty_upload_directories('uploads/banners');
 
     log_it('DELETE_BANNER', $name, get_translated_text($caption));
 
@@ -763,4 +770,16 @@ function delete_banner_type($id)
         require_code('resource_fs');
         expunge_resource_fs_moniker('banner_type', $id);
     }
+}
+
+/**
+ * Reorganise the banner uploads.
+ *
+ * @param  array $where Limit reorganisation to rows matching this WHERE map
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
+ */
+function reorganise_uploads__banners($where = array(), $tolerate_errors = false)
+{
+    require_code('uploads2');
+    reorganise_uploads('banner', 'uploads/banners', 'img_url', $where, null, false, $tolerate_errors);
 }

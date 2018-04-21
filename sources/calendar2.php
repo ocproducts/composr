@@ -463,6 +463,8 @@ function delete_calendar_event($id)
         update_catalogue_content_ref('event', strval($id), '');
     }
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'calendar', 'm_resource_type' => 'view', 'm_resource_id' => strval($id)));
+
     log_it('DELETE_CALENDAR_EVENT', strval($id), $e_title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {

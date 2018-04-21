@@ -55,7 +55,7 @@ class Block_main_bottom_bar
         }
 
         if (get_forum_type() != 'cns') {
-            return do_template('RED_ALERT',array('_GUID' => '0tcc11s4mxymww9ubl49vqig0m8y72wh', 'TEXT' => do_lang_tempcode('NO_CNS')));
+            return do_template('RED_ALERT', array('_GUID' => '0tcc11s4mxymww9ubl49vqig0m8y72wh', 'TEXT' => do_lang_tempcode('NO_CNS')));
         }
 
         require_code('cns_general');

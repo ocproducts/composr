@@ -165,7 +165,7 @@ class Hook_task_import_catalogue
      *
      * @param  ID_TEXT $catalogue_name The name of the catalogue that was used
      * @param  array $csv_data Data array of CSV imported file's lines
-     * @param  ?AUTO_LINK $catalog_root Catalogue root ID (null: Not a tree catalogue)
+     * @param  ?AUTO_LINK $catalogue_root Catalogue root ID (null: Not a tree catalogue)
      * @param  array $fields Array of catalogue fields
      * @param  array $categories Array of categories
      * @param  array $csv_field_titles Array of csv field titles
@@ -182,7 +182,7 @@ class Hook_task_import_catalogue
      * @param  boolean $allow_trackbacks Whether trackbacks are allowed for this resource
      * @return ?array Return to propagate [immediate exit] (null: nothing to propagate)
      */
-    public function import_csv_line($catalogue_name, $csv_data, $catalog_root, $fields, &$categories, $csv_field_titles, $key_field, $new_handling, $delete_handling, $update_handling, &$matched_ids, $notes_field, $meta_keywords_field, $meta_description_field, $allow_rating, $allow_comments, $allow_trackbacks)
+    public function import_csv_line($catalogue_name, $csv_data, $catalogue_root, $fields, &$categories, $csv_field_titles, $key_field, $new_handling, $delete_handling, $update_handling, &$matched_ids, $notes_field, $meta_keywords_field, $meta_description_field, $allow_rating, $allow_comments, $allow_trackbacks)
     {
         $notes = '';
         $meta_keywords = '';
@@ -244,7 +244,7 @@ class Hook_task_import_catalogue
 
                     if ($value != '') {
                         if ((strpos($value, '\\') === false) && (strpos($value, '/') === false)) {
-                            $value = 'uploads/catalogues/' . rawurlencode($value);
+                            $value = cms_rawurlrecode('uploads/catalogues/' . rawurlencode($value));
                         }
                     }
                 } else {
@@ -280,17 +280,17 @@ class Hook_task_import_catalogue
                         list(, , $db_type) = $hook_ob->get_field_value_row_bits($field);
                         switch ($db_type) {
                             case 'integer':
-                                $has_match = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_' . $db_type, 'id', array('cv_value' => intval($key)));
+                                $has_match = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_' . $db_type . ' x JOIN ' . get_table_prefix() . 'catalogue_entries e ON e.id=x.ce_id', 'x.id', array('c_name' => $catalogue_name, 'cv_value' => intval($key)));
                                 break;
                             case 'float':
-                                $has_match = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_' . $db_type, 'id', array('cv_value' => floatval($key)));
+                                $has_match = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_' . $db_type . ' x JOIN ' . get_table_prefix() . 'catalogue_entries e ON e.id=x.ce_id', 'x.id', array('c_name' => $catalogue_name, 'cv_value' => floatval($key)));
                                 break;
                             case 'short_trans':
                             case 'long_trans':
-                                $has_match = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_' . $db_type, 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cv_value') => $key));
+                                $has_match = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_' . $db_type . ' x JOIN ' . get_table_prefix() . 'catalogue_entries e ON e.id=x.ce_id', 'x.id', array('c_name' => $catalogue_name, $GLOBALS['SITE_DB']->translate_field_ref('cv_value') => $key));
                                 break;
                             default:
-                                $has_match = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_' . $db_type, 'id', array('cv_value' => $key));
+                                $has_match = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_' . $db_type . ' x JOIN ' . get_table_prefix() . 'catalogue_entries e ON e.id=x.ce_id', 'x.id', array('c_name' => $catalogue_name, 'cv_value' => $key));
                                 break;
                         }
                         break;
@@ -321,12 +321,18 @@ class Hook_task_import_catalogue
                 // Checks the general category exists or not
                 if (array_key_exists($catalogue_name, $categories)) {
                     $category_id = $categories[$catalogue_name];
-                } else { // If category field is null, record adds to a general category named catalogue name.
-                    $catalog_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => $catalogue_name));
+                } else { // If category field is null, record adds to a general category named by catalogue_name.
+                    $catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => $catalogue_name));
 
-                    $category_id = actual_add_catalogue_category($catalogue_name, $catalog_title, $catalog_title, $catalog_title, $catalog_root, '');
-                    if (get_value('disable_cat_cat_perms') !== '1') {
-                        $this->set_permissions(strval($category_id));
+                    if (array_key_exists($catalogue_title, $categories)) {
+                        $category_id = $categories[$catalogue_title];
+                    } else {
+                        $category_id = actual_add_catalogue_category($catalogue_name, $catalogue_title, '', '', $catalogue_root);
+                        if (get_value('disable_cat_cat_perms') !== '1') {
+                            $this->set_permissions(strval($category_id));
+                        }
+
+                        $categories[$catalogue_title] = $category_id;
                     }
 
                     $categories[$catalogue_name] = $category_id;
@@ -334,12 +340,12 @@ class Hook_task_import_catalogue
             } elseif (array_key_exists($category_title, $categories)) {
                 $category_id = $categories[$category_title];
             } else {
-                $category_id = actual_add_catalogue_category($catalogue_name, $category_title, $category_title, $category_title, $catalog_root, '');
+                $category_id = actual_add_catalogue_category($catalogue_name, $category_title, '', '', $catalogue_root);
                 if (get_value('disable_cat_cat_perms') !== '1') {
                     $this->set_permissions(strval($category_id));
                 }
 
-                $categories[$catalogue_name] = $category_id;
+                $categories[$category_title] = $category_id;
             }
 
             if (($method == 'overwrite') || ($method == 'add')) {
@@ -378,5 +384,15 @@ class Hook_task_import_catalogue
         }
 
         return null;
+    }
+
+    /**
+     * Set permissions of the news category from POST parameters.
+     *
+     * @param  ID_TEXT $id The category to set permissions for
+     */
+    public function set_permissions($id)
+    {
+        set_category_permissions_from_environment($this->permission_module, $id, $this->privilege_page);
     }
 }

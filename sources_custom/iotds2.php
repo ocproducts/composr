@@ -198,6 +198,8 @@ function delete_iotd($id)
 
     delete_cache_entry('main_iotd');
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'iotds', 'm_resource_type' => 'view', 'm_resource_id' => strval($id)));
+
     log_it('DELETE_IOTD', strval($id), get_translated_text($caption));
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {

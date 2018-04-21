@@ -495,12 +495,12 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         }
     }
 
+    $page = fix_page_name_dashing($zone, $attributes['page']);
+
     require_code('site');
-    if (_request_page($attributes['page'], $zone) === false) {
+    if (_request_page($page, $zone) === false) {
         return '';
     }
-
-    $page = fix_page_name_dashing($zone, $attributes['page']);
 
     // Put it together
     $page_link = $zone . ':' . $page;
@@ -510,6 +510,13 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         $page_link .= ':';
     }
     if (array_key_exists('id', $attributes)) {
+        if (!is_numeric($attributes['id'])) {
+            $moniker_id = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => $page, 'm_resource_type' => isset($attributes['type']) ? $attributes['type'] : 'browse', 'm_moniker' => $attributes['id']));
+            if ($moniker_id !== null) {
+                $attributes['id'] = $moniker_id;
+            }
+        }
+
         $page_link .= ':' . $attributes['id'];
     }
     foreach ($attributes as $key => $val) {
@@ -699,7 +706,6 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
         // It's possible we're re-activating a deprecated one
         'm_resource_page' => $page,
         'm_resource_type' => $type,
-        'm_resource_id' => $id,
         'm_moniker' => $moniker,
     ), '', 1);
     $GLOBALS['SITE_DB']->query_insert('url_id_monikers', array(
@@ -765,6 +771,7 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
             $dupe_sql .= ' OR m_moniker_reversed LIKE \'' . db_encode_like(strrev('%/' . $moniker)) . '\'';
         }
         $dupe_sql .= ')';
+        $dupe_sql .= ' AND m_deprecated=0';
         $test = $GLOBALS['SITE_DB']->query_value_if_there($dupe_sql, false, true);
         if ($test !== null) { // Oh dear, will pass to next iteration, but trying a new moniker
             $next_num++;
@@ -996,7 +1003,7 @@ function find_unique_path($subdir, $filename = null, $lock_in = false, $conflict
         cms_file_put_contents_safe($path, ''); // Lock it in ASAP, to stop race conditions
     }
 
-    $url = str_replace('%2F', '/', rawurlencode($subdir . '/' . $adjusted_filename));
+    $url = cms_rawurlrecode(str_replace('%2F', '/', rawurlencode($subdir . '/' . $adjusted_filename)));
 
     return array($path, $url, $adjusted_filename);
 }

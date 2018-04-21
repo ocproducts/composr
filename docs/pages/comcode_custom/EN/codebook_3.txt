@@ -599,6 +599,7 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]disable_virtual_roots[/tt] -- set this to '1' to disable virtual roots
  - Low-level tuning:
   - [tt]disable_kid_gloves_html[/tt] -- set this to '1' if you want to completely disable the kid-gloves HTML escaping mode, i.e. avoid the need to make declarations in your overrides. You may want to use this if you override various files but aren't really writing custom code and don't really understand how to make the declarations
+  - [tt]show_menu_items_as_url[/tt] -- set this to '1' if you want the menu editor to show URLs instead of page-links (they will then be converted back)
   - [tt]whitelisted_blocks[/tt] -- set this to a comma-separated list of block names to whitelist any user to use those blocks independently. This is useful for AJAX-loaded blocks on sites where users may leave pages open, letting their sessions or block authorisations expire.
   - [tt]no_individual_gallery_view[/tt] -- set this to '1' if all images/videos in a flow-mode gallery must be viewed from the flow-mode view (never individually)
   - [tt]root_cat__images[/tt] -- you can set this to the codename of a gallery, which will be the root for gallery selection on the gallery addon's Add Image form (root is not shown as an option). Alternatively, it can be an Selectcode string.
@@ -630,6 +631,7 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]default_newsletter_mail_template[/tt] -- set to the name of a template to set the default template for newsletters (instead of [tt]MAIL[/tt])
   - [tt]default_comcode_text[/tt] -- set this if you want to have multi-line Comcode editing fields to have a default value; this is useful for setting default font styles but don't want to retroactively affect old content; if you want it to be able to auto-wrap quick-reply content then you can put [tt]{content}[/tt] where you'd like the content to be inserted
   - [tt]addon_disabled_<addon>[/tt] -- set this to '1' to disable a particular addon (may not be supported by all addons)
+  - [tt]mail_theme[/tt] -- set this to the name of a theme to force that theme to be used for all outbound e-mails. This is useful because otherwise the theme of the user triggering the e-mail to be sent will be used.
  - Performance tuning (positive) [not official options as will break normal expectations of how the system will behave / complicate things]:
   - [tt]lots_of_data_in_*[/tt] -- set this to '1', with '*' replaced with a database table name, if you want the Selectcode mechanism to work with recursive DB lookups rather than one huge flat lookup
   - [tt]disable_cat_cat_perms[/tt] -- set this to '1' if you want to disable catalogue category permissions

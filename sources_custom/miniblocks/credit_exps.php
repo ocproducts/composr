@@ -16,25 +16,25 @@
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 if (!addon_installed('composr_homesite_support_credits')) {
-    return do_template('RED_ALERT',array('_GUID' => '6i3v3cs3s5ia4gu7mqcegz643hqz5nb6', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite_support_credits'))));
+    return do_template('RED_ALERT', array('_GUID' => '6i3v3cs3s5ia4gu7mqcegz643hqz5nb6', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('composr_homesite_support_credits'))));
 }
 
 if (!addon_installed('tickets')) {
-    return do_template('RED_ALERT',array('_GUID' => 'tivtotrvmlpkmqizx5toryotzigbrq8f', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('tickets'))));
+    return do_template('RED_ALERT', array('_GUID' => 'tivtotrvmlpkmqizx5toryotzigbrq8f', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('tickets'))));
 }
 if (!addon_installed('ecommerce')) {
-    return do_template('RED_ALERT',array('_GUID' => 'qkf23refnl212qwqn7foixklt4fmz8l7', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce'))));
+    return do_template('RED_ALERT', array('_GUID' => 'qkf23refnl212qwqn7foixklt4fmz8l7', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('ecommerce'))));
 }
 if (!addon_installed('points')) {
-    return do_template('RED_ALERT',array('_GUID' => 'iknm2uc9sjay5y7j71mqgec3jnqpuloz', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('points'))));
+    return do_template('RED_ALERT', array('_GUID' => 'iknm2uc9sjay5y7j71mqgec3jnqpuloz', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('points'))));
 }
 
 if (get_forum_type() != 'cns') {
-    return do_template('RED_ALERT',array('_GUID' => '3umhxm898adwsf01425xck2ub40zj9v7', 'TEXT' => do_lang_tempcode('NO_CNS')));
+    return do_template('RED_ALERT', array('_GUID' => '3umhxm898adwsf01425xck2ub40zj9v7', 'TEXT' => do_lang_tempcode('NO_CNS')));
 }
 
 if (strpos(get_db_type(), 'mysql') !== false) {
-    return do_template('RED_ALERT',array('_GUID' => '4wr6c3yhtmnlnprymsibx35b7mjnuwm1', 'TEXT' => 'This works with MySQL only'));
+    return do_template('RED_ALERT', array('_GUID' => '4wr6c3yhtmnlnprymsibx35b7mjnuwm1', 'TEXT' => 'This works with MySQL only'));
 }
 
 $block_id = get_block_id($map);

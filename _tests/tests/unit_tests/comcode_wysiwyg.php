@@ -154,11 +154,10 @@ class comcode_wysiwyg_test_set extends cms_test_case
         // semihtml...
 
         $in = "a<br />\nb";
-        $out = '<input class="cms-keep-ui-controlled" size="45" title="[block]a&lt;br /&gt;' . "\n" . 'b[/block]" type="button" value="a' . "\n" . do_lang('comcode:COMCODE_EDITABLE_BLOCK', 'b') . '" />';
+        $out = '<button class="cms-keep-ui-controlled" size="45" title="[block]a&lt;br /&gt;' . "\n" . 'b[/block]" type="button">a' . "\n" . do_lang('comcode:COMCODE_EDITABLE_BLOCK', 'b') . '</button>';
 
         $got = add_wysiwyg_comcode_markup('block', array(), make_string_tempcode($in), /*$semihtml*/true);
-        $is_matched = ($out == $got);
-        $this->assertTrue($is_matched);
+        $this->assertTrue($out == $got);
     }
 
     public function testBTag() // Reversible WYSIWYG_COMCODE__HTML

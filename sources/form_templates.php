@@ -1487,7 +1487,11 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     $field_url = $set_name . '__url';
 
-    $url_widget = form_input_url(do_lang_tempcode('URL'), do_lang_tempcode('DESCRIPTION_ALTERNATE_URL'), $field_url, $default, $required);
+    require_code('urls_simplifier');
+    $coder_ob = new HarmlessURLCoder();
+    $_default = $coder_ob->decode($default);
+
+    $url_widget = form_input_url(do_lang_tempcode('URL'), do_lang_tempcode('DESCRIPTION_ALTERNATE_URL'), $field_url, $_default, $required);
 
     $field_set->attach($url_widget);
 
@@ -2074,7 +2078,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 $pos = strpos($selected_url, '/' . $id);
                 $selected = false;
                 if ($id != '') {
-                    $selected = (find_theme_image($id, false, false, null, null, $db) == $selected_url) || (find_theme_image($id, false, true, null, null, $db) == $selected_url);
+                    $selected = (cms_rawurlrecode(find_theme_image($id, false, false, null, null, $db)) == cms_rawurlrecode($selected_url)) || (cms_rawurlrecode(find_theme_image($id, false, true, null, null, $db)) == cms_rawurlrecode($selected_url));
                 }
                 if ($selected) {
                     $selected_code = $id;

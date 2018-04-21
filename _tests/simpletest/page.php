@@ -588,7 +588,7 @@ class SimplePage {
             $this->_addLink($tag);
         } elseif ($tag->getTagName() == "base") {
             $this->_setBase($tag);
-        } elseif ($tag->getTagName() == "title") {
+        } elseif (($tag->getTagName() == "title") && ($this->_title === false)) {
             $this->_setTitle($tag);
         } elseif ($this->_isFormElement($tag->getTagName())) {
             for ($i = 0; $i < count($this->_open_forms); $i++) {

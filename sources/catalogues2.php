@@ -607,6 +607,8 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
 
     calculate_category_child_count_cache($parent_id);
 
+    reorganise_uploads__catalogue_categories(array('id' => $id));
+
     log_it('ADD_CATALOGUE_CATEGORY', strval($id), get_translated_text($map['cc_title']));
 
     require_code('content2');
@@ -835,6 +837,8 @@ function actual_edit_catalogue_category($id, $title, $description, $notes, $pare
         calculate_category_child_count_cache($parent_id);
     }
 
+    reorganise_uploads__catalogue_categories(array('id' => $id));
+
     log_it('EDIT_CATALOGUE_CATEGORY', strval($id), $title);
 
     delete_cache_entry('main_cc_embed');
@@ -929,7 +933,12 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
     $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($id)));
     $GLOBALS['SITE_DB']->query_delete('group_privileges', array('module_the_name' => 'catalogues_category', 'category_name' => strval($id)));
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'catalogues', 'm_resource_type' => 'category', 'm_resource_id' => strval($id)));
+
     calculate_category_child_count_cache($old_parent_id);
+
+    require_code('uploads2');
+    clean_empty_upload_directories('uploads/repimages');
 
     log_it('DELETE_CATALOGUE_CATEGORY', strval($id), $_title);
 
@@ -1117,6 +1126,8 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
             generate_resource_fs_moniker('catalogue_entry', strval($id), null, null, true);
         }
     }
+
+    reorganise_uploads__catalogue_entries(array('ce_id' => $id));
 
     delete_cache_entry('main_cc_embed');
 
@@ -1306,6 +1317,8 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
         }
     }
 
+    reorganise_uploads__catalogue_entries(array('ce_id' => $id));
+
     require_code('feedback');
     update_spacer_post(
         $allow_comments != 0,
@@ -1393,7 +1406,12 @@ function actual_delete_catalogue_entry($id)
 
     calculate_category_child_count_cache($old_category_id);
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'catalogues', 'm_resource_type' => 'entry', 'm_resource_id' => strval($id)));
+
     delete_cache_entry('main_cc_embed');
+
+    require_code('uploads2');
+    clean_empty_upload_directories('uploads/catalogues');
 
     if ($catalogue_name[0] != '_') {
         log_it('DELETE_CATALOGUE_ENTRY', strval($id), $title);
@@ -1408,4 +1426,46 @@ function actual_delete_catalogue_entry($id)
     notify_sitemap_node_delete('SEARCH:catalogues:entry:' . strval($id));
 
     @ignore_user_abort(false);
+}
+
+/**
+ * Reorganise the catalogue category uploads.
+ *
+ * @param  array $where Limit reorganisation to rows matching this WHERE map
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
+ */
+function reorganise_uploads__catalogue_categories($where = array(), $tolerate_errors = false)
+{
+    require_code('uploads2');
+    reorganise_uploads('catalogue_category', 'uploads/repimages', 'rep_image', $where, null, true, $tolerate_errors);
+}
+
+/**
+ * Reorganise the catalogue entry uploads.
+ *
+ * @param  array $where Limit reorganisation to rows matching this WHERE map
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
+ */
+function reorganise_uploads__catalogue_entries($where = array(), $tolerate_errors = false)
+{
+    require_code('uploads2');
+    $fake_cma_info = array(
+        'table' => 'catalogue_efv_short d',
+        'table_extended' => 'catalogue_efv_short d JOIN ' . get_table_prefix() . 'catalogue_entries e ON e.id=d.ce_id JOIN ' . get_table_prefix() . 'catalogue_fields f ON f.id=d.cf_id',
+        'db' => $GLOBALS['SITE_DB'],
+        'id_field' => 'd.id',
+        'parent_category_field' => 'cc_id',
+        'title_field' => null,
+        'title_field_dereference' => null,
+        'parent_spec__table_name' => 'catalogue_categories',
+        'parent_spec__field_name' => 'id',
+        'parent_spec__parent_name' => 'cc_parent_id',
+    );
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'upload'), $fake_cma_info, false, $tolerate_errors);
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'picture'), $fake_cma_info, false, $tolerate_errors);
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'video'), $fake_cma_info, false, $tolerate_errors);
+    $fake_cma_info['table'] = 'catalogue_efv_long';
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'upload_multi'), $fake_cma_info, false, $tolerate_errors);
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'picture_multi'), $fake_cma_info, false, $tolerate_errors);
+    reorganise_uploads('catalogue_entry', 'uploads/catalogues', 'cv_value', $where + array('cf_type' => 'video_multi'), $fake_cma_info, false, $tolerate_errors);
 }

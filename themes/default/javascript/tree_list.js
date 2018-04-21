@@ -522,7 +522,7 @@
                 $dom.fadeIn(htmlNode);
 
                 expandBtn.title = expandBtn.title.replace('{!EXPAND;^}', '{!CONTRACT;^}');
-                
+
                 if (expandBtnImg) {
                     expandBtnImg.src = $util.srl('{$IMG;,icons/tree_field/collapse}');
                     expandBtnImg.alt = expandBtnImg.alt.replace('{!EXPAND;^}', '{!CONTRACT;^}');
@@ -535,7 +535,7 @@
                 htmlNode.style.display = 'none';
 
                 expandBtn.title = expandBtn.title.replace('{!CONTRACT;^}', '{!EXPAND;^}');
-                
+
                 if (expandBtnImg) {
                     expandBtnImg.src = $util.srl('{$IMG;,icons/tree_field/expand}');
                     expandBtnImg.alt = expandBtnImg.alt.replace('{!CONTRACT;^}', '{!EXPAND;^}');

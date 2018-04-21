@@ -979,6 +979,7 @@ class Module_warnings extends Standard_crud_module
         }
 
         // Post deletion
+        $deleted_all = false;
         if (has_delete_permission('mid', get_member(), $member_id, 'topics')) {
             $where = array('p_poster' => $member_id);
             $sup = 'ORDER BY p_time';
@@ -987,6 +988,7 @@ class Module_warnings extends Standard_crud_module
             }
             $posts_already_deleted = array();
             $posts_by_member = $GLOBALS['FORUM_DB']->query_select('f_posts', array('id', 'p_topic_id', 'p_time'), $where, $sup);
+            $deleted_all = true;
             foreach ($posts_by_member as $post) {
                 if (isset($posts_already_deleted[$post['id']])) {
                     continue;
@@ -1006,6 +1008,9 @@ class Module_warnings extends Standard_crud_module
                             $posts[] = $_post['id'];
                             $posts_already_deleted[$_post['id']] = true;
                         }
+                        break;
+                    default:
+                        $deleted_all = false;
                         break;
                 }
                 cns_delete_posts_topic($post['p_topic_id'], $posts, $explanation, false);
@@ -1122,9 +1127,10 @@ class Module_warnings extends Standard_crud_module
             }
         }
 
-        if ((get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) == '') && (!$done_deleting)) {
+        if ((get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) == '') || ($deleted_all)) {
             require_code('site2');
             assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0);
+            unset($_GET['redirect']);
         }
 
         return strval($warning_id);

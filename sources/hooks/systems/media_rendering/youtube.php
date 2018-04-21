@@ -79,7 +79,7 @@ class Hook_media_rendering_youtube extends Media_renderer_with_fallback
     {
         $matches = array();
         if ((preg_match('#^https?://(www|m)\.youtube\.com/watch\?v=([\w\-]+)#', $src_url, $matches) != 0) || (preg_match('#^http://(youtu\.be)/([\w\-]+)#', $src_url, $matches) != 0)) {
-            return 'http://img.youtube.com/vi/' . rawurldecode($matches[2]) . '/0.jpg';
+            return 'https://img.youtube.com/vi/' . rawurldecode($matches[2]) . '/0.jpg';
         }
         return null;
     }

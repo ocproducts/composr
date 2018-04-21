@@ -16,11 +16,11 @@
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 if (!addon_installed('idolisr')) {
-    return do_template('RED_ALERT',array('_GUID' => 'g4l3co9a92o8mbdsq1luqo3mqdftv7x8', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('idolisr'))));
+    return do_template('RED_ALERT', array('_GUID' => 'g4l3co9a92o8mbdsq1luqo3mqdftv7x8', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('idolisr'))));
 }
 
 if (!addon_installed('points')) {
-    return do_template('RED_ALERT',array('_GUID' => 'zm4ccp3vsxc8wj32w3e4ejtrkn35705x', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('points'))));
+    return do_template('RED_ALERT', array('_GUID' => 'zm4ccp3vsxc8wj32w3e4ejtrkn35705x', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('points'))));
 }
 
 require_code('cns_groups');

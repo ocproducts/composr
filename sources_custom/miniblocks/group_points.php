@@ -16,11 +16,11 @@
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 if (!addon_installed('group_points')) {
-    return do_template('RED_ALERT',array('_GUID' => 'tl49gdaw7tr37siemgg8nx85kh4uqpqd', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('group_points'))));
+    return do_template('RED_ALERT', array('_GUID' => 'tl49gdaw7tr37siemgg8nx85kh4uqpqd', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('group_points'))));
 }
 
 if (!addon_installed('points')) {
-    return do_template('RED_ALERT',array('_GUID' => '3umhxm898adwsf01425xck2ub40zj9v7', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('points'))));
+    return do_template('RED_ALERT', array('_GUID' => '3umhxm898adwsf01425xck2ub40zj9v7', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('points'))));
 }
 
 require_code('points');

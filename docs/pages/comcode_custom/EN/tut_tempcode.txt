@@ -1454,7 +1454,7 @@ where:
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$STAFF_TOOLTIPS_URL_PATTERNS_JSON}</td>
-			<td>JSON object of staff URL patterns to apply comcode tooltips to.</td>
+			<td>JSON object of staff URL patterns to apply Comcode tooltips to.</td>
 		</tr>
 	</tbody>
 </table>

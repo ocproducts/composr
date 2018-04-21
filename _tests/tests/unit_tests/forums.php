@@ -47,8 +47,9 @@ class forums_test_set extends cms_test_case
         }
 
         // Test the <title> contains "Test" which wil be in our forum name
-        $this->get('forum:forumview:browse:' . strval($this->forum_id));
-        $this->assertTitle(new PatternExpectation('/Test/'));
+        $page_link = 'forum:forumview:browse:' . strval($this->forum_id);
+        $this->get($page_link);
+        $this->assertTitle(new PatternExpectation('/Test/'), 'Could not get expected Title on ' . $page_link);
     }
 
     public function testEditForum()

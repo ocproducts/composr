@@ -98,7 +98,7 @@ class Block_main_members
     public function run($map)
     {
         if (get_forum_type() != 'cns') {
-            return do_template('RED_ALERT',array('_GUID' => 'lnxrdzazqbcnmcg8ubo3y915wcef6t13', 'TEXT' => do_lang_tempcode('NO_CNS')));
+            return do_template('RED_ALERT', array('_GUID' => 'lnxrdzazqbcnmcg8ubo3y915wcef6t13', 'TEXT' => do_lang_tempcode('NO_CNS')));
         }
 
         require_code('cns_members');

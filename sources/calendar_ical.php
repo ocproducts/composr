@@ -187,12 +187,16 @@ function output_ical($headers_and_exit = true)
                 $start += 1000;
             } while (count($_comments) == 1000);
 
-            $start_day_of_month = find_concrete_day_of_month($event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type'], ($event['e_start_hour'] === null) ? find_timezone_start_hour_in_utc($event['e_timezone'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type']) : $event['e_start_hour'], ($event['e_start_minute'] === null) ? find_timezone_start_minute_in_utc($event['e_timezone'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type']) : $event['e_start_minute'], $event['e_timezone'], $event['e_do_timezone_conv'] == 1);
+            $_start_hour = ($event['e_start_hour'] === null) ? find_timezone_start_hour_in_utc($event['e_timezone'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type']) : $event['e_start_hour'];
+            $_start_minute = ($event['e_start_minute'] === null) ? find_timezone_start_minute_in_utc($event['e_timezone'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type']) : $event['e_start_minute'];
+            $start_day_of_month = find_concrete_day_of_month($event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type'], $_start_hour, $_start_minute, $event['e_timezone'], $event['e_do_timezone_conv'] == 1);
             $time = mktime(($event['e_start_hour'] === null) ? 12 : $event['e_start_hour'], ($event['e_start_minute'] === null) ? 0 : $event['e_start_minute'], 0, $event['e_start_month'], $start_day_of_month, $event['e_start_year']);
             if (($event['e_end_year'] === null) || ($event['e_end_month'] === null) || ($event['e_end_day'] === null)) {
                 $time2 = null;
             } else {
-                $end_day_of_month = find_concrete_day_of_month($event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type'], ($event['e_end_hour'] === null) ? find_timezone_end_hour_in_utc($event['e_timezone'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type']) : $event['e_end_hour'], ($event['e_end_minute'] === null) ? find_timezone_end_minute_in_utc($event['e_timezone'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type']) : $event['e_end_minute'], $event['e_timezone'], $event['e_do_timezone_conv'] == 1);
+                $_end_hour = ($event['e_end_hour'] === null) ? find_timezone_end_hour_in_utc($event['e_timezone'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type']) : $event['e_end_hour'];
+                $_end_minute = ($event['e_end_minute'] === null) ? find_timezone_end_minute_in_utc($event['e_timezone'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type']) : $event['e_end_minute'];
+                $end_day_of_month = find_concrete_day_of_month($event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type'], $_end_hour, $_end_minute, $event['e_timezone'], $event['e_do_timezone_conv'] == 1);
                 $time2 = mktime(($event['e_end_hour'] === null) ? 12 : $event['e_end_hour'], ($event['e_end_minute'] === null) ? 0 : $event['e_end_minute'], 0, $event['e_end_month'], $end_day_of_month, $event['e_end_year']);
             }
             if ($event['e_recurrence'] != 'none') {

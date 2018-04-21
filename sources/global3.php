@@ -777,6 +777,16 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
                             } else {
                                 $val_raw = $row[$cma_info[$cma_field]];
                             }
+
+                            if ($content_type === 'comcode_page') {
+                                // FUDGE
+                                if ($content_id === ':start') {
+                                    $val_raw = get_site_name();
+                                } else {
+                                    $val_raw = titleify($val_raw);
+                                }
+                            }
+
                             if ((!isset($cma_info['title_field_supports_comcode'])) || (!$cma_info['title_field_supports_comcode'])) {
                                 $val = comcode_escape($val_raw);
                             } else {
@@ -824,7 +834,12 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
             if ((strpos($cma_info['thumb_field'], 'CALL:') !== false) && ($content_id !== null)) {
                 $image_url = call_user_func(trim(substr($cma_info['thumb_field'], 5)), array('id' => $content_id), false);
             } else {
-                $image_url = $row[$cma_info['thumb_field']];
+                if ($content_type === 'image') {
+                    $image_url = $row['url'];
+                    // FUDGE
+                } else {
+                    $image_url = $row[$cma_info['thumb_field']];
+                }
             }
             if ($image_url != '') {
                 if ($cma_info['thumb_field_is_theme_image']) {
@@ -836,7 +851,7 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
                 }
             }
         }
-        if ((empty($image_url)) && ($cma_info['alternate_icon_theme_image'] != '')) {
+        if ((empty($image_url)) && ($cma_info['alternate_icon_theme_image'] != '') && ($content_id !== ':' . DEFAULT_ZONE_PAGE_NAME)) {
             $METADATA['image'] = find_theme_image($cma_info['alternate_icon_theme_image'], true);
         }
         if (!empty($image_url)) {

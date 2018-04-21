@@ -34,6 +34,7 @@ function init__uploads()
 
     require_code('urls2');
     require_code('images_cleanup_pipeline');
+    require_code('urls_simplifier');
 
     reset_images_cleanup_pipeline_settings();
 }
@@ -110,7 +111,7 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
         }
         $filename = $urls[2];
 
-        return $urls[0];
+        return cms_rawurlrecode($urls[0]);
     }
 
     // URL
@@ -119,6 +120,10 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
     $field_url = $name . '__url';
     $url = post_param_string($field_url, '');
     if ($url != '') {
+        // We should use compliant encoding
+        $coder_ob = new HarmlessURLCoder();
+        $url = $coder_ob->encode($url);
+
         $filename = urldecode(preg_replace('#\?.*#', '', basename($url)));
 
         // Get thumbnail
@@ -127,7 +132,7 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
             $thumb_url = $urls[1];
         }
 
-        return $url;
+        return cms_rawurlrecode($url);
     }
 
     // Filedump
@@ -145,7 +150,7 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
                 $thumb_url = $urls[1];
             }
 
-            return $url;
+            return cms_rawurlrecode($url);
         }
     }
 
@@ -598,6 +603,11 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         $_POST[$thumb_specify_name] = $out[1];
     }
 
+    $out[0] = cms_rawurlrecode($out[0]);
+    if (array_key_exists(2, $out)) {
+        $out[2] = cms_rawurlrecode($out[2]);
+    }
+
     if (count($filearrays) != 0) {
         cms_profile_end_for('get_url', $attach_name);
     }
@@ -623,6 +633,10 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
     $url = array();
     $url[0] = /*filter_naughty*/(post_param_string($specify_name));
     $url[1] = rawurldecode(basename($url[0]));
+
+    // We should use compliant encoding
+    $coder_ob = new HarmlessURLCoder();
+    $url[0] = $coder_ob->encode($url[0]);
 
     // If this is a relative URL then it may be downloaded through a PHP script.
     //  So lets check we are allowed to download it!
@@ -927,46 +941,4 @@ function get_upload_filearray($name, &$filearrays)
     }
 
     $filearrays[$name] = $_FILES[$name];
-}
-
-/**
- * Shorten a filename so it will fit in the database.
- *
- * @param  string $filename The filename
- * @param  integer $length The length
- * @return string The shortened filename
- */
-function shorten_urlencoded_filename($filename, $length = 226)
-{
-    if ((stripos(PHP_OS, 'WIN') === 0) && (version_compare(PHP_VERSION, '7.2', '<'))) {
-        // Older versions of PHP on Windows cannot handle utf-8 filenames
-        require_code('character_sets');
-        $filename = transliterate_string($filename);
-    }
-
-    // Default length is... maxDBFieldSize - maxUploadDirSize - suffixingLeeWay = 255 - (7 + 1 + 23 + 1) - 6 = 230
-    // (maxUploadDirSize is LEN('uploads') + LEN('/') + LEN(maxUploadSubdirSize) + LEN('/')
-    // Suffixing leeway is so we can have up to ~99999 different files with the same base filename, varying by auto-generated suffixes
-
-    $matches = array();
-    if (preg_match('#^(.*)\.(.*)$#', $filename, $matches) != 0) {
-        $filename_suffix = $matches[2];
-        $_filename_stem = $matches[1];
-
-        $i = 0;
-        $mb_len = cms_mb_strlen($_filename_stem);
-        $filename_stem = '';
-        do {
-            $next_mb_char = cms_mb_substr($_filename_stem, $i, 1);
-            if (strlen(urlencode($filename_stem . $next_mb_char . '.' . $filename_suffix)) > $length) {
-                break;
-            }
-            $filename_stem .= $next_mb_char;
-            $i++;
-        }
-        while ($i < $mb_len);
-
-        $filename = $filename_stem . '.' . $filename_suffix;
-    }
-    return $filename;
 }

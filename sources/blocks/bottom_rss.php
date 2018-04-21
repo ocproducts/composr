@@ -68,7 +68,7 @@ class Block_bottom_rss
         }
 
         if (!addon_installed('news')) {
-            return do_template('RED_ALERT',array('_GUID' => 'v8iz3vqc9lpgf554antlpja9ewhunyvm', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('news'))));
+            return do_template('RED_ALERT', array('_GUID' => 'v8iz3vqc9lpgf554antlpja9ewhunyvm', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('news'))));
         }
 
         $block_id = get_block_id($map);

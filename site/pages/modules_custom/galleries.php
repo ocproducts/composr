@@ -70,7 +70,7 @@ function init__site__pages__modules_custom__galleries($code)
 
     // ...and videos separately.
     $code = override_str_replace_exactly(
-        "\$current_entry = do_template('GALLERY_FLOW_MODE_VIDEO",
+        "\$current_entry = do_template('GALLERY_FLOW_MODE_VIDEO'",
         "
         // Add the workflow form if this entry is non-validated
         if (\$row['validated'] == 0) {

@@ -28,16 +28,16 @@
 
 (function ($cms, $util, $dom) {
     'use strict';
-    
+
     $dom.ready.then(function () {
         // Allow form submissions by removing this listener attached early in dom_init.js
         window.removeEventListener('submit', $dom.preventFormSubmissionUntilDomReadyListener, /*useCapture*/true);
         delete $dom.preventFormSubmissionUntilDomReadyListener;
-        
+
         if (typeof window.svg4everybody === 'function') { // Loaded only on IE
             window.svg4everybody();
         }
-        
+
         // Start everything
         $cms.attachBehaviors(document);
     });

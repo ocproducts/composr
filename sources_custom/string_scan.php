@@ -413,6 +413,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ACCEPTED_MEDIA_TYPES
         WORDFILTER
         AUDIT
+        DESCRIPTION_REORGANISE_UPLOADS
+        REORGANISE_UPLOADS
         KA_CHING
         PLEASE_STATE
         VIDEO_WAS_AUTO_IMPORTED
@@ -493,6 +495,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ANTISPAM_RESPONSE_SKIP
         CORRUPT_ATTACHMENT
         ATTACHMENT_REFERENCES
+        FILENAME_TOO_LONG
         MERGE_SUPPORT_TICKETS
         NO_PARAMETER_SENT
         CONFIRM_MERGE_TICKETS
@@ -3690,20 +3693,35 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DELETE_REVISION
         DELETE_SAVED_WARNING
         DELETE_SEARCH_STATS
-        HTTP_CACHE=HTTP cache
+        HTTP_CACHE
+        REORGANISE_UPLOADS
+        CONFIG_OPTION_reorganise_uploads
+        CONFIG_OPTION_reorganise_uploads_VALUE_0
+        CONFIG_OPTION_reorganise_uploads_VALUE_1
+        CONFIG_OPTION_reorganise_uploads_VALUE_2
+        URL_SIMPLIFIER
+        CONFIG_OPTION_url_simplifier
         DESCRIPTION_HTTP_CACHE
         META_TREE_REBUILD
         DESCRIPTION_META_TREE_REBUILD
         LOST_DISK_CONTENT
         DESCRIPTION_LOST_DISK_CONTENT
         URL_METADATA_CACHE
-        DESCRIPTION_METADATA_CACHE_CACHE
         TEMPLATE_USAGE
         DESCRIPTION_TEMPLATE_USAGE
         TEMP
-        DESCRIPTION_TEMP_CACHE
-        EMAIL_BOUNCES_CACHE
-        DESCRIPTION_EMAIL_BOUNCES_CACHE
+        DESCRIPTION_TEMP
+        CONFIG_OPTION_fonts
+        CONFIG_OPTION_google_fonts
+        CONFIG_OPTION_hc_database_threshold
+        DESCRIPTION_EMAIL_BOUNCES
+        DESCRIPTION_REBUILD_SITEMAP
+        DESCRIPTION_URL_METADATA_CACHE
+        FONTS
+        GOOGLE_FONTS
+        HC_DATABASE_THRESHOLD
+        REBUILD_SITEMAP
+        EMAIL_BOUNCES
         DELETE_SELECTED
         DELETE_SOME_MESSAGES
         DELETE_STATUS
@@ -4237,7 +4255,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_UPLOAD_CSV
         DESCRIPTION_UPLOAD_CSV_2
         DESCRIPTION_URL
-        DESCRIPTION_URLS_CACHE
         DESCRIPTION_URL_BANNER
         DESCRIPTION_URL_REDIRECT
         DESCRIPTION_USERGROUP_SUBSCRIPTION_PRICE
@@ -7296,7 +7313,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         UPLOADED_FILES
         UPLOADED_FILE_NOT_DOWNLOADABLE_YET
         URL
-        URLS_CACHE
         URL_BEGIN_FTP
         URL_MONIKER
         URL_MONIKERS_ENABLED
@@ -7898,7 +7914,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADD_TOPIC_POLL
         ADD_TO_CART
         CHECKOUT
-        ADD_TO_DIGG
         ADD_TO_FACEBOOK
         ADD_TO_STUMBLEUPON
         ADD_TO_TWITTER
@@ -8352,10 +8367,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEFAULT_CPF_im_jabber_NAME
         DEFAULT_CPF_im_skype_DESCRIPTION
         DEFAULT_CPF_im_skype_NAME
+        DEFAULT_CPF_sn_google_plus_DESCRIPTION
+        DEFAULT_CPF_sn_google_plus_NAME
         DEFAULT_CPF_sn_facebook_DESCRIPTION
         DEFAULT_CPF_sn_facebook_NAME
-        DEFAULT_CPF_sn_google_DESCRIPTION
-        DEFAULT_CPF_sn_google_NAME
         DEFAULT_CPF_sn_twitter_DESCRIPTION
         DEFAULT_CPF_sn_twitter_NAME
         DEFAULT_CPF_amazon_NAME

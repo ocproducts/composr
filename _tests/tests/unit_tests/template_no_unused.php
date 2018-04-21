@@ -67,6 +67,8 @@ class template_no_unused_test_set extends cms_test_case
             'CATALOGUE_products_FIELDMAP_ENTRY_FIELD',
             'CATALOGUE_products_GRID_ENTRY_FIELD',
             'CATALOGUE_products_GRID_ENTRY_WRAP',
+            'CNS_MEMBER_PROFILE_FIELD',
+            'CNS_MEMBER_PROFILE_FIELDS',
             'CHATCODE_EDITOR_MICRO_BUTTON',
             'CNS_MEMBER_DIRECTORY_SCREEN_FILTERS',
             'CNS_MEMBER_DIRECTORY_SCREEN_FILTER',

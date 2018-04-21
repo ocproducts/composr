@@ -135,7 +135,7 @@ function get_users_timezone($member_id = null)
     }
 
     // Get user timezone
-    if ((get_forum_type() == 'cns') && (!is_guest($member_id))) {
+    if ((get_forum_type() == 'cns') && (!is_guest($member_id)) && (get_option('enable_timezones') !== '0')) {
         $timezone_member = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_timezone_offset');
     } elseif ((function_exists('cms_admirecookie')) && (get_option('is_on_timezone_detection') === '1') && (get_option('enable_timezones') !== '0')) {
         $client_time = cms_admirecookie('client_time');
@@ -240,17 +240,26 @@ function usertime_to_utctime($timestamp = null, $member_id = null)
  */
 function tz_time($time, $zone)
 {
+    return $time + find_timezone_offset($time, $zone);
+}
+
+/**
+ * For a UTC timestamp and timezone, find the timezone offset.
+ *
+ * @param  TIME $time UTC time
+ * @param  string $zone Timezone (boring style)
+ * @return integer Timezone offset in seconds
+ */
+function find_timezone_offset($time, $zone)
+{
     if ($zone == '') {
         $zone = get_server_timezone();
     }
-    static $zone_offsets = array();
-    //if (!isset($zone_offsets[$zone])) {  Actually, cannot do this, as $time is not constant
+
     @date_default_timezone_set($zone);
-    $zone_offsets[$zone] = intval(60.0 * 60.0 * floatval(date('O', $time)) / 100.0);
+    $offset = intval(60.0 * 60.0 * floatval(date('O', $time)) / 100.0);
     date_default_timezone_set('UTC');
-    //}
-    $ret = $time + $zone_offsets[$zone];
-    return $ret;
+    return $offset;
 }
 
 /**
@@ -426,11 +435,14 @@ function cms_strftime($format, $timestamp = null)
 
     static $is_windows = null;
     if ($is_windows === null) {
-        $is_windows = (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN');
+        $is_windows = (stripos(PHP_OS, 'WIN') === 0);
     }
     if ($is_windows) {
         $format = str_replace('%e', '%#d', $format);
         $format = str_replace('%l', '%#I', $format);
+    } elseif (PHP_OS == 'SunOS') {
+        $format = str_replace('%e', '{{%e}}', $format);
+        $format = str_replace('%l', '{{%l}}', $format);
     } else {
         $format = str_replace('%e', '%-d', $format);
         $format = str_replace('%l', '%-I', $format);
@@ -440,7 +452,10 @@ function cms_strftime($format, $timestamp = null)
     if ($ret === false) {
         $ret = '';
     }
-    return trim($ret); // Needed as %e comes with a leading space
+    if (PHP_OS == 'SunOS') {
+        $ret = preg_replace('#\{\{[ 0]?([^\{\}]+)\}\}#', '${1}', $ret);
+    }
+    return trim(locale_filter($ret)); // Needed as %e comes with a leading space
 }
 
 /**

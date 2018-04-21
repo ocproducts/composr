@@ -68,7 +68,7 @@ class Block_side_rss
         }
 
         if (!addon_installed('news')) {
-            return do_template('RED_ALERT',array('_GUID' => '0cyxfhw3xxpxosehm6togd48cs3bqwka', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('news'))));
+            return do_template('RED_ALERT', array('_GUID' => '0cyxfhw3xxpxosehm6togd48cs3bqwka', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('news'))));
         }
 
         require_lang('news');

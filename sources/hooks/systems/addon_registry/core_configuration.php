@@ -161,6 +161,8 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/brute_force_instant_ban.php',
             'sources/hooks/systems/config/brute_force_login_minutes.php',
             'sources/hooks/systems/config/brute_force_threshold.php',
+            'sources/hooks/systems/config/reorganise_uploads.php',
+            'sources/hooks/systems/config/urls_simplifier.php',
             'sources/hooks/systems/config/call_home.php',
             'sources/hooks/systems/config/cleanup_files.php',
             'sources/hooks/systems/config/jpeg_quality.php',

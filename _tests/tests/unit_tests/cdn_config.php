@@ -31,7 +31,7 @@ class cdn_config_test_set extends cms_test_case
         $dh = opendir($path);
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
-                if (is_image($file, IMAGE_CRITERIA_RASTER)) {
+                if (is_image($file, IMAGE_CRITERIA_WEBSAFE)) {
                     $ext = get_file_extension($file);
                     $url = find_theme_image(basename($file, '.' . $ext));
                     if (strpos($url, 'localhost') !== false) {

@@ -66,7 +66,7 @@ class Block_main_image_slider
         }
 
         if (!addon_installed('galleries')) {
-            return do_template('RED_ALERT',array('_GUID' => 'cer2r1bqzio6b98ksizgsptqnvidthq6', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('galleries'))));
+            return do_template('RED_ALERT', array('_GUID' => 'cer2r1bqzio6b98ksizgsptqnvidthq6', 'TEXT' => do_lang_tempcode('MISSING_ADDON', escape_html('galleries'))));
         }
 
         require_css('skitter');

@@ -79,13 +79,13 @@ function member_field_is_required($member_id, $field_class, $current_value = nul
  * @param  SHORT_TEXT $username The username
  * @param  SHORT_TEXT $password The password
  * @param  SHORT_TEXT $email_address The e-mail address
- * @param  ?array $secondary_groups A list of secondary usergroups (null: default/current usergroups)
+ * @param  ?array $secondary_groups A list of secondary usergroups Note there are no security checks, so make sure anything you pass is already available for this user (null: default/current usergroups)
  * @param  ?integer $dob_day Day of date of birth (null: unknown)
  * @param  ?integer $dob_month Month of date of birth (null: unknown)
  * @param  ?integer $dob_year Year of date of birth (null: unknown)
  * @param  array $custom_fields A map of custom field values (fieldID=>value)
  * @param  ?ID_TEXT $timezone The member timezone (null: auto-detect)
- * @param  ?GROUP $primary_group The member's primary (null: default)
+ * @param  ?GROUP $primary_group The member's primary usergroup. Note there are no security checks, so make sure anything you pass is already available for this user (null: default)
  * @param  BINARY $validated Whether the profile has been validated
  * @param  ?TIME $join_time When the member joined (null: now)
  * @param  ?TIME $last_visit_time When the member last visited (null: now)

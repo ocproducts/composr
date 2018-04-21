@@ -5,7 +5,7 @@
 
 /* Web UI */
 
-#web-notifications-button, 
+#web-notifications-button,
 #pts-button {
 	color: {$GET,heading_text};
 	display: inline-block;

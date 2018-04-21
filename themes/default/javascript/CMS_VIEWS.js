@@ -490,7 +490,7 @@
             /*{$SET,icon_proceed,{+START,INCLUDE,ICON}NAME=buttons/proceed{+END}}*/
             /*{$SET,icon_yes,{+START,INCLUDE,ICON}NAME=buttons/yes{+END}}*/
             /*{$SET,icon_no,{+START,INCLUDE,ICON}NAME=buttons/no{+END}}*/
-            
+
             switch (this.type) {
                 case 'iframe':
                     var iframeWidth = (this.width.match(/^[\d\.]+$/) !== null) ? ((this.width - 14) + 'px') : this.width,

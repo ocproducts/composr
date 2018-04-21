@@ -316,7 +316,7 @@ function do_access($given_password)
     $save_icon = do_template('ICON', array('NAME' => 'buttons/save'));
     echo '
         <p class="proceed-button" style="text-align: center">
-            <button class="button-screen buttons--save" type="submit" onclick="return checkPasswords(this.form);">' . $save_icon . ' Save</button>
+            <button class="button-screen buttons--save" type="submit" onclick="return checkPasswords(this.form);">' . $save_icon->evaluate() . ' Save</button>
         </p>
 
         <input type="hidden" name="given_password" value="' . htmlentities($given_password) . '" />
