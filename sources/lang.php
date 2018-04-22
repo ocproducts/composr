@@ -762,9 +762,9 @@ function _do_lang($codename, $parameter1 = null, $parameter2 = null, $parameter3
             $ret = do_lang($codename, $parameter1, $parameter2, $parameter3, fallback_lang(), $require_result);
 
             if ((!isset($PAGE_CACHE_LANG_LOADED[$lang][$codename])) && (isset($PAGE_CACHE_LANG_LOADED[fallback_lang()][$codename]))) {
-                $PAGE_CACHE_LANG_LOADED[$lang][$codename] = $ret; // Will have been cached into fallback_lang() from the nested do_lang call, we need to copy it into our cache bucket for this language
+                $PAGE_CACHE_LANG_LOADED[$lang][$codename] = $PAGE_CACHE_LANG_LOADED[fallback_lang()][$codename]; // Will have been cached into fallback_lang() from the nested do_lang call, we need to copy it into our cache bucket for this language
                 if ($SMART_CACHE !== null) {
-                    $SMART_CACHE->append('lang_strings_' . $lang, $codename, $ret);
+                    $SMART_CACHE->append('lang_strings_' . $lang, $codename, $PAGE_CACHE_LANG_LOADED[$lang][$codename]);
                 }
             }
 
