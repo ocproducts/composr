@@ -476,13 +476,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $to_array[$_to_email] = is_array($to_name) ? $to_name[$i] : $to_name;
         }
     }
-    if (
-        (get_option('use_true_from') == '1') ||
-        ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('website_email')))) ||
-        ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('staff_address')))) ||
-        ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('ticket_mail_email_address')))) ||
-        ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == get_domain()))
-    ) {
+    if ((get_option('use_true_from') == '1') || (preg_replace('#^.*@#', '', $from_email) == get_domain()) || (in_array(preg_replace('#^.*@#', '', $from_email), $system_addresses))) {
         $website_email = $from_email;
     }
     $message = Swift_Message::newInstance($subject)

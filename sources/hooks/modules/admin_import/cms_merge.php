@@ -3359,7 +3359,7 @@ class Hook_cms_merge
 
             $forum_groupings_id = import_id_remap_get('forum_groupings', strval(isset($row['f_forum_groupings_id']) ? $row['f_forum_groupings_id'] : $row['f_category_id']), true);
 
-            $id_new = cns_make_forum($row['f_name'], $this->get_lang_string($db, $row['f_description']), $forum_groupings_id, array(), db_get_first_id(), $row['f_position'], $row['f_post_count_increment'], $row['f_order_sub_alpha'], $this->get_lang_string($db, $row['f_intro_question']), $row['f_intro_answer'], $row['f_redirection'], array_key_exists('f_order', $row) ? $row['f_order'] : 'last_post', array_key_exists('f_is_threaded', $row) ? $row['f_is_threaded'] : 0, array_key_exists('f_allows_anonymous_posts', $row) ? $row['f_allows_anonymous_posts'] : 0);
+            $id_new = cns_make_forum($row['f_name'], $this->get_lang_string($db, $row['f_description']), $forum_groupings_id, array(), db_get_first_id(), $row['f_position'], $row['f_post_count_increment'], $row['f_order_sub_alpha'], $this->get_lang_string($db, $row['f_intro_question']), $row['f_intro_answer'], $row['f_redirection'], array_key_exists('f_order', $row) ? $row['f_order'] : 'last_post', array_key_exists('f_is_threaded', $row) ? $row['f_is_threaded'] : 0, array_key_exists('f_allows_anonymous_posts', $row) ? $row['f_allows_anonymous_posts'] : 0, $row['f_mail_email_address'], $row['f_mail_server_type'], $row['f_mail_server_host'], $row['f_mail_server_port'], $row['f_mail_folder'], $row['f_mail_username'], $row['f_mail_password'], $row['f_mail_nonmatch_policy'], $row['f_mail_unconfirmed_member_notice']);
             import_id_remap_put('forum', strval($row['id']), $id_new);
         }
 

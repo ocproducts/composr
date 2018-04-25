@@ -2657,6 +2657,13 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_mail_server_host
         CONFIG_OPTION_mail_server_port
         CONFIG_OPTION_mail_password
+        MAIL_NONMATCH_POLICY
+        DESCRIPTION_MAIL_NONMATCH_POLICY
+        MAIL_NONMATCH_POLICY_block
+        MAIL_NONMATCH_POLICY_post_as_guest
+        MAIL_NONMATCH_POLICY_create_account
+        MAIL_UNCONFIRMED_MEMBER_NOTICE
+        DESCRIPTION_MAIL_UNCONFIRMED_MEMBER_NOTICE
         CONFIG_OPTION_mail_username
         CONFIG_OPTION_immediate_downloads
         CONFIG_OPTION_implied_spammer_confidence

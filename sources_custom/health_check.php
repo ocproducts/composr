@@ -460,20 +460,17 @@ abstract class Hook_Health_Check
      */
     protected function get_mail_domains()
     {
-        $domains = array();
-        $domains[preg_replace('#^.*@#', '', get_option('staff_address'))] = get_option('staff_address');
-        $domains[preg_replace('#^.*@#', '', get_option('website_email'))] = get_option('website_email');
-        if (addon_installed('tickets')) {
-            $domains[preg_replace('#^.*@#', '', get_option('ticket_mail_email_address'))] = get_option('ticket_mail_email_address');
-        }
+        require_code('mail');
 
-        foreach ($domains as $domain => $email) {
-            if ($this->is_localhost_domain($domain)) {
-                unset($domains[$domain]);
+        $domains = array();
+        $addresses = find_system_email_addresses();
+        foreach ($addresses as $address => $domain) {
+            if (!$this->is_localhost_domain($domain)) {
+                $domains[$domain] = $address;
             }
         }
 
-        return array_unique($domains);
+        return $domains;
     }
 
     /*

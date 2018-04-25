@@ -321,7 +321,9 @@ function email_comcode_from_text($body)
  */
 function is_non_human_email($subject, $body, $full_header, $from_email)
 {
-    if ($from_email == get_option('ticket_mail_email_address') || $from_email == get_option('staff_address') || $from_email == get_option('website_email')) {
+    require_code('mail');
+
+    if (array_key_exists($from_email, find_system_email_addresses())) {
         return true;
     }
 

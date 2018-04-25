@@ -105,9 +105,12 @@ function cns_delete_forum_grouping($forum_grouping_id, $target_forum_grouping_id
  * @param  SHORT_TEXT $mail_folder Mailing list folder (blank: not set)
  * @param  SHORT_TEXT $mail_username Mailing list username (blank: not set)
  * @param  SHORT_TEXT $mail_password Mailing list password (blank: not set / use centrally configured)
+ * @param  ID_TEXT $mail_nonmatch_policy Mailing list policy for non-matched users
+ * @set block post_as_guest create_account
+ * @param  BINARY $mail_unconfirmed_member_notice Mailing list policy: whether to highlight that members are not fully confirmed
  * @param  boolean $reset_intro_acceptance Whether to force forum rules to be re-agreed to, if they've just been changed.
  */
-function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new_parent, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 0, $mail_email_address = '', $mail_server_type = '', $mail_server_host = '', $mail_server_port = null, $mail_folder = '', $mail_username = '', $mail_password = '', $reset_intro_acceptance = false)
+function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new_parent, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection, $order, $is_threaded, $allows_anonymous_posts, $mail_email_address, $mail_server_type, $mail_server_host, $mail_server_port, $mail_folder, $mail_username, $mail_password, $mail_nonmatch_policy, $mail_unconfirmed_member_notice, $reset_intro_acceptance = false)
 {
     if ($forum_grouping_id == -1) {
         $forum_grouping_id = null;
@@ -165,6 +168,8 @@ function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new
         'f_mail_folder' => $mail_folder,
         'f_mail_username' => $mail_username,
         'f_mail_password' => $mail_password,
+        'f_mail_nonmatch_policy' => $mail_nonmatch_policy,
+        'f_mail_unconfirmed_member_notice' => $mail_unconfirmed_member_notice,
     );
     $map += lang_remap_comcode('f_description', $forum_info[0]['f_description'], $description, $GLOBALS['FORUM_DB']);
     $map += lang_remap_comcode('f_intro_question', $forum_info[0]['f_intro_question'], $intro_question, $GLOBALS['FORUM_DB']);

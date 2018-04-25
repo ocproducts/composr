@@ -203,9 +203,12 @@ class Module_admin_cns_forums extends Standard_crud_module
      * @param  SHORT_TEXT $mail_folder Mailing list folder (blank: not set)
      * @param  SHORT_TEXT $mail_username Mailing list username (blank: not set)
      * @param  SHORT_TEXT $mail_password Mailing list password (blank: not set / use centrally configured)
+     * @param  ID_TEXT $mail_nonmatch_policy Mailing list policy for non-matched users
+     * @set block post_as_guest create_account
+     * @param  BINARY $mail_unconfirmed_member_notice Mailing list policy: whether to highlight that members are not fully confirmed
      * @return array A pair: The input fields, Hidden fields
      */
-    public function get_form_fields($id = null, $name = '', $description = '', $forum_grouping_id = null, $parent_forum = null, $position = null, $post_count_increment = 1, $order_sub_alpha = 0, $intro_question = '', $intro_answer = '', $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 1, $mail_email_address = '', $mail_server_type = '', $mail_server_host = '', $mail_server_port = null, $mail_folder = '', $mail_username = '', $mail_password = '')
+    public function get_form_fields($id = null, $name = '', $description = '', $forum_grouping_id = null, $parent_forum = null, $position = null, $post_count_increment = 1, $order_sub_alpha = 0, $intro_question = '', $intro_answer = '', $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 1, $mail_email_address = '', $mail_server_type = '', $mail_server_host = '', $mail_server_port = null, $mail_folder = '', $mail_username = '', $mail_password = '', $mail_nonmatch_policy = 'post_as_guest', $mail_unconfirmed_member_notice = 1)
     {
         if (is_null($forum_grouping_id)) {
             $forum_grouping_id = get_param_integer('forum_grouping_id', db_get_first_id());
@@ -244,18 +247,31 @@ class Module_admin_cns_forums extends Standard_crud_module
 
         if (function_exists('imap_open')) {
             require_lang('config');
+
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'ab47ed06695dc2cd99211772fe4c5643', 'SECTION_HIDDEN' => $mail_username != '', 'TITLE' => do_lang_tempcode('MAILING_LIST'), 'DESCRIPTION' => do_lang_tempcode('DESCRIPTION_MAILING_LIST'))));
+
             $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), do_lang_tempcode('CONFIG_OPTION_website_email'), 'mail_email_address', $mail_email_address, false));
             $mail_server_types = new Tempcode();
             foreach (array('imap', 'imaps', 'imaps_nocert', 'imapt', 'imapt_nocert', 'pop3', 'pop3s', 'pop3s_nocert', 'pop3t', 'pop3t_nocert') as $_server_type) {
                 $mail_server_types->attach(form_input_list_entry($_server_type, $_server_type == $server_type));
             }
             $fields->attach(form_input_list(do_lang_tempcode('SERVER_TYPE'), do_lang_tempcode('CONFIG_OPTION_mail_server_type'), 'mail_server_type', $mail_server_types));
+
             $fields->attach(form_input_line(do_lang_tempcode('HOST'), do_lang_tempcode('CONFIG_OPTION_mail_server_host'), 'mail_server_host', $mail_host, false));
             $fields->attach(form_input_integer(do_lang_tempcode('PORT'), do_lang_tempcode('CONFIG_OPTION_mail_server_port'), 'mail_server_port', $mail_port, false));
+
             $fields->attach(form_input_line(do_lang_tempcode('MAIL_FOLDER'), do_lang_tempcode('CONFIG_OPTION_mail_folder'), 'mail_folder', $mail_folder, false));
+
             $fields->attach(form_input_line(do_lang_tempcode('USERNAME'), do_lang_tempcode('CONFIG_OPTION_mail_username'), 'mail_username', $mail_username, false));
             $fields->attach(form_input_line(do_lang_tempcode('PASSWORD'), do_lang_tempcode('CONFIG_OPTION_mail_password'), 'mail_password', $mail_password, false));
+
+            $mail_non_match_policies = new Tempcode();
+            foreach (array('block', 'post_as_guest', 'create_account') as $_mail_nonmatch_policy) {
+                $mail_non_match_policies->attach(form_input_list_entry($_server_type, $_mail_nonmatch_policy == $mail_nonmatch_policy, do_lang_tempcode('MAIL_NONMATCH_POLICY_' . $_mail_nonmatch_policy)));
+            }
+            $fields->attach(form_input_list(do_lang_tempcode('MAIL_NONMATCH_POLICY'), do_lang_tempcode('DESCRIPTION_MAIL_NONMATCH_POLICY'), 'mail_nonmatch_policy', $mail_non_match_policies));
+
+            $fields->attach(form_input_tick(do_lang_tempcode('MAIL_UNCONFIRMED_MEMBER_NOTICE'), do_lang_tempcode('DESCRIPTION_MAIL_UNCONFIRMED_MEMBER_NOTICE'), 'mail_unconfirmed_member_notice', $mail_unconfirmed_member_notice == 1));
         }
 
         $fields->attach(metadata_get_fields('forum', is_null($id) ? null : strval($id)));
@@ -539,7 +555,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         }
         $r = $m[0];
 
-        $fields = $this->get_form_fields($r['id'], $r['f_name'], get_translated_text($r['f_description'], $GLOBALS['FORUM_DB']), $r['f_forum_grouping_id'], $r['f_parent_forum'], $r['f_position'], $r['f_post_count_increment'], $r['f_order_sub_alpha'], get_translated_text($r['f_intro_question'], $GLOBALS['FORUM_DB']), $r['f_intro_answer'], $r['f_redirection'], $r['f_order'], $r['f_is_threaded'], $r['f_allows_anonymous_posts'], $r['f_mail_email_address'], $r['f_mail_server_type'], $r['f_mail_server_host'], $r['f_mail_server_port'], $r['f_mail_folder'], $r['f_mail_username'], $r['f_mail_password']);
+        $fields = $this->get_form_fields($r['id'], $r['f_name'], get_translated_text($r['f_description'], $GLOBALS['FORUM_DB']), $r['f_forum_grouping_id'], $r['f_parent_forum'], $r['f_position'], $r['f_post_count_increment'], $r['f_order_sub_alpha'], get_translated_text($r['f_intro_question'], $GLOBALS['FORUM_DB']), $r['f_intro_answer'], $r['f_redirection'], $r['f_order'], $r['f_is_threaded'], $r['f_allows_anonymous_posts'], $r['f_mail_email_address'], $r['f_mail_server_type'], $r['f_mail_server_host'], $r['f_mail_server_port'], $r['f_mail_folder'], $r['f_mail_username'], $r['f_mail_password'], $r['f_mail_nonmatch_policy'], $r['f_mail_unconfirmed_member_notice']);
 
         $delete_fields = new Tempcode();
         if (intval($id) != db_get_first_id()) {
@@ -568,6 +584,8 @@ class Module_admin_cns_forums extends Standard_crud_module
         $mail_folder = post_param_string('mail_folder', '');
         $mail_username = post_param_string('mail_username', '');
         $mail_password = post_param_string('mail_password', '');
+        $mail_nonmatch_policy = post_param_string('mail_nonmatch_policy', 'post_as_guest');
+        $mail_unconfirmed_member_notice = post_param_integer('mail_unconfirmed_member_notice', 0);
 
         if ((($mail_username != '') && ($mail_email_address == '')) || (($mail_email_address != '') && ($mail_username == ''))) {
             warn_exit(do_lang_tempcode('FORUM_MAIL_USERNAME_AND_EMAIL_ADDRESS_BOTH'));
@@ -616,7 +634,7 @@ class Module_admin_cns_forums extends Standard_crud_module
             }
         }
 
-        return array($mail_email_address, $mail_server_type, $mail_server_host, $mail_server_port, $mail_folder, $mail_username, $mail_password);
+        return array($mail_email_address, $mail_server_type, $mail_server_host, $mail_server_port, $mail_folder, $mail_username, $mail_password, $mail_nonmatch_policy, $mail_unconfirmed_member_notice);
     }
 
     /**
@@ -631,7 +649,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         $parent_forum = post_param_integer('parent_forum');
         $name = post_param_string('name');
 
-        list($mail_email_address, $mail_server_type, $mail_server_host, $mail_server_port, $mail_folder, $mail_username, $mail_password) = $this->input_and_check_mail_parameters();
+        list($mail_email_address, $mail_server_type, $mail_server_host, $mail_server_port, $mail_folder, $mail_username, $mail_password, $mail_nonmatch_policy, $mail_unconfirmed_member_notice) = $this->input_and_check_mail_parameters();
 
         $metadata = actual_metadata_get_fields('forum', null);
 
@@ -656,7 +674,9 @@ class Module_admin_cns_forums extends Standard_crud_module
             $mail_server_port,
             $mail_folder,
             $mail_username,
-            $mail_password
+            $mail_password,
+            $mail_nonmatch_policy,
+            $mail_unconfirmed_member_notice
         );
         $id = strval($_id);
 
@@ -715,7 +735,7 @@ class Module_admin_cns_forums extends Standard_crud_module
      */
     public function edit_actualisation($id)
     {
-        list($mail_email_address, $mail_server_type, $mail_server_host, $mail_server_port, $mail_folder, $mail_username, $mail_password) = $this->input_and_check_mail_parameters($id);
+        list($mail_email_address, $mail_server_type, $mail_server_host, $mail_server_port, $mail_folder, $mail_username, $mail_password, $mail_nonmatch_policy, $mail_unconfirmed_member_notice) = $this->input_and_check_mail_parameters($id);
 
         $metadata = actual_metadata_get_fields('forum', $id);
 
@@ -741,6 +761,8 @@ class Module_admin_cns_forums extends Standard_crud_module
             $mail_folder,
             $mail_username,
             $mail_password,
+            $mail_nonmatch_policy,
+            $mail_unconfirmed_member_notice,
             post_param_integer('reset_intro_acceptance', 0) == 1
         );
 

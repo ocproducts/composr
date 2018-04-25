@@ -340,6 +340,8 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_folder', 'SHORT_TEXT');
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_username', 'SHORT_TEXT');
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_password', 'SHORT_TEXT');
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_nonmatch_policy', 'ID_TEXT', 'post_as_guest');
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_unconfirmed_member_notice', 'BINARY', 1);
 
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_smart_topic_notification', 'BINARY');
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_mailing_list_style_notifications', 'BINARY');
@@ -685,6 +687,8 @@ function install_cns($upgrade_from = null)
             'f_mail_server_port' => '?INTEGER',
             'f_mail_username' => 'SHORT_TEXT',
             'f_mail_password' => 'SHORT_TEXT',
+            'f_mail_nonmatch_policy' => 'ID_TEXT',
+            'f_mail_unconfirmed_member_notice' => 'BINARY',
         ));
         $GLOBALS['FORUM_DB']->create_index('f_forums', 'cache_num_posts', array('f_cache_num_posts')); // Used to find active forums
         $GLOBALS['FORUM_DB']->create_index('f_forums', 'subforum_parenting', array('f_parent_forum'));
