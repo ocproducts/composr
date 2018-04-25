@@ -464,7 +464,7 @@ abstract class Hook_Health_Check
         $domains[preg_replace('#^.*@#', '', get_option('staff_address'))] = get_option('staff_address');
         $domains[preg_replace('#^.*@#', '', get_option('website_email'))] = get_option('website_email');
         if (addon_installed('tickets')) {
-            $domains[preg_replace('#^.*@#', '', get_option('ticket_email_from'))] = get_option('ticket_email_from');
+            $domains[preg_replace('#^.*@#', '', get_option('ticket_mail_email_address'))] = get_option('ticket_mail_email_address');
         }
 
         foreach ($domains as $domain => $email) {

@@ -77,7 +77,7 @@ class Forum_driver_ipb3 extends forum_driver_ipb_shared
      */
     public function get_displayname($username)
     {
-        return $this->connection->query_select_value_if_there('members', 'members_display_name', array('name' => $username));
+        return $this->connection->query_select_value_if_there('members', 'members_display_name', array('name' => $this->ipb_escape($username)));
     }
 
     /**
@@ -160,7 +160,7 @@ class Forum_driver_ipb3 extends forum_driver_ipb_shared
      */
     public function get_matching_members($pattern, $limit = null)
     {
-        $query = 'SELECT * FROM ' . $this->connection->get_table_prefix() . 'members WHERE name LIKE \'' . db_encode_like($pattern) . '\' AND member_id<>' . strval($this->get_guest_id()) . ' ORDER BY last_post DESC';
+        $query = 'SELECT * FROM ' . $this->connection->get_table_prefix() . 'members WHERE name LIKE \'' . db_encode_like($this->ipb_escape($pattern)) . '\' AND member_id<>' . strval($this->get_guest_id()) . ' ORDER BY last_post DESC';
         $rows = $this->connection->query($query, $limit);
         sort_maps_by($rows, 'name');
         return $rows;
@@ -174,7 +174,7 @@ class Forum_driver_ipb3 extends forum_driver_ipb_shared
      */
     public function get_member_from_username($name)
     {
-        return $this->connection->query_select_value_if_there('members', 'member_id', array('name' => $name));
+        return $this->connection->query_select_value_if_there('members', 'member_id', array('name' => $this->ipb_escape($name)));
     }
 
     /**
@@ -692,10 +692,11 @@ class Forum_driver_ipb3 extends forum_driver_ipb_shared
      * Try to find the theme that the logged-in/guest member is using, and map it to a Composr theme.
      * The themes/map.ini file functions to provide this mapping between forum themes, and Composr themes, and has a slightly different meaning for different forum drivers. For example, some drivers map the forum themes theme directory to the Composr theme name, while others made the humanly readeable name.
      *
-     * @param  boolean $skip_member_specific Whether to avoid member-specific lookup
+     * @param  boolean $skip_member_specific Whether to avoid member-specific lookup (i.e. find via what forum theme is currently configured as the default)
+     * @param  ?MEMBER $member The member to find for (null: current member)
      * @return ID_TEXT The theme
      */
-    public function _get_theme($skip_member_specific = false)
+    public function _get_theme($skip_member_specific = false, $member = null)
     {
         $def = '';
 
@@ -705,7 +706,9 @@ class Forum_driver_ipb3 extends forum_driver_ipb_shared
 
         if (!$skip_member_specific) {
             // Work out
-            $member = get_member();
+            if ($member === null) {
+                $member = get_member();
+            }
             if ($member > 0) {
                 $skin = $this->get_member_row_field($member, 'skin');
             } else {
@@ -951,7 +954,7 @@ class Forum_driver_ipb3 extends forum_driver_ipb_shared
         $out['id'] = null;
 
         if (is_null($userid)) {
-            $rows = $this->connection->query_select('members', array('*'), array('name' => $this->ipb_escape($username)), '', 1);
+            $rows = $this->connection->query_select('members', array('*'), array('name' => $username), '', 1);
             if (array_key_exists(0, $rows)) {
                 $this->MEMBER_ROWS_CACHED[$rows[0]['member_id']] = $rows[0];
             }
@@ -1048,8 +1051,8 @@ class Forum_driver_ipb3 extends forum_driver_ipb_shared
             $rows = array();
             $rows[0] = array();
             $rows[0]['member_id'] = 0;
-            $rows[0]['name'] = do_lang('GUEST');
-            $rows[0]['members_display_name'] = do_lang('GUEST');
+            $rows[0]['name'] = $this->ipb_escape(do_lang('GUEST'));
+            $rows[0]['members_display_name'] = $this->ipb_escape(do_lang('GUEST'));
             $rows[0]['member_group_id'] = 2;
             $rows[0]['language'] = null;
         } else {

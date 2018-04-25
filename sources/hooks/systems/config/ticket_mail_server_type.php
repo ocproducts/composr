@@ -31,13 +31,13 @@ class Hook_config_ticket_mail_server_type
     public function get_details()
     {
         return array(
-            'human_name' => 'TICKET_MAIL_SERVER_TYPE',
+            'human_name' => 'SERVER_TYPE',
             'type' => 'list',
             'category' => 'FEATURE',
             'group' => 'SUPPORT_TICKETS_MAIL',
             'explanation' => 'CONFIG_OPTION_ticket_mail_server_type',
             'shared_hosting_restricted' => '0',
-            'list_options' => 'pop3|pop3s|imap|imaps',
+            'list_options' => 'imap|imaps|imaps_nocert|imapt|imapt_nocert|pop3|pop3s|pop3s_nocert|pop3t|pop3t_nocert',
             'order_in_category_group' => 5,
 
             'addon' => 'tickets',

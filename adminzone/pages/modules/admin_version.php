@@ -994,6 +994,12 @@ class Module_admin_version
 
         if (($upgrade_from !== null) && ($upgrade_from < 18)) {
             $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('smart_topic_notification');
+
+            rename_config_option('imap_folder', 'mail_folder');
+            rename_config_option('imap_host', 'mail_server_host');
+            rename_config_option('imap_port', 'mail_server_port');
+            rename_config_option('imap_username', 'mail_username');
+            rename_config_option('imap_password', 'mail_password');
         }
     }
 

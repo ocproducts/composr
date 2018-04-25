@@ -52,7 +52,8 @@ class Hook_config_mailing_list_style_notifications_default
     public function get_default()
     {
         require_code('cns_forums2');
-        if (!cns_has_mailing_list_style()) {
+        $test = cns_has_mailing_list_style();
+        if ($test[0] == 0) {
             return null;
         }
 

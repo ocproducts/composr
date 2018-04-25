@@ -90,7 +90,7 @@ class Hook_addon_registry_user_mappr
 
 The addon adds extra custom profile fields to store members coordinates to store their latitude and logitude. The addon can automatically populate the members when members visit the block page (only supported by browsers that support the HTML 5 Location API, e.g. Firefox). Members can edit their locations in their profile.
 
-You should configure the "Google Map key" option in the configuration (Admin Zone > Setup > Configuration > Feature options > Google map).
+You should configure the "Google Map key" option in the configuration (Admin Zone > Setup > Configuration > Feature options > Google map). If you do not you may get a "Oops! Something went wrong." error and a corresponding "MissingKeyMapError" error in the browser console.
 
 Parameters:
  - Title -- The Name of the block which will appear on screen for example Store Locator.

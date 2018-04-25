@@ -151,7 +151,12 @@ function get_resource_fs_record($resource_type, $resource_id)
 
     $resource_fs_data = $resource_fs_ob->resource_load($resource_type, basename($resource_fs_path), dirname($resource_fs_path));
 
-    return array(json_encode($resource_fs_data, defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0), $resource_fs_path);
+    if (defined('JSON_PRESERVE_ZERO_FRACTION')) {
+        $json = json_encode($resource_fs_data, JSON_PRESERVE_ZERO_FRACTION);
+    } else {
+        $json = json_encode($resource_fs_data);
+    }
+    return array($json, $resource_fs_path);
 }
 
 /**
@@ -891,7 +896,8 @@ function remap_portable_as_urlpath($portable_data, $ignore_conflicts = false)
                 break;
             }
 
-            $filename = strval($i) . preg_replace('#\..*\.#', '.', basename(urldecode($urlpath)));
+            $ext = '.' . get_file_extension($urlpath);
+            $filename = basename(preg_replace('#\..*\.#', '.', urldecode($urlpath)), $ext) . '_' . strval($i) . $ext;
             $place = get_custom_file_base() . '/' . dirname(urldecode($urlpath)) . '/' . $filename;
             $urlpath = dirname($urlpath) . '/' . urlencode($filename);
             $i++;

@@ -25,7 +25,7 @@
  * @param  string $from_name The from name (blank: site name)
  * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
  * @range  1 5
- * @param  ?array $attachments An list of attachments (each attachment being a map, path=>filename) (null: none)
+ * @param  ?array $attachments An list of attachments (each attachment being a map, absolute path=>filename) (null: none)
  * @param  boolean $no_cc Whether to NOT CC to the CC address
  * @param  ?MEMBER $as Convert Comcode->tempcode as this member (a privilege thing: we don't want people being able to use admin rights by default!) (null: guest)
  * @param  boolean $as_admin Replace above with arbitrary admin
@@ -50,6 +50,20 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     if (@$GLOBALS['SITE_INFO']['no_email_output'] === '1') {
         return false;
+    }
+
+    if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) {
+        if ($priority != 1 && $to_email !== null) {
+            foreach ($to_email as $key => $email) {
+                if ($GLOBALS['FORUM_DRIVER']->is_banned($GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email))) {
+                    unset($to_email[$key]);
+                }
+
+                if (count($to_email) == 0) {
+                    return true;
+                }
+            }
+        }
     }
 
     if (is_null($bypass_queue)) {
@@ -148,17 +162,21 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $SENDING_MAIL = false;
         return true;
     }
-    if ($to_email[0] == $staff_address) {
-        $lang = get_site_default_lang();
-    } else {
-        $lang = user_lang();
-        if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) {
-            $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($to_email[0]);
-            if (!is_null($member_id)) {
-                $lang = get_lang($member_id);
-            }
-        }
+
+    $member_id = null;
+    if ((method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) && (count($to_email) == 1)) {
+        $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($to_email[0]);
     }
+    if (($member_id === null) && (count($to_email) > 1)) {
+        $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+    }
+
+    if ($member_id === null) {
+        $lang = user_lang();
+    } else {
+        $lang = get_lang($member_id);
+    }
+
     if (is_null($to_name)) {
         if ($to_email[0] == $staff_address) {
             $to_name = get_site_name();
@@ -182,9 +200,18 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         cms_profile_start_for('mail_wrap');
     }
 
-    $theme = method_exists($GLOBALS['FORUM_DRIVER'], 'get_theme') ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
-    if ($theme == 'default' || $theme == 'admin') { // Sucks, probably due to sending from Admin Zone...
-        $theme = $GLOBALS['FORUM_DRIVER']->get_theme(''); // ... So get theme of welcome zone
+    $_theme = get_value('mail_theme');
+    if ($_theme !== null) {
+        $theme = $_theme;
+    } else {
+        if ($member_id === null) {
+            $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id(); // As there's no browser-settings involved (as for user_lang()) we just want to set for what a guest would see
+        }
+
+        $theme = method_exists($GLOBALS['FORUM_DRIVER'], 'get_theme') ? $GLOBALS['FORUM_DRIVER']->get_theme(null, $member_id) : 'default';
+        if ($theme == 'default' || $theme == 'admin') { // Sucks, probably due to sending from Admin Zone...
+            $theme = $GLOBALS['FORUM_DRIVER']->get_theme('', $member_id); // ... So get theme of welcome zone
+        }
     }
 
     // Our subject
@@ -259,6 +286,14 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
             // Cleanup the Comcode a bit
             $message_plain = comcode_to_clean_text($message_raw);
+            $message_plain = static_evaluate_tempcode(do_template($mail_template, array(
+                '_GUID' => 'a23069c20202aa59b7450ebf8d49cde1',
+                'CSS' => '{CSS}',
+                'LOGOURL' => get_logo_url(''),
+                'LANG' => $lang,
+                'TITLE' => $subject,
+                'CONTENT' => $message_plain,
+            ), $lang, false, 'MAIL', '.txt', 'text', $theme));
 
             $html_content_cache[$cache_sig] = array($html_evaluated, $message_plain, $EMAIL_ATTACHMENTS);
 
@@ -381,6 +416,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             } else {
                 $myfile = cms_tempnam();
                 http_download_file($path, null, false, false, 'Composr', null, null, null, null, null, $myfile);
+                if (filesize($myfile) == 0) {
+                    continue;
+                }
                 if (!is_null($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'])) {
                     $mime_type = $GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'];
                 }
@@ -442,7 +480,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         (get_option('use_true_from') == '1') ||
         ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('website_email')))) ||
         ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('staff_address')))) ||
-        ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('ticket_email_from')))) ||
+        ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('ticket_mail_email_address')))) ||
         ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == get_domain()))
     ) {
         $website_email = $from_email;

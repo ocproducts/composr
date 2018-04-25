@@ -34,7 +34,7 @@ class Hook_config_is_on_anonymous_posts
             'human_name' => 'IS_ON_ANONYMOUS_POSTS_PRIVATE_TOPICS',
             'type' => 'tick',
             'category' => 'FORUMS',
-            'group' => 'FORUM_TOPICS',
+            'group' => 'PRIVATE_TOPICS',
             'explanation' => 'CONFIG_OPTION_is_on_anonymous_posts',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
@@ -50,6 +50,6 @@ class Hook_config_is_on_anonymous_posts
      */
     public function get_default()
     {
-        return '1';
+        return '0';
     }
 }

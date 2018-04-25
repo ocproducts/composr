@@ -220,7 +220,7 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $connection)
                         $attachment_id = $db->query_insert('attachments', array(
                             'a_member_id' => get_member(),
                             'a_file_size' => strlen($data),
-                            'a_url' => 'uploads/attachments/' . rawurlencode($new_filename),
+                            'a_url' => cms_rawurlrecode('uploads/attachments/' . rawurlencode($new_filename)),
                             'a_thumb_url' => '',
                             'a_original_filename' => basename($new_filename),
                             'a_num_downloads' => 0,
@@ -318,7 +318,8 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                 $i = 2;
                 // Hunt with sensible names until we don't get a conflict
                 while (file_exists($place)) {
-                    $_file = strval($i) . basename($entry['path']);
+                    $ext = '.' . get_file_extension($entry['path']);
+                    $_file = basename($entry['path'], $ext) . '_' . strval($i) . $ext;
                     $place = get_custom_file_base() . '/uploads/attachments/' . $_file;
                     $i++;
                 }
@@ -332,7 +333,8 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                 $place_thumb = get_custom_file_base() . '/uploads/attachments_thumbs/' . $_file_thumb;
                 // Hunt with sensible names until we don't get a conflict
                 while (file_exists($place_thumb)) {
-                    $_file_thumb = strval($i) . basename($entry['path']);
+                    $ext = '.' . get_file_extension($entry['path']);
+                    $_file_thumb = basename($entry['path'], $ext) . '_' . strval($i) . $ext;
                     $place_thumb = get_custom_file_base() . '/uploads/attachments_thumbs/' . $_file_thumb;
                     $i++;
                 }
@@ -398,7 +400,7 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                 handle_images_cleanup_pipeline($place);
 
                 // Create new attachment from extracted file
-                $url = 'uploads/attachments/' . rawurlencode($_file);
+                $url = cms_rawurlrecode('uploads/attachments/' . rawurlencode($_file));
                 $attachment_id = $connection->query_insert('attachments', array(
                     'a_member_id' => get_member(),
                     'a_file_size' => $file_details['size'],

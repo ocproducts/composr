@@ -85,7 +85,7 @@ class Hook_task_import_filesystem_downloads
             while (($entry = readdir($dh)) !== false) {
                 if (!should_ignore_file($entry, IGNORE_ACCESS_CONTROLLERS | IGNORE_HIDDEN_FILES)) {
                     $full_path = $server_path . '/' . $entry;
-                    $full_url = $server_url . '/' . rawurlencode($entry);
+                    $full_url = cms_rawurlrecode($server_url . '/' . rawurlencode($entry));
 
                     // Is the entry a directory?
                     if (is_dir($full_path)) {

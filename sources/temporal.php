@@ -148,7 +148,7 @@ function get_users_timezone($member = null)
     }
 
     // Get user timezone
-    if ((get_forum_type() == 'cns') && (!is_guest($member))) {
+    if ((get_forum_type() == 'cns') && (!is_guest($member)) && (get_option('allow_international') !== '0')) {
         $timezone_member = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member, 'm_timezone_offset');
     } elseif ((function_exists('cms_admirecookie')) && (get_option('is_on_timezone_detection') === '1') && (get_option('allow_international') !== '0')) {
         $client_time = cms_admirecookie('client_time');
@@ -266,6 +266,9 @@ function cms_strftime($format, $timestamp = null)
     if ($is_windows) {
         $format = str_replace('%e', '%#d', $format);
         $format = str_replace('%l', '%#I', $format);
+    } elseif (PHP_OS == 'SunOS') {
+        $format = str_replace('%e', '{{%e}}', $format);
+        $format = str_replace('%l', '{{%l}}', $format);
     } else {
         $format = str_replace('%e', '%-d', $format);
         $format = str_replace('%l', '%-I', $format);
@@ -274,6 +277,9 @@ function cms_strftime($format, $timestamp = null)
     $ret = @strftime($format, $timestamp);
     if ($ret === false) {
         $ret = '';
+    }
+    if (PHP_OS == 'SunOS') {
+        $ret = preg_replace('#\{\{[ 0]?([^\{\}]+)\}\}#', '${1}', $ret);
     }
     return trim(locale_filter($ret)); // Needed as %e comes with a leading space
 }
@@ -430,22 +436,31 @@ function post_param_date($stub, $get_also = false, $do_timezone_conversion = tru
  * For a UTC timestamp, find the equivalent virtualised local timestamp.
  *
  * @param  TIME $time UTC time
- * @param  string $zone Timezone (boring style)
+ * @param  string $zone Timezone
  * @return TIME Virtualised local time
  */
 function tz_time($time, $zone)
 {
+    return $time + find_timezone_offset($time, $zone);
+}
+
+/**
+ * For a UTC timestamp and timezone, find the timezone offset.
+ *
+ * @param  TIME $time UTC time
+ * @param  string $zone Timezone
+ * @return integer Timezone offset in seconds
+ */
+function find_timezone_offset($time, $zone)
+{
     if ($zone == '') {
         $zone = get_server_timezone();
     }
-    static $zone_offsets = array();
-    //if (!isset($zone_offsets[$zone])) {  Actually, cannot do this, as $time is not constant
+
     @date_default_timezone_set($zone);
-    $zone_offsets[$zone] = intval(60.0 * 60.0 * floatval(date('O', $time)) / 100.0);
+    $offset = intval(60.0 * 60.0 * floatval(date('O', $time)) / 100.0);
     date_default_timezone_set('UTC');
-    //}
-    $ret = $time + $zone_offsets[$zone];
-    return $ret;
+    return $offset;
 }
 
 /**

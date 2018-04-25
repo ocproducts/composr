@@ -108,6 +108,7 @@ class Hook_addon_registry_downloads
             'themes/default/images/icons/48x48/menu/cms/downloads/edit_one_licence.png',
             'themes/default/images/icons/24x24/menu/cms/downloads/index.html',
             'themes/default/images/icons/48x48/menu/cms/downloads/index.html',
+            'sources/hooks/systems/reorganise_uploads/downloads.php',
             'sources/hooks/systems/resource_meta_aware/download_licence.php',
             'sources/hooks/systems/commandr_fs/download_licences.php',
             'sources/hooks/systems/preview/download.php',

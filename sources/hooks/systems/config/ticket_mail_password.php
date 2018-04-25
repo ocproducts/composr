@@ -31,14 +31,14 @@ class Hook_config_ticket_mail_password
     public function get_details()
     {
         return array(
-            'human_name' => 'TICKET_MAIL_PASSWORD',
+            'human_name' => 'PASSWORD',
             'type' => 'line',
             'category' => 'FEATURE',
             'group' => 'SUPPORT_TICKETS_MAIL',
             'explanation' => 'CONFIG_OPTION_ticket_mail_password',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 9,
+            'order_in_category_group' => 10,
 
             'addon' => 'tickets',
         );

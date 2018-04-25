@@ -316,6 +316,7 @@ function _sync_file_move($old, $new)
 
 /**
  * Delete all the contents of a directory, and any subdirectories of that specified directory (recursively).
+ * Does not delete the directory itself.
  *
  * @param  PATH $dir The pathname to the directory to delete
  * @param  boolean $default_preserve Whether to preserve files there by default
@@ -343,13 +344,13 @@ function _deldir_contents($dir, $default_preserve = false, $just_files = false)
                 deldir_contents($dir . '/' . $entryname, $default_preserve, $just_files);
                 if (!$just_files) {
                     $test = @rmdir($dir . '/' . $entryname);
-                    if (($test === false) && (!$just_files/*tolerate weird locked dirs if we only need to delete files anyways*/)) {
+                    if (($test === false) && (!$just_files/*tolerate weird locked dirs if we only need to delete files anyways*/) && (function_exists('attach_message'))) {
                         attach_message(do_lang_tempcode('WRITE_ERROR', escape_html($dir . '/' . $entryname)), 'warn');
                     }
                 }
             } elseif (($entryname != '.') && ($entryname != '..')) {
                 $test = @unlink($dir . '/' . $entryname);
-                if ($test === false) {
+                if (($test === false) && (function_exists('attach_message'))) {
                     attach_message(do_lang_tempcode('WRITE_ERROR', escape_html($dir . '/' . $entryname)), 'warn');
                 }
             }
@@ -813,7 +814,7 @@ function delete_upload($upload_path, $table, $field, $id_field, $id, $new_url = 
             return;
         }
 
-        if ((is_null($new_url)) || (($url != $new_url) && ($new_url != STRING_MAGIC_NULL))) {
+        if ((is_null($new_url)) || ((($url != $new_url) && (rawurldecode($url) != rawurldecode($new_url))) && ($new_url != STRING_MAGIC_NULL))) {
             if ((url_is_local($url)) && (substr($url, 0, strlen($upload_path) + 1) == $upload_path . '/')) {
                 $count = $GLOBALS['SITE_DB']->query_select_value($table, 'COUNT(*)', array($field => $url));
 

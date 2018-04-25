@@ -236,7 +236,7 @@ function get_exif_image_caption($path, $filename)
         $comments = '';
     }
 
-    return $comments;
+    return trim($comments);
 }
 
 /**

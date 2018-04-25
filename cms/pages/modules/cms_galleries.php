@@ -331,6 +331,7 @@ class Module_cms_galleries extends Standard_crud_module
         }
 
         require_code('form_templates');
+        require_code('files');
         require_lang('trackbacks');
 
         // To choose to batch import from an attached TAR or ZIP file (ZIP file only supported if ZIP module running on php install)
@@ -378,7 +379,7 @@ class Module_cms_galleries extends Standard_crud_module
             $there = array();
             $_dir = opendir(get_custom_file_base() . '/uploads/galleries/');
             while (false !== ($file = readdir($_dir))) {
-                if (($file != 'index.html') && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $file)) && ((is_image($file)) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
+                if ((!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS)) && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $file)) && ((is_image($file)) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
                     $there[$file] = filemtime(get_custom_file_base() . '/uploads/galleries/' . $file);
                 }
             }
@@ -386,7 +387,7 @@ class Module_cms_galleries extends Standard_crud_module
             $_dir = @opendir(get_custom_file_base() . '/uploads/galleries/' . filter_naughty($cat));
             if ($_dir !== false) {
                 while (false !== ($file = readdir($_dir))) {
-                    if (($file != 'index.html') && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $cat . '/' . $file)) && ((is_image($file)) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
+                    if ((!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS)) && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $cat . '/' . $file)) && ((is_image($file)) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
                         $there[$cat . '/' . $file] = filemtime(get_custom_file_base() . '/uploads/galleries/' . $cat . '/' . $file);
                     }
                 }
@@ -404,7 +405,7 @@ class Module_cms_galleries extends Standard_crud_module
                         $file = strval($file);
                     }
 
-                    if ((!in_array('uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file)), $test1)) && (!in_array('uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file)), $test2))) {
+                    if ((!in_array(cms_rawurlrecode('uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file))), $test1)) && (!in_array(cms_rawurlrecode('uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file))), $test2))) {
                         $orphaned_content->attach(form_input_list_entry($file, ($time >= $last_time - 60 * 60 * 3) || (strpos($file, '/') !== false), $file));
                     }
                 }
@@ -445,6 +446,10 @@ class Module_cms_galleries extends Standard_crud_module
      */
     public function __import()
     {
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(1000);
+        }
+
         $cat = get_param_string('cat');
 
         require_code('images');
@@ -669,8 +674,8 @@ class Module_cms_galleries extends Standard_crud_module
 
         if (array_key_exists('ss_files', $_POST)) {
             foreach ($_POST['ss_files'] as $file) {
-                $url = 'uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file));
-                $thumb_url = 'uploads/galleries_thumbs/' . str_replace('%2F', '/', rawurlencode($file));
+                $url = cms_rawurlrecode('uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file)));
+                $thumb_url = cms_rawurlrecode('uploads/galleries_thumbs/' . str_replace('%2F', '/', rawurlencode($file)));
                 if (substr($thumb_url, -4, 4) == '.gif') {
                     $thumb_url = substr($thumb_url, 0, strlen($thumb_url) - 4) . '.png';
                 }
@@ -765,7 +770,8 @@ class Module_cms_galleries extends Standard_crud_module
         $i = 2;
         $_file = filter_naughty($file);
         while (file_exists($place)) {
-            $_file = strval($i) . $file;
+            $ext = '.' . get_file_extension($file);
+            $_file = basename($file, $ext) . '_' . strval($i) . $ext;
             $place = get_custom_file_base() . '/uploads/galleries/' . $_file;
             $i++;
         }
@@ -777,7 +783,8 @@ class Module_cms_galleries extends Standard_crud_module
         $i = 2;
         $_file_thumb = filter_naughty($file);
         while (file_exists($place_thumb)) {
-            $_file_thumb = strval($i) . $file;
+            $ext = '.' . get_file_extension($file);
+            $_file_thumb = basename($file, $ext) . '_' . strval($i) . $ext;
             $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $_file_thumb;
             $i++;
         }
@@ -793,8 +800,8 @@ class Module_cms_galleries extends Standard_crud_module
         fix_permissions($place);
         sync_file($place);
 
-        $aurl = 'uploads/galleries/' . rawurlencode($_file);
-        $thumb_url = 'uploads/galleries_thumbs/' . rawurlencode($_file_thumb);
+        $aurl = cms_rawurlrecode('uploads/galleries/' . rawurlencode($_file));
+        $thumb_url = cms_rawurlrecode('uploads/galleries_thumbs/' . rawurlencode($_file_thumb));
 
         // Add to database
         return $this->simple_add($aurl, $thumb_url, $_file, $cat, $time);
@@ -819,13 +826,14 @@ class Module_cms_galleries extends Standard_crud_module
             }
 
             if (substr($x, 0, 5) == 'file_') {
-                $aurl = 'uploads/galleries/' . rawurlencode($file);
+                $aurl = cms_rawurlrecode('uploads/galleries/' . rawurlencode($file));
 
                 $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $file;
                 $i = 2;
                 $_file_thumb = $file;
                 while (file_exists($place_thumb)) {
-                    $_file_thumb = strval($i) . $file;
+                    $ext = '.' . get_file_extension($file);
+                    $_file_thumb = basename($file, $ext) . '_' . strval($i) . $ext;
                     $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $_file_thumb;
                     $i++;
                 }
@@ -833,7 +841,7 @@ class Module_cms_galleries extends Standard_crud_module
                     intelligent_write_error($place_thumb);
                 }
                 sync_file($place_thumb);
-                $thumb_url = 'uploads/galleries_thumbs/' . rawurlencode($_file_thumb);
+                $thumb_url = cms_rawurlrecode('uploads/galleries_thumbs/' . rawurlencode($_file_thumb));
 
                 $this->simple_add($aurl, $thumb_url, $file, $cat);
             }
@@ -1573,6 +1581,11 @@ class Module_cms_galleries_alt extends Standard_crud_module
                 if ($url == '') {
                     return array(null, null, null);
                 }
+
+                // We should use compliant encoding
+                require_code('urls_simplifier');
+                $coder_ob = new HarmlessURLCoder();
+                $url = $coder_ob->encode($url);
 
                 $_video_width = null;
                 $_video_height = null;

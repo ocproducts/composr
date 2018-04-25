@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_imap_username
+class Hook_config_mail_host
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_imap_username
     public function get_details()
     {
         return array(
-            'human_name' => 'USERNAME',
+            'human_name' => 'HOST',
             'type' => 'line',
             'category' => 'SERVER',
             'group' => 'IMAP',
-            'explanation' => 'CONFIG_OPTION_imap_username',
+            'explanation' => 'CONFIG_OPTION_mail_host',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 4,
+            'order_in_category_group' => 2,
 
             'addon' => 'core_configuration',
         );
@@ -55,7 +55,6 @@ class Hook_config_imap_username
             return null;
         }
 
-        $website_email = get_option('website_email');
-        return preg_replace('#@.*$#', '', $website_email);
+        return 'localhost';
     }
 }

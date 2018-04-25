@@ -29,7 +29,7 @@
 									<time class="dtstart" datetime="{FROM_TIME_VCAL*}" itemprop="startDate">{$?,{$EQ,{FROM_TIME},{!ALL_DAY_EVENT}},{FROM_TIME_VCAL*},{FROM_TIME*}}</time>
 								</td>
 
-								<td{+START,IF,{$EQ,{FROM_TIME},{!ALL_DAY_EVENT}}} colspan="2"{+END}>
+								<td{+START,IF,{$EQ,{TIME_WRITTEN},{!ALL_DAY_EVENT}}} colspan="2"{+END}>
 									<a href="{VIEW_URL*}" class="url" itemprop="name"><span class="summary">{E_TITLE*}</span></a>
 									{+START,IF_PASSED,TO_TIME}
 										<span{+START,IF,{$EQ,{FROM_TIME},{TO_TIME}}} style="display: none"{+END}>

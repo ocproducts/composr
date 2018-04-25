@@ -662,8 +662,11 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
             $fields->attach(form_input_tick(do_lang_tempcode('SMART_TOPIC_NOTIFICATION'), do_lang_tempcode('DESCRIPTION_SMART_TOPIC_NOTIFICATION'), 'smart_topic_notification', $smart_topic_notification == 1));
             if (addon_installed('cns_forum')) {
                 require_code('cns_forums2');
-                if (cns_has_mailing_list_style()) {
-                    $fields->attach(form_input_tick(do_lang_tempcode('MAILING_LIST_STYLE_NOTIFICATIONS'), do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_NOTIFICATIONS'), 'mailing_list_style_notifications', $mailing_list_style_notifications == 1));
+                $test = cns_has_mailing_list_style();
+                if ($test[0] > 0) {
+                    $mlsn_description_caveat = $test[1] ? new Tempcode() : do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_NOTIFICATIONS_CAVEAT');
+                    $mlsn_description = do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_NOTIFICATIONS', $mlsn_description_caveat);
+                    $fields->attach(form_input_tick(do_lang_tempcode('MAILING_LIST_STYLE_NOTIFICATIONS'), $mlsn_description, 'mailing_list_style_notifications', $mailing_list_style_notifications == 1));
                 }
             }
             */

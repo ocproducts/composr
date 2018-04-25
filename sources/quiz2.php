@@ -554,6 +554,8 @@ function delete_quiz($id)
 
     $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'quiz', 'category_name' => strval($id)));
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'quiz', 'm_resource_type' => 'do', 'm_resource_id' => strval($id)));
+
     log_it('DELETE_QUIZ', strval($id), $name);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {

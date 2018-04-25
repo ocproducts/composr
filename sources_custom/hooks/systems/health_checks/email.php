@@ -327,26 +327,28 @@ class Hook_health_check_email extends Hook_Health_Check
             require_code('mail2');
 
             if ($use_test_data_for_pass === null) {
-                $address = get_option('hc_mail_address');
+                $address = get_option('website_email');
 
-                $server = get_option('hc_mail_server');
-                $port = intval(get_option('hc_mail_server_port'));
-                $type = get_option('hc_mail_server_type');
+                $type = get_option('mail_server_type');
+                $host = get_option('mail_server_host');
+                $port = intval(get_option('mail_server_port'));
+                $folder = get_option('mail_server_folder');
 
-                $username = get_option('hc_mail_username');
-                $password = get_option('hc_mail_password');
+                $username = get_option('mail_username');
+                $password = get_option('mail_password');
             } else {
                 $address = 'test@ocproducts.com';
 
-                $server = 'imap.gmail.com';
-                $port = 993;
                 $type = 'imaps';
+                $host = 'imap.gmail.com';
+                $port = 993;
+                $folder = 'INBOX';
 
                 $username = 'test@ocproducts.com';
                 $password = '!Xtest1234';
             }
 
-            if (($address == '') || ($server == '') || ($username == '')) {
+            if (($address == '') || ($host == '') || ($username == '')) {
                 $this->state_check_skipped('Test e-mail account not fully configured');
                 return;
             }
@@ -359,26 +361,26 @@ class Hook_health_check_email extends Hook_Health_Check
 
             $good = false;
             $time_started = time();
-            $ref = _imap_server_spec($server, $port, $type);
+            $server_spec = _imap_server_spec($host, $port, $type);
             $i = 0;
             do {
                 sleep(3);
 
-                $resource = @imap_open($ref . 'INBOX', $username, $password, CL_EXPUNGE);
-                $ok = ($resource !== false);
+                $mbox = @imap_open($server_spec . $folder, $username, $password, CL_EXPUNGE);
+                $ok = ($mbox !== false);
                 if ($i == 0) {
-                    $this->assert_true($ok, 'Could not connect to IMAP server, [tt]' . $server . '[/tt]');
+                    $this->assert_true($ok, 'Could not connect to IMAP server, [tt]' . $host . '[/tt]');
                     if (!$ok) {
                         return;
                     }
                 }
                 if ($ok) {
-                    $list = imap_search($resource, 'FROM "' . get_site_name() . '"');
+                    $list = imap_search($mbox, 'FROM "' . get_site_name() . '"');
                     if ($list === false) {
                         $list = array();
                     }
                     foreach ($list as $l) {
-                        $header = imap_headerinfo($resource, $l);
+                        $header = imap_headerinfo($mbox, $l);
 
                         $_subject = $header->subject;
 
@@ -387,11 +389,11 @@ class Hook_health_check_email extends Hook_Health_Check
                         }
 
                         if (strpos($_subject, brand_name() . ' Self-Test') !== false) {
-                            imap_delete($resource, $l); // Auto-clean-up
+                            imap_delete($mbox, $l); // Auto-clean-up
                         }
                     }
 
-                    imap_close($resource);
+                    imap_close($mbox);
                 }
 
                 $time_taken = time() - $time_started;

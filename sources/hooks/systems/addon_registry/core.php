@@ -1238,6 +1238,8 @@ class Hook_addon_registry_core
             'sources/themes.php',
             'sources/type_sanitisation.php',
             'sources/uploads.php',
+            'sources/urls_simplifier.php',
+            'sources/uploads2.php',
             'sources/upload_syndication.php',
             'data/upload_syndication_auth.php',
             'lang/EN/upload_syndication.ini',

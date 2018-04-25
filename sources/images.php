@@ -30,11 +30,11 @@
  */
 function _symbol_image_dims($param)
 {
-    if (!function_exists('imagecreatefromstring')) {
-        return array('', '');
-    }
-
     $value = array('', '');
+
+    if (!function_exists('imagecreatefromstring')) {
+        return $value;
+    }
 
     if (running_script('install')) {
         return $value;
@@ -42,6 +42,10 @@ function _symbol_image_dims($param)
 
     if (isset($param[0])) {
         $path = $param[0];
+        if ($path == '') {
+            return $value;
+        }
+
         $cacheable = (isset($param[1]) && $param[1] == '1');
 
         if ($cacheable) {
@@ -316,7 +320,7 @@ function cms_getimagesize($path, $ext = null)
     if (function_exists('getimagesize')) {
         $details = @getimagesize($path);
         if ($details !== false) {
-            return array($details[0], $details[1]);
+            return array(max(1, $details[0]), max(1, $details[1]));
         }
     }
 
@@ -330,19 +334,19 @@ function cms_getimagesize($path, $ext = null)
  * @param  ?string $ext File extension (null: unknown)
  * @return ~array The width and height (false: error)
  */
-function cms_getimagesizefromstring($data, $ext)
+function cms_getimagesizefromstring($data, $ext = null)
 {
     if ($ext === 'gif') { // Workaround problem with animated gifs
         $header = unpack('@6/' . 'vwidth/' . 'vheight', $data);
         $sx = $header['width'];
         $sy = $header['height'];
-        return array($sx, $sy);
+        return array(max(1, $sx), max(1, $sy));
     }
 
     if (function_exists('getimagesizefromstring')) {
         $details = @getimagesizefromstring($data);
         if ($details !== false) {
-            return array($details[0], $details[1]);
+            return array(max(1, $details[0]), max(1, $details[1]));
         }
     } else {
         $img_res = cms_imagecreatefromstring($data, $ext);
@@ -352,7 +356,7 @@ function cms_getimagesizefromstring($data, $ext)
 
             imagedestroy($img_res);
 
-            return array($sx, $sy);
+            return array(max(1, $sx), max(1, $sy));
         }
     }
 
@@ -747,7 +751,7 @@ function cms_imagecreatefrom($path, $ext = null)
  * @param  ?string $ext File extension (null: unknown)
  * @return ~resource Image resource (false: error)
  */
-function cms_imagecreatefromstring($data, $ext)
+function cms_imagecreatefromstring($data, $ext = null)
 {
     if (!function_exists('imagecreatefromstring')) {
         return false;

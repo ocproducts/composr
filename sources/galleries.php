@@ -347,6 +347,7 @@ function get_default_gallery_max()
 
 /**
  * Find whether a certain gallery has any content (images, videos, or subgalleries).
+ * Doesn't do a recursive search.
  *
  * @param  ID_TEXT $name The name of the gallery
  * @return boolean The answer
@@ -362,11 +363,11 @@ function gallery_has_content($name)
         $GALLERY_ENTRIES_CATS_USED_CACHE = array();
         $images_cats = $GLOBALS['SITE_DB']->query_select('images', array('DISTINCT cat'), ($num_galleries < intval(get_option('general_safety_listing_limit'))) ? array('validated' => 1) : array('validated' => 1, 'cat' => $name));
         foreach ($images_cats as $images_cat) {
-            $GALLERY_ENTRIES_CATS_USED_CACHE[$images_cat['cat']] = 1;
+            $GALLERY_ENTRIES_CATS_USED_CACHE[$images_cat['cat']] = true;
         }
         $videos_cats = $GLOBALS['SITE_DB']->query_select('videos', array('DISTINCT cat'), ($num_galleries < intval(get_option('general_safety_listing_limit'))) ? array('validated' => 1) : array('validated' => 1, 'cat' => $name));
         foreach ($videos_cats as $videos_cat) {
-            $GALLERY_ENTRIES_CATS_USED_CACHE[$videos_cat['cat']] = 1;
+            $GALLERY_ENTRIES_CATS_USED_CACHE[$videos_cat['cat']] = true;
         }
     }
     if (array_key_exists($name, $GALLERY_ENTRIES_CATS_USED_CACHE)) {
@@ -633,9 +634,9 @@ function get_gallery_tree($gallery = 'root', $breadcrumbs = '', $gallery_info = 
     $title = get_translated_text($gallery_info['fullname']);
     $breadcrumbs .= $title;
 
-    $is_member_synched = $gallery_info['is_member_synched'] == 1;
-    $accept_images = $gallery_info['accept_images'] == 1;
-    $accept_videos = $gallery_info['accept_videos'] == 1;
+    $is_member_synched = ($gallery_info['is_member_synched'] == 1);
+    $accept_images = ($gallery_info['accept_images'] == 1);
+    $accept_videos = ($gallery_info['accept_videos'] == 1);
 
     $children = array();
     $sub = false;
@@ -660,8 +661,8 @@ function get_gallery_tree($gallery = 'root', $breadcrumbs = '', $gallery_info = 
         $children[0]['id'] = $gallery;
         $children[0]['title'] = $title;
         $children[0]['breadcrumbs'] = $breadcrumbs;
-        $children[0]['accept_images'] = $gallery_info['accept_images'];
-        $children[0]['accept_videos'] = $gallery_info['accept_videos'];
+        $children[0]['accept_images'] = $accept_images;
+        $children[0]['accept_videos'] = $accept_videos;
         $children[0]['is_member_synched'] = $gallery_info['is_member_synched'];
         if ($addable_filter) {
             $children[0]['addable'] = (can_submit_to_gallery($gallery, $gallery_info) !== false) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_galleries', array('galleries', $gallery)));

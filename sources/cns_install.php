@@ -333,11 +333,13 @@ function install_cns($upgrade_from = null)
         }
     }
     if (($upgrade_from === null) || ($upgrade_from < 11.0)) {
-        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_imap_host', 'SHORT_TEXT');
-        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_imap_port', '?INTEGER');
-        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_imap_username', 'SHORT_TEXT');
-        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_imap_password', 'SHORT_TEXT');
-        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_imap_folder', 'SHORT_TEXT');
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_email_address', 'EMAIL');
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_server_type', 'ID_TEXT');
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_server_host', 'SHORT_TEXT');
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_server_port', '?INTEGER');
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_folder', 'SHORT_TEXT');
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_username', 'SHORT_TEXT');
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_password', 'SHORT_TEXT');
 
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_smart_topic_notification', 'BINARY');
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_mailing_list_style_notifications', 'BINARY');
@@ -677,11 +679,12 @@ function install_cns($upgrade_from = null)
             'f_order' => 'ID_TEXT',
             'f_is_threaded' => 'BINARY',
             'f_allows_anonymous_posts' => 'BINARY',
-            'f_imap_host' => 'SHORT_TEXT',
-            'f_imap_port' => '?INTEGER',
-            'f_imap_username' => 'SHORT_TEXT',
-            'f_imap_password' => 'SHORT_TEXT',
-            'f_imap_folder' => 'SHORT_TEXT',
+            'f_mail_email_address' => 'EMAIL',
+            'f_mail_server_type' => 'ID_TEXT',
+            'f_mail_server_host' => 'SHORT_TEXT',
+            'f_mail_server_port' => '?INTEGER',
+            'f_mail_username' => 'SHORT_TEXT',
+            'f_mail_password' => 'SHORT_TEXT',
         ));
         $GLOBALS['FORUM_DB']->create_index('f_forums', 'cache_num_posts', array('f_cache_num_posts')); // Used to find active forums
         $GLOBALS['FORUM_DB']->create_index('f_forums', 'subforum_parenting', array('f_parent_forum'));

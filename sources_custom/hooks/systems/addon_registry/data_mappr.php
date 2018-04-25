@@ -88,7 +88,7 @@ class Hook_addon_registry_data_mappr
     {
         return 'Shows different catalogue entries\' longitude/latitude values as pins on a Google Map. Clicking on the pin shows the catalogue entry in a little box (as a link to the entry).
 
-You should configure the "Google Map key" option in the configuration (Admin Zone > Setup > Configuration > Feature options > Google map).
+You should configure the "Google Map key" option in the configuration (Admin Zone > Setup > Configuration > Feature options > Google map). If you do not you may get a "Oops! Something went wrong." error and a corresponding "MissingKeyMapError" error in the browser console.
 
 The names of the fields to take longitude/latitude from are configured inside block parameters.
 

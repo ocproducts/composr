@@ -85,6 +85,6 @@
 
 	<p class="simple_neat_checkbox">
 		<input{+START,IF,{MAILING_LIST_STYLE_NOTIFICATIONS}} checked="checked"{+END} type="checkbox" id="mailing_list_style_notifications" name="mailing_list_style_notifications" value="1" />
-		<label for="mailing_list_style_notifications"><span>{!cns:DESCRIPTION_MAILING_LIST_STYLE_NOTIFICATIONS}</span></label>
+		<label for="mailing_list_style_notifications"><span>{MAILING_LIST_STYLE_NOTIFICATIONS_DESCRIPTION}</span></label>
 	</p>
 {+END}

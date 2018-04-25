@@ -712,17 +712,21 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $SENDING_MAIL = false;
         return true;
     }
-    if ($to_email[0] == $staff_address) {
-        $lang = get_site_default_lang();
-    } else {
-        $lang = user_lang();
-        if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) {
-            $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($to_email[0]);
-            if (!is_null($member_id)) {
-                $lang = get_lang($member_id);
-            }
-        }
+
+    $member_id = null;
+    if ((method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) && (count($to_email) == 1)) {
+        $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($to_email[0]);
     }
+    if (($member_id === null) && (count($to_email) > 1)) {
+        $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+    }
+
+    if ($member_id === null) {
+        $lang = user_lang();
+    } else {
+        $lang = get_lang($member_id);
+    }
+
     if (is_null($to_name)) {
         if ($to_email[0] == $staff_address) {
             $to_name = get_site_name();
@@ -746,9 +750,18 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         cms_profile_start_for('mail_wrap');
     }
 
-    $theme = method_exists($GLOBALS['FORUM_DRIVER'], 'get_theme') ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
-    if ($theme == 'default' || $theme == 'admin') { // Sucks, probably due to sending from Admin Zone...
-        $theme = $GLOBALS['FORUM_DRIVER']->get_theme(''); // ... So get theme of welcome zone
+    $_theme = get_value('mail_theme');
+    if ($_theme !== null) {
+        $theme = $_theme;
+    } else {
+        if ($member_id === null) {
+            $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id(); // As there's no browser-settings involved (as for user_lang()) we just want to set for what a guest would see
+        }
+
+        $theme = method_exists($GLOBALS['FORUM_DRIVER'], 'get_theme') ? $GLOBALS['FORUM_DRIVER']->get_theme(null, $member_id) : 'default';
+        if ($theme == 'default' || $theme == 'admin') { // Sucks, probably due to sending from Admin Zone...
+            $theme = $GLOBALS['FORUM_DRIVER']->get_theme('', $member_id); // ... So get theme of welcome zone
+        }
     }
 
     // Line termination is fiddly. It is safer to rely on sendmail supporting \n than undetectable-qmail not supporting the correct \r\n
@@ -890,7 +903,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         (get_option('use_true_from') == '1') ||
         ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('website_email')))) ||
         ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('staff_address')))) ||
-        ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('ticket_email_from')))) ||
+        ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('ticket_mail_email_address')))) ||
         ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == get_domain()))
     ) {
         $headers = 'From: "' . $from_name . '" <' . $from_email . '>' . $line_term;
@@ -1083,10 +1096,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     // Attachments
     if (!empty($attachments)) {
         foreach ($attachments as $path => $filename) {
-            $sending_message .= '--' . $boundary . $line_term;
-            $sending_message .= 'Content-Type: ' . get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous')) . $line_term; // . '; name="' . escape_header($filename).'"'   http://www.imc.org/ietf-822/old-archive2/msg02121.html
-            $sending_message .= 'Content-Transfer-Encoding: base64' . $line_term;
-            $sending_message .= 'Content-Disposition: attachment; filename="' . escape_header($filename) . '"' . $line_term . $line_term;
+            $mime_type = get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous'));
 
             if ((strpos($path, '://') === false) && (substr($path, 0, 5) != 'gs://')) {
                 if (!is_file($path)) {
@@ -1098,7 +1108,16 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 if (is_null($contents)) {
                     continue;
                 }
+                if (!is_null($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'])) {
+                    $mime_type = $GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'];
+                }
             }
+
+            $sending_message .= '--' . $boundary . $line_term;
+            $sending_message .= 'Content-Type: ' . $mime_type . $line_term; // . '; name="' . escape_header($filename).'"'   http://www.imc.org/ietf-822/old-archive2/msg02121.html
+            $sending_message .= 'Content-Transfer-Encoding: base64' . $line_term;
+            $sending_message .= 'Content-Disposition: attachment; filename="' . escape_header($filename) . '"' . $line_term . $line_term;
+
             $sending_message .= chunk_split(base64_encode($contents), 76, $line_term);
         }
 
@@ -1302,9 +1321,9 @@ function _get_image_for_cid($img, $as, &$total_filesize)
     } else {
         $file_contents = mixed();
         $matches = array();
-        require_code('attachments');
         if ((preg_match('#^' . preg_quote(find_script('attachment'), '#') . '\?id=(\d+)&amp;thumb=(0|1)#', $img, $matches) != 0) && (strpos($img, 'forum_db=1') === false)) {
             $rows = $GLOBALS['SITE_DB']->query_select('attachments', array('*'), array('id' => intval($matches[1])), 'ORDER BY a_add_time DESC');
+            require_code('attachments');
             if ((array_key_exists(0, $rows)) && (has_attachment_access($as, intval($matches[1])))) {
                 $myrow = $rows[0];
 
@@ -1325,6 +1344,8 @@ function _get_image_for_cid($img, $as, &$total_filesize)
                         }
                         $file_contents = file_get_contents($_full);
                         $mime_type = get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous'));
+                    } else {
+                        return null;
                     }
                 }
             }

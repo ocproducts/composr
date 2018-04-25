@@ -63,8 +63,8 @@ function member_field_is_required($member_id, $field_class, $current_value = nul
  * @param  SHORT_TEXT $username The username
  * @param  SHORT_TEXT $password The password
  * @param  SHORT_TEXT $email_address The e-mail address
- * @param  ?GROUP $primary_group The member's primary usergroup (null: default)
- * @param  ?array $secondary_groups A list of secondary usergroups (null: default usergroups)
+ * @param  ?GROUP $primary_group The member's primary usergroup. Note there are no security checks, so make sure anything you pass is already available for this user (null: default)
+ * @param  ?array $secondary_groups A list of secondary usergroups. Note there are no security checks, so make sure anything you pass is already available for this user (null: default/current usergroups)
  * @param  ?integer $dob_day Day of date of birth (null: unknown)
  * @param  ?integer $dob_month Month of date of birth (null: unknown)
  * @param  ?integer $dob_year Year of date of birth (null: unknown)

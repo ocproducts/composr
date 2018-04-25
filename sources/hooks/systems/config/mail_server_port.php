@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_imap_password
+class Hook_config_mail_port
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_imap_password
     public function get_details()
     {
         return array(
-            'human_name' => 'PASSWORD',
-            'type' => 'line',
+            'human_name' => 'PORT',
+            'type' => 'integer',
             'category' => 'SERVER',
             'group' => 'IMAP',
-            'explanation' => 'CONFIG_OPTION_imap_password',
+            'explanation' => 'CONFIG_OPTION_mail_port',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 5,
+            'order_in_category_group' => 3,
 
             'addon' => 'core_configuration',
         );
@@ -55,6 +55,6 @@ class Hook_config_imap_password
             return null;
         }
 
-        return '';
+        return '143';
     }
 }

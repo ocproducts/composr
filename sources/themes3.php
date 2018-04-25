@@ -162,7 +162,7 @@ function cleanup_theme_images($old_url)
 
         foreach (array_keys($files_existing) as $path) {
             $path = str_replace(get_custom_file_base() . '/', '', filter_naughty($path));
-            $encoded_path = substr($path, 0, strrpos($path, '/') + 1) . rawurlencode(substr($path, strrpos($path, '/') + 1));
+            $encoded_path = cms_rawurlrecode(substr($path, 0, strrpos($path, '/') + 1) . rawurlencode(substr($path, strrpos($path, '/') + 1)));
             if ((!in_array($path, $files_referenced)) && (!in_array($encoded_path, $files_referenced)) && (($old_url == $path) || ($old_url == $encoded_path))) {
                 @unlink(get_custom_file_base() . '/' . $path);
                 sync_file(get_custom_file_base() . '/' . $path);

@@ -19,15 +19,42 @@
  */
 
 /**
- * Find if we have at least one mailing-list-style forum.
+ * Find if we have mailing-list-style forums.
  *
- * @return boolean Whether we do
+ * @return array A pair: How many that do, If all do
  */
 function cns_has_mailing_list_style()
 {
-    $sql = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE f_imap_username IS NOT NULL AND f_imap_email_address IS NOT NULL';
-    $test = $GLOBALS['FORUM_DB']->query_value_if_there($sql);
-    return ($test !== null);
+    $sql = 'SELECT id,f_mail_username,f_mail_email_address,f_mail_server_type,f_mail_server_host,f_mail_server_port,f_mail_folder,f_mail_username,f_mail_password FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums';
+    $sql_sup = ' WHERE ' . db_string_not_equal_to('f_mail_username', '') . ' AND ' . db_string_not_equal_to('f_mail_email_address', '');
+
+    $test = $GLOBALS['FORUM_DB']->query_value_if_there($sql . $sql_sup);
+    if ($test === null) {
+        return array(0, false);
+    }
+
+    $cnt_yes = 0;
+    $cnt_no = 0;
+    $rows = $GLOBALS['FORUM_DB']->query($sql);
+    foreach ($rows as $row) {
+        if
+            (
+                ($row['f_mail_username'] != '') &&
+                ($row['f_mail_email_address'] != '') &&
+                (($row['f_mail_server_type'] != '') || (get_option('mail_server_type') != '')) &&
+                (($row['f_mail_server_host'] != '') || (get_option('mail_server_host') != '')) &&
+                (($row['f_mail_server_port'] !== null) || (get_option('mail_server_port') != '')) &&
+                (($row['f_mail_folder'] != '') || (get_option('mail_folder') != '')) &&
+                (($row['f_mail_username'] != '') || (get_option('mail_username') != '')) &&
+                (($row['f_mail_password'] != '') || (get_option('mail_password') != ''))
+            ) {
+            $cnt_yes++;
+        } else {
+            $cnt_no++;
+        }
+    }
+
+    return array($cnt_yes, $cnt_no == 0);
 }
 
 /**

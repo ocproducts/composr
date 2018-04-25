@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_configuration
+ * @package    tickets
  */
 
 /**
  * Hook class.
  */
-class Hook_config_imap_folder
+class Hook_config_ticket_mail_server_host
 {
     /**
      * Gets the details relating to the config option.
@@ -31,16 +31,16 @@ class Hook_config_imap_folder
     public function get_details()
     {
         return array(
-            'human_name' => 'MAIL_FOLDER',
+            'human_name' => 'HOST',
             'type' => 'line',
-            'category' => 'SERVER',
-            'group' => 'IMAP',
-            'explanation' => 'CONFIG_OPTION_imap_folder',
-            'shared_hosting_restricted' => '1',
+            'category' => 'FEATURE',
+            'group' => 'SUPPORT_TICKETS_MAIL',
+            'explanation' => 'CONFIG_OPTION_ticket_mail_server_host',
+            'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 7,
 
-            'addon' => 'core_configuration',
+            'addon' => 'tickets',
         );
     }
 
@@ -55,6 +55,6 @@ class Hook_config_imap_folder
             return null;
         }
 
-        return 'INBOX';
+        return 'localhost';
     }
 }

@@ -357,6 +357,26 @@ class Module_admin_cns_members
 
         $validated = post_param_integer('validated', 0);
 
+        // Secondary groups
+        $secondary_groups = array();
+        if (array_key_exists('secondary_groups', $_POST)) {
+            $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
+            $groups = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), ($group_count > 200) ? array('g_is_private_club' => 0) : null));
+            foreach ($_POST['secondary_groups'] as $group_id) {
+                $group = $groups[intval($group_id)];
+
+                if ((!has_privilege(get_member(), 'see_hidden_groups')) && ($group['g_hidden'] == 1)) {
+                    continue;
+                }
+
+                if ((!has_privilege(get_member(), 'assume_any_member')) && ($group['g_open_membership'] == 0)) {
+                    continue;
+                }
+
+                $secondary_groups[] = $group['id'];
+            }
+        }
+
         // Add member
         $password_compatibility_scheme = ((post_param_integer('temporary_password', 0) == 1) ? 'temporary' : '');
         $id = cns_make_member(
@@ -364,7 +384,7 @@ class Module_admin_cns_members
             $password, // password
             $email_address, // email_address
             $primary_group, // primary_group
-            $_POST['secondary_groups'], // secondary_groups
+            $secondary_groups, // secondary_groups
             $dob_day, // dob_day
             $dob_month, // dob_month
             $dob_year, // dob_year
@@ -402,25 +422,6 @@ class Module_admin_cns_members
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');
             content_review_set('member', strval($id));
-        }
-
-        // Secondary groups
-        if (array_key_exists('secondary_groups', $_POST)) {
-            require_code('cns_groups_action2');
-            $members_groups = array();
-            $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
-            $groups = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), ($group_count > 200) ? array('g_is_private_club' => 0) : null));
-            foreach ($_POST['secondary_groups'] as $group_id) {
-                $group = $groups[intval($group_id)];
-
-                if (($group['g_hidden'] == 1) && (!in_array($group['id'], $members_groups)) && (!has_privilege(get_member(), 'see_hidden_groups'))) {
-                    continue;
-                }
-
-                if ((in_array($group['id'], $members_groups)) || (has_privilege(get_member(), 'assume_any_member')) || ($group['g_open_membership'] == 1)) {
-                    cns_add_member_to_group($id, $group['id']);
-                }
-            }
         }
 
         $special_links = array();

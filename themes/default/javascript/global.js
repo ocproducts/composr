@@ -2594,15 +2594,20 @@ function trigger_resize(and_subframes)
 {
 	if (typeof window.parent=='undefined') return;
 	if (typeof window.parent.document=='undefined') return;
-	var frames=window.parent.document.getElementsByTagName('iframe');
+
+	var frames;
 	var done=false;
 
-	for (var i=0;i<frames.length;i++)
+	if (window.parent!=window)
 	{
-		if ((frames[i].src==window.location.href) || (frames[i].contentWindow==window) || ((frames[i].id!='') && (typeof window.parent.frames[frames[i].id]!='undefined') && (window.parent.frames[frames[i].id]==window)))
+		frames=window.parent.document.getElementsByTagName('iframe');
+		for (var i=0;i<frames.length;i++)
 		{
-			if (frames[i].style.height=='900px') frames[i].style.height='auto';
-			window.parent.resize_frame(frames[i].name);
+			if ((frames[i].src==window.location.href) || (frames[i].contentWindow==window) || ((frames[i].name!='') && (typeof window.parent.frames[frames[i].name]!='undefined') && (window.parent.frames[frames[i].name]==window)))
+			{
+				if (frames[i].style.height=='900px') frames[i].style.height='auto';
+				window.parent.resize_frame(frames[i].name);
+			}
 		}
 	}
 

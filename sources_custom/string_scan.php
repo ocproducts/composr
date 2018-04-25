@@ -162,6 +162,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ACCEPTED_MEDIA_TYPES
         WORDFILTER
         AUDIT
+        DESCRIPTION_REORGANISE_UPLOADS
+        REORGANISE_UPLOADS
         KA_CHING
         PLEASE_STATE
         VIDEO_WAS_AUTO_IMPORTED
@@ -212,6 +214,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ANTISPAM_RESPONSE_SKIP
         CORRUPT_ATTACHMENT
         ATTACHMENT_REFERENCES
+        FILENAME_TOO_LONG
         MERGE_SUPPORT_TICKETS
         NO_PARAMETER_SENT
         CONFIRM_MERGE_TICKETS
@@ -2649,11 +2652,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_honeypot_url
         CONFIG_OPTION_hot_topic_definition
         CONFIG_OPTION_httpauth_is_enabled
-        CONFIG_OPTION_imap_folder
-        CONFIG_OPTION_imap_host
-        CONFIG_OPTION_imap_password
-        CONFIG_OPTION_imap_port
-        CONFIG_OPTION_imap_username
+        CONFIG_OPTION_mail_folder
+        CONFIG_OPTION_mail_server_type
+        CONFIG_OPTION_mail_server_host
+        CONFIG_OPTION_mail_server_port
+        CONFIG_OPTION_mail_password
+        CONFIG_OPTION_mail_username
         CONFIG_OPTION_immediate_downloads
         CONFIG_OPTION_implied_spammer_confidence
         CONFIG_OPTION_important_groups_per_page
@@ -2963,11 +2967,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_threaded_topics_default
         CONFIG_OPTION_thumb_width
         CONFIG_OPTION_ticket_auto_assign
-        CONFIG_OPTION_ticket_email_from
+        CONFIG_OPTION_ticket_mail_email_address
         CONFIG_OPTION_ticket_forum_name
         CONFIG_OPTION_ticket_mail_on
+        CONFIG_OPTION_ticket_mail_folder
         CONFIG_OPTION_ticket_mail_password
-        CONFIG_OPTION_ticket_mail_server
+        CONFIG_OPTION_ticket_mail_server_host
         CONFIG_OPTION_ticket_mail_server_port
         CONFIG_OPTION_ticket_mail_server_type
         CONFIG_OPTION_ticket_mail_username
@@ -5790,6 +5795,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         POP3_DESCRIPTION
         POP3_MAINTAIN_URL
         PORT
+        SERVER_TYPE
         PORTFOLIO
         POSTAL_ADDRESS
         POSTING_RATES
@@ -6497,11 +6503,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TICKET_FORUM_NAME
         TICKET_GUEST_EMAILS_MANDATORY
         TICKET_MAIL_ON
-        TICKET_MAIL_PASSWORD
-        TICKET_MAIL_SERVER
-        TICKET_MAIL_SERVER_PORT
-        TICKET_MAIL_SERVER_TYPE
-        TICKET_MAIL_USERNAME
         TICKET_MEMBER_FORUMS
         TICKET_NEW_MESSAGE_FOR_STAFF
         TICKET_NEW_STAFF

@@ -63,7 +63,7 @@ class Hook_media_rendering_vimeo extends Media_renderer_with_fallback
      */
     public function recognises_url($url)
     {
-        if (preg_match('#^https?://vimeo\.com/(\d+)#', $url) != 0) {
+        if (preg_match('#^https?://vimeo\.com/(.*/)?(\d+)#', $url) != 0) {
             return MEDIA_RECOG_PRECEDENCE_HIGH;
         }
         return MEDIA_RECOG_PRECEDENCE_NONE;
@@ -78,7 +78,7 @@ class Hook_media_rendering_vimeo extends Media_renderer_with_fallback
     public function get_video_thumbnail($src_url)
     {
         $matches = array();
-        if (preg_match('#^https?://vimeo\.com/(\d+)#', $src_url, $matches) != 0) {
+        if (preg_match('#^https?://vimeo\.com/(.*/)?(\d+)#', $src_url, $matches) != 0) {
             $test = get_value('vimeo_thumb_for__' . $matches[1], null, true);
             if ($test !== null) {
                 return $test;
@@ -87,7 +87,7 @@ class Hook_media_rendering_vimeo extends Media_renderer_with_fallback
             // Vimeo API method
             if ((is_file(get_file_base() . '/sources_custom/gallery_syndication.php')) && (!in_safe_mode())) {
                 require_code('hooks/modules/video_syndication/vimeo');
-                $ob = object_factory('video_syndication_vimeo');
+                $ob = object_factory('Hook_video_syndication_vimeo');
                 if ($ob->is_active()) {
                     $result = $ob->get_remote_videos(null, $matches[1]);
                     if (count($result) != 0) {
@@ -133,7 +133,7 @@ class Hook_media_rendering_vimeo extends Media_renderer_with_fallback
         if (is_object($url)) {
             $url = $url->evaluate();
         }
-        $attributes['remote_id'] = preg_replace('#^https?://vimeo\.com/(\d+)#', '${1}', $url);
+        $attributes['remote_id'] = preg_replace('#^https?://vimeo\.com/(.*/)?(\d+)#', '${1}', $url);
         return do_template('MEDIA_VIMEO', array('_GUID' => '490903ba659a899d70d3a2f5afa7d6cb', 'HOOK' => 'vimeo') + _create_media_template_parameters($url, $attributes, $as_admin, $source_member));
     }
 }

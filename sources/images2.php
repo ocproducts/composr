@@ -51,7 +51,7 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
     $_file = preg_replace('#[^\w]#', 'x', substr($_file, 0, $dot_pos));
     $thumb_path = '';
     do {
-        $file = rawurldecode($_file) . (($i == 0) ? '' : strval($i));
+        $file = rawurldecode($_file) . (($i == 0) ? '' : ('_' . strval($i)));
         $thumb_path = get_custom_file_base() . '/uploads/' . $thumb_dir . '_thumbs/' . $file . '.' . $ext;
         $i++;
     } while (file_exists($thumb_path));
@@ -59,7 +59,7 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
         intelligent_write_error($thumb_path);
     }
     sync_file($thumb_path);
-    $thumb_url = 'uploads/' . $thumb_dir . '_thumbs/' . rawurlencode($file) . '.' . $ext;
+    $thumb_url = cms_rawurlrecode('uploads/' . $thumb_dir . '_thumbs/' . rawurlencode($file) . '.' . $ext);
     if ((substr($table, 0, 2) == 'f_') && (get_forum_type() == 'cns')) {
         $GLOBALS['FORUM_DB']->query_update($table, array($thumb_field_name => $thumb_url), array('id' => $id), '', 1);
     } else {

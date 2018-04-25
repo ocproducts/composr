@@ -994,10 +994,11 @@ class Forum_driver_aef extends Forum_driver_base
      * Try to find the theme that the logged-in/guest member is using, and map it to a Composr theme.
      * The themes/map.ini file functions to provide this mapping between forum themes, and Composr themes, and has a slightly different meaning for different forum drivers. For example, some drivers map the forum themes theme directory to the Composr theme name, while others made the humanly readeable name.
      *
-     * @param  boolean $skip_member_specific Whether to avoid member-specific lookup
+     * @param  boolean $skip_member_specific Whether to avoid member-specific lookup (i.e. find via what forum theme is currently configured as the default)
+     * @param  ?MEMBER $member The member to find for (null: current member)
      * @return ID_TEXT The theme
      */
-    public function _get_theme($skip_member_specific = false)
+    public function _get_theme($skip_member_specific = false, $member = null)
     {
         $def = '';
 
@@ -1007,7 +1008,9 @@ class Forum_driver_aef extends Forum_driver_base
 
         // Work out
         if (!$skip_member_specific) {
-            $member = get_member();
+            if ($member === null) {
+                $member = get_member();
+            }
             if ($member > 0) {
                 $skin = $this->get_member_row_field($member, 'user_theme');
             } else {

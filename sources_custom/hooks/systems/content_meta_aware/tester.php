@@ -60,7 +60,7 @@ class Hook_content_meta_aware_tester
             'add_url' => (has_submit_permission('mid', get_member(), get_ip_address(), 'tester')) ? (get_module_zone('tester') . ':tester:add') : null,
             'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('tester')) . ':tester',
 
-            'support_url_monikers' => true,
+            'support_url_monikers' => false,
 
             'views_field' => null,
             'order_field' => null,

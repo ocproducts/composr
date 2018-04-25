@@ -33,7 +33,7 @@ function load_breadcrumb_substitutions($segments)
 
     static $substitutions = null;
     if ($substitutions === null) {
-        $substitutions = persistent_cache_get('BREADCRUMBS_CACHE');
+        $substitutions = persistent_cache_get('BREADCRUMBS_CACHE_' . user_lang());
     }
     if ($substitutions === null) {
         $data = @cms_file_get_contents_safe(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
@@ -45,7 +45,7 @@ function load_breadcrumb_substitutions($segments)
         }
 
         if (trim($data) == '') {
-            persistent_cache_set('BREADCRUMBS_CACHE', array());
+            persistent_cache_set('BREADCRUMBS_CACHE_' . user_lang(), array());
 
             return $segments;
         }
@@ -54,7 +54,7 @@ function load_breadcrumb_substitutions($segments)
         $loader->go($data);
         $substitutions = $loader->substitutions;
 
-        persistent_cache_set('BREADCRUMBS_CACHE', $substitutions);
+        persistent_cache_set('BREADCRUMBS_CACHE_' . user_lang(), $substitutions);
     }
 
     $segments_new = array();

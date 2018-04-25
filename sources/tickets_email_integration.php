@@ -62,7 +62,7 @@ function ticket_outgoing_message($ticket_id, $ticket_url, $ticket_type_name, $su
     }
 
     $headers = '';
-    $from_email = get_option('ticket_email_from');
+    $from_email = get_option('ticket_mail_email_address');
     if ($from_email == '') {
         $from_email = get_option('staff_address');
     }
@@ -95,7 +95,7 @@ function ticket_outgoing_message($ticket_id, $ticket_url, $ticket_type_name, $su
 function ticket_email_cannot_bind($subject, $body, $email, $email_bounce_to)
 {
     $headers = '';
-    $from_email = get_option('ticket_email_from');
+    $from_email = get_option('ticket_mail_email_address');
     if ($from_email == '') {
         $from_email = get_option('staff_address');
     }
@@ -130,36 +130,55 @@ function ticket_incoming_scan()
     require_code('tickets2');
     require_code('mail2');
 
-    $server = get_option('ticket_mail_server');
-    $port = intval(get_option('ticket_mail_server_port'));
     $type = get_option('ticket_mail_server_type');
+    if ($type == '') {
+        $type = get_option('mail_server_type');
+    }
+    $host = get_option('ticket_mail_server_host');
+    if ($host == '') {
+        $host = get_option('mail_server_host');
+    }
+    $port = intval(get_option('ticket_mail_server_port'));
+    if ($port == 0) {
+        $port = intval(get_option('mail_server_port'));
+    }
+    $folder = get_option('ticket_mail_folder');
+    if ($folder == '') {
+        $folder = get_option('ticket_mail_folder');
+    }
 
     $username = get_option('ticket_mail_username');
+    if ($username == '') {
+        $username = get_option('mail_username');
+    }
     $password = get_option('ticket_mail_password');
+    if ($password == '') {
+        $password = get_option('mail_password');
+    }
 
-    $ref = _imap_server_spec($server, $port, $type);
-    $resource = @imap_open($ref . 'INBOX', $username, $password, CL_EXPUNGE);
-    if ($resource !== false) {
-        $list = imap_search($resource, (get_param_integer('test', 0) == 1 && $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) ? '' : 'UNSEEN');
+    $server_spec = _imap_server_spec($host, $port, $type);
+    $mbox = @imap_open($server_spec . $folder, $username, $password, CL_EXPUNGE);
+    if ($mbox !== false) {
+        $list = imap_search($mbox, (get_param_integer('test', 0) == 1 && $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) ? '' : 'UNSEEN');
         if ($list === false) {
             $list = array();
         }
         foreach ($list as $l) {
-            $header = imap_headerinfo($resource, $l);
-            $full_header = imap_fetchheader($resource, $l);
+            $header = imap_headerinfo($mbox, $l);
+            $full_header = imap_fetchheader($mbox, $l);
 
             $subject = $header->subject;
 
             $attachments = array();
             $attachment_size_total = 0;
-            $body = _imap_get_part($resource, $l, 'TEXT/HTML', $attachments, $attachment_size_total);
+            $body = _imap_get_part($mbox, $l, 'TEXT/HTML', $attachments, $attachment_size_total);
             if ($body === null) { // Convert from plain text
-                $body = _imap_get_part($resource, $l, 'TEXT/PLAIN', $attachments, $attachment_size_total);
+                $body = _imap_get_part($mbox, $l, 'TEXT/PLAIN', $attachments, $attachment_size_total);
                 $body = email_comcode_from_text($body);
             } else { // Convert from HTML
                 $body = email_comcode_from_html($body);
             }
-            _imap_get_part($resource, $l, 'APPLICATION/OCTET-STREAM', $attachments, $attachment_size_total);
+            _imap_get_part($mbox, $l, 'APPLICATION/OCTET-STREAM', $attachments, $attachment_size_total);
 
             if (strlen($header->reply_toaddress) > 0) {
                 $from_email = get_ticket_email_from_header($header->reply_toaddress);
@@ -174,7 +193,7 @@ function ticket_incoming_scan()
             }
 
             if (!is_non_human_email($subject, $body, $full_header, $from_email)) {
-                imap_clearflag_full($resource, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
+                imap_clearflag_full($mbox, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
 
                 ticket_incoming_message(
                     $from_email,
@@ -184,9 +203,9 @@ function ticket_incoming_scan()
                 );
             }
 
-            imap_setflag_full($resource, $l, '\\Seen');
+            imap_setflag_full($mbox, $l, '\\Seen');
         }
-        imap_close($resource);
+        imap_close($mbox);
     } else {
         $error = imap_last_error();
         imap_errors(); // Works-around weird PHP bug where "Retrying PLAIN authentication after [AUTHENTICATIONFAILED] Authentication failed. (errflg=1) in Unknown on line 0" may get spit out into any stream (even the backup log)
@@ -302,7 +321,7 @@ function email_comcode_from_text($body)
  */
 function is_non_human_email($subject, $body, $full_header, $from_email)
 {
-    if ($from_email == get_option('ticket_email_from') || $from_email == get_option('staff_address') || $from_email == get_option('website_email')) {
+    if ($from_email == get_option('ticket_mail_email_address') || $from_email == get_option('staff_address') || $from_email == get_option('website_email')) {
         return true;
     }
 
@@ -575,7 +594,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         $attachment_id = $GLOBALS['SITE_DB']->query_insert('attachments', array(
             'a_member_id' => $member_id,
             'a_file_size' => strlen($filedata),
-            'a_url' => 'uploads/attachments/' . rawurlencode($new_filename),
+            'a_url' => cms_rawurlrecode('uploads/attachments/' . rawurlencode($new_filename)),
             'a_thumb_url' => '',
             'a_original_filename' => $filename,
             'a_num_downloads' => 0,

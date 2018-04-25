@@ -584,6 +584,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]allow_php_in_templates[/tt] -- set this to '1' to enable the undocumented Tempcode 'PHP' directive, and its short-hand syntax (written like normal PHP long-tags). This allows you to write PHP code inside templates, but please aware there are strong risks associated with this. It means that themes you install may contain PHP code, or people submitting Comcode content may put in PHP code which you could accidentally unwittingly activate when validating content (as it would be validated against your own security credentials). Note this option is not designed to work from Comcode, because Comcode will add HTML formatting around your PHP code, corrupting it (from a security point of view you need to be aware though, as that could be avoided with some care by a hacker) 
   - [tt]git_autopull[/tt] -- set this to '1' if git changes should automatically be pulled every minute (less frequently if the CRON interval is longer). Assumes a suEXEC-like server and a git deployment and working [tt]shell_exec[/tt]
  - Low-level tuning
+  - [tt]show_menu_items_as_url[/tt] -- set this to '1' if you want the menu editor to show URLs instead of page-links (they will then be converted back)
   - [tt]kid_gloves_html[/tt] -- set this to '0' if you want to completely disable the kid-gloves HTML escaping mode, i.e. avoid the need to make declarations in your overrides. You may want to use this if you override various files but aren't really writing custom code and don't really understand how to make the declarations
   - [tt]whitelisted_blocks[/tt] -- set this to a comma-separated list of block names to whitelist any user to use those blocks independently. This is useful for AJAX-loaded blocks on sites where users may leave pages open, letting their sessions or block authorisations expire.
   - [tt]no_individual_gallery_view[/tt] -- set this to '1' if all images/videos in a flow-mode gallery must be viewed from the flow-mode view (never individually)
@@ -617,6 +618,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]force_spell_checker[/tt] -- set to 'pspell' or 'enchant' to force that particular spell-checker, rather than auto-detecting
   - [tt]avoid_register_shutdown_function[/tt] -- set this to '1' if [tt]register_shutdown_function[/tt] is not reliable on this system (may appear to be unreliable on some Windows servers, for example)
   - [tt]skip_fulltext_sqlserver[/tt] -- set this to '1' if you are using Microsoft SQL Server and want to disable full-text search support. You may do this if you don't like the limitations of SQL Server full-text search (per-table searching, not per-field searching).
+  - [tt]mail_theme[/tt] -- set this to the name of a theme to force that theme to be used for all outbound e-mails. This is useful because otherwise the theme of the user triggering the e-mail to be sent will be used.
  - Performance tuning (positive) [not official options as will break normal expectations of how the system will behave / complicate things]
   - [tt]lots_of_data_in_*[/tt] -- set this to '1', with '*' replaced with a database table name, if you want the Selectcode mechanism to work with recursive DB lookups rather than one huge flat lookup
   - [tt]disable_cat_cat_perms[/tt] -- set this to '1' if you want to disable catalogue category permissions
@@ -657,6 +659,8 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]access_protocol_redirect[/tt] -- set this to '1' if you want to redirect if the wrong access protocol (e.g. HTTP instead of HTTPS) is used to access the site. Note that this option won't apply when pages are served from the static cache, so it is still a good idea to configure the web server to do this directly. Sample code is in the [page="_SEARCH:tut_security"]Security tutorial[/page] (Migrating HTTP websites).
   - [tt]captcha_member_days[/tt] -- set this to a number if new members should continue to have CAPTCHA for this many days
   - [tt]captcha_member_posts[/tt] -- set this to a number if new members should continue to have CAPTCHA for this many forum posts
+  - [tt]reorganise_uploads[/tt] -- set this to '2' for various upload directories to have a hierarchical structure of subdirectories to organise your files based on category; set this to '1' for a flat structure; set this to '0' to disable it completely; to retroactively move things run the "Organise uploads" cleanup tool that will then appear.
+  - [tt]urls_simplifier[/tt] -- set this to '1' to have simplified (not-RFC-compliant) URLs shown in URL inputs on edit forms. This makes them a lot easier to use, and we convert them back to compliant URLs on the server. It is a safe process where it is not possible to cause any corruption by double encoding or double decoding.
 
 [title="4"]Hidden 'keep' parameters[/title]
 
