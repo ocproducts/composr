@@ -213,15 +213,15 @@ function notifications_ui($member_id_of)
     $mlsn_description = new Tempcode();
     if (get_forum_type() == 'cns') {
         $auto_monitor_contrib_content = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_auto_monitor_contrib_content') == 1);
-        $smart_topic_notification = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_smart_topic_notification') == 1);
+
         if (addon_installed('cns_forum')) {
+            $smart_topic_notification = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_smart_topic_notification') == 1);
+
             require_code('cns_forums2');
             $test = cns_has_mailing_list_style();
-
             if ($test[0] > 0) {
                 $mailing_list_style_notifications = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'mailing_list_style_notifications') == 1);
             }
-
             $mlsn_description_caveat = $test[1] ? new Tempcode() : do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_NOTIFICATIONS_CAVEAT');
             $mlsn_description = do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_NOTIFICATIONS', $mlsn_description_caveat);
         }
