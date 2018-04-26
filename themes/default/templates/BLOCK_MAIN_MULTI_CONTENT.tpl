@@ -24,8 +24,8 @@
 
 		{+START,IF_NON_EMPTY,{CONTENT}}
 			<div id="carousel-{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
-				<div class="move-left js-btn-car-move" data-move-amount="-30"></div>
-				<div class="move-right js-btn-car-move" data-move-amount="+30"></div>
+				<div class="move-left js-btn-car-move" data-move-amount="-30">{+START,INCLUDE,ICON}NAME=carousel/button_left{+END}</div>
+				<div class="move-right js-btn-car-move" data-move-amount="+30">{+START,INCLUDE,ICON}NAME=carousel/button_right{+END}</div>
 
 				<div class="main raw-ajax-grow-spot">
 				</div>

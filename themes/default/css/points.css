@@ -159,17 +159,3 @@ table.points-summary-table .answer {
 .leader-board-rank {
 	display: none;
 }
-
-/*
-=========================
-=========Buttons=========
-=========================
-*/
-
-.buttons--points {
-	background-image: url('{$IMG,icons/buttons/points}') !important;
-}
-
-.menu--social--points {
-	background-image: url('{$IMG,icons/menu/social/points}') !important;
-}

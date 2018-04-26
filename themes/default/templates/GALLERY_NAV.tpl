@@ -30,7 +30,7 @@
 			{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
 				{+START,IF,{$DESKTOP}}
 					{+START,IF,{$NOT,{SLIDESHOW}}}
-						<a class="button-screen buttons--slideshow inline-desktop" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
+						<a class="button-screen buttons--slideshow inline-desktop" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</span></a>
 					{+END}
 				{+END}
 			{+END}
@@ -70,7 +70,7 @@
 		{+START,IF,{$NOT,{SLIDESHOW}}}
 			<div class="float-surrounder block-mobile">
 				<div class="right block-mobile">
-					<a class="button-screen buttons--slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
+					<a class="button-screen buttons--slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</span></a>
 				</div>
 			</div>
 		{+END}

@@ -72,7 +72,13 @@
 								<option value="{TICKET_TYPE_ID*}"{+START,IF,{SELECTED}} selected="selected"{+END}>{NAME*}</option>{$,You can also use {LEAD_TIME} to get the ticket type's lead time}
 							{+END}
 						</select>
-						<div id="error-ticket-type-id" style="display: none" class="input-error-here"></div>
+						<div id="error-ticket-type-id" style="display: none" class="input-error-here">
+							{+START,INCLUDE,ICON}
+								NAME=status/notice
+								ICON_SIZE=24
+							{+END}
+							<span class="js-error-message"></span>
+						</div>
 					</td>
 				</tr>
 			{+END}

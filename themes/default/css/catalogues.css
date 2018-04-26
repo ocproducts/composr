@@ -156,16 +156,3 @@
 	padding-top: 0.5em;
 	padding-left: 1em;
 }
-
-/*
-=========================
-=========Buttons=========
-=========================
-*/
-
-.menu--cms--catalogues--add-one-catalogue {
-	background-image: url('{$IMG,icons/menu/cms/catalogues/add_one_catalogue}') !important;
-}
-.menu--cms--catalogues--edit-this-catalogue {
-	background-image: url('{$IMG,icons/menu/cms/catalogues/edit_this_catalogue}') !important;
-}

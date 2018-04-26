@@ -14829,7 +14829,7 @@
 
         var newContents = window.$editing.getTextbox(postField);
         newContents = newContents.replace(new RegExp('\\[(attachment|attachment_safe)[^\\]]*\\]new_' + index + '\\[/(attachment|attachment_safe)\\]', 'g'), '');
-        newContents = newContents.replace(new RegExp('<input[^<>]* class="cms-keep-ui-controlled"[^<>]* title="[^<>]*" value="[^"]+"[^<>]* />'), ''); // Shell of the above
+        newContents = newContents.replace(new RegExp('<button [^>]*class="cms-keep-ui-controlled" [^>]*title="([^"]*)" [^>]*type="button"[^>]*>.*?</button>'), ''); // Shell of the above
         window.$editing.setTextbox(postField, newContents, newContents);
         document.getElementById('file' + index).value = '';
     }

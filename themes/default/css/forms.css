@@ -85,12 +85,15 @@ div.comcode-supported {
 .input-error-here {
 	font-size: 0.9em;
 	display: block;
-	padding: 1em 1em 1em 35px;
+	padding: 1em;
 	border: 1px solid {$GET,light_error_border};
-	background: url('{$IMG;,icons/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
-	background-size: 24px 24px;
+	background-color: {$GET,light_error_background};
 	border-radius: 5px;
 	margin-top: 0.5em;
+}
+
+.input-error-here .icon {
+	margin-right: 0.3em;
 }
 
 /* This is used to fix a problem on screen-readers (we don't want a paragraph used) */
@@ -907,7 +910,8 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	padding: 2px;
 }
 
-#wysiwyg-editor input.cms-keep-ui-controlled, #wysiwyg-editor input.cms-keep-ui-controlled:focus {
+#wysiwyg-editor button.cms-keep-ui-controlled, 
+#wysiwyg-editor button.cms-keep-ui-controlled:focus {
 	border: 1px dashed gray;
 	text-align: center;
 	color: {$GET,native_ui_foreground};
@@ -916,11 +920,11 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	padding: 1px 25px 1px 2px;
 }
 /* Separately specified, as the weird selector breaks whole compound selector on some browsers */
-#wysiwyg-editor input.cms-keep-ui-controlled::selection {
+#wysiwyg-editor button.cms-keep-ui-controlled::selection {
 	color: {$GET,native_ui_foreground};
 	background-color: {$GET,native_ui_active_background};
 }
-#wysiwyg-editor input.cms-keep-ui-controlled::-moz-selection {
+#wysiwyg-editor button.cms-keep-ui-controlled::-moz-selection {
 	color: {$GET,native_ui_foreground};
 	background-color: {$GET,native_ui_active_background};
 }

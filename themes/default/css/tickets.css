@@ -58,19 +58,3 @@ body table.results-table tbody tr.unclosed-ticket td {
 .ticket-page-text {
 	margin-bottom: 2em;
 }
-
-/*
-=========================
-=========Buttons=========
-=========================
-*/
-
-.buttons--add-ticket {
-	background-image: url('{$IMG,icons/buttons/add_ticket}') !important;
-}
-.buttons--new-reply-staff-only {
-	background-image: url('{$IMG,icons/buttons/new_reply_staff_only}') !important;
-}
-.menu--adminzone--security--permissions--privileges {
-	background-image: url('{$IMG,icons/menu/adminzone/security/permissions/privileges}') !important;
-}

@@ -170,16 +170,3 @@
 		text-align: center;
 	}
 /*{+END}*/
-
-/*
-=========================
-=========Buttons=========
-=========================
-*/
-
-.menu--adminzone--audit--ecommerce--subscriptions {
-	background-image: url('{$IMG,icons/menu/adminzone/audit/ecommerce/subscriptions}') !important;
-}
-.menu--rich-content--ecommerce--purchase {
-	background-image: url('{$IMG,icons/menu/rich_content/ecommerce/purchase}') !important;
-}

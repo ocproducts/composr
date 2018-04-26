@@ -18,7 +18,13 @@
 		{+END}
 		{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}
 
-		<div id="error-{NAME*}" style="display: none" class="input-error-here"></div>
+		<div id="error-{NAME*}" style="display: none" class="input-error-here">
+			{+START,INCLUDE,ICON}
+				NAME=status/notice
+				ICON_SIZE=24
+			{+END}
+			<span class="js-error-message"></span>
+		</div>
 
 		<input type="hidden" id="required-posted--{NAME*}" name="require__{NAME*}" value="{$?,{REQUIRED*},1,0}" />
 	</div>

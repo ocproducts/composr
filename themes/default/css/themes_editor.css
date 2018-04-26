@@ -259,10 +259,3 @@
 =========Buttons=========
 =========================
 */
-
-.buttons--simple {
-	background-image: url('{$IMG,icons/buttons/simple}') !important;
-}
-.buttons--advanced {
-	background-image: url('{$IMG,icons/buttons/advanced}') !important;
-}

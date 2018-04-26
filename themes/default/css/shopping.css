@@ -59,28 +59,3 @@ table.cart-table .associated-details {
 table.shipping-address {
 	border: 0;
 }
-
-/*
-=========================
-=========Buttons=========
-=========================
-*/
-
-.buttons--cart-add {
-	background-image: url('{$IMG,icons/buttons/cart_add}') !important;
-}
-.buttons--cart-checkout {
-	background-image: url('{$IMG,icons/buttons/cart_checkout}') !important;
-}
-.buttons--cart-empty {
-	background-image: url('{$IMG,icons/buttons/cart_empty}') !important;
-}
-.buttons--cart-update {
-	background-image: url('{$IMG,icons/buttons/cart_update}') !important;
-}
-.buttons--cart-view {
-	background-image: url('{$IMG,icons/menu/rich_content/ecommerce/shopping_cart}') !important;
-}
-.menu--rich-content--catalogues--products {
-	background-image: url('{$IMG,icons/menu/rich_content/catalogues/products}') !important;
-}

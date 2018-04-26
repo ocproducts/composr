@@ -72,6 +72,6 @@
 	{+END}
 
 	<p class="buttons-group">
-		<a class="button-screen buttons--add-ticket" rel="add" href="{ADD_TICKET_URL*}"><span>{!ADD_TICKET}</span></a>
+		<a class="button-screen buttons--add-ticket" rel="add" href="{ADD_TICKET_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/add_ticket{+END} {!ADD_TICKET}</span></a>
 	</p>
 </div>

@@ -28,15 +28,17 @@
 
         if (theElement.name !== undefined) {
             var name = theElement.name,
-                errorMsgElement = getErrorMsgElement(name);
+                errorMsgElementWrapper = getErrorMsgElement(name);
 
             if ((errorMsg === '') && (name.includes('_hour')) || (name.includes('_minute'))) { // Do not blank out as day/month/year (which comes first) would have already done it
                 return;
             }
 
-            if (errorMsgElement) {
+            if (errorMsgElementWrapper) {
+                var errorMsgElement = errorMsgElementWrapper.querySelector('.js-error-message');
+                
                 // Make error message visible, if there's an error
-                $dom.toggle(errorMsgElement, (errorMsg !== ''));
+                $dom.toggle(errorMsgElementWrapper, (errorMsg !== ''));
 
                 // Changed error message
                 if ($dom.html(errorMsgElement) !== $cms.filter.html(errorMsg)) {
@@ -45,7 +47,7 @@
                         theElement.setAttribute('aria-invalid', 'true');
 
                         // Need to switch tab?
-                        var p = errorMsgElement.parentElement;
+                        var p = errorMsgElementWrapper.parentElement;
                         while (p != null) {
                             if ((errorMsg.substr(0, 5) !== '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p.id.substr(0, 2) === 'g-') && (p.style.display === 'none')) {
                                 $cms.ui.selectTab('g', p.id.substr(2, p.id.length - 2), false, true);
@@ -59,11 +61,11 @@
                         errorMsgElement.setAttribute('role', 'alert');
 
                         // Fade in
-                        $dom.fadeIn(errorMsgElement);
+                        $dom.fadeIn(errorMsgElementWrapper);
 
                     } else {
                         theElement.setAttribute('aria-invalid', 'false');
-                        errorMsgElement.setAttribute('role', '');
+                        errorMsgElementWrapper.setAttribute('role', '');
                     }
                 }
             }

@@ -892,56 +892,6 @@ hr.cns-sig-barrier {
 =========Buttons=========
 =========================
 */
-
-.buttons--forum {
-	background-image: url('{$IMG,icons/buttons/forum}') !important;
-}
-.buttons--mark-read-forum {
-	background-image: url('{$IMG,icons/buttons/mark_read}') !important;
-}
-.buttons--mark-read-topic {
-	background-image: url('{$IMG,icons/buttons/mark_read}') !important;
-}
-.buttons--mark-unread-forum {
-	background-image: url('{$IMG,icons/buttons/mark_unread}') !important;
-}
-.buttons--mark-unread-topic {
-	background-image: url('{$IMG,icons/buttons/mark_unread}') !important;
-}
-.buttons--new-post-full {
-	background-image: url('{$IMG,icons/buttons/new_post_full}') !important;
-}
-/*{+START,IF,{$ADDON_INSTALLED,cns_forum}}*/
-	.buttons--add-topic {
-		background-image: url('{$IMG,icons/buttons/add_topic}') !important;
-	}
-/*{+END}*/
-.buttons--new-quote {
-	background-image: url('{$IMG,icons/buttons/new_quote}') !important;
-}
-.buttons--whisper {
-	background-image: url('{$IMG,icons/buttons/whisper}') !important;
-}
-/*{+START,IF,{$ADDON_INSTALLED,cns_multi_moderations}}*/
-	.menu--adminzone--structure--forum--multi-moderations {
-		background-image: url('{$IMG,icons/menu/adminzone/structure/forum/multi_moderations}') !important;
-	}
-/*{+END}*/
-.menu--site-meta--user-actions--lost-password {
-	background-image: url('{$IMG,icons/menu/site_meta/user_actions/lost_password}') !important;
-}
-/*{+START,IF,{$ADDON_INSTALLED,cns_warnings}}*/
-	.admin--warn {
-		background-image: url('{$IMG,icons/admin/warn}') !important;
-	}
-/*{+END}*/
-.buttons--linear {
-	background-image: url('{$IMG,icons/buttons/linear}') !important;
-}
-.buttons--threaded {
-	background-image: url('{$IMG,icons/buttons/threaded}') !important;
-}
-
 /*{+START,CSS_MODE,mobile}*/
 	/* Modifications to make the top "Mark read" button appear in mobile mode */
 	.cns-topic-buttons.non-accessibility-redundancy,

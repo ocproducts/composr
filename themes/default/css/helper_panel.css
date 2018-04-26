@@ -87,7 +87,7 @@
 		height: 20px;
 		background-position: 20px 0 !important;
 	}
-	#helper-panel-toggle img {
+	#helper-panel-toggle .icon {
 		display: none;
 	}
 	.helper-panel-hidden #helper-panel-toggle {

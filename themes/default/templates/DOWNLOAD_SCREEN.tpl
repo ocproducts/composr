@@ -32,6 +32,10 @@
 					<div class="box-inner">
 					{+END}
 						<div class="download-now" itemprop="significantLinks">
+							{+START,INCLUDE,ICON}
+								NAME=menu/rich_content/downloads
+							   ICON_SIZE=24
+							{+END} 
 							{+START,IF,{MAY_DOWNLOAD}}
 								<p class="download-link associated-link suggested-link"><a {+START,IF,{$NOT,{$INLINE_STATS}}} data-click-ga-track="{ category: '{!DOWNLOAD;^*}', action: '{ORIGINAL_FILENAME;^*}' }"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
 							{+END}
@@ -154,8 +158,8 @@
 			{$SET,carousel_id,{$RAND}}
 
 			<div id="carousel-{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
-				<div class="move-left js-btn-car-move" data-move-amount="-100"></div>
-				<div class="move-right js-btn-car-move" data-move-amount="+100"></div>
+				<div class="move-left js-btn-car-move" data-move-amount="-100">{+START,INCLUDE,ICON}NAME=carousel/button_left{+END}</div>
+				<div class="move-right js-btn-car-move" data-move-amount="+100">{+START,INCLUDE,ICON}NAME=carousel/button_right{+END}</div>
 
 				<div class="main">
 				</div>

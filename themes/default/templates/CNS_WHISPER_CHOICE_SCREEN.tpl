@@ -28,7 +28,7 @@
 						<input type="hidden" name="type" value="new_pt" />
 
 						<p class="proceed-button">
-							<button class="button-screen buttons--add-topic" type="submit" data-disable-on-click="1">{!QUOTE_TO_PT}</button>
+							<button class="button-screen buttons--add-topic" type="submit" data-disable-on-click="1">{+START,INCLUDE,ICON}NAME=buttons/add_topic{+END} {!QUOTE_TO_PT}</button>
 						</p>
 					</div>
 				</form>
@@ -49,7 +49,7 @@
 					<input type="hidden" name="type" value="new_post" />
 
 					<p class="proceed-button">
-						<button class="button-screen buttons--new-post-full" type="submit" data-disable-on-click="1">{!IN_TOPIC_PP}</button>
+						<button class="button-screen buttons--new-post-full" type="submit" data-disable-on-click="1">{+START,INCLUDE,ICON}NAME=buttons/new_post_full{+END} {!IN_TOPIC_PP}</button>
 					</p>
 				</div>
 			</form>

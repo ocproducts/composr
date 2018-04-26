@@ -17,34 +17,40 @@
 	max-width: 140px;
 }
 
-.carousel .move-left, .carousel .move-right {
+.carousel .move-left, 
+.carousel .move-right {
 	min-height: 16px;
 	width: 17px;
-	background-size: 16px 16px !important;
+	position: relative;
+}
+
+.carousel .move-left .icon ,
+.carousel .move-right .icon { 
+	width: 16px;
+	height: 16px;
+	position: absolute;
+	top: 50%;
+	margin-top: -8px;
+}
+
+.carousel .move-left:hover .icon ,
+.carousel .move-right:hover .icon {
+	filter: brightness(1.4);
+	-webkit-filter: brightness(1.4);
 }
 
 .carousel .move-left {
 	margin-right: 20px;
 	padding-right: 5px;
 	float: left;
-	background: url('{$IMG;,icons/carousel/button_left}') left center no-repeat;
 	border-right: 1px dotted {$GET,standard_border};
-}
-
-.carousel .move-left:hover {
-	background-image: url('{$IMG;,icons/carousel/button_left_hover}');
 }
 
 .carousel .move-right {
 	margin-left: 20px;
 	padding-left: 5px;
 	float: right;
-	background: url('{$IMG;,icons/carousel/button_right}') right center no-repeat;
 	border-left: 1px dotted {$GET,standard_border};
-}
-
-.carousel .move-right:hover {
-	background-image: url('{$IMG;,icons/carousel/button_right_hover}');
 }
 
 .carousel .main {
