@@ -694,7 +694,7 @@ function get_max_file_size($source_member = null, $connection = null, $consider_
             require_code('cns_groups');
             $daily_quota = cns_get_member_best_group_property($source_member, 'max_daily_upload_mb');
         } else {
-            $daily_quota = 5; // 5 is a hard-coded default for non-Conversr forums
+            $daily_quota = NON_CNS_QUOTA;
         }
         if (is_null($connection)) {
             $connection = $GLOBALS['SITE_DB'];
@@ -729,17 +729,22 @@ function get_max_file_size($source_member = null, $connection = null, $consider_
  * @param  boolean $skip_server_side_security_check Whether to skip the server side security check
  * @param  ?string $file_to_delete Delete this file if we have to exit (null: no file to delete)
  * @param  boolean $accept_errors Whether to allow errors without dying
+ * @param  MEMBER $member_id Member to check as
  * @return boolean Success status
  */
-function check_extension($name, $skip_server_side_security_check = false, $file_to_delete = null, $accept_errors = false)
+function check_extension($name, $skip_server_side_security_check = false, $file_to_delete = null, $accept_errors = false, $member_id = null)
 {
+    if ($member_id === null) {
+        $member_id = get_member();
+    }
+
     $ext = get_file_extension($name);
     $_types = get_option('valid_types');
     $types = array_flip(explode(',', $_types));
     $_types = '';
     ksort($types);
     if (!$skip_server_side_security_check) {
-        if (!has_privilege(get_member(), 'use_very_dangerous_comcode')) {
+        if (!has_privilege($member_id, 'use_very_dangerous_comcode')) {
             unset($types['js']);
             unset($types['swf']);
             unset($types['html']);

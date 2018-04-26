@@ -315,7 +315,12 @@ abstract class EmailIntegration
 
         if ($mime_type == 'APPLICATION/OCTET-STREAM') { // Anything 'attachment' will be considered as 'application/octet-stream' so long as it is not plain text or HTML
             $disposition = $structure->ifdisposition ? strtoupper($structure->disposition) : '';
-            if (($disposition == 'ATTACHMENT') || (($structure->type != 1) && ($structure->type != 2) && (isset($structure->bytes)) && ($part_mime_type != 'TEXT/PLAIN') && ($part_mime_type != 'TEXT/HTML'))) {
+            if (
+                ($disposition == 'ATTACHMENT') || (($structure->type != 1) &&
+                ($structure->type != 2) &&
+                (isset($structure->bytes)) &&
+                (!in_array($part_mime_type, array('TEXT/PLAIN', 'TEXT/HTML', 'TEXT/X-VCARD', 'APPLICATION/PGP-SIGNATURE')))
+            ) {
                 $filename = $structure->parameters[0]->value;
 
                 if ($attachment_size_total + $structure->bytes < 1024 * 1024 * 20/*20MB is quite enough, thank you*/) {
@@ -417,13 +422,51 @@ abstract class EmailIntegration
      * Save e-mail attachments and attach to body Comcode.
      *
      * @param  array $attachments Attachments
+     * @param  MEMBER $member_id Member ID
      * @param  MEMBER $member_id_comcode Member ID to save against
      * @param  string $body Comcode body (altered by reference)
+     * @return array List of attachment error messages
      */
-    protected function save_attachments($attachments, $member_id_comcode, &$body)
+    protected function save_attachments($attachments, $member_id, $member_id_comcode, &$body)
     {
+        require_code('files');
+        require_code('files2');
+        require_lang('mail');
+
+        if (get_forum_type() == 'cns') {
+            require_code('cns_groups');
+            $max_attachments_per_post = cns_get_member_best_group_property($member_id, 'max_attachments_per_post');
+            $daily_quota = cns_get_member_best_group_property($source_member, 'max_daily_upload_mb');
+        } else {
+            $max_attachments_per_post = null;
+            $daily_quota = NON_CNS_QUOTA;
+        }
+
+        $max_download_size = intval(get_option('max_download_size')) * 1024;
+
+        $errors = array();
+
+        $num_attachments_handed = 0;
         foreach ($attachments as $filename => $filedata) {
-            require_code('files');
+            if (($max_attachments_per_post !== null) && ($max_attachments_per_post <= $num_attachments_handed)) {
+                $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_TOO_MANY', array(integer_format($num_attachments_handed), integer_format($max_attachments_per_post)));
+                break;
+            }
+
+            if (!check_extension($file, true, null, true, $member_id_comcode)) {
+                $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_INVALID_TYPE', array($file));
+                continue;
+            }
+
+            if (strlen($filedata) > $max_download_size) {
+                $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_TOO_BIG', array(clean_file_size($max_download_size)));
+            }
+
+            $max_size = get_max_file_size($member_id, null, false);
+            if (strlen($filedata) > $max_size) {
+                $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_OVER_QUOTA', array(clean_file_size($daily_quota * 1024 * 1024)));
+            }
+
             $new_filename = preg_replace('#\..*#', '', $filename) . '.dat';
             do {
                 $new_path = get_custom_file_base() . '/uploads/attachments/' . $new_filename;
@@ -433,10 +476,15 @@ abstract class EmailIntegration
             } while (file_exists($new_path));
             cms_file_put_contents_safe($new_path, $filedata, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
+            $urls = array(cms_rawurlrecode('uploads/attachments/' . rawurlencode($new_filename)), '');
+
+            require_code('upload_syndication');
+            $urls[0] = handle_upload_syndication('', '', '', $urls[0], $filename, true);
+
             $attachment_id = $GLOBALS['SITE_DB']->query_insert('attachments', array(
-                'a_member_id' => $member_id_comcode,
+                'a_member_id' => $member_id,
                 'a_file_size' => strlen($filedata),
-                'a_url' => cms_rawurlrecode('uploads/attachments/' . rawurlencode($new_filename)),
+                'a_url' => $urls[0],
                 'a_thumb_url' => '',
                 'a_original_filename' => $filename,
                 'a_num_downloads' => 0,
@@ -446,7 +494,11 @@ abstract class EmailIntegration
             ), true);
 
             $body .= "\n\n" . '[attachment framed="1" thumb="1"]' . strval($attachment_id) . '[/attachment]';
+
+            $num_attachments_handed++;
         }
+
+        return $errors;
     }
 
     /**
@@ -628,12 +680,30 @@ abstract class EmailIntegration
     }
 
     /**
+     * Send out an e-mail about us having some problem(s) with attachments.
+     *
+     * @param  string $subject Subject line of original message
+     * @param  string $body Body of original message
+     * @param  EMAIL $email E-mail address we tried to bind to
+     * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
+     * @param  array $errors Attachment errors
+     * @param  string $url URL to content
+     */
+    protected function send_bounce_email__attachment_errors($subject, $body, $email, $email_bounce_to, $errors, $url)
+    {
+        $extended_subject = do_lang('MAIL_INTEGRATION_ATTACHMENT_ERRORS_SUBJECT', $subject, $email, array(get_site_name()), get_site_default_lang());
+        $extended_message = do_lang('MAIL_INTEGRATION_ATTACHMENT_ERRORS_MAIL', comcode_to_clean_text($body), $email, array($subject, get_site_name(), $errors, $url), get_site_default_lang());
+
+        $this->send_bounce_email($extended_subject, $extended_message, $email, $email_bounce_to);
+    }
+
+    /**
      * Send out an e-mail about us not recognising an e-mail address for an incoming e-mail.
      *
      * @param  string $subject Subject line of original message
      * @param  string $body Body of original message
-     * @param  string $email E-mail address we tried to bind to
-     * @param  string $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
+     * @param  EMAIL $email E-mail address we tried to bind to
+     * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      */
     protected abstract function send_bounce_email__cannot_bind($subject, $body, $email, $email_bounce_to);
 
@@ -642,8 +712,8 @@ abstract class EmailIntegration
      *
      * @param  string $subject Subject line of original message
      * @param  string $body Body of original message
-     * @param  string $email E-mail address we were to bind to
-     * @param  string $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
+     * @param  EMAIL $email E-mail address we were to bind to
+     * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      */
     protected function send_bounce_email($subject, $body, $email, $email_bounce_to)
     {

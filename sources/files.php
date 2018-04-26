@@ -52,6 +52,8 @@ function init__files()
         define('FILE_WRITE_FAILURE_SOFT', 2);
         define('FILE_WRITE_SYNC_FILE', 4);
         define('FILE_WRITE_FIX_PERMISSIONS', 8);
+
+        define('NON_CNS_QUOTA', 5); // A hard-coded default for non-Conversr forums
     }
 }
 

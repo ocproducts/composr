@@ -147,7 +147,15 @@ class ForumEmailIntegration extends EmailIntegration
             if ($warn_if_missing) {
                 // E-mail back, saying user not found
                 $this->send_bounce_email__cannot_bind($subject, $body, $from_email, $from_email);
+                return;
             }
+        }
+
+        // Check access
+        if (!has_category_access($this->member_id, 'forums', strval($this->forum_id))) {
+            $forum_name = get_translated_text($this->forum_row['f_name']);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+            $this->send_bounce_email__access_denied($subject, $body, $from_email, $from_email, $forum_name, $username);
         }
 
         // Check there can be no forgery vulnerability
@@ -158,11 +166,11 @@ class ForumEmailIntegration extends EmailIntegration
         $LAX_COMCODE = true;
 
         // Add in attachments
-        $this->save_attachments($attachments, $member_id_comcode, $body);
+        $attachment_errors = $this->save_attachments($attachments, $member_id, $member_id_comcode, $body);
 
         // Mark that this was e-mailed in
         $body = static_evaluate_tempcode(do_template('CNS_POST_FROM_MAILING_LIST', array(
-            'UNCONFIRMED_MEMBER_NOTICE' => $this->forum_row['f_mail_unconfirmed_member_notice'] == 1,
+            'UNCONFIRMED_MEMBER_NOTICE' => ($this->forum_row['f_mail_unconfirmed_member_notice'] == 1) && (!is_guest($member_id)),
             'POST' => $body,
             'USERNAME' => $username,
         )));
@@ -182,7 +190,13 @@ class ForumEmailIntegration extends EmailIntegration
             $topic_id = cns_make_topic($this->forum_id);
         }
         require_code('cns_posts_action');
-        cns_make_post($topic_id, $title, $body, 0, $is_starter);
+        $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter);
+
+        if (count($attachment_errors) != 0) {
+            $post_url = $GLOBALS['FORUM_DRIVER']->post_url($post_id, '');
+
+            $this->send_bounce_email__attachment_errors($subject, $body, $from_email, $from_email, $attachment_errors, $post_url);
+        }
     }
 
     /**
@@ -232,13 +246,31 @@ class ForumEmailIntegration extends EmailIntegration
      *
      * @param  string $subject Subject line of original message
      * @param  string $body Body of original message
-     * @param  string $email E-mail address we tried to bind to
-     * @param  string $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
+     * @param  EMAIL $email E-mail address we tried to bind to
+     * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      */
     protected function send_bounce_email__cannot_bind($subject, $body, $email, $email_bounce_to)
     {
         $extended_subject = do_lang('MAILING_LIST_CANNOT_BIND_SUBJECT', $subject, $email, array(get_site_name()), get_site_default_lang());
         $extended_message = do_lang('MAILING_LIST_CANNOT_BIND_MAIL', comcode_to_clean_text($body), $email, array($subject, get_site_name()), get_site_default_lang());
+
+        $this->send_bounce_email($extended_subject, $extended_message, $email, $email_bounce_to);
+    }
+
+    /**
+     * Send out an e-mail about us not having access to the forum.
+     *
+     * @param  string $subject Subject line of original message
+     * @param  string $body Body of original message
+     * @param  EMAIL $email E-mail address we tried to bind to
+     * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
+     * @param  string $forum_name Forum name
+     * @param  string $username Bound username
+     */
+    protected function send_bounce_email__access_denied($subject, $body, $email, $email_bounce_to, $forum_name, $username)
+    {
+        $extended_subject = do_lang('MAILING_LIST_ACCESS_DENIED_SUBJECT', $subject, $email, array(get_site_name(), $forum_name, $username), get_site_default_lang());
+        $extended_message = do_lang('MAILING_LIST_ACCESS_DENIED_MAIL', comcode_to_clean_text($body), $email, array($subject, get_site_name(), $forum_name, $username), get_site_default_lang());
 
         $this->send_bounce_email($extended_subject, $extended_message, $email, $email_bounce_to);
     }

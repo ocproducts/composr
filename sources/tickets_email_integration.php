@@ -158,6 +158,7 @@ class TicketsEmailIntegration
             if ($warn_if_missing) {
                 // E-mail back, saying user not found
                 $this->send_bounce_email__cannot_bind($subject, $body, $from_email, $from_email_orig);
+                return;
             }
         }
 
@@ -178,7 +179,7 @@ class TicketsEmailIntegration
         $LAX_COMCODE = true;
 
         // Add in attachments
-        $this->save_attachments($attachments, $member_id_comcode, $body);
+        $attachment_errors = $this->save_attachments($attachments, $member_id, $member_id_comcode, $body);
 
         // Mark that this was e-mailed in
         $body .= "\n\n" . do_lang('TICKET_EMAILED_IN', null, null, null, get_lang($member_id));
@@ -240,6 +241,10 @@ class TicketsEmailIntegration
 
             // Send email (to staff & to confirm receipt to $member_id)
             send_ticket_email($existing_ticket, $__title, $body, $home_url, $from_email, null, $member_id, true);
+        }
+
+        if (count($attachment_errors) != 0) {
+            $this->send_bounce_email__attachment_errors($subject, $body, $from_email, $from_email, $attachment_errors, $home_url);
         }
     }
 
@@ -323,8 +328,8 @@ class TicketsEmailIntegration
      *
      * @param  string $subject Subject line of original message
      * @param  string $body Body of original message
-     * @param  string $email E-mail address we tried to bind to
-     * @param  string $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
+     * @param  EMAIL $email E-mail address we tried to bind to
+     * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      */
     protected function send_bounce_email__cannot_bind($subject, $body, $email, $email_bounce_to)
     {

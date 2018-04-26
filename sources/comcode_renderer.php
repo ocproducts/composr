@@ -2019,7 +2019,8 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     require_code('cns_groups');
                     $daily_quota = cns_get_member_best_group_property($source_member, 'max_daily_upload_mb');
                 } else {
-                    $daily_quota = 5; // 5 is a hard coded default for non-Conversr forums
+                    require_code('files');
+                    $daily_quota = NON_CNS_QUOTA;
                 }
                 require_code('upload_syndication');
                 if ((!is_null($daily_quota)) && ((substr($id, 0, 4) != 'new_') || (!upload_will_syndicate('file' . substr($id, 4))))) {
