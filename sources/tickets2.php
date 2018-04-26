@@ -458,11 +458,13 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
             $staff_username = $GLOBALS['FORUM_DRIVER']->get_username($new_poster);
 
             if ((get_option('ticket_mail_on') == '1') && (cron_installed()) && (function_exists('imap_open'))) {
-                require_code('tickets_email_integration');
                 if ($uid_email == '') {
                     $uid_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($uid);
                 }
-                ticket_outgoing_message($ticket_id, $ticket_url, $ticket_type_name, $title, $post, $uid_displayname, $uid_email, $staff_displayname);
+                require_code('mail_integration');
+                require_code('tickets_email_integration');
+                $email_ob = new TicketsEmailIntegration();
+                $email_ob->outgoing_message($ticket_id, $ticket_url, $ticket_type_name, $title, $post, $uid, $uid_displayname, $uid_email, $staff_displayname);
             } elseif (!is_guest($uid)) {
                 $uid_lang = get_lang($uid);
 
@@ -535,8 +537,10 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
         // ALSO: Tell member that their message was received
         if ($uid_email != '') {
             if ((get_option('ticket_mail_on') == '1') && (cron_installed()) && (function_exists('imap_open')) && ($new_ticket) && ($auto_created)) {
+                require_code('mail_integration');
                 require_code('tickets_email_integration');
-                ticket_outgoing_message($ticket_id, $ticket_url, $ticket_type_name, $title, $post, $uid_displayname, $uid_email, '', true);
+                $email_ob = new TicketsEmailIntegration();
+                $email_ob->outgoing_message($ticket_id, $ticket_url, $ticket_type_name, $title, $post, $uid, $uid_displayname, $uid_email, '', true);
             } elseif (get_option('message_received_emails') == '1') {
                 require_code('mail');
                 mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($uid_email), empty($uid_displayname) ? null : $uid_displayname, '', '', 3, null, false, $new_poster);

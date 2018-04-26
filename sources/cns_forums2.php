@@ -23,14 +23,19 @@
  *
  * @return array A pair: How many that do, If all do
  */
-function cns_has_mailing_list_style()
+function cns_has_mailing_list_style($forum_id = null)
 {
     $sql = 'SELECT id,f_mail_username,f_mail_email_address,f_mail_server_type,f_mail_server_host,f_mail_server_port,f_mail_folder,f_mail_username,f_mail_password FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums';
     $sql_sup = ' WHERE ' . db_string_not_equal_to('f_mail_username', '') . ' AND ' . db_string_not_equal_to('f_mail_email_address', '');
+    if ($forum_id !== null) {
+        $sql_sup .= ' AND id=' . strval($forum_id);
+    }
 
-    $test = $GLOBALS['FORUM_DB']->query_value_if_there($sql . $sql_sup);
-    if ($test === null) {
-        return array(0, false);
+    if ($forum_id !== null) {
+        $test = $GLOBALS['FORUM_DB']->query_value_if_there($sql . $sql_sup);
+        if ($test === null) {
+            return array(0, false);
+        }
     }
 
     $cnt_yes = 0;

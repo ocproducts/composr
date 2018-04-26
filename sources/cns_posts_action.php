@@ -323,7 +323,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
             } else {
                 require_code('cns_posts_action2');
                 cms_profile_start_for('cns_make_post:cns_send_topic_notification');
-                cns_send_topic_notification($url, $topic_id, $forum_id, $anonymous ? db_get_first_id() : $poster, $is_starter, $post_comcode, $topic_title, $intended_solely_for/*limits to this*/, $is_pt, null, null, $poster_name_if_guest);
+                cns_send_topic_notification($url, $topic_id, $post_id, $forum_id, $anonymous ? db_get_first_id() : $poster, $is_starter, $post_comcode, $topic_title, $intended_solely_for/*limits to this*/, $is_pt, null, null, $poster_name_if_guest);
                 cms_profile_end_for('cns_make_post:cns_send_topic_notification');
             }
         }

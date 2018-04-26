@@ -1,9 +1,9 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2016
+ Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 
  NOTE TO PROGRAMMERS:
@@ -15,26 +15,30 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    tickets
+ * @package    cns_forum
  */
 
 /**
  * Hook class.
  */
-class Hook_cron_tickets_email_integration
+class Hook_cron_cns_forum_email_integration
 {
     /**
      * Run function for CRON hooks. Searches for tasks to perform.
      */
     public function run()
     {
-        if (!addon_installed('tickets')) {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
+        if (!addon_installed('cns_forum')) {
             return;
         }
 
         require_code('mail_integration');
-        require_code('tickets_email_integration');
-        $email_ob = new TicketsEmailIntegration();
+        require_code('cns_forum_email_integration');
+        $email_ob = new ForumEmailIntegration();
         $email_ob->incoming_scan();
     }
 }

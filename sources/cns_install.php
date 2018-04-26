@@ -343,9 +343,9 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_nonmatch_policy', 'ID_TEXT', 'post_as_guest');
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_unconfirmed_member_notice', 'BINARY', 1);
 
-        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_smart_topic_notification', 'BINARY');
-        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_mailing_list_style_notifications', 'BINARY');
-        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_sound_enabled', 'BINARY');
+        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_smart_topic_notification', 'BINARY', 0);
+        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_mailing_list_style_notifications', 'BINARY', 1);
+        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_sound_enabled', 'BINARY', 0);
     }
 
     // If we have the forum installed to this db already, leave

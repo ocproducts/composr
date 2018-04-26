@@ -72,7 +72,7 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
         }
     }
 
-    cns_send_topic_notification($url, $topic_id, $forum_id, $poster, $is_starter, $post, $topic_info[0]['t_cache_first_title'], null, !is_null($topic_info[0]['t_pt_from']), null, null, $post_info[0]['p_poster_name_if_guest']);
+    cns_send_topic_notification($url, $topic_id, $post_id, $forum_id, $poster, $is_starter, $post, $topic_info[0]['t_cache_first_title'], null, !is_null($topic_info[0]['t_pt_from']), null, null, $post_info[0]['p_poster_name_if_guest']);
 
     if (!is_null($forum_id)) {
         cns_force_update_forum_caching($forum_id, 0, 1);

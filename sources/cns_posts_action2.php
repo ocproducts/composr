@@ -160,7 +160,8 @@ function cns_member_handle_promotion($member_id = null)
  *
  * @param  URLPATH $url The URL to view the new post.
  * @param  AUTO_LINK $topic_id The ID of the topic that got posted in.
- * @param  ?AUTO_LINK $forum_id The forum that the topic is in (null: find out from the DB).
+ * @param  AUTO_LINK $post_id The ID of the post.
+ * @param  AUTO_LINK $forum_id The forum that the topic is in.
  * @param  MEMBER $sender_member_id The member that made the post triggering this tracking notification.
  * @param  boolean $is_starter Whether the post started a new topic.
  * @param  LONG_TEXT $post The post, in Comcode format.
@@ -171,9 +172,9 @@ function cns_member_handle_promotion($member_id = null)
  * @param  ?SHORT_TEXT $no_notify_for__code_category DO NOT send notifications to: The category within the notification code (null: none / no restriction)
  * @param  ?SHORT_TEXT $poster_name The name of the poster (null: default for $sender_member_id)
  */
-function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_id, $is_starter, $post, $topic_title, $_limit_to = null, $is_pt = false, $no_notify_for__notification_code = null, $no_notify_for__code_category = null, $poster_name = null)
+function cns_send_topic_notification($url, $topic_id, $post_id, $forum_id, $sender_member_id, $is_starter, $post, $topic_title, $_limit_to = null, $is_pt = false, $no_notify_for__notification_code = null, $no_notify_for__code_category = null, $poster_name = null)
 {
-    if ((is_null($forum_id)) && ($is_starter)) {
+    if (($is_pt) && ($is_starter)) {
         return;
     }
 
@@ -207,7 +208,23 @@ function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_
         $limit_to[] = $topic_info[0]['t_pt_from'];
         $limit_to = array_merge($limit_to, collapse_1d_complexity('s_member_id', $GLOBALS['FORUM_DB']->query_select('f_special_pt_access', array('s_member_id'), array('s_topic_id' => $topic_id))));
     }
-    dispatch_notification('cns_topic', strval($topic_id), $subject, $mail, (count($limit_to) == 0) ? null : $limit_to, $sender_member_id, 3, false, false, $no_notify_for__notification_code, $no_notify_for__code_category);
+
+    if ($is_pt) {
+        $extra = array();
+    } else {
+        $extra = array(
+            'url' => $url,
+            'forum_id' => $forum_id,
+            'topic_id' => $topic_id,
+            'post_id' => $post_id,
+            'sender_member_id' => $sender_member_id,
+            'is_starter' => $is_starter,
+            'post' => $post,
+            'topic_title' => $topic_title,
+        );
+    }
+
+    dispatch_notification('cns_topic', strval($topic_id), $subject, $mail, (count($limit_to) == 0) ? null : $limit_to, $sender_member_id, 3, false, false, $no_notify_for__notification_code, $no_notify_for__code_category, '', '', '', '', null, false, $extra);
 }
 
 /**

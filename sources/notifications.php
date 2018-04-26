@@ -180,12 +180,17 @@ function do_notification_template($codename, $parameters = null, $lang = null, $
  * @param  string $body_suffix Only relevant if $store_in_staff_messaging_system is true: body suffix for storage
  * @param  ?array $attachments A list of attachments (each attachment being a map, path=>filename) (null: none)
  * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
+ * @param  ?array $extra Extra data we may need to handle special cases in our dispatch code (null: none)
  */
-function dispatch_notification($notification_code, $code_category, $subject, $message, $to_member_ids = null, $from_member_id = null, $priority = 3, $store_in_staff_messaging_system = false, $no_cc = false, $no_notify_for__notification_code = null, $no_notify_for__code_category = null, $subject_prefix = '', $subject_suffix = '', $body_prefix = '', $body_suffix = '', $attachments = null, $use_real_from = false)
+function dispatch_notification($notification_code, $code_category, $subject, $message, $to_member_ids = null, $from_member_id = null, $priority = 3, $store_in_staff_messaging_system = false, $no_cc = false, $no_notify_for__notification_code = null, $no_notify_for__code_category = null, $subject_prefix = '', $subject_suffix = '', $body_prefix = '', $body_suffix = '', $attachments = null, $use_real_from = false, $extra = null)
 {
     global $NOTIFICATIONS_ON;
     if (!$NOTIFICATIONS_ON) {
         return;
+    }
+
+    if ($extra === null) {
+        $extra = array(); // TODO: Change in v11
     }
 
     if (!isset($GLOBALS['FORUM_DRIVER'])) {
@@ -205,7 +210,7 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
         return;
     }
 
-    $dispatcher = new Notification_dispatcher($notification_code, $code_category, $subject, $message, $to_member_ids, $from_member_id, $priority, $store_in_staff_messaging_system, $no_cc, $no_notify_for__notification_code, $no_notify_for__code_category, $subject_prefix, $subject_suffix, $body_prefix, $body_suffix, $attachments, $use_real_from);
+    $dispatcher = new Notification_dispatcher($notification_code, $code_category, $subject, $message, $to_member_ids, $from_member_id, $priority, $store_in_staff_messaging_system, $no_cc, $no_notify_for__notification_code, $no_notify_for__code_category, $subject_prefix, $subject_suffix, $body_prefix, $body_suffix, $attachments, $use_real_from, $extra);
 
     if ((get_param_integer('keep_debug_notifications', 0) == 1) || ($notification_code == 'task_completed') || (running_script('cron_bridge'))) {
         $dispatcher->dispatch();
@@ -244,6 +249,7 @@ class Notification_dispatcher
     public $body_suffix = '';
     public $attachments = null;
     public $use_real_from = false;
+    public $extra = array();
 
     /**
      * Construct notification dispatcher.
@@ -266,8 +272,9 @@ class Notification_dispatcher
      * @param  string $body_suffix Only relevant if $store_in_staff_messaging_system is true: body suffix for storage
      * @param  ?array $attachments A list of attachments (each attachment being a map, path=>filename) (null: none)
      * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
+     * @param  ?array $extra Extra data we may need to handle special cases in our dispatch code (null: none)
      */
-    public function __construct($notification_code, $code_category, $subject, $message, $to_member_ids, $from_member_id, $priority, $store_in_staff_messaging_system, $no_cc, $no_notify_for__notification_code, $no_notify_for__code_category, $subject_prefix = '', $subject_suffix = '', $body_prefix = '', $body_suffix = '', $attachments = null, $use_real_from = false)
+    public function __construct($notification_code, $code_category, $subject, $message, $to_member_ids, $from_member_id, $priority, $store_in_staff_messaging_system, $no_cc, $no_notify_for__notification_code, $no_notify_for__code_category, $subject_prefix = '', $subject_suffix = '', $body_prefix = '', $body_suffix = '', $attachments = null, $use_real_from = false, $extra = null)
     {
         $this->notification_code = $notification_code;
         $this->code_category = $code_category;
@@ -286,6 +293,7 @@ class Notification_dispatcher
         $this->body_suffix = $body_suffix;
         $this->attachments = $attachments;
         $this->use_real_from = $use_real_from;
+        $this->extra = $extra;
     }
 
     /**
@@ -336,6 +344,24 @@ class Notification_dispatcher
 
         $testing = (get_param_integer('keep_debug_notifications', 0) == 1);
 
+        if (($this->notification_code == 'cns_topic') && (isset($this->extra['post_id']))) { // FUDGE
+            require_code('mail_integration');
+            require_code('cns_forum_email_integration');
+
+            $email_integration_ob = new ForumEmailIntegration();
+
+            $topic_id = $this->extra['topic_id'];
+            $post_id = $this->extra['post_id'];
+            $forum_id = $this->extra['forum_id'];
+            $post_url = $this->extra['url'];
+            $topic_title = $this->extra['topic_title'];
+            $post = $this->extra['post'];
+            $from_displayname = $GLOBALS['FORUM_DRIVER']->get_username($this->extra['sender_member_id'], true);
+            $is_starter = $this->extra['is_starter'];
+
+            $ob->handle_mailing_list = true;
+        }
+
         $start = 0;
         $max = 300;
         do {
@@ -357,6 +383,15 @@ class Notification_dispatcher
 
                 if (($to_member_id !== $this->from_member_id) || ($testing)) {
                     $no_cc = _dispatch_notification_to_member($to_member_id, $setting, $this->notification_code, $this->code_category, $subject, $message, $this->from_member_id, $this->priority, $no_cc, $this->attachments, $this->use_real_from);
+                }
+            }
+
+            if (($this->notification_code == 'cns_topic') && (isset($this->extra['post_id']))) {
+                // FUDGE: We need to specially handle for the members that will receive mailing-list-style notifications. We don't handle as a regular notification type as it is a very specialised two-way dynamic.
+                foreach ($ob->mailing_list_members as $member_id) {
+                    $to_displayname = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
+                    $to_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
+                    $email_integration_ob->outgoing_message($topic_id, $post_id, $forum_id, $post_url, $topic_title, $post, $member_id, $to_displayname, $to_email, $from_displayname, $is_starter);
                 }
             }
 

@@ -8356,6 +8356,16 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MAY_LEAVE_BLANK_ADVANCED
         MEC_NOTIFICATION_MAIL
         MEC_NOTIFICATION_MAIL_SUBJECT
+        POST_FROM_MAILING_LIST
+        MAILING_LIST_CANNOT_BIND_SUBJECT
+        MAILING_LIST_CANNOT_BIND_MAIL
+        MAILING_LIST_SIMPLE_SUBJECT_new
+        MAILING_LIST_SIMPLE_SUBJECT_reply
+        MAILING_LIST_SIMPLE_SUBJECT_new_regexp
+        MAILING_LIST_SIMPLE_SUBJECT_reply_regexp
+        MAILING_LIST_SIMPLE_MAIL_new
+        MAILING_LIST_SIMPLE_MAIL_reply
+        MAILING_LIST_SIMPLE_MAIL_regexp
         MEDIA
         MEDIA_FEATURES
         MEDIA_SET

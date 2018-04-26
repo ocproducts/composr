@@ -116,6 +116,13 @@ function init__lang()
      */
     global $SEARCH__CONTENT_BITS;
     $SEARCH__CONTENT_BITS = null;
+
+    /** Override member ID used for parsing and saving language string Comcode.
+     *
+     * @global MEMBER $OVERRIDE_MEMBER_ID_COMCODE
+     */
+    global $OVERRIDE_MEMBER_ID_COMCODE;
+    $OVERRIDE_MEMBER_ID_COMCODE = null;
 }
 
 // ====
