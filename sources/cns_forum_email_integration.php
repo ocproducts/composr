@@ -144,11 +144,10 @@ class ForumEmailIntegration extends EmailIntegration
         // Try to bind to a from member
         $member_id = $this->find_member_id($from_email);
         if ($member_id === null) {
-            if ($warn_if_missing) {
-                // E-mail back, saying user not found
-                $this->send_bounce_email__cannot_bind($subject, $body, $from_email, $from_email);
-                return;
-            }
+            $member_id = $this->handle_missing_member($from_email, $this->forum_row['f_mail_nonmatch_policy']);
+        }
+        if ($member_id === null) {
+            return;
         }
 
         // Check access
@@ -190,7 +189,12 @@ class ForumEmailIntegration extends EmailIntegration
             $topic_id = cns_make_topic($this->forum_id);
         }
         require_code('cns_posts_action');
-        $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter);
+        if (is_guest($member_id)) {
+            $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+        } else {
+            $poster_name_if_guest = titleify(str_replace('.', ' ', preg_replace('#[@+].*$#', '', $from_email)));
+        }
+        $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter, null, 0, $poster_name_if_guest);
 
         if (count($attachment_errors) != 0) {
             $post_url = $GLOBALS['FORUM_DRIVER']->post_url($post_id, '');
@@ -254,7 +258,7 @@ class ForumEmailIntegration extends EmailIntegration
         $extended_subject = do_lang('MAILING_LIST_CANNOT_BIND_SUBJECT', $subject, $email, array(get_site_name()), get_site_default_lang());
         $extended_message = do_lang('MAILING_LIST_CANNOT_BIND_MAIL', comcode_to_clean_text($body), $email, array($subject, get_site_name()), get_site_default_lang());
 
-        $this->send_bounce_email($extended_subject, $extended_message, $email, $email_bounce_to);
+        $this->send_system_email($extended_subject, $extended_message, $email, $email_bounce_to);
     }
 
     /**
@@ -272,6 +276,6 @@ class ForumEmailIntegration extends EmailIntegration
         $extended_subject = do_lang('MAILING_LIST_ACCESS_DENIED_SUBJECT', $subject, $email, array(get_site_name(), $forum_name, $username), get_site_default_lang());
         $extended_message = do_lang('MAILING_LIST_ACCESS_DENIED_MAIL', comcode_to_clean_text($body), $email, array($subject, get_site_name(), $forum_name, $username), get_site_default_lang());
 
-        $this->send_bounce_email($extended_subject, $extended_message, $email, $email_bounce_to);
+        $this->send_system_email($extended_subject, $extended_message, $email, $email_bounce_to);
     }
 }

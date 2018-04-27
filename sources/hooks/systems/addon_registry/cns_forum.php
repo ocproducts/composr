@@ -1172,6 +1172,7 @@ class Hook_addon_registry_cns_forum
             'FORUM_GROUPINGS' => $forum_groupings,
             'ID' => placeholder_id(),
             'DESCRIPTION' => lorem_phrase(),
+            'MAIL_EMAIL_ADDRESS' => 'example@example.com',
         ));
 
         $members_viewing = new Tempcode();

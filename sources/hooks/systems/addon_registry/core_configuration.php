@@ -294,6 +294,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/mail_folder.php',
             'sources/hooks/systems/config/mail_username.php',
             'sources/hooks/systems/config/mail_password.php',
+            'sources/hooks/systems/config/mail_delete_after.php',
             'sources/hooks/systems/config/fractional_editing.php',
             'sources/hooks/systems/addon_registry/core_configuration.php',
             'themes/default/templates/CONFIG_CATEGORY_SCREEN.tpl',

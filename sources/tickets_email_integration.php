@@ -155,11 +155,10 @@ class TicketsEmailIntegration
         // Try to bind to a from member
         $member_id = $this->find_member_id($from_email, $tags, $existing_ticket);
         if ($member_id === null) {
-            if ($warn_if_missing) {
-                // E-mail back, saying user not found
-                $this->send_bounce_email__cannot_bind($subject, $body, $from_email, $from_email_orig);
-                return;
-            }
+            $member_id = $this->handle_missing_member($from_email, get_option('ticket_mail_nonmatch_policy'));
+        }
+        if ($member_id === null) {
+            return;
         }
 
         // Remember the e-mail address to member ID mapping
@@ -336,6 +335,6 @@ class TicketsEmailIntegration
         $extended_subject = do_lang('TICKET_CANNOT_BIND_SUBJECT', $subject, $email, array(get_site_name()), get_site_default_lang());
         $extended_message = do_lang('TICKET_CANNOT_BIND_MAIL', comcode_to_clean_text($body), $email, array($subject, get_site_name()), get_site_default_lang());
 
-        $this->send_bounce_email($extended_subject, $extended_message, $email, $email_bounce_to);
+        $this->send_system_email($extended_subject, $extended_message, $email, $email_bounce_to);
     }
 }

@@ -3044,6 +3044,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_wiki_enable_content_posts
         CONFIG_OPTION_wysiwyg
         CONFIG_OPTION_yeehaw
+        CONFIG_OPTION_mail_delete_after
+        MAIL_DELETE_AFTER
         CONFIRM
         CONFIRM_CODE
         CONFIRM_DELETE_ALL_CHATROOMS
@@ -7151,6 +7153,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PAGE_VIEWS_THIS_WEEK
         PAGE_VIEWS_TODAY
         PAGES
+        MAILING_LIST_ADVERTISE
         COUNT_CHATPOSTS
         COUNT_CHATTERS
         COUNT_FILES
@@ -7510,6 +7513,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CLUBS
         CLUB_WITH_MEMBERS_APPROVAL
         CLUB_WITH_MEMBERS_OPEN
+        MAIL_INTEGRATION_AUTOMATIC_ACCOUNT_SUBJECT
+        MAIL_INTEGRATION_AUTOMATIC_ACCOUNT_MAIL
         CMS
         CMS_COMMUNITY_HELP
         CNS_DESCRIPTION_PUBLICATION_TIME

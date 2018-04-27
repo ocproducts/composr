@@ -148,7 +148,7 @@ abstract class EmailIntegration
                 $full_header = imap_fetchheader($mbox, $l);
 
                 $subject = $header->subject;
-                $this->strip_system_code($subject, , self::STRIP_SUBJECT);
+                $this->strip_system_code($subject, self::STRIP_SUBJECT);
 
                 // Find overall character set
                 $input_charset = 'iso-8859-1';
@@ -192,6 +192,8 @@ abstract class EmailIntegration
 
                 // Continue to real processing
                 if (!$this->is_non_human_email($subject, $body, $full_header, $from_email)) {
+                    $header = imap_headerinfo($mbox, $l);
+
                     imap_clearflag_full($mbox, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
 
                     $this->process_incoming_message(
@@ -202,9 +204,26 @@ abstract class EmailIntegration
                         $attachments
                     );
                 }
+
                 imap_setflag_full($mbox, $l, '\\Seen');
             }
-            imap_close($mbox);
+
+            // Cleanup
+            $mail_delete_after = get_option('mail_delete_after');
+            if ($mail_delete_after != '') {
+                $cutoff = time() - 60 * 60 * 24 * intval($mail_delete_after);
+                $list = imap_search($mbox, 'SEEN BEFORE "' . date('j-M-Y', $cutoff) . '"');
+                if ($list === false) {
+                    $list = array();
+                }
+                foreach ($list as $l) {
+                    if ((!empty($header->udate)) && ($header->udate < $cutoff)) {
+                        imap_delete($mbox, $l);
+                    }
+                }
+            }
+
+            imap_close($mbox,  CL_EXPUNGE);
         } else {
             $error = imap_last_error();
             imap_errors(); // Works-around weird PHP bug where "Retrying PLAIN authentication after [AUTHENTICATIONFAILED] Authentication failed. (errflg=1) in Unknown on line 0" may get spit out into any stream (even the backup log)
@@ -400,6 +419,72 @@ abstract class EmailIntegration
     protected function find_member_id($from_email)
     {
         return $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($from_email);
+    }
+
+    /**
+     * Handle a case where we could not bind to a member.
+     *
+     * @param  EMAIL $from_email From e-mail
+     * @param  string $mail_nonmatch_policy Non-match policy
+     * @set post_as_guest create_account block
+     * @return ?MEMBER The member ID (null: none)
+     */
+    function handle_missing_member($from_email, $mail_nonmatch_policy)
+    {
+        $member_id = null;
+
+        // Pre-checks to make sure our operation is actually possible
+        switch ($mail_nonmatch_policy) {
+            case 'create_account':
+                if (get_forum_type() != 'cns') {
+                    $mail_nonmatch_policy = 'block';
+                    break;
+                }
+
+                require_code('type_sanitisation');
+                if (!is_email_address($from_email)) {
+                    $mail_nonmatch_policy = 'block';
+                    break;
+                }
+
+                $i = 1;
+                $_username = preg_replace('#@.*$#', '', $from_email);
+                while ($GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $username)) !== null) {
+                    $username = $_username . strval($i);
+                    $i++;
+
+                    if ($i >= 1000) {
+                        $mail_nonmatch_policy = 'block';
+                        break;
+                    }
+                }
+        }
+
+        switch ($mail_nonmatch_policy) {
+            case 'post_as_guest':
+                $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+                break;
+
+            case 'create_account':
+                require_code('crypt');
+                $password = get_rand_password();
+                $member_id = cns_make_member($username, $password, $from_email);
+
+                // Send creation e-mail
+                $system_subject = do_lang('MAIL_INTEGRATION_AUTOMATIC_ACCOUNT_SUBJECT', $subject, $email, array(get_site_name(), $username), get_site_default_lang());
+                $system_message = do_lang('MAIL_INTEGRATION_AUTOMATIC_ACCOUNT_MAIL', comcode_to_clean_text($body), $from_email, array($subject, get_site_name(), $username, $password), get_site_default_lang());
+                $this->send_system_email($system_subject, $system_message, $email, $email_bounce_to);
+
+                break;
+
+            case 'block':
+            default:
+                // E-mail back, saying user not found
+                $this->send_bounce_email__cannot_bind($subject, $body, $from_email, $from_email_orig);
+                break;
+        }
+
+        return $member_id;
     }
 
     /**
@@ -694,7 +779,7 @@ abstract class EmailIntegration
         $extended_subject = do_lang('MAIL_INTEGRATION_ATTACHMENT_ERRORS_SUBJECT', $subject, $email, array(get_site_name()), get_site_default_lang());
         $extended_message = do_lang('MAIL_INTEGRATION_ATTACHMENT_ERRORS_MAIL', comcode_to_clean_text($body), $email, array($subject, get_site_name(), $errors, $url), get_site_default_lang());
 
-        $this->send_bounce_email($extended_subject, $extended_message, $email, $email_bounce_to);
+        $this->send_system_email($extended_subject, $extended_message, $email, $email_bounce_to);
     }
 
     /**
@@ -708,14 +793,14 @@ abstract class EmailIntegration
     protected abstract function send_bounce_email__cannot_bind($subject, $body, $email, $email_bounce_to);
 
     /**
-     * Send out an e-mail about us not being able to process an e-mail.
+     * Send out a system (advisory) e-mail.
      *
      * @param  string $subject Subject line of original message
      * @param  string $body Body of original message
      * @param  EMAIL $email E-mail address we were to bind to
      * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      */
-    protected function send_bounce_email($subject, $body, $email, $email_bounce_to)
+    protected function send_system_email($subject, $body, $email, $email_bounce_to)
     {
         $headers = '';
         $website_email = $this->get_sender_email();
