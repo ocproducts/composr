@@ -394,7 +394,7 @@ class Hook_ipb_base
                     $row['view_sigs'], // views_signatures
                     $row['auto_track'], // auto_monitor_contrib_content
                     null, // smart_topic_notification
-                    null, // mailing_list_style_notifications
+                    null, // mailing_list_style
                     1, // auto_mark_read
                     null, // sound_enabled
                     $row['email_pm'], // allow_emails

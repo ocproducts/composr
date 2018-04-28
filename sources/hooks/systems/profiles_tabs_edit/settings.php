@@ -74,7 +74,7 @@ class Hook_profiles_tabs_edit_settings
             $views_signatures = null;
             $auto_monitor_contrib_content = null;
             $smart_topic_notification = null;
-            $mailing_list_style_notifications = null;
+            $mailing_list_style = null;
             $auto_mark_read = null;
             $sound_enabled = null;
             $highlighted_name = null;
@@ -140,11 +140,11 @@ class Hook_profiles_tabs_edit_settings
                 Actually managed on the notifications tab, even though technically account settings
                 $auto_monitor_contrib_content = post_param_integer('auto_monitor_contrib_content',0);
                 $smart_topic_notification = post_param_integer('smart_topic_notification', 0);
-                $mailing_list_style_notifications = post_param_integer('mailing_list_style_notifications', 0);
+                $mailing_list_style = post_param_integer('mailing_list_style', 0);
                 */
                 $auto_monitor_contrib_content = null;
                 $smart_topic_notification = null;
-                $mailing_list_style_notifications = null;
+                $mailing_list_style = null;
 
                 $auto_mark_read = post_param_integer('auto_mark_read', 0);
                 $sound_enabled = post_param_integer('sound_enabled', 0);
@@ -222,7 +222,7 @@ class Hook_profiles_tabs_edit_settings
                 $views_signatures, // views_signatures
                 $auto_monitor_contrib_content, // auto_monitor_contrib_content
                 $smart_topic_notification, // smart_topic_notification
-                $mailing_list_style_notifications, // mailing_list_style_notifications
+                $mailing_list_style, // mailing_list_style
                 $auto_mark_read, // auto_mark_read
                 $sound_enabled, // sound_enabled
                 post_param_integer('allow_emails', fractional_edit() ? INTEGER_MAGIC_NULL : 0), // allow_emails
@@ -334,7 +334,7 @@ class Hook_profiles_tabs_edit_settings
             $myrow['m_views_signatures'],
             $myrow['m_auto_monitor_contrib_content'],
             $myrow['m_smart_topic_notification'],
-            $myrow['m_mailing_list_style_notifications'],
+            $myrow['m_mailing_list_style'],
             $myrow['m_auto_mark_read'],
             $myrow['m_sound_enabled'],
             $myrow['m_allow_emails'],

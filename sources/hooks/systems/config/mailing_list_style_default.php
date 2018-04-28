@@ -22,7 +22,7 @@
 /**
  * Hook class.
  */
-class Hook_config_mailing_list_style_notifications_default
+class Hook_config_mailing_list_style_default
 {
     /**
      * Gets the details relating to the config option.
@@ -32,11 +32,11 @@ class Hook_config_mailing_list_style_notifications_default
     public function get_details()
     {
         return array(
-            'human_name' => 'MAILING_LIST_STYLE_NOTIFICATIONS',
+            'human_name' => 'MAILING_LIST_STYLE',
             'type' => 'tick',
             'category' => 'USERS',
             'group' => 'MEMBER_DEFAULT_SETTINGS',
-            'explanation' => 'CONFIG_OPTION_mailing_list_style_notifications_default',
+            'explanation' => 'CONFIG_OPTION_mailing_list_style_default',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 

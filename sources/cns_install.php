@@ -341,10 +341,10 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_username', 'SHORT_TEXT');
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_password', 'SHORT_TEXT');
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_nonmatch_policy', 'ID_TEXT', 'post_as_guest');
-        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_unconfirmed_member_notice', 'BINARY', 1);
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_unconfirmed_notice', 'BINARY', 1);
 
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_smart_topic_notification', 'BINARY', 0);
-        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_mailing_list_style_notifications', 'BINARY', 1);
+        $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_mailing_list_style', 'BINARY', 1);
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_sound_enabled', 'BINARY', 0);
     }
 
@@ -456,7 +456,7 @@ function install_cns($upgrade_from = null)
             'm_views_signatures' => 'BINARY',
             'm_auto_monitor_contrib_content' => 'BINARY',
             'm_smart_topic_notification' => 'BINARY',
-            'm_mailing_list_style_notifications' => 'BINARY',
+            'm_mailing_list_style' => 'BINARY',
             'm_auto_mark_read' => 'BINARY',
             'm_sound_enabled' => 'BINARY',
             'm_allow_emails' => 'BINARY',
@@ -685,10 +685,11 @@ function install_cns($upgrade_from = null)
             'f_mail_server_type' => 'ID_TEXT',
             'f_mail_server_host' => 'SHORT_TEXT',
             'f_mail_server_port' => '?INTEGER',
+            'f_mail_folder' => 'SHORT_TEXT',
             'f_mail_username' => 'SHORT_TEXT',
             'f_mail_password' => 'SHORT_TEXT',
             'f_mail_nonmatch_policy' => 'ID_TEXT',
-            'f_mail_unconfirmed_member_notice' => 'BINARY',
+            'f_mail_unconfirmed_notice' => 'BINARY',
         ));
         $GLOBALS['FORUM_DB']->create_index('f_forums', 'cache_num_posts', array('f_cache_num_posts')); // Used to find active forums
         $GLOBALS['FORUM_DB']->create_index('f_forums', 'subforum_parenting', array('f_parent_forum'));
@@ -921,7 +922,7 @@ function install_cns($upgrade_from = null)
             1, // views_signatures
             null, // auto_monitor_contrib_content
             null, // smart_topic_notification
-            null, // mailing_list_style_notifications
+            null, // mailing_list_style
             1, // auto_mark_read
             null, // sound_enabled
             1, // allow_emails
@@ -959,7 +960,7 @@ function install_cns($upgrade_from = null)
             1, // views_signatures
             null, // auto_monitor_contrib_content
             null, // smart_topic_notification
-            null, // mailing_list_style_notifications
+            null, // mailing_list_style
             1, // auto_mark_read
             null, // sound_enabled
             1, // allow_emails
@@ -997,7 +998,7 @@ function install_cns($upgrade_from = null)
             1, // views_signatures
             null, // auto_monitor_contrib_content
             null, // smart_topic_notification
-            null, // mailing_list_style_notifications
+            null, // mailing_list_style
             1, // auto_mark_read
             null, // sound_enabled
             1, // allow_emails

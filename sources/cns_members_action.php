@@ -82,7 +82,7 @@ function member_field_is_required($member_id, $field_class, $current_value = nul
  * @param  BINARY $views_signatures Whether the member sees signatures in posts
  * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to (null: get default from config)
  * @param  ?BINARY $smart_topic_notification Whether to do smart topic notification [i.e. avoid sending so many notifications] (null: global configured default)
- * @param  ?BINARY $mailing_list_style_notifications Whether to send mailing-list style notifications (null: global configured default)
+ * @param  ?BINARY $mailing_list_style Whether to send mailing-list style notifications (null: global configured default)
  * @param  BINARY $auto_mark_read Mark topics as read automatically
  * @param  ?BINARY $sound_enabled Whether sound is enabled (null: global configured default)
  * @param  BINARY $allow_emails Whether the member allows e-mails via the site
@@ -106,7 +106,7 @@ function member_field_is_required($member_id, $field_class, $current_value = nul
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @return AUTO_LINK The ID of the new member
  */
-function cns_make_member($username, $password, $email_address = '', $primary_group = null, $secondary_groups = null, $dob_day = null, $dob_month = null, $dob_year = null, $custom_fields = null, $timezone = null, $language = null, $theme = '', $title = '', $photo_url = '', $photo_thumb_url = '', $avatar_url = null, $signature = '', $preview_posts = null, $reveal_age = 0, $views_signatures = 1, $auto_monitor_contrib_content = null, $smart_topic_notification = null, $mailing_list_style_notifications = null, $auto_mark_read = 1, $sound_enabled = null, $allow_emails = 1, $allow_emails_from_staff = 1, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $validated = 1, $validated_email_confirm_code = '', $on_probation_until = null, $is_perm_banned = 0, $check_correctness = true, $ip_address = null, $password_compatibility_scheme = null, $salt = '', $join_time = null, $last_visit_time = null, $last_submit_time = null, $profile_views = 0, $total_sessions = 0, $id = null)
+function cns_make_member($username, $password, $email_address = '', $primary_group = null, $secondary_groups = null, $dob_day = null, $dob_month = null, $dob_year = null, $custom_fields = null, $timezone = null, $language = null, $theme = '', $title = '', $photo_url = '', $photo_thumb_url = '', $avatar_url = null, $signature = '', $preview_posts = null, $reveal_age = 0, $views_signatures = 1, $auto_monitor_contrib_content = null, $smart_topic_notification = null, $mailing_list_style = null, $auto_mark_read = 1, $sound_enabled = null, $allow_emails = 1, $allow_emails_from_staff = 1, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $validated = 1, $validated_email_confirm_code = '', $on_probation_until = null, $is_perm_banned = 0, $check_correctness = true, $ip_address = null, $password_compatibility_scheme = null, $salt = '', $join_time = null, $last_visit_time = null, $last_submit_time = null, $profile_views = 0, $total_sessions = 0, $id = null)
 {
     require_code('form_templates');
     require_code('cns_members');
@@ -196,8 +196,8 @@ function cns_make_member($username, $password, $email_address = '', $primary_gro
     if ($smart_topic_notification === null) {
         $smart_topic_notification = (get_option('smart_topic_notification_default') == '1') ? 1 : 0;
     }
-    if ($mailing_list_style_notifications === null) {
-        $mailing_list_style_notifications = (get_option('mailing_list_style_notifications_default') == '1') ? 1 : 0;
+    if ($mailing_list_style === null) {
+        $mailing_list_style = (get_option('mailing_list_style_default') == '1') ? 1 : 0;
     }
     if ($sound_enabled === null) {
         $sound_enabled = (get_option('sound_enabled_default') == '1') ? 1 : 0;
@@ -285,7 +285,7 @@ function cns_make_member($username, $password, $email_address = '', $primary_gro
         'm_views_signatures' => $views_signatures,
         'm_auto_monitor_contrib_content' => $auto_monitor_contrib_content,
         'm_smart_topic_notification' => $smart_topic_notification,
-        'm_mailing_list_style_notifications' => $mailing_list_style_notifications,
+        'm_mailing_list_style' => $mailing_list_style,
         'm_auto_mark_read' => $auto_mark_read,
         'm_sound_enabled' => $sound_enabled,
         'm_allow_emails' => $allow_emails,

@@ -314,7 +314,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             $auto_monitor_contrib_content = intval(get_option('allow_auto_notifications'));
         }
         $smart_topic_notification = $this->_default_property_int($properties, 'smart_topic_notification');
-        $mailing_list_style_notifications = $this->_default_property_int($properties, 'mailing_list_style_notifications');
+        $mailing_list_style = $this->_default_property_int($properties, 'mailing_list_style');
         $auto_mark_read = $this->_default_property_int($properties, 'auto_mark_read');
         $sound_enabled = $this->_default_property_int($properties, 'sound_enabled');
         $allow_emails = $this->_default_property_int_modeavg($properties, 'allow_emails', 'f_members', 1, 'm_allow_emails');
@@ -358,7 +358,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             $actual_custom_fields[$custom_field['id']] = $value;
         }
 
-        return array($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $language, $theme, $title, $photo_url, $photo_thumb_url, $avatar_url, $signature, $preview_posts, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $smart_topic_notification, $mailing_list_style_notifications, $auto_mark_read, $sound_enabled, $allow_emails, $allow_emails_from_staff, $highlighted_name, $pt_allow, $pt_rules_text, $validated, $validated_email_confirm_code, $on_probation_until, $is_perm_banned, $ip_address, $password_compatibility_scheme, $salt, $join_time);
+        return array($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $language, $theme, $title, $photo_url, $photo_thumb_url, $avatar_url, $signature, $preview_posts, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $smart_topic_notification, $mailing_list_style, $auto_mark_read, $sound_enabled, $allow_emails, $allow_emails_from_staff, $highlighted_name, $pt_allow, $pt_rules_text, $validated, $validated_email_confirm_code, $on_probation_until, $is_perm_banned, $ip_address, $password_compatibility_scheme, $salt, $join_time);
     }
 
     /**
@@ -380,7 +380,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
 
         require_code('cns_members_action');
 
-        list($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $language, $theme, $title, $photo_url, $photo_thumb_url, $avatar_url, $signature, $preview_posts, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $smart_topic_notification, $mailing_list_style_notifications, $auto_mark_read, $sound_enabled, $allow_emails, $allow_emails_from_staff, $highlighted_name, $pt_allow, $pt_rules_text, $validated, $validated_email_confirm_code, $on_probation_until, $is_perm_banned, $ip_address, $password_compatibility_scheme, $salt, $join_time) = $this->__file_read_in_properties($path, $properties, false);
+        list($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $language, $theme, $title, $photo_url, $photo_thumb_url, $avatar_url, $signature, $preview_posts, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $smart_topic_notification, $mailing_list_style, $auto_mark_read, $sound_enabled, $allow_emails, $allow_emails_from_staff, $highlighted_name, $pt_allow, $pt_rules_text, $validated, $validated_email_confirm_code, $on_probation_until, $is_perm_banned, $ip_address, $password_compatibility_scheme, $salt, $join_time) = $this->__file_read_in_properties($path, $properties, false);
 
         $id = cns_make_member(
             $label, // username
@@ -405,7 +405,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             $views_signatures, // views_signatures
             $auto_monitor_contrib_content, // auto_monitor_contrib_content
             $smart_topic_notification, // smart_topic_notification
-            $mailing_list_style_notifications, // mailing_list_style_notifications
+            $mailing_list_style, // mailing_list_style
             $auto_mark_read, // auto_mark_read
             $sound_enabled, // sound_enabled
             $allow_emails, // allow_emails
@@ -480,7 +480,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             'views_signatures' => $row['m_views_signatures'],
             'auto_monitor_contrib_content' => $row['m_auto_monitor_contrib_content'],
             'smart_topic_notification' => $row['m_smart_topic_notification'],
-            'mailing_list_style_notifications' => $row['m_mailing_list_style_notifications'],
+            'mailing_list_style' => $row['m_mailing_list_style'],
             'auto_mark_read' => $row['m_auto_mark_read'],
             'sound_enabled' => $row['m_sound_enabled'],
             'allow_emails' => $row['m_allow_emails'],
@@ -542,7 +542,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         require_code('cns_members_action2');
 
         $label = $this->_default_property_str($properties, 'label');
-        list($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $language, $theme, $title, $photo_url, $photo_thumb_url, $avatar_url, $signature, $preview_posts, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $smart_topic_notification, $mailing_list_style_notifications, $auto_mark_read, $sound_enabled, $allow_emails, $allow_emails_from_staff, $highlighted_name, $pt_allow, $pt_rules_text, $validated, $validated_email_confirm_code, $on_probation_until, $is_perm_banned, $ip_address, $password_compatibility_scheme, $salt, $join_time) = $this->__file_read_in_properties($path, $properties, true);
+        list($password_hashed, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $language, $theme, $title, $photo_url, $photo_thumb_url, $avatar_url, $signature, $preview_posts, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $smart_topic_notification, $mailing_list_style, $auto_mark_read, $sound_enabled, $allow_emails, $allow_emails_from_staff, $highlighted_name, $pt_allow, $pt_rules_text, $validated, $validated_email_confirm_code, $on_probation_until, $is_perm_banned, $ip_address, $password_compatibility_scheme, $salt, $join_time) = $this->__file_read_in_properties($path, $properties, true);
 
         cns_edit_member(
             intval($resource_id), // member_id
@@ -567,7 +567,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             $views_signatures, // views_signatures
             $auto_monitor_contrib_content, // views_signatures
             $smart_topic_notification, // smart_topic_notification
-            $mailing_list_style_notifications, // mailing_list_style_notifications
+            $mailing_list_style, // mailing_list_style
             $auto_mark_read, // auto_mark_read
             $sound_enabled, // sound_enabled
             $allow_emails, // allow_emails

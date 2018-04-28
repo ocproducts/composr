@@ -305,7 +305,7 @@ class Hook_addon_registry_cns_forum
             'themes/default/templates/CNS_PT_FILTERS.tpl',
             'themes/default/templates/CNS_MEMBER_PROFILE_POSTS.tpl',
             'sources/hooks/systems/cleanup/cns.php',
-            'sources/hooks/systems/config/mailing_list_style_notifications_default.php',
+            'sources/hooks/systems/config/mailing_list_style_default.php',
             'sources/hooks/systems/config/smart_topic_notification_default.php',
             'sources/hooks/systems/config/sound_enabled_default.php',
             'sources/hooks/systems/config/edit_time_limit.php',

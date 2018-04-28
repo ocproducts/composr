@@ -171,7 +171,7 @@ class ForumEmailIntegration extends EmailIntegration
 
         // Mark that this was e-mailed in
         $body = static_evaluate_tempcode(do_template('CNS_POST_FROM_MAILING_LIST', array(
-            'UNCONFIRMED_MEMBER_NOTICE' => ($this->forum_row['f_mail_unconfirmed_member_notice'] == 1) && (!is_guest($member_id)),
+            'UNCONFIRMED_MEMBER_NOTICE' => ($this->forum_row['f_mail_unconfirmed_notice'] == 1) && (!is_guest($member_id)),
             'POST' => $body,
             'USERNAME' => $username,
         )));

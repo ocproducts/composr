@@ -392,7 +392,7 @@ class Hook_vb3
                     $views_signatures, // views_signatures
                     $row['autosubscribe'], // auto_monitor_contrib_content
                     null, // smart_topic_notification
-                    null, // mailing_list_style_notifications
+                    null, // mailing_list_style
                     1, // auto_mark_read
                     null, // sound_enabled
                     $row['options'] & 16, // allow_emails

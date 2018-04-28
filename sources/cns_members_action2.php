@@ -337,7 +337,7 @@ function cns_member_external_linker($type, $username, $password, $email_check = 
         1, // views_signatures
         null, // auto_monitor_contrib_content
         null, // smart_topic_notification
-        null, // mailing_list_style_notifications
+        null, // mailing_list_style
         1, // auto_mark_read
         null, // sound_enabled
         $allow_emails, // allow_emails
@@ -411,7 +411,7 @@ function cns_read_in_custom_fields($custom_fields, $member_id = null)
  * @param  BINARY $views_signatures Whether the member sees signatures in posts
  * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to (null: get default from config)
  * @param  ?BINARY $smart_topic_notification Whether to do smart topic notification [i.e. avoid sending so many notifications] (null: global configured default)
- * @param  ?BINARY $mailing_list_style_notifications Whether to send mailing-list style notifications (null: global configured default)
+ * @param  ?BINARY $mailing_list_style Whether to send mailing-list style notifications (null: global configured default)
  * @param  BINARY $auto_mark_read Mark topics as read automatically
  * @param  ?BINARY $sound_enabled Whether sound is enabled (null: global configured default)
  * @param  BINARY $allow_emails Whether the member allows e-mails via the site
@@ -424,12 +424,12 @@ function cns_read_in_custom_fields($custom_fields, $member_id = null)
  * @param  BINARY $is_perm_banned Whether the member is permanently banned
  * @return array A pair: The form fields, Hidden fields (both Tempcode)
  */
-function cns_get_member_fields($mini_mode = true, $special_type = '', $member_id = null, $username = '', $email_address = '', $primary_group = null, $groups = null, $dob_day = null, $dob_month = null, $dob_year = null, $custom_fields = null, $timezone = null, $language = null, $theme = null, $preview_posts = 0, $reveal_age = 1, $views_signatures = 1, $auto_monitor_contrib_content = null, $smart_topic_notification = null, $mailing_list_style_notifications = null, $auto_mark_read = 1, $sound_enabled = null, $allow_emails = 1, $allow_emails_from_staff = 1, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $validated = 1, $on_probation_until = null, $is_perm_banned = 0)
+function cns_get_member_fields($mini_mode = true, $special_type = '', $member_id = null, $username = '', $email_address = '', $primary_group = null, $groups = null, $dob_day = null, $dob_month = null, $dob_year = null, $custom_fields = null, $timezone = null, $language = null, $theme = null, $preview_posts = 0, $reveal_age = 1, $views_signatures = 1, $auto_monitor_contrib_content = null, $smart_topic_notification = null, $mailing_list_style = null, $auto_mark_read = 1, $sound_enabled = null, $allow_emails = 1, $allow_emails_from_staff = 1, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $validated = 1, $on_probation_until = null, $is_perm_banned = 0)
 {
     $fields = new Tempcode();
     $hidden = new Tempcode();
 
-    list($_fields, $_hidden) = cns_get_member_fields_settings($mini_mode, $special_type, $member_id, $username, $email_address, $primary_group, $groups, $dob_day, $dob_month, $dob_year, $timezone, $language, $theme, $preview_posts, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $smart_topic_notification, $mailing_list_style_notifications, $auto_mark_read, $sound_enabled, $allow_emails, $allow_emails_from_staff, $highlighted_name, $pt_allow, $pt_rules_text, $validated, $on_probation_until, $is_perm_banned);
+    list($_fields, $_hidden) = cns_get_member_fields_settings($mini_mode, $special_type, $member_id, $username, $email_address, $primary_group, $groups, $dob_day, $dob_month, $dob_year, $timezone, $language, $theme, $preview_posts, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $smart_topic_notification, $mailing_list_style, $auto_mark_read, $sound_enabled, $allow_emails, $allow_emails_from_staff, $highlighted_name, $pt_allow, $pt_rules_text, $validated, $on_probation_until, $is_perm_banned);
     $fields->attach($_fields);
     $hidden->attach($_hidden);
 
@@ -465,7 +465,7 @@ function cns_get_member_fields($mini_mode = true, $special_type = '', $member_id
  * @param  BINARY $views_signatures Whether the member sees signatures in posts
  * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to (null: get default from config)
  * @param  ?BINARY $smart_topic_notification Whether to do smart topic notification [i.e. avoid sending so many notifications] (null: global configured default)
- * @param  ?BINARY $mailing_list_style_notifications Whether to send mailing-list style notifications (null: global configured default)
+ * @param  ?BINARY $mailing_list_style Whether to send mailing-list style notifications (null: global configured default)
  * @param  BINARY $auto_mark_read Mark topics as read automatically
  * @param  ?BINARY $sound_enabled Whether sound is enabled (null: global configured default)
  * @param  BINARY $allow_emails Whether the member allows e-mails via the site
@@ -478,7 +478,7 @@ function cns_get_member_fields($mini_mode = true, $special_type = '', $member_id
  * @param  BINARY $is_perm_banned Whether the member is permanently banned
  * @return array A pair: The form fields, Hidden fields (both Tempcode)
  */
-function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $member_id = null, $username = '', $email_address = '', $primary_group = null, $groups = null, $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $language = null, $theme = null, $preview_posts = null, $reveal_age = 1, $views_signatures = 1, $auto_monitor_contrib_content = null, $smart_topic_notification = null, $mailing_list_style_notifications = null, $auto_mark_read = 1, $sound_enabled = null, $allow_emails = 1, $allow_emails_from_staff = 1, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $validated = 1, $on_probation_until = null, $is_perm_banned = 0)
+function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $member_id = null, $username = '', $email_address = '', $primary_group = null, $groups = null, $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $language = null, $theme = null, $preview_posts = null, $reveal_age = 1, $views_signatures = 1, $auto_monitor_contrib_content = null, $smart_topic_notification = null, $mailing_list_style = null, $auto_mark_read = 1, $sound_enabled = null, $allow_emails = 1, $allow_emails_from_staff = 1, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $validated = 1, $on_probation_until = null, $is_perm_banned = 0)
 {
     require_code('form_templates');
     require_code('cns_members_action');
@@ -501,8 +501,8 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
     if ($smart_topic_notification === null) {
         $smart_topic_notification = (get_option('smart_topic_notification_default') == '1') ? 1 : 0;
     }
-    if ($mailing_list_style_notifications === null) {
-        $mailing_list_style_notifications = (get_option('mailing_list_style_notifications_default') == '1') ? 1 : 0;
+    if ($mailing_list_style === null) {
+        $mailing_list_style = (get_option('mailing_list_style_default') == '1') ? 1 : 0;
     }
     if ($sound_enabled === null) {
         $sound_enabled = (get_option('sound_enabled_default') == '1') ? 1 : 0;
@@ -666,7 +666,7 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
                 if ($test[0] > 0) {
                     $mlsn_description_caveat = $test[1] ? new Tempcode() : do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_NOTIFICATIONS_CAVEAT');
                     $mlsn_description = do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_NOTIFICATIONS', $mlsn_description_caveat);
-                    $fields->attach(form_input_tick(do_lang_tempcode('MAILING_LIST_STYLE_NOTIFICATIONS'), $mlsn_description, 'mailing_list_style_notifications', $mailing_list_style_notifications == 1));
+                    $fields->attach(form_input_tick(do_lang_tempcode('MAILING_LIST_STYLE_NOTIFICATIONS'), $mlsn_description, 'mailing_list_style', $mailing_list_style == 1));
                 }
             }
             */
@@ -909,7 +909,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
  * @param  ?BINARY $views_signatures Whether the member sees signatures in posts (null: don't change)
  * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to (null: don't change)
  * @param  ?BINARY $smart_topic_notification Whether to do smart topic notification [i.e. avoid sending so many notifications] (null: don't change)
- * @param  ?BINARY $mailing_list_style_notifications Whether to send mailing-list style notifications (null: don't change)
+ * @param  ?BINARY $mailing_list_style Whether to send mailing-list style notifications (null: don't change)
  * @param  ?BINARY $auto_mark_read Mark topics as read automatically (null: don't change)
  * @param  ?BINARY $sound_enabled Whether sound is enabled (null: don't change)
  * @param  ?BINARY $allow_emails Whether the member allows e-mails via the site (null: don't change)
@@ -925,7 +925,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
  * @param  ?SHORT_TEXT $salt Password salt (null: don't change)
  * @param  ?TIME $join_time When the member joined (null: don't change)
  */
-function cns_edit_member($member_id, $username = null, $password = null, $email_address = null, $primary_group = null, $dob_day = null, $dob_month = null, $dob_year = null, $custom_fields = null, $timezone = null, $language = null, $theme = null, $title = null, $photo_url = null, $photo_thumb_url = null, $avatar_url = null, $signature = null, $preview_posts = null, $reveal_age = null, $views_signatures = null, $auto_monitor_contrib_content, $smart_topic_notification = null, $mailing_list_style_notifications = null, $auto_mark_read = null, $sound_enabled = null, $allow_emails = null, $allow_emails_from_staff = null, $highlighted_name = null, $pt_allow = '*', $pt_rules_text = '', $validated = null, $on_probation_until = null, $is_perm_banned = null, $check_correctness = true, $password_compatibility_scheme = null, $salt = null, $join_time = null)
+function cns_edit_member($member_id, $username = null, $password = null, $email_address = null, $primary_group = null, $dob_day = null, $dob_month = null, $dob_year = null, $custom_fields = null, $timezone = null, $language = null, $theme = null, $title = null, $photo_url = null, $photo_thumb_url = null, $avatar_url = null, $signature = null, $preview_posts = null, $reveal_age = null, $views_signatures = null, $auto_monitor_contrib_content, $smart_topic_notification = null, $mailing_list_style = null, $auto_mark_read = null, $sound_enabled = null, $allow_emails = null, $allow_emails_from_staff = null, $highlighted_name = null, $pt_allow = '*', $pt_rules_text = '', $validated = null, $on_probation_until = null, $is_perm_banned = null, $check_correctness = true, $password_compatibility_scheme = null, $salt = null, $join_time = null)
 {
     require_code('type_sanitisation');
     require_code('cns_members_action');
@@ -1089,8 +1089,8 @@ function cns_edit_member($member_id, $username = null, $password = null, $email_
     if ($smart_topic_notification !== null) {
         $update['m_smart_topic_notification'] = $smart_topic_notification;
     }
-    if ($mailing_list_style_notifications !== null) {
-        $update['m_mailing_list_style_notifications'] = $mailing_list_style_notifications;
+    if ($mailing_list_style !== null) {
+        $update['m_mailing_list_style'] = $mailing_list_style;
     }
     if ($auto_mark_read !== null) {
         $update['m_auto_mark_read'] = $auto_mark_read;

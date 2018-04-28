@@ -43,7 +43,7 @@ class Hook_commandr_fs_members
         'views_signatures' => 'm_views_signatures',
         'auto_monitor_contrib_content' => 'm_auto_monitor_contrib_content',
         'smart_topic_notification' => 'm_smart_topic_notification',
-        'mailing_list_style_notifications' => 'm_mailing_list_style_notifications',
+        'mailing_list_style' => 'm_mailing_list_style',
         'auto_mark_read' => 'm_auto_mark_read',
         'sound_enabled' => 'm_sound_enabled',
         'allow_emails' => 'm_allow_emails',
@@ -220,7 +220,7 @@ class Hook_commandr_fs_members
                 1, // views_signatures
                 null, // auto_monitor_contrib_content
                 null, // smart_topic_notification
-                null, // mailing_list_style_notifications
+                null, // mailing_list_style
                 1, // auto_mark_read
                 null, // sound_enabled
                 1, // allow_emails

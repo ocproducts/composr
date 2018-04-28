@@ -281,10 +281,10 @@ class Hook_notification_cns_topic extends Hook_Notification
                 $this->mailing_list_members = array();
 
                 foreach ($members as $member_id => $setting) {
-                    $mailing_list_style_notifications = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_mailing_list_style_notifications') == 1);
+                    $mailing_list_style = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_mailing_list_style') == 1);
                     $email_address = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address');
                     $receive_email_notification = ($setting & A_INSTANT_EMAIL) != 0;
-                    if (($mailing_list_style_notifications) && ($email_address != '') && ($receive_email_notification)) {
+                    if (($mailing_list_style) && ($email_address != '') && ($receive_email_notification)) {
                         $setting = $setting & ~A_INSTANT_EMAIL;
                         $this->mailing_list_members[] = $member_id;
                     }

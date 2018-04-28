@@ -382,7 +382,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
             1, // views_signatures
             null, // auto_monitor_contrib_content
             null, // smart_topic_notification
-            null, // mailing_list_style_notifications
+            null, // mailing_list_style
             1, // auto_mark_read
             null, // sound_enabled
             $allow_emails, // allow_emails
