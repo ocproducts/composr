@@ -222,8 +222,8 @@ function notifications_ui($member_id_of)
             if ($test[0] > 0) {
                 $mailing_list_style = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'mailing_list_style') == 1);
             }
-            $mlsn_description_caveat = $test[1] ? new Tempcode() : do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_NOTIFICATIONS_CAVEAT');
-            $mlsn_description = do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_NOTIFICATIONS', $mlsn_description_caveat);
+            $mlsn_description_caveat = $test[1] ? new Tempcode() : do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_CAVEAT');
+            $mlsn_description = do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE', $mlsn_description_caveat);
         }
     }
 
@@ -234,8 +234,8 @@ function notifications_ui($member_id_of)
         'NOTIFICATION_TYPES_TITLES' => $notification_types_titles,
         'NOTIFICATION_SECTIONS' => $notification_sections,
         'SMART_TOPIC_NOTIFICATION' => $smart_topic_notification,
-        'MAILING_LIST_STYLE_NOTIFICATIONS' => $mailing_list_style,
-        'MAILING_LIST_STYLE_NOTIFICATIONS_DESCRIPTION' => $mlsn_description,
+        'MAILING_LIST_STYLE' => $mailing_list_style,
+        'MAILING_LIST_STYLE_DESCRIPTION' => $mlsn_description,
         'MEMBER_ID' => strval($member_id_of),
     ));
 }

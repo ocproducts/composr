@@ -102,6 +102,9 @@ class lang_no_unused_test_set extends cms_test_case
             'ECOM_CATD_',
             'ARITHMETICAL_SYMBOL__',
             '_PASSWORD_RESET_TEXT_',
+            'MAIL_NONMATCH_POLICY_',
+            'MAILING_LIST_SIMPLE_SUBJECT_',
+            'MAILING_LIST_SIMPLE_MAIL_',
         );
 
         $skip = array(

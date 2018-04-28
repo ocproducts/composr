@@ -2956,6 +2956,41 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_spam_check_level_VALUE_NEVER
         CONFIG_OPTION_spam_check_usernames
         CONFIG_OPTION_spam_stale_threshold
+        CONFIG_OPTION_mail_server_type_VALUE_imap
+        CONFIG_OPTION_mail_server_type_VALUE_imaps
+        CONFIG_OPTION_mail_server_type_VALUE_imaps_nocert
+        CONFIG_OPTION_mail_server_type_VALUE_imapt
+        CONFIG_OPTION_mail_server_type_VALUE_imapt_nocert
+        CONFIG_OPTION_mail_server_type_VALUE_pop3
+        CONFIG_OPTION_mail_server_type_VALUE_pop3s
+        CONFIG_OPTION_mail_server_type_VALUE_pop3s_nocert
+        CONFIG_OPTION_mail_server_type_VALUE_pop3t
+        CONFIG_OPTION_mail_server_type_VALUE_pop3t_nocert
+        CONFIG_OPTION_mailing_list_style_default
+        CONFIG_OPTION_smart_topic_notification_default
+        CONFIG_OPTION_sound_enabled_default
+        CONFIG_OPTION_ticket_mail_nonmatch_policy
+        CONFIG_OPTION_ticket_mail_nonmatch_policy_VALUE_block
+        CONFIG_OPTION_ticket_mail_nonmatch_policy_VALUE_create_account
+        CONFIG_OPTION_ticket_mail_nonmatch_policy_VALUE_post_as_guest
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imap
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imaps
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imaps_nocert
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imapt
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imapt_nocert
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3s
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3s_nocert
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3t
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3t_nocert
+        TICKET_MAIL_EMAIL_ADDRESS
+        TICKET_MAIL_NONMATCH_POLICY
+        FORUM_MAIL_INCOMPLETE_CONFIGURATION
+        FORUM_MAIL_USERNAME_AND_EMAIL_ADDRESS_BOTH
+        FORUM_MAIL_USER_CANNOT_BE_SHARED
+        MAILING_LIST
+        MEMBER_DEFAULT_SETTINGS
+        DESCRIPTION_MAILING_LIST
         CONFIG_OPTION_ssw
         CONFIG_OPTION_staff_address
         CONFIG_OPTION_staff_text
@@ -6508,7 +6543,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TICKET_AUTO_ASSIGN
         TICKET_CANNOT_BIND_MAIL
         TICKET_CANNOT_BIND_SUBJECT
-        TICKET_EMAIL_FROM
         TICKET_FORUM_NAME
         TICKET_GUEST_EMAILS_MANDATORY
         TICKET_MAIL_ON
@@ -7297,6 +7331,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ASSIGNED_TO
         ASSIGN_TO
         ATOZ
+        DESCRIPTION_MAILING_LIST_STYLE
+        DESCRIPTION_MAILING_LIST_STYLE_CAVEAT
+        DESCRIPTION_SOUND_ENABLED
+        MAILING_LIST_STYLE
+        SOUND_ENABLED
         ATTACHMENT
         ATTACHMENTS
         ATTACHMENTS_OF

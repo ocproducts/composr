@@ -427,8 +427,8 @@ class Hook_addon_registry_core_notifications
             'NOTIFICATION_SECTIONS' => $notification_sections,
             'AUTO_NOTIFICATION_CONTRIB_CONTENT' => false,
             'SMART_TOPIC_NOTIFICATION' => false,
-            'MAILING_LIST_STYLE_NOTIFICATIONS' => false,
-            'MAILING_LIST_STYLE_NOTIFICATIONS_DESCRIPTION' => do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_NOTIFICATIONS', ''),
+            'MAILING_LIST_STYLE' => false,
+            'MAILING_LIST_STYLE_DESCRIPTION' => do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE', ''),
             'MEMBER_ID' => placeholder_id(),
         ));
         $out = do_lorem_template('NOTIFICATIONS_MANAGE_SCREEN', array(

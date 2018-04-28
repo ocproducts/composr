@@ -174,7 +174,7 @@ class ForumEmailIntegration extends EmailIntegration
             'UNCONFIRMED_MEMBER_NOTICE' => ($this->forum_row['f_mail_unconfirmed_notice'] == 1) && (!is_guest($member_id)),
             'POST' => $body,
             'USERNAME' => $username,
-        )));
+        ), null, false, null, '.txt', 'text'));
 
         // Try and match to a topic
         $topic_id = null;

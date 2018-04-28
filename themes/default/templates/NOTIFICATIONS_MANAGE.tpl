@@ -80,11 +80,11 @@
 	</p>
 {+END}
 
-{+START,IF_PASSED,MAILING_LIST_STYLE_NOTIFICATIONS}
-	<h2>{!cns:MAILING_LIST_STYLE_NOTIFICATIONS}</h2>
+{+START,IF_PASSED,MAILING_LIST_STYLE}
+	<h2>{!cns:MAILING_LIST_STYLE}</h2>
 
 	<p class="simple_neat_checkbox">
-		<input{+START,IF,{MAILING_LIST_STYLE_NOTIFICATIONS}} checked="checked"{+END} type="checkbox" id="mailing_list_style_notifications" name="mailing_list_style_notifications" value="1" />
-		<label for="mailing_list_style_notifications"><span>{MAILING_LIST_STYLE_NOTIFICATIONS_DESCRIPTION}</span></label>
+		<input{+START,IF,{MAILING_LIST_STYLE}} checked="checked"{+END} type="checkbox" id="mailing_list_style" name="mailing_list_style" value="1" />
+		<label for="mailing_list_style"><span>{MAILING_LIST_STYLE_DESCRIPTION}</span></label>
 	</p>
 {+END}

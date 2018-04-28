@@ -37,14 +37,13 @@ class user_test_set extends cms_test_case
         $this->member_id = cns_make_member(
             'testmember', // username
             '123456', // password
-            null, // primary_group
             'test@example.com', // email_address
+            null, // primary_group
             null, // secondary_groups
             10, // dob_day
             1, // dob_month
             1980, // dob_year
             array(), // custom_fields
-            null, // join_time
             null, // timezone
             '', // language
             '', // theme
@@ -63,9 +62,9 @@ class user_test_set extends cms_test_case
             null, // sound_enabled
             1, // allow_emails
             1, // allow_emails_from_staff
+            0, // highlighted_name
             '*', // pt_allow
             '', // pt_rules_text
-            null, // highlighted_name
             1, // validated
             '', // validated_email_confirm_code
             null, // on_probation_until
@@ -82,11 +81,11 @@ class user_test_set extends cms_test_case
             $this->member_id, // member_id
             null, // username
             null, // password
-            null, // primary_group
-            'testing@example.com' // email_address
+            'testing@example.com', // email_address
+            null // primary_group
         );
 
-        $this->assertTrue('testing@test.com' == $GLOBALS['FORUM_DB']->query_select_value('f_members', 'm_email_address', array('id' => $this->member_id)));
+        $this->assertTrue('testing@example.com' == $GLOBALS['FORUM_DB']->query_select_value('f_members', 'm_email_address', array('id' => $this->member_id)));
     }
 
     public function tearDown()

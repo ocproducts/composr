@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_mail_host
+class Hook_config_mail_server_host
 {
     /**
      * Gets the details relating to the config option.

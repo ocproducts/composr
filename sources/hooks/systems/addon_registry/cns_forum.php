@@ -342,7 +342,7 @@ class Hook_addon_registry_cns_forum
             'sources/hooks/systems/tasks/notify_topics_moved.php',
             'sources/hooks/systems/cron/cns_forum_email_integration.php',
             'sources/cns_forum_email_integration.php',
-            'themes/default/templates/CNS_POST_FROM_MAILING_LIST.tpl',
+            'themes/default/text/CNS_POST_FROM_MAILING_LIST.txt',
         );
     }
 
@@ -411,7 +411,7 @@ class Hook_addon_registry_cns_forum
             'templates/CNS_MEMBER_PROFILE_POSTS.tpl' => 'cns_member_profile_posts',
             'templates/CNS_MEMBER_PROFILE_PTS.tpl' => 'cns_member_profile_pts',
             'templates/CNS_VFORUM_FILTERING.tpl' => 'cns_vforum_filtering',
-            'templates/CNS_POST_FROM_MAILING_LIST.tpl' => 'cns_post_from_mailing_list',
+            'templates/CNS_POST_FROM_MAILING_LIST.txt' => 'cns_post_from_mailing_list',
         );
     }
 
@@ -1774,6 +1774,8 @@ class Hook_addon_registry_cns_forum
      */
     public function tpl_preview__cns_post_from_mailing_list()
     {
+        require_lang('cns');
+
         return array(
             lorem_globalise(do_lorem_template('CNS_POST_FROM_MAILING_LIST', array(
                 'UNCONFIRMED_MEMBER_NOTICE' => true,

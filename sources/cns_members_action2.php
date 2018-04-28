@@ -664,9 +664,9 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
                 require_code('cns_forums2');
                 $test = cns_has_mailing_list_style();
                 if ($test[0] > 0) {
-                    $mlsn_description_caveat = $test[1] ? new Tempcode() : do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_NOTIFICATIONS_CAVEAT');
-                    $mlsn_description = do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_NOTIFICATIONS', $mlsn_description_caveat);
-                    $fields->attach(form_input_tick(do_lang_tempcode('MAILING_LIST_STYLE_NOTIFICATIONS'), $mlsn_description, 'mailing_list_style', $mailing_list_style == 1));
+                    $mlsn_description_caveat = $test[1] ? new Tempcode() : do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_CAVEAT');
+                    $mlsn_description = do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE', $mlsn_description_caveat);
+                    $fields->attach(form_input_tick(do_lang_tempcode('MAILING_LIST_STYLE'), $mlsn_description, 'mailing_list_style', $mailing_list_style == 1));
                 }
             }
             */
@@ -925,7 +925,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
  * @param  ?SHORT_TEXT $salt Password salt (null: don't change)
  * @param  ?TIME $join_time When the member joined (null: don't change)
  */
-function cns_edit_member($member_id, $username = null, $password = null, $email_address = null, $primary_group = null, $dob_day = null, $dob_month = null, $dob_year = null, $custom_fields = null, $timezone = null, $language = null, $theme = null, $title = null, $photo_url = null, $photo_thumb_url = null, $avatar_url = null, $signature = null, $preview_posts = null, $reveal_age = null, $views_signatures = null, $auto_monitor_contrib_content, $smart_topic_notification = null, $mailing_list_style = null, $auto_mark_read = null, $sound_enabled = null, $allow_emails = null, $allow_emails_from_staff = null, $highlighted_name = null, $pt_allow = '*', $pt_rules_text = '', $validated = null, $on_probation_until = null, $is_perm_banned = null, $check_correctness = true, $password_compatibility_scheme = null, $salt = null, $join_time = null)
+function cns_edit_member($member_id, $username = null, $password = null, $email_address = null, $primary_group = null, $dob_day = null, $dob_month = null, $dob_year = null, $custom_fields = null, $timezone = null, $language = null, $theme = null, $title = null, $photo_url = null, $photo_thumb_url = null, $avatar_url = null, $signature = null, $preview_posts = null, $reveal_age = null, $views_signatures = null, $auto_monitor_contrib_content = null, $smart_topic_notification = null, $mailing_list_style = null, $auto_mark_read = null, $sound_enabled = null, $allow_emails = null, $allow_emails_from_staff = null, $highlighted_name = null, $pt_allow = '*', $pt_rules_text = '', $validated = null, $on_probation_until = null, $is_perm_banned = null, $check_correctness = true, $password_compatibility_scheme = null, $salt = null, $join_time = null)
 {
     require_code('type_sanitisation');
     require_code('cns_members_action');
