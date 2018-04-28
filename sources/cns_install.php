@@ -332,8 +332,8 @@ function install_cns($upgrade_from = null)
             build_cpf_indices($id, $index, $type, $_type);
         }
     }
-    if (($upgrade_from === null) || ($upgrade_from < 11.0)) {
-        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_email_address', 'EMAIL');
+    if (($upgrade_from !== null) && ($upgrade_from < 11.0)) {
+        $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_email_address', 'SHORT_TEXT');
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_server_type', 'ID_TEXT');
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_server_host', 'SHORT_TEXT');
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_mail_server_port', '?INTEGER');
@@ -681,7 +681,7 @@ function install_cns($upgrade_from = null)
             'f_order' => 'ID_TEXT',
             'f_is_threaded' => 'BINARY',
             'f_allows_anonymous_posts' => 'BINARY',
-            'f_mail_email_address' => 'EMAIL',
+            'f_mail_email_address' => 'SHORT_TEXT',
             'f_mail_server_type' => 'ID_TEXT',
             'f_mail_server_host' => 'SHORT_TEXT',
             'f_mail_server_port' => '?INTEGER',
