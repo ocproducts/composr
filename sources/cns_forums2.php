@@ -21,6 +21,7 @@
 /**
  * Find if we have mailing-list-style forums.
  *
+ * @param ?AUTO_LINK $forum_id Forum ID of forum to check (null: no filter, find a count for all)
  * @return array A pair: How many that do, If all do
  */
 function cns_has_mailing_list_style($forum_id = null)
@@ -42,17 +43,16 @@ function cns_has_mailing_list_style($forum_id = null)
     $cnt_no = 0;
     $rows = $GLOBALS['FORUM_DB']->query($sql);
     foreach ($rows as $row) {
-        if
-            (
-                ($row['f_mail_username'] != '') &&
-                ($row['f_mail_email_address'] != '') &&
-                (($row['f_mail_server_type'] != '') || (get_option('mail_server_type') != '')) &&
-                (($row['f_mail_server_host'] != '') || (get_option('mail_server_host') != '')) &&
-                (($row['f_mail_server_port'] !== null) || (get_option('mail_server_port') != '')) &&
-                (($row['f_mail_folder'] != '') || (get_option('mail_folder') != '')) &&
-                (($row['f_mail_username'] != '') || (get_option('mail_username') != '')) &&
-                (($row['f_mail_password'] != '') || (get_option('mail_password') != ''))
-            ) {
+        if (
+            ($row['f_mail_username'] != '') &&
+            ($row['f_mail_email_address'] != '') &&
+            (($row['f_mail_server_type'] != '') || (get_option('mail_server_type') != '')) &&
+            (($row['f_mail_server_host'] != '') || (get_option('mail_server_host') != '')) &&
+            (($row['f_mail_server_port'] !== null) || (get_option('mail_server_port') != '')) &&
+            (($row['f_mail_folder'] != '') || (get_option('mail_folder') != '')) &&
+            (($row['f_mail_username'] != '') || (get_option('mail_username') != '')) &&
+            (($row['f_mail_password'] != '') || (get_option('mail_password') != ''))
+        ) {
             $cnt_yes++;
         } else {
             $cnt_no++;

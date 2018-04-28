@@ -729,7 +729,7 @@ function get_max_file_size($source_member = null, $connection = null, $consider_
  * @param  boolean $skip_server_side_security_check Whether to skip the server side security check
  * @param  ?string $file_to_delete Delete this file if we have to exit (null: no file to delete)
  * @param  boolean $accept_errors Whether to allow errors without dying
- * @param  MEMBER $member_id Member to check as
+ * @param  ?MEMBER $member_id Member to check as (null: current member)
  * @return boolean Success status
  */
 function check_extension($name, $skip_server_side_security_check = false, $file_to_delete = null, $accept_errors = false, $member_id = null)

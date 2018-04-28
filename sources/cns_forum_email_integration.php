@@ -108,7 +108,8 @@ class ForumEmailIntegration extends EmailIntegration
     public function incoming_scan()
     {
         require_code('cns_forums2');
-        if (!cns_has_mailing_list_style()) {
+        $test = cns_has_mailing_list_style();
+        if ($test[0] == 0) {
             return; // Possibly due to not being fully configured yet
         }
 
@@ -121,7 +122,7 @@ class ForumEmailIntegration extends EmailIntegration
 
             $type = $row['f_mail_server_type'];
             $host = $row['f_mail_server_host'];
-            $port = intval($row['f_mail_server_port']);
+            $port = ($row['f_mail_server_port'] == '') ? null : intval($row['f_mail_server_port']);
             $folder = $row['f_mail_folder'];
             $username = $row['f_mail_username'];
             $password = $row['f_mail_password'];
@@ -134,17 +135,18 @@ class ForumEmailIntegration extends EmailIntegration
      * Process an e-mail found.
      *
      * @param  EMAIL $from_email From e-mail
+     * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      * @param  string $from_name From name
      * @param  string $subject E-mail subject
      * @param  string $body E-mail body
      * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
      */
-     protected function _process_incoming_message($from_email, $from_name, $subject, $body, $attachments)
-     {
+    protected function _process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $body, $attachments)
+    {
         // Try to bind to a from member
         $member_id = $this->find_member_id($from_email);
         if ($member_id === null) {
-            $member_id = $this->handle_missing_member($from_email, $this->forum_row['f_mail_nonmatch_policy']);
+            $member_id = $this->handle_missing_member($from_email, $email_bounce_to, $this->forum_row['f_mail_nonmatch_policy'], $subject, $body);
         }
         if ($member_id === null) {
             return;
@@ -154,7 +156,7 @@ class ForumEmailIntegration extends EmailIntegration
         if (!has_category_access($this->member_id, 'forums', strval($this->forum_id))) {
             $forum_name = get_translated_text($this->forum_row['f_name']);
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-            $this->send_bounce_email__access_denied($subject, $body, $from_email, $from_email, $forum_name, $username);
+            $this->send_bounce_email__access_denied($subject, $body, $from_email, $email_bounce_to, $forum_name, $username);
         }
 
         // Check there can be no forgery vulnerability
@@ -199,7 +201,7 @@ class ForumEmailIntegration extends EmailIntegration
         if (count($attachment_errors) != 0) {
             $post_url = $GLOBALS['FORUM_DRIVER']->post_url($post_id, '');
 
-            $this->send_bounce_email__attachment_errors($subject, $body, $from_email, $from_email, $attachment_errors, $post_url);
+            $this->send_bounce_email__attachment_errors($subject, $body, $from_email, $email_bounce_to, $attachment_errors, $post_url);
         }
     }
 

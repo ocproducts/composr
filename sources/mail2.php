@@ -189,7 +189,7 @@ function is_mail_bounced($email, $host = null, $port = null, $type = null, $fold
  *
  * @param  string $host The server hostname
  * @param  integer $port The port
- * @param  ?string $type The protocol
+ * @param  string $type The protocol
  * @set imap imaps imaps_nocert pop3 pop3s pop3s_nocert
  * @param  string $folder The inbox identifier
  * @param  string $username The username
@@ -235,7 +235,7 @@ function update_bounce_storage($host, $port, $type, $folder, $username, $passwor
  *
  * @param  string $host The server hostname
  * @param  integer $port The port
- * @param  ?string $type The protocol
+ * @param  string $type The protocol
  * @set imap imaps imaps_nocert pop3 pop3s pop3s_nocert
  * @param  string $folder The inbox identifier
  * @param  string $username The username
@@ -272,7 +272,7 @@ function find_mail_bounces($host, $port, $type, $folder, $username, $password, $
  *
  * @param  string $host The server hostname
  * @param  integer $port The port
- * @param  ?string $type The protocol
+ * @param  string $type The protocol
  * @set imap imaps imaps_nocert pop3 pop3s pop3s_nocert
  * @param  string $folder The inbox identifier
  * @param  string $username The username

@@ -252,13 +252,13 @@ class Module_admin_cns_forums extends Standard_crud_module
 
             $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), do_lang_tempcode('CONFIG_OPTION_website_email'), 'mail_email_address', $mail_email_address, false));
             $mail_server_types = new Tempcode();
-            foreach (array('imap', 'imaps', 'imaps_nocert', 'imapt', 'imapt_nocert', 'pop3', 'pop3s', 'pop3s_nocert', 'pop3t', 'pop3t_nocert') as $_server_type) {
-                $mail_server_types->attach(form_input_list_entry($_server_type, $_server_type == $server_type));
+            foreach (array('imap', 'imaps', 'imaps_nocert', 'imapt', 'imapt_nocert', 'pop3', 'pop3s', 'pop3s_nocert', 'pop3t', 'pop3t_nocert') as $_mail_server_type) {
+                $mail_server_types->attach(form_input_list_entry($_mail_server_type, $_mail_server_type == $mail_server_type));
             }
             $fields->attach(form_input_list(do_lang_tempcode('SERVER_TYPE'), do_lang_tempcode('CONFIG_OPTION_mail_server_type'), 'mail_server_type', $mail_server_types));
 
-            $fields->attach(form_input_line(do_lang_tempcode('HOST'), do_lang_tempcode('CONFIG_OPTION_mail_server_host'), 'mail_server_host', $mail_host, false));
-            $fields->attach(form_input_integer(do_lang_tempcode('PORT'), do_lang_tempcode('CONFIG_OPTION_mail_server_port'), 'mail_server_port', $mail_port, false));
+            $fields->attach(form_input_line(do_lang_tempcode('HOST'), do_lang_tempcode('CONFIG_OPTION_mail_server_host'), 'mail_server_host', $mail_server_host, false));
+            $fields->attach(form_input_integer(do_lang_tempcode('PORT'), do_lang_tempcode('CONFIG_OPTION_mail_server_port'), 'mail_server_port', $mail_server_port, false));
 
             $fields->attach(form_input_line(do_lang_tempcode('MAIL_FOLDER'), do_lang_tempcode('CONFIG_OPTION_mail_folder'), 'mail_folder', $mail_folder, false));
 
@@ -267,7 +267,7 @@ class Module_admin_cns_forums extends Standard_crud_module
 
             $mail_non_match_policies = new Tempcode();
             foreach (array('block', 'post_as_guest', 'create_account') as $_mail_nonmatch_policy) {
-                $mail_non_match_policies->attach(form_input_list_entry($_server_type, $_mail_nonmatch_policy == $mail_nonmatch_policy, do_lang_tempcode('MAIL_NONMATCH_POLICY_' . $_mail_nonmatch_policy)));
+                $mail_non_match_policies->attach(form_input_list_entry($_mail_nonmatch_policy, $_mail_nonmatch_policy == $mail_nonmatch_policy, do_lang_tempcode('MAIL_NONMATCH_POLICY_' . $_mail_nonmatch_policy)));
             }
             $fields->attach(form_input_list(do_lang_tempcode('MAIL_NONMATCH_POLICY'), do_lang_tempcode('DESCRIPTION_MAIL_NONMATCH_POLICY'), 'mail_nonmatch_policy', $mail_non_match_policies));
 
@@ -572,10 +572,10 @@ class Module_admin_cns_forums extends Standard_crud_module
     /**
      * Get mailing list details from POST environment and check them.
      *
-     * @param AUTO_LINK $id ID (null: new entry)
+     * @param ?AUTO_LINK $id ID (null: new entry)
      * @return array A tuple of mailing list details
      */
-    function input_and_check_mail_parameters($id = null)
+    public function input_and_check_mail_parameters($id = null)
     {
         $mail_email_address = post_param_string('mail_email_address', '');
         $mail_server_type = post_param_string('mail_server_type', '');
@@ -591,18 +591,14 @@ class Module_admin_cns_forums extends Standard_crud_module
             warn_exit(do_lang_tempcode('FORUM_MAIL_USERNAME_AND_EMAIL_ADDRESS_BOTH'));
         }
 
-        if
-            (
-                ($mail_username != '') &&
-                (
-                    (($mail_server_type == '') && (get_option('mail_server_type') == '')) ||
-                    (($mail_server_host == '') && (get_option('mail_server_host') == '')) ||
-                    (($mail_server_port === null) && (get_option('mail_server_port') == '')) ||
-                    (($mail_folder == '') && (get_option('mail_folder') == '')) ||
-                    (($mail_username == '') && (get_option('mail_username') == '')) ||
-                    (($mail_password == '') && (get_option('mail_password') == ''))
-                )
-            ) {
+        if (($mail_username != '') && (
+            (($mail_server_type == '') && (get_option('mail_server_type') == '')) ||
+            (($mail_server_host == '') && (get_option('mail_server_host') == '')) ||
+            (($mail_server_port === null) && (get_option('mail_server_port') == '')) ||
+            (($mail_folder == '') && (get_option('mail_folder') == '')) ||
+            (($mail_username == '') && (get_option('mail_username') == '')) ||
+            (($mail_password == '') && (get_option('mail_password') == ''))
+        )) {
             attach_message(do_lang_tempcode('FORUM_MAIL_INCOMPLETE_CONFIGURATION'), 'warn');
         }
 

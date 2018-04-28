@@ -18,12 +18,14 @@
  * @package    core
  */
 
+/*EXTRA FUNCTIONS: imap\_.+*/
+
 /**
  * Standard code module initialisation function.
  *
  * @ignore
  */
-function init__downloads()
+function init__mail_integration()
 {
     require_code('mail');
 }
@@ -69,10 +71,10 @@ abstract class EmailIntegration
         $headers .= 'Reply-To: ' . do_lang('TICKET_SIMPLE_FROM', get_site_name(), $from_displayname, array(), get_lang($to_member_id)) . ' <' . $from_email . '>';
 
         // Subject
-        $tightened_subject = str_replace(array("\n", "\r"), array('', ''), $extended_subject);
+        $tightened_subject = str_replace(array("\n", "\r"), array('', ''), $subject);
 
         // Send
-        mail($to_displayname . ' <' . $to_email . '>', $subject, comcode_to_clean_text($message), $headers);
+        mail($to_displayname . ' <' . $to_email . '>', $tightened_subject, comcode_to_clean_text($message), $headers);
     }
 
     /**
@@ -97,17 +99,24 @@ abstract class EmailIntegration
      *
      * @return EMAIL E-mail address
      */
-    protected abstract function get_system_email();
+    abstract protected function get_system_email();
 
     /**
      * Scan for new e-mails.
      */
-    public abstract function incoming_scan();
+    abstract public function incoming_scan();
 
     /**
      * Scan for new e-mails.
+     *
+     * @param  string $type Server type (blank: get from glboal configuration)
+     * @param  string $host Server hostname (blank: get from glboal configuration)
+     * @param  ?integer $port Server port (null: get from glboal configuration)
+     * @param  string $folder Inbox folder (blank: get from glboal configuration)
+     * @param  string $username Username (blank: get from glboal configuration)
+     * @param  string $password Password (blank: get from glboal configuration)
      */
-    protected function _incoming_scan()
+    protected function _incoming_scan($type, $host, $port, $folder, $username, $password)
     {
         require_code('mail2');
 
@@ -121,7 +130,7 @@ abstract class EmailIntegration
         if ($host == '') {
             $host = get_option('mail_server_host');
         }
-        if ($port == 0) {
+        if ($port === null) {
             $port = intval(get_option('mail_server_port'));
         }
         if ($folder == '') {
@@ -239,13 +248,16 @@ abstract class EmailIntegration
      * Process an e-mail found.
      *
      * @param  EMAIL $from_email From e-mail
+     * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      * @param  string $from_name From name
      * @param  string $subject E-mail subject
      * @param  string $body E-mail body
      * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
      */
-    protected function process_incoming_message($from_email, $from_name, $subject, $body, $attachments)
+    protected function process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $body, $attachments)
     {
+        $email_bounce_to = $from_email;
+
         // De-forward
         $forwarded = false;
         foreach (array('fwd: ', 'fw: ') as $prefix) {
@@ -280,19 +292,20 @@ abstract class EmailIntegration
             }
         }
 
-        $this->_process_incoming_message($from_email, $from_name, $subject, $body, $attachments);
+        $this->_process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $body, $attachments);
     }
 
     /**
      * Process an e-mail found.
      *
      * @param  EMAIL $from_email From e-mail
+     * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      * @param  string $from_name From name
      * @param  string $subject E-mail subject
      * @param  string $body E-mail body
      * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
      */
-    protected abstract function _process_incoming_message($from_email, $from_name, $subject, $body, $attachments);
+    abstract protected function _process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $body, $attachments);
 
     /**
      * Get the mime type for a part of the IMAP structure.
@@ -335,10 +348,13 @@ abstract class EmailIntegration
         if ($mime_type == 'APPLICATION/OCTET-STREAM') { // Anything 'attachment' will be considered as 'application/octet-stream' so long as it is not plain text or HTML
             $disposition = $structure->ifdisposition ? strtoupper($structure->disposition) : '';
             if (
-                ($disposition == 'ATTACHMENT') || (($structure->type != 1) &&
-                ($structure->type != 2) &&
-                (isset($structure->bytes)) &&
-                (!in_array($part_mime_type, array('TEXT/PLAIN', 'TEXT/HTML', 'TEXT/X-VCARD', 'APPLICATION/PGP-SIGNATURE')))
+                ($disposition == 'ATTACHMENT') ||
+                (
+                    ($structure->type != 1) &&
+                    ($structure->type != 2) &&
+                    (isset($structure->bytes)) &&
+                    (!in_array($part_mime_type, array('TEXT/PLAIN', 'TEXT/HTML', 'TEXT/X-VCARD', 'APPLICATION/PGP-SIGNATURE')))
+                )
             ) {
                 $filename = $structure->parameters[0]->value;
 
@@ -384,7 +400,7 @@ abstract class EmailIntegration
                     $parameters[strtolower($param->attribute)] = $param->value;
                 }
                 if (isset($parameters['charset'])) {
-                    $input_charset = $parameters['charset']);
+                    $input_charset = $parameters['charset'];
                 }
             }
             $data = convert_to_internal_encoding($data, $input_charset);
@@ -410,26 +426,17 @@ abstract class EmailIntegration
     }
 
     /**
-     * Find member ID behind an e-mail.
-     *
-     * @param  EMAIL $from_email From e-mail
-     * @param  string $from_name From name
-     * @return ?MEMBER The member ID (null: not found)
-     */
-    protected function find_member_id($from_email)
-    {
-        return $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($from_email);
-    }
-
-    /**
      * Handle a case where we could not bind to a member.
      *
      * @param  EMAIL $from_email From e-mail
+     * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      * @param  string $mail_nonmatch_policy Non-match policy
      * @set post_as_guest create_account block
+     * @param  string $subject Subject line
+     * @param  string $body Message body
      * @return ?MEMBER The member ID (null: none)
      */
-    function handle_missing_member($from_email, $mail_nonmatch_policy)
+    protected function handle_missing_member($from_email, $email_bounce_to, $mail_nonmatch_policy, $subject, $body)
     {
         $member_id = null;
 
@@ -449,6 +456,7 @@ abstract class EmailIntegration
 
                 $i = 1;
                 $_username = preg_replace('#@.*$#', '', $from_email);
+                $username = $_username;
                 while ($GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $username)) !== null) {
                     $username = $_username . strval($i);
                     $i++;
@@ -471,16 +479,16 @@ abstract class EmailIntegration
                 $member_id = cns_make_member($username, $password, $from_email);
 
                 // Send creation e-mail
-                $system_subject = do_lang('MAIL_INTEGRATION_AUTOMATIC_ACCOUNT_SUBJECT', $subject, $email, array(get_site_name(), $username), get_site_default_lang());
+                $system_subject = do_lang('MAIL_INTEGRATION_AUTOMATIC_ACCOUNT_SUBJECT', $subject, $from_email, array(get_site_name(), $username), get_site_default_lang());
                 $system_message = do_lang('MAIL_INTEGRATION_AUTOMATIC_ACCOUNT_MAIL', comcode_to_clean_text($body), $from_email, array($subject, get_site_name(), $username, $password), get_site_default_lang());
-                $this->send_system_email($system_subject, $system_message, $email, $email_bounce_to);
+                $this->send_system_email($system_subject, $system_message, $from_email, $email_bounce_to);
 
                 break;
 
             case 'block':
             default:
                 // E-mail back, saying user not found
-                $this->send_bounce_email__cannot_bind($subject, $body, $from_email, $from_email_orig);
+                $this->send_bounce_email__cannot_bind($subject, $body, $from_email, $email_bounce_to);
                 break;
         }
 
@@ -521,7 +529,7 @@ abstract class EmailIntegration
         if (get_forum_type() == 'cns') {
             require_code('cns_groups');
             $max_attachments_per_post = cns_get_member_best_group_property($member_id, 'max_attachments_per_post');
-            $daily_quota = cns_get_member_best_group_property($source_member, 'max_daily_upload_mb');
+            $daily_quota = cns_get_member_best_group_property($member_id, 'max_daily_upload_mb');
         } else {
             $max_attachments_per_post = null;
             $daily_quota = NON_CNS_QUOTA;
@@ -538,8 +546,8 @@ abstract class EmailIntegration
                 break;
             }
 
-            if (!check_extension($file, true, null, true, $member_id_comcode)) {
-                $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_INVALID_TYPE', array($file));
+            if (!check_extension($filename, true, null, true, $member_id_comcode)) {
+                $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_INVALID_TYPE', array($filename));
                 continue;
             }
 
@@ -681,7 +689,7 @@ abstract class EmailIntegration
      * @param  string $body E-mail body
      * @param  integer $format A STRIP_* constant
      */
-    protected abstract function strip_system_code($body, $format);
+    abstract protected function strip_system_code($body, $format);
 
     /**
      * Process a quote block in plain-text e-mail, into a Comcode quote tag. preg callback.
@@ -790,7 +798,7 @@ abstract class EmailIntegration
      * @param  EMAIL $email E-mail address we tried to bind to
      * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      */
-    protected abstract function send_bounce_email__cannot_bind($subject, $body, $email, $email_bounce_to);
+    abstract protected function send_bounce_email__cannot_bind($subject, $body, $email, $email_bounce_to);
 
     /**
      * Send out a system (advisory) e-mail.

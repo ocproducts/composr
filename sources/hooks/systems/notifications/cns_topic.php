@@ -274,17 +274,20 @@ class Hook_notification_cns_topic extends Hook_Notification
         }
 
         // Filter members who will receive mailing-style e-mails
-        require_code('cns_forums2');
-        if ((is_numeric($category)) && ($this->handle_mailing_list) && (cns_has_mailing_list_style($forum_id))) {
-            $this->mailing_list_members = array();
+        if ((is_numeric($category)) && ($this->handle_mailing_list)) {
+            require_code('cns_forums2');
+            $mls = cns_has_mailing_list_style($forum_id);
+            if ($mls[0] == 1) {
+                $this->mailing_list_members = array();
 
-            foreach ($members as $member_id => $setting) {
-                $mailing_list_style_notifications = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_mailing_list_style_notifications') == 1);
-                $email_address = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address');
-                $receive_email_notification = ($setting & A_INSTANT_EMAIL) != 0;
-                if (($mailing_list_style_notifications) && ($email_address != '') && ($receive_email_notification)) {
-                    $setting = $setting & ~A_INSTANT_EMAIL;
-                    $this->mailing_list_members[] = $member_id;
+                foreach ($members as $member_id => $setting) {
+                    $mailing_list_style_notifications = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_mailing_list_style_notifications') == 1);
+                    $email_address = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address');
+                    $receive_email_notification = ($setting & A_INSTANT_EMAIL) != 0;
+                    if (($mailing_list_style_notifications) && ($email_address != '') && ($receive_email_notification)) {
+                        $setting = $setting & ~A_INSTANT_EMAIL;
+                        $this->mailing_list_members[] = $member_id;
+                    }
                 }
             }
         }

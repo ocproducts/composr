@@ -12,8 +12,6 @@
 
 */
 
-/*EXTRA FUNCTIONS: imap\_.+*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -105,7 +103,7 @@ class TicketsEmailIntegration
 
         $type = get_option('ticket_mail_server_type');
         $host = get_option('ticket_mail_server_host');
-        $port = intval(get_option('ticket_mail_server_port'));
+        $port = (get_option('ticket_mail_server_port') == '') ? null : intval(get_option('ticket_mail_server_port'));
         $folder = get_option('ticket_mail_folder');
         $username = get_option('ticket_mail_username');
         $password = get_option('ticket_mail_password');
@@ -117,15 +115,14 @@ class TicketsEmailIntegration
      * Process an e-mail found.
      *
      * @param  EMAIL $from_email From e-mail
+     * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      * @param  string $from_name From name
      * @param  string $subject E-mail subject
      * @param  string $body E-mail body
      * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
      */
-    protected function _process_incoming_message($from_email, $from_name, $subject, $body, $attachments)
+    protected function _process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $body, $attachments)
     {
-        $from_email_orig = $from_email;
-
         // Try to bind to an existing ticket
         $existing_ticket = null;
         $matches = array();
@@ -155,7 +152,7 @@ class TicketsEmailIntegration
         // Try to bind to a from member
         $member_id = $this->find_member_id($from_email, $tags, $existing_ticket);
         if ($member_id === null) {
-            $member_id = $this->handle_missing_member($from_email, get_option('ticket_mail_nonmatch_policy'));
+            $member_id = $this->handle_missing_member($from_email, $email_bounce_to, get_option('ticket_mail_nonmatch_policy'), $subject, $body);
         }
         if ($member_id === null) {
             return;
@@ -243,7 +240,7 @@ class TicketsEmailIntegration
         }
 
         if (count($attachment_errors) != 0) {
-            $this->send_bounce_email__attachment_errors($subject, $body, $from_email, $from_email, $attachment_errors, $home_url);
+            $this->send_bounce_email__attachment_errors($subject, $body, $from_email, $email_bounce_to, $attachment_errors, $home_url);
         }
     }
 
@@ -251,9 +248,8 @@ class TicketsEmailIntegration
      * Find member ID behind an e-mail.
      *
      * @param  EMAIL $from_email From e-mail
-     * @param  string $from_name From name
      * @param  ?array $tags List of extra tags (null: none)
-     * @param  string $existing_ticket ID of existing ticket
+     * @param  ?string $existing_ticket ID of existing ticket (null: unknown)
      * @return ?MEMBER The member ID (null: not found)
      */
     protected function find_member_id($from_email, $tags = null, $existing_ticket = null)
@@ -305,7 +301,7 @@ class TicketsEmailIntegration
                     $strings[] = do_lang('TICKET_SIMPLE_MAIL_reply_regexp', null, null, null, $lang);
                 }
                 foreach ($strings as $s) {
-                    $body = preg_replace('#' . str_replace("\n", "(\n|<br[^<>]*>)*", $s)) . '#i', '', $body);
+                    $body = preg_replace('#' . str_replace("\n", "(\n|<br[^<>]*>)*", $s) . '#i', '', $body);
                 }
                 break;
 
