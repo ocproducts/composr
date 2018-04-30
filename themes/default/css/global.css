@@ -2801,10 +2801,8 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 .index-screen-fancier-entry-link {
 	font-weight: bold;
 	margin-bottom: 0.3em;
-	padding: 0 0 0 18px;
-	background: url('{$IMG_INLINE;,icons/buttons/proceed2}') 0 3px no-repeat;
-	background-size: 14px 14px;
 }
+
 .index-screen-fancier-entry-count {
 	font-size: 0.9em;
 	font-weight: normal;

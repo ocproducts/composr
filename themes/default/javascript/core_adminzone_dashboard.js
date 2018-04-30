@@ -34,11 +34,11 @@
             
             if (data.vwTaskDone === 'checklist_todo') {
                 $cms.loadSnippet('checklist_task_manage', 'type=mark_done&id=' + id);
-                $cms.setIcon(this.iconChecklistStatus, 'checklist__checklist_done', '{$IMG;,icons/checklist/checklist_done}');
+                $cms.setIcon(this.iconChecklistStatus, 'checklist/checklist_done', '{$IMG;,icons/checklist/checklist_done}');
                 data.vwTaskDone = 'checklist_done';
             } else {
                 $cms.loadSnippet('checklist_task_manage', 'type=mark_undone&id=' + id);
-                $cms.setIcon(this.iconChecklistStatus, 'checklist__checklist_todo', '{$IMG;,icons/checklist/checklist_todo}');
+                $cms.setIcon(this.iconChecklistStatus, 'checklist/checklist_todo', '{$IMG;,icons/checklist/checklist_todo}');
                 data.vwTaskDone = 'checklist_todo';
             }
         },

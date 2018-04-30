@@ -1000,17 +1000,29 @@
 
     /**
      * @param iconEl
-     * @param symbolId
+     * @param iconName
      * @param imageSrc
      */
-    $cms.setIcon = function setIcon(iconEl, symbolId, imageSrc) {
-        var use;
+    $cms.setIcon = function setIcon(iconEl, iconName, imageSrc) {
+        var symbolId, use, newSrc, newClass;
         if (iconEl.localName === 'svg') {
+            symbolId = iconName.replace(/\//g, '__');
             use = iconEl.querySelector('use');
             use.setAttribute('xlink:href', use.getAttribute('xlink:href').replace(/#\w+$/, '#' + symbolId));
         } else {
-            iconEl.src = $util.srl(imageSrc);
+            if ($util.url(iconEl.src).pathname.includes('/themewizard.php')) {
+                // themewizard.php script, set ?show=<image name>
+                newSrc = $util.url(iconEl.src);
+                newSrc.searchParams.set('show', 'icons/' + iconName);
+            } else {
+                newSrc = $util.srl(imageSrc);
+            }
+            iconEl.src = newSrc;
         }
+
+        // Replace the existing icon-* class with the new one
+        newClass = iconName.replace(/_/g, '-').replace(/\//g, '--');
+        iconEl.className = iconEl.className.replace(/(^| )icon-[\w\-]+($| )/, ' ' + newClass + ' ').trim().replace(/ +/g, ' ');
     };
 
     /**
