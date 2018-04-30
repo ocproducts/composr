@@ -22,6 +22,8 @@ class theme_images_test_set extends cms_test_case
     {
         parent::setUp();
 
+        set_time_limit(200);
+
         require_code('themes2');
         require_code('images');
         require_code('files2');

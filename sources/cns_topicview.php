@@ -599,7 +599,8 @@ function cns_cache_member_details($members)
 
             // Signature
             if ((get_page_name() != 'search') && ($row['m_signature'] !== null) && ($row['m_signature'] !== '') && ($row['m_signature'] !== 0)) {
-                $SIGNATURES_CACHE[$row['id']] = get_translated_tempcode('f_members', $row, 'm_signature', $GLOBALS['FORUM_DB']);
+                $just_row = db_map_restrict($row, array('id', '', 'news', 'news_article'));
+                $SIGNATURES_CACHE[$row['id']] = get_translated_tempcode('f_members', $just_row, 'm_signature', $GLOBALS['FORUM_DB']);
             }
 
             $MEMBER_CACHE_FIELD_MAPPINGS[$row['mf_member_id']] = $row;

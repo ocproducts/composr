@@ -15,6 +15,8 @@
 
 /*EXTRA FUNCTIONS: diff_simple_2*/
 
+// Expect ~3014 files to appear in _tests/screens_tested
+
 /**
  * Composr test case class (unit testing).
  */
@@ -25,6 +27,13 @@ class template_previews_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
+        $a = scandir(get_file_base() . '/_tests/screens_tested');
+        sleep(3);
+        $b = scandir(get_file_base() . '/_tests/screens_tested');
+        if (count($b) > count($a)) {
+            exit('Already running');
+        }
 
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(0);
@@ -38,7 +47,7 @@ class template_previews_test_set extends cms_test_case
         $_GET['keep_devtest'] = '1';
         $_GET['keep_has_js'] = '0';
         $_GET['keep_minify'] = '0'; // Disables resource merging, which messes with results
-        $_GET['keep_fatalistic'] = '1';
+        //$_GET['keep_fatalistic'] = '1';
         $GLOBALS['OUTPUT_STREAMING'] = false;
 
         require_code('lorem');
@@ -96,6 +105,7 @@ class template_previews_test_set extends cms_test_case
         $only_do_these = array(); // If you want to test specific templates temporarily put the template names (without .tpl) in this array. But remove again before you commit!
 
         $lists = find_all_previews__by_template();
+        $this->shuffle_assoc($lists); // So parallelism can work
         foreach ($lists as $template => $list) {
             if (count($only_do_these) != 0) {
                 if (!in_array($template, $only_do_these)) {
@@ -224,6 +234,7 @@ class template_previews_test_set extends cms_test_case
         $HAS_KEEP_IN_URL_CACHE = null;
 
         $lists = find_all_previews__by_screen();
+        $this->shuffle_assoc($lists); // So parallelism can work
         foreach ($lists as $function => $tpls) {
             $template = $tpls[0];
             $hook = null;
@@ -301,6 +312,7 @@ class template_previews_test_set extends cms_test_case
         global $ATTACHED_MESSAGES, $ATTACHED_MESSAGES_RAW;
 
         $lists = find_all_previews__by_screen();
+        $this->shuffle_assoc($lists); // So parallelism can work
         foreach ($lists as $function => $tpls) {
             $template = $tpls[0];
             $hook = null;
@@ -381,5 +393,20 @@ class template_previews_test_set extends cms_test_case
 
         cms_ini_set('ocproducts.type_strictness', '0');
         cms_ini_set('ocproducts.xss_detect', '0');
+    }
+
+    protected function shuffle_assoc(&$array)
+    {
+        $keys = array_keys($array);
+
+        shuffle($keys);
+
+        foreach($keys as $key) {
+            $new[$key] = $array[$key];
+        }
+
+        $array = $new;
+
+        return true;
     }
 }

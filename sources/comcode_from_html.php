@@ -349,7 +349,7 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
         $semihtml = str_replace(hex2bin('e2808b'), '', $semihtml);
     }
 
-    if (stripos($semihtml, '<input') !== false) {
+    if (stripos($semihtml, '<button') !== false) {
         // Our button editing for embedded tags
         do {
             $semihtml_before = $semihtml;

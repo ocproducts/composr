@@ -24,6 +24,8 @@ class urls_simplifier_test_set extends cms_test_case
     {
         parent::setUp();
 
+        set_value('urls_simplifier', '1');
+
         require_code('uploads');
 
         require_code('urls_simplifier');

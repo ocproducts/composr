@@ -229,7 +229,7 @@ function metadata_get_fields($content_type, $content_id, $require_owner = true, 
             }
         }
 
-        if (($info['support_url_monikers']) && (!in_array('url_moniker', $fields_to_skip))) {
+        if (($info['support_url_monikers']) && (url_monikers_enabled()) && (!in_array('url_moniker', $fields_to_skip))) {
             $url_moniker = null;
             if ($content_id !== null) {
                 if ($content_type == 'comcode_page') {

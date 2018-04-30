@@ -296,6 +296,7 @@ class css_file_test_set extends cms_test_case
 
         $exceptions = array(
             'comcode-button',
+            'back-to-top-by-buttons',
             'display-mobile',
             'display-desktop',
             'help',
