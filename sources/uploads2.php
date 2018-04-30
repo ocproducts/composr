@@ -363,6 +363,11 @@ function clean_empty_upload_directories($upload_directory, $top_level = true)
             continue;
         }
 
+        if (($f == 'pre_transcoding') && ($top_level)) {
+            $ok_to_delete = false;
+            continue;
+        }
+
         if (is_dir(get_custom_file_base() . '/' . $upload_directory . '/' . $f)) {
             $ok_to_delete = clean_empty_upload_directories($upload_directory . '/' . $f, false) && $ok_to_delete;
         } else {

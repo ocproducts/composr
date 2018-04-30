@@ -140,6 +140,7 @@ class Hook_addon_registry_cns_member_photos
                 'USERNAME' => lorem_word(),
                 'PHOTO' => placeholder_image_url(),
                 'TEXT' => '',
+                'MEMBER_ID' => placeholder_id(),
             )), null, '', true)
         );
     }

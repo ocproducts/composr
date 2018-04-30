@@ -337,10 +337,12 @@ function cms_getimagesize($path, $ext = null)
 function cms_getimagesizefromstring($data, $ext = null)
 {
     if ($ext === 'gif') { // Workaround problem with animated gifs
-        $header = unpack('@6/' . 'vwidth/' . 'vheight', $data);
-        $sx = $header['width'];
-        $sy = $header['height'];
-        return array(max(1, $sx), max(1, $sy));
+        $header = @unpack('@6/' . 'vwidth/' . 'vheight', $data);
+        if ($header !== false) {
+            $sx = $header['width'];
+            $sy = $header['height'];
+            return array(max(1, $sx), max(1, $sy));
+        }
     }
 
     if (function_exists('getimagesizefromstring')) {
