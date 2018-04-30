@@ -373,6 +373,8 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
     $shipping_tax_derivation = array();
     $shipping_tax = 0.00;
     $shipping_tax_tracking = array();
+    $total_shipping_tax_derivation = array();
+    $total_shipping_tax = 0.0;
 
     // Do TaxCloud call
     if (count($taxcloud_items) > 0) {
