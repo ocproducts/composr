@@ -95,7 +95,7 @@
             }
 
             submitBtn.disabled = true;
-            var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_catalogue&name=' + encodeURIComponent(value);
+            var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_catalogue&name=' + encodeURIComponent(value) + $cms.keep();
             e.preventDefault();
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
