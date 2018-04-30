@@ -51,7 +51,7 @@
 
 						<label for="assign-username" class="accessibility-hidden">{!USERNAME}</label>
 						<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="input-username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign-username" name="username" value="{$USERNAME*}" />
-						<button class="button-micro buttons--proceed" type="submit">{!ASSIGN_TO} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
+						<button class="button-micro buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!ASSIGN_TO}</button>
 					</form>
 				</li>
 			{+END}

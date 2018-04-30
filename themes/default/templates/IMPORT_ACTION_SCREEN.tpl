@@ -32,7 +32,7 @@
 	</table></div>
 
 	<p class="proceed-button">
-		<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--proceed" type="submit">{!IMPORT} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
+		<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!IMPORT}</button>
 	</p>
 </form>
 

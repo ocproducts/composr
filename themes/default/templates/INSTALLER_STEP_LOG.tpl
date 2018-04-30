@@ -17,7 +17,7 @@
 			{HIDDEN}
 
 			<p class="proceed-button">
-				<button id="proceed-button" class="button-screen buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
+				<button id="proceed-button" class="button-screen buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 			</p>
 		</div>
 	</form>

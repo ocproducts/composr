@@ -70,6 +70,6 @@
 	</tbody></table></div>
 
 	<p class="proceed-button">
-		<button class="button-screen buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
+		<button class="button-screen buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 	</p>
 </form>

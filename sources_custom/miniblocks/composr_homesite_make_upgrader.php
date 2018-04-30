@@ -58,7 +58,7 @@ if (!function_exists('mu_ui')) {
     </p>
     <p>(example above is for upgrading from 10.0.0 beta1)</p>
     <p>
-        <button class="buttons--proceed button-screen-item" id="make-upgrader-button" type="submit">Generate {$proceed_icon}</button>
+        <button class="buttons--proceed button-screen-item" id="make-upgrader-button" type="submit">{$proceed_icon} Generate</button>
     </p>
 </form>
 END;

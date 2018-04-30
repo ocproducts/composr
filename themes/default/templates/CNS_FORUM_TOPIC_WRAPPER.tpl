@@ -96,7 +96,7 @@
 						<select class="dropdown-actions" name="type" id="fma-type">
 							<option value="browse">-</option>
 							{MODERATOR_ACTIONS}
-						</select><button class="button-micro buttons--proceed js-click-btn-add-form-marked-posts" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
+						</select><button class="button-micro buttons--proceed js-click-btn-add-form-marked-posts" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 					</div>
 				</form>
 
@@ -113,7 +113,7 @@
 								<option value="50"{$?,{$EQ,{MAX},50}, selected="selected",}>50</option>
 								<option value="100"{$?,{$EQ,{MAX},100}, selected="selected",}>100</option>
 								<option value="300"{$?,{$EQ,{MAX},300}, selected="selected",}>300</option>
-							</select><button class="button-micro buttons--proceed js-click-btn-add-form-marked-posts" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
+							</select><button class="button-micro buttons--proceed js-click-btn-add-form-marked-posts" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 						</div>
 					</form>
 

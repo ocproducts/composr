@@ -402,7 +402,7 @@
         button = document.createElement('button');
         button.type = 'submit';
         button.className = 'buttons--proceed button-screen-item';
-        $dom.html(button, '{!encryption:DECRYPT;^} {$GET;^,proceed_icon}');
+        $dom.html(button, '{$GET;^,proceed_icon} {!encryption:DECRYPT;^}');
         // Hide the form upon submission
         button.addEventListener('click', function () {
             container.style.display = 'none';
