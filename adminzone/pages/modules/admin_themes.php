@@ -356,6 +356,7 @@ class Module_admin_themes
         require_code('themes2');
         require_lang('zones');
         require_code('files');
+        require_code('images');
 
         require_css('themes_editor');
 
@@ -740,6 +741,12 @@ class Module_admin_themes
         $theme = post_param_string('theme');
         require_code('type_sanitisation');
         if (!is_alphanumeric($theme)) {
+            if ((stripos(PHP_OS, 'WIN') === 0) && (version_compare(PHP_VERSION, '7.2', '<'))) {
+                // Older versions of PHP on Windows cannot handle utf-8 filenames
+                require_code('character_sets');
+                $theme = transliterate_string($theme);
+            }
+
             $theme = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $theme);
             //warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
@@ -2066,17 +2073,13 @@ class Module_admin_themes
         $unmodified = (strpos($path, 'themes/default/images/') !== false);
 
         disable_php_memory_limit();
-        $from_file = @file_get_contents(($unmodified ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($path));
+        $full_path = ($unmodified ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($path);
         $width = do_lang_tempcode('UNKNOWN_EM');
         $height = do_lang_tempcode('UNKNOWN_EM');
-        if (($from_file !== false) && (function_exists('imagecreatefromstring'))) {
-            $source = @imagecreatefromstring($from_file);
-            unset($from_file);
-            if ($source !== false) {
-                $width = make_string_tempcode(strval(imagesx($source)));
-                $height = make_string_tempcode(strval(imagesy($source)));
-                imagedestroy($source);
-            }
+        $image_size = cms_getimagesize($full_path);
+        if ($image_size !== false) {
+            $width = make_string_tempcode(strval($image_size[0]));
+            $height = make_string_tempcode(strval($image_size[1]));
         }
 
         $url = ($unmodified ? get_base_url() : get_custom_base_url()) . '/' . $path;

@@ -206,25 +206,21 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $connection)
             if (strpos($comcode, $matches[0][$i]) !== false) { // Check still here (if we have same image in multiple places, may have already been attachment-ified)
                 $data = @base64_decode($matches[1][$i]);
                 if (($data !== false) && (function_exists('imagepng'))) {
-                    $image = @imagecreatefromstring($data);
+                    require_code('images');
+                    $image = cms_imagecreatefromstring($data, null);
                     if ($image !== false) {
                         do {
                             $new_filename = uniqid('', true) . '.png';
                             $new_path = get_custom_file_base() . '/uploads/attachments/' . $new_filename;
                         } while (file_exists($new_path));
-                        imagepng($image, $new_path, 9);
+                        cms_imagesave($image, $new_path) or intelligent_write_error($new_path);
                         imagedestroy($image);
-                        require_code('images_png');
-                        png_compress($new_path);
-
-                        fix_permissions($new_path);
-                        sync_file($new_path);
 
                         $db = $GLOBALS[((substr($type, 0, 4) == 'cns_') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
                         $attachment_id = $db->query_insert('attachments', array(
                             'a_member_id' => get_member(),
                             'a_file_size' => strlen($data),
-                            'a_url' => 'uploads/attachments/' . rawurlencode($new_filename),
+                            'a_url' => cms_rawurlrecode('uploads/attachments/' . rawurlencode($new_filename)),
                             'a_thumb_url' => '',
                             'a_original_filename' => basename($new_filename),
                             'a_num_downloads' => 0,
@@ -322,7 +318,8 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                 $i = 2;
                 // Hunt with sensible names until we don't get a conflict
                 while (file_exists($place)) {
-                    $_file = strval($i) . basename($entry['path']);
+                    $ext = '.' . get_file_extension($entry['path']);
+                    $_file = basename($entry['path'], $ext) . '_' . strval($i) . $ext;
                     $place = get_custom_file_base() . '/uploads/attachments/' . $_file;
                     $i++;
                 }
@@ -336,7 +333,8 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                 $place_thumb = get_custom_file_base() . '/uploads/attachments_thumbs/' . $_file_thumb;
                 // Hunt with sensible names until we don't get a conflict
                 while (file_exists($place_thumb)) {
-                    $_file_thumb = strval($i) . basename($entry['path']);
+                    $ext = '.' . get_file_extension($entry['path']);
+                    $_file_thumb = basename($entry['path'], $ext) . '_' . strval($i) . $ext;
                     $place_thumb = get_custom_file_base() . '/uploads/attachments_thumbs/' . $_file_thumb;
                     $i++;
                 }
@@ -397,8 +395,12 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                     }
                 }
 
+                // Images cleanup pipeline
+                require_code('images_cleanup_pipeline');
+                handle_images_cleanup_pipeline($place);
+
                 // Create new attachment from extracted file
-                $url = 'uploads/attachments/' . rawurlencode($_file);
+                $url = cms_rawurlrecode('uploads/attachments/' . rawurlencode($_file));
                 $attachment_id = $connection->query_insert('attachments', array(
                     'a_member_id' => get_member(),
                     'a_file_size' => $file_details['size'],

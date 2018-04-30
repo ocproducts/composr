@@ -1484,6 +1484,8 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
 
     static $done_one_posting_field = false;
 
+    $ret = null;
+
     if (strpos($storage_type, '_trans') !== false) {
         if (is_integer($value)) {
             $value = get_translated_text($value, $GLOBALS['FORUM_DB']);
@@ -1547,7 +1549,8 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
         if (!$defer) {
             $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', $change, array('mf_member_id' => $member_id), '', 1);
         }
-        return $change;
+
+        $ret = $change;
     }
 
     if (function_exists('decache')) {
@@ -1559,7 +1562,7 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
         unset($MEMBER_CACHE_FIELD_MAPPINGS[$member_id]);
     }
 
-    return null;
+    return $ret;
 }
 
 /**
@@ -1807,20 +1810,12 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
             if (is_null($from_file)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('URL')));
             }
-            $source = @imagecreatefromstring($from_file);
-            if ($source === false) {
+
+            $test = cms_getimagesizefromstring($from_file, get_file_extension($avatar_url));
+            if (!$test) {
                 warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($avatar_url)));
             }
-
-            if (get_file_extension($avatar_url) == 'gif') {
-                $header = unpack('@6/' . 'vwidth/' . 'vheight', $from_file);
-                $sx = $header['width'];
-                $sy = $header['height'];
-            } else {
-                $sx = imagesx($source);
-                $sy = imagesy($source);
-            }
-            imagedestroy($source);
+            list($sx, $sy) = $test;
 
             require_code('cns_groups');
             $width = cns_get_member_best_group_property($member_id, 'max_avatar_width');

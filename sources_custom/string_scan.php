@@ -183,6 +183,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ACCEPTED_MEDIA_TYPES
         WORDFILTER
         AUDIT
+        DESCRIPTION_REORGANISE_UPLOADS
+        REORGANISE_UPLOADS
         KA_CHING
         PLEASE_STATE
         VIDEO_WAS_AUTO_IMPORTED
@@ -237,6 +239,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ANTISPAM_RESPONSE_SKIP
         CORRUPT_ATTACHMENT
         ATTACHMENT_REFERENCES
+        FILENAME_TOO_LONG
         MERGE_SUPPORT_TICKETS
         NO_PARAMETER_SENT
         CONFIRM_MERGE_TICKETS
@@ -1365,6 +1368,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_menu_PARAM_type_TITLE
         BLOCK_menu_USE
         INDEX_DOWNLOAD
+        SPAM_URLS
         BLOCK_side_calendar_DESCRIPTION
         BLOCK_side_calendar_PARAM_as_guest
         BLOCK_side_calendar_PARAM_as_guest_TITLE
@@ -2699,6 +2703,20 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CNS_WAITING_CONFIRM_MAIL_COPPA
         COPPA_JOIN_SUBJECT
         COPPA_MAIL
+        PREPARE_EMAIL
+        PREPARE_EMAIL_DESCRIPTION
+        PREPARE_EMAIL_SUBJECT
+        PREPARE_EMAIL_BODY
+        HANDLE_POST__POST_STANDALONE_AT_END
+        HANDLE_POST__POST_STANDALONE_IN_MIDDLE
+        HANDLE_POST__POST_AS_TOPIC_FULL
+        HANDLE_POST__POST_AS_TOPIC_STARTER
+        HANDLE_POST__NOTHING
+        HANDLE_POST__DELETE_POST
+        HANDLE_POST__DELETE_POST_WITH_GAP
+        HANDLE_POST__DELETE_POST_AND_FOLLOWING
+        HANDLE_POST__DELETE_TOPIC
+        HANDLE_POST__DELETE_TOPIC_WITH_REPLIES
         CONFIG_OPTION_is_on_emoticon_choosers
         CONFIG_OPTION_is_on_folder_create
         CONFIG_OPTION_is_on_forw_buy
@@ -4946,6 +4964,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         JAVASCRIPT_EXECUTED
         JAVASCRIPT_REQUIRED
         JPEG_QUALITY
+        REPAIR_IMAGES
+        CONFIG_OPTION_repair_images
         JSON_ONLY
         JS_CAPTCHA
         JS_OVERLAYS
@@ -6876,6 +6896,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         WARNING_UNINSTALL
         WARNING_UNINSTALL_GENERAL
         WARN_MEMBER
+        WARN_MEMBER_AS_SPAMMER
         WARN_TO_STACK_TRACE
         WARN_TO_STACK_TRACE_2
         WARN_TO_STACK_TRACE_3

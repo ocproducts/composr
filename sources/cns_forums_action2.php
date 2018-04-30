@@ -236,6 +236,8 @@ function cns_delete_forum($forum_id, $target_forum_id = null, $delete_topics = 0
         update_catalogue_content_ref('forum', strval($forum_id), '');
     }
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'forumview', 'm_resource_type' => 'browse', 'm_resource_id' => strval($forum_id)));
+
     log_it('DELETE_FORUM', strval($forum_id), $name);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {

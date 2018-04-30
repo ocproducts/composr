@@ -106,6 +106,7 @@ class Hook_addon_registry_news
             'themes/default/images/icons/24x24/tabs/member_account/blog.png',
             'themes/default/images/icons/48x48/menu/rich_content/news.png',
             'themes/default/images/icons/48x48/tabs/member_account/blog.png',
+            'sources/hooks/systems/reorganise_uploads/news.php',
             'sources/hooks/systems/notifications/news_entry.php',
             'sources/hooks/modules/admin_setupwizard_installprofiles/blog.php',
             'sources/hooks/systems/realtime_rain/news.php',

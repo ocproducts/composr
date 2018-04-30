@@ -407,7 +407,7 @@ function _search_img_file($theme, $lang, $id, $dir = 'images')
             $file_path .= $id . '.' . $extension;
 
             if (is_file($file_path)) { // Good, now return URL
-                $url_path = 'themes/' . rawurlencode($theme) . '/' . $dir . '/';
+                $url_path = cms_rawurlrecode('themes/' . rawurlencode($theme) . '/' . $dir . '/');
                 if (!empty($lang)) {
                     $url_path .= $lang . '/';
                 }

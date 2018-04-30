@@ -37,18 +37,20 @@ Sample Commandr command:
 :set_value('captcha_member_days', '5'); set_value('captcha_member_posts', '5');
 [/code]
 
-[title="2"]Remote Block Lists (RBLs)[/title]
+[title="2"]Public block lists[/title]
+
+[title="3"]Remote Block Lists (RBLs)[/title]
 
 Remote Block Lists (RBLs) are a technique whereby Composr checks third-party lists of known spammers, via special RBL-protocols, based on DNS. You don't need to know the technical details other than that Composr can be configured to use an RBL service.
 We have picked defaults options within Composr to help you get started with the best service(s).
 
 Update: Actually the default list is now empty, as we learnt that there currently aren't any very reliable services for this. Common ones may block too widely, for example blocking computers that were at any point in the last year infected with a virus.
 
-[title="2"]Stop Forum Spam[/title]
+[title="3"]Stop Forum Spam[/title]
 
 We use the popular [url="Stop Forum Spam system"]http://www.stopforumspam.com/[/url] system to look for known spammers based upon IP address, username, and e-mail address. We also report who you identify as spammers, back to Stop Forum Spam.
 
-[title="2"]Options[/title]
+[title="3"]Options[/title]
 
 [media width="150" description="The options" float="right"]data_custom/images/docs/tut_antispam/settings.png[/media]
 The options are located at Admin Zone > Setup > Configuration > Security options > Spammer detection.
@@ -71,11 +73,11 @@ Other options include:
  - Specifying how long spam results are cached for
  - Specifying how long to trust reports of a spammer that were assigned a "last spam activity" date
 
-[title="2"]Privileges[/title]
+[title="2"]Link posting[/title]
 
 Absence of the "Post links that search engines will follow" privilege disincentivises users from posting links. Without this privilege all links will have [tt]rel="nofollow"[/tt].
 
-[title="2"]Links on member profiles[/title]
+[title="3"]Links on member profiles[/title]
 
 We entirely block the presence of links on Composr member profiles for members with no posts. The links will automatically reappear once a member has a post, and disappear again if their post(s) are deleted. If the [tt]cns_forum[/tt] addon is not installed then this functionality is not active.
 This is to disincentivise spammers from flagging your site as an easy way to get links that won't even get moderated away.
@@ -97,7 +99,13 @@ This is described in the [page="_SEARCH:tut_censor"]Policing a community site tu
 
 [title="2"]Guest posting[/title]
 
-You may simply want to deny guest posting permissions, which will raise the effort spammers have to go to. This may be enough to deter them.
+You may simply want to deny some guest permissions, which will raise the effort spammers have to go to:
+ - Guest posting posting permissions on the forum
+ - The "Comment upon content" privilege (Admin Zone > Security > Privileges > Feedback)
+ - The "May report posts" privilege (Admin Zone > Security > Privileges > Members, usergroups and forums privilege)
+ - Anonymous posts: the "Anonymous posts within private topics" configuration option (Admin Zone > Setup > Configuration > Forum options > Private Topics), and the option individually on forums
+
+This may be enough to deter them.
 
 You may want to also disable permission for Guests to report content.
 
@@ -109,11 +117,16 @@ You could then then configure your forum permissions so there is only a single f
 
 The developer addon hard-codes the CPF ID being checked against, and the expected value, and the ID of the usergroup to put failing members in (the default Probation usergroup). It would be fairly easy to customise with minimal coding skills, although ideally we'd add a [url="more extensive configurable feature"]https://compo.sr/tracker/view.php?id=1579[/url].
 
+[title="2"]Setting rules[/title]
+
+If spam is being posted by real humans, those humans may not realise you have [tt]nofollow[/tt], and other measures that minimise the effectiveness of their spam.
+It may be a good idea to explicitly mention your policies on your join page so that human spammers will know they are wasting their time, and thus avoid wasting your time too. The compo.sr site has a good example you can follow.
+
 [title="2"]What we don't do[/title]
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
 We're not a fan of all anti-spam systems. Here's a run-down of what we don't do:
- - Some popular spam checking tools will run checks through a commercial third-party server. We'd rather deliver our code to you within Composr, for improved performance, and in line with our Open Source philosophy.
+ - Some popular spam checking tools will run checks through a commercial third-party server. We'd rather deliver our code to you within Composr, for improved performance, reliability, and in line with our Open Source philosophy.
  - Various alternative CAPTCHA systems (as explained above, under 'CAPTCHA')
 
 [title="2"]Making a spam report to the developers[/title]
@@ -141,16 +154,24 @@ Once you've made your report hopefully someone can then tell you what case categ
 [*] Insufficient protection within Composr -- in which case we can consider making Composr improvements
 [/list]
 
+[title="2"]Cleaning up after a forum spammer[/title]
+
+The warn/punish form has a spammer mode that allows 1-click disposal of a spammer account, via providing some good default settings on the form. The default settings will delete all their forum posts and topics, and ban/report them in various ways. You can always tune the exact settings each time you action the form but the defaults are usually what you'd want.
+
+There are two ways to open the spammer mode:
+ - The "Deal with as spammer" Audit action from their member profile screen
+ - By clicking 'Warn' button under a forum post using the middle mouse button (if you have one)
+
+[title="2"]Additional future techniques[/title]
+
+Fighting spam is an ongoing challenge. Actual humans are paid to post spam, and increasingly will try and hide spam behind legitimate activity. Ideas for fighting spammer are categorised under the [url="Type: Spam"]https://compo.sr/tracker/tag_view_page.php?tag_id=52[/url] tracker tag.
+
 [concepts
  1_key="CAPTCHA"           1_value="A security image/sound consisting of numbers that a human must enter into a text box. It is designed to prevent bots from spamming your website."
  2_key="RBL"               2_value="A block list service, detecting whether to block the IP address of a known spammer."
  3_key="Spam-bot"          3_value="A malicious program a spammer runs, to automatically submit spam to websites. It is often written using techniques similar to that of a search engine crawler (to find targets), and then tries to simulate humans but while posting spam. Some spam-bots run on infected PCs, which is why it can be hard to directly block known spammers."
  4_key="Honey Pot"         4_value="A hidden link of area where spam-bots may get to, but a human never would. An effective way for detecting spam-bots."
 ]Concepts[/concepts]
-
-[title="2"]Additional future techniques[/title]
-
-Fighting spam is an ongoing challenge. Actual humans are paid to post spam, and increasingly will try and hide spam behind legitimate activity. Ideas for fighting spammer are categorised under the [url="Type: Spam"]https://compo.sr/tracker/tag_view_page.php?tag_id=52[/url] tracker tag.
 
 [title="2"]See also[/title]
 

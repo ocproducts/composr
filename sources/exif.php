@@ -236,7 +236,7 @@ function get_exif_image_caption($path, $filename)
         $comments = '';
     }
 
-    return $comments;
+    return trim($comments);
 }
 
 /**
@@ -273,7 +273,7 @@ function store_exif($content_type, $content_id, $exif, $map = null)
             $map[$field['id']] = $exif[$name];
         } elseif (isset($exif[str_replace(' ', '', $name)])) {
             $map[$field['id']] = $exif[str_replace(' ', '', $name)];
-        } elseif ((isset($exif['COMPUTED']['ApertureFNumber'])) && ($name == 'Aperture')) {// PHP tidies up for us, we want to use this
+        } elseif ((isset($exif['COMPUTED']['ApertureFNumber'])) && ($name == 'Aperture')) { // PHP tidies up for us, we want to use this
             $map[$field['id']] = $exif['COMPUTED']['ApertureFNumber'];
         } elseif (isset($exif[str_replace(' ', '', $name . ' Value')])) {
             $map[$field['id']] = $exif[str_replace(' ', '', $name . ' Value')];

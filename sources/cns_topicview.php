@@ -636,10 +636,9 @@ function cns_cache_member_details($members)
     }
     if ($member_or_list != '') {
         global $TABLE_LANG_FIELDS_CACHE;
-        $member_rows = $GLOBALS['FORUM_DB']->query('SELECT m.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m WHERE ' . $member_or_list, null, null, false, true);
+        $member_rows = $GLOBALS['FORUM_DB']->query('SELECT m.*,f.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields f ON f.mf_member_id=m.id WHERE ' . $member_or_list, null, null, false, true);
         global $TABLE_LANG_FIELDS_CACHE;
-        $member_rows_2 = $GLOBALS['FORUM_DB']->query('SELECT f.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields f WHERE ' . str_replace('m.id', 'mf_member_id', $member_or_list), null, null, false, true, array_key_exists('f_member_custom_fields', $TABLE_LANG_FIELDS_CACHE) ? $TABLE_LANG_FIELDS_CACHE['f_member_custom_fields'] : array());
-        $member_rows_3 = $GLOBALS['FORUM_DB']->query('SELECT gm_group_id,gm_member_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members WHERE gm_validated=1 AND (' . str_replace('m.id', 'gm_member_id', $member_or_list) . ')', null, null, false, true);
+        $member_rows_g = $GLOBALS['FORUM_DB']->query('SELECT gm_group_id,gm_member_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members WHERE gm_validated=1 AND (' . str_replace('m.id', 'gm_member_id', $member_or_list) . ')', null, null, false, true);
         global $MEMBER_CACHE_FIELD_MAPPINGS, $SIGNATURES_CACHE;
         $found_groups = array();
         foreach ($member_rows as $row) {
@@ -655,11 +654,10 @@ function cns_cache_member_details($members)
             if ((get_page_name() != 'search') && (!is_null($row['m_signature'])) && ($row['m_signature'] !== '') && ($row['m_signature'] !== 0)) {
                 $SIGNATURES_CACHE[$row['id']] = get_translated_tempcode('f_members', $row, 'm_signature', $GLOBALS['FORUM_DB']);
             }
-        }
-        foreach ($member_rows_2 as $row) {
+
             $MEMBER_CACHE_FIELD_MAPPINGS[$row['mf_member_id']] = $row;
         }
-        foreach ($member_rows_3 as $row) {
+        foreach ($member_rows_g as $row) {
             if (!cns_is_ldap_member($row['gm_member_id'])) {
                 $found_groups[$row['gm_group_id']] = true;
             }
@@ -847,7 +845,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
             $_title = do_lang_tempcode('__WARN_MEMBER');
             $_title_full = do_lang_tempcode('WARN_MEMBER');
             $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '2698c51b06a72773ac7135bbfe791318', 'REL' => 'nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__warn', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
+            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '2698c51b06a72773ac7135bbfe791318', 'JAVASCRIPT_MOUSEDOWN' => 'if (event.which==2) this.href+=\'&spam=1\';', 'REL' => 'nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__warn', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
         }
     }
 

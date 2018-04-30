@@ -263,7 +263,7 @@ function _build_sitemap_menu($menu)
 
         switch ($include) {
             case 'children':
-                $root['children'] = array_merge($root['children'], $node['children']);
+                $root['children'] = array_merge(($root['children'] === null) ? array() : $root['children'], ($node['children'] === null) ? array() : $node['children']);
                 break;
 
             case 'node':

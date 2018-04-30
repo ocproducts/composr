@@ -200,7 +200,7 @@ function get_ticket_forum_id($member_id = null, $ticket_type_id = null, $create 
 /**
  * Returns whether the given forum ID is for a ticket forum (subforum of the root ticket forum).
  *
- * @param  ?AUTO_LINK $forum_id The forum ID (null: private topics forum)
+ * @param  ?AUTO_LINK $forum_id The forum ID (null: private topics)
  * @return boolean Whether the given forum is a ticket forum
  */
 function is_ticket_forum($forum_id)

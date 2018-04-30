@@ -422,8 +422,10 @@ function _get_mov_details_do_atom_list($file, $atom_size = null)
  */
 function add_image($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '', $regions = null)
 {
-    require_code('global4');
-    prevent_double_submit('ADD_IMAGE', null, $title);
+    if (get_param_string('type', null) !== '__import') {
+        require_code('global4');
+        prevent_double_submit('ADD_IMAGE', null, $title);
+    }
 
     if (is_null($regions)) {
         $regions = array();
@@ -462,6 +464,8 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
     foreach ($regions as $region) {
         $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'image', 'content_id' => strval($id), 'region' => $region));
     }
+
+    reorganise_uploads__gallery_images(array('id' => $id));
 
     log_it('ADD_IMAGE', strval($id), $title);
 
@@ -611,6 +615,8 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
         dispatch_notification('gallery_entry', $cat, $subject, $mail, $privacy_limits);
     }
 
+    reorganise_uploads__gallery_images(array('id' => $id));
+
     log_it('EDIT_IMAGE', strval($id), $title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -685,6 +691,12 @@ function delete_image($id, $delete_full = true)
     decache('main_gallery_embed');
     decache('main_image_fader');
     decache('main_image_slider');
+
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'galleries', 'm_resource_type' => 'image', 'm_resource_id' => strval($id)));
+
+    require_code('uploads2');
+    clean_empty_upload_directories('uploads/galleries');
+    clean_empty_upload_directories('uploads/galleries_thumbs');
 
     log_it('DELETE_IMAGE', strval($id), get_translated_text($title));
 
@@ -775,7 +787,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
                 $expected_output_path = get_custom_file_base() . '/uploads/galleries/' . $filename;
             }
             if (file_exists($expected_output_path)) {
-                return 'uploads/galleries/' . rawurlencode(basename($expected_output_path));
+                return cms_rawurlrecode('uploads/galleries/' . rawurlencode(basename($expected_output_path)));
             }
 
             $movie = @(new ffmpeg_movie($src_file, false));
@@ -800,7 +812,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
                         convert_image($expected_output_path, $expected_output_path, -1, -1, intval(get_option('thumb_width')), true, null, true);
                     }
 
-                    return 'uploads/galleries/' . rawurlencode(basename($expected_output_path));
+                    return cms_rawurlrecode('uploads/galleries/' . rawurlencode(basename($expected_output_path)));
                 }
             }
         }
@@ -815,7 +827,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
             }
 
             if ((file_exists($dest_file)) && (is_null(post_param_integer('thumbnail_auto_position', null)))) {
-                return 'uploads/galleries/' . rawurlencode(basename($expected_output_path));
+                return cms_rawurlrecode('uploads/galleries/' . rawurlencode(basename($expected_output_path)));
             }
             @unlink($dest_file); // So "if (@filesize($expected_output_path)) break;" will definitely fail if error
 
@@ -846,7 +858,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
                     sync_file($expected_output_path);
                 }
 
-                return 'uploads/galleries/' . rawurlencode(basename($expected_output_path));
+                return cms_rawurlrecode('uploads/galleries/' . rawurlencode(basename($expected_output_path)));
             }
         }
     }
@@ -896,8 +908,10 @@ function create_video_thumb($src_url, $expected_output_path = null)
  */
 function add_video($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '', $regions = null)
 {
-    require_code('global4');
-    prevent_double_submit('ADD_VIDEO', null, $title);
+    if (get_param_string('type', null) !== '__import') {
+        require_code('global4');
+        prevent_double_submit('ADD_VIDEO', null, $title);
+    }
 
     if (is_null($regions)) {
         $regions = array();
@@ -942,6 +956,8 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
 
     require_code('transcoding');
     transcode_video($url, 'videos', $id, 'id', 'url', null, 'video_width', 'video_height');
+
+    reorganise_uploads__gallery_videos(array('id' => $id));
 
     log_it('ADD_VIDEO', strval($id), $title);
 
@@ -1105,6 +1121,8 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
         dispatch_notification('gallery_entry', $cat, $subject, $mail, $privacy_limits);
     }
 
+    reorganise_uploads__gallery_videos(array('id' => $id));
+
     log_it('EDIT_VIDEO', strval($id), $title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -1188,6 +1206,12 @@ function delete_video($id, $delete_full = true)
         }
     }
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'galleries', 'm_resource_type' => 'video', 'm_resource_id' => strval($id)));
+
+    require_code('uploads2');
+    clean_empty_upload_directories('uploads/galleries');
+    clean_empty_upload_directories('uploads/galleries_thumbs');
+
     log_it('DELETE_VIDEO', strval($id), get_translated_text($title));
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -1200,23 +1224,13 @@ function delete_video($id, $delete_full = true)
 }
 
 /**
- * Watermarks an image with the appropriate gallery watermarks.
+ * Find how to apply gallery watermarks.
  *
  * @param  ID_TEXT $gallery The name of the gallery for the image
- * @param  PATH $file_path The path to the image file
- * @param  string $filename The original file name of the image
+ * @return ?array A quartet of watermark images suitable for handle_images_cleanup_pipeline (null: no watermark images)
  */
-function watermark_gallery_image($gallery, $file_path, $filename)
+function find_gallery_watermarks($gallery)
 {
-    // We can't watermark an image we can't save
-    require_code('images');
-    if (!function_exists('imagepng')) {
-        return;
-    }
-    if (!is_saveable_image($filename)) {
-        return;
-    }
-
     // We need to find the most applicable gallery watermarks
     $watermark_top_left = '';
     $watermark_top_right = '';
@@ -1224,7 +1238,7 @@ function watermark_gallery_image($gallery, $file_path, $filename)
     $watermark_bottom_right = '';
     do {
         if ($gallery == '') {
-            return; // We couldn't find any matermarks
+            return null; // We couldn't find any matermarks
         }
 
         $_gallery = $GLOBALS['SITE_DB']->query_select('galleries', array('parent_id', 'watermark_top_left', 'watermark_top_right', 'watermark_bottom_left', 'watermark_bottom_right'), array('name' => $gallery), '', 1);
@@ -1235,43 +1249,18 @@ function watermark_gallery_image($gallery, $file_path, $filename)
         $gallery = $_gallery[0]['parent_id'];
     } while (($watermark_top_left == '') && ($watermark_top_right == '') && ($watermark_bottom_left == '') && ($watermark_bottom_right == ''));
 
-    // Now we must apply the watermarks
-    $ext = get_file_extension($filename);
-    $source = @imagecreatefromstring(file_get_contents($file_path));
-    if ($source === false) {
-        return; // We couldn't load it for some reason
+    if ($watermark_top_left . $watermark_top_right . $watermark_bottom_left . $watermark_bottom_right == '') {
+        return null;
     }
 
-    // Apply the watermarks
-    _watermark_corner($source, $watermark_top_left, 0, 0);
-    _watermark_corner($source, $watermark_top_right, 1, 0);
-    _watermark_corner($source, $watermark_bottom_left, 0, 1);
-    _watermark_corner($source, $watermark_bottom_right, 1, 1);
-
-    // Save
-    imagealphablending($source, false);
-    if (function_exists('imagesavealpha')) {
-        imagesavealpha($source, true);
-    }
-    if ((function_exists('imagepng')) && ($ext == 'png')) {
-        imagepng($source, $file_path, 9);
-        require_code('images_png');
-        png_compress($file_path);
-    } elseif ((function_exists('imagejpeg')) && (($ext == 'jpg') || ($ext == 'jpeg'))) {
-        imagejpeg($source, $file_path, intval(get_option('jpeg_quality')));
-    } elseif ((function_exists('imagegif')) && ($ext == 'gif')) {
-        imagegif($source, $file_path);
-    }
-
-    // Clean up
-    imagedestroy($source);
+    return array($watermark_top_left, $watermark_top_right, $watermark_bottom_left, $watermark_bottom_right);
 }
 
 /**
  * Watermark the corner of an image.
  *
  * @param  resource $source The image resource being watermarked
- * @param  URLPATH $watermark_url The (local) URL to the watermark file
+ * @param  URLPATH $watermark_url The URL to the watermark file
  * @param  BINARY $x Whether a right hand side corner is being watermarked
  * @param  BINARY $y Whether a bottom edge corner is being watermarked
  *
@@ -1280,7 +1269,11 @@ function watermark_gallery_image($gallery, $file_path, $filename)
 function _watermark_corner($source, $watermark_url, $x, $y)
 {
     if ($watermark_url != '') {
-        $watermark = @imagecreatefromstring(file_get_contents(rawurldecode($watermark_url)));
+        $_watermark_url = rawurldecode($watermark_url);
+        if (url_is_local($_watermark_url)) {
+            $_watermark_url = get_custom_base_url() . '/' . $_watermark_url;
+        }
+        $watermark = cms_imagecreatefrom($_watermark_url);
         if ($watermark !== false) {
             imagecolortransparent($watermark, imagecolorallocate($watermark, 255, 0, 255));
             if ($x == 1) {
@@ -1292,35 +1285,6 @@ function _watermark_corner($source, $watermark_url, $x, $y)
             imagecopy($source, $watermark, $x, $y, 0, 0, imagesx($watermark), imagesy($watermark));
             imagedestroy($watermark);
         }
-    }
-}
-
-/**
- * Make sure the detailed image file is not bigger than the defined box width.
- *
- * @param  PATH $file_path The path to the image file
- * @param  string $filename The original filename of the image
- * @param  integer $box_width The box width
- */
-function constrain_gallery_image_to_max_size($file_path, $filename, $box_width)
-{
-    // We can't watermark an image we can't save
-    require_code('images');
-    if (!is_saveable_image($filename)) {
-        return;
-    }
-
-    if (function_exists('imagepng')) {
-        if ((function_exists('getimagesize')) && (is_image($filename))) {
-            $details = @getimagesize($file_path);
-            if ($details !== false) {
-                if (($details[0] <= $box_width) && ($details[1] <= $box_width)) {
-                    return;
-                }
-            }
-        }
-
-        convert_image($file_path, $file_path, -1, -1, $box_width, false, get_file_extension($filename), true, true);
     }
 }
 
@@ -1395,6 +1359,8 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
     $map += insert_lang_comcode('description', $description, 2);
     $map += insert_lang_comcode('fullname', $fullname, 1);
     $GLOBALS['SITE_DB']->query_insert('galleries', $map);
+
+    reorganise_uploads__galleries(array('name' => $name));
 
     log_it('ADD_GALLERY', $name, $fullname);
 
@@ -1573,6 +1539,8 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
 
     $GLOBALS['SITE_DB']->query_update('galleries', $update_map, array('name' => $old_name), '', 1);
 
+    reorganise_uploads__galleries(array('name' => $name));
+
     log_it('EDIT_GALLERY', $name, $fullname);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -1664,6 +1632,12 @@ function delete_gallery($name)
     decache('side_galleries');
     decache('main_personal_galleries_list');
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'galleries', 'm_resource_type' => 'browse', 'm_resource_id' => $name));
+
+    require_code('uploads2');
+    clean_empty_upload_directories('uploads/repimages');
+    clean_empty_upload_directories('uploads/watermarks');
+
     log_it('DELETE_GALLERY', $name, get_translated_text($rows[0]['fullname']));
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -1737,7 +1711,7 @@ function get_potential_gallery_title($cat)
         $parent_id = $parts[2];
         $_parent_info = $GLOBALS['SITE_DB']->query_select('galleries', array('accept_images', 'accept_videos', 'flow_mode_interface', 'fullname'), array('name' => $parent_id), '', 1);
         if (!array_key_exists(0, $_parent_info)) {
-            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
         $parent_info = $_parent_info[0];
 
@@ -1755,4 +1729,44 @@ function get_potential_gallery_title($cat)
         // Does exist
         return get_translated_text($test);
     }
+}
+
+/**
+ * Reorganise the gallery uploads.
+ *
+ * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
+ */
+function reorganise_uploads__galleries($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
+{
+    require_code('uploads2');
+    reorganise_uploads('gallery', 'uploads/repimages', 'rep_image', $where, null, true, $tolerate_errors);
+    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_top_left', $where, null, false, $tolerate_errors);
+    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_top_right', $where, null, false, $tolerate_errors);
+    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_bottom_left', $where, null, false, $tolerate_errors);
+    reorganise_uploads('gallery', 'uploads/watermarks', 'watermark_bottom_right', $where, null, false, $tolerate_errors);
+}
+/**
+ * Reorganise the gallery image uploads.
+ *
+ * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
+ */
+function reorganise_uploads__gallery_images($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
+{
+    require_code('uploads2');
+    reorganise_uploads('image', 'uploads/galleries', 'url', $where, null, false, $tolerate_errors);
+    reorganise_uploads('image', 'uploads/galleries_thumbs', 'thumb_url', $where, null, false, $tolerate_errors);
+}
+/**
+ * Reorganise the gallery video uploads.
+ *
+ * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
+ */
+function reorganise_uploads__gallery_videos($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
+{
+    require_code('uploads2');
+    reorganise_uploads('video', 'uploads/galleries', 'url', $where, null, false, $tolerate_errors);
+    reorganise_uploads('video', 'uploads/galleries_thumbs', 'thumb_url', $where, null, false, $tolerate_errors);
 }

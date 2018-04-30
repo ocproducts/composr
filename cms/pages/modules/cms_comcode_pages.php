@@ -728,6 +728,12 @@ class Module_cms_comcode_pages
             warn_exit(do_lang_tempcode('NO_SUCH_ZONE'));
         }
 
+        if ((stripos(PHP_OS, 'WIN') === 0) && (version_compare(PHP_VERSION, '7.2', '<'))) {
+            // Older versions of PHP on Windows cannot handle utf-8 filenames
+            require_code('character_sets');
+            $file = transliterate_string($file);
+        }
+
         require_code('type_sanitisation');
         if ((!is_alphanumeric($file)) || (strpos($file, '-') !== false && strpos($file, '_') !== false)/*can't have both*/) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
@@ -982,6 +988,18 @@ class Module_cms_comcode_pages
         } else {
             $new_file = filter_naughty($file);
         }
+
+        if ((stripos(PHP_OS, 'WIN') === 0) && (version_compare(PHP_VERSION, '7.2', '<'))) {
+            // Older versions of PHP on Windows cannot handle utf-8 filenames
+            require_code('character_sets');
+            $new_file = transliterate_string($new_file);
+        }
+
+        require_code('type_sanitisation');
+        if ((!is_alphanumeric($new_file)) || (strpos($new_file, '-') !== false && strpos($new_file, '_') !== false)/*can't have both*/) {
+            warn_exit(do_lang_tempcode('BAD_CODENAME'));
+        }
+
         if ($file == '') {
             $file = $new_file;
         }

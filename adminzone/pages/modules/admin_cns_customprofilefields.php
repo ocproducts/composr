@@ -94,7 +94,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         }
 
         if ($type == '_stats') {
-            breadcrumb_set_parents(array(array('_SEARCH:_SELF:stats', do_lang_tempcode('CUSTOM_PROFILE_FIELD_STATS'))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:stats', do_lang_tempcode('CUSTOM_PROFILE_FIELD_STATS'))));
         }
 
         if ($type == 'stats' || $type == '_stats') {

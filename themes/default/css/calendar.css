@@ -314,7 +314,7 @@ abbr.dtstart, abbr.dtend {
 /* -- */
 
 .calendar_current {
-	background-color: {$GET,area_current_background};
+	background-color: {$GET,area_current_background} !important;
 }
 
 .calendar_day_table td, .calendar_week td, .calendar_month td, .calendar_year_wrap td {

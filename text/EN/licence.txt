@@ -131,6 +131,8 @@ This product includes:
   - mergesort implementation (from php.net comment by sreid, Creative Commons Attribution License)
   - GUID implementation (from php.net comment by Andrew Moore, Creative Commons Attribution License)
   - adjust_pic_orientation function (from stackoverflow comment)
+  - animated gif detection (from php.net comment by ZeBadger, Creative Commons Attribution License)
+  - Exif transfer code (from php.net comment by ebashkoff, Creative Commons Attribution License)
   - Stemmer (BSD-like licence)
   - PHP 5.5 hashing compatibility library (MIT licence)
   - jsmin (MIT licence)

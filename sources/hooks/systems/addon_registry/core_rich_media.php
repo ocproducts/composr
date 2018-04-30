@@ -2046,6 +2046,7 @@ class Hook_addon_registry_core_rich_media
                 'WIDTH' => placeholder_number(),
                 'HEIGHT' => placeholder_number(),
                 'URL' => placeholder_url(),
+                'REL' => null,
             )), null, '', true)
         );
     }
@@ -2068,6 +2069,7 @@ class Hook_addon_registry_core_rich_media
                 'WIDTH' => placeholder_number(),
                 'HEIGHT' => placeholder_number(),
                 'URL' => placeholder_url(),
+                'REL' => null,
             )), null, '', true)
         );
     }
@@ -2092,6 +2094,7 @@ class Hook_addon_registry_core_rich_media
                 'URL' => placeholder_url(),
                 'WIDTH' => placeholder_number(),
                 'HEIGHT' => placeholder_number(),
+                'REL' => null,
             )), null, '', true)
         );
     }

@@ -698,6 +698,8 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
         update_catalogue_content_ref('comcode_page', $page, '');
     }
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => $page, 'm_resource_type' => '', 'm_resource_id' => $zone));
+
     log_it('DELETE_PAGES', $page);
 
     require_code('sitemap_xml');

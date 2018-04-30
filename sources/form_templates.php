@@ -1444,7 +1444,11 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     $field_url = $set_name . '__url';
 
-    $field_set->attach(form_input_url(do_lang_tempcode('URL'), do_lang_tempcode('DESCRIPTION_ALTERNATE_URL'), $field_url, $default, $required));
+    require_code('urls_simplifier');
+    $coder_ob = new HarmlessURLCoder();
+    $_default = $coder_ob->decode($default);
+
+    $field_set->attach(form_input_url(do_lang_tempcode('URL'), do_lang_tempcode('DESCRIPTION_ALTERNATE_URL'), $field_url, $_default, $required));
 
     // Filedump
     // --------
@@ -1928,6 +1932,8 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
 
     $tabindex = get_form_field_tabindex($tabindex);
 
+    require_code('images');
+
     $selected_code = filter_form_field_default($name, is_null($selected_code) ? '' : $selected_code);
     if ($selected_code == '') {
         $selected_code = null;
@@ -2003,7 +2009,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 $pos = strpos($selected_url, '/' . $id);
                 $selected = false;
                 if ($id != '') {
-                    $selected = (find_theme_image($id, false, false, null, null, $db) == $selected_url) || (find_theme_image($id, false, true, null, null, $db) == $selected_url);
+                    $selected = (cms_rawurlrecode(find_theme_image($id, false, false, null, null, $db)) == cms_rawurlrecode($selected_url)) || (cms_rawurlrecode(find_theme_image($id, false, true, null, null, $db)) == cms_rawurlrecode($selected_url));
                 }
                 if ($selected) {
                     $selected_code = $id;
@@ -2034,9 +2040,9 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
 
             $file_path = convert_url_to_path($url);
             if (!is_null($file_path)) {
-                $test = @getimagesize($file_path);
+                $test = cms_getimagesize($file_path);
             } else {
-                $test = @getimagesize($url);
+                $test = false;
             }
             if ($test !== false) {
                 list($width, $height) = $test;
@@ -2044,7 +2050,6 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 $width = null;
                 $height = null;
             }
-
             $temp = do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', array('_GUID' => '10005e2f08b44bfe17fce68685b4c884', 'LINEAR' => $linear, 'CHECKED' => $selected, 'PRETTY' => $pretty, 'NAME' => $name, 'CODE' => $id, 'URL' => $url, 'WIDTH' => is_null($width) ? '' : strval($width), 'HEIGHT' => is_null($height) ? '' : strval($height)));
             $_category->attach($temp);
 

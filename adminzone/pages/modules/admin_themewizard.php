@@ -254,10 +254,18 @@ class Module_admin_themewizard
         $dark = get_param_integer('dark', 0);
         $inherit_css = get_param_integer('inherit_css', 0);
         $themename = get_param_string('themename');
+
+        if ((stripos(PHP_OS, 'WIN') === 0) && (version_compare(PHP_VERSION, '7.2', '<'))) {
+            // Older versions of PHP on Windows cannot handle utf-8 filenames
+            require_code('character_sets');
+            $themename = transliterate_string($themename);
+        }
+
         require_code('type_sanitisation');
         if ((!is_alphanumeric($themename)) || (strlen($themename) > 40)) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
+
         if ((file_exists(get_custom_file_base() . '/themes/' . $themename)) || ($themename == 'default' || $themename == 'admin')) {
             warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($themename)));
         }
@@ -497,6 +505,7 @@ class Module_admin_themewizard
 
         // Do it
         require_code('themes2');
+        require_code('images');
         foreach (array($theme, 'default') as $logo_save_theme) {
             // Save -logo
             $img = generate_logo(post_param_string('name'), $font, $logo_theme_image, $background_theme_image, false, $logo_save_theme);
@@ -512,9 +521,7 @@ class Module_admin_themewizard
                     make_missing_directory(get_custom_file_base() . '/' . dirname($path));
                 }
 
-                @imagepng($img, get_custom_file_base() . '/' . $path, 9) or intelligent_write_error($path);
-                require_code('images_png');
-                png_compress(get_custom_file_base() . '/' . $path);
+                cms_imagesave($img, get_custom_file_base() . '/' . $path) or intelligent_write_error($path);
                 actual_edit_theme_image('logo/-logo', $logo_save_theme, $lang, 'logo/-logo', $path);
             }
             imagedestroy($img);
@@ -528,9 +535,7 @@ class Module_admin_themewizard
                     $path = 'themes/' . $logo_save_theme . '/images_custom/standalone_logo.png';
                 }
 
-                @imagepng($img, get_custom_file_base() . '/' . $path, 9) or intelligent_write_error($path);
-                require_code('images_png');
-                png_compress(get_custom_file_base() . '/' . $path);
+                cms_imagesave($img, get_custom_file_base() . '/' . $path) or intelligent_write_error($path);
                 actual_edit_theme_image('logo/standalone_logo', $logo_save_theme, $lang, 'logo/standalone_logo', $path);
             }
             imagedestroy($img);

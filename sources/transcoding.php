@@ -301,7 +301,7 @@ function store_transcoding_success($transcoder_id, $new_url = null)
     if (!is_null($new_url)) {
         $row[$descript_row['t_url_field']] = $new_url;
     } else {
-        $row[$descript_row['t_url_field']] = 'uploads/galleries/' . rawurlencode($descript_row['t_output_filename']);
+        $row[$descript_row['t_url_field']] = cms_rawurlrecode('uploads/galleries/' . rawurlencode($descript_row['t_output_filename']));
     }
 
     // Update record to point to new file

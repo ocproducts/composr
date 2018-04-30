@@ -48,6 +48,8 @@ function add_news_category($title, $img = 'newscats/general', $notes = '', $owne
     }
     $id = $GLOBALS['SITE_DB']->query_insert('news_categories', $map, true);
 
+    reorganise_uploads__news_categories(array('id' => $id));
+
     log_it('ADD_NEWS_CATEGORY', strval($id), $title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -100,13 +102,6 @@ function edit_news_category($id, $title, $img, $notes, $owner)
         }
     }
 
-    log_it('EDIT_NEWS_CATEGORY', strval($id), $title);
-
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
-        require_code('resource_fs');
-        generate_resource_fs_moniker('news_category', strval($id));
-    }
-
     if (is_null($title)) {
         $title = get_translated_text($myrow['nc_title']);
     }
@@ -128,6 +123,15 @@ function edit_news_category($id, $title, $img, $notes, $owner)
 
     require_code('themes2');
     tidy_theme_img_code($img, $myrow['nc_img'], 'news_categories', 'nc_img');
+
+    reorganise_uploads__news_categories(array('id' => $id));
+
+    log_it('EDIT_NEWS_CATEGORY', strval($id), $title);
+
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        generate_resource_fs_moniker('news_category', strval($id));
+    }
 
     decache('main_news');
     decache('main_image_fader_news');
@@ -180,6 +184,11 @@ function delete_news_category($id)
     tidy_theme_img_code(null, $myrow['nc_img'], 'news_categories', 'nc_img');
 
     decache('side_news_categories');
+
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'news', 'm_resource_type' => 'browse', 'm_resource_id' => strval($id)));
+
+    require_code('uploads2');
+    clean_empty_upload_directories('uploads/repimages');
 
     log_it('DELETE_NEWS_CATEGORY', strval($id), $old_title);
 
@@ -698,6 +707,8 @@ function delete_news($id)
         update_catalogue_content_ref('news', strval($id), '');
     }
 
+    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'news', 'm_resource_type' => 'view', 'm_resource_id' => strval($id)));
+
     log_it('DELETE_NEWS', strval($id), $_title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -941,4 +952,16 @@ function _news_import_grab_image(&$data, $url)
         $data = str_replace('\'' . $url . '\'', $target_url, $data);
         $data = str_replace('\'' . preg_replace('#^http://.*/#U', '/', $url) . '\'', $target_url, $data);
     }
+}
+
+/**
+ * Reorganise the news category uploads.
+ *
+ * @param  ?array $where Limit reorganisation to rows matching this WHERE map (null: none)
+ * @param  boolean $tolerate_errors Whether to tolerate missing files (false = give an error)
+ */
+function reorganise_uploads__news_categories($where = null, $tolerate_errors = false) // TODO: Change to array() in v11
+{
+    require_code('uploads2');
+    reorganise_uploads('news_category', 'uploads/repimages', 'nc_img', $where, null, true, $tolerate_errors);
 }

@@ -30,6 +30,12 @@ class Hook_cleanup_self_learning
      */
     public function info()
     {
+        global $SITE_INFO;
+        $is_on = (isset($SITE_INFO['self_learning_cache']) && $SITE_INFO['self_learning_cache'] == '1');
+        if (!$is_on) {
+            return null;
+        }
+
         $info = array();
         $info['title'] = do_lang_tempcode('SELF_LEARNING_CACHE');
         $info['description'] = do_lang_tempcode('DESCRIPTION_SELF_LEARNING_CACHE');

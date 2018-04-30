@@ -351,6 +351,8 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
  */
 function post_param_image($name = 'image', $upload_to = null, $theme_image_type = null, $required = true, $is_edit = false, &$filename = null, &$thumb_url = null)
 {
+    require_code('uploads');
+
     $thumb_specify_name = $name . '__thumb__url';
     $test = post_param_string($thumb_specify_name, '');
     if ($test == '') {
@@ -370,7 +372,6 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
         }
     }
 
-    require_code('uploads');
     $field_file = $name . '__upload';
     $thumb_attach_name = $name . '__thumb__upload';
     if ((is_plupload()) || (((array_key_exists($field_file, $_FILES)) && (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
@@ -385,7 +386,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
         }
         $filename = $urls[2];
 
-        return $urls[0];
+        return cms_rawurlrecode($urls[0]);
     }
 
     // URL
@@ -394,6 +395,11 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
     $field_url = $name . '__url';
     $url = post_param_string($field_url, '');
     if ($url != '') {
+        // We should use compliant encoding
+        require_code('urls_simplifier');
+        $coder_ob = new HarmlessURLCoder();
+        $url = $coder_ob->encode($url);
+
         $filename = urldecode(preg_replace('#\?.*#', '', basename($url)));
 
         // Get thumbnail
@@ -402,7 +408,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
             $thumb_url = $urls[1];
         }
 
-        return $url;
+        return cms_rawurlrecode($url);
     }
 
     // Filedump
@@ -420,7 +426,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
                 $thumb_url = $urls[1];
             }
 
-            return $url;
+            return cms_rawurlrecode($url);
         }
     }
 
@@ -441,7 +447,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
             $thumb_url = $urls[1];
         }
 
-        return $url;
+        return cms_rawurlrecode($url);
     }
 
     // ---
@@ -504,7 +510,7 @@ function find_images_do_dir($theme, $subdir, $langs)
                             $_subdir = str_replace('/' . $lang . '/', '/', $_subdir);
                         }
                         $_subdir = preg_replace('#(^|/)images(\_custom)?/#', '', $_subdir);
-                        $out[$_subdir . $_file[0]] = 'themes/' . rawurlencode($theme) . '/' . $subdir . rawurlencode($file);
+                        $out[$_subdir . $_file[0]] = cms_rawurlrecode('themes/' . rawurlencode($theme) . '/' . $subdir . rawurlencode($file));
                     }
                 }
             }
@@ -730,7 +736,7 @@ function get_image_paths($base_url, $base_path)
                 $this_path = $base_path . $file;
                 if (is_file($this_path)) {
                     if (is_image($file)) {
-                        $this_url = $base_url . rawurlencode($file);
+                        $this_url = cms_rawurlrecode($base_url . rawurlencode($file));
                         $out[$this_path] = $this_url;
                     }
                 } elseif ((strlen($file) != 2) || (strtoupper($file) != $file)) {
@@ -876,24 +882,26 @@ function find_all_themes($full_details = false)
     require_code('files');
 
     $themes = array();
-    $_dir = opendir(get_file_base() . '/themes/');
-    while (false !== ($file = readdir($_dir))) {
-        $ini_file = get_file_base() . '/themes/' . $file . '/theme.ini';
-        if ((strpos($file, '.') === false) && (is_dir(get_file_base() . '/themes/' . $file)) && (file_exists($ini_file))) {
-            $details = better_parse_ini_file($ini_file);
-            if (!array_key_exists('title', $details)) {
-                $details['title'] = '?';
+    $_dir = @opendir(get_file_base() . '/themes/');
+    if ($_dir !== false) {
+        while (false !== ($file = readdir($_dir))) {
+            $ini_file = get_file_base() . '/themes/' . $file . '/theme.ini';
+            if ((strpos($file, '.') === false) && (is_dir(get_file_base() . '/themes/' . $file)) && (file_exists($ini_file))) {
+                $details = better_parse_ini_file($ini_file);
+                if (!array_key_exists('title', $details)) {
+                    $details['title'] = '?';
+                }
+                if (!array_key_exists('description', $details)) {
+                    $details['description'] = '?';
+                }
+                if (!array_key_exists('author', $details)) {
+                    $details['author'] = '?';
+                }
+                $themes[$file] = $full_details ? $details : $details['title'];
             }
-            if (!array_key_exists('description', $details)) {
-                $details['description'] = '?';
-            }
-            if (!array_key_exists('author', $details)) {
-                $details['author'] = '?';
-            }
-            $themes[$file] = $full_details ? $details : $details['title'];
         }
+        closedir($_dir);
     }
-    closedir($_dir);
     if (get_custom_file_base() != get_file_base()) {
         $_dir = @opendir(get_custom_file_base() . '/themes/');
         if ($_dir !== false) {
