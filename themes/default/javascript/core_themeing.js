@@ -523,7 +523,7 @@
 
         form.addEventListener('submit', function submitCheck(e) {
             var value = form.elements['theme'].value,
-                url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_theme&name=' + encodeURIComponent(value);
+                url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_theme&name=' + encodeURIComponent(value) + $cms.keep();
 
             if (value === validValue) {
                 return;
