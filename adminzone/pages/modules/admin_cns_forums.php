@@ -248,7 +248,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         if (function_exists('imap_open')) {
             require_lang('config');
 
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'ab47ed06695dc2cd99211772fe4c5643', 'SECTION_HIDDEN' => $mail_username != '', 'TITLE' => do_lang_tempcode('MAILING_LIST'), 'DESCRIPTION' => do_lang_tempcode('DESCRIPTION_MAILING_LIST'))));
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'ab47ed06695dc2cd99211772fe4c5643', 'SECTION_HIDDEN' => $mail_username == '', 'TITLE' => do_lang_tempcode('MAILING_LIST'), 'DESCRIPTION' => do_lang_tempcode('DESCRIPTION_MAILING_LIST'))));
 
             $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), do_lang_tempcode('CONFIG_OPTION_website_email'), 'mail_email_address', $mail_email_address, false));
             $mail_server_types = new Tempcode();
@@ -625,8 +625,8 @@ class Module_admin_cns_forums extends Standard_crud_module
             }
 
             $test = $GLOBALS['FORUM_DB']->query('SELECT f_name FROM ' . $table . ' WHERE ' . $where);
-            if ($test !== null) {
-                warn_exit(do_lang_tempcode('FORUM_MAIL_USER_CANNOT_BE_SHARED', escape_html(get_translated_text($test))));
+            if (count($test) > 0) {
+                warn_exit(do_lang_tempcode('FORUM_MAIL_USER_CANNOT_BE_SHARED', escape_html(get_translated_text($test[0]['f_name']))));
             }
         }
 

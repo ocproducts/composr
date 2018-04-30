@@ -35,7 +35,7 @@ class Hook_config_mail_server_port
             'type' => 'integer',
             'category' => 'SERVER',
             'group' => 'IMAP',
-            'explanation' => 'CONFIG_OPTION_mail_port',
+            'explanation' => 'CONFIG_OPTION_mail_server_port',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 3,

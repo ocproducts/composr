@@ -41,7 +41,11 @@ class config_lang_strings_test_set extends cms_test_case
         require_all_lang();
         foreach ($options as $option) {
             $test = do_lang($option['human_name'], null, null, null, null, false);
-            $this->assertFalse(is_null($test), 'Error on: ' . $option['human_name']);
+            $this->assertTrue($test !== null, 'Error on: ' . $option['human_name']);
+
+            $test = do_lang($option['explanation'], null, null, null, null, false);
+            $test2 = do_lang('CONFIG_GROUP_DEFAULT_DESCRIP_' . $option['group'], null, null, null, null, false);
+            $this->assertTrue($test !== null || $test2 !== null, 'Error on: ' . $option['explanation']);
         }
     }
 }

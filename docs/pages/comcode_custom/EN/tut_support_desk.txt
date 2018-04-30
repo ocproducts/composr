@@ -121,7 +121,17 @@ It is usual to use page access permissions to restrict access to the support tic
 
 [title="3"]Integration with e-mail[/title]
 
-There is an option to allow people to e-mail in to the support ticket system. This requires the PHP IMAP extension to be installed.
+There is an option to allow people to e-mail in to the support ticket system.
+
+This requires:
+1) The PHP IMAP extension to be installed
+2) The PHP [tt]mail[/tt] command must work (on most servers this means a local SMTP server must be running [which can just relay to another if you wish]; on Windows it means the PHP SMTP settings must be correctly configured)
+3) The software scheduler must be running (CRON)
+
+Also recommended:
+1) The mail server supports IMAP (not just POP3)
+2) The mail server enforces SPF and DKIM, so that Composr can know that e-mails have legitimately come from where they claim to come from
+3) The mail server enforce a reasonable maximum size for an individual e-mail, e.g. 25MB
 
 If you choose to enable this, there are a number of assumptions:
  - Ticket categorisation is not very important

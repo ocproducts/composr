@@ -1,0 +1,41 @@
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Advanced forum settings[/title]
+
+This tutorial covers more advanced forum configuration.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Mailing lists[/title]
+
+[surround]
+[media width="150" description="Setting up mailing list settings on a forum" float="right"]data_custom/images/docs/tut_adv_forums/mailing_list.png[/media]
+There is an option to allow people to e-mail in to the forums.
+
+This requires:
+1) The PHP IMAP extension to be installed
+2) The PHP [tt]mail[/tt] command must work (on most servers this means a local SMTP server must be running [which can just relay to another if you wish]; on Windows it means the PHP SMTP settings must be correctly configured)
+3) The software scheduler must be running (CRON)
+
+Also recommended:
+1) The mail server supports IMAP (not just POP3)
+2) The mail server enforces SPF and DKIM, so that Composr can know that e-mails have legitimately come from where they claim to come from
+3) The mail server enforce a reasonable maximum size for an individual e-mail, e.g. 5MB
+
+Each individual forum is configured with its own mailing list settings, on the forum add/edit form. You can inherit settings from the IMAP configuration options, so long as each forum gets its own individual E-mail address and Username.
+
+E-mails are bound to accounts via recognition of e-mail addresses. You can configure how to handle unrecognised addresses:
+ - Block the posting
+ - Automatically create an account (and e-mail the randomly-generated password back)
+ - Post as guest
+
+Forums with a mailing list configured will say so when the forum is viewed.
+
+Members enable/disable the functionality from the notifications tab of their account settings. It is on by default. Users may wish to disable if they prefer to reduce their e-mail volume using the "Smart topic notification" setting.
+
+Composr makes some attempt to clean up the e-mail text, so that the forum posts are not too much of a mess.
+[/surround]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_forums"]Discussion forums[/page]
+
+{$SET,tutorial_tags,Forum,cns_forum,Social,regular}{$SET,tutorial_add_date,May 2018}{$SET,tutorial_summary,This tutorial covers more advanced forum configuration.}[block]main_tutorial_rating[/block]

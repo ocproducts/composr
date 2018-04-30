@@ -75,8 +75,8 @@
 	<h2>{!cns:SMART_TOPIC_NOTIFICATION}</h2>
 
 	<p class="simple_neat_checkbox">
-		<input{+START,IF,{SMART_TOPIC_NOTIFICATION}} checked="checked"{+END} type="checkbox" id="smart_topic_notification_content" name="smart_topic_notification_content" value="1" />
-		<label for="smart_topic_notification_content"><span>{!cns:DESCRIPTION_SMART_TOPIC_NOTIFICATION}</span></label>
+		<input{+START,IF,{SMART_TOPIC_NOTIFICATION}} checked="checked"{+END} type="checkbox" id="smart_topic_notification" name="smart_topic_notification" value="1" />
+		<label for="smart_topic_notification"><span>{!cns:DESCRIPTION_SMART_TOPIC_NOTIFICATION}</span></label>
 	</p>
 {+END}
 
