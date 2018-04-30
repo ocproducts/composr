@@ -89,7 +89,7 @@
 							<select class="dropdown-actions" id="tma-type" name="type">
 								<option value="browse">-</option>
 								{MODERATOR_ACTIONS}
-							</select><button class="button-micro buttons--proceed js-click-require-tma-type-selection" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
+							</select><button class="button-micro buttons--proceed js-click-require-tma-type-selection" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 						</div>
 					</form>
 				{+END}
@@ -106,7 +106,7 @@
 										<option value="browse">-</option>
 									{+END}
 									{MARKED_POST_ACTIONS}
-								</select><button class="button-micro buttons--proceed js-click-check-marked-form-and-submit" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
+								</select><button class="button-micro buttons--proceed js-click-check-marked-form-and-submit" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 							</div>
 						</form>
 					{+END}

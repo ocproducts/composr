@@ -76,7 +76,7 @@
                 return;
             }
 
-            var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(value);
+            var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(value) + $cms.keep();
             e.preventDefault();
             submitBtn.disabled = true;
             $cms.form.doAjaxFieldTest(url).then(function (valid) {

@@ -15,17 +15,45 @@
 				<div class="rating-inner">
 					{$,Like/dislike}
 					{+START,IF,{LIKES}}
-						<img id="rating-bar-1--{$GET,identifier}" alt="" width="18" height="18" src="{$IMG*,icons/feedback/dislike}" />
-						<img id="rating-bar-10--{$GET,identifier}" alt="" width="18" height="18" src="{$IMG*,icons/feedback/like}" />
+						{+START,INCLUDE,ICON}
+							NAME=feedback/dislike
+							ICON_ID=rating-bar-1--{$GET,identifier}
+							ICON_SIZE=18
+						{+END}
+						{+START,INCLUDE,ICON}
+							NAME=feedback/like
+							ICON_ID=rating-bar-10--{$GET,identifier}
+							ICON_SIZE=18
+						{+END}
 					{+END}
 
 					{$,Star ratings}
 					{+START,IF,{$NOT,{LIKES}}}
-						<img id="rating-bar-2--{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-						<img id="rating-bar-4--{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-						<img id="rating-bar-6--{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-						<img id="rating-bar-8--{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-						<img id="rating-bar-10--{$GET,identifier}" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
+						{+START,INCLUDE,ICON}
+							NAME=feedback/rating
+							ICON_ID=rating-bar-2--{$GET,identifier}
+							ICON_SIZE=14
+						{+END}
+						{+START,INCLUDE,ICON}
+							NAME=feedback/rating
+							ICON_ID=rating-bar-4--{$GET,identifier}
+							ICON_SIZE=14
+						{+END}
+						{+START,INCLUDE,ICON}
+							NAME=feedback/rating
+							ICON_ID=rating-bar-6--{$GET,identifier}
+							ICON_SIZE=14
+						{+END}
+						{+START,INCLUDE,ICON}
+							NAME=feedback/rating
+							ICON_ID=rating-bar-8--{$GET,identifier}
+							ICON_SIZE=14
+						{+END}
+						{+START,INCLUDE,ICON}
+							NAME=feedback/rating
+							ICON_ID=rating-bar-10--{$GET,identifier}
+							ICON_SIZE=14
+						{+END}
 					{+END}
 				</div>
 			</div>

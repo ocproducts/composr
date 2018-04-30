@@ -50,13 +50,3 @@
 .wiki-post-buttons {
 	padding: 0.5em !important;
 }
-
-/*
-=========================
-=========Buttons=========
-=========================
-*/
-
-.admin--wiki-edit-tree {
-	background-image: url('{$IMG,icons/admin/wiki_edit_tree}') !important;
-}

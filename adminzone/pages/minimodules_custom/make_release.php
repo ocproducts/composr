@@ -142,7 +142,7 @@ function phase_0()
             <input type="checkbox" name="bleeding_edge" ' . (((strpos($release_description, 'patch release') === false) && (strpos($release_description, 'gold') === false)) ? 'checked="checked" ' : '') . 'id="bleeding_edge" value="1" /><label for="bleeding_edge">Bleeding-edge release</label>
             <input type="checkbox" name="old_tree" id="old_tree" value="1" /><label for="old_tree">Older-tree maintenance release</label>
             <input type="checkbox" name="make_omni_upgrader" id="make_omni_upgrader" value="1" /><label for="make_omni_upgrader">Make omni-upgrader archive (for easy upgrader testing)</label>
-            <p><button type="submit" class="buttons--proceed button-screen">Shake it baby ' . $proceed_icon . '</button></p>
+            <p><button type="submit" class="buttons--proceed button-screen">' . $proceed_icon . ' Shake it baby</button></p>
         </fieldset>
     </form>
     ';
@@ -233,7 +233,7 @@ function phase_1()
             <input type="hidden" name="changes" value="' . escape_html($changes) . '" />
             <input type="hidden" name="descrip" value="' . escape_html($descrip) . '" />
 
-            <button type="submit" class="buttons--proceed button-screen">Move on to instructions about how to release this ' . $proceed_icon . '</button>
+            <button type="submit" class="buttons--proceed button-screen">' . $proceed_icon . ' Move on to instructions about how to release this</button>
         </form>
     ';
 }

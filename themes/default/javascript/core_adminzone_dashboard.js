@@ -34,11 +34,11 @@
             
             if (data.vwTaskDone === 'checklist_todo') {
                 $cms.loadSnippet('checklist_task_manage', 'type=mark_done&id=' + id);
-                $cms.setIcon(this.iconChecklistStatus, 'checklist__checklist_done', '{$IMG;,icons/checklist/checklist_done}');
+                $cms.setIcon(this.iconChecklistStatus, 'checklist/checklist_done', '{$IMG;,icons/checklist/checklist_done}');
                 data.vwTaskDone = 'checklist_done';
             } else {
                 $cms.loadSnippet('checklist_task_manage', 'type=mark_undone&id=' + id);
-                $cms.setIcon(this.iconChecklistStatus, 'checklist__checklist_todo', '{$IMG;,icons/checklist/checklist_todo}');
+                $cms.setIcon(this.iconChecklistStatus, 'checklist/checklist_todo', '{$IMG;,icons/checklist/checklist_todo}');
                 data.vwTaskDone = 'checklist_todo';
             }
         },
@@ -216,26 +216,21 @@
         function setTaskHiding(hideEnable) {
             hideEnable = !!hideEnable;
 
-            var i, checklistRows = document.querySelectorAll('.checklist-row'), rowImgs, src;
+            var checklistRows = document.querySelectorAll('.checklist-row'), icon;
 
-            for (i = 0; i < checklistRows.length; i++) {
-                rowImgs = checklistRows[i].querySelectorAll('img');
+            for (var i = 0; i < checklistRows.length; i++) {
+                icon = checklistRows[i].querySelector('.icon');
                 if (hideEnable) {
-                    src = rowImgs[rowImgs.length - 1].src;
-                    if (rowImgs[rowImgs.length - 1].origsrc) {
-                        src = rowImgs[rowImgs.length - 1].origsrc;
-                    }
-                    if (src && src.includes('checklist_done')) {
+                    if (icon && $cms.isIcon(icon, 'checklist/checklist_done')) {
                         $dom.hide(checklistRows[i]);
                         checklistRows[i].classList.add('task-hidden');
                     } else {
-                        checklistRows[i].classList.remove('task-hidden');
+                        checklistRows[i].classList.remove('task-hidden'); 
                     }
                 } else {
-                    if (!$dom.isDisplayed(checklistRows[i])) {
+                    if ($dom.notDisplayed(checklistRows[i])) {
                         $dom.fadeIn(checklistRows[i]);
                     }
-                    $dom.show(checklistRows[i]);
                     checklistRows[i].classList.remove('task-hidden');
                 }
             }

@@ -83,11 +83,11 @@
             if (!menuEditorWrapEl.classList.contains('docked')) {
                 menuEditorWrapEl.classList.add('docked');
                 menuEditorWrapEl.classList.remove('docked');
-                $cms.setIcon(clicked.querySelector('.icon'), 'arrow_box__arrow_box_hover', '{$IMG;^,icons/arrow_box/arrow_box_hover}');
+                $cms.setIcon(clicked.querySelector('.icon'), 'arrow_box/arrow_box_hover', '{$IMG;^,icons/arrow_box/arrow_box_hover}');
             } else {
                 menuEditorWrapEl.classList.add('non-docked');
                 menuEditorWrapEl.classList.remove('docked');
-                $cms.setIcon(clicked.querySelector('.icon'), 'arrow_box__arrow_box', '{$IMG;^,icons/arrow_box/arrow_box}');
+                $cms.setIcon(clicked.querySelector('.icon'), 'arrow_box/arrow_box', '{$IMG;^,icons/arrow_box/arrow_box}');
             }
 
             adjustPaneHeights();

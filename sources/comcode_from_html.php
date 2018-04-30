@@ -353,7 +353,7 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
         // Our button editing for embedded tags
         do {
             $semihtml_before = $semihtml;
-            $semihtml = preg_replace_callback('#<button [^>]*class="cms-keep-ui-controlled" [^>]*title="([^"]*)" [^>]*type="button"[^>]*>[^<]*?</button>#siU', '_debuttonise', $semihtml);
+            $semihtml = preg_replace_callback('#<button [^>]*class="cms-keep-ui-controlled" [^>]*title="([^"]*)" [^>]*type="button"[^>]*>.*?</button>#si', '_debuttonise', $semihtml);
         } while ($semihtml != $semihtml_before);
     }
 

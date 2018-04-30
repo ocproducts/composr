@@ -168,7 +168,7 @@
             }
 
             submitBtn.disabled = true;
-            var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_usergroup&name=' + encodeURIComponent(value);
+            var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_usergroup&name=' + encodeURIComponent(value) + $cms.keep();
             e.preventDefault();
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
@@ -194,7 +194,7 @@
             }
 
             submitBtn.disabled = true;
-            var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_emoticon&name=' + encodeURIComponent(value);
+            var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_emoticon&name=' + encodeURIComponent(value) + $cms.keep();
             e.preventDefault();
             $cms.form.doAjaxFieldTest(url).then(function (valid) {
                 if (valid) {
@@ -402,7 +402,7 @@
         button = document.createElement('button');
         button.type = 'submit';
         button.className = 'buttons--proceed button-screen-item';
-        $dom.html(button, '{!encryption:DECRYPT;^} {$GET;^,proceed_icon}');
+        $dom.html(button, '{$GET;^,proceed_icon} {!encryption:DECRYPT;^}');
         // Hide the form upon submission
         button.addEventListener('click', function () {
             container.style.display = 'none';
@@ -480,17 +480,17 @@
             checkPromises.push($cms.form.doAjaxFieldTest(url, 'password=' + encodeURIComponent(form.elements['password'].value)));
 
             if (params.invitesEnabled) {
-                url = params.snippetScript + '?snippet=invite_missing&name=' + encodeURIComponent(form.elements['email_address'].value);
+                url = params.snippetScript + '?snippet=invite_missing&name=' + encodeURIComponent(form.elements['email_address'].value) + $cms.keep();
                 checkPromises.push($cms.form.doAjaxFieldTest(url));
             }
 
             if (params.onePerEmailAddress) {
-                url = params.snippetScript + '?snippet=exists_email&name=' + encodeURIComponent(form.elements['email_address'].value);
+                url = params.snippetScript + '?snippet=exists_email&name=' + encodeURIComponent(form.elements['email_address'].value) + $cms.keep();
                 checkPromises.push($cms.form.doAjaxFieldTest(url));
             }
 
             if (params.useCaptcha && ($cms.configOption('recaptcha_site_key') === '')) {
-                url = params.snippetScript + '?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
+                url = params.snippetScript + '?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value) + $cms.keep();
                 checkPromises.push($cms.form.doAjaxFieldTest(url));
             }
 

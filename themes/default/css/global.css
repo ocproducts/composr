@@ -2801,10 +2801,8 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 .index-screen-fancier-entry-link {
 	font-weight: bold;
 	margin-bottom: 0.3em;
-	padding: 0 0 0 18px;
-	background: url('{$IMG_INLINE;,icons/buttons/proceed2}') 0 3px no-repeat;
-	background-size: 14px 14px;
 }
+
 .index-screen-fancier-entry-count {
 	font-size: 0.9em;
 	font-weight: normal;
@@ -3449,8 +3447,6 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 	font-size: 0.95em;
 	opacity: 0.4;
 	transition: opacity 0.6s linear;
-	background: url('{$IMG_INLINE;,icons/buttons/settings}') right 4px no-repeat;
-	background-size: 24px 24px;
 	padding-right: 5px;
 	background-origin: content-box;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
@@ -3458,9 +3454,6 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 }
 .staff-actions:hover, body.touch-enabled .staff-actions {
 	opacity: 1.0;
-}
-.staff-actions .box-inner {
-	padding-right: 25px;
 }
 .staff-actions .field-name.standard-field-name {
 	display: none;

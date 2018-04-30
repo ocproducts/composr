@@ -44,7 +44,13 @@
 		{+END}
 		{$SET,early_description,0}
 
-		<div id="error-{$GET,randomised_id}" style="display: none" class="input-error-here"{+START,IF_PASSED,PATTERN_ERROR} data-errorRegexp="{PATTERN_ERROR*}"{+END}></div>
+		<div id="error-{$GET,randomised_id}" style="display: none" class="input-error-here"{+START,IF_PASSED,PATTERN_ERROR} data-errorRegexp="{PATTERN_ERROR*}"{+END}>
+			{+START,INCLUDE,ICON}
+				NAME=status/notice
+				ICON_SIZE=24
+			{+END}
+			<span class="js-error-message"></span>
+		</div>
 
 		{+START,IF_NON_EMPTY,{NAME}}
 			<input type="hidden" id="required-posted--{$GET,randomised_id}" name="require__{NAME*}" value="{$?,{REQUIRED*},1,0}" />

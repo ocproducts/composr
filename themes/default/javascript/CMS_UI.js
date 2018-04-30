@@ -16,7 +16,6 @@
 
         var icon = $dom.$(el.parentNode, '.toggleable-tray-button .icon') || $dom.$('img#e-' + el.id),
             iconAnchor = $dom.parent(icon, 'a'),
-            isThemeWizard = Boolean(icon && icon.src && icon.src.includes('/themewizard.php')),
             expanding = $dom.notDisplayed(el);
 
         el.setAttribute('aria-expanded', expanding ? 'true' : 'false');
@@ -39,13 +38,13 @@
 
         if (icon) {
             if (expanding) {
-                setTrayThemeImage('expand', 'contract', '{$IMG;,icons/trays/expand}', '{$IMG;,icons/trays/contract}');
+                $cms.setIcon(icon, 'trays/contract', '{$IMG;,icons/trays/contract}');
                 iconAnchor.title = '{!CONTRACT;^}';
                 if (iconAnchor.cmsTooltipTitle !== undefined) {
                     iconAnchor.cmsTooltipTitle = '{!CONTRACT;^}';
                 }
             } else {
-                setTrayThemeImage('contract', 'expand', '{$IMG;,icons/trays/contract}', '{$IMG;,icons/trays/expand}');
+                $cms.setIcon(icon, 'trays/expand', '{$IMG;,icons/trays/expand}');
                 iconAnchor.title = '{!EXPAND;^}';
                 if (iconAnchor.cmsTooltipTitle !== undefined) {
                     iconAnchor.cmsTooltipTitle = '{!EXPAND;^}';
@@ -56,17 +55,6 @@
         $dom.triggerResize(true);
 
         return expanding;
-
-        // Execution ends here
-        function setTrayThemeImage(beforeThemeImg, afterThemeImg, beforeUrl, afterUrl) {
-            if (icon.localName === 'svg') {
-                icon.querySelector('use').setAttribute('xlink:href', icon.querySelector('use').getAttribute('xlink:href').replace(beforeThemeImg, afterThemeImg));
-            } else if (isThemeWizard) {
-                icon.src = icon.src.replace(beforeThemeImg, afterThemeImg);
-            } else {
-                icon.src = $util.srl(afterUrl);
-            }
-        }
     };
 
     /**

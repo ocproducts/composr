@@ -7,7 +7,7 @@
 			{LIST}
 		</select></label>
 
-		<button data-disable-on-click="1" class="button-screen-item buttons--proceed" type="submit">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
+		<button data-disable-on-click="1" class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 	</form>
 
 	<hr class="spaced-rule" />

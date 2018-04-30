@@ -28,8 +28,8 @@
 			{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS},raw=.*\,cache=.*,{START_PARAM}=.*}&{START_PARAM}=current_loading_from_pos_{$GET,carousel_id}}
 
 			<div id="carousel-{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
-				<div class="move-left js-btn-car-move " data-move-amount="-47"></div>
-				<div class="move-right js-btn-car-move js-click-carousel-prepare-load-more" data-move-amount="+47"></div>
+				<div class="move-left js-btn-car-move " data-move-amount="-47">{+START,INCLUDE,ICON}NAME=carousel/button_left{+END}</div>
+				<div class="move-right js-btn-car-move js-click-carousel-prepare-load-more" data-move-amount="+47">{+START,INCLUDE,ICON}NAME=carousel/button_right{+END}</div>
 
 				<div class="main raw-ajax-grow-spot" id="carousel-{$GET*,carousel_id}-container"></div>
 			</div>

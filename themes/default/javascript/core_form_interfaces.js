@@ -37,7 +37,7 @@
         },
 
         toggleSubordFields: function (e, target) {
-            toggleSubordinateFields(target.parentNode.querySelector('img'), 'fes-attachments-help');
+            toggleSubordinateFields(target, 'fes-attachments-help');
         }
     });
 
@@ -594,11 +594,11 @@
             sectionHidden = Boolean(params.sectionHidden);
 
         $dom.on(container, 'click', '.js-click-toggle-subord-fields', function (e, clicked) {
-            toggleSubordinateFields(clicked.parentNode.querySelector('img'), 'fes' + title + '_help');
+            toggleSubordinateFields(clicked, 'fes' + title + '_help');
         });
 
         $dom.on(container, 'keypress', '.js-keypress-toggle-subord-fields', function (e, pressed) {
-            toggleSubordinateFields(pressed.parentNode.querySelector('img'), 'fes' + title + '_help');
+            toggleSubordinateFields(pressed, 'fes' + title + '_help');
         });
 
         $dom.on(container, 'click', '.js-click-geolocate-address-fields', function () {
@@ -1510,8 +1510,9 @@
     }
 
     // Hide a 'tray' of trs in a form
-    function toggleSubordinateFields(pic, helpId) {
-        var fieldInput = $dom.parent(pic, '.form-table-field-spacer'),
+    function toggleSubordinateFields(anchor, helpId) {
+        var icon = anchor.querySelector('.icon'),
+            fieldInput = $dom.parent(icon, '.form-table-field-spacer'),
             next = fieldInput.nextElementSibling,
             newDisplayState, newDisplayState2;
 
@@ -1527,21 +1528,17 @@
             }
         }
 
-        if ((!next && (pic.src.includes('expand'))) || (next && (next.style.display === 'none'))) {/* Expanding now */
-            pic.src = pic.src.includes('themewizard.php') ? pic.src.replace('expand', 'contract') : $util.srl('{$IMG;,icons/trays/contract}');
-            pic.alt = '{!CONTRACT;^}';
-            pic.title = '{!CONTRACT;^}';
+        if ((!next && $cms.isIcon(icon, 'trays/expand')) || (next && (next.style.display === 'none'))) {/* Expanding now */
+            anchor.title = '{!CONTRACT;^}';
+            $cms.setIcon(icon, 'trays/contract', '{$IMG;,icons/trays/contract}');
             newDisplayState = ''; // default state from CSS
             newDisplayState2 = ''; // default state from CSS
         } else { /* Contracting now */
-            pic.src = pic.src.includes('themewizard.php') ? pic.src.replace('contract', 'expand') : $util.srl('{$IMG;,icons/trays/expand}');
-            pic.alt = '{!EXPAND;^}';
-            pic.title = '{!EXPAND;^}';
+            anchor.title = '{!EXPAND;^}';
+            $cms.setIcon(icon, 'trays/expand', '{$IMG;,icons/trays/expand}');
             newDisplayState = 'none';
             newDisplayState2 = 'none';
         }
-        pic.width = '20';
-        pic.height = '20';
 
         // Hide everything until we hit end of section
         var count = 0;
@@ -1563,7 +1560,7 @@
         }
 
         if (helpId === undefined) {
-            helpId = pic.parentNode.id + '-help';
+            helpId = icon.parentNode.id + '-help';
         }
 
         var help = document.getElementById(helpId);

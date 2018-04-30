@@ -17,6 +17,6 @@
 			<option value="zip">{!FILEDUMP_ZIP}</option>
 		</select>
 
-		<button type="submit" class="button-micro buttons--proceed">{!PROCEED} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
+		<button type="submit" class="button-micro buttons--proceed">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 	</div>
 </div>

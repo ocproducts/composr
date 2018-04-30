@@ -51,10 +51,12 @@ if ($subdownloads->is_empty()) {
 } else {
     $carousel_id = strval(mt_rand(0, mt_getrandmax()));
 
+    $icon_button_left = do_template('ICON', array('NAME' => 'carousel/button_left'));
+    $icon_button_right = do_template('ICON', array('NAME' => 'carousel/button_right'));
     $content = make_string_tempcode(/** @lang HTML */'
         <div id="carousel-' . $carousel_id . '" class="carousel" style="display: none" data-view="Carousel" data-view-params=\'{"carouselId":"' . $carousel_id . '"}\'>
-            <div class="move-left js-btn-car-move" data-move-amount="-100"></div>
-            <div class="move-right js-btn-car-move" data-move-amount="+100"></div>
+            <div class="move-left js-btn-car-move" data-move-amount="-100">' . $icon_button_left . '</div>
+            <div class="move-right js-btn-car-move" data-move-amount="+100">' . $icon_button_right . '</div>
 
             <div class="main">
             </div>

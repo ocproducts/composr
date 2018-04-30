@@ -43,6 +43,6 @@
 	{+END}
 
 	<p class="purchase-button">
-		<button id="purchase-button" data-disable-on-click="1" class="button-screen buttons--cart-checkout" type="submit" name="submit">{!MAKE_PAYMENT}</button>
+		<button id="purchase-button" data-disable-on-click="1" class="button-screen buttons--cart-checkout" type="submit" name="submit">{+START,INCLUDE,ICON}NAME=buttons/cart_checkout{+END} {!MAKE_PAYMENT}</button>
 	</p>
 </form>

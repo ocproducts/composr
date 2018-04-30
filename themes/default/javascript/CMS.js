@@ -999,18 +999,54 @@
     };
 
     /**
-     * @param iconEl
-     * @param symbolId
-     * @param imageSrc
+     * Change an icon to another one
+     * @param {SVGSVGElement|HTMLImageElement} iconEl
+     * @param {string} iconName
+     * @param {string} imageSrc
      */
-    $cms.setIcon = function setIcon(iconEl, symbolId, imageSrc) {
-        var use;
+    $cms.setIcon = function setIcon(iconEl, iconName, imageSrc) {
+        var symbolId, use, newSrc, newClass;
         if (iconEl.localName === 'svg') {
+            symbolId = iconName.replace(/\//g, '__');
             use = iconEl.querySelector('use');
             use.setAttribute('xlink:href', use.getAttribute('xlink:href').replace(/#\w+$/, '#' + symbolId));
         } else {
-            iconEl.src = $util.srl(imageSrc);
+            if ($util.url(iconEl.src).pathname.includes('/themewizard.php')) {
+                // themewizard.php script, set ?show=<image name>
+                newSrc = $util.url(iconEl.src);
+                newSrc.searchParams.set('show', 'icons/' + iconName);
+            } else {
+                newSrc = $util.srl(imageSrc);
+            }
+            iconEl.src = newSrc;
         }
+        
+        // Replace the existing icon-* class with the new one
+        newClass = iconName.replace(/_/g, '-').replace(/\//g, '--');
+        // Using setAttribute() because the className property on <svg> elements is a "SVGAnimatedString" object rather than a string
+        iconEl.setAttribute('class', iconEl.getAttribute('class').replace(/(^| )icon-[\w\-]+($| )/, ' icon-' + newClass + ' ').trim().replace(/ +/g, ' '));
+    };
+
+    /**
+     * Find out whether an icon is a particular one
+     * @param {SVGSVGElement|HTMLImageElement} iconEl
+     * @param {string} iconName
+     * @returns {boolean}
+     */
+    $cms.isIcon = function isIcon(iconEl, iconName) {
+        var src;
+        
+        if (iconEl.localName === 'svg') {
+            return iconEl.querySelector('use').getAttribute('xlink:href').endsWith('#' + iconName.replace(/\//g, '__'));
+        }
+        
+        src = $util.url(iconEl.src);
+        
+        if (src.pathname.includes('/themewizard.php')) {
+            return src.searchParams.get('show') === 'icons/' + iconName;
+        }
+        
+        return src.pathname.includes('icons/' + iconName);
     };
 
     /**

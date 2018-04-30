@@ -6,8 +6,8 @@
 	{$SET,img,{$?,{$AND,{$IS_EMPTY,{IMG}},{$LT,{THE_LEVEL},3}},{$IMG,icons/content_types/page},{IMG}}}
 	{$SET,img_html,<img class="icon" alt="" src="{$GET*,img}" />}
 
-	{+START,IF,{$PREG_MATCH,^{$BASE_URL}/themes/[^/]+/images/icons/,{$GET,img}}}
-		{$SET,img_name,{$PREG_REPLACE,\.(png|gif|svg)$,,{$PREG_REPLACE,^{$BASE_URL}/themes/[^/]+/images/icons/,,{$GET,img}}}}
+	{+START,IF,{$PREG_MATCH,^{$BASE_URL}/themes/[^/]+/images(_custom)?/icons/,{$GET,img}}}
+		{$SET,img_name,{$PREG_REPLACE,\.(png|gif|svg)$,,{$PREG_REPLACE,^{$BASE_URL}/themes/[^/]+/images(_custom)?/icons/,,{$GET,img}}}}
 		{$SET,img_html,{+START,INCLUDE,ICON}NAME={$GET,img_name}{+END}}
 	{+END}
 

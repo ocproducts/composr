@@ -555,7 +555,7 @@
                     if (this.yes) {
                         button = $dom.create('button', {
                             'type': 'button',
-                            'html': this.yesButton + ' {$GET;^,icon_proceed}',
+                            'html': '{$GET;^,icon_proceed} ' + this.yesButton',
                             'className': 'buttons--proceed button-screen-item js-onclick-do-option-yes'
                         });
 
@@ -1614,7 +1614,7 @@
                 }
 
                 helperPanelToggle.title = '{!HELP_OR_ADVICE}: {!HIDE}';
-                $cms.setIcon(helperPanelToggleIcon, 'helper_panel__hide', '{$IMG;,icons/helper_panel/hide}');
+                $cms.setIcon(helperPanelToggleIcon, 'helper_panel/hide', '{$IMG;,icons/helper_panel/hide}');
             } else {
                 if ($cms.readCookie('hide_helper_panel') === '') {
                     $cms.ui.confirm('{!CLOSING_HELP_PANEL_CONFIRM;^}', function (answer) {
@@ -1634,7 +1634,7 @@
                 helperPanelContents.style.display = 'none';
                 $cms.setCookie('hide_helper_panel', '1', 100);
                 helperPanelToggle.title = '{!HELP_OR_ADVICE}: {!SHOW}';
-                $cms.setIcon(helperPanelToggleIcon, 'helper_panel__show', '{$IMG;,icons/helper_panel/show}');
+                $cms.setIcon(helperPanelToggleIcon, 'helper_panel/show', '{$IMG;,icons/helper_panel/show}');
             }
         }
     });

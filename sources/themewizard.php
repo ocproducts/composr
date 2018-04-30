@@ -1356,8 +1356,8 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
     $val_dif = $seed_v - $composr_v;
 
     if (is_string($path)) {
-        $_image = cms_imagecreatefrom($path);
-        if ($_image === false) {
+        $image = cms_imagecreatefrom($path);
+        if ($image === false) {
             warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($path)), false, true);
         }
     } else {

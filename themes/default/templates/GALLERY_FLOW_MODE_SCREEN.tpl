@@ -28,8 +28,8 @@
 			{$SET,carousel_id,{$RAND}}
 
 			<div id="carousel-{$GET*,carousel_id}" class="carousel" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
-				<div class="move-left js-btn-car-move" data-move-amount="-100"></div>
-				<div class="move-right js-btn-car-move" data-move-amount="+100"></div>
+				<div class="move-left js-btn-car-move" data-move-amount="-100">{+START,INCLUDE,ICON}NAME=carousel/button_left{+END}</div>
+				<div class="move-right js-btn-car-move" data-move-amount="+100">{+START,INCLUDE,ICON}NAME=carousel/button_right{+END}</div>
 
 				<div class="main" itemprop="significantLinks">
 				</div>

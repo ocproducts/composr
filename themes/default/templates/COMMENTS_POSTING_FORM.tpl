@@ -86,7 +86,13 @@
 											<input id="email" name="email" value="{$MEMBER_EMAIL*}" type="text" tabindex="2" maxlength="255" class="wide-field{+START,IF,{$NOT,{EMAIL_OPTIONAL}}} input-text-required{+END}" />
 										</div>
 
-										<div id="error-email" style="display: none" class="input-error-here"></div>
+										<div id="error-email" style="display: none" class="input-error-here">
+											{+START,INCLUDE,ICON}
+												NAME=status/notice
+												ICON_SIZE=24
+											{+END}
+											<span class="js-error-message"></span>
+										</div>
 									</td>
 								</tr>
 							{+END}
@@ -103,7 +109,13 @@
 											<input id="title" name="title" value="{DEFAULT_TITLE*}" type="text" tabindex="3" maxlength="255" class="wide-field" />
 										</div>
 
-										<div id="error-title" style="display: none" class="input-error-here"></div>
+										<div id="error-title" style="display: none" class="input-error-here">
+											{+START,INCLUDE,ICON}
+												NAME=status/notice
+												ICON_SIZE=24
+											{+END}
+											<span class="js-error-message"></span>
+										</div>
 									</td>
 								</tr>
 							{+END}
@@ -116,11 +128,42 @@
 										</th>
 
 										<td>
-											<img id="review-bar-1--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="2" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-											<img id="review-bar-2--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="4" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-											<img id="review-bar-3--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="6" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-											<img id="review-bar-4--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="8" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
-											<img id="review-bar-5--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="rating-star js-img-review-bar" data-vw-rating="10" alt="" width="14" height="14" src="{$IMG*,icons/feedback/rating}" />
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-1--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="2"
+											{+END}
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-2--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="4"
+											{+END}
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-3--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="6"
+											{+END}
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-4--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="8"
+											{+END}
+											{+START,INCLUDE,ICON}
+												NAME=feedback/rating
+												ICON_ID=review-bar-5--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}
+												ICON_CLASS=rating-star js-img-review-bar
+												ICON_SIZE=14
+												ICON_ATTRS=data-vw-rating="10"
+											{+END}
+											
 											<input id="review-rating--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="js-inp-review-rating" type="hidden" name="review_rating__{REVIEW_TITLE|*}" value="" />
 										</td>
 									</tr>
@@ -181,7 +224,13 @@
 										<input type="hidden" name="comcode__post" value="1" />
 									</div>
 
-									<div id="error-post" style="display: none" class="input-error-here"></div>
+									<div id="error-post" style="display: none" class="input-error-here">
+										{+START,INCLUDE,ICON}
+											NAME=status/notice
+											ICON_SIZE=24
+										{+END}
+										<span class="js-error-message"></span>
+									</div>
 
 									{+START,IF_PASSED,ATTACHMENTS}
 										<div class="attachments">
@@ -217,7 +266,7 @@
 							{+END}
 
 							{+START,IF_PASSED,MORE_URL}
-								<button tabindex="6" accesskey="y" class="buttons--new-post-full {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} js-btn-full-editor" type="button">{+START,IF,{$DESKTOP}}<span class="inline-desktop">{!FULL_EDITOR}</span>{+END}<span class="inline-mobile">{!MORE}</span></button>
+								<button tabindex="6" accesskey="y" class="buttons--new-post-full {$?,{$IS_EMPTY,{COMMENT_URL}},button-screen,button-screen-item} js-btn-full-editor" type="button">{+START,INCLUDE,ICON}NAME=buttons/new_post_full{+END} {+START,IF,{$DESKTOP}}<span class="inline-desktop">{!FULL_EDITOR}</span>{+END}<span class="inline-mobile">{!MORE}</span></button>
 							{+END}
 
 							{+START,IF_PASSED,ATTACHMENTS}
