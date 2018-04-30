@@ -555,7 +555,7 @@
                     if (this.yes) {
                         button = $dom.create('button', {
                             'type': 'button',
-                            'html': '{$GET;^,icon_proceed} ' + this.yesButton',
+                            'html': '{$GET;^,icon_proceed} ' + this.yesButton,
                             'className': 'buttons--proceed button-screen-item js-onclick-do-option-yes'
                         });
 
