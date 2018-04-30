@@ -195,7 +195,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      * @param  ID_TEXT $tax_code The tax code
      * @param  integer $length The length
      * @param  SHORT_TEXT $length_units The units for the length
-     * @set    y m d w
+     * @set y m d w
      * @param  BINARY $auto_recur Auto-recur
      * @param  ?GROUP $group_id The usergroup that purchasing gains membership to (null: not set)
      * @param  BINARY $uses_primary Whether this is applied to primary usergroup membership

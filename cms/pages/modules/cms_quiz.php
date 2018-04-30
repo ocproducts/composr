@@ -267,7 +267,7 @@ class Module_cms_quiz extends Standard_crud_module
      * @param  integer $num_winners The number of winners for this if it is a competition
      * @param  ?integer $redo_time The minimum number of hours between attempts (null: no restriction)
      * @param  ID_TEXT $type The type
-     * @set    SURVEY COMPETITION TEST
+     * @set SURVEY COMPETITION TEST
      * @param  BINARY $validated Whether this is validated
      * @param  ?string $text Text for questions (null: default)
      * @param  integer $points_for_passing The number of points awarded for completing/passing the quiz/test

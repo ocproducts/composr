@@ -2231,7 +2231,7 @@ class DatabaseConnector
      * @param  ID_TEXT $name The field name
      * @param  ID_TEXT $key The tables key field name
      * @param  integer $level The translation level to use
-     * @set    1 2 3 4
+     * @set 1 2 3 4
      * @param  boolean $in_assembly Whether our data is already stored in Tempcode assembly format
      */
     public function promote_text_field_to_comcode($table_name, $name, $key = 'id', $level = 2, $in_assembly = false)

@@ -91,10 +91,10 @@ class Hook_search_download_categories extends FieldsSearchHook
      * @param  ?MEMBER $author_id Member-ID to match for (null: unknown)
      * @param  mixed $cutoff Cutoff date (TIME or a pair representing the range)
      * @param  string $sort The sort type (gets remapped to a field in this function)
-     * @set    title add_date
+     * @set title add_date
      * @param  integer $limit_to Limit to this number of results
      * @param  string $boolean_operator What kind of boolean search to do
-     * @set    or and
+     * @set or and
      * @param  string $where_clause Where constraints known by the main search code (SQL query fragment)
      * @param  string $search_under Comma-separated list of categories to search under
      * @param  boolean $boolean_search Whether it is a boolean search

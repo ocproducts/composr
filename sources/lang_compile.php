@@ -35,7 +35,7 @@ function init__lang_compile()
  * @param  ID_TEXT $codename The language file name
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  ?string $type The language type (lang_custom, or custom) (null: normal priorities are used)
- * @set    lang_custom custom
+ * @set lang_custom custom
  * @param  PATH $cache_path Where we are caching too
  * @param  boolean $ignore_errors Whether to just return if there was a loading error
  * @return boolean Whether we FAILED to load

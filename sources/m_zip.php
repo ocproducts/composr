@@ -278,7 +278,7 @@ function init__m_zip()
          * @param  array $zip The ZIP file resource
          * @param  array $zip_entry Directory entry resource returned by m_zip_read()
          * @param  string $mode The file access mode
-         * @set    rb
+         * @set rb
          * @return boolean Whether the operation was succesful
          */
         function zip_entry_open($zip, $zip_entry, $mode = 'rb')

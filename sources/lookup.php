@@ -118,7 +118,7 @@ function lookup_member_page($member, &$name, &$id, &$ip)
  * @param  integer $max The maximum number of rows to show per browser page
  * @param  ?ID_TEXT $sortable The current sortable (null: none)
  * @param  ?ID_TEXT $sort_order The order we are sorting in (null: none)
- * @set    ASC DESC
+ * @set ASC DESC
  * @return Tempcode The results table
  */
 function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_and_time', $sort_order = 'DESC')

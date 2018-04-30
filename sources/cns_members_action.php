@@ -912,7 +912,7 @@ function get_cpf_storage_for($type, $encrypted = 0, $__default = '')
  * @param  BINARY $owner_set Whether the field may be set by the owner
  * @param  BINARY $encrypted Whether the field is encrypted
  * @param  ID_TEXT $type The type of the field
- * @set    short_text long_text short_trans long_trans integer upload picture url list tick float
+ * @set short_text long_text short_trans long_trans integer upload picture url list tick float
  * @param  BINARY $required Whether it is required that every member have this field filled in
  * @param  BINARY $show_in_posts Whether this field is shown in posts and places where member details are highlighted (such as an image in a member gallery)
  * @param  BINARY $show_in_post_previews Whether this field is shown in preview places, such as in the forum member tooltip

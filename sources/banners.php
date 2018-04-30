@@ -77,7 +77,7 @@ function banner_select_sql($b_type = null, $do_type_join = false, $banner_to_avo
  *
  * @param  boolean $ret Whether to return a result rather than outputting
  * @param  ?string $type Whether we are displaying or click-processing (null: get from URL param)
- * @set    "click" ""
+ * @set click ""
  * @param  ?string $dest Specific banner to display (null: get from URL param) (blank: randomise)
  * @param  ?string $b_type Banner type to display (null: get from URL param)
  * @param  ?string $source The banner advertisor who is actively displaying the banner (calling up this function) and hence is rewarded (null: get from URL param) (blank: our own site)

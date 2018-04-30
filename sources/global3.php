@@ -614,7 +614,7 @@ function restore_output_state($just_tempcode = false, $merge_current = false, $k
  * @param  ?Tempcode $middle The Tempcode to put into a nice frame (null: support output streaming mode)
  * @param  ?mixed $message 'Additional' message (null: none)
  * @param  string $type The type of special message
- * @set    inform warn ""
+ * @set inform warn ""
  * @param  boolean $include_header_and_footer Whether to include the header/footer/panels
  * @param  boolean $show_border Whether to include a full screen rendering layout (will be overridable by 'show_border' GET parameter if present or if main page view)
  * @return Tempcode Standalone page
@@ -898,7 +898,7 @@ function set_http_status_code($code)
  * @param  ID_TEXT $theme The theme to use
  * @param  string $suffix File type suffix of template file (e.g. .tpl)
  * @param  string $directory Subdirectory type to look in
- * @set    templates css
+ * @set templates css
  * @param  boolean $non_custom_only Whether to only search in the default templates
  * @return ?array List of parameters needed for the _do_template function to be able to load the template (null: could not find the template)
  */
@@ -2131,7 +2131,7 @@ function is_valid_ip($ip)
  * Attempt to get the clean IP address of the current user.
  *
  * @param  integer $amount The number of groups to include in the IP address (rest will be replaced with *'s). For IP6, this is doubled.
- * @set    1 2 3 4
+ * @set 1 2 3 4
  * @param  ?IP $ip IP address to use, normally left null (null: current user's)
  * @return IP The users IP address (blank: could not find a valid one)
  */
@@ -2671,7 +2671,7 @@ function escape_html($string)
  * See's if the current browser matches some special property code. Assumes users are keeping up on newish browsers (as defined in tut_browsers).
  *
  * @param  string $code The property code
- * @set    android ios wysiwyg windows mac linux odd_os mobile ie gecko safari odd_browser chrome bot simplified_attachments_ui itunes
+ * @set android ios wysiwyg windows mac linux odd_os mobile ie gecko safari odd_browser chrome bot simplified_attachments_ui itunes
  * @param  ?string $comcode Comcode that might be WYSIWYG edited; used to determine whether WYSIWYG may load when we'd prefer it to not do so (null: none)
  * @return boolean Whether there is a match
  */

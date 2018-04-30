@@ -279,7 +279,7 @@ function lang_code_to_static_content($field_name, $str, $comcode = false, $level
  * @param  ID_TEXT $field_name The field name
  * @param  string $text The text
  * @param  integer $level The level of importance this language string holds
- * @set    1 2 3 4
+ * @set 1 2 3 4
  * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  boolean $comcode Whether it is to be parsed as Comcode
  * @param  ?integer $id The ID to use for the language string (null: work out next available)

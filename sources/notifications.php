@@ -106,9 +106,9 @@ function do_notification_lang($codename, $parameter1 = null, $parameter2 = null,
  * @param  boolean $light_error Whether to not produce a stack trace if the template is missing
  * @param  ?ID_TEXT $fallback Alternate template to use if the primary one does not exist (null: none)
  * @param  string $suffix File type suffix of template file (e.g. .tpl)
- * @set    .tpl .js .xml .txt .css
+ * @set .tpl .js .xml .txt .css
  * @param  string $directory Subdirectory type to look in
- * @set    templates javascript xml text css
+ * @set templates javascript xml text css
  * @param  ?ID_TEXT $theme Theme to use (null: current theme)
  * @return Tempcode The Tempcode for this template
  */

@@ -919,7 +919,7 @@ function form_input_line_comcode($pretty_name, $description, $name, $default, $r
  * @param  integer $num_required The minimum number of inputs allowed
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  string $class CSS class for input
- * @set    line email
+ * @set line email
  * @param  ?string $pattern Custom regex pattern (null: none)
  * @param  ?string $pattern_error Custom regex pattern validation error (null: none)
  * @return Tempcode The input field
@@ -1898,7 +1898,7 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
  * @param  string $base The base name which this input field is for
  * @param  Tempcode $list A list culmulation to select against
  * @param  string $type The current type of partial selection
- * @set    + - *
+ * @set + - *
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @return Tempcode The input field
  */

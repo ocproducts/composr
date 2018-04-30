@@ -221,7 +221,7 @@ class Hook_payment_gateway_authorize
      * @param  ID_TEXT $currency The currency to use
      * @param  integer $length The subscription length in the units
      * @param  ID_TEXT $length_units The length units
-     * @set    d w m y
+     * @set d w m y
      * @return Tempcode The button
      */
     public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $currency, $length, $length_units)
@@ -484,7 +484,7 @@ class Hook_payment_gateway_authorize
      * @param  ID_TEXT $trans_expecting_id The transaction ID we have generated for this transaction
      * @param  SHORT_TEXT $cardholder_name Cardholder name
      * @param  SHORT_TEXT $card_type Card Type
-     * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
+     * @set "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
      * @param  integer $card_number Card number
      * @param  SHORT_TEXT $card_start_date Card Start date (blank: none)
      * @param  SHORT_TEXT $card_expiry_date Card Expiry date (blank: none)
@@ -510,7 +510,7 @@ class Hook_payment_gateway_authorize
      * @param  SHORT_TEXT $shipping_phone Phone number (shipping)
      * @param  ?integer $length The subscription length in the units. (null: not a subscription)
      * @param  ?ID_TEXT $length_units The length units. (null: not a subscription)
-     * @set    d w m y
+     * @set d w m y
      * @return array A tuple: success (boolean), message (string), raw message (string), transaction ID (string)
      */
     public function do_local_transaction($trans_expecting_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
@@ -605,7 +605,7 @@ class Hook_payment_gateway_authorize
      * This function defines the parameters needed to make an Advanced Integration Method (AIM) call.
      *
      * @param  SHORT_TEXT $card_type Card Type
-     * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
+     * @set "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
      * @param  integer $card_number Card number
      * @param  SHORT_TEXT $card_start_date Card Start date (blank: none)
      * @param  SHORT_TEXT $card_expiry_date Card Expiry date (blank: none)
@@ -701,7 +701,7 @@ class Hook_payment_gateway_authorize
      * This function defines the parameters needed to make an ARB (Automated Recurring Billing) call.
      *
      * @param  SHORT_TEXT $card_type Card Type
-     * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
+     * @set "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
      * @param  integer $card_number Card number
      * @param  SHORT_TEXT $card_start_date Card Start date (blank: none)
      * @param  SHORT_TEXT $card_expiry_date Card Expiry date (blank: none)
@@ -710,7 +710,7 @@ class Hook_payment_gateway_authorize
      * @param  SHORT_TEXT $start_date Start date
      * @param  ?integer $length The subscription length in the units. (null: not a subscription)
      * @param  ?ID_TEXT $length_units The length units. (null: not a subscription)
-     * @set    d w m y
+     * @set d w m y
      * @param  ID_TEXT $trans_expecting_id Transaction ID
      * @param  float $amount Transaction amount
      * @param  SHORT_TEXT $billing_firstname Cardholder first name

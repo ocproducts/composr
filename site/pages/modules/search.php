@@ -551,7 +551,7 @@ class Module_search
      * @param  mixed $cutoff Cutoff date (TIME or a pair representing the range)
      * @param  ID_TEXT $sort Sort key
      * @param  ID_TEXT $direction Sort direction
-     * @set    ASC DESC
+     * @set ASC DESC
      * @param  boolean $only_titles Whether to only search titles
      * @param  string $search_under Comma-separated list of categories to search under
      * @return array A triple: The results, results browser, the number of results

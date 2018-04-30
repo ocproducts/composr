@@ -229,7 +229,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
  * @param  SHORT_TEXT $filter_topic_description The topic description filter
  * @param  boolean $show_first_posts Whether to show the first posts
  * @param  string $date_key The date key to sort by
- * @set    lasttime firsttime
+ * @set lasttime firsttime
  * @param  boolean $hot Whether to limit to hot topics
  * @param  boolean $open_only Open tickets only
  * @return ?array The array of topics (null: error/none)

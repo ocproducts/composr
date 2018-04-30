@@ -357,7 +357,7 @@ function inform_non_canonical_parameter($param, $block_page_from_static_cache_if
  *
  * @param  mixed $message The type of special message
  * @param  ID_TEXT $type The template to use
- * @set    inform notice warn
+ * @set inform notice warn
  * @param  boolean $put_in_helper_panel Whether to put into the helper panel instead of the normal header area
  * @param  boolean $log_error Whether to log the error
  * @return string Blank string so it can be chained in the Tempcode compiler. You will rarely want to use this return value. It's kind of a failsafe.

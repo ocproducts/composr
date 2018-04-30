@@ -32,7 +32,7 @@
  * @param  array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order
  * @param  ?ID_TEXT $sortable The current sortable (null: none)
  * @param  ?ID_TEXT $sort_order The order we are sorting in (null: none)
- * @set    ASC DESC
+ * @set ASC DESC
  * @param  ?ID_TEXT $sort_name The parameter name used to store our sortable (usually 'sort') (null: none)
  * @param  ?Tempcode $message Message to show (null: auto)
  * @param  array $widths Widths to specify to the table (strings, ending 'px')
@@ -155,7 +155,7 @@ function results_entry($values, $auto_escape, $tpl_set = null, $guid = '9e340dd1
  * @param  array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order
  * @param  ?ID_TEXT $sortable The current sortable (null: none)
  * @param  ?ID_TEXT $sort_order The order we are sorting in (null: none)
- * @set    ASC DESC
+ * @set ASC DESC
  * @param  ?ID_TEXT $sort_name The parameter name used to store our sortable (usually 'sort') (null: none)
  * @param  ?ID_TEXT $hash URL hash component (null: none)
  * @return Tempcode The results sorter

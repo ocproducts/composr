@@ -28,7 +28,7 @@
  * @range  1 max
  * @param  LONG_TEXT $notes Any notes associated with the banner
  * @param  SHORT_INTEGER $deployment_agreement The type of banner (0=permanent, 1=campaign, 2=fallback)
- * @set    0 1 2
+ * @set 0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never)
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
  * @param  BINARY $validated Whether the banner has been validated

@@ -2321,7 +2321,7 @@ function _obscure_html_callback($matches)
  *
  * @param  integer $list_indent The depth level of lists that we need to close
  * @param  string $list_type List-type code
- * @set    ul a 1
+ * @set ul a 1
  * @return array The output needed to close the lists, and the new list indentation (always zero). Done like this so we can use 'list' to set both at once in the main parser.
  *
  * @ignore

@@ -232,7 +232,7 @@ function missing_template_parameter($origin)
  * Build a conventional Tempcode object.
  *
  * @param  integer $type The type of symbol this is (TC_SYMBOL, TC_LANGUAGE_REFERENCE)
- * @set    0 2
+ * @set 0 2
  * @param  ID_TEXT $name The name of the symbol
  * @param  array $parameters Parameters to the symbol. In same format as expected by ecv.
  * @param  array $escaping Escaping for the symbol
@@ -826,9 +826,9 @@ function fill_template_preview_op_cache()
  * @param  boolean $light_error Whether to not produce a stack trace if the template is missing
  * @param  ?ID_TEXT $fallback Alternate template to use if the primary one does not exist (null: none)
  * @param  string $suffix File type suffix of template file (e.g. .tpl)
- * @set    .tpl .js .xml .txt .css
+ * @set .tpl .js .xml .txt .css
  * @param  string $directory Subdirectory type to look in
- * @set    templates javascript xml text css
+ * @set templates javascript xml text css
  * @param  ?ID_TEXT $theme Theme to use (null: current theme)
  * @param  boolean $non_custom_only Whether to only search in the default templates
  * @return Tempcode The Tempcode for this template

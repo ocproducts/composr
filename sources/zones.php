@@ -946,7 +946,7 @@ function find_all_hook_obs($type, $subtype, $classname_prefix)
  * Get an array of all the hook implementation names for a hook sub-type.
  *
  * @param  ID_TEXT $type The type of hook
- * @set    blocks endpoints modules systems
+ * @set blocks endpoints modules systems
  * @param  ID_TEXT $subtype The hook sub-type to find hook implementations for (e.g. the name of a module)
  * @return array A map of hook implementation name to [sources|sources_custom]
  */
@@ -1593,7 +1593,7 @@ function block_installed($block)
  * @param  integer $show_method Selection algorithm constant
  * @set 0 1 2
  * @param  ?ID_TEXT $page_type Page type to show (null: all)
- * @set    modules comcode html
+ * @set modules comcode html
  * @return array A map of page name to type (modules_custom, etc)
  */
 function find_all_pages_wrap($zone, $keep_ext_on = false, $consider_redirects = false, $show_method = 0, $page_type = null)
@@ -1607,7 +1607,7 @@ function find_all_pages_wrap($zone, $keep_ext_on = false, $consider_redirects = 
  *
  * @param  ID_TEXT $zone The zone name
  * @param  ID_TEXT $type The page type
- * @set    modules modules_custom comcode/EN comcode_custom/EN html/EN html_custom/EN
+ * @set modules modules_custom comcode/EN comcode_custom/EN html/EN html_custom/EN
  * @param  string $ext The file extension to limit us to (without a dot)
  * @param  boolean $keep_ext_on Whether to leave file extensions on the page name
  * @param  ?TIME $cutoff_time Only show pages newer than (null: no restriction)

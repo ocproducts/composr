@@ -138,7 +138,7 @@ function delete_attachments($type, $db = null)
  *
  * @param  AUTO_LINK $id The attachment ID to delete
  * @param  object $db The database connector to use
- * @set    cms forum
+ * @set cms forum
  *
  * @ignore
  */

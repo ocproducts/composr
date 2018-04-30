@@ -23,7 +23,7 @@
  *
  * @param  ?PATH $path The path to the TAR archive (null: write out directly to stdout)
  * @param  string $mode The mode to open the TAR archive (rb=read, wb=write)
- * @set    rb wb c+b
+ * @set rb wb c+b
  * @return array The TAR file handle
  */
 function tar_open($path, $mode)

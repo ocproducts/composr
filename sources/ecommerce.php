@@ -559,7 +559,7 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
  * @param  integer $price_points Transaction price in points (only for first transaction)
  * @param  integer $length The subscription length in the units
  * @param  ID_TEXT $length_units The length units
- * @set    d w m y
+ * @set d w m y
  * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect)
  * @return Tempcode The button
  */
@@ -1391,7 +1391,7 @@ function handle_ipn_transaction_script($silent_fail = false, $send_notifications
  * @param  ?ID_TEXT $purchase_id The ID of the purchase-type (meaning depends on item_name) (null: lookup from $trans_expecting_id - for debugging only)
  * @param  boolean $is_subscription Whether this is a subscription
  * @param  ID_TEXT $status The status this transaction is telling of
- * @set    Pending Completed SModified SCancelled
+ * @set Pending Completed SModified SCancelled
  * @param  SHORT_TEXT $reason A reason for the transaction's status (blank: unknown or N/A)
  * @param  ?REAL $amount Transaction amount (null: lookup from $trans_expecting_id - for debugging only)
  * @param  ?REAL $tax Transaction tax amount (null: not separated out, find the tax due and take it out of $amount)

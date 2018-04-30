@@ -126,7 +126,7 @@ function get_table_backup($log_file, $db_meta, $db_meta_indices, &$install_php_f
  *
  * @param  string $file The filename to backup to
  * @param  string $b_type The type of backup to do
- * @set    full incremental
+ * @set full incremental
  * @param  integer $max_size The maximum size of a file to include in the backup
  * @param  ?mixed $callback Callback to run on each iteration (null: none)
  * @return Tempcode Success message

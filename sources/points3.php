@@ -191,7 +191,7 @@ function points_profile($member_id_of, $member_id_viewing)
  * Show the point transactions a member has had.
  *
  * @param  ID_TEXT $type The type of transactions we are looking for
- * @set    from to
+ * @set from to
  * @param  MEMBER $member_id_of Who we are looking at transactions for
  * @param  MEMBER $member_id_viewing Who we are looking at transactions using the account of
  * @return Tempcode The UI

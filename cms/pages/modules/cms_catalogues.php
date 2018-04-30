@@ -1612,7 +1612,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
      * @param  integer $submit_points How many points are given to a member that submits to the catalogue
      * @param  BINARY $ecommerce Whether the catalogue is an eCommerce catalogue
      * @param  ID_TEXT $send_view_reports How to send view reports
-     * @set    never daily weekly monthly quarterly
+     * @set never daily weekly monthly quarterly
      * @param  ?integer $default_review_freq Default review frequency for catalogue entries (null: none)
      * @return array A tuple: the Tempcode for the visible fields, and the Tempcode for the hidden fields, ..., and action fields
      */

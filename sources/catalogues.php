@@ -275,7 +275,7 @@ function count_catalogue_category_children($category_id)
  * @param  ID_TEXT $catalogue_name The name of the catalogue
  * @param  ?array $catalogue A database row of the catalogue we are working with (null: read it in)
  * @param  ID_TEXT $view_type The view type we're doing
- * @set    PAGE SEARCH CATEGORY
+ * @set PAGE SEARCH CATEGORY
  * @param  ID_TEXT $tpl_set The template set we are rendering this category using
  * @param  ?integer $max The maximum number of entries to show on a single page of this this category (null: all)
  * @param  integer $start The entry number to start at
@@ -868,7 +868,7 @@ function catalogue_entries_manual_sort($fields, &$entries, $order_by, $direction
  * @param  array $entry A database row of the entry we are working with
  * @param  ?array $catalogue A database row of the catalogue we are working with (null: read it in here)
  * @param  ID_TEXT $view_type The view type we're doing
- * @set    PAGE SEARCH CATEGORY
+ * @set PAGE SEARCH CATEGORY
  * @param  ID_TEXT $tpl_set The template set we are rendering this category using
  * @param  ?AUTO_LINK $root The virtual root for display of this category (null: none)
  * @param  ?array $fields The database rows for the fields for this catalogue (null: find them)
@@ -1090,7 +1090,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
  * @param  ?array $fields The database rows for the fields for this catalogue (null: find them)
  * @param  boolean $natural_order Whether to order the fields in their natural database order. This is only used for shopping catalogues as a defence against webmaster field reordering and not a strong guarantee
  * @param  ID_TEXT $view_type The view type we're doing
- * @set    PAGE SEARCH CATEGORY
+ * @set PAGE SEARCH CATEGORY
  * @return array A list of maps (each field for the entry gets a map), where each map contains 'effective_value' (the value for the field). Some maps get additional fields (effective_value_pure), depending on the field type
  */
 function get_catalogue_entry_field_values($catalogue_name, $entry_id, $only_fields = null, $fields = null, $natural_order = false, $view_type = 'PAGE')
@@ -1235,7 +1235,7 @@ function _resolve_catalogue_entry_field($field, $entry_id, $only_field_ids, &$ta
  * @param  AUTO_LINK $field_id The ID of the field we are getting
  * @param  mixed $entry_id The ID of the entry we are getting for OR the row
  * @param  ID_TEXT $type The type of field
- * @set    short long
+ * @set short long
  * @param  ?array $only_field_ids A list of field IDs that we are limiting ourselves to (null: get ALL fields)
  * @return ?array The row (null: not found)
  * @ignore

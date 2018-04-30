@@ -152,7 +152,7 @@ class Hook_payment_gateway_secpay
      * @param  ID_TEXT $currency The currency to use
      * @param  integer $length The subscription length in the units
      * @param  ID_TEXT $length_units The length units
-     * @set    d w m y
+     * @set d w m y
      * @return Tempcode The button
      */
     public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $currency, $length, $length_units)
@@ -190,7 +190,7 @@ class Hook_payment_gateway_secpay
      *
      * @param  integer $length The subscription length in the units
      * @param  ID_TEXT $length_units The length units
-     * @set    d w m y
+     * @set d w m y
      * @return array A tuple: the period in secpay units, the date of the first repeat
      */
     protected function _translate_subscription_details($length, $length_units)
@@ -506,7 +506,7 @@ class Hook_payment_gateway_secpay
      * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID
      * @param  SHORT_TEXT $cardholder_name Cardholder name
      * @param  SHORT_TEXT $card_type Card Type
-     * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
+     * @set "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
      * @param  integer $card_number Card number
      * @param  SHORT_TEXT $card_start_date Card Start date (blank: none)
      * @param  SHORT_TEXT $card_expiry_date Card Expiry date (blank: none)
@@ -532,7 +532,7 @@ class Hook_payment_gateway_secpay
      * @param  SHORT_TEXT $shipping_phone Phone number (shipping)
      * @param  ?integer $length The subscription length in the units. (null: not a subscription)
      * @param  ?ID_TEXT $length_units The length units. (null: not a subscription)
-     * @set    d w m y
+     * @set d w m y
      * @return array A tuple: success (boolean), message (string), raw message (string), transaction ID (string)
      */
     public function do_local_transaction($trans_expecting_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)

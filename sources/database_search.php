@@ -1599,7 +1599,7 @@ function in_memory_search_match($filter, $title, $post = null)
  * @param  string $content The search content
  * @param  boolean $boolean_search Whether it's a boolean search
  * @param  string $boolean_operator Boolean operation to use
- * @set    AND OR
+ * @set AND OR
  * @param  boolean $full_coverage Whether we can assume we require full coverage (i.e. not substring matches)
  * @return array A tuple (any SQL component may be blank): The combined where clause SQL, the boolean operator, body where clause SQL, positive where clause SQL, negative where clause SQL
  */
@@ -1657,7 +1657,7 @@ function build_content_where($content, $boolean_search, &$boolean_operator, $ful
  *
  * @param  string $content Boolean search string
  * @param  string $boolean_operator Boolean operator to use
- * @set    AND OR
+ * @set AND OR
  * @param  boolean $full_coverage Whether we can assume we require full coverage
  * @return array A tuple (any SQL component may be blank): The combined where clause SQL, the boolean operator, body where clause SQL, positive where clause SQL, negative where clause SQL
  */
@@ -1730,7 +1730,7 @@ function db_like_assemble($content, $boolean_operator = 'AND', $full_coverage = 
  * @param  array $results Existing array of results (originally starts blank)
  * @return array Sorted results
  * @param  string $direction Sort direction
- * @set    ASC DESC
+ * @set ASC DESC
  */
 function sort_search_results($hook_results, $results, $direction)
 {
@@ -1765,7 +1765,7 @@ function sort_search_results($hook_results, $results, $direction)
  * @param  integer $start Start index
  * @param  integer $max Maximum index
  * @param  string $direction Sort direction
- * @set    ASC DESC
+ * @set ASC DESC
  * @param  boolean $general_search Whether this is a general search, rather than a search for a specific result-type (such as all members)
  * @return Tempcode Interface
  */

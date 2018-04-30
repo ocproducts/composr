@@ -39,7 +39,7 @@ function init__symbols()
  * @param  string $lang The language to evaluate this symbol in (some symbols refer to language elements)
  * @param  array $escaped Array of escaping operations
  * @param  integer $type The type of symbol this is (TC_SYMBOL, TC_LANGUAGE_REFERENCE)
- * @set    0 2
+ * @set 0 2
  * @param  ID_TEXT $name The name of the symbol
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return mixed The result. Either Tempcode, or a string.
@@ -1946,7 +1946,7 @@ function ecv_TRUNCATE_SPREAD($lang, $escaped, $param)
  *
  * @param  array $param Parameters passed to the symbol (0=text, 1=amount, 2=tooltip?, 3=is_html?, 4=use as grammatical length rather than HTML byte length, 5=fractional-deviation-tolerance for grammar-preservation)
  * @param  string $type The type of truncation to do
- * @set    left right spread
+ * @set left right spread
  * @param  ?mixed $tooltip_if_truncated Tooltip to add on, but only if we end up creating our own tooltip (null: none)
  * @return string The result
  */

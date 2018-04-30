@@ -1454,7 +1454,7 @@ function generate_gradient($top, $bottom)
  * @param  ?string $colour_b2_orig The colour code of what we have as our second major colour (the gradient target, at the bottom/right of the image) (null: not gradiented)
  * @param  ?string $colour_b2_new The colour code of what we want as our second major colour (the gradient target, at the bottom/right of the image) (null: not gradiented)
  * @param  string $gradient_direction The directional code for the gradient
- * @set    vertical horizontal
+ * @set vertical horizontal
  * @param  ?array $pixel_x_start_array An array that is used to limit where we do our conversion on. It specifies, for each y-offset, the x-offset we start from (null: no such limitation)
  * @param  integer $gradient_offset What the gradient assumed start-position will be offset by (in the gradient direction)
  * @param  boolean $end_array Whether the pixel_x_start array is actually an end array

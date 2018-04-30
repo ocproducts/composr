@@ -467,7 +467,7 @@ function get_lang($member_id)
  * @param  ID_TEXT $codename The language file name
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  ?string $type The language type (lang_custom, or custom) (null: normal priorities are used)
- * @set    lang_custom custom
+ * @set lang_custom custom
  * @param  boolean $ignore_errors Whether to just return if there was a loading error
  */
 function require_lang($codename, $lang = null, $type = null, $ignore_errors = false) // $type is for efficiency only - to avoid needing to doubly-search when requiring all
@@ -962,7 +962,7 @@ function create_selection_list_langs($select_lang = null, $show_unset = false)
  * @param  ID_TEXT $field_name The field name
  * @param  string $text The text
  * @param  integer $level The level of importance this language string holds
- * @set    1 2 3 4
+ * @set 1 2 3 4
  * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  boolean $insert_as_admin Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges)
  * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
@@ -985,7 +985,7 @@ function insert_lang_comcode($field_name, $text, $level, $db = null, $insert_as_
  * @param  ID_TEXT $field_name The field name
  * @param  string $text The text
  * @param  integer $level The level of importance this language string holds
- * @set    1 2 3 4
+ * @set 1 2 3 4
  * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  boolean $comcode Whether it is to be parsed as Comcode
  * @param  ?integer $id The ID to use for the language string (null: work out next available)

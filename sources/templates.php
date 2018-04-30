@@ -346,7 +346,7 @@ function with_whitespace($in)
  * @param  ?mixed $text Message to show (may be Tempcode) (null: standard redirection message)
  * @param  boolean $intermediary_hop For intermediary hops, don't mark so as to read status messages - save them up for the next hop (which will not be intermediary)
  * @param  ID_TEXT $msg_type Code of message type to show
- * @set    warn inform fatal
+ * @set warn inform fatal
  * @return Tempcode Redirection message (likely to not actually be seen due to instant redirection)
  */
 function redirect_screen($title, $url, $text = null, $intermediary_hop = false, $msg_type = 'inform')

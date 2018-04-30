@@ -4552,7 +4552,7 @@ function file_get_contents($filename, $use_include_path = false, $context = null
  *
  * @param  string $input String to count words in
  * @param  integer $format The format
- * @set    0 1 2
+ * @set 0 1 2
  * @param  string $chars A list of additional characters which will be considered as 'word'
  * @return mixed Typically a list - the words of the input string
  */

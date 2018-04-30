@@ -49,7 +49,7 @@ function grab_new_owner($param_name)
  *
  * @param  Tempcode $message The message to show
  * @param  ID_TEXT $msg_type Code of message type to show
- * @set    warn inform fatal
+ * @set warn inform fatal
  */
 function buildr_refresh_with_message($message, $msg_type = 'inform')
 {

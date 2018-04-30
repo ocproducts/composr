@@ -517,7 +517,7 @@ function placeholder_breadcrumbs()
  * @param  ?ID_TEXT $fallback Alternate template to use if the primary one does not exist (null: none)
  * @param  string $suffix File type suffix of template file (e.g. .tpl)
  * @param  string $directory Subdirectory type to look in
- * @set    templates css javascript xml text
+ * @set templates css javascript xml text
  * @return Tempcode The Tempcode for this template
  */
 function do_lorem_template($codename, $parameters = array(), $lang = null, $light_error = false, $fallback = null, $suffix = '.tpl', $directory = 'templates')
@@ -536,7 +536,7 @@ function do_lorem_template($codename, $parameters = array(), $lang = null, $ligh
  * @param  Tempcode $middle The Tempcode to put into a nice frame
  * @param  ?mixed $message 'Additional' message (null: none)
  * @param  string $type The type of special message
- * @set    inform warn ""
+ * @set inform warn ""
  * @param  boolean $include_header_and_footer Whether to include the header/footer/panels
  * @return Tempcode Standalone page
  */

@@ -93,7 +93,7 @@ function resource_fs_logging__start($level = 'notice')
  *
  * @param  string $message The message
  * @param  ID_TEXT $type The template to use
- * @set    inform notice warn
+ * @set inform notice warn
  */
 function resource_fs_logging($message, $type = 'warn')
 {

@@ -298,7 +298,7 @@ class Module_cms_banners extends Standard_crud_module
      * @param  ?integer $campaign_remaining The number of hits the banner may have (null: not applicable for this banner type)
      * @range  0 max
      * @param  SHORT_INTEGER $deployment_agreement The type of banner (a BANNER_* constant)
-     * @set    0 1 2
+     * @set 0 1 2
      * @param  ?TIME $expiry_date The banner expiry date (null: never expires)
      * @param  ?MEMBER $submitter The banners submitter (null: current member)
      * @param  BINARY $validated Whether the banner has been validated

@@ -948,7 +948,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $include_link = false, $z
  * Get a nice, formatted XHTML list of gallery entries, in gallery tree structure.
  *
  * @param  ID_TEXT $table The table we are working with
- * @set    images videos
+ * @set images videos
  * @param  ?ID_TEXT $it The currently selected entry (null: none selected)
  * @param  ?AUTO_LINK $submitter Only show images/videos submitted by this member (null: no filter)
  * @param  boolean $use_compound_list Whether to get a list of child galleries (not just direct ones, recursively), instead of just IDs
@@ -982,7 +982,7 @@ function create_selection_list_gallery_content_tree($table, $it = null, $submitt
  * Get a list of maps containing all the gallery entries, and path information, under the specified gallery - and those beneath it, recursively.
  *
  * @param  ID_TEXT $table The table we are working with
- * @set    images videos
+ * @set images videos
  * @param  ?AUTO_LINK $submitter Only show images/videos submitted by this member (null: no filter)
  * @param  ?ID_TEXT $gallery The gallery being at the root of our recursion (null: true root)
  * @param  ?string $breadcrumbs The breadcrumbs up to this point in the recursion (null: blank, as we are starting the recursion)

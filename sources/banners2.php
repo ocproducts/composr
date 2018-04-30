@@ -162,7 +162,7 @@ function create_selection_list_banners($it = null, $only_owned = null)
  * @param  ?integer $campaign_remaining The number of hits the banner may have (null: not applicable for this banner type)
  * @range  0 max
  * @param  SHORT_INTEGER $deployment_agreement The type of banner (0=permanent, 1=campaign, 2=fallback)
- * @set    0 1 2
+ * @set 0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never expires)
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
  * @param  BINARY $validated Whether the banner has been validated
@@ -389,7 +389,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
  * @range  1 max
  * @param  LONG_TEXT $notes Any notes associated with the banner
  * @param  SHORT_INTEGER $deployment_agreement The type of banner (a BANNER_* constant)
- * @set    0 1 2
+ * @set 0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never)
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
  * @param  BINARY $validated Whether the banner has been validated
@@ -496,7 +496,7 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
  * @range  1 max
  * @param  LONG_TEXT $notes Any notes associated with the banner
  * @param  SHORT_INTEGER $deployment_agreement The type of banner (a BANNER_* constant)
- * @set    0 1 2
+ * @set 0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never)
  * @param  ?MEMBER $submitter The banners submitter (null: leave unchanged)
  * @param  BINARY $validated Whether the banner has been validated

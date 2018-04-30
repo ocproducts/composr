@@ -7,7 +7,7 @@
  * @param  ID_TEXT $upload_folder The folder name in uploads/ where we would normally put this upload, if we weren't transferring it to the CDN
  * @param  string $filename Filename to upload with. May not be respected, depending on service implementation
  * @param  integer $obfuscate Whether to obfuscate file names so the URLs can not be guessed/derived (0=do not, 1=do, 2=make extension .dat as well)
- * @set    0 1 2
+ * @set 0 1 2
  * @param  boolean $accept_errors Whether to accept upload errors
  * @return ?URLPATH URL on syndicated server (null: did not syndicate)
  */

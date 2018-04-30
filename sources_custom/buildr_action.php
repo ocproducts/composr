@@ -166,7 +166,7 @@ function add_item_wrap_copy($member_id, $name, $price, $not_infinite)
  *
  * @param  MEMBER $member_id The member performing the action
  * @param  integer $relative Code showing where the room will be relative to the members current room. 0=above. 1=below. 2=right. 3=left.
- * @set     0 1 2 3
+ * @set 0 1 2 3
  * @param  string $name Name for the room
  * @param  string $text Description of room
  * @param  string $password_question Hint for password to enter room

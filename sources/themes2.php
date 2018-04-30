@@ -175,9 +175,9 @@ function create_selection_list_themes($theme = null, $include_rely = true, $show
  *
  * @param  ID_TEXT $theme The theme to search for
  * @param  string $directory Subdirectory type to look in
- * @set    templates javascript xml text css
+ * @set templates javascript xml text css
  * @param  ?string $suffix File type suffix of template file (e.g. .tpl) (null: calculate for the $directory norm)
- * @set    .tpl .js .xml .txt .css
+ * @set .tpl .js .xml .txt .css
  * @param  boolean $this_theme_only Just for this theme
  * @return array A map of the files (file=>path)
  */
@@ -227,7 +227,7 @@ function get_template_files_list($theme, $directory, $suffix = null, $this_theme
  * @param  PATH $base_dir The path to search relative to
  * @param  PATH $subdir The subdirectory to search
  * @param  string $suffix File type suffix of template file (e.g. .tpl)
- * @set    .tpl .js .xml .txt .css
+ * @set .tpl .js .xml .txt .css
  * @return array A map of the files (file=>path)
  *
  * @ignore

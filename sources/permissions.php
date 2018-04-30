@@ -856,7 +856,7 @@ function has_privilege($member_id, $privilege, $page = null, $cats = null)
  * Check to see if a member has permission to submit an item. If it doesn't, an error message is outputted.
  *
  * @param  string $range The range of privilege we are checking to see if they have; these ranges are like trust levels
- * @set   low mid high cat_low cat_mid cat_high
+ * @set low mid high cat_low cat_mid cat_high
  * @param  ?array $cats A list of cat details to require access to (c-type-1,c-id-1,c-type-2,c-d-2,...) (null: N/A)
  * @param  ?ID_TEXT $page The ID code for the page being checked (null: current page)
  */
@@ -875,7 +875,7 @@ function check_submit_permission($range, $cats = null, $page = null)
  * Find if a member has permission to submit.
  *
  * @param  string $range The range of privilege we are checking to see if they have; these ranges are like trust levels
- * @set    low mid high cat_low cat_mid cat_high
+ * @set low mid high cat_low cat_mid cat_high
  * @param  MEMBER $member_id The member being checked whether to have the access
  * @param  IP $ip The member's IP address
  * @param  ?ID_TEXT $page The ID code for the page being checked (null: current page)
@@ -914,7 +914,7 @@ function has_submit_permission($range, $member_id, $ip, $page, $cats = null)
  * Check to see if a member has permission to edit any of an item. If it doesn't, an error message is outputted.
  *
  * @param  string $range The range of privilege we are checking to see if they have; these ranges are like trust levels
- * @set    low mid high cat_low cat_mid cat_high
+ * @set low mid high cat_low cat_mid cat_high
  * @param  ?array $cats A list of cat details to require access to (c-type-1,c-id-1,c-type-2,c-d-2,...) (null: N/A)
  * @param  ?ID_TEXT $page The ID code for the page being checked (null: current page)
  */
@@ -945,7 +945,7 @@ function check_some_edit_permission($range, $cats = null, $page = null)
  * Check to see if a member has permission to edit an item. If it doesn't, an error message is outputted.
  *
  * @param  string $range The range of privilege we are checking to see if they have; these ranges are like trust levels
- * @set    low mid high cat_low cat_mid cat_high
+ * @set low mid high cat_low cat_mid cat_high
  * @param  ?MEMBER $resource_owner The member that owns this resource (null: no-one)
  * @param  ?array $cats A list of cat details to require access to (c-type-1,c-id-1,c-type-2,c-d-2,...) (null: N/A)
  * @param  ?ID_TEXT $page The ID code for the page being checked (null: current page)
@@ -965,7 +965,7 @@ function check_edit_permission($range, $resource_owner, $cats = null, $page = nu
  * Find if a member has permission to edit.
  *
  * @param  string $range The range of privilege we are checking to see if they have; these ranges are like trust levels
- * @set    low mid high cat_low cat_mid cat_high
+ * @set low mid high cat_low cat_mid cat_high
  * @param  MEMBER $member_id The member being checked for access
  * @param  ?MEMBER $resource_owner The member that owns this resource (null: no-one)
  * @param  ?ID_TEXT $page The ID code for the page being checked (null: current page)
@@ -990,7 +990,7 @@ function has_edit_permission($range, $member_id, $resource_owner, $page, $cats =
  * Check if a member has permission to delete a specific resource. If it doesn't, an error message is outputted.
  *
  * @param  string $range The range of privilege we are checking to see if they have; these ranges are like trust levels
- * @set    low mid high cat_low cat_mid cat_high
+ * @set low mid high cat_low cat_mid cat_high
  * @param  ?MEMBER $resource_owner The member that owns this resource (null: no-one)
  * @param  ?array $cats A list of cat details to require access to (c-type-1,c-id-1,c-type-2,c-d-2,...) (null: N/A)
  * @param  ?ID_TEXT $page The ID code for the page being checked (null: current page)
@@ -1010,7 +1010,7 @@ function check_delete_permission($range, $resource_owner, $cats = null, $page = 
  * Check to see if a member has permission to delete a specific resource.
  *
  * @param  string $range The range of privilege we are checking to see if they have; these ranges are like trust levels
- * @set    low mid high cat_low cat_mid cat_high
+ * @set low mid high cat_low cat_mid cat_high
  * @param  MEMBER $member_id The member being checked for access
  * @param  ?MEMBER $resource_owner The member that owns this resource (null: no-one)
  * @param  ?ID_TEXT $page The ID code for the page being checked (null: current page)

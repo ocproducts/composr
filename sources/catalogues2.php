@@ -106,7 +106,7 @@ function catalogue_from_tree($catalogue_name)
  * @param  integer $submit_points How many points a member gets by submitting to this catalogue
  * @param  BINARY $ecommerce Whether the catalogue is an eCommerce catalogue
  * @param  ID_TEXT $send_view_reports How to send view reports
- * @set    never daily weekly monthly quarterly
+ * @set never daily weekly monthly quarterly
  * @param  ?integer $default_review_freq Default review frequency for catalogue entries (null: none)
  * @param  ?TIME $add_time The add time (null: now)
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
@@ -307,7 +307,7 @@ function actual_add_catalogue_field($c_name, $name, $description = '', $type = '
  * @param  integer $submit_points How many points are given to a member that submits to the catalogue
  * @param  BINARY $ecommerce Whether the catalogue is an eCommerce catalogue
  * @param  ID_TEXT $send_view_reports How to send view reports
- * @set    never daily weekly monthly quarterly
+ * @set never daily weekly monthly quarterly
  * @param  ?integer $default_review_freq Default review frequency for catalogue entries (null: none)
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict

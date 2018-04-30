@@ -1299,7 +1299,7 @@ function cns_unban_member($member_id)
  * @param  integer $order The order of this field relative to other fields
  * @param  LONG_TEXT $only_group The usergroups that this field is confined to (comma-separated list)
  * @param  ID_TEXT $type The type of the field
- * @set    short_text long_text short_trans long_trans integer upload picture url list tick float
+ * @set short_text long_text short_trans long_trans integer upload picture url list tick float
  * @param  BINARY $show_on_join_form Whether it is required that every member have this field filled in
  * @param  SHORT_TEXT $options Field options
  * @param  ID_TEXT $icon Whether it is required that every member have this field filled in

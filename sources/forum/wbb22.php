@@ -550,7 +550,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
      * @param  SHORT_TEXT $filter_topic_title The topic title filter
      * @param  boolean $show_first_posts Whether to show the first posts
      * @param  string $date_key The date key to sort by
-     * @set    lasttime firsttime
+     * @set lasttime firsttime
      * @param  boolean $hot Whether to limit to hot topics
      * @param  SHORT_TEXT $filter_topic_description The topic description filter
      * @return ?array The array of topics (null: error)

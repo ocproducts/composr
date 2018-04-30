@@ -157,7 +157,7 @@ class Hook_payment_gateway_worldpay
      * @param  ID_TEXT $currency The currency to use
      * @param  integer $length The subscription length in the units
      * @param  ID_TEXT $length_units The length units
-     * @set    d w m y
+     * @set d w m y
      * @return Tempcode The button
      */
     public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $currency, $length, $length_units)

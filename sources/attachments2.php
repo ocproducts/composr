@@ -287,7 +287,7 @@ function _check_attachment_count()
  *
  * @param  ID_TEXT $field_name The field name
  * @param  integer $level The level of importance this language string holds
- * @set    1 2 3 4
+ * @set 1 2 3 4
  * @param  LONG_TEXT $text The Comcode content
  * @param  ID_TEXT $type The arbitrary type that the attached is for (e.g. download)
  * @param  ID_TEXT $id The ID in the set of the arbitrary types that the attached is for

@@ -270,7 +270,7 @@ function is_plupload($fake_prepopulation = false)
  * @param  ID_TEXT $attach_name The name of the HTTP file parameter storing the upload (if '', then no HTTP file parameter). No file necessarily is uploaded under this.
  * @param  ID_TEXT $upload_folder The folder name where we will put this upload
  * @param  integer $obfuscate Whether to obfuscate file names so the URLs can not be guessed/derived (0=do not, 1=do, 2=make extension .dat as well, 3=only obfuscate if we need to)
- * @set    0 1 2 3
+ * @set 0 1 2 3
  * @param  integer $enforce_type The type of upload it is (bitmask, from CMS_UPLOAD_* constants)
  * @param  boolean $make_thumbnail Make a thumbnail (this only makes sense, if it is an image)
  * @param  ID_TEXT $thumb_specify_name The name of the POST parameter storing the thumb URL. As before
@@ -797,7 +797,7 @@ function _check_enforcement_of_type($member_id, $file, $enforce_type, $accept_er
  * @param  PATH $upload_folder_full Full folder path
  * @param  integer $enforce_type The type of upload it is (bitmask, from CMS_UPLOAD_* constants)
  * @param  integer $obfuscate Whether to obfuscate file names so the URLs can not be guessed/derived (0=do not, 1=do, 2=make extension .dat as well)
- * @set    0 1 2
+ * @set 0 1 2
  * @param  boolean $accept_errors Whether to accept upload errors
  * @param  ?string $filename Filename to use (null: choose one)
  * @return array A pair: the URL and the filename
@@ -883,7 +883,7 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
  * @param  ID_TEXT $upload_folder The folder name in uploads/ where we would normally put this upload, if we weren't transferring it to the CDN
  * @param  string $filename Filename to upload with. May not be respected, depending on service implementation
  * @param  integer $obfuscate Whether to obfuscate file names so the URLs can not be guessed/derived (0=do not, 1=do, 2=make extension .dat as well)
- * @set    0 1 2
+ * @set 0 1 2
  * @param  boolean $accept_errors Whether to accept upload errors
  * @return ?URLPATH URL on syndicated server (null: did not syndicate)
  */

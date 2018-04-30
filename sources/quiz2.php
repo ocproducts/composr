@@ -323,7 +323,7 @@ function _save_available_quiz_answers($id, $text, $type)
  * @param  integer $num_winners The number of winners for this if it is a competition
  * @param  integer $redo_time The minimum number of hours between attempts
  * @param  ID_TEXT $type The type
- * @set    SURVEY COMPETITION TEST
+ * @set SURVEY COMPETITION TEST
  * @param  BINARY $validated Whether this is validated
  * @param  string $text Text for questions
  * @param  ?MEMBER $submitter The member adding it (null: current member)
@@ -417,7 +417,7 @@ function add_quiz($name, $timeout, $start_text, $end_text, $end_text_fail, $note
  * @param  integer $num_winners The number of winners for this if it is a competition
  * @param  integer $redo_time The minimum number of hours between attempts
  * @param  ID_TEXT $type The type
- * @set    SURVEY COMPETITION TEST
+ * @set SURVEY COMPETITION TEST
  * @param  BINARY $validated Whether this is validated
  * @param  string $text Text for questions
  * @param  SHORT_TEXT $meta_keywords Meta keywords
