@@ -200,11 +200,13 @@ function calculate_shipping_cost($details, $shipping_cost, &$product_weight, &$p
 
     // Error handling
     $error_message = '';
-    foreach ($response['messages'] as $error_struct) {
-        if ($error_message != '') {
-            $error_message = '';
+    if (isset($response['messages'])) {
+        foreach ($response['messages'] as $error_struct) {
+            if ($error_message != '') {
+                $error_message = '';
+            }
+            $error_message .= $error_struct['text'];
         }
-        $error_message .= $error_struct['text'];
     }
     if ($response['object_status'] == 'ERROR') {
         fatal_exit(do_lang_tempcode('SHIPPING_ERROR', escape_html($error_message)));
