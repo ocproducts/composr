@@ -461,7 +461,7 @@ function taxcloud_declare_completed($tracking_id, $txn_id, $member_id, $session_
     if ($response['ResponseType'] != 3) {
         $messages = array();
         foreach ($response['Messages'] as $message) {
-            if (strpos($message['Message'], 'already') !== false) {
+            if (strpos($message['Message'], 'already') === false) {
                 $messages[] = $message['Message'];
             }
         }
