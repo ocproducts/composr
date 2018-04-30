@@ -1512,7 +1512,6 @@
     // Hide a 'tray' of trs in a form
     function toggleSubordinateFields(anchor, helpId) {
         var icon = anchor.querySelector('.icon'),
-            use = icon.querySelector('use'),
             fieldInput = $dom.parent(icon, '.form-table-field-spacer'),
             next = fieldInput.nextElementSibling,
             newDisplayState, newDisplayState2;
@@ -1529,7 +1528,7 @@
             }
         }
 
-        if ((!next && (use ? use.getAttribute('xlink:href').includes('expand') : icon.src.includes('expand'))) || (next && (next.style.display === 'none'))) {/* Expanding now */
+        if ((!next && $cms.isIcon(icon, 'trays/expand')) || (next && (next.style.display === 'none'))) {/* Expanding now */
             anchor.title = '{!CONTRACT;^}';
             $cms.setIcon(icon, 'trays/contract', '{$IMG;,icons/trays/contract}');
             newDisplayState = ''; // default state from CSS

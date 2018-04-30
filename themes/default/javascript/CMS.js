@@ -999,9 +999,10 @@
     };
 
     /**
-     * @param iconEl
-     * @param iconName
-     * @param imageSrc
+     * Change an icon to another one
+     * @param {SVGSVGElement|HTMLImageElement} iconEl
+     * @param {string} iconName
+     * @param {string} imageSrc
      */
     $cms.setIcon = function setIcon(iconEl, iconName, imageSrc) {
         var symbolId, use, newSrc, newClass;
@@ -1023,6 +1024,28 @@
         // Replace the existing icon-* class with the new one
         newClass = iconName.replace(/_/g, '-').replace(/\//g, '--');
         iconEl.className = iconEl.className.replace(/(^| )icon-[\w\-]+($| )/, ' ' + newClass + ' ').trim().replace(/ +/g, ' ');
+    };
+
+    /**
+     * Find out whether an icon is a particular one
+     * @param {SVGSVGElement|HTMLImageElement} iconEl
+     * @param {string} iconName
+     * @returns {boolean}
+     */
+    $cms.isIcon = function isIcon(iconEl, iconName) {
+        var src;
+        
+        if (iconEl.localName === 'svg') {
+            return iconEl.querySelector('use').getAttribute('xlink:href').endsWith('#' + iconName.replace(/\//g, '__'));
+        }
+        
+        src = $util.url(iconEl.src);
+        
+        if (src.pathname.includes('/themewizard.php')) {
+            return src.searchParams.get('show') === 'icons/' + iconName;
+        }
+        
+        return src.pathname.includes('icons/' + iconName);
     };
 
     /**
