@@ -1020,10 +1020,11 @@
             }
             iconEl.src = newSrc;
         }
-
+        
         // Replace the existing icon-* class with the new one
         newClass = iconName.replace(/_/g, '-').replace(/\//g, '--');
-        iconEl.className = iconEl.className.replace(/(^| )icon-[\w\-]+($| )/, ' ' + newClass + ' ').trim().replace(/ +/g, ' ');
+        // Using setAttribute() because the className property on <svg> elements is a "SVGAnimatedString" object rather than a string
+        iconEl.setAttribute('class', iconEl.getAttribute('class').replace(/(^| )icon-[\w\-]+($| )/, ' icon-' + newClass + ' ').trim().replace(/ +/g, ' '));
     };
 
     /**
