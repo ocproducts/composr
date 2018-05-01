@@ -86,8 +86,8 @@ function do_work()
         $member_id = cns_make_member(
             uniqid('', false), // username
             uniqid('', true), // password
-            null, // primary_group
             uniqid('', true) . '@example.com', // email_address
+            null, // primary_group
             null, // secondary_groups
             intval(date('d')), // dob_day
             intval(date('m')), // dob_month
@@ -111,9 +111,9 @@ function do_work()
             null, // sound_enabled
             1, // allow_emails
             1, // allow_emails_from_staff
+            0, // highlighted_name
             '*', // pt_allow
             '', // pt_rules_text
-            0, // highlighted_name
             1, // validated
             '', // validated_email_confirm_code
             null, // on_probation_until

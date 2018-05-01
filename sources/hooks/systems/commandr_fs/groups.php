@@ -410,9 +410,9 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             $sound_enabled, // sound_enabled
             $allow_emails, // allow_emails
             $allow_emails_from_staff, // allow_emails_from_staff
+            $highlighted_name, // highlighted_name
             $pt_allow, // pt_allow
             $pt_rules_text, // pt_rules_text
-            $highlighted_name, // highlighted_name
             $validated, // validated
             $validated_email_confirm_code, // validated_email_confirm_code
             $on_probation_until, // on_probation_until

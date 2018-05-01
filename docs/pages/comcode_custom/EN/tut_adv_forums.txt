@@ -34,6 +34,30 @@ Members enable/disable the functionality from the notifications tab of their acc
 Composr makes some attempt to clean up the e-mail text, so that the forum posts are not too much of a mess.
 [/surround]
 
+[title="3"]Processing notes[/title]
+
+Be aware of the following:
+ - Comcode is generally processed with guest permissions, due to us not being able to perfectly confirm the poster is who they say they are.
+ - Attachments provided are not fully protected from unauthorised access, due to the need for them be able to render with guest credentials.
+ - Posting is tracked by marking e-mails read. If you mark an e-mail unread, it will post again. This can be useful for testing.
+
+[title="3"]Specific mail servers[/title]
+
+This section covers some advice for specific mail servers we have tested.
+
+[title="4"]Gmail[/title]
+
+Gmail can be highly problematic, and we were not able to get it to work reliably during testing due to automated threat detection measures running on Google's servers.
+To get it to run you need to do the following:
+ - Enable IMAP in the gmail settings of the account
+ - Enable [url="less secure apps"]https://myaccount.google.com/lesssecureapps[/url]
+ - Either disable 2-step verification, or configure using app-specific passwords rather than the account password
+ - You may need to do a [url="CAPTCHA unlock"]https://accounts.google.com/b/0/DisplayUnlockCaptcha[/url]
+
+[title="4"]Zoho[/title]
+
+For Zoho to work you just need to enable IMAP in your Zoho Mail account settings.
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_forums"]Discussion forums[/page]

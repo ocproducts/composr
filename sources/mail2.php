@@ -66,7 +66,7 @@ function _imap_server_spec($host, $port, $type = null)
     }
 
     if ($ssl || $starttls) {
-        $server_special_details .= '/secure';
+        //$server_special_details .= '/secure'; "do not transmit a plaintext password over the network", causes issue with gmail ("Can't do secure authentication with this server")
         if ($ssl) {
             $server_special_details .= '/ssl';
         }

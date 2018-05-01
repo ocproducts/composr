@@ -19,6 +19,17 @@
  */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__cns_forum_email_integration()
+{
+    require_lang('cns');
+    require_code('cns_forums2');
+}
+
+/**
  * Forum e-mail integration class.
  *
  * @package        cns_forum
@@ -107,7 +118,6 @@ class ForumEmailIntegration extends EmailIntegration
      */
     public function incoming_scan()
     {
-        require_code('cns_forums2');
         $test = cns_has_mailing_list_style();
         if ($test[0] == 0) {
             return; // Possibly due to not being fully configured yet
@@ -115,7 +125,7 @@ class ForumEmailIntegration extends EmailIntegration
 
         $sql = 'SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums';
         $sql_sup = ' WHERE ' . db_string_not_equal_to('f_mail_username', '') . ' AND ' . db_string_not_equal_to('f_mail_email_address', '');
-        $rows = $GLOBALS['FORUM_DB']->query($sql);
+        $rows = $GLOBALS['FORUM_DB']->query($sql . $sql_sup);
         foreach ($rows as $row) {
             $this->forum_id = $row['id'];
             $this->forum_row = $row;
@@ -152,10 +162,11 @@ class ForumEmailIntegration extends EmailIntegration
             return;
         }
 
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+
         // Check access
-        if (!has_category_access($this->member_id, 'forums', strval($this->forum_id))) {
-            $forum_name = get_translated_text($this->forum_row['f_name']);
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+        if (!has_category_access($member_id, 'forums', strval($this->forum_id))) {
+            $forum_name = $this->forum_row['f_name'];
             $this->send_bounce_email__access_denied($subject, $body, $from_email, $email_bounce_to, $forum_name, $username);
         }
 
@@ -190,13 +201,15 @@ class ForumEmailIntegration extends EmailIntegration
             require_code('cns_topics_action');
             $topic_id = cns_make_topic($this->forum_id);
         }
-        require_code('cns_posts_action');
+
         if (is_guest($member_id)) {
-            $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-        } else {
             $poster_name_if_guest = titleify(str_replace('.', ' ', preg_replace('#[@+].*$#', '', $from_email)));
+        } else {
+            $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
         }
-        $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter, null, 0, $poster_name_if_guest);
+
+        require_code('cns_posts_action');
+        $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter, null, 0, $poster_name_if_guest, null, null, $member_id);
 
         if (count($attachment_errors) != 0) {
             $post_url = $GLOBALS['FORUM_DRIVER']->post_url($post_id, '');

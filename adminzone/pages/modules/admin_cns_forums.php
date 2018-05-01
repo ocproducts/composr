@@ -252,10 +252,10 @@ class Module_admin_cns_forums extends Standard_crud_module
 
             $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), do_lang_tempcode('CONFIG_OPTION_website_email'), 'mail_email_address', $mail_email_address, false));
             $mail_server_types = new Tempcode();
-            foreach (array('imap', 'imaps', 'imaps_nocert', 'imapt', 'imapt_nocert', 'pop3', 'pop3s', 'pop3s_nocert', 'pop3t', 'pop3t_nocert') as $_mail_server_type) {
+            foreach (array('', 'imap', 'imaps', 'imaps_nocert', 'imapt', 'imapt_nocert', 'pop3', 'pop3s', 'pop3s_nocert', 'pop3t', 'pop3t_nocert') as $_mail_server_type) {
                 $mail_server_types->attach(form_input_list_entry($_mail_server_type, $_mail_server_type == $mail_server_type));
             }
-            $fields->attach(form_input_list(do_lang_tempcode('SERVER_TYPE'), do_lang_tempcode('CONFIG_OPTION_mail_server_type'), 'mail_server_type', $mail_server_types));
+            $fields->attach(form_input_list(do_lang_tempcode('SERVER_TYPE'), do_lang_tempcode('CONFIG_OPTION_mail_server_type'), 'mail_server_type', $mail_server_types, null, false, false));
 
             $fields->attach(form_input_line(do_lang_tempcode('HOST'), do_lang_tempcode('CONFIG_OPTION_mail_server_host'), 'mail_server_host', $mail_server_host, false));
             $fields->attach(form_input_integer(do_lang_tempcode('PORT'), do_lang_tempcode('CONFIG_OPTION_mail_server_port'), 'mail_server_port', $mail_server_port, false));
@@ -626,7 +626,7 @@ class Module_admin_cns_forums extends Standard_crud_module
 
             $test = $GLOBALS['FORUM_DB']->query('SELECT f_name FROM ' . $table . ' WHERE ' . $where);
             if (count($test) > 0) {
-                warn_exit(do_lang_tempcode('FORUM_MAIL_USER_CANNOT_BE_SHARED', escape_html(get_translated_text($test[0]['f_name']))));
+                warn_exit(do_lang_tempcode('FORUM_MAIL_USER_CANNOT_BE_SHARED', escape_html($test[0]['f_name'])));
             }
         }
 

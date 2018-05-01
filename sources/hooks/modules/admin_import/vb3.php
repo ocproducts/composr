@@ -405,6 +405,7 @@ class Hook_vb3
                     null, // on_probation_until
                     0, // is_perm_banned
                     false, // check_correctness
+                    null, // ip_address
                     $type, // password_compatibility_scheme
                     $salt, // salt
                     $row['joindate'], // join_time

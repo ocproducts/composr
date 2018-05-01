@@ -248,13 +248,12 @@ abstract class EmailIntegration
      * Process an e-mail found.
      *
      * @param  EMAIL $from_email From e-mail
-     * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      * @param  string $from_name From name
      * @param  string $subject E-mail subject
      * @param  string $body E-mail body
      * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
      */
-    protected function process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $body, $attachments)
+    protected function process_incoming_message($from_email, $from_name, $subject, $body, $attachments)
     {
         $email_bounce_to = $from_email;
 
@@ -476,6 +475,7 @@ abstract class EmailIntegration
             case 'create_account':
                 require_code('crypt');
                 $password = get_rand_password();
+                require_code('cns_members_action');
                 $member_id = cns_make_member($username, $password, $from_email);
 
                 // Send creation e-mail
@@ -542,22 +542,22 @@ abstract class EmailIntegration
         $num_attachments_handed = 0;
         foreach ($attachments as $filename => $filedata) {
             if (($max_attachments_per_post !== null) && ($max_attachments_per_post <= $num_attachments_handed)) {
-                $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_TOO_MANY', array(integer_format($num_attachments_handed), integer_format($max_attachments_per_post)));
+                $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_TOO_MANY', integer_format($num_attachments_handed), integer_format($max_attachments_per_post));
                 break;
             }
 
             if (!check_extension($filename, true, null, true, $member_id_comcode)) {
-                $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_INVALID_TYPE', array($filename));
+                $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_INVALID_TYPE', $filename);
                 continue;
             }
 
             if (strlen($filedata) > $max_download_size) {
-                $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_TOO_BIG', array(clean_file_size($max_download_size)));
+                $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_TOO_BIG', clean_file_size($max_download_size));
             }
 
             $max_size = get_max_file_size($member_id, null, false);
             if (strlen($filedata) > $max_size) {
-                $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_OVER_QUOTA', array(clean_file_size($daily_quota * 1024 * 1024)));
+                $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_OVER_QUOTA', clean_file_size($daily_quota * 1024 * 1024));
             }
 
             $new_filename = preg_replace('#\..*#', '', $filename) . '.dat';
@@ -585,6 +585,7 @@ abstract class EmailIntegration
                 'a_description' => '',
                 'a_add_time' => time()
             ), true);
+            $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => 'null', 'r_referer_id' => '', 'a_id' => $attachment_id));
 
             $body .= "\n\n" . '[attachment framed="1" thumb="1"]' . strval($attachment_id) . '[/attachment]';
 
@@ -753,7 +754,7 @@ abstract class EmailIntegration
      */
     protected function get_email_address_from_header($header)
     {
-        $addresses = imap_rfc822_parse_adrlist($header);
+        $addresses = imap_rfc822_parse_adrlist($header, get_domain());
         if (count($addresses) == 0) {
             return null;
         }
@@ -785,7 +786,7 @@ abstract class EmailIntegration
     protected function send_bounce_email__attachment_errors($subject, $body, $email, $email_bounce_to, $errors, $url)
     {
         $extended_subject = do_lang('MAIL_INTEGRATION_ATTACHMENT_ERRORS_SUBJECT', $subject, $email, array(get_site_name()), get_site_default_lang());
-        $extended_message = do_lang('MAIL_INTEGRATION_ATTACHMENT_ERRORS_MAIL', comcode_to_clean_text($body), $email, array($subject, get_site_name(), $errors, $url), get_site_default_lang());
+        $extended_message = do_lang('MAIL_INTEGRATION_ATTACHMENT_ERRORS_MAIL', comcode_to_clean_text($body), $email, array($subject, get_site_name(), implode("\n", $errors), $url), get_site_default_lang());
 
         $this->send_system_email($extended_subject, $extended_message, $email, $email_bounce_to);
     }
@@ -810,12 +811,9 @@ abstract class EmailIntegration
      */
     protected function send_system_email($subject, $body, $email, $email_bounce_to)
     {
-        $headers = '';
-        $website_email = $this->get_sender_email();
         $from_email = $this->get_system_email();
-        $headers .= 'From: ' . get_site_name() . ' <' . $website_email . '>' . "\r\n";
-        $headers .= 'Reply-To: ' . get_site_name() . ' <' . $from_email . '>';
 
-        mail($email_bounce_to, $subject, $body, $headers);
+        require_code('mail');
+        mail_wrap($subject, $body, array($email_bounce_to), null, $from_email, '', 2);
     }
 }

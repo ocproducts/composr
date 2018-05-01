@@ -3049,9 +3049,9 @@ class Hook_cms_merge
                         $row['m_sound_enabled'], // sound_enabled
                         $row['m_allow_emails'], // allow_emails
                         $row['m_allow_emails_from_staff'], // allow_emails_from_staff
+                        $row['m_highlighted_name'], // highlighted_name
                         $row['m_pt_allow'], // pt_allow
                         $this->get_lang_string($db, $row['m_pt_rules_text']), // pt_rules_text
-                        $row['m_highlighted_name'], // highlighted_name
                         $row['m_validated'], // validated
                         $row['m_validated_email_confirm_code'], // validated_email_confirm_code
                         $row['m_on_probation_until'], // on_probation_until

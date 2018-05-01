@@ -148,6 +148,8 @@ Composr will try and match the original e-mailer for forwarded e-mails. You can 
 This is useful if Composr cannot match the originating e-mail address automatically. Often people have multiple e-mail addresses. Composr will learn, so you only need to do it once per person. If Composr can't find a match it will e-mail you back saying so, rather than logging the ticket against a Guest. You can override this behaviour via tagging against [tt][Guest][/tt].
 You can also use square brackets to specify the ticket type to log as. Composr "intelligently" matches things in square brackets against whatever it can.
 
+Some further applicable advice is included in the [page="_SEARCH:tut_adv_forums"]Advanced forum settings[/page] tutorial.
+
 [title="2"]The Messaging system[/title]
 
 The Messaging system is designed to allow staff to easily receive messages and organise themselves with respect to those messages. It is different from the Support Ticket system because the Messaging system is designed around staff planning, and unlike support tickets there is no inbuilt reply mechanism to reply to messages received (although people may leave their contact details). It is optimised for managing feedback instead of maintaining customer relationships.

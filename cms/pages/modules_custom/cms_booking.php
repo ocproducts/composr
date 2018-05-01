@@ -1128,9 +1128,9 @@ class Module_cms_booking_bookings extends Standard_crud_module
                     null, // sound_enabled
                     1, // allow_emails
                     1, // allow_emails_from_staff
+                    0, // highlighted_name
                     '*', // pt_allow
                     '', // pt_rules_text
-                    0, // highlighted_name
                     1, // validated
                     '', // validated_email_confirm_code
                     null, // on_probation_until
