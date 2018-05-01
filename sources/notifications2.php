@@ -220,7 +220,7 @@ function notifications_ui($member_id_of)
             require_code('cns_forums2');
             $test = cns_has_mailing_list_style();
             if ($test[0] > 0) {
-                $mailing_list_style = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'mailing_list_style') == 1);
+                $mailing_list_style = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_mailing_list_style') == 1);
             }
             $mlsn_description_caveat = $test[1] ? new Tempcode() : do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE_CAVEAT');
             $mlsn_description = do_lang_tempcode('DESCRIPTION_MAILING_LIST_STYLE', $mlsn_description_caveat);

@@ -249,6 +249,25 @@ class Hook_notification_cns_topic extends Hook_Notification
             list($members, $maybe_more) = $this->_all_members_who_have_enabled_with_category_access(array($members, $maybe_more), 'forums', $notification_code, strval($forum_id), $to_member_ids, $start, $max);
         }
 
+        // Filter members who will receive mailing-style e-mails
+        if ((is_numeric($category)) && ($this->handle_mailing_list)) {
+            require_code('cns_forums2');
+            $mls = cns_has_mailing_list_style($forum_id);
+            if ($mls[0] == 1) {
+                $this->mailing_list_members = array();
+
+                foreach ($members as $member_id => $setting) {
+                    $mailing_list_style = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_mailing_list_style') == 1);
+                    $email_address = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address');
+                    $receive_email_notification = ($setting & A_INSTANT_EMAIL) != 0;
+                    if (($mailing_list_style) && ($email_address != '') && ($receive_email_notification)) {
+                        $this->mailing_list_members[] = $member_id;
+                        $members[$member_id] = $setting & ~A_INSTANT_EMAIL;
+                    }
+                }
+            }
+        }
+
         // Filter members who have more than one unread posts in that topic
         if (is_numeric($category)) {
             $members_new = array();
@@ -271,25 +290,6 @@ class Hook_notification_cns_topic extends Hook_Notification
                 }
             }
             $members = $members_new;
-        }
-
-        // Filter members who will receive mailing-style e-mails
-        if ((is_numeric($category)) && ($this->handle_mailing_list)) {
-            require_code('cns_forums2');
-            $mls = cns_has_mailing_list_style($forum_id);
-            if ($mls[0] == 1) {
-                $this->mailing_list_members = array();
-
-                foreach ($members as $member_id => $setting) {
-                    $mailing_list_style = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_mailing_list_style') == 1);
-                    $email_address = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address');
-                    $receive_email_notification = ($setting & A_INSTANT_EMAIL) != 0;
-                    if (($mailing_list_style) && ($email_address != '') && ($receive_email_notification)) {
-                        $setting = $setting & ~A_INSTANT_EMAIL;
-                        $this->mailing_list_members[] = $member_id;
-                    }
-                }
-            }
         }
 
         return array($members, $maybe_more);
