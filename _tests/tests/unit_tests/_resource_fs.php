@@ -193,15 +193,20 @@ class _resource_fs_test_set extends cms_test_case
 
             if ($path != '') {
                 $result = $ob->folder_load(basename($path), (strpos($path, '/') === false) ? '' : dirname($path));
-                $result = $ob->folder_edit(basename($path), (strpos($path, '/') === false) ? '' : dirname($path), $result);
-                $this->assertTrue($result !== false, 'Failed to folder_edit ' . $commandr_fs_hook);
+                $this->assertTrue($result !== false, 'Failed to folder_load before folder_edit ' . $commandr_fs_hook);
+                if ($result !== false) {
+                    $result = $ob->folder_edit(basename($path), (strpos($path, '/') === false) ? '' : dirname($path), $result);
+                    $this->assertTrue($result !== false, 'Failed to folder_edit ' . $commandr_fs_hook);
+                }
 
                 if (strpos($path, '/') !== false) {
                     $_path = dirname($path);
                     $result = $ob->folder_load(basename($_path), (strpos($_path, '/') === false) ? '' : dirname($_path));
-
-                    $result = $ob->folder_edit(basename($_path), (strpos($_path, '/') === false) ? '' : dirname($_path), $result);
-                    $this->assertTrue($result !== false, 'Failed to folder_edit ' . $commandr_fs_hook);
+                    $this->assertTrue($result !== false, 'Failed to folder_load before folder_edit ' . $commandr_fs_hook);
+                    if ($result !== false) {
+                        $result = $ob->folder_edit(basename($_path), (strpos($_path, '/') === false) ? '' : dirname($_path), $result);
+                        $this->assertTrue($result !== false, 'Failed to folder_edit ' . $commandr_fs_hook);
+                    }
                 }
             }
 
