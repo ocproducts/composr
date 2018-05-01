@@ -85,7 +85,7 @@
     function toggleInstallerSection(id) {
         // Try and grab our item
         var itm = document.getElementById(id),
-            img = document.getElementById('img_' + id);
+            img = document.getElementById('img-' + id);
 
         if (itm.style.display === 'none') {
             itm.style.display = 'block';

@@ -67,7 +67,7 @@ class Hook_content_meta_aware_wiki_post
             'view_page_link_pattern' => '_SEARCH:wiki:find_post:_WILD',
             'edit_page_link_pattern' => '_SEARCH:wiki:post:post_id=_WILD',
             'view_category_page_link_pattern' => '_SEARCH:wiki:browse:_WILD',
-            'add_url' => (function_exists('has_submit_permission') && has_submit_permission('low', get_member(), get_ip_address(), 'wiki')) ? (get_module_zone('wiki') . ':wiki:add_post') : null,
+            'add_url' => (function_exists('has_submit_permission') && function_exists('get_member') && has_submit_permission('low', get_member(), get_ip_address(), 'wiki')) ? (get_module_zone('wiki') . ':wiki:add_post') : null,
             'archive_url' => (($zone !== null) ? $zone : get_module_zone('wiki')) . ':wiki',
 
             'support_url_monikers' => false,
