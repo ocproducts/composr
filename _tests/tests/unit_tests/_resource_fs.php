@@ -38,7 +38,7 @@ class _resource_fs_test_set extends cms_test_case
             $this->paths = array();
         }
 
-        $GLOBALS['SITE_DB']->query_delete('alternative_ids');
+        //$GLOBALS['SITE_DB']->query_delete('alternative_ids'); Messes up future runs
         $GLOBALS['SITE_DB']->query_delete('url_id_monikers');
 
         $limit_to = get_param_string('limit_to', null); // Useful for breaking down testing into more manageable isolated pieces
@@ -77,7 +77,7 @@ class _resource_fs_test_set extends cms_test_case
             }
             $result = $ob->file_add('test_content.' . RESOURCE_FS_DEFAULT_EXTENSION, $path, array());
             destrictify();
-            $this->assertTrue($result !== false, 'Failed to file_add ' . $commandr_fs_hook);
+            $this->assertTrue($result !== false, 'Failed to file_add ' . $commandr_fs_hook . ' (' . $path . ')');
             $this->paths[$commandr_fs_hook] = $path;
         }
     }
@@ -134,19 +134,25 @@ class _resource_fs_test_set extends cms_test_case
             if (!is_null($ob->folder_resource_type)) {
                 $folder_resource_type = is_array($ob->folder_resource_type) ? $ob->folder_resource_type[0] : $ob->folder_resource_type;
                 list(, $folder_resource_id) = $ob->folder_convert_filename_to_id('test-a', $folder_resource_type);
-                $test = $ob->search($folder_resource_type, $folder_resource_id, true);
-                $this->assertTrue($test !== null, 'Could not search for ' . $folder_resource_type . ' test-a');
+                $this->assertTrue($folder_resource_id !== null, 'Could not folder_convert_filename_to_id');
+                if ($folder_resource_id !== null) {
+                    $test = $ob->search($folder_resource_type, $folder_resource_id, true);
+                    $this->assertTrue($test !== null, 'Could not search for ' . $folder_resource_type . ' test-a');
+                }
             }
 
             $file_resource_type = is_array($ob->file_resource_type) ? $ob->file_resource_type[0] : $ob->file_resource_type;
             list(, $file_resource_id) = $ob->file_convert_filename_to_id('test_content', $file_resource_type);
-            $test = $ob->search($file_resource_type, $file_resource_id, true);
-            $this->assertTrue($test !== null, 'Could not search for ' . $file_resource_type . ' test_content');
-            if (!is_null($test)) {
-                if (is_null($ob->folder_resource_type)) {
-                    $this->assertTrue($test == '', 'Should have found in root, ' . $file_resource_type);
-                } else {
-                    $this->assertTrue($test != '', 'Should not have found in root, ' . $file_resource_type);
+            $this->assertTrue($file_resource_id !== null, 'Could not file_convert_filename_to_id');
+            if ($file_resource_id !== null) {
+                $test = $ob->search($file_resource_type, $file_resource_id, true);
+                $this->assertTrue($test !== null, 'Could not search for ' . $file_resource_type . ' test_content');
+                if (!is_null($test)) {
+                    if (is_null($ob->folder_resource_type)) {
+                        $this->assertTrue($test == '', 'Should have found in root, ' . $file_resource_type);
+                    } else {
+                        $this->assertTrue($test != '', 'Should not have found in root, ' . $file_resource_type);
+                    }
                 }
             }
         }
@@ -182,7 +188,7 @@ class _resource_fs_test_set extends cms_test_case
             }
 
             $result = $ob->file_load('test_content.' . RESOURCE_FS_DEFAULT_EXTENSION, $path);
-            $this->assertTrue($result !== false, 'Failed to file_load ' . $commandr_fs_hook);
+            $this->assertTrue($result !== false, 'Failed to file_load ' . $commandr_fs_hook . ' (' . $path . ')');
         }
     }
 
@@ -196,7 +202,7 @@ class _resource_fs_test_set extends cms_test_case
                 $this->assertTrue($result !== false, 'Failed to folder_load before folder_edit ' . $commandr_fs_hook);
                 if ($result !== false) {
                     $result = $ob->folder_edit(basename($path), (strpos($path, '/') === false) ? '' : dirname($path), $result);
-                    $this->assertTrue($result !== false, 'Failed to folder_edit ' . $commandr_fs_hook);
+                    $this->assertTrue($result !== false, 'Failed to folder_edit ' . $commandr_fs_hook . ' (' . $path . ')');
                 }
 
                 if (strpos($path, '/') !== false) {
@@ -205,13 +211,13 @@ class _resource_fs_test_set extends cms_test_case
                     $this->assertTrue($result !== false, 'Failed to folder_load before folder_edit ' . $commandr_fs_hook);
                     if ($result !== false) {
                         $result = $ob->folder_edit(basename($_path), (strpos($_path, '/') === false) ? '' : dirname($_path), $result);
-                        $this->assertTrue($result !== false, 'Failed to folder_edit ' . $commandr_fs_hook);
+                        $this->assertTrue($result !== false, 'Failed to folder_edit ' . $commandr_fs_hook . ' (' . $_path . ')');
                     }
                 }
             }
 
             $result = $ob->file_edit('test_content.' . RESOURCE_FS_DEFAULT_EXTENSION, $path, array('label' => 'test_content'));
-            $this->assertTrue($result !== false, 'Failed to file_edit ' . $commandr_fs_hook);
+            $this->assertTrue($result !== false, 'Failed to file_edit ' . $commandr_fs_hook . ' (' . $path . ')');
         }
     }
 
@@ -221,16 +227,16 @@ class _resource_fs_test_set extends cms_test_case
             $path = $this->paths[$commandr_fs_hook];
 
             $result = $ob->file_delete('test_content.' . RESOURCE_FS_DEFAULT_EXTENSION, $path);
-            $this->assertTrue($result !== false, 'Failed to file_delete ' . $commandr_fs_hook);
+            $this->assertTrue($result !== false, 'Failed to file_delete ' . $commandr_fs_hook . ' (' . $path . ')');
 
             if ($path != '') {
                 $result = $ob->folder_delete(basename($path), (strpos($path, '/') === false) ? '' : dirname($path));
-                $this->assertTrue($result !== false, 'Failed to folder_delete ' . $commandr_fs_hook);
+                $this->assertTrue($result !== false, 'Failed to folder_delete ' . $commandr_fs_hook . ' (' . $path . ')');
 
                 if (strpos($path, '/') !== false) {
                     $_path = dirname($path);
-                    $result = $ob->folder_delete(basename($_path), dirname($_path));
-                    $this->assertTrue($result !== false, 'Failed to folder_delete ' . $commandr_fs_hook);
+                    $result = $ob->folder_delete(basename($_path), (strpos($_path, '/') === false) ? '' : dirname($_path));
+                    $this->assertTrue($result !== false, 'Failed to folder_delete ' . $commandr_fs_hook . ' (' . $_path . ')');
                 }
             }
         }
