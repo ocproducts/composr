@@ -1052,6 +1052,11 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	margin-bottom: 1em;
 }
 
+.global-message .icon-status--notice {
+	float: left;
+	margin-right: 0.3em;
+}
+
 .global-message span, .global-message img {
 	vertical-align: middle;
 }

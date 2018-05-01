@@ -31,7 +31,8 @@
         });
 
         function continueFunc() {
-            button.value = '{!PROCEED;} ({!AUTO_IN;} ' + button.countdown + ')';
+            var labelEl = button.querySelector('.js-button-label');
+            labelEl.textContent = '{!PROCEED;^} ({!AUTO_IN;^} ' + button.countdown + ')';
             if (button.countdown === 0) {
                 if (timer) {
                     window.clearInterval(timer);

@@ -6502,13 +6502,24 @@ function ecv_DECIMAL_POINT($lang, $escaped, $param)
  */
 function ecv_ICONS_SVG_SPRITE_CONTENTS($lang, $escaped, $param)
 {
-    // @TODO: Add caching?
-
+    static $_value = null;
     require_code('themes');
 
-    $theme = isset($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
+    if ($_value === null) {
+        $theme = isset($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
+        $path = get_file_base() . '/themes/' . $theme . '/images/icons/sprite.svg';
+        $_value = '';
 
-    $value = file_get_contents(get_file_base() . '/themes/' . $theme . '/images/icons/sprite.svg');
+        if (!file_exists($path)) {
+            $path = get_file_base() . '/themes/default/images/icons/sprite.svg';
+        }
+
+        if (file_exists($path)) {
+            $_value = file_get_contents($path);
+        }
+    }
+
+    $value = $_value;
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
