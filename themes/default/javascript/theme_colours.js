@@ -7,9 +7,8 @@
 
     var $themeColours = window.$themeColours = {};
 
-    window.namesToNumbers || (window.namesToNumbers = {});
-    window.lastCc || (window.lastCc = {});
-    window.lastCcI || (window.lastCcI = {});
+    var namesToNumbers = { length: 0 },
+        lastCcI = {};
 
     $themeColours.makeColourChooser = function makeColourChooser(name, color, context, tabindex, label, className) {
         name = strVal(name);
@@ -22,8 +21,8 @@
             className = 'class="' + className + '" ';
         }
 
-        window.namesToNumbers[name] = window.namesToNumbers.length;
-        window.namesToNumbers.length++;
+       namesToNumbers[name] = namesToNumbers.length;
+       namesToNumbers.length++;
 
         var p = document.getElementById('colours-go-here-' + name);
         if (!p) {
@@ -41,25 +40,25 @@
         var _color = (color === '' || color === '#') ? '#000000' : ('#' + color.substr(1));
 
         var t = '';
-        t = t + '<div class="css-colour-chooser">';
-        t = t + '	<div class="css-colour-chooser-name">';
-        t = t + '		<label class="field-name" for="' + name + '"> ' + label + '</label><br />';
-        t = t + '       <input ' + className + 'alt="{!COLOUR;^}" type="color" value="' + _color + '" id="' + name + '" name="' + name + '" size="6" class="js-change-update-chooser" />';
-        t = t + '	</div>';
-        t = t + '	<div class="css-colour-chooser-fixed">';
-        t = t + '	<div class="css-colour-chooser-from" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc-source-' + name + '">';
-        t = t + "		{!themes:FROM_COLOUR^#}";
-        t = t + '	</div>';
-        t = t + '	<div class="css-colour-chooser-to" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc-target-' + name + '">';
-        t = t + "		{!themes:TO_COLOUR^#}";
-        t = t + '	</div>';
-        t = t + '	<div class="css-colour-chooser-colour">';
-        t = t + '		<div id="cc-0-' + name + '"></div>';
-        t = t + '		<div id="cc-1-' + name + '"></div>';
-        t = t + '		<div id="cc-2-' + name + '"></div>';
-        t = t + '	</div>';
-        t = t + '	</div>';
-        t = t + '</div>';
+        t += '<div class="css-colour-chooser">';
+        t += '	<div class="css-colour-chooser-name">';
+        t += '		<label class="field-name" for="' + name + '"> ' + label + '</label><br />';
+        t += '       <input ' + className + 'alt="{!COLOUR;^}" type="color" value="' + _color + '" id="' + name + '" name="' + name + '" size="6" class="js-change-update-chooser" />';
+        t += '	</div>';
+        t += '	<div class="css-colour-chooser-fixed">';
+        t += '	<div class="css-colour-chooser-from" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc-source-' + name + '">';
+        t += '		{!themes:FROM_COLOUR^#}';
+        t += '	</div>';
+        t += '	<div class="css-colour-chooser-to" style="background-color: ' + ((color === '') ? '#000' : color) + '" id="cc-target-' + name + '">';
+        t += '		{!themes:TO_COLOUR^#}';
+        t += '	</div>';
+        t += '	<div class="css-colour-chooser-colour">';
+        t += '		<div id="cc-0-' + name + '"></div>';
+        t += '		<div id="cc-1-' + name + '"></div>';
+        t += '		<div id="cc-2-' + name + '"></div>';
+        t += '	</div>';
+        t += '	</div>';
+        t += '</div>';
 
         if (context !== '') {
             t = t + '<div class="css-colour-chooser-context">' + context + '</div>';
@@ -87,15 +86,9 @@
     };
 
     $themeColours.doColorChooser = function doColorChooser() {
-        var elements = document.getElementsByTagName('div');
-        var ce, a = 0, myElements = [];
-        for (ce = 0; ce < elements.length; ce++) {
-            if (elements[ce].id.startsWith('cc-target-')) {
-                myElements[a] = elements[ce];
-                a++;
-            }
-        }
-        for (ce = 0; ce < a; ce++) {
+        var myElements = document.querySelectorAll('div[id^=cc-target-]'), ce;
+        
+        for (ce = 0; ce < myElements.length; ce++) {
             doColorChooserElement(myElements[ce]);
         }
 
@@ -138,7 +131,7 @@
 
             var d, i, _rgb = [], bg, innert, tid, selected, style;
             for (d = 0; d <= 2; d++) {
-                window.lastCcI[d + window.namesToNumbers[id] * 3] = 0;
+                lastCcI[d + namesToNumbers[id] * 3] = 0;
                 innert = '';
 
                 for (i = 0; i < 256; i += 4) {
@@ -152,7 +145,7 @@
                         _rgb[0] = 255;
                         _rgb[1] = 255;
                         _rgb[2] = 255;
-                        window.lastCcI[d + window.namesToNumbers[id] * 3] = i;
+                        lastCcI[d + namesToNumbers[id] * 3] = i;
                     }
                     bg = 'rgb(' + _rgb[0] + ',' + _rgb[1] + ',' + _rgb[2] + ')';
                     tid = 'cc_col_' + d + '_' + i + '#' + id;
@@ -164,22 +157,17 @@
                     innert = innert + '<div class="css-colour-strip js-click-do-color-change" style="' + style + '" id="' + tid + '"></div>';
                 }
                 $dom.html(c[d], innert);
-                $dom.on(c[d].querySelector('.js-click-do-color-change'), 'click', function (e) {
-                    doColorChange(e);
-                });
             }
+            
+            $dom.on(c[0], 'click', '.js-click-do-color-change', doColorChange);
+            $dom.on(c[1], 'click', '.js-click-do-color-change', doColorChange);
+            $dom.on(c[2], 'click', '.js-click-do-color-change', doColorChange);
         }
     };
 
-    function doColorChange(e) {
-        // Find our colour element we clicked on
-        var targ;
-        if (e.target !== undefined) {
-            targ = e.target;
-        }
-
+    function doColorChange(e, target) {
         // Find the colour chooser's ID of this element
-        var _id = targ.id.substring(targ.id.lastIndexOf('#') + 1);
+        var _id = target.id.substring(target.id.lastIndexOf('#') + 1);
 
         var finality = document.getElementById(_id);
         if (finality.disabled) {
@@ -187,7 +175,7 @@
         }
 
         // Get the ID of the element we clicked (format: cc_col_<0-2>_<0-255>#<chooser-id>)
-        var id = targ.id;
+        var id = target.id;
 
         var b = id.substr(0, id.length - _id.length).lastIndexOf('_');
 
@@ -198,20 +186,20 @@
         rgb[0] = 0;
         rgb[1] = 0;
         rgb[2] = 0;
-        rgb[d] = window.lastCcI[d + window.namesToNumbers[_id] * 3];
+        rgb[d] = lastCcI[d + namesToNumbers[_id] * 3];
         var tempLastCc = document.getElementById('cc_col_' + d + '_' + rgb[d] + '#' + _id);
-        if (tempLastCc !== targ) {
+        if (tempLastCc !== target) {
             tempLastCc.style.backgroundColor = '#' + $util.decToHex(rgb[0]) + $util.decToHex(rgb[1]) + $util.decToHex(rgb[2]);
             tempLastCc.style.cursor = 'pointer';
-            tempLastCc.style.outline = 'none';
-            tempLastCc.style.position = 'static';
-            window.lastCcI[d + window.namesToNumbers[_id] * 3] = i;
+            tempLastCc.style.outline = '';
+            tempLastCc.style.position = '';
+            lastCcI[d + namesToNumbers[_id] * 3] = i;
 
             // Show a white line over the colour we clicked
-            targ.style.backgroundColor = '#FFFFFF';
-            targ.style.cursor = '';
-            targ.style.outline = '3px solid gray';
-            targ.style.position = 'relative';
+            target.style.backgroundColor = '#FFFFFF';
+            target.style.cursor = '';
+            target.style.outline = '3px solid gray';
+            target.style.position = 'relative';
 
             var element = document.getElementById('cc-target-' + _id);
             var bgColor = element.style.backgroundColor;
@@ -252,12 +240,12 @@
             rgb[0] = 0;
             rgb[1] = 0;
             rgb[2] = 0;
-            rgb[d] = window.lastCcI[d + window.namesToNumbers[id] * 3];
+            rgb[d] = lastCcI[d + namesToNumbers[id] * 3];
             var tempLastCc = document.getElementById('cc_col_' + d + '_' + rgb[d] + '#' + id);
             tempLastCc.style.backgroundColor = '#' + $util.decToHex(rgb[0]) + $util.decToHex(rgb[1]) + $util.decToHex(rgb[2]); // Reset old
             tempLastCc.style.outline = 'none';
             tempLastCc.style.position = 'static';
-            window.lastCcI[d + window.namesToNumbers[id] * 3] = i;
+            lastCcI[d + namesToNumbers[id] * 3] = i;
 
             var element = document.getElementById('cc-target-' + id);
             var bgColor = element.style.backgroundColor;
