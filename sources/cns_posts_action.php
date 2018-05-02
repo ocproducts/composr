@@ -200,7 +200,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         }
     }
 
-    if ((is_null($forum_id)) || (($topic_title == '') && (!$is_starter))) {
+    if ((is_null($forum_id)) || (($topic_title == '') && (!$is_starter)) || ($check_permissions)) {
         $info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_is_open', 't_pt_from', 't_pt_to', 't_forum_id', 't_cache_last_member_id', 't_cache_first_title'), array('id' => $topic_id), '', 1);
         if (!array_key_exists(0, $info)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));

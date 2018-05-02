@@ -39,6 +39,7 @@ class Hook_config_ticket_mail_folder
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 6,
+            'required' => false,
 
             'addon' => 'tickets',
         );
@@ -55,6 +56,6 @@ class Hook_config_ticket_mail_folder
             return null;
         }
 
-        return 'INBOX';
+        return '';
     }
 }

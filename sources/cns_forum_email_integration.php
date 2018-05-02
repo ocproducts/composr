@@ -39,6 +39,27 @@ class ForumEmailIntegration extends EmailIntegration
     protected $forum_id = null, $forum_row = null;
 
     /**
+     * Set what forum we're currently dealing with.
+     *
+     * @param  AUTO_LINK $forum_id Forum ID
+     * @param  ?array $forum_row Forum row (null: load up from database)
+     */
+    public function set_forum($forum_id, $forum_row = null)
+    {
+        $this->forum_id = $forum_id;
+
+        if ($forum_row === null) {
+            $forum_rows = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('id' => $forum_id), '', 1);
+            if (!array_key_exists(0, $forum_rows)) {
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum'));
+            }
+            $this->forum_row = $forum_rows[0];
+        } else {
+            $this->forum_row = $forum_row;
+        }
+    }
+
+    /**
      * Send out an e-mail message for a forum post.
      *
      * @param  AUTO_LINK $topic_id The ID of the topic that got posted in.
@@ -55,18 +76,11 @@ class ForumEmailIntegration extends EmailIntegration
      */
     public function outgoing_message($topic_id, $post_id, $forum_id, $post_url, $topic_title, $post, $to_member_id, $to_displayname, $to_email, $from_displayname, $is_starter = false)
     {
-        $this->forum_id = $forum_id;
-        $forum_rows = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('id' => $forum_id), '', 1);
-        if (!array_key_exists(0, $forum_rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum'));
-        }
-        $this->forum_row = $forum_rows[0];
+        $this->set_forum($forum_id);
 
         $extended_subject = do_lang('MAILING_LIST_SIMPLE_SUBJECT_' . ($is_starter ? 'new' : 'reply'), $topic_title, get_site_name(), array($from_displayname), get_lang($to_member_id));
 
-        $extended_message = '';
-        $extended_message .= do_lang('MAILING_LIST_SIMPLE_MAIL_' . ($is_starter ? 'new' : 'reply'), $topic_title, $post, array($post_url, get_site_name(), $from_displayname), get_lang($to_member_id));
-        $extended_message .= $post;
+        $extended_message = do_lang('MAILING_LIST_SIMPLE_MAIL_' . ($is_starter ? 'new' : 'reply'), $topic_title, $post, array($post_url, get_site_name(), $from_displayname), get_lang($to_member_id));
 
         $this->_outgoing_message($extended_subject, $extended_message, $to_member_id, $to_displayname, $to_email, $from_displayname);
     }
@@ -127,8 +141,7 @@ class ForumEmailIntegration extends EmailIntegration
         $sql_sup = ' WHERE ' . db_string_not_equal_to('f_mail_username', '') . ' AND ' . db_string_not_equal_to('f_mail_email_address', '');
         $rows = $GLOBALS['FORUM_DB']->query($sql . $sql_sup);
         foreach ($rows as $row) {
-            $this->forum_id = $row['id'];
-            $this->forum_row = $row;
+            $this->set_forum($row['id'], $row);
 
             $type = $row['f_mail_server_type'];
             $host = $row['f_mail_server_host'];
@@ -191,7 +204,7 @@ class ForumEmailIntegration extends EmailIntegration
         $topic_id = null;
         if (substr($subject, 0, 4) == 'Re: ') {
             $title = substr($subject, 4);
-            $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('t_cache_first_title' => $title, 't_forum_id' => $this->forum_id));
+            $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('t_cache_first_title' => $title, 't_forum_id' => $this->forum_id), 'ORDER BY t_cache_last_time DESC');
         } else {
             $title = $subject;
         }
@@ -209,7 +222,7 @@ class ForumEmailIntegration extends EmailIntegration
         }
 
         require_code('cns_posts_action');
-        $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter, null, 0, $poster_name_if_guest, null, null, $member_id);
+        $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter, null, 0, $poster_name_if_guest, null, null, $member_id, null, null, null, true, true, $this->forum_id, true, $title, 0, null, false, true);
 
         if (count($attachment_errors) != 0) {
             $post_url = $GLOBALS['FORUM_DRIVER']->post_url($post_id, '');
@@ -219,12 +232,12 @@ class ForumEmailIntegration extends EmailIntegration
     }
 
     /**
-     * Strip system code from an e-mail body.
+     * Strip system code from an e-mail component.
      *
-     * @param  string $body E-mail body
+     * @param  string $body E-mail component
      * @param  integer $format A STRIP_* constant
      */
-    protected function strip_system_code($body, $format)
+    public/*TODO: protected*/ function strip_system_code(&$body, $format)
     {
         switch ($format) {
             case self::STRIP_SUBJECT:

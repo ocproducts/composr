@@ -342,6 +342,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
             $message_plain = preg_replace("#\[url( param)?=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\4' : '\4 (\2)', $message_plain);
             $message_plain = preg_replace("#\[url( param)?=\"([^\"]*)\"[^\[\]]*\]([^\[\]]*)\[/url\]#", '\2 (\3)', $message_plain);
             $message_plain = preg_replace("#\[url( param)?=\"([^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\2' : '\2 (\4)', $message_plain);
+            $message_plain = preg_replace("#(.*) \(\1\)#", '\1', $message_plain);
         }
     }
 

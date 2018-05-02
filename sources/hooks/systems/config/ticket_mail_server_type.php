@@ -37,8 +37,9 @@ class Hook_config_ticket_mail_server_type
             'group' => 'SUPPORT_TICKETS_MAIL',
             'explanation' => 'CONFIG_OPTION_ticket_mail_server_type',
             'shared_hosting_restricted' => '0',
-            'list_options' => 'imap|imaps|imaps_nocert|imapt|imapt_nocert|pop3|pop3s|pop3s_nocert|pop3t|pop3t_nocert',
+            'list_options' => '|imap|imaps|imaps_nocert|imapt|imapt_nocert|pop3|pop3s|pop3s_nocert|pop3t|pop3t_nocert',
             'order_in_category_group' => 5,
+            'required' => false,
 
             'addon' => 'tickets',
         );
@@ -55,6 +56,6 @@ class Hook_config_ticket_mail_server_type
             return null;
         }
 
-        return 'imap';
+        return '';
     }
 }

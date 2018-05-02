@@ -39,6 +39,7 @@ class Hook_config_ticket_mail_server_host
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 7,
+            'required' => false,
 
             'addon' => 'tickets',
         );
@@ -55,6 +56,6 @@ class Hook_config_ticket_mail_server_host
             return null;
         }
 
-        return 'localhost';
+        return '';
     }
 }

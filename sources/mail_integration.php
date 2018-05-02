@@ -62,13 +62,13 @@ abstract class EmailIntegration
 
         // From
         $sender_email = $this->get_sender_email(); // Typically 'website_email' option
-        $headers .= 'From: ' . do_lang('TICKET_SIMPLE_FROM', get_site_name(), $from_displayname, array(), get_lang($to_member_id)) . ' <' . $sender_email . '>' . "\r\n";
+        $headers .= 'From: ' . $from_displayname . ' <' . $sender_email . '>' . "\r\n";
 
         // Reply-To
         if ($from_email == '') {
             $from_email = $this->get_system_email();
         }
-        $headers .= 'Reply-To: ' . do_lang('TICKET_SIMPLE_FROM', get_site_name(), $from_displayname, array(), get_lang($to_member_id)) . ' <' . $from_email . '>';
+        $headers .= 'Reply-To: ' . $from_displayname . ' <' . $from_email . '>';
 
         // Subject
         $tightened_subject = str_replace(array("\n", "\r"), array('', ''), $subject);
@@ -155,6 +155,7 @@ abstract class EmailIntegration
             foreach ($list as $l) {
                 $header = imap_headerinfo($mbox, $l);
                 $full_header = imap_fetchheader($mbox, $l);
+                imap_clearflag_full($mbox, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
 
                 $subject = $header->subject;
                 $this->strip_system_code($subject, self::STRIP_SUBJECT);
@@ -170,13 +171,16 @@ abstract class EmailIntegration
                 $attachments = array();
                 $attachment_size_total = 0;
                 $body = $this->_imap_get_part($mbox, $l, 'TEXT/HTML', $attachments, $attachment_size_total, $input_charset);
+                imap_clearflag_full($mbox, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
                 if ($body === null) { // Convert from plain text
                     $body = $this->_imap_get_part($mbox, $l, 'TEXT/PLAIN', $attachments, $attachment_size_total, $input_charset);
+                    imap_clearflag_full($mbox, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
                     $body = $this->email_comcode_from_text($body);
                 } else { // Convert from HTML
                     $body = $this->email_comcode_from_html($body);
                 }
                 $this->_imap_get_part($mbox, $l, 'APPLICATION/OCTET-STREAM', $attachments, $attachment_size_total, $input_charset);
+                imap_clearflag_full($mbox, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
 
                 // Find from details (preferencing Reply-To)
                 $from_email = null;
@@ -201,10 +205,6 @@ abstract class EmailIntegration
 
                 // Continue to real processing
                 if (!$this->is_non_human_email($subject, $body, $full_header, $from_email)) {
-                    $header = imap_headerinfo($mbox, $l);
-
-                    imap_clearflag_full($mbox, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
-
                     $this->process_incoming_message(
                         $from_email,
                         $from_name,
@@ -253,7 +253,7 @@ abstract class EmailIntegration
      * @param  string $body E-mail body
      * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
      */
-    protected function process_incoming_message($from_email, $from_name, $subject, $body, $attachments)
+    public/*TODO: protected*/ function process_incoming_message($from_email, $from_name, $subject, $body, $attachments)
     {
         $email_bounce_to = $from_email;
 
@@ -685,12 +685,12 @@ abstract class EmailIntegration
     }
 
     /**
-     * Strip system code from an e-mail body.
+     * Strip system code from an e-mail component.
      *
-     * @param  string $body E-mail body
+     * @param  string $body E-mail component
      * @param  integer $format A STRIP_* constant
      */
-    abstract protected function strip_system_code($body, $format);
+    abstract public/*TODO: protected*/ function strip_system_code(&$body, $format);
 
     /**
      * Process a quote block in plain-text e-mail, into a Comcode quote tag. preg callback.
@@ -700,7 +700,7 @@ abstract class EmailIntegration
      */
     public function _convert_text_quote_to_comcode($matches)
     {
-        return '[quote]' . trim(preg_replace('#\n> (.*)#', "\n" . '${1}', $matches[0])) . '[/quote]';
+        return '[quote]'. "\n" . trim(preg_replace('#\n> (.*)#', "\n" . '${1}', $matches[0])) . "\n" . '[/quote]';
     }
 
     /**

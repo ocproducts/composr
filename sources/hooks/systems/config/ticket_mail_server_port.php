@@ -39,6 +39,7 @@ class Hook_config_ticket_mail_server_port
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 8,
+            'required' => false,
 
             'addon' => 'tickets',
         );
@@ -55,6 +56,6 @@ class Hook_config_ticket_mail_server_port
             return null;
         }
 
-        return '143';
+        return '';
     }
 }

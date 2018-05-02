@@ -19,11 +19,23 @@
  */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__tickets_email_integration()
+{
+    require_lang('tickets');
+    require_code('tickets');
+    require_code('tickets2');
+}
+
+/**
  * Ticket e-mail integration class.
  *
  * @package        tickets
  */
-class TicketsEmailIntegration
+class TicketsEmailIntegration extends EmailIntegration
 {
     /**
      * Send out an e-mail message for a ticket / ticket reply.
@@ -46,12 +58,10 @@ class TicketsEmailIntegration
         }
 
         $extended_subject = do_lang('TICKET_SIMPLE_SUBJECT_' . ($new ? 'new' : 'reply'), $subject, $ticket_id, array($ticket_type_name, $from_displayname, get_site_name()), get_lang($to_member_id));
+        $extended_message = do_lang('TICKET_SIMPLE_MAIL_' . ($new ? 'new' : 'reply'), get_site_name(), $ticket_type_name, array($ticket_url, $from_displayname, $message), get_lang($to_member_id));
+        $extended_from_displayname = do_lang('TICKET_SIMPLE_FROM', get_site_name(), $from_displayname, array(), get_lang($to_member_id));
 
-        $extended_message = '';
-        $extended_message .= do_lang('TICKET_SIMPLE_MAIL_' . ($new ? 'new' : 'reply'), get_site_name(), $ticket_type_name, array($ticket_url, $from_displayname), get_lang($to_member_id));
-        $extended_message .= $message;
-
-        $this->_outgoing_message($extended_subject, $extended_message, $to_member_id, $to_displayname, $to_email, $from_displayname);
+        $this->_outgoing_message($extended_subject, $extended_message, $to_member_id, $to_displayname, $to_email, $extended_from_displayname);
     }
 
     /**
@@ -96,10 +106,6 @@ class TicketsEmailIntegration
         if (get_option('ticket_mail_on') !== '1') {
             return;
         }
-
-        require_lang('tickets');
-        require_code('tickets');
-        require_code('tickets2');
 
         $type = get_option('ticket_mail_server_type');
         $host = get_option('ticket_mail_server_host');
@@ -282,12 +288,12 @@ class TicketsEmailIntegration
     }
 
     /**
-     * Strip system code from an e-mail body.
+     * Strip system code from an e-mail component.
      *
-     * @param  string $body E-mail body
+     * @param  string $body E-mail component
      * @param  integer $format A STRIP_* constant
      */
-    protected function strip_system_code($body, $format)
+    public/*TODO: protected*/ function strip_system_code(&$body, $format)
     {
         switch ($format) {
             case self::STRIP_SUBJECT:
