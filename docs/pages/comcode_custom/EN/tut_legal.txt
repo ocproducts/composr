@@ -2,7 +2,7 @@
 
 [media width="350" description="" float="right"]data_custom/images/docs/tut_legal/image.png[/media]
 If you are running a website, in particular a large or corporate website, there are important legal and social issues that need to be understood, and procedures or rules need to be put in place.
-We will summarise some laws (or broad patterns of laws) in this tutorial, although the particular laws that apply will vary based on where you are located, or have business interests -- and it is impossible for us to consider everything. Ultimately businesses may have to seek legal counsel.
+We will summarise some laws (or broad patterns of laws) in this tutorial, although the particular laws that apply will vary based on where you are located, or have business interests -- and it is impossible for us to consider everything. Ultimately businesses may have to seek legal counsel, or use the stated policies of an established business in your jurisdiction as a base for your own.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -38,6 +38,11 @@ It is not necessary to state that submitted-for-publication content will be visi
 Depending on your jurisdiction and situation, you may need to register with a 'data commissioner' for holding personal data.
 
 You may also wish to include your policy with respect to deletion of publicly submitted content upon request by the submitter or another party.
+
+To meet Californian law a privacy policy must state:
+ - What you do with a "Do Not Track" HTTP header (Composr does nothing out of the box, mainly because we do not do cross-site tracking, and also because the standard is not well-adopted)
+ - The date the privacy policy was written on
+ - A dated list of amendments
 
 [title="3"]Accessibility[/title]
 
