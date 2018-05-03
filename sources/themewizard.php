@@ -716,77 +716,84 @@ function calculate_theme($seed, $source_theme, $algorithm, $show = 'colours', $d
         }
     }
 
-    if ($show != 'colours') {
-        unset($_GET['keep_theme_seed']);
-        $ti = find_theme_image($show, false, true, $source_theme, $lang);
+    if ($show === 'colours') {// Whether to just calculate colours
+        return array($colours, $landscape);
+    }
+
+    /* Calculate image */
+
+    unset($_GET['keep_theme_seed']);
+    $ti = find_theme_image($show, false, true, $source_theme, $lang);
+    if ($ti == '') {
+        return null;
+    }
+    $path = get_file_base() . '/' . $ti;
+    if (!file_exists($path)) { // File since deleted, we'll revert
+        $ti = find_theme_image($show, false, true, $source_theme, $lang, null, true);
         if ($ti == '') {
             return null;
         }
         $path = get_file_base() . '/' . $ti;
-        if (!file_exists($path)) { // File since deleted, we'll revert
-            $ti = find_theme_image($show, false, true, $source_theme, $lang, null, true);
-            if ($ti == '') {
-                return null;
-            }
-            $path = get_file_base() . '/' . $ti;
-        }
-
-        $img = null;
-        if (function_exists('imagecolorallocatealpha')) {
-            if ($algorithm == 'hsv') {
-                $img = re_hue_image($path, $seed, $source_theme, true);
-            } else {
-                if ($source_theme == 'default') {
-                    $needed = array('washed_out', 'area_background', 'lgrad', 'dgrad', 'dark_border', 'comcode_quote_left', 'comcode_quote_right', 'a.link', 'a.hover', 'a.link__dark', 'a.hover__dark', 'special_borderer', 'cns_redirect_indicator', 'cns_post_indicator', 'slightly_seeded_text', 'special_middle',);
-                    foreach ($needed as $colour_needed) {
-                        if (!array_key_exists($colour_needed, $colours)) {
-                            warn_exit(do_lang_tempcode('UNRESOLVABLE_COLOURS', escape_html($colour_needed)), false, true);
-                        }
-                    }
-
-                    if ($show == 'gradient') {
-                        $img = generate_gradient($colours['lgrad'], $colours['dgrad']);
-                    } elseif (($show == 'background_image')) {
-                        $img = generate_recoloured_image($path, '#FFFFFF', $colours['WB'], '#DDE5F7', $colours['washed_out']);
-                    } elseif (($show == 'header') || ($show == 'outer_background') || ($show == 'inner_background') || ($show == 'block_background') || ($show == 'big_tabs/controller_button_active') || ($show == 'big_tabs/controller_button_top_active') || ($show == 'big_tabs/controller_button_top') || ($show == 'big_tabs/controller_button')) {
-                        $img = re_hue_image($path, $seed, $source_theme, false, $light_dark == 'dark');
-                    } elseif ($show == 'quote_gradient') {
-                        $img = generate_recoloured_image($path, '#072A66', $colours['dark_border'], '#C7D5EC', $colours['comcode_quote_left'], '#8CA7D2', $colours['comcode_quote_right'], 'horizontal');
-                    } elseif ($show == 'tabs/modern_subtab_active') {
-                        $img = generate_recoloured_image($path, '#FFFFFF', $colours['WB'], '#7F9AC5', $colours['box_title_background_2']);
-                    } elseif ($show == 'tabs/modern_subtab_header_column') {
-                        $img = generate_recoloured_image($path, '#FFFFFF', $colours['WB'], '#7F9AC5', $colours['box_title_background_2']);
-                    } elseif ($show == 'menu_bullet') {
-                        $img = generate_recoloured_image($path, '#190406', $colours['a.link'], '#190406', $colours['a.link']);
-                    } elseif ($show == 'menu_bullet_current') {
-                        $img = generate_recoloured_image($path, '#00A55A', $colours['a.hover'], '#00A55A', $colours['a.hover']);
-                    } elseif ($show == 'menu_bullet_hover') {
-                        $img = generate_recoloured_image($path, '#9C202F', $colours['a.hover'], '#BA1621', $colours['a.hover']);
-                    } elseif ($show == 'tab') {
-                        $img = generate_recoloured_image($path, '#B5B5B5', $colours['tab_border'], '#F4F4F4', $colours['area_5_background']);
-                    } elseif (substr($show, 0, 15) == 'icons/checklist/') {
-                        $img = generate_recoloured_image($path, '#335082', $colours['special_borderer'], '#091C3D', $colours['special_middle']);
-                    } elseif ($show == 'icons/arrow_box/arrow_box') {
-                        $img = generate_recoloured_image($path, '#12467A', $colours['a.link'], '#0A223D', $colours['a.link__dark']);
-                    } elseif ($show == 'icons/arrow_box/arrow_box_hover') {
-                        $img = generate_recoloured_image($path, '#12467A', $colours['a.hover'], '#0A223D', $colours['a.hover__dark']);
-                    } elseif (in_array($show, array('icons/cns_general/no_new_posts_redirect', 'icons/cns_general/new_posts_redirect'))) {
-                        $img = generate_recoloured_image($path, '#FFFFFF', '#FFFFFF', '#549B8C', $colours['cns_redirect_indicator']);
-                    } elseif (in_array($show, array('icons/cns_general/redirect', 'icons/cns_general/redirect', 'icons/cns_general/no_new_posts', 'icons/cns_general/new_posts'))) {
-                        $img = generate_recoloured_image($path, '#FFFFFF', '#FFFFFF', '#5A84C4', $colours['cns_post_indicator']);
-                    } else { // These are less special... we just change the hue
-                        $img = re_hue_image($path, $seed, $source_theme);
-                    }
-                } else {
-                    $img = re_hue_image($path, $seed, $source_theme);
-                }
-            }
-        }
-
-        return $img;
     }
 
-    return array($colours, $landscape);
+    if (get_file_extension($path) === 'svg') {
+        return null; // SVG not supported yet
+    }
+
+    $img = null;
+
+    if (function_exists('imagecolorallocatealpha')) {
+        if ($algorithm == 'hsv') {
+            $img = re_hue_image($path, $seed, $source_theme, true);
+        } else {
+            if ($source_theme == 'default') {
+                $needed = array('washed_out', 'area_background', 'lgrad', 'dgrad', 'dark_border', 'comcode_quote_left', 'comcode_quote_right', 'a.link', 'a.hover', 'a.link__dark', 'a.hover__dark', 'special_borderer', 'cns_redirect_indicator', 'cns_post_indicator', 'slightly_seeded_text', 'special_middle',);
+                foreach ($needed as $colour_needed) {
+                    if (!array_key_exists($colour_needed, $colours)) {
+                        warn_exit(do_lang_tempcode('UNRESOLVABLE_COLOURS', escape_html($colour_needed)), false, true);
+                    }
+                }
+
+                if ($show == 'gradient') {
+                    $img = generate_gradient($colours['lgrad'], $colours['dgrad']);
+                } elseif (($show == 'background_image')) {
+                    $img = generate_recoloured_image($path, '#FFFFFF', $colours['WB'], '#DDE5F7', $colours['washed_out']);
+                } elseif (($show == 'header') || ($show == 'outer_background') || ($show == 'inner_background') || ($show == 'block_background') || ($show == 'big_tabs/controller_button_active') || ($show == 'big_tabs/controller_button_top_active') || ($show == 'big_tabs/controller_button_top') || ($show == 'big_tabs/controller_button')) {
+                    $img = re_hue_image($path, $seed, $source_theme, false, $light_dark == 'dark');
+                } elseif ($show == 'quote_gradient') {
+                    $img = generate_recoloured_image($path, '#072A66', $colours['dark_border'], '#C7D5EC', $colours['comcode_quote_left'], '#8CA7D2', $colours['comcode_quote_right'], 'horizontal');
+                } elseif ($show == 'tabs/modern_subtab_active') {
+                    $img = generate_recoloured_image($path, '#FFFFFF', $colours['WB'], '#7F9AC5', $colours['box_title_background_2']);
+                } elseif ($show == 'tabs/modern_subtab_header_column') {
+                    $img = generate_recoloured_image($path, '#FFFFFF', $colours['WB'], '#7F9AC5', $colours['box_title_background_2']);
+                } elseif ($show == 'menu_bullet') {
+                    $img = generate_recoloured_image($path, '#190406', $colours['a.link'], '#190406', $colours['a.link']);
+                } elseif ($show == 'menu_bullet_current') {
+                    $img = generate_recoloured_image($path, '#00A55A', $colours['a.hover'], '#00A55A', $colours['a.hover']);
+                } elseif ($show == 'menu_bullet_hover') {
+                    $img = generate_recoloured_image($path, '#9C202F', $colours['a.hover'], '#BA1621', $colours['a.hover']);
+                } elseif ($show == 'tab') {
+                    $img = generate_recoloured_image($path, '#B5B5B5', $colours['tab_border'], '#F4F4F4', $colours['area_5_background']);
+                } elseif (substr($show, 0, 15) == 'icons/checklist/') {
+                    $img = generate_recoloured_image($path, '#335082', $colours['special_borderer'], '#091C3D', $colours['special_middle']);
+                } elseif ($show == 'icons/arrow_box/arrow_box') {
+                    $img = generate_recoloured_image($path, '#12467A', $colours['a.link'], '#0A223D', $colours['a.link__dark']);
+                } elseif ($show == 'icons/arrow_box/arrow_box_hover') {
+                    $img = generate_recoloured_image($path, '#12467A', $colours['a.hover'], '#0A223D', $colours['a.hover__dark']);
+                } elseif (in_array($show, array('icons/cns_general/no_new_posts_redirect', 'icons/cns_general/new_posts_redirect'))) {
+                    $img = generate_recoloured_image($path, '#FFFFFF', '#FFFFFF', '#549B8C', $colours['cns_redirect_indicator']);
+                } elseif (in_array($show, array('icons/cns_general/redirect', 'icons/cns_general/redirect', 'icons/cns_general/no_new_posts', 'icons/cns_general/new_posts'))) {
+                    $img = generate_recoloured_image($path, '#FFFFFF', '#FFFFFF', '#5A84C4', $colours['cns_post_indicator']);
+                } else { // These are less special... we just change the hue
+                    $img = re_hue_image($path, $seed, $source_theme);
+                }
+            } else {
+                $img = re_hue_image($path, $seed, $source_theme);
+            }
+        }
+    }
+
+    return $img;
 }
 
 /**
