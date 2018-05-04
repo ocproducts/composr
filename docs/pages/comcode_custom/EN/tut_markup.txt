@@ -106,6 +106,11 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>Robots exclusion standard. Google's version of the specification is the most accurate to what search engines now support.</td>
 			<td>Knowing this may be important for [abbr="Search Engine Optimisation"]SEO[/abbr].</td>
 		</tr>
+		<tr>
+			<td>[url="https://developers.google.com/search/reference/robots_meta_tag"]Robots meta tag and X-Robots-Tag HTTP header[/url]</td>
+			<td>Specifying what URLs may be indexed. Google's version of the specification is the most accurate to what search engines now support.</td>
+			<td>Knowing this may be important for [abbr="Search Engine Optimisation"]SEO[/abbr].</td>
+		</tr>
 
 		<tr>
 			<th colspan="3"><em>Accessibility and Internationalisation</em></th>
