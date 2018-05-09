@@ -405,6 +405,10 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
 
     require_code('themes3');
 
+    if (get_theme_option('supports_themewizard_equations', null, $source_theme) == '0') {
+        $algorithm = 'hsv';
+    }
+
     load_themewizard_params_from_theme($source_theme, $algorithm == 'hsv');
 
     if (file_exists(get_custom_file_base() . '/themes/' . $theme_name)) {
