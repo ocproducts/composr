@@ -19,6 +19,17 @@
  */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__uploads2()
+{
+    global $REORGANISE_UPLOADS_ERRORMSGS;
+    $REORGANISE_UPLOADS_ERRORMSG = array();
+}
+
+/**
  * Find a tree path for a content item.
  *
  * @param  string $content_type Content type
@@ -35,13 +46,17 @@ function reorganise_uploads($content_type, $upload_directory, $upload_field, $wh
         $where = array(); // TODO: Remove in v11
     }
 
+    global $REORGANISE_UPLOADS_ERRORMSGS;
+
     $reorganise_uploads = get_value('reorganise_uploads', '0');
     if ($reorganise_uploads == '0') {
+        $REORGANISE_UPLOADS_ERRORMSGS[] = 'NOTICE: reorganise_uploads option disabled';
         return; // TODO: Make into proper upload in v11
     }
     $flat = ($reorganise_uploads == '1');
 
     if (!is_suexec_like()) {
+        $REORGANISE_UPLOADS_ERRORMSGS[] = 'NOTICE: suEXEC not available';
         return;
     }
 
@@ -77,6 +92,7 @@ function reorganise_uploads($content_type, $upload_directory, $upload_field, $wh
 
             if ($current_upload_url == '') {
                 // Empty field
+                $REORGANISE_UPLOADS_ERRORMSGS[] = 'NOTICE: Empty upload for ' . serialize($row);
                 continue;
             }
 
@@ -132,9 +148,12 @@ function reorganise_uploads($content_type, $upload_directory, $upload_field, $wh
  */
 function _reorganise_content_row_upload($row, $content_type, $upload_directory, $upload_field, $cma_info, $flat, $append_content_type_to_upload_dir, $tolerate_errors)
 {
+    global $REORGANISE_UPLOADS_ERRORMSGS;
+
     $current_upload_url = $row[$upload_field];
 
     if (substr($current_upload_url, 0, strlen($upload_directory) + 1) != $upload_directory . '/') {
+        $REORGANISE_UPLOADS_ERRORMSGS[] = 'NOTICE: Outside upload directory for ' . serialize($row);
         return null; // Not under our normal uploads directory
     }
     if ($append_content_type_to_upload_dir) {
@@ -147,6 +166,7 @@ function _reorganise_content_row_upload($row, $content_type, $upload_directory, 
             warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($current_disk_path)));
         }
 
+        $REORGANISE_UPLOADS_ERRORMSGS[] = 'WARN: Missing file for ' . serialize($row);
         return null; // Error, could not find the file
     }
 
@@ -183,6 +203,8 @@ function _reorganise_content_row_upload($row, $content_type, $upload_directory, 
             $optimal_filename_stub = $matches[1]; // LEGACY: Old style prefixing of what we can see are based on content titles
         } elseif (preg_match('#^(.*)_\d+$#', $optimal_filename_stub, $matches) != 0) {
             $optimal_filename_stub = $matches[1];
+        } elseif ((running_script('execute_temp')) && (get_param_integer('hard', 0) == 1) && (preg_match('#^\d+([^\d].*)$#', $optimal_filename_stub, $matches) != 0)) {
+            $optimal_filename_stub = $matches[1]; // LEGACY: Old style prefixing of what we can see are based on content titles
         }
     }
 
@@ -201,28 +223,39 @@ function _reorganise_content_row_upload($row, $content_type, $upload_directory, 
     while (is_file($new_disk_path));
 
     if (strlen($new_upload_url) > 255) {
+        $REORGANISE_UPLOADS_ERRORMSGS[] = 'NOTICE: Too long URL, ' . $new_upload_url . ' for ' . serialize($row);
         return null; // Too long, so we'll store in the root
     }
 
     // Make directory tree
     $_new_disk_path = get_custom_file_base() . '/' . rawurldecode($new_upload_path);
     $_compounded_new_disk_path = get_custom_file_base();
-    $parts = explode('/', $new_upload_path);
+    $parts = explode('/', rawurldecode($new_upload_path));
     foreach ($parts as $part) {
         $_compounded_new_disk_path .= '/' . $part;
         if (!file_exists($_compounded_new_disk_path)) {
+            if (running_script('execute_temp')) {
+                $REORGANISE_UPLOADS_ERRORMSGS[] = 'INFO: Making new directory, ' . $_compounded_new_disk_path;
+            }
+
             if (@mkdir($_compounded_new_disk_path, 0777, true) === false) {
+                $REORGANISE_UPLOADS_ERRORMSGS[] = 'WARN: Failed to make directory ' . $_compounded_new_disk_path;
                 return null; // Error, failed to make the directory
             }
             fix_permissions($_compounded_new_disk_path);
             @copy(get_custom_file_base() . '/uploads/index.html', $_compounded_new_disk_path . '/index.html');
             fix_permissions($_compounded_new_disk_path . '/index.html');
             sync_file($_compounded_new_disk_path . '/index.html');
+        } else {
+            if (running_script('execute_temp')) {
+                $REORGANISE_UPLOADS_ERRORMSGS[] = 'INFO: Directory already exists, ' . $_compounded_new_disk_path;
+            }
         }
     }
 
     // Move file
     if (!@rename($current_disk_path, $new_disk_path)) {
+        $REORGANISE_UPLOADS_ERRORMSGS[] = 'WARN: Failed to move ' . $current_disk_path . ' to ' . $new_disk_path;
         return null; // Error, failed to move file
     }
 
@@ -240,6 +273,8 @@ function _reorganise_content_row_upload($row, $content_type, $upload_directory, 
  */
 function _get_upload_tree_path($content_type, $parent_id, $cma_info, $upload_directory)
 {
+    global $REORGANISE_UPLOADS_ERRORMSGS;
+
     $table = $cma_info['parent_spec__table_name'];
 
     if ($table === null) {
@@ -269,12 +304,17 @@ function _get_upload_tree_path($content_type, $parent_id, $cma_info, $upload_dir
 
         $parent_rows = $cma_info['connection']->query_select($table, $select, $where, '', 1);
         if (!array_key_exists(0, $parent_rows)) {
+            $REORGANISE_UPLOADS_ERRORMSGS[] = 'WARN: Missing parent, ' . serialize($parent_id);
             return null;
         }
         $parent_row = $parent_rows[0];
 
         $this_level = $parent_row[$cma_info['parent_spec__field_name']];
         $this_level_str = (is_string($this_level) ? $this_level : strval($this_level));
+        if (get_option('moniker_transliteration') == '1') {
+            require_code('character_sets');
+            $this_level_str = transliterate_string($this_level_str);
+        }
 
         $path = rawurlencode($this_level_str) . (($path == '') ? '' : ('/' . $path));
 
@@ -286,6 +326,7 @@ function _get_upload_tree_path($content_type, $parent_id, $cma_info, $upload_dir
         $parent_id = $parent_row[$cma_info['parent_spec__parent_name']];
 
         if (isset($seen[$parent_id])) {
+            $REORGANISE_UPLOADS_ERRORMSGS[] = 'WARN: Looped category structure, ' . serialize($parent_id);
             break; // Error, some kind of loop
         }
 
@@ -319,6 +360,11 @@ function clean_empty_upload_directories($upload_directory, $top_level = true)
 
     while (($f = readdir($dh)) !== false) {
         if (should_ignore_file(get_custom_file_base() . '/' . $upload_directory . '/' . $f, IGNORE_ACCESS_CONTROLLERS)) {
+            continue;
+        }
+
+        if (($f == 'pre_transcoding') && ($top_level)) {
+            $ok_to_delete = false;
             continue;
         }
 

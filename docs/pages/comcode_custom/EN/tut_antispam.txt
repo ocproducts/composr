@@ -103,6 +103,7 @@ You may simply want to deny some guest permissions, which will raise the effort 
  - Guest posting posting permissions on the forum
  - The "Comment upon content" privilege (Admin Zone > Security > Privileges > Feedback)
  - The "May report posts" privilege (Admin Zone > Security > Privileges > Members, usergroups and forums privilege)
+ - Anonymous posts: the "Anonymous posts within private topics" configuration option (Admin Zone > Setup > Configuration > Forum options > Private Topics), and the option individually on forums
 
 This may be enough to deter them.
 

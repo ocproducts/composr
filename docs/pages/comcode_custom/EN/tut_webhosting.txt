@@ -81,11 +81,12 @@ The remainder of this section details Composr's requirements. If you have troubl
   - If running Apache using a [tt]mod_php[/tt] (as opposed to a CGI version of PHP), the server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security)
  - The CGI timeout on the server must not be lower than 60 seconds (which is the default on Apache)
  - That the web server is not overloaded with too many users, or has very poor performance
- - That the web server does not have a Firewall that stops outgoing connections or internal connections to itself (sometimes referred to 'HTTP loopback')
+ - That the web server does not have a Firewall that stops outgoing connections or internal connections to itself (sometimes referred to 'HTTP loopback') -- this applies to both TCP port 80 and 443
  - Connectivity to a mail server (SMTP) so that outgoing e-mail can be sent out to the staff e-mail address or the addresses of individual members
  - The install path does not contain the text "_custom" in it
  - Either a suEXEC-style server or a working FTP connection from PHP back to the hosting
  - If you are running on Windows, and a PHP version below 7.2, and are using non-latin characters in codenames, you need to install the [tt]transliteration[/tt] addon (basically due to a PHP bug reading and write non-latin filenames)
+ - The web server may be running Windows, Linux, or MacOS -- other operating systems such as Solaris or OpenBSD are not officially supported, although bug fixes may be made
 (*) Other database software may work, but is not supported. MariaDB should work as a drop-in MySQL replacement but we do not proactively test against it. Certain permissions are required as described in the [page="_SEARCH:tut_install"]Basic Installation[/page] tutorial.
 (&dagger;) MySQL 5.5.3 introduces the utf8mb4 character set, which is required to store emojis. The installer assumes you will install with this support available, but upgrades from older versions may work in anything from MySQL 4.1+ if the database is kept in latin1 via having [tt]$SITE_INFO['database_charset'] = 'latin1';[/tt] in [tt]_config.php[/tt]. This compatibility will not be guaranteed, but as webhosts have been very slow to upgrade MySQL installations we will informally try and maintain it.
 

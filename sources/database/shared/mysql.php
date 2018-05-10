@@ -159,7 +159,7 @@ class Database_super_mysql
         }
 
         // These risk parse errors during full-text natural search and aren't supported for Composr searching
-        $content = str_replace(array('>', '<', '(', ')', '~', '?'), array('', '', '', '', '', ''), $content); // Risks parse error and not supported
+        $content = str_replace(array('>', '<', '(', ')', '~', '?', '@'), array('', '', '', '', '', '', ''), $content); // Risks parse error and not supported
         $content = preg_replace('#[\-\+]($|\s)#', '$1', $content); // Parse error if on end
         $content = preg_replace('#(^|\s)[\*]#', '$1', $content); // Parse error if on start
         db_escape_string($content); // Hack to so SQL injection detector doesn't get confused

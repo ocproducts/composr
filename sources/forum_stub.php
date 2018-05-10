@@ -50,7 +50,7 @@ class Forum_driver_base
     public $EMOTICON_CACHE = null;
 
     /**
-     * Add the specified custom field to the forum (some forums implemented this using proper custom profile fields, others through adding a new field).
+     * Delete the specified custom field from the forum.
      *
      * @param  string $name The name of the new custom field
      */
@@ -434,10 +434,10 @@ class Forum_driver_base
      */
     public function get_theme($zone_for = null, $member_id = null)
     {
-        global $SITE_INFO, $ZONE, $USER_THEME_CACHE;
+        global $SITE_INFO, $ZONE, $USER_THEME_CACHE, $IN_MINIKERNEL_VERSION;
 
-        if ($member_id === null) {
-            $member_id = get_member();
+        if (($member_id === null) || ($IN_MINIKERNEL_VERSION)) {
+            $member_id = $IN_MINIKERNEL_VERSION ? $this->get_guest_id() : get_member();
             $is_current_member = true;
         } else {
             $is_current_member = (get_member() == $member_id);
@@ -454,7 +454,6 @@ class Forum_driver_base
             $current_zone_requested = (get_zone_name() == $zone_for);
         }
 
-        global $IN_MINIKERNEL_VERSION;
         if (($IN_MINIKERNEL_VERSION) || (in_safe_mode())) {
             return ($zone_for === 'adminzone' || $zone_for === 'cms') ? 'admin' : 'default';
         }

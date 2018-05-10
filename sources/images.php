@@ -320,7 +320,7 @@ function cms_getimagesize($path, $ext = null)
     if (function_exists('getimagesize')) {
         $details = @getimagesize($path);
         if ($details !== false) {
-            return array($details[0], $details[1]);
+            return array(max(1, $details[0]), max(1, $details[1]));
         }
     }
 
@@ -337,16 +337,18 @@ function cms_getimagesize($path, $ext = null)
 function cms_getimagesizefromstring($data, $ext = null)
 {
     if ($ext === 'gif') { // Workaround problem with animated gifs
-        $header = unpack('@6/' . 'vwidth/' . 'vheight', $data);
-        $sx = $header['width'];
-        $sy = $header['height'];
-        return array($sx, $sy);
+        $header = @unpack('@6/' . 'vwidth/' . 'vheight', $data);
+        if ($header !== false) {
+            $sx = $header['width'];
+            $sy = $header['height'];
+            return array(max(1, $sx), max(1, $sy));
+        }
     }
 
     if (function_exists('getimagesizefromstring')) {
         $details = @getimagesizefromstring($data);
         if ($details !== false) {
-            return array($details[0], $details[1]);
+            return array(max(1, $details[0]), max(1, $details[1]));
         }
     } else {
         $img_res = cms_imagecreatefromstring($data, $ext);
@@ -356,7 +358,7 @@ function cms_getimagesizefromstring($data, $ext = null)
 
             imagedestroy($img_res);
 
-            return array($sx, $sy);
+            return array(max(1, $sx), max(1, $sy));
         }
     }
 
@@ -803,6 +805,7 @@ function _will_fix_corrupt_png_alpha($image)
 function _fix_corrupt_png_alpha(&$image, $path)
 {
     if (_will_fix_corrupt_png_alpha($image)) {
+        require_code('images2');
         $imagemagick = find_imagemagick();
         if ($imagemagick !== null) {
             if ((php_function_allowed('shell_exec')) && (php_function_allowed('escapeshellarg'))) {
