@@ -401,7 +401,7 @@ class template_previews_test_set extends cms_test_case
 
         shuffle($keys);
 
-        foreach($keys as $key) {
+        foreach ($keys as $key) {
             $new[$key] = $array[$key];
         }
 

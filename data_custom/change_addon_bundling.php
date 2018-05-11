@@ -62,7 +62,7 @@ if (!addon_installed('galleries')) {
 
 $password = post_param_string('password', null, INPUT_FILTER_NONE);
 if ($password === null) {
-    @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><button class="admin--delete3 button-screen" type="submit">' . do_template('ICON', array('NAME' => 'admin/delete3')) . ' Delete programmed data</button></form>');
+    @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><button class="admin--delete3 button-screen" type="submit">' . do_template('ICON', array('NAME' => 'admin/delete3'))->evaluate() . ' Delete programmed data</button></form>');
 }
 require_code('crypt_master');
 if (!check_master_password($password)) {

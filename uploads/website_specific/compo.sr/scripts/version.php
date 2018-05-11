@@ -210,7 +210,7 @@ function display_version_upgrade_path($higher_version)
         <!-- Output upgrader link -->
         <span class="version-button" id="link-pos-<?= strval($i) ?>">
             <form style="display: inline" action="../<?= escape_html($upgrade_script) ?>" target="_blank" method="post">
-                <button class="menu--adminzone--tools--upgrade button-screen-item" type="submit" title="Upgrade to <?= escape_html($higher_version['version_pretty']) ?>"><?= do_template('ICON', array('NAME' => 'menu/adminzone/tools/upgrade')) ?> Launch upgrader</button>
+                <button class="menu--adminzone--tools--upgrade button-screen-item" type="submit" title="Upgrade to <?= escape_html($higher_version['version_pretty']) ?>"><?= do_template('ICON', array('NAME' => 'menu/adminzone/tools/upgrade'))->evaluate() ?> Launch upgrader</button>
             </form>
         </span>
         <script>
