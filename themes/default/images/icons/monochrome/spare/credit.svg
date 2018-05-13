@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="48px" height="48px" viewBox="-2.269 -10.452 48 48" enable-background="new -2.269 -10.452 48 48"
+	 xml:space="preserve">
+<defs>
+</defs>
+<path d="M11.028,0.851h-8.52C1.123,0.851,0,1.974,0,3.359v21.229c0,1.385,1.123,2.508,2.508,2.508h8.52V0.851z"/>
+<path d="M40.955,0.851h-9.404v26.245h9.404c1.385,0,2.508-1.123,2.508-2.508V3.359C43.463,1.974,42.34,0.851,40.955,0.851z"/>
+<polygon points="21.178,22.013 13.234,27.096 29.296,27.096 "/>
+<path d="M13.336,0v24.369l7.839-5.017l8.011,5.017V0H13.336z M23.38,18.144l-2.609-1.373l-2.608,1.373l0.498-2.906l-2.109-2.055
+	l2.914-0.423l1.305-2.642l1.302,2.642l2.917,0.423l-2.107,2.055L23.38,18.144z M22.879,6.825l0.501,2.904l-2.609-1.371l-2.608,1.371
+	l0.498-2.904l-2.109-2.056l2.914-0.423l1.305-2.643l1.302,2.643l2.917,0.423L22.879,6.825z"/>
+</svg>
