@@ -406,6 +406,10 @@ svg.icon {
 	fill: currentColor;
 }
 
+img.icon {
+	object-fit: contain; /* match the svg behavior, preserve the image's aspect-ratio */
+}
+
 /*input[type="text"],textarea {  So Comcode can be typed
 	unicode-bidi: bidi-override;
 	direction: ltr;
