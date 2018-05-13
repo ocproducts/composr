@@ -6,25 +6,6 @@
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
 	 x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
-<defs>
-</defs>
-<path display="none" fill="#C8691C" d="M40.021,38.516c0,1.44-1.168,2.609-2.61,2.609H4.329c-1.441,0-2.611-1.169-2.611-2.609
-	V17.623c0-1.443,1.17-2.612,2.611-2.612h33.082c1.442,0,2.61,1.169,2.61,2.612V38.516z"/>
-<path display="none" fill="#F79523" d="M13.058,24.604c-1.442,0-2.612-1.169-2.612-2.611V16.77H2.611C1.169,16.769,0,17.938,0,19.38
-	v20.894c0,1.441,1.169,2.609,2.611,2.609h34.821c1.441,0,2.611-1.168,2.611-2.609v-15.67H13.058z"/>
-<rect x="3.455" y="15.167" transform="matrix(-0.6428 0.766 -0.766 -0.6428 49.1167 16.2928)" display="none" fill="#52CAF5" width="34.609" height="8.861"/>
-<rect x="31.019" y="0.186" transform="matrix(-0.6427 0.7661 -0.7661 -0.6427 58.2863 -17.9477)" display="none" fill="#6D6E71" width="4.619" height="8.862"/>
-<polygon display="none" fill="#FCB51E" points="13.071,35.651 7.812,37.744 4.996,35.381 6.284,29.956 "/>
-<polygon display="none" points="7.599,37.639 4.329,38.966 5.133,35.571 "/>
-<rect x="29.261" y="1.006" transform="matrix(0.643 -0.7659 0.7659 0.643 8.866 25.2991)" display="none" fill="#A7A9AC" width="4.617" height="4.266"/>
-<polygon display="none" fill="#58595B" points="6.319,36.567 5.133,35.571 4.339,38.926 "/>
-<polygon display="none" fill="#FFD65A" points="6.348,36.516 9.551,32.696 6.284,29.956 4.996,35.381 "/>
-<rect x="1.696" y="15.984" transform="matrix(0.6428 -0.766 0.766 0.6428 -7.0913 21.0266)" display="none" fill="#84D5F7" width="34.611" height="4.266"/>
-<polygon display="none" fill="#58595B" points="21.375,32.257 21.717,25.919 18.071,26.145 17.953,36.129 27.846,34.789 
-	27.622,31.141 "/>
-<rect x="18.377" y="25.546" transform="matrix(-0.6624 0.7492 -0.7492 -0.6624 63.3601 26.6748)" display="none" fill="#58595B" width="14.584" height="4.136"/>
-<polygon display="none" points="21.375,32.257 17.953,36.129 27.846,34.789 27.622,31.141 "/>
-<polygon display="none" points="32.047,23.521 22.387,34.446 20.715,32.969 30.588,22.231 "/>
 <path d="M18.439,19.296h1.944L30.484,6.925H7.004c-1.561,0-2.828,1.266-2.828,2.827v1.239c0.303-0.11,0.626-0.181,0.968-0.181
 	h10.468v6.256C15.611,18.631,16.878,19.296,18.439,19.296z"/>
 <path d="M43.673,7.067L33.472,19.296h12.19V9.752C45.662,8.485,44.822,7.426,43.673,7.067z"/>

@@ -6,21 +6,6 @@
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
 	 x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
-<defs>
-</defs>
-<path display="none" fill="#C8691C" d="M31.268,37.261c0,1.83-1.481,3.313-3.313,3.313H3.667c-1.829,0-3.312-1.482-3.312-3.313
-	V3.312C0.355,1.483,1.838,0,3.667,0h24.289c1.83,0,3.313,1.483,3.313,3.312v33.949H31.268z"/>
-<rect x="0.355" y="10.59" display="none" fill="#FCB51E" width="30.913" height="1.363"/>
-<rect x="14.728" y="1.104" display="none" fill="#FCB51E" width="1.363" height="38.365"/>
-<rect x="0.355" y="22.182" display="none" fill="#FCB51E" width="30.913" height="1.364"/>
-<rect x="0.355" y="33.775" display="none" fill="#FCB51E" width="30.913" height="1.361"/>
-<polygon display="none" fill="#52CAF5" points="31.785,25.111 31.732,40.574 14.688,40.574 18.937,36.732 0.355,18.015 0.355,2.367 
-	27.104,29.346 "/>
-<polygon display="none" fill="#3588A6" points="31.785,25.111 31.732,40.574 0.355,9.398 0.355,2.367 27.104,29.346 "/>
-<polyline display="none" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" points="14.688,40.574 18.937,36.732 0.355,18.015 
-	"/>
-<polyline display="none" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" points="0.355,2.367 27.104,29.346 31.785,25.111 "/>
-<rect x="38.968" y="38.139" width="3.56" height="7.104"/>
 <polygon points="22.171,38.139 24.803,40.957 20.045,45.242 5.473,45.242 5.473,38.139 "/>
 <polygon points="25.157,23.716 16.291,14.387 25.157,14.387 "/>
 <polygon points="38.968,36.238 38.968,28.146 33.806,32.814 27.058,25.715 27.058,14.387 42.527,14.387 42.527,36.238 "/>

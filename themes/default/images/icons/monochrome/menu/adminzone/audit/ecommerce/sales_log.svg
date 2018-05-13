@@ -6,19 +6,6 @@
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
 	 x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
-<defs>
-</defs>
-<polygon display="none" fill="#F79523" points="34.256,0 0,0 0,39.759 0.05,39.759 0.034,39.742 3.239,36.539 6.443,39.742 
-	6.427,39.759 9.632,36.547 12.896,39.759 12.881,39.742 16.085,36.539 19.289,39.742 19.274,39.759 19.32,39.759 19.304,39.742 
-	22.508,36.539 25.712,39.742 25.697,39.759 25.743,39.759 25.727,39.742 28.932,36.539 32.135,39.742 32.12,39.759 32.166,39.759 
-	32.15,39.742 34.256,37.637 "/>
-<rect x="7.52" y="5.613" display="none" fill="#52CAF5" width="19.216" height="1.976"/>
-<rect x="4.826" y="12.805" display="none" fill="#FFFFFF" width="13.08" height="1.976"/>
-<rect x="21.954" y="12.805" display="none" fill="#FFFFFF" width="7.692" height="1.976"/>
-<rect x="4.826" y="18.157" display="none" fill="#FFFFFF" width="13.08" height="1.976"/>
-<rect x="21.954" y="18.157" display="none" fill="#FFFFFF" width="7.692" height="1.976"/>
-<rect x="4.826" y="23.51" display="none" fill="#FFFFFF" width="13.08" height="1.977"/>
-<rect x="21.954" y="23.51" display="none" fill="#FFFFFF" width="7.692" height="1.977"/>
 <path d="M31.122,24.729l9.628,9.452V3.497H7.25v29.236h23.872V24.729z M36.15,16.897h-7.5v-1.9h7.5V16.897z M14.55,8.997h18.8v1.9
 	h-18.8V8.997z M24.75,28.396h-12.8v-1.9h12.8V28.396z M24.75,22.097h-12.8v-1.899h12.8V22.097z M24.75,16.897h-12.8v-1.9h12.8
 	V16.897z M28.65,20.198h7.5v1.899h-7.5V20.198z"/>
