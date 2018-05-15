@@ -238,6 +238,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/show_content_tagging.php',
             'sources/hooks/systems/config/show_content_tagging_inline.php',
             'sources/hooks/systems/config/show_screen_actions.php',
+            'sources/hooks/systems/config/use_monochrome_icons.php',
             'sources/hooks/systems/config/allow_audio_videos.php',
             'sources/hooks/systems/config/allow_ext_images.php',
             'sources/hooks/systems/config/anti_leech.php',

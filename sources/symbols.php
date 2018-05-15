@@ -6500,26 +6500,30 @@ function ecv_DECIMAL_POINT($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string The result
  */
-function ecv_ICONS_SVG_SPRITE_CONTENTS($lang, $escaped, $param)
+function ecv_IS_ICON_IN_SVG_SPRITE($lang, $escaped, $param)
 {
-    static $_value = null;
-    require_code('themes');
+    static $sprite = null;
 
-    if ($_value === null) {
+    if ($sprite === null) {
+        require_code('themes');
         $theme = isset($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
-        $path = get_file_base() . '/themes/' . $theme . '/images/icons/sprite.svg';
-        $_value = '';
+        $is_monochrome = get_option('use_monochrome_icons') === '1';
+        $path = get_file_base() . '/themes/' . $theme . '/images/icons/' . ($is_monochrome ? 'monochrome/' : '') . 'sprite.svg';
+        $sprite = '';
 
         if (!file_exists($path)) {
-            $path = get_file_base() . '/themes/default/images/icons/sprite.svg';
+            $path = get_file_base() . '/themes/default/images/icons/' . ($is_monochrome ? 'monochrome/' : '') . 'sprite.svg';
         }
 
         if (file_exists($path)) {
-            $_value = file_get_contents($path);
+            $sprite = file_get_contents($path);
         }
     }
 
-    $value = $_value;
+    $icon_name = $param[0];
+    $icon_id = str_replace('/', '__', $icon_name);
+
+    $value = (strpos($sprite, 'id="' . $icon_id . '"') !== false) ? '1' : '0';
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
