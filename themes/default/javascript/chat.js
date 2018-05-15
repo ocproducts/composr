@@ -133,7 +133,7 @@
             friend = friends[i];
 
             if (friend.onlineText !== '{!chat:ACTIVE;^}') {
-                $dom.$('#friend-img-' + friend.memberId).className = 'friend-inactive';
+                document.getElementById('friend-img-' + friend.memberId).classList.add('friend-inactive');
             }
         }
 

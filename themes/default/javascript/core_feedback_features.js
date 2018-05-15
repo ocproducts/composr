@@ -455,7 +455,7 @@
             if (!bit) {
                 return;
             }
-            bit.className = (likes ? (rating === number) : (rating >= number)) ? 'rating-star-highlight' : 'rating-star';
+            bit.classList.add((likes ? (rating === number) : (rating >= number)) ? 'rating-star-highlight' : 'rating-star');
 
             if (!initialisationPhase) {
                 return;
