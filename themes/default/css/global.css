@@ -59,6 +59,7 @@ In mobile mode:
 
 /* Used to initiate equations (although running the Theme Wizard replaces these with what the user chooses - which is how it works) */
 {$THEMEWIZARD_COLOR,#426aa9,seed,100% 426aa9}
+{$THEMEWIZARD_COLOR,#f79523,seed_secondary,100% f79523}
 {$THEMEWIZARD_COLOR,#ffffff,WB,100% FFFFFF}
 {$THEMEWIZARD_COLOR,#000000,BW,100% 000000}
 /*Theme seed is: 426aa9*/
@@ -3366,6 +3367,7 @@ ul.actions-list-super-compact > li {
 ul.actions-list > li > .icon,
 ul.actions-list-compact > li > .icon,
 ul.actions-list-super-compact > li > .icon {
+	color: {$GET,seed_secondary};
 	width: 14px;
 	height: 14px;
 }

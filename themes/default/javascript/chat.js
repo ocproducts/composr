@@ -133,6 +133,7 @@
             friend = friends[i];
 
             if (friend.onlineText !== '{!chat:ACTIVE;^}') {
+                document.getElementById('friend-img-' + friend.memberId).classList.remove('friend-active');
                 document.getElementById('friend-img-' + friend.memberId).classList.add('friend-inactive');
             }
         }
@@ -867,7 +868,8 @@
                                 break;
                             }
                             $dom.html(tmpElement, '{!chat:INACTIVE;^}');
-                            document.getElementById('friend-img-' + memberId).className = 'friend-inactive';
+                            document.getElementById('friend-img-' + memberId).classList.remove('friend-active');
+                            document.getElementById('friend-img-' + memberId).classList.add('friend-inactive');
                             friendBeingTracked = true;
                         }
 

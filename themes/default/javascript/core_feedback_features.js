@@ -455,7 +455,9 @@
             if (!bit) {
                 return;
             }
-            bit.classList.add((likes ? (rating === number) : (rating >= number)) ? 'rating-star-highlight' : 'rating-star');
+            var shouldHighlight = (likes ? (rating === number) : (rating >= number));
+            bit.classList.toggle('rating-star-highlight', shouldHighlight);
+            bit.classList.toggle('rating-star', !shouldHighlight);
 
             if (!initialisationPhase) {
                 return;
