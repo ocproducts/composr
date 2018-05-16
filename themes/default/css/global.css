@@ -1747,7 +1747,13 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 .box.nested {
 	border: 1px solid {$GET,pale_border};
 }
-.global-side-panel .box-inner>h1, .global-side-panel .box-inner>h2, .global-side-panel .box-inner>h3, .global-side-panel .box-inner>h4, .global-side-panel .box-inner>h5, .global-side-panel .box-inner>h6, .global-side-panel .box>.toggleable-tray-title {
+.global-side-panel .box-inner>h1, 
+.global-side-panel .box-inner>h2, 
+.global-side-panel .box-inner>h3, 
+.global-side-panel .box-inner>h4, 
+.global-side-panel .box-inner>h5, 
+.global-side-panel .box-inner>h6, 
+.global-side-panel .box>.toggleable-tray-title {
 	background-image: none;
 	color: inherit;
 }
@@ -1763,7 +1769,15 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	padding: 5px; /* not em so that header may be positioned properly */
 }
 
-.box-inner>h1, .box-inner>h2, .box-inner>h3, .box-inner>h4, .box-inner>h5, .box-inner>h6, .toggleable-tray-title, #standalone-html-wrap .box .box .box-inner>h2, #standalone-html-wrap .box .box .box-inner>h3 {
+.box-inner>h1, 
+.box-inner>h2, 
+.box-inner>h3, 
+.box-inner>h4, 
+.box-inner>h5, 
+.box-inner>h6, 
+.toggleable-tray-title, 
+#standalone-html-wrap .box .box .box-inner>h2, 
+#standalone-html-wrap .box .box .box-inner>h3 {
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
@@ -1780,7 +1794,13 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	padding: 0.4em 0.8em 0.4em 0.3em;
 	width: calc(100% - 4px);
 }
-.box-inner>h1 + *, .box-inner>h2 + *, .box-inner>h3 + *, .box-inner>h4 + *, .box-inner>h5 + *, .box-inner>h6 + *, .toggleable-tray-title + * {
+.box-inner>h1 + *, 
+.box-inner>h2 + *, 
+.box-inner>h3 + *, 
+.box-inner>h4 + *, 
+.box-inner>h5 + *, 
+.box-inner>h6 + *, 
+.toggleable-tray-title + * {
 	margin-top: 5px;
 }
 .box-inner>h2>.right .button-screen {
@@ -1797,17 +1817,42 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	font-weight: normal;
 }
 
-.box-inner>h1 a, .box-inner>h2 a, .box-inner>h3 a, .box-inner>h4 a, .box-inner>h5 a, .box-inner>h6 a, .toggleable-tray-title a, .box-inner>h1 a:visited, .box-inner>h2 a:visited, .box-inner>h3 a:visited, .box-inner>h4 a:visited, .box-inner>h5 a:visited, .box-inner>h6 a:visited, .toggleable-tray-title a:visited {
+.box-inner>h1 a, 
+.box-inner>h2 a, 
+.box-inner>h3 a, 
+.box-inner>h4 a, 
+.box-inner>h5 a, 
+.box-inner>h6 a, 
+.toggleable-tray-title a, 
+.box-inner>h1 a:visited, 
+.box-inner>h2 a:visited, 
+.box-inner>h3 a:visited, 
+.box-inner>h4 a:visited, 
+.box-inner>h5 a:visited, 
+.box-inner>h6 a:visited, 
+.toggleable-tray-title a:visited {
 	color: inherit;
 	text-decoration: underline;
 }
 a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	text-decoration: none !important;
 }
-.box-inner>h1 a:hover, .box-inner>h2 a:hover, .box-inner>h3 a:hover, .box-inner>h4 a:hover, .box-inner>h5 a:hover, .box-inner>h6 a:hover, .toggleable-tray-title a:hover {
+.box-inner>h1 a:hover, 
+.box-inner>h2 a:hover, 
+.box-inner>h3 a:hover, 
+.box-inner>h4 a:hover, 
+.box-inner>h5 a:hover, 
+.box-inner>h6 a:hover, 
+.toggleable-tray-title a:hover {
 	color: {$GET,box_title_text_hover};
 }
-.boxless-space .box-inner>h1 a:hover, .boxless-space .box-inner>h2 a:hover, .boxless-space .box-inner>h3 a:hover, .boxless-space .box-inner>h4 a:hover, .boxless-space .box-inner>h5 a:hover, .boxless-space .box-inner>h6 a:hover, .boxless-space .toggleable-tray-title a:hover {
+.boxless-space .box-inner>h1 a:hover, 
+.boxless-space .box-inner>h2 a:hover, 
+.boxless-space .box-inner>h3 a:hover, 
+.boxless-space .box-inner>h4 a:hover, 
+.boxless-space .box-inner>h5 a:hover, 
+.boxless-space .box-inner>h6 a:hover, 
+.boxless-space .toggleable-tray-title a:hover {
 	color: inherit;
 }
 
@@ -1841,7 +1886,13 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .boxless-space .box>.box-inner {
 	margin: 0;
 }
-.boxless-space .box>.box-inner>h1, .boxless-space .box>.box-inner>h2, .boxless-space .box>.box-inner>h3, .boxless-space .box>.box-inner>h4, .boxless-space .box>.box-inner>h5, .boxless-space .box>.box-inner>h6, .boxless-space .box>.toggleable-tray-title {
+.boxless-space .box>.box-inner>h1, 
+.boxless-space .box>.box-inner>h2, 
+.boxless-space .box>.box-inner>h3, 
+.boxless-space .box>.box-inner>h4, 
+.boxless-space .box>.box-inner>h5, 
+.boxless-space .box>.box-inner>h6, 
+.boxless-space .box>.toggleable-tray-title {
 	background: url('{$IMG_INLINE;,boxes/boxless_title_leadin_rightcomp}') no-repeat !important;
 	background-size: 18px 18px !important;
 	color: {$GET,slightly_seeded_right_complement_text} !important;
@@ -1855,15 +1906,32 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	text-transform: uppercase;
 	border-radius: 0;
 }
-.global-side-panel .boxless-space .box>.box-inner>h1, .global-side-panel .boxless-space .box>.box-inner>h2, .global-side-panel .boxless-space .box>.box-inner>h3, .global-side-panel .boxless-space .box>.box-inner>h4, .global-side-panel .boxless-space .box>.box-inner>h5, .global-side-panel .boxless-space .box>.box-inner>h6,
-.boxless-space .box .box>.box-inner>h1, .boxless-space .box .box>.box-inner>h2, .boxless-space .box .box>.box-inner>h3, .boxless-space .box .box>.box-inner>h4, .boxless-space .box .box>.box-inner>h5, .boxless-space .box .box>.box-inner>h6 {
+.global-side-panel .boxless-space .box>.box-inner>h1, 
+.global-side-panel .boxless-space .box>.box-inner>h2, 
+.global-side-panel .boxless-space .box>.box-inner>h3, 
+.global-side-panel .boxless-space .box>.box-inner>h4, 
+.global-side-panel .boxless-space .box>.box-inner>h5, 
+.global-side-panel .boxless-space .box>.box-inner>h6,
+.boxless-space .box .box>.box-inner>h1, 
+.boxless-space .box .box>.box-inner>h2, 
+.boxless-space .box .box>.box-inner>h3, 
+.boxless-space .box .box>.box-inner>h4, 
+.boxless-space .box .box>.box-inner>h5, 
+.boxless-space .box .box>.box-inner>h6 {
 	background: url('{$IMG_INLINE;,boxes/boxless_title_leadin_leftcomp}') no-repeat !important;
 	background-size: 18px 18px !important;
 	color: {$GET,slightly_seeded_left_complement_text} !important;
 }
-.global-side-panel .boxless-space .box>.box-inner>h1, .global-side-panel .boxless-space .box>.box-inner>h2, .global-side-panel .boxless-space .box>.box-inner>h3, .global-side-panel .boxless-space .box>.box-inner>h4, .global-side-panel .boxless-space .box>.box-inner>h5, .global-side-panel .boxless-space .box>.box-inner>h6 {
+.global-side-panel .boxless-space .box>.box-inner>h1, 
+.global-side-panel .boxless-space .box>.box-inner>h2, 
+.global-side-panel .boxless-space .box>.box-inner>h3, 
+.global-side-panel .boxless-space .box>.box-inner>h4, 
+.global-side-panel .boxless-space .box>.box-inner>h5, 
+.global-side-panel .boxless-space .box>.box-inner>h6 {
 }
-.boxless-space .buttons-group, .boxless-space .associated-links-block-group, .boxless-space .media-box, .boxless-space .proceed-button {
+.boxless-space .buttons-group, 
+.boxless-space .associated-links-block-group, 
+.boxless-space .media-box, .boxless-space .proceed-button {
 	text-align: left;
 	width: auto;
 }
@@ -1906,13 +1974,29 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 
 /* Boxes under boxes shouldn't have the title style - would be ugly */
 
-.box .box .box-inner>h1, .box .box .box-inner>h2, .box .box .box-inner>h3, .box .box .box-inner>h4, .box .box .box-inner>h5, .box .box .box-inner>h6, .box .box .toggleable-tray-title, #standalone-html-wrap .box .box .box .box-inner>h2, #standalone-html-wrap .box .box .box .box-inner>h3 {
+.box .box .box-inner>h1, 
+.box .box .box-inner>h2, 
+.box .box .box-inner>h3, 
+.box .box .box-inner>h4, 
+.box .box .box-inner>h5, 
+.box .box .box-inner>h6, 
+.box .box .toggleable-tray-title, 
+#standalone-html-wrap .box .box .box .box-inner>h2, 
+#standalone-html-wrap .box .box .box .box-inner>h3 {
 	background: none;
 	color: inherit;
 	padding-left: 0;
 	font-size: 1.1em;
 } /* This rule is not applied to boxes under the top level box in the preview (#standalone-html-wrap) as those should show verbatim */
-.box .box .box-inner>h1 a, .box .box .box-inner>h2 a, .box .box .box-inner>h3 a, .box .box .box-inner>h4 a, .box .box .box-inner>h5 a, .box .box .box-inner>h6 a, .box .box .toggleable-tray-title a, #standalone-html-wrap .box .box .box .box-inner>h2 a, #standalone-html-wrap .box .box .box .box-inner>h3 a {
+.box .box .box-inner>h1 a, 
+.box .box .box-inner>h2 a, 
+.box .box .box-inner>h3 a, 
+.box .box .box-inner>h4 a, 
+.box .box .box-inner>h5 a, 
+.box .box .box-inner>h6 a, 
+.box .box .toggleable-tray-title a, 
+#standalone-html-wrap .box .box .box .box-inner>h2 a, 
+#standalone-html-wrap .box .box .box .box-inner>h3 a {
 	color: {$GET,a.hover};
 }
 
