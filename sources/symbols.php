@@ -6508,11 +6508,11 @@ function ecv_IS_ICON_IN_SVG_SPRITE($lang, $escaped, $param)
         require_code('themes');
         $theme = isset($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
         $is_monochrome = get_option('use_monochrome_icons') === '1';
-        $path = get_file_base() . '/themes/' . $theme . '/images/icons' . ($is_monochrome ? '-monochrome' : '') . '/sprite.svg';
+        $path = get_file_base() . '/themes/' . $theme . '/images/icons' . ($is_monochrome ? '-monochrome' : '') . '-sprite.svg';
         $sprite = '';
 
         if (!file_exists($path)) {
-            $path = get_file_base() . '/themes/default/images/icons' . ($is_monochrome ? '-monochrome' : '') . '/sprite.svg';
+            $path = get_file_base() . '/themes/default/images/icons' . ($is_monochrome ? '-monochrome' : '') . '-sprite.svg';
         }
 
         if (file_exists($path)) {
