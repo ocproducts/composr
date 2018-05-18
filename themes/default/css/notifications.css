@@ -7,7 +7,6 @@
 
 #web-notifications-button,
 #pts-button {
-	color: {$GET,heading_text};
 	display: inline-block;
 	position: relative;
 	text-align: center;

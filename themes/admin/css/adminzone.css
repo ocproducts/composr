@@ -143,3 +143,20 @@ footer .global-minilinks {
 	margin: 0.75em 0.5em 0 0;
 	float: right;
 }
+
+/*
+=========================
+========SVG Sprites======
+=========================
+*/
+.preview-svg-sprite-icon {
+	float: left;
+	text-align: center;
+	padding: 20px;
+	margin: 10px;
+	border: 1px solid;
+}
+
+.preview-svg-sprite-icon .icon {
+	color: {$GET,seed};
+}
