@@ -324,6 +324,9 @@ class Module_admin_svg_sprites
             $xml = simplexml_load_string(file_get_contents($icon_path));
             $output .= '<symbol viewBox="' . $xml['viewBox'] . '" id="' . str_replace('/', '__', $icon_name) . '">' . "\n";
             foreach ($xml->children() as $child) {
+                if (($child->getName() === 'defs') && (trim($child) === '')) {
+                    continue;
+                }
                 $output .= $child->asXML() . "\n";
             }
             $output .= "</symbol>\n";
