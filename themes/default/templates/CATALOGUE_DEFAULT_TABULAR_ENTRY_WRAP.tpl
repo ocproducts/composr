@@ -7,7 +7,7 @@
 	{+START,IF_NON_EMPTY,{VIEW_URL}}
 		<td>
 			<!--VIEWLINK-->
-			<a class="button-screen-item buttons--more" href="{VIEW_URL*}"><span>{!VIEW}</span> {+START,INCLUDE,ICON}NAME=buttons/more{+END}</a>
+			<a class="button-screen-item buttons--more" href="{VIEW_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/more{+END} {!VIEW}</span></a>
 		</td>
 	{+END}
 	{$, Uncomment to show ratings
