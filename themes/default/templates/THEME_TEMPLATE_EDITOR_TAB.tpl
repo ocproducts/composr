@@ -467,7 +467,7 @@
 									<a href="#!" class="js-a-editarea-search" data-ea-search="&#10;.logo-outer {">{!CHANGE_HEADER_IMAGE}</a>
 								</li>
 								<li>
-									<a href="#!" class="js-a-editarea-search" data-search="#main-website #main-website-inner {">{!CHANGE_FIXED_WIDTH}</a>
+									<a href="#!" class="js-a-editarea-search" data-ea-search="#main-website #main-website-inner {">{!CHANGE_FIXED_WIDTH}</a>
 								</li>
 							{+END}
 						</ul>

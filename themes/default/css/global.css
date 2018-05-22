@@ -58,8 +58,8 @@ In mobile mode:
 */
 
 /* Used to initiate equations (although running the Theme Wizard replaces these with what the user chooses - which is how it works) */
-{$THEMEWIZARD_COLOR,#426aa9,seed,100% 426aa9}
-{$THEMEWIZARD_COLOR,#f79523,seed_secondary,100% f79523}
+{$THEMEWIZARD_COLOR,#239def,seed,100% 239def}
+{$THEMEWIZARD_COLOR,#ff8900,seed_secondary,100% ff8900}
 {$THEMEWIZARD_COLOR,#ffffff,WB,100% FFFFFF}
 {$THEMEWIZARD_COLOR,#000000,BW,100% 000000}
 /*Theme seed is: 426aa9*/
@@ -205,11 +205,19 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#389596,gcol_14,100% #389596}
 {$THEMEWIZARD_COLOR,#389653,gcol_15,100% #389653}
 
+{$SET,fixed_width,1366px}
+
 /*
 =========================
 ===Overridden Elements===
 =========================
 */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
 
 html {
 	overflow-y: scroll; /* This makes rendering smoother, no jerk when browser realises a scrollbar is needed, or between pages with/without */
@@ -218,6 +226,10 @@ html {
 html, body {
 	border: 0;
 	{$BETA_CSS_PROPERTY,text-size-adjust: none;}
+}
+
+body {
+	font-size: 15px;
 }
 
 body, .email-body, textarea, input, td, th {
@@ -558,42 +570,31 @@ input.input-username::-webkit-calendar-picker-indicator {
 */
 
 /* Consider .website-body as 'body': it is just we cannot put our styles directly on body because sometimes this gets used in things we should not mess with such as the WYSIWYG editors frame (which is #wysiwyg-editor) and e-mails */
-body.website-body {
+.website-body {
 	padding: 0 !important;
 	margin: 0;
 	color: {$GET,slightly_seeded_text};
 	background-color: {$GET,main_background};
 }
-body.website-body.frame {
+
+.website-body.frame {
 	background-color: transparent; /* Don't assume too much for a frame, it may be nested inside a box for example */
 }
 
 /*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 	/*{+START,CSS_MODE,desktop}*/
-		html>body#main-website { /* #main-website targets only the main site screen, avoiding frames etc */
-			/* Want to change the tiled background?
-				Try this web search to get image ideas https://duckduckgo.com/?q=tile+background&iax=images&ia=images
-				Find how to edit the referenced "outer_background" theme image by doing an Admin Zone search for "outer_background"
-			*/
-			background-image: url('{$IMG_INLINE;,outer_background}');
-			background-size: 220px 220px;
-		}
-		#main-website #main-website-inner {
-			width: 980px;
+		#main-website-inner {
 			position: relative;
-			margin: 15px auto 15px auto;
-			border: 1px solid {$GET,fixed_width_border};
-			box-shadow: 0 0 20px {$GET,standard_border};
 		}
 		/*{+START,IF,{$NAND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
-			#main-website #main-website-inner {
+			#main-website-inner {
 				margin: 15px;
 			}
 		/*{+END}*/
 	/*{+END}*/
 
 	/*{+START,CSS_MODE,tablet_fixed_viewport}*/
-		#main-website #main-website-inner {
+		#main-website-inner {
 			margin: 0 0 0 0.5em;
 			border: 0;
 			box-shadow: none;
@@ -605,7 +606,7 @@ body.website-body.frame {
 	/*{+END}*/
 /*{+END}*/
 
-body.website-body, #wysiwyg-editor {
+.website-body, #wysiwyg-editor {
 	font-size: 13px;
 }
 #wysiwyg-editor {
@@ -615,35 +616,35 @@ body.website-body, #wysiwyg-editor {
 	{$BETA_CSS_PROPERTY,user-select: text !important;}
 }
 
-body#main-website {
+#main-website {
 	margin: 0;
 }
 
-/*{+START,IF,{$THEME_OPTION,fixed_width}}*/
-	/* To stop it scaling down if we are applying "width=device-width" and forcing a page to displaying non-mobile */
-	/*{+START,CSS_MODE,desktop}*/
-		body#main-website {
-			min-width: 1000px;
-		}
-	/*{+END}*/
-/*{+END}*/
+.container {
+	max-width: {$GET,fixed_width};
+	width: 100%;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto;
+	margin-left: auto;
+}
 
-body#main-website #main-website-inner .global-middle-outer {
+#main-website #main-website-inner .global-middle-outer {
 	min-height: 450px;
 }
 
 /* If not #main-website, it'll be one of these (the names correspond to the templates used) */
-body#basic-html-wrap {
+#basic-html-wrap {
 	margin: 0;
 }
-body#standalone-html-wrap {
+#standalone-html-wrap {
 	margin: 0;
 }
 
-body.popup-spacer {
+.popup-spacer {
 	padding: 1em !important;
 }
-body.popup-spacer h2 {
+.popup-spacer h2 {
 	margin-top: 0;
 }
 
@@ -708,9 +709,7 @@ header h1 {
 }
 
 .global-navigation {
-	border-top: 1px solid {$GET,standard_border};
-	border-bottom: 1px solid {$GET,standard_border};
-	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
+	background-color: {$GET,seed};
 	color: {$GET,WB};
 	min-height: 3.5em;
 }
@@ -731,7 +730,6 @@ header h1 {
 
 .global-navigation .top-buttons, .global-navigation .top-form {
 	padding: 0.5em 0;
-	margin-right: 1em;
 	float: right;
 }
 
@@ -809,10 +807,18 @@ header h1 {
 	border-bottom: none;
 	color: inherit;
 }
+
 .hero-section * {
 	margin-top: 0;
 }
-.hero-section .hero-button a:visited, .hero-section .hero-button a:link, .hero-section .hero-button a:active, .hero-section .hero-button a:hover, .hero-section .hero-button a.user-link:link, .hero-section .hero-button a.user-link:active, .hero-section .hero-button a.user-link:hover {
+
+.hero-section .hero-button a:visited, 
+.hero-section .hero-button a:link, 
+.hero-section .hero-button a:active, 
+.hero-section .hero-button a:hover, 
+.hero-section .hero-button a.user-link:link, 
+.hero-section .hero-button a.user-link:active, 
+.hero-section .hero-button a.user-link:hover {
 	text-decoration: none;
 	padding: 0.5em !important;
 	background-image: none !important; /* Will be overridden below if linear-gradient supported by browser */
@@ -947,6 +953,14 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	width: auto;
 }
 
+#panel-left {
+	margin-right: 1em;
+}
+
+#panel-right {
+	margin-left: 1em;
+}
+
 /*{+START,CSS_MODE,desktop}*/
 	.global-middle-outer {
 		{$BETA_CSS_PROPERTY,display: flex;}
@@ -954,10 +968,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 
 	.global-middle {
 		/* Add some spacing. This will be overwritten to 1.5em in rules below if we have panels */
-		padding-left: 1em;
-		padding-right: 1em;
 		margin-bottom: 1em;
-		box-sizing: border-box;
 		{$BETA_CSS_PROPERTY,order: 1;}
 		{$BETA_CSS_PROPERTY,flex-grow: 1;}
 		min-width: 0; /* This stops it stretching beyond available space if containing something white-space:pre, which it will do in Firefox [unrelated to flex-grow] https://bugzilla.mozilla.org/show_bug.cgi?id=1136818 */
@@ -992,12 +1003,10 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 		padding-right: 2px;
 		{$BETA_CSS_PROPERTY,text-size-adjust: none;}
 		width: 100% !important; /* Remove this line for 50:50 display of panels */
-		box-sizing: border-box;
 	}
 
 	body.overlay {
 		width: 100%;
-		box-sizing: border-box;
 	}
 
 	.overlay h1 {
@@ -1012,13 +1021,11 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 		float: left;
 		padding-left: 2px;
 		padding-right: 1px;
-		box-sizing: border-box;
 	}
 	#panel-right {
 		float: left;
 		padding-right: 2px;
 		padding-left: 1px;
-		box-sizing: border-box;
 	}
 
 	.global-side-panel .stuck-nav { /* overrides possibility from the inline style the stuck-nav JS puts there */
@@ -1037,16 +1044,6 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	}
 /*{+END}*/
 
-/*{+START,CSS_MODE,desktop}*/
-	.global-messages {
-		margin: 0 1em;
-	}
-/*{+END}*/
-/*{+START,CSS_MODE,mobile}*/
-	.global-messages {
-		margin: 0 2px;
-	}
-/*{+END}*/
 .global-middle-faux .global-messages {
 	margin: 0; /* Probably inside a frame, hence already indented outside said frame */
 }
@@ -1392,7 +1389,6 @@ div.edited {
 }
 .media-box>a>img, .media-box>img {
 	border: 1px solid {$GET,standard_border};
-	box-sizing: border-box;
 	box-shadow: 3px 3px 10px {$GET,standard_border};
 }
 .media-box>a>img:not([width]):not([height]), .media-box>img:not([width]):not([height]) {
@@ -1402,7 +1398,6 @@ div.edited {
 
 .scale-down { /* Membership of this class is used as a tag to turn on image scale-to-fit */
 	max-width: 100%;
-	box-sizing: border-box;
 }
 .scale-down:not([width]):not([height]) {
 	max-width: 100%;
@@ -1714,12 +1709,7 @@ th.metadata-title {
 
 	margin: 1em 0;
 
-	/* Want to change the tiled background?
-		Try this web search to get image ideas https://duckduckgo.com/?q=tile+background&iax=images&ia=images
-		Find how to edit the referenced "block_background" theme image by doing an Admin Zone search for "block_background"
-	*/
-	background: url('{$IMG_INLINE;,block_background}') {$GET,area_background};
-	background-size: 5px 5px;
+	background-color: {$GET,area_background};
 
 	overflow: hidden;
 }
@@ -2067,7 +2057,6 @@ h3 .toggleable-tray-button .icon {
 }
 
 .fp-col-block {
-	box-sizing: border-box;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.fp-col-block {
@@ -3857,7 +3846,6 @@ ul.buttons-group, ul.associated-links-block-group {
 	padding-left: 2em;
 	margin-top: -1.5em;
 	width: 100%;
-	box-sizing: border-box;
 }
 
 /*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key,1}}*/
@@ -3899,7 +3887,6 @@ ul.buttons-group, ul.associated-links-block-group {
 
 .wide-field {
 	width: 100%;
-	box-sizing: border-box;
 	margin-left: 0 !important;
 	margin-right: 0 !important;
 }
@@ -3932,7 +3919,6 @@ input.magic-image-edit-link {
 
 .button-micro, .button-screen, .button-screen-item, .hero-section .hero-button a, body .hero-section .hero-button>a.user-link {
 	display: inline-block;
-	box-sizing: border-box;
 	border: 1px solid {$GET,dark_border};
 	border-radius: 6px;
 	margin: 0.25em;

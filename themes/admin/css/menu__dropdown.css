@@ -17,7 +17,6 @@ For example:
 	margin-bottom: 0;
 	transition: color,background-color 0.5s linear;
 	font-size: 0.9em;
-	box-sizing: border-box;
 }
 
 .dropdown-menu a.toplevel-link,

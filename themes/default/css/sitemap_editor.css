@@ -8,7 +8,6 @@
 }
 
 .sitemap-left {
-	box-sizing: border-box;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.tree-list--root-tree-list {
@@ -22,7 +21,6 @@
 }
 
 .sitemap-right {
-	box-sizing: border-box;
 }
 
 /*{+START,CSS_MODE,desktop}*/

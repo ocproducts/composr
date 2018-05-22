@@ -78,7 +78,6 @@
 /*{+START,CSS_MODE,mobile}*/
 	#news-ticker h1 {
 		width: 100%;
-		box-sizing: border-box;
 		background-size: 100% 100% !important;
 	}
 /*{+END}*/
@@ -191,7 +190,6 @@
 /*{+START,CSS_MODE,mobile}*/
 	#timer {
 		padding: 4px 0 0 10px;
-		box-sizing: border-box;
 		width: 100%;
 		background-size: 100% 100% !important;
 	}

@@ -333,7 +333,6 @@ div.cns-table-footer>div>div {
 .cns-topic-poll-radio, .cns-topic-poll-result {
 	text-align: right;
 	width: 50%;
-	box-sizing: border-box;
 	padding: 0.5em;
 }
 
@@ -805,7 +804,6 @@ hr.cns-sig-barrier {
 		margin-bottom: 3em;
 		padding: 4em 2em 4em 4em;
 		width: 50%;
-		box-sizing: border-box;
 	}
 /*{+END}*/
 .cns-whisper-choose-box .box {

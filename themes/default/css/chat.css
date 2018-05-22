@@ -16,7 +16,6 @@
 .chat-rooms {
 	width: 50%;
 	padding-left: 1em;
-	box-sizing: border-box;
 }
 
 .chat-rooms .associated-details:last-child {
@@ -28,7 +27,6 @@
 	width: 50%;
 	padding-left: 1em;
 	border-left: 1px solid {$GET,pale_border};
-	box-sizing: border-box;
 	padding-bottom: 1em;
 }
 
@@ -71,7 +69,6 @@
 /*{+START,CSS_MODE,mobile}*/
 	.chat-posting-area textarea {
 		width: 100%;
-		box-sizing: border-box;
 	}
 
 	.chat-posting-area .left {
@@ -106,19 +103,16 @@
 
 	.chat-room-options {
 		padding: 0.5em;
-		box-sizing: border-box;
 	}
 
 	.chat-room-actions {
 		padding-left: 1em;
 		border-left: 1px solid {$GET,pale_border};
-		box-sizing: border-box;
 	}
 
 	.chat-colour-option, .chat-font-option {
 		float: left;
 		width: 50%;
-		box-sizing: border-box;
 	}
 
 	.chat-colour-option {
@@ -255,7 +249,6 @@
 }
 
 .chat-lobby-friends {
-	box-sizing: border-box;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.chat-lobby-friends {
@@ -271,7 +264,6 @@
 .chat-lobby-convos {
 	margin-top: 1em;
 	margin-left: 0.75em;
-	box-sizing: border-box;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.chat-lobby-convos {
@@ -405,7 +397,6 @@
 	width: 100%;
 	text-align: left;
 	margin: 0.2em 0 !important;
-	box-sizing: border-box;
 }
 
 .chat-lobby-convos-area-bar {

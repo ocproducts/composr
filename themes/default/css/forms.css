@@ -214,7 +214,6 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de-t
 /*{+END}*/
 .form-table-field-input .wide-field {
 	max-width: 100%;
-	box-sizing: border-box;
 }
 
 /* Tone it all down for forms inside tabs */
@@ -670,7 +669,6 @@ span.validated-checkbox+input[name="validated"].input-tick {
 
 	/* Fix for overhanging borders */
 	padding-right: 2px;
-	box-sizing: border-box;
 }
 
 .permissions-matrix-wrap select {

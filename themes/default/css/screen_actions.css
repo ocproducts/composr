@@ -6,7 +6,6 @@
 .screen-actions-outer {
 	margin: 2em 0;
 	overflow: visible !important;
-	box-sizing: border-box;
 
 	/* Needed so the ::after clearfix works in a constrained context */
 	display: inline-block;

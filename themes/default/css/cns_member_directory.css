@@ -12,7 +12,6 @@
 .block-main-members>div {
 	vertical-align: top;
 	margin: 0.5em 0 0 0.5em;
-	box-sizing: border-box; /* Exact percentage widths are chosen to match the per_row block parameter */
 }
 /*{+START,CSS_MODE,desktop}*/
 	.block-main-members>div {

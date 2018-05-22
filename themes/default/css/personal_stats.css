@@ -19,14 +19,12 @@
 /* Top block */
 
 #top-personal-stats-button {
-	width: 30px;
-	height: 23px;
 	display: inline-block;
+	padding: 0 5px; /* This is needed for spacing, but also to ensure a consistent width compared to the notification/inbox buttons */
 }
 .top-buttons #top-personal-stats-button .icon {
-	padding: 0 5px; /* This is needed for spacing, but also to ensure a consistent width compared to the notification/inbox buttons */
-	width: 20px;
-	height: 20px;
+	width: 24px;
+	height: 24px;
 }
 
 .global-button-ref-point .personal-stats-avatar {

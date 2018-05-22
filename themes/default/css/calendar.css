@@ -248,7 +248,6 @@ abbr.dtstart, abbr.dtend {
 	.event-interest-box {
 		width: 50%;
 		padding: 0.5em;
-		box-sizing: border-box;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/

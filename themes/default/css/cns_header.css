@@ -129,7 +129,6 @@ body.touch-enabled .cns-information-bar-outer body.touch-enabled .toggleable-tra
 /*{+START,CSS_MODE,mobile}*/
 	.cns-member-column-d li {
 		width: calc(50% - 5px);
-		box-sizing: border-box;
 		float: left;
 	}
 /*{+END}*/
