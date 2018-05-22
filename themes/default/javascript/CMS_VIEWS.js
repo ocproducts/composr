@@ -224,13 +224,11 @@
             id = $dom.id(this.el, 'tray-');
             this.cookie = id.startsWith('tray') ? id : 'tray-' + id;
         }
+        
+        this.contentEl = this.$('.js-tray-content');
 
-        if (!params.accordion) {
-            this.contentEl = this.$('.js-tray-content');
-
-            if (this.cookie) {
-                this.handleTrayCookie();
-            }
+        if (this.cookie) {
+            this.handleTrayCookie();
         }
     }
 
@@ -287,8 +285,8 @@
             if (($dom.notDisplayed(this.contentEl) && (cookieValue === 'open')) || ($dom.isDisplayed(this.contentEl) && (cookieValue === 'closed'))) {
                 expanded = $cms.ui.toggleableTray(this.contentEl, false);
 
-                expanded = this.el.classList.toggle('is-expanded', expanded);
-                expanded = this.el.classList.toggle('is-collapsed', !expanded);
+                this.el.classList.toggle('is-expanded', expanded);
+                this.el.classList.toggle('is-collapsed', !expanded);
             }
         }
     });
