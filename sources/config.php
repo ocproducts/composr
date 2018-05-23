@@ -240,7 +240,7 @@ function get_theme_option($name, $default = null, $theme = null, $missing_ok = f
                 $default = '1';
                 break;
             case 'seed':
-                $default = '426aa9'; // Call find_theme_seed() for a better guess
+                $default = '239def'; // Call find_theme_seed() for a better guess
                 break;
             case 'supports_themewizard_equations':
                 $default = '0';

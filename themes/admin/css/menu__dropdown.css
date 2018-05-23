@@ -128,7 +128,6 @@ For example:
 
 	.dropdown-menu li.toplevel {
 		float: left;
-		padding: 0.5em 0.25em;
 		width: {$DIV_FLOAT*,100,9}%;
 	}
 
@@ -139,7 +138,7 @@ For example:
 
 	.dropdown-menu a.toplevel-link,
 	.dropdown-menu a.nlevel-link {
-		padding: 0.5em !important;
+		padding: 0.5em;
 	}
 
 	.dropdown-menu li.toplevel.first {
@@ -236,11 +235,6 @@ For example:
 	.dropdown-menu .nlevel .menu-spacer {
 		display: block;
 		padding-right: 0;
-	}
-
-	.dropdown-menu ul.nlevel li a { /* ul li added to ensure precedence over ".nl li" selector, while not forcing us to use up our only !important */
-		padding-left: 14px;
-		background-size: 6px 6px !important;
 	}
 
 	.dropdown-menu .nlevel a,

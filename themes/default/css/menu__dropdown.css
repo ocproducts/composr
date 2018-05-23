@@ -23,16 +23,9 @@ For example:
 }
 
 .dropdown-menu li.toplevel {
-	border-left: 1px solid {$GET,standard_border};
 	margin-right: -1px;
 	margin-bottom: 0;
-	transition: color,background-color 0.5s linear;
-	/*{+START,IF,{$NOT,{!takes_lots_of_space}}}*/
-		font-size: 0.9em;
-	/*{+END}*/
-	/*{+START,IF,{!takes_lots_of_space}}*/
-		font-size: 0.8em;
-	/*{+END}*/
+	transition: color, background-color 0.5s linear;
 }
 
 .dropdown-menu a.toplevel-link,
@@ -62,7 +55,7 @@ For example:
 	height: 16px;
 }
 
-	/*{+START,CSS_MODE,mobile}*/
+/*{+START,CSS_MODE,mobile}*/
 	.dropdown-menu-toggle-btn {
 		text-decoration: none;
 		color: {$GET,WB} !important;
@@ -144,12 +137,11 @@ For example:
 
 	.dropdown-menu li.toplevel {
 		float: left;
-		padding: 0.5em 0.25em;
 	}
 
 	.dropdown-menu a.toplevel-link,
 	.dropdown-menu a.nlevel-link {
-		padding: 0.5em !important;
+		padding: 0.5em;
 	}
 
 	.dropdown-menu li.toplevel.first {
@@ -171,23 +163,26 @@ For example:
 	}
 
 	.dropdown-menu a.toplevel-link {
-		padding: 0.4em 0.5em;
+		padding: 19px 0.7em;
 	}
 
 	.dropdown-menu .has-children>a.toplevel-link::after {
 		content: "\025BC"; /* Downward arrow */
 		vertical-align: middle;
 		padding-left: 0.5em;
-		font-size: 0.8em;
+		font-size: 0.5em;
 		display: inline-block;
-		margin-top: 4px;
 	}
 
 	.dropdown-menu li.nlevel.has-children > a.nlevel-link::after {
+		content: '\025BC'; /* Downward arrow */
+		transform: rotate(-90deg); /* Point towards right */
 		display: inline-block;
 		vertical-align: middle;
-		content: '\2192'; /* Right arrow */
-		margin-left: 0.3em;
+		float: right;
+		font-size: 0.6em;
+		margin-right: 0.5em;
+		margin-left: 0.5em;
 	}
 
 	.dropdown-menu .toplevel-link a, .dropdown-menu .toplevel-link a:visited, .dropdown-menu .toplevel-link a:hover {
@@ -220,13 +215,16 @@ For example:
 	.dropdown-menu .nlevel li {
 		white-space: nowrap;
 		overflow: hidden; /* Needed as images are set to float */
+		font-size: 0.9rem;
 	}
 
-	.dropdown-menu .nlevel li:hover, .dropdown-menu .nlevel li.current {
+	.dropdown-menu .nlevel li:hover, 
+	.dropdown-menu .nlevel li.current {
 		background-color: {$GET,dropdown_menu_text};
 	}
 
-	.dropdown-menu .nlevel li, .dropdown-menu .nlevel .menu-spacer {
+	.dropdown-menu .nlevel li, 
+	.dropdown-menu .nlevel .menu-spacer {
 		background-color: {$GET,dropdown_menu_background};
 		font-weight: normal;
 		border-bottom: 1px solid {$GET,standard_border};
@@ -236,11 +234,6 @@ For example:
 	.dropdown-menu .nlevel .menu-spacer {
 		display: block;
 		padding-right: 0;
-	}
-
-	.dropdown-menu ul.nlevel li a { /* ul li added to ensure precedence over ".nl li" selector, while not forcing us to use up our only !important */
-		padding-left: 14px;
-		background-size: 6px 6px !important;
 	}
 
 	.dropdown-menu .nlevel a, .dropdown-menu .nlevel a:visited {

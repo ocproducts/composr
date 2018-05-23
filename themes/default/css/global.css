@@ -62,7 +62,7 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#ff8900,seed_secondary,100% ff8900}
 {$THEMEWIZARD_COLOR,#ffffff,WB,100% FFFFFF}
 {$THEMEWIZARD_COLOR,#000000,BW,100% 000000}
-/*Theme seed is: 426aa9*/
+/*Theme seed is: 239def*/
 
 /* The fundamental website */
 {$THEMEWIZARD_COLOR,#e3eaf6,fixed_width_background,11% (seed sat_to 100) + 89% WB}
@@ -100,16 +100,19 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#000000,dark_shadow,100% BW}
 
 /* For standard elements */
-{$THEMEWIZARD_COLOR,#325180,heading_text,76% seed + 24% BW}
-{$THEMEWIZARD_COLOR,#051225,a.hover,30% a.link + 70% BW}
-{$THEMEWIZARD_COLOR,#113871,a.visited,67% (seed sat_to 85) + 33% BW}
-{$THEMEWIZARD_COLOR,#123d7b,a.link,73% (seed sat_to 85) + 27% BW}
+{$THEMEWIZARD_COLOR,#1b77b6,heading_text,76% seed + 24% BW}
+{$THEMEWIZARD_COLOR,#239def,a.link,100% seed}
+{$THEMEWIZARD_COLOR,#1e85cb,a.hover,85% a.link + 15% BW}
+{$THEMEWIZARD_COLOR,#1a76b3,a.visited,75% a.link + 25% BW}
 {$THEMEWIZARD_COLOR,#bdcbe1,th_secondary_text,35% seed + 65% WB}
 {$THEMEWIZARD_COLOR,#a2b6d5,hr,60% area_background + 40% seed}
 {$THEMEWIZARD_COLOR,#325180,divider_line,76% seed + 24% BW}
 
+{$THEMEWIZARD_COLOR,#239def,button_background,100% seed}
+{$THEMEWIZARD_COLOR,#1e85cb,button_background_hover,85% button_background + 15% BW}
+
 /* Borders */
-{$THEMEWIZARD_COLOR,#6b81a1,standard_border,95% (seed sat_to 33) + 5% BW}
+{$THEMEWIZARD_COLOR,#dddddd,standard_border,100% dddddd}
 {$THEMEWIZARD_COLOR,#4b5a71,dark_border,70% standard_border + 30% BW}
 {$THEMEWIZARD_COLOR,#c1cee3,pale_border,33% seed + 67% WB}
 {$THEMEWIZARD_COLOR,#8497b3,point_of_interest_border,50% dark_border + 50% WB}
@@ -127,8 +130,8 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#c2d1e5,area_hover_2_background,20% seed + 80% WB}
 {$THEMEWIZARD_COLOR,#d9e1ee,area_current_background,93% (area_background sat_to 15) + 7% BW}
 {$THEMEWIZARD_COLOR,#dce2eb,point_of_interest_background,97% area_2_background + 2% BW}
-{$THEMEWIZARD_COLOR,#6b81a1,footer_background,95% (seed sat_to 33) + 5% BW}
-{$THEMEWIZARD_COLOR,#607490,footer_2_background,85% (seed sat_to 33) + 15% BW}
+{$THEMEWIZARD_COLOR,#444444,footer_background,100% 444444}
+{$THEMEWIZARD_COLOR,#444444,footer_2_background,100% 444444}
 /* Backgrounds, employing color wheel theory */
 {$THEMEWIZARD_COLOR,#d9e1ee,area_highlight_background,20% seed + 80% WB}
 {$THEMEWIZARD_COLOR,#d9ecee,area_highlight_left_complement_background,20% (seed hue_add -21) + 80% WB}
@@ -151,7 +154,7 @@ In mobile mode:
 /* Special colour for box titles */
 {$THEMEWIZARD_COLOR,#ffffff,box_title_text,100% WB}
 {$THEMEWIZARD_COLOR,#cccccc,box_title_text_hover,80% WB + 20% BW}
-{$THEMEWIZARD_COLOR,#426aa9,box_title_background,100% seed}
+{$THEMEWIZARD_COLOR,#239def,box_title_background,100% seed}
 {$THEMEWIZARD_COLOR,#7f9ac5,box_title_background_2,68% seed + 32% WB}
 
 /* Special colour for code/quote boxes */
@@ -221,15 +224,12 @@ In mobile mode:
 
 html {
 	overflow-y: scroll; /* This makes rendering smoother, no jerk when browser realises a scrollbar is needed, or between pages with/without */
+	font-size: 14px;
 }
 
 html, body {
 	border: 0;
 	{$BETA_CSS_PROPERTY,text-size-adjust: none;}
-}
-
-body {
-	font-size: 15px;
 }
 
 body, .email-body, textarea, input, td, th {
@@ -289,12 +289,14 @@ input[type="text"]:disabled, input[type="password"]:disabled, input[type="color"
 
 a, .button-hyperlink {
 	color: {$GET,a.link};
+	text-decoration: none;
 }
 a:visited {
 	color: {$GET,a.visited};
 }
 a:hover, .button-hyperlink:hover {
 	color: {$GET,a.hover};
+	text-decoration: underline;
 }
 
 h1, h2, h3, .faux-h2 {
@@ -606,9 +608,6 @@ input.input-username::-webkit-calendar-picker-indicator {
 	/*{+END}*/
 /*{+END}*/
 
-.website-body, #wysiwyg-editor {
-	font-size: 13px;
-}
 #wysiwyg-editor {
 	margin: 0;
 	color: {$GET,slightly_seeded_text};
@@ -963,34 +962,31 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 
 /*{+START,CSS_MODE,desktop}*/
 	.global-middle-outer {
-		{$BETA_CSS_PROPERTY,display: flex;}
+		display: flex;
 	}
 
 	.global-middle {
 		/* Add some spacing. This will be overwritten to 1.5em in rules below if we have panels */
 		margin-bottom: 1em;
-		{$BETA_CSS_PROPERTY,order: 1;}
-		{$BETA_CSS_PROPERTY,flex-grow: 1;}
+		order: 1;
+		flex-grow: 1;
 		min-width: 0; /* This stops it stretching beyond available space if containing something white-space:pre, which it will do in Firefox [unrelated to flex-grow] https://bugzilla.mozilla.org/show_bug.cgi?id=1136818 */
 	}
 
 	#panel-left {
-		{$BETA_CSS_PROPERTY,order: 0;}
-		margin-left: 1em;
+		order: 0;
 	}
 
 	#panel-right {
-		{$BETA_CSS_PROPERTY,order: 2;}
-		margin-right: 1em;
+		order: 2;
 	}
 
 	.global-side-panel {
 		margin-top: -1em;
-		width: 13em;
-
+		width: 20em;
 		/* Force the issue, as flex box can flex too much! */
-		min-width: 13em;
-		max-width: 13em;
+		min-width: 18em;
+		max-width: 18em;
 	}
 
 	#panel-bottom {
@@ -1082,25 +1078,13 @@ footer {
 	clear: both;
 	margin-top: 2em;
 	background-image: linear-gradient(to bottom, {$GET,footer_background}, {$GET,footer_2_background});
-
 	color: {$GET,footer_text};
-	/*{+START,IF,{$NAND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
-		box-shadow: 0 0 2px 2px {$GET,footer_tinting};
-	/*{+END}*/
 }
 /*{+START,CSS_MODE,desktop}*/
 	footer {
 		padding: 1.5em;
 	}
 /*{+END}*/
-
-footer .button-hyperlink, footer a, footer a:visited, footer .horizontal-links {
-	color: {$GET,footer_text};
-}
-
-footer a:hover, footer .button-hyperlink:hover {
-	color: {$GET,footer_tinting};
-}
 
 /*{+START,CSS_MODE,mobile}*/
 	footer .global-footer-left, footer .global-footer-right {
@@ -1219,7 +1203,6 @@ footer .global-minilinks {
 
 footer .global-minilinks .footer-links {
 	width: auto;
-	font-size: 1.1em;
 	margin: 0;
 	padding: 0;
 	list-style-type: none;
@@ -1705,13 +1688,9 @@ th.metadata-title {
 
 .box {
 	border: 1px solid {$GET,standard_border};
-	border-radius: 5px;
-
+	border-radius: 3px;
 	margin: 1em 0;
-
-	background-color: {$GET,area_background};
-
-	overflow: hidden;
+	background-color: {$GET,WB};
 }
 td>.box:first-child, .fake-table-cell>.box:first-child, .fake-table-cell>div:first-child>.box:first-child, .fake-table-cell>div:first-child>div:first-child>.box:first-child, .left .box:first-child:last-child, .right .box:first-child:last-child,
 td>.comcode-code:first-child, .fake-table-cell>.comcode-code:first-child, .fake-table-cell>div:first-child>.comcode-code:first-child, .fake-table-cell>div:first-child>div:first-child>.comcode-code:first-child, .left .comcode-code, .right .comcode-code,
@@ -1744,12 +1723,13 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 .global-side-panel .box-inner>h5, 
 .global-side-panel .box-inner>h6, 
 .global-side-panel .box>.toggleable-tray-title {
-	background-image: none;
+	background: none;
 	color: inherit;
 }
 
-.box>.box-inner, .box>.toggleable-tray {
-	margin: 5px; /* not em so that header may be positioned properly */
+.box>.box-inner, 
+.box>.toggleable-tray {
+	margin: 10px 15px; /* not em so that header may be positioned properly */
 }
 .boxless-space .box>.box-inner, .boxless-space .box>.toggleable-tray {
 	margin: 0;
@@ -1770,7 +1750,7 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 #standalone-html-wrap .box .box .box-inner>h3 {
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
-	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
+	background-color: {$GET,seed};
 	color: {$GET,box_title_text};
 	text-align: center;
 	font-weight: bold;
@@ -1780,9 +1760,8 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	letter-spacing: 0;
 
 	/* .box-inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
-	margin: -5px 0 0 -5px;
+	margin: -11px -16px 0 -16px;
 	padding: 0.4em 0.8em 0.4em 0.3em;
-	width: calc(100% - 4px);
 }
 .box-inner>h1 + *, 
 .box-inner>h2 + *, 
@@ -2807,9 +2786,8 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 }
 
 .compacted-subbox-stream.box-inner {
-	margin-left: 0 !important;
-	margin-right: 0 !important;
 }
+
 .compacted-subbox-stream>.raw-ajax-grow-spot>h3 {
 	margin: 1em 5px;
 }
@@ -3917,24 +3895,27 @@ input.magic-image-edit-link {
 	background-image: none !important;
 }
 
-.button-micro, .button-screen, .button-screen-item, .hero-section .hero-button a, body .hero-section .hero-button>a.user-link {
+.button-micro, 
+.button-screen, 
+.button-screen-item, 
+.hero-section .hero-button a, 
+body .hero-section .hero-button>a.user-link {
 	display: inline-block;
-	border: 1px solid {$GET,dark_border};
-	border-radius: 6px;
+	border: none;
+	border-radius: 3px;
 	margin: 0.25em;
-	box-shadow: 0 0 5px {$GET,standard_border};
-	text-shadow: 2px 1px 2px {$GET,dark_shadow};
-	background-color: {$GET,lgrad};
-	background-repeat: no-repeat;
-	background-position: 96% 3px; /*fallback*/
-	background-position: right 7px center;
+	background-color: {$GET,button_background};
 	color: {$GET,box_title_text} !important;
 	text-decoration: none !important;
 	{$BETA_CSS_PROPERTY,appearance: none;}
 	vertical-align: middle;
 	cursor: pointer;
+	font-size: 1rem;
 }
-div>.button-micro:first-child, div>.button-screen:first-child, div>.button-screen-item:first-child, .hero-section .hero-button a:first-child {
+div>.button-micro:first-child, 
+div>.button-screen:first-child, 
+div>.button-screen-item:first-child, 
+.hero-section .hero-button a:first-child {
 	margin-left: 2px; /* enough for the shadow */
 }
 
@@ -3956,8 +3937,7 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 }
 
 .button-screen-item {
-	padding: 5px 7px;
-	font-size: 13px;
+	padding: 11px 15px;
 	text-align: center;
 }
 
@@ -3975,7 +3955,6 @@ div>.button-micro:first-child, div>.button-screen:first-child, div>.button-scree
 	padding: 4px 6px;
 	font-size: 12px;
 	margin: 1px 0.2em 0 0.4em; /* Push it up a bit due to confined space */
-	text-shadow: 1px 1px 1px {$GET,dark_shadow};
 }
 /*{+START,CSS_MODE,mobile}*/
 	.button-micro {
@@ -3994,7 +3973,6 @@ div .button-micro .icon {
 .button-screen-item,
 .button-micro,
 .toggleable-tray-button .icon {
-	opacity: 0.85;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	display: inline-block;
 }
@@ -4009,12 +3987,8 @@ div .button-micro .icon {
 .button-screen:hover,
 .button-screen-item:hover,
 .button-micro:hover,
-.toggleable-tray-button:hover .icon,
-body.touch-enabled .button-screen,
-body.touch-enabled .button-screen-item,
-body.touch-enabled .button-micro,
-body.touch-enabled .toggleable-tray-button .icon {
-	opacity: 1.0;
+.toggleable-tray-button:hover .icon {
+	background-color: {$GET,button_background_hover};
 }
 .button-micro:disabled, .button-screen:disabled, .button-screen-item:disabled {
 	opacity: 0.4 !important;
