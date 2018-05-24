@@ -3673,3 +3673,25 @@ function escape_header($str, $within_quotes = false)
     }
     return str_replace(array("\r", "\n"), array('', ''), $str);
 }
+
+/**
+ * Find if a forum post is a spacer post.
+ *
+ * @param string $post The spacer post
+ * @return boolean Whether it is
+ */
+function is_spacer_post($post)
+{
+    if (substr($post, 0, 10) == '[semihtml]') {
+        $post = substr($post, 10);
+    }
+
+    $langs = find_all_langs();
+    foreach (array_keys($langs) as $lang) {
+        $matcher = do_lang('SPACER_POST_MATCHER', null, null, null, $lang);
+        if (substr($post, 0, strlen($matcher)) == $matcher) {
+            return true;
+        }
+    }
+    return false;
+}

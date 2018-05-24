@@ -28,7 +28,7 @@ function notification_poller_init(time_barrier)
 
 function notifications_mark_all_read(event)
 {
-	var url='{$FIND_SCRIPT;,notifications}?type=poller&type=mark_all_read';
+	var url='{$FIND_SCRIPT;,notifications}?type=mark_all_read';
 	if (typeof window.max_notifications_to_show!='undefined') url+='&max='+window.max_notifications_to_show;
 	url+='&time_barrier='+window.encodeURIComponent(window.notifications_time_barrier);
 	url+='&forced_update=1';
@@ -51,7 +51,7 @@ function poll_for_notifications(forced_update,delay)
 		return;
 	}
 
-	var url='{$FIND_SCRIPT;,notifications}?type=poller&type=poller';
+	var url='{$FIND_SCRIPT;,notifications}?type=poller';
 	if (typeof window.max_notifications_to_show!='undefined') url+='&max='+window.max_notifications_to_show;
 	url+='&time_barrier='+window.encodeURIComponent(window.notifications_time_barrier);
 	if (forced_update) url+='&forced_update=1';

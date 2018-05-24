@@ -903,6 +903,10 @@ function add_download($category_id, $name, $url, $description, $author, $additio
         }
     }
 
+    if (($file_size < 0) || ($file_size > 2147483647)) {
+        $file_size = 2147483647;
+    }
+
     if (!addon_installed('unvalidated')) {
         $validated = 1;
     }
@@ -1095,6 +1099,10 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
                 $file_size = $GLOBALS['HTTP_DOWNLOAD_SIZE'];
             }
         }
+    }
+
+    if (($file_size < 0) || ($file_size > 2147483647)) {
+        $file_size = 2147483647;
     }
 
     $myrows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('name', 'description', 'additional_details', 'category_id'), array('id' => $id), '', 1);

@@ -395,6 +395,10 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
                 }
             }
 
+            if ((count($children) == 0) && (preg_match('#^(cms|adminzone):admin:#', $page_link) != 0)) {
+                return null;
+            }
+
             sort_maps_by($children, 'title');
 
             $struct['children'] = $children;

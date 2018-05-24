@@ -104,7 +104,9 @@ function incoming_uploads_script()
 
         $member_id = get_member();
 
-        $file_db_id = $GLOBALS['SITE_DB']->query_insert('incoming_uploads', array('i_submitter' => $member_id, 'i_date_and_time' => time(), 'i_orig_filename' => $name, 'i_save_url' => $savename), true, false);
+        $insert_map = array('i_submitter' => $member_id, 'i_date_and_time' => time(), 'i_orig_filename' => $name, 'i_save_url' => $savename);
+        $insert_map['id'] = mt_rand(0, 2147483647);
+        $file_db_id = $GLOBALS['SITE_DB']->query_insert('incoming_uploads', $insert_map, true, false);
 
         // File is valid, and was successfully uploaded. Now see if there is any metadata to surface from the file.
         require_code('images');

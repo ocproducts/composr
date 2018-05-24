@@ -23,7 +23,6 @@ class lang_string_special_validity_test_set extends cms_test_case
         require_all_lang();
 
         $langs = find_all_langs();
-        $langs = array('EN' => 'lang'); // TODO, remove and get passing for other languages
 
         $regexp_pairs = array(
             'TICKET_SIMPLE_SUBJECT_regexp' => array('TICKET_SIMPLE_SUBJECT_reply', 'x', 'x', 'x'),
@@ -31,12 +30,18 @@ class lang_string_special_validity_test_set extends cms_test_case
         );
         foreach (array_keys($langs) as $lang) {
             foreach ($regexp_pairs as $_regexp => $_str) {
-                $regexp = do_lang($_regexp, null, null, null, $lang);
+                $regexp = $this->do_lang($_regexp, null, null, null, $lang);
+                if ($regexp === null) {
+                    continue; // Not defined for language
+                }
                 if (is_array($_str)) {
                     $_str[]= $lang;
-                    $str = call_user_func_array('do_lang', $_str);
+                    $str = call_user_func_array(array($this, 'do_lang'), $_str);
                 } else {
-                    $str = do_lang($_str, null, null, null, $lang);
+                    $str = $this->do_lang($_str, null, null, null, $lang);
+                }
+                if ($str === null) {
+                    continue; // Not defined for language
                 }
                 $this->assertTrue(preg_match('#' . $regexp . '#', $str) != 0, $_regexp . ' (' . $regexp . ') did not match ' . $str . ', for ' . $lang);
             }
@@ -49,15 +54,22 @@ class lang_string_special_validity_test_set extends cms_test_case
             'BLOCK_IND_SUPPORTS_COMCODE' => 'COMCODE_TAG_indent_EMBED',
             'BLOCK_IND_ADVANCED' => 'COMCODE_TAG_box_PARAM_options',
             'BLOCK_IND_WHETHER' => 'COMCODE_TAG_codebox_PARAM_numbers',
+            'SPACER_POST_MATCHER' => 'SPACER_POST',
         );
         foreach (array_keys($langs) as $lang) {
             foreach ($substring_pairs as $_substring => $_str) {
-                $substring = do_lang($_substring, null, null, null, $lang);
+                $substring = $this->do_lang($_substring, null, null, null, $lang);
+                if ($substring === null) {
+                    continue; // Not defined for language
+                }
                 if (is_array($_str)) {
                     $_str[]= $lang;
-                    $str = call_user_func_array('do_lang', $_str);
+                    $str = call_user_func_array(array($this, 'do_lang'), $_str);
                 } else {
-                    $str = do_lang($_str, null, null, null, $lang);
+                    $str = $this->do_lang($_str, null, null, null, $lang);
+                }
+                if ($str === null) {
+                    continue; // Not defined for language
                 }
                 $this->assertTrue(stripos($str, $substring) !== false, $_substring . ' (' . $substring . ') was not found in ' . $str . ', for ' . $lang);
             }
@@ -86,23 +98,47 @@ class lang_string_special_validity_test_set extends cms_test_case
         );
         foreach (array_keys($langs) as $lang) {
             foreach ($short_strings as $_str) {
-                $str = do_lang($_str, null, null, null, $lang);
+                $str = $this->do_lang($_str, null, null, null, $lang);
+                if ($str === null) {
+                    continue; // Not defined for language
+                }
                 $this->assertTrue(cms_mb_strlen($str) <= 4, $_str . ' is too long, for ' . $lang);
             }
         }
 
         foreach (array_keys($langs) as $lang) {
-            $result = do_lang('charset', null, null, null, $lang);
+            $result = $this->do_lang('charset', null, null, null, $lang);
+            if ($result === null) {
+                continue; // Not defined for language
+            }
             $this->assertTrue($result == 'utf-8', 'charset is not in utf-8, for ' . $lang);
 
-            $result = do_lang('dir', null, null, null, $lang);
+            $result = $this->do_lang('dir', null, null, null, $lang);
+            if ($result === null) {
+                continue; // Not defined for language
+            }
             $this->assertTrue($result == 'ltr' || $result == 'rtl', 'dir is not a valid value, for ' . $lang);
 
-            $result = do_lang('en_left', null, null, null, $lang);
+            $result = $this->do_lang('en_left', null, null, null, $lang);
+            if ($result === null) {
+                continue; // Not defined for language
+            }
             $this->assertTrue($result == 'left' || $result == 'right', 'en_left is not a valid value, for ' . $lang);
 
-            $result = do_lang('en_right', null, null, null, $lang);
+            $result = $this->do_lang('en_right', null, null, null, $lang);
+            if ($result === null) {
+                continue; // Not defined for language
+            }
             $this->assertTrue($result == 'left' || $result == 'right', 'en_right is not a valid value, for ' . $lang);
         }
+    }
+
+    function do_lang($str, $a, $b, $c, $lang)
+    {
+        $ret = do_lang($str, $a, $b, $c, $lang);
+        if (($lang != fallback_lang()) && ($ret == do_lang($str, $a, $b, $c, fallback_lang()))) {
+            return null; // Not defined for language
+        }
+        return $ret;
     }
 }
