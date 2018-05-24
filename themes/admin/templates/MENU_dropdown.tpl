@@ -20,7 +20,7 @@
 					<span class="dropdown-menu-item-caption">{!HELP}</span>
 				</a>
 				{+START,IF,{$GET,HAS_CHILDREN}}
-				<div aria-haspopup="true" class="dropdown-menu-item-popup nlevel menu-help-section" id="{MENU|*}-dexpand-{$GET*,RAND}" style="display: none">
+				<div aria-haspopup="true" class="dropdown-menu-items dropdown-menu-item-popup nlevel menu-help-section" id="{MENU|*}-dexpand-{$GET*,RAND}" style="display: none">
 					{+START,INCLUDE,ADMIN_ZONE_SEARCH}{+END}
 				</div>
 				{+END}

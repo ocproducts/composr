@@ -1688,20 +1688,18 @@
         events: function () {
             var mobileEvents = {
                 'click .dropdown-menu-toggle-btn': 'toggleMenuContent',
-                'click .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'togleSubMenu',
+                'click .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'toggleSubMenu',
             };
 
             var desktopEvents = {
                 'mouseover .dropdown-menu-items': 'setActiveMenu',
                 'mouseout .dropdown-menu-items': 'unsetActiveMenu',
-                
-                'mouseover .dropdown-menu-item-popup': 'setActiveMenu',
-                'mouseout .dropdown-menu-item-popup': 'unsetActiveMenu',
 
                 'mousemove .dropdown-menu-item.toplevel.has-children': 'timerPopUpMenu',
                 'mouseout .dropdown-menu-item.toplevel.has-children': 'clearPopUpTimer',
                 
                 'mousemove .dropdown-menu-item.nlevel.has-children': 'popUpMenu',
+                
                 'focus .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'focusPopUpMenu',
                 'click .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'unsetActiveMenu',
             };
@@ -1716,21 +1714,20 @@
             $dom.toggle(this.menuContentEl);
         },
 
-        togleSubMenu: function (e, clicked) {
-            var subMenuId = clicked.dataset.vwSubMenuId;
+        toggleSubMenu: function (e, target) {
+            var popupEl = $dom.parent(target, '.dropdown-menu-item').querySelector('.dropdown-menu-items');
             e.preventDefault();
-            $dom.toggle('#' + subMenuId);
+            $dom.toggle(popupEl);
         },
 
         /* Desktop methods */
 
         timerPopUpMenu: function (e, target) {
-            var menu = $cms.filter.id(this.menu),
-                subMenuId = target.dataset.vwSubMenuId;
+            var menu = $cms.filter.id(this.menu);
 
             if (!target.timer) {
                 target.timer = setTimeout(function () {
-                    popupMenu('#' + subMenuId, 'below', menu + '-d');
+                    popupMenu(target.querySelector('.dropdown-menu-items'), 'below', menu + '-d');
                 }, 200);
             }
         },
@@ -1742,18 +1739,17 @@
             }
         },
 
+        popUpMenu: function (e, target) {
+            var menu = $cms.filter.id(this.menu);
+
+            popupMenu(target.querySelector('.dropdown-menu-items'), null, menu + '-d');
+        },
+        
         focusPopUpMenu: function (e, target) {
             var menu = $cms.filter.id(this.menu),
-                subMenuId = target.dataset.vwSubMenuId;
+                popupEl = $dom.parent(target, '.dropdown-menu-item').querySelector('.dropdown-menu-items');
 
-            popupMenu('#' + subMenuId, 'below', menu + '-d', true);
-        },
-
-        popUpMenu: function (e, target) {
-            var menu = $cms.filter.id(this.menu),
-                subMenuId = target.dataset.vwSubMenuId;
-
-            popupMenu('#' + subMenuId, null, menu + '-d');
+            popupMenu(popupEl, 'below', menu + '-d', true);
         },
 
         setActiveMenu: function (e, target) {
