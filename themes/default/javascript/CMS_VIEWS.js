@@ -1730,7 +1730,7 @@
 
             if (!target.timer) {
                 target.timer = setTimeout(function () {
-                    popupMenu(subMenuId, 'below', menu + '-d');
+                    popupMenu('#' + subMenuId, 'below', menu + '-d');
                 }, 200);
             }
         },
@@ -1746,14 +1746,14 @@
             var menu = $cms.filter.id(this.menu),
                 subMenuId = target.dataset.vwSubMenuId;
 
-            popupMenu(subMenuId, 'below', menu + '-d', true);
+            popupMenu('#' + subMenuId, 'below', menu + '-d', true);
         },
 
         popUpMenu: function (e, target) {
             var menu = $cms.filter.id(this.menu),
                 subMenuId = target.dataset.vwSubMenuId;
 
-            popupMenu(subMenuId, null, menu + '-d');
+            popupMenu('#' + subMenuId, null, menu + '-d');
         },
 
         setActiveMenu: function (e, target) {
@@ -1823,7 +1823,7 @@
             };
         },
         popUpMenu: function () {
-            popupMenu(this.popup, null, this.menu + '-p');
+            popupMenu('#' + this.popup, null, this.menu + '-p');
         },
         setActiveMenu: function () {
             if (getActiveMenu() == null) {
@@ -2068,22 +2068,16 @@
     }
 
     /**
-     * @param popupId
+     * @param popupEl
      * @param place
      * @param menu
      * @param outsideFixedWidth
      */
-    function popupMenu(popupId, place, menu, outsideFixedWidth) {
-        popupId = strVal(popupId);
+    function popupMenu(popupEl, place, menu, outsideFixedWidth) {
+        popupEl = $dom.elArg(popupEl);
         place = strVal(place) || 'right';
         menu = strVal(menu);
         outsideFixedWidth = Boolean(outsideFixedWidth);
-
-        var popupEl = $dom.$('#' + popupId);
-
-        if (!popupEl) {
-            return;
-        }
 
         if (cleanMenusTimeout) {
             clearTimeout(cleanMenusTimeout);
@@ -2093,7 +2087,7 @@
             return;
         }
 
-        setActiveMenu(popupId);
+        setActiveMenu(popupEl.id);
         lastActiveMenu = menu;
         cleanMenus();
 
