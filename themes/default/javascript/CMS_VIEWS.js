@@ -1688,19 +1688,22 @@
         events: function () {
             var mobileEvents = {
                 'click .dropdown-menu-toggle-btn': 'toggleMenuContent',
-                'click .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'togleSubMenu'
+                'click .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'togleSubMenu',
             };
 
             var desktopEvents = {
+                'mouseover .dropdown-menu-items': 'setActiveMenu',
+                'mouseout .dropdown-menu-items': 'unsetActiveMenu',
+                
+                'mouseover .dropdown-menu-item-popup': 'setActiveMenu',
+                'mouseout .dropdown-menu-item-popup': 'unsetActiveMenu',
+
                 'mousemove .dropdown-menu-item.toplevel.has-children': 'timerPopUpMenu',
                 'mouseout .dropdown-menu-item.toplevel.has-children': 'clearPopUpTimer',
-                'focus .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'focusPopUpMenu',
+                
                 'mousemove .dropdown-menu-item.nlevel.has-children': 'popUpMenu',
-                'mouseover .dropdown-menu-items': 'setActiveMenu',
-                'mouseover .dropdown-menu-item-popup': 'setActiveMenu',
+                'focus .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'focusPopUpMenu',
                 'click .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'unsetActiveMenu',
-                'mouseout .dropdown-menu-items': 'unsetActiveMenu',
-                'mouseout .dropdown-menu-item-popup': 'unsetActiveMenu'
             };
 
             return $cms.isCssMode('mobile') ? mobileEvents : desktopEvents;
