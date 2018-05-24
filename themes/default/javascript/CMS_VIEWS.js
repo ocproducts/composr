@@ -1687,21 +1687,20 @@
     $util.inherits(DropdownMenu, Menu, /**@lends $cms.views.DropdownMenu#*/{
         events: function () {
             var mobileEvents = {
-                'click .js-click-toggle-menu-content': 'toggleMenuContent',
-                'click .js-click-toggle-sub-menu': 'togleSubMenu'
+                'click .dropdown-menu-toggle-btn': 'toggleMenuContent',
+                'click .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'togleSubMenu'
             };
 
             var desktopEvents = {
-                'mousemove .js-mousemove-timer-pop-up-menu': 'timerPopUpMenu',
-                'mouseout .js-mouseout-clear-pop-up-timer': 'clearPopUpTimer',
-                'focus .js-focus-pop-up-menu': 'focusPopUpMenu',
-                'mousemove .js-mousemove-pop-up-menu': 'popUpMenu',
-                'mouseover .js-mouseover-set-active-menu': 'setActiveMenu',
-                'click .js-click-unset-active-menu': 'unsetActiveMenu',
-                'mouseout .js-mouseout-unset-active-menu': 'unsetActiveMenu',
-                // For admin/templates/MENU_dropdown.tpl:
-                'mousemove .js-mousemove-admin-timer-pop-up-menu': 'adminTimerPopUpMenu',
-                'mouseout .js-mouseout-admin-clear-pop-up-timer': 'adminClearPopUpTimer'
+                'mousemove .dropdown-menu-item.toplevel.has-children': 'timerPopUpMenu',
+                'mouseout .dropdown-menu-item.toplevel.has-children': 'clearPopUpTimer',
+                'focus .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'focusPopUpMenu',
+                'mousemove .dropdown-menu-item.nlevel.has-children': 'popUpMenu',
+                'mouseover .dropdown-menu-items': 'setActiveMenu',
+                'mouseover .dropdown-menu-item-popup': 'setActiveMenu',
+                'click .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'unsetActiveMenu',
+                'mouseout .dropdown-menu-items': 'unsetActiveMenu',
+                'mouseout .dropdown-menu-item-popup': 'unsetActiveMenu'
             };
 
             return $cms.isCssMode('mobile') ? mobileEvents : desktopEvents;
@@ -1724,11 +1723,11 @@
 
         timerPopUpMenu: function (e, target) {
             var menu = $cms.filter.id(this.menu),
-                rand = strVal(target.dataset.vwRand);
+                subMenuId = target.dataset.vwSubMenuId;
 
             if (!target.timer) {
                 target.timer = setTimeout(function () {
-                    popupMenu(menu + '-dexpand-' + rand, 'below', menu + '-d');
+                    popupMenu(subMenuId, 'below', menu + '-d');
                 }, 200);
             }
         },
@@ -1742,16 +1741,16 @@
 
         focusPopUpMenu: function (e, target) {
             var menu = $cms.filter.id(this.menu),
-                rand = strVal(target.dataset.vwRand);
+                subMenuId = target.dataset.vwSubMenuId;
 
-            popupMenu(menu + '-dexpand-' + rand, 'below', menu + '-d', true);
+            popupMenu(subMenuId, 'below', menu + '-d', true);
         },
 
         popUpMenu: function (e, target) {
             var menu = $cms.filter.id(this.menu),
-                rand = strVal(target.dataset.vwRand);
+                subMenuId = target.dataset.vwSubMenuId;
 
-            popupMenu(menu + '-dexpand-' + rand, null, menu + '-d');
+            popupMenu(subMenuId, null, menu + '-d');
         },
 
         setActiveMenu: function (e, target) {
@@ -1768,28 +1767,6 @@
             if (!target.contains(e.relatedTarget)) {
                 setActiveMenu(null);
                 recreateCleanTimeout();
-            }
-        },
-
-        /* For admin/templates/MENU_dropdown.tpl */
-        adminTimerPopUpMenu: function (e, target) {
-            var menu = $cms.filter.id(this.menu),
-                rand = strVal(target.dataset.vwRand);
-
-            setMenuHoldTime(3000);
-            if (!target.timer) {
-                target.timer = setTimeout(function () {
-                    popupMenu(menu + '-dexpand-' + rand, 'below', menu + '-d', true);
-                    try {
-                        document.getElementById('search-content').focus();
-                    } catch (ignore) {}
-                }, 200);
-            }
-        },
-        adminClearPopUpTimer: function (e, target) {
-            if (target.timer) {
-                clearTimeout(target.timer);
-                target.timer = null;
             }
         }
     });
