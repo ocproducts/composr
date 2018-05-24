@@ -2083,7 +2083,7 @@
             return;
         }
 
-        setActiveMenu(popupEl.id);
+        setActiveMenu($dom.id(popupEl, 'dropdown-'));
         lastActiveMenu = menu;
         cleanMenus();
 

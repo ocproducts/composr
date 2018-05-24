@@ -27,10 +27,6 @@ For example:
 	color: inherit;
 }
 
-.dropdown-menu .nlevel .has-img > a > img {
-	width: 20px;
-}
-
 .dropdown-menu-item-icon,
 .dropdown-menu-item-caption {
 	vertical-align: middle;
@@ -86,7 +82,6 @@ For example:
 		left: 0;
 		z-index: 1000;
 		background-color: {$GET,area_5_background};
-		box-shadow: 0px 20px 25px 0px {$GET,dark_border};
 	}
 
 	.dropdown-menu li {
@@ -129,11 +124,6 @@ For example:
 	.dropdown-menu li.toplevel {
 		float: left;
 		width: {$DIV_FLOAT*,100,9}%;
-	}
-
-	.dropdown-menu li.toplevel.current,
-	.dropdown-menu li.toplevel:hover {
-		background-image: linear-gradient(to bottom, #ffffff, #cbdbeb);
 	}
 
 	.dropdown-menu a.toplevel-link,
@@ -201,7 +191,6 @@ For example:
 
 	.dropdown-menu ul.nlevel,
 	.dropdown-menu div.nlevel {
-		box-shadow: 3px 5px 13px #c9c9c9;
 		line-height: 1.4em;
 	}
 
@@ -251,20 +240,5 @@ For example:
 	.dropdown-menu .nlevel a:visited,
 	.dropdown-menu .nlevel a:hover {
 		color: {$GET,area_text};
-	}
-
-	.dropdown-menu .nlevel .current a {
-		background: transparent url('{$IMG;,icons/menus/menu_bullet_current}') no-repeat 5px 5px !important;
-	}
-	body .dropdown-menu .nlevel .has-img>a, body .dropdown-menu .nlevel.current.has-img>a {
-		background: none !important;
-	}
-
-	.dropdown-menu .nlevel .non-current a {
-		background: transparent url('{$IMG;,icons/menus/menu_bullet}') no-repeat 5px 5px;
-	}
-
-	.dropdown-menu .nlevel .non-current a:hover {
-		background: transparent url('{$IMG;,icons/menus/menu_bullet_hover}') no-repeat 5px 5px;
 	}
 /*{+END}*/

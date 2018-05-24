@@ -37,10 +37,6 @@ For example:
 	color: inherit;
 }
 
-.dropdown-menu .nlevel .has-img > a > img {
-	width: 20px;
-}
-
 .dropdown-menu-item-icon,
 .dropdown-menu-item-caption {
 	vertical-align: middle;
@@ -249,20 +245,5 @@ For example:
 
 	.dropdown-menu .nlevel a:hover {
 		color: {$GET,a.hover};
-	}
-
-	.dropdown-menu .nlevel .current a {
-		background: transparent url('{$IMG;,icons/menus/menu_bullet_current}') no-repeat 5px 5px !important;
-	}
-	body .dropdown-menu .nlevel .has-img>a, body .dropdown-menu .nlevel.current.has-img>a {
-		background: none !important;
-	}
-
-	.dropdown-menu .nlevel .non-current a {
-		background: transparent url('{$IMG;,icons/menus/menu_bullet}') no-repeat 5px 5px;
-	}
-
-	.dropdown-menu .nlevel .non-current a:hover {
-		background: transparent url('{$IMG;,icons/menus/menu_bullet_hover}') no-repeat 5px 5px;
 	}
 /*{+END}*/

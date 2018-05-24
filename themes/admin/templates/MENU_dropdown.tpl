@@ -14,13 +14,13 @@
 		<ul class="dropdown-menu-items dropdown-menu-items-main nl" id="{$GET*,menu_id}">
 			{CONTENT}
 
-			<li class="dropdown-menu-item non-current last toplevel {$?,{$GET,HAS_CHILDREN},has-children}" data-vw-rand="{$GET*,RAND}">
-				<a href="{$TUTORIAL_URL*,tutorials}" class="dropdown-menu-item-a toplevel-link last" title="{!menus:MM_TOOLTIP_DOCS}"{$?,{$GET,HAS_CHILDREN}, data-vw-sub-menu-id="{MENU|*}-dexpand-{$GET*,RAND}"}>
+			<li class="dropdown-menu-item toplevel non-current {$?,{$GET,HAS_CHILDREN},has-children} last">
+				<a href="{$TUTORIAL_URL*,tutorials}" class="dropdown-menu-item-a toplevel-link" title="{!menus:MM_TOOLTIP_DOCS}">
 					<span class="dropdown-menu-item-icon">{+START,INCLUDE,ICON}NAME=help{+END}</span>
 					<span class="dropdown-menu-item-caption">{!HELP}</span>
 				</a>
 				{+START,IF,{$GET,HAS_CHILDREN}}
-				<div aria-haspopup="true" class="dropdown-menu-items dropdown-menu-item-popup nlevel menu-help-section" id="{MENU|*}-dexpand-{$GET*,RAND}" style="display: none">
+				<div aria-haspopup="true" class="dropdown-menu-items dropdown-menu-item-popup nlevel menu-help-section" style="display: none">
 					{+START,INCLUDE,ADMIN_ZONE_SEARCH}{+END}
 				</div>
 				{+END}

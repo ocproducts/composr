@@ -4427,16 +4427,13 @@ div.proceed-button-left-2 {
 	font-size: 13px; /* Puts it back, as was set to zero elsewhere */
 	z-index: 2000;
 }
-.global-button-ref-point .box {
-	box-shadow: 3px 3px 10px {$GET,standard_border};
-}
 
-.global-button-ref-point .associated-links-block-group, .notification+.notification {
+.global-button-ref-point .associated-links-block-group, 
+.notification + .notification {
 	margin-top: 0.5em;
 	border-top: 1px solid {$GET,pale_border};
 	padding-top: 0.5em;
 }
-
 
 /*
 NB: Form buttons are wrapped in either:
