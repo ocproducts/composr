@@ -53,7 +53,7 @@ class Hook_cron_cns_confirm_reminder
         $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'f_members WHERE ' . db_string_not_equal_to('m_validated_email_confirm_code', '') . ' AND m_join_time>' . strval($last_time - 24 * 60 * 60 * 2) . ' AND m_join_time<=' . strval($last_time));
         $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
         foreach ($rows as $row) {
-            $coppa = (get_option('is_on_coppa') == '1') && (utctime_to_usertime(time() - mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $row['m_dob_year'])) / 31536000.0 < 13.0);
+            $coppa = (get_option('is_on_coppa') == '1') && ($row['m_dob_year'] !== null) && (utctime_to_usertime(time() - mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $row['m_dob_year'])) / 31536000.0 < 13.0);
             if (!$coppa) {
                 $zone = get_module_zone('join');
                 if ($zone != '') {

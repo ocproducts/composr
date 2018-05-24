@@ -29,12 +29,8 @@
  */
 function _enforce_sessioned_url($url)
 {
-    // Take hash off
-    $hash = '';
-    $hash_pos = strpos($url, '#');
-    if ($hash_pos !== false) {
-        $hash = substr($url, $hash_pos);
-        $url = substr($url, 0, $hash_pos);
+    if (get_bot_type() === null) {
+        return $url;
     }
 
     // Take hash off

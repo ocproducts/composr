@@ -353,7 +353,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     if (!$staff_validation_if_enabled) {
         $staff_validation = false;
     }
-    $coppa = (get_option('is_on_coppa') == '1') && (utctime_to_usertime(time() - mktime(0, 0, 0, $dob_month, $dob_day, $dob_year)) / 31536000.0 < 13.0);
+    $coppa = (get_option('is_on_coppa') == '1') && ($dob_year !== null) && (utctime_to_usertime(time() - mktime(0, 0, 0, $dob_month, $dob_day, $dob_year)) / 31536000.0 < 13.0);
     if (!$coppa_if_enabled) {
         $coppa = false;
     }

@@ -80,7 +80,7 @@
 {+START,IF_NON_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$METADATA*,image}" /><meta property="og:image:width" content="{$IMG_WIDTH*,{$METADATA,image}}" /><meta property="og:image:height" content="{$IMG_HEIGHT*,{$METADATA,image}}" />{$,NB: You may also want to define a image_src link tag for some social sites}{+END}{+START,IF_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$IMG*,logo/standalone_logo}" /><meta property="og:image:width" content="{$IMG_WIDTH*,logo/standalone_logo}" /><meta property="og:image:height" content="{$IMG_HEIGHT*,logo/standalone_logo}" />{+END}
 {+START,IF_NON_EMPTY,{$METADATA,video}}<meta property="og:video" content="{$METADATA*,video}" /><meta property="og:video:width" content="{$METADATA*,video:width}" /><meta property="og:video:height" content="{$METADATA*,video:height}" /><meta property="og:video:type" content="{$METADATA*,video:type}" />{+END}
 <meta property="og:locale" content="{$PREG_REPLACE,\..*$,,{$PREG_REPLACE,\,.*$,,{$REPLACE,-,_,{!locale}}}}" />
-{+START,IF,{$EQ,{$METADATA,type},Article}}
+{+START,IF,{$EQ,{$METADATA,type},News article}}
 	{+START,IF_NON_EMPTY,{$METADATA,created}}<meta name="article:published_time" content="{$METADATA*,created}" />{+END}
 	{+START,IF_NON_EMPTY,{$METADATA,modified}}<meta name="article:modified_time" content="{$METADATA*,modified}" />{+END}
 	{+START,IF_NON_EMPTY,{$METADATA,category}}<meta name="article:section" content="{$METADATA*,category}" />{+END}
@@ -104,7 +104,7 @@
 
 {$,Favicon and app icon for site, managed as theme images}
 <link rel="icon" href="{$IMG*,favicon}" type="image/x-icon" sizes="48x48 32x32 24x24 16x16" />
-<link rel="apple-touch-icon" href="{$IMG*,webclipicon}?v={$IMG_MTIME%,webclipicon}" sizes="152x152 120x120" /> {$,Used on speed dials and phone home screens and not downloaded automatically}
+<link rel="apple-touch-icon" href="{$IMG*,webclipicon}?v={$IMG_MTIME%,webclipicon}" type="image/x-icon" sizes="152x152 120x120" /> {$,Used on speed dials and phone home screens and not downloaded automatically}
 
 {$,Inclusion of search semantic data, so smart browsers can automatically allow native-browser searching of the site}
 {+START,COMMENT,Commented out by default to save bandwidth}{+START,IF,{$ADDON_INSTALLED,search}}

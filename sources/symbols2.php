@@ -955,7 +955,7 @@ function ecv2_COMMA_LIST_UNSHIFT($lang, $escaped, $param)
  */
 function ecv2_COPPA_ON($lang, $escaped, $param)
 {
-    $value = (get_option('is_on_coppa') == '1') ? '1' : '0';
+    $value = ((get_option('is_on_coppa') == '1') && (get_option('dobs') == '1')) ? '1' : '0';
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
