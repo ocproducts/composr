@@ -26,6 +26,7 @@ For example:
 	margin-right: -1px;
 	margin-bottom: 0;
 	transition: color, background-color 0.5s linear;
+	cursor: default;
 }
 
 .dropdown-menu a.toplevel-link,
@@ -95,7 +96,6 @@ For example:
 		left: 0;
 		z-index: 1000;
 		background-color: {$GET,area_5_background};
-		box-shadow: 0px 20px 25px 0px {$GET,dark_border};
 	}
 
 	.dropdown-menu li {
@@ -201,7 +201,6 @@ For example:
 	}
 
 	.dropdown-menu ul.nlevel {
-		box-shadow: 3px 3px 10px {$GET,standard_border};
 		line-height: 1.4em;
 		border-top: 1px solid {$GET,standard_border};
 		border-left: 1px solid {$GET,standard_border};
@@ -215,12 +214,11 @@ For example:
 	.dropdown-menu .nlevel li {
 		white-space: nowrap;
 		overflow: hidden; /* Needed as images are set to float */
-		font-size: 0.9rem;
 	}
 
 	.dropdown-menu .nlevel li:hover, 
 	.dropdown-menu .nlevel li.current {
-		background-color: {$GET,dropdown_menu_text};
+		background-color: {$GET,dropdown_menu_background_hover};
 	}
 
 	.dropdown-menu .nlevel li, 
@@ -244,8 +242,13 @@ For example:
 		text-decoration: underline;
 	}
 
-	.dropdown-menu .nlevel, .dropdown-menu .nlevel a, .dropdown-menu .nlevel a:visited, .dropdown-menu .nlevel a:hover {
-		color: {$GET,slightly_seeded_text} !important;
+	.dropdown-menu .nlevel, .dropdown-menu .nlevel a, 
+	.dropdown-menu .nlevel a:visited {
+		color: {$GET,a.link};
+	}
+
+	.dropdown-menu .nlevel a:hover {
+		color: {$GET,a.hover};
 	}
 
 	.dropdown-menu .nlevel .current a {

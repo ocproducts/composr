@@ -30,7 +30,11 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				{+END}
 
 				{$,The main logo}
-				<h1 class="logo-outer"><a target="_self" href="{$PAGE_LINK*,:}" rel="home"><img class="logo" src="{$LOGO_URL*}" title="{!HOME}" alt="{$SITE_NAME*}" /></a></h1>
+				<h1 class="logo-outer container">
+					<a target="_self" href="{$PAGE_LINK*,:}" rel="home">
+						<img class="logo" src="{$LOGO_URL*}" title="{!HOME}" alt="{$SITE_NAME*}" />
+					</a>
+				</h1>
 
 				{$,Main menu}
 				<div class="global-navigation">

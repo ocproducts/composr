@@ -164,8 +164,8 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#7f9ac5,code_border,68% seed + 32% WB}
 
 /* Drop down menus should look 'above' the site */
-{$THEMEWIZARD_COLOR,#c1cee3,dropdown_menu_background,33% seed + 67% WB}
-{$THEMEWIZARD_COLOR,#d9e1ee,dropdown_menu_text,20% seed + 80% WB}
+{$THEMEWIZARD_COLOR,#f8f8f8,dropdown_menu_background,100% f8f8f8}
+{$THEMEWIZARD_COLOR,#ffffff,dropdown_menu_background_hover,100% WB}
 
 /* Global-level messages should stand out compared to other styling */
 {$THEMEWIZARD_COLOR,#ebe773,message_border,100% EBE773} /* Intentionally coloured on all themes */
@@ -209,6 +209,7 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#389653,gcol_15,100% #389653}
 
 {$SET,fixed_width,1366px}
+{$SET,border_radius,3px}
 
 /*
 =========================
@@ -217,11 +218,10 @@ In mobile mode:
 */
 
 /*!
-* Bootstrap Reboot v4.1.1 (https://getbootstrap.com/)
+* Bootstrap v4.1.1 (https://getbootstrap.com/)
 * Copyright 2011-2018 The Bootstrap Authors
 * Copyright 2011-2018 Twitter, Inc.
 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
-* Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md)
 */
 *,
 *::before,
@@ -547,7 +547,89 @@ template {
 	display: none !important;
 }
 
-/* End Bootstrap Reboot */
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+	margin-bottom: 0.5rem;
+	font-family: inherit;
+	font-weight: 500;
+	line-height: 1.2;
+	color: inherit;
+}
+
+h1, .h1 {
+	font-size: 2.5rem;
+}
+
+h2, .h2 {
+	font-size: 2rem;
+}
+
+h3, .h3 {
+	font-size: 1.75rem;
+}
+
+h4, .h4 {
+	font-size: 1.5rem;
+}
+
+h5, .h5 {
+	font-size: 1.25rem;
+}
+
+h6, .h6 {
+	font-size: 1rem;
+}
+
+.lead {
+	font-size: 1.25rem;
+	font-weight: 300;
+}
+
+.display-1 {
+	font-size: 6rem;
+	font-weight: 300;
+	line-height: 1.2;
+}
+
+.display-2 {
+	font-size: 5.5rem;
+	font-weight: 300;
+	line-height: 1.2;
+}
+
+.display-3 {
+	font-size: 4.5rem;
+	font-weight: 300;
+	line-height: 1.2;
+}
+
+.display-4 {
+	font-size: 3.5rem;
+	font-weight: 300;
+	line-height: 1.2;
+}
+
+hr {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	border: 0;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+small,
+.small {
+	font-size: 80%;
+	font-weight: 400;
+}
+
+mark,
+.mark {
+	padding: 0.2em;
+	background-color: #fcf8e3;
+}
+
+/* End Bootstrap */
 
 html {
 	overflow-y: scroll; /* This makes rendering smoother, no jerk when browser realises a scrollbar is needed, or between pages with/without */
@@ -596,15 +678,6 @@ textarea, input, code {
 	font-size: 1em;
 }
 
-/* Our little 'typing' effect, shows a keyboard when focusing input fields */
-/*Doesn't look good in IE10 input[type="text"]:focus, input[type="password"]:focus {
-	background: url('{$IMG_INLINE;,keyboard}') right center no-repeat {$GET,native_ui_background};
-	background-size: 19px 16px;
-}
-input[type="text"][size="6"]:focus, input[type="text"][readonly="true"]:focus {
-	background-image: none;
-}*/
-
 /* Normally a browser default, but gets inherited on some phones */
 input[type="text"], input[type="password"], input[type="color"], input[type="email"], input[type="number"], input[type="range"], input[type="search"], input[type="tel"], input[type="url"], textarea, select {
 	background-color: {$GET,native_ui_background};
@@ -626,30 +699,10 @@ a:hover, .button-hyperlink:hover {
 	text-decoration: underline;
 }
 
-h1, h2, h3, .faux-h2 {
-	font-weight: normal;
-	color: {$GET,heading_text};
+h1, h2, h3 {
 	border-bottom: 1px solid {$GET,pale_border};
 }
-h1 {
-	font-size: 1.6em;
-	margin-top: 0.27em; /* Consistency with boxes (so gap between header and content is consistent), but rationalised against higher em font size */
-}
-h2, .faux-h2 {
-	font-size: 1.3em;
-}
-h3 {
-	font-size: 1.1em;
-	letter-spacing: -0.75px;
-}
-h3 a, h3 a:hover {
-	text-decoration: none;
-}
-h4 {
-	font-size: 1em;
-	color: {$GET,heading_text};
-	font-weight: bold;
-}
+
 /* An iframe screen */
 .opens-below h1 {
 	display: none;
@@ -1021,13 +1074,13 @@ header h1 {
 }
 
 .logo-outer {
-	display: block;
-	margin: 0;
 	overflow: hidden;
 }
+
 .logo-outer a, .logo-outer img {
 	display: block;
 }
+
 .logo-outer .logo {
 	width: 100%;
 	height: auto;
@@ -1100,7 +1153,6 @@ header h1 {
 
 /* This is applied to the screen title, which is specially included on each screen; in the case of Comcode pages it is the first level 1 title. The screen title is by default an h1, but we define the styles separately so we can style this special title independently (there are lots of cool things we could do to it) */
 .screen-title {
-	margin-top: 0.35em;
 	margin-bottom: 0.8em;
 	min-width: 300px;
 	padding-bottom: 6px; /* For better alignment with breadcrumbs to the right */
@@ -1414,7 +1466,8 @@ footer {
 /*{+END}*/
 
 /*{+START,CSS_MODE,mobile}*/
-	footer .global-footer-left, footer .global-footer-right {
+	footer .global-footer-left, 
+	footer .global-footer-right {
 		padding-left: 0.5em;
 		padding-right: 0.5em;
 	}
@@ -1423,6 +1476,10 @@ footer {
 /*{+START,CSS_MODE,desktop}*/
 	footer .global-footer-left {
 		float: left;
+	}
+	
+	footer .global-footer-right {
+		float: right;
 	}
 /*{+END}*/
 
@@ -1508,7 +1565,7 @@ footer .invisible-ref-point {
 
 /*{+START,CSS_MODE,desktop}*/
 	footer .global-copyright {
-		text-align: center;
+		text-align: right;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
@@ -1519,8 +1576,6 @@ footer .invisible-ref-point {
 
 footer .global-minilinks {
 	padding-bottom: 0.3em;
-	font-size: 0.9em;
-	margin-right: 3em; /* Make tidy gap away from the font sizer */
 }
 /*{+START,CSS_MODE,desktop}*/
 	footer .global-minilinks {
@@ -1536,18 +1591,20 @@ footer .global-minilinks .footer-links {
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.footer-links>li::before {
+	.footer-links > li::before {
 		vertical-align: -20%;
 		padding: 0 0.5em 0 0.1em;
 		content: "\00b7" !important; /* a &middot; */
 	}
+	
 	.footer-links li:first-child::before {
 		/* Undoes the middot/comma separator */
 		content: "" !important;
 		padding-left: 0 !important;
 		padding-right: 0 !important;
 	}
-	.footer-links>li {
+	
+	.footer-links > li {
 		display: inline;
 		margin: 0;
 		padding: 0;
@@ -1892,7 +1949,7 @@ span.red-alert, a.red-alert, strong.red-alert, em.red-alert {
 	font-weight: bold;
 }
 div.red-alert, p.red-alert, .inline-wip-message {
-	border-radius: 5px;
+	border-radius: {$GET,border_radius};
 	padding: 1em;
 }
 div.red-alert, p.red-alert {
@@ -2015,7 +2072,7 @@ th.metadata-title {
 
 .box {
 	border: 1px solid {$GET,standard_border};
-	border-radius: 3px;
+	border-radius: {$GET,border_radius};
 	margin: 1em 0;
 	background-color: {$GET,WB};
 }
@@ -3224,7 +3281,7 @@ div.wysiwyg-toolbar-color-finder {
 	margin-top: -2em;
 	margin-left: -6em;
 	background-color: rgba(255,255,255,0.5);
-	border-radius: 5px;
+	border-radius: {$GET,border_radius};
 }
 
 div.ajax-loading, p.ajax-loading {
@@ -3814,7 +3871,7 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 	font-size: 0.8em;
 	text-align: center;
 	border: 1px solid {$GET,pale_border};
-	border-radius: 5px;
+	border-radius: {$GET,border_radius};
 	padding: 0.5em;
 	opacity: 0.4;
 	transition: opacity 0.6s linear;
@@ -4229,7 +4286,7 @@ input.magic-image-edit-link {
 body .hero-section .hero-button>a.user-link {
 	display: inline-block;
 	border: none;
-	border-radius: 3px;
+	border-radius: {$GET,border_radius};
 	margin: 0.25em;
 	background-color: {$GET,button_background};
 	color: {$GET,box_title_text} !important;
@@ -4264,7 +4321,7 @@ div>.button-screen-item:first-child,
 }
 
 .button-screen-item {
-	padding: 11px 15px;
+	padding: 10px 14px;
 	text-align: center;
 }
 
@@ -4882,7 +4939,7 @@ body div.comcode-table-of-contents>div.box-inner>ol>li {
 
 .comcode-member-link {
 	border: 1px solid {$GET,standard_border};
-	border-radius: 5px;
+	border-radius: {$GET,border_radius};
 	display: inline-block;
 	padding: 0.2em 0.25em;
 	vertical-align: middle;
@@ -5000,7 +5057,7 @@ a[rel="lightbox"] {
 	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
 	border: 1px solid {$GET,standard_border};
 	background-color: {$GET,area_background};
-	border-radius: 5px;
+	border-radius: {$GET,border_radius};
 }
 
 .media-set * {
