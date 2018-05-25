@@ -579,27 +579,36 @@ function ecv($lang, $escaped, $type, $name, $param)
 
                     $new_value .= substr($value, $last_offset, $this_offset - $last_offset);
 
-                    if (strpos($matches[$i][0][0], 'srcset=') !== false) {
+                    if (strpos($matches[$i][0][0], 'srcset=') !== false || strpos($matches[$i][0][0], 'sizes=') !== false) {
                         // Already responsive?
                         $new_value .= $matches[$i][0][0];
                         $last_offset = $this_offset + strlen($matches[$i][0][0]);
                         continue;
                     }
 
+                    $mobile_url = null;
+
+                    // Explicitly defined alternate image?
+                    $matches2 = array();
+                    if (preg_match('#\sdata-src-mobile="([^"]*)"#', $matches[$i][0][0], $matches2) != 0) {
+                        $mobile_url = $matches2[1];
+                    }
+
                     // Find alternate images
                     $url = html_entity_decode($matches[$i][2][0], ENT_QUOTES);
-                    $mobile_url = null;
-                    $url_stub = get_custom_base_url() . '/uploads/filedump/';
-                    if (substr($url, 0, strlen($url_stub)) == $url_stub) {
-                        $file_path = get_custom_file_base() . substr($url, strlen(get_custom_base_url()));
-                        if (is_file($file_path)) {
-                            $ext = get_file_extension($file_path);
-                            $mobile_file_path = dirname($file_path) . '/' . basename($file_path, '.' . $ext) . '_mobile.' . $ext;
-                            if (!is_file($mobile_file_path)) {
-                                $mobile_file_path = dirname($file_path) . '/' . basename($file_path, '.' . $ext) . '-mobile.' . $ext;
-                            }
-                            if (is_file($mobile_file_path)) {
-                                $mobile_url = get_custom_base_url() . substr($mobile_file_path, strlen(get_custom_file_base()));
+                    if ($mobile_url === null) {
+                        $url_stub = get_custom_base_url() . '/uploads/filedump/';
+                        if (substr($url, 0, strlen($url_stub)) == $url_stub) {
+                            $file_path = get_custom_file_base() . substr($url, strlen(get_custom_base_url()));
+                            if (is_file($file_path)) {
+                                $ext = get_file_extension($file_path);
+                                $mobile_file_path = dirname($file_path) . '/' . basename($file_path, '.' . $ext) . '_mobile.' . $ext;
+                                if (!is_file($mobile_file_path)) {
+                                    $mobile_file_path = dirname($file_path) . '/' . basename($file_path, '.' . $ext) . '-mobile.' . $ext;
+                                }
+                                if (is_file($mobile_file_path)) {
+                                    $mobile_url = get_custom_base_url() . substr($mobile_file_path, strlen(get_custom_file_base()));
+                                }
                             }
                         }
                     }
@@ -656,6 +665,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                 }
                 if ($num_matches > 0) {
                     $new_value .= substr($value, $last_offset);
+                    $new_value = preg_replace('#\sdata-src-mobile="([^"]*)"#', '', $new_value);
                     $value = $new_value;
                 }
 
@@ -682,6 +692,111 @@ function ecv($lang, $escaped, $type, $name, $param)
                     }
                 }
 
+                break;
+
+            case 'HTML_COMPRESS':
+                $options = isset($param[1]) ? explode('|', $param[0]) : array();
+                $value = $param[count($param) - 2]->evaluate();
+                if ((get_option('output_streaming') == '0') && (get_param_integer('keep_minify', 1) == 1)) {
+                    if (in_array('comments', $options)) {
+                        $value = preg_replace('#<!--.*-->#Us', '', $value);
+                    }
+
+                    if (in_array('delayjavascript', $options)) {
+                        $insert_pos = stripos($value, '</body>');
+                        if ($insert_pos !== false) {
+                            $new_value = '';
+                            $script_buildup = '';
+                            $prior_pos_end = 0;
+                            $end_len = strlen('</script>');
+                            do {
+                                $pos = stripos($value, '<script', $prior_pos_end);
+                                if ($pos === false) {
+                                    break; // Nothing more
+                                }
+
+                                $pos_end = stripos($value, '</script>', $pos);
+                                if ($pos_end === false) {
+                                    break; // Doesn't terminate, weird, nothing more
+                                }
+                                if ($pos_end > $insert_pos) {
+                                    break; // Somehow this got past the end of the </body>
+                                }
+
+                                $before = substr($value, $prior_pos_end, $pos - $prior_pos_end);
+                                $script = substr($value, $pos, $pos_end - $pos + $end_len);
+                                if (strpos($script, ' data-optimize="no"') === false) {
+                                    $new_value .= $before;
+                                    $script_buildup .= "\n" . $script . "\n";
+                                } else {
+                                    $new_value .= $before . str_replace(' data-optimize="no"', '', $script);
+                                }
+
+                                $prior_pos_end = $pos_end + $end_len;
+                            }
+                            while (true);
+                            $after = substr($value, $prior_pos_end, $insert_pos - $prior_pos_end);
+                            $tail = substr($value, $insert_pos);
+                            $value = $new_value . $script_buildup . $tail;
+                        }
+                    }
+
+                    $active_html_components = '<\w+(\s[^<>]*)?' . '>|</\w+>|/>|-->|<!DOCTYPE[^<>]*>|// <!\[CDATA\[|//\]\]>';
+                    $value = preg_replace('#(' . $active_html_components . ')\s*\n\s*#i', "$1\n", $value);
+                    $value = preg_replace('#\s*\n\s*(' . $active_html_components . ')#i', "\n$1", $value);
+
+                    if (in_array('relativeurls', $options)) {
+                        $matches = array();
+                        if (preg_match('#^(.*/)(.*)$#', get_self_url_easy(), $matches) != 0) {
+                            $current_relative_base = $matches[1];
+                            $current_relative_url = $matches[2];
+                            $value = preg_replace('#(\s(href|src|action)=")' . preg_quote(escape_html($current_relative_base), '#') . '([^"]*")#i', '$1$3', $value);
+                            $value = str_ireplace('<link rel="canonical" href="', '<link rel="canonical" href="' . $current_relative_base, $value); // We don't want this to be relative, it's confusing
+                        }
+                    }
+
+                    if (in_array('protocolrelativeurls', $options)) {
+                        $current_relative_url = preg_replace('#^(.*/)(.*)$#', '$1', get_self_url_easy());
+                        $value = preg_replace('#(\s(href|src|action)=")' . (tacit_https() ? 'https' : 'http') . '://#i', '$1//', $value);
+                    }
+
+                    if (in_array('selfclose', $options)) {
+                        $value = str_replace(' />', '>', $value);
+                    }
+
+                    if (in_array('redundantclose', $options)) {
+                        $value = preg_replace('#\n*</(p|li|option)>#i', '', $value);
+                    }
+
+                    if (in_array('quotes', $options)) {
+                        $value = preg_replace('#(\s*\w+=)"([^\s`\'\"=<>]+)"#', '$1$2', $value);
+                    }
+
+                    if (in_array('cdata', $options)) {
+                        $value = str_ireplace(array('// <![CDATA[', '//]]>'), array('', ''), $value);
+                    }
+
+                    $value = trim($value);
+                }
+                break;
+
+            case 'CDN_FILTER':
+                $value = $param[count($param) - 2]->evaluate();
+                if ((get_option('cdn_regexps') != '') && (get_option('cdn') != '') && (get_param_integer('keep_minify', 1) == 1)) {
+                    $matches = array();
+                    $bu = get_base_url();
+                    $num_matches = preg_match_all('#(\s+(src|href))="' . preg_quote($bu, '#') . '/([^"]+)"#', $value, $matches);
+                    $cdn_regexps = str_replace("\n", '|', get_option('cdn_regexps'));
+                    for ($i = 0; $i < $num_matches; $i++) {
+                        $_url = $matches[3][$i];
+                        if (preg_match('#' . $cdn_regexps . '#', $_url) != 0) {
+                            $url = $bu . '/' . html_entity_decode($_url, ENT_QUOTES);
+                            $from = $matches[0][$i];
+                            $to = $matches[1][$i] . '="' . htmlentities(cdn_filter($url), ENT_QUOTES) . '"';
+                            $value = str_replace($from, $to, $value);
+                        }
+                    }
+                }
                 break;
 
             default:
@@ -1553,28 +1668,33 @@ function ecv_METADATA($lang, $escaped, $param)
 
         switch ($param[0]) {
             case 'site_newestmember':
+                // Getting
                 $value = get_value('cns_newest_member_username');
                 if ($value === null) {
                     $value = '';
                 }
                 break;
             case 'site_nummembers':
+                // Getting
                 if ($GLOBALS['FORUM_DRIVER'] !== null) {
                     $value = strval($GLOBALS['FORUM_DRIVER']->get_num_members());
                 }
                 break;
             case 'site_bestmember':
+                // Getting
                 $value = get_value('site_bestmember');
                 if ($value === null) {
                     $value = '';
                 }
                 break;
             case 'forum_numtopics':
+                // Getting
                 if ($GLOBALS['FORUM_DRIVER'] !== null) {
                     $value = strval($GLOBALS['FORUM_DRIVER']->get_num_topics());
                 }
                 break;
             case 'forum_numposts':
+                // Getting
                 if ($GLOBALS['FORUM_DRIVER'] !== null) {
                     $value = strval($GLOBALS['FORUM_DRIVER']->get_num_forum_posts());
                 }
@@ -1582,8 +1702,10 @@ function ecv_METADATA($lang, $escaped, $param)
 
             case 'meta_description':
                 if (isset($param[2])) {
+                    // Getting specified
                     list(, $value) = seo_meta_get_for($param[1], $param[2]);
                 } else {
+                    // Getting contextual
                     global $SEO_DESCRIPTION;
                     if (($SEO_DESCRIPTION === null) || ($SEO_DESCRIPTION == '')) {
                         if (!empty($METADATA['description'])) {
@@ -1598,6 +1720,7 @@ function ecv_METADATA($lang, $escaped, $param)
                 break;
 
             case 'raw_keywords':
+                // Getting
                 global $SEO_KEYWORDS;
                 if ($SEO_KEYWORDS === null) {
                     $SEO_KEYWORDS = array();
@@ -1608,8 +1731,10 @@ function ecv_METADATA($lang, $escaped, $param)
 
             case 'keywords':
                 if (isset($param[2])) {
+                    // Getting specified
                     list($value,) = seo_meta_get_for($param[1], $param[2]);
                 } else {
+                    // Getting contextual
                     global $SEO_KEYWORDS;
                     $keywords = get_option('keywords');
                     if ($SEO_KEYWORDS === null) {
@@ -1623,42 +1748,63 @@ function ecv_METADATA($lang, $escaped, $param)
                 }
                 break;
 
+            case 'lang':
+                if (isset($param[1])) {
+                    // Setting override
+                    $METADATA[$param[0]] = $param[1];
+                } else {
+                    if (!empty($METADATA[$param[0]])) {
+                        // Getting override
+                        $value = $METADATA[$param[0]];
+                    } else {
+                        // Getting default
+                        $value = user_lang();
+                    }
+                }
+                break;
+
+            case 'breadcrumb_self':
+                if (isset($param[1])) {
+                    // Setting
+                    $BREADCRUMB_SET_SELF = $param[1];
+                } else {
+                    // Getting (do nothing)
+                }
+                break;
+
             default:
                 if (isset($param[1])) {
-                    switch ($param[0]) {
-                        case 'breadcrumb_self':
-                            $BREADCRUMB_SET_SELF = $param[1];
-                            break;
+                    // Setting a generic...
 
-                        default:
-                            $matches = array();
-                            // If attachment given, check permissions
-                            if (($param[0] == 'image') && (preg_match('#^' . preg_quote(find_script('attachment'), '#') . '\?id=(\d+)#', $param[1], $matches) != 0)) {
-                                require_code('attachments');
-                                if (!has_attachment_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), intval($matches[1]))) {
-                                    break;
-                                }
-                            }
-
-                            $METADATA[$param[0]] = $param[1];
+                    // Special case
+                    $matches = array();
+                    if (($param[0] == 'image') && (preg_match('#^' . preg_quote(find_script('attachment'), '#') . '\?id=(\d+)#', $param[1], $matches) != 0)) {
+                        require_code('attachments');
+                        if (!has_attachment_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), intval($matches[1]))) {
                             break;
+                        }
                     }
+
+                    $METADATA[$param[0]] = $param[1];
                 } else {
+                    // Getting a generic...
+
                     if (isset($METADATA[$param[0]])) {
                         $value = $METADATA[$param[0]];
+
+                        if ($value === null) {
+                            $value = '';
+                        }
+
+                        // Special case
                         if ($param[0] != 'image') {
-                            $value = $METADATA[$param[0]];
                             if ($param[0] == 'title' || $param[0] == 'description') {
                                 $value = strip_comcode($value);
                             }
                         }
-                    } else {
-                        $value = '';
-                    }
-                    if ($value === null) {
-                        $value = '';
                     }
                 }
+                break;
         }
     }
 
@@ -6529,5 +6675,29 @@ function ecv_IS_ICON_IN_SVG_SPRITE($lang, $escaped, $param)
         apply_tempcode_escaping($escaped, $value);
     }
 
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv_ATTR_DEFAULTED($lang, $escaped, $param)
+{
+    $value = '';
+
+    if ((isset($param[1])) && ($param[1] != (isset($param[2]) ? $param[2] : ''))) {
+        $value = ' ' . $param[0] . '="' . $param[1] . '"';
+    }
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
     return $value;
 }

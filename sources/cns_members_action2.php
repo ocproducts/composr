@@ -157,7 +157,7 @@ function get_username_from_human_name($username)
  *
  * @param  SHORT_TEXT $username The username for the member profile
  * @param  ID_TEXT $type The type of member profile we are finishing off
- * @param  string $email_address Auto-detected e-mail address (blank: none)
+ * @param  EMAIL $email_address Auto-detected e-mail address (blank: none)
  * @param  ?integer $dob_day Auto-detected DOB day (null: unknown)
  * @param  ?integer $dob_month Auto-detected DOB month (null: unknown)
  * @param  ?integer $dob_year Auto-detected DOB year (null: unknown)
@@ -208,7 +208,7 @@ function cns_member_external_linker_ask($username, $type, $email_address = '', $
  * @param  SHORT_TEXT $password The password for the member profile
  * @param  ID_TEXT $type The type of member profile we are finishing off
  * @param  boolean $email_check Whether to check for duplicated email addresses
- * @param  string $email_address Auto-detected e-mail address (blank: none)
+ * @param  EMAIL $email_address Auto-detected e-mail address (blank: none)
  * @param  ?integer $dob_day Auto-detected DOB day (null: unknown)
  * @param  ?integer $dob_month Auto-detected DOB month (null: unknown)
  * @param  ?integer $dob_year Auto-detected DOB year (null: unknown)

@@ -119,25 +119,14 @@ class Hook_ajax_tree_choose_filedump_file
      */
     public function simple($id, $options, $it = null)
     {
-        $out = '';
+        $out = new Tempcode();
 
         if (has_actual_page_access(null, 'filedump')) {
-            require_code('images');
-            require_code('files2');
-            $full_path = get_custom_file_base() . '/uploads/filedump';
-            if ($id != '') {
-                $full_path .= '/' . $id;
-            }
-            $tree = get_directory_contents($full_path, '');
-
-            foreach ($tree as $f) {
-                if ((!isset($options['only_images'])) || (!$options['only_images']) || (is_image($f, IMAGE_CRITERIA_WEBSAFE, true))) {
-                    $rel = ($id === null) ? '' : preg_replace('#^' . preg_quote($id, '#') . '/#', '', $f);
-                    $out .= '<option value="' . escape_html('uploads/filedump/' . $f) . '"' . (($it === $f) ? ' selected="selected"' : '') . '>' . escape_html($rel) . '</option>' . "\n";
-                }
-            }
+            require_code('filedump');
+            $only_images = isset($options['only_images']) && ($options['only_images']);
+            $out = nice_get_filedump_files($it, $only_images, $id);
         }
 
-        return make_string_tempcode($out);
+        return $out;
     }
 }

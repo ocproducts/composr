@@ -109,7 +109,12 @@ function execute_task_background($task_row)
         } else {
             $content_result = mixed();
 
-            list($mime_type, $content_result) = $result;
+            if ($result === false) {
+                $mime_type = null;
+                $content_result = do_lang('INTERNAL_ERROR');
+            } else {
+                list($mime_type, $content_result) = $result;
+            }
 
             // Handle error results
             if ($mime_type === null) {
@@ -144,19 +149,27 @@ function execute_task_background($task_row)
         }
 
         dispatch_notification('task_completed', null, $subject, $message, array($requester), A_FROM_SYSTEM_PRIVILEGED, array('priority' => 2, 'attachments' => $attachments, 'send_immediately' => true));
+    }
 
-        if ($result !== null) {
-            list($mime_type, $content_result) = $result;
-            if (is_array($content_result)) {
-                @unlink($content_result[1]);
-                sync_file($content_result[1]);
-            }
+    if (is_array($result)) {
+        list($mime_type, $content_result) = $result;
+        if (is_array($content_result)) {
+            @unlink($content_result[1]);
+            sync_file($content_result[1]);
         }
     }
 
-    $GLOBALS['SITE_DB']->query_delete('task_queue', array(
-        'id' => $task_row['id'],
-    ), '', 1);
+    if ($result === false) {
+        $GLOBALS['SITE_DB']->query_update('task_queue', array(
+            't_locked' => 0,
+        ), array(
+            'id' => $task_row['id'],
+        ), '', 1);
+    } else {
+        $GLOBALS['SITE_DB']->query_delete('task_queue', array(
+            'id' => $task_row['id'],
+        ), '', 1);
+    }
 
     $RUNNING_TASK = false;
 }

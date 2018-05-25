@@ -76,6 +76,8 @@ class Module_join
 
         require_lang('cns');
 
+        inform_non_canonical_parameter('_lead_source_description');
+
         $this->title = get_screen_title('__JOIN', true, array(escape_html(get_site_name())));
 
         if ($type == 'browse') {

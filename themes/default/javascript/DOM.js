@@ -1104,7 +1104,7 @@
      * @memberof $dom
      * @param el { Window|Document|Element|string }
      * @param event {string|object}
-     * @param [selector] {string|function}
+     * @param [selector] {string|function} (or may be omitted, and callback used here instead)
      * @param [callback] {function}
      * @param [one] {number}
      */

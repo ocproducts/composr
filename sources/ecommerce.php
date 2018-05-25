@@ -932,7 +932,7 @@ function get_address_fields($prefix, $street_address, $city, $county, $state, $p
  * Fetch default eCommerce fields for a form (returns by reference).
  *
  * @param  ?MEMBER $member_id The member this is for (null: current member)
- * @param  string $shipping_email Shipping e-mail address (blank: unknown)
+ * @param  EMAIL $shipping_email Shipping e-mail address (blank: unknown)
  * @param  string $shipping_phone Shipping phone number (blank: unknown)
  * @param  string $shipping_firstname Shipping first name (blank: unknown)
  * @param  string $shipping_lastname Shipping last name (blank: unknown)

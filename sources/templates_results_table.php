@@ -41,9 +41,10 @@
  * @param  string $guid GUID to pass to template
  * @param  boolean $skip_sortables_form Whether to skip showing a sort form (useful if there is another form wrapped around this)
  * @param  ?ID_TEXT $hash URL hash component (null: none)
+ * @param  boolean $interactive Whether to allow interactive sorting and filtering
  * @return Tempcode The results table
  */
-function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows, $header_row, $result_entries, $sortables = array(), $sortable = null, $sort_order = null, $sort_name = 'sort', $message = null, $widths = array(), $tpl_set = null, $max_page_links = 8, $guid = '1c8645bc2a3ff5bec2e003142185561f', $skip_sortables_form = false, $hash = null)
+function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows, $header_row, $result_entries, $sortables = array(), $sortable = null, $sort_order = null, $sort_name = 'sort', $message = null, $widths = array(), $tpl_set = null, $max_page_links = 8, $guid = '1c8645bc2a3ff5bec2e003142185561f', $skip_sortables_form = false, $hash = null, $interactive = false)
 {
     require_code('templates_pagination');
 
@@ -84,6 +85,7 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
             'SORT' => $skip_sortables_form ? new Tempcode() : $sort,
             'PAGINATION' => $pagination,
             'WIDTHS' => $widths,
+            'INTERACTIVE' => $interactive,
         ),
         null,
         false,
@@ -99,12 +101,13 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
  * @param  ID_TEXT $order_param The parameter name used to store our sortable
  * @param  ID_TEXT $current_ordering The current ordering ("$sortable $sort_order")
  * @param  string $guid GUID to pass to template
+ * @param  ?array $interactive_options Array of tuples matching the indices of $values, each pair being a boolean whether the value is searchable, boolean whether the value is filterable, and a sortable type supported by sortable_tables.js (or null) (null: no interactivity)
  * @return Tempcode The generated header row
  */
-function results_header_row($values, $sortables = array(), $order_param = 'sort', $current_ordering = '', $guid = 'fbcaf8b021e3939bfce1dce9ff8ed63a')
+function results_header_row($values, $sortables = array(), $order_param = 'sort', $current_ordering = '', $guid = 'fbcaf8b021e3939bfce1dce9ff8ed63a', $interactive_options = null)
 {
     $cells = new Tempcode();
-    foreach ($values as $value) {
+    foreach ($values as $index => $value) {
         $found = null;
         foreach ($sortables as $key => $sortable) {
             $_value = is_object($value) ? $value->evaluate() : $value;
@@ -113,14 +116,33 @@ function results_header_row($values, $sortables = array(), $order_param = 'sort'
                 break;
             }
         }
+
+        $map = array(
+            '_GUID' => '80e9de91bb9e479766bc8568a790735c',
+            'VALUE' => $value,
+
+            // Interactivity
+            'INTERACTIVE' => ($interactive_options !== null),
+            'SEARCHABLE' => (($interactive_options !== null) && (array_key_exists($index, $interactive_options))) ? $interactive_options[$index][0] : false,
+            'FILTERABLE' => (($interactive_options !== null) && (array_key_exists($index, $interactive_options))) ? $interactive_options[$index][1] : false,
+            'SORTABLE_TYPE' => (($interactive_options !== null) && (array_key_exists($index, $interactive_options))) ? $interactive_options[$index][2] : null,
+        );
+
         if ($found !== null) {
             $sort_url_asc = get_self_url(false, false, array($order_param => $found . ' ASC'), true);
             $sort_url_desc = get_self_url(false, false, array($order_param => $found . ' DESC'), true);
             $sort_asc_selected = ($current_ordering == $found . ' ASC');
             $sort_desc_selected = ($current_ordering == $found . ' DESC');
-            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE_SORTABLE', array('_GUID' => 'e71df89abff7c7d51907867924dbfa7e', 'VALUE' => $value, 'SORT_ASC_SELECTED' => $sort_asc_selected, 'SORT_DESC_SELECTED' => $sort_desc_selected, 'SORT_URL_DESC' => $sort_url_desc, 'SORT_URL_ASC' => $sort_url_asc)));
+            $map += array(
+                'VALUE' => $value,
+                'SORT_ASC_SELECTED' => $sort_asc_selected,
+                'SORT_DESC_SELECTED' => $sort_desc_selected,
+                'SORT_URL_DESC' => $sort_url_desc,
+                'SORT_URL_ASC' => $sort_url_asc,
+            );
+            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE_SORTABLE', $map));
         } else {
-            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE', array('_GUID' => '80e9de91bb9e479766bc8568a790735c', 'VALUE' => $value)));
+            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE', $map));
         }
     }
 
@@ -143,10 +165,19 @@ function results_entry($values, $auto_escape, $tpl_set = null, $guid = '9e340dd1
         if (($auto_escape) && (!is_object($value))) {
             $value = escape_html($value);
         }
-        $cells->attach(do_template(($tpl_set === null) ? 'RESULTS_TABLE_FIELD' : ('RESULTS_TABLE_' . $tpl_set . '_FIELD'), array('_GUID' => $guid, 'VALUE' => $value, 'CLASS' => (is_string($class)) ? $class : ''), null, false, 'RESULTS_TABLE_FIELD'));
+        $results_table_field_tpl = ($tpl_set === null) ? 'RESULTS_TABLE_FIELD' : ('RESULTS_TABLE_' . $tpl_set . '_FIELD');
+        $cells->attach(do_template($results_table_field_tpl, array(
+            '_GUID' => $guid,
+            'VALUE' => $value,
+            'CLASS' => (is_string($class)) ? $class : '',
+        ), null, false, 'RESULTS_TABLE_FIELD'));
     }
 
-    return do_template(($tpl_set === null) ? 'RESULTS_TABLE_ENTRY' : ('RESULTS_TABLE_' . $tpl_set . '_ENTRY'), array('_GUID' => $guid, 'VALUES' => $cells), null, false, 'RESULTS_TABLE_ENTRY');
+    $results_table_tpl = ($tpl_set === null) ? 'RESULTS_TABLE_ENTRY' : ('RESULTS_TABLE_' . $tpl_set . '_ENTRY');
+    return do_template($results_table_tpl, array(
+        '_GUID' => $guid,
+        'VALUES' => $cells,
+    ), null, false, 'RESULTS_TABLE_ENTRY');
 }
 
 /**

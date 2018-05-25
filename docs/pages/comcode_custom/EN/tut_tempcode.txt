@@ -1320,6 +1320,10 @@ where:
 			<td>{$ALREADY_RATED,downloads,3}</td>
 			<td>Find if the current user has already rated something.</td>
 		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FORM_TO_EMAIL_URL,pagename}</td>
+			<td>Used to cleanly produce a URL to the <kbd>form_to_mail</kbd> script. Documented in the [/html][page="_SEARCH:tut_feedback"]Feedback and user interaction[/page][html] tutorial.</td>
+		</tr>
 	</tbody>
 </table>
 [/html]
@@ -1532,6 +1536,10 @@ Understanding of these symbols requires an understanding of basic boolean operat
 				<kbd>{$?,0,yes}</kbd> &rarr; (blank)<br />
 				<kbd>{$?,1,yes}</kbd> &rarr; <kbd>yes</kbd>
 			</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$ATTR_DEFAULTED,parameter,somevalue,defaultvalue}</td>
+			<td>This is for outputting HTML parameters only where they differ from the browser's inbuilt default (hence saving some bandwidth). It is a compact equivalent of <kbd>{$?,{$NEQ,somevalue,defaultvalue}, parameter="somevalue"}</kbd>.</td>
 		</tr>
 	</tbody>
 </table>
@@ -1977,6 +1985,14 @@ Note that you cannot use directives for symbol parameters because directives con
 		<tr style="background: #DDFFDD">
 			<td>MAKE_MOBILE</td>
 			<td>On mobile mode perform some basic conversions on the enclosed HTML to make it mobile-friendly. Covered in the [page="_SEARCH:tut_mobile"]Mobile design[/page] tutorial.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>HTML_COMPRESS</td>
+			<td>Apply HTML compression techniques to an area of the output. Covered in the [page="_SEARCH:tut_performance"]Optimising Performance[/page] tutorial.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>CDN_FILTER</td>
+			<td>Mass-apply the <kbd>CDN_FILTER</kbd> symbol to appropriate URLs found inside the directive. Covered in the [page="_SEARCH:tut_performance"]Optimising Performance[/page] tutorial.</td>
 		</tr>
 	</tbody>
 </table>

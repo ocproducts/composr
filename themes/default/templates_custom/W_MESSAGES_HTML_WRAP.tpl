@@ -1,7 +1,7 @@
 {$,This template is used for things like iframes used for previewing or for creating independent navigation areas in the site}
 <!DOCTYPE html>
 
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}">
+<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr}>
 	<head>
 		{+START,INCLUDE,HTML_HEAD}TITLE={!MESSAGES}{+END}
 

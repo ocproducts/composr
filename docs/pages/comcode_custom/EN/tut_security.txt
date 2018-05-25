@@ -462,7 +462,6 @@ Disallow: /data/ace/
 Disallow: /data/ckeditor/
 Disallow: /text/
 Disallow: /text_custom/
-Disallow: /themes/default/
 Disallow: /themes/*/text
 Disallow: /themes/*/xml
 

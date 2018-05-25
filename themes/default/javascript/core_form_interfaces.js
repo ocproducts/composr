@@ -1154,6 +1154,10 @@
         $dom.on(container, 'keypress', '.js-keypress-input-ensure-next-field', function (e, input) {
             $coreFormInterfaces.ensureNextField2(e, input);
         });
+
+        $dom.on(container, 'keyup', function (e, input) {
+            TODO
+        });
     };
 
     $cms.templates.formScreenInputTextMulti = function formScreenInputTextMulti(params, container) {

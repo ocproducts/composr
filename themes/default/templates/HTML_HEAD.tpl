@@ -1,7 +1,7 @@
 {$, - Note you will need to empty the template cache manually if you change this file manually due to the way it is included - }
 
 {$,The character set of the page}
-<meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />
+<meta charset="{$CHARSET*}" />
 
 {$,Page title}
 <title>{+START,IF_NON_PASSED,TITLE}{+START,IF_NON_EMPTY,{$HEADER_TEXT}}{$HEADER_TEXT*} &ndash; {+END}{$SITE_NAME*}{+END}{+START,IF_PASSED,TITLE}{TITLE}{+END}</title>
@@ -36,8 +36,6 @@
 {+START,IF,{$NEQ,{$PAGE},404}}<link rel="canonical" href="{$CANONICAL_URL*}" />{+END}
 <link rel="baseurl" href="{$BASE_URL*}" />
 <link rel="sitemap" href="{$BASE_URL*}/data_custom/sitemaps/index.xml" />
-<meta name="description" content="{+START,IF,{$NEQ,{$METADATA,meta_description},{!NA},???}}{$METADATA*,meta_description}{+END}" />
-<meta name="keywords" content="{$METADATA*,keywords}" />
 <meta id="composr-symbol-data" name="composr-symbol-data" content="{$SYMBOL_DATA_AS_JSON*}" />
 {+START,COMMENT,Commented out by default to save bandwidth}
 	<meta name="GENERATOR" content="{$BRAND_NAME*}" />
@@ -54,7 +52,7 @@
 	{+START,IF_NON_EMPTY,{$METADATA,forum_numtopics}}<meta name="CMSCORE.Forum_NumTopics" content="{$METADATA*,forum_numtopics}" />{+END}
 	{+START,IF_NON_EMPTY,{$METADATA,forum_numposts}}<meta name="CMSCORE.Forum_NumPosts" content="{$METADATA*,forum_numposts}" />{+END}
 	<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" /><link rel="schema.DCTERMS" href="http://purl.org/dc/terms/" />
-	<meta name="DC.Language" content="{$LANG*}" />{+START,IF_NON_EMPTY,{$METADATA,created}}<meta name="DCTERMS.Created" content="{$METADATA*,created}" />{+END}
+	<meta name="DC.Language" content="{$METADATA*,lang}" />{+START,IF_NON_EMPTY,{$METADATA,created}}<meta name="DCTERMS.Created" content="{$METADATA*,created}" />{+END}
 	{+START,IF_NON_EMPTY,{$METADATA,publisher}}<meta name="DC.Publisher" content="{$METADATA*,publisher}" />{+END}
 	{+START,IF_NON_EMPTY,{$METADATA,created}}<meta name="DC.Creator" content="{$METADATA*,creator}" />{+END}
 	{+START,IF_NON_EMPTY,{$METADATA,modified}}<meta name="DCTERMS.Modified" content="{$METADATA*,modified}" />{+END}
@@ -64,17 +62,20 @@
 	{+START,IF_NON_EMPTY,{$METADATA,description}}<meta name="DC.Description" content="{$TRIM,{$METADATA*,description}}" />{+END}
 {+END}
 {+START,IF_NON_EMPTY,{$METADATA,title}}<meta property="og:title" content="{$METADATA*,title}" />{+END}
-{+START,IF,{$EQ,{$METADATA,type},News article}}{$,Valid types only}<meta property="og:type" content="{$REPLACE*,News article,article,{$METADATA,type}}" />{+END}
-<meta property="og:url" content="{$CANONICAL_URL*}" /><meta property="og:site_name" content="{$SITE_NAME*}" />
+<meta property="og:type" content="{$?,{$EQ,{$METADATA,type},News article},article,website}" />
+<meta property="og:url" content="{$CANONICAL_URL*}" />
+<meta property="og:site_name" content="{$SITE_NAME*}" />
 {+START,COMMENT,Commented out by default to save bandwidth}
 	Only do this if you have a real uid, not a page id... {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_uid,1}}<meta property="fb:admins" content="{$CONFIG_OPTION*,facebook_uid}" />{+END}
 {+END}
 {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_appid}}<meta property="fb:app_id" content="{$CONFIG_OPTION*,facebook_appid,1}" />{+END}
-{+START,IF_NON_EMPTY,{$METADATA,meta_description}}<meta property="og:description" content="{$TRIM,{$METADATA*,meta_description}}" />{+END}
+{+START,IF_NON_EMPTY,{$METADATA,meta_description}}<meta property="og:description" name="description" content="{+START,IF,{$NEQ,{$METADATA,meta_description},{!NA},???}}{$TRIM,{$METADATA*,meta_description}}{+END}" />{+END}
+<meta name="description" content="{+START,IF,{$NEQ,{$METADATA,meta_description},{!NA},???}}{$METADATA*,meta_description}{+END}" />
+<meta name="keywords" content="{$METADATA*,keywords}" />
 {+START,IF_NON_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$METADATA*,image}" /><meta property="og:image:width" content="{$IMG_WIDTH*,{$METADATA,image}}" /><meta property="og:image:height" content="{$IMG_HEIGHT*,{$METADATA,image}}" />{$,NB: You may also want to define a image_src link tag for some social sites}{+END}{+START,IF_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$IMG*,logo/standalone_logo}" /><meta property="og:image:width" content="{$IMG_WIDTH*,logo/standalone_logo}" /><meta property="og:image:height" content="{$IMG_HEIGHT*,logo/standalone_logo}" />{+END}
 {+START,IF_NON_EMPTY,{$METADATA,video}}<meta property="og:video" content="{$METADATA*,video}" /><meta property="og:video:width" content="{$METADATA*,video:width}" /><meta property="og:video:height" content="{$METADATA*,video:height}" /><meta property="og:video:type" content="{$METADATA*,video:type}" />{+END}
-<meta property="og:locale" content="{$PREG_REPLACE,\..*$,,{$PREG_REPLACE,\,.*$,,{$REPLACE,-,_,{!locale}}}}" />
-{+START,IF,{$EQ,{$METADATA,type},Article}}
+{$SET,og_locale,{$PREG_REPLACE,\..*$,,{$PREG_REPLACE,\,.*$,,{$REPLACE,-,_,{!locale}}}}}{+START,IF,{$NEQ,{$GET,og_locale},en_US}}<meta property="og:locale" content="{$GET,og_locale}" />{+END}
+{+START,IF,{$EQ,{$METADATA,type},News article}}
 	{+START,IF_NON_EMPTY,{$METADATA,created}}<meta name="article:published_time" content="{$METADATA*,created}" />{+END}
 	{+START,IF_NON_EMPTY,{$METADATA,modified}}<meta name="article:modified_time" content="{$METADATA*,modified}" />{+END}
 	{+START,IF_NON_EMPTY,{$METADATA,category}}<meta name="article:section" content="{$METADATA*,category}" />{+END}
@@ -112,6 +113,9 @@
 	{+START,IF_NON_EMPTY,{$METADATA,opensearch_itemsperpage}}<meta name="itemsPerPage" content="{$METADATA*,opensearch_itemsperpage}" />{+END}
 {+END}{+END}
 
+{$,CSS includes from Composr page}
+{$CSS_TEMPCODE}
+
 {$,Load polyfills}
 {+START,INCLUDE,HTML_HEAD_POLYFILLS}{+END}
 
@@ -122,9 +126,6 @@
 {+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_fonts}}
 	<link href="//fonts.googleapis.com/css?family={+START,LOOP,={$CONFIG_OPTION,google_fonts}}{+START,IF_NON_EMPTY,{_loop_key}}|{+END}{_loop_var&*}{+END}:400,400i,600,600i" rel="stylesheet" />
 {+END}
-
-{$,CSS includes from Composr page}
-{$CSS_TEMPCODE}
 
 {$,If the page is doing a refresh include the markup for that}
 {$REFRESH}

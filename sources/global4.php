@@ -30,6 +30,26 @@ function init__global4()
 }
 
 /**
+ * Find whether a page is indexable.
+ *
+ * @param  ID_TEXT Zone name
+ * @param  ID_TEXT Page name
+ * @return boolean Whether it is indexable
+ */
+function comcode_page_is_indexable($zone, $codename)
+{
+    if (
+        (substr($codename, 0, 6) == 'panel_') ||
+        ($codename[0] == '_') ||
+        ($zone . ':' . $codename == ':404') ||
+        (in_array($zone . ':' . $codename, explode("\n", get_option('noindex_comcode_pages'))))
+    ) {
+        return false;
+    }
+    return true;
+}
+
+/**
  * Attach a message mentioning how the site is closed.
  *
  * @param  Tempcode $messages_bottom Where to place the message

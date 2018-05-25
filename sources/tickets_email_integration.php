@@ -92,8 +92,8 @@ function ticket_outgoing_message($ticket_id, $ticket_url, $ticket_type_name, $su
  *
  * @param  string $subject Subject line of original message
  * @param  string $body Body of original message
- * @param  string $email E-mail address we tried to bind to
- * @param  string $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
+ * @param  EMAIL $email E-mail address we tried to bind to
+ * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
  */
 function ticket_email_cannot_bind($subject, $body, $email, $email_bounce_to)
 {
@@ -637,7 +637,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
  * Try and get an e-mail address from an embedded part of an e-mail header.
  *
  * @param  string $from_email E-mail header
- * @return string E-mail address (hopefully)
+ * @return EMAIL E-mail address (hopefully)
  */
 function get_ticket_email_from_header($from_email)
 {
@@ -651,7 +651,7 @@ function get_ticket_email_from_header($from_email)
 /**
  * Find the ticket member for an e-mail address.
  *
- * @param  string $from_email E-mail address
+ * @param  EMAIL $from_email E-mail address
  * @return ?MEMBER Member ID (null: none)
  */
 function find_ticket_member_from_email($from_email)

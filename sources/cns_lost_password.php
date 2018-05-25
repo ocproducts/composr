@@ -36,7 +36,7 @@ function get_password_reset_process()
  * Send out a lost password e-mail.
  *
  * @param  string $username Username to reset for (may be blank if other is not)
- * @param  string $email_address E-mail address to set for (may be blank if other is not)
+ * @param  EMAIL $email_address E-mail address to set for (may be blank if other is not)
  * @return array A tuple: e-mail address, obfuscated e-mail address that is safe(ish) to display, member ID
  */
 function lost_password_emailer_step($username, $email_address)

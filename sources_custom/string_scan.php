@@ -7899,7 +7899,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADDRESS_DESIRED
         ADDRESS_DESIRED_STUB
         ADD_ATTACHMENT
-        ADD_ATTACHMENTS_MEDIA_LIBRARY
         ADD_DATE
         ADD_FRIEND_ACTION_DESCRIPTION
         ADD_IMAGES

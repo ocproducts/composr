@@ -130,6 +130,8 @@ class Module_recommend
 
         require_lang('recommend');
 
+        inform_non_canonical_parameter('_lead_source_description');
+
         if ($type == 'browse') {
             attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 

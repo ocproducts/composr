@@ -317,6 +317,7 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = array())
             case 'PAGE_LINK':
             case 'LOAD_PAGE':
             case 'LOAD_PANEL':
+            case 'METADATA':
                 break;
 
             default:
@@ -1548,6 +1549,20 @@ function handle_symbol_preprocessing($seq_part, &$children)
         case 'FRACTIONAL_EDITABLE':
             require_javascript('fractional_edit');
             return;
+
+        case 'METADATA':
+            // We need to allow setting operations to be preprocessed
+            $param = $seq_part[3];
+            if (isset($param[1])) {
+                foreach ($param as $i => $p) {
+                    if (is_object($p)) {
+                        $param[$i] = $p->evaluate();
+                    }
+                }
+
+                ecv_METADATA(user_lang(), array(), $param);
+            }
+            return;
     }
 }
 
@@ -1599,6 +1614,7 @@ class Tempcode
                                 case 'PAGE_LINK':
                                 case 'LOAD_PAGE':
                                 case 'LOAD_PANEL':
+                                case 'METADATA':
                                     $pp_bits[] = array(array(), TC_SYMBOL, $seq_part[3], $seq_part[1]);
                                     break;
                             }

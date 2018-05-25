@@ -1,3 +1,8 @@
+{+START,IF_PASSED_AND_TRUE,INTERACTIVE}
+	{$REQUIRE_CSS,sortable_tables}
+	{$REQUIRE_JAVASCRIPT,sortable_tables}
+{+END}
+
 {+START,IF_PASSED,TEXT_ID}{$SET,TEXT_ID,{TEXT_ID}}{+END}
 
 {+START,IF_EMPTY,{RESULT_ENTRIES}}
@@ -9,7 +14,7 @@
 {+START,IF_NON_EMPTY,{RESULT_ENTRIES}}
 	{$PARAGRAPH,{MESSAGE}}
 
-	<div class="wide-table-wrap"><table class="columned-table results-table wide-table{+START,IF_EMPTY,{WIDTHS}} autosized-table{+END} responsive-table" itemprop="significantLinks">
+	<div class="wide-table-wrap"><table class="columned-table results-table wide-table{+START,IF_EMPTY,{WIDTHS}} autosized-table{+END} responsive-table{+START,IF_PASSED_AND_TRUE,INTERACTIVE} sortable_table table-autosort:2 table-autofilter{+END}" itemprop="significantLinks">
 		{+START,IF,{$DESKTOP}}{+START,IF,{$EQ,{$LANG},EN}}{+START,IF_NON_EMPTY,{WIDTHS}}
 			<colgroup>
 				{+START,LOOP,WIDTHS}

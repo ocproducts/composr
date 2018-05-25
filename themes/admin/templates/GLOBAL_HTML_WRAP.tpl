@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<!--
-Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
-{$BRAND_BASE_URL*}
-(admin theme)
--->
 
 {$REQUIRE_CSS,adminzone}
 {$REQUIRE_CSS,menu__dropdown}
@@ -14,7 +9,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 {$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
 
 {$,We deploy as HTML5 but code and conform strictly to XHTML5}
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}">
+<html lang="{$LCASE*,{$METADATA,lang}}"{$ATTR_DEFAULTED,dir,{!dir},ltr} data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>
@@ -269,3 +264,5 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 	{$JS_TEMPCODE}
 </body>
 </html>
+
+<!-- Powered by {$BRAND_NAME*} (admin theme), (c) ocProducts Ltd - {$BRAND_BASE_URL*} -->

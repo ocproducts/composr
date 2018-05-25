@@ -32,7 +32,7 @@ class Hook_task_send_newsletter
      * @param  LANGUAGE_NAME $lang The language
      * @param  array $send_details A map describing what newsletters the newsletter is being sent to
      * @param  BINARY $html_only Whether to only send in HTML format
-     * @param  string $from_email Override the email address the mail is sent from (blank: staff address)
+     * @param  EMAIL $from_email Override the email address the mail is sent from (blank: staff address)
      * @param  string $from_name Override the name the mail is sent from (blank: site name)
      * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
      * @range  1 5

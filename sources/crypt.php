@@ -187,7 +187,7 @@ function obfuscate_entities($val)
  * Obfuscate the given e-mail address.
  * This function may want to be modified on a per-site basis, to stop spammers triggering onto Composr's default method (possible some already do, although I think it unlikely they would go to this much effort/computation unless it was more widespread to do this).
  *
- * @param  string $email The e-mail address to obfuscate
+ * @param  EMAIL $email The e-mail address to obfuscate
  * @return string The obfuscated version
  */
 function obfuscate_email_address($email)

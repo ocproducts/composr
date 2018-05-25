@@ -25,7 +25,7 @@
  * @param  mixed $email_address Their e-mail address (string or array of alternates)
  * @param  string $message The recommendation message
  * @param  boolean $is_invite Whether this is an invitation
- * @param  ?string $recommender_email Email address of the recommender (null: current user's)
+ * @param  ?EMAIL $recommender_email Email address of the recommender (null: current user's)
  * @param  ?string $subject The subject (null: default)
  * @param  ?array $names List of names (null: use email addresses as names)
  */
