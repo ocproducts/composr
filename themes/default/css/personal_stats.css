@@ -20,7 +20,6 @@
 
 #top-personal-stats-button {
 	display: inline-block;
-	padding: 0 5px; /* This is needed for spacing, but also to ensure a consistent width compared to the notification/inbox buttons */
 }
 .top-buttons #top-personal-stats-button .icon {
 	width: 24px;

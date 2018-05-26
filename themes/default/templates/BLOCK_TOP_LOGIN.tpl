@@ -1,10 +1,10 @@
 {+START,IF,{$NOR,{$GET,login_screen},{$MATCH_KEY_MATCH,_WILD:login}}}
-	<div data-tpl="blockTopLogin" class="inline">
-		<form title="{!_LOGIN}" action="{LOGIN_URL*}" method="post" class="inline top-login js-form-top-login" autocomplete="on">
+	<div data-tpl="blockTopLogin">
+		<form title="{!_LOGIN}" action="{LOGIN_URL*}" method="post" class="top-login js-form-top-login" autocomplete="on">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			{+START,IF,{$DESKTOP}}
-				<div class="inline-desktop">
+				<div class="top-login-controls display-desktop">
 					<div class="accessibility-hidden"><label for="s-login-username">{$LOGIN_LABEL}</label></div>
 					<input maxlength="80" size="10" accesskey="l" type="text" placeholder="{!USERNAME}" id="s-login-username" name="login_username" />
 					<div class="accessibility-hidden"><label for="s-password">{!PASSWORD}</label></div>
@@ -15,11 +15,11 @@
 						<input title="{!REMEMBER_ME}"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-confirm-remember-me{+END}" type="checkbox" value="1" id="s-remember" name="remember" />
 					{+END}
 
-					<button class="button-screen-item menu--site-meta--user-actions--login" type="submit">{+START,INCLUDE,ICON}NAME=menu/site_meta/user_actions/login{+END} {!_LOGIN}</button>
+					<button class="button-micro menu--site-meta--user-actions--login" type="submit">{+START,INCLUDE,ICON}NAME=menu/site_meta/user_actions/login{+END} {!_LOGIN}</button>
 				</div>
 			{+END}
 
-			<ul class="horizontal-links">
+			<ul class="horizontal-links bock-top-login-links">
 				{+START,IF_NON_EMPTY,{JOIN_URL}}<li><a href="{JOIN_URL*}">{+START,INCLUDE,ICON}NAME=menu/site_meta/user_actions/join{+END} {!_JOIN}</a></li>{+END}
 				<li><a data-open-as-overlay="{}" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{+START,INCLUDE,ICON}NAME=menu/site_meta/user_actions/login{+END} {+START,IF,{$DESKTOP}}<span class="inline-desktop">{!OPTIONS}</span>{+END}<span class="inline-mobile">{!_LOGIN}</span></a></li>
 			</ul>

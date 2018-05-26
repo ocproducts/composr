@@ -1110,13 +1110,15 @@ header h1 {
 .global-navigation .top-buttons, 
 .global-navigation .top-form {
 	float: right;
+	
 }
 
 .global-navigation .top-buttons {
 }
 
-.global-navigation .top-buttons a {
+.global-navigation .top-buttons .top-button {
 	color: {$GET,WB};
+	padding: 17px 5px;
 }
 
 /*{+START,CSS_MODE,desktop}*/
@@ -1131,25 +1133,34 @@ header h1 {
 
 .global-navigation .top-form.top-search {
 }
+.global-navigation .top-form {
+	padding: 16px 0 16px 10px;
+}
+
 .global-navigation .top-form * {
 	vertical-align: middle;
 }
 
-.global-navigation .top-login .horizontal-links {
+.global-navigation .top-login-controls {
+	float: left;
+}
+
+.global-navigation .top-login .bock-top-login-links {
 	margin-left: 0.5em;
 	width: auto;
 	padding-top: 2px; /* To force it align correctly with the form in a different block (which is taller) */
+	float: left;
 }
 
-.global-navigation .top-login .horizontal-links a {
+.global-navigation .top-login .bock-top-login-links a {
 	color: inherit;
 	text-decoration: none;
 }
-.global-navigation .top-login .horizontal-links a:hover {
+.global-navigation .top-login .bock-top-login-links a:hover {
 	text-decoration: underline;
 }
 
-.global-navigation .top-login .horizontal-links a .icon {
+.global-navigation .top-login .bock-top-login-links a .icon {
 	width: 24px;
 	height: 24px;
 }
@@ -2510,15 +2521,14 @@ h3 .toggleable-tray-button .icon {
 	overflow: visible;
 	margin-top: 4px; /* 2 +2px gap */
 }
-.box.box-arrow>span {
-	background: url('{$IMG;,boxes/arrow}') no-repeat;
-	background-size: 13px 7px;
-	margin-top: -7px;
+
+.box.box-arrow::before {
+	content: "\025B2"; /* Upward arrow */
+	color: {$GET,standard_border};
 	display: inline-block;
-	width: 13px;
-	height: 7px;
-	margin-left: 20.2em;
+	margin-left: 20rem;
 	position: absolute;
+	top: -11px;
 	right: 13px;
 }
 
@@ -4287,6 +4297,7 @@ body .hero-section .hero-button>a.user-link {
 	vertical-align: middle;
 	cursor: pointer;
 	font-size: 1rem;
+	transition: color, background-color 0.3s linear;
 }
 div>.button-micro:first-child, 
 div>.button-screen:first-child, 
@@ -4300,10 +4311,7 @@ div>.button-screen-item:first-child,
 }
 
 .button-screen {
-	padding: 7px;
-	border-width: 2px;
-	font-size: 13px;
-	min-width: 8em;
+	padding: 10px 14px;
 	text-align: center;
 }
 
@@ -4329,8 +4337,8 @@ div>.button-screen-item:first-child,
 /*{+END}*/
 .button-micro {
 	padding: 4px 6px;
-	font-size: 12px;
-	margin: 1px 0.2em 0 0.4em; /* Push it up a bit due to confined space */
+	font-size: 0.85rem;
+	margin: 1px 0.2rem 0 0.4rem; /* Push it up a bit due to confined space */
 }
 /*{+START,CSS_MODE,mobile}*/
 	.button-micro {
@@ -4416,7 +4424,6 @@ div.proceed-button-left-2 {
 .global-button-ref-point {
 	position: absolute;
 	min-width: 22em;
-	font-size: 13px; /* Puts it back, as was set to zero elsewhere */
 	z-index: 2000;
 }
 
@@ -5295,6 +5302,12 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 	position: absolute;
 	cursor: pointer;
 }
+
+.overlay-close-button .icon {
+	width: 38px;
+	height: 38px;
+}
+
 /*{+START,CSS_MODE,mobile}*/
 	.overlay-close-button {
 		top: 0;

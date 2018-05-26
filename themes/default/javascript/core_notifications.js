@@ -259,7 +259,7 @@
                 unread = responseXml.getElementsByTagName('unread_web_notifications');
                 $dom.html(spot, $dom.html(display[0]));
                 $dom.html(button.firstElementChild, $dom.html(unread[0]));
-                button.className = 'count_' + $dom.html(unread[0]);
+                button.className = 'count-' + $dom.html(unread[0]);
             }
         }
 
@@ -367,37 +367,31 @@
 
         var button = document.getElementById(name + '-button');
         button.title = '';
-        var setPosition = function () {
-            var buttonX = $dom.findPosX(button, true);
-            var buttonWidth = button.offsetWidth;
-            var x = (buttonX + buttonWidth - el.offsetWidth);
-            if (x < 0) {
-                var span = el.querySelector('span');
-                span.style.marginLeft = (buttonX + buttonWidth / 4) + 'px';
-                x = 0;
-            }
-            el.style.left = x + 'px';
-            el.style.top = ($dom.findPosY(button, true) + button.offsetHeight) + 'px';
-            try {
-                el.style.opacity = '1.0';
-            } catch (ex) {}
-        };
-        setTimeout(setPosition, 0);
 
         if ((el.style.display === 'none') && !hide) {
             var tooltip = document.querySelector('body > .tooltip');
             if (tooltip != null) { // Hide tooltip, to stop it being a mess
                 tooltip.style.display = 'none';
             }
-
-            el.style.display = 'inline';
+            
+            setTimeout(setPosition, 0);
+            $dom.fadeIn(el);
         } else {
             el.style.display = 'none';
         }
-
-        el.style.opacity = 0; // Render, but invisibly, until we've positioned it
-
+        
         return false;
+
+        function setPosition() {
+            var buttonX = $dom.findPosX(button, true),
+                buttonWidth = button.offsetWidth,
+                x = (buttonX + buttonWidth - el.offsetWidth);
+            if (x < 0) {
+                x = 0;
+            }
+            el.style.left = x + 'px';
+            el.style.top = ($dom.findPosY(button, true) + button.offsetHeight) + 'px';
+        }
     };
 }(window.$cms, window.$util, window.$dom));
 

@@ -640,11 +640,10 @@
                     });
                     this.buttonContainerEl.appendChild(button);
                 } else {
-                    button = $dom.create('img', {
-                        'width': '38',
-                        'height': '38',
-                        'src': $util.srl('{$IMG;,icons/media_set/lightbox_close}'),
-                        'alt': this.cancelButton,
+                    /*{$SET,icon_media_set_lightbox_close,{+START,INCLUDE,ICON}NAME=media_set/lightbox_close{+END}}*/
+                    button = $dom.create('a', {
+                        'href' : '#!',
+                        'html': '{$GET;^,icon_media_set_lightbox_close}',
                         'className': 'overlay-close-button ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
                     });
                     this.containerEl.appendChild(button);

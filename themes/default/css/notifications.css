@@ -9,14 +9,6 @@
 #pts-button {
 	display: inline-block;
 	position: relative;
-	text-align: center;
-	min-width: 30px;
-	height: 24px;
-	font-size: 1.05em;
-	padding: 1px 0;
-	vertical-align: middle;
-	background-repeat: no-repeat;
-	outline: 0;
 	text-decoration: none;
 }
 
@@ -25,12 +17,25 @@
 	width: 24px;
 	height: 24px;
 }
-#web-notifications-button span, #pts-button span {
-	visibility: hidden;
+
+#web-notifications-button .top-button-bubble,
+#pts-button .top-button-bubble {
+	position: absolute;
+	right: 2px;
+	border-radius: {$GET,border_radius};
+	top: 10px;
+	background: rgba(0, 0, 0, 0.7);
+	padding: 0 3px;
+	font-size: 0.8rem;
+}
+
+#web-notifications-button.count-0 .top-button-bubble, 
+#pts-button.count-0 .top-button-bubble {
+	display: none;
 }
 
 .count-0 {
-	opacity: 0.5;
+	/*opacity: 0.5;*/
 }
 
 .notification {
