@@ -13,7 +13,7 @@
 
 {+START,IF,{TOP_LEVEL}}
 <li class="dropdown-menu-item toplevel {$?,{CURRENT},current,non-current}{$?,{$GET,HAS_CHILDREN}, has-children}{$?,{FIRST}, first}{$?,{LAST}, last} {+START,IF_PASSED,SIBLINGS}siblings-{SIBLINGS*}{+END}">
-	<a {+START,INCLUDE,MENU_LINK_PROPERTIES}{+END} class="dropdown-menu-item-a {+START,IF_EMPTY,{URL}}non-link {+END}toplevel-link">
+	<a {+START,INCLUDE,MENU_LINK_PROPERTIES}{+END} class="dropdown-menu-item-a toplevel-link">
 		{+START,IF_NON_EMPTY,{$GET,img}}<span class="dropdown-menu-item-icon">{$GET,img_html}</span>{+END}
 		<span class="dropdown-menu-item-caption">{CAPTION}</span>
 	</a>
@@ -27,7 +27,7 @@
 
 {+START,IF,{$NOT,{TOP_LEVEL}}}
 <li class="dropdown-menu-item nlevel {$?,{CURRENT},current,non-current}{$?,{$GET,HAS_CHILDREN}, has-children}{$?,{FIRST}, first}{$?,{LAST}, last} {+START,IF_PASSED,SIBLINGS}siblings-{SIBLINGS*}{+END}">
-	<a {+START,IF_NON_EMPTY,{URL}}{+START,INCLUDE,MENU_LINK_PROPERTIES}{+END}{+END} {+START,IF_EMPTY,{URL}}href="#!"{+END} class="dropdown-menu-item-a nlevel-link {+START,IF_EMPTY,{URL}}non-link{+END}">
+	<a {+START,IF_NON_EMPTY,{URL}}{+START,INCLUDE,MENU_LINK_PROPERTIES}{+END}{+END} {+START,IF_EMPTY,{URL}}href="#!"{+END} class="dropdown-menu-item-a nlevel-link">
 		{+START,IF_NON_EMPTY,{$GET,img}}<span class="dropdown-menu-item-icon">{$GET,img_html}</span>{+END}
 		<span class="dropdown-menu-item-caption">{CAPTION}</span>
 	</a>

@@ -1673,15 +1673,21 @@
 
         this.menuContentEl = this.$('.js-el-menu-content');
 
-        var isMobile = $cms.isCssMode('mobile'),
-            that = this;
-        $dom.on(window, 'resize orientationchange', $util.debounce(function () {
-            if (isMobile !== $cms.isCssMode('mobile')) {
-                // CSS mode changed, re-attach event listeners
-                isMobile = $cms.isCssMode('mobile');
-                that.delegateEvents();
-            }
-        }, 200));
+        var that = this,
+            isMobile = $cms.isCssMode('mobile'),
+            delegateEvents = function () {
+                if (isMobile !== $cms.isCssMode('mobile')) {
+                    // CSS mode changed, re-attach event listeners
+                    isMobile = $cms.isCssMode('mobile');
+                    that.delegateEvents();
+                }
+            };
+
+        window.addEventListener('orientationchange', delegateEvents);
+        window.addEventListener('resize', $util.debounce(delegateEvents, 200));
+        window.addEventListener('beforeunload', function () {
+            that.unsetActiveMenuInstantly();
+        });
     }
 
     $util.inherits(DropdownMenu, Menu, /**@lends $cms.views.DropdownMenu#*/{
@@ -1692,16 +1698,12 @@
             };
 
             var desktopEvents = {
-                'mouseover .dropdown-menu-items': 'setActiveMenu',
-                'mouseout .dropdown-menu-items': 'unsetActiveMenu',
-
-                'mousemove .dropdown-menu-item.toplevel.has-children': 'timerPopUpMenu',
-                'mouseout .dropdown-menu-item.toplevel.has-children': 'clearPopUpTimer',
+                'mouseover .dropdown-menu-item': 'mouseoverMenuItem',
+                'mouseout .dropdown-menu-item': 'mouseoutMenuItem',
                 
-                'mousemove .dropdown-menu-item.nlevel.has-children': 'popUpMenu',
+                'focus .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'focusMenuItemAnchor',
                 
-                'focus .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'focusPopUpMenu',
-                'click .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'unsetActiveMenu',
+                'clickout': 'unsetActiveMenuInstantly',
             };
 
             return $cms.isCssMode('mobile') ? mobileEvents : desktopEvents;
@@ -1722,51 +1724,47 @@
 
         /* Desktop methods */
 
-        timerPopUpMenu: function (e, target) {
-            var menu = $cms.filter.id(this.menu);
-
-            if (!target.timer) {
-                target.timer = setTimeout(function () {
-                    popupMenu(target.querySelector('.dropdown-menu-items'), 'below', menu + '-d');
-                }, 200);
+        mouseoverMenuItem: function (e, target) {
+            if (target.contains(e.relatedTarget)) {
+                return;
             }
-        },
-
-        clearPopUpTimer: function (e, target) {
-            if (target.timer) {
-                clearTimeout(target.timer);
-                target.timer = null;
+            
+            // if ((getActiveMenu() == null)) {
+            var misHovered = $dom.parent(target, '.dropdown-menu-items');
+            setActiveMenu($dom.id(misHovered), this.menuId);
+            // }
+            
+            if (target.classList.contains('has-children')) {
+                popupMenu(target.querySelector('.dropdown-menu-items'), target.classList.contains('toplevel') ? 'below' : 'right', this.menuId);
             }
-        },
-
-        popUpMenu: function (e, target) {
-            var menu = $cms.filter.id(this.menu);
-
-            popupMenu(target.querySelector('.dropdown-menu-items'), null, menu + '-d');
+            
         },
         
-        focusPopUpMenu: function (e, target) {
-            var menu = $cms.filter.id(this.menu),
-                popupEl = $dom.parent(target, '.dropdown-menu-item').querySelector('.dropdown-menu-items');
+        mouseoutMenuItem: function (e, target) {
+            if (target.contains(e.relatedTarget)) {
+                return;
+            }
+            
+            var isMisHovered = $dom.matches($dom.parent(target, '.dropdown-menu-items'), ':hover');
+            
+            if (isMisHovered) {
+                return;
+            }
 
-            popupMenu(popupEl, 'below', menu + '-d', true);
+            setActiveMenu(null);
+            recreateCleanTimeout();
         },
 
-        setActiveMenu: function (e, target) {
-            if (!target.contains(e.relatedTarget)) {
-                var menu = $cms.filter.id(this.menu);
+        focusMenuItemAnchor: function (e, target) {
+            var menuItem = $dom.parent(target, '.dropdown-menu-item'),
+                popupEl = menuItem.querySelector('.dropdown-menu-items');
 
-                if (getActiveMenu() == null) {
-                    setActiveMenu(target.id, menu + '_d');
-                }
-            }
+            popupMenu(popupEl, menuItem.classList.contains('toplevel') ? 'below' : 'right', this.menuId, true);
         },
 
-        unsetActiveMenu: function (e, target) {
-            if (!target.contains(e.relatedTarget)) {
-                setActiveMenu(null);
-                recreateCleanTimeout();
-            }
+        unsetActiveMenuInstantly: function () {
+            setActiveMenu(null);
+            recreateCleanTimeout(true);
         }
     });
 
@@ -1819,11 +1817,11 @@
             };
         },
         popUpMenu: function () {
-            popupMenu('#' + this.popup, null, this.menu + '-p');
+            popupMenu('#' + this.popup, null, 'r-' + this.menu + '-p');
         },
         setActiveMenu: function () {
             if (getActiveMenu() == null) {
-                setActiveMenu(this.popup, this.menu + '-p');
+                setActiveMenu(this.popup, 'r-' + this.menu + '-p');
             }
         }
     });
@@ -1936,6 +1934,9 @@
         }
     });
 
+    /**
+     * @param menuId
+     */
     function menuActiveSelection(menuId) {
         var menuElement = $dom.$('#' + menuId),
             possibilities = [], isSelected, url, minScore, i;
@@ -2056,10 +2057,17 @@
         return activeMenu;
     }
 
-    function recreateCleanTimeout() {
+    function recreateCleanTimeout(instant) {
         if (cleanMenusTimeout) {
             clearTimeout(cleanMenusTimeout);
+            cleanMenusTimeout = null;
         }
+        
+        if (instant) {
+            cleanMenus();
+            return;
+        }
+        
         cleanMenusTimeout = setTimeout(cleanMenus, menuHoldTime);
     }
 
@@ -2083,8 +2091,7 @@
             return;
         }
 
-        setActiveMenu($dom.id(popupEl, 'dropdown-'));
-        lastActiveMenu = menu;
+        setActiveMenu($dom.id(popupEl, 'dropdown-'), menu);
         cleanMenus();
 
         var left = 0,
@@ -2174,18 +2181,19 @@
     function cleanMenus() {
         cleanMenusTimeout = null;
 
-        var menuEl = $dom.$('#r-' + lastActiveMenu);
+        var menuEl = document.getElementById(lastActiveMenu);
+        
         if (!menuEl) {
             return;
         }
-        var tags = menuEl.querySelectorAll('ul.nlevel, div.nlevel'),
+        var tags = menuEl.querySelectorAll('.dropdown-menu-items.nlevel'),
             activeMenuEl = (getActiveMenu() != null) ? document.getElementById(getActiveMenu()) : null,
             hideable;
 
-        for (var i = tags.length - 1; i >= 0; i--) {
+        for (var i = 0; i < tags.length; i++) {
             hideable = activeMenuEl ? !tags[i].contains(activeMenuEl) : true;
             if (hideable) {
-                tags[i].style.left = '-999px';
+                tags[i].style.left = '-9999px';
                 tags[i].style.display = 'none';
             }
         }

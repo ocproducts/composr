@@ -22,29 +22,32 @@ For example:
 	float: left;
 }
 
-.dropdown-menu li.toplevel {
-	margin-right: -1px;
+.dropdown-menu-items {
 	margin-bottom: 0;
-	transition: color, background-color 0.5s linear;
+	padding-left: 0;
+	list-style: none;
+}
+
+.dropdown-menu-item-a,
+.dropdown-menu-item-a:visited,
+.dropdown-menu-item-a:hover {
+	text-decoration: none;
+	transition: color, background-color 0.3s linear;
+}
+
+.dropdown-menu-item.toplevel {
 	cursor: default;
 }
 
-.dropdown-menu a.toplevel-link,
-.dropdown-menu a.nlevel-link {
+.dropdown-menu-item-a.toplevel-link,
+.dropdown-menu-item-a.nlevel-link {
 	display: block;
-	outline: 0;
 	text-decoration: none;
 	color: inherit;
 }
 
-.dropdown-menu-item-icon,
-.dropdown-menu-item-caption {
-	vertical-align: middle;
-}
-
 .dropdown-menu-item-icon {
 	margin-right: 0.3em;
-	text-decoration: none !important;
 }
 
 .dropdown-menu-item-icon .icon {
@@ -94,34 +97,34 @@ For example:
 		background-color: {$GET,area_5_background};
 	}
 
-	.dropdown-menu li {
+	.dropdown-menu-item {
 		border-top: 1px solid {$GET,standard_border};
 		border-left: 1px solid {$GET,standard_border};
 		color: {$GET,BW};
 	}
 
-	.dropdown-menu li.nlevel {
+	.dropdown-menu-item.nlevel {
 		margin-left: 2em;
 	}
 
-	.dropdown-menu li.toplevel,
-	.dropdown-menu li.nlevel {
+	.dropdown-menu-item.toplevel,
+	.dropdown-menu-item.nlevel {
 		background-color: {$GET,area_5_background};
 	}
 
-	.dropdown-menu a.toplevel-link,
-	.dropdown-menu a.nlevel-link {
+	.dropdown-menu-item.toplevel-link,
+	.dropdown-menu-item.nlevel-link {
 		padding: 1.2em 3em 1.2em 1em;
 		background: url('{$IMG;,icons/buttons/proceed}') transparent no-repeat top 1em right 1em;
 		background-size: 24px 24px;
 	}
 
-	.dropdown-menu li.toplevel:hover,
-	.dropdown-menu li.nlevel:hover,
+	.dropdown-menu-item.toplevel:hover,
+	.dropdown-menu-item.nlevel:hover,
 	.dropdown-menu a.toplevel-link:hover,
 	.dropdown-menu a.nlevel-link:hover,
-	.dropdown-menu li.current > a.toplevel-link,
-	.dropdown-menu li.current > a.nlevel-link {
+	.dropdown-menu-item.current > a.toplevel-link,
+	.dropdown-menu-item.current > a.nlevel-link {
 		background-color: {$GET,area_hover_2_background};
 	}
 /*{+END}*/
@@ -135,34 +138,28 @@ For example:
 		float: left;
 	}
 
-	.dropdown-menu a.toplevel-link,
-	.dropdown-menu a.nlevel-link {
+	.dropdown-menu-item-a {
 		padding: 0.5em;
 	}
 
-	.dropdown-menu li.toplevel.first {
-		border-left: 0;
-	}
-
-	.dropdown-menu li.toplevel.last {
-		overflow: hidden; /* so it is shunted against its left-hand neighbours without overlapping */
-		margin-right: 0 !important; /* as would cause wrapping with the overflow hidden */
-		position: relative;
-		left: -1px; /* In place of margin-right */
-	}
-
-	.dropdown-menu li.toplevel.menu-spacer {
+	.dropdown-menu-item.toplevel.menu-spacer {
 		height: 2.5em;
 		width: 1em;
 		padding: 0.5em;
 		float: left;
 	}
 
-	.dropdown-menu a.toplevel-link {
-		padding: 19px 0.7em;
+	.dropdown-menu-item-a.toplevel-link {
+		padding: 19px 1em;
 	}
 
-	.dropdown-menu .has-children>a.toplevel-link::after {
+	.dropdown-menu-item.toplevel:hover > a,
+	.dropdown-menu-item-a.toplevel-link:hover,
+	.dropdown-menu-item-a.toplevel-link:focus {
+		background: rgba(0, 0, 0, 0.05);
+	}
+
+	.dropdown-menu-item.toplevel.has-children > a::after {
 		content: "\025BC"; /* Downward arrow */
 		vertical-align: middle;
 		padding-left: 0.5em;
@@ -170,80 +167,62 @@ For example:
 		display: inline-block;
 	}
 
-	.dropdown-menu li.nlevel.has-children > a.nlevel-link::after {
+	.dropdown-menu-item.nlevel.has-children > a::after {
 		content: '\025BC'; /* Downward arrow */
 		transform: rotate(-90deg); /* Point towards right */
-		display: inline-block;
-		vertical-align: middle;
 		float: right;
 		font-size: 0.6em;
-		margin-right: 0.5em;
-		margin-left: 0.5em;
+		margin: 0.7em 0.5em 0 1em;
 	}
 
-	.dropdown-menu .toplevel-link a, .dropdown-menu .toplevel-link a:visited, .dropdown-menu .toplevel-link a:hover {
-		text-decoration: none;
-	}
-
-	.dropdown-menu .toplevel.current .toplevel-link span, .dropdown-menu .toplevel .toplevel-link:hover span {
-		text-decoration: underline;
-	}
-	.dropdown-menu .toplevel .toplevel-link.non-link:hover span {
-		text-decoration: none;
-	}
-
-	.dropdown-menu .toplevel-link img {
-		max-width: 20px;
-	}
-
-	.dropdown-menu ul.nlevel {
-		line-height: 1.4em;
+	.dropdown-menu-items.nlevel {
 		border-top: 1px solid {$GET,standard_border};
 		border-left: 1px solid {$GET,standard_border};
 		border-right: 1px solid {$GET,standard_border};
+		border-bottom-left-radius: {$GET,border_radius};
+		border-bottom-right-radius: {$GET,border_radius};
 	}
 
-	.dropdown-menu ul.nlevel ul.nlevel {
+	.dropdown-menu-items.nlevel .dropdown-menu-item.last > a {
+		border-bottom-left-radius: {$GET,border_radius};
+		border-bottom-right-radius: {$GET,border_radius};
+	}
+
+	.dropdown-menu-items.nlevel .dropdown-menu-items.nlevel {
 		margin-top: -1px; /* To compensate for border size */
+		border-top-right-radius: {$GET,border_radius};
+	}
+
+	.dropdown-menu-items.nlevel .dropdown-menu-items.nlevel .dropdown-menu-item.first > a {
+		border-top-right-radius: {$GET,border_radius};
 	}
 
 	.dropdown-menu .nlevel li {
 		white-space: nowrap;
-		overflow: hidden; /* Needed as images are set to float */
 	}
 
-	.dropdown-menu .nlevel li:hover, 
-	.dropdown-menu .nlevel li.current {
+	.dropdown-menu-item.nlevel > a:hover, 
+	.dropdown-menu-item.nlevel > a:focus, 
+	.dropdown-menu-item.nlevel:hover > a,
+	.dropdown-menu-item.nlevel.current > a {
 		background-color: {$GET,dropdown_menu_background_hover};
+		color: {$GET,a.hover};
 	}
 
-	.dropdown-menu .nlevel li, 
-	.dropdown-menu .nlevel .menu-spacer {
+	.dropdown-menu-item.nlevel > a, 
+	.dropdown-menu-item.nlevel .menu-spacer {
 		background-color: {$GET,dropdown_menu_background};
 		font-weight: normal;
 		border-bottom: 1px solid {$GET,standard_border};
-		min-height: 20px;
 	}
 
 	.dropdown-menu .nlevel .menu-spacer {
 		display: block;
 		padding-right: 0;
 	}
-
-	.dropdown-menu .nlevel a, .dropdown-menu .nlevel a:visited {
-		text-decoration: none;
-	}
-
-	.dropdown-menu .nlevel a:hover span {
-		text-decoration: underline;
-	}
-
-	.dropdown-menu .nlevel, .dropdown-menu .nlevel a, 
-	.dropdown-menu .nlevel a:visited {
+	
+	.dropdown-menu-item.nlevel > a, 
+	.dropdown-menu-item.nlevel > a:visited {
 		color: {$GET,a.link};
-	}
-
-	.dropdown-menu .nlevel a:hover {
-		color: {$GET,a.hover};
 	}
 /*{+END}*/

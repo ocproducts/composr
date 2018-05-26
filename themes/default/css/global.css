@@ -1107,14 +1107,18 @@ header h1 {
 	}
 /*{+END}*/
 
-.global-navigation .top-buttons, .global-navigation .top-form {
-	padding: 0.5em 0;
+.global-navigation .top-buttons, 
+.global-navigation .top-form {
 	float: right;
 }
 
 .global-navigation .top-buttons {
-	margin-top: 1px; /* To force it align correctly with the form in a different block (which is taller) */
 }
+
+.global-navigation .top-buttons a {
+	color: {$GET,WB};
+}
+
 /*{+START,CSS_MODE,desktop}*/
 	.global-navigation .top-buttons {
 		margin-left: 1.5em;
@@ -1126,7 +1130,6 @@ header h1 {
 }
 
 .global-navigation .top-form.top-search {
-	margin-top: 3px; /* To force it align correctly with the form in a different block (which is taller) */
 }
 .global-navigation .top-form * {
 	vertical-align: middle;
@@ -1622,14 +1625,6 @@ footer .global-minilinks .footer-links {
 	}
 /*{+END}*/
 
-footer .global-minilinks a, footer .global-minilinks .button-hyperlink {
-	white-space: nowrap !important; /* So works on mobiles */
-	text-decoration: none;
-}
-footer .global-minilinks a:hover, footer .global-minilinks .button-hyperlink:hover {
-	text-decoration: underline;
-}
-
 /*
 =========================
 ==With Special Meanings==
@@ -1805,7 +1800,6 @@ body button.button-hyperlink:hover {
 	border-style: none !important;
 	background-color: transparent !important;
 	background-image: none !important;
-	/*font-weight: bold !important;*/
 	border-radius: 0 !important;
 	border: 0 !important;
 	margin: 0 !important;
@@ -1813,8 +1807,6 @@ body button.button-hyperlink:hover {
 	cursor: pointer !important;
 	text-align: left !important;
 	vertical-align: baseline !important;
-	/*color: inherit !important;*/
-	text-decoration: underline;
 }
 
 /* Used to make a button look more like an icon - i.e. undoes button-face styling */

@@ -8,7 +8,7 @@
 		<a href="{$PAGE_LINK*,:sitemap}" class="dropdown-menu-toggle-btn">{+START,INCLUDE,ICON}NAME=menus/mobile_menu{+END} <span>{!MENU}</span></a>
 
 		<nav class="dropdown-menu-content js-el-menu-content">
-			<ul class="dropdown-menu-items dropdown-menu-items-main nl" id="{$GET*,menu_id}">
+			<ul class="dropdown-menu-items dropdown-menu-items-main" id="{$GET*,menu_id}">
 				{CONTENT}
 			</ul>
 		</nav>

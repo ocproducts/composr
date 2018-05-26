@@ -12,29 +12,36 @@ For example:
  "nlevel" has the image to the left of the anchor, like with most of the other menu types.
 */
 
-.dropdown-menu-item.toplevel {
-	border-left: 1px solid #cacaca;
+
+.dropdown-menu-items {
 	margin-bottom: 0;
-	transition: color,background-color 0.5s linear;
-	font-size: 0.9em;
+	padding-left: 0;
+	list-style: none;
 }
 
-.dropdown-menu a.toplevel-link,
-.dropdown-menu a.nlevel-link {
+.dropdown-menu-items-main {
+	display: flex;
+}
+
+.dropdown-menu-item-a,
+.dropdown-menu-item-a:visited,
+.dropdown-menu-item-a:hover {
+	text-decoration: none;
+	transition: color, background-color 0.3s linear;
+}
+
+.dropdown-menu-item.toplevel {
+	flex: 1;
+}
+
+.dropdown-menu-item-a {
 	display: block;
-	outline: 0;
 	text-decoration: none;
 	color: inherit;
 }
 
-.dropdown-menu-item-icon,
-.dropdown-menu-item-caption {
-	vertical-align: middle;
-}
-
 .dropdown-menu-item-icon {
 	margin-right: 0.3em;
-	text-decoration: none !important;
 }
 
 .dropdown-menu-item-icon .icon {
@@ -121,11 +128,6 @@ For example:
 		display: none;
 	}
 
-	.dropdown-menu li.toplevel {
-		float: left;
-		width: {$DIV_FLOAT*,100,9}%;
-	}
-
 	.dropdown-menu a.toplevel-link,
 	.dropdown-menu a.nlevel-link {
 		padding: 0.5em;
@@ -133,18 +135,6 @@ For example:
 
 	.dropdown-menu li.toplevel.first {
 		border-left: 0;
-	}
-
-	.dropdown-menu li.toplevel.last {
-		border-right: 1px solid #cacaca;
-		float: none !important; /* so it eats all space remaining */
-		overflow: hidden; /* so it is shunted against its left-hand neighbours without overlapping */
-		margin-right: 0 !important; /* as would cause wrapping with the overflow hidden */
-		width: auto;
-	}
-
-	.dropdown-menu li.toplevel.first.siblings-1 {
-		width: 50%; /* Otherwise it looks ugly */
 	}
 
 	.dropdown-menu li.toplevel.menu-spacer {
@@ -157,9 +147,6 @@ For example:
 	.dropdown-menu a.toplevel-link {
 		padding: 0.4em 0.5em;
 		text-align: center;
-		color: {$GET,area_text};
-		max-width: 107px;
-		margin: 0 auto;
 	}
 
 	.dropdown-menu a.toplevel-link span {
@@ -173,12 +160,6 @@ For example:
 		margin-left: 0.3em;
 	}
 
-	.dropdown-menu .toplevel-link a,
-	.dropdown-menu .toplevel-link a:visited,
-	.dropdown-menu .toplevel-link a:hover {
-		text-decoration: none;
-	}
-
 	.dropdown-menu-item.toplevel > .dropdown-menu-item-a > .dropdown-menu-item-icon {
 		margin-right: 0;
 		margin-bottom: 5px;
@@ -189,56 +170,64 @@ For example:
 		height: 32px;
 	}
 
-	.dropdown-menu ul.nlevel,
-	.dropdown-menu div.nlevel {
-		line-height: 1.4em;
+	.dropdown-menu-items.nlevel {
+		border-top: 1px solid {$GET,standard_border};
+		border-left: 1px solid {$GET,standard_border};
+		border-right: 1px solid {$GET,standard_border};
+		border-bottom-left-radius: {$GET,border_radius};
+		border-bottom-right-radius: {$GET,border_radius};
 	}
-
-	.dropdown-menu ul.nlevel ul.nlevel {
+	
+	.dropdown-menu-items.nlevel .dropdown-menu-item.last > a {
+		border-bottom-left-radius: {$GET,border_radius};
+		border-bottom-right-radius: {$GET,border_radius};
+	}
+	
+	.dropdown-menu-items.nlevel .dropdown-menu-items.nlevel {
 		margin-top: -1px; /* To compensate for border size */
+		border-top-right-radius: {$GET,border_radius};
+	}
+	
+	.dropdown-menu-items.nlevel .dropdown-menu-items.nlevel .dropdown-menu-item.first > a {
+		border-top-right-radius: {$GET,border_radius};
 	}
 
 	.dropdown-menu .nlevel li {
 		white-space: nowrap;
-		overflow: hidden; /* Needed as images are set to float */
 	}
 
-	.dropdown-menu .nlevel li:hover,
-	.dropdown-menu .nlevel li.current {
-		background-color: #e8f4ff;
-		background-image: none;
+	.dropdown-menu-item.nlevel > a:hover,
+	.dropdown-menu-item.nlevel > a:focus,
+	.dropdown-menu-item.nlevel:hover > a,
+	.dropdown-menu-item.nlevel.current > a {
+		background-color: {$GET,dropdown_menu_background_hover};
+		color: {$GET,a.hover};
 	}
-
+	
 	.dropdown-menu .nlevel li,
 	.dropdown-menu div.nlevel,
 	.dropdown-menu .nlevel .menu-spacer {
-		background-image: linear-gradient(to bottom, #cbdaed, #d8e4f0);
+		background-color: {$GET,dropdown_menu_background};
 		font-weight: normal;
-		border-bottom: 1px solid #e7eef8;
+		border-bottom: 1px solid {$GET,standard_border};
 		min-height: 20px;
 
 		/* We do want wrapping for this, as menu labels could be longer than the available space between the start of the dropdown label and the edge of the fixed width */
-		white-space: normal;
+        white-space: normal;
 	}
 
 	.dropdown-menu .nlevel .menu-spacer {
 		display: block;
 		padding-right: 0;
 	}
-
+	
 	.dropdown-menu .nlevel a,
 	.dropdown-menu .nlevel a:visited {
-		text-decoration: none;
+		color: {$GET,a.link};
 	}
 
-	.dropdown-menu .nlevel a:hover span {
-		text-decoration: underline;
-	}
-
-	.dropdown-menu .nlevel,
-	.dropdown-menu .nlevel a,
-	.dropdown-menu .nlevel a:visited,
 	.dropdown-menu .nlevel a:hover {
-		color: {$GET,area_text};
+		color: {$GET,a.hover};
+		text-decoration: none;
 	}
 /*{+END}*/
