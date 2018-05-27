@@ -51,16 +51,14 @@ if (!addon_installed('free_article_import')) {
     warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('free_article_import')));
 }
 
-if (php_function_allowed('set_time_limit')) {
-    @set_time_limit(0);
-}
-
-if (!addon_installed('free_article_import')) {
-    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('free_article_import')));
-}
-
 if (!addon_installed('news')) {
     warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('news')));
+}
+
+header('X-Robots-Tag: noindex');
+
+if (php_function_allowed('set_time_limit')) {
+    @set_time_limit(0);
 }
 
 require_code('news');

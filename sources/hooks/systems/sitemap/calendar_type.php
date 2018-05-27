@@ -82,7 +82,7 @@ class Hook_sitemap_calendar_type extends Hook_sitemap_content
         do {
             $rows = $GLOBALS['SITE_DB']->query_select('calendar_types', array('*'), array(), '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
-                if (($row['id'] != db_get_first_id()) || (($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (cron_installed()))) { // Filters system commands
+                if (($row['id'] != db_get_first_id()) || (((($options & SITEMAP_GEN_CHECK_PERMS) == 0) || ($GLOBALS['FORUM_DRIVER']->is_super_admin($this->get_member($options)))) && (cron_installed()))) { // Filters system commands
                     $child_page_link = $zone . ':' . $page . ':' . $this->screen_type . ':int_' . strval($row['id']) . '=1';
                     $node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
                     if (($callback === null || $return_anyway) && ($node !== null)) {
@@ -141,7 +141,7 @@ class Hook_sitemap_calendar_type extends Hook_sitemap_content
             'edit_url' => build_url(array('page' => 'cms_calendar', 'type' => '_edit_category', 'id' => $content_id), get_module_zone('cms_calendar')),
         ) + $partial_struct;
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 

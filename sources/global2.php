@@ -81,7 +81,7 @@ function init__global2()
     if ((is_file(get_file_base() . '/closed.html')) && (get_param_integer('keep_force_open', 0) == 0)) {
         if ((strpos($_SERVER['SCRIPT_NAME'], 'upgrader.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], 'execute_temp.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], '_tests') === false) && ((!isset($SITE_INFO['no_extra_closed_file'])) || ($SITE_INFO['no_extra_closed_file'] != '1'))) {
             if ((@strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false)) {
-                header('HTTP/1.0 503 Service Temporarily Unavailable');
+                http_response_code(503);
             }
             header('Location: ' . (is_file($RELATIVE_PATH . 'closed.html') ? 'closed.html' : '../closed.html'));
 
@@ -305,7 +305,7 @@ function init__global2()
     if ((!running_script('webdav')) && (!running_script('endpoint'))) {
         $http_method = $_SERVER['REQUEST_METHOD'];
         if ($http_method != 'GET' && $http_method != 'POST' && $http_method != 'HEAD' && $http_method != '') {
-            header('HTTP/1.0 405 Method Not Allowed');
+            http_response_code(405);
             exit();
         }
     }
@@ -752,6 +752,8 @@ function memory_tracking()
  */
 function prepare_for_known_ajax_response()
 {
+    header('X-Robots-Tag: noindex');
+
     set_http_caching(null);
 
     convert_request_data_encodings(true);

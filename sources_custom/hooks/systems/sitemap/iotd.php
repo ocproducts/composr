@@ -124,7 +124,7 @@ class Hook_sitemap_iotd extends Hook_sitemap_content
             'privilege_page' => $this->get_privilege_page($page_link),
         ) + $partial_struct;
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 

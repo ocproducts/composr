@@ -30,9 +30,12 @@ function download_gallery_script()
     // Closed site
     $site_closed = get_option('site_closed');
     if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
+        http_response_code(503);
         header('Content-type: text/plain; charset=' . get_charset());
         @exit(get_option('closed'));
     }
+
+    attach_to_screen_header('<meta name="robots" content="noindex" />');
 
     $cat = get_param_string('cat');
 

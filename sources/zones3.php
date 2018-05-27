@@ -673,6 +673,9 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
         require_code('sitemap_xml');
         notify_sitemap_node_delete($zone . ':' . $file);
 
+        require_code('sitemap_xml');
+        notify_sitemap_node_delete($zone . ':' . $file);
+
         // Main page record rename
         $GLOBALS['SITE_DB']->query_update('comcode_pages', array(
             'p_parent_page' => $new_file,
@@ -752,16 +755,8 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
     }
 
     if ((substr($new_file, 0, 1) != '_') && (substr($new_file, 0, 6) != 'panel_')) {
-        $zone_default_page = get_zone_default_page($zone);
         require_code('sitemap_xml');
-        notify_sitemap_node_add(
-            $zone . ':' . $new_file,
-            $add_time,
-            $edit_time,
-            ($zone_default_page == $new_file) ? SITEMAP_IMPORTANCE_ULTRA : SITEMAP_IMPORTANCE_HIGH,
-            ($zone_default_page == $new_file) ? 'daily' : 'weekly',
-            true
-        );
+        notify_sitemap_node_add($zone . ':' . $new_file);
     }
 
     return $full_path;

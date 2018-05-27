@@ -34,6 +34,8 @@ function init__tasks()
  */
 function tasks_script()
 {
+    header('X-Robots-Tag: noindex');
+
     $id = get_param_integer('id');
     $secure_ref = get_param_string('secure_ref', '');
 

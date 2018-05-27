@@ -35,6 +35,8 @@ function incoming_bounced_email_script()
         return;
     }
 
+    header('X-Robots-Tag: noindex');
+
     $bounce_email = file_get_contents('php://input');
 
     $matches = array();

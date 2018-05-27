@@ -34,9 +34,10 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
      * Find if a page-link will be covered by this node.
      *
      * @param  ID_TEXT $page_link The page-link
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options
      * @return integer A SITEMAP_NODE_* constant
      */
-    public function handles_page_link($page_link)
+    public function handles_page_link($page_link, $options)
     {
         $matches = array();
         if (preg_match('#^([^:]*):([^:]*)#', $page_link, $matches) != 0) {
@@ -260,7 +261,7 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 

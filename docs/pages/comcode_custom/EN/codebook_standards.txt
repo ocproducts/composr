@@ -626,6 +626,13 @@ Allow initialisation functions to run twice
 | Product development only
 | Manually
 | Do not assume Composr is running on Linux, or Microsoft Windows, or Apache, or IIS, or Mac OS, or a case-sensitive filesystem, or a case-insensitive filesystem, or anything else unless it is defined in our minimum requirements. This is an important lesson for new programmers who may be used to just making something work for the computer they are in-front of. You need to use universally accepted techniques rather than platform-specific APIs.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Block access when closed
+| Stability
+| All development
+| Manually
+| Any URL that a user may reasonably navigate to manually that is not passed through [tt]index.php[/tt], must show the closed site message by its own means. Look to see how other code does it for example.
 |}
 
 [title="4"]Addons[/title]
@@ -711,7 +718,7 @@ Put your code in a function named [tt]<filename>_script()[/tt]
 | 
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-Call [tt]prepare_for_ajax_response[/tt]
+Call [tt]prepare_for_known_ajax_response[/tt]
 | Internationalisation
 | Product development only
 | Manually
@@ -1985,6 +1992,13 @@ Either place checkboxes before labels, or place a colon after the label
 | Product development only
 | Automated test ([tt]template_previews.php[/tt])
 | Otherwise users may be confused as to how things are laid out.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Exclude robots appropriately
+| SEO
+| All development
+| Manually
+| You need to stop search engines indexing utility scripts, or pages that only should be navigated to manually by a human. This can be done using an [tt]attach_to_screen_header[/tt] call that adds a [tt]meta[/tt] tag for HTML pages, a [tt]NOINDEX[/tt] parameter to the [tt]STANDALONE_HTML_WRAP[/tt] template, or a [tt]X-Robots-Tag[/tt] HTTP header for non-HTML pages.
 |}
 
 Guidance for tables...

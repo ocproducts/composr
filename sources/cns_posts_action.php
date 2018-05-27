@@ -424,7 +424,10 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
 
     if (($is_starter) && (!$is_pt) && ($forum_id !== null)) {
         require_code('sitemap_xml');
-        notify_sitemap_node_add('_SEARCH:topicview:id=' . strval($topic_id), $time, $last_edit_time, SITEMAP_IMPORTANCE_LOW, 'daily', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
+        if ($validated == 1) {
+            require_code('sitemap_xml');
+            notify_sitemap_node_add('_SEARCH:topicview:id=' . strval($topic_id));
+        }
     }
 
     // Tidy up auto-save

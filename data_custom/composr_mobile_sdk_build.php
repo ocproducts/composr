@@ -59,6 +59,8 @@ if (!addon_installed('composr_mobile_sdk')) {
     warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_mobile_sdk')));
 }
 
+header('X-Robots-Tag: noindex');
+
 // Bootstrap tools
 $ob = new Composr_mobile_sdk_tools();
 $ob->run();

@@ -50,6 +50,8 @@ if ($cli) {
     header('Content-type: text/plain; charset=utf-8');
 }
 
+header('X-Robots-Tag: noindex');
+
 $required_settings = array(
     'fast_spider_cache',
     'any_guest_cached_too',

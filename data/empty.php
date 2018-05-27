@@ -17,3 +17,5 @@
  * @copyright  ocProducts Ltd
  * @package    core
  */
+
+header('X-Robots-Tag: noindex');

@@ -438,6 +438,8 @@ function set_no_clickjacking_csp()
  */
 function csp_logging_script()
 {
+    header('X-Robots-Tag: noindex');
+
     if (get_option('csp_report_issues') == '0') {
         return;
     }

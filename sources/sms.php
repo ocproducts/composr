@@ -146,6 +146,8 @@ function sms_callback_script()
         warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('sms')));
     }
 
+    header('X-Robots-Tag: noindex');
+
     // Currently does nothing. Would receive messages in the form below, via the "data" GET parameter
     /*
     < ?xml version="1.0"? >

@@ -10,7 +10,7 @@
 {+START,IF,{$NOT,{$DEV_MODE}}}{+START,IF_PASSED,TARGET}<base href="{$BASE_URL*}/{$ZONE*}" target="{TARGET*}" />{+END}{+END}
 
 {$,Hints to Google etc that may be set by Composr code}
-{+START,IF_PASSED_AND_TRUE,NOFOLLOW}
+{+START,IF_PASSED_AND_TRUE,NOINDEX}
 	<meta name="robots" content="noindex, nofollow" />
 {+END}
 

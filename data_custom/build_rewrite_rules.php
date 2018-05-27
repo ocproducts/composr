@@ -21,9 +21,7 @@ Also see url_remappings.php for the Composr side of things (and to a lesser exte
 Also see chmod_consistency.php for the equivalent for chmodding rules, and make_release.php for manifest building.
 */
 
-if (!addon_installed('composr_release_build')) {
-    warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('composr_release_build')));
-}
+header('X-Robots-Tag: noindex');
 
 $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
 if (!$cli) {

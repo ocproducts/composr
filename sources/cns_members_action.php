@@ -429,8 +429,10 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
 
     set_value('cns_member_count', strval(intval(get_value('cns_member_count')) + 1));
 
-    require_code('sitemap_xml');
-    notify_sitemap_node_add('_SEARCH:members:view:' . strval($member_id), $join_time, null, SITEMAP_IMPORTANCE_LOW, 'monthly', true);
+    if ($validated == 1) {
+        require_code('sitemap_xml');
+        notify_sitemap_node_add('_SEARCH:members:view:' . strval($member_id));
+    }
 
     return $member_id;
 }

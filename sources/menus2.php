@@ -170,6 +170,8 @@ function create_menu_structure($structure, $menu_name = 'main_menu', $reset = tr
  */
 function menu_management_script()
 {
+    header('X-Robots-Tag: noindex');
+
     $id = get_param_integer('id');
     $to_menu = get_param_string('menu');
     $changes = array('i_menu' => $to_menu);

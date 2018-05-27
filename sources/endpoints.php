@@ -25,6 +25,8 @@ function endpoint_script()
 {
     set_http_caching(null);
 
+    header('X-Robots-Tag: noindex');
+
     cms_ini_set('ocproducts.xss_detect', '0');
 
     $hook_type = mixed();

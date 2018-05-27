@@ -180,6 +180,11 @@ CRM software supported:
 
             'sources_custom/hooks/systems/config/sugarcrm_member_sync_types.php',
             'sources_custom/hooks/systems/config/sugarcrm_member_mappings.php',
+
+            'sources_custom/hooks/systems/config/sugarcrm_skip_string.php',
+
+            'sources_custom/hooks/systems/tasks/sugarcrm_sync_message.php',
+            'sources_custom/hooks/systems/tasks/sugarcrm_sync_member.php',
         );
     }
 }

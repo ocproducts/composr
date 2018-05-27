@@ -75,7 +75,7 @@ if (!function_exists('critical_error')) {
         if (!headers_sent()) {
             if ((function_exists('browser_matches')) && (($relay === null) || (strpos($relay, 'Allowed memory') === false))) {
                 if ((!browser_matches('ie')) && (strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false)) {
-                    header('HTTP/1.0 500 Internal server error');
+                    http_response_code(500);
                 }
             }
         }
@@ -265,7 +265,7 @@ END;
             file_put_contents($dir . '/' . $code . '.log', $contents);
             ob_end_clean();
 
-            @header('HTTP/1.0 500 Internal Server Error');
+            http_response_code(500);
             global $RELATIVE_PATH, $SITE_INFO;
             if (isset($SITE_INFO['base_url'])) {
                 $back_path = $SITE_INFO['base_url'];

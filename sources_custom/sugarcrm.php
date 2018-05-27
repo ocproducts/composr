@@ -21,17 +21,23 @@ function init__sugarcrm()
     global $SUGARCRM;
     $SUGARCRM = null;
 
+    require_lang('sugarcrm');
+}
+
+function sugarcrm_initialise_connection()
+{
+    global $SUGARCRM;
+
+    if (!sugarcrm_configured()) {
+        return;
+    }
+
     require_code('sugar_crm_lib');
     require_code('curl');
-    require_lang('sugarcrm');
 
     $base_url = get_option('sugarcrm_base_url');
     $username = get_option('sugarcrm_username');
     $password = get_option('sugarcrm_password');
-
-    if ((empty($base_url)) || (empty($username))) {
-        return;
-    }
 
     $SUGARCRM = new SugarWrapper;
 
@@ -47,6 +53,14 @@ function init__sugarcrm()
     catch (Exception $e) {
         sugarcrm_failed($e->getMessage());
     }
+}
+
+function sugarcrm_configured()
+{
+    $base_url = get_option('sugarcrm_base_url');
+    $username = get_option('sugarcrm_username');
+
+    return (!empty($base_url)) && (!empty($username));
 }
 
 function sugarcrm_failed($message)
@@ -79,12 +93,14 @@ function get_or_create_sugarcrm_account($company, $timestamp = null)
     if (isset($response[0])) {
         $account_id = $response[0];
     } else {
+        $account_map = array(
+            array('name' => 'name', 'value' => $company),
+            array('name' => 'date_entered', 'value' => timestamp_to_sugarcrm_date_string($timestamp)),
+        );
+        sugarcrm_log_action('Accounts', array($account_map));
         $response = $SUGARCRM->set(
             'Accounts',
-            array(
-                array('name' => 'name', 'value' => $company),
-                array('name' => 'date_entered', 'value' => timestamp_to_sugarcrm_date_string($timestamp)),
-            )
+            $account_map
         );
         $account_id = $response['id'];
     }
@@ -189,7 +205,7 @@ function save_composr_account_into_sugarcrm_as_configured($member_id, $timestamp
         $attachments = array();
         if (addon_installed('securitylogging')) {
             require_code('lookup');
-            $user_metadata_path = save_user_metadata();
+            $user_metadata_path = save_user_metadata(false, $member_id);
             $attachments[$user_metadata_path] = 'user_metadata.txt';
         }
 
@@ -371,6 +387,7 @@ function save_message_into_sugarcrm($sync_type, $mappings, $subject, $body, $fro
             $sugarcrm_data['description']['value'] .= "\n\n" . do_lang('EXISTING_LEADS', integer_format($num_existing_leads));
         }
     }
+    sugarcrm_log_action($_sync_type, array(array_values($sugarcrm_data)));
     $response = $SUGARCRM->set(
         $_sync_type,
         array_values($sugarcrm_data)
@@ -388,11 +405,13 @@ function save_message_into_sugarcrm($sync_type, $mappings, $subject, $body, $fro
             'emailAddress0' => array('name' => 'emailAddress0', 'value' => $from_email), // SuiteCRM
             'email1' => array('name' => 'email1', 'value' => $from_email),
         );
+        sugarcrm_log_action('Contacts', array(array_values($sugarcrm_data)));
         $response = $SUGARCRM->set(
             'Contacts',
             array_values($sugarcrm_data)
         );
         $contact_id = $response['id'];
+        sugarcrm_log_action('set_relationship', array($_sync_type, $entity_id, 'contacts', array($contact_id)));
         $SUGARCRM->set_relationship($_sync_type, $entity_id, 'contacts', array($contact_id));
     }
 
@@ -408,11 +427,13 @@ function save_message_into_sugarcrm($sync_type, $mappings, $subject, $body, $fro
             if ($contact_details !== null) {
                 $sugarcrm_data['contact_id'] = array('name' => 'contact_id', 'value' => $contact_details['id']);
             }
+            sugarcrm_log_action('Notes', array(array_values($sugarcrm_data)));
             $response = $SUGARCRM->set(
                 'Notes',
                 array_values($sugarcrm_data)
             );
             $note_id = $response['id'];
+            sugarcrm_log_action('set_note_attachment', array($note_id, base64_encode(file_get_contents($file_path)), $filename));
             $SUGARCRM->set_note_attachment($note_id, base64_encode(file_get_contents($file_path)), $filename);
         }
     }
@@ -424,17 +445,30 @@ function save_message_into_sugarcrm($sync_type, $mappings, $subject, $body, $fro
                 'document_name' => array('name' => 'document_name', 'value' => $filename),
                 'revision' => array('name' => 'revision', 'value' => '1'),
             );
+            sugarcrm_log_action('Documents', array(array_values($sugarcrm_data)));
             $response = $SUGARCRM->set(
                 'Documents',
                 array_values($sugarcrm_data)
             );
             $document_id = $response['id'];
+            sugarcrm_log_action('set_document_revision', array($document_id, $filename, $file_path, '1'));
             $SUGARCRM->set_document_revision($document_id, $filename, $file_path, '1');
+            sugarcrm_log_action('set_relationship', array($_sync_type, $entity_id, 'documents', array($document_id)));
             $SUGARCRM->set_relationship($_sync_type, $entity_id, 'documents', array($document_id));
         }
     }
 
     return true;
+}
+
+function sugarcrm_log_action($action_type, $params)
+{
+    $log_path = get_custom_file_base() . '/data_custom/sugarcrm.log';
+    if ((file_exists($log_path)) && (is_writable($log_path))) {
+        $logfile = fopen($log_path, 'ab');
+        fwrite($logfile, "\n" . date('Y-m-d H:i:s') . ' ' . $action_type . '... ' . json_encode($params));
+        fclose($logfile);
+    }
 }
 
 function save_account_into_sugarcrm($mappings, $username, $first_name, $last_name, $email_address, $data, $posted_data, $timestamp = null)
@@ -504,6 +538,7 @@ function save_account_into_sugarcrm($mappings, $username, $first_name, $last_nam
             }
         }
 
+        sugarcrm_log_action('Contacts', array(array_values($sugarcrm_data)));
         $response = $SUGARCRM->set(
             'Contacts',
             array_values($sugarcrm_data)

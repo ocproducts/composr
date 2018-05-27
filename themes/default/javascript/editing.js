@@ -456,6 +456,11 @@
             });
             if (document.getElementById('js-attachment-store')) {
                 window.lang_PREFER_CMS_ATTACHMENTS = '{!javascript:PREFER_CMS_ATTACHMENTS;^}';
+                window.lang_INPUTSYSTEM_RAW_IMAGE='{!javascript:INPUTSYSTEM_RAW_IMAGE;^}';
+                window.lang_INPUTSYSTEM_ATTACHMENT='{!javascript:INPUTSYSTEM_ATTACHMENT;^}';
+                window.lang_INPUTSYSTEM_MEDIA='{!javascript:INPUTSYSTEM_MEDIA;^}';
+                window.lang_IMAGE_EDITING_TYPE='{!javascript:IMAGE_EDITING_TYPE;^}';
+                window.lang_IMAGE_EDITING_QUESTION='{!javascript:IMAGE_EDITING_QUESTION;^}';
             }
             window.lang_SPELLCHECKER_ENABLED = '{!javascript:SPELLCHECKER_ENABLED;^}';
             window.lang_SPELLCHECKER_DISABLED = '{!javascript:SPELLCHECKER_DISABLED;^}';

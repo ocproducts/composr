@@ -198,16 +198,7 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
     dispatch_member_mention_notifications('forum', strval($forum_id));
 
     require_code('sitemap_xml');
-    if ($forum_id == db_get_first_id()) {
-        $sitemap_priority = SITEMAP_IMPORTANCE_ULTRA;
-    } else {
-        if ($parent_forum == db_get_first_id()) {
-            $sitemap_priority = SITEMAP_IMPORTANCE_HIGH;
-        } else {
-            $sitemap_priority = SITEMAP_IMPORTANCE_MEDIUM;
-        }
-    }
-    notify_sitemap_node_add('_SEARCH:forumview:id=' . strval($forum_id), null, null, $sitemap_priority, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
+    notify_sitemap_node_add('_SEARCH:forumview:id=' . strval($forum_id));
 
     return $forum_id;
 }

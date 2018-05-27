@@ -220,7 +220,7 @@ function warnings_script()
         $content = paragraph(do_lang_tempcode('NO_ENTRIES'), 'rfdsfsdf3t45', 'nothing-here');
     }
 
-    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '90c86490760cee23a8d5b8a5d14122e9', 'TITLE' => do_lang_tempcode('CHOOSE_SAVED_WARNING'), 'POPUP' => true, 'CONTENT' => $content));
+    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '90c86490760cee23a8d5b8a5d14122e9', 'TITLE' => do_lang_tempcode('CHOOSE_SAVED_WARNING'), 'POPUP' => true, 'NOINDEX' => true, 'CONTENT' => $content));
     $echo->evaluate_echo();
 }
 

@@ -721,7 +721,7 @@
 
         // For All-and-not,Line-multi,Compound-Tick,Radio-List,Date/Time: $cms.form.setLocked assumes that the calling code is clever
         // special input types are coded to observe their master input field readonly status)
-        var button = $dom.$id('uploadButton_' + field.name.replace(/\[\]$/, ''));
+        var button = $dom.$id('upload-button-' + field.name.replace(/\[\]$/, ''));
 
         if (isLocked) {
             var labels = document.getElementsByTagName('label'), label = null;

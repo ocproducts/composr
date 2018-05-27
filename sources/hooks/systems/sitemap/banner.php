@@ -150,7 +150,7 @@ class Hook_sitemap_banner extends Hook_sitemap_content
             '_bypassed' => $row['submitter'] == get_member(),
         );
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 

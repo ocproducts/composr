@@ -167,7 +167,7 @@ function assign_refresh($url, $multiplier = 0.0)
 
     global $FORCE_META_REFRESH;
 
-    if ((!running_script('index')) || ($must_show_message)) {
+    if (((!running_script('index')) && (!running_script('form_to_email'))) || ($must_show_message)) {
         $FORCE_META_REFRESH = true;
     }
 

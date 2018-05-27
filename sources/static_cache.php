@@ -152,7 +152,7 @@ function static_cache($mode)
     if (($mode & STATIC_CACHE__FAILOVER_MODE) != 0) {
         // Correct HTTP status
         if ((!function_exists('browser_matches')) || ((!browser_matches('ie')) && (strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false))) {
-            header('HTTP/1.0 503 Service Temporarily Unavailable');
+            http_response_code(503);
         }
     }
 
@@ -253,7 +253,7 @@ function static_cache($mode)
                 $since = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
                 if ($since != '') {
                     if (strtotime($since) < $mtime) {
-                        header('HTTP/1.0 304 Not Modified');
+                        http_response_code(304);
 
                         $aaf = ini_get('auto_append_file');
                         if (!empty($aaf)) {

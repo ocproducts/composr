@@ -198,6 +198,7 @@ class Hook_addon_registry_core_comcode_pages
                     'LINK_TEXT' => lorem_phrase(),
                 )),
                 'FILTER' => '',
+                'HAS_PAGINATION' => true,
             )), null, '', true)
         );
     }

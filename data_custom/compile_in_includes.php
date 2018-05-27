@@ -35,6 +35,8 @@ if (!addon_installed('performance_compile')) {
     warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('performance_compile')));
 }
 
+header('X-Robots-Tag: noindex');
+
 $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
 if (!$cli) {
     header('Content-type: text/plain; charset=utf-8');

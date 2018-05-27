@@ -45,6 +45,8 @@ function captcha_script()
         warn_exit(do_lang_tempcode('GD_NEEDED'));
     }
 
+    header('X-Robots-Tag: noindex');
+
     $code_needed = $GLOBALS['SITE_DB']->query_select_value_if_there('captchas', 'si_code', array('si_session_id' => get_session_id()));
     if ($code_needed === null) {
         generate_captcha();

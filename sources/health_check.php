@@ -105,6 +105,8 @@ function health_check_script()
         warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('health_check')));
     }
 
+    header('X-Robots-Tag: noindex');
+
     if (!is_cli()) {
         if (!has_actual_page_access(get_member(), 'admin_health_check', 'adminzone')) {
             require_lang('permissions');

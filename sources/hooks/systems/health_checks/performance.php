@@ -68,7 +68,7 @@ class Hook_health_check_performance extends Hook_Health_Check
 
         // external_health_check (on maintenance sheet)
 
-        $this->stateCheckManual('Check for [url="speed issues"]https://developers.google.com/speed/pagespeed/insights/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->stateCheckManual('Check for speed issues on [url="Google PageSpeed"]https://developers.google.com/speed/pagespeed/insights/[/url], [url="Pingdom"]https://tools.pingdom.com/[/url], [url="GTmetrix"]https://gtmetrix.com[/url], and [url="WebPageTest"]https://www.webpagetest.org[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
     }
 
     /**
@@ -132,6 +132,11 @@ class Hook_health_check_performance extends Hook_Health_Check
     public function testCookies($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
         if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        global $SITE_INFO;
+        if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1')) {
             return;
         }
 

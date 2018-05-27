@@ -58,6 +58,8 @@ if (!addon_installed('msn')) {
 
 require_code('multi_site_networks');
 
+header('X-Robots-Tag: noindex');
+
 $redir_url = get_param_string('url', '', INPUT_FILTER_URL_GENERAL);
 $echo = do_netlink($redir_url);
 $echo->evaluate_echo();

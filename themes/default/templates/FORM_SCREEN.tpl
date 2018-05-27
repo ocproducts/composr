@@ -75,6 +75,6 @@
 			<img alt="" width="45" height="45" src="{$IMG*,arrow_ruler}" />
 		</div>
 
-		<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} class="form-screen-iframe" title="{!EDIT}" name="iframe-under" id="iframe-under" src="{$BASE_URL*}/uploads/index.html">{!EDIT}</iframe>
+		<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} class="form-screen-iframe" title="{!EDIT}" name="iframe-under" id="iframe-under" src="{$BASE_URL*}/data/empty.php">{!EDIT}</iframe>
 	{+END}
 </div>

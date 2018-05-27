@@ -141,6 +141,8 @@ function transifex_push_script()
         warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('transifex')));
     }
 
+    header('X-Robots-Tag: noindex');
+
     $cli = is_cli();
     if (!$cli) {
         if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
@@ -460,6 +462,8 @@ function transifex_pull_script()
     if (!addon_installed('transifex')) {
         warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('transifex')));
     }
+
+    header('X-Robots-Tag: noindex');
 
     $version = _transifex_env_version();
     $lang = _transifex_env_lang();

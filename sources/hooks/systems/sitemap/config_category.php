@@ -27,9 +27,10 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
      * Find if a page-link will be covered by this node.
      *
      * @param  ID_TEXT $page_link The page-link
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options
      * @return integer A SITEMAP_NODE_* constant
      */
-    public function handles_page_link($page_link)
+    public function handles_page_link($page_link, $options)
     {
         $matches = array();
         if (preg_match('#^([^:]*):admin_config(:browse|$)#', $page_link, $matches) != 0) {
@@ -152,8 +153,8 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
             'extra_meta' => array(
                 'description' => null,
                 'image' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/menu/adminzone/setup/config/config') : null,
-                'add_date' => null,
-                'edit_date' => null,
+                'add_time' => null,
+                'edit_time' => null,
                 'submitter' => null,
                 'views' => null,
                 'rating' => null,
@@ -174,7 +175,7 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
             'privilege_page' => null,
         );
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 

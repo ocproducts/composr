@@ -455,6 +455,8 @@ function referrer_report_script($ret = false)
         warn_exit(do_lang_tempcode('NO_CNS'));
     }
 
+    header('X-Robots-Tag: noindex');
+
     $path = get_custom_file_base() . '/text_custom/referrals.txt';
     if (!is_file($path)) {
         $path = get_file_base() . '/text_custom/referrals.txt';

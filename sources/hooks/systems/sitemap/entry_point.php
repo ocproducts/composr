@@ -27,9 +27,10 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
      * Find if a page-link will be covered by this node.
      *
      * @param  ID_TEXT $page_link The page-link
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options
      * @return integer A SITEMAP_NODE_* constant
      */
-    public function handles_page_link($page_link)
+    public function handles_page_link($page_link, $options)
     {
         if (preg_match('#^cms:cms_catalogues:add_catalogue:#', $page_link)) {
             return SITEMAP_NODE_HANDLED;
@@ -48,7 +49,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
                 if ($details[0] == 'MODULES' || $details[0] == 'MODULES_CUSTOM') {
                     $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
                         false, // $check_perms
-                        null, // $member_id
+                        $this->get_member($options), // $member_id
                         true, // $support_crosslinks
                         true, // $be_deferential
                     ));
@@ -137,7 +138,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
             if ($row === null) {
                 $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
                     true, // $check_perms
-                    null, // $member_id
+                    $this->get_member($options), // $member_id
                     false, //$support_crosslinks   Must be false so that things known to be cross-linked from elsewhere are not skipped
                     false, //$be_deferential
 
@@ -160,7 +161,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
                         $hooks = find_all_hook_obs('systems', 'sitemap', 'Hook_sitemap_');
                         foreach ($hooks as $ob) {
                             if ($ob->is_active()) {
-                                $is_handled = $ob->handles_page_link($page_link);
+                                $is_handled = $ob->handles_page_link($page_link, $options);
                                 if ($is_handled == SITEMAP_NODE_HANDLED) {
                                     return $ob->get_node($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, null, $return_anyway);
                                 }
@@ -205,8 +206,8 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
             'extra_meta' => array(
                 'description' => null,
                 'image' => ($icon === null) ? null : find_theme_image('icons/' . $icon),
-                'add_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filectime(get_file_base() . '/' . $path) : null,
-                'edit_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filemtime(get_file_base() . '/' . $path) : null,
+                'add_time' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filectime(get_file_base() . '/' . $path) : null,
+                'edit_time' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filemtime(get_file_base() . '/' . $path) : null,
                 'submitter' => null,
                 'views' => null,
                 'rating' => null,
@@ -254,7 +255,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
             $this->_ameliorate_with_row($options, $struct, $row_x, $meta_gather);
         }
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 
@@ -263,7 +264,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
             $hooks = find_all_hook_obs('systems', 'sitemap', 'Hook_sitemap_');
             foreach ($hooks as $ob) {
                 if ($ob->is_active()) {
-                    $is_handled = $ob->handles_page_link($page_link);
+                    $is_handled = $ob->handles_page_link($page_link, $options);
                     if ($is_handled == SITEMAP_NODE_HANDLED_VIRTUALLY) {
                         $struct['has_possible_children'] = true;
 

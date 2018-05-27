@@ -475,6 +475,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/emoticons.php',
             '_tests/tests/unit_tests/community_billboard.php',
             '_tests/tests/unit_tests/forums.php',
+            '_tests/tests/unit_tests/ipstack.php',
             '_tests/tests/unit_tests/forum_groupings.php',
             '_tests/tests/unit_tests/theme_images.php',
             '_tests/tests/unit_tests/seo.php',

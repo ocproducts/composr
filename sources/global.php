@@ -804,7 +804,7 @@ if ($rate_limiting) {
             // Do we have to block?
             $rate_limit_hits_per_window = empty($SITE_INFO['rate_limit_hits_per_window']) ? 5 : intval($SITE_INFO['rate_limit_hits_per_window']);
             if (count($pertinent) >= $rate_limit_hits_per_window) {
-                header('HTTP/1.0 429 Too Many Requests');
+                http_response_code(429);
                 header('Content-Type: text/plain');
                 exit('We only allow ' . strval($rate_limit_hits_per_window - 1) . ' page hits every ' . strval($rate_limit_time_window) . ' seconds. You\'re at ' . strval(count($pertinent)) . '.');
             }

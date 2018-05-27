@@ -372,44 +372,43 @@
         return $cms.ui.open($util.rel($cms.maintainThemeInLink(url)), '', 'width=800,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
     }
 
-    function doInputComcode(fieldName, tag) {
+    function doInputComcode(fieldName, tag, extraQueryString) {
         var attributes = {},
             defaultEmbed = null,
-            saveToId = null;
+            saveToId = null,
+            element = document.getElementById(fieldName);
 
-        if (tag == null) {
-            var element = document.getElementById(fieldName);
+        if ($cms.form.isWysiwygField(element)) {
+            var selection = window.wysiwygEditors[fieldName].getSelection(),
+                ranges = selection.getRanges();
 
-            if ($cms.form.isWysiwygField(element)) {
-                var selection = window.wysiwygEditors[fieldName].getSelection(),
-                    ranges = selection.getRanges();
-
-                if (ranges[0] !== undefined) {
-                    var comcodeElement = ranges[0].startContainer.$;
-                    do {
-                        var matches = comcodeElement.nodeName.toLowerCase().match(/^comcode-(\w+)/);
-                        if (matches !== null) {
+            if (ranges[0] !== undefined) {
+                var comcodeElement = ranges[0].startContainer.$;
+                do {
+                    var matches = comcodeElement.nodeName.toLowerCase().match(/^comcode-(\w+)/);
+                    if (matches !== null) {
+                        if (tag == null) {
                             tag = matches[1];
-
-                            for (var i = 0; i < comcodeElement.attributes.length; i++) {
-                                if (comcodeElement.attributes[i].name !== 'id') {
-                                    attributes[comcodeElement.attributes[i].name] = comcodeElement.attributes[i].value;
-                                }
-                            }
-
-                            defaultEmbed = $dom.html(comcodeElement);
-
-                            if (comcodeElement.id === '') {
-                                comcodeElement.id = 'comcode_' + Date.now();
-                            }
-                            saveToId = comcodeElement.id;
-
-                            break;
                         }
 
-                        comcodeElement = comcodeElement.parentNode;
-                    } while (comcodeElement != null);
-                }
+                        for (var i = 0; i < comcodeElement.attributes.length; i++) {
+                            if (comcodeElement.attributes[i].name !== 'id') {
+                                attributes[comcodeElement.attributes[i].name] = comcodeElement.attributes[i].value;
+                            }
+                        }
+
+                        defaultEmbed = $dom.html(comcodeElement);
+
+                        if (comcodeElement.id === '') {
+                            comcodeElement.id = 'comcode_' + Date.now();
+                        }
+                        saveToId = comcodeElement.id;
+
+                        break;
+                    }
+
+                    comcodeElement = comcodeElement.parentNode;
+                } while (comcodeElement != null);
             }
         }
 
@@ -440,6 +439,10 @@
             url += '&save_to_id=' + encodeURIComponent(saveToId);
         }
         url += $cms.keep();
+
+        if (extraQueryString != null) {
+            url += extraQueryString;
+        }
 
         $cms.ui.open($util.rel($cms.maintainThemeInLink(url)), '', 'width=800,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
     }

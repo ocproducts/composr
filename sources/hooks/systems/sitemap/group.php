@@ -70,8 +70,8 @@ class Hook_sitemap_group extends Hook_sitemap_content
         $page = $this->_make_zone_concrete($zone, $page_link);
 
         $where = '1=1';
-        if (has_privilege(get_member(), 'see_hidden_groups')) {
-            $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups(get_member());
+        if ((($options & SITEMAP_GEN_CHECK_PERMS) != 0) && (!has_privilege($this->get_member($options), 'see_hidden_groups'))) {
+            $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups($this->get_member($options));
             // May be cached so don't make member-specific $where .= ' AND (g_hidden=0 OR g.id IN (' . implode(',', array_map('strval', $members_groups)) . '))';
             $where .= ' AND g_hidden=0';
         }
@@ -140,7 +140,7 @@ class Hook_sitemap_group extends Hook_sitemap_content
             'edit_url' => build_url(array('page' => 'admin_cns_groups', 'type' => '_edit', 'id' => $content_id), get_module_zone('admin_cns_groups')),
         ) + $partial_struct;
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 

@@ -58,6 +58,8 @@ if (!addon_installed('news')) {
     warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('news')));
 }
 
+header('X-Robots-Tag: noindex');
+
 require_code('composr_homesite');
 
 header('Content-type: text/plain; charset=' . get_charset());

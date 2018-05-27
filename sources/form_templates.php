@@ -45,6 +45,11 @@ function init__form_templates()
     global $DOING_ALTERNATE_FIELDS_SET;
     $DOING_ALTERNATE_FIELDS_SET = null;
 
+    // This is a hackerish way to chain raw field inputs together
+    global $_FORM_INPUT_PREFIX, $_FORM_INPUT_SUFFIX;
+    $_FORM_INPUT_PREFIX = null;
+    $_FORM_INPUT_SUFFIX = null;
+
     require_css('forms');
 
     if (function_exists('get_member')) {
@@ -2605,6 +2610,23 @@ function form_input_na($pretty_name, $tabindex = null)
  */
 function _form_input($name, $pretty_name, $description, $input, $required, $comcode = false, $tabindex = null, $w = false, $skip_label = false, $description_side = '', $pattern_error = null)
 {
+    global $_FORM_INPUT_PREFIX, $_FORM_INPUT_SUFFIX;
+    if ($_FORM_INPUT_PREFIX !== null) {
+        $_input = new Tempcode();
+        $_input->attach($_FORM_INPUT_PREFIX);
+        $_input->attach('<br />');
+        $_input->attach('<br />');
+        $_input->attach($input);
+        if ($_FORM_INPUT_SUFFIX !== null) {
+            $_input->attach($_FORM_INPUT_SUFFIX);
+        }
+        $input = $_input;
+    } elseif ($_FORM_INPUT_SUFFIX !== null) {
+        $input->attach('<br />');
+        $input->attach('<br />');
+        $input->attach($_FORM_INPUT_SUFFIX);
+    }
+
     check_suhosin_request_quantity(2, ($name == '') ? 20 : strlen($name));
 
     if (($GLOBALS['DEV_MODE']) && (user_lang() == fallback_lang())) {

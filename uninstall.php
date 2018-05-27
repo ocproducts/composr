@@ -61,7 +61,7 @@ if (uninstall_check_master_password(post_param_string('given_password', null, IN
 
     $uninstalled->evaluate_echo();
 } else {
-    $echo = do_template('BASIC_HTML_WRAP', array('_GUID' => '009e7517e7df76167b4d13ca77308704', 'NOFOLLOW' => true, 'NOINDEX' => true, 'TITLE' => do_lang_tempcode('UNINSTALL'), 'CONTENT' => do_template('UNINSTALL_SCREEN')));
+    $echo = do_template('BASIC_HTML_WRAP', array('_GUID' => '009e7517e7df76167b4d13ca77308704', 'NOINDEX' => true, 'TITLE' => do_lang_tempcode('UNINSTALL'), 'CONTENT' => do_template('UNINSTALL_SCREEN')));
     $echo->evaluate_echo();
 }
 

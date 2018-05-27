@@ -289,6 +289,6 @@
 	{+END}
 
 	{+START,IF,{$CONFIG_OPTION,enable_previews}}
-		<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" name="preview-iframe" id="preview-iframe" src="{$BASE_URL*}/uploads/index.html" class="hidden-preview-frame">{!PREVIEW}</iframe>
+		<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" name="preview-iframe" id="preview-iframe" src="{$BASE_URL*}/data/empty.php" class="hidden-preview-frame">{!PREVIEW}</iframe>
 	{+END}
 </div>

@@ -63,7 +63,7 @@ function add_news_category($title, $img = 'icons/news/general', $notes = '', $ow
     dispatch_member_mention_notifications('news_category', strval($id));
 
     require_code('sitemap_xml');
-    notify_sitemap_node_add('_SEARCH:news:browse:' . strval($id), null, null, SITEMAP_IMPORTANCE_HIGH, 'daily', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($id)));
+    notify_sitemap_node_add('_SEARCH:news:browse:' . strval($id));
 
     return $id;
 }
@@ -141,7 +141,7 @@ function edit_news_category($id, $title, $img, $notes, $owner)
     delete_cache_entry('side_news_categories');
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:news:browse:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($id)));
+    notify_sitemap_node_edit('_SEARCH:news:browse:' . strval($id));
 }
 
 /**
@@ -428,8 +428,10 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
     require_code('member_mentions');
     dispatch_member_mention_notifications('news_category', strval($id));
 
-    require_code('sitemap_xml');
-    notify_sitemap_node_add('_SEARCH:news:view:' . strval($id), $time, $edit_date, SITEMAP_IMPORTANCE_HIGH, 'monthly', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($main_news_category_id)));
+    if ($validated == 1) {
+        require_code('sitemap_xml');
+        notify_sitemap_node_add('_SEARCH:news:view:' . strval($id));
+    }
 
     return $id;
 }
@@ -615,7 +617,11 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
     );
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:news:view:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($main_news_category)));
+    if ($validated == 1) {
+        notify_sitemap_node_edit('_SEARCH:news:view:' . strval($id));
+    } else {
+        notify_sitemap_node_delete('_SEARCH:news:view:' . strval($id));
+    }
 }
 
 /**

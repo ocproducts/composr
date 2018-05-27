@@ -72,6 +72,7 @@ function download_licence_script()
         '_GUID' => 'd8f60d5f6f56b08589ed6f4b874dad85',
         'TITLE' => $licence_title,
         'POPUP' => true,
+        'NOINDEX' => true,
         'CONTENT' => comcode_to_tempcode($licence_text, $GLOBALS['FORUM_DRIVER']->get_guest_id(), false),
     ));
     $echo->evaluate_echo();

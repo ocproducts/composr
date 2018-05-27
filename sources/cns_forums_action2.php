@@ -177,7 +177,7 @@ function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:forumview:id=' . strval($forum_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
+    notify_sitemap_node_edit('SEARCH:forumview:id=' . strval($forum_id));
 }
 
 /**

@@ -1137,7 +1137,11 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     delete_cache_entry('main_members');
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:members:view:' . strval($member_id), true);
+    if ($validated == 1) {
+        notify_sitemap_node_edit('_SEARCH:members:view:' . strval($member_id));
+    } else {
+        notify_sitemap_node_delete('_SEARCH:members:view:' . strval($member_id));
+    }
 }
 
 /**

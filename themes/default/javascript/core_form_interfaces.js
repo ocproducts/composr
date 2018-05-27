@@ -902,7 +902,7 @@
                         doneOne = true;
                     }
 
-                    uploadButton = mainWindow.document.getElementById('uploadButton_' + inputs[i].name);
+                    uploadButton = mainWindow.document.getElementById('upload-button-' + inputs[i].name);
                     if (uploadButton) {
                         uploadButton.disabled = true;
                     }

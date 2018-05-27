@@ -23,6 +23,8 @@
  */
 function incoming_uploads_script()
 {
+    header('X-Robots-Tag: noindex');
+
     $is_uploaded = false;
 
     if ($GLOBALS['DEV_MODE']) {

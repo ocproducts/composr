@@ -239,6 +239,8 @@ function find_theme_image_themewizard_preview($id, $silent_fail = false)
  */
 function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/default_logos/1', $background_theme_image = 'logo/default_backgrounds/banner1', $raw = false, $theme = null, $standalone_version = false)
 {
+    header('X-Robots-Tag: noindex');
+
     require_code('character_sets');
     require_code('files');
     require_code('themes2');
@@ -559,6 +561,8 @@ function themewizard_script()
     if (!addon_installed('themewizard')) {
         warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('themewizard')));
     }
+
+    header('X-Robots-Tag: noindex');
 
     $type = get_param_string('type');
     $source_theme = get_param_string('keep_theme_source', 'default');

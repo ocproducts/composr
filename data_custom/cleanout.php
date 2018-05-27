@@ -60,6 +60,8 @@ if (!addon_installed('meta_toolkit')) {
     warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('meta_toolkit')));
 }
 
+header('X-Robots-Tag: noindex');
+
 $out = cleanup();
 if (!headers_sent()) {
     header('Content-type: text/plain; charset=' . get_charset());

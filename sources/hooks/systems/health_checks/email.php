@@ -198,14 +198,14 @@ class Hook_health_check_email extends Hook_Health_Check
                     $reverse_dns_host = null;
                     $ip_address = gethostbyname($host);
                     if ($ip_address != $host) {
-                        $_reverse_dns_host = @gethostbyaddr($ip_address);
+                        $_reverse_dns_host = cms_gethostbyaddr($ip_address);
                         if ($_reverse_dns_host != $ip_address) {
                             $reverse_dns_host = $_reverse_dns_host;
                         }
                     }
                     $this->assertTrue($reverse_dns_host !== null, 'Missing reverse-DNS for [tt]' . $email . '[/tt] address (host=[tt]' . $host . '[/tt])');
 
-                    if ((php_function_allowed('fsockopen')) && (php_function_allowed('gethostbyname'))/* && (php_function_allowed('gethostbyaddr'))*/) {
+                    if (php_function_allowed('fsockopen')) {
                         // See if SMTP running
                         $errno = 0;
                         $errstr = '';
@@ -230,7 +230,7 @@ class Hook_health_check_email extends Hook_Health_Check
                             }
                         }
                     } else {
-                        $this->stateCheckSkipped('PHP fsockopen/gethostbyname function(s) not available'); // /gethostbyaddr
+                        $this->stateCheckSkipped('PHP fsockopen function not available');
                     }
                 }
 
@@ -266,11 +266,11 @@ class Hook_health_check_email extends Hook_Health_Check
         }
 
         if (get_option('smtp_sockets_use') == '0') {
-            if ((php_function_allowed('dns_get_record')) && (php_function_allowed('gethostbyname'))) {
+            if (php_function_allowed('dns_get_record')) {
                 $domains = $this->get_domains();
 
                 foreach ($domains as $self_domain) {
-                    $self_ip = @gethostbyname($self_domain);
+                    $self_ip = cms_gethostbyname($self_domain);
 
                     $mail_domains = $this->get_mail_domains(true);
 
@@ -285,7 +285,7 @@ class Hook_health_check_email extends Hook_Health_Check
                     }
                 }
             } else {
-                $this->stateCheckSkipped('PHP dns_get_record/gethostbyname function(s) not available');
+                $this->stateCheckSkipped('PHP dns_get_record function not available');
             }
         }
     }
@@ -532,7 +532,7 @@ class Hook_health_check_email extends Hook_Health_Check
 
         require_code('antispam');
 
-        if ((php_function_allowed('getmxrr')) && (php_function_allowed('gethostbyname'))) {
+        if (php_function_allowed('getmxrr')) {
             $domains = $this->get_mail_domains(true);
 
             foreach ($domains as $domain => $email) {
@@ -545,7 +545,7 @@ class Hook_health_check_email extends Hook_Health_Check
                 }
 
                 foreach ($mail_hosts as $host) {
-                    $ip = @gethostbyname($host);
+                    $ip = cms_gethostbyname($host);
                     $rbls = array(
                         '*.dnsbl.sorbs.net',
                         '*.bl.spamcop.net',
@@ -558,7 +558,7 @@ class Hook_health_check_email extends Hook_Health_Check
                 }
             }
         } else {
-            $this->stateCheckSkipped('PHP getmxrr/gethostbyname function(s) not available');
+            $this->stateCheckSkipped('PHP getmxrr function not available');
         }
     }
 

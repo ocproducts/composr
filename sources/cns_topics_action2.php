@@ -155,7 +155,11 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
 
     if ($forum_id !== null) {
         require_code('sitemap_xml');
-        notify_sitemap_node_edit('SEARCH:topicview:id=' . strval($topic_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
+        if ($validated == 1) {
+            notify_sitemap_node_edit('_SEARCH:topicview:id=' . strval($topic_id));
+        } else {
+            notify_sitemap_node_delete('_SEARCH:topicview:id=' . strval($topic_id));
+        }
     }
 }
 

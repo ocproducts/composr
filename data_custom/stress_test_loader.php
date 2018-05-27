@@ -46,6 +46,8 @@ if (!addon_installed('stress_test')) {
     warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('stress_test')));
 }
 
+header('X-Robots-Tag: noindex');
+
 if (php_function_allowed('set_time_limit')) {
     @set_time_limit(0);
 }

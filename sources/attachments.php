@@ -167,6 +167,7 @@ function attachments_script()
     // Closed site
     $site_closed = get_option('site_closed');
     if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
+        http_response_code(503);
         header('Content-type: text/plain; charset=' . get_charset());
         @exit(get_option('closed'));
     }
@@ -391,10 +392,7 @@ function attachment_popup_script()
 
     $content = do_template('ATTACHMENTS_BROWSER', array('_GUID' => '7773aad46fb0bfe563a142030beb1a36', 'LIST' => $list, 'ATTACHMENTS' => $attachments, 'URL' => $post_url));
 
-    require_code('site');
-    attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
-
-    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '954617cc747b5cece4cc406d8c110150', 'TITLE' => do_lang_tempcode('ATTACHMENT_POPUP'), 'POPUP' => true, 'CONTENT' => $content));
+    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '954617cc747b5cece4cc406d8c110150', 'TITLE' => do_lang_tempcode('ATTACHMENT_POPUP'), 'POPUP' => true, 'NOINDEX' => true, 'CONTENT' => $content));
     $echo->handle_symbol_preprocessing();
     $echo->evaluate_echo();
 }

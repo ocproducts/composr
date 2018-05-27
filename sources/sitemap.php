@@ -94,6 +94,8 @@ function init__sitemap()
         define('SITEMAP_GEN_COLLAPSE_ZONES', 128); // Simulate zone collapse in the Sitemap.
         define('SITEMAP_GEN_CHECK_PERMS', 256); // Check permissions when building up nodes.
         define('SITEMAP_GEN_USE_PAGE_GROUPINGS_SUPPRESS', 512); // Unset SITEMAP_GEN_USE_PAGE_GROUPINGS for one recursion only.
+        define('SITEMAP_GEN_MACHINE_SITEMAP', 512); // Gather pages that should be on a machine sitemap (but not on a normal UX sitemap).
+        define('SITEMAP_GEN_AS_GUEST', 1024); // Whether to evaluate permissions as guest.
 
         // Defining how the content-selection list should be put together
         define('CSL_PERMISSION_VIEW', 0);
@@ -131,7 +133,7 @@ function retrieve_sitemap_node($page_link = '', $callback = null, $valid_node_ty
     global $IS_SITEMAP_STRUCTURE_LOOPING;
     $IS_SITEMAP_STRUCTURE_LOOPING = array();
 
-    $test = find_sitemap_object($page_link);
+    $test = find_sitemap_object($page_link, $options);
     if ($test === null) {
         return null;
     }
@@ -163,9 +165,10 @@ function retrieve_sitemap_node($page_link = '', $callback = null, $valid_node_ty
  * Find the Sitemap object that serves a particular page-link.
  *
  * @param  ID_TEXT $page_link The page-link we are finding a Sitemap object for (blank: root)
+ * @param  integer $options A bitmask of SITEMAP_GEN_* options
  * @return ?array A pair: the Sitemap object, and whether you need to make a virtual call (null: cannot find one)
  */
-function find_sitemap_object($page_link)
+function find_sitemap_object($page_link, $options = 0)
 {
     if ($page_link == '') {
         $hook = 'root';
@@ -179,7 +182,7 @@ function find_sitemap_object($page_link)
         $hooks = find_all_hook_obs('systems', 'sitemap', 'Hook_sitemap_');
         foreach ($hooks as $_hook => $ob) {
             if ($ob->is_active()) {
-                $is_handled = $ob->handles_page_link($page_link);
+                $is_handled = $ob->handles_page_link($page_link, $options);
                 if ($is_handled != SITEMAP_NODE_NOT_HANDLED) {
                     $matches['_' . strval($is_handled)] = $_hook;
                 }
@@ -237,9 +240,10 @@ abstract class Hook_sitemap_base
      *
      * @param  ID_TEXT $zone The zone the page is being loaded in
      * @param  ID_TEXT $page The codename of the page to load
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options
      * @return boolean Whether the page should be omitted
      */
-    protected function _is_page_omitted_from_sitemap($zone, $page)
+    protected function _is_page_omitted_from_sitemap($zone, $page, $options)
     {
         // Some kinds of hidden pages
         if (substr($page, 0, 6) == 'panel_') {
@@ -251,19 +255,26 @@ abstract class Hook_sitemap_base
         if ($page == '404') {
             return true;
         }
-        if ($page == 'sitemap') {
-            return true;
-        }
 
-        // Pages shown in the footer should not repeat in the Sitemap
-        if ((get_option('bottom_show_privacy_link') == '1') && ($page == 'privacy')) {
-            return true;
-        }
-        if ((get_option('bottom_show_rules_link') == '1') && ($page == 'rules') && (($zone == '') || ($zone == 'site') || ($zone == 'forum'))) {
-            return true;
-        }
-        if ((get_option('bottom_show_feedback_link') == '1') && ($page == 'feedback')) {
-            return true;
+        if (($options & SITEMAP_GEN_MACHINE_SITEMAP) == 0) {
+            if ($page == 'sitemap') {
+                return true;
+            }
+
+            // Pages shown in the footer should not repeat in the Sitemap
+            if ((get_option('bottom_show_privacy_link') == '1') && ($page == 'privacy')) {
+                return true;
+            }
+            if ((get_option('bottom_show_rules_link') == '1') && ($page == 'rules') && (($zone == '') || ($zone == 'site') || ($zone == 'forum'))) {
+                return true;
+            }
+            if ((get_option('bottom_show_feedback_link') == '1') && ($page == 'feedback')) {
+                return true;
+            }
+        } else {
+            if ($page == 'login') {
+                return true;
+            }
         }
 
         // Disabled, maybe via a looped redirect?
@@ -331,9 +342,10 @@ abstract class Hook_sitemap_base
      * Find if a page-link will be covered by this node.
      *
      * @param  ID_TEXT $page_link The page-link
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options
      * @return integer A SITEMAP_NODE_* constant
      */
-    abstract public function handles_page_link($page_link);
+    abstract public function handles_page_link($page_link, $options);
 
     /**
      * Get a particular Sitemap object. Used for easily tying in a different kind of child node.
@@ -409,36 +421,56 @@ abstract class Hook_sitemap_base
     }
 
     /**
+     * Find which member to evaluate permissions with.
+     *
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options
+     * @return MEMBER The member ID to evaluate for
+     */
+    protected function get_member($options)
+    {
+        if (($options & SITEMAP_GEN_AS_GUEST) != 0) {
+            return $GLOBALS['FORUM_DRIVER']->get_guest_id();
+        }
+
+        return get_member();
+    }
+
+    /**
      * Check the permissions of the node structure, returning false if they fail for the current user.
      *
      * @param  array $struct Node structure
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options
      * @return boolean Whether the permissions pass
      */
-    protected function _check_node_permissions($struct)
+    protected function _check_node_permissions($struct, $options)
     {
+        if (($options & SITEMAP_GEN_CHECK_PERMS) == 0) {
+            return true;
+        }
+
         // Check defined permissions
         foreach ($struct['permissions'] as $permission) {
             switch ($permission['type']) {
                 case 'non_guests':
-                    if (is_guest(get_member())) {
+                    if (is_guest($this->get_member($options))) {
                         return false;
                     }
                     break;
 
                 case 'zone':
-                    if (!has_zone_access(get_member(), $permission['zone_name'])) {
+                    if (!has_zone_access($this->get_member($options), $permission['zone_name'])) {
                         return false;
                     }
                     break;
 
                 case 'page':
-                    if (!has_page_access(get_member(), $permission['page_name'], $permission['zone_name'])) {
+                    if (!has_page_access($this->get_member($options), $permission['page_name'], $permission['zone_name'])) {
                         return false;
                     }
                     break;
 
                 case 'category':
-                    if (!has_category_access(get_member(), $permission['permission_module'], $permission['category_name'])) {
+                    if (!has_category_access($this->get_member($options), $permission['permission_module'], $permission['category_name'])) {
                         return false;
                     }
                     break;
@@ -453,11 +485,11 @@ abstract class Hook_sitemap_base
             $page = $matches[2];
             $type = $matches[3];
 
-            $groups = get_permission_where_clause_groups(get_member(), false);
+            $groups = get_permission_where_clause_groups($this->get_member($options), false);
             if ($groups !== null) {
                 list(, $params) = page_link_decode($page_link);
 
-                $groups2 = filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member(), false));
+                $groups2 = filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups($this->get_member($options), false));
 
                 $pg_where = '1=0';
                 $pg_where .= ' OR page_name LIKE \'' . db_encode_like('\_WILD:' . $page . ':%') . '\'';
@@ -648,9 +680,10 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
      * Find if a page-link will be covered by this node.
      *
      * @param  ID_TEXT $page_link The page-link
+     * @param  integer $options A bitmask of SITEMAP_GEN_* options
      * @return integer A SITEMAP_NODE_* constant
      */
-    public function handles_page_link($page_link)
+    public function handles_page_link($page_link, $options)
     {
         $matches = array();
         if (preg_match('#^([^:]*):([^:]*)#', $page_link, $matches) != 0) {
@@ -792,8 +825,8 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
             'extra_meta' => array(
                 'description' => null,
                 'image' => null,
-                'add_date' => null,
-                'edit_date' => null,
+                'add_time' => null,
+                'edit_time' => null,
                 'submitter' => null,
                 'views' => null,
                 'rating' => null,

@@ -37,6 +37,8 @@ function incoming_ticket_email_script()
         return;
     }
 
+    header('X-Robots-Tag: noindex');
+
     $_body = file_get_contents('php://input');
 
     return; // Not currently supported

@@ -140,7 +140,7 @@ class Hook_sitemap_wiki_page extends Hook_sitemap_content
 
         $struct['extra_meta']['is_a_category_tree_root'] = true;
 
-        if (!$this->_check_node_permissions($struct)) {
+        if (!$this->_check_node_permissions($struct, $options)) {
             return null;
         }
 

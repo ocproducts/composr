@@ -527,10 +527,7 @@ function block_helper_script()
         ));
     }
 
-    require_code('site');
-    attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
-
-    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'ccb57d45d593eb8aabc2a5e99ea7711f', 'TITLE' => do_lang_tempcode('BLOCK_HELPER'), 'POPUP' => true, 'CONTENT' => $content));
+    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'ccb57d45d593eb8aabc2a5e99ea7711f', 'TITLE' => do_lang_tempcode('BLOCK_HELPER'), 'POPUP' => true, 'NOINDEX' => true, 'CONTENT' => $content));
     $echo->handle_symbol_preprocessing();
     $echo->evaluate_echo();
 }
