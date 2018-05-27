@@ -1,9 +1,8 @@
 <div class="fields_set_item">
 	<div class="fields_set_radio">
-		<label class="accessibility_hidden" for="choose_{NAME*}">{!USE}: {PRETTY_NAME*}</label>
 		<input type="radio" name="{SET_NAME*}" id="choose_{NAME*}" />
 
-		<label for="{NAME*}">{PRETTY_NAME*}</label>
+		<label for="choose_{NAME*}">{PRETTY_NAME*}</label>
 
 		{COMCODE}
 	</div>

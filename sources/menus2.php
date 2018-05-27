@@ -109,6 +109,10 @@ function import_menu_csv($file_path = null)
  */
 function menu_management_script()
 {
+    if (!has_actual_page_access(get_member(), 'admin_menus')) {
+        access_denied('I_ERROR');
+    }
+
     $id = get_param_integer('id');
     $to_menu = get_param_string('menu');
     $changes = array('i_menu' => $to_menu);

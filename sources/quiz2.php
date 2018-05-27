@@ -504,7 +504,7 @@ function edit_quiz($id, $name, $timeout, $start_text, $end_text, $end_text_fail,
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:quiz:do:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'quiz', strval($id)));
+    notify_sitemap_node_edit('_SEARCH:quiz:do:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'quiz', strval($id)));
 }
 
 /**
@@ -564,5 +564,5 @@ function delete_quiz($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:quiz:do:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:quiz:do:' . strval($id));
 }

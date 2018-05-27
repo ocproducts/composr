@@ -631,6 +631,8 @@ function snippet_script()
         $ZONE = null;
     }
 
+    header('X-Robots-Tag: noindex'); // We would not normally bother doing no-index tagging for a non-HTML page, but Google is finding this because we often emit HTML code from it
+
     header('Content-Type: text/plain; charset=' . get_charset());
     convert_data_encodings(true);
     $hook = filter_naughty_harsh(get_param_string('snippet'));

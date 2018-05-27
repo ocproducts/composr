@@ -269,7 +269,7 @@ function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, 
     );
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:polls:view:' . strval($id), true);
+    notify_sitemap_node_edit('_SEARCH:polls:view:' . strval($id), true);
 }
 
 /**
@@ -311,7 +311,7 @@ function delete_poll($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:polls:view:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:polls:view:' . strval($id));
 }
 
 /**

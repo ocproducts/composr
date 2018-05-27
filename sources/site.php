@@ -44,12 +44,14 @@ function init__site()
     if (function_exists('get_value')) {
         $is_non_canonical = false;
         $canonical_keep_params = explode(',', is_null(get_value('canonical_keep_params')) ? 'keep_devtest' : get_value('canonical_keep_params'));
-        foreach (array_intersect(array_keys($_GET), array('keep_session'/*may be inserted later*/)) as $key) {
+        foreach (array_merge(array_keys($_GET), array('keep_session'/*may be inserted later*/)) as $key) {
             if ((is_string($key)) && (substr($key, 0, 5) == 'keep_') && (!@in_array($key, $canonical_keep_params))) {
                 $NON_CANONICAL_PARAMS[$key] = true;
                 $is_non_canonical = true;
             }
         }
+        /*
+        Doing this redirect is too risky. Some code (including user code) may redirect back to inject missing parameters.
         if (($is_non_canonical) && (get_bot_type() !== null)) { // Force bots onto the canonical URL if there were non-standard keep parameters, as they may ignore even the canonical meta tag.
             $non_canonical = array();
             if (is_array($NON_CANONICAL_PARAMS)) {
@@ -62,6 +64,7 @@ function init__site()
             header('Location: ' . escape_header(get_self_url(true, false, $non_canonical)));
             exit();
         }
+        */
     }
 
     global $PAGE_STRING, $LAST_COMCODE_PARSED_TITLE;
@@ -1063,6 +1066,10 @@ function save_static_caching($out, $mime_type = 'text/html')
                 $static_cache = $out;
             }
 
+            if (!$GLOBALS['STATIC_CACHE_ENABLED']) {
+                return; // Something in the output tree decided this was not cacheable
+            }
+
             // Remove any sessions etc
             $static_cache = preg_replace('#(&|&amp;|&amp;amp;|%3Aamp%3A|\?)?(keep_session|keep_devtest|keep_failover)(=|%3D)\w+#', '', $static_cache);
 
@@ -1682,24 +1689,9 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         set_http_status_code('404');
     }
 
+    require_code('global4');
     if (
-        (
-            ($is_panel) ||
-            ($codename[0] == '_') ||
-            ($zone . ':' . $codename == ':404') ||
-
-            // FUDGE. Sculpt what comes up in Google a bit. We don't want really meta contextual help muddying search results
-            ($codename == 'rules') ||
-            ($zone . ':' . $codename == ':recommend_help') ||
-            ($zone . ':' . $codename == ':popup_blockers') ||
-            ($zone . ':' . $codename == ':help') ||
-            ($zone . ':' . $codename == ':userguide_chatcode') ||
-            ($zone . ':' . $codename == ':userguide_comcode') ||
-            ($zone . ':' . $codename == 'site:popup_blockers') ||
-            ($zone . ':' . $codename == 'site:help') ||
-            ($zone . ':' . $codename == 'site:userguide_chatcode') ||
-            ($zone . ':' . $codename == 'site:userguide_comcode')
-        ) &&
+        (!comcode_page_is_indexable($zone, $codename)) &&
         (get_page_name() == $codename/*Top-level*/)
     ) {
         attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML

@@ -978,7 +978,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $base_url_parsed['host'] = '127.0.0.1';
     }
     $config_ip_forwarding = function_exists('get_option') ? get_option('ip_forwarding') : '';
-    $do_ip_forwarding = ($base_url_parsed['host'] == $connect_to) && ($config_ip_forwarding != '') && ($config_ip_forwarding != '0');
+    $do_ip_forwarding = (preg_replace('#^www\.#', '', $base_url_parsed['host']) == preg_replace('#^www\.#', '', $connect_to)) && ($config_ip_forwarding != '') && ($config_ip_forwarding != '0');
     if ($do_ip_forwarding) { // For cases where we have IP-forwarding, and a strong firewall (i.e. blocked to our own domain's IP by default)
         if ($config_ip_forwarding == '1') {
             $connect_to = cms_srv('LOCAL_ADDR');
@@ -999,8 +999,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
             $connect_to = $config_ip_forwarding;
         }
-    } elseif ((php_function_allowed('gethostbyname')) && ($url_parts['scheme'] == 'http')) {
-        $connect_to = @gethostbyname($connect_to); // for DNS caching
+    } elseif ($url_parts['scheme'] == 'http') {
+        $connect_to = cms_gethostbyname($connect_to); // for DNS caching
     }
     if (!array_key_exists('scheme', $url_parts)) {
         $url_parts['scheme'] = 'http';
@@ -1593,8 +1593,12 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $first_fail_time = mixed();
         $chunked = false;
         $buffer_unprocessed = '';
+        $time_init = time();
         while (($chunked) || (!@feof($mysock))) { // @'d because socket might have died. If so fread will will return false and hence we'll break
             $line = @fread($mysock, 32000);
+            if (($input == '') && ($time_init + $timeout < time())) {
+                $line = false; // Manual timeout
+            }
             if ($line === false) {
                 if ((!$chunked) || ($buffer_unprocessed == '')) {
                     break;
