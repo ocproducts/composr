@@ -726,6 +726,16 @@ th, .fake-th {
 .table-header-sorting {
 	float: right;
 }
+
+.table-header-sorting-link,
+.table-header-sorting-link:hover {
+	text-decoration: none;
+}
+
+.table-header-sorting-link.selected {
+	opacity: 0.5;
+}
+
 .columned-table[itemprop="significantLinks"] tbody tr th,
 .columned-table[itemprop="significantLinks"] tbody tr .fake-th { /* itemprop is for precedence */
 	background-color: {$GET,box_title_background_2} !important;

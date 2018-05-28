@@ -23,8 +23,21 @@
 			<option value="branch_plus">{!EXPANDED_BRANCH}</option>
 		</select>
 
-		<a href="#!" id="down_{I*}" class="horiz-field-sep js-click-btn-move-down-handle-ordering"><img height="12" src="{$IMG*,results/sortablefield_desc}"alt="{!MOVE_DOWN}"></a>
-		<a href="#!" id="up_{I*}" class="js-click-btn-move-up-handle-ordering"><img height="12" src="{$IMG*,results/sortablefield_asc}" alt="{!MOVE_UP}"></a>
+		<a href="#!" id="down_{I*}" class="horiz-field-sep js-click-btn-move-down-handle-ordering">
+			{+START,INCLUDE,ICON}
+				NAME=results/sortablefield_desc
+				ICON_SIZE=12
+				ICON_DESCRIPTION={!MOVE_DOWN}
+			{+END}
+		</a>
+		
+		<a href="#!" id="up_{I*}" class="js-click-btn-move-up-handle-ordering">
+			{+START,INCLUDE,ICON}
+				NAME=results/sortablefield_asc
+				ICON_SIZE=12
+				ICON_DESCRIPTION={!MOVE_UP}
+			{+END}
+		</a>
 
 		<button class="admin--delete3 button-micro horiz-field-sep js-click-delete-menu-branch" type="button" id="del_{I*}" name="del_{I*}">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</button>
 	</div>
