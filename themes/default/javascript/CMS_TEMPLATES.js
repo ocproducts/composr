@@ -286,16 +286,12 @@
 
     $cms.templates.blockTopPersonalStats = function (params, container) {
         $dom.on(container, 'click', '.js-click-toggle-top-personal-stats', function (e) {
-            if (toggleTopPersonalStats(e) === false) {
-                e.preventDefault();
-            }
+            e.preventDefault();
+            window.$coreNotifications.toggleMessagingBox('top-personal-stats');
         });
-
-        function toggleTopPersonalStats(event) {
-            window.$coreNotifications.toggleMessagingBox(event, 'pts', true);
-            window.$coreNotifications.toggleMessagingBox(event, 'web-notifications', true);
-            return window.$coreNotifications.toggleMessagingBox(event, 'top-personal-stats');
-        }
+        $dom.on(container, 'clickout', '.js-clickout-hide-top-personal-stats', function () {
+            window.$coreNotifications.toggleMessagingBox('top-personal-stats', true);
+        });
     };
 
     $cms.templates.blockSidePersonalStatsNo = function blockSidePersonalStatsNo(params, container) {

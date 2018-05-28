@@ -84,12 +84,11 @@
             $dom.toggle(this.booleanOptionsEl, checkbox.checked);
         }
     });
-
-
+    
     $cms.templates.blockTopSearch = function (params, container) {
         var searchType = $cms.filter.nl(params.searchType);
 
-        $dom.on(container, 'submit', '.js-submit-check-search-content-element', function (e, form) {
+        $dom.on(container, 'submit', function (e, form) {
             if (form.elements.content === undefined) {
                 $cms.ui.disableFormButtons(form);
                 return;
@@ -105,6 +104,15 @@
 
         $dom.on(container, 'keyup', '.js-input-keyup-update-ajax-search-list', function (e, input) {
             $cms.form.updateAjaxSearchList(input, e, searchType);
+        });
+        
+        $dom.on(container, 'click', '.js-click-toggle-top-search', function (e) {
+            e.preventDefault();
+            window.$coreNotifications.toggleMessagingBox('top-search');
+        });
+
+        $dom.on(container, 'clickout', '.js-clickout-hide-top-search', function () {
+            window.$coreNotifications.toggleMessagingBox('top-search', true);
         });
     };
 }(window.$cms, window.$util, window.$dom));

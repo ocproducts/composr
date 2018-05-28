@@ -32,7 +32,7 @@ For example:
 .dropdown-menu-item-a:visited,
 .dropdown-menu-item-a:hover {
 	text-decoration: none;
-	transition: color, background-color 0.3s linear;
+	transition: color, background-color 0.3s;
 }
 
 .dropdown-menu-item.toplevel {
@@ -160,19 +160,22 @@ For example:
 	}
 
 	.dropdown-menu-item.toplevel.has-children > a::after {
-		content: "\025BC"; /* Downward arrow */
+		font-family: sans-serif;
+		content: "\025BC"; /* Downward triangle */
 		vertical-align: middle;
 		padding-left: 0.5em;
-		font-size: 0.5em;
+		font-size: 0.7em;
 		display: inline-block;
+		transform: scale(1, 0.6);
 	}
 
 	.dropdown-menu-item.nlevel.has-children > a::after {
-		content: '\025BC'; /* Downward arrow */
-		transform: rotate(-90deg); /* Point towards right */
+		font-family: sans-serif;
+		content: '\025BA'; /* Rightward triangle */
 		float: right;
-		font-size: 0.6em;
+		font-size: 0.7em;
 		margin: 0.7em 0.5em 0 1em;
+		transform: scale(0.6, 1);
 	}
 
 	.dropdown-menu-items.nlevel {

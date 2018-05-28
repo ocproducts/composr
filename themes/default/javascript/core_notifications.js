@@ -68,31 +68,30 @@
         window.maxNotificationsToShow = +params.max || 0;
 
         $dom.on(container, 'click', '.js-click-notifications-mark-all-read', function (e) {
+            e.preventDefault();
             notificationsMarkAllRead(e);
         });
 
         $dom.on(container, 'click', '.js-click-toggle-web-notifications', function (e) {
-            if (toggleWebNotifications(e) === false) {
-                e.preventDefault();
-            }
+            e.preventDefault();
+            $coreNotifications.toggleMessagingBox('web-notifications');
+        });
+        
+        $dom.on(container, 'clickout', '.js-clickout-hide-top-web-notifications', function () {
+            window.$coreNotifications.toggleMessagingBox('web-notifications', true);
         });
 
-        $dom.on(container, 'mouseup', '.js-mouseup-toggle-web-notifications', function (e) {
-            toggleWebNotifications(e);
-        });
-
-        $dom.on(container, 'mouseup', '.js-mouseup-find-url-tab', function (e) {
+        $dom.on(container, 'mouseup', '.js-click-find-url-tab', function (e) {
             $cms.ui.findUrlTab();
         });
 
         $dom.on(container, 'click', '.js-click-toggle-pts', function (e) {
-            if (togglePts(e) === false) {
-                e.preventDefault();
-            }
+            e.preventDefault();
+            $coreNotifications.toggleMessagingBox('pts');
         });
 
-        $dom.on(container, 'mouseup', '.js-mouseup-toggle-pts', function (e) {
-            togglePts(e);
+        $dom.on(container, 'clickout', '.js-clickout-hide-top-pts', function () {
+            $coreNotifications.toggleMessagingBox('pts', true);
         });
 
         function notificationsMarkAllRead(event) {
@@ -104,20 +103,7 @@
             url += '&forced_update=1';
             url += $cms.keep();
             $cms.doAjaxRequest(url, _pollForNotifications);
-            $coreNotifications.toggleMessagingBox(event, 'web-notifications', true);
-            return false;
-        }
-
-        function toggleWebNotifications(event) {
-            $coreNotifications.toggleMessagingBox(event, 'top-personal-stats', true);
-            $coreNotifications.toggleMessagingBox(event, 'pts', true);
-            return $coreNotifications.toggleMessagingBox(event, 'web-notifications');
-        }
-
-        function togglePts(event) {
-            $coreNotifications.toggleMessagingBox(event, 'top-personal-stats', true);
-            $coreNotifications.toggleMessagingBox(event, 'web-notifications', true);
-            return $coreNotifications.toggleMessagingBox(event, 'pts');
+            $coreNotifications.toggleMessagingBox('web-notifications', true);
         }
     };
 
@@ -337,60 +323,22 @@
         }
     }
 
-    $coreNotifications.toggleMessagingBox = function toggleMessagingBox(event, name, hide) {
-        hide = Boolean(hide);
+    $coreNotifications.toggleMessagingBox = function toggleMessagingBox(name, forceHide) {
+        forceHide = Boolean(forceHide);
 
-        var el = document.getElementById(name + '-rel');
+        var popupEl = document.getElementById(name + '-rel'),
+            buttonEl = document.getElementById(name + '-button');
+        
+        buttonEl.title = '';
 
-        if (!el) {
-            return;
-        }
-
-        event.withinMessageBox = true;
-
-        if (el.parentNode !== document.body) { // Move over, so it is not cut off by overflow:hidden of the header
-            el.parentNode.removeChild(el);
-            document.body.appendChild(el);
-
-            el.addEventListener('click', function (event) {
-                event.withinMessageBox = true;
-            });
-            document.body.addEventListener('click', function (event) {
-                if (event.withinMessageBox !== undefined) {
-                    return;
-                }
-                $coreNotifications.toggleMessagingBox(event, 'top-personal-stats', true);
-                $coreNotifications.toggleMessagingBox(event, 'web-notifications', true);
-                $coreNotifications.toggleMessagingBox(event, 'pts', true);
-            });
-        }
-
-        var button = document.getElementById(name + '-button');
-        button.title = '';
-
-        if ((el.style.display === 'none') && !hide) {
+        if ((popupEl.style.display === 'none') && !forceHide) {
             var tooltip = document.querySelector('body > .tooltip');
             if (tooltip != null) { // Hide tooltip, to stop it being a mess
                 tooltip.style.display = 'none';
             }
-            
-            setTimeout(setPosition, 0);
-            $dom.fadeIn(el);
+            $dom.fadeIn(popupEl);
         } else {
-            el.style.display = 'none';
-        }
-        
-        return false;
-
-        function setPosition() {
-            var buttonX = $dom.findPosX(button, true),
-                buttonWidth = button.offsetWidth,
-                x = (buttonX + buttonWidth - el.offsetWidth);
-            if (x < 0) {
-                x = 0;
-            }
-            el.style.left = x + 'px';
-            el.style.top = ($dom.findPosY(button, true) + button.offsetHeight) + 'px';
+            popupEl.style.display = 'none';
         }
     };
 }(window.$cms, window.$util, window.$dom));

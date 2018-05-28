@@ -100,6 +100,7 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#000000,dark_shadow,100% BW}
 
 /* For standard elements */
+{$THEMEWIZARD_COLOR,#404040,body_color,75% BW + 25% WB}
 {$THEMEWIZARD_COLOR,#1b77b6,heading_text,76% seed + 24% BW}
 {$THEMEWIZARD_COLOR,#239def,a.link,100% seed}
 {$THEMEWIZARD_COLOR,#1e85cb,a.hover,85% a.link + 15% BW}
@@ -253,7 +254,7 @@ body {
 	font-size: 1rem;
 	font-weight: 400;
 	line-height: 1.5;
-	color: #212529;
+	color: {$GET,body_color};
 	text-align: left;
 	background-color: #fff;
 }
@@ -641,11 +642,6 @@ html, body {
 	{$BETA_CSS_PROPERTY,text-size-adjust: none;}
 }
 
-body, .email-body, textarea, input, td, th {
-	/* 'Open Sans' is a Google font, and only will be enabled if listed in the Google Fonts configuration option -- so normally it is Segoe UI (Windows, newer version of Tahoma) or Tahoma that is active (available on Windows and Mac since Leopard) or a similar humanist sans-serif font */
-	font-family: 'Open Sans', 'Segoe UI', Tahoma, Verdana, Arial, Helvetica, sans-serif;
-}
-
 tt, kbd, samp {
 	font-weight: bold;
 	font-size: 1.15em;
@@ -1008,6 +1004,12 @@ input.input-username::-webkit-calendar-picker-indicator {
 	margin-left: auto;
 }
 
+.container::after {
+	display: block;
+	clear: both;
+	content: "";
+}
+
 #main-website #main-website-inner .global-middle-outer {
 	min-height: 450px;
 }
@@ -1099,7 +1101,6 @@ header h1 {
 /*{+END}*/
 
 .global-navigation-inner {
-	overflow: hidden;
 }
 /*{+START,CSS_MODE,mobile}*/
 	.global-navigation-inner {
@@ -1113,22 +1114,52 @@ header h1 {
 	
 }
 
-.global-navigation .top-buttons {
-}
-
-.global-navigation .top-buttons .top-button {
-	color: {$GET,WB};
-	padding: 17px 5px;
-}
-
 /*{+START,CSS_MODE,desktop}*/
 	.global-navigation .top-buttons {
 		margin-left: 1.5em;
 	}
 /*{+END}*/
 
-.global-navigation .top-buttons>div {
-	display: inline-block;
+.top-button-wrapper {
+	float: left;
+	position: relative;
+}
+
+.top-button {
+	position: relative;
+	float: left;
+	text-decoration: none;
+	transition: color, background-color 0.3s;
+	padding: 17px 10px;
+}
+
+.top-button,
+.top-button:hover,
+.top-button:visited {
+	color: {$GET,WB};
+}
+
+.top-button:hover {
+	background: rgba(0, 0, 0, 0.05);
+}
+
+.top-button > .icon {
+	width: 24px;
+	height: 24px;
+}
+
+.top-button-bubble {
+	position: absolute;
+	right: 2px;
+	border-radius: {$GET,border_radius};
+	top: 10px;
+	background: rgba(0, 0, 0, 0.7);
+	padding: 0 3px;
+	font-size: 0.8rem;
+}
+
+.top-button.count-0 .top-button-bubble {
+	display: none;
 }
 
 .global-navigation .top-form.top-search {
@@ -1682,25 +1713,27 @@ body .accessibility-hidden { /* Contents should be made visible (or interpreted)
 	overflow: hidden;
 }
 
-.clearfix::before,
 .clearfix::after {
-	content: " ";
-	display: table;
-}
-.clearfix::after {
+	display: block;
 	clear: both;
+	content: "";
 }
 
 /* Commonly used to indicate there is no content to display */
 .nothing-here, .more-here {
-	font-size: 13px !important; /* px not em due to careful background positioning */
-	padding-left: 15px !important;
 	margin: 1.5em;
-	margin-left: 10px !important;
-	background-image: url('{$IMG_INLINE;,cannot_show}');
-	background-position: left center;
-	background-repeat: no-repeat;
-	background-size: 10px 10px;
+	margin-left: 10px;
+}
+
+.nothing-here::before,
+.more-here::before {
+	font-family: sans-serif;
+	color: {$GET,seed_secondary};
+	content: '\025BA'; /* Rightward triangle */
+	vertical-align: middle;
+	padding-right: 1em;
+	display: inline-block;
+	transform: scale(0.5, 1);
 }
 
 /* Used for styling the 'last edited' information */
@@ -4289,7 +4322,6 @@ body .hero-section .hero-button>a.user-link {
 	display: inline-block;
 	border: none;
 	border-radius: {$GET,border_radius};
-	margin: 0.25em;
 	background-color: {$GET,button_background};
 	color: {$GET,box_title_text} !important;
 	text-decoration: none !important;
@@ -4298,12 +4330,6 @@ body .hero-section .hero-button>a.user-link {
 	cursor: pointer;
 	font-size: 1rem;
 	transition: color, background-color 0.3s linear;
-}
-div>.button-micro:first-child, 
-div>.button-screen:first-child, 
-div>.button-screen-item:first-child, 
-.hero-section .hero-button a:first-child {
-	margin-left: 2px; /* enough for the shadow */
 }
 
 .button-faded {
@@ -4338,7 +4364,6 @@ div>.button-screen-item:first-child,
 .button-micro {
 	padding: 4px 6px;
 	font-size: 0.85rem;
-	margin: 1px 0.2rem 0 0.4rem; /* Push it up a bit due to confined space */
 }
 /*{+START,CSS_MODE,mobile}*/
 	.button-micro {
@@ -4421,13 +4446,16 @@ div.proceed-button-left-2 {
 	height: 25px;
 }
 
-.global-button-ref-point {
+.top-button-popup {
 	position: absolute;
-	min-width: 22em;
 	z-index: 2000;
+	color: {$GET,body_color};
+	top: 100%;
+	right: 0;
+	min-width: 20em;
 }
 
-.global-button-ref-point .associated-links-block-group, 
+.top-button-popup .associated-links-block-group, 
 .notification + .notification {
 	margin-top: 0.5em;
 	border-top: 1px solid {$GET,pale_border};

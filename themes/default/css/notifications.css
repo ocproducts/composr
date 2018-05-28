@@ -3,40 +3,11 @@
  Copyright (c) ocProducts, 2004-2018
 */
 
+.block-top-notifications {
+	float: left;
+}
+
 /* Web UI */
-
-#web-notifications-button,
-#pts-button {
-	display: inline-block;
-	position: relative;
-	text-decoration: none;
-}
-
-#web-notifications-button .icon,
-#pts-button .icon {
-	width: 24px;
-	height: 24px;
-}
-
-#web-notifications-button .top-button-bubble,
-#pts-button .top-button-bubble {
-	position: absolute;
-	right: 2px;
-	border-radius: {$GET,border_radius};
-	top: 10px;
-	background: rgba(0, 0, 0, 0.7);
-	padding: 0 3px;
-	font-size: 0.8rem;
-}
-
-#web-notifications-button.count-0 .top-button-bubble, 
-#pts-button.count-0 .top-button-bubble {
-	display: none;
-}
-
-.count-0 {
-	/*opacity: 0.5;*/
-}
 
 .notification {
 	margin: 0.5em 0;
