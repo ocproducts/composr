@@ -1033,12 +1033,12 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
         $field_set = alternate_fields_set__start($set_name);
 
         $_FORM_INPUT_SUFFIX = $place_list;
-        $upload_field = form_input_upload(do_lang_tempcode('FILEDUMP_UPLOAD'), '', 'tag_contents__c', false);
+        $upload_field = form_input_upload(do_lang_tempcode('CHOICE_FILEDUMP_UPLOAD'), '', 'tag_contents__c', false);
         $_FORM_INPUT_SUFFIX = null;
         $field_set->attach($upload_field);
 
         $filedump_url = build_url(array('page' => 'filedump'), get_module_zone('filedump'));
-        $field_set->attach(form_input_tree_list(do_lang_tempcode('FILEDUMP_EXISTING'), do_lang_tempcode('COMCODE_TAG_media_EMBED__library', escape_html($filedump_url->evaluate())), 'tag_contents__b', '', 'choose_filedump_file', array(), false, '', false));
+        $field_set->attach(form_input_tree_list(do_lang_tempcode('CHOICE_FILEDUMP_EXISTING'), do_lang_tempcode('COMCODE_TAG_media_EMBED__library', escape_html($filedump_url->evaluate())), 'tag_contents__b', '', 'choose_filedump_file', array(), false, '', false));
 
         $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'tag_contents__a', $default_embed, false));
 

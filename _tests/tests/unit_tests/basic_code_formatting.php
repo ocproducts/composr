@@ -25,6 +25,8 @@ class basic_code_formatting_test_set extends cms_test_case
     {
         parent::setUp();
 
+        @set_time_limit(1000);
+
         require_code('files2');
 
         $this->files = get_directory_contents(get_file_base(), '', IGNORE_FLOATING | IGNORE_CUSTOM_DIR_FLOATING_CONTENTS | IGNORE_UPLOADS | IGNORE_SHIPPED_VOLATILE | IGNORE_UNSHIPPED_VOLATILE | IGNORE_CUSTOM_THEMES);
@@ -331,6 +333,7 @@ class basic_code_formatting_test_set extends cms_test_case
                     'themes/default/templates/CROP_TEXT_MOUSE_OVER_INLINE.tpl',
                     'themes/default/templates/CROP_TEXT_MOUSE_OVER.tpl',
                     'themes/default/templates/CNS_USER_MEMBER.tpl',
+                    'themes/default/templates/ICON.tpl',
                 ))) {
                     $expected_breaks = 0;
                 }

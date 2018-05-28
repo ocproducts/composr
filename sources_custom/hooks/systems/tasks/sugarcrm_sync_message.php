@@ -35,6 +35,10 @@ class Hook_task_sugarcrm_sync_message
      */
     public function run($subject, $body, $to_email, $to_name, $from_email, $from_name, $attachments, $body_parts, $body_prefix, $body_suffix)
     {
+        if (!addon_installed('sugarcrm')) {
+            return null;
+        }
+
         require_code('sugarcrm');
         sugarcrm_initialise_connection();
 

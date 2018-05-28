@@ -444,6 +444,8 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/cqc_site.php',
             '_tests/tests/unit_tests/cqc_sources.php',
             '_tests/tests/unit_tests/cqc_welcome.php',
+            '_tests/tests/unit_tests/cqc_cns.php',
+            '_tests/tests/unit_tests/cqc_persistent_caching.php',
             '_tests/tests/unit_tests/web_resources.php',
             '_tests/tests/unit_tests/media.php',
             '_tests/tests/unit_tests/versioning.php',

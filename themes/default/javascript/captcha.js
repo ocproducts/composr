@@ -46,7 +46,7 @@
                     // Decrease perceived page load time - the delay stops the browser 'spinning' while loading 13 URLs right away - people won't submit form within 5 seconds
                     setTimeout(function () {
                         window.grecaptcha.render(captchaEl, grecaptchaParameters, false);
-                    }, 5000); 
+                    }, 5000);
 
                     $dom.on(form, 'submit', function (e) {
                         if (!captchaEl.dataset.recaptchaSuccessful || (captchaEl.dataset.recaptchaSuccessful === '0')) {

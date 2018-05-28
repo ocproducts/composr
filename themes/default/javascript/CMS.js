@@ -1020,7 +1020,7 @@
             }
             iconEl.src = newSrc;
         }
-        
+
         // Replace the existing icon-* class with the new one
         newClass = iconName.replace(/_/g, '-').replace(/\//g, '--');
         // Using setAttribute() because the className property on <svg> elements is a "SVGAnimatedString" object rather than a string
@@ -1035,17 +1035,17 @@
      */
     $cms.isIcon = function isIcon(iconEl, iconName) {
         var src;
-        
+
         if (iconEl.localName === 'svg') {
             return iconEl.querySelector('use').getAttribute('xlink:href').endsWith('#' + iconName.replace(/\//g, '__'));
         }
-        
+
         src = $util.url(iconEl.src);
-        
+
         if (src.pathname.includes('/themewizard.php')) {
             return src.searchParams.get('show') === 'icons/' + iconName;
         }
-        
+
         return src.pathname.includes('icons/' + iconName);
     };
 

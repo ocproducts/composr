@@ -35,7 +35,7 @@
 							{+START,INCLUDE,ICON}
 								NAME=menu/rich_content/downloads
 							   ICON_SIZE=24
-							{+END} 
+							{+END}
 							{+START,IF,{MAY_DOWNLOAD}}
 								<p class="download-link associated-link suggested-link"><a {+START,IF,{$NOT,{$INLINE_STATS}}} data-click-ga-track="{ category: '{!DOWNLOAD;^*}', action: '{ORIGINAL_FILENAME;^*}' }"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
 							{+END}

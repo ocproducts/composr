@@ -2077,6 +2077,14 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CHMOD_FAIL
         CHMOD_PASS
         CHOICE
+        CDN_REGEXPS
+        CONFIG_OPTION_cdn_regexps
+        CONFIG_OPTION_ipstack_api_key
+        CONFIG_OPTION_noindex_comcode_pages
+        CONFIG_OPTION_use_monochrome_icons
+        IPSTACK_API_KEY
+        NOINDEX_COMCODE_PAGES
+        TOO_MANY_PAGES_LOGGED
         CHOOSE_A_CONFIG_CATEGORY
         CHOOSE_CATALOGUE
         CHOOSE_CRITICISE_LIST_LANG_FILE
@@ -4862,6 +4870,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FILEDUMP_EDIT
         FILEDUMP_EMBED
         FILEDUMP_EXISTING_COUNT
+        CHOICE_FILEDUMP_EXISTING
+        CHOICE_FILEDUMP_UPLOAD
         FILEDUMP_FOLDER_MATCHING
         FILEDUMP_FOLDER_NON_MATCHING
         FILEDUMP_IMAGE_URLS
@@ -7805,6 +7815,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TOPIC_PINNED_FOR
         USERGROUP_SUBSCRIPTION_DESCRIPTION
         _SUBSCRIPTION
+        IMAGE_EDITING_QUESTION
+        IMAGE_EDITING_TYPE
+        INPUTSYSTEM_ATTACHMENT
+        INPUTSYSTEM_MEDIA
+        INPUTSYSTEM_RAW_IMAGE
         TASK_COMPLETED
         TASK_COMPLETED_BODY
         TASK_COMPLETED_BODY_ATTACHMENT
@@ -7898,7 +7913,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADDRESS_CURRENT
         ADDRESS_DESIRED
         ADDRESS_DESIRED_STUB
-        ADD_ATTACHMENT
         ADD_DATE
         ADD_FRIEND_ACTION_DESCRIPTION
         ADD_IMAGES

@@ -31,7 +31,7 @@
             if (this.$closest(e.target, '.js-click-confirm-delete')) {
                 return;
             }
-            
+
             if (data.vwTaskDone === 'checklist_todo') {
                 $cms.loadSnippet('checklist_task_manage', 'type=mark_done&id=' + id);
                 $cms.setIcon(this.iconChecklistStatus, 'checklist/checklist_done', '{$IMG;,icons/checklist/checklist_done}');
@@ -225,7 +225,7 @@
                         $dom.hide(checklistRows[i]);
                         checklistRows[i].classList.add('task-hidden');
                     } else {
-                        checklistRows[i].classList.remove('task-hidden'); 
+                        checklistRows[i].classList.remove('task-hidden');
                     }
                 } else {
                     if ($dom.notDisplayed(checklistRows[i])) {

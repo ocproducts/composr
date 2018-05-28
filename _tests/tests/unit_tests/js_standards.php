@@ -52,6 +52,7 @@ class js_standards_test_set extends cms_test_case
     protected function check_for_script_override_issue($file, $c)
     {
         $c2 = str_replace('/index.php', '', $c);
+        $c2 = str_replace('/empty.php', '', $c2);
         $this->assertTrue(preg_match('#/(data|adminzone|cms|site|forum)/\w+\.php#', $c2) == 0, $file . ' is directly referencing a script, bypassing override system');
     }
 }

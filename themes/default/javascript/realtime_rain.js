@@ -104,11 +104,11 @@
             if (e.parentNode) {
                 e.parentNode.parentNode.removeChild(e.parentNode);
             }
-            
+
             $cms.setIcon(img, 'tool_buttons/realtime_rain_on', '{$IMG;,icons/tool_buttons/realtime_rain_on}');
             return false;
         }
-        
+
         $cms.setIcon(img, 'tool_buttons/realtime_rain_off', '{$IMG;,icons/tool_buttons/realtime_rain_off}');
 
         var tmpElement = document.getElementById('realtime-rain-img-loader');

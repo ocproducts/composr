@@ -159,7 +159,7 @@ function add_poll($question, $a1, $a2, $a3 = '', $a4 = '', $a5 = '', $a6 = '', $
         generate_resource_fs_moniker('poll', strval($id), null, null, true);
     }
 
-    if ($current) {
+    if ($current == 1) {
         require_code('sitemap_xml');
         notify_sitemap_node_add('_SEARCH:polls:view:' . strval($id));
     }

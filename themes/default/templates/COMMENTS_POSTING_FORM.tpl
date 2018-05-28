@@ -163,7 +163,7 @@
 												ICON_SIZE=14
 												ICON_ATTRS=data-vw-rating="10"
 											{+END}
-											
+
 											<input id="review-rating--{TYPE|*}--{REVIEW_TITLE|*}--{ID|*}" class="js-inp-review-rating" type="hidden" name="review_rating__{REVIEW_TITLE|*}" value="" />
 										</td>
 									</tr>

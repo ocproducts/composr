@@ -210,14 +210,14 @@ function upgrader_link($url, $text, $disabled = false, $js = '')
     if (get_param_integer('keep_show_loading', 0) == 1) {
         $url .= '&keep_show_loading=1';
     }
-    $icon = 'buttons/proceed';
+    $_icon = 'buttons/proceed';
     if ($text == do_lang('MORE_OPTIONS')) {
-        $icon = 'buttons/back';
+        $_icon = 'buttons/back';
     }
 
     $ret = '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">';
     $ret .= $hidden;
-    $icon = do_template('ICON', array('NAME' => $icon));
+    $icon = do_template('ICON', array('NAME' => $_icon));
     $ret .= '<button ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="button-screen-item" type="submit">' . $icon->evaluate() . ' ' . escape_html($text) . '</button>';
     $ret .= '</form>';
     return $ret;

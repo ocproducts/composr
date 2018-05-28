@@ -32,8 +32,8 @@ function init__global4()
 /**
  * Find whether a page is indexable.
  *
- * @param  ID_TEXT Zone name
- * @param  ID_TEXT Page name
+ * @param  ID_TEXT $zone Zone name
+ * @param  ID_TEXT $codename Page name
  * @return boolean Whether it is indexable
  */
 function comcode_page_is_indexable($zone, $codename)

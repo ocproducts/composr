@@ -21,7 +21,7 @@
 			<ul class="horizontal-links associated-links-block-group force-margin">
 				<li>
 					<span><a href="{TOPIC_URL*}" title="{!VIEW}: {!FORUM_POST} #{ID*}">{!VIEW}</a></span>
-					{+START,IF,{$NEQ,{_ADDITIONAL_POSTS},0}} 
+					{+START,IF,{$NEQ,{_ADDITIONAL_POSTS},0}}
 						<a class="top-vertical-alignment help-icon" data-cms-rich-tooltip="{}" title="{!cns:ADDITIONAL_PT_POSTS,{ADDITIONAL_POSTS}}" href="#!">
 							{+START,INCLUDE,ICON}
 								NAME=help

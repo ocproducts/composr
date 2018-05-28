@@ -87,7 +87,7 @@
 
     $themeColours.doColorChooser = function doColorChooser() {
         var myElements = document.querySelectorAll('div[id^=cc-target-]'), ce;
-        
+
         for (ce = 0; ce < myElements.length; ce++) {
             doColorChooserElement(myElements[ce]);
         }
@@ -158,7 +158,7 @@
                 }
                 $dom.html(c[d], innert);
             }
-            
+
             $dom.on(c[0], 'click', '.js-click-do-color-change', doColorChange);
             $dom.on(c[1], 'click', '.js-click-do-color-change', doColorChange);
             $dom.on(c[2], 'click', '.js-click-do-color-change', doColorChange);

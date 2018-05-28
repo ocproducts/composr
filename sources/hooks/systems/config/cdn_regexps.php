@@ -38,6 +38,9 @@ class Hook_config_cdn_regexps
             'explanation' => 'CONFIG_OPTION_cdn_regexps',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
+
+            'public' => false,
 
             'addon' => 'core_configuration',
         );

@@ -26,6 +26,10 @@ class Hook_task_sugarcrm_sync_member
      */
     public function run($member_id)
     {
+        if (!addon_installed('sugarcrm')) {
+            return null;
+        }
+
         require_code('sugarcrm');
         sugarcrm_initialise_connection();
 

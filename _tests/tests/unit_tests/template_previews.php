@@ -398,15 +398,12 @@ class template_previews_test_set extends cms_test_case
     protected function shuffle_assoc(&$array)
     {
         $keys = array_keys($array);
-
         shuffle($keys);
 
+        $new = array();
         foreach ($keys as $key) {
             $new[$key] = $array[$key];
         }
-
         $array = $new;
-
-        return true;
     }
 }

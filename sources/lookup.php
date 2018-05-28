@@ -242,7 +242,7 @@ function find_security_alerts($where = array())
  * Save analytics metadata for the current user's request into a file.
  *
  * @param  boolean $include_referer Whether to include the referer
- * @param ?MEMBER $member_id Member to lookup (null: current user)
+ * @param  ?MEMBER $member_id Member to lookup (null: current user)
  * @return PATH The path of the file
  */
 function save_user_metadata($include_referer = false, $member_id = null)
@@ -263,13 +263,7 @@ function save_user_metadata($include_referer = false, $member_id = null)
  * Find analytics metadata for the current user's request.
  *
  * @param  boolean $include_referer Whether to include the referer
- * @return array Data
- */
-/**
- * Find analytics metadata for the current user's request.
- *
- * @param boolean $include_referer Whether to include the referer
- * @param ?MEMBER $member_id Member to lookup (null: current user)
+ * @param  ?MEMBER $member_id Member to lookup (null: current user)
  * @return array Data
  */
 function find_user_metadata($include_referer = true, $member_id = null)
@@ -289,7 +283,7 @@ function find_user_metadata($include_referer = true, $member_id = null)
     }
 
     if (!is_guest()) {
-        $data[do_lang('cns:PROFILE')] = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true, false);
+        $data[do_lang('cns:PROFILE')] = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
     }
 
     if ($member_id == get_member()) {
@@ -305,8 +299,8 @@ function find_user_metadata($include_referer = true, $member_id = null)
 
     if (get_option('ipstack_api_key') != '') {
         $ip_stack_url = 'http://api.ipstack.com/' . rawurlencode($ip) . '?access_key=' . urlencode(get_option('ipstack_api_key'));
-	    $_json = http_get_contents($ip_stack_url, array('trigger_error' => false));
-	    $json = @json_decode($_json, true);
+        $_json = http_get_contents($ip_stack_url, array('trigger_error' => false));
+        $json = @json_decode($_json, true);
         if (is_array($json)) {
             $data['~Geo-Lookup'] = $json;
         }
@@ -384,7 +378,7 @@ function find_user_metadata($include_referer = true, $member_id = null)
 
             $h = array();
 
-            $h[$l_date_time] = get_timezoned_date(tz_time($myrow['date_and_time'], get_server_timezone()), true, false, false, true);
+            $h[$l_date_time] = get_timezoned_date_time(tz_time($myrow['date_and_time'], get_server_timezone()), false);
 
             $page_link = convert_page_string_to_page_link($myrow['the_page']);
             list($zone, $attributes) = page_link_decode($page_link);

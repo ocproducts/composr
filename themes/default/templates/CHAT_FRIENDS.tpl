@@ -50,7 +50,7 @@
 						<a {+START,IF,{SIMPLER}} title="{ONLINE_TEXT*}"{+END}>{+START,INCLUDE,ICON}
 							NAME=menu/social/members
 							ICON_ID=friend-img-{MEMBER_ID*}
-							ICON_SIZE=24 
+							ICON_SIZE=24
 						{+END}</a>
 					</td>
 

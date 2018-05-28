@@ -4043,3 +4043,57 @@ function is_maintained_description($code, $text)
     }
     return $text;
 }
+
+/**
+ * Get the Internet host name corresponding to a given IP address.
+ *
+ * @param  string $ip_address IP address
+ * @return string Host name OR IP address if failed to look up
+ */
+function cms_gethostbyaddr($ip_address)
+{
+	$hostname = '';
+
+	if ((php_function_allowed('shell_exec')) && (get_value('slow_php_dns') === '1')) {
+		$hostname = trim(preg_replace('#^.* #', '', shell_exec('host ' . escapeshellarg($ip_address))));
+	}
+
+	if ($hostname == '') {
+		if (php_function_allowed('gethostbyaddr')) {
+			$hostname = @gethostbyaddr($ip_address);
+		}
+	}
+
+	if ($hostname == '') {
+		$hostname = $ip_address;
+	}
+
+	return $hostname;
+}
+
+/**
+ * Get the IP address corresponding to a given Internet host name.
+ *
+ * @param  string $hostname Host name
+ * @return string IP address OR host name if failed to look up
+ */
+function cms_gethostbyname($hostname)
+{
+	$ip_address = '';
+
+	if ((php_function_allowed('shell_exec')) && (get_value('slow_php_dns') === '1')) {
+		$ip_address = preg_replace('#^.*has address (\d+\.\d+\.\d+).*#s', '$1', shell_exec('host ' . escapeshellarg($hostname)));
+	}
+
+	if ($ip_address == '') {
+		if (php_function_allowed('gethostbyaddr')) {
+			$ip_address = @gethostbyaddr($ip_address);
+		}
+	}
+
+	if ($ip_address == '') {
+		$ip_address = $hostname;
+	}
+
+	return $ip_address;
+}

@@ -37,7 +37,7 @@ class Hook_symbol_FORM_TO_EMAIL_URL
         } else {
             $redirect_url = get_self_url(true);
         }
-        $url .= '?redirect=' . cms_url_encode(protect_url_parameter($redirect_url)));
+        $url .= '?redirect=' . cms_urlencode(static_evaluate_tempcode(protect_url_parameter($redirect_url)));
         $url .= keep_symbol(array());
         return $url;
     }

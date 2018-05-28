@@ -1258,38 +1258,6 @@ function ecv2_HAS_CATEGORY_ACCESS($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string The result
  */
-function ecv2_HAS_EDIT_PERMISSION($lang, $escaped, $param)
-{
-    $value = '';
-
-    if (isset($param[1])) {
-        $range = strtolower($param[0]);
-        $owner = intval($param[1]);
-        $member_id = (($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member();
-        $cms_page = (($param !== null) && (isset($param[3]))) ? $param[3] : get_page_name();
-        if (array_key_exists(5, $param)) {
-            $value = has_edit_permission($range, $member_id, $owner, $cms_page, array($param[4], $param[5])) ? '1' : '0';
-        } else {
-            $value = has_edit_permission($range, $member_id, $owner, $cms_page) ? '1' : '0';
-        }
-    }
-
-    if ($GLOBALS['XSS_DETECT']) {
-        ocp_mark_as_escaped($value);
-    }
-    return $value;
-}
-
-/**
- * Evaluate a particular Tempcode symbol.
- *
- * @ignore
- *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
- * @param  array $escaped Array of escaping operations
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result
- */
 function ecv2_SUPPORTS_FRACTIONAL_EDITABLE($lang, $escaped, $param)
 {
     $value = '0';

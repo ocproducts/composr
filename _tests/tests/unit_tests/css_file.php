@@ -295,6 +295,7 @@ class css_file_test_set extends cms_test_case
         }
 
         $exceptions = array(
+            'table-header-sorted',
             'comcode-button',
             'back-to-top-by-buttons',
             'display-mobile',

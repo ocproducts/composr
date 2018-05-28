@@ -34,6 +34,9 @@ class Hook_config_sugarcrm_skip_string
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 5,
+            'required' => false,
+
+            'public' => false,
 
             'addon' => 'sugarcrm',
         );
@@ -46,6 +49,10 @@ class Hook_config_sugarcrm_skip_string
      */
     public function get_default()
     {
+        if (!addon_installed('sugarcrm')) {
+            return null;
+        }
+
         return 'TESTING123';
     }
 }

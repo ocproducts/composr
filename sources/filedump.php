@@ -260,11 +260,12 @@ function check_filedump_uploaded($file)
  * Add a filedump file to the system, moving in the file and adding a description to the database.
  *
  * @param  string $place Whether it is being stored under uploads/filedump
- * @param  string $file The filename
- * @param  string $temp_path The temporary file path
+ * @param  string $filename The filename
+ * @param  string $tmp_path The temporary file path
  * @param  string $description The description
  * @param  ?boolean $plupload_based Whether this is a Plupload (i.e. from a faked $_FILES-array-row) (null: work out from environment)
  * @param  boolean $check_permissions Check access permissions
+ * @return Tempcode Error message
  */
 function add_filedump_file($place, &$filename, $tmp_path, $description = '', $plupload_based = null, $check_permissions = true)
 {

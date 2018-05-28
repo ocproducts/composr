@@ -346,13 +346,13 @@ function _sitemap_cache_node($node, $guest_access)
 /**
  * Add a row to our sitemap cache.
  *
- * @param SHORT_TEXT $page_link The page-link
- * @param ?TIME $add_date The add time (null: unknown)
- * @param ?TIME $edit_date The edit time (null: same as add time)
- * @param ?float $priority The sitemap priority, a SITEMAP_IMPORTANCE_* constant (null: unknown - and trigger a Sitemap tail call to find it)
- * @param ?ID_TEXT $refreshfreq The refresh frequency (null: unknown - and trigger a Sitemap tail call to find it)
+ * @param  SHORT_TEXT $page_link The page-link
+ * @param  ?TIME $add_date The add time (null: unknown)
+ * @param  ?TIME $edit_date The edit time (null: same as add time)
+ * @param  ?float $priority The sitemap priority, a SITEMAP_IMPORTANCE_* constant (null: unknown - and trigger a Sitemap tail call to find it)
+ * @param  ?ID_TEXT $refreshfreq The refresh frequency (null: unknown - and trigger a Sitemap tail call to find it)
  * @set always hourly daily weekly monthly yearly never
- * @param ?boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to true then it will not end up in an XML Sitemap, but we'll keep tabs of it for other possible uses) (null: unknown - and trigger a Sitemap tail call to find it)
+ * @param  ?boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to true then it will not end up in an XML Sitemap, but we'll keep tabs of it for other possible uses) (null: unknown - and trigger a Sitemap tail call to find it)
  */
 function notify_sitemap_node_add($page_link, $add_date = null, $edit_date = null, $priority = null, $refreshfreq = null, $guest_access = null)
 {
@@ -474,7 +474,7 @@ function notify_sitemap_node_add($page_link, $add_date = null, $edit_date = null
  * For renames instead call notify_sitemap_node_delete then notify_sitemap_node_add.
  *
  * @param  SHORT_TEXT $page_link The page-link
- * @param  boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML Sitemap, but we'll keep tabs of it for other possible uses)
+ * @param  ?boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML Sitemap, but we'll keep tabs of it for other possible uses) (null: unknown)
  */
 function notify_sitemap_node_edit($page_link, $guest_access = null)
 {

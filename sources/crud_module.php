@@ -1226,7 +1226,7 @@ abstract class Standard_crud_module
             if ((array_key_exists(2, $table_result)) && ($table_result[2] !== null)) {
                 $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_TABLE_EXTRA',
                     escape_html($table_result[2]->evaluate()),
-                    escape_html($table_result[3]->evaluate())),
+                    escape_html($table_result[3]->evaluate()),
                     array(
                         static_evaluate_tempcode(do_template('ICON', array(
                             'NAME' => 'buttons/search',
@@ -1247,7 +1247,7 @@ abstract class Standard_crud_module
                         'NAME' => 'admin/view_archive',
                         'ICON_SIZE' => '18',
                         'ICON_CLASS' => 'vertical-alignment',
-                    ))),
+                    )))
                 ));
             } else {
                 $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_TABLE'));
@@ -1295,7 +1295,7 @@ abstract class Standard_crud_module
                             'NAME' => 'admin/view_archive',
                             'ICON_SIZE' => '18',
                             'ICON_CLASS' => 'vertical-alignment',
-                        ))),
+                        )))
                     ));
                 }
                 $entries = $_entries[0];

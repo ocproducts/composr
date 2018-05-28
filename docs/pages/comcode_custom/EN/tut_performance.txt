@@ -105,7 +105,7 @@ You could:
 
 Of course you may want to make changes to [tt]galleries.css[/tt] too. In which case you'd need to copy and paste the contents onto the end of [tt]global.css[/tt] and make changes there, rather than doing an include.
 
-[title="2"][tt]HTML_COMPRESS[/tt] and [tt]CDN_FILTER[/tt] directives[/tt]
+[title="2"][tt]HTML_COMPRESS[/tt] and [tt]CDN_FILTER[/tt] directives[/title]
 
 Composr has HTML compression. If you wish you can edit the [tt]GLOBAL_HTML_WRAP[/tt] template to wrap the contents like:
 [code="HTML"]
@@ -119,7 +119,7 @@ Both directives make some assumptions based upon Composr coding standards. So ma
 
 Note that these directives will not do anything if the "Output streaming" option is enabled. Also they will disable if you temporarily are disabling output minification.
 
-[title="3"][tt]HTML_COMPRESS[/tt] directive[/tt]
+[title="3"][tt]HTML_COMPRESS[/tt] directive[/title]
 
 The [tt]HTML_COMPRESS[/tt] rules available are:
  - [tt]cdata[/tt] -- remove [tt]CDATA[/tt] code from JavaScript, which is needed for XHTML but not HTML
@@ -136,7 +136,7 @@ The [tt]HTML_COMPRESS[/tt] rules available are:
   - if you're using a [tt]<base>[/tt] tag with a new base URL, you shouldn't use this
  - [tt]selfclose[/tt] -- remove unneeded tag self-closing indicators for tags that always self-close
 
-[title="4"]More advanced discussion[/tt]
+[title="4"]More advanced discussion[/title]
 
 We don't do anything particularly assumptive or risky in this directive, for that you can consider Cloudflare or [tt]mod_pagespeed[/tt]. For example:
  - We don't recompress images, or target scaled-down images to different devices, or switch file extensions on you. We assume you'll compress your own theme images well, and do some image compression when we generate thumbnails. It would be technically very challenging for us to implement these image switching techniques, and we feel we'd cause as many problems as we'd solve.
@@ -145,7 +145,7 @@ We don't do anything particularly assumptive or risky in this directive, for tha
  - We don't automatically merge stylesheets or script files. A technique to do this manually (i.e. in knowledge of your real tradeoffs) is discussed in this tutorial though.
  - We don't try and implement an initially-inlined-then-locally-cached mechanism using a shared client/server memory of what resources have already been sent. This is a really cool technique that can make initial page-load time optimal, and subsequent page-load time optimal, without any kind of tradeoff. However it is very complex and should not be implemented within the scope of a CMS. It also is not necessarily optimal except for simple sites, due to the possibility of connection stutter during the initial monolithic page transfer.
 
-[title="3"][tt]CDN_FILTER[/tt] directive[/tt]
+[title="3"][tt]CDN_FILTER[/tt] directive[/title]
 
 The [tt]CDN_FILTER[/tt] directive is equivalent of individually wrapping the [tt]CDN_FILTER[/tt] symbol on each URL within the contained HTML.
 This allows images in WYSIWYG-edited code to be passed through the CDN without this having to be seen or considered at the editing level.

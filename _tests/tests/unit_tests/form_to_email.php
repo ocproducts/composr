@@ -28,6 +28,10 @@ class form_to_email_test_set extends cms_test_case
         $result = cms_http_request($url, array('trigger_error' => false, 'post_params' => array('foo' => 'bar')));
         set_option('mail_queue_debug', $bak);
 
+        if (get_param_integer('debug', 0) == 1) {
+            @var_dump($result);
+        }
+
         $rows = $GLOBALS['SITE_DB']->query_select('logged_mail_messages', array('*'), array(), 'ORDER BY m_date_and_time DESC', 2);
         foreach ($rows as $row) {
             $this->assertTrue(strpos($row['m_message'], 'bar') !== false);

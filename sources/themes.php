@@ -365,7 +365,7 @@ function cdn_filter($url_path)
         static $normal_prefix = null;
         static $bus = null;
         if ($normal_prefix === null) {
-            $normal_prefix = '#(^https?://)' . preg_quote(cms_srv('HTTP_HOST'), '#') . '(/)#';
+            $normal_prefix = '#(^https?://)' . preg_quote($_SERVER['HTTP_HOST'], '#') . '(/)#';
             $bus = get_base_url() . '/';
         }
         if (substr($url_path, 0, strlen($bus)) == $bus) {

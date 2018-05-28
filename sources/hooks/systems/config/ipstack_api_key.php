@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core
+ * @package    core_configuration
  */
 
 /**
@@ -40,7 +40,9 @@ class Hook_config_ipstack_api_key
             'list_options' => '',
             'required' => false,
 
-            'addon' => 'core',
+            'public' => false,
+
+            'addon' => 'core_configuration',
         );
     }
 

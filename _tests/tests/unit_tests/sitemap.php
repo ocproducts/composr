@@ -182,8 +182,8 @@ class sitemap_test_set extends cms_test_case
         $props_meta = array(
             'description',
             'image',
-            'add_date',
-            'edit_date',
+            'add_time',
+            'edit_time',
             'submitter',
             'views',
             'rating',

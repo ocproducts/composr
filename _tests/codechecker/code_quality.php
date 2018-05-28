@@ -630,8 +630,16 @@ if (isset($_GET['test'])) {
     if (isset($_GET['avoid'])) {
         $avoid = explode(',', $_GET['avoid']);
     }
+    $filter = array();
+    if (isset($_GET['filter'])) {
+        $filter = explode(',', $_GET['filter']);
+    }
+    $filter_avoid = array();
+    if (isset($_GET['filter_avoid'])) {
+        $filter_avoid = explode(',', $_GET['filter_avoid']);
+    }
     $enable_custom = isset($_GET['enable_custom']) && ($_GET['enable_custom'] == '1');
-    $files = do_dir($COMPOSR_PATH . (isset($_GET['subdir']) ? ('/' . $_GET['subdir']) : ''), $enable_custom, true, $avoid);
+    $files = do_dir($COMPOSR_PATH . (isset($_GET['subdir']) ? ('/' . $_GET['subdir']) : ''), $enable_custom, true, $avoid, $filter, $filter_avoid);
     $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
     foreach ($files as $i => $to_use) {
         if ($i < $start) {

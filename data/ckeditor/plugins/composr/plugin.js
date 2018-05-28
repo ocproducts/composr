@@ -62,7 +62,7 @@
 						editor.execCommand('image');
 					} else {
 						$cms.ui.generateQuestionUi(
-							window.lang_PREFER_CMS_ATTACHMENTS, 
+							window.lang_PREFER_CMS_ATTACHMENTS,
 							{
 								'buttons/all': window.lang_INPUTSYSTEM_MEDIA,
 								'buttons/upload': window.lang_INPUTSYSTEM_ATTACHMENT,
@@ -74,11 +74,11 @@
 							if (prompt.toLowerCase() === window.lang_INPUTSYSTEM_RAW_IMAGE.toLowerCase()) {
 								editor.execCommand('image');
 							}
-						
+
 							if (prompt.toLowerCase() === window.lang_INPUTSYSTEM_ATTACHMENT.toLowerCase()) {
 								$util.navigate(document.getElementById('upload-button-file' + window.numAttachments));
 							}
-						
+
 							if (prompt.toLowerCase() === window.lang_INPUTSYSTEM_MEDIA.toLowerCase()) {
 								window.doInputComcode(editor.element.$.id, 'media', '&image=1');
 							}

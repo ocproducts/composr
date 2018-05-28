@@ -36,7 +36,7 @@
 
             if (errorMsgElementWrapper) {
                 var errorMsgElement = errorMsgElementWrapper.querySelector('.js-error-message');
-                
+
                 // Make error message visible, if there's an error
                 $dom.toggle(errorMsgElementWrapper, (errorMsg !== ''));
 
