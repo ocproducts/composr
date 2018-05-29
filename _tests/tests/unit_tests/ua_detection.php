@@ -31,8 +31,8 @@ class ua_detection_test_set extends cms_test_case
         require_code('cns_topics_action');
         require_code('cns_topics_action2');
 
-        $topic_id = cns_make_topic(db_get_first_id(), 'Test');
-        cns_make_post($topic_id, 'welcome', 'welcome to the posts', 0, false, null, 0, null, null, null, null, null, null, null, true, true, null, true, '', 0, null, false, false, false);
+        $topic_id = cns_make_topic(db_get_first_id(), 'Test', '', 1, 1, 0, 0, 0, null, null, false);
+        cns_make_post($topic_id, 'welcome', 'welcome to the posts', 0, false, 1, 0, null, null, null, null, null, null, null, true, true, null, true, '', 0, null, false, false, false);
 
         $data = http_download_file($url->evaluate(), null, false, false, 'Googlebot');
         $this->assertTrue(strpos($data, 'findpost') === false);

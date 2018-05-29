@@ -530,7 +530,7 @@ For languages that have very high-quality release-ready translations an addon is
 Composr associated topics with content using the topic description field. This involves a translated language string.
 Therefore if you switch your default site language, any existing topics will become disassociated.
 You can resolve with a manual database query (in something like phpMyAdmin):
-[code]
+[code="SQL"]
 UPDATE cms_f_topics SET t_description=REPLACE(t_description, 'Comment: ', 'Commentaire: ');
 [/code]
 Replace [tt]Commentaire[/tt] with whatever you have translated the [tt]COMMENT[/tt] language string to.

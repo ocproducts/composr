@@ -33,7 +33,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>Unless you use webmail, you'll be using these already. You don't need any special understanding of them.</td>
 		</tr>
 		<tr>
-			<td>[abbr="Transfer Control Protocol / Internet Protocol"][url="https://tools.ietf.org/html/rfc793"]TCP[/url]/[url="https://tools.ietf.org/html/rfc1700"]IP[/url][/abbr]</td>
+			<td>[abbr="Transfer Control Protocol / Internet Protocol"][url="https://tools.ietf.org/html/rfc793"]TCP[/url]/[url="https://www.ietf.org/rfc/rfc2460.txt"]IP[/url][/abbr]</td>
 			<td>This is the protocol for transmitting Internet data.</td>
 			<td>You won't need much awareness except knowing what IP addresses are and are used for (explained in the [page="_SEARCH:tut_trace"]Using IP addresses to trace users tutorial[/page]).</td>
 		</tr>

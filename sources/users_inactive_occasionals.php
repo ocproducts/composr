@@ -84,7 +84,7 @@ function _enforce_sessioned_url($url)
  */
 function create_session($member, $session_confirmed = 0, $invisible = false, $create_cookie = true)
 {
-    global $SESSION_CACHE, $MEMBER_CACHED;
+    global $SESSION_CACHE, $MEMBER_CACHED, $SITE_INFO;
     $MEMBER_CACHED = $member;
 
     if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (is_guest($member))) {

@@ -24,9 +24,9 @@
 			speed: {SPEED%}
 		});
 		sliders.on('swipeleft', function(e) {
-		    unslider.prev();
+		    sliders.prev();
 		}).on('swiperight', function(e) {
-		    unslider.next();
+		    sliders.next();
 		});
 	});
 //]]></script>

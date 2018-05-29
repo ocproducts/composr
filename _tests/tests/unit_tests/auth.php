@@ -93,9 +93,9 @@ class auth_test_set extends cms_test_case
 
         $ips = array();
         $server_addr = get_ip_address(3, cms_srv('SERVER_ADDR'));
-        if (($server_addr == '0000:0000:0000:0000:0000:0000:*:*') && (cms_srv('HTTP_HOST') == 'localhost')) {
+        /*This now breaks the test rather than fixes it, on MacOSX if (($server_addr == '0000:0000:0000:0000:0000:0000:*:*') && (cms_srv('HTTP_HOST') == 'localhost')) {
             $server_addr = '127.0.0.*'; // DNS will resolve localhost using ipv4, regardless of what Apache self-reports, at least on my current dev machine -- ChrisG
-        }
+        }*/
         $ips[$server_addr] = true;
         $ips['1.2.3.4'] = false;
 
@@ -121,7 +121,8 @@ class auth_test_set extends cms_test_case
             persistent_cache_delete('SESSION_CACHE');
 
             require_code('files');
-            $result = http_download_file(static_evaluate_tempcode(build_url(array('page' => '', 'keep_session' => $fake_session_id), 'adminzone', null, false, false, true)), null, false);
+            $url = static_evaluate_tempcode(build_url(array('page' => '', 'keep_session' => $fake_session_id), 'adminzone', null, false, false, true));
+            $result = http_download_file($url, null, false);
 
             global $HTTP_MESSAGE;
             if ($pass_expected) {

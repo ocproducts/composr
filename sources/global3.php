@@ -3702,8 +3702,8 @@ function cms_gethostbyaddr($ip_address)
 {
     $hostname = '';
 
-    if ((php_function_allowed('shell_exec')) && (get_value('slow_php_dns') === '1')) {
-        $hostname = trim(preg_replace('#^.* #', '', shell_exec('host ' . escapeshellarg($ip_address))));
+    if ((php_function_allowed('shell_exec')) && (function_exists('get_value')) && (get_value('slow_php_dns') === '1')) {
+        $hostname = trim(preg_replace('#^.* #', '', shell_exec('host ' . escapeshellarg_wrap($ip_address))));
     }
 
     if ($hostname == '') {
@@ -3729,8 +3729,8 @@ function cms_gethostbyname($hostname)
 {
     $ip_address = '';
 
-    if ((php_function_allowed('shell_exec')) && (get_value('slow_php_dns') === '1')) {
-        $ip_address = preg_replace('#^.*has address (\d+\.\d+\.\d+).*#s', '$1', shell_exec('host ' . escapeshellarg($hostname)));
+    if ((php_function_allowed('shell_exec')) && (function_exists('get_value')) && (get_value('slow_php_dns') === '1')) {
+        $ip_address = preg_replace('#^.*has address (\d+\.\d+\.\d+).*#s', '$1', shell_exec('host ' . escapeshellarg_wrap($hostname)));
     }
 
     if ($ip_address == '') {

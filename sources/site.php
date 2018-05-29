@@ -1689,9 +1689,24 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         set_http_status_code('404');
     }
 
-    require_code('global4');
     if (
-        (!comcode_page_is_indexable($zone, $codename)) &&
+        (
+            ($is_panel) ||
+            ($codename[0] == '_') ||
+            ($zone . ':' . $codename == ':404') ||
+
+            // FUDGE. Sculpt what comes up in Google a bit. We don't want really meta contextual help muddying search results
+            ($codename == 'rules') ||
+            ($zone . ':' . $codename == ':recommend_help') ||
+            ($zone . ':' . $codename == ':popup_blockers') ||
+            ($zone . ':' . $codename == ':help') ||
+            ($zone . ':' . $codename == ':userguide_chatcode') ||
+            ($zone . ':' . $codename == ':userguide_comcode') ||
+            ($zone . ':' . $codename == 'site:popup_blockers') ||
+            ($zone . ':' . $codename == 'site:help') ||
+            ($zone . ':' . $codename == 'site:userguide_chatcode') ||
+            ($zone . ':' . $codename == 'site:userguide_comcode')
+        ) &&
         (get_page_name() == $codename/*Top-level*/)
     ) {
         attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
