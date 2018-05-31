@@ -165,7 +165,7 @@ function _google_translate_api_request($url, $request = null)
         $_request = json_encode($request);
     }
 
-    $_result = http_download_file($url, null, false, false, 'Composr', ($_request === null) ? null : array($_request), null, null, null, null, null, null, null, 0.5, true, null, null, ($request === null) ? 'GET' : 'POST', 'application/json');
+    $_result = http_download_file($url, null, false, false, 'Composr', ($_request === null) ? null : array($_request), null, null, null, null, null, null, null, 0.5, ($request !== null), null, null, ($request === null) ? 'GET' : 'POST', 'application/json');
 
     $result = @json_decode($_result, true);
     if ($result === false) {
