@@ -56,7 +56,7 @@ class Hook_symbol_PROVIDE_WITH_TRANSLATION
                 break;
 
             case TRANS_TEXT_CONTEXT_html_block:
-                $text .= '<br />' . $text_translated; // Comes with a "Powered by" message
+                $text .= '<br /><div class="box box-translation">' . $text_translated . '</div>'; // Comes with a "Powered by" message
                 break;
 
             case TRANS_TEXT_CONTEXT_html_inline:
