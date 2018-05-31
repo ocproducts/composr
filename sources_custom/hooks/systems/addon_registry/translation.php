@@ -152,6 +152,7 @@ If you omit the source language then it will be autodetected.
             'sources_custom/translation.php',
             'sources_custom/hooks/systems/symbols/PROVIDE_WITH_TRANSLATION.php',
             'themes/default/images_custom/google_translate.svg',
+            'sources_custom/hooks/systems/startup/translation.php',
         );
     }
 
