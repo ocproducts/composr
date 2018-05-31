@@ -13,13 +13,6 @@
  * @package    translation
  */
 
-function init__translation()
-{
-    define('TRANS_TEXT_CONTEXT_plain', 0);
-    define('TRANS_TEXT_CONTEXT_html_block', 1);
-    define('TRANS_TEXT_CONTEXT_html_inline', 2);
-}
-
 /**
  * Translate some text.
  * Powered by Google Translate.
