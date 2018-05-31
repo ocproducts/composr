@@ -779,6 +779,8 @@ function check_function($function)
                     break;
                 }
             }
+        } else {
+            set_composr_type($p[1], 'mixed');
         }
     }
 
