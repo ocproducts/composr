@@ -158,8 +158,8 @@ function menu_management_script()
 /**
  * Add a menu item, without giving tedious/unnecessary detail.
  *
- * @param  SHORT_TEXT $menu_id The name of the menu to add the item to.
- * @param  ?mixed $parent The menu item ID of the parent branch of the menu item (AUTO_LINK) / the URL of something else on the same menu (URLPATH) (null: is on root).
+ * @param  SHORT_TEXT $menu The name of the menu to add the item to.
+ * @param  ?mixed $parent The menu item ID of the parent branch of the menu item (AUTO_LINK) / the URL of the parent-item (SHORT_TEXT) (null: is on root).
  * @param  SHORT_TEXT $caption The caption.
  * @param  SHORT_TEXT $url The URL (in entry point form).
  * @param  BINARY $expanded Whether it is an expanded branch.
@@ -172,25 +172,28 @@ function menu_management_script()
  * @param  ?integer $order Order to use (null: automatic, after the ones that have it specified).
  * @return AUTO_LINK The ID of the newly added menu item.
  */
-function add_menu_item_simple($menu_id, $parent, $caption, $url = '', $expanded = 0, $check_permissions = 0, $dereference_caption = true, $caption_long = '', $new_window = 0, $theme_image_code = '', $include_sitemap = 0, $order = null)
+function add_menu_item_simple($menu, $parent, $caption, $url = '', $expanded = 0, $check_permissions = 0, $dereference_caption = true, $caption_long = '', $new_window = 0, $theme_image_code = '', $include_sitemap = 0, $order = null)
 {
     global $ADD_MENU_COUNTER;
 
-    $id = $GLOBALS['SITE_DB']->query_select_value_if_there('menu_items', 'id', array('i_url' => $url, 'i_menu' => $menu_id));
+    if (is_string($parent)) {
+        $parent = $GLOBALS['SITE_DB']->query_select_value_if_there('menu_items', 'id', array('i_url' => $parent, 'i_menu' => $menu));
+    }
+
+    $id = $GLOBALS['SITE_DB']->query_select_value_if_there('menu_items', 'id', array('i_url' => $url, 'i_menu' => $menu, 'i_parent' => $parent));
     if (!is_null($id)) {
         return $id; // Already exists
-    }
-    if (is_string($parent)) {
-        $parent = $GLOBALS['SITE_DB']->query_select_value_if_there('menu_items', 'i_parent', array('i_url' => $parent));
     }
 
     $_caption = (strpos($caption, ':') === false) ? do_lang($caption, null, null, null, null, false) : null;
     if (is_null($_caption)) {
         $_caption = $caption;
     }
-    $id = add_menu_item($menu_id, $ADD_MENU_COUNTER, $parent, $dereference_caption ? $_caption : $caption, $url, $check_permissions, '', $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap);
+    $id = add_menu_item($menu, ($order === null) ? $ADD_MENU_COUNTER : $order, $parent, $dereference_caption ? $_caption : $caption, $url, $check_permissions, '', $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap);
 
-    $ADD_MENU_COUNTER++;
+    if ($order === null) {
+        $ADD_MENU_COUNTER++;
+    }
 
     return $id;
 }
