@@ -79,6 +79,7 @@ The remainder of this section details Composr's requirements. If you have troubl
  - A web server running Apache (the common Linux web server) or IIS7+ (the Microsoft web server). It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported (for example nginx should work, but you would need significant expertise to get the URL schemes functionality working)
   - If running Windows, you should use an NTFS partition not a FAT32 partition, as FAT32 cannot support file locking
   - If running Apache using a [tt]mod_php[/tt] (as opposed to a CGI version of PHP), the server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security)
+  - If you want URL Schemes on Apache, [tt]mod_rewrite[/tt] must be enabled
  - The CGI timeout on the server must not be lower than 60 seconds (which is the default on Apache)
  - That the web server is not overloaded with too many users, or has very poor performance
  - That the web server does not have a Firewall that stops outgoing connections or internal connections to itself (sometimes referred to 'HTTP loopback') -- this applies to both TCP port 80 and 443
@@ -152,6 +153,8 @@ Some lines in the default PHP ini ([tt]/etc/php5/apache2/php.ini[/tt]) file need
 (the extension_dir may actually be different on different versions, so check that)
 
 [title="4"]Fedora/RHEL/CentOS[/title]
+
+You may need to setup the [url="EPEL repository"]https://www.tecmint.com/how-to-enable-epel-repository-for-rhel-centos-6-5/[/url] first.
 
 [code="Bash"]
 yum install httpd php php-common php-cli php-pecl-apc php-pdo curl enchant freetype gd php-gd php-imap php-mysql php-mbstring php-pspell php-xml openssl mysql-server mysql sendmail nano wget lynx hunspell git openssh-server aspell aspell-en nano wget

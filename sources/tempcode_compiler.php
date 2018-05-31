@@ -668,7 +668,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
-                                $current_level_data[] = '((!isset($bound_' . preg_replace('#[^\w]#', '', $eval) . ') || (otp($bound_' . preg_replace('#[^\w]#', '', $eval) . ')=="0"))?(' . implode('.', $past_level_data) . '):\'\')';
+                                $current_level_data[] = '((!isset($bound_' . preg_replace('#[^\w]#', '', $eval) . ') || (otp($bound_' . preg_replace('#[^\w]#', '', $eval) . ')!="1"))?(' . implode('.', $past_level_data) . '):\'\')';
                                 break;
 
                             case 'WHILE':

@@ -46,7 +46,7 @@ class Database_Static_mysql_dbx extends Database_super_mysql
     public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
     {
         if (!function_exists('dbx_connect')) {
-            $error = 'dbx not on server (anymore?). Try using the \'mysql\' database driver. To use it, edit the _config.php config file.';
+            $error = 'The \'dbx\' PHP extension is not installed (anymore?). You need to contact the system administrator of this server, or use a different MySQL database driver (drivers can be chosen by editing _config.php).';
             if ($fail_ok) {
                 echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;

@@ -416,8 +416,11 @@ function check_field(the_element,the_form,for_preview)
 	if (the_element.disabled) return null;
 
 	// Test file sizes
-	if ((the_element.type=='file') && (the_element.files) && (the_element.files.item) && (the_element.files.item(0)) && (the_element.files.item(0).fileSize))
-		total_file_size+=the_element.files.item(0).fileSize;
+	try {
+		if ((the_element.type=='file') && (the_element.files) && (the_element.files.item) && (the_element.files.item(0)) && (the_element.files.item(0).fileSize))
+			total_file_size+=the_element.files.item(0).fileSize;
+	}
+	catch (e) { }; // May produce 'invalid argument' if no files selected, in Microsoft Edge
 
 	// Test file types
 	if ((the_element.type=='file') && (the_element.value) && (the_element.name!='file_anytype'))

@@ -384,10 +384,12 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
 
     require_code('global3');
 
-    global $WANT_TEXT_ERRORS;
+    global $WANT_TEXT_ERRORS, $HTTP_STATUS_CODE;
     if ($WANT_TEXT_ERRORS) {
         @header('Content-type: text/plain; charset=' . get_charset());
-        set_http_status_code('500');
+        if ($HTTP_STATUS_CODE == '200') {
+            set_http_status_code('500');
+        }
         safe_ini_set('ocproducts.xss_detect', '0');
         @debug_print_backtrace();
         exit((is_object($text) ? strip_html($text->evaluate()) : $text) . "\n");
@@ -646,8 +648,8 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
                 }
             }
         }
-        $dns = @gethostbyaddr($alt_ip ? $ip2 : $ip);
-        if ((php_function_allowed('gethostbyname')) || (@gethostbyname($dns) === ($alt_ip ? $ip2 : $ip))) { // Verify it's not faking the DNS
+        $dns = cms_gethostbyaddr($alt_ip ? $ip2 : $ip);
+        if (cms_gethostbyname($dns) === ($alt_ip ? $ip2 : $ip)) { // Verify it's not faking the DNS
             $se_domain_names = array('googlebot.com', 'google.com', 'msn.com', 'yahoo.com', 'ask.com', 'aol.com');
             foreach ($se_domain_names as $domain_name) {
                 if (substr($dns, -strlen($domain_name) - 1) == '.' . $domain_name) {
@@ -916,17 +918,21 @@ function _fatal_exit($text, $return = false)
         }
     }
 
-    global $WANT_TEXT_ERRORS;
+    global $WANT_TEXT_ERRORS, $HTTP_STATUS_CODE;
     if ($WANT_TEXT_ERRORS && !headers_sent()) {
         header('Content-type: text/plain; charset=' . get_charset());
         require_code('global3');
-        set_http_status_code('500');
+        if ($HTTP_STATUS_CODE == '200') {
+            set_http_status_code('500');
+        }
         safe_ini_set('ocproducts.xss_detect', '0');
         @debug_print_backtrace();
         exit(is_object($text) ? strip_html($text->evaluate()) : $text);
     }
 
-    set_http_status_code('500');
+    if ($HTTP_STATUS_CODE == '200') {
+        set_http_status_code('500');
+    }
     if (!headers_sent()) {
         header('Content-type: text/html; charset=' . get_charset());
         header('Content-Disposition: inline');
@@ -1428,7 +1434,13 @@ function _access_denied($class, $param, $force_login)
 
         cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
-        $redirect = get_self_url(true, false, array('page' => get_page_name())); // We have to pass in 'page' because an access-denied situation tells get_page_name() (which get_self_url() relies on) that we are on page ''.
+        $real_page = get_page_name();
+
+        $redirect = get_self_url(true, false, array('page' => $real_page)); // We have to pass in 'page' because an access-denied situation tells get_page_name() (which get_self_url() relies on) that we are on page ''.
+        set_extra_request_metadata(array(
+            'real_page' => $real_page,
+        ));
+        ecv_CANONICAL_URL(user_lang(), array(), array()); // Cause this to be pre-cached with the correct value
         $_GET['redirect'] = $redirect;
         $_GET['page'] = 'login';
         $_GET['type'] = 'browse';

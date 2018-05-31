@@ -140,7 +140,7 @@ function static_cache($mode)
 
     $support_compressed = (isset($_SERVER['HTTP_ACCEPT_ENCODING'])) && (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false);
     if ($support_compressed) {
-        $file_extension = '.gz';
+        $file_extension .= '.gz';
     }
 
     if (($mode & STATIC_CACHE__FAILOVER_MODE) == 0) {

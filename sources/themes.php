@@ -364,11 +364,11 @@ function cdn_filter($url_path)
             $cdn_part = $cdn_parts[$sum_asc % count($cdn_parts)]; // To make a consistent but fairly even distribution we do some modular arithmetic against the total of the ascii values
         }
 
-        static $normal_suffix = null;
-        if ($normal_suffix === null) {
-            $normal_suffix = '#(^https?://)' . str_replace('#', '#', preg_quote(get_domain())) . '(/)#';
+        static $normal_prefix = null;
+        if ($normal_prefix === null) {
+            $normal_prefix = '#(^https?://)' . preg_quote(cms_srv('HTTP_HOST'), '#') . '(/)#';
         }
-        $out = preg_replace($normal_suffix, '${1}' . $cdn_part . '${2}', $url_path);
+        $out = preg_replace($normal_prefix, '${1}' . $cdn_part . '${2}', $url_path);
 
         $cdn_consistency_check[$url_path] = $out;
 

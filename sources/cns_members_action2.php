@@ -1158,9 +1158,12 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     }
 
     decache('main_members');
+    if (($GLOBALS['FORUM_DRIVER']->is_super_admin($member_id)) && ($old_email_address == '')) {
+        decache('main_staff_checklist'); // As it tracks whether admin have e-mail address set
+    }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:members:view:' . strval($member_id), true);
+    notify_sitemap_node_edit('_SEARCH:members:view:' . strval($member_id), true);
 }
 
 /**
@@ -1239,7 +1242,7 @@ function cns_delete_member($member_id)
     decache('main_members');
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:members:view:' . strval($member_id));
+    notify_sitemap_node_delete('_SEARCH:members:view:' . strval($member_id));
 }
 
 /**

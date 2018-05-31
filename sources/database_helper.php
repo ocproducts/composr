@@ -242,7 +242,7 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
         }
     }
     $this_ref->query_insert('db_meta', array('m_table' => $ins_m_table, 'm_name' => $ins_m_name, 'm_type' => $ins_m_type), false, true); // Allow errors because sometimes bugs when developing can call for this happening twice
-    if (count($this_ref->connection_write) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($this_ref->connection_write)) && (count($this_ref->connection_write) > 4)) { // Okay, we can't be lazy anymore
         $this_ref->connection_write = call_user_func_array(array($this_ref->static_ob, 'db_get_connection'), $this_ref->connection_write);
         _general_db_init();
     }
@@ -313,7 +313,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
             }
             $fields_full[$field_name] = $db_type;
 
-            $fields_with_types[$_field_name] = $db_type;
+            $fields_with_types[$field_name] = $db_type;
         }
         if (!$sized) {
             _check_sizes($table_name, false, $fields_full, $index_name, false, true, true/*indexes don't use so many bytes as keys somehow*/);
@@ -355,7 +355,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
     $this_ref->query_insert('db_meta_indices', $insert_map);
 
     if ($_fields !== null) {
-        if (count($this_ref->connection_write) > 4) { // Okay, we can't be lazy anymore
+        if ((is_array($this_ref->connection_write)) && (count($this_ref->connection_write) > 4)) { // Okay, we can't be lazy anymore
             $this_ref->connection_write = call_user_func_array(array($this_ref->static_ob, 'db_get_connection'), $this_ref->connection_write);
             _general_db_init();
         }
@@ -408,7 +408,7 @@ function _helper_generate_index_fields($table_name, $fields, $is_full_text)
                 return null; // We don't create a full-text index on *_TRANS fields if we are directing through the translate table
             }
 
-            if ((!$is_full_text) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
+            if ((strpos($field_name, '(') === false) && (!$is_full_text) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
                 if (((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
                     $_fields .= '(250)'; // 255 would be too much with MySQL's UTF. Only MySQL supports index lengths, but the other drivers will strip them back out again.
                 }
@@ -483,7 +483,7 @@ function _helper_drop_table_if_exists($this_ref, $table)
         $this_ref->query_delete('db_meta_indices', array('i_table' => $table));
     }
 
-    if (count($this_ref->connection_write) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($this_ref->connection_write)) && (count($this_ref->connection_write) > 4)) { // Okay, we can't be lazy anymore
         $this_ref->connection_write = call_user_func_array(array($this_ref->static_ob, 'db_get_connection'), $this_ref->connection_write);
         _general_db_init();
     }
@@ -842,7 +842,7 @@ function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $n
  */
 function _helper_change_primary_key($this_ref, $table_name, $new_key)
 {
-    if (count($this_ref->connection_write) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($this_ref->connection_write)) && (count($this_ref->connection_write) > 4)) { // Okay, we can't be lazy anymore
         $this_ref->connection_write = call_user_func_array(array($this_ref->static_ob, 'db_get_connection'), $this_ref->connection_write);
         _general_db_init();
     }

@@ -157,6 +157,20 @@ function reload_lang_fields($full = false, $only_table = null)
 
             $TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']][$lang_field['m_name']] = $lang_field['m_type'];
         }
+
+        if ((is_on_multi_site_network()) && (get_forum_type() == 'cns')) { // TODO: Change in v11
+            $_table_lang_fields_forum = $GLOBALS['FORUM_DB']->query($sql, null, null, true);
+            unset($TABLE_LANG_FIELDS_CACHE['f_member_custom_fields']);
+            if ($_table_lang_fields_forum !== null) {
+                foreach ($_table_lang_fields_forum as $lang_field) {
+                    if (!isset($TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']])) {
+                        $TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']] = array();
+                    }
+
+                    $TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']][$lang_field['m_name']] = $lang_field['m_type'];
+                }
+            }
+        }
     }
 
     if (function_exists('persistent_cache_set')) {
@@ -238,7 +252,7 @@ function db_encode_like($pattern)
  */
 function db_supports_drop_table_if_exists($db)
 {
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -258,7 +272,7 @@ function db_supports_drop_table_if_exists($db)
  */
 function db_has_full_text($db)
 {
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -297,7 +311,7 @@ function db_has_subqueries($db)
         return true;
     }
 
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -313,7 +327,7 @@ function db_has_subqueries($db)
  */
 function db_has_expression_ordering($db)
 {
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -332,7 +346,7 @@ function db_has_expression_ordering($db)
  */
 function db_uses_offset_syntax($db)
 {
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -351,7 +365,7 @@ function db_uses_offset_syntax($db)
  */
 function db_supports_truncate_table($db)
 {
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -369,7 +383,7 @@ function db_supports_truncate_table($db)
  */
 function db_start_transaction($db)
 {
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -386,7 +400,7 @@ function db_start_transaction($db)
  */
 function db_end_transaction($db)
 {
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }

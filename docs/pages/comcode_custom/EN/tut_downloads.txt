@@ -89,6 +89,11 @@ In addition, the [tt]search[/tt] module is able to search within the actual down
  - searching text buried within binary formats (e.g. [tt].doc[/tt], [tt].ppt[/tt])
  - searching for other file types within archive files ([tt].zip[/tt], [tt].tar[/tt], [tt].gz[/tt])
 
+[title="2"]Large files[/title]
+
+If you're PHP build is 32 bit, files over 2GB are not supported.
+If you're PHP build is 64 bit, files over 2GB are supported but the file size will not be displayed.
+
 [concepts
  1_key="Download"          1_value="An entry in the download system, bound to a local file or a URL"
  2_key="Do-next manager"   2_value="A standard Composr screen shown after managing content"
