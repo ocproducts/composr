@@ -397,7 +397,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
     if ($url != '') {
         // We should use compliant encoding
         require_code('urls_simplifier');
-        $coder_ob = new HarmlessURLCoder();
+        $coder_ob = new HarmlessURLCoder(); // TODO: This should move into post_param_string in v11, filter based
         $url = $coder_ob->encode($url);
 
         $filename = urldecode(preg_replace('#\?.*#', '', basename($url)));

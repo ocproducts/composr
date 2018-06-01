@@ -1584,7 +1584,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
 
                 // We should use compliant encoding
                 require_code('urls_simplifier');
-                $coder_ob = new HarmlessURLCoder();
+                $coder_ob = new HarmlessURLCoder(); // TODO: This should move into post_param_string in v11, filter based
                 $url = $coder_ob->encode($url);
 
                 $_video_width = null;
