@@ -199,6 +199,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
         }
     }
     $hidden = build_keep_form_fields('_SELF', true, array($max_name, $start_name));
+    $hidden->attach(build_keep_post_fields());
     $per_page = do_template('PAGINATION_PER_PAGE', array('_GUID' => '1993243727e58347d1544279c5eba496', 'HASH' => ($hash == '') ? null : $hash, 'HIDDEN' => $hidden, 'URL' => $get_url, 'MAX_NAME' => $max_name, 'SELECTORS' => $selectors));
     $GLOBALS['INCREMENTAL_ID_GENERATOR']++;
 
