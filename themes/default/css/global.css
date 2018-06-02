@@ -210,7 +210,6 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#389653,gcol_15,100% #389653}
 
 {$SET,max_container_width,1366px}
-{$SET,root_font_size,14px}
 {$SET,border_radius,4px}
 
 /*
@@ -233,7 +232,7 @@ html {
 	-ms-overflow-style: scrollbar;
 	-webkit-tap-highlight-color: transparent;
 	box-sizing: border-box;
-	font-size: {$GET,root_font_size};
+	font-size: 14px;
 	overflow-y: scroll; /* This makes rendering smoother, no jerk when browser realises a scrollbar is needed, or between pages with/without */
 }
 
@@ -248,7 +247,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 body {
 	margin: 0;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-	font-size: {$GET,root_font_size};
+	font-size: 14px;
 	font-weight: 400;
 	line-height: 1.5;
 	color: {$GET,body_color};
@@ -268,12 +267,12 @@ hr {
 
 h1, h2, h3, h4, h5, h6 {
 	margin-top: 0;
-	margin-bottom: 0.5rem;
+	margin-bottom: 7px;
 }
 
 p {
 	margin-top: 0;
-	margin-bottom: 1rem;
+	margin-bottom: 14px;
 }
 
 abbr[title],
@@ -286,7 +285,7 @@ abbr[data-original-title] {
 }
 
 address {
-	margin-bottom: 1rem;
+	margin-bottom: 14px;
 	font-style: normal;
 	line-height: inherit;
 }
@@ -295,7 +294,7 @@ ol,
 ul,
 dl {
 	margin-top: 0;
-	margin-bottom: 1rem;
+	margin-bottom: 14px;
 }
 
 ol ol,
@@ -310,12 +309,12 @@ dt {
 }
 
 dd {
-	margin-bottom: .5rem;
+	margin-bottom: 7px;
 	margin-left: 0;
 }
 
 blockquote {
-	margin: 0 0 1rem;
+	margin: 0 0 14px;
 }
 
 dfn {
@@ -383,13 +382,13 @@ samp {
 
 pre {
 	margin-top: 0;
-	margin-bottom: 1rem;
+	margin-bottom: 14px;
 	overflow: auto;
 	-ms-overflow-style: scrollbar;
 }
 
 figure {
-	margin: 0 0 1rem;
+	margin: 0 0 14px;
 }
 
 img {
@@ -406,8 +405,8 @@ table {
 }
 
 caption {
-	padding-top: 0.75rem;
-	padding-bottom: 0.75rem;
+	padding-top: 10px;
+	padding-bottom: 10px;
 	color: #6c757d;
 	text-align: left;
 	caption-side: bottom;
@@ -419,7 +418,7 @@ th {
 
 label {
 	display: inline-block;
-	margin-bottom: 0.5rem;
+	margin-bottom: 7px;
 }
 
 button {
@@ -497,8 +496,8 @@ legend {
 	width: 100%;
 	max-width: 100%;
 	padding: 0;
-	margin-bottom: .5rem;
-	font-size: 1.5rem;
+	margin-bottom: 7px;
+	font-size: 21px;
 	line-height: inherit;
 	color: inherit;
 	white-space: normal;
@@ -548,7 +547,7 @@ template {
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
-	margin-bottom: 0.5rem;
+	margin-bottom: 7px;
 	font-family: inherit;
 	font-weight: 500;
 	line-height: 1.2;
@@ -556,61 +555,61 @@ h1, h2, h3, h4, h5, h6,
 }
 
 h1, .h1 {
-	font-size: 2.5rem;
+	font-size: 35px;
 }
 
 h2, .h2 {
-	font-size: 2rem;
+	font-size: 28px;
 }
 
 h3, .h3 {
-	font-size: 1.75rem;
+	font-size: 24px;
 }
 
 h4, .h4 {
-	font-size: 1.5rem;
+	font-size: 21px;
 }
 
 h5, .h5 {
-	font-size: 1.25rem;
+	font-size: 17px;
 }
 
 h6, .h6 {
-	font-size: 1rem;
+	font-size: 14px;
 }
 
 .lead {
-	font-size: 1.25rem;
+	font-size: 17px;
 	font-weight: 300;
 }
 
 .display-1 {
-	font-size: 6rem;
+	font-size: 84px;
 	font-weight: 300;
 	line-height: 1.2;
 }
 
 .display-2 {
-	font-size: 5.5rem;
+	font-size: 77px;
 	font-weight: 300;
 	line-height: 1.2;
 }
 
 .display-3 {
-	font-size: 4.5rem;
+	font-size: 63px;
 	font-weight: 300;
 	line-height: 1.2;
 }
 
 .display-4 {
-	font-size: 3.5rem;
+	font-size: 49px;
 	font-weight: 300;
 	line-height: 1.2;
 }
 
 hr {
-	margin-top: 1rem;
-	margin-bottom: 1rem;
+	margin-top: 14px;
+	margin-bottom: 14px;
 	border: 0;
 	border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -1155,7 +1154,7 @@ header h1 {
 	top: 10px;
 	background: rgba(0, 0, 0, 0.7);
 	padding: 0 3px;
-	font-size: 0.8rem;
+	font-size: 11px;
 }
 
 .top-button.count-0 .top-button-bubble {
@@ -2559,7 +2558,7 @@ h3 .toggleable-tray-button .icon {
 	content: "\025B2"; /* Upward arrow */
 	color: {$GET,standard_border};
 	display: inline-block;
-	margin-left: 20rem;
+	margin-left: 280px;
 	position: absolute;
 	top: -11px;
 	right: 13px;
@@ -4327,7 +4326,7 @@ input.magic-image-edit-link {
 	-ms-user-select: none;
 	user-select: none;
 	padding: 6px 12px;
-	font-size: {$GET,root_font_size};
+	font-size: 14px;
 	line-height: 1.5;
 	border-radius: {$GET,border_radius};
 	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
@@ -4388,7 +4387,7 @@ input.magic-image-edit-link {
 /*{+END}*/
 .button-micro {
 	padding: 4px 6px;
-	font-size: 0.85rem;
+	font-size: 12px;
 }
 /*{+START,CSS_MODE,mobile}*/
 	.button-micro {
