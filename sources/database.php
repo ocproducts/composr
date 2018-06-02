@@ -2080,7 +2080,9 @@ class DatabaseConnector
             $locked = count($locks) >= 1;
             $tries++;
             if ($locked) {
-                usleep(50000); // 50ms wait
+                if (php_function_allowed('usleep')) {
+                    usleep(50000); // 50ms wait
+                }
             }
         } while (($locked) && ($tries < 5));
 

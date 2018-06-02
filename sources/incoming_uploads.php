@@ -26,7 +26,9 @@ function incoming_uploads_script()
     $is_uploaded = false;
 
     if ($GLOBALS['DEV_MODE']) {
-        sleep(4); // Makes testing more realistic
+        if (php_function_allowed('sleep')) {
+            sleep(4); // Makes testing more realistic
+        }
     }
 
     $path = get_custom_file_base() . '/uploads/incoming';

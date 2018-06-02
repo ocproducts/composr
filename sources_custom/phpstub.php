@@ -2720,17 +2720,6 @@ function print_r($data)
 }
 
 /**
- * Sets the value of an environment variable.
- *
- * @param  string $string The string to send over (e.g. PATH=foo).
- * @return boolean Success status.
- */
-function putenv($string)
-{
-    return true;
-}
-
-/**
  * Decode URL-encoded strings.
  *
  * @param  string $str The string to decode.
@@ -4274,24 +4263,6 @@ function sinh($in)
 }
 
 /**
- * Delay execution.
- *
- * @param  integer $sec Time in seconds.
- */
-function sleep($sec)
-{
-}
-
-/**
- * Delay execution for microseconds.
- *
- * @param  integer $sec Time in microseconds.
- */
-function usleep($sec)
-{
-}
-
-/**
  * Calculate the soundex key of a string.
  *
  * @param  string $input Input.
@@ -5749,6 +5720,9 @@ disk_total_space
 error_log
 php_uname
 ini_restore
+putenv
+sleep
+usleep
 
 Disabled due to often being ill-configured or disabled on hosts...
 

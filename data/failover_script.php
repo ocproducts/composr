@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: sleep*/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -72,6 +74,10 @@ foreach ($required_settings as $setting) {
 
 if ($SITE_INFO['failover_mode'] != 'auto_on' && $SITE_INFO['failover_mode'] != 'auto_off') {
     exit(); // Not enabled. No message, we don't want to push noise back into the CRON system.
+}
+
+if (!php_function_allowed('sleep')) {
+    exit('PHP sleep function must not be disabled');
 }
 
 handle_failover_auto_switching();

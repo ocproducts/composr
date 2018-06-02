@@ -67,7 +67,9 @@ class Hook_health_check_network extends Hook_Health_Check
             if ($data !== null) {
                 break;
             }
-            sleep(5);
+            if (php_function_allowed('sleep')) {
+                sleep(5);
+            }
         }
         $result = @json_decode($data, true);
         $this->assert_true($result === '200', 'Could not access website externally');
@@ -125,7 +127,9 @@ class Hook_health_check_network extends Hook_Health_Check
 
             if ($data === null) {
                 $ok = false;
-                sleep(5);
+                if (php_function_allowed('sleep')) {
+                    sleep(5);
+                }
 
                 continue;
             }
@@ -138,7 +142,9 @@ class Hook_health_check_network extends Hook_Health_Check
             if ($ok) {
                 break;
             }
-            sleep(5);
+            if (php_function_allowed('sleep')) {
+                sleep(5);
+            }
         }
 
         $this->assert_true($ok, 'Slow transfer latency @ ' . float_format($time) . ' seconds (downloading Google home page)');
@@ -173,7 +179,9 @@ class Hook_health_check_network extends Hook_Health_Check
             if ($data === null) {
                 $ok = false;
                 $megabits_per_second = 0.0;
-                sleep(5);
+                if (php_function_allowed('sleep')) {
+                    sleep(5);
+                }
 
                 continue;
             }
@@ -189,7 +197,9 @@ class Hook_health_check_network extends Hook_Health_Check
             if ($ok) {
                 break;
             }
-            sleep(5);
+            if (php_function_allowed('sleep')) {
+                sleep(5);
+            }
         }
 
         $this->assert_true($ok, 'Slow speed transfering data to a remote machine @ ' . float_format($megabits_per_second) . ' Megabits per second');

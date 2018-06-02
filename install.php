@@ -1419,7 +1419,9 @@ function step_5_ftp()
 
         // Test tmp file isn't currently being used by another iteration of process (race issue, causing horrible corruption)
         $file_size_before = @filesize(get_file_base() . '/cms_inst_tmp/tmp');
-        sleep(1);
+        if (php_function_allowed('sleep')) {
+            sleep(1);
+        }
         $file_size_after = @filesize(get_file_base() . '/cms_inst_tmp/tmp');
         if ($file_size_before !== $file_size_after) {
             warn_exit(do_lang_tempcode('DATA_FILE_CONFLICT'));
@@ -1431,7 +1433,9 @@ function step_5_ftp()
             warn_exit(do_lang_tempcode('DATA_FILE_CONFLICT'));
         }
         $file_size_before = @filesize(get_file_base() . '/cms_inst_tmp/tmp');
-        sleep(1);
+        if (php_function_allowed('sleep')) {
+            sleep(1);
+        }
         $file_size_after = @filesize(get_file_base() . '/cms_inst_tmp/tmp');
         if ($file_size_before !== $file_size_after) {
             warn_exit(do_lang_tempcode('DATA_FILE_CONFLICT'));
@@ -3135,7 +3139,9 @@ END;
             fwrite($myfile, $clause);
             flock($myfile, LOCK_UN);
             fclose($myfile);
-            usleep(100000); // 100ms, some servers are slow to update
+            if (php_function_allowed('usleep')) {
+                usleep(100000); // 100ms, some servers are slow to update
+            }
             $HTTP_MESSAGE = '';
             http_download_file($base_url . '/exports/addons/index.php', null, false);
             if ($HTTP_MESSAGE != '200') {
