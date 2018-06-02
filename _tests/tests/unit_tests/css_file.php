@@ -348,7 +348,6 @@ class css_file_test_set extends cms_test_case
             'box_scroll_thumbs',
             'bubble',
             'buildr-self-member',
-            'button-screen-item-tall',
             'calendar-active',
             'calendar-current',
             'calendar-day',

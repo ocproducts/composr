@@ -209,7 +209,8 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#389596,gcol_14,100% #389596}
 {$THEMEWIZARD_COLOR,#389653,gcol_15,100% #389653}
 
-{$SET,fixed_width,1366px}
+{$SET,max_container_width,1366px}
+{$SET,root_font_size,14px}
 {$SET,border_radius,4px}
 
 /*
@@ -218,12 +219,6 @@ In mobile mode:
 =========================
 */
 
-/*!
-* Bootstrap v4.1.1 (https://getbootstrap.com/)
-* Copyright 2011-2018 The Bootstrap Authors
-* Copyright 2011-2018 Twitter, Inc.
-* Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
-*/
 *,
 *::before,
 *::after {
@@ -238,6 +233,8 @@ html {
 	-ms-overflow-style: scrollbar;
 	-webkit-tap-highlight-color: transparent;
 	box-sizing: border-box;
+	font-size: {$GET,root_font_size};
+	overflow-y: scroll; /* This makes rendering smoother, no jerk when browser realises a scrollbar is needed, or between pages with/without */
 }
 
 @-ms-viewport {
@@ -251,7 +248,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 body {
 	margin: 0;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-	font-size: 1rem;
+	font-size: {$GET,root_font_size};
 	font-weight: 400;
 	line-height: 1.5;
 	color: {$GET,body_color};
@@ -630,13 +627,6 @@ mark,
 	background-color: #fcf8e3;
 }
 
-/* End Bootstrap */
-
-html {
-	overflow-y: scroll; /* This makes rendering smoother, no jerk when browser realises a scrollbar is needed, or between pages with/without */
-	font-size: 14px;
-}
-
 html, body {
 	border: 0;
 	{$BETA_CSS_PROPERTY,text-size-adjust: none;}
@@ -1006,7 +996,7 @@ input.input-username::-webkit-calendar-picker-indicator {
 }
 
 .container {
-	max-width: {$GET,fixed_width};
+	max-width: {$GET,max_container_width};
 	width: 100%;
 	padding-right: 15px;
 	padding-left: 15px;
@@ -4320,26 +4310,56 @@ input.magic-image-edit-link {
 	text-shadow: 0 0 0;
 }
 
-.button-screen-item-tall {
-	background-image: none !important;
+.button-micro, 
+.button-screen,
+.button-screen-item,
+.hero-section .hero-button a {
+	border: 1px solid transparent;
+	background-color: {$GET,button_background};
+	color: {$GET,box_title_text};
+	display: inline-block;
+	font-weight: 400;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	padding: 6px 12px;
+	font-size: {$GET,root_font_size};
+	line-height: 1.5;
+	border-radius: {$GET,border_radius};
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
 }
 
-.button-micro, 
-.button-screen, 
-.button-screen-item, 
-.hero-section .hero-button a, 
-body .hero-section .hero-button>a.user-link {
-	display: inline-block;
-	border: none;
-	border-radius: {$GET,border_radius};
-	background-color: {$GET,button_background};
-	color: {$GET,box_title_text} !important;
-	text-decoration: none !important;
-	{$BETA_CSS_PROPERTY,appearance: none;}
-	vertical-align: middle;
+.button-micro:hover,
+.button-micro:focus,
+.button-screen:hover,
+.button-screen:focus,
+.button-screen-item:hover,
+.button-screen-item:focus,
+.hero-section .hero-button a:hover,
+.hero-section .hero-button a:focus {
+	text-decoration: none;
+}
+
+.button-micro.disabled,
+.button-micro:disabled,
+.button-screen.disabled,
+.button-screen:disabled,
+.button-screen-item.disabled,
+.button-screen-item:disabled,
+.hero-section .hero-button a.disabled,
+.hero-section .hero-button a:disabled {
+	opacity: 0.65;
+}
+
+.button-micro:not(:disabled):not(.disabled),
+.button-screen:not(:disabled):not(.disabled),
+.button-screen-item:not(:disabled):not(.disabled),
+.hero-section .hero-button a:not(:disabled):not(.disabled) {
 	cursor: pointer;
-	font-size: 1rem;
-	transition: color, background-color 0.3s linear;
 }
 
 .button-faded {
@@ -4347,20 +4367,15 @@ body .hero-section .hero-button>a.user-link {
 }
 
 .button-screen {
-	padding: 10px 14px;
-	text-align: center;
-}
-
-.button-screen .icon {
-	width: 22px;
-	height: 22px;
+	padding: 7px;
 }
 
 .button-screen-item {
-	padding: 10px 14px;
+	padding: 5px 7px;
 	text-align: center;
 }
 
+.button-screen .icon,
 .button-screen-item .icon {
 	width: 18px;
 	height: 18px;
@@ -4390,8 +4405,7 @@ div .button-micro .icon {
 
 .button-screen,
 .button-screen-item,
-.button-micro,
-.toggleable-tray-button .icon {
+.button-micro {
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	display: inline-block;
 }
@@ -4405,8 +4419,7 @@ div .button-micro .icon {
 .button-screen-item:hover,
 .button-screen:hover,
 .button-screen-item:hover,
-.button-micro:hover,
-.toggleable-tray-button:hover .icon {
+.button-micro:hover {
 	background-color: {$GET,button_background_hover};
 }
 .button-micro:disabled, .button-screen:disabled, .button-screen-item:disabled {
