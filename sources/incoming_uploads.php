@@ -26,8 +26,8 @@ function incoming_uploads_script()
     $is_uploaded = false;
 
     if ($GLOBALS['DEV_MODE']) {
-        if (php_function_allowed('sleep')) {
-            sleep(4); // Makes testing more realistic
+        if (php_function_allowed('usleep')) {
+            usleep(4000000); // Makes testing more realistic
         }
     }
 

@@ -67,8 +67,8 @@ class Hook_health_check_network extends Hook_Health_Check
             if ($data !== null) {
                 break;
             }
-            if (php_function_allowed('sleep')) {
-                sleep(5);
+            if (php_function_allowed('usleep')) {
+                usleep(5000000);
             }
         }
         $result = @json_decode($data, true);
@@ -127,8 +127,8 @@ class Hook_health_check_network extends Hook_Health_Check
 
             if ($data === null) {
                 $ok = false;
-                if (php_function_allowed('sleep')) {
-                    sleep(5);
+                if (php_function_allowed('usleep')) {
+                    usleep(5000000);
                 }
 
                 continue;
@@ -142,8 +142,8 @@ class Hook_health_check_network extends Hook_Health_Check
             if ($ok) {
                 break;
             }
-            if (php_function_allowed('sleep')) {
-                sleep(5);
+            if (php_function_allowed('usleep')) {
+                usleep(5000000);
             }
         }
 
@@ -179,8 +179,8 @@ class Hook_health_check_network extends Hook_Health_Check
             if ($data === null) {
                 $ok = false;
                 $megabits_per_second = 0.0;
-                if (php_function_allowed('sleep')) {
-                    sleep(5);
+                if (php_function_allowed('usleep')) {
+                    usleep(5000000);
                 }
 
                 continue;
@@ -197,8 +197,8 @@ class Hook_health_check_network extends Hook_Health_Check
             if ($ok) {
                 break;
             }
-            if (php_function_allowed('sleep')) {
-                sleep(5);
+            if (php_function_allowed('usleep')) {
+                usleep(5000000);
             }
         }
 

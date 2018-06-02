@@ -1419,8 +1419,8 @@ function step_5_ftp()
 
         // Test tmp file isn't currently being used by another iteration of process (race issue, causing horrible corruption)
         $file_size_before = @filesize(get_file_base() . '/cms_inst_tmp/tmp');
-        if (php_function_allowed('sleep')) {
-            sleep(1);
+        if (php_function_allowed('usleep')) {
+            usleep(1000000);
         }
         $file_size_after = @filesize(get_file_base() . '/cms_inst_tmp/tmp');
         if ($file_size_before !== $file_size_after) {
@@ -1433,8 +1433,8 @@ function step_5_ftp()
             warn_exit(do_lang_tempcode('DATA_FILE_CONFLICT'));
         }
         $file_size_before = @filesize(get_file_base() . '/cms_inst_tmp/tmp');
-        if (php_function_allowed('sleep')) {
-            sleep(1);
+        if (php_function_allowed('usleep')) {
+            usleep(1000000);
         }
         $file_size_after = @filesize(get_file_base() . '/cms_inst_tmp/tmp');
         if ($file_size_before !== $file_size_after) {

@@ -362,8 +362,8 @@ class Hook_health_check_email extends Hook_Health_Check
             $ref = _imap_server_spec($server, $port, $type);
             $i = 0;
             do {
-                if (php_function_allowed('sleep')) {
-                    sleep(3);
+                if (php_function_allowed('usleep')) {
+                    usleep(3000000);
                 }
 
                 $resource = @imap_open($ref . 'INBOX', $username, $password, CL_EXPUNGE);

@@ -45,8 +45,8 @@ if (isset($_SERVER['argv'][0]) && strpos($_SERVER['argv'][0], 'critical_errors.p
                 }
                 closedir($dh);
                 $last_run = time();
-                if (php_function_allowed('sleep')) {
-                    sleep(10);
+                if (php_function_allowed('usleep')) {
+                    usleep(10000000);
                 }
             }
         }

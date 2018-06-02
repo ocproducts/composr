@@ -113,8 +113,8 @@ class Hook_health_check_security extends Hook_Health_Check
             if ($_result !== null) {
                 break;
             }
-            if (php_function_allowed('sleep')) {
-                sleep(5);
+            if (php_function_allowed('usleep')) {
+                usleep(5000000);
             }
         }
 

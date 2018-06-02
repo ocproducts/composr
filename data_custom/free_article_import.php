@@ -301,8 +301,8 @@ function http_download_file_cached($url, $referer = '', $cookies = null)
     if (is_file($cache_file)) {
         $data = file_get_contents($cache_file);
     } else {
-        if (php_function_allowed('sleep')) {
-            sleep(3);
+        if (php_function_allowed('usleep')) {
+            usleep(3000000);
         }
 
         require_code('files');

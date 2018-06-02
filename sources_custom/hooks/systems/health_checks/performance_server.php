@@ -124,7 +124,7 @@ class Hook_health_check_performance_server extends Hook_Health_Check
             }
 
             /*  This technique is okay in theory, but there's too much rounding when we're looking at a narrow threshold
-            sleep(2); // Let CPU recover a bit from our own script
+            usleep(2000000); // Let CPU recover a bit from our own script
             $result = explode("\n", shell_exec('ps -A -o %cpu'));
             $cpu = 0.0;
             foreach ($result as $r) {
