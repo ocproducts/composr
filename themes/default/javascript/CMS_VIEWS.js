@@ -1670,7 +1670,7 @@
     function DropdownMenu(params) {
         DropdownMenu.base(this, 'constructor', arguments);
 
-        this.menuContentEl = this.$('.js-el-menu-content');
+        this.menuContentEl = this.$('.dropdown-menu-content');
 
         var that = this,
             isMobile = $cms.isCssMode('mobile'),

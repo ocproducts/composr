@@ -346,15 +346,15 @@ sup {
 	top: -.5em;
 }
 
-a {
-	color: #007bff;
+a, .button-hyperlink {
+	color: {$GET,a.link};
 	text-decoration: none;
 	background-color: transparent;
 	-webkit-text-decoration-skip: objects;
 }
 
-a:hover {
-	color: #0056b3;
+a:hover, .button-hyperlink:hover {
+	color: {$GET,a.hover};
 	text-decoration: underline;
 }
 
@@ -670,18 +670,6 @@ input[type="text"], input[type="password"], input[type="color"], input[type="ema
 }
 input[type="text"]:disabled, input[type="password"]:disabled, input[type="color"]:disabled, input[type="email"]:disabled, input[type="number"]:disabled, input[type="range"]:disabled, input[type="search"]:disabled, input[type="tel"]:disabled, input[type="url"]:disabled, textarea:disabled, select:disabled {
 	color: gray;
-}
-
-a, .button-hyperlink {
-	color: {$GET,a.link};
-	text-decoration: none;
-}
-a:visited {
-	color: {$GET,a.visited};
-}
-a:hover, .button-hyperlink:hover {
-	color: {$GET,a.hover};
-	text-decoration: underline;
 }
 
 h1, h2, h3 {
@@ -1128,7 +1116,7 @@ header h1 {
 	position: relative;
 	float: left;
 	text-decoration: none;
-	transition: color, background-color 0.3s;
+	transition: color  0.15s ease-in-out, background-color  0.15s ease-in-out;
 	padding: 17px 10px;
 }
 

@@ -7,7 +7,7 @@
 	<div class="dropdown-menu" data-view="DropdownMenu" data-view-params="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING,menu_id}{_*}{+END}">
 		<a href="{$PAGE_LINK*,:sitemap}" class="dropdown-menu-toggle-btn">{+START,INCLUDE,ICON}NAME=menus/mobile_menu{+END} <span>{!MENU}</span></a>
 
-		<nav class="dropdown-menu-content js-el-menu-content">
+		<nav class="dropdown-menu-content">
 			<ul class="dropdown-menu-items dropdown-menu-items-main" id="{$GET*,menu_id}">
 				{CONTENT}
 			</ul>

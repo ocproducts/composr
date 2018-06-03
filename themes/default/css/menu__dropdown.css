@@ -32,15 +32,17 @@ For example:
 .dropdown-menu-item-a:visited,
 .dropdown-menu-item-a:hover {
 	text-decoration: none;
-	transition: color, background-color 0.3s;
+	transition: color  0.15s ease-in-out, background-color  0.15s ease-in-out;
 }
 
-.dropdown-menu-item.toplevel {
-	cursor: default;
+.dropdown-menu-item-a {
+	display: block;
+	text-decoration: none;
 }
 
-.dropdown-menu-item-a.toplevel-link,
-.dropdown-menu-item-a.nlevel-link {
+.dropdown-menu-item-a,
+.dropdown-menu-item-a:hover,
+.dropdown-menu-item-a:visited {
 	display: block;
 	text-decoration: none;
 	color: inherit;
@@ -112,8 +114,8 @@ For example:
 		background-color: {$GET,area_5_background};
 	}
 
-	.dropdown-menu-item.toplevel-link,
-	.dropdown-menu-item.nlevel-link {
+	.dropdown-menu-a.toplevel-link,
+	.dropdown-menu-a.nlevel-link {
 		padding: 1.2em 3em 1.2em 1em;
 		background: url('{$IMG;,icons/buttons/proceed}') transparent no-repeat top 1em right 1em;
 		background-size: 24px 24px;
@@ -134,7 +136,7 @@ For example:
 		display: none;
 	}
 
-	.dropdown-menu li.toplevel {
+	.dropdown-menu-item.toplevel {
 		float: left;
 	}
 

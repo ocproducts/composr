@@ -10,8 +10,15 @@ html>body#main-website {
 }
 
 header {
-	background-image: linear-gradient(to bottom, #f9f9f9, #ebebeb);
-	border-bottom: 3px solid #cacaca;
+	background-color: {$GET,seed};
+	color: {$GET,WB};
+	margin-bottom: 1em;
+}
+
+header::after {
+	display: block;
+	clear: both;
+	content: "";
 }
 
 /*{+START,CSS_MODE,desktop}*/
@@ -44,7 +51,6 @@ header {
 #main-website #main-website-inner {
 	border: 0;
 	box-shadow: none;
-	margin-top: 0;
 }
 
 body#main-website #main-website-inner, html>body div.global-middle-faux {
@@ -62,6 +68,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	background-image: none !important;
 	background-color: #FFF !important;
 	border-color: #bdcde6 !important;
+	margin-top: 0;
 }
 
 .box---message .global-message {
