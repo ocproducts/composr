@@ -192,7 +192,8 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = ar
 
             register_shutdown_function(function () use ($plain_title, $title, $hook, $args, $force_immediate, $send_notification) {
                 call_user_func_array__long_task($plain_title, $title, $hook, $args, false, $force_immediate, $send_notification);
-            });            return new Tempcode();
+            });
+            return new Tempcode();
         }
 
         // Disable limits, as tasks can be resource-intensive
