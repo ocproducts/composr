@@ -2,6 +2,6 @@
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<p class="proceed-button">
-		<button class="button-screen-item admin--delete3" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE_SELECTION}</button>
+		<button class="btn btn-primary btn-scri admin--delete3" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE_SELECTION}</button>
 	</p>
 </form>

@@ -16,9 +16,9 @@
 		<input type="hidden" name="name" value="{NAME*}" />
 
 		<p>
-			<button class="button-screen buttons--back" type="button" data-cms-btn-go-back="1">{+START,INCLUDE,ICON}NAME=buttons/back{+END} {!GO_BACK}</button>
+			<button class="btn btn-primary btn-scr buttons--back" type="button" data-cms-btn-go-back="1">{+START,INCLUDE,ICON}NAME=buttons/back{+END} {!GO_BACK}</button>
 
-			<button class="button-screen admin--delete3" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!PROCEED}</button>
+			<button class="btn btn-primary btn-scr admin--delete3" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!PROCEED}</button>
 		</p>
 	</form>
 </div>

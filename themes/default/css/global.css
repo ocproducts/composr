@@ -59,7 +59,7 @@ In mobile mode:
 
 /* Used to initiate equations (although running the Theme Wizard replaces these with what the user chooses - which is how it works) */
 {$THEMEWIZARD_COLOR,#239def,seed,100% 239def}
-{$THEMEWIZARD_COLOR,#ff8900,seed_secondary,100% ff8900}
+{$THEMEWIZARD_COLOR,#ff8900,seed_alt,100% ff8900}
 {$THEMEWIZARD_COLOR,#ffffff,WB,100% FFFFFF}
 {$THEMEWIZARD_COLOR,#000000,BW,100% 000000}
 /*Theme seed is: 239def*/
@@ -1715,7 +1715,7 @@ body .accessibility-hidden { /* Contents should be made visible (or interpreted)
 .nothing-here::before,
 .more-here::before {
 	font-family: sans-serif;
-	color: {$GET,seed_secondary};
+	color: {$GET,seed_alt};
 	content: '\025BA'; /* Rightward triangle */
 	vertical-align: middle;
 	padding-right: 1em;
@@ -2179,7 +2179,7 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 .toggleable-tray-title + * {
 	margin-top: 5px;
 }
-.box-inner>h2>.right .button-screen {
+.box-inner>h2>.right .btn-scr {
 	vertical-align: top;
 }
 .box.box-prominent>.box-inner {
@@ -3824,7 +3824,7 @@ ul.actions-list-super-compact > li {
 ul.actions-list > li > .icon,
 ul.actions-list-compact > li > .icon,
 ul.actions-list-super-compact > li > .icon {
-	color: {$GET,seed_secondary};
+	color: {$GET,seed_alt};
 	width: 14px;
 	height: 14px;
 }
@@ -4329,6 +4329,7 @@ input.magic-image-edit-link {
 .hero-section .hero-button a:hover,
 .hero-section .hero-button a:focus {
 	text-decoration: none;
+	background-color: {$GET,button_background_hover};
 }
 
 .button-micro.disabled,
@@ -4368,50 +4369,19 @@ input.magic-image-edit-link {
 	height: 18px;
 }
 
-/*{+START,CSS_MODE,mobile}*/
-	.button-screen-item {
-		margin: 0.25em 0.1em !important;
-	}
-/*{+END}*/
 .button-micro {
 	padding: 4px 6px;
 	font-size: 12px;
 }
-/*{+START,CSS_MODE,mobile}*/
-	.button-micro {
-		line-height: 0.9em;
-	}
-/*{+END}*/
-div .button-micro {
-	border-radius: 1px;
-}
 
-div .button-micro .icon {
+.btn-sm .icon {
 	display: none; /* Too loud for such a small space */
 }
 
-.button-screen,
-.button-screen-item,
-.button-micro {
-	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
-	display: inline-block;
-}
 .buttons--previous-none,
 .buttons--next-none {
 	opacity: 0.85 !important;
 	cursor: not-allowed;
-}
-.button-micro:hover,
-.button-screen:hover,
-.button-screen-item:hover,
-.button-screen:hover,
-.button-screen-item:hover,
-.button-micro:hover {
-	background-color: {$GET,button_background_hover};
-}
-.button-micro:disabled, .button-screen:disabled, .button-screen-item:disabled {
-	opacity: 0.4 !important;
-	cursor: default;
 }
 
 .proceed-button {

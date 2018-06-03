@@ -11,7 +11,7 @@
 
 	{+START,IF_NON_EMPTY,{REORDER_URL}}
 		<p class="proceed-button">
-			<button accesskey="u" data-disable-on-click="1" class="button-screen buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!REORDER_FORUMS}</button>
+			<button accesskey="u" data-disable-on-click="1" class="btn btn-primary btn-scr buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!REORDER_FORUMS}</button>
 		</p>
 	{+END}
 </form>

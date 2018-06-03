@@ -9,7 +9,7 @@
 		</div>
 
 		<p class="proceed-button">
-			<button class="button-screen buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!INSTALL} Composr</button>
+			<button class="btn btn-primary btn-scr buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!INSTALL} Composr</button>
 		</p>
 	</div>
 </form>

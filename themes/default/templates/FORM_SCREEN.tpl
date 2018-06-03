@@ -34,7 +34,7 @@
 			<div class="skip-step-button-wrap{+START,IF,{$IN_STR,{FIELDS},required-star}} skip-step-button-wrap-with-req-note{+END}">
 				<div>
 					<input type="hidden" id="{SKIPPABLE*}" name="{SKIPPABLE*}" value="0" />
-					<button data-disable-on-click="1" tabindex="151" class="button-screen-item buttons--skip js-btn-skip-step" type="submit">{+START,INCLUDE,ICON}NAME=buttons/skip{+END} {!SKIP}</button>
+					<button data-disable-on-click="1" tabindex="151" class="btn btn-primary btn-scri buttons--skip js-btn-skip-step" type="submit">{+START,INCLUDE,ICON}NAME=buttons/skip{+END} {!SKIP}</button>
 				</div>
 			</div>
 		{+END}

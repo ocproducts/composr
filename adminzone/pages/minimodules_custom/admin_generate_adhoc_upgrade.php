@@ -288,7 +288,7 @@ echo '
         </p>
 
         <p class="proceed-button">
-            <button class="buttons--proceed button-screen" type="submit">' . $proceed_icon->evaluate() . ' Auto-probe</button>
+            <button class="btn btn-primary btn-scr buttons--proceed" type="submit">' . $proceed_icon->evaluate() . ' Auto-probe</button>
         </p>
     </form>
 ';
@@ -329,7 +329,7 @@ foreach (array_merge(array_keys($addons['bundled']), array_keys($addons['non_bun
 $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
 echo '
         <p class="proceed-button">
-            <button class="buttons--proceed button-screen" type="submit">' . $proceed_icon->evaluate() . ' Generate</button>
+            <button class="btn btn-primary btn-scr buttons--proceed" type="submit">' . $proceed_icon->evaluate() . ' Generate</button>
         </p>
     </form>
 ';

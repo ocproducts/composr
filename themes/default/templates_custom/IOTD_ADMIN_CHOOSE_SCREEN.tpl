@@ -33,6 +33,6 @@
 		{!NOT_SHOWING_OLD_IOTDS_YET}
 	</p>
 	<p>
-		<a class="button-screen buttons--all2" href="{USED_URL*}#used">{+START,INCLUDE,ICON}NAME=buttons/all2{+END} <span>{!SHOW_OLD_TOO}</span></a>
+		<a class="btn btn-primary btn-scr buttons--all2" href="{USED_URL*}#used">{+START,INCLUDE,ICON}NAME=buttons/all2{+END} <span>{!SHOW_OLD_TOO}</span></a>
 	</p>
 {+END}

@@ -554,7 +554,7 @@
                         button = $dom.create('button', {
                             'type': 'button',
                             'html': '{$GET;^,icon_proceed} ' + this.yesButton,
-                            'className': 'buttons--proceed button-screen-item js-onclick-do-option-yes'
+                            'className': 'btn btn-primary btn-scri buttons--proceed js-onclick-do-option-yes'
                         });
 
                         this.buttonContainerEl.appendChild(button);
@@ -579,14 +579,14 @@
                     button = $dom.create('button', {
                         'type': 'button',
                         'html': '{$GET;^,icon_yes} ' + this.yesButton,
-                        'className': 'buttons--yes button-screen-item js-onclick-do-option-yes',
+                        'className': 'btn btn-primary btn-scri buttons--yes js-onclick-do-option-yes',
                         'style': 'font-weight: bold;'
                     });
                     this.buttonContainerEl.appendChild(button);
                     button = $dom.create('button', {
                         'type': 'button',
                         'html': '{$GET;^,icon_no} ' + this.noButton,
-                        'className': 'buttons--no button-screen-item js-onclick-do-option-no'
+                        'className': 'btn btn-primary btn-scri buttons--no js-onclick-do-option-no'
                     });
                     this.buttonContainerEl.appendChild(button);
                     break;
@@ -608,7 +608,7 @@
                         button = $dom.create('button', {
                             'type': 'button',
                             'html': this.yesButton,
-                            'className': 'buttons--yes button-screen-item js-onclick-do-option-yes',
+                            'className': 'btn btn-primary btn-scri buttons--yes js-onclick-do-option-yes',
                             'css': {
                                 'font-weight': 'bold'
                             }
@@ -636,7 +636,7 @@
                     button = $dom.create('button', {
                         'type': 'button',
                         'html': '{$GET;^,icon_cancel} ' + this.cancelButton,
-                        'className': 'button-screen-item buttons--cancel ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
+                        'className': 'btn btn-primary btn-scri buttons--cancel ' + (this.cancel ? 'js-onclick-do-option-cancel' : 'js-onclick-do-option-finished')
                     });
                     this.buttonContainerEl.appendChild(button);
                 } else {
@@ -1447,7 +1447,7 @@
                     ml.type = 'button';
                     ml.id = 'editimg_' + target.id;
                     ml.value = '{!themes:EDIT_THEME_IMAGE;^}';
-                    ml.className = 'magic-image-edit-link button-micro';
+                    ml.className = 'btn btn-primary btn-sm magic-image-edit-link';
                     ml.style.position = 'absolute';
                     ml.style.left = $dom.findPosX(target) + 'px';
                     ml.style.top = $dom.findPosY(target) + 'px';

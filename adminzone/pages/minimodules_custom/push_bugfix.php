@@ -324,7 +324,7 @@ echo <<<END
     </fieldset>
 
     <p style="margin-left: 440px;">
-        <button class="buttons--proceed button-screen" type="submit">{$proceed_icon} Submit fix</button>
+        <button class="btn btn-primary btn-scr buttons--proceed" type="submit">{$proceed_icon} Submit fix</button>
     </p>
 
     <p>
@@ -485,7 +485,7 @@ function make_call($call, $params, $file = null)
         }
         $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
         echo '
-                    <button class="buttons--proceed button-screen" type="submit">' . $proceed_icon->evaluate() . ' Action failed: Try manually</button>
+                    <button class="btn btn-primary btn-scr buttons--proceed" type="submit">' . $proceed_icon->evaluate() . ' Action failed: Try manually</button>
             </form>
         ';
         $result = '';

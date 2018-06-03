@@ -38,7 +38,7 @@
 
 			{+START,IF_PASSED,SUBMIT_NAME}
 				<p class="proceed-button" id="selection-submit">
-					<button class="button-screen" type="submit">{+START,INCLUDE,ICON}NAME={SUBMIT_ICON}{+END} {SUBMIT_NAME*}</button>
+					<button class="btn btn-primary btn-scr" type="submit">{+START,INCLUDE,ICON}NAME={SUBMIT_ICON}{+END} {SUBMIT_NAME*}</button>
 				</p>
 			{+END}
 		</form>

@@ -7,7 +7,7 @@
 			{LIST}
 		</select></label>
 
-		<button data-disable-on-click="1" class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+		<button data-disable-on-click="1" class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 	</form>
 
 	<hr class="spaced-rule" />
@@ -16,14 +16,14 @@
 		{TPL}
 
 		<div class="buttons-group">
-			<a class="button-screen-item buttons--choose js-click-do-attachment-and-close" href="#!">{+START,INCLUDE,ICON}NAME=buttons/choose{+END} <span>{!CHOOSE}</span></a>
+			<a class="btn btn-primary btn-scri buttons--choose js-click-do-attachment-and-close" href="#!">{+START,INCLUDE,ICON}NAME=buttons/choose{+END} <span>{!CHOOSE}</span></a>
 
 			{+START,IF,{MAY_DELETE}}
 				<form title="{!DELETE}" class="inline" method="post" action="{DELETE_URL*}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<input type="hidden" name="delete_{ID*}" value="1" />
-					<button data-cms-confirm-click="{!ARE_YOU_SURE_DELETE*}" type="submit" class="button-screen-item admin--delete3">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</button>
+					<button data-cms-confirm-click="{!ARE_YOU_SURE_DELETE*}" type="submit" class="btn btn-primary btn-scri admin--delete3">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</button>
 				</form>
 			{+END}
 		</div>

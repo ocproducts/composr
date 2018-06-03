@@ -27,10 +27,10 @@
 			<p>
 				{+START,LOOP,SYNDICATIONS}
 					{+START,IF,{SYNDICATION_IS_SET}}
-						<button class="button-screen-item buttons--cancel" data-disable-on-click="1" type="submit" id="syndicate_stop__{_loop_key*}" name="syndicate_stop__{_loop_key*}">{+START,INCLUDE,ICON}NAME=buttons/cancel{+END} {!STOP_SYNDICATING_TO,{SYNDICATION_SERVICE_NAME*}}</button>
+						<button class="btn btn-primary btn-scri buttons--cancel" data-disable-on-click="1" type="submit" id="syndicate_stop__{_loop_key*}" name="syndicate_stop__{_loop_key*}">{+START,INCLUDE,ICON}NAME=buttons/cancel{+END} {!STOP_SYNDICATING_TO,{SYNDICATION_SERVICE_NAME*}}</button>
 					{+END}
 					{+START,IF,{$NOT,{SYNDICATION_IS_SET}}}
-						<button class="button-screen-item buttons--proceed" data-disable-on-click="1" type="submit" id="syndicate_start__{_loop_key*}" name="syndicate_start__{_loop_key*}">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!START_SYNDICATING_TO,{SYNDICATION_SERVICE_NAME*}}</button>
+						<button class="btn btn-primary btn-scri buttons--proceed" data-disable-on-click="1" type="submit" id="syndicate_start__{_loop_key*}" name="syndicate_start__{_loop_key*}">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!START_SYNDICATING_TO,{SYNDICATION_SERVICE_NAME*}}</button>
 					{+END}
 				{+END}
 			</p>

@@ -13,12 +13,12 @@
 			<option value="2">1</option>
 		</select>
 		{+START,IF,{SIMPLISTIC}}
-			<button data-disable-on-click="1" class="button-micro feedback--rate" type="submit">{+START,INCLUDE,ICON}NAME=feedback/rate{+END} {!RATE}</button>
+			<button data-disable-on-click="1" class="btn btn-primary btn-sm feedback--rate" type="submit">{+START,INCLUDE,ICON}NAME=feedback/rate{+END} {!RATE}</button>
 		{+END}
 	{+END}
 	{+START,IF,{$NOT,{SIMPLISTIC}}}
 		<div>
-			<button data-disable-on-click="1" class="button-micro feedback--rate" type="submit">{+START,INCLUDE,ICON}NAME=feedback/rate{+END} {!RATE}</button>
+			<button data-disable-on-click="1" class="btn btn-primary btn-sm feedback--rate" type="submit">{+START,INCLUDE,ICON}NAME=feedback/rate{+END} {!RATE}</button>
 		</div>
 	{+END}
 {+END}

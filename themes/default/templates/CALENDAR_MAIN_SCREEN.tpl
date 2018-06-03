@@ -39,14 +39,14 @@
 
 <div class="trinav-wrap nograd">
 	<div class="trinav-left">
-		<a class="button-screen buttons--previous" href="{PREVIOUS_URL*}" rel="{+START,IF,{PREVIOUS_NO_FOLLOW}}nofollow {+END}prev" accesskey="j">{+START,INCLUDE,ICON}NAME=buttons/previous{+END} <span>{!PREVIOUS}</span></a>
+		<a class="btn btn-primary btn-scr buttons--previous" href="{PREVIOUS_URL*}" rel="{+START,IF,{PREVIOUS_NO_FOLLOW}}nofollow {+END}prev" accesskey="j">{+START,INCLUDE,ICON}NAME=buttons/previous{+END} <span>{!PREVIOUS}</span></a>
 	</div>
 	<div class="trinav-right">
-		<a class="button-screen buttons--next" href="{NEXT_URL*}" rel="{+START,IF,{NEXT_NO_FOLLOW}}nofollow {+END}next" accesskey="k"><span>{!NEXT}</span> {+START,INCLUDE,ICON}NAME=buttons/next{+END}</a>
+		<a class="btn btn-primary btn-scr buttons--next" href="{NEXT_URL*}" rel="{+START,IF,{NEXT_NO_FOLLOW}}nofollow {+END}next" accesskey="k"><span>{!NEXT}</span> {+START,INCLUDE,ICON}NAME=buttons/next{+END}</a>
 	</div>
 	<div class="trinav-mid block-desktop">
 		{+START,IF_NON_EMPTY,{ADD_URL}}
-			<a class="button-screen admin--add" rel="add" href="{ADD_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_CALENDAR_EVENT}</span></a>
+			<a class="btn btn-primary btn-scr admin--add" rel="add" href="{ADD_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_CALENDAR_EVENT}</span></a>
 		{+END}
 	</div>
 </div>
@@ -57,7 +57,7 @@
 
 {+START,IF_NON_EMPTY,{ADD_URL}}
 	<p class="buttons-group">
-		<a class="button-screen admin--add" rel="add" href="{ADD_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_CALENDAR_EVENT}</span></a>
+		<a class="btn btn-primary btn-scr admin--add" rel="add" href="{ADD_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_CALENDAR_EVENT}</span></a>
 	</p>
 {+END}
 
@@ -86,7 +86,7 @@
 						</div>
 
 						<p class="proceed-button">
-							<button data-disable-on-click="1" class="button-screen buttons--choose" type="submit">{+START,INCLUDE,ICON}NAME=buttons/choose{+END} {!INTERESTS}</button>
+							<button data-disable-on-click="1" class="btn btn-primary btn-scr buttons--choose" type="submit">{+START,INCLUDE,ICON}NAME=buttons/choose{+END} {!INTERESTS}</button>
 						</p>
 					</form>
 				</div></section></div>
@@ -105,7 +105,7 @@
 						</div>
 
 						<p class="proceed-button">
-							<button data-disable-on-click="1" class="button-screen buttons--filter" type="submit">{+START,INCLUDE,ICON}NAME=buttons/filter{+END} {!FILTER}</button>
+							<button data-disable-on-click="1" class="btn btn-primary btn-scr buttons--filter" type="submit">{+START,INCLUDE,ICON}NAME=buttons/filter{+END} {!FILTER}</button>
 						</p>
 					</form>
 				</div></section></div>

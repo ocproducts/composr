@@ -104,7 +104,7 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<div class="inline">
-							<button id="wiki-merge-button" style="display: none" class="admin--merge button-screen button-faded js-click-btn-add-form-marked-posts" type="submit">{+START,INCLUDE,ICON}NAME=admin/merge{+END} {!_MERGE_WIKI_POSTS}</button>
+							<button id="wiki-merge-button" style="display: none" class="btn btn-primary btn-scr admin--merge button-faded js-click-btn-add-form-marked-posts" type="submit">{+START,INCLUDE,ICON}NAME=admin/merge{+END} {!_MERGE_WIKI_POSTS}</button>
 						</div>
 					</form>
 				{+END}

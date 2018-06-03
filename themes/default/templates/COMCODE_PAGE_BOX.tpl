@@ -12,7 +12,7 @@
 	{+END}{+END}
 
 	<p class="shunted-button">
-		<a class="button-screen-item buttons--more" href="{URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/more{+END} {!VIEW}</span></a>
+		<a class="btn btn-primary btn-scri buttons--more" href="{URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/more{+END} {!VIEW}</span></a>
 	</p>
 {+END}
 

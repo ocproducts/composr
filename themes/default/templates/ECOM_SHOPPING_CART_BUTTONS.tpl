@@ -7,7 +7,7 @@
 				<form title="{!ADD_TO_CART}" method="post" action="{ACTION_URL*}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<button class="button-screen-item buttons--cart-add"{+START,IF,{OUT_OF_STOCK}} data-click-alert="{!OUT_OF_STOCK*}" data-click-pd="1"{+END} type="submit">{+START,INCLUDE,ICON}NAME=buttons/cart_add{+END} {!ADD_TO_CART}</button>
+					<button class="btn btn-primary btn-scri buttons--cart-add"{+START,IF,{OUT_OF_STOCK}} data-click-alert="{!OUT_OF_STOCK*}" data-click-pd="1"{+END} type="submit">{+START,INCLUDE,ICON}NAME=buttons/cart_add{+END} {!ADD_TO_CART}</button>
 					<input type="hidden" id="quantity" name="quantity" value="1" />
 					<input type="hidden" name="type_code" value="{TYPE_CODE*}" />
 				</form>
@@ -21,7 +21,7 @@
 					<form title="{!BUY_NOW}" method="post" enctype="multipart/form-data" action="{PURCHASE_ACTION_URL*}" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
-						<button class="button-screen-item buttons--cart-checkout" type="submit">{+START,INCLUDE,ICON}NAME=buttons/cart_checkout{+END} {!BUY_NOW}</button>
+						<button class="btn btn-primary btn-scri buttons--cart-checkout" type="submit">{+START,INCLUDE,ICON}NAME=buttons/cart_checkout{+END} {!BUY_NOW}</button>
 					</form>
 				</div>
 			{+END}

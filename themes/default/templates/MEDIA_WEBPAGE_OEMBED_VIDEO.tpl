@@ -10,6 +10,6 @@
 	{+END}
 
 	<p class="shunted-button">
-		<a class="button-screen-item buttons--more" href="{URL*}"{+START,IF_PASSED,REL} rel="{REL*}"{+END}><span>{+START,INCLUDE,ICON}NAME=buttons/more{+END} {!VIEW}</span></a>
+		<a class="btn btn-primary btn-scri buttons--more" href="{URL*}"{+START,IF_PASSED,REL} rel="{REL*}"{+END}><span>{+START,INCLUDE,ICON}NAME=buttons/more{+END} {!VIEW}</span></a>
 	</p>
 </div></section>

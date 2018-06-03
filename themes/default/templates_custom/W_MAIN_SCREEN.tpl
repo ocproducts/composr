@@ -139,7 +139,7 @@
 						<option value="0">
 							{!W_EVERYONE}
 						</option>
-					</select> <button class="button-screen-item buttons--send" type="submit">{+START,INCLUDE,ICON}NAME=buttons/send{+END}{!SEND_MESSAGE}</button></div>
+					</select> <button class="btn btn-primary btn-scri buttons--send" type="submit">{+START,INCLUDE,ICON}NAME=buttons/send{+END}{!SEND_MESSAGE}</button></div>
 				</form>
 			</div>
 
@@ -303,7 +303,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="drop" />
-									<button class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -322,7 +322,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="give" />
-									<button class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -341,7 +341,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="btype" value="pickpocket" />
-									<button class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -360,7 +360,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="use" />
-									<button class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -379,7 +379,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="btype" value="delete-message-by-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 								</td>
 							</tr>
 						{+END}
@@ -399,7 +399,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="findperson" />
-								<button class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+								<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 							</td>
 						</tr>
 
@@ -419,7 +419,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="teleport-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -438,7 +438,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="imprison-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -457,7 +457,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="hurt-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -476,7 +476,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="dehurt-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -495,7 +495,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="ban-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -514,7 +514,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="unban-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 								</td>
 							</tr>
 
@@ -533,7 +533,7 @@
 								</td>
 								<td>
 									<input type="hidden" name="type" value="take-from-person" />
-									<button class="button-screen-item buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 								</td>
 							</tr>
 						{+END}
@@ -595,15 +595,15 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<label for="item">{!W_ITEMS}</label>: {ITEMS_OWNED} <input type="hidden" name="type" value="edititem" />
-						<button class="js-click-set-type-edititem button-screen-item admin--edit" type="submit">{+START,INCLUDE,ICON}NAME=admin/edit{+END} {!W_EDIT_ITEM}</button>
-						<button class="js-click-set-type-confirm button-screen-item admin--delete3" type="submit">{!W_DELETE_ITEM}</button>
+						<button class="btn btn-primary btn-scri js-click-set-type-edititem admin--edit" type="submit">{+START,INCLUDE,ICON}NAME=admin/edit{+END} {!W_EDIT_ITEM}</button>
+						<button class="btn btn-primary btn-scri js-click-set-type-confirm admin--delete3" type="submit">{!W_DELETE_ITEM}</button>
 					</div></form>
 
 					{+START,IF,{IS_STAFF}}
 						<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off"><div>
 							{$INSERT_SPAMMER_BLACKHOLE}
 
-							<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <button class="button-screen-item admin--merge" type="submit">{!W_MERGE_ITEMS}</button>
+							<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <button class="btn btn-primary btn-scri admin--merge" type="submit">{!W_MERGE_ITEMS}</button>
 						</div></form>
 					{+END}
 				{+END}

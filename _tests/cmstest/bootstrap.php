@@ -103,7 +103,7 @@ function unit_testing_run()
     $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
     echo "
         </select>
-        <p><button class=\"button-screen buttons--proceed\" type=\"button\"id=\"select-button\" />{$proceed_icon} Call selection</button></p>
+        <p><button class=\"btn btn-primary btn-scr buttons--proceed\" type=\"button\"id=\"select-button\" />{$proceed_icon} Call selection</button></p>
         <script nonce=\"" . $GLOBALS['CSP_NONCE'] . "\" id=\"select-list\">
             var list = document.getElementById('select-list');
             var button = document.getElementById('select-button');

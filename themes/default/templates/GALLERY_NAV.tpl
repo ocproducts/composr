@@ -18,10 +18,10 @@
 		<div class="trinav-left">
 			{$,Back}
 			{+START,IF_NON_EMPTY,{BACK_URL}}
-				<a class="button-screen buttons--previous {+START,IF,{SLIDESHOW}}js-click-slideshow-backward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="prev" accesskey="j" href="{BACK_URL*}">{+START,INCLUDE,ICON}NAME=buttons/previous{+END} <span>{!PREVIOUS}</span></a>
+				<a class="btn btn-primary btn-scr buttons--previous {+START,IF,{SLIDESHOW}}js-click-slideshow-backward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="prev" accesskey="j" href="{BACK_URL*}">{+START,INCLUDE,ICON}NAME=buttons/previous{+END} <span>{!PREVIOUS}</span></a>
 			{+END}
 			{+START,IF_EMPTY,{BACK_URL}}
-				<span class="button-screen buttons--previous-none">{+START,INCLUDE,ICON}NAME=buttons/previous_none{+END}  <span>{!PREVIOUS}</span></span>
+				<span class="btn btn-primary btn-scr buttons--previous-none">{+START,INCLUDE,ICON}NAME=buttons/previous_none{+END}  <span>{!PREVIOUS}</span></span>
 			{+END}
 		</div>
 
@@ -30,17 +30,17 @@
 			{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
 				{+START,IF,{$DESKTOP}}
 					{+START,IF,{$NOT,{SLIDESHOW}}}
-						<a class="button-screen buttons--slideshow inline-desktop" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</span></a>
+						<a class="btn btn-primary btn-scr buttons--slideshow inline-desktop" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</span></a>
 					{+END}
 				{+END}
 			{+END}
 
 			{$,Next}
 			{+START,IF_NON_EMPTY,{NEXT_URL}}
-				<a class="button-screen buttons--next {+START,IF,{SLIDESHOW}}js-click-slideshow-forward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="next" accesskey="k" href="{NEXT_URL*}"><span>{!NEXT}</span> {+START,INCLUDE,ICON}NAME=buttons/next{+END}</a>
+				<a class="btn btn-primary btn-scr buttons--next {+START,IF,{SLIDESHOW}}js-click-slideshow-forward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="next" accesskey="k" href="{NEXT_URL*}"><span>{!NEXT}</span> {+START,INCLUDE,ICON}NAME=buttons/next{+END}</a>
 			{+END}
 			{+START,IF_EMPTY,{NEXT_URL}}
-				<span class="button-screen buttons--next-none"><span>{!NEXT}</span> {+START,INCLUDE,ICON}NAME=buttons/next_none{+END}</span>
+				<span class="btn btn-primary btn-scr buttons--next-none"><span>{!NEXT}</span> {+START,INCLUDE,ICON}NAME=buttons/next_none{+END}</span>
 			{+END}
 		</div>
 
@@ -70,7 +70,7 @@
 		{+START,IF,{$NOT,{SLIDESHOW}}}
 			<div class="float-surrounder block-mobile">
 				<div class="right block-mobile">
-					<a class="button-screen buttons--slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</span></a>
+					<a class="btn btn-primary btn-scr buttons--slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</span></a>
 				</div>
 			</div>
 		{+END}

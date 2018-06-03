@@ -388,7 +388,7 @@
         /*{$SET,icon_cancel,{+START,INCLUDE,ICON}NAME=buttons/cancel{+END}}*/
         var button = document.createElement('button');
         button.type = 'button';
-        button.className = 'buttons--cancel button-screen-item';
+        button.className = 'btn btn-primary btn-scri buttons--cancel';
         $dom.html(button, '{$GET;^,icon_cancel} {!INPUTSYSTEM_CANCEL;^}');
         // Remove the form when it's cancelled
         button.addEventListener('click', function () {
@@ -401,7 +401,7 @@
         /*{$SET,proceed_icon,{+START,INCLUDE,ICON}NAME=buttons/proceed{+END}}*/
         button = document.createElement('button');
         button.type = 'submit';
-        button.className = 'buttons--proceed button-screen-item';
+        button.className = 'btn btn-primary btn-scri buttons--proceed';
         $dom.html(button, '{$GET;^,proceed_icon} {!encryption:DECRYPT;^}');
         // Hide the form upon submission
         button.addEventListener('click', function () {

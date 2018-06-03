@@ -101,7 +101,7 @@
 			{IP_LIST}
 		</ul>
 
-		<button data-disable-on-click="1" class="button-screen buttons--save" type="submit">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {!SET}</button>
+		<button data-disable-on-click="1" class="btn btn-primary btn-scr buttons--save" type="submit">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {!SET}</button>
 	</form>
 {+END}
 {+START,IF_EMPTY,{IP_LIST}}

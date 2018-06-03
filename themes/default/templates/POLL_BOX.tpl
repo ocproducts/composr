@@ -23,7 +23,7 @@
 
 		{+START,IF_NON_EMPTY,{RESULT_URL}}
 			<p>
-				<button disabled="disabled" id="poll{PID*}" data-disable-on-click="1" class="button-screen-item menu--social--polls" type="submit">{!VOTE}</button>
+				<button disabled="disabled" id="poll{PID*}" data-disable-on-click="1" class="btn btn-primary btn-scri menu--social--polls" type="submit">{!VOTE}</button>
 			</p>
 		{+END}
 	</form>

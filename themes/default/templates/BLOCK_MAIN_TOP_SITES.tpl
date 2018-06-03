@@ -48,5 +48,5 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{SUBMIT_URL}}
-	<p class="proceed-button"><a class="button-screen admin--add" href="{SUBMIT_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_BANNER}</span></a></p>
+	<p class="proceed-button"><a class="btn btn-primary btn-scr admin--add" href="{SUBMIT_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_BANNER}</span></a></p>
 {+END}

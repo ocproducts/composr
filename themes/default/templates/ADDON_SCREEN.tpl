@@ -58,7 +58,7 @@
 		</div>
 
 		<p class="proceed-button">
-			<button data-disable-on-click="1" class="button-screen buttons--proceed" type="submit">{!INSTALL_AND_UNINSTALL} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
+			<button data-disable-on-click="1" class="btn btn-primary btn-scr buttons--proceed" type="submit">{!INSTALL_AND_UNINSTALL} {+START,INCLUDE,ICON}NAME=buttons/proceed{+END}</button>
 		</p>
 	</form>
 

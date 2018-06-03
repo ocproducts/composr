@@ -25,6 +25,6 @@
 	<input type="hidden" name="x_recurring_billing" value="TRUE" />
 
 	<div class="purchase-button">
-		<button id="purchase-button" data-disable-on-click="1" class="button-screen menu--rich-content--ecommerce--purchase" type="submit" alt="Authorize.net - Simple Checkout">{+START,INCLUDE,ICON}NAME=menu/rich_content/ecommerce/purchase{+END} {!MAKE_PAYMENT}</button>
+		<button id="purchase-button" data-disable-on-click="1" class="btn btn-primary btn-scr menu--rich-content--ecommerce--purchase" type="submit" alt="Authorize.net - Simple Checkout">{+START,INCLUDE,ICON}NAME=menu/rich_content/ecommerce/purchase{+END} {!MAKE_PAYMENT}</button>
 	</div>
 </form>

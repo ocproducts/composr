@@ -45,7 +45,7 @@
 
 				<label class="points-anon" for="give-anonymous">{!TICK_ANON}: <input type="checkbox" id="give-anonymous" name="anonymous" value="1" /></label>
 
-				<button id="give-points-submit" class="button-screen-item buttons--points" type="submit">{!GIVE_POINTS}</button>
+				<button id="give-points-submit" class="btn btn-primary btn-scri buttons--points" type="submit">{!GIVE_POINTS}</button>
 			</p>
 		</form>
 	{+END}
@@ -85,7 +85,7 @@
 						<label class="accessibility-hidden" for="give-amount">{!AMOUNT}</label>
 						<input maxlength="8" data-prevent-input="[^\-\d{$BACKSLASH}{$DECIMAL_POINT*}]" size="7" id="give-amount" class="input-integer-required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
-						<button id="give-points-submit" class="button-micro buttons--points" type="submit">{!PROCEED_SHORT}</button>
+						<button id="give-points-submit" class="btn btn-primary btn-sm buttons--points" type="submit">{!PROCEED_SHORT}</button>
 					</p>
 				</div>
 

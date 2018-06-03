@@ -218,7 +218,7 @@ function upgrader_link($url, $text, $disabled = false, $js = '')
     $ret = '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">';
     $ret .= $hidden;
     $icon = do_template('ICON', array('NAME' => $icon));
-    $ret .= '<button ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="button-screen-item" type="submit">' . $icon->evaluate() . ' ' . escape_html($text) . '</button>';
+    $ret .= '<button ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="btn btn-primary btn-scri" type="submit">' . $icon->evaluate() . ' ' . escape_html($text) . '</button>';
     $ret .= '</form>';
     return $ret;
 }
@@ -327,7 +327,7 @@ function upgrader_output_login($message = null)
     $login_icon = do_template('ICON', array('NAME' => 'menu/site_meta/user_actions/login'));
     echo "
     <p>
-        <button class=\"menu--site-meta--user-actions--login button-screen\" type=\"submit\">{$login_icon} {$l_login}</button>
+        <button class=\"btn btn-primary btn-scr menu--site-meta--user-actions--login\" type=\"submit\">{$login_icon} {$l_login}</button>
     </p>
     </form>
     ";

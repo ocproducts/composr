@@ -514,16 +514,16 @@
 {$,Buttons}
 
 <div class="float-surrounder buttons-group">
-	<button data-disable-on-click="1" class="button-screen buttons--save js-btn-save-content" type="submit">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {!SAVE}</button>
+	<button data-disable-on-click="1" class="btn btn-primary btn-scr buttons--save js-btn-save-content" type="submit">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {!SAVE}</button>
 
 	{+START,SET,preview_buttons}
 		{+START,IF_PASSED,LIVE_PREVIEW_URL}
 			<!-- Preview in live rendering -->
-			<button class="button-screen buttons--preview js-btn-live-preview" type="submit">{+START,INCLUDE,ICON}NAME=buttons/preview{+END} {!LIVE_PREVIEW}</button>
+			<button class="btn btn-primary btn-scr buttons--preview js-btn-live-preview" type="submit">{+START,INCLUDE,ICON}NAME=buttons/preview{+END} {!LIVE_PREVIEW}</button>
 		{+END}
 		{+START,IF_PASSED,SCREEN_PREVIEW_URL}
 			<!-- Preview in screen preview (Lorem ipsum) -->
-			<button class="button-screen buttons--preview js-btn-screen-preview" type="submit">{+START,INCLUDE,ICON}NAME=buttons/preview{+END} {!LOREM_PREVIEW}</button>
+			<button class="btn btn-primary btn-scr buttons--preview js-btn-screen-preview" type="submit">{+START,INCLUDE,ICON}NAME=buttons/preview{+END} {!LOREM_PREVIEW}</button>
 		{+END}
 	{+END}
 	{+START,IF_NON_EMPTY,{$TRIM,{$GET,preview_buttons}}}
@@ -621,7 +621,7 @@
 			<label for="css-equation-{FILE_ID*}">{!CSS_EQUATION_HELPER}</label>
 			<input name="css_equation" id="css-equation-{FILE_ID*}" type="text" value="100% seed" />
 
-			<button class="button-screen-item buttons--calculate js-btn-equation-helper" type="submit">{+START,INCLUDE,ICON}NAME=buttons/calculate{+END} {!CALCULATE}</button>
+			<button class="btn btn-primary btn-scri buttons--calculate js-btn-equation-helper" type="submit">{+START,INCLUDE,ICON}NAME=buttons/calculate{+END} {!CALCULATE}</button>
 
 			&rarr;
 

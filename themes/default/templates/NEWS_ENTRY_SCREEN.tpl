@@ -80,7 +80,7 @@
 
 			{+START,IF,{$NOT,{$_GET,blog}}}
 				{$,Actually breadcrumbs will do fine!,<div>
-					<a class="button-screen buttons--all2" rel="archives" href="\{ARCHIVE_URL*\}">{+START,INCLUDE,ICON}NAME=buttons/all2{+END} <span>\{!VIEW_ARCHIVE\}</span></a>
+					<a class="btn btn-primary btn-scr buttons--all2" rel="archives" href="\{ARCHIVE_URL*\}">{+START,INCLUDE,ICON}NAME=buttons/all2{+END} <span>\{!VIEW_ARCHIVE\}</span></a>
 				</div>}
 			{+END}
 		</nav></aside>

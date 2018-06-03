@@ -11,7 +11,7 @@
 		<p>{!ADDING_THEME_IMAGE}</p>
 
 		<p class="buttons-group">
-			<a class="button-screen admin--add" rel="add" href="{ADD_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_THEME_IMAGE}</span></a>
+			<a class="btn btn-primary btn-scr admin--add" rel="add" href="{ADD_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_THEME_IMAGE}</span></a>
 		</p>
 	</div></div>
 </div>

@@ -25,6 +25,6 @@
 	<input type="hidden" name="repeat" value="{FIRST_REPEAT*}/{LENGTH_UNITS_2*}/0/{PRICE*}" />
 
 	<div>
-		<button id="purchase-button" data-disable-on-click="1" class="button-screen menu--adminzone--audit--ecommerce--subscriptions" type="submit">{+START,INCLUDE,ICON}NAME=menu/adminzone/audit/ecommerce/subscriptions{+END} {!MAKE_PAYMENT}</button>
+		<button id="purchase-button" data-disable-on-click="1" class="btn btn-primary btn-scr menu--adminzone--audit--ecommerce--subscriptions" type="submit">{+START,INCLUDE,ICON}NAME=menu/adminzone/audit/ecommerce/subscriptions{+END} {!MAKE_PAYMENT}</button>
 	</div>
 </form>

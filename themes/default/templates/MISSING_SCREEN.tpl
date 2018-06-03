@@ -12,12 +12,12 @@
 
 {+START,SET,BUTTONS}
 	{+START,IF_NON_EMPTY,{ADD_URL}}
-		<a class="button-screen admin--add" rel="add" href="{ADD_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_NEW_PAGE}</span></a>
+		<a class="btn btn-primary btn-scr admin--add" rel="add" href="{ADD_URL*}"><span>{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD_NEW_PAGE}</span></a>
 	{+END}
 
 	{+START,IF_PASSED,ADD_REDIRECT_URL}
 		{+START,IF_NON_EMPTY,{ADD_REDIRECT_URL}}
-			<a class="button-screen buttons--redirect" href="{ADD_REDIRECT_URL*}">{+START,INCLUDE,ICON}NAME=buttons/redirect{+END} <span>{!redirects:NEW_REDIRECT}</span></a>
+			<a class="btn btn-primary btn-scr buttons--redirect" href="{ADD_REDIRECT_URL*}">{+START,INCLUDE,ICON}NAME=buttons/redirect{+END} <span>{!redirects:NEW_REDIRECT}</span></a>
 		{+END}
 	{+END}
 {+END}

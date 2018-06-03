@@ -200,7 +200,7 @@
 				</table></div>
 
 				<p class="proceed-button">
-					<button data-disable-on-click="1" accesskey="u" class="button-screen buttons--search" type="submit">{+START,INCLUDE,ICON}NAME=buttons/search{+END} {!SEARCH_TITLE}</button>
+					<button data-disable-on-click="1" accesskey="u" class="btn btn-primary btn-scr buttons--search" type="submit">{+START,INCLUDE,ICON}NAME=buttons/search{+END} {!SEARCH_TITLE}</button>
 				</p>
 			</form>
 		</div>

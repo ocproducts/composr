@@ -75,7 +75,7 @@ END;
     }
 
     echo <<<END
-            <button class="buttons--proceed button-screen" type="submit">Begin</button>
+            <button class="btn btn-primary btn-scr buttons--proceed" type="submit">Begin</button>
         </div>
 END;
 } else {

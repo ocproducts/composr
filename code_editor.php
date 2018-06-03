@@ -196,7 +196,7 @@ END;
         <tr><th>FTP Password</th><td><input size="50" type="password" name="ftp_password" /></td></tr>
     </table>
     <p>
-        <button class="button-screen menu--site-meta--user-actions--login" type="submit">Log in</button>
+        <button class="btn btn-primary btn-scr menu--site-meta--user-actions--login" type="submit">Log in</button>
     </p>
     <hr />
     <ul class="actions-list" role="navigation">
@@ -280,7 +280,7 @@ END;
         OR, existing file: <select name="path">{$paths}</select>
     </p>
     <p class="proceed-button">
-        <button class="button-screen buttons--save" type="submit">Edit file</button>
+        <button class="btn btn-primary btn-scr buttons--save" type="submit">Edit file</button>
     </p>
 END;
 }
