@@ -148,7 +148,7 @@ class HarmlessURLCoder
     public function decode($str)
     {
         // TODO: Document this new behaviour in v11 codebook
-        if ((strpos($str, '://') !== false) && (function_exists('idn_to_utf8')) && (get_charset() == 'utf-8')) {
+        if ((function_exists('idn_to_utf8')) && (strpos($str, '://') !== false) && (get_charset() == 'utf-8')) {
             $domain = parse_url($str,  PHP_URL_HOST);
             $_domain = idn_to_utf8($domain);
             if ($_domain !== false) {
@@ -188,7 +188,7 @@ class HarmlessURLCoder
     public function encode($str)
     {
         // TODO: Document this new behaviour in v11 codebook
-        if ((strpos($str, '://') !== false) && (function_exists('idn_to_ascii')) && (get_charset() == 'utf-8')) {
+        if ((function_exists('idn_to_ascii')) && (strpos($str, '://') !== false) && (get_charset() == 'utf-8')) {
             $domain = preg_replace('#(^.*://)([^:/]*)(.*$)#', '$2', $str);
             $_domain = idn_to_ascii($domain);
             if ($_domain !== false) {
@@ -196,7 +196,7 @@ class HarmlessURLCoder
             }
         }
 
-        if (get_value('urls_simplifier') !== '1') { // TODO: Make a proper option in v11
+        if ((!function_exists('get_value')) || (get_value('urls_simplifier') !== '1')) { // TODO: Make a proper option in v11
             return $str;
         }
 
