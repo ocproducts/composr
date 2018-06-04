@@ -139,7 +139,7 @@ function reload_lang_fields($full = false, $only_table = null)
         unset($TABLE_LANG_FIELDS_CACHE[$only_table]);
     }
 
-    $msn_running = (is_on_multi_site_network()) && (get_forum_type() == 'cns') && (isset($GLOBALS['FORUM_DB']));
+    $msn_running = (is_on_multi_site_network()) && (get_forum_type() == 'cns') && (isset($GLOBALS['FORUM_DB'])); // TODO: Change in v11
 
     if (multi_lang_content() || $full) {
         $like = db_string_equal_to('m_type', 'SHORT_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', 'LONG_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', 'SHORT_TRANS') . ' OR ' . db_string_equal_to('m_type', 'LONG_TRANS') . ' OR ' . db_string_equal_to('m_type', '?SHORT_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', '?LONG_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', '?SHORT_TRANS') . ' OR ' . db_string_equal_to('m_type', '?LONG_TRANS');
@@ -151,7 +151,7 @@ function reload_lang_fields($full = false, $only_table = null)
         $sql .= ' AND ' . db_string_equal_to('m_table', $only_table);
     }
     if (($msn_running) && (substr($only_table, 0, 2) === 'f_')) {
-        $_table_lang_fields = array();
+        $_table_lang_fields = array(); // Optimisation, as it'll get overwritten anyway
     } else {
         $_table_lang_fields = $GLOBALS['SITE_DB']->query($sql, null, null, true);
     }
@@ -164,7 +164,11 @@ function reload_lang_fields($full = false, $only_table = null)
             $TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']][$lang_field['m_name']] = $lang_field['m_type'];
         }
 
-        if ($msn_running) { // TODO: Change in v11
+        if (($msn_running) && (($only_table === null) || (substr($only_table, 0, 2) === 'f_'))) {
+            if ($only_table !== null) {
+                unset($TABLE_LANG_FIELDS_CACHE[$only_table]);
+            }
+
             $sql .= ' AND m_table LIKE \'' . db_encode_like('f_%') . '\'';
 
             $_table_lang_fields_forum = $GLOBALS['FORUM_DB']->query($sql, null, null, true);
