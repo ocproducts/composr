@@ -154,10 +154,10 @@
         },
 
         cssEquationHelper: function (e) {
+            e.preventDefault();
+            
             var params = this.params,
                 url = 'themewizard_equation';
-
-            e.preventDefault();
 
             url += '&theme=' + encodeURIComponent(params.theme);
             url += '&css_equation=' + encodeURIComponent(document.getElementById('css-equation-' + params.fileId).value);

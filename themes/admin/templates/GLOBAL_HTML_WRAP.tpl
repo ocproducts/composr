@@ -49,7 +49,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 		</header>
 	{+END}
 
-	<div id="main-website-inner">
+	<div id="main-website-inner" class="container-fluid">
 		{$,By default the top panel contains the admin menu, community menu, member bar, etc}
 		{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,top}}}
 			<div id="panel-top">
