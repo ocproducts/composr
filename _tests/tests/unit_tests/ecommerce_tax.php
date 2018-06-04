@@ -56,6 +56,13 @@ class ecommerce_tax_test_set extends cms_test_case
         $this->assertTrue($tax == 19.0);
     }
 
+    public function testUSTaxTICList()
+    {
+        $_data = http_get_contents('https://prev.taxcloud.net/tic/?format=json');
+        $data = json_decode($_data, true);
+        $this->assertTrue(isset($data['tic_list'][0]));
+    }
+
     /* Test key for TaxCloud expired
     public function testUSTax()
     {

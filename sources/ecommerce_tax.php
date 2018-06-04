@@ -716,7 +716,7 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
         $default_set = 'tic';
     }
     require_code('http');
-    list($__tics) = cache_and_carry('cms_http_request', array('https://taxcloud.net/tic/?format=json', array('trigger_error' => false)));
+    list($__tics) = cache_and_carry('cms_http_request', array('https://prev.taxcloud.net/tic/?format=json', array('trigger_error' => false)));
     $_tics = @json_decode($__tics, true);
     if (($_tics !== false) && ($_tics !== null)) {
         $tics = new Tempcode();
