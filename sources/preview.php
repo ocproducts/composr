@@ -124,6 +124,7 @@ function build_preview($multi_return = false)
     $db = $forum_db ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
     $map_table_map = array();
     require_code('templates_map_table');
+    $attachment_field = null;
     foreach ($_POST as $key => $val) {
         if (!is_string($val)) {
             continue;
@@ -330,7 +331,18 @@ function build_preview($multi_return = false)
         // Display...
 
         if (is_null($output)) {
-            if ((is_null($attachment_type)) || ($key != 'post')) { // Not an attachment-supporting field
+            $attachment_supporting_field = false;
+            if (($attachment_type !== null) && ($key == 'post')) {
+                $attachment_supporting_field = true;
+                $attachment_field = $key;
+            } elseif ((in_array($key, array('post', 'description'))) && (strpos($val, '[attachment') !== false)) {
+                $attachment_supporting_field = true;
+                if (!isset($_POST['post'])) {
+                    $attachment_field = $key;
+                }
+            }
+
+            if (!$attachment_supporting_field) {
                 $tempcodecss = (post_param_integer('tempcodecss__' . $key, 0) == 1);
                 $supports_comcode = (post_param_integer('comcode__' . $key, 0) == 1);
                 $preformatted = (post_param_integer('pre_f_' . $key, 0) == 1);
@@ -361,11 +373,11 @@ function build_preview($multi_return = false)
                 $map_table_map[$key_nice] = $valt;
             } else { // An attachment-supporting field
                 $tempcodecss = false;
-                $posting_ref_id = post_param_integer('posting_ref_id');
+                $posting_ref_id = post_param_integer('posting_ref_id', null);
                 if ($posting_ref_id < 0) {
                     fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
                 }
-                $post_bits = do_comcode_attachments($val, $attachment_type, strval(-$posting_ref_id), true, $db);
+                $post_bits = do_comcode_attachments($val, ($attachment_type === null) ? 'null' : $attachment_type, ($posting_ref_id === null) ? '' : strval(-$posting_ref_id), true, $db);
                 $new_post_value = $post_bits['comcode'];
 
                 $map_table_map[$key_nice] = $post_bits['tempcode'];
@@ -413,7 +425,7 @@ function build_preview($multi_return = false)
         $new_post_value_html = wysiwygify_media_set($_new_post_value_html->evaluate());
 
         if (strpos($new_post_value_html, '<!-- CC-error -->') === false) {
-            $output->attach(do_template('PREVIEW_SCRIPT_CODE', array('_GUID' => 'bc7432af91e1eaf212dc210f3bf2f756', 'NEW_POST_VALUE_HTML' => $new_post_value_html, 'NEW_POST_VALUE' => $new_post_value)));
+            $output->attach(do_template('PREVIEW_SCRIPT_CODE', array('_GUID' => 'bc7432af91e1eaf212dc210f3bf2f756', 'ATTACHMENT_FIELD' => $attachment_field, 'NEW_POST_VALUE_HTML' => $new_post_value_html, 'NEW_POST_VALUE' => $new_post_value)));
         }
     }
 

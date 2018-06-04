@@ -958,7 +958,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }//critical_error('FILE_DOS', $url);
 
     // Work out what we'll be doing
-    $url_parts = @parse_url($url);
+    $url_parts = @parse_url(normalise_idn_url($url));
     if ($url_parts === false || !isset($url_parts['host'])) {
         if ($trigger_error) {
             warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_BAD_URL', escape_html($url)));
@@ -1021,7 +1021,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $faux = '#' . $faux . '#i';
         }
         if (preg_match($faux, $url) != 0) {
-            $parsed = parse_url($url);
+            $parsed = parse_url(normalise_idn_url($url));
             $parsed_base_url = parse_url(get_custom_base_url());
             $file_base = get_custom_file_base();
             $file_base = preg_replace('#' . preg_quote(urldecode($parsed_base_url['path'])) . '$#', '', $file_base);

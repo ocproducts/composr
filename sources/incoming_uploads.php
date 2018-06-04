@@ -26,7 +26,9 @@ function incoming_uploads_script()
     $is_uploaded = false;
 
     if ($GLOBALS['DEV_MODE']) {
-        sleep(4); // Makes testing more realistic
+        if (php_function_allowed('usleep')) {
+            usleep(4000000); // Makes testing more realistic
+        }
     }
 
     $path = get_custom_file_base() . '/uploads/incoming';
@@ -140,6 +142,9 @@ function incoming_uploads_script()
         }
         $outstr .= '}';
         echo $outstr;
+
+        // Clear uploads records/files older then 2 days
+        clear_old_uploads();
 
         exit(); // So auto_append_file cannot run and corrupt our output
     } else {

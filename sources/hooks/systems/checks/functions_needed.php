@@ -51,7 +51,7 @@ class Hook_check_functions_needed
             isset krsort ksort localeconv ltrim mail max md5 method_exists microtime min is_writable
             mkdir mktime move_uploaded_file mt_getrandmax mt_rand mt_srand number_format ob_end_clean
             ob_end_flush ob_get_contents ob_start octdec opendir ord pack parse_url pathinfo
-            preg_replace preg_replace_callback preg_split print_r putenv rawurldecode rmdir
+            preg_replace preg_replace_callback preg_split print_r rawurldecode rmdir
             rawurlencode readdir realpath register_shutdown_function rename require require_once reset
             round rsort rtrim serialize set_error_handler preg_match preg_grep preg_match_all
             setcookie setlocale sha1 sin sort fprintf sprintf srand str_pad str_repeat str_replace
@@ -65,7 +65,7 @@ class Hook_check_functions_needed
             levenshtein log log10 long2ip md5_file pow preg_quote prev rad2deg
             range readfile shuffle similar_text sqrt strcasecmp strcoll strcspn stristr strnatcasecmp
             strnatcmp strncasecmp strncmp strrchr strrev strspn substr_replace tan unpack version_compare
-            gettype var_dump vprintf vsprintf touch tanh sinh sleep soundex stripcslashes
+            gettype var_dump vprintf vsprintf touch tanh sinh soundex stripcslashes
             readgzfile restore_error_handler rewind rewinddir quoted_printable_decode
             quotemeta exp ezmlm_hash lcg_value localtime addcslashes
             array_filter array_map array_merge_recursive array_multisort array_pad array_reduce array_walk
@@ -78,7 +78,7 @@ class Hook_check_functions_needed
             gettimeofday get_cfg_var get_magic_quotes_runtime get_meta_tags get_parent_class
             get_included_files get_resource_type gzcompress gzdeflate gzencode gzfile gzinflate
             gzuncompress hypot ignore_user_abort hebrev hebrevc array_intersect_assoc
-            is_link is_callable debug_print_backtrace stream_context_create next usleep array_sum
+            is_link is_callable debug_print_backtrace stream_context_create next array_sum
             gzclose gzopen gzwrite file_get_contents str_word_count html_entity_decode
             array_combine array_diff_uassoc array_udiff array_uintersect_uassoc
             array_udiff_assoc array_udiff_uassoc array_walk_recursive array_uintersect_assoc

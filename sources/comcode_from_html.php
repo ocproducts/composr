@@ -1237,54 +1237,46 @@ function array_html_preg_replace($element, $array, $semihtml)
 
         // Find offset of openers and closers
         $matches = array();
-        $count = preg_match_all('#<' . $element . '[ >]#', $semihtml, $matches, PREG_OFFSET_CAPTURE);
-        $starts = array();
+        $count = preg_match_all('#<(/?)' . $element . '[ >]#', $semihtml, $matches, PREG_OFFSET_CAPTURE);
+        $tags = array();
         for ($i = 0; $i < $count; $i++) {
-            $starts[] = $matches[0][$i][1];
+            $is_closer = ($matches[1][$i][0] == '/');
+            $tags[] = array(
+                $is_closer ? -1 : 1, // Balancer
+                $matches[0][$i][1], // Offset
+                strlen($matches[0][$i][0]), // Length
+            );
         }
-        $count = preg_match_all('#</' . $element . '[ >]#', $semihtml, $matches, PREG_OFFSET_CAPTURE);
-        $ends = array();
-        $lengths = array();
-        for ($i = 0; $i < $count; $i++) {
-            $ends[] = $matches[0][$i][1];
-            $lengths[] = strlen($matches[0][$i][0]);
-        }
-        $s_opens = array();
-        $s_closes = array();
+        $num_tags = count($tags);
         foreach ($array as $index => $temp) {
             list($pattern, $replacement) = $temp;
-            foreach ($starts as $start) {
-                foreach ($ends as $i => $end) {
-                    if ($end < $start) {
-                        continue;
+            foreach ($tags as $i => $tag) {
+                if ($tag[0] == 1) {
+                    $start = $tag[1];
+
+                    // Find the matching end position
+                    $end = null;
+                    $balance = 0;
+                    for ($j = $i ; $j < $num_tags; $j++) {
+                        $balance += $tags[$j][0];
+                        if ($balance == 0) {
+                            $end = $tags[$j][1];
+                            $length = $tags[$j][2];
+                            break;
+                        }
+                    }
+                    if ($end === null) {
+                        break;
                     }
 
-                    $opens = isset($s_opens[$start][$end]) ? $s_opens[$start][$end] : null;
-                    $closes = isset($s_closes[$start][$end]) ? $s_closes[$start][$end] : null;
-                    if ($opens === null) // Not worked out yet, work out and put into $s_opens and $s_closes
-                    {
-                        $segment = substr($semihtml, $start, $end + $lengths[$i] - $start);
-                        $opens = substr_count($segment, '<' . $element . ' ') + substr_count($segment, '<' . $element . '>');
-                        $closes = substr_count($segment, '</' . $element . '>');
-                        $s_opens[$start][$end] = $opens;
-                        $s_closes[$start][$end] = $closes;
-                    } else {
-                        $segment = null;
-                    }
-
-                    // Segment is a clean isolated tag
-                    if ($opens == $closes) {
-                        if ($segment === null) {
-                            $segment = substr($semihtml, $start, $end + $lengths[$i] - $start);
-                        }
-                        $before = substr($semihtml, 0, $start);
-                        $after = substr($semihtml, $end + $lengths[$i]);
-                        $subbed = preg_replace($pattern . 'A', $replacement, $segment);
-                        $semihtml = $before . $subbed . $after;
-                        if ($semihtml != $old_semihtml) {
-                            break 3; // We need to start again now as the offsets have all changed
-                        }
-                        break; // Ok, well at least we know we found our tag bound, so no more need to search
+                    // Process segment
+                    $segment = substr($semihtml, $start, $end + $length - $start);
+                    $before = substr($semihtml, 0, $start);
+                    $after = substr($semihtml, $end + $length);
+                    $subbed = preg_replace($pattern . 'A', $replacement, $segment);
+                    $semihtml = $before . $subbed . $after;
+                    if ($semihtml != $old_semihtml) {
+                        break 2; // We need to start again now as the offsets have all changed
                     }
                 }
             }

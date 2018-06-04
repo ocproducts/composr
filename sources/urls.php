@@ -212,7 +212,7 @@ function cms_url_encode($url_part, $can_try_url_schemes = null)
  * @param  ?boolean $can_try_url_schemes Whether we have to consider URL Schemes (null: don't know, look up)
  * @return URLPATH The encoded result
  */
-function cms_raw_url_encode($url_part, $can_try_url_schemes = null)
+function cms_raw_url_encode($url_part, $can_try_url_schemes = null) // TODO: Rename function in v11 and document in codebook
 {
     // Slipstream for 99.99% of data
     $url_part_encoded = rawurlencode($url_part);
@@ -1548,4 +1548,17 @@ function cms_rawurlrecode($url, $force = false, $tolerate_errors = false)
     }
 
     return $url;
+}
+
+/**
+ * Take a URL, which may have a utf-8 domain name, and normalise it to normal IDN.
+ *
+ * @param  URLPATH $url The URL
+ * @return URLPATH The normalised URL
+ */
+function normalise_idn_url($url)
+{
+    require_code('urls_simplifier');
+    $coder_ob = new HarmlessURLCoder();
+    return $coder_ob->encode($url);
 }

@@ -1639,6 +1639,7 @@ class Hook_addon_registry_core_form_interfaces
             lorem_globalise(do_lorem_template('PREVIEW_SCRIPT_CODE', array(
                 'NEW_POST_VALUE_HTML' => lorem_phrase(),
                 'NEW_POST_VALUE' => lorem_phrase(),
+                'ATTACHMENT_FIELD' => placeholder_id(),
             )), null, '', true)
         );
     }
