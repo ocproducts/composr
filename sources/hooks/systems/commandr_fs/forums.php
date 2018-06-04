@@ -200,6 +200,11 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         $filename = preg_replace('#^.*/#', '', $filename); // Paths not needed, as filenames are globally unique; paths would not be in alternative_ids table
 
         if (substr($filename, 0, 6) == 'FORUM-') { // Must be defined first, to ensure prefix stripped
+            $test = parent::folder_convert_filename_to_id($filename, 'forum');
+            if ($test[1] !== null) {
+                return $test;
+            }
+
             return parent::folder_convert_filename_to_id(substr($filename, 6), 'forum');
         }
 

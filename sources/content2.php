@@ -184,7 +184,7 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
             }
         }
 
-        if (($info['support_url_monikers']) && (!in_array('url_moniker', $fields_to_skip))) {
+        if (($info['support_url_monikers']) && (url_monikers_enabled()) && (!in_array('url_moniker', $fields_to_skip))) {
             $url_moniker = mixed();
             if (!is_null($content_id)) {
                 if ($content_type == 'comcode_page') {

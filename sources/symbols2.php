@@ -955,7 +955,7 @@ function ecv2_COMMA_LIST_UNSHIFT($lang, $escaped, $param)
  */
 function ecv2_COPPA_ON($lang, $escaped, $param)
 {
-    $value = (get_option('is_on_coppa') == '1') ? '1' : '0';
+    $value = ((get_option('is_on_coppa') == '1') && (get_option('dobs') == '1')) ? '1' : '0';
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
@@ -3319,7 +3319,7 @@ function ecv2_IF(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         $_p = $param[0]->evaluate();
-        if (($_p == '1') || ($_p == '1')) {
+        if ($_p == '1') {
             $value = $param[1]->evaluate();
         }
     }
@@ -3417,7 +3417,7 @@ function ecv2_IF_PASSED_AND_TRUE(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         $t = $param[0]->evaluate();
-        if ((isset($param['vars'][$t])) && ($param['vars'][$t] !== false) && ($param['vars'][$t] !== '0') && ($param['vars'][$t] !== '')) {
+        if ((isset($param['vars'][$t])) && ($param['vars'][$t] !== false) && ($param['vars'][$t] === '1')) {
             $value = $param[1]->evaluate();
         }
     }
@@ -3437,7 +3437,7 @@ function ecv2_IF_NON_PASSED_OR_FALSE(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         $t = $param[0]->evaluate();
-        if ((!isset($param['vars'][$t])) || ($param['vars'][$t] === false) || ($param['vars'][$t] === '0') || ($param['vars'][$t] === '')) {
+        if ((!isset($param['vars'][$t])) || ($param['vars'][$t] === false) || ($param['vars'][$t] !== '1')) {
             $value = $param[1]->evaluate();
         }
     }
@@ -3457,7 +3457,7 @@ function ecv2_WHILE(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         $_p = $param[0]->evaluate();
-        if (($_p == '1') || ($_p == '1')) {
+        if ($_p == '1') {
             $value = '';
             $value .= $param[1]->evaluate();
             $put = '';

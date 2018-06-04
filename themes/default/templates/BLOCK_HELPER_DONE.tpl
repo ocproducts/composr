@@ -105,6 +105,11 @@
 			{+END}
 			target_window.insert_comcode_tag();
 
+			if (target_window.is_wysiwyg_field(element))
+			{
+				target_window.generate_background_preview(element);
+			}
+
 			if (message!='')
 			{
 				window.fauxmodal_alert(

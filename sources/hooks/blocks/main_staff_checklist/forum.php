@@ -30,6 +30,10 @@ class Hook_checklist_forum
      */
     public function run()
     {
+        if (get_value('no_forum_moderate') === '1') {
+            return array();
+        }
+
         // Forum moderation
         if (!has_no_forum()) {
             $status = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_NA');

@@ -150,7 +150,8 @@ function date_from_week_of_year($year, $week)
 
     $basis = strval($year) . '-' . str_pad(strval($week), 2, '0', STR_PAD_LEFT);
     $time = mktime(12, 0, 0, 1, 1, $year);
-    for ($i = ($week == 52) ? 350/*conditional to stop it finding week as previous year overlap week of same number*/ : -7; $i < 365 + 7; $i++) {
+    $days_in_year = intval(date('z', mktime(0, 0, 0, 12, 31, $year))) + 1;
+    for ($i = ($week == 52) ? 350/*conditional to stop it finding week as previous year overlap week of same number*/ : -7; $i < $days_in_year + 7; $i++) {
         $new_time = $time + 60 * 60 * 24 * $i;
         $w = intval(date('w', $new_time));
         if ((($ssw) && ($w == 0)) || ((!$ssw) && ($w == 1))) {
@@ -238,7 +239,8 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
         $dif_days = get_days_between($initial_start_month, $day_of_month, $initial_start_year, $initial_end_month, $end_day_of_month, $initial_end_year);
     }
 
-    $dif = utctime_to_usertime($period_start) - utctime_to_usertime(mktime($_start_hour, $_start_minute, 0, $start_month, $day_of_month, $start_year));
+    $start_timestamp = mktime($_start_hour, $_start_minute, 0, $start_month, $day_of_month, $start_year);
+    $dif = $period_start - utctime_to_usertime($start_timestamp);
     $start_day_of_month = $day_of_month;
     if ($recurrence != 'monthly') { // Defensiveness (this should be automatic)
         $start_monthly_spec_type = 'day_of_month';
@@ -295,7 +297,8 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
         case 'yearly':
             $dif_year = 1;
             if (($dif > 60 * 60 * 24 * 365 * 10) && ($mask_len == 0) && ($optimise_recurrence_via_zoom)) {
-                $zoom = $dif_year * intval(floor(floatval($dif) / (60.0 * 60.0 * 24.0 * 365.0))) - 1;
+                $days_in_year = intval(date('z', mktime(0, 0, 0, 12, 31, $start_year))) + 1;
+                $zoom = $dif_year * intval(floor(floatval($dif) / (60.0 * 60.0 * 24.0 * floatval($days_in_year)))) - 1;
                 $start_year += $zoom;
                 if (!is_null($end_year)) {
                     $end_year += $zoom;
@@ -318,6 +321,9 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
             $end_day = $start_day;
         } else {
             $end_day = $start_day_of_month;
+        }
+        if (find_timezone_offset($start_timestamp, $timezone) > 0) {
+            $end_day++;
         }
         $end_month = $start_month;
         $end_year = $start_year;
@@ -566,7 +572,11 @@ function regenerate_event_reminder_jobs($id, $force = false)
     $GLOBALS['SITE_DB']->query_delete('calendar_jobs', array('j_event_id' => $id));
 
     $period_start = $force ? 0 : null;
-    $recurrences = find_periods_recurrence($event['e_timezone'], $event['e_do_timezone_conv'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type'], is_null($event['e_start_hour']) ? 0 : $event['e_start_hour'], is_null($event['e_start_minute']) ? 0 : $event['e_start_minute'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type'], is_null($event['e_end_hour']) ? 23 : $event['e_end_hour'], is_null($event['e_end_minute']) ? 0 : $event['e_end_minute'], $event['e_recurrence'], min(1, $event['e_recurrences']), $period_start);
+    $start_hour = ($event['e_start_hour'] === null) ? find_timezone_start_hour_in_utc($event['e_timezone'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type']) : $event['e_start_hour'];
+    $start_minute = ($event['e_start_minute'] === null) ? find_timezone_start_minute_in_utc($event['e_timezone'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type']) : $event['e_start_minute'];
+    $end_hour = ($event['e_end_hour'] === null) ? find_timezone_end_hour_in_utc($event['e_timezone'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type']) : $event['e_end_hour'];
+    $end_minute = ($event['e_end_minute'] === null) ? find_timezone_end_minute_in_utc($event['e_timezone'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type']) : $event['e_end_minute'];
+    $recurrences = find_periods_recurrence($event['e_timezone'], $event['e_do_timezone_conv'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type'], $start_hour, $start_minute, $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type'], $end_hour, $end_minute, $event['e_recurrence'], min(1, $event['e_recurrences']), $period_start);
     if ((array_key_exists(0, $recurrences)) && ($recurrences[0][0] == $recurrences[0][2]/*really starts in window, not just spanning it*/)) {
         if ($event['e_type'] == db_get_first_id()) { // Add system command job if necessary
             $GLOBALS['SITE_DB']->query_insert('calendar_jobs', array(
@@ -1048,7 +1058,6 @@ function find_timezone_start_hour_in_utc($timezone, $year, $month, $day, $monthl
     $t2 = tz_time($t1, $timezone);
     $t2 -= 2 * ($t2 - $t1);
     $ret = intval(date('H', $t2));
-
     return $ret;
 }
 
@@ -1095,7 +1104,6 @@ function find_timezone_end_hour_in_utc($timezone, $year, $month, $day, $monthly_
     $t2 = tz_time($t1, $timezone);
     $t2 -= 2 * ($t2 - $t1);
     $ret = intval(date('H', $t2));
-
     return $ret;
 }
 
@@ -1476,9 +1484,9 @@ function monthly_spec_type_chooser($day_of_month, $month, $year, $default_monthl
         $timestamp = mktime(0, 0, 0, $month, $day_of_month, $year);
 
         if (substr($monthly_spec_type, 0, 4) == 'dow_') {
-            $nth = cms_strftime('%e%o', mktime(0, 0, 0, 1, intval(floatval($day) / 7.0) + 1, $year)); // Bit of a hack. Uses the date locales nth stuff, even when it's not actually a day-of-month here.
+            $nth = cms_strftime(do_lang('calendar_day_of_month'), mktime(0, 0, 0, 1, intval(floatval($day) / 7.0) + 1, $year)); // Bit of a hack. Uses the date locales nth stuff, even when it's not actually a day-of-month here.
         } else {
-            $nth = cms_strftime('%e%o', mktime(0, 0, 0, $month, $day, $year)); // Bit of a hack. Uses the date locales nth stuff, even when it's not actually a day-of-month here.
+            $nth = cms_strftime(do_lang('calendar_day_of_month'), mktime(0, 0, 0, $month, $day, $year)); // Bit of a hack. Uses the date locales nth stuff, even when it's not actually a day-of-month here.
         }
         $dow = cms_strftime('%a', $timestamp);
 
@@ -1515,12 +1523,17 @@ function adjust_event_dates_for_a_recurrence($day, $event, $timezone)
         $orig_concrete_start_day = start_find_concrete_day_of_month_wrap($event);
 
         // Adjust for the fact that this was given in the user's timezone, while event is in UTC
-        //$first_timestamp = mktime(is_null($event['e_start_hour']) ? 0 : $event['e_start_hour'], is_null($event['e_start_minute']) ? 0 : $event['e_start_minute'], 0, $orig_start_month, $orig_concrete_start_day, $orig_start_year);	Wrong, DST could be issue
-        $incident_timestamp = mktime(is_null($event['e_start_hour']) ? 0 : $event['e_start_hour'], is_null($event['e_start_minute']) ? 0 : $event['e_start_minute'], 0, $recurrence_start_month, $recurrence_start_day, $recurrence_start_year);
+        $start_hour = ($event['e_start_hour'] === null) ? find_timezone_start_hour_in_utc($event['e_timezone'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type']) : $event['e_start_hour'];
+        $start_minute = ($event['e_start_minute'] === null) ? find_timezone_start_minute_in_utc($event['e_timezone'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type']) : $event['e_start_minute'];
+        $end_hour = ($event['e_end_hour'] === null) ? find_timezone_end_hour_in_utc($event['e_timezone'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type']) : $event['e_end_hour'];
+        $end_minute = ($event['e_end_minute'] === null) ? find_timezone_end_minute_in_utc($event['e_timezone'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type']) : $event['e_end_minute'];
+        //$first_timestamp = mktime($start_hour, $start_minute, 0, $orig_start_month, $orig_concrete_start_day, $orig_start_year);	Wrong, DST could be issue
+        $incident_timestamp = mktime($start_hour, $start_minute, 0, $recurrence_start_month, $recurrence_start_day, $recurrence_start_year);
         $shifted_incident_timestamp = tz_time($incident_timestamp, $timezone);
         $day_dif_due_to_timezone = intval(date('z', $incident_timestamp)) - intval(date('z', $shifted_incident_timestamp));
         if ($day_dif_due_to_timezone > 182) {
-            $day_dif_due_to_timezone = (365 - intval(date('L', $incident_timestamp))) - $day_dif_due_to_timezone;
+            $days_in_year = intval(date('z', mktime(0, 0, 0, 12, 31, $recurrence_start_year))) + 1;
+            $day_dif_due_to_timezone = ($days_in_year - intval(date('L', $incident_timestamp))) - $day_dif_due_to_timezone;
         }
         $recurrence_start_day += $day_dif_due_to_timezone;
 

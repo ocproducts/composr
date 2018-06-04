@@ -35,7 +35,7 @@ Adding attachments.
  * @param  ?MEMBER $for_member The member to use for ownership permissions (null: current member)
  * @return array A map containing 'Comcode' (after substitution for tying down the new attachments) and 'tempcode'
  */
-function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, $connection = null, $insert_as_admin = null, $for_member = null)
+function do_comcode_attachments($comcode, $type = 'null', $id = '', $previewing_only = false, $connection = null, $insert_as_admin = null, $for_member = null)
 {
     require_lang('comcode');
     require_code('comcode_compiler');
@@ -139,6 +139,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
                 $comcode = preg_replace('#(\[(attachment|attachment_safe)[^\]]*\])new_' . strval($marker_id) . '(\[/)#', '${1}' . strval($attachment['id']) . '${3}', $comcode);
 
                 if (!is_null($type)) {
+                    $connection->query_delete('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment['id']));
                     $connection->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment['id']));
                 }
             } else {
@@ -486,7 +487,7 @@ function _check_attachment_count()
  * @param  ?MEMBER $for_member The member to use for ownership permissions (null: current member)
  * @return array The language string ID save fields
  */
-function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id, $connection = null, $insert_as_admin = false, $for_member = null)
+function insert_lang_comcode_attachments($field_name, $level, $text, $type = 'null', $id = '', $connection = null, $insert_as_admin = false, $for_member = null)
 {
     if (is_null($connection)) {
         $connection = $GLOBALS['SITE_DB'];

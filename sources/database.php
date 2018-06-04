@@ -139,6 +139,8 @@ function reload_lang_fields($full = false, $only_table = null)
         unset($TABLE_LANG_FIELDS_CACHE[$only_table]);
     }
 
+    $msn_running = (is_on_multi_site_network()) && (get_forum_type() == 'cns') && (isset($GLOBALS['FORUM_DB'])); // TODO: Change in v11
+
     if (multi_lang_content() || $full) {
         $like = db_string_equal_to('m_type', 'SHORT_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', 'LONG_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', 'SHORT_TRANS') . ' OR ' . db_string_equal_to('m_type', 'LONG_TRANS') . ' OR ' . db_string_equal_to('m_type', '?SHORT_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', '?LONG_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', '?SHORT_TRANS') . ' OR ' . db_string_equal_to('m_type', '?LONG_TRANS');
     } else {
@@ -148,7 +150,11 @@ function reload_lang_fields($full = false, $only_table = null)
     if ($only_table !== null) {
         $sql .= ' AND ' . db_string_equal_to('m_table', $only_table);
     }
-    $_table_lang_fields = $GLOBALS['SITE_DB']->query($sql, null, null, true);
+    if (($msn_running) && (substr($only_table, 0, 2) === 'f_')) {
+        $_table_lang_fields = array(); // Optimisation, as it'll get overwritten anyway
+    } else {
+        $_table_lang_fields = $GLOBALS['SITE_DB']->query($sql, null, null, true);
+    }
     if ($_table_lang_fields !== null) {
         foreach ($_table_lang_fields as $lang_field) {
             if (!isset($TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']])) {
@@ -156,6 +162,25 @@ function reload_lang_fields($full = false, $only_table = null)
             }
 
             $TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']][$lang_field['m_name']] = $lang_field['m_type'];
+        }
+
+        if (($msn_running) && (($only_table === null) || (substr($only_table, 0, 2) === 'f_'))) {
+            if ($only_table !== null) {
+                unset($TABLE_LANG_FIELDS_CACHE[$only_table]);
+            }
+
+            $sql .= ' AND m_table LIKE \'' . db_encode_like('f_%') . '\'';
+
+            $_table_lang_fields_forum = $GLOBALS['FORUM_DB']->query($sql, null, null, true);
+            if ($_table_lang_fields_forum !== null) {
+                foreach ($_table_lang_fields_forum as $lang_field) {
+                    if (!isset($TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']])) {
+                        $TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']] = array();
+                    }
+
+                    $TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']][$lang_field['m_name']] = $lang_field['m_type'];
+                }
+            }
         }
     }
 
@@ -238,7 +263,7 @@ function db_encode_like($pattern)
  */
 function db_supports_drop_table_if_exists($db)
 {
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -258,7 +283,7 @@ function db_supports_drop_table_if_exists($db)
  */
 function db_has_full_text($db)
 {
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -297,7 +322,7 @@ function db_has_subqueries($db)
         return true;
     }
 
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -313,7 +338,7 @@ function db_has_subqueries($db)
  */
 function db_has_expression_ordering($db)
 {
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -332,7 +357,7 @@ function db_has_expression_ordering($db)
  */
 function db_uses_offset_syntax($db)
 {
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -351,7 +376,7 @@ function db_uses_offset_syntax($db)
  */
 function db_supports_truncate_table($db)
 {
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -369,7 +394,7 @@ function db_supports_truncate_table($db)
  */
 function db_start_transaction($db)
 {
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -386,7 +411,7 @@ function db_start_transaction($db)
  */
 function db_end_transaction($db)
 {
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
+    if ((is_array($db)) && (count($db) > 4)) { // Okay, we can't be lazy anymore
         $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
         _general_db_init();
     }
@@ -2066,7 +2091,9 @@ class DatabaseConnector
             $locked = count($locks) >= 1;
             $tries++;
             if ($locked) {
-                usleep(50000); // 50ms wait
+                if (php_function_allowed('usleep')) {
+                    usleep(50000); // 50ms wait
+                }
             }
         } while (($locked) && ($tries < 5));
 

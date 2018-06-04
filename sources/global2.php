@@ -157,7 +157,7 @@ function init__global2()
         require_code('chat_poller');
         chat_poller();
     }
-    if ((running_script('notifications')) && (@filemtime(get_custom_file_base() . '/data_custom/modules/web_notifications/latest.dat') <= get_param_integer('time_barrier'))) {
+    if ((running_script('notifications')) && (@filemtime(get_custom_file_base() . '/data_custom/modules/web_notifications/latest.dat') <= get_param_integer('time_barrier')) && (get_param_string('type', '') == 'poller')) {
         prepare_for_known_ajax_response();
 
         header('Content-Type: application/xml');
@@ -238,7 +238,7 @@ function init__global2()
     $BASE_URL_HTTP_CACHE = null;
     $BASE_URL_HTTPS_CACHE = null;
 
-    require_code_no_override('version');
+    require_code('version');
     @header('X-Content-Type-Options: nosniff');
     @header('X-XSS-Protection: 1');
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) {
@@ -280,7 +280,15 @@ function init__global2()
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__FAST_SPIDER);
             }
-            if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (count(array_diff_key($_COOKIE, array('__utma' => 0, '__utmc' => 0, '__utmz' => 0, 'has_cookies' => 0, 'last_visit' => 0))) == 0) && ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != @strval($_SERVER['REMOTE_ADDR']))) && (!isset($_GET['keep_session']))) {
+            if (
+                (isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') &&
+                (
+                    (get_forum_type() == 'cns') && (!isset($_COOKIE[$SITE_INFO['user_cookie']])) && (!isset($_COOKIE[$SITE_INFO['session_cookie']])) ||
+                    (count(array_diff_key($_COOKIE, array('__utma' => 0, '__utmc' => 0, '__utmz' => 0, 'has_cookies' => 0, 'last_visit' => 0))) == 0)
+                ) &&
+                ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != @strval($_SERVER['REMOTE_ADDR']))) &&
+                (!isset($_GET['keep_session'])
+            )) {
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__GUEST);
             }
@@ -777,6 +785,7 @@ function load_user_stuff()
          */
         $FORUM_DB = mixed();
         $GLOBALS['FORUM_DB'] = &$FORUM_DRIVER->connection; // Done like this to workaround that PHP can't put a reference in a global'd variable
+        reload_lang_fields(false, 'f_member_custom_fields');
     }
 }
 

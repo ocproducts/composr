@@ -273,7 +273,7 @@ class Forum_driver_ipb_shared extends Forum_driver_base
      */
     public function mrow_email($r)
     {
-        return $this->ipb_unescape($r['email']);
+        return $r['email'];
     }
 
     /**
@@ -466,7 +466,7 @@ class Forum_driver_ipb_shared extends Forum_driver_base
      */
     protected function _get_member_email_address($member)
     {
-        return $this->ipb_unescape($this->get_member_row_field($member, 'email'));
+        return $this->get_member_row_field($member, 'email');
     }
 
     /**

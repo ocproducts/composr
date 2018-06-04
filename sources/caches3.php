@@ -258,7 +258,9 @@ function erase_cached_language()
                         if (!file_exists($path . '/' . $file)) {
                             break; // Race condition, gone already
                         }
-                        sleep(1); // May be race condition, lock
+                        if (php_function_allowed('usleep')) {
+                            usleep(1000000); // May be race condition, lock
+                        }
                         $i++;
                     }
                     if ($i >= 5) {
@@ -435,7 +437,9 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
                         if (!file_exists($path . $file)) {
                             break; // Successful delete
                         }
-                        sleep(1); // May be race condition, lock
+                        if (php_function_allowed('usleep')) {
+                            usleep(1000000); // May be race condition, lock
+                        }
                         $i++;
                     }
                     if ($i >= 5) {

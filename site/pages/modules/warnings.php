@@ -471,7 +471,7 @@ class Module_warnings extends Standard_crud_module
                         for ($i = 0; $i < $num_matches; $i++) {
                             $spam_url = $matches[1][$i];
                             if (!url_is_local($spam_url)) {
-                                $domain = parse_url($spam_url, PHP_URL_HOST);
+                                $domain = parse_url(normalise_idn_url($spam_url), PHP_URL_HOST);
                                 if ($domain != get_domain()) {
                                     if (!isset($spam_urls[$domain])) {
                                         require_code('mail');
@@ -991,6 +991,7 @@ class Module_warnings extends Standard_crud_module
         if ((get_param_string('redirect', '') == '') || ($deleted_all)) {
             require_code('site2');
             assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true, true), 0.0);
+            unset($_GET['redirect']);
         }
 
         return strval($warning_id);

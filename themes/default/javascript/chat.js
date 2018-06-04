@@ -241,7 +241,16 @@ function chat_post(event,current_room_id,field_name,font_name,font_colour)
 
 		if (message_text!='')
 		{
-			if (window.top_window.cc_timer) { window.top_window.clearTimeout(window.top_window.cc_timer); window.top_window.cc_timer=null; }
+			if (typeof window.top_window.console!='undefined')
+				window.top_window.console.log('Posting chat message (' + new Date().getTime() + ')');
+
+			if (window.top_window.cc_timer) {
+				if (typeof window.top_window.console!='undefined')
+					window.top_window.console.log('Clearing existing chat timer as this posting will take control until finished (' + new Date().getTime() + ')');
+
+				window.top_window.clearTimeout(window.top_window.cc_timer);
+				window.top_window.cc_timer=null;
+			}
 
 			// Reinvite last left member if necessary
 			if ((typeof element.force_invite!='undefined') && (element.force_invite!==null))
@@ -255,6 +264,9 @@ function chat_post(event,current_room_id,field_name,font_name,font_colour)
 			element.disabled=true;
 			window.top_window.currently_sending_message=true;
 			var func=function(result) {
+				if (typeof window.top_window.console!='undefined')
+					window.top_window.console.log('Successfully posted chat message (' + new Date().getTime() + ')');
+
 				window.top_window.currently_sending_message=false;
 				element.disabled=false;
 				var responses=result.getElementsByTagName('result');
@@ -272,7 +284,9 @@ function chat_post(event,current_room_id,field_name,font_name,font_colour)
 				}
 
 				// Reschedule the next check (cc_timer was reset already higher up in function)
-				window.top_window.cc_timer=window.top_window.setTimeout(function() { window.top_window.chat_check(false,window.top_window.last_message_id,window.top_window.last_event_id); },window.MESSAGE_CHECK_INTERVAL);
+				if (typeof window.top_window.console!='undefined')
+					window.top_window.console.log('Setting new chat timer (' + new Date().getTime() + ')');
+				window.top_window.cc_timer=window.top_window.setTimeout(function() {window.top_window.chat_check(false,window.top_window.last_message_id,window.top_window.last_event_id); },window.MESSAGE_CHECK_INTERVAL);
 
 				try
 				{
@@ -281,10 +295,15 @@ function chat_post(event,current_room_id,field_name,font_name,font_colour)
 				catch (e) {}
 			}
 			var error_func=function() {
+				if (typeof window.top_window.console!='undefined')
+					window.top_window.console.log('Failed to post chat message (' + new Date().getTime() + ')');
+
 				window.top_window.currently_sending_message=false;
 				element.disabled=false;
 
 				// Reschedule the next check (cc_timer was reset already higher up in function)
+				if (typeof window.top_window.console!='undefined')
+					window.top_window.console.log('Setting new chat timer (' + new Date().getTime() + ')');
 				window.top_window.cc_timer=window.top_window.setTimeout(function() { window.top_window.chat_check(false,window.top_window.last_message_id,window.top_window.last_event_id); },window.MESSAGE_CHECK_INTERVAL);
 			}
 			var full_url=maintain_theme_in_link(url+window.top_window.keep_stub(false));
@@ -304,8 +323,15 @@ function chat_post(event,current_room_id,field_name,font_name,font_colour)
 // Check for new messages
 function chat_check(backlog,message_id,event_id)
 {
-	if (window.currently_sending_message) // We'll reschedule once our currently-in-progress message is sent
+	if (window.currently_sending_message) { // We'll reschedule once our currently-in-progress message is sent
+		if (typeof window.top_window.console!='undefined')
+			window.top_window.console.log('Skip checking for chat messages (chat timer), as a message posting is pending completion (' + new Date().getTime() + ')');
+
 		return null;
+	}
+
+	if (typeof window.top_window.console!='undefined')
+		window.top_window.console.log('Checking for chat messages (chat timer) (' + new Date().getTime() + ')');
 
 	if ((typeof event_id=='undefined') || (!event_id)) var event_id=-1; // Means, we don't want to look at events, but the server will give us a null event
 
@@ -329,7 +355,7 @@ function chat_check(backlog,message_id,event_id)
 			}
 			if (window.location.href.indexOf('no_reenter_message=1')!=-1) url=url+'&no_reenter_message=1';
 			var func=function(ajax_result_frame,ajax_result) {
-				chat_check_response(ajax_result_frame,ajax_result,backlog/*backlog = skip_incoming_sound*/);
+			chat_check_response(ajax_result_frame,ajax_result,backlog/*backlog = skip_incoming_sound*/);
 			};
 			var error_func=function() {
 				chat_check_response(null,null);
@@ -337,6 +363,9 @@ function chat_check(backlog,message_id,event_id)
 			var full_url=maintain_theme_in_link(url+keep_stub(false));
 			do_ajax_request(full_url,[func,error_func]);
 			return false;
+		} else {
+			if (typeof window.top_window.console!='undefined')
+				window.top_window.console.log('Skip checking for chat messages (chat timer), as a previous check is pending completion and not yet timed out (' + new Date().getTime() + ')');
 		}
 		return null;
 	} else
@@ -353,8 +382,14 @@ function chat_check_timeout(backlog,message_id,event_id)
 	var the_date=new Date();
 	if ((window.message_checking) && (window.message_checking<=the_date.getTime()-window.MESSAGE_CHECK_INTERVAL*1.2) && (!window.currently_sending_message)) // If we are awaiting a response (message_checking is not false, and that response was made more than 12 seconds ago
 	{
+		if (typeof window.top_window.console!='undefined')
+			window.top_window.console.log('(Guard) Making sure our last actioned chat check completed and was on time - and it did not! (' + new Date().getTime() + ')');
+
 		// Our response is tardy - presume we've lost our scheduler / AJAX request, so fire off a new AJAX request and reset the chat_check_timeout timer
 		chat_check(backlog,message_id,event_id);
+	} else {
+		if (typeof window.top_window.console!='undefined')
+			window.top_window.console.log('(Guard) Making sure our last actioned chat check completed and was on time - and it did (' + new Date().getTime() + ')');
 	}
 }
 
@@ -363,13 +398,21 @@ function chat_check_response(ajax_result_frame,ajax_result,skip_incoming_sound)
 {
 	if (ajax_result!=null)
 	{
+		if (typeof window.top_window.console!='undefined')
+			window.top_window.console.log('Received chat check response (' + new Date().getTime() + ')');
+
 		if (typeof skip_incoming_sound=='undefined') skip_incoming_sound=false;
 
 		var temp=process_chat_xml_messages(ajax_result,skip_incoming_sound);
 		if (temp==-2) return false;
+	} else {
+		if (typeof window.top_window.console!='undefined')
+			window.top_window.console.log('Chat check failed (' + new Date().getTime() + ')');
 	}
 
 	// Schedule the next check
+	if (typeof window.top_window.console!='undefined')
+		window.top_window.console.log('Schedule next chat message check (chat timer) (' + new Date().getTime() + ')');
 	if (window.cc_timer) { window.clearTimeout(window.cc_timer); window.cc_timer=null; }
 	window.cc_timer=window.setTimeout(function() { chat_check(false,window.last_message_id,window.last_event_id); },window.MESSAGE_CHECK_INTERVAL);
 

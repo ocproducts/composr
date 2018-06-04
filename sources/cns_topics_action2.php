@@ -164,7 +164,7 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
 
     if (!is_null($forum_id)) {
         require_code('sitemap_xml');
-        notify_sitemap_node_edit('SEARCH:topicview:id=' . strval($topic_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
+        notify_sitemap_node_edit('_SEARCH:topicview:id=' . strval($topic_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
     }
 }
 
@@ -335,7 +335,7 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
     $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => 'topicview', 'm_resource_type' => 'browse', 'm_resource_id' => strval($topic_id)));
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:topicview:id=' . strval($topic_id));
+    notify_sitemap_node_delete('_SEARCH:topicview:id=' . strval($topic_id));
 
     return $forum_id;
 }

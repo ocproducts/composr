@@ -77,7 +77,7 @@ class Forum_driver_ipb2 extends forum_driver_ipb_shared
      */
     public function get_displayname($username)
     {
-        return $this->connection->query_select_value_if_there('members', 'members_display_name', array('name' => $username));
+        return $this->connection->query_select_value_if_there('members', 'members_display_name', array('name' => $this->ipb_escape($username)));
     }
 
     /**
@@ -103,7 +103,7 @@ class Forum_driver_ipb2 extends forum_driver_ipb_shared
      */
     public function get_member_from_username($name)
     {
-        return $this->connection->query_select_value_if_there('members', 'id', array('members_display_name' => $name));
+        return $this->connection->query_select_value_if_there('members', 'id', array('members_display_name' =>  $this->ipb_escape($name)));
     }
 
     /**

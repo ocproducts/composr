@@ -265,7 +265,7 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
      serverid="' . xmlentities($serverid) . '"
      expanded="false"
      title="' . xmlentities(strip_html($node['title']->evaluate())) . '"
-     description="' . xmlentities(strip_html(isset($node['description']) ? $node['description'] : '')) . '"
+     description_html="' . xmlentities(isset($node['description']) ? $node['description']->evaluate() : '') . '"
      has_children="' . ($has_children ? 'true' : 'false') . '"
      selectable="' . ($selectable ? 'true' : 'false') . '"
      ' . (($node['page_link'] == $default && $default != '') ? 'selected="yes"' : '') . '

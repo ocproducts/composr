@@ -501,7 +501,7 @@ function copy_exif_data($src_path, $dest_path, $reorientated = false)
                 if ($u[1] != 0x0112) {
                     $_exif_data .= substr($exif_data, $exif_data_offset + ($i * 12), 12);
                 } else { // Mangle it to an unknown tag (fffe) so it won't be read as orientation (removing the tag would be hard, we'd need to rewrite all offsets)
-                    $_exif_data .= hex2bin('fffe') . substr($exif_data, $exif_data_offset + ($i * 12) + 2, 10);
+                    $_exif_data .= chr(hexdec('ff')) . chr(hexdec('fe'))/*TODO hex2bin('fffe') in v11*/ . substr($exif_data, $exif_data_offset + ($i * 12) + 2, 10);
                 }
             }
 

@@ -84,7 +84,7 @@ function rebuild_sitemap_set($set_number, $last_time)
     fwrite($sitemaps_out_file, $blob);
 
     // Nodes accessible by guests, and not deleted (ignore update time as we are rebuilding whole set)
-    $where = array('set_number' => $set_number, 'is_deleted' => 0, 'guest_access' => 0);
+    $where = array('set_number' => $set_number, 'is_deleted' => 0, 'guest_access' => 1);
     $nodes = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('*'), $where);
     foreach ($nodes as $node) {
         $page_link = $node['page_link'];

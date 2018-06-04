@@ -266,6 +266,9 @@ function cms_strftime($format, $timestamp = null)
     if ($is_windows) {
         $format = str_replace('%e', '%#d', $format);
         $format = str_replace('%l', '%#I', $format);
+    } elseif (PHP_OS == 'SunOS') {
+        $format = str_replace('%e', '{{%e}}', $format);
+        $format = str_replace('%l', '{{%l}}', $format);
     } else {
         $format = str_replace('%e', '%-d', $format);
         $format = str_replace('%l', '%-I', $format);
@@ -274,6 +277,9 @@ function cms_strftime($format, $timestamp = null)
     $ret = @strftime($format, $timestamp);
     if ($ret === false) {
         $ret = '';
+    }
+    if (PHP_OS == 'SunOS') {
+        $ret = preg_replace('#\{\{[ 0]?([^\{\}]+)\}\}#', '${1}', $ret);
     }
     return trim(locale_filter($ret)); // Needed as %e comes with a leading space
 }
