@@ -374,6 +374,8 @@ function call_block(url,new_block_params,target_div,append,callback,scroll_to_to
 	do_ajax_request(
 		ajax_url+keep_stub(),
 		function(raw_ajax_result) { // Show results when available
+			if (!target_div.parentNode) return; // A prior AJAX result came in and did a set_outer_html, wiping the container
+
 			_call_block_render(raw_ajax_result,ajax_url,target_div,append,callback,scroll_to_top_of_wrapper,inner);
 		},
 		post_params

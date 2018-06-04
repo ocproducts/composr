@@ -5602,8 +5602,6 @@ php_real_logo_guid
 php_egg_logo_guid
 register_tick_function
 unregister_tick_function
-time_nanosleep
-time_sleep_until
 get_loaded_extensions
 extension_loaded
 get_extension_funcs
@@ -5723,6 +5721,8 @@ ini_restore
 putenv
 sleep
 usleep
+time_nanosleep
+time_sleep_until
 
 Disabled due to often being ill-configured or disabled on hosts...
 

@@ -143,6 +143,9 @@ function incoming_uploads_script()
         $outstr .= '}';
         echo $outstr;
 
+        // Clear uploads records/files older then 2 days
+        clear_old_uploads();
+
         exit(); // So auto_append_file cannot run and corrupt our output
     } else {
         //header('Content-type: text/plain; charset=' . get_charset()); @print('No file (' . serialize($_FILES) . ')');
