@@ -34,7 +34,7 @@ class extra_logging_test_set extends cms_test_case
 
         set_value('enable_profiler', '1');
         $url = build_url(array('page' => ''), 'forum');
-        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
+        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         set_value('enable_profiler', '0');
 
         clearstatcache();
@@ -56,7 +56,7 @@ class extra_logging_test_set extends cms_test_case
         $log_path = get_file_base() . '/data_custom/errorlog.php';
         cms_file_put_contents_safe($log_path, '');
         $url = build_url(array('page' => 'faq', 'cache' => 0), 'docs');
-        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
+        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $this->assertTrue(strpos(cms_file_get_contents_safe($log_path), 'Over time limit @'));
 
         set_value('monitor_slow_urls', '0');
@@ -69,7 +69,7 @@ class extra_logging_test_set extends cms_test_case
         $log_path = get_file_base() . '/data_custom/errorlog.php';
         cms_file_put_contents_safe($log_path, '');
         $url = build_url(array('page' => ''), '');
-        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
+        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $this->assertTrue(strpos(cms_file_get_contents_safe($log_path), 'Memory usage above memory_tracking'));
 
         set_value('memory_tracking', '0');
@@ -78,70 +78,70 @@ class extra_logging_test_set extends cms_test_case
     public function testSpecialPageTypeMemory()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'memory'), '');
-        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
+        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $this->assertTrue(strpos($data, 'Memory usage:') !== false);
     }
 
     public function testSpecialPageTypeIDELinkage()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'ide_linkage'), '');
-        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
+        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $this->assertTrue(strpos($data, 'txmt://') !== false);
     }
 
     public function testSpecialPageTypeQuery()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'query'), '');
-        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
+        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $this->assertTrue(strpos($data, 'View queries') !== false);
     }
 
     public function testSpecialPageTypeTranslateContent()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'lang_EN'), '');
-        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
+        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $this->assertTrue(strpos($data, 'Translate/rephrase Composr into English') !== false || strpos($data, 'Translate/rephrase the software into English') !== false);
     }
 
     public function testSpecialPageTypeValidate()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'code'), '');
-        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
+        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $this->assertTrue(strpos($data, 'Standards checker notices') !== false);
     }
 
     public function testSpecialPageTypeThemeImages()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'theme_images'), '');
-        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
+        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $this->assertTrue(strpos($data, 'Theme image editing') !== false);
     }
 
     public function testSpecialPageTypeTemplates()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'templates'), '');
-        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
+        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $this->assertTrue(strpos($data, 'Templates') !== false);
     }
 
     public function testSpecialPageTypeTree()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'tree'), '');
-        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
+        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $this->assertTrue(strpos($data, 'Template tree') !== false);
     }
 
     public function testSpecialPageTypeShowMarkers()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'show_markers'), '');
-        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
+        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $this->assertTrue(strpos($data, '<!-- START-TEMPLATE=HTML_HEAD -->') !== false);
     }
 
     public function testSpecialPageTypeShowEditLinks()
     {
         $url = build_url(array('page' => '', 'special_page_type' => 'show_edit_links'), '');
-        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()));
+        $data = http_download_file($url->evaluate(), null, true, false, 'Composr', null, array(get_session_cookie() => get_session_id()), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $this->assertTrue(strpos($data, 'admin-themes') !== false);
     }
 
