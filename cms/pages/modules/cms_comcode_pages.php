@@ -51,10 +51,17 @@ class Module_cms_comcode_pages
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        return array(
+        $ret = array(
             'browse' => array('COMCODE_PAGE_MANAGEMENT', 'menu/cms/comcode_page_edit'),
             'generate_page_sitemap' => array('GENERATE_PAGE_SITEMAP', 'tool_buttons/sitemap'),
         );
+
+        if ($support_crosslinks) {
+            require_code('fields');
+            $ret += manage_custom_fields_entry_points('comcode_page');
+        }
+
+        return $ret;
     }
 
     /**

@@ -168,7 +168,7 @@ function check_posted_field($name, $val)
  */
 function strip_url_to_representative_domain($url)
 {
-    return preg_replace('#^www\.#', '', strtolower(parse_url($url, PHP_URL_HOST)));
+    return preg_replace('#^www\.#', '', strtolower(parse_url(normalise_idn_url($url), PHP_URL_HOST)));
 }
 
 /**

@@ -31,6 +31,10 @@ class broken_includes_test_set extends cms_test_case
     {
         foreach ($this->contents as $c) {
             if (substr($c, -4) == '.php') {
+                if ($c == 'data_custom/execute_temp.php') {
+                    continue;
+                }
+
                 $_c = file_get_contents(get_file_base() . '/' . $c);
                 $matches = array();
                 $num_matches = preg_match_all('#require_code\(\'([^\']+)\'\)#', $_c, $matches);

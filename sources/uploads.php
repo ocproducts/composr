@@ -118,7 +118,7 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
     $url = post_param_string($field_url, '');
     if ($url != '') {
         // We should use compliant encoding
-        $coder_ob = new HarmlessURLCoder();
+        $coder_ob = new HarmlessURLCoder(); // TODO: This should move into post_param_string in v11, filter based
         $url = $coder_ob->encode($url);
 
         $filename = urldecode(preg_replace('#\?.*#', '', basename($url)));
@@ -657,7 +657,7 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
     $url[1] = rawurldecode(basename($url[0]));
 
     // We should use compliant encoding
-    $coder_ob = new HarmlessURLCoder();
+    $coder_ob = new HarmlessURLCoder(); // TODO: This should move into post_param_string in v11, filter based
     $url[0] = $coder_ob->encode($url[0]);
 
     // If this is a relative URL then it may be downloaded through a PHP script.

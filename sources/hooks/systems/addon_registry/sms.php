@@ -151,7 +151,7 @@ class Hook_addon_registry_sms
                 'm_phone_number' => '*SHORT_TEXT',
                 'm_member_id' => 'MEMBER',
                 'm_time' => 'TIME',
-                'm_confirm_code' => 'IP',
+                'm_confirm_code' => 'SHORT_TEXT',
             ));
             */
             /*$GLOBALS['SITE_DB']->create_index('confirmed_mobiles', 'confirmed_numbers', array('m_confirm_code'));*/

@@ -392,7 +392,7 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:calendar:view:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'calendar', strval($type)));
+    notify_sitemap_node_edit('_SEARCH:calendar:view:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'calendar', strval($type)));
 }
 
 /**
@@ -474,7 +474,7 @@ function delete_calendar_event($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:calendar:view:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:calendar:view:' . strval($id));
 
     if (addon_installed('ecommerce')) {
         require_code('ecommerce_permission_products');
@@ -556,7 +556,7 @@ function edit_event_type($id, $title, $logo, $external_feed)
     log_it('EDIT_EVENT_TYPE', strval($id), $title);
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:calendar:browse:int_' . strval($id) . '=1', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'calendar', strval($id)));
+    notify_sitemap_node_edit('_SEARCH:calendar:browse:int_' . strval($id) . '=1', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'calendar', strval($id)));
 }
 
 /**
@@ -606,5 +606,5 @@ function delete_event_type($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:calendar:browse:int_' . strval($id) . '=1');
+    notify_sitemap_node_delete('_SEARCH:calendar:browse:int_' . strval($id) . '=1');
 }

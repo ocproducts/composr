@@ -301,7 +301,9 @@ function http_download_file_cached($url, $referer = '', $cookies = null)
     if (is_file($cache_file)) {
         $data = file_get_contents($cache_file);
     } else {
-        sleep(3);
+        if (php_function_allowed('usleep')) {
+            usleep(3000000);
+        }
 
         require_code('files');
         $data = http_download_file($url, null, true, false, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36', null, $cookies, 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', null, 'en-US,en;q=0.8', null, $referer);

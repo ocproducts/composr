@@ -2255,12 +2255,8 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
                 if (($self_host == '') || (preg_match('#^localhost[\.\:$]#', $self_host) != 0)) {
                     $self_ip = '';
                 } else {
-                    if (!php_function_allowed('gethostbyname')) {
-                        $self_ip = gethostbyname($self_host);
-                    } else {
-                        $self_ip = '';
-                    }
-                    if ($self_ip == '') {
+                    $self_ip = cms_gethostbyname($self_host);
+                    if ($self_ip == $self_host) {
                         $self_ip = cms_srv('SERVER_ADDR');
                     }
                 }
@@ -3673,4 +3669,80 @@ function escape_header($str, $within_quotes = false)
         $str = addslashes($str);
     }
     return str_replace(array("\r", "\n"), array('', ''), $str);
+}
+
+/**
+ * Find if a forum post is a spacer post.
+ *
+ * @param string $post The spacer post
+ * @return boolean Whether it is
+ */
+function is_spacer_post($post)
+{
+    if (substr($post, 0, 10) == '[semihtml]') {
+        $post = substr($post, 10);
+    }
+
+    $langs = find_all_langs();
+    foreach (array_keys($langs) as $lang) {
+        $matcher = do_lang('SPACER_POST_MATCHER', null, null, null, $lang);
+        if (substr($post, 0, strlen($matcher)) == $matcher) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Get the Internet host name corresponding to a given IP address.
+ *
+ * @param  string $ip_address IP address
+ * @return string Host name OR IP address if failed to look up
+ */
+function cms_gethostbyaddr($ip_address)
+{
+    $hostname = '';
+
+    if ((php_function_allowed('shell_exec')) && (function_exists('get_value')) && (get_value('slow_php_dns') === '1')) {
+        $hostname = trim(preg_replace('#^.* #', '', shell_exec('host ' . escapeshellarg_wrap($ip_address))));
+    }
+
+    if ($hostname == '') {
+        if (php_function_allowed('gethostbyaddr')) {
+            $hostname = @gethostbyaddr($ip_address);
+        }
+    }
+
+    if ($hostname == '') {
+        $hostname = $ip_address;
+    }
+
+    return $hostname;
+}
+
+/**
+ * Get the IP address corresponding to a given Internet host name.
+ *
+ * @param  string $hostname Host name
+ * @return string IP address OR host name if failed to look up
+ */
+function cms_gethostbyname($hostname)
+{
+    $ip_address = '';
+
+    if ((php_function_allowed('shell_exec')) && (function_exists('get_value')) && (get_value('slow_php_dns') === '1')) {
+        $ip_address = preg_replace('#^.*has address (\d+\.\d+\.\d+).*#s', '$1', shell_exec('host ' . escapeshellarg_wrap($hostname)));
+    }
+
+    if ($ip_address == '') {
+        if (php_function_allowed('gethostbyaddr')) {
+            $ip_address = @gethostbyaddr($ip_address);
+        }
+    }
+
+    if ($ip_address == '') {
+        $ip_address = $hostname;
+    }
+
+    return $ip_address;
 }

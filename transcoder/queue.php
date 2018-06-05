@@ -238,5 +238,5 @@ while (true) {
         break;
     }
 
-    sleep(10);
+    usleep(10000000);
 }

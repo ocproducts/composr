@@ -724,6 +724,8 @@ function check_function($function, $inside_class = false)
                     break;
                 }
             }
+        } else {
+            set_composr_type($p[1], 'mixed');
         }
     }
 

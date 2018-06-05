@@ -1,3 +1,5 @@
+/*{$,Parser hint: .innerHTML okay}*/
+
 // Based on http://welcome.totheinter.net/columnizer-jquery-plugin/
 //  But with fixes and better flexibility, and pure CSS-based activation
 

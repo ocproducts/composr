@@ -138,8 +138,10 @@ class Hook_profiles_tabs_edit_settings
             }
             if ((has_actual_page_access($member_id_viewing, 'admin_cns_members')) || (has_privilege($member_id_of, 'rename_self'))) {
                 $username = ($is_ldap) ? null : post_param_string('edit_username', null/*May not be passed if username not editable for member type*/);
+                $username_old = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of);
             } else {
                 $username = null;
+                $username_old = null;
             }
 
             require_code('cns_members_action');
@@ -235,6 +237,15 @@ class Hook_profiles_tabs_edit_settings
                 if (addon_installed('awards')) {
                     require_code('awards');
                     handle_award_setting('member', strval($member_id_of));
+                }
+
+                if (($username !== null) && ($username != $username_old)) {
+                    $title = get_screen_title('MEMBER_ACCOUNT', true, array(escape_html($username), escape_html($username)));
+                    $tpl = redirect_screen($title, get_self_url(), do_lang_tempcode('SUCCESS_SAVE'));
+
+                    $echo = globalise($tpl, null, '', true);
+                    $echo->evaluate_echo();
+                    exit();
                 }
 
                 attach_message(do_lang_tempcode('SUCCESS_SAVE'), 'inform');

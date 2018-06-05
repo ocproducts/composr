@@ -193,6 +193,9 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
         require_code('hooks/systems/tasks/' . filter_naughty_harsh($hook));
         $ob = object_factory('Hook_task_' . filter_naughty_harsh($hook));
         $result = call_user_func_array(array($ob, 'run'), $args);
+        if ($result === false) {
+            $result = array(null, do_lang_tempcode('INTERNAL_ERROR'));
+        }
         if (is_null($result)) {
             if (is_null($title)) {
                 return new Tempcode();
@@ -220,6 +223,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
         // Handle error results
         if (is_null($mime_type)) {
             if (is_null($title)) {
+                attach_message(do_lang_tempcode('TASK_FAILED_SUBJECT', escape_html($plain_title)), 'warn');
                 return $content_result;
             }
             return warn_screen($title, $content_result);

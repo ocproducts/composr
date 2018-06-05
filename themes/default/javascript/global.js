@@ -1,3 +1,5 @@
+/*{$,Parser hint: .innerHTML okay}*/
+
 /* Ideally this template should not be edited. See the note at the bottom of how JAVASCRIPT_CUSTOM_GLOBALS.tpl is appended to this template */
 
 "use strict";

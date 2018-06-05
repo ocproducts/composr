@@ -714,7 +714,7 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
     if ($has_tic) {
         $default_set = 'tic';
     }
-    list($__tics) = cache_and_carry('http_download_file', array('https://taxcloud.net/tic/?format=json', null, false));
+    list($__tics) = cache_and_carry('http_download_file', array('https://prev.taxcloud.net/tic/?format=json', null, false));
     $_tics = @json_decode($__tics, true); // TODO: Fix in v11
     if (($_tics !== false) && ($_tics !== null)) {
         $tics = new Tempcode();

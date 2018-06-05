@@ -167,9 +167,9 @@ function currency_convert($amount, $from_currency = null, $to_currency = null, $
         $new_amount = ($_new_amount === null) ? null : floatval($_new_amount);
     }
 
-    // Case: Get using EU-central-bank data, using a free API
+    // Case: Get using a free API
     if ($new_amount === null) {
-        $new_amount = _currency_convert__ecb($amount, $from_currency, $to_currency, $cache_minutes);
+        $new_amount = _currency_convert__currency_conv_api($amount, $from_currency, $to_currency, $cache_minutes);
         if ($new_amount !== null) {
             $save_caching = true;
         }
@@ -224,28 +224,32 @@ function currency_convert($amount, $from_currency = null, $to_currency = null, $
 }
 
 /**
- * Perform a currency conversion using ECB data.
+ * Perform a currency conversion using "The Free Currency Converter API".
  *
- * @param  mixed $amount The starting amount (integer or float).
- * @param  ID_TEXT $from_currency The start currency code.
- * @param  ID_TEXT $to_currency The end currency code.
- * @param  integer $cache_minutes The number of minutes to cache for.
- * @return ?float The new amount (null: could not look up).
+ * @param  mixed $amount The starting amount (integer or float)
+ * @param  ID_TEXT $from_currency The start currency code
+ * @param  ID_TEXT $to_currency The end currency code
+ * @return ?float The new amount (null: could not look up)
  */
-function _currency_convert__ecb($amount, $from_currency, $to_currency, $cache_minutes)
+function _currency_convert__currency_conv_api($amount, $from_currency, $to_currency)
 {
-    $ecb_currencies = array('EUR', 'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK', 'DKK', 'GBP', 'HKD', 'HRK', 'HUF', 'IDR', 'ILS', 'INR', 'JPY', 'KRW', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SEK', 'SGD', 'THB', 'TRY', 'USD', 'ZAR');
-    if ((in_array($from_currency, $ecb_currencies)) && (in_array($to_currency, $ecb_currencies))) {
-        $url = 'http://api.fixer.io/latest?base=' . urlencode($from_currency);
-        require_code('files2'); // TODO: http in v11
-        list($http_data) = cache_and_carry('http_download_file', array($url, null, false, false, 'Composr', null, null, null, null, null, null, null, null, 1.5), $cache_minutes); // TODO: Fix in v11
-        $data = @json_decode($http_data, true);
-        if (isset($data['rates'][$to_currency])) {
-            $new_amount = round($amount * $data['rates'][$to_currency], 2);
-            return $new_amount;
+    $rate_key = urlencode($from_currency) . '_' . urlencode($to_currency);
+    $cache_key = 'currency_' . $rate_key;
+    $test = get_value($cache_key, null, true);
+    if ($test !== null) {
+        return floatval($test) * $amount;
+    }
+    $conv_api_url = 'https://free.currencyconverterapi.com/api/v5/convert?q=' . $rate_key . '&compact=y';
+    $result = http_download_file($conv_api_url, null, false);
+    if (is_string($result)) {
+        require_code('json');
+        $data = json_decode($result, true);
+        if (isset($data[$rate_key]['val'])) {
+            $rate = $data[$rate_key]['val'];
+            set_value($cache_key, float_to_raw_string($rate, 10, false), true); // Will be de-cached in currency_convert
+            return (float)$rate * $amount;
         }
     }
-
     return null;
 }
 

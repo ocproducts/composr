@@ -44,12 +44,14 @@ function init__site()
     if (function_exists('get_value')) {
         $is_non_canonical = false;
         $canonical_keep_params = explode(',', is_null(get_value('canonical_keep_params')) ? 'keep_devtest' : get_value('canonical_keep_params'));
-        foreach (array_intersect(array_keys($_GET), array('keep_session'/*may be inserted later*/)) as $key) {
+        foreach (array_merge(array_keys($_GET), array('keep_session'/*may be inserted later*/)) as $key) {
             if ((is_string($key)) && (substr($key, 0, 5) == 'keep_') && (!@in_array($key, $canonical_keep_params))) {
                 $NON_CANONICAL_PARAMS[$key] = true;
                 $is_non_canonical = true;
             }
         }
+        /*
+        Doing this redirect is too risky. Some code (including user code) may redirect back to inject missing parameters.
         if (($is_non_canonical) && (get_bot_type() !== null)) { // Force bots onto the canonical URL if there were non-standard keep parameters, as they may ignore even the canonical meta tag.
             $non_canonical = array();
             if (is_array($NON_CANONICAL_PARAMS)) {
@@ -62,6 +64,7 @@ function init__site()
             header('Location: ' . escape_header(get_self_url(true, false, $non_canonical)));
             exit();
         }
+        */
     }
 
     global $PAGE_STRING, $LAST_COMCODE_PARSED_TITLE;
@@ -1102,6 +1105,10 @@ function save_static_caching($out, $mime_type = 'text/html')
                 $static_cache = $out_evaluated;
             } else {
                 $static_cache = $out;
+            }
+
+            if (!$GLOBALS['STATIC_CACHE_ENABLED']) {
+                return; // Something in the output tree decided this was not cacheable
             }
 
             // Remove any sessions etc

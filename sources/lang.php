@@ -973,6 +973,11 @@ function insert_lang_comcode($field_name, $text, $level, $connection = null, $in
         $connection = $GLOBALS['SITE_DB'];
     }
 
+    if ((strpos($text, '[attachment') !== false) && ($preparse_mode) && ($pass_id === null)) {
+        require_code('attachments2');
+        return insert_lang_comcode_attachments($field_name, $level, $text, 'null', '', $connection, $insert_as_admin);
+    }
+
     return insert_lang($field_name, $text, $level, $connection, true, null, null, $insert_as_admin, $pass_id, null, $wrap_pos, $preparse_mode, $save_as_volatile);
 }
 
@@ -1015,6 +1020,11 @@ function insert_lang($field_name, $text, $level, $connection = null, $comcode = 
  */
 function lang_remap_comcode($field_name, $id, $text, $connection = null, $pass_id = null, $source_user = null, $as_admin = false)
 {
+    if ((strpos($text, '[attachment') !== false) && ($pass_id === null)) {
+        require_code('attachments3');
+        return update_lang_comcode_attachments($field_name, $id, $text, 'null', '', $connection);
+    }
+
     return lang_remap($field_name, $id, $text, $connection, true, $pass_id, $source_user, $as_admin);
 }
 

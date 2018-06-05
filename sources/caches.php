@@ -496,6 +496,7 @@ function erase_persistent_cache()
     }
     $done_once = true;
 
+    /* This is unsafe, the task queue may need something
     $path = get_custom_file_base() . '/safe_mode_temp';
     if (is_dir($path)) {
         $d = opendir($path);
@@ -506,6 +507,7 @@ function erase_persistent_cache()
         }
         closedir($d);
     }
+    */
 
     $path = get_custom_file_base() . '/caches/persistent';
     if (is_dir($path)) {
@@ -519,18 +521,7 @@ function erase_persistent_cache()
         closedir($d);
     }
 
-    $path = get_custom_file_base() . '/caches/guest_pages';
-    if (!file_exists($path)) {
-        return;
-    }
-    $d = opendir($path);
-    while (($e = readdir($d)) !== false) {
-        if ((substr($e, -4) == '.htm' || substr($e, -4) == '.xml') && (strpos($e, '__failover_mode') === false)) {
-            // Ideally we'd lock while we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors while we're clearing the cache. Fortunately this is a rare op to perform.
-            @unlink(get_custom_file_base() . '/caches/guest_pages/' . $e);
-        }
-    }
-    closedir($d);
+    erase_static_cache();
 
     require_code('files');
     cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/failover_rewritemap.txt', '', FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
@@ -541,6 +532,25 @@ function erase_persistent_cache()
         return null;
     }
     $PERSISTENT_CACHE->flush();
+}
+
+/**
+ * Remove all data from the static cache.
+ */
+function erase_static_cache()
+{
+    $path = get_custom_file_base() . '/caches/guest_pages';
+    if (!file_exists($path)) {
+        return;
+    }
+    $d = opendir($path);
+    while (($e = readdir($d)) !== false) {
+        if ((substr($e, -4) == '.htm' || substr($e, -4) == '.xml' || substr($e, -3) == '.gz') && (strpos($e, '__failover_mode') === false)) {
+            // Ideally we'd lock while we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors while we're clearing the cache. Fortunately this is a rare op to perform.
+            @unlink(get_custom_file_base() . '/caches/guest_pages/' . $e);
+        }
+    }
+    closedir($d);
 }
 
 /**

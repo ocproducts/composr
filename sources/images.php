@@ -805,6 +805,7 @@ function _will_fix_corrupt_png_alpha($image)
 function _fix_corrupt_png_alpha(&$image, $path)
 {
     if (_will_fix_corrupt_png_alpha($image)) {
+        require_code('images2');
         $imagemagick = find_imagemagick();
         if ($imagemagick !== null) {
             if ((php_function_allowed('shell_exec')) && (php_function_allowed('escapeshellarg'))) {

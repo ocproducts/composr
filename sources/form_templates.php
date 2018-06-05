@@ -1444,7 +1444,7 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     $field_url = $set_name . '__url';
 
-    require_code('urls_simplifier');
+    require_code('urls_simplifier'); // TODO: This should move into form_input_url in v11
     $coder_ob = new HarmlessURLCoder();
     $_default = $coder_ob->decode($default);
 

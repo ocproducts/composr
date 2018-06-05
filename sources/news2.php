@@ -141,7 +141,7 @@ function edit_news_category($id, $title, $img, $notes, $owner)
     decache('side_news_categories');
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:news:browse:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($id)));
+    notify_sitemap_node_edit('_SEARCH:news:browse:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($id)));
 }
 
 /**
@@ -210,7 +210,7 @@ function delete_news_category($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:news:browse:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:news:browse:' . strval($id));
 
     if (addon_installed('ecommerce')) {
         require_code('ecommerce_permission_products');
@@ -446,7 +446,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
  * @param  boolean $show_errors Whether to show errors
  * @return string HTTP result output
  */
-function send_rss_ping($show_errors = true)
+function send_rss_ping($show_errors = false)
 {
     $url = find_script('backend') . '?type=rss&mode=news';
 
@@ -457,7 +457,7 @@ function send_rss_ping($show_errors = true)
     foreach ($ping_urls as $ping_url) {
         $ping_url = trim($ping_url);
         if ($ping_url != '') {
-            $out .= http_download_file($ping_url, null, $show_errors);
+            $out .= http_download_file($ping_url, null, $show_errors, false, 'Composr', null, null, null, null, null, null, null, null, 1.0);
         }
     }
 
@@ -620,7 +620,7 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
     );
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:news:view:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($main_news_category)));
+    notify_sitemap_node_edit('_SEARCH:news:view:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($main_news_category)));
 }
 
 /**
@@ -717,7 +717,7 @@ function delete_news($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:news:view:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:news:view:' . strval($id));
 }
 
 /**

@@ -256,6 +256,7 @@ class Module_search
             $ob = object_factory('Hook_search_' . filter_naughty_harsh($id, true));
             $info = $ob->info();
             if (is_null($info)) {
+                set_http_status_code('404');
                 warn_exit(do_lang_tempcode('SEARCH_HOOK_NOT_AVAILABLE'));
             }
 
@@ -324,7 +325,7 @@ class Module_search
                     ));
                 }
             }
-            
+
             if (!$got_tree_selector) {
                 $ajax = false;
                 $tree = form_input_list_entry('!', false, do_lang_tempcode('NA_EM'));
