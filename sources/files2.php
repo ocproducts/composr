@@ -1596,7 +1596,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $time_init = time();
         while (($chunked) || (!@feof($mysock))) { // @'d because socket might have died. If so fread will will return false and hence we'll break
             $line = @fread($mysock, 32000);
-            if (($input == '') && ($time_init + $timeout < time())) {
+            if (($input === '') && ($time_init + $timeout < time())) {
                 $line = false; // Manual timeout
             }
             if ($line === false) {
