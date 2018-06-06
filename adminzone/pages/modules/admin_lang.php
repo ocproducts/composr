@@ -108,6 +108,9 @@ class Module_admin_lang
             }
 
             $lang = filter_naughty_harsh(get_param_string('lang', ''));
+            if ($lang_new != '') {
+                $lang = $lang_new;
+            }
             if ($lang == '') {
                 breadcrumb_set_self(do_lang_tempcode('TRANSLATE_CODE'));
 
