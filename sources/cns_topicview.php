@@ -400,9 +400,9 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
             $linked_url = '';
 
             // If it's a spacer post, see if we can detect it better
-            $is_spacer_post = (($i == 0) && (substr($_postdetails['message_comcode'], 0, strlen('[semihtml]' . do_lang('SPACER_POST_MATCHER'))) == '[semihtml]' . do_lang('SPACER_POST_MATCHER')));
+            $is_spacer_post = is_spacer_post($_postdetails['message_comcode']);
             if ($is_spacer_post) {
-                $c_prefix = do_lang('COMMENT') . ': #';
+                $c_prefix = do_lang('COMMENT', null, null, null, get_site_default_lang()) . ': #';
                 if ((substr($out['description'], 0, strlen($c_prefix)) == $c_prefix) && ($out['description_link'] != '')) {
                     list($linked_type, $linked_id) = explode('_', substr($out['description'], strlen($c_prefix)), 2);
                     $linked_url = $out['description_link'];
@@ -599,7 +599,7 @@ function cns_cache_member_details($members)
 
             // Signature
             if ((get_page_name() != 'search') && ($row['m_signature'] !== null) && ($row['m_signature'] !== '') && ($row['m_signature'] !== 0)) {
-                $just_row = db_map_restrict($row, array('id', '', 'news', 'news_article'));
+                $just_row = db_map_restrict($row, array('id', 'm_signature'));
                 $SIGNATURES_CACHE[$row['id']] = get_translated_tempcode('f_members', $just_row, 'm_signature', $GLOBALS['FORUM_DB']);
             }
 

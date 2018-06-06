@@ -141,9 +141,9 @@ The [tt]HTML_COMPRESS[/tt] rules available are:
 We don't do anything particularly assumptive or risky in this directive, for that you can consider Cloudflare or [tt]mod_pagespeed[/tt]. For example:
  - We don't recompress images, or target scaled-down images to different devices, or switch file extensions on you. We assume you'll compress your own theme images well, and do some image compression when we generate thumbnails. It would be technically very challenging for us to implement these image switching techniques, and we feel we'd cause as many problems as we'd solve.
  - We don't make changes to your stylesheet structure. Almost any change can alter the priorities styles are applied with, i.e. break your layout.
- - We don't automatically inline images. You can do this manually using the [tt]IMG_INLINE[/tt] symbol, in full knowledge of your real tradeoffs.
- - We don't automatically merge stylesheets or script files. A technique to do this manually (i.e. in knowledge of your real tradeoffs) is discussed in this tutorial though.
- - We don't try and implement an initially-inlined-then-locally-cached mechanism using a shared client/server memory of what resources have already been sent. This is a really cool technique that can make initial page-load time optimal, and subsequent page-load time optimal, without any kind of tradeoff. However it is very complex and should not be implemented within the scope of a CMS. It also is not necessarily optimal except for simple sites, due to the possibility of connection stutter during the initial monolithic page transfer.
+ - We don't automatically inline images. You can do this manually using the [tt]IMG_INLINE[/tt] symbol, in full knowledge of your real trade-offs.
+ - We don't automatically merge stylesheets or script files. A technique to do this manually (i.e. in knowledge of your real trade-offs) is discussed in this tutorial though.
+ - We don't try and implement an initially-inlined-then-locally-cached mechanism using a shared client/server memory of what resources have already been sent. This is a really cool technique that can make initial page-load time optimal, and subsequent page-load time optimal, without any kind of trade-off. However it is very complex and should not be implemented within the scope of a CMS. It also is not necessarily optimal except for simple sites, due to the possibility of connection stutter during the initial monolithic page transfer.
 
 [title="3"][tt]CDN_FILTER[/tt] directive[/title]
 
@@ -351,7 +351,7 @@ If you have outgrown normal shared hosting / a single VPS or server, you can do 
 1) Composr runs perfectly on Rackspace Cloud Sites hosting, where you can set up quite large instances (we have been told that behind-the-scenes there is database replication, to share database load).
 2) You can run on Amazon EC2 Instances (or pretty much any cloud service that supports custom images, or PHP). There is a Composr Bitnami image for easy installation on Amazon's infrastructure. Bitnami also provide their own Amazon-based hosting service. If you want to use multiple instances you will need to set up your own MySQL replication and file-synching, but Composr does have support for it (see "Server farms"). There are some solutions to auto-scale out cloud instances, although many companies handle it manually.
 3) You can set up your own cloud system on your own servers, or cheap dedicated servers. You could look at using something like OpenStack to achieve this. This is similar to Facebook's infrastructure and a very challenging option, but perhaps the best from a huge-scale cost perspective.
-4) You can use Google App Engine, to get automated scaling, with a tradeoff that it is a bit harder to initially set up. This is the most elegant and maintainable option and we generally prefer it over '1' and '2' if you are seriously investing in a maintainable infrastructure. We discuss this in the separate [page="_SEARCH:tut_google_appengine"]Google App Engine[/page] tutorial. [i]At the time of writing Google App Engine PHP support is unstable and won't run Composr properly -- this is outside our control, and we have been discussing it with Google directly.[/i]
+4) You can use Google App Engine, to get automated scaling, with a trade-off that it is a bit harder to initially set up. This is the most elegant and maintainable option and we generally prefer it over '1' and '2' if you are seriously investing in a maintainable infrastructure. We discuss this in the separate [page="_SEARCH:tut_google_appengine"]Google App Engine[/page] tutorial. [i]At the time of writing Google App Engine PHP support is unstable and won't run Composr properly -- this is outside our control, and we have been discussing it with Google directly.[/i]
 
 [title="3"]Amazon EC2[/title]
 
@@ -527,7 +527,7 @@ As you can see, it is a comma-separated list of domain names. These domain names
  - Use your own CDN servers, and something like [tt]rsync[/tt] to keep files in sync
   - If you are very sophisticated, you may use implement choice of the best geographic server location at the DNS level
  - Use Cloudflare, but just on the CDN domain (hence getting all the CDN advantages of Cloudflare but without having to proxy your entire website)
-  - If you set Cloudflare to control your entire site then this is actually creating a bottleneck and a performance degredation, as you are relying on all your content flowing through Cloudflare, even for users in the same building as your server
+  - If you set Cloudflare to control your entire site then this is actually creating a bottleneck and a performance degradation, as you are relying on all your content flowing through Cloudflare, even for users in the same building as your server
  - Just run your CDN domains off the same server (this is called 'domain sharding', and is like CDN-lite)
 
 Composr will randomise what CDN's it uses, so parallelisation can work more efficiently (this is the only reason for the comma-separation). Web browsers have a limit on how many parallel web requests may come from a single server, and this works around that.
@@ -595,6 +595,7 @@ The Cloudflare service provides some of the same optimisations that [tt]mod_page
 [title="2"]Preloaded links[/title]
 
 Web browsers are starting to support link preloading. If you have a situation where you can predict what links people will click, you can use a standard HTML approach to define preloading for those links.
+Various [url="HTTP streaming techniques"]https://www.patreon.com/posts/18644315[/url] are discussed in a blog post I wrote.
 
 [title="2"]Profiling[/title]
 

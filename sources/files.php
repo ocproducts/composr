@@ -279,6 +279,9 @@ function clean_file_size($bytes)
     if ($bytes === null) {
         return do_lang('UNKNOWN') . ' bytes';
     }
+    if ($bytes == 2147483647) {
+        return do_lang('UNKNOWN') . ' bytes';
+    }
     if (floatval($bytes) > 2.0 * 1024.0 * 1024.0 * 1024.0) {
         return strval(intval(round(floatval($bytes) / 1024.0 / 1024.0 / 1024.0))) . ' GB';
     }
@@ -378,6 +381,7 @@ function should_ignore_file($path, $bitmask = 0)
         'thumbs.db:encryptable' => '.*',
         'thumbs.db' => '.*',
         '.ds_store' => '.*',
+        "icon\r" => '.*',
 
         // Source code control systems
         '.git' => '.*',

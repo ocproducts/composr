@@ -335,7 +335,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
             }
             $ret_str .= '<p class="associated-details"><a href="#!" onclick="var checkmarks=this.parentNode.parentNode.getElementsByTagName(\'input\'); for (var i=0;i&lt;checkmarks.length;i++) { checkmarks[i].checked=true; } return false;">' . do_lang('UPGRADER_CHECK_ALL') . '</a></p>';
             $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
-            $ret_str .= '<button class="buttons--proceed button-screen" accesskey="c" type="submit">' . $proceed_icon . ' ' . do_lang('UPGRADER_AUTO_HANDLE') . '</button>';
+            $ret_str .= '<button class="buttons--proceed button-screen" accesskey="c" type="submit">' . $proceed_icon->evaluate() . ' ' . do_lang('UPGRADER_AUTO_HANDLE') . '</button>';
             $ret_str .= '</div>';
 
             $found_something = true;

@@ -789,6 +789,11 @@ function step_4()
 
     $forum_driver_specifics = $GLOBALS['FORUM_DRIVER']->install_specifics();
 
+    $use_msn = post_param_integer('use_msn', 0);
+    if ($use_msn == 0) {
+        $use_msn = post_param_integer('use_multi_db', 0);
+    }
+
     // Now we've gone through all the work of detecting it, lets grab from _config.php to see what we had last time we installed
     global $SITE_INFO;
     if ((file_exists(get_file_base() . '/_config.php')) && (filesize(get_file_base() . '/_config.php') != 0)) {
@@ -849,7 +854,7 @@ function step_4()
         if (isset($SITE_INFO['domain'])) {
             $domain = $SITE_INFO['domain'];
         }
-        if (!file_exists(get_file_base() . '/.git')) {
+        if ((!file_exists(get_file_base() . '/.git')) || ($use_msn)) {
             if (isset($SITE_INFO['multi_lang_content'])) {
                 $multi_lang_content = intval($SITE_INFO['multi_lang_content']);
             }
@@ -949,10 +954,6 @@ function step_4()
         $forum_title = do_lang_tempcode('_FORUM_SETTINGS', escape_html($_forum_type));
     }
     $forum_options = new Tempcode();
-    $use_msn = post_param_integer('use_msn', 0);
-    if ($use_msn == 0) {
-        $use_msn = post_param_integer('use_multi_db', 0);
-    }
     $forum_type = post_param_string('forum_type');
     if ($forum_type != 'none') {
         if ($use_msn == 1) {
@@ -1135,6 +1136,9 @@ function step_5()
     if ($multi_lang_content == 0) {
         $_POST['multi_lang_content'] = '0';
     }
+
+    // Cleanup base URL
+    $_POST['base_url'] = normalise_idn_url($_POST['base_url']);
 
     // Check cookie settings. IF THIS CODE IS CHANGED ALSO CHANGE COPY&PASTED CODE IN CONFIG_EDITOR.PHP
     $cookie_path = post_param_string('cookie_path');
@@ -1402,7 +1406,9 @@ function step_5_ftp()
             warn_exit(do_lang_tempcode('DATA_FILE_CONFLICT'));
         }
         $file_size_before = @filesize(get_file_base() . '/cms_inst_tmp/tmp');
-        sleep(1);
+        if (php_function_allowed('usleep')) {
+            usleep(1000000);
+        }
         $file_size_after = @filesize(get_file_base() . '/cms_inst_tmp/tmp');
         if ($file_size_before !== $file_size_after) {
             warn_exit(do_lang_tempcode('DATA_FILE_CONFLICT'));
@@ -3119,7 +3125,9 @@ END;
             ");
 
             cms_file_put_contents_safe(get_file_base() . '/exports/addons/.htaccess', $clause);
-            usleep(100000); // 100ms, some servers are slow to update
+            if (php_function_allowed('usleep')) {
+                usleep(1000000); // 100ms, some servers are slow to update
+            }
             $http_result = cms_http_request($base_url . '/exports/addons/index.php', array('trigger_error' => false));
 
             if ($http_result->message != '200') {

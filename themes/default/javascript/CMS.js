@@ -759,6 +759,10 @@
         return new Promise(function (resolvePromise) {
             // Make AJAX call
             $cms.doAjaxRequest(ajaxUrl + $cms.keep(), null, postParams).then(function (xhr) { // Show results when available
+                if (!targetDiv.parentNode) {
+                    return; // A prior AJAX result came in and did a set_outer_html, wiping the container
+                }
+
                 callBlockRender(xhr, ajaxUrl, targetDiv, append, function () {
                     resolvePromise();
                 }, scrollToTopOfWrapper, inner);

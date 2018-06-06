@@ -223,6 +223,9 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = ar
         task_log_open();
         task_log(null, 'Starting task ' . $hook);
         $result = call_user_func_array(array($ob, 'run'), $args);
+        if ($result === false) {
+            $result = array(null, do_lang_tempcode('INTERNAL_ERROR'));
+        }
         task_log(null, 'Finished task ' . $hook);
         task_log_close();
         if ($result === null) {
@@ -252,6 +255,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = ar
         // Handle error results
         if ($mime_type === null) {
             if ($title === null) {
+                attach_message(do_lang_tempcode('TASK_FAILED_SUBJECT', escape_html($plain_title)), 'warn');
                 return $content_result;
             }
             return warn_screen($title, $content_result);

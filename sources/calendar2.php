@@ -479,7 +479,7 @@ function delete_calendar_event($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:calendar:view:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:calendar:view:' . strval($id));
 
     if (addon_installed('ecommerce')) {
         require_code('ecommerce_permission_products');
@@ -611,5 +611,5 @@ function delete_event_type($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:calendar:browse:int_' . strval($id) . '=1');
+    notify_sitemap_node_delete('_SEARCH:calendar:browse:int_' . strval($id) . '=1');
 }

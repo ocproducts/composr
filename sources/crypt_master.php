@@ -85,7 +85,9 @@ function check_master_password_from_hash($password_given_hashed)
  */
 function _master_password_check__init()
 {
-    usleep(500000); // Wait for half a second, to reduce brute force potential
+    if ((function_exists('php_function_allowed')) && (php_function_allowed('usleep'))) {
+        @usleep(500000); // Wait for half a second, to reduce brute force potential
+    }
 
     global $SITE_INFO;
 

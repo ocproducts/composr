@@ -495,7 +495,7 @@ function delete_download_category($category_id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:downloads:browse:' . strval($category_id));
+    notify_sitemap_node_delete('_SEARCH:downloads:browse:' . strval($category_id));
 
     if (addon_installed('ecommerce')) {
         require_code('ecommerce_permission_products');
@@ -905,6 +905,10 @@ function add_download($category_id, $name, $url, $description, $author, $additio
         }
     }
 
+    if (($file_size < 0) || ($file_size > 2147483647)) {
+        $file_size = 2147483647;
+    }
+
     if (!addon_installed('unvalidated')) {
         $validated = 1;
     }
@@ -1109,6 +1113,10 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         }
     }
 
+    if (($file_size < 0) || ($file_size > 2147483647)) {
+        $file_size = 2147483647;
+    }
+
     require_code('content2');
     seo_meta_set_for_explicit('downloads_download', strval($id), $meta_keywords, $meta_description);
 
@@ -1288,7 +1296,7 @@ function delete_download($id, $leave = false)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:downloads:entry:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:downloads:entry:' . strval($id));
 }
 
 /**

@@ -32,8 +32,6 @@
      * @param postingFieldName
      */
     function addAttachment(startNum, postingFieldName) {
-        //console.log('addAttachment()', 'startNum:', startNum, 'postingFieldName:', postingFieldName);
-
         var addTo = document.getElementById('js-attachment-store');
 
         window.numAttachments++;
@@ -71,8 +69,6 @@
      * @return { Promise }
      */
     $posting.setAttachment = function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
-        //console.log('setAttachment()', 'fieldName:', fieldName, 'number:', number, 'filename:', filename, 'multi:', multi, 'uploaderSettings:', uploaderSettings);
-
         fieldName = strVal(fieldName);
         number = Number(number);
         filename = strVal(filename);
@@ -1158,7 +1154,7 @@
 
     function getAutosaveUrlStem() {
         var name = 'cms_autosave_' + window.location.pathname;
-        if (window.location.search.indexOf('type=') !== -1) {
+        if ((window.location.search.indexOf('type=') !== -1) || (window.location.search.indexOf('page_link') !== -1)/*editing Comcode page*/) {
             name += window.location.search.replace(/[\?&]redirect=.*/, '').replace(/[\?&]keep_\w+=.*/, '').replace(/[\?&]cat=.*/, '');
         }
         name = name.replace(/\./, '_'); // PHP can't use dots in field names

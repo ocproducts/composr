@@ -386,6 +386,8 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
                 }
             }
         }
+
+        spellchecker_shutdown();
     }
 
     /**
@@ -558,5 +560,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             }
             while (count($rows) > 0);
         }
+
+        spellchecker_shutdown();
     }
 }

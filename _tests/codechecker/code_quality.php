@@ -794,6 +794,8 @@ function check_function($function, $is_closure = false, $inside_class = false)
                     break;
                 }
             }
+        } else {
+            set_composr_type($p[1], 'mixed');
         }
     }
 

@@ -324,7 +324,7 @@ function delete_poll($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:polls:view:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:polls:view:' . strval($id));
 }
 
 /**

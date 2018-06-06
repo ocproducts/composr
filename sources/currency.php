@@ -169,14 +169,6 @@ function currency_convert($amount, $from_currency = null, $to_currency = null, $
         $new_amount = ($_new_amount === null) ? null : floatval($_new_amount);
     }
 
-    // Case: Get using EU-central-bank data, using a free API
-    if (($new_amount === null) && ($force_via === null) || ($force_via == 'ecb')) {
-        $new_amount = _currency_convert__ecb($amount, $from_currency, $to_currency, $cache_minutes);
-        if ($new_amount !== null) {
-            $save_caching = true;
-        }
-    }
-
     // Case: Get from "The Free Currency Converter API"
     if (($new_amount === null) && ($force_via === null) || ($force_via == 'conv_api')) {
         $new_amount = _currency_convert__currency_conv_api($amount, $from_currency, $to_currency);
@@ -236,32 +228,6 @@ function currency_convert($amount, $from_currency = null, $to_currency = null, $
 }
 
 /**
- * Perform a currency conversion using ECB data.
- *
- * @param  mixed $amount The starting amount (integer or float)
- * @param  ID_TEXT $from_currency The start currency code
- * @param  ID_TEXT $to_currency The end currency code
- * @param  integer $cache_minutes The number of minutes to cache for
- * @return ?float The new amount (null: could not look up)
- */
-function _currency_convert__ecb($amount, $from_currency, $to_currency, $cache_minutes)
-{
-    $ecb_currencies = array('EUR', 'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK', 'DKK', 'GBP', 'HKD', 'HRK', 'HUF', 'IDR', 'ILS', 'INR', 'JPY', 'KRW', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SEK', 'SGD', 'THB', 'TRY', 'USD', 'ZAR');
-    if ((in_array($from_currency, $ecb_currencies)) && (in_array($to_currency, $ecb_currencies))) {
-        $url = 'http://api.fixer.io/latest?base=' . urlencode($from_currency);
-        require_code('http');
-        list($http_data) = cache_and_carry('cms_http_request', array($url, array('timeout' => 1.5)), $cache_minutes);
-        $data = @json_decode($http_data, true);
-        if (isset($data['rates'][$to_currency])) {
-            $new_amount = round($amount * $data['rates'][$to_currency], 2);
-            return $new_amount;
-        }
-    }
-
-    return null;
-}
-
-/**
  * Perform a currency conversion using "The Free Currency Converter API".
  *
  * @param  mixed $amount The starting amount (integer or float)
@@ -288,7 +254,7 @@ function _currency_convert__currency_conv_api($amount, $from_currency, $to_curre
 
             set_value($cache_key, float_to_raw_string($rate, 10, false), true); // Will be de-cached in currency_convert
 
-            return $rate * $amount;
+            return (float)$rate * $amount;
         }
     }
     return null;

@@ -401,7 +401,7 @@ function edit_chatroom($id, $welcome, $room_name, $room_owner, $allow2, $allow2_
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:chat:room:' . strval($id), ($allow2 == '') && ($allow2_groups == ''));
+    notify_sitemap_node_edit('_SEARCH:chat:room:' . strval($id), ($allow2 == '') && ($allow2_groups == ''));
 }
 
 /**
@@ -440,7 +440,7 @@ function delete_chatroom($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:chat:room:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:chat:room:' . strval($id));
 
     if (addon_installed('ecommerce')) {
         require_code('ecommerce_permission_products');

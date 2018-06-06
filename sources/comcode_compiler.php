@@ -455,7 +455,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
         }
     }
 
-    $link_terminator_strs = array(' ', "\n", ']', '[', ')', '"', '>', '<', '}', '{', ".\n", ', ', '. ', "'", '&nbsp;');
+    $link_terminator_strs = array(' ', "\n", ']', '[', ')', '"', '>', '<', '}', '{', ".\n", ', ', '. ', "'", '&nbsp;', '&quot;', '&rdquo;', '&ldquo;');
     if (get_charset() == 'utf-8') {
         $nbsp = hex2bin('c2a0');
         $link_terminator_strs[] = $nbsp;

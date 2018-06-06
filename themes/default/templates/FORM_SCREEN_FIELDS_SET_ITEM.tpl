@@ -2,7 +2,7 @@
 
 <div class="fields-set-item" data-tpl="formScreenFieldsSetItem" data-tpl-params="{+START,PARAMS_JSON,NAME}{_*}{+END}">
 	<div class="fields-set-radio">
-		<label class="accessibility-hidden" for="choose-{NAME*}">{!USE}: {PRETTY_NAME*}</label>
+		<label for="choose-{NAME*}"><span class="accessibility-hidden">{!CHOOSE}</span> {PRETTY_NAME*}</label>
 		<input type="radio" name="{SET_NAME*}" id="choose-{NAME*}" value="{NAME*}" />
 
 		<label for="{NAME*}">{PRETTY_NAME*}</label>
@@ -11,11 +11,15 @@
 	</div>
 
 	<div class="mini-indent fields-set-contents vertical-alignment">
-		{INPUT}
+		{$SET,show_label,{$AND,{$IS_NON_EMPTY,{NAME}},{$NOT,{SKIP_LABEL}}}}
+		{+START,IF,{$GET,show_label}}
+			<label class="accessibility_hidden" for="{NAME*}">{PRETTY_NAME*}</label>
 
-		{+START,IF_NON_EMPTY,{DESCRIPTION}}
 			<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_HTML,{PRETTY_NAME*}}" />
 		{+END}
+
+		{INPUT}
+
 		{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}
 
 		<div id="error-{NAME*}" style="display: none" class="input-error-here">

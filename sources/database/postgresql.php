@@ -270,7 +270,7 @@ class Database_Static_postgresql extends DatabaseDriver
      * @param  array $fields A map of field names to Composr field types (with *#? encodings)
      * @param  mixed $connection The DB connection to make on
      * @param  ID_TEXT $raw_table_name The table name with no table prefix
-     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with trade-offs of not being able to support all unicode characters; use this if key length is an issue
      * @return array List of SQL queries to run
      */
     public function create_table($table_name, $fields, $connection, $raw_table_name, $save_bytes = false)

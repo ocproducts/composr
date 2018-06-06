@@ -469,11 +469,6 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
     $field_url = $name . '__url';
     $url = post_param_string($field_url, '');
     if ($url != '') {
-        // We should use compliant encoding
-        require_code('urls_simplifier');
-        $coder_ob = new HarmlessURLCoder();
-        $url = $coder_ob->encode($url);
-
         $filename = urldecode(preg_replace('#\?.*#', '', basename($url)));
 
         // Get thumbnail

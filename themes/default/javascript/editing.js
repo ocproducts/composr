@@ -820,8 +820,6 @@
         }
 
         function insertTextboxWysiwyg(element, text, isPlainInsert, html) {
-            //console.log('insertTextboxWysiwyg():', 'element:', element, 'text:', text, 'isPlainInsert:', isPlainInsert, 'html:', html);
-
             return new Promise(function (resolvePromise) {
                 var editor = window.wysiwygEditors[element.id],
                     insert = '';
@@ -864,9 +862,14 @@
                 if (editor.getSelection() && (editor.getSelection().getStartElement().getName() === 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
                     editor.document.getBody().appendHtml(insert);
                 } else {
-                    //editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
+                    // Ideally we use insertElement, as insertHtml may break up the parent tag (we want it to nest nicely)
                     var elementForInserting = window.CKEDITOR.dom.element.createFromHtml(insert);
-                    editor.insertElement(elementForInserting);
+                    if (typeof elementForInserting.getName == 'undefined') {
+                        editor.insertHtml(insert);
+                    } else
+                    {
+                        editor.insertElement(elementForInserting);
+                    }
                 }
 
                 after = editor.getData();

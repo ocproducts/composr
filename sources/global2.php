@@ -43,12 +43,13 @@ function init__global2()
     define('INPUT_FILTER_DYNAMIC_FIREWALL', 2048); // Check against dynamic firewall. Applies to POST/GET
     define('INPUT_FILTER_TRUSTED_SITES', 4096); // Only allow a POST request from a trusted site. Applies to POST
     define('INPUT_FILTER_MODSECURITY_URL_PARAMETER', 8192); // Decode a URL-in-URL parameter that was encoded to bypass ModSecurity protection. Applies to POST/GET
+    define('INPUT_FILTER_URL_RECODING', 16384); // Re-encodes Unicode to %-encoding and Punycode for a valid URL
     //Compound ones intended for direct use
     define('INPUT_FILTER_DEFAULT_POST', INPUT_FILTER_WORDFILTER | INPUT_FILTER_WYSIWYG_TO_COMCODE | INPUT_FILTER_COMCODE_CLEANUP | INPUT_FILTER_DOWNLOAD_ASSOCIATED_MEDIA | INPUT_FILTER_FIELDS_XML | INPUT_FILTER_URL_SCHEMES | INPUT_FILTER_JS_URLS | INPUT_FILTER_SPAM_HEURISTIC | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_TRUSTED_SITES);
     define('INPUT_FILTER_DEFAULT_GET', INPUT_FILTER_JS_URLS | INPUT_FILTER_VERY_STRICT | INPUT_FILTER_SPAM_HEURISTIC | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES);
     define('INPUT_FILTER_GET_COMPLEX', INPUT_FILTER_JS_URLS | INPUT_FILTER_SPAM_HEURISTIC | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES);
-    define('INPUT_FILTER_URL_GENERAL', INPUT_FILTER_JS_URLS | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES | INPUT_FILTER_MODSECURITY_URL_PARAMETER);
-    define('INPUT_FILTER_URL_INTERNAL', INPUT_FILTER_JS_URLS | INPUT_FILTER_URL_DESTINATION | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES | INPUT_FILTER_MODSECURITY_URL_PARAMETER);
+    define('INPUT_FILTER_URL_GENERAL', INPUT_FILTER_JS_URLS | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES | INPUT_FILTER_MODSECURITY_URL_PARAMETER | INPUT_FILTER_URL_RECODING);
+    define('INPUT_FILTER_URL_INTERNAL', INPUT_FILTER_JS_URLS | INPUT_FILTER_URL_DESTINATION | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES | INPUT_FILTER_MODSECURITY_URL_PARAMETER | INPUT_FILTER_URL_RECODING);
     define('INPUT_FILTER_NONE', 0);
 
     fixup_bad_php_env_vars();
@@ -180,7 +181,7 @@ function init__global2()
         require_code('chat_poller');
         chat_poller();
     }
-    if ((running_script('notifications')) && (@filemtime(get_custom_file_base() . '/data_custom/modules/web_notifications/latest.dat') <= get_param_integer('time_barrier'))) {
+    if ((running_script('notifications')) && (@filemtime(get_custom_file_base() . '/data_custom/modules/web_notifications/latest.dat') <= get_param_integer('time_barrier')) && (get_param_string('type', '') == 'poller')) {
         prepare_for_known_ajax_response();
 
         header('Content-Type: application/xml');
@@ -280,7 +281,7 @@ function init__global2()
         $SITE_INFO['cns_table_prefix'] = $SITE_INFO['table_prefix'];
     }
 
-    require_code_no_override('version');
+    require_code('version');
     @header('X-Content-Type-Options: nosniff');
     @header('X-XSS-Protection: 1');
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) {
@@ -323,7 +324,15 @@ function init__global2()
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__FAST_SPIDER);
             }
-            if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (count(array_diff_key($_COOKIE, array('__utma' => 0, '__utmc' => 0, '__utmz' => 0, 'has_cookies' => 0, 'last_visit' => 0))) == 0) && ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != @strval($_SERVER['REMOTE_ADDR']))) && (!isset($_GET['keep_session']))) {
+            if (
+                (isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') &&
+                (
+                    (get_forum_type() == 'cns') && (!isset($_COOKIE[$SITE_INFO['user_cookie']])) && (!isset($_COOKIE[$SITE_INFO['session_cookie']])) ||
+                    (count(array_diff_key($_COOKIE, array('__utma' => 0, '__utmc' => 0, '__utmz' => 0, 'has_cookies' => 0, 'last_visit' => 0))) == 0)
+                ) &&
+                ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != @strval($_SERVER['REMOTE_ADDR']))) &&
+                (!isset($_GET['keep_session'])
+            )) {
                 load_csp(array('csp_enabled' => '0'));
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__GUEST);
@@ -896,6 +905,7 @@ function load_user_stuff()
          */
         $FORUM_DB = null;
         $GLOBALS['FORUM_DB'] = &$FORUM_DRIVER->db; // Done like this to workaround that PHP can't put a reference in a global'd variable
+        reload_lang_fields(false, 'f_member_custom_fields');
     }
 }
 

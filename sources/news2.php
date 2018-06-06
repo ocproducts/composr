@@ -210,7 +210,7 @@ function delete_news_category($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:news:browse:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:news:browse:' . strval($id));
 
     if (addon_installed('ecommerce')) {
         require_code('ecommerce_permission_products');
@@ -442,7 +442,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
  * @param  boolean $show_errors Whether to show errors
  * @return string HTTP result output
  */
-function send_rss_ping($show_errors = true)
+function send_rss_ping($show_errors = false)
 {
     $url = find_script('backend') . '?type=rss&mode=news';
 
@@ -453,7 +453,7 @@ function send_rss_ping($show_errors = true)
     foreach ($ping_urls as $ping_url) {
         $ping_url = trim($ping_url);
         if ($ping_url != '') {
-            $out .= http_get_contents($ping_url, array('trigger_error' => $show_errors));
+            $out .= http_get_contents($ping_url, array('trigger_error' => $show_errors, 'timeout' => 1.0));
         }
     }
 
@@ -718,7 +718,7 @@ function delete_news($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:news:view:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:news:view:' . strval($id));
 }
 
 /**

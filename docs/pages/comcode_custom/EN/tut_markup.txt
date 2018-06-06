@@ -33,7 +33,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>Unless you use webmail, you'll be using these already. You don't need any special understanding of them.</td>
 		</tr>
 		<tr>
-			<td>[abbr="Transfer Control Protocol / Internet Protocol"][url="https://tools.ietf.org/html/rfc793"]TCP[/url]/[url="https://tools.ietf.org/html/rfc1700"]IP[/url][/abbr]</td>
+			<td>[abbr="Transfer Control Protocol / Internet Protocol"][url="https://tools.ietf.org/html/rfc793"]TCP[/url]/[url="https://www.ietf.org/rfc/rfc2460.txt"]IP[/url][/abbr]</td>
 			<td>This is the protocol for transmitting Internet data.</td>
 			<td>You won't need much awareness except knowing what IP addresses are and are used for (explained in the [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page] tutorial).</td>
 		</tr>
@@ -41,6 +41,11 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>[abbr="Domain Name System"][url="https://tools.ietf.org/html/rfc1101"]DNS[/url][/abbr]</td>
 			<td>This is the protocol for looking up the IP address for a domain name.</td>
 			<td>When you buy and configure a domain name, you are using DNS.</td>
+		</tr>
+		<tr>
+			<td>[abbr="Domain Name System"][url="https://tools.ietf.org/html/rfc3492"]Punycode[/url][/abbr]</td>
+			<td>This is a standard for International Domain Names (IDN).</td>
+			<td>When you input URLs into most non-Composr systems you'll need to make sure you use the Puny-coded version (only a tiny minority of users have an IDN though).</td>
 		</tr>
 		<tr>
 			<td>[abbr="Simple Mail Transfer Protocol"][url="https://tools.ietf.org/html/rfc2821"]SMTP[/url][/abbr]</td>
@@ -109,6 +114,11 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 		<tr>
 			<td>[url="https://developers.google.com/search/reference/robots_txt"]robots.txt[/url]</td>
 			<td>Robots exclusion standard. Google's version of the specification is the most accurate to what search engines now support.</td>
+			<td>Knowing this may be important for [abbr="Search Engine Optimisation"]SEO[/abbr].</td>
+		</tr>
+		<tr>
+			<td>[url="https://developers.google.com/search/reference/robots_meta_tag"]Robots meta tag and X-Robots-Tag HTTP header[/url]</td>
+			<td>Specifying what URLs may be indexed. Google's version of the specification is the most accurate to what search engines now support.</td>
 			<td>Knowing this may be important for [abbr="Search Engine Optimisation"]SEO[/abbr].</td>
 		</tr>
 

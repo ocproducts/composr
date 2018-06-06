@@ -858,7 +858,7 @@ function ecv_IF(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         $_p = $param[0]->evaluate();
-        if (($_p == '1') || ($_p == '1')) {
+        if ($_p == '1') {
             $value = $param[1]->evaluate();
         }
     }
@@ -956,7 +956,7 @@ function ecv_IF_PASSED_AND_TRUE(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         $t = $param[0]->evaluate();
-        if ((isset($param['vars'][$t])) && ($param['vars'][$t] !== false) && ($param['vars'][$t] !== '0') && ($param['vars'][$t] !== '')) {
+        if ((isset($param['vars'][$t])) && ($param['vars'][$t] !== false) && ($param['vars'][$t] === '1')) {
             $value = $param[1]->evaluate();
         }
     }
@@ -976,7 +976,7 @@ function ecv_IF_NON_PASSED_OR_FALSE(&$value, $lang, $escaped, $param)
 {
     if (isset($param[1])) {
         $t = $param[0]->evaluate();
-        if ((!isset($param['vars'][$t])) || ($param['vars'][$t] === false) || ($param['vars'][$t] === '0') || ($param['vars'][$t] === '')) {
+        if ((!isset($param['vars'][$t])) || ($param['vars'][$t] === false) || ($param['vars'][$t] !== '1')) {
             $value = $param[1]->evaluate();
         }
     }

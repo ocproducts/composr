@@ -445,8 +445,6 @@
          * @param attachmentBrowseButton
          */
         function rebuildAttachmentButtonForNext(_postingFieldName, attachmentBrowseButton) {
-            //console.log('rebuildAttachmentButtonForNext()', '_postingFieldName:', _postingFieldName, 'attachmentBrowseButton:', attachmentBrowseButton);
-
             if (_postingFieldName !== postingFieldName) {
                 return;
             }

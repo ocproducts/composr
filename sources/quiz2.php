@@ -570,5 +570,5 @@ function delete_quiz($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:quiz:do:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:quiz:do:' . strval($id));
 }

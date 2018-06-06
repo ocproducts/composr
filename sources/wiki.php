@@ -544,7 +544,7 @@ function wiki_edit_page($page_id, $title, $description, $notes, $show_posts, $me
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:wiki:browse:' . strval($page_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'wiki', strval($page_id)));
+    notify_sitemap_node_edit('_SEARCH:wiki:browse:' . strval($page_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'wiki', strval($page_id)));
 }
 
 /**
@@ -612,7 +612,7 @@ function wiki_delete_page($page_id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:wiki:browse:' . strval($page_id));
+    notify_sitemap_node_delete('_SEARCH:wiki:browse:' . strval($page_id));
 }
 
 /**

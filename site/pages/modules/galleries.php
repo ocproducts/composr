@@ -105,7 +105,7 @@ class Module_galleries
                 'is_member_synched' => 'BINARY',
                 'flow_mode_interface' => 'BINARY',
                 'gallery_views' => 'INTEGER',
-                'g_owner' => '?AUTO_LINK',
+                'g_owner' => '?MEMBER',
             ));
             $GLOBALS['SITE_DB']->create_index('galleries', 'watermark_top_left', array('watermark_top_left'));
             $GLOBALS['SITE_DB']->create_index('galleries', 'watermark_top_right', array('watermark_top_right'));

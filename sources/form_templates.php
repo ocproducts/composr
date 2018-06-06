@@ -687,10 +687,14 @@ function form_input_url($pretty_name, $description, $name, $default, $required, 
     $default = filter_form_field_default($name, $default);
     $required = filter_form_field_required($name, $required);
 
+    require_code('urls_simplifier');
+    $coder_ob = new HarmlessURLCoder();
+    $_default = $coder_ob->decode($default);
+
     $tabindex = get_form_field_tabindex($tabindex);
 
     $_required = ($required) ? '-required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_URL', array('_GUID' => '12789c9af25cbc971e86bfcc0ad322d5', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default));
+    $input = do_template('FORM_SCREEN_INPUT_URL', array('_GUID' => '12789c9af25cbc971e86bfcc0ad322d5', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $_default));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
 
@@ -1492,11 +1496,7 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     $field_url = $set_name . '__url';
 
-    require_code('urls_simplifier');
-    $coder_ob = new HarmlessURLCoder();
-    $_default = $coder_ob->decode($default);
-
-    $url_widget = form_input_url(do_lang_tempcode('URL'), do_lang_tempcode('DESCRIPTION_ALTERNATE_URL'), $field_url, $_default, $required);
+    $url_widget = form_input_url(do_lang_tempcode('URL'), do_lang_tempcode('DESCRIPTION_ALTERNATE_URL'), $field_url, $default, $required);
 
     $field_set->attach($url_widget);
 

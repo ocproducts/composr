@@ -535,9 +535,9 @@ function snippet_script()
         $ZONE = null;
     }
 
-    header('X-Robots-Tag: noindex');
-
     cms_ini_set('ocproducts.xss_detect', '0');
+
+    header('X-Robots-Tag: noindex');
 
     header('Content-Type: text/plain; charset=' . get_charset());
     $hook = filter_naughty_harsh(get_param_string('snippet'));

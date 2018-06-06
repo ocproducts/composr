@@ -113,7 +113,7 @@ function semi_dev_mode_startup()
                 $rs = get_resources();
                 foreach ($rs as $r) {
                     $type = get_resource_type($r);
-                    if (!in_array($type, array('Unknown', 'stream-context'))) {
+                    if (!in_array($type, array('Unknown', 'stream-context', 'pspell', 'pspell config'))) {
                         if ($type == 'stream') {
                             $stream_meta = stream_get_meta_data($r);
                         } else {

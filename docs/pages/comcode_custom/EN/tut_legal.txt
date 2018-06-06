@@ -2,6 +2,7 @@
 
 [media width="350" description="" float="right"]data_custom/images/docs/tut_legal/image.png[/media]
 If you are running a website, in particular a large or corporate website, there are important legal and social issues that need to be understood, and procedures or rules need to be put in place.
+We will summarise some laws (or broad patterns of laws) in this tutorial, although the particular laws that apply will vary based on where you are located, or have business interests -- and it is impossible for us to consider everything. Ultimately businesses may have to seek legal counsel, or use the stated policies of an established business in your jurisdiction as a base for your own.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -16,7 +17,7 @@ It is inevitable that some members will break the rules, maliciously or accident
 Composr provides a number of default rules pages that can be chosen using the Setup Wizard, or when creating a new Comcode page from a page template. The rules page is linked into your menus, and is displayed for enforced agreement when a member joins the site. This page can be edited like any Composr Comcode page.
 [/surround]
 
-[title="3"]Privacy[/title]
+[title="2"]Privacy[/title]
 
 If you are a commercial entity, or if you hold sensitive personal data, you are more likely to be affected by privacy laws than others.
 
@@ -38,39 +39,45 @@ Depending on your jurisdiction and situation, you may need to register with a 'd
 
 You may also wish to include your policy with respect to deletion of publicly submitted content upon request by the submitter or another party.
 
-[title="3"]Accessibility[/title]
+To meet Californian law a privacy policy must state:
+ - What you do with a "Do Not Track" HTTP header (Composr does nothing out of the box, mainly because we do not do cross-site tracking, and also because the standard is not well-adopted)
+ - The date the privacy policy was written on
+ - A dated list of amendments
 
-It is arguable that under discrimination laws, your website must satisfy the web-accessibility-initiative ([concept]WAI[/concept]), web content accessibility guidelines ([concept]WCAG[/concept]). Fortunately Composr complies to the highest level of accessibility under these guidelines (for [b]all[/b] interfaces: user and administrator), which is rare, as the vast majority of web applications are not close to complying with the lowest level of accessibility.
+[title="2"]Accessibility[/title]
+
+Potentially (under anti-discrimination laws) your website must satisfy the web-accessibility-initiative ([concept]WAI[/concept]), web content accessibility guidelines ([concept]WCAG[/concept]). Fortunately Composr complies to the highest level of accessibility under these guidelines (for [b]all[/b] interfaces: user and administrator), which is rare, as the vast majority of web applications are not close to complying with the lowest level of accessibility.
 
 As a site-maintainer however, there are accessibility guidelines that apply to content that the developers can not arrange-for on your behalf. Also, if you modify the default Composr templates, it is very easy to degrade the inbuilt accessibility.
 
 For more information, see the [page="_SEARCH:tut_accessibility"]accessibility[/page] tutorial.
 
-[title="3"]Sales[/title]
+[title="2"]eCommerce sales[/title]
 
 If you use your website to drive 'electronic' sales, then it is likely there is legislature regulating your activities. In the UK, these are known as the 'distance selling regulations' and are essentially involved in making sure that adequate provisions are put in place to make up for the lack of personal communication that is inherent in a brick&mortar store.
 
 Your website would, of course, also be party to legislation on all forms of business, including issues such as tax. International VAT/sales-tax is a particularly complex and situational-dependant topic, so I will not make any attempt to explain it here.
 
-[title="3"]Liability[/title]
+[title="2"]Liability[/title]
 
 Unless you disclaim liability, you may be liable for problems caused directly or indirectly by you or your website. For example, if you allow users to get downloads into your database without having them screened for viruses, it is possible someone could try and hold you legally accountable if they were infected by a virus from software from your download database, unless you made it explicit that you disclaim responsibility for this.
 
 Please note that it is not usually possible to disclaim liability for everything that might affect you.
 
-[title="3"]Intellectual property[/title]
+[title="2"]Illegal content[/title]
 
 You could be at risk of liability for harm caused to third-parties, particular in the areas of intellectual property.
 
 Specifically:
- - Copyright infringement (unauthorised distribution of copyright-protected works)
- - Trademark infringement
- - Trade secrets
+ - Intellectual property infringement:
+  - Copyright infringement (unauthorised distribution of copyright-protected works)
+  - Trademark infringement
+  - Trade secrets
  - State-banned material, such as secret documents, or terrorist manuals
 
 Your responsibilities:
  - You need to make sure you don't make any direct infringements yourself
- - You need to make reasonable efforts to take down illegal content posted by users as you become aware of it. You are protected under "safe harbour" laws, but only if you do take reasonable measures to comply when you know of issues.
+ - You need to make reasonable efforts to take down illegal content posted by users as you become aware of it. You are likely protected under "safe harbour" laws, but only if you do take reasonable measures to comply when you know of issues.
  - You must be reasonable. You can't set up a site for 'warez' or 'file sharing', knowing that it is primarily being used for illegal content then hide behind the safe harbour laws. You can't claim fair use (e.g. parody) for large amounts of material that is clearly being distributed for direct usage.
 
 Perhaps the best way to tackle content policing is a three-pronged approach:
@@ -81,15 +88,19 @@ Of course there is a big difference between highly criminal content (such as ter
 
 You may wish to add to your legal page that you disclaim liability for mis-use of registered trademarks, and that they remain the property of their respective owners.
 
-[title="3"]Discussion of illegal activities[/title]
+[title="2"]Discussion of illegal activities[/title]
 
 The advice for illegal content generally applies to the discussion of illegal activities also. There is, however, a fine line between discussing the merits of illegal activity and the incitement of it: this is very likely to be an issue on any active community, and you will need to consider how you will deal with it.
 
-[title="3"]Libel[/title]
+[title="2"]Libel[/title]
 
 The advice for illegal content generally applies to the discussion of libel (defamation) also.
 
-[title="3"]Computer mis-use[/title]
+[title="2"]Government orders[/title]
+
+It is possible that governments may make legal requests for you to provide data, or add government tracking systems.
+
+[title="2"]Computer mis-use[/title]
 
 It is likely that you will experience attempts to hack into your website by malicious users and 'bots' which automatically probe websites for vulnerabilities. Fortunately Composr is extremely sophisticated when it comes to 'hack attack' detection, and will block, and log, these attempts. Composr provides a two-layer security approach: it is engineered to use secure practices, and proactively detects when its interfaces are being abused.
 
@@ -108,6 +119,7 @@ The sub-sections of this section briefly cover the main social issues you are li
 There is a US law, [concept]COPPA[/concept] (Children's Online Privacy Protection Act), that you need to comply with if your (US) website targets children under 13 for membership, or if you know that members of your website are under 13. More information on this law is available here from the COPPA website (see 'see also').
 
 Australia has a similar law that you can use the same system for, COPA. If you are targeting COPA, adjust the [tt]COPPA_MAIL[/tt] language string to reflect this.
+Similarly the EU has an equivalent law, in GDPR (General Data Protection Regulation).
 
 If COPPA support is configured in [concept]Conversr[/concept], then when visitors try to join they will be added as non-validated if they are too young, with a notice to send in a COPPA form to you via mail or fax.
 In addition to Composr's COPPA support, you should also add your real-world contact details to your privacy policy, along with thorough details about what Custom Profile Fields may be filled in, how the information is used, how it is disclosed (if at all), and specification of various parent rights (which are listed on the COPPA website).
@@ -126,7 +138,7 @@ The Private Topic (PT) system (of [concept]Conversr[/concept]) can be a particul
 
 It is unfortunate but inevitable that in most social climates, people will have strongly opposing views about what is appropriate behaviour. I have personal experience moderating forums, and know people may be explosively passionate about their views, and highly accusative of those who do not carry them.
 
-Most opposing views are political in some sense, and usually related to the divide between traditionalism/conservatism and liberalism.
+Most opposing views are political in some sense, and usually related to the divide between traditionalism/conservatism/political-correctness and liberalism/free-speech.
 
 You need to make three main decisions:
 1) Are you going to reach a balance between extremes (if so, make some decisions on where the balance lies), or moderate against your-own or someone-else's personal/corporate views?
@@ -159,14 +171,14 @@ You may wish to make rules and policies regarding abuse between members.
 
 [title="3"]Personality types[/title]
 
-As a community-leader, you should be aware that members of your community may have differing psychologies. It is actually likely that in many large online communities you could have users at extreme ends of the spectrum, and therefore you may wish to have policies in place to monitor such users in order to maintain a healthy balance, and protect the more vulnerable users.
+As a community-leader, you should be aware that members of your community may have differing psychologies. It is actually likely that in many large online communities you could have users at extreme ends of various spectrums, and therefore you may wish to have policies in place to monitor such users in order to maintain a healthy balance, and protect the more vulnerable users.
 
 With a basic awareness of psychology you may identify issues and be able to help people who may otherwise be isolated (someone very active online may be socially-isolated offline).
 
 [title="3"]Handling feedback[/title]
 
 You should develop a policy about how you handle feedback. This is of particular importance to commercial entities:
- - will you leave negative feedback visible and possibly have negative views on your very own website?
+ - will you leave negative feedback visible (possibly with a response, and/or closed to further responses) and possibly therefore allow publishing of negative views on your very own website?
  - will you moderate negative feedback and be accused of suppressing the truth?
  - will you consciously make sure there is no publicly visible outlet for negative feedback on the site, and remove any that is found for being 'off-topic'?
 

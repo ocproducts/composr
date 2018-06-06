@@ -89,8 +89,9 @@ class Hook_addon_registry_data_mappr
         return 'Shows different catalogue entries\' longitude/latitude values as pins on a {$IS_MAINTAINED,google_maps,Google map}. Clicking on the pin shows the catalogue entry in a little box (as a link to the entry).
 
 Before you can use the block you must first configure the API:
-1) Configure the Google API Key in the configuration (Admin Zone > Configuration > Setup > Composr API options > Google API) If you do not you may get a "Oops! Something went wrong." error and a corresponding "MissingKeyMapError" error in the browser console.
+1) Configure the Google API Key in the configuration (Admin Zone > Configuration > Setup > Composr API options > Google API)
 2) Make sure that Google Maps JavaScript API is enabled on Google\'s end
+If you do not you may get a "Oops! Something went wrong." error and a corresponding "MissingKeyMapError" error in the browser console.
 
 The names of the fields to take longitude/latitude from are configured inside block parameters.
 

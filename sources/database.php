@@ -179,6 +179,8 @@ function reload_lang_fields($full = false, $only_table = null)
         unset($TABLE_LANG_FIELDS_CACHE[$only_table]);
     }
 
+    $msn_running = (is_on_multi_site_network()) && (get_forum_type() == 'cns') && (isset($GLOBALS['FORUM_DB']));
+
     if (multi_lang_content() || $full) {
         $like = db_string_equal_to('m_type', 'SHORT_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', 'LONG_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', 'SHORT_TRANS') . ' OR ' . db_string_equal_to('m_type', 'LONG_TRANS') . ' OR ' . db_string_equal_to('m_type', '?SHORT_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', '?LONG_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', '?SHORT_TRANS') . ' OR ' . db_string_equal_to('m_type', '?LONG_TRANS');
     } else {
@@ -188,7 +190,11 @@ function reload_lang_fields($full = false, $only_table = null)
     if ($only_table !== null) {
         $sql .= ' AND ' . db_string_equal_to('m_table', $only_table);
     }
-    $_table_lang_fields = $GLOBALS['SITE_DB']->query($sql, null, 0, true); // Suppress errors in case table does not exist yet
+    if (($msn_running) && (substr($only_table, 0, 2) === 'f_')) {
+        $_table_lang_fields = array();
+    } else {
+        $_table_lang_fields = $GLOBALS['SITE_DB']->query($sql, null, 0, true); // Suppress errors in case table does not exist yet
+    }
     if ($_table_lang_fields !== null) {
         foreach ($_table_lang_fields as $lang_field) {
             if (!isset($TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']])) {
@@ -196,6 +202,25 @@ function reload_lang_fields($full = false, $only_table = null)
             }
 
             $TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']][$lang_field['m_name']] = $lang_field['m_type'];
+        }
+
+        if (($msn_running) && (($only_table === null) || (substr($only_table, 0, 2) === 'f_'))) {
+            if ($only_table !== null) {
+                unset($TABLE_LANG_FIELDS_CACHE[$only_table]);
+            }
+
+            $sql .= ' AND m_table LIKE \'' . db_encode_like('f_%') . '\'';
+
+            $_table_lang_fields_forum = $GLOBALS['FORUM_DB']->query($sql, null, 0, true);
+            if ($_table_lang_fields_forum !== null) {
+                foreach ($_table_lang_fields_forum as $lang_field) {
+                    if (!isset($TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']])) {
+                        $TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']] = array();
+                    }
+
+                    $TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']][$lang_field['m_name']] = $lang_field['m_type'];
+                }
+            }
         }
     }
 
@@ -2127,7 +2152,7 @@ class DatabaseConnector
      * @param  array $fields The fields
      * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
      * @param  boolean $skip_null_check Whether to skip the check for null string fields
-     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with trade-offs of not being able to support all unicode characters; use this if key length is an issue
      */
     public function create_table($table_name, $fields, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
     {
@@ -2388,7 +2413,9 @@ class DatabaseConnector
             $locked = count($locks) >= 1;
             $tries++;
             if ($locked) {
-                usleep(50000); // 50ms wait
+                if (php_function_allowed('usleep')) {
+                    usleep(50000); // 50ms wait
+                }
             }
         } while (($locked) && ($tries < 5));
 

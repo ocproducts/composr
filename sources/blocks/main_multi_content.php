@@ -612,7 +612,7 @@ class Block_main_multi_content
             // Lifetime managing
             if ($lifetime !== null) {
                 if (!array_key_exists($content_id, $lifetime_monitor)) {
-                    // Test to see if it is actually there in the past - we only loaded the "running now" ones for performance reasons. Any new ones coming will trigger extra queries to see if they've been used before, as a tradeoff to loading potentially 10's of thousands of rows.
+                    // Test to see if it is actually there in the past - we only loaded the "running now" ones for performance reasons. Any new ones coming will trigger extra queries to see if they've been used before, as a trade-off to loading potentially 10's of thousands of rows.
                     $lifetime_monitor += list_to_map('content_id', $GLOBALS['SITE_DB']->query_select('feature_lifetime_monitor', array('content_id', 'run_period', 'last_update'), array('block_cache_id' => $block_cache_id, 'content_id' => $content_id)));
                 }
 

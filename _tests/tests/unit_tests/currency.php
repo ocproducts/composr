@@ -37,13 +37,6 @@ class currency_test_set extends cms_test_case
         $this->assertTrue($test_a === $test_b); // Floats and integers should convert the same
     }
 
-    public function testCurrencyViaECB()
-    {
-        $test = currency_convert(10.00, 'USD', 'GBP', 0, 'ecb');
-        $this->assertTrue($test > 0.00);
-        $this->assertTrue($test < 10.00); // GBP is worth more
-    }
-
     public function testCurrencyViaConvAPI()
     {
         $test = currency_convert(10.00, 'MMK', 'GBP', 0, 'conv_api');

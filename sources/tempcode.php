@@ -2181,7 +2181,7 @@ class Tempcode
         }
         $cl = $current_lang;
 
-        $first_of_long = isset($this->seq_parts[0][3]) || isset($this->seq_parts[3]); // We set this to know not to dig right through to determine emptiness, as this wastes cache memory (it's a tradeoff)
+        $first_of_long = isset($this->seq_parts[0][3]) || isset($this->seq_parts[3]); // We set this to know not to dig right through to determine emptiness, as this wastes cache memory (it's a trade-off)
         $tpl_funcs = $KEEP_TPL_FUNCS;
 
         $codename = $this->codename;

@@ -54,7 +54,9 @@ function _forum_authorise_login($this_ref, $username, $user_id, $password_hashed
     require_lang('cns');
     require_code('mail');
 
-    usleep(500000); // Wait for half a second, to reduce brute force potential
+    if (php_function_allowed('usleep')) {
+        usleep(500000); // Wait for half a second, to reduce brute force potential
+    }
 
     $skip_auth = false;
 

@@ -513,9 +513,9 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
     // If it's a spacer post, we need to intercede at this point, and make a better one
     $linked_type = '';
     $linked_id = '';
-    $is_spacer_post = (substr($topic['first_post']->evaluate(), 0, strlen(do_lang('SPACER_POST_MATCHER'))) == do_lang('SPACER_POST_MATCHER'));
+    $is_spacer_post = is_spacer_post($topic['first_post']->evaluate());
     if ($is_spacer_post) {
-        $c_prefix = do_lang('COMMENT') . ': #';
+        $c_prefix = do_lang('COMMENT', null, null, null, get_site_default_lang()) . ': #';
         if ((substr($topic['description'], 0, strlen($c_prefix)) == $c_prefix) && ($topic['description_link'] != '')) {
             list($linked_type, $linked_id) = explode('_', substr($topic['description'], strlen($c_prefix)), 2);
             $topic['description'] = '';

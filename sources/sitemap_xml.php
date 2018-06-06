@@ -381,7 +381,7 @@ function notify_sitemap_node_add($page_link, $add_date = null, $edit_date = null
     }
 
     // Find set number we will write into
-    $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'set_number', null, 'WHERE guest_access=1 GROUP BY set_number HAVING COUNT(*)<' . strval(URLS_PER_SITEMAP_SET));
+    $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'set_number', array(), 'WHERE guest_access=1 GROUP BY set_number HAVING COUNT(*)<' . strval(URLS_PER_SITEMAP_SET));
     if ($set_number === null) { // No free space in existing set
         // Next set number in sequence
         $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'MAX(set_number)', array('guest_access' => 1));

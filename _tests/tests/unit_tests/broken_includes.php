@@ -42,6 +42,11 @@ class broken_includes_test_set extends cms_test_case
                 continue;
             }
 
+            if ($path == 'data_custom/execute_temp.php') {
+                continue;
+            }
+
+
             $c = file_get_contents(get_file_base() . '/' . $path);
             $matches = array();
             $num_matches = preg_match_all('#require_code\(\'([^\']+)\'\)#', $c, $matches);

@@ -871,7 +871,9 @@
             newPostValueHtml = strVal(params.newPostValueHtml),
             mainWindow = $cms.getMainCmsWindow();
 
-        var post = mainWindow.document.getElementById('post');
+        var postField = strVal(params.attachmentField);
+
+        var post = mainWindow.document.getElementById(postField);
 
         // Replace Comcode
         var oldComcode = mainWindow.$editing.getTextbox(post);
@@ -879,7 +881,7 @@
 
         // Turn main post editing back on
         if (window.$editing !== undefined) {
-            window.$editing.wysiwygSetReadonly('post', false);
+            window.$editing.wysiwygSetReadonly(postField, false);
         }
 
         // Remove attachment uploads

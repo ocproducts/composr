@@ -200,6 +200,8 @@ Failover can automatically fall into place based on a number of criteria.
 
 Note that the failover status messages ([tt]failover_message_place_after[/tt] and [tt]failover_message_place_before[/tt] options) are put in place at the caching stage, not dynamically. So you would need to empty the static cache if you change these messages to something else.
 
+Failover mode requires the PHP [tt]usleep[/tt] function not be disabled.
+
 [title="2"]Cleanup tools[/title]
 
 {!cleanup:DOC_CLEANUP_TOOLS}

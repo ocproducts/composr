@@ -1390,11 +1390,6 @@ class Module_cms_galleries_alt extends Standard_crud_module
                     return array(null, null, null);
                 }
 
-                // We should use compliant encoding
-                require_code('urls_simplifier');
-                $coder_ob = new HarmlessURLCoder();
-                $url = $coder_ob->encode($url);
-
                 $_video_width = null;
                 $_video_height = null;
 

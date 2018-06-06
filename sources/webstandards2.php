@@ -612,6 +612,7 @@ function check_spelling($value)
         init__spelling();
     }
     $misspellings = run_spellcheck($value, $lang, false, false, false);
+    spellchecker_shutdown();
 
     $errors = array();
     foreach (array_keys($misspellings) as $word) {

@@ -157,8 +157,9 @@ function cns_get_all_default_groups($include_primary = false, $include_all_confi
  * Ensure a list of usergroups are cached in memory.
  *
  * @param  mixed $groups The list of usergroups (array) or '*'
+ * @param  boolean $tolerant Be tolerant of missing usergroups
  */
-function cns_ensure_groups_cached($groups)
+function cns_ensure_groups_cached($groups, $tolerant = false)
 {
     global $USER_GROUPS_CACHED;
 
@@ -198,8 +199,10 @@ function cns_ensure_groups_cached($groups)
     }
     $extra_groups = $GLOBALS['FORUM_DB']->query('SELECT g.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ' . $groups_to_load, null, 0, false, true, array('g_name' => 'SHORT_TRANS', 'g_title' => 'SHORT_TRANS'));
 
-    if (count($extra_groups) < $expected_load_count) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
+    if (!$tolerant) {
+        if (count($extra_groups) < $expected_load_count) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
+        }
     }
 
     foreach ($extra_groups as $extra_group) {
@@ -319,10 +322,14 @@ function cns_get_best_group_property($groups, $property)
     $go_super_size = in_array($property, $big_is_better);
 
     global $USER_GROUPS_CACHED;
-    cns_ensure_groups_cached($groups);
+    cns_ensure_groups_cached($groups, true);
     $best_value_so_far = 0; // Initialise type to integer
     $best_value_so_far = null;
     foreach ($groups as $group) {
+        if (!isset($USER_GROUPS_CACHED[$group])) {
+            continue;
+        }
+
         $this_value = $USER_GROUPS_CACHED[$group]['g_' . $property];
         if (($best_value_so_far === null) ||
             (($best_value_so_far < $this_value) && ($go_super_size)) ||

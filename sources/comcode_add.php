@@ -947,7 +947,7 @@ function _try_for_special_comcode_tag_specific_param_ui($tag, $actual_tag, $para
 
         $fields_advanced->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required, $default));
     } elseif ((($tag == 'attachment') || ($tag == 'media')) && (($param == 'filesize') || ($param == 'length'))) {
-        $field = form_input_integer($parameter_name, protect_from_escaping($descriptiont), $param, $default, false);
+        $field = form_input_integer($parameter_name, protect_from_escaping($descriptiont), $param, ($default == '') ? null : intval($default), false);
     } elseif (($tag == 'page') && ($param == 'param') && (substr_count($default, ':') == 1)) {
         $fields->attach(form_input_page_link($parameter_name, protect_from_escaping($descriptiont), $param, $default, true, null));
     } else {

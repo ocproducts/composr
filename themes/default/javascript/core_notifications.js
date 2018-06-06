@@ -96,7 +96,7 @@
         });
 
         function notificationsMarkAllRead(event) {
-            var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller&type=mark_all_read';
+            var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=mark_all_read';
             if (window.maxNotificationsToShow !== undefined) {
                 url += '&max=' + window.maxNotificationsToShow;
             }
@@ -213,7 +213,7 @@
             return;
         }
 
-        var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller&type=poller';
+        var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller';
         if (window.maxNotificationsToShow !== undefined) {
             url += '&max=' + window.maxNotificationsToShow;
         }

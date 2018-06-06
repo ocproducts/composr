@@ -309,7 +309,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     require_code('crypt');
     $validated_email_confirm_code = $email_validation ? strval(get_secure_random_number()) : '';
     $staff_validation = (get_option_with_overrides('require_new_member_validation', $adjusted_config_options) == '1');
-    $coppa = (get_option_with_overrides('is_on_coppa', $adjusted_config_options) == '1') && (utctime_to_usertime(time() - mktime(0, 0, 0, $dob_month, $dob_day, $dob_year)) / 31536000.0 < 13.0);
+    $coppa = (get_option_with_overrides('is_on_coppa', $adjusted_config_options) == '1') && ($dob_year !== null) && (utctime_to_usertime(time() - mktime(0, 0, 0, $dob_month, $dob_day, $dob_year)) / 31536000.0 < 13.0);
     $validated = ($staff_validation || $coppa) ? 0 : 1;
     if ($member_id === null) {
         $member_id = cns_make_member($username, $password, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $primary_group, $validated, time(), time(), '', null, '', 0, (get_option('default_preview_guests') == '1') ? 1 : 0, $reveal_age, '', '', '', 1, (get_option('allow_auto_notifications') == '0') ? 0 : 1, $language, $allow_emails, $allow_emails_from_staff, get_ip_address(), $validated_email_confirm_code, true, '', '');

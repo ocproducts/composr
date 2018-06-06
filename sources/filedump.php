@@ -265,7 +265,7 @@ function check_filedump_uploaded($file)
  * @param  string $description The description
  * @param  ?boolean $plupload_based Whether this is a Plupload (i.e. from a faked $_FILES-array-row) (null: work out from environment)
  * @param  boolean $check_permissions Check access permissions
- * @return Tempcode Error message
+ * @return ?Tempcode Error message (null: no error)
  */
 function add_filedump_file($place, &$filename, $tmp_path, $description = '', $plupload_based = null, $check_permissions = true)
 {
@@ -310,9 +310,9 @@ function add_filedump_file($place, &$filename, $tmp_path, $description = '', $pl
     sync_file($full);
 
     // Add description
-    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
-    if ($test !== null) {
-        delete_lang($test);
+    $description_l = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+    if ($description_l !== null) {
+        delete_lang($description_l);
         $GLOBALS['SITE_DB']->query_delete('filedump', array('name' => cms_mb_substr($filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
     }
     $map = array(
@@ -411,7 +411,7 @@ function nice_get_filedump_places($it, $base = null)
         $full_path .= '/' . $base;
     }
 
-    $directories = get_directory_contents($full_path, '', false, true, false);
+    $directories = get_directory_contents($full_path, '', IGNORE_ACCESS_CONTROLLERS, true, false);
     $directories[] = '';
     sort($directories, SORT_NATURAL | SORT_FLAG_CASE);
 

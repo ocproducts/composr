@@ -219,6 +219,8 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
     $temp = $do_enforce ? javascript_enforce($j, null, (!running_script('script')) && ($_minify === null) && ($_https === null) && ($_mobile === null)) : '';
     if (($temp != '') || (!$do_enforce)) {
         if ($temp == 'defer') {
+            $GLOBALS['STATIC_CACHE_ENABLED'] = false;
+
             $_theme = $GLOBALS['FORUM_DRIVER']->get_theme();
             $keep = symbol_tempcode('KEEP');
             $url = find_script('script') . '?script=' . urlencode($j) . $keep->evaluate() . '&theme=' . urlencode($_theme) . '&keep_theme=' . urlencode($_theme);
@@ -448,6 +450,8 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
         $temp = $do_enforce ? css_enforce($c, $theme, (!running_script('sheet')) && ($context === null) && ($_minify === null) && ($_https === null) && ($_mobile === null)) : '';
 
         if ($temp == 'defer') {
+            $GLOBALS['STATIC_CACHE_ENABLED'] = false;
+
             $_theme = ($theme === null) ? $GLOBALS['FORUM_DRIVER']->get_theme() : $theme;
             $keep = symbol_tempcode('KEEP');
             $url = find_script('sheet') . '?sheet=' . urlencode($c) . $keep->evaluate() . '&theme=' . urlencode($_theme) . '&keep_theme=' . urlencode($_theme);

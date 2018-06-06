@@ -164,7 +164,7 @@ function edit_iotd($id, $title, $caption, $thumb_url, $url, $allow_rating, $allo
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:iotds:view:' . strval($id), false);
+    notify_sitemap_node_edit('_SEARCH:iotds:view:' . strval($id), false);
 }
 
 /**
@@ -208,7 +208,7 @@ function delete_iotd($id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:iotds:view:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:iotds:view:' . strval($id));
 }
 
 /**

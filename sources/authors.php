@@ -218,7 +218,7 @@ function delete_author($author)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:authors:browse:' . $author);
+    notify_sitemap_node_delete('_SEARCH:authors:browse:' . $author);
 }
 
 /**

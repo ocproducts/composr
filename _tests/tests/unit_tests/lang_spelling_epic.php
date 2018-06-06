@@ -33,6 +33,14 @@ class lang_spelling_epic_test_set extends cms_test_case
 
         // Many of these aren't real words, but they appear for good reasons so we whitelist them
         $okay_words = array(
+            'balancer',
+            'usleep',
+            'insertelement',
+            'californian',
+            'spectrums',
+            'recompress',
+            'inlined',
+            'thefeedback',
             'ipstack',
             'setattribute',
             'classname',
@@ -2495,7 +2503,6 @@ class lang_spelling_epic_test_set extends cms_test_case
             'trackback',
             'trackbacked',
             'trackbacks',
-            'tradeoff',
             'trak',
             'transactional',
             'transcode',
@@ -3073,5 +3080,7 @@ class lang_spelling_epic_test_set extends cms_test_case
                 $this->assertTrue(false, 'Misspelling: ' . $word . ' (' . $addon . ' addon description)');
             }
         }
+
+        spellchecker_shutdown();
     }
 }

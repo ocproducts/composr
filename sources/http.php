@@ -243,6 +243,8 @@ function get_webpage_meta_details($url)
  */
 function _cms_http_request($url, $options = array())
 {
+    error_log($url . ' called from ' . get_self_url_easy());
+
     $curl = new HttpDownloaderCurl();
     $curl_priority = $curl->may_run_for($url, $options);
 
@@ -388,7 +390,7 @@ abstract class HttpDownloader
 
         // Work out what we'll be connecting to...
 
-        $this->url_parts = @parse_url($url);
+        $this->url_parts = @parse_url(normalise_idn_url($url));
         if ($this->url_parts === false || !isset($this->url_parts['host'])) {
             if ($this->trigger_error) {
                 warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_BAD_URL', escape_html($url)), false, true);
@@ -410,7 +412,7 @@ abstract class HttpDownloader
         }
 
         $config_ip_forwarding = function_exists('get_option') ? get_option('ip_forwarding') : '';
-        $this->do_ip_forwarding = ($base_url_parsed['host'] == $this->connect_to) && ($config_ip_forwarding != '') && ($config_ip_forwarding != '0');
+        $this->do_ip_forwarding = (preg_replace('#^www\.#', '', $base_url_parsed['host']) == preg_replace('#^www\.#', '', $this->connect_to)) && ($config_ip_forwarding != '') && ($config_ip_forwarding != '0');
 
         if ($this->do_ip_forwarding) { // For cases where we have IP-forwarding, and a strong firewall (i.e. blocked to our own domain's IP by default)
             if ($config_ip_forwarding == '1') {
@@ -429,8 +431,8 @@ abstract class HttpDownloader
                 }
                 $this->connect_to = $config_ip_forwarding;
             }
-        } elseif ((php_function_allowed('gethostbyname')) && ($this->url_parts['scheme'] == 'http')) {
-            $this->connect_to = @gethostbyname($this->connect_to); // for DNS caching
+        } elseif ($this->url_parts['scheme'] == 'http') {
+            $this->connect_to = cms_gethostbyname($this->connect_to); // for DNS caching
         }
         if (!array_key_exists('scheme', $this->url_parts)) {
             $this->url_parts['scheme'] = 'http';
@@ -902,7 +904,7 @@ class HttpDownloaderCurl extends HttpDownloader
      */
     public function may_run_for($url, $options = array())
     {
-        $this->url_parts = @parse_url($url);
+        $this->url_parts = @parse_url(normalise_idn_url($url));
         $this->read_in_options($options);
 
         if (!function_exists('curl_version')) {
@@ -1263,7 +1265,7 @@ class HttpDownloaderSockets extends HttpDownloader
      */
     public function may_run_for($url, $options = array())
     {
-        $this->url_parts = @parse_url($url);
+        $this->url_parts = @parse_url(normalise_idn_url($url));
         $this->read_in_options($options);
 
         if (isset($this->url_parts['scheme']) && ($this->url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (php_function_allowed('fsockopen'))) {
@@ -1354,8 +1356,12 @@ class HttpDownloaderSockets extends HttpDownloader
             $first_fail_time = null;
             $chunked = false;
             $buffer_unprocessed = '';
+            $time_init = time();
             while (($chunked) || (!@feof($mysock))) { // @'d because socket might have died. If so fread will will return false and hence we'll break
                 $line = @fread($mysock, 32000);
+                if (($input === '') && ($time_init + $this->timeout < time())) {
+                    $line = false; // Manual timeout
+                }
                 if ($line === false) {
                     if ((!$chunked) || ($buffer_unprocessed == '')) {
                         break;
@@ -1848,7 +1854,7 @@ class HttpDownloaderFilesystem extends HttpDownloader
      */
     public function may_run_for($url, $options = array())
     {
-        $this->url_parts = @parse_url($url);
+        $this->url_parts = @parse_url(normalise_idn_url($url));
         $this->read_in_options($options);
 
         $faux = function_exists('get_value') ? get_value('http_faux_loopback') : null;
@@ -1873,7 +1879,7 @@ class HttpDownloaderFilesystem extends HttpDownloader
      */
     protected function _run($url, $options)
     {
-        $parsed = parse_url($url);
+        $parsed = parse_url(normalise_idn_url($url));
         $parsed_base_url = parse_url(get_custom_base_url());
         $file_base = get_custom_file_base();
         $file_base = preg_replace('#' . preg_quote(urldecode($parsed_base_url['path'])) . '$#', '', $file_base);

@@ -149,7 +149,9 @@ class Hook_media_rendering_hyperlink
             if (!empty($attributes['filename'])) {
                 $link_captions_title = $attributes['filename'];
             } else {
-                $link_captions_title = $_url_safe;
+                require_code('urls_simplifier');
+                $coder_ob = new HarmlessURLCoder();
+                $link_captions_title = $coder_ob->decode($_url_safe);
             }
         }
 

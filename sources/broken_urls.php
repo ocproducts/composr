@@ -382,7 +382,9 @@ class BrokenURLScanner
 
                 if ($continuing) {
                     if (get_option('moz_paid') == '0') {
-                        sleep(10);
+                        if (php_function_allowed('usleep')) {
+                            usleep(10000000);
+                        }
                     }
                 }
             }

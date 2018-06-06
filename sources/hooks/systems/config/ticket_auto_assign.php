@@ -34,11 +34,11 @@ class Hook_config_ticket_auto_assign
             'human_name' => 'TICKET_AUTO_ASSIGN',
             'type' => 'tick',
             'category' => 'MESSAGES',
-            'group' => 'SUPPORT_TICKETS_MAIL',
+            'group' => 'SUPPORT_TICKETS',
             'explanation' => 'CONFIG_OPTION_ticket_auto_assign',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 5,
 
             'required' => true,
             'public' => false,

@@ -56,6 +56,13 @@ function check_input_field_string($name, &$val, $posted, $filters)
         log_hack_attack_and_exit('DODGY_GET_HACK', $name, $val);
     }
 
+    if (($filters & INPUT_FILTER_URL_RECODING) != 0) {
+        // We should use compliant encoding
+        require_code('urls_simplifier');
+        $coder_ob = new HarmlessURLCoder();
+        $val = $coder_ob->encode($val);
+    }
+
     if ((($filters & INPUT_FILTER_URL_DESTINATION) != 0) && (!$posted)) { // Don't allow redirections to non-trusted sites
         if (!url_is_local($val)) {
             $bus = array(
@@ -167,7 +174,7 @@ function check_posted_field($name, $val, $filters)
  */
 function strip_url_to_representative_domain($url)
 {
-    return preg_replace('#^www\.#', '', strtolower(parse_url($url, PHP_URL_HOST)));
+    return preg_replace('#^www\.#', '', strtolower(parse_url(normalise_idn_url($url), PHP_URL_HOST)));
 }
 
 /**

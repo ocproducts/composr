@@ -296,7 +296,7 @@
                                 window.alreadyAutonomous = false;
                             }
 
-                            window.opener.console.log('Reattaching chat window to re-navigated master window.');
+                            window.opener.$util.inform('Reattaching chat window to re-navigated master window.');
                         }
                     }
                 }
@@ -431,7 +431,7 @@
             }
         }
 
-        window.topWindow.console.log('Playing ' + sId + ' sound'); // Useful when debugging sounds when testing using SU, otherwise you don't know which window they came from
+        window.topWindow.$util.inform('Playing ' + sId + ' sound'); // Useful when debugging sounds when testing using SU, otherwise you don't know which window they came from
 
         window.topWindow.soundManager.play(sId);
     }
@@ -537,7 +537,11 @@
         var messageText = strVal(element.value);
 
         if (messageText !== '') {
+            window.topWindow.$util.inform('Posting chat message (' + new Date().getTime() + ')');
+
             if (window.topWindow.ccTimer) {
+                window.topWindow.$util.inform('Clearing existing chat timer as this posting will take control until finished (' + new Date().getTime() + ')');
+
                 window.topWindow.clearTimeout(window.topWindow.ccTimer);
                 window.topWindow.ccTimer = null;
             }
@@ -573,6 +577,7 @@
                     }
 
                     // Reschedule the next check (ccTimer was reset already higher up in function)
+                    window.topWindow.$util.inform('Setting new chat timer (' + new Date().getTime() + ')');
                     window.topWindow.ccTimer = window.topWindow.setTimeout(function () {
                         window.topWindow.chatCheck(false, window.topWindow.lastMessageId, window.topWindow.lastEventId);
                     }, window.MESSAGE_CHECK_INTERVAL);
@@ -581,10 +586,13 @@
                         element.focus();
                     } catch (e) {}
                 } else {
+                    window.topWindow.$util.inform('Successfully posted chat message (' + new Date().getTime() + ')');
+
                     window.topWindow.currentlySendingMessage = false;
                     element.disabled = false;
 
                     // Reschedule the next check (ccTimer was reset already higher up in function)
+                    window.topWindow.$util.inform('Setting new chat timer (' + new Date().getTime() + ')');
                     window.topWindow.ccTimer = window.topWindow.setTimeout(function () {
                         window.topWindow.chatCheck(false, window.topWindow.lastMessageId, window.topWindow.lastEventId);
                     }, window.MESSAGE_CHECK_INTERVAL);
@@ -598,8 +606,11 @@
     // Check for new messages
     function chatCheck(backlog, messageId, eventId) {
         if (window.currentlySendingMessage)  { // We'll reschedule once our currently-in-progress message is sent
+            window.topWindow.$util.inform('Skip checking for chat messages (chat timer), as a message posting is pending completion (' + new Date().getTime() + ')');
             return null;
         }
+
+        window.topWindow.$util.inform('Checking for chat messages (chat timer) (' + new Date().getTime() + ')');
 
         eventId = intVal(eventId, -1);  // -1 Means, we don't want to look at events, but the server will give us a null event
 
@@ -630,6 +641,8 @@
                 }
             });
             return false;
+        } else {
+            window.topWindow.$util.inform('Skip checking for chat messages (chat timer), as a previous check is pending completion and not yet timed out (' + new Date().getTime() + ')');
         }
 
         return null;
@@ -640,8 +653,12 @@
     function chatCheckTimeout(backlog, messageId, eventId) {
         var theDate = new Date();
         if ((window.messageChecking) && (window.messageChecking <= theDate.getTime() - window.MESSAGE_CHECK_INTERVAL * 1.2) && (!window.currentlySendingMessage)) { // If we are awaiting a response (messageChecking is not false, and that response was made more than 12 seconds ago
+            indow.topWindow.$util.inform('(Guard) Making sure our last actioned chat check completed and was on time - and it did not! (' + new Date().getTime() + ')');
+
             // Our response is tardy - presume we've lost our scheduler / AJAX request, so fire off a new AJAX request and reset the chatCheckTimeout timer
             chatCheck(backlog, messageId, eventId);
+        } else {
+            window.topWindow.$util.inform('(Guard) Making sure our last actioned chat check completed and was on time - and it did (' + new Date().getTime() + ')');
         }
     }
 
@@ -650,6 +667,8 @@
         var ajaxResult = responseXML && responseXML.querySelector('result');
 
         if (ajaxResult != null) {
+            window.topWindow.$util.inform('Received chat check response (' + new Date().getTime() + ')');
+
             if (skipIncomingSound === undefined) {
                 skipIncomingSound = false;
             }
@@ -658,9 +677,12 @@
             if (temp == -2) {
                 return false;
             }
+        } else {
+            window.topWindow.$util.inform('Chat check failed (' + new Date().getTime() + ')');
         }
 
         // Schedule the next check
+        window.topWindow.$util.inform('Schedule next chat message check (chat timer) (' + new Date().getTime() + ')');
         if (window.ccTimer) {
             clearTimeout(window.ccTimer);
             window.ccTimer = null;

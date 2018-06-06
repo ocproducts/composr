@@ -179,7 +179,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                             $functions = extract_module_functions($path_addon, array('get_description'));
                             $description = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : cms_eval($functions[0], $path_addon);
                             $description = do_lang('FROM_ADDON', $package, $description);
-                            $struct['description'] = $description;
+                            $struct['description'] = comcode_to_tempcode($description);
                         }
                     }
 

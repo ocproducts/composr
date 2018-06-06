@@ -505,6 +505,10 @@ function _log_it($type, $a = null, $b = null)
         delete_cache_entry('main_awards');
         delete_cache_entry('main_multi_content');
         delete_cache_entry('menu'); // Due to the content counts in the CMS/Admin Zones, and Sitemap menus
+
+        if (get_value('flush_cache_on_action') === '1') {
+            erase_static_cache();
+        }
     }
 
     // No more logging if site closed (possibly)

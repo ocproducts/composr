@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: usleep*/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -76,6 +78,10 @@ if ($SITE_INFO['failover_mode'] != 'auto_on' && $SITE_INFO['failover_mode'] != '
     exit(); // Not enabled. No message, we don't want to push noise back into the Cron system.
 }
 
+if (!php_function_allowed('usleep')) {
+    exit('PHP usleep function must not be disabled');
+}
+
 handle_failover_auto_switching();
 
 /**
@@ -124,7 +130,7 @@ function handle_failover_auto_switching($iteration = 0)
                         is_failing($full_url . ' (failed load / slow load)');
                     } else {
                         $done_retries++;
-                        sleep($time_between_retries);
+                        usleep($time_between_retries * 1000000);
                         continue;
                     }
                 }
@@ -135,7 +141,7 @@ function handle_failover_auto_switching($iteration = 0)
                         is_failing($full_url . ' (bad HTTP code; ' . $http_response_header[0] . ')');
                     } else {
                         $done_retries++;
-                        sleep($time_between_retries);
+                        usleep($time_between_retries * 1000000);
                         continue;
                     }
                 }
@@ -147,7 +153,7 @@ function handle_failover_auto_switching($iteration = 0)
                         is_failing($full_url . ' (' . $matches[1] . ')');
                     } else {
                         $done_retries++;
-                        sleep($time_between_retries);
+                        usleep($time_between_retries * 1000000);
                         continue;
                     }
                 }
@@ -158,7 +164,7 @@ function handle_failover_auto_switching($iteration = 0)
                         is_failing($full_url . ' (slow load; ' . number_format($time, 2) . ' seconds)');
                     } else {
                         $done_retries++;
-                        sleep($time_between_retries);
+                        usleep($time_between_retries * 1000000);
                         continue;
                     }
                 }
@@ -214,7 +220,7 @@ function handle_failover_auto_switching($iteration = 0)
     // Keep checking for around a minute more, every 10 seconds
     if ($made_change_to_off) {
         if ($iteration < 6) {
-            sleep(10);
+            usleep(10000000);
             handle_failover_auto_switching($iteration + 1);
         }
     }

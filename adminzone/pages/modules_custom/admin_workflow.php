@@ -102,7 +102,7 @@ class Module_admin_workflow extends Standard_crud_module
         // The workflow_content_status table records the status of each approval point for a piece of content and the member who approved the point (if any)
         $GLOBALS['SITE_DB']->create_table('workflow_content_status', array(
             'id' => '*AUTO', // ID for reference. Larger IDs will override smaller ones if they report a different status (nondeterministic for non-incremental IDs!)
-            'workflow_content_id' => 'INTEGER', // The ID of this content in the workflow_content table
+            'workflow_content_id' => 'AUTO_LINK', // The ID of this content in the workflow_content table
             'workflow_approval_point_id' => 'AUTO_LINK', // The ID of the approval point
             'status_code' => 'SHORT_INTEGER', // A code indicating the status
             'approved_by' => 'MEMBER', // Remember who set this status, if the need arises to investigate this later

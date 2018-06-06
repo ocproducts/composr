@@ -154,7 +154,7 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
             );
         } else { // For simple link branches
             $url = ltrim(substr($line, $pos + 1));
-            if ($url[0] == '~') {
+            if (substr($url, 0, 1) == '~') {
                 $url = substr($url, 1);
                 $modifiers['new_window'] = true;
             }

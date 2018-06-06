@@ -35,6 +35,12 @@ class Hook_search_cns_members extends FieldsSearchHook
             return null;
         }
 
+        if ($check_permissions) {
+            if (!has_actual_page_access(get_member(), 'members')) {
+                return null;
+            }
+        }
+
         if (($GLOBALS['FORUM_DRIVER']->get_num_members() <= 3) && (get_param_string('id', '') != 'cns_members') && (get_param_integer('search_cns_members', 0) != 1)) {
             return null;
         }

@@ -330,7 +330,7 @@ function rbl_resolve($ip, $rbl_domain, $page_level)
 
     $lookup = str_replace('*', $arpa, $rbl_domain) . '.';
 
-    $_result = gethostbyname($lookup);
+    $_result = cms_gethostbyname($lookup);
     $result = explode('.', $_result);
 
     if (implode('.', $result) == $lookup) { // This is how gethostbyname indicates an error happened; however it likely actually means no block happened (as the RBL returned no data on the IP)

@@ -596,7 +596,7 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
     );
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:galleries:image:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
+    notify_sitemap_node_edit('_SEARCH:galleries:image:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
 }
 
 /**
@@ -661,7 +661,7 @@ function delete_image($id, $delete_full = true)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:galleries:image:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:galleries:image:' . strval($id));
 }
 
 /**
@@ -1093,7 +1093,7 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:galleries:video:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
+    notify_sitemap_node_edit('_SEARCH:galleries:video:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $cat));
 }
 
 /**
@@ -1161,7 +1161,7 @@ function delete_video($id, $delete_full = true)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:galleries:video:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:galleries:video:' . strval($id));
 }
 
 /**
@@ -1425,7 +1425,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         }
 
         require_code('sitemap_xml');
-        notify_sitemap_node_delete('SEARCH:galleries:browse:' . $old_name);
+        notify_sitemap_node_delete('_SEARCH:galleries:browse:' . $old_name);
     }
 
     if ($meta_keywords !== null) {
@@ -1509,7 +1509,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
     );
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:galleries:browse:' . $name, has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $name));
+    notify_sitemap_node_edit('_SEARCH:galleries:browse:' . $name, has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'galleries', $name));
 
     return $name;
 }
@@ -1591,7 +1591,7 @@ function delete_gallery($name)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:galleries:browse:' . $name);
+    notify_sitemap_node_delete('_SEARCH:galleries:browse:' . $name);
 
     if (addon_installed('ecommerce')) {
         require_code('ecommerce_permission_products');
