@@ -364,7 +364,9 @@ class Hook_health_check_email extends Hook_Health_Check
             $server_spec = _imap_server_spec($host, $port, $type);
             $i = 0;
             do {
-                sleep(3);
+                if (php_function_allowed('usleep')) {
+                    usleep(3000000);
+                }
 
                 $mbox = @imap_open($server_spec . $folder, $username, $password, CL_EXPUNGE);
                 $ok = ($mbox !== false);

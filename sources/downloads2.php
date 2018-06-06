@@ -432,7 +432,7 @@ function edit_download_category($category_id, $category, $parent_id, $descriptio
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:downloads:browse:' . strval($category_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'downloads', strval($category_id)));
+    notify_sitemap_node_edit('_SEARCH:downloads:browse:' . strval($category_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'downloads', strval($category_id)));
 }
 
 /**
@@ -487,7 +487,7 @@ function delete_download_category($category_id)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:downloads:browse:' . strval($category_id));
+    notify_sitemap_node_delete('_SEARCH:downloads:browse:' . strval($category_id));
 }
 
 /**
@@ -1219,7 +1219,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
     );
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:downloads:entry:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'downloads', strval($category_id)));
+    notify_sitemap_node_edit('_SEARCH:downloads:entry:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'downloads', strval($category_id)));
 }
 
 /**
@@ -1285,7 +1285,7 @@ function delete_download($id, $leave = false)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:downloads:entry:' . strval($id));
+    notify_sitemap_node_delete('_SEARCH:downloads:entry:' . strval($id));
 }
 
 /**

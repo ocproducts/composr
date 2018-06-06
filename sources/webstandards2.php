@@ -203,8 +203,8 @@ function init__webstandards2()
     $enforce_inumber = '[0-9]+';
     $enforce_character = '.';
     $enforce_color = '(black|silver|gray|white|maroon|purple|fuchsia|green|darkgrey|slategrey|lime|olive|yellow|navy|blue|teal|aqua|orange|red|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]))'; // orange and red aren't 'official' -- but kind of handy ;). In reality, the colour codes were never properly defined, and these two are obvious names for obviously needed ones-- they'll be supported
-    $enforce_length = '((0)|(' . $enforce_number . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_fractional . ')(in|cm|mm|ex|px|em|%)))'; // |ex|pt|in|cm|mm|pc  We don't want these in our XHTML... preferably we only want em when it comes to font size!
-    $enforce_ilength = '((0)|(' . $enforce_inumber . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_inumber . ')?\.' . $enforce_inumber . '(in|cm|mm|ex|em|%)))'; // |ex|pt|in|cm|mm|pc We don't want these in our XHTML... preferably we only want em when it comes to font size!
+    $enforce_length = '((0)|(' . $enforce_number . '(|in|cm|mm|ex|pt|pc|px|em|%|vw))|((' . $enforce_fractional . ')(in|cm|mm|ex|px|em|%|vw)))'; // |ex|pt|in|cm|mm|pc  We don't want these in our XHTML... preferably we only want em when it comes to font size!
+    $enforce_ilength = '((0)|(' . $enforce_inumber . '(|in|cm|mm|ex|pt|pc|px|em|%|vw))|((' . $enforce_inumber . ')?\.' . $enforce_inumber . '(in|cm|mm|ex|em|%|vw)))'; // |ex|pt|in|cm|mm|pc We don't want these in our XHTML... preferably we only want em when it comes to font size!
     $enforce_pixels = '[0-9]+';
     $enforce_auto_or_length = '(auto|' . $enforce_length . ')';
     $enforce_auto_or_ilength = '(auto|' . $enforce_ilength . ')';
@@ -494,6 +494,7 @@ function init__webstandards2()
         'img.ismap' => 'ismap',
         'img.longdesc' => '.+',
         'img.src' => $enforce_link,
+        'img.sizes' => $enforce_length,
         'img.srcset' => '(' . $enforce_link . ' \d+x( |$))*',
         'img.usemap' => '.+',
         'img.width' => $enforce_inumber,

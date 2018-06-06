@@ -33,14 +33,14 @@ class ssl_test_set extends cms_test_case
         $HTTPS_PAGES_CACHE = null;
         erase_persistent_cache();
         $url = build_url(array('page' => 'forumview'), get_module_zone('forumview'));
-        $contents = http_download_file($url->evaluate());
+        $contents = http_download_file($url->evaluate(), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $this->assertTrue(strpos($contents, 'src="http://') === false);
 
         $GLOBALS['SITE_DB']->query_delete('https_pages', array('https_page_name' => 'forum:forumview'));
         $HTTPS_PAGES_CACHE = null;
         erase_persistent_cache();
         $url = build_url(array('page' => 'forumview'), get_module_zone('forumview'));
-        $contents = http_download_file($url->evaluate());
+        $contents = http_download_file($url->evaluate(), null, true, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $this->assertTrue(strpos($contents, 'src="https://') === false);
 
         set_value('disable_ssl_for__' . $_SERVER['HTTP_HOST'], '0');

@@ -1265,7 +1265,7 @@ function clever_set_value(form,element,value)
 function get_autosave_url_stem()
 {
 	var name='cms_autosave_'+window.location.pathname;
-	if (window.location.search.indexOf('type=')!=-1)
+	if ((window.location.search.indexOf('type=')!=-1) || (window.location.search.indexOf('page_link')!=-1)/*editing Comcode page*/)
 	{
 		name+=window.location.search.replace(/[\?&]redirect=.*/,'').replace(/[\?&]keep_\w+=.*/,'').replace(/[\?&]cat=.*/,'');
 	}

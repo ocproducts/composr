@@ -172,7 +172,7 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
             if (strpos($page_converted, ':') !== false) {
                 $get = str_replace('<param>page=' . substr($page_converted, strpos($page_converted, ':') + 1) . '</param>' . "\n", '', $get);
             }
-            $data = escape_html($get) . escape_html($myrow['post']);
+            $data = escape_html($get) . (($myrow['post'] == '') ? '' : ', ') . escape_html($myrow['post']);
             $data = str_replace('&lt;param&gt;', '', str_replace('&lt;/param&gt;', ', ', $data));
             if (substr($data, -3) == ', ' . "\n") {
                 $data = substr($data, 0, strlen($data) - 3);

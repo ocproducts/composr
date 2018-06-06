@@ -178,7 +178,9 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
                 if ($ok) {
                     break;
                 }
-                sleep(5);
+                if (php_function_allowed('usleep')) {
+                    usleep(5000000);
+                }
             }
             $this->assert_true($ok, 'Problem downloading HTTP requests by SSL');
 

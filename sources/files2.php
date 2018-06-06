@@ -963,7 +963,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }//critical_error('FILE_DOS', $url);
 
     // Work out what we'll be doing
-    $url_parts = @parse_url($url);
+    $url_parts = @parse_url(normalise_idn_url($url));
     if ($url_parts === false || !isset($url_parts['host'])) {
         if ($trigger_error) {
             warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_BAD_URL', escape_html($url)));
@@ -983,7 +983,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $base_url_parsed['host'] = '127.0.0.1';
     }
     $config_ip_forwarding = function_exists('get_option') ? get_option('ip_forwarding') : '';
-    $do_ip_forwarding = ($base_url_parsed['host'] == $connect_to) && ($config_ip_forwarding != '') && ($config_ip_forwarding != '0');
+    $do_ip_forwarding = (preg_replace('#^www\.#', '', $base_url_parsed['host']) == preg_replace('#^www\.#', '', $connect_to)) && ($config_ip_forwarding != '') && ($config_ip_forwarding != '0');
     if ($do_ip_forwarding) { // For cases where we have IP-forwarding, and a strong firewall (i.e. blocked to our own domain's IP by default)
         if ($config_ip_forwarding == '1') {
             $connect_to = cms_srv('LOCAL_ADDR');
@@ -1004,8 +1004,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
             $connect_to = $config_ip_forwarding;
         }
-    } elseif ((php_function_allowed('gethostbyname')) && ($url_parts['scheme'] == 'http')) {
-        $connect_to = @gethostbyname($connect_to); // for DNS caching
+    } elseif ($url_parts['scheme'] == 'http') {
+        $connect_to = cms_gethostbyname($connect_to); // for DNS caching
     }
     if (!array_key_exists('scheme', $url_parts)) {
         $url_parts['scheme'] = 'http';
@@ -1026,7 +1026,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $faux = '#' . $faux . '#i';
         }
         if (preg_match($faux, $url) != 0) {
-            $parsed = parse_url($url);
+            $parsed = parse_url(normalise_idn_url($url));
             $parsed_base_url = parse_url(get_custom_base_url());
             $file_base = get_custom_file_base();
             $file_base = preg_replace('#' . preg_quote(urldecode($parsed_base_url['path'])) . '$#', '', $file_base);
@@ -1598,8 +1598,12 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $first_fail_time = mixed();
         $chunked = false;
         $buffer_unprocessed = '';
+        $time_init = time();
         while (($chunked) || (!@feof($mysock))) { // @'d because socket might have died. If so fread will will return false and hence we'll break
             $line = @fread($mysock, 32000);
+            if (($input === '') && ($time_init + $timeout < time())) {
+                $line = false; // Manual timeout
+            }
             if ($line === false) {
                 if ((!$chunked) || ($buffer_unprocessed == '')) {
                     break;

@@ -770,9 +770,15 @@ function insert_textbox(element,text,sel,plain_insert,html)
 				editor.document.getBody().appendHtml(insert);
 			} else
 			{
-				//editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
+				// Ideally we use insertElement, as insertHtml may break up the parent tag (we want it to nest nicely)
 				var element_for_inserting=window.CKEDITOR.dom.element.createFromHtml(insert);
-				editor.insertElement(element_for_inserting);
+				if (typeof element_for_inserting.getName=='undefined')
+				{
+					editor.insertHtml(insert);
+				} else
+				{
+					editor.insertElement(element_for_inserting);
+				}
 			}
 
 			var after=editor.getData();

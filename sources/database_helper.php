@@ -313,7 +313,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
             }
             $fields_full[$field_name] = $db_type;
 
-            $fields_with_types[$_field_name] = $db_type;
+            $fields_with_types[$field_name] = $db_type;
         }
         if (!$sized) {
             _check_sizes($table_name, false, $fields_full, $index_name, false, true, true/*indexes don't use so many bytes as keys somehow*/);
@@ -408,7 +408,7 @@ function _helper_generate_index_fields($table_name, $fields, $is_full_text)
                 return null; // We don't create a full-text index on *_TRANS fields if we are directing through the translate table
             }
 
-            if ((!$is_full_text) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
+            if ((strpos($field_name, '(') === false) && (!$is_full_text) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
                 if (((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
                     $_fields .= '(250)'; // 255 would be too much with MySQL's UTF. Only MySQL supports index lengths, but the other drivers will strip them back out again.
                 }

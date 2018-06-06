@@ -1249,7 +1249,7 @@ function cns_edit_member($member_id, $username = null, $password = null, $email_
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:members:view:' . strval($member_id), true);
+    notify_sitemap_node_edit('_SEARCH:members:view:' . strval($member_id), true);
 }
 
 /**
@@ -1328,7 +1328,7 @@ function cns_delete_member($member_id)
     decache('main_members');
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:members:view:' . strval($member_id));
+    notify_sitemap_node_delete('_SEARCH:members:view:' . strval($member_id));
 }
 
 /**

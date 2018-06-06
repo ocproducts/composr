@@ -84,8 +84,12 @@ function _enforce_sessioned_url($url)
  */
 function create_session($member, $session_confirmed = 0, $invisible = false, $create_cookie = true)
 {
-    global $SESSION_CACHE, $MEMBER_CACHED;
+    global $SESSION_CACHE, $MEMBER_CACHED, $SITE_INFO;
     $MEMBER_CACHED = $member;
+
+    if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (is_guest($member))) {
+        return 'omni-guest'; // We should not even try and count/distinguish sessions for guests if the static cache is on
+    }
 
     if (($invisible) && (get_option('is_on_invisibility') == '0')) {
         $invisible = false;

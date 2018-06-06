@@ -1363,6 +1363,7 @@ class Module_admin_themes
                 'FIELDS' => $fields,
                 'SUBMIT_ICON' => 'buttons__proceed',
                 'SUBMIT_NAME' => do_lang_tempcode('EDIT'),
+                'SECONDARY_FORM' => ($i != 0),
             ));
 
             $edit_forms[] = array(

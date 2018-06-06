@@ -62,7 +62,7 @@ function shorten_urlencoded_filename($filename, $length = 226)
 }
 
 /**
- * Remove unnecessarily parnoid URL-encoding if needed, so the given URL will fit in the database.
+ * Remove unnecessarily paranoid URL-encoding if needed, so the given URL will fit in the database.
  *
  * @param  URLPATH $url The URL
  * @param  boolean $tolerate_errors If this is set to false then an error message will be shown if the URL is still too long after we do what we can; set to true if we have someway of further shortening the URL after this function is called
@@ -140,13 +140,22 @@ class HarmlessURLCoder
     }
 
     /**
-     * URL-decode a string to be readable.
+     * URL-decode a string (whole or partial URL) to be readable.
      *
      * @param  string $str The input string
      * @return string The decoded string
      */
     public function decode($str)
     {
+        // TODO: Document this new behaviour in v11 codebook
+        if ((function_exists('idn_to_utf8')) && (strpos($str, '://') !== false) && (get_charset() == 'utf-8')) {
+            $domain = parse_url($str,  PHP_URL_HOST);
+            $_domain = idn_to_utf8($domain);
+            if ($_domain !== false) {
+                $str = preg_replace('#(^.*://)' . preg_quote($domain, '#') . '(.*$)#U', '$1' . $_domain . '$2', $str);
+            }
+        }
+
         if (get_value('urls_simplifier') !== '1') { // TODO: Make a proper option in v11
             return $str;
         }
@@ -171,14 +180,23 @@ class HarmlessURLCoder
     }
 
     /**
-     * URL-encode a string to be valid.
+     * URL-encode a string (whole or partial URL) to be valid.
      *
      * @param  string $str The input string
      * @return string The encoded string
      */
     public function encode($str)
     {
-        if (get_value('urls_simplifier') !== '1') { // TODO: Make a proper option in v11
+        // TODO: Document this new behaviour in v11 codebook
+        if ((function_exists('idn_to_ascii')) && (strpos($str, '://') !== false) && (get_charset() == 'utf-8')) {
+            $domain = preg_replace('#(^.*://)([^:/]*)(.*$)#', '$2', $str);
+            $_domain = idn_to_ascii($domain);
+            if ($_domain !== false) {
+                $str = preg_replace('#(^.*://)' . preg_quote($domain, '#') . '(.*$)#U', '$1' . $_domain . '$2', $str);
+            }
+        }
+
+        if ((!function_exists('get_value')) || (get_value('urls_simplifier') !== '1')) { // TODO: Make a proper option in v11
             return $str;
         }
 

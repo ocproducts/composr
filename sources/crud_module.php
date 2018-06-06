@@ -1270,7 +1270,7 @@ abstract class Standard_crud_module
                 if (!is_null($_entries[1])) {
                     $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_LIST_EXTRA', escape_html($_entries[1]->evaluate()), escape_html($_entries[2]->evaluate())));
                 } else {
-                    $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_LIST_EXTRA', escape_html($_entries[2]->evaluate())));
+                    $text = paragraph(do_lang_tempcode('_CHOOSE_EDIT_LIST_EXTRA', escape_html($_entries[2]->evaluate())));
                 }
                 $entries = $_entries[0];
             } else {
