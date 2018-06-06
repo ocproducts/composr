@@ -126,7 +126,7 @@ class Module_cms_comcode_pages
             if ($page_link != '') {
                 breadcrumb_set_self(do_lang_tempcode('EDIT'));
             }
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse:lang=' . get_param_string('lang', ''), do_lang_tempcode('COMCODE_PAGES'))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse:lang=' . get_param_string('lang', ''), do_lang_tempcode('menus:_COMCODE_PAGES'))));
 
             $this->title = get_screen_title(($file == '') ? 'COMCODE_PAGE_ADD' : '_COMCODE_PAGE_EDIT', true, array(escape_html($zone), escape_html($file)));
 
@@ -143,6 +143,8 @@ class Module_cms_comcode_pages
 
         if ($type == 'generate_page_sitemap') {
             $this->title = get_screen_title('GENERATE_PAGE_SITEMAP');
+
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse:lang=' . get_param_string('lang', ''), do_lang_tempcode('menus:_COMCODE_PAGES'))));
         }
 
         return null;
@@ -1149,6 +1151,12 @@ class Module_cms_comcode_pages
             ($total_known_pages < 300) &&
             ($GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages c LEFT JOIN ' . get_table_prefix() . 'cached_comcode_pages a ON c.the_page=a.the_page AND c.the_zone=a.the_zone', 'c.the_page', array('a.the_page' => null)) !== null)
         ) {
+            $____pages = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_zone', 'the_page', 'p_parent_page', 'p_validated'));
+            $___pages = array();
+            foreach ($____pages as $____page) {
+                $___pages[$____page['the_zone'] . ':' . $____page['the_page']] = $____page;
+            }
+
             $files_list = $this->get_comcode_files_list_disk_search(user_lang(), null, false);
             $__pages = array();
             foreach ($files_list as $page_link => $path_bits) {
@@ -1160,8 +1168,8 @@ class Module_cms_comcode_pages
                 $__pages[] = array(
                     'the_zone' => $_zone,
                     'the_page' => $__page,
-                    'p_parent_page' => '',
-                    'p_validated' => 1,
+                    'p_parent_page' => isset($___pages[$page_link]) ? $___pages[$page_link]['p_parent_page'] : '',
+                    'p_validated' => isset($___pages[$page_link]) ? $___pages[$page_link]['p_validated'] : 1,
                     'cc_page_title' => get_comcode_page_title_from_disk($path_bits[0]),
                     'string_index' => file_get_contents($path_bits[0]),
                 );
