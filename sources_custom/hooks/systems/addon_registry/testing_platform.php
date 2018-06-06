@@ -451,6 +451,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/media.php',
             '_tests/tests/unit_tests/versioning.php',
             '_tests/tests/unit_tests/dev_environment.php',
+            '_tests/tests/unit_tests/translation.php',
             '_tests/tests/unit_tests/filter_xml.php',
             '_tests/tests/unit_tests/upload_directory.php',
             '_tests/tests/unit_tests/ecommerce_custom.php',

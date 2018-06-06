@@ -14,6 +14,36 @@
  */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__translation()
+{
+    define('TRANS_TEXT_CONTEXT_autodetect', 0);
+    define('TRANS_TEXT_CONTEXT_plain', 1);
+    define('TRANS_TEXT_CONTEXT_html_block', 2);
+    define('TRANS_TEXT_CONTEXT_html_inline', 3);
+    define('TRANS_TEXT_CONTEXT_html_raw', 4);
+}
+
+/**
+ * Whether translation is available.
+ *
+ * @return boolean Whether it is
+ */
+function has_translation()
+{
+    if (get_option('google_apis_api_key') == '') {
+        return false;
+    }
+    if (get_option('google_translate_enabled') == '0') {
+        return false;
+    }
+    return true;
+}
+
+/**
  * Translate some text.
  * Powered by Google Translate.
  *
@@ -23,13 +53,13 @@
  * @param  ?LANGUAGE_NAME $to Destination language (null: current user's language)
  * @return ?string Translated text (null: some kind of error)
  */
-function translate_text($text, $context = 0, $from = null, $to = null)
+function translate_text($text, $context = TRANS_TEXT_CONTEXT_autodetect, $from = null, $to = null)
 {
     if ($text == '') {
         return '';
     }
 
-    if (get_option('google_apis_api_key') == '') {
+    if (!has_translation()) {
         return null;
     }
 
@@ -41,12 +71,12 @@ function translate_text($text, $context = 0, $from = null, $to = null)
         return null;
     }
 
-    $_to = _get_google_lang_code($to);
+    $_to = get_google_lang_code($to);
     if ($_to === null) {
         return null;
     }
     if ($from !== null) {
-        $_from = _get_google_lang_code($from);
+        $_from = get_google_lang_code($from);
         if ($_from === null) {
             return null;
         }
@@ -71,8 +101,21 @@ function translate_text($text, $context = 0, $from = null, $to = null)
             'q' => $text,
             'source' => $_from,
             'target' => $_to,
-            'format' => ($context == TRANS_TEXT_CONTEXT_plain) ? 'text' : 'html',
         );
+        switch ($context) {
+            case TRANS_TEXT_CONTEXT_autodetect:
+                break;
+
+            case TRANS_TEXT_CONTEXT_plain:
+                $request['format'] = 'text';
+                break;
+
+            case TRANS_TEXT_CONTEXT_html_block:
+            case TRANS_TEXT_CONTEXT_html_inline:
+            case TRANS_TEXT_CONTEXT_html_raw:
+                $request['format'] = 'html';
+                break;
+        }
 
         $result = _google_translate_api_request($url, $request);
 
@@ -94,7 +137,9 @@ function translate_text($text, $context = 0, $from = null, $to = null)
 
     $ret = '';
     switch ($context) {
+        case TRANS_TEXT_CONTEXT_autodetect:
         case TRANS_TEXT_CONTEXT_plain:
+        case TRANS_TEXT_CONTEXT_html_raw:
             $ret = $text_result;
             break;
 
@@ -103,11 +148,7 @@ function translate_text($text, $context = 0, $from = null, $to = null)
             $tag = ($context == TRANS_TEXT_CONTEXT_html_block) ? 'div' : 'span';
             $ret = '<' . $tag . ' lang="' . $_to . '-x-mtfrom-' . $_from . '">' . $text_result . '</' . $tag . '>';
             if ($context == TRANS_TEXT_CONTEXT_html_block) {
-                $ret .= '
-                <div>
-                    <a href="http://translate.google.com/" target="_blank" title="Powered by Google Translate ' . do_lang('LINK_NEW_WINDOW') . '"><img src="' . escape_html(find_theme_image('google_translate')) . '" alt="" /></a>
-                </div>
-                ';
+                $ret .= '<div>' . get_google_translate_credit() . '</div>';
             }
             break;
     }
@@ -116,19 +157,36 @@ function translate_text($text, $context = 0, $from = null, $to = null)
 }
 
 /**
+ * Get HTML to provide Google credit.
+ *
+ * @return string Credit HTML
+ */
+function get_google_translate_credit()
+{
+    $powered_by = do_lang('POWERED_BY', 'Google translate');
+    $lnw = do_lang('LINK_NEW_WINDOW');
+    $img = find_theme_image('google_translate');
+    return '<a href="http://translate.google.com/" target="_blank" title="' . $powered_by . ' ' . $lnw . '"><img src="' . escape_html($img) . '" alt="" /></a>';
+}
+
+/**
  * Convert a standard language codename to a google code.
  *
  * @param  LANGUAGE_NAME $in The code to convert
  * @return string The converted code (null: none found)
  */
-function _get_google_lang_code($in)
+function get_google_lang_code($in)
 {
+    if (!has_translation()) {
+        return null;
+    }
+
     $url = 'https://translation.googleapis.com/language/translate/v2/languages';
     $ret = str_replace('_', '-', strtolower($in));
 
     // Now check the language actually exists...
 
-    require_code('files2');
+    require_code('http');
     $result = unserialize(cache_and_carry('_google_translate_api_request', array($url, null)));
 
     if ($result === null) {
@@ -165,7 +223,7 @@ function _google_translate_api_request($url, $request = null)
         $_request = json_encode($request);
     }
 
-    $_result = http_download_file($url, null, false, false, 'Composr', ($_request === null) ? null : array($_request), null, null, null, null, null, null, null, 0.5, ($request !== null), null, null, ($request === null) ? 'GET' : 'POST', 'application/json');
+    $_result = http_get_contents($url, array('trigger_error' => false, 'post_params' => ($_request === null) ? null : array($_request), 'timeout' => 0.5, 'raw_post' => ($request !== null), 'http_verb' => ($request === null) ? 'GET' : 'POST', 'raw_content_type' => 'application/json'));
 
     $result = @json_decode($_result, true);
     if ($result === false) {

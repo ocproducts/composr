@@ -117,6 +117,10 @@ class Module_admin_lang
             }
 
             $lang = filter_naughty_harsh(get_param_string('lang', ''));
+            $lang_new = get_param_string('lang_new', $lang);
+            if ($lang_new != '') {
+                $lang = $lang_new;
+            }
             if ($lang == '') {
                 breadcrumb_set_self(do_lang_tempcode('TRANSLATE_CODE'));
 
@@ -158,8 +162,6 @@ class Module_admin_lang
     {
         require_code('input_filter_2');
         rescue_shortened_post_request();
-
-        require_javascript('translate');
 
         require_css('translations_editor');
 
@@ -436,12 +438,14 @@ class Module_admin_lang
         require_all_open_lang_files($lang);
 
         // Make our translation page
-        $lines = '';
-        if ((get_option('google_apis_api_key') == '0') || (get_option('google_apis_api_key') == '')) {
-            $google = '';
+        require_code('translation');
+        $has_translation = (has_translation()) && (get_google_lang_code($lang) !== null);
+        if ($has_translation) {
+            $translation_credit = get_google_translate_credit();
         } else {
-            $google = $this->get_google_code($lang);
+            $translation_credit = '';
         }
+        $lines = '';
         $actions = make_string_tempcode('&nbsp;');
         $last_level = null;
         $too_many = (count($to_translate) == $max);
@@ -473,8 +477,14 @@ class Module_admin_lang
             $id = $it['id'];
             $name = $names[$id];
 
-            if ($google != '') {
-                $actions = do_template('TRANSLATE_ACTION', array('_GUID' => 'f625cf15c9db5e5af30fc772a7f0d5ff', 'LANG_FROM' => $it['language'], 'LANG_TO' => $lang, 'NAME' => 'trans_' . strval($id), 'OLD' => $old));
+            if ($translation_credit != '') {
+                $actions = do_template('TRANSLATE_ACTION', array(
+                    '_GUID' => 'f625cf15c9db5e5af30fc772a7f0d5ff',
+                    'LANG_FROM' => $it['language'],
+                    'LANG_TO' => $lang,
+                    'NAME' => 'trans-' . strval($id),
+                    'OLD' => $old,
+                ));
             }
 
             check_suhosin_request_quantity(2, strlen('trans_' . $name));
@@ -486,7 +496,7 @@ class Module_admin_lang
                 'OLD' => $old,
                 'CURRENT' => $current,
                 'ACTIONS' => $actions,
-                'GOOGLE' => $google,
+                'TRANSLATION_CREDIT' => $translation_credit,
                 'PRIORITY' => $priority,
                 'LAST' => !isset($to_translate[$i + 1]),
             ));
@@ -509,7 +519,7 @@ class Module_admin_lang
             'LANG_NICE_ORIGINAL_NAME' => lookup_language_full_name(get_site_default_lang()),
             'LANG_NICE_NAME' => lookup_language_full_name($lang),
             'TOO_MANY' => $too_many,
-            'GOOGLE' => $google,
+            'TRANSLATION_CREDIT' => $translation_credit,
             'LANG' => $lang,
             'LINES' => $lines,
             'TITLE' => $this->title,
@@ -538,7 +548,7 @@ class Module_admin_lang
                 continue;
             }
 
-            $lang_id = intval(substr($key, 6));
+            $lang_id = intval(substr($key, strlen('trans_')));
 
             if ($val != '') {
                 $GLOBALS['SITE_DB']->query_delete('translate', array('language' => $lang, 'id' => $lang_id), '', 1);
@@ -615,7 +625,7 @@ class Module_admin_lang
             global $LANGUAGE_STRINGS_CACHE;
             foreach ($LANGUAGE_STRINGS_CACHE[user_lang()] as $key => $value) {
                 if (stripos($value, $search) !== false) {
-                    $fields->attach(form_input_text($key, '', 'l_' . $key, str_replace('\n', "\n", $value), false));
+                    $fields->attach(form_input_text($key, '', 'trans_' . $key, str_replace('\n', "\n", $value), false));
                 }
             }
             if ($fields->is_empty()) {
@@ -689,40 +699,14 @@ class Module_admin_lang
 
         // Make our translation page
         $lines = '';
-        $google = $this->get_google_code($lang);
+        require_code('translation');
+        $has_translation = (has_translation()) && (get_google_lang_code($lang) !== null);
+        if ($has_translation) {
+            $translation_credit = get_google_translate_credit();
+        } else {
+            $translation_credit = '';
+        }
         $actions = new Tempcode();
-        $next = 0;
-        $trans_lot = '';
-        $delimit = "\n" . '=-=-=-=-=-=-=-=-' . "\n";
-        foreach ($for_base_lang as $name => $old) {
-            if (array_key_exists($name, $for_lang)) {
-                $current = $for_lang[$name];
-            } else {
-                $current = '';//$this->find_lang_matches($old, $lang); Too slow / useless for code translation
-            }
-            if (($current == '') && (strtolower($name) != $name)) {
-                $trans_lot .= str_replace('\n', "\n", str_replace(array('{', '}'), array('(((', ')))'), $old)) . $delimit;
-            }
-        }
-
-        $translated_stuff = array();
-        if (($trans_lot != '') && ($google != '')) {
-            $http_result = http_get_contents('http://translate.google.com/translate_t', array('trigger_error' => false, 'post_params' => array('text' => $trans_lot, 'langpair' => 'en|' . $google)));
-            $result = $http_result->data;
-            if ($result !== null) {
-                require_code('character_sets');
-                $result = convert_to_internal_encoding($result, $http_result->charset);
-
-                $matches = array();
-                if (preg_match('#<div id=result_box dir="ltr">(.*)</div>#Us', $result, $matches) != 0) {
-                    $result2 = $matches[1];
-                    $result2 = @html_entity_decode($result2, ENT_QUOTES);
-                    $result2 = preg_replace('#\s?<br>\s?#', "\n", $result2);
-                    $result2 = str_replace('> ', '>', str_replace(' <', ' <', str_replace('</ ', '</', str_replace(array('(((', ')))'), array('{', '}'), $result2))));
-                    $translated_stuff = explode(trim($delimit), $result2 . "\n");
-                }
-            }
-        }
         foreach ($for_base_lang + $for_lang as $name => $old) {
             if (array_key_exists($name, $for_lang)) {
                 $current = $for_lang[$name];
@@ -730,25 +714,23 @@ class Module_admin_lang
                 $current = '';//$this->find_lang_matches($old, $lang); Too slow / useless for code translation
             }
             $description = array_key_exists($name, $descriptions) ? $descriptions[$name] : '';
-            if (($current == '') && (strtolower($name) != $name) && (array_key_exists($next, $translated_stuff))) {
-                $_current = '';
-                $translate_auto = trim($translated_stuff[$next]);
-                $next++;
-            } else {
-                $_current = str_replace('\n', "\n", $current);
-                $translate_auto = null;
-            }
+            $_current = str_replace('\n', "\n", $current);
             if ($_current == '') {
                 $_current = str_replace('\n', "\n", $old);
             }
 
-            if (($google != '') && (get_option('google_apis_api_key') != '') && (get_option('google_translate_enabled') == '1')) {
-                $actions = do_template('TRANSLATE_ACTION', array('_GUID' => '9e9a68cb2c1a1e23a901b84c9af2280b', 'LANG_FROM' => get_site_default_lang(), 'LANG_TO' => $lang, 'NAME' => 'trans_' . $name, 'OLD' => $_current));
+            if ($translation_credit != '') {
+                $actions = do_template('TRANSLATE_ACTION', array(
+                    '_GUID' => '9e9a68cb2c1a1e23a901b84c9af2280b',
+                    'LANG_FROM' => get_site_default_lang(),
+                    'LANG_TO' => $lang,
+                    'NAME' => 'trans-' . $name,
+                    'OLD' => $_current,
+                ));
             }
 
             $temp = do_template('TRANSLATE_LINE', array(
                 '_GUID' => '9cb331f5852ee043e6ad30b45aedc43b',
-                'TRANSLATE_AUTO' => $translate_auto,
                 'DESCRIPTION' => $description,
                 'NAME' => $name,
                 'OLD' => str_replace('\n', "\n", $old),
@@ -763,26 +745,12 @@ class Module_admin_lang
         return do_template('TRANSLATE_SCREEN', array(
             '_GUID' => 'b3429f8bd0b4eb79c33709ca43e3207c',
             'PAGE' => $lang_file,
-            'GOOGLE' => ((get_option('google_apis_api_key') != '') && (get_option('google_translate_enabled') == '1')) ? $google : '',
+            'TRANSLATION_CREDIT' => $translation_credit,
             'LANG' => $lang,
             'LINES' => $lines,
             'TITLE' => $this->title,
             'URL' => $url,
         ));
-    }
-
-    /**
-     * Convert a standard language codename to a google code.
-     *
-     * @param  LANGUAGE_NAME $in The code to convert
-     * @return string The converted code (or blank if none can be found)
-     */
-    public function get_google_code($in)
-    {
-        if ($in == fallback_lang()) {
-            return '';
-        }
-        return strtolower($in);
     }
 
     /**
@@ -828,7 +796,7 @@ class Module_admin_lang
         $contents .= "\n";
         $contents .= "[strings]\n";
         foreach (array_unique(array_merge(array_keys($for_base_lang), array_keys($for_base_lang_2))) as $key) {
-            $val = post_param_string($key, null);
+            $val = post_param_string('trans_' . $key, null);
             if (($val === null) && (!array_key_exists($key, $for_base_lang))) {
                 $val = $for_base_lang_2[$key]; // Not in lang, but is in lang_custom, AND not set now - must copy though
             }
@@ -877,7 +845,7 @@ class Module_admin_lang
             $one_changed_from_saved = false;
 
             foreach ($for_base_lang_2 + $for_base_lang as $key => $disk_val) {
-                $val = post_param_string('l_' . $key, str_replace('\n', "\n", array_key_exists($key, $for_base_lang_2) ? $for_base_lang_2[$key] : $disk_val));
+                $val = post_param_string('trans_' . $key, str_replace('\n', "\n", array_key_exists($key, $for_base_lang_2) ? $for_base_lang_2[$key] : $disk_val));
                 $changed_from_saved = ($val != str_replace('\n', "\n", $disk_val)); // was already changed in language file
                 $not_a_default = (!array_key_exists($key, $for_base_lang)); // not in default Composr
                 $changed_from_default = !$not_a_default && ($for_base_lang[$key] != $val); // changed from default Composr

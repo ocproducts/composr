@@ -26,16 +26,15 @@ class Hook_symbol_PROVIDE_WITH_TRANSLATION
      */
     public function run($param)
     {
-        if (!addon_installed('translation')) {
-            return '';
-        }
-
         require_code('translation');
 
         $text = isset($param[0]) ? $param[0] : '';
 
-        if ((isset($param[1])) && (is_numeric($param[1]))) {
-            $context = intval($param[1]);
+        if (isset($param[1])) {
+            $context = @constant('TRANS_TEXT_CONTEXT_' . $param[1]);
+            if ($context === null) {
+                $context = TRANS_TEXT_CONTEXT_html_block;
+            }
         } else {
             $context = TRANS_TEXT_CONTEXT_html_block;
         }

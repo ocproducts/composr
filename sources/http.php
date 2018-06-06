@@ -243,8 +243,6 @@ function get_webpage_meta_details($url)
  */
 function _cms_http_request($url, $options = array())
 {
-    error_log($url . ' called from ' . get_self_url_easy());
-
     $curl = new HttpDownloaderCurl();
     $curl_priority = $curl->may_run_for($url, $options);
 

@@ -291,17 +291,17 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             $value_found = get_translated_text($key, $forum_db ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB']);
             if ($value_found != '') {
                 $description = make_string_tempcode(escape_html($value_found));
-                if ((get_option('google_apis_api_key') == '0') || (get_option('google_apis_api_key') == '') || (user_lang() == get_site_default_lang())) {
-                    $actions = new Tempcode();
-                } else {
-                    require_javascript('translate');
+                $has_translation = (has_translation()) && (get_google_lang_code($lang) !== null) && (user_lang() != get_site_default_lang());
+                if ($has_translation) {
                     $actions = do_template('TRANSLATE_ACTION', array(
                         '_GUID' => '441cd96588b2a4f74e94003643262833',
                         'LANG_FROM' => get_site_default_lang(),
                         'LANG_TO' => user_lang(),
-                        'NAME' => 'trans_' . strval($key),
+                        'NAME' => 'trans-' . strval($key),
                         'OLD' => $value_found,
                     ));
+                } else {
+                    $actions = new Tempcode();
                 }
                 $description->attach($actions);
                 $fields->attach(form_input_text(($names[$key] === null) ? ('#' . strval($key)) : $names[$key], $description, 'trans_' . strval($key), $value_found, false));
@@ -367,17 +367,17 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             $value_found = do_lang($key, null, null, null, null, false);
             $description = array_key_exists($key, $descriptions) ? make_string_tempcode($descriptions[$key]) : new Tempcode();
             if ($value_found !== null) {
-                if ((get_option('google_apis_api_key') == '0') || (get_option('google_apis_api_key') == '') || (user_lang() == get_site_default_lang())) {
-                    $actions = new Tempcode();
-                } else {
-                    require_javascript('translate');
+                $has_translation = (has_translation()) && (get_google_lang_code($lang) !== null) && (user_lang() != get_site_default_lang());
+                if ($has_translation) {
                     $actions = do_template('TRANSLATE_ACTION', array(
                         '_GUID' => '031eb918cb3bcaf4339130b46f8b1b8a',
                         'LANG_FROM' => get_site_default_lang(),
                         'LANG_TO' => user_lang(),
-                        'NAME' => 'l_' . $key,
+                        'NAME' => 'trans_' . $key,
                         'OLD' => str_replace('\n', "\n", $value_found),
                     ));
+                } else {
+                    $actions = new Tempcode();
                 }
                 $description->attach($actions);
 
@@ -398,7 +398,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
                     }
                 }
 
-                $fields->attach(form_input_text($key_extended, $description, 'l_' . $key, str_replace('\n', "\n", $value_found), false));
+                $fields->attach(form_input_text($key_extended, $description, 'trans_' . $key, str_replace('\n', "\n", $value_found), false));
             }
         }
 

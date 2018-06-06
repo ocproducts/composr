@@ -631,6 +631,34 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 			<td>{$RTL}</td>
 			<td>If the current language pack is right-to-left (Arabic etc)</td>
 		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$PROVIDE_WITH_TRANSLATION}</td>
+			<td>
+				<p>This symbol is designed for assistive translations of user-supplied content.</p>
+
+				<p>Before you can use the API you must first configure it:</p>
+				<ol>
+					<li>Configure the Google API Key in the configuration (Admin Zone > Configuration > Setup > Composr API options > Google API)</li>
+					<li>Make sure that Google Translation API is enabled on Google\'s end</li>
+					<li>Enable the "Google translate enabled" option (under Admin Zone > Configuration > Site options > Internationalisation)</li>
+				</ol>
+
+				<p>To use the symbol just wrap it around text that needs translating in templates, e.g. <kbd>{$PROVIDE_WITH_TRANSLATION,{TEXT},html_block,FR}</kbd>.</p>
+
+				<p>This example translates French in [tt]{TEXT}[/tt] to the site\'s current language, within the context of a block of HTML. The original text is followed by the translated text, and as it is a block of HTML it also includes the "Powered by Google Translate" message.</p>
+
+				<p>Here are the available translation modes:</p>
+				<ol>
+					<li>[tt]plain[/tt] &ndash; translate plain text (without any translation metadata or credit message)</li>
+					<li>[tt]html_block[/tt] &ndash; translate a block of HTML (with a [tt]div[/tt] specifying translation metadata and a credit message to Google)</li>
+					<li>[tt]html_inline[/tt] &ndash; translate inline HTML (with a [tt]span[/tt] specifying translation metadata but without a credit message to Google)
+					<li>[tt]html_raw[/tt] &ndash; translate HTML (without any translation metadata or credit message)</li>
+					<li>[tt]autodetect[/tt] &ndash; autodetect whether it is plain text or HTML (without any translation metadata or credit message)</li>
+				</ol>
+
+				<p>If you omit the source language then it will be autodetected.</p>
+			</td>
+		</tr>
 	</tbody>
 </table>
 [/html]

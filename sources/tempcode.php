@@ -391,7 +391,12 @@ function closure_eval($code, $parameters)
         return do_lang('NO_PHP_IN_TEMPLATES');
     }
 
-    $ret = eval($code);
+    try {
+        $ret = eval($code);
+    }
+    catch (Error $e) {
+        tempcode_error($e, $code);
+    }
     if (!is_string($ret)) {
         $ret = @strval($ret);
     }
@@ -1846,11 +1851,21 @@ class Tempcode
                     if (!@is_file(\'' . $_file . '\')) {
                         $GLOBALS[\'CACHE_TEMPLATES\']=false;
                     }
-                    eval($tmp->code_to_preexecute);
+                    try {
+                        eval($tmp->code_to_preexecute);
+                    }
+                    catch (Error $e) {
+                        tempcode_error($e, $tmp->code_to_preexecute);
+                    }
                     $GLOBALS[\'CACHE_TEMPLATES\']=$tmp2;
                     unset($tmp);
                 } else {
-                    eval($result[4]);
+                    try {
+                        eval($result[4]);
+                    }
+                    catch (Error $e) {
+                        tempcode_error($e, $result[4]);
+                    }
                     unset($result);
                 }
             ';
@@ -1914,7 +1929,12 @@ class Tempcode
             $this->metadata = create_template_tree_metadata();
         }
 
-        $result = eval($raw_data);
+        try {
+            $result = eval($raw_data);
+        }
+        catch (Error $e) {
+            tempcode_error($e, $raw_data);
+        }
         if ($result === false) {
             if ($allow_failure) {
                 return false;
@@ -2190,13 +2210,23 @@ class Tempcode
             foreach ($seq_parts_group as $seq_part) {
                 $seq_part_0 = $seq_part[0];
                 if (!isset($tpl_funcs[$seq_part_0])) {
-                    eval($this->code_to_preexecute[$seq_part_0]);
+                    try {
+                        eval($this->code_to_preexecute[$seq_part_0]);
+                    }
+                    catch (Error $e) {
+                        tempcode_error($e, $this->code_to_preexecute[$seq_part_0]);
+                    }
                 }
                 if (is_callable($tpl_funcs[$seq_part_0])) {
                     call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                 } else {
                     $parameters = $seq_part[1];
-                    eval($tpl_funcs[$seq_part_0]);
+                    try {
+                        eval($tpl_funcs[$seq_part_0]);
+                    }
+                    catch (Error $e) {
+                        tempcode_error($e, $tpl_funcs[$seq_part_0]);
+                    }
                 }
 
                 if ((($first_of_long) || ($MEMORY_OVER_SPEED)) && (ob_get_length() > 0)) { // We only quick exit on the first iteration, as we know we likely didn't spend much time getting to it- anything more and we finish so that we can cache for later use by evaluate/evaluate_echo
@@ -2291,13 +2321,23 @@ class Tempcode
             foreach ($seq_parts_group as $seq_part) {
                 $seq_part_0 = $seq_part[0];
                 if (!isset($tpl_funcs[$seq_part_0])) {
-                    eval($this->code_to_preexecute[$seq_part_0]);
+                    try {
+                        eval($this->code_to_preexecute[$seq_part_0]);
+                    }
+                    catch (Error $e) {
+                        tempcode_error($e, $this->code_to_preexecute[$seq_part_0]);
+                    }
                 }
                 if (is_callable($tpl_funcs[$seq_part_0])) {
                     call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                 } else {
                     $parameters = $seq_part[1];
-                    eval($tpl_funcs[$seq_part_0]);
+                    try {
+                        eval($tpl_funcs[$seq_part_0]);
+                    }
+                    catch (Error $e) {
+                        tempcode_error($e, $tpl_funcs[$seq_part_0]);
+                    }
                 }
             }
         }
@@ -2383,13 +2423,23 @@ class Tempcode
 
                 $seq_part_0 = $seq_part[0];
                 if (!isset($tpl_funcs[$seq_part_0])) {
-                    eval($this->code_to_preexecute[$seq_part_0]);
+                    try {
+                        eval($this->code_to_preexecute[$seq_part_0]);
+                    }
+                    catch (Error $e) {
+                        tempcode_error($e, $this->code_to_preexecute[$seq_part_0]);
+                    }
                 }
                 if (is_callable($tpl_funcs[$seq_part_0])) {
                     call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                 } else {
                     $parameters = $seq_part[1];
-                    eval($tpl_funcs[$seq_part_0]);
+                    try {
+                        eval($tpl_funcs[$seq_part_0]);
+                    }
+                    catch (Error $e) {
+                        tempcode_error($e, $tpl_funcs[$seq_part_0]);
+                    }
                 }
 
                 if ($stop_if_stuck) {
@@ -2429,7 +2479,13 @@ function recall_named_function($id, $parameters, $code)
 {
     $k = 'TEMPCODE_FUNCTION__' . $id;
     if (!isset($GLOBALS[$k])) {
-        $GLOBALS[$k] = eval('return function(' . $parameters . ') { ' . $code . ' };');
+        $code = 'return function(' . $parameters . ') { ' . $code . ' };';
+        try {
+            $GLOBALS[$k] = eval($code);
+        }
+        catch (Error $e) {
+            tempcode_error($e, $code);
+        }
     }
     return $GLOBALS[$k];
 }
@@ -2538,4 +2594,26 @@ function reinstate_static_tempcode($text)
     $text = str_replace(get_base_url() . '/', '{$BASE_URL}/', $text);
 
     return $text;
+}
+
+/**
+ * Log an error in failed Tempcode evaluation, and give a generic failure message.
+ *
+ * @param  object $e Error object
+ * @param  string $code Eval'd code
+ */
+function tempcode_error($e, $code)
+{
+    $error_message = $e->getMessage();
+
+    $error_label = 'Tempcode error - ' . $error_message . ' - ' . $code;
+
+    if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
+        syslog(LOG_ERR, $error_label);
+    }
+    if (php_function_allowed('error_log')) {
+        @error_log('Composr: ' . $error_label, 0);
+    }
+
+    fatal_exit($error_message);
 }

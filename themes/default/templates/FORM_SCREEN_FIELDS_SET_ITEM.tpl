@@ -5,15 +5,13 @@
 		<label for="choose-{NAME*}"><span class="accessibility-hidden">{!CHOOSE}</span> {PRETTY_NAME*}</label>
 		<input type="radio" name="{SET_NAME*}" id="choose-{NAME*}" value="{NAME*}" />
 
-		<label for="{NAME*}">{PRETTY_NAME*}</label>
-
 		{COMCODE}
 	</div>
 
 	<div class="mini-indent fields-set-contents vertical-alignment">
 		{$SET,show_label,{$AND,{$IS_NON_EMPTY,{NAME}},{$NOT,{SKIP_LABEL}}}}
 		{+START,IF,{$GET,show_label}}
-			<label class="accessibility_hidden" for="{NAME*}">{PRETTY_NAME*}</label>
+			<label class="accessibility-hidden" for="{NAME*}">{PRETTY_NAME*}</label>
 
 			<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_HTML,{PRETTY_NAME*}}" />
 		{+END}

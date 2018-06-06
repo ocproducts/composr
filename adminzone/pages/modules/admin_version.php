@@ -89,6 +89,7 @@ class Module_admin_version
         $GLOBALS['SITE_DB']->drop_table_if_exists('content_regions');
         $GLOBALS['SITE_DB']->drop_table_if_exists('post_tokens');
         $GLOBALS['SITE_DB']->drop_table_if_exists('cron_progression');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('translation_cache');
 
         /* We don't want to get rid of on-disk data when reinstalling
         $zones = find_all_zones(true);
@@ -1012,6 +1013,16 @@ class Module_admin_version
                 'c_last_error' => 'LONG_TEXT',
                 'c_enabled' => 'BINARY',
             ));
+
+            $GLOBALS['SITE_DB']->create_table('translation_cache', array(
+                'id' => '*AUTO',
+                't_lang_from' => 'LANGUAGE_NAME',
+                't_lang_to' => 'LANGUAGE_NAME',
+                't_text' => 'LONG_TEXT',
+                't_context' => 'INTEGER',
+                't_text_result' => 'LONG_TEXT',
+            ));
+            $GLOBALS['SITE_DB']->create_index('translation_cache', 'lookup', array('t_lang_from', 't_lang_to', 't_text(100)', 't_context'));
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 18)) { // LEGACY
