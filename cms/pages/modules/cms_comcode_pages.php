@@ -126,7 +126,7 @@ class Module_cms_comcode_pages
             if ($page_link != '') {
                 breadcrumb_set_self(do_lang_tempcode('EDIT'));
             }
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse:lang=' . get_param_string('lang', ''), do_lang_tempcode('COMCODE_PAGES'))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse:lang=' . get_param_string('lang', ''), do_lang_tempcode('menus:_COMCODE_PAGES'))));
 
             $this->title = get_screen_title(($file == '') ? 'COMCODE_PAGE_ADD' : '_COMCODE_PAGE_EDIT', true, array(escape_html($zone), escape_html($file)));
 
@@ -143,6 +143,8 @@ class Module_cms_comcode_pages
 
         if ($type == 'generate_page_sitemap') {
             $this->title = get_screen_title('GENERATE_PAGE_SITEMAP');
+
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse:lang=' . get_param_string('lang', ''), do_lang_tempcode('menus:_COMCODE_PAGES'))));
         }
 
         return null;
