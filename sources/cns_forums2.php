@@ -32,27 +32,21 @@ function cns_has_mailing_list_style($forum_id = null)
         $sql_sup .= ' AND id=' . strval($forum_id);
     }
 
+    // Optimisation: for a single forum, does it have it
     if ($forum_id !== null) {
-        $test = $GLOBALS['FORUM_DB']->query_value_if_there($sql . $sql_sup);
-        if ($test === null) {
+        $test = $GLOBALS['FORUM_DB']->query($sql . $sql_sup, 1);
+        if ((count($test) == 0) || (!cns_supports_mailing_list_style($test[0]))) {
             return array(0, false);
         }
+        return array(1, true);
     }
 
+    // Consider whether each has it or not
     $cnt_yes = 0;
     $cnt_no = 0;
     $rows = $GLOBALS['FORUM_DB']->query($sql);
     foreach ($rows as $row) {
-        if (
-            ($row['f_mail_username'] != '') &&
-            ($row['f_mail_email_address'] != '') &&
-            (($row['f_mail_server_type'] != '') || (get_option('mail_server_type') != '')) &&
-            (($row['f_mail_server_host'] != '') || (get_option('mail_server_host') != '')) &&
-            (($row['f_mail_server_port'] !== null) || (get_option('mail_server_port') != '')) &&
-            (($row['f_mail_folder'] != '') || (get_option('mail_folder') != '')) &&
-            (($row['f_mail_username'] != '') || (get_option('mail_username') != '')) &&
-            (($row['f_mail_password'] != '') || (get_option('mail_password') != ''))
-        ) {
+        if (cns_supports_mailing_list_style($row)) {
             $cnt_yes++;
         } else {
             $cnt_no++;
@@ -60,6 +54,27 @@ function cns_has_mailing_list_style($forum_id = null)
     }
 
     return array($cnt_yes, $cnt_no == 0);
+}
+
+/**
+ * Whether a forum supports mailing-list style.
+ *
+ * @param  array $row The forum row.
+ * @return boolean Whether it does.
+ */
+function cns_supports_mailing_list_style($row)
+{
+    $ret =
+        ($row['f_mail_username'] != '') &&
+        ($row['f_mail_email_address'] != '') &&
+        (($row['f_mail_server_type'] != '') || (get_option('mail_server_type') != '')) &&
+        (($row['f_mail_server_host'] != '') || (get_option('mail_server_host') != '')) &&
+        (($row['f_mail_server_port'] !== null) || (get_option('mail_server_port') != '')) &&
+        (($row['f_mail_folder'] != '') || (get_option('mail_folder') != '')) &&
+        (($row['f_mail_username'] != '') || (get_option('mail_username') != '')) &&
+        (($row['f_mail_password'] != '') || (get_option('mail_password') != ''));
+
+    return $ret;
 }
 
 /**
