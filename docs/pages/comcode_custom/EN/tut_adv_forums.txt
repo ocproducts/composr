@@ -46,7 +46,7 @@ Composr makes some attempt to clean up the e-mail text, so that the forum posts 
 Be aware of the following:
  - Comcode is generally processed with guest permissions, due to us not being able to perfectly confirm the poster is who they say they are.
  - Attachments provided are not fully protected from unauthorised access, due to the need for them be able to render with guest credentials.
- - Posting is tracked by marking e-mails read. If you mark an e-mail unread, it will post again. This can be useful for testing.
+ - Posting is tracked by marking e-mails read. If you mark an e-mail unread (unseen), it will post again. This can be useful for testing.
 
 [title="3"]Specific mail servers[/title]
 
