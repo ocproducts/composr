@@ -58,7 +58,7 @@ class TicketsEmailIntegration extends EmailIntegration
         }
 
         $extended_subject = do_lang('TICKET_SIMPLE_SUBJECT_' . ($new ? 'new' : 'reply'), $subject, $ticket_id, array($ticket_type_name, $from_displayname, get_site_name()), get_lang($to_member_id));
-        $extended_message = do_lang('TICKET_SIMPLE_MAIL_' . ($new ? 'new' : 'reply'), get_site_name(), $ticket_type_name, array($ticket_url, $from_displayname, $message), get_lang($to_member_id));
+        $extended_message = do_lang('TICKET_SIMPLE_MAIL_' . ($new ? 'new' : 'reply'), get_site_name(), $ticket_type_name, array($ticket_url, $from_displayname, strip_comcode($message)), get_lang($to_member_id));
         $extended_from_displayname = do_lang('TICKET_SIMPLE_FROM', get_site_name(), $from_displayname, array(), get_lang($to_member_id));
 
         $this->_outgoing_message($extended_subject, $extended_message, $to_member_id, $to_displayname, $to_email, $extended_from_displayname);
@@ -293,7 +293,7 @@ class TicketsEmailIntegration extends EmailIntegration
      * @param  string $body E-mail component
      * @param  integer $format A STRIP_* constant
      */
-    public/*TODO: protected*/ function strip_system_code(&$body, $format)
+    protected function strip_system_code(&$body, $format)
     {
         switch ($format) {
             case self::STRIP_SUBJECT:

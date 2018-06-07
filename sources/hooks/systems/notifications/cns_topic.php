@@ -207,14 +207,19 @@ class Hook_notification_cns_topic extends Hook_Notification
      * @param  ID_TEXT $notification_code Notification code
      * @param  ?SHORT_TEXT $category The category within the notification code (null: none)
      * @param  ?array $to_member_ids List of member IDs we are restricting to (null: no restriction). This effectively works as a intersection set operator against those who have enabled.
+     * @param  ?integer $from_member_id The member ID doing the sending. Either a MEMBER or a negative number (e.g. A_FROM_SYSTEM_UNPRIVILEGED) (null: current member)
      * @param  integer $start Start position (for pagination)
      * @param  integer $max Maximum (for pagination)
      * @return array A pair: Map of members to their notification setting, and whether there may be more
      */
-    public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $start = 0, $max = 300)
+    public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $from_member_id = null, $start = 0, $max = 300)
     {
         if ((!is_numeric($category)) && (!is_null($category))) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR')); // We should never be accessing as forum:<id>, that is used only behind the scenes
+        }
+
+        if ($from_member_id === null) {
+            $from_member_id = get_member();
         }
 
         list($members, $maybe_more) = $this->_all_members_who_have_enabled($notification_code, $category, $to_member_ids, $start, $max);
@@ -260,7 +265,7 @@ class Hook_notification_cns_topic extends Hook_Notification
                     $mailing_list_style = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_mailing_list_style') == 1);
                     $email_address = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address');
                     $receive_email_notification = ($setting & A_INSTANT_EMAIL) != 0;
-                    if (($mailing_list_style) && ($email_address != '') && ($receive_email_notification)) {
+                    if (($mailing_list_style) && ($email_address != '') && ($receive_email_notification) && ($member_id != $from_member_id)) {
                         $this->mailing_list_members[] = $member_id;
                         $members[$member_id] = $setting & ~A_INSTANT_EMAIL;
                     }

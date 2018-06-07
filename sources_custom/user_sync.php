@@ -289,11 +289,11 @@ function user_sync__inbound($since = null)
                     $username, // username
                     $password, // password
                     $email_address, // email_address
-                    $category, // primary_group
+                    $primary_group, // primary_group
                     $dob_day, // dob_day
                     $dob_month, // dob_month
                     $dob_year, // dob_year
-                    $actual_custom_fields, // custom_fields
+                    $cpf_values, // custom_fields
                     null, // timezone
                     $language, // language
                     '', // theme
@@ -318,7 +318,7 @@ function user_sync__inbound($since = null)
                     $validated, // validated
                     null, // on_probation_until
                     $is_perm_banned, // is_perm_banned
-                    $check_correctness, // check_correctness
+                    false, // check_correctness
                     $password_compatibility_scheme, // password_compatibility_scheme
                     $salt, // salt
                     $join_time // join_time

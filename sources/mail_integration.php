@@ -253,7 +253,7 @@ abstract class EmailIntegration
      * @param  string $body E-mail body
      * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
      */
-    public/*TODO: protected*/ function process_incoming_message($from_email, $from_name, $subject, $body, $attachments)
+    protected function process_incoming_message($from_email, $from_name, $subject, $body, $attachments)
     {
         $email_bounce_to = $from_email;
 
@@ -690,7 +690,7 @@ abstract class EmailIntegration
      * @param  string $body E-mail component
      * @param  integer $format A STRIP_* constant
      */
-    abstract public/*TODO: protected*/ function strip_system_code(&$body, $format);
+    abstract protected function strip_system_code(&$body, $format);
 
     /**
      * Process a quote block in plain-text e-mail, into a Comcode quote tag. preg callback.

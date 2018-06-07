@@ -80,7 +80,7 @@ class ForumEmailIntegration extends EmailIntegration
 
         $extended_subject = do_lang('MAILING_LIST_SIMPLE_SUBJECT_' . ($is_starter ? 'new' : 'reply'), $topic_title, get_site_name(), array($from_displayname), get_lang($to_member_id));
 
-        $extended_message = do_lang('MAILING_LIST_SIMPLE_MAIL_' . ($is_starter ? 'new' : 'reply'), $topic_title, $post, array($post_url, get_site_name(), $from_displayname), get_lang($to_member_id));
+        $extended_message = do_lang('MAILING_LIST_SIMPLE_MAIL_' . ($is_starter ? 'new' : 'reply'), $topic_title, strip_comcode($post), array($post_url, get_site_name(), $from_displayname), get_lang($to_member_id));
 
         $this->_outgoing_message($extended_subject, $extended_message, $to_member_id, $to_displayname, $to_email, $from_displayname);
     }
@@ -237,7 +237,7 @@ class ForumEmailIntegration extends EmailIntegration
      * @param  string $body E-mail component
      * @param  integer $format A STRIP_* constant
      */
-    public/*TODO: protected*/ function strip_system_code(&$body, $format)
+    protected function strip_system_code(&$body, $format)
     {
         switch ($format) {
             case self::STRIP_SUBJECT:

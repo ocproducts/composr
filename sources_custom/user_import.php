@@ -158,7 +158,7 @@ function do_user_import()
                         '', // validated_email_confirm_code
                         null, // on_probation_until
                         $is_perm_banned, // is_perm_banned
-                        false // check_correctness
+                        false, // check_correctness
                         '', // ip_address
                         'plain', // password_compatibility_scheme
                         '', // salt

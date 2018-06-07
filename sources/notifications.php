@@ -365,7 +365,7 @@ class Notification_dispatcher
         $start = 0;
         $max = 300;
         do {
-            list($members, $possibly_has_more) = $ob->list_members_who_have_enabled($this->notification_code, $this->code_category, $this->to_member_ids, $start, $max);
+            list($members, $possibly_has_more) = $ob->list_members_who_have_enabled($this->notification_code, $this->code_category, $this->to_member_ids, $this->from_member_id, $start, $max);
 
             if (get_value('notification_safety_testing') === '1') {
                 if (count($members) > 20) {
@@ -513,7 +513,10 @@ function _find_member_statistical_notification_type($to_member_id, $notification
 
     $setting = mixed();
 
-    $notifications_enabled = $GLOBALS['SITE_DB']->query_select('notifications_enabled', array('l_setting'), array('l_member_id' => $to_member_id, 'l_code_category' => ''), '', 100/*within reason*/);
+    $notifications_enabled = $GLOBALS['SITE_DB']->query_select('notifications_enabled', array('l_setting'), array('l_member_id' => $to_member_id, 'l_notification_code' => $notification_code), '', 100/*within reason*/);
+    if (count($notifications_enabled) == 0) {
+        $notifications_enabled = $GLOBALS['SITE_DB']->query_select('notifications_enabled', array('l_setting'), array('l_member_id' => $to_member_id, 'l_code_category' => ''), '', 100/*within reason*/);
+    }
 
     // If no notifications so far, we look for defaults
     if (count($notifications_enabled) == 0) {
@@ -536,32 +539,45 @@ function _find_member_statistical_notification_type($to_member_id, $notification
     // Search for what can be done to find true statistical result
     if (is_null($setting)) {
         $possible_settings = array();
+        $best_settings = array();
         global $ALL_NOTIFICATION_TYPES;
         foreach ($ALL_NOTIFICATION_TYPES as $possible_setting) {
             if (_notification_setting_available($possible_setting, $to_member_id)) {
-                $possible_settings[$possible_setting] = 0;
+                $possible_settings[] = $possible_setting;
             }
         }
         foreach ($notifications_enabled as $ml) {
-            foreach (array_keys($possible_settings) as $possible_setting) {
-                if ($ml['l_setting'] >= 0) {
+            if ($ml['l_setting'] >= 0) {
+                // Compound setting as possibility
+                if (($ml['l_setting'] & $possible_setting) != 0) {
+                    if (!isset($best_settings[$ml['l_setting']])) {
+                        $best_settings[$ml['l_setting']] = 0;
+                    }
+                    $best_settings[$ml['l_setting']]++;
+                }
+
+                // Individual settings as possibilities
+                foreach ($possible_settings as $possible_setting) {
                     if (($ml['l_setting'] & $possible_setting) != 0) {
-                        $possible_settings[$possible_setting]++;
+                        if (!isset($best_settings[$possible_setting])) {
+                            $best_settings[$possible_setting] = 0;
+                        }
+                        $best_settings[$possible_setting]++;
                     }
                 }
             }
         }
-        arsort($possible_settings);
-        reset($possible_settings);
-        $setting = key($possible_settings);
+        krsort($best_settings); // So compound settings come first
+        arsort($best_settings); // So best possibilities come first
+        reset($best_settings);
+        $setting = key($best_settings);
         if (is_null($setting)) {
-            $setting = A_INSTANT_EMAIL; // Nothing available, so save as an e-mail notification even though it cannot be received
+            $setting = _notification_setting_available(A_INSTANT_EMAIL, $to_member_id) ? A_WEB_NOTIFICATION : A_INSTANT_EMAIL; // Nothing available, so save as an e-mail notification even though it cannot be received
         }
     }
 
     // Cache/return
     $cache[$to_member_id] = $setting;
-    $setting |= A_WEB_NOTIFICATION;
     return $setting;
 }
 
@@ -1114,11 +1130,12 @@ class Hook_Notification
      * @param  ID_TEXT $notification_code Notification code
      * @param  ?SHORT_TEXT $category The category within the notification code (null: none)
      * @param  ?array $to_member_ids List of member IDs we are restricting to (null: no restriction). This effectively works as a intersection set operator against those who have enabled.
+     * @param  ?integer $from_member_id The member ID doing the sending. Either a MEMBER or a negative number (e.g. A_FROM_SYSTEM_UNPRIVILEGED) (null: current member)
      * @param  integer $start Start position (for pagination)
      * @param  integer $max Maximum (for pagination)
      * @return array A pair: Map of members to their notification setting, and whether there may be more
      */
-    public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $start = 0, $max = 300)
+    public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $from_member_id = null, $start = 0, $max = 300)
     {
         return $this->_all_members_who_have_enabled($notification_code, $category, $to_member_ids, $start, $max);
     }
@@ -1375,13 +1392,14 @@ class Hook_notification__Staff extends Hook_Notification
      * @param  ID_TEXT $notification_code Notification code
      * @param  ?SHORT_TEXT $category The category within the notification code (null: none)
      * @param  ?array $to_member_ids List of member IDs we are restricting to (null: no restriction). This effectively works as a intersection set operator against those who have enabled.
+     * @param  ?integer $from_member_id The member ID doing the sending. Either a MEMBER or a negative number (e.g. A_FROM_SYSTEM_UNPRIVILEGED) (null: current member)
      * @param  integer $start Start position (for pagination)
      * @param  integer $max Maximum (for pagination)
      * @return array A pair: Map of members to their notification setting, and whether there may be more
      */
-    public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $start = 0, $max = 300)
+    public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $from_member_id = null, $start = 0, $max = 300)
     {
-        return $this->_all_staff_who_have_enabled($notification_code, $category, $to_member_ids, $start, $max);
+        return $this->_all_staff_who_have_enabled($notification_code, $category, $to_member_ids, $from_member_id, $start, $max);
     }
 
     /**
