@@ -312,9 +312,9 @@ function user_sync__inbound($since = null)
                     null, // sound_enabled
                     $allow_emails, // allow_emails
                     $allow_emails_from_staff, // allow_emails_from_staff
+                    0, // highlighted_name
                     '*', // pt_allow
                     '', // pt_rules_text
-                    0, // highlighted_name
                     $validated, // validated
                     null, // on_probation_until
                     $is_perm_banned, // is_perm_banned
