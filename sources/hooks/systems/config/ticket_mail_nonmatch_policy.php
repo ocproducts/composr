@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_ticket_email_from
+class Hook_config_ticket_mail_nonmatch_policy
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_ticket_email_from
     public function get_details()
     {
         return array(
-            'human_name' => 'TICKET_EMAIL_FROM',
-            'type' => 'line',
-            'category' => 'MESSAGES',
+            'human_name' => 'TICKET_MAIL_NONMATCH_POLICY',
+            'type' => 'list',
+            'category' => 'FEATURE',
             'group' => 'SUPPORT_TICKETS_MAIL',
-            'explanation' => 'CONFIG_OPTION_ticket_email_from',
+            'explanation' => 'CONFIG_OPTION_ticket_mail_nonmatch_policy',
             'shared_hosting_restricted' => '0',
-            'list_options' => '',
-            'order_in_category_group' => 4,
+            'list_options' => 'post_as_guest|create_account|block',
+            'order_in_category_group' => 11,
             'required' => true,
 
             'public' => false,
@@ -58,10 +58,10 @@ class Hook_config_ticket_email_from
             return null;
         }
 
-        if (GOOGLE_APPENGINE) {
-            return 'tickets@appid.appspotmail.com';
+        if (!function_exists('imap_open')) {
+            return null;
         }
 
-        return 'support@' . get_domain();
+        return 'block';
     }
 }

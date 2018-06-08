@@ -1,6 +1,7 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Using SQL Server with Composr[/title]
 
-[media float="right" framed="0"]data_custom/images/docs/tut_sqlserver/sqlserver_logo.png[/media]This tutorial provides some advice targeted towards Microsoft SQL Server (including SQL Server Express).
+[media float="right" framed="0"]data_custom/images/docs/tut_sqlserver/sqlserver_logo.png[/media]
+This tutorial provides some advice targeted towards Microsoft SQL Server (including SQL Server Express).
 
 General details of Composr's database driver functionality are included in the [page="_SEARCH:tut_postgresql"]Using PostgreSQL with Composr[/page] tutorial. You may wish to read this first, as we are not repeating the same information here -- this will be a much shorter tutorial only covering the specifics of the SQL Server support.
 

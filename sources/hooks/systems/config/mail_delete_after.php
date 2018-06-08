@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_imap_folder
+class Hook_config_mail_delete_after
 {
     /**
      * Gets the details relating to the config option.
@@ -31,15 +31,15 @@ class Hook_config_imap_folder
     public function get_details()
     {
         return array(
-            'human_name' => 'MAIL_FOLDER',
-            'type' => 'line',
+            'human_name' => 'MAIL_DELETE_AFTER',
+            'type' => 'integer',
             'category' => 'SERVER',
             'group' => 'IMAP',
-            'explanation' => 'CONFIG_OPTION_imap_folder',
+            'explanation' => 'CONFIG_OPTION_mail_delete_after',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 3,
-            'required' => true,
+            'order_in_category_group' => 7,
+            'required' => false,
 
             'public' => false,
 
@@ -54,6 +54,10 @@ class Hook_config_imap_folder
      */
     public function get_default()
     {
-        return 'INBOX';
+        if (!function_exists('imap_open')) {
+            return null;
+        }
+
+        return '';
     }
 }

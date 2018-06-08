@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    tickets
+ * @package    core_configuration
  */
 
 /**
  * Hook class.
  */
-class Hook_config_ticket_mail_server
+class Hook_config_mail_password
 {
     /**
      * Gets the details relating to the config option.
@@ -31,19 +31,19 @@ class Hook_config_ticket_mail_server
     public function get_details()
     {
         return array(
-            'human_name' => 'TICKET_MAIL_SERVER',
+            'human_name' => 'PASSWORD',
             'type' => 'line',
-            'category' => 'MESSAGES',
-            'group' => 'SUPPORT_TICKETS_MAIL',
-            'explanation' => 'CONFIG_OPTION_ticket_mail_server',
-            'shared_hosting_restricted' => '0',
+            'category' => 'SERVER',
+            'group' => 'IMAP',
+            'explanation' => 'CONFIG_OPTION_mail_password',
+            'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 6,
-            'required' => true,
+            'required' => false,
 
             'public' => false,
 
-            'addon' => 'tickets',
+            'addon' => 'core_configuration',
         );
     }
 
@@ -54,14 +54,10 @@ class Hook_config_ticket_mail_server
      */
     public function get_default()
     {
-        if (!addon_installed('tickets')) {
+        if (!function_exists('imap_open')) {
             return null;
         }
 
-        if (GOOGLE_APPENGINE) {
-            return null;
-        }
-
-        return 'localhost';
+        return '';
     }
 }

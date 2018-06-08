@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_imap_port
+class Hook_config_mail_server_port
 {
     /**
      * Gets the details relating to the config option.
@@ -35,10 +35,10 @@ class Hook_config_imap_port
             'type' => 'integer',
             'category' => 'SERVER',
             'group' => 'IMAP',
-            'explanation' => 'CONFIG_OPTION_imap_port',
+            'explanation' => 'CONFIG_OPTION_mail_server_port',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 2,
+            'order_in_category_group' => 3,
             'required' => true,
 
             'public' => false,
@@ -54,6 +54,10 @@ class Hook_config_imap_port
      */
     public function get_default()
     {
+        if (!function_exists('imap_open')) {
+            return null;
+        }
+
         return '143';
     }
 }

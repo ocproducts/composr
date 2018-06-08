@@ -25,11 +25,17 @@ class lang_string_special_validity_test_set extends cms_test_case
         $langs = find_all_langs();
 
         $regexp_pairs = array(
-            'TICKET_SIMPLE_SUBJECT_regexp' => array('TICKET_SIMPLE_SUBJECT_reply', 'x', 'x', 'x'),
-            'TICKET_SIMPLE_MAIL_reply_regexp' => array('TICKET_SIMPLE_MAIL_reply', 'x', 'x', 'x'),
+            array('TICKET_SIMPLE_SUBJECT_regexp', array('TICKET_SIMPLE_SUBJECT_reply', 'x', 'x', 'x')),
+            array('TICKET_SIMPLE_MAIL_reply_regexp', array('TICKET_SIMPLE_MAIL_reply', 'x', 'x', 'x')),
+            array('MAILING_LIST_SIMPLE_SUBJECT_new_regexp', array('MAILING_LIST_SIMPLE_SUBJECT_new', 'x', 'x', 'x')),
+            array('MAILING_LIST_SIMPLE_SUBJECT_reply_regexp', array('MAILING_LIST_SIMPLE_SUBJECT_reply', 'x', 'x', 'x')),
+            array('MAILING_LIST_SIMPLE_MAIL_regexp', array('MAILING_LIST_SIMPLE_MAIL_new', 'x', 'x', 'x')),
+            array('MAILING_LIST_SIMPLE_MAIL_regexp', array('MAILING_LIST_SIMPLE_MAIL_reply', 'x', 'x', 'x')),
         );
         foreach (array_keys($langs) as $lang) {
-            foreach ($regexp_pairs as $_regexp => $_str) {
+            foreach ($regexp_pairs as $_parts) {
+                list($_regexp, $_str) = $_parts;
+
                 $regexp = $this->do_lang($_regexp, null, null, null, $lang);
                 if ($regexp === null) {
                     continue; // Not defined for language
@@ -48,16 +54,18 @@ class lang_string_special_validity_test_set extends cms_test_case
         }
 
         $substring_pairs = array(
-            'BLOCK_IND_EITHER' => array('BLOCK_PARAM_cache', null, null, null),
-            'BLOCK_IND_HOOKTYPE' => array('BLOCK_main_custom_gfx_PARAM_param', null, null, null),
-            //'BLOCK_IND_DEFAULT' => 'default: test',
-            'BLOCK_IND_SUPPORTS_COMCODE' => 'COMCODE_TAG_indent_EMBED',
-            'BLOCK_IND_ADVANCED' => 'COMCODE_TAG_box_PARAM_options',
-            'BLOCK_IND_WHETHER' => 'COMCODE_TAG_codebox_PARAM_numbers',
-            'SPACER_POST_MATCHER' => 'SPACER_POST',
+            array('BLOCK_IND_EITHER', array('BLOCK_PARAM_cache', null, null, null)),
+            array('BLOCK_IND_HOOKTYPE', array('BLOCK_main_custom_gfx_PARAM_param', null, null, null)),
+            //array('BLOCK_IND_DEFAULT', 'default: test'),
+            array('BLOCK_IND_SUPPORTS_COMCODE', 'COMCODE_TAG_indent_EMBED'),
+            array('BLOCK_IND_ADVANCED', 'COMCODE_TAG_box_PARAM_options'),
+            array('BLOCK_IND_WHETHER', 'COMCODE_TAG_codebox_PARAM_numbers'),
+            array('SPACER_POST_MATCHER', 'SPACER_POST'),
         );
         foreach (array_keys($langs) as $lang) {
-            foreach ($substring_pairs as $_substring => $_str) {
+            foreach ($substring_pairs as $_parts) {
+                list($_substring, $_str) = $_parts;
+
                 $substring = $this->do_lang($_substring, null, null, null, $lang);
                 if ($substring === null) {
                     continue; // Not defined for language

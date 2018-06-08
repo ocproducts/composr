@@ -860,7 +860,6 @@ class Module_admin_version
 
             add_privilege('SUBMISSION', 'edit_meta_fields');
             add_privilege('SUBMISSION', 'perform_webstandards_check_by_default');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('smart_topic_notification', 20, 1, 0, 1, 1, '', 'tick', 0, '0', '', 'icons/tool_buttons/notifications');
 
             $GLOBALS['SITE_DB']->create_table('email_bounces', array(
                 'id' => '*AUTO',
@@ -1091,6 +1090,16 @@ class Module_admin_version
                     'c_enabled' => 1,
                 ));
             }
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 18)) {
+            $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('smart_topic_notification');
+
+            rename_config_option('imap_folder', 'mail_folder');
+            rename_config_option('imap_host', 'mail_server_host');
+            rename_config_option('imap_port', 'mail_server_port');
+            rename_config_option('imap_username', 'mail_username');
+            rename_config_option('imap_password', 'mail_password');
         }
     }
 

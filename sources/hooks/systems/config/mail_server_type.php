@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_imap_host
+class Hook_config_mail_server_type
 {
     /**
      * Gets the details relating to the config option.
@@ -31,13 +31,13 @@ class Hook_config_imap_host
     public function get_details()
     {
         return array(
-            'human_name' => 'HOST',
-            'type' => 'line',
+            'human_name' => 'SERVER_TYPE',
+            'type' => 'list',
             'category' => 'SERVER',
             'group' => 'IMAP',
-            'explanation' => 'CONFIG_OPTION_imap_host',
-            'shared_hosting_restricted' => '1',
-            'list_options' => '',
+            'explanation' => 'CONFIG_OPTION_mail_server_type',
+            'shared_hosting_restricted' => '0',
+            'list_options' => 'imap|imaps|imaps_nocert|imapt|imapt_nocert|pop3|pop3s|pop3s_nocert|pop3t|pop3t_nocert',
             'order_in_category_group' => 1,
             'required' => true,
 
@@ -54,6 +54,10 @@ class Hook_config_imap_host
      */
     public function get_default()
     {
-        return 'localhost';
+        if (!function_exists('imap_open')) {
+            return null;
+        }
+
+        return 'imap';
     }
 }

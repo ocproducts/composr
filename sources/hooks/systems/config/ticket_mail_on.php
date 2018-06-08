@@ -53,6 +53,10 @@ class Hook_config_ticket_mail_on
      */
     public function get_default()
     {
+        if (!function_exists('imap_open')) {
+            return null;
+        }
+
         if (!addon_installed('tickets')) {
             return null;
         }

@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    health_check
+ * @package    core_configuration
  */
 
 /**
  * Hook class.
  */
-class Hook_config_hc_mail_server_type
+class Hook_config_mail_username
 {
     /**
      * Gets the details relating to the config option.
@@ -31,19 +31,19 @@ class Hook_config_hc_mail_server_type
     public function get_details()
     {
         return array(
-            'human_name' => 'HC_MAIL_SERVER_TYPE',
-            'type' => 'list',
-            'category' => 'HEALTH_CHECK',
-            'group' => '_EMAIL',
-            'explanation' => 'CONFIG_OPTION_hc_mail_server_type',
-            'shared_hosting_restricted' => '0',
-            'list_options' => 'pop3|pop3s|imap|imaps',
+            'human_name' => 'USERNAME',
+            'type' => 'line',
+            'category' => 'SERVER',
+            'group' => 'IMAP',
+            'explanation' => 'CONFIG_OPTION_mail_username',
+            'shared_hosting_restricted' => '1',
+            'list_options' => '',
+            'order_in_category_group' => 5,
             'required' => true,
-            'order_in_category_group' => 6,
 
             'public' => false,
 
-            'addon' => 'health_check',
+            'addon' => 'core_configuration',
         );
     }
 
@@ -54,14 +54,11 @@ class Hook_config_hc_mail_server_type
      */
     public function get_default()
     {
-        if (!addon_installed('health_check')) {
-            return null;
-        }
-
         if (!function_exists('imap_open')) {
             return null;
         }
 
-        return 'imap';
+        $website_email = get_option('website_email');
+        return preg_replace('#@.*$#', '', $website_email);
     }
 }

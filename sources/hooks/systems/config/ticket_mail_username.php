@@ -31,14 +31,14 @@ class Hook_config_ticket_mail_username
     public function get_details()
     {
         return array(
-            'human_name' => 'TICKET_MAIL_USERNAME',
+            'human_name' => 'USERNAME',
             'type' => 'line',
             'category' => 'MESSAGES',
             'group' => 'SUPPORT_TICKETS_MAIL',
             'explanation' => 'CONFIG_OPTION_ticket_mail_username',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 8,
+            'order_in_category_group' => 9,
             'required' => true,
 
             'public' => false,
@@ -54,6 +54,10 @@ class Hook_config_ticket_mail_username
      */
     public function get_default()
     {
+        if (!function_exists('imap_open')) {
+            return null;
+        }
+
         if (!addon_installed('tickets')) {
             return null;
         }

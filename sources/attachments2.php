@@ -60,6 +60,12 @@ function do_comcode_attachments($comcode, $type = 'null', $id = '', $previewing_
         $insert_as_admin = false;
     }
 
+    global $OVERRIDE_MEMBER_ID_COMCODE;
+    if ($OVERRIDE_MEMBER_ID_COMCODE !== null) {
+        $member = $OVERRIDE_MEMBER_ID_COMCODE;
+        $insert_as_admin = false;
+    }
+
     // Handle data URLs for attachment embedding
     _handle_data_url_attachments($comcode, $type, $id, $db);
 
@@ -225,9 +231,17 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $db)
                             $new_url = $test;
                         }
 
+                        $member = get_member();
+
+                        global $OVERRIDE_MEMBER_ID_COMCODE;
+                        if ($OVERRIDE_MEMBER_ID_COMCODE !== null) {
+                            $member = $OVERRIDE_MEMBER_ID_COMCODE;
+                            $insert_as_admin = false;
+                        }
+
                         $db = $GLOBALS[((substr($type, 0, 4) == 'cns_') && (get_forum_type() == 'cns')) ? 'FORUM_DB' : 'SITE_DB'];
                         $attachment_id = $db->query_insert('attachments', array(
-                            'a_member_id' => get_member(),
+                            'a_member_id' => $member,
                             'a_file_size' => strlen($data),
                             'a_url' => $new_url,
                             'a_thumb_url' => '',
@@ -306,6 +320,13 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type = 'nu
     require_lang('comcode');
 
     _check_attachment_count();
+
+    global $OVERRIDE_MEMBER_ID_COMCODE;
+    if ($OVERRIDE_MEMBER_ID_COMCODE !== null) {
+        $for_member = $OVERRIDE_MEMBER_ID_COMCODE;
+        $insert_as_admin = false;
+        $source_user = $OVERRIDE_MEMBER_ID_COMCODE;
+    }
 
     $_info = do_comcode_attachments($text, $type, $id, false, $db, $insert_as_admin, $for_member);
     $text_parsed = $_info['tempcode']->to_assembly();

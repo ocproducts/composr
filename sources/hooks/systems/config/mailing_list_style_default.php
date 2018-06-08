@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    health_check
+ * @package    cns_forum
  */
 
 /**
  * Hook class.
  */
-class Hook_config_hc_mail_server
+class Hook_config_mailing_list_style_default
 {
     /**
      * Gets the details relating to the config option.
@@ -31,19 +31,18 @@ class Hook_config_hc_mail_server
     public function get_details()
     {
         return array(
-            'human_name' => 'HC_MAIL_SERVER',
-            'type' => 'line',
-            'category' => 'HEALTH_CHECK',
-            'group' => '_EMAIL',
-            'explanation' => 'CONFIG_OPTION_hc_mail_server',
+            'human_name' => 'MAILING_LIST_STYLE',
+            'type' => 'tick',
+            'category' => 'USERS',
+            'group' => 'MEMBER_DEFAULT_SETTINGS',
+            'explanation' => 'CONFIG_OPTION_mailing_list_style_default',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'required' => false,
-            'order_in_category_group' => 2,
+            'required' => true,
 
             'public' => false,
 
-            'addon' => 'health_check',
+            'addon' => 'cns_forum',
         );
     }
 
@@ -54,14 +53,16 @@ class Hook_config_hc_mail_server
      */
     public function get_default()
     {
-        if (!addon_installed('health_check')) {
+        if (!addon_installed('cns_forum')) {
             return null;
         }
 
-        if (!function_exists('imap_open')) {
+        require_code('cns_forums2');
+        $test = cns_has_mailing_list_style();
+        if ($test[0] == 0) {
             return null;
         }
 
-        return 'localhost';
+        return '1';
     }
 }

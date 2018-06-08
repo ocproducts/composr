@@ -35,6 +35,41 @@ function init__mail()
     $EMAIL_ATTACHMENTS = array();
 }
 
+/**
+ * Gets a list of all system-owned e-mail addresses.
+ * This is sometimes needed for internal processing.
+ *
+ * @param  boolean $include_all Include all e-mail domains, as opposed to just the main outgoing one
+ * @return array A map of system e-mail address to domain name it uses
+ */
+function find_system_email_addresses($include_all = true)
+{
+    $addresses = array();
+    $addresses[get_option('website_email')] = true;
+    if ($include_all) {
+        $addresses[get_option('staff_address')] = true;
+        if (addon_installed('tickets')) {
+            $addresses[get_option('ticket_mail_email_address')] = true;
+        }
+        if (addon_installed('cns_forum')) {
+            $rows = $GLOBALS['SITE_DB']->query_select('f_forums', array('f_mail_email_address'));
+            foreach ($rows as $row) {
+                $addresses[$row['f_mail_email_address']] = true;
+            }
+        }
+    }
+
+    unset($addresses['']); // None-set values should not carry through
+
+    $_addresses = array();
+    foreach ($addresses as $address) {
+        $domain = preg_replace('#^.*@#', '', $address);
+        $_addresses[$address] = $domain;
+    }
+
+    return $_addresses;
+}
+
 /*
 What headers to use can easily confuse. Here is a guide...
 
@@ -747,13 +782,8 @@ abstract class Mail_dispatcher_base
         // Headers
         $headers = '';
         if ($this->website_email != '') {
-            if (
-                (get_option('use_true_from') == '1') ||
-                ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('website_email')))) ||
-                ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('staff_address')))) ||
-                ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('ticket_email_from')))) ||
-                ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == get_domain()))
-            ) {
+            $system_addresses = find_system_email_addresses();
+            if ((get_option('use_true_from') == '1') || (preg_replace('#^.*@#', '', $from_email) == get_domain()) || (in_array(preg_replace('#^.*@#', '', $from_email), $system_addresses))) {
                 $headers .= 'From: "' . $from_name . '" <' . $from_email . '>' . $this->line_term;
             } else {
                 $headers .= 'From: "' . $from_name . '" <' . $this->website_email . '>' . $this->line_term;

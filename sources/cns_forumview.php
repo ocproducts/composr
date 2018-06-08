@@ -466,6 +466,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         }
     }
 
+    require_code('cns_forums2');
     $map = array(
         '_GUID' => '1c14afd9265b1bf69375169dd6faf83c',
         'STARTER_TITLE' => $starter_title,
@@ -476,6 +477,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         'TOPIC_WRAPPER' => $topic_wrapper,
         'BREADCRUMBS' => $breadcrumbs,
         'FORUM_GROUPINGS' => $forum_groupings,
+        'MAIL_EMAIL_ADDRESS' => ($id === null || !cns_supports_mailing_list_style($forum_info)) ? null : $forum_info['f_mail_email_address'],
         'PARENT_FORUM' => ($forum_info === null) ? '-1' : (($forum_info['f_parent_forum'] === null) ? '' : strval($forum_info['f_parent_forum'])),
     );
     $content = do_template('CNS_FORUM', $map);

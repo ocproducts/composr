@@ -23,6 +23,10 @@ class phpdoc_test_set extends cms_test_case
         $phpdoc_to_functions = array();
 
         $exceptions = array(
+            'Find the e-mail address for system e-mails (Reply-To header).',
+            'Process an e-mail found.',
+            'Strip system code from an e-mail component.',
+            'Send out an e-mail about us not recognising an e-mail address for an incoming e-mail.',
             'Output a login page.',
             'Standard code module initialisation function.',
             'Provides a hook for file synchronisation between mirrored servers.',

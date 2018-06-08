@@ -21,19 +21,24 @@
 /**
  * Hook class.
  */
-class Hook_cns_cpf_filter_notifications
+class Hook_cron_cns_forum_email_integration
 {
     /**
-     * Find which special CPFs to enable.
-     *
-     * @return array A list of CPFs to enable
+     * Run function for CRON hooks. Searches for tasks to perform.
      */
-    public function to_enable()
+    public function run()
     {
-        if (!addon_installed('cns_forum')) {
-            return array();
+        if (get_forum_type() != 'cns') {
+            return;
         }
 
-        return array('smart_topic_notification' => true);
+        if (!addon_installed('cns_forum')) {
+            return;
+        }
+
+        require_code('mail_integration');
+        require_code('cns_forum_email_integration');
+        $email_ob = new ForumEmailIntegration();
+        $email_ob->incoming_scan();
     }
 }

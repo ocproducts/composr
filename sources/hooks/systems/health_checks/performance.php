@@ -203,7 +203,9 @@ class Hook_health_check_performance extends Hook_Health_Check
 
         $css_basename = basename(css_enforce('global', 'default'));
         $javascript_basename = basename(javascript_enforce('global', 'default'));
-        sleep(1);
+        if (php_function_allowed('usleep')) {
+            usleep(1000000);
+        }
 
         $urls = array(
             'page' => $this->get_page_url(),

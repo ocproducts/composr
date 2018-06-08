@@ -121,7 +121,9 @@ class Hook_health_check_security extends Hook_Health_Check
             if ($http_result->data !== null) {
                 break;
             }
-            sleep(5);
+            if (php_function_allowed('usleep')) {
+                usleep(5000000);
+            }
         }
 
         $this->assertTrue(!in_array($http_result->message, array('401', '403')), 'Error with our Google Safe Browsing API key (' . $http_result->message . ')');

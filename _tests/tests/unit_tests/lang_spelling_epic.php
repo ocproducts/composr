@@ -20,6 +20,10 @@ class lang_spelling_epic_test_set extends cms_test_case
 {
     public function testSpelling()
     {
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(200);
+        }
+
         require_code('files2');
         require_code('spelling');
 
@@ -33,6 +37,15 @@ class lang_spelling_epic_test_set extends cms_test_case
 
         // Many of these aren't real words, but they appear for good reasons so we whitelist them
         $okay_words = array(
+            'imaps',
+            'imapt',
+            'nocert',
+            'nonmatch',
+            'openbsd',
+            'preferencing',
+            'solaris',
+            'plaintext',
+            'starttls',
             'balancer',
             'usleep',
             'insertelement',

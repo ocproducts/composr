@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_imap_password
+class Hook_config_mail_folder
 {
     /**
      * Gets the details relating to the config option.
@@ -31,15 +31,15 @@ class Hook_config_imap_password
     public function get_details()
     {
         return array(
-            'human_name' => 'PASSWORD',
+            'human_name' => 'MAIL_FOLDER',
             'type' => 'line',
             'category' => 'SERVER',
             'group' => 'IMAP',
-            'explanation' => 'CONFIG_OPTION_imap_password',
+            'explanation' => 'CONFIG_OPTION_mail_folder',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 5,
-            'required' => false,
+            'order_in_category_group' => 4,
+            'required' => true,
 
             'public' => false,
 
@@ -54,6 +54,10 @@ class Hook_config_imap_password
      */
     public function get_default()
     {
-        return '';
+        if (!function_exists('imap_open')) {
+            return null;
+        }
+
+        return 'INBOX';
     }
 }

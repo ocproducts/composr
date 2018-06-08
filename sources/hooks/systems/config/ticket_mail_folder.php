@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    health_check
+ * @package    tickets
  */
 
 /**
  * Hook class.
  */
-class Hook_config_hc_mail_username
+class Hook_config_ticket_mail_folder
 {
     /**
      * Gets the details relating to the config option.
@@ -31,19 +31,19 @@ class Hook_config_hc_mail_username
     public function get_details()
     {
         return array(
-            'human_name' => 'HC_MAIL_USERNAME',
+            'human_name' => 'MAIL_FOLDER',
             'type' => 'line',
-            'category' => 'HEALTH_CHECK',
-            'group' => '_EMAIL',
-            'explanation' => 'CONFIG_OPTION_hc_mail_username',
-            'shared_hosting_restricted' => '0',
+            'category' => 'FEATURE',
+            'group' => 'SUPPORT_TICKETS_MAIL',
+            'explanation' => 'CONFIG_OPTION_ticket_mail_folder',
+            'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'order_in_category_group' => 6,
             'required' => false,
-            'order_in_category_group' => 4,
 
             'public' => false,
 
-            'addon' => 'health_check',
+            'addon' => 'tickets',
         );
     }
 
@@ -54,7 +54,7 @@ class Hook_config_hc_mail_username
      */
     public function get_default()
     {
-        if (!addon_installed('health_check')) {
+        if (!addon_installed('tickets')) {
             return null;
         }
 

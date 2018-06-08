@@ -94,6 +94,11 @@ class Module_tickets
             $GLOBALS['SITE_DB']->create_index('ticket_known_emailers', 'member_id', array('member_id'));
         }
 
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
+            rename_config_option('ticket_email_from', 'ticket_mail_email_address');
+            rename_config_option('ticket_mail_server', 'ticket_mail_server_host');
+        }
+
         if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('tickets', array(
                 'ticket_id' => '*SHORT_TEXT',

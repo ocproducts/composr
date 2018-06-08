@@ -25,36 +25,37 @@ class Hook_commandr_fs_members
 {
     private $field_mapping = array(
         'id' => 'id',
-        'theme' => 'm_theme',
-        'avatar' => 'm_avatar_url',
-        'validated' => 'm_validated',
-        'timezone_offset' => 'm_timezone_offset',
+        'email' => 'm_email_address',
         'primary_group' => 'm_primary_group',
-        'signature' => 'm_signature',
-        'banned' => 'm_is_perm_banned',
-        'preview_posts' => 'm_preview_posts',
         'dob_day' => 'm_dob_day',
         'dob_month' => 'm_dob_month',
         'dob_year' => 'm_dob_year',
-        'reveal_age' => 'm_reveal_age',
-        'email' => 'm_email_address',
+        'timezone' => 'm_timezone_offset',
+        'language' => 'm_language',
+        'theme' => 'm_theme',
         'title' => 'm_title',
         'photo' => 'm_photo_url',
         'photo_thumb' => 'm_photo_thumb_url',
+        'avatar' => 'm_avatar_url',
+        'signature' => 'm_signature',
+        'preview_posts' => 'm_preview_posts',
+        'reveal_age' => 'm_reveal_age',
         'views_signatures' => 'm_views_signatures',
         'auto_monitor_contrib_content' => 'm_auto_monitor_contrib_content',
-        'language' => 'm_language',
+        'smart_topic_notification' => 'm_smart_topic_notification',
+        'mailing_list_style' => 'm_mailing_list_style',
+        'auto_mark_read' => 'm_auto_mark_read',
+        'sound_enabled' => 'm_sound_enabled',
         'allow_emails' => 'm_allow_emails',
         'allow_emails_from_staff' => 'm_allow_emails_from_staff',
-        'max_email_attach_size_mb' => 'm_max_email_attach_size_mb',
-        'last_visit_time' => 'm_last_visit_time',
-        'last_submit_time' => 'm_last_submit_time',
-        'ip_address' => 'm_ip_address',
         'highlighted_name' => 'm_highlighted_name',
         'pt_allow' => 'm_pt_allow',
         'pt_rules_text' => 'm_pt_rules_text',
+        'validated' => 'm_validated',
         'on_probation_until' => 'm_on_probation_until',
-        'auto_mark_read' => 'm_auto_mark_read',
+        'banned' => 'm_is_perm_banned',
+        'ip_address' => 'm_ip_address',
+        'max_email_attach_size_mb' => 'm_max_email_attach_size_mb',
     );
 
     /**
@@ -196,7 +197,43 @@ class Hook_commandr_fs_members
             // We're at the top level, and adding a new member
             require_code('cns_members_action');
             require_code('cns_members_action2');
-            cns_make_member($new_dir_name, 'commandr', '', null, null, null, null, array(), null, null, 1, null, null, '', '', '', 0, 1, 1, '', '', '', 1, 1, null, 1, 1, null, '', false);
+            cns_make_member(
+                $new_dir_name, // username
+                'commandr', // password
+                '', // email_address
+                null, // primary_group
+                null, // secondary_groups
+                null, // dob_day
+                null, // dob_month
+                null, // dob_year
+                array(), // custom_fields
+                null, // timezone
+                '', // language
+                '', // theme
+                '', // title
+                '', // photo_url
+                '', // photo_thumb_url
+                null, // avatar_url
+                '', // signature
+                null, // preview_posts
+                1, // reveal_age
+                1, // views_signatures
+                null, // auto_monitor_contrib_content
+                null, // smart_topic_notification
+                null, // mailing_list_style
+                1, // auto_mark_read
+                null, // sound_enabled
+                1, // allow_emails
+                1, // allow_emails_from_staff
+                0, // highlighted_name
+                '*', // pt_allow
+                '', // pt_rules_text
+                1, // validated
+                '', // validated_email_confirm_code
+                null, // on_probation_until
+                0, // is_perm_banned
+                false // check_correctness
+            );
         } else {
             return false; // Directories aren't allowed to be added anywhere else
         }

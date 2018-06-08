@@ -1939,18 +1939,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_hc_compound_requests_per_second_threshold
         HC_COMPOUND_REQUESTS_WINDOW_SIZE
         CONFIG_OPTION_hc_compound_requests_window_size
-        HC_MAIL_ADDRESS
-        CONFIG_OPTION_hc_mail_address
-        HC_MAIL_SERVER
-        CONFIG_OPTION_hc_mail_server
-        HC_MAIL_SERVER_TYPE
-        CONFIG_OPTION_hc_mail_server_type
-        HC_MAIL_SERVER_PORT
-        CONFIG_OPTION_hc_mail_server_port
-        HC_MAIL_USERNAME
-        CONFIG_OPTION_hc_mail_username
-        HC_MAIL_PASSWORD
-        CONFIG_OPTION_hc_mail_password
         HC_MAIL_WAIT_TIME
         CONFIG_OPTION_hc_mail_wait_time
         HC_CRON_SECTIONS_TO_RUN
@@ -3056,11 +3044,19 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_honeypot_url
         CONFIG_OPTION_hot_topic_definition
         CONFIG_OPTION_httpauth_is_enabled
-        CONFIG_OPTION_imap_folder
-        CONFIG_OPTION_imap_host
-        CONFIG_OPTION_imap_password
-        CONFIG_OPTION_imap_port
-        CONFIG_OPTION_imap_username
+        CONFIG_OPTION_mail_folder
+        CONFIG_OPTION_mail_server_type
+        CONFIG_OPTION_mail_server_host
+        CONFIG_OPTION_mail_server_port
+        CONFIG_OPTION_mail_password
+        MAIL_NONMATCH_POLICY
+        DESCRIPTION_MAIL_NONMATCH_POLICY
+        MAIL_NONMATCH_POLICY_block
+        MAIL_NONMATCH_POLICY_post_as_guest
+        MAIL_NONMATCH_POLICY_create_account
+        MAIL_UNCONFIRMED_NOTICE
+        DESCRIPTION_MAIL_UNCONFIRMED_NOTICE
+        CONFIG_OPTION_mail_username
         CONFIG_OPTION_immediate_downloads
         CONFIG_OPTION_implied_spammer_confidence
         CONFIG_OPTION_important_groups_per_page
@@ -3347,6 +3343,41 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_spam_check_level_VALUE_NEVER
         CONFIG_OPTION_spam_check_usernames
         CONFIG_OPTION_spam_stale_threshold
+        CONFIG_OPTION_mail_server_type_VALUE_imap
+        CONFIG_OPTION_mail_server_type_VALUE_imaps
+        CONFIG_OPTION_mail_server_type_VALUE_imaps_nocert
+        CONFIG_OPTION_mail_server_type_VALUE_imapt
+        CONFIG_OPTION_mail_server_type_VALUE_imapt_nocert
+        CONFIG_OPTION_mail_server_type_VALUE_pop3
+        CONFIG_OPTION_mail_server_type_VALUE_pop3s
+        CONFIG_OPTION_mail_server_type_VALUE_pop3s_nocert
+        CONFIG_OPTION_mail_server_type_VALUE_pop3t
+        CONFIG_OPTION_mail_server_type_VALUE_pop3t_nocert
+        CONFIG_OPTION_mailing_list_style_default
+        CONFIG_OPTION_smart_topic_notification_default
+        CONFIG_OPTION_sound_enabled_default
+        CONFIG_OPTION_ticket_mail_nonmatch_policy
+        CONFIG_OPTION_ticket_mail_nonmatch_policy_VALUE_block
+        CONFIG_OPTION_ticket_mail_nonmatch_policy_VALUE_create_account
+        CONFIG_OPTION_ticket_mail_nonmatch_policy_VALUE_post_as_guest
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imap
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imaps
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imaps_nocert
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imapt
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_imapt_nocert
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3s
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3s_nocert
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3t
+        CONFIG_OPTION_ticket_mail_server_type_VALUE_pop3t_nocert
+        TICKET_MAIL_EMAIL_ADDRESS
+        TICKET_MAIL_NONMATCH_POLICY
+        FORUM_MAIL_INCOMPLETE_CONFIGURATION
+        FORUM_MAIL_USERNAME_AND_EMAIL_ADDRESS_BOTH
+        FORUM_MAIL_USER_CANNOT_BE_SHARED
+        MAILING_LIST
+        MEMBER_DEFAULT_SETTINGS
+        DESCRIPTION_MAILING_LIST
         CONFIG_OPTION_ssw
         CONFIG_OPTION_staff_address
         CONFIG_OPTION_stats_store_time
@@ -3365,11 +3396,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_threaded_topics_default
         CONFIG_OPTION_thumb_width
         CONFIG_OPTION_ticket_auto_assign
-        CONFIG_OPTION_ticket_email_from
+        CONFIG_OPTION_ticket_mail_email_address
         CONFIG_OPTION_ticket_forum_name
         CONFIG_OPTION_ticket_mail_on
+        CONFIG_OPTION_ticket_mail_folder
         CONFIG_OPTION_ticket_mail_password
-        CONFIG_OPTION_ticket_mail_server
+        CONFIG_OPTION_ticket_mail_server_host
         CONFIG_OPTION_ticket_mail_server_port
         CONFIG_OPTION_ticket_mail_server_type
         CONFIG_OPTION_ticket_mail_username
@@ -3429,6 +3461,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_wiki_enable_content_posts
         CONFIG_OPTION_wysiwyg
         CONFIG_OPTION_yeehaw
+        CONFIG_OPTION_mail_delete_after
+        MAIL_DELETE_AFTER
         CONFIRM
         CONFIRM_CODE
         CONFIRM_DELETE_ALL_CHATROOMS
@@ -6210,6 +6244,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         POP3_DESCRIPTION
         POP3_MAINTAIN_URL
         PORT
+        SERVER_TYPE
         PORTFOLIO
         POSTING_RATES
         POSTING_TICKET_AS
@@ -7126,15 +7161,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TICKET_AUTO_ASSIGN
         TICKET_CANNOT_BIND_MAIL
         TICKET_CANNOT_BIND_SUBJECT
-        TICKET_EMAIL_FROM
         TICKET_FORUM_NAME
         TICKET_GUEST_EMAILS_MANDATORY
         TICKET_MAIL_ON
-        TICKET_MAIL_PASSWORD
-        TICKET_MAIL_SERVER
-        TICKET_MAIL_SERVER_PORT
-        TICKET_MAIL_SERVER_TYPE
-        TICKET_MAIL_USERNAME
         TICKET_NEW_MESSAGE_FOR_STAFF
         TICKET_NEW_STAFF
         TICKET_OTHERS_HACK
@@ -7845,6 +7874,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PAGE_VIEWS_THIS_WEEK
         PAGE_VIEWS_TODAY
         PAGES
+        MAILING_LIST_ADVERTISE
         COUNT_CHATPOSTS
         COUNT_CHATTERS
         COUNT_FILES
@@ -7983,6 +8013,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ASSIGNED_TO
         ASSIGN_TO
         ATOZ
+        DESCRIPTION_MAILING_LIST_STYLE
+        DESCRIPTION_MAILING_LIST_STYLE_CAVEAT
+        DESCRIPTION_SOUND_ENABLED
+        MAILING_LIST_STYLE
+        SOUND_ENABLED
         ATTACHMENT
         ATTACHMENTS
         ATTACHMENTS_OF
@@ -8189,6 +8224,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CLUBS
         CLUB_WITH_MEMBERS_APPROVAL
         CLUB_WITH_MEMBERS_OPEN
+        MAIL_INTEGRATION_AUTOMATIC_ACCOUNT_SUBJECT
+        MAIL_INTEGRATION_AUTOMATIC_ACCOUNT_MAIL
         CMS
         CMS_COMMUNITY_HELP
         CNS_DESCRIPTION_PUBLICATION_TIME
@@ -8606,7 +8643,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD
         DISABLE_COMMENT_NOTIFICATIONS
         DISABLE_NOTIFICATIONS
-        DISABLE_NOTIFICATION_SOUND
         DISABLE_WYSIWYG
         DISALLOW_LIST
         DISALLOW_LIST_GROUPS
@@ -8714,7 +8750,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ENABLE_NOTIFICATIONS_WEEKLY_EMAIL_DIGEST
         ENABLE_NOTIFICATIONS__CHOICE
         ENABLE_NOTIFICATIONS__STATISTICAL
-        ENABLE_NOTIFICATION_SOUND
         ENABLE_POPUPS
         ENABLE_WYSIWYG
         END_CHAT
@@ -9115,6 +9150,24 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MAY_LEAVE_BLANK_ADVANCED
         MEC_NOTIFICATION_MAIL
         MEC_NOTIFICATION_MAIL_SUBJECT
+        POST_FROM_MAILING_LIST
+        MAILING_LIST_CANNOT_BIND_SUBJECT
+        MAILING_LIST_CANNOT_BIND_MAIL
+        MAILING_LIST_ACCESS_DENIED_SUBJECT
+        MAILING_LIST_ACCESS_DENIED_MAIL
+        MAIL_INTEGRATION_ATTACHMENT_ERRORS_SUBJECT
+        MAIL_INTEGRATION_ATTACHMENT_ERRORS_MAIL
+        MAIL_INTEGRATION_ATTACHMENT_TOO_MANY
+        MAIL_INTEGRATION_ATTACHMENT_TOO_BIG
+        MAIL_INTEGRATION_ATTACHMENT_OVER_QUOTA
+        MAIL_INTEGRATION_ATTACHMENT_INVALID_TYPE
+        MAILING_LIST_SIMPLE_SUBJECT_new
+        MAILING_LIST_SIMPLE_SUBJECT_reply
+        MAILING_LIST_SIMPLE_SUBJECT_new_regexp
+        MAILING_LIST_SIMPLE_SUBJECT_reply_regexp
+        MAILING_LIST_SIMPLE_MAIL_new
+        MAILING_LIST_SIMPLE_MAIL_reply
+        MAILING_LIST_SIMPLE_MAIL_regexp
         MEDIA
         MEDIA_FEATURES
         MEDIA_SET
@@ -9365,7 +9418,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NOTIFICATION_PT_MESSAGE_WRAP_DIRECT_REPLY
         NOTIFICATION_PT_SUBJECT_WRAP
         NOTIFICATION_SMS_COMPLETE_WRAP
-        NOTIFICATION_SOUND
         NOTIFICATION_SUBJECT_invited_content
         NOTIFICATION_TYPE_calendar_event
         NOTIFICATION_TYPE_calendar_reminder
@@ -9960,7 +10012,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SPECIAL_CPF__cms_post_code
         SPECIAL_CPF__cms_role
         SPECIAL_CPF__cms_sites
-        SPECIAL_CPF__cms_smart_topic_notification
         SPECIAL_CPF__cms_state
         SPECIAL_CPF__cms_street_address
         SPECIAL_REGISTRATION_FIELDS

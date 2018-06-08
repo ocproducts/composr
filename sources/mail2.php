@@ -45,68 +45,95 @@ function email_spam_check($mime_email)
     return array($spam_report, $spam_score);
 }
 
+
 /**
  * Get an IMAP/POP3 connection string.
  *
- * @param  string $server The server hostname
+ * @param  string $host The hostname
  * @param  integer $port The port
  * @param  ?string $type The protocol (null: autodetect)
- * @set pop3 pop3s imap imaps
+ * @set imap imaps imaps_nocert pop3 pop3s pop3s_nocert
  * @return string Connection string
  *
  * @ignore
  */
-function _imap_server_spec($server, $port, $type = null)
+function _imap_server_spec($host, $port, $type = null)
 {
-    if ($type === 'pop3' || $type === 'pop3s') {
+    if ($type === 'pop3' || $type === 'pop3s' || $type === 'pop3s_nocert' || $type === 'pop3t' || $type === 'pop3t_nocert') {
         $is_pop3 = true;
-    } elseif ($type === 'imap' || $type === 'imaps') {
+    } elseif ($type === 'imap' || $type === 'imaps' || $type === 'imaps_nocert' || $type === 'imapt' || $type === 'imapt_nocert') {
         $is_pop3 = false;
     } else {
-        $is_pop3 = (strpos($server, 'pop') !== false || $port == 110 || $port == 995);
+        $is_pop3 = (strpos($host, 'pop') !== false || $port == 110 || $port == 995);
     }
 
     if ($is_pop3) {
         if ($type === null) {
             $ssl = ($port == 995);
+            $starttls = false;
+            $nocert = true;
         } else {
-            $ssl = ($type == 'pop3s');
+            $ssl = ($type == 'pop3s' || $type == 'pop3s_nocert');
+            $starttls = ($type == 'pop3t' || $type == 'pop3t_nocert');
+            $nocert = ($type == 'pop3s_nocert' || $type == 'pop3t_nocert');
         }
-        $server_special_details = $ssl ? '/pop3/ssl/novalidate-cert' : '/pop3/novalidate-cert';
-        $server_spec = '{' . $server . ':' . strval($port) . '' . $server_special_details . '}';
+        $server_special_details = '/pop3';
     } else {
         if ($type === null) {
             $ssl = ($port == 993);
+            $starttls = false;
+            $nocert = true;
         } else {
-            $ssl = ($type == 'imaps');
+            $ssl = ($type == 'imaps' || $type == 'imaps_nocert');
+            $starttls = ($type == 'imapt' || $type == 'imapt_nocert');
+            $nocert = ($type == 'imaps_nocert' || $type == 'imapt_nocert');
         }
-        $server_special_details = $ssl ? '/ssl/novalidate-cert' : '/novalidate-cert';
-        $server_spec = '{' . $server . ':' . strval($port) . '/imap' . $server_special_details . '}';
+        $server_special_details = '/imap';
     }
-    return $server_spec;
+
+    if ($ssl || $starttls) {
+        //$server_special_details .= '/secure'; "do not transmit a plaintext password over the network", causes issue with gmail ("Can't do secure authentication with this server")
+        if ($ssl) {
+            $server_special_details .= '/ssl';
+        }
+        if ($starttls) {
+            $server_special_details .= '/tls';
+        }
+        if ($nocert) {
+            $server_special_details .= '/novalidate-cert';
+        } else {
+            $server_special_details .= '/validate-cert';
+        }
+    } else {
+        $server_special_details .= '/notls';
+    }
+
+    return '{' . $host . ':' . strval($port) . $server_special_details . '}';
 }
 
 /**
- * Find IMAP folders.
+ * Find IMAP/POP3 folders.
  *
- * @param  string $server The IMAP server hostname
- * @param  integer $port The IMAP port
- * @param  string $username The IMAP username
- * @param  string $password The IMAP password
+ * @param  string $host The server hostname
+ * @param  integer $port The port
+ * @param  ?string $type The protocol (null: autodetect)
+ * @set imap imaps imaps_nocert pop3 pop3s pop3s_nocert
+ * @param  string $username The username
+ * @param  string $password The password
  * @return array Map of folders (codenames to display labels)
  */
-function find_mail_folders($server, $port, $username, $password)
+function find_mail_folders($host, $port, $type, $username, $password)
 {
     if (!function_exists('imap_open')) {
         warn_exit(do_lang_tempcode('IMAP_NEEDED'));
     }
 
-    $server_spec = _imap_server_spec($server, $port);
+    $server_spec = _imap_server_spec($host, $port, $type);
     $mbox = @imap_open($server_spec . 'INBOX', $username, $password);
     if ($mbox === false) {
         $error = imap_last_error();
         imap_errors(); // Works-around weird PHP bug where "Retrying PLAIN authentication after [AUTHENTICATIONFAILED] Authentication failed. (errflg=1) in Unknown on line 0" may get spit out into any stream (even the backup log)
-        warn_exit(do_lang_tempcode('IMAP_ERROR', $error), false, true);
+        warn_exit(do_lang_tempcode('IMAP_ERROR', $error));
     }
     $_folders = imap_list($mbox, $server_spec, '*');
 
@@ -124,46 +151,50 @@ function find_mail_folders($server, $port, $username, $password)
  * Find if a member can be e-mailed.
  *
  * @param  MEMBER $member_id The member ID
- * @param  ?string $server The IMAP server hostname (null: use configured)
- * @param  ?integer $port The IMAP port (null: use configured)
- * @param  ?string $folder The IMAP inbox identifier (null: use configured)
- * @param  ?string $username The IMAP username (null: use configured)
- * @param  ?string $password The IMAP password (null: use configured)
+ * @param  ?string $host The server hostname (null: use configured)
+ * @param  ?integer $port The port (null: use configured)
+ * @param  ?string $type The protocol (null: use configured / autodetect)
+ * @set imap imaps imaps_nocert pop3 pop3s pop3s_nocert
+ * @param  ?string $folder The inbox identifier (null: use configured)
+ * @param  ?string $username The username (null: use configured)
+ * @param  ?string $password The password (null: use configured)
  * @return ?TIME Last bounce time (null: not bounced)
  */
-function can_email_member($member_id, $server = null, $port = null, $folder = null, $username = null, $password = null)
+function can_email_member($member_id, $host = null, $port = null, $type = null, $folder = null, $username = null, $password = null)
 {
     $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
     if ($email == '') {
         return null;
     }
 
-    return is_mail_bounced($email, $server, $port, $folder, $username, $password);
+    return is_mail_bounced($email, $host, $port, $folder, $username, $password);
 }
 
 /**
  * Find if an e-mail address is bounced.
  *
  * @param  EMAIL $email The email address
- * @param  ?string $server The IMAP server hostname (null: use configured)
- * @param  ?integer $port The IMAP port (null: use configured)
- * @param  ?string $folder The IMAP inbox identifier (null: use configured)
- * @param  ?string $username The IMAP username (null: use configured)
- * @param  ?string $password The IMAP password (null: use configured)
+ * @param  ?string $host The server hostname (null: use configured)
+ * @param  ?integer $port The port (null: use configured)
+ * @param  ?string $type The protocol (null: use configured / autodetect)
+ * @set imap imaps imaps_nocert pop3 pop3s pop3s_nocert
+ * @param  ?string $folder The inbox identifier (null: use configured)
+ * @param  ?string $username The username (null: use configured)
+ * @param  ?string $password The password (null: use configured)
  * @return ?TIME Last bounce time (null: not bounced)
  */
-function is_mail_bounced($email, $server = null, $port = null, $folder = null, $username = null, $password = null)
+function is_mail_bounced($email, $host = null, $port = null, $type = null, $folder = null, $username = null, $password = null)
 {
     if ($email == '') {
         return null;
     }
 
-    if ($server === null) {
-        $server = get_option('imap_host');
-        $port = intval(get_option('imap_port'));
-        $folder = get_option('imap_folder');
-        $username = get_option('imap_username');
-        $password = get_option('imap_password');
+    if ($host === null) {
+        $host = get_option('mail_server_host');
+        $port = intval(get_option('mail_server_port'));
+        $folder = get_option('mail_folder');
+        $username = get_option('mail_username');
+        $password = get_option('mail_password');
     }
 
     if ($password == '' || !function_exists('imap_open')) {
@@ -174,7 +205,7 @@ function is_mail_bounced($email, $server = null, $port = null, $folder = null, $
     if ($update_since === null) {
         $update_since = $GLOBALS['SITE_DB']->query_select_value_if_there('email_bounces', 'MAX(b_time)');
     }
-    update_bounce_storage($server, $port, $folder, $username, $password, $update_since);
+    update_bounce_storage($host, $port, $type, $folder, $username, $password, $update_since);
 
     return $GLOBALS['SITE_DB']->query_select_value_if_there('email_bounces', 'MAX(b_time)', array('b_email_address' => $email));
 }
@@ -182,14 +213,16 @@ function is_mail_bounced($email, $server = null, $port = null, $folder = null, $
 /**
  * Update the details in our bounce storage table, by looking at received bounces.
  *
- * @param  string $server The IMAP server hostname
- * @param  integer $port The IMAP port
- * @param  string $folder The IMAP inbox identifier
- * @param  string $username The IMAP username
- * @param  string $password The IMAP password
- * @param  ?TIME $since Only find bounces since this date (null: 8 weeks ago). This is approximate, we will actually look from a bit further back to compensate for possible timezone differences.
+ * @param  string $host The server hostname
+ * @param  integer $port The port
+ * @param  string $type The protocol
+ * @set imap imaps imaps_nocert pop3 pop3s pop3s_nocert
+ * @param  string $folder The inbox identifier
+ * @param  string $username The username
+ * @param  string $password The password
+ * @param  ?TIME $since Only find bounces since this date (null: 8 weeks ago). This is approximate, we will actually look from a bit further back to compensate for possible timezone differences
  */
-function update_bounce_storage($server, $port, $folder, $username, $password, $since = null)
+function update_bounce_storage($host, $port, $type, $folder, $username, $password, $since = null)
 {
     if ($since === null) {
         $since = time() - 60 * 60 * 24 * 7 * 8;
@@ -204,7 +237,7 @@ function update_bounce_storage($server, $port, $folder, $username, $password, $s
         $done_in_session = true;
     }
 
-    $bounces = _find_mail_bounces($server, $port, $folder, $username, $password, true, $since);
+    $bounces = _find_mail_bounces($host, $port, $type, $folder, $username, $password, true, $since);
     foreach ($bounces as $email => $_details) {
         list($subject, $is_bounce, $time, $body) = $_details;
 
@@ -224,17 +257,19 @@ function update_bounce_storage($server, $port, $folder, $username, $password, $s
 }
 
 /**
- * Find bounces in an IMAP folder, with DB caching.
+ * Find bounces in an IMAP/POP3 folder, with DB caching.
  *
- * @param  string $server The IMAP server hostname
- * @param  integer $port The IMAP port
- * @param  string $folder The IMAP inbox identifier
- * @param  string $username The IMAP username
- * @param  string $password The IMAP password
- * @param  ?TIME $since Only find bounces since this date (null: 8 weeks ago). This is approximate, we will actually look from a bit further back to compensate for possible timezone differences.
+ * @param  string $host The server hostname
+ * @param  integer $port The port
+ * @param  string $type The protocol
+ * @set imap imaps imaps_nocert pop3 pop3s pop3s_nocert
+ * @param  string $folder The inbox identifier
+ * @param  string $username The username
+ * @param  string $password The password
+ * @param  ?TIME $since Only find bounces since this date (null: 8 weeks ago). This is approximate, we will actually look from a bit further back to compensate for possible timezone differences
  * @return array Bounces (a map between email address and details of the bounce)
  */
-function find_mail_bounces($server, $port, $folder, $username, $password, $since = null)
+function find_mail_bounces($host, $port, $type, $folder, $username, $password, $since = null)
 {
     if ($since === null) {
         $since = time() - 60 * 60 * 24 * 7 * 8;
@@ -248,7 +283,7 @@ function find_mail_bounces($server, $port, $folder, $username, $password, $since
         $_since = null;
     }
 
-    update_bounce_storage($server, $port, $folder, $username, $password, $_since);
+    update_bounce_storage($host, $port, $type, $folder, $username, $password, $_since);
 
     $_ret = $GLOBALS['SITE_DB']->query_select('email_bounces', array('b_email_address', 'b_subject', 'b_time', 'b_body'), array(), 'ORDER BY b_time');
     $ret = array();
@@ -259,20 +294,22 @@ function find_mail_bounces($server, $port, $folder, $username, $password, $since
 }
 
 /**
- * Find bounces in an IMAP folder.
+ * Find bounces in an IMAP/POP3 folder.
  *
- * @param  string $server The IMAP server hostname
- * @param  integer $port The IMAP port
- * @param  string $folder The IMAP inbox identifier
- * @param  string $username The IMAP username
- * @param  string $password The IMAP password
+ * @param  string $host The server hostname
+ * @param  integer $port The port
+ * @param  string $type The protocol
+ * @set imap imaps imaps_nocert pop3 pop3s pop3s_nocert
+ * @param  string $folder The inbox identifier
+ * @param  string $username The username
+ * @param  string $password The password
  * @param  boolean $bounces_only Only find bounces (otherwise will find anything)
- * @param  ?TIME $since Only find bounces since this date (null: no limit). This is approximate, we will actually look from a bit further back to compensate for possible timezone differences.
+ * @param  ?TIME $since Only find bounces since this date (null: no limit). This is approximate, we will actually look from a bit further back to compensate for possible timezone differences
  * @return array Bounces (a map between email address and details of the bounce)
  *
  * @ignore
  */
-function _find_mail_bounces($server, $port, $folder, $username, $password, $bounces_only = true, $since = null)
+function _find_mail_bounces($host, $port, $type, $folder, $username, $password, $bounces_only = true, $since = null)
 {
     if (!function_exists('imap_open')) {
         warn_exit(do_lang_tempcode('IMAP_NEEDED'));
@@ -282,7 +319,7 @@ function _find_mail_bounces($server, $port, $folder, $username, $password, $boun
 
     disable_php_memory_limit(); // In case of a huge number
 
-    $server_spec = _imap_server_spec($server, $port);
+    $server_spec = _imap_server_spec($host, $port, $type);
     $mbox = @imap_open($server_spec . $folder, $username, $password);
     if ($mbox === false) {
         $error = imap_last_error();

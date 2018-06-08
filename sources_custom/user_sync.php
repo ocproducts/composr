@@ -167,24 +167,23 @@ function user_sync__inbound($since = null)
             foreach ($field_remap as $key => $remap_scheme) {
                 $user_data[$key] = user_sync_handle_field_remap($key, $remap_scheme, $user, $dbh, $member_id);
             }
+            $primary_group = $user_data['primary_group'];
             $groups = $user_data['groups'];
             $dob_day = $user_data['dob_day'];
             $dob_month = $user_data['dob_month'];
             $dob_year = $user_data['dob_year'];
-            $timezone = $user_data['timezone_offset'];
-            $primary_group = $user_data['primary_group'];
-            $validated = $user_data['validated'];
-            $is_perm_banned = $user_data['is_perm_banned'];
-            $reveal_age = $user_data['reveal_age'];
-            $photo_url = $user_data['photo_url'];
             $language = $user_data['language'];
+            $photo_url = $user_data['photo_url'];
+            $reveal_age = $user_data['reveal_age'];
             $allow_emails = $user_data['allow_emails'];
             $allow_emails_from_staff = $user_data['allow_emails_from_staff'];
+            $validated = $user_data['validated'];
             $on_probation_until = $user_data['on_probation_until'];
+            $is_perm_banned = $user_data['is_perm_banned'];
             $join_time = $user_data['join_time'];
 
             // Collate CPFs
-            $cpf_values = array();
+            $custom_fields = array();
             foreach ($user_data as $key => $value) {
                 if (in_array($key, $native_fields)) {
                     continue;
@@ -216,7 +215,7 @@ function user_sync__inbound($since = null)
                 // Set it
                 if ($cpf_id !== null) {
                     $cpf_value = is_string($value) ? $value : strval($value);
-                    $cpf_values[$cpf_id] = $cpf_value;
+                    $custom_fields[$cpf_id] = $cpf_value;
                 } else {
                     resource_fs_logging('Could not bind ' . $key . ' to CPF.', 'warn');
                 }
@@ -228,28 +227,47 @@ function user_sync__inbound($since = null)
                 $password = ($user_data['pass_hash_salted'] === null) ? get_secure_random_string() : $user_data['pass_hash_salted'];
                 $password_compatibility_scheme = $temporary_password ? 'temporary' : (($user_data['pass_hash_salted'] === null) ? 'plain'/*so we can find it from the DB*/ : null);
 
-                // These ones are very Composr-centric and hence won't be synched specially
-                $last_visit_time = null;
-                $theme = '';
-                $avatar_url = null;
-                $signature = '';
-                $preview_posts = null;
-                $title = '';
-                $photo_thumb_url = '';
-                $views_signatures = 1;
-                $auto_monitor_contrib_content = null;
-                $ip_address = null;
-                $validated_email_confirm_code = '';
-                $salt = '';
-                $last_submit_time = null;
-                $highlighted_name = 0;
-                $pt_allow = '*';
-                $pt_rules_text = '';
-                $auto_mark_read = null;
-
-                $check_correctness = false;
-
-                $member_id = cns_make_member($username, $password, $email_address, $groups, $dob_day, $dob_month, $dob_year, $cpf_values, $timezone, $primary_group, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, $check_correctness, $password_compatibility_scheme, $salt, $last_submit_time, null, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read);
+                $member_id = cns_make_member(
+                    $username, // username
+                    $password, // password
+                    $email_address, // email_address
+                    $primary_group, // primary_group
+                    $groups, // secondary_groups
+                    $dob_day, // dob_day
+                    $dob_month, // dob_month
+                    $dob_year, // dob_year
+                    $custom_fields, // custom_fields
+                    null, // timezone
+                    $language, // language
+                    '', // theme
+                    '', // title
+                    $photo_url, // photo_url
+                    '', // photo_thumb_url
+                    null, // avatar_url
+                    '', // signature
+                    null, // preview_posts
+                    $reveal_age, // reveal_age
+                    1, // views_signatures
+                    null, // auto_monitor_contrib_content
+                    null, // smart_topic_notification
+                    null, // mailing_list_style
+                    1, // auto_mark_read
+                    null, // sound_enabled
+                    $allow_emails, // allow_emails
+                    $allow_emails_from_staff, // allow_emails_from_staff
+                    0, // highlighted_name
+                    '*', // pt_allow
+                    '', // pt_rules_text
+                    $validated, // validated
+                    '', // validated_email_confirm_code
+                    null, // on_probation_until
+                    $is_perm_banned, // is_perm_banned
+                    false, // check_correctness
+                    '', // ip_address
+                    '', // password_compatibility_scheme
+                    '', // salt
+                    $join_time // join_time
+                );
             } else {
                 // Delete?
                 if (function_exists('user_sync__handle_deletion')) {
@@ -261,30 +279,50 @@ function user_sync__inbound($since = null)
                     }
                 }
 
-                $password = null; // Passwords will not be re-synched
-                $last_visit_time = null;
-                $theme = null;
-                $avatar_url = null;
-                $signature = null;
-                $preview_posts = null;
-                $title = null;
-                $photo_thumb_url = null;
-                $views_signatures = null;
-                $auto_monitor_contrib_content = null;
-                $ip_address = null;
-                $validated_email_confirm_code = null;
-                $check_correctness = null;
+                // Passwords will not be re-synched
+                $password = null;
                 $password_compatibility_scheme = null;
                 $salt = null;
-                $last_submit_time = null;
-                $highlighted_name = null;
-                $pt_allow = null;
-                $pt_rules_text = null;
-                $auto_mark_read = null;
 
-                $skip_checks = true;
-
-                cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $cpf_values, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated, $username, $password, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read, $join_time, $avatar_url, $signature, $is_perm_banned, $photo_url, $photo_thumb_url, $salt, $password_compatibility_scheme, $skip_checks);
+                cns_edit_member(
+                    $member_id, // member_id
+                    $username, // username
+                    $password, // password
+                    $email_address, // email_address
+                    $primary_group, // primary_group
+                    $dob_day, // dob_day
+                    $dob_month, // dob_month
+                    $dob_year, // dob_year
+                    $custom_fields, // custom_fields
+                    null, // timezone
+                    $language, // language
+                    '', // theme
+                    '', // title
+                    $photo_url, // photo_url
+                    '', // photo_thumb_url
+                    null, // avatar_url
+                    '', // signature
+                    null, // preview_posts
+                    $reveal_age, // reveal_age
+                    1, // views_signatures
+                    null, // auto_monitor_contrib_content
+                    null, // smart_topic_notification
+                    null, // mailing_list_style
+                    1, // auto_mark_read
+                    null, // sound_enabled
+                    $allow_emails, // allow_emails
+                    $allow_emails_from_staff, // allow_emails_from_staff
+                    0, // highlighted_name
+                    '*', // pt_allow
+                    '', // pt_rules_text
+                    $validated, // validated
+                    null, // on_probation_until
+                    $is_perm_banned, // is_perm_banned
+                    false, // check_correctness
+                    $password_compatibility_scheme, // password_compatibility_scheme
+                    $salt, // salt
+                    $join_time // join_time
+                );
 
                 require_code('cns_groups_action2');
                 $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups($member_id);
@@ -389,7 +427,6 @@ function user_sync_handle_field_remap($field_name, $remap_scheme, $remote_data, 
             return ($data[0] === null) ? null : intval($data[0]);
         // Timestamps
         case 'join_time':
-        case 'on_probation_until':
             if (is_integer($data[0])) {
                 return $data[0];
             }
@@ -428,37 +465,32 @@ function user_sync_get_field_default($field_name)
             return null;
         case 'email_address':
             return '';
+        case 'primary_group':
+            return get_first_default_group();
+        case 'groups':
+            return array();
         case 'dob_day':
             return null;
         case 'dob_month':
             return null;
         case 'dob_year':
             return null;
-        case 'timezone_offset':
+        case 'language':
+            return null;
+        case 'photo_url':
             return '';
-        case 'primary_group':
-            return get_first_default_group();
+        case 'reveal_age':
+            return 0;
         case 'validated':
             return 1;
         case 'is_perm_banned':
             return 0;
-        case 'reveal_age':
-            return 0;
-        case 'photo_url':
-            return '';
-        case 'language':
-            return null;
         case 'allow_emails':
             return 0;
         case 'allow_emails_from_staff':
             return 1;
-        case 'on_probation_until':
-            return null;
         case 'join_time':
             return null;
-
-        case 'groups':
-            return array();
     }
     resource_fs_logging('Requested to import unknown field. ' . $field_name . '.', 'warn');
     return null; // Should not get here
@@ -648,7 +680,6 @@ function user_sync_find_native_fields()
         'language',
         'allow_emails',
         'allow_emails_from_staff',
-        'on_probation_until',
         'join_time',
 
         'groups',

@@ -1083,7 +1083,43 @@ class Module_cms_booking_bookings extends Standard_crud_module
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
             if ($member_id === null) {
                 require_code('cns_members_action');
-                $member_id = cns_make_member($username, uniqid('', true), '', array(), null, null, null, array(), null, null, 1, null, null, '', null, '', 0, 0, 1, '', '', '', 1, 1, null, 1, 1, null, '', false);
+                $member_id = cns_make_member(
+                    $username, // username
+                    uniqid('', true), // password
+                    '', // email_address
+                    null, // primary_group
+                    null, // secondary_groups
+                    null, // dob_day
+                    null, // dob_month
+                    null, // dob_year
+                    array(), // custom_fields
+                    null, // timezone
+                    null, // language
+                    '', // theme
+                    '', // title
+                    '', // photo_url
+                    '', // photo_thumb_url
+                    null, // avatar_url
+                    '', // signature
+                    null, // preview_posts
+                    1, // reveal_age
+                    1, // views_signatures
+                    null, // auto_monitor_contrib_content
+                    null, // smart_topic_notification
+                    null, // mailing_list_style
+                    1, // auto_mark_read
+                    null, // sound_enabled
+                    1, // allow_emails
+                    1, // allow_emails_from_staff
+                    0, // highlighted_name
+                    '*', // pt_allow
+                    '', // pt_rules_text
+                    1, // validated
+                    '', // validated_email_confirm_code
+                    null, // on_probation_until
+                    0, // is_perm_banned
+                    false // check_correctness
+                );
             }
         } else {
             $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();

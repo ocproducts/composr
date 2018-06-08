@@ -121,22 +121,6 @@
         }
     };
 
-    $cms.templates.notificationsManageScreen = function notificationsManageScreen(params, container) {
-        var soundRadioEl = $dom.$('#sound_' + $cms.readCookie('sound', 'off'));
-
-        if (soundRadioEl) {
-            soundRadioEl.checked = true;
-        }
-
-        $dom.on(container, 'click', '.js-click-set-sound-cookie-on', function () {
-            $cms.setCookie('sound', 'on');
-        });
-
-        $dom.on(container, 'click', '.js-click-set-sound-cookie-off', function () {
-            $cms.setCookie('sound', 'off');
-        });
-    };
-
     $cms.templates.notificationsTree = function notificationsTree(params, tableRow) {
         $dom.on(tableRow, 'click', '.js-click-copy-advanced-notifications', function () {
             advancedNotificationsCopyUnder(tableRow);
@@ -287,9 +271,6 @@
             var sound = notification.getAttribute('sound');
             if (!sound) {
                 sound = (parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
-            }
-            if ($cms.readCookie('sound', 'off') === 'off') {
-                sound = 'off';
             }
             var notificationCode = notification.getAttribute('notification_code');
             if (sound === 'on' && notificationCode !== 'ticket_reply' && notificationCode !== 'ticket_reply_staff') {

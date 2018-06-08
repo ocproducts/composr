@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    health_check
+ * @package    tickets
  */
 
 /**
  * Hook class.
  */
-class Hook_config_hc_mail_server_port
+class Hook_config_ticket_mail_email_address
 {
     /**
      * Gets the details relating to the config option.
@@ -31,19 +31,19 @@ class Hook_config_hc_mail_server_port
     public function get_details()
     {
         return array(
-            'human_name' => 'HC_MAIL_SERVER_PORT',
-            'type' => 'integer',
-            'category' => 'HEALTH_CHECK',
-            'group' => '_EMAIL',
-            'explanation' => 'CONFIG_OPTION_hc_mail_server_port',
+            'human_name' => 'TICKET_MAIL_EMAIL_ADDRESS',
+            'type' => 'line',
+            'category' => 'MESSAGES',
+            'group' => 'SUPPORT_TICKETS_MAIL',
+            'explanation' => 'CONFIG_OPTION_ticket_mail_email_address',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 4,
             'required' => true,
-            'order_in_category_group' => 3,
 
             'public' => false,
 
-            'addon' => 'health_check',
+            'addon' => 'tickets',
         );
     }
 
@@ -54,14 +54,14 @@ class Hook_config_hc_mail_server_port
      */
     public function get_default()
     {
-        if (!addon_installed('health_check')) {
+        if (!addon_installed('tickets')) {
             return null;
         }
 
-        if (!function_exists('imap_open')) {
-            return null;
+        if (GOOGLE_APPENGINE) {
+            return 'tickets@appid.appspotmail.com';
         }
 
-        return '143';
+        return 'support@' . get_domain();
     }
 }
