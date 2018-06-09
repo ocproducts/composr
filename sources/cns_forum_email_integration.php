@@ -257,7 +257,7 @@ class ForumEmailIntegration extends EmailIntegration
                     $strings[] = do_lang('MAILING_LIST_SIMPLE_MAIL_regexp', null, null, null, $lang);
                 }
                 foreach ($strings as $s) {
-                    $body = preg_replace('#' . str_replace(array("\n", '---'), array("(\n|<br[^<>]*>)*", '<hr[^<>]*>'), $s) . '#i', '', $body);
+                    $body = preg_replace('#' . str_replace(array("\n", '---'), array("(\n|<br[^<>]*>)", '<hr[^<>]*>'), $s) . '#i', '', $body);
                 }
                 break;
 

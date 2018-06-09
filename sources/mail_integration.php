@@ -219,7 +219,7 @@ abstract class EmailIntegration
 
             // Cleanup
             $mail_delete_after = get_option('mail_delete_after');
-            if ($mail_delete_after != '') {
+            if (($mail_delete_after != '') && ($mail_delete_after != '0')) {
                 $cutoff = time() - 60 * 60 * 24 * intval($mail_delete_after);
                 $list = imap_search($mbox, 'SEEN BEFORE "' . date('j-M-Y', $cutoff) . '"');
                 if ($list === false) {
