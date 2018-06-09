@@ -139,7 +139,7 @@ class ForumEmailIntegration extends EmailIntegration
             return; // Possibly due to not being fully configured yet
         }
 
-        $this->log_message('Starting overall incoming e-mail scan process');
+        $this->log_message('Starting overall incoming e-mail scan process (forums)');
 
         $sql = 'SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums';
         $sql_sup = ' WHERE ' . db_string_not_equal_to('f_mail_username', '') . ' AND ' . db_string_not_equal_to('f_mail_email_address', '');
@@ -157,7 +157,7 @@ class ForumEmailIntegration extends EmailIntegration
             $this->_incoming_scan($type, $host, $port, $folder, $username, $password);
         }
 
-        $this->log_message('Finished overall incoming e-mail scan process');
+        $this->log_message('Finished overall incoming e-mail scan process (forums)');
     }
 
     /**

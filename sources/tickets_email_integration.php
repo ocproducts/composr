@@ -104,8 +104,11 @@ class TicketsEmailIntegration extends EmailIntegration
     public function incoming_scan()
     {
         if (get_option('ticket_mail_on') !== '1') {
+            $this->log_message('Support ticket e-mail integration is not enabled');
             return;
         }
+
+        $this->log_message('Starting overall incoming e-mail scan process (support tickets)');
 
         $type = get_option('ticket_mail_server_type');
         $host = get_option('ticket_mail_server_host');
@@ -115,6 +118,8 @@ class TicketsEmailIntegration extends EmailIntegration
         $password = get_option('ticket_mail_password');
 
         $this->_incoming_scan($type, $host, $port, $folder, $username, $password);
+
+        $this->log_message('Finished overall incoming e-mail scan process (support tickets)');
     }
 
     /**
