@@ -199,10 +199,14 @@ abstract class EmailIntegration
                 $body = $this->_imap_get_part($mbox, $l, 'TEXT/HTML', $attachments, $attachment_size_total, $input_charset);
                 imap_clearflag_full($mbox, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
                 if ($body === null) { // Convert from plain text
+                    $this->log_message('E-mail is plain text');
+
                     $body = $this->_imap_get_part($mbox, $l, 'TEXT/PLAIN', $attachments, $attachment_size_total, $input_charset);
                     imap_clearflag_full($mbox, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
                     $body = $this->email_comcode_from_text($body);
                 } else { // Convert from HTML
+                    $this->log_message('E-mail is HTML');
+
                     $body = $this->email_comcode_from_html($body);
                 }
                 $this->_imap_get_part($mbox, $l, 'APPLICATION/OCTET-STREAM', $attachments, $attachment_size_total, $input_charset);
@@ -798,7 +802,7 @@ abstract class EmailIntegration
             return null;
         }
 
-        return array($addresses[0]->mailbox . '@' . $addresses[0]->host, $addresses[0]->personal);
+        return array($addresses[0]->mailbox . '@' . $addresses[0]->host, isset($addresses[0]->personal) ? $addresses[0]->personal : 'localhost');
     }
 
     /**

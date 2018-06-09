@@ -233,7 +233,7 @@ class ForumEmailIntegration extends EmailIntegration
 
         if ($is_starter) {
             require_code('cns_topics_action');
-            $topic_id = cns_make_topic($this->forum_id);
+            $topic_id = cns_make_topic($this->forum_id, '', '', null, 1, 0, 0, 0, null, null, false);
 
             $this->log_message('Created topic #' . strval($topic_id));
         }
@@ -245,7 +245,7 @@ class ForumEmailIntegration extends EmailIntegration
         }
 
         require_code('cns_posts_action');
-        $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter, null, 0, $poster_name_if_guest, null, null, $member_id, null, null, null, true, true, $this->forum_id, true, $title, 0, null, false, true);
+        $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter, null, 0, $poster_name_if_guest, null, null, $member_id, null, null, null, false, true, $this->forum_id, true, $title, 0, null, false, true);
 
         $this->log_message('Created post #' . strval($post_id));
 

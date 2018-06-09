@@ -156,7 +156,12 @@ class TicketsEmailIntegration extends EmailIntegration
         $num_matches = preg_match_all('# \[([^\[\]]+)\]#', $subject, $matches);
         $tags = array();
         for ($i = 0; $i < $num_matches; $i++) {
-            $tags[] = $matches[1][$i];
+            $tag = $matches[1][$i];
+
+            $this->log_message('Detected tag ' . $tag);
+
+            $tags[] = $tag;
+
             $subject = str_replace($matches[0][$i], '', $subject);
         }
 
@@ -166,7 +171,11 @@ class TicketsEmailIntegration extends EmailIntegration
             $member_id = $this->handle_missing_member($from_email, $email_bounce_to, get_option('ticket_mail_nonmatch_policy'), $subject, $body);
         }
         if ($member_id === null) {
+            $this->log_message('Could not bind to a member');
+
             return;
+        } else {
+            $this->log_message('Bound to member #' . strval($member_id));
         }
 
         // Remember the e-mail address to member ID mapping
@@ -177,6 +186,8 @@ class TicketsEmailIntegration extends EmailIntegration
             'email_address' => $from_email,
             'member_id' => $member_id,
         ));
+
+        $this->log_message('Recording ' . $from_email . ' as a valid posted for member #' . strval($member_id));
 
         // Check there can be no forgery vulnerability
         $member_id_comcode = $this->degrade_member_id_for_comcode($member_id);
@@ -218,6 +229,8 @@ class TicketsEmailIntegration extends EmailIntegration
 
             // Send email (to staff)
             send_ticket_email($new_ticket_id, $subject, $body, $home_url, $from_email, $ticket_type_id, $member_id, true);
+
+            $this->log_message('Created new ticket, ' . $new_ticket_id);
         } else {
             $_home_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $existing_ticket, 'redirect' => null), get_module_zone('tickets'), null, false, true, true);
             $home_url = $_home_url->evaluate();
@@ -248,9 +261,13 @@ class TicketsEmailIntegration extends EmailIntegration
 
             // Send email (to staff & to confirm receipt to $member_id)
             send_ticket_email($existing_ticket, $__title, $body, $home_url, $from_email, null, $member_id, true);
+
+            $this->log_message('Posted in ticket, ' . $existing_ticket);
         }
 
         if (count($attachment_errors) != 0) {
+            $this->log_message('Had some issues creating an attachment(s) [non-fatal], e-mailing them about it');
+
             $this->send_bounce_email__attachment_errors($subject, $body, $from_email, $email_bounce_to, $attachment_errors, $home_url);
         }
     }
