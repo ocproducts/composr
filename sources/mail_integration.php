@@ -42,6 +42,22 @@ abstract class EmailIntegration
     const STRIP_TEXT = 3;
 
     /**
+     * Log a message, if the log has been created.
+     *
+     * @param  string $message Message
+     */
+    protected function log_message($message)
+    {
+        $path = get_custom_file_base() . '/data_custom/mail_integration.log';
+        if (is_file($path)) {
+            $myfile = fopen($path, 'ab');
+            $log_line = date('Y-m-d H:i:s') . ': ' . $message . "\n";
+            fwrite($myfile, $log_line);
+            fclose($myfile);
+        }
+    }
+
+    /**
      * Send out an e-mail message.
      *
      * @param  string $subject Subject
@@ -57,6 +73,8 @@ abstract class EmailIntegration
         if ($to_email == '') {
             return;
         }
+
+        $this->log_message('Sending outgoing e-mail to ' . $to_email . ' (' . $subject . ')');
 
         $headers = '';
 
@@ -120,6 +138,8 @@ abstract class EmailIntegration
     {
         require_code('mail2');
 
+        $this->log_message('Starting an incoming e-mail scan on ' . $host . ' (' . $username . ')');
+
         if (!function_exists('imap_open')) {
             warn_exit(do_lang_tempcode('IMAP_NEEDED'));
         }
@@ -147,6 +167,8 @@ abstract class EmailIntegration
         $server_spec = _imap_server_spec($host, $port, $type);
         $mbox = @imap_open($server_spec . $folder, $username, $password, CL_EXPUNGE);
         if ($mbox !== false) {
+            $this->log_message('Successfully opened server connection');
+
             $reprocess = (get_param_integer('test', 0) == 1 && $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()));
             $list = imap_search($mbox, $reprocess ? '' : 'UNSEEN');
             if ($list === false) {
@@ -159,6 +181,8 @@ abstract class EmailIntegration
 
                 $subject = $header->subject;
                 $this->strip_system_code($subject, self::STRIP_SUBJECT);
+
+                $this->log_message('Found an unread e-mail, ' . $subject);
 
                 // Find overall character set
                 $input_charset = 'iso-8859-1';
@@ -205,6 +229,8 @@ abstract class EmailIntegration
 
                 // Continue to real processing
                 if (!$this->is_non_human_email($subject, $body, $full_header, $from_email)) {
+                    $this->log_message('E-mail is being processed (From e-mail=' . $from_email . ', From name=' . $from_name . ', From subject=' . $subject . ')');
+
                     $this->process_incoming_message(
                         $from_email,
                         $from_name,
@@ -212,6 +238,8 @@ abstract class EmailIntegration
                         $body,
                         $attachments
                     );
+                } else {
+                    $this->log_message('E-mail was considered non-human');
                 }
 
                 imap_setflag_full($mbox, $l, '\\Seen');
@@ -237,11 +265,15 @@ abstract class EmailIntegration
             $error = imap_last_error();
             imap_errors(); // Works-around weird PHP bug where "Retrying PLAIN authentication after [AUTHENTICATIONFAILED] Authentication failed. (errflg=1) in Unknown on line 0" may get spit out into any stream (even the backup log)
 
+            $this->log_message('Failed to open server connection (' . $error . ')');
+
             $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
             if (!$cli && get_param_integer('no_fatal_cron_errors', 0) != 1) {
                 warn_exit(do_lang_tempcode('IMAP_ERROR', $error));
             }
         }
+
+        $this->log_message('Finished incoming e-mail scan');
     }
 
     /**
@@ -700,7 +732,7 @@ abstract class EmailIntegration
      */
     public function _convert_text_quote_to_comcode($matches)
     {
-        return '[quote]'. "\n" . trim(preg_replace('#\n> (.*)#', "\n" . '${1}', $matches[0])) . "\n" . '[/quote]';
+        return '[quote]' . "\n" . trim(preg_replace('#\n> (.*)#', "\n" . '${1}', $matches[0])) . "\n" . '[/quote]';
     }
 
     /**
@@ -720,13 +752,16 @@ abstract class EmailIntegration
 
         $full_header = "\r\n" . strtolower($full_header);
         if (strpos($full_header, "\r\nfrom: <>") !== false) {
+            $this->log_message('Considered non-human due to: empty-from field');
+
             return true;
         }
         if (strpos($full_header, "\r\nauto-submitted: ") !== false && strpos($full_header, "\r\nauto-submitted: no") === false) {
+            $this->log_message('Considered non-human due to: auto-submitted header');
+
             return true;
         }
 
-        $junk = false;
         $junk_strings = array(
             'Delivery Status Notification',
             'Delivery Notification',
@@ -740,10 +775,12 @@ abstract class EmailIntegration
         );
         foreach ($junk_strings as $j) {
             if ((stripos($subject, $j) !== false) || (stripos($body, $j) !== false)) {
-                $junk = true;
+                $this->log_message('Considered non-human due to: recognised automated subject line');
+
+                return true;
             }
         }
-        return $junk;
+        return false;
     }
 
     /**

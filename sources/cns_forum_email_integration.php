@@ -170,8 +170,20 @@ class ForumEmailIntegration extends EmailIntegration
         $member_id = $this->find_member_id($from_email);
         if ($member_id === null) {
             $member_id = $this->handle_missing_member($from_email, $email_bounce_to, $this->forum_row['f_mail_nonmatch_policy'], $subject, $body);
+
+            if ($member_id !== null) {
+                if (is_guest($member_id)) {
+                    $this->log_message('Will be posting as guest');
+                } else {
+                    $this->log_message('Created a new member, #' . strval($member_id));
+                }
+            }
+        } else {
+            $this->log_message('Bound to a member, #' . strval($member_id));
         }
         if ($member_id === null) {
+            $this->log_message('Could not bind to a member');
+
             return;
         }
 
@@ -180,6 +192,9 @@ class ForumEmailIntegration extends EmailIntegration
         // Check access
         if (!has_category_access($member_id, 'forums', strval($this->forum_id))) {
             $forum_name = $this->forum_row['f_name'];
+
+            $this->log_message('Access denied to the bound member for ' . $forum_name);
+
             $this->send_bounce_email__access_denied($subject, $body, $from_email, $email_bounce_to, $forum_name, $username);
         }
 
@@ -213,6 +228,8 @@ class ForumEmailIntegration extends EmailIntegration
         if ($is_starter) {
             require_code('cns_topics_action');
             $topic_id = cns_make_topic($this->forum_id);
+
+            $this->log_message('Created topic #' . strval($topic_id));
         }
 
         if (is_guest($member_id)) {
@@ -224,7 +241,11 @@ class ForumEmailIntegration extends EmailIntegration
         require_code('cns_posts_action');
         $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter, null, 0, $poster_name_if_guest, null, null, $member_id, null, null, null, true, true, $this->forum_id, true, $title, 0, null, false, true);
 
+        $this->log_message('Created post #' . strval($post_id));
+
         if (count($attachment_errors) != 0) {
+            $this->log_message('Had some issues creating an attachment(s) [non-fatal], e-mailing them about it');
+
             $post_url = $GLOBALS['FORUM_DRIVER']->post_url($post_id, '');
 
             $this->send_bounce_email__attachment_errors($subject, $body, $from_email, $email_bounce_to, $attachment_errors, $post_url);
