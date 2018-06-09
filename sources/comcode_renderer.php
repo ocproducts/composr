@@ -2219,7 +2219,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                         } else {
                             $attributes['thumb_url'] = $url;
                         }
-                    } elseif ((addon_installed('galleries')) && (is_video($original_filename, $as_admin)) && (url_is_local($url))) {
+                    } elseif ((addon_installed('galleries')) && (is_video($original_filename, $as_admin, true)) && (url_is_local($url))) {
                         require_code('galleries2');
                         $attributes['thumb_url'] = create_video_thumb(url_is_local($url) ? (get_custom_base_url() . '/' . $url) : $url);
                     }

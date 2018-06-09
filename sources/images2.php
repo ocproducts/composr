@@ -70,7 +70,7 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
     if (url_is_local($from)) {
         $from = get_custom_base_url() . '/' . $from;
     }
-    if (is_video($from, true)) {
+    if (is_video($from, false, true)) {
         if (addon_installed('galleries')) {
             require_code('galleries2');
             create_video_thumb($full_url, $thumb_path);
