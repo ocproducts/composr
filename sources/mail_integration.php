@@ -138,9 +138,9 @@ abstract class EmailIntegration
     {
         require_code('mail2');
 
-        $this->log_message('Starting an incoming e-mail scan on ' . $host . ' (' . $username . ')');
-
         if (!function_exists('imap_open')) {
+            $this->log_message('IMAP is not available');
+
             warn_exit(do_lang_tempcode('IMAP_NEEDED'));
         }
 
@@ -163,6 +163,8 @@ abstract class EmailIntegration
         if ($password == '') {
             $password = get_option('mail_password');
         }
+
+        $this->log_message('Starting an incoming e-mail scan on ' . $host . ' (' . $username . ')');
 
         $server_spec = _imap_server_spec($host, $port, $type);
         $mbox = @imap_open($server_spec . $folder, $username, $password, CL_EXPUNGE);
