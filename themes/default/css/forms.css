@@ -196,7 +196,7 @@ th.form-table-field-name, /* Extra specificity to take precedence over th.de-th 
 th.form-table-field-name a, /* Extra specificity to take precedence over th.de-th */
 .form-table-field-spacer>th a, .form-table-field-spacer>td a, .form-table-description-above-cell a, .form-table-description-under-cell a
 {
-	color: {$GET,a.link} !important;
+	color: {$GET,a.link};
 }
 
 .form-table-field-input select, .form-table-field-input input, .form-table-field-input img {
@@ -596,9 +596,92 @@ span.validated-checkbox+input[name="validated"].input-tick {
 	}
 /*{+END}*/
 
-.comcode-button,
-.comcode-micro-button {
-	display: inline-block;
+
+.btn-comcode {
+	color: {$GET,WB} !important;
+	position: relative;
+	overflow: hidden;
+	padding: 3px 6px;
+	text-align: left;
+}
+
+.btn-comcode:not(.btn-sm) {
+	min-height: 40px;
+}
+
+.btn-comcode-text {
+	text-transform: lowercase;
+	font-size: 0.8em;
+	float: left;
+	white-space: normal;
+	max-width: 3.5em;
+}
+
+.btn-comcode .icon {
+	display: block;
+}
+
+.btn-comcode-thumb,
+.btn-comcode-block,
+.btn-comcode-url,
+.btn-comcode-box {
+	padding-right: 28px;
+}
+
+.btn-comcode-comcode,
+.btn-comcode-apply_changes {
+	padding-right: 38px;
+}
+
+.btn-comcode-thumb .icon,
+.btn-comcode-block .icon,
+.btn-comcode-comcode .icon,
+.btn-comcode-url .icon,
+.btn-comcode-box .icon,
+.btn-comcode-apply_changes .icon {
+	position: absolute;
+	width: 28px;
+	height: 28px;
+	right: 5px;
+	top: 50%;
+	margin-top: -14px;
+}
+
+.btn-comcode-list,
+.btn-comcode-page,
+.btn-comcode-quote,
+.btn-comcode-code,
+.btn-comcode-html {
+	text-align: center;
+}
+
+.btn-comcode-list .icon,
+.btn-comcode-page .icon,
+.btn-comcode-quote .icon,
+.btn-comcode-code .icon,
+.btn-comcode-html .icon {
+	position: absolute;
+	bottom: 3px;
+	left: 50%;
+	margin-left: -9px;
+	width: 18px;
+	height: 18px;
+}
+
+.btn-comcode-code .icon {
+	width: 32px;
+	height: 32px;
+	margin-left: 0;
+	left: 3px;
+	bottom: -5px;
+}
+
+.btn-comcode-html .icon {
+	width: 32px;
+	height: 32px;
+	margin-left: 0;
+	left: 3px;
+	bottom: -5px;
 }
 
 .posting-form-main-comcode-button {
@@ -627,9 +710,11 @@ span.validated-checkbox+input[name="validated"].input-tick {
 }
 
 .posting-form-insert-buttons .divider {
-	margin-left: 0.2em;
+	margin-left: 0.3em;
 	border-left: 1px solid {$GET,standard_border};
-	padding-left: 0.4em;
+	width: 0.3em;
+	display: inline-block;
+	height: 2em;
 }
 
 .emoticon-chooser {

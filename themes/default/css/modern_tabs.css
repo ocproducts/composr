@@ -115,43 +115,49 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 /* Sub tabs, which look entirely different as they go down in an lhs column */
 
 .modern-subtabs {
-	border: 0;
-	background: {$GET,area_background} url('{$IMG;,tabs/modern_subtab_header_column}') repeat-y;
-	background-size: 150px 1px;
-	overflow: hidden;
+	background: {$GET,area_background};
+	display: flex;
 }
 
 .modern-subtab-headers {
-	overflow: hidden;
-	float: left;
-	width: 158px; /* 150px+8px, 150px matches the background size in the tabs/modern_subtab_header_column theme image */
+	background: {$GET,seed_alternate};
+	margin-right: 8px;
 }
 
-.modern-subtab-headers>div {
+.modern-subtab-headers > div {
 	color: {$GET,WB};
+	position: relative;
 }
-.modern-subtab-headers>div:last-child {
+
+.modern-subtab-headers > div:last-child {
 	border-bottom: 0;
 }
 
-.modern-subtab-headers>div.tab-active, .modern-subtab-headers>div:hover {
-	background: url('{$IMG;,tabs/modern_subtab_active}') no-repeat right center;
-	background-size: 8px 16px;
+.modern-subtab-headers > div.tab-active::after, 
+.modern-subtab-headers > div:hover::after {
+	/*background: url('{$IMG;,tabs/modern_subtab_active}') no-repeat right center;*/
+	/*background-size: 8px 16px;*/
+	font-family: sans-serif;
+	content: '\025BA'; /* Rightward triangle */
+	color: {$GET,seed_alternate};
+	transform: scale(0.6, 1);
+	position: absolute;
+	right: -10px;
+	top: 50%;
+	margin-top: -0.5em;
 }
 
-.modern-subtab-headers>div * {
+.modern-subtab-headers > div * {
 	vertical-align: middle;
 	display: inline-block;
 }
 
-.modern-subtab-headers>div>a {
-	padding: 1em 0 1em 30px;
-	margin-right: 8px; /* For modern_subtab_active to overlay into */
+.modern-subtab-headers > div > a {
+	padding: 1em 20px;
 	border-bottom: 1px solid {$GET,standard_border};
 	display: block;
 	cursor: pointer;
-	background: url('{$IMG;,tabs/modern_subtab_chevron}') no-repeat 10px center;
-	background-size: 9px 9px;
+	min-width: 160px;
 }
 
 .modern-subtab-headers>div>a, .modern-subtab-headers>div>a:visited, .modern-subtab-headers>div>a:active, .modern-subtab-headers>div>a:hover {
@@ -164,7 +170,6 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 }
 
 .modern-subtab-bodies {
-	overflow: hidden;
 	padding: 1.5em 1em 1.5em 0em;
 }
 

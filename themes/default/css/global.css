@@ -59,7 +59,7 @@ In mobile mode:
 
 /* Used to initiate equations (although running the Theme Wizard replaces these with what the user chooses - which is how it works) */
 {$THEMEWIZARD_COLOR,#2388ef,seed,100% 2388ef}
-{$THEMEWIZARD_COLOR,#ff8900,seed_alt,100% ff8900}
+{$THEMEWIZARD_COLOR,#ff8900,seed_alternate,100% ff8900}
 {$THEMEWIZARD_COLOR,#ffffff,WB,100% FFFFFF}
 {$THEMEWIZARD_COLOR,#000000,BW,100% 000000}
 /*Theme seed is: 2388ef*/
@@ -1713,7 +1713,7 @@ body .accessibility-hidden { /* Contents should be made visible (or interpreted)
 .nothing-here::before,
 .more-here::before {
 	font-family: sans-serif;
-	color: {$GET,seed_alt};
+	color: {$GET,seed_alternate};
 	content: '\025BA'; /* Rightward triangle */
 	vertical-align: middle;
 	padding-right: 1em;
@@ -3822,7 +3822,7 @@ ul.actions-list-super-compact > li {
 ul.actions-list > li > .icon,
 ul.actions-list-compact > li > .icon,
 ul.actions-list-super-compact > li > .icon {
-	color: {$GET,seed_alt};
+	color: {$GET,seed_alternate};
 	width: 14px;
 	height: 14px;
 }
@@ -4341,14 +4341,14 @@ fieldset:disabled a.btn {
 
 .btn-primary {
 	color: #fff;
-	background-color: #007bff;
-	border-color: #007bff;
+	background-color: {$GET,button_background};
+	border-color: {$GET,button_background};
 }
 
 .btn-primary:hover {
 	color: #fff;
-	background-color: #0069d9;
-	border-color: #0062cc;
+	background-color: {$GET,button_background_hover};
+	border-color: {$GET,button_background_hover};
 }
 
 .btn-primary:focus, .btn-primary.focus {
@@ -4402,9 +4402,48 @@ fieldset:disabled a.btn {
 	border-color: #4e555b;
 }
 
-.btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus,
+.btn-secondary:not(:disabled):not(.disabled):active:focus, 
+.btn-secondary:not(:disabled):not(.disabled).active:focus,
 .show > .btn-secondary.dropdown-toggle:focus {
 	box-shadow: 0 0 0 3px rgba(108, 117, 125, 0.5);
+}
+
+.btn-alternate {
+	color: #fff;
+	background-color: {$GET,seed_alternate};
+	border-color: {$GET,seed_alternate};
+}
+
+.btn-alternate:hover {
+	color: #fff;
+	background-color: #d97400;
+	border-color: #cc6e00;
+}
+
+.btn-alternate:focus, 
+.btn-alternate.focus {
+	box-shadow: 0 0 0 3px rgba(255, 137, 0, 0.5);
+}
+
+.btn-alternate.disabled, 
+.btn-alternate:disabled {
+	color: #fff;
+	background-color: {$GET,seed_alternate};
+	border-color: {$GET,seed_alternate};
+}
+
+.btn-alternate:not(:disabled):not(.disabled):active, 
+.btn-alternate:not(:disabled):not(.disabled).active, 
+.show > .btn-alternate.dropdown-toggle {
+	color: #fff;
+	background-color: #cc6e00;
+	border-color: #bf6700;
+}
+
+.btn-alternate:not(:disabled):not(.disabled):active:focus, 
+.btn-alternate:not(:disabled):not(.disabled).active:focus, 
+.show > .btn-alternate.dropdown-toggle:focus {
+	box-shadow: 0 0 0 3px rgba(255, 137, 0, 0.5);
 }
 
 .btn-success {

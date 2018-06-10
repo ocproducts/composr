@@ -46,7 +46,9 @@
 				<option value="yellow" style="color: yellow">{!YELLOW}</option>
 			</select>
 
-			<a href="#!" class="js-click-do-input-font-posting-field"><img title="{!INPUT_COMCODE_font}" alt="{!INPUT_COMCODE_font}" height="34" src="{$IMG*,comcode_editor/apply_changes}" /></a>
+			<a href="#!" title="{!INPUT_COMCODE_font}" class="btn btn-alternate btn-comcode btn-comcode-apply_changes js-click-do-input-font-posting-field">
+				<span class="btn-comcode-text">{!APPLY_CHANGES}</span> {+START,INCLUDE,ICON}NAME=comcode_editor/apply_changes{+END}
+			</a>
 		</div>
 	{+END}
 </div>
