@@ -623,7 +623,7 @@ function themewizard_script()
  *
  * @param  string $seed Colour seed
  * @param  ID_TEXT $source_theme The theme it's being generated from
- * @param  ?ID_TEXT $algorithm The algorithm to use (null: autodetect)
+ * @param  ID_TEXT $algorithm The algorithm to use
  * @set equations hsv
  * @param  ID_TEXT $show What to generate ('colours', or the name of a theme image)
  * @param  ?boolean $dark Whether it will be a dark theme (null: autodetect)
@@ -632,10 +632,10 @@ function themewizard_script()
  * @param  ?LANGUAGE_NAME $lang The language to work in (null: default)
  * @return mixed Image resource OR A pair: extended map of colours, colour expression landscape
  */
-function calculate_theme($seed, $source_theme, $algorithm = null, $show = 'colours', $dark = null, $colours = null, $landscape = null, $lang = null)
+function calculate_theme($seed, $source_theme, $algorithm, $show = 'colours', $dark = null, $colours = null, $landscape = null, $lang = null)
 {
-    if ($algorithm === null) {
-        $algorithm = (get_theme_option('supports_themewizard_equations', null, $source_theme) === '1') ? 'equations' : 'hsv';
+    if (get_theme_option('supports_themewizard_equations', null, $source_theme) == '0') {
+        $algorithm = 'hsv';
     }
 
     if ($seed[0] == '#') {

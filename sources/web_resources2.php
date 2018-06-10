@@ -37,7 +37,7 @@ function init__web_resources2()
  * @param  ID_TEXT $destination_theme Destination theme
  * @param  ?ID_TEXT $seed Seed (null: do not re-seed)
  * @param  boolean $dark Whether it is a dark theme
- * @param  ?ID_TEXT $algorithm The algorithm to use
+ * @param  ID_TEXT $algorithm The algorithm to use
  * @set equations hsv
  * @return string The sheet
  */

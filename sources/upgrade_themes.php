@@ -149,7 +149,7 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
         require_code('themewizard');
         $seed = find_theme_seed($theme);
         $dark = find_theme_dark($theme);
-        list($colours, $landscape) = calculate_theme($seed, 'default', null, 'colours', $dark);
+        list($colours, $landscape) = calculate_theme($seed, 'default', 'equations', 'colours', $dark);
     }
 
     // CSS
@@ -353,7 +353,7 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
                                 afm_make_directory(dirname($new_path), true, true);
                             }
 
-                            $image = calculate_theme($seed, 'default', null, $new, $dark, $colours, $landscape, $lang);
+                            $image = calculate_theme($seed, 'default', 'equations', $new, $dark, $colours, $landscape, $lang);
                             if ($image !== null) {
                                 if (!$test_run) {
                                     cms_imagesave($image, get_custom_file_base() . '/' . $new_path) or intelligent_write_error(get_custom_file_base() . '/' . $new_path);
