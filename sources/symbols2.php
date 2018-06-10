@@ -2688,7 +2688,7 @@ function ecv2_CSS_INHERIT(&$value, $lang, $escaped, $param)
             $seed = null;
         }
         $dark = isset($param[3]) ? ($param[3]->evaluate() == '1') : false;
-        $algorithm = isset($param[4]) ? ($param[4]->evaluate()) : 'equations';
+        $algorithm = isset($param[4]) ? ($param[4]->evaluate()) : null;
 
         $value = css_inherit($css_file, $theme, $GLOBALS['FORUM_DRIVER']->get_theme(), $seed, $dark, $algorithm);
     }
