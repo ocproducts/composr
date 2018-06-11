@@ -129,10 +129,11 @@ class TicketsEmailIntegration extends EmailIntegration
      * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      * @param  string $from_name From name
      * @param  string $subject E-mail subject
-     * @param  string $body E-mail body
+     * @param  ?string $_body_text E-mail body converted from text format (null: not present)
+     * @param  ?string $_body_html E-mail body converted from HTML format (null: not present)
      * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
      */
-    protected function _process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $body, $attachments)
+    protected function _process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $_body_text, $_body_html, $attachments)
     {
         // Try to bind to an existing ticket
         $existing_ticket = null;
@@ -168,7 +169,7 @@ class TicketsEmailIntegration extends EmailIntegration
         // Try to bind to a from member
         $member_id = $this->find_member_id($from_email, $tags, $existing_ticket);
         if ($member_id === null) {
-            $member_id = $this->handle_missing_member($from_email, $email_bounce_to, get_option('ticket_mail_nonmatch_policy'), $subject, $body);
+            $member_id = $this->handle_missing_member($from_email, $email_bounce_to, get_option('ticket_mail_nonmatch_policy'), $subject, $_body_text, $_body_html);
         }
         if ($member_id === null) {
             $this->log_message('Could not bind to a member');
@@ -176,6 +177,12 @@ class TicketsEmailIntegration extends EmailIntegration
             return;
         } else {
             $this->log_message('Bound to member #' . strval($member_id));
+        }
+
+        if ($_body_html === null) {
+            $body = $this->email_comcode_from_text($_body_text);
+        } else {
+            $body = $this->email_comcode_from_html($_body_html, $member_id);
         }
 
         // Remember the e-mail address to member ID mapping
@@ -350,12 +357,19 @@ class TicketsEmailIntegration extends EmailIntegration
      * Send out an e-mail about us not recognising an e-mail address for an incoming e-mail.
      *
      * @param  string $subject Subject line of original message
-     * @param  string $body Body of original message
+     * @param  ?string $_body_text E-mail body in text format (null: not present)
+     * @param  ?string $_body_html E-mail body in HTML format (null: not present)
      * @param  EMAIL $email E-mail address we tried to bind to
      * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      */
-    protected function send_bounce_email__cannot_bind($subject, $body, $email, $email_bounce_to)
+    protected function send_bounce_email__cannot_bind($subject, $_body_text, $_body_html, $email, $email_bounce_to)
     {
+        if ($_body_html === null) {
+            $body = $this->email_comcode_from_text($_body_text);
+        } else {
+            $body = $this->email_comcode_from_html($_body_html, $GLOBALS['FORUM_DRIVER']->get_guest_id());
+        }
+
         $extended_subject = do_lang('TICKET_CANNOT_BIND_SUBJECT', $subject, $email, array(get_site_name()), get_site_default_lang());
         $extended_message = do_lang('TICKET_CANNOT_BIND_MAIL', comcode_to_clean_text($body), $email, array($subject, get_site_name()), get_site_default_lang());
 

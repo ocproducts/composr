@@ -37,16 +37,20 @@ For a member to receive mailing list e-mails the following must all be true:
 3) They must have a configured e-mail address -- if you want to force this you can configure e-mail addresses to be required
 4) They must be monitoring the forum or topic where a post is coming in to, specifically with e-mail as the notification type -- if you want to force this, you can use the [page="_SEARCH:tut_notifications"]"Lock-down" feature[/page] to force all member's to receive e-mail notifications on all forums
 5) They must have enabled them in their account settings (Notification tab settings) -- if you want to force this you can configure the default setting
-
-Composr makes some attempt to clean up the e-mail text, so that the forum posts are not too much of a mess.
 [/surround]
 
 [title="3"]Processing notes[/title]
 
 Be aware of the following:
- - Comcode is generally processed with guest permissions, due to us not being able to perfectly confirm the poster is who they say they are.
+ - Composr makes some attempt to clean up the e-mail text, so that the forum posts are not too much of a mess.
+ - Comcode will be processed with guest permissions if the poster would normally have "Use dangerous Comcode" privilege, due to us not being able to perfectly confirm the poster is who they say they are.
+ - You may want to assign usergroups the "Subject to a more liberal HTML filter" privilege, so that complicated HTML e-mails don't look too ugly. If an e-mail has both HTML and text versions, the HTML version will only be used if this privilege is present.
  - Attachments provided are not fully protected from unauthorised access, due to the need for them be able to render with guest credentials.
+ - There's no way for us to separate replies and original messages when replying by e-mail, so it would be good to advise your users to reply cleanly. We can remove some 'Forwarding' header text when e-mails are directly forwarded with no additional note, as a special case.
+
+Debugging:
  - Posting is tracked by marking e-mails read. If you mark an e-mail unread (unseen), it will post again. This can be useful for testing.
+ - You may make an empty writeable file, [tt]data_custom/mail_integration.log[/tt], and Composr will write detailed log data into this file.
 
 [title="3"]Specific mail servers[/title]
 

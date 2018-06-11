@@ -931,7 +931,7 @@ function url_is_local($url)
         return true;
     }
     $first_char = $url[0];
-    return (strpos($url, '://') === false) && ($first_char !== '{') && (substr($url, 0, 7) !== 'mailto:') && (substr($url, 0, 5) !== 'data:') && ($first_char !== '%');
+    return (strpos($url, '://') === false) && ($first_char !== '{') && (substr($url, 0, 7) !== 'mailto:') && (substr($url, 0, 5) !== 'data:') && (substr($url, 0, 4) !== 'cid:') && ($first_char !== '%');
 }
 
 /**

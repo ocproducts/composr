@@ -124,7 +124,7 @@ function build_preview($multi_return = false)
     $db = $forum_db ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
     $map_table_map = array();
     require_code('templates_map_table');
-    $attachment_field = null;
+    $attachment_field = 'post';
     foreach ($_POST as $key => $val) {
         if (!is_string($val)) {
             continue;
