@@ -254,7 +254,8 @@ class ForumEmailIntegration extends EmailIntegration
         }
 
         require_code('cns_posts_action');
-        $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter, null, 0, $poster_name_if_guest, null, null, $member_id, null, null, null, false, true, $this->forum_id, true, $title, 0, null, false, true);
+        $post_validated = has_privilege($member_id, 'bypass_validation_lowrange_content', 'topics', array('forums', $this->forum_id));
+        $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter, $post_validated ? 1 : 0, 0, $poster_name_if_guest, null, null, $member_id, null, null, null, false, true, $this->forum_id, true, $title, 0, null, false, true);
 
         $this->log_message('Created post #' . strval($post_id));
 

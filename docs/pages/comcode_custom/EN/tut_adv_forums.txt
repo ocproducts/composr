@@ -19,6 +19,7 @@ Also recommended:
 1) The mail server supports IMAP (not just POP3)
 2) The mail server enforces SPF and DKIM, so that Composr can know that e-mails have legitimately come from where they claim to come from
 3) The mail server enforce a reasonable maximum size for an individual e-mail, e.g. 5MB
+4) The software scheduler be set to run every minute
 
 Each individual forum is configured with its own mailing list settings, on the forum add/edit form. You can inherit settings from the IMAP configuration options, so long as each forum gets its own individual E-mail address and Username.
 
