@@ -286,7 +286,7 @@ abstract class EmailIntegration
      * @param  string $subject E-mail subject
      * @param  ?string $_body_text E-mail body in text format (null: not present)
      * @param  ?string $_body_html E-mail body in HTML format (null: not present)
-     * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
+     * @param  array $attachments Map of attachments (name to file data)
      */
     protected function process_incoming_message($from_email, $from_name, $subject, $_body_text, $_body_html, $attachments)
     {
@@ -346,7 +346,7 @@ abstract class EmailIntegration
      * @param  string $subject E-mail subject
      * @param  ?string $_body_text E-mail body in text format (null: not present)
      * @param  ?string $_body_html E-mail body in HTML format (null: not present)
-     * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
+     * @param  array $attachments Map of attachments (name to file data)
      */
     abstract protected function _process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $_body_text, $_body_html, $attachments);
 
@@ -372,23 +372,25 @@ abstract class EmailIntegration
      *
      * @param  resource $stream IMAP connection object
      * @param  integer $msg_number Message number
-     * @param  string $mime_type Mime type we need (in upper case)
-     * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
+     * @param  string $needed_mime_type Mime type we need (in upper case)
+     * @param  array $attachments Map of attachments (name to file data); only populated if $needed_mime_type is appropriate for an attachment
      * @param  integer $attachment_size_total Total size of attachments in bytes
      * @param  string $input_charset The character set of the e-mail
      * @param  ?object $structure IMAP message structure (null: look up)
      * @param  string $part_number Message part number (blank: root)
      * @return ?string The message part (null: could not find one)
      */
-    protected function _imap_get_part($stream, $msg_number, $mime_type, &$attachments, &$attachment_size_total, $input_charset, $structure = null, $part_number = '')
+    protected function _imap_get_part($stream, $msg_number, $needed_mime_type, &$attachments, &$attachment_size_total, $input_charset, $structure = null, $part_number = '')
     {
         if ($structure === null) {
             $structure = imap_fetchstructure($stream, $msg_number);
         }
 
+        $qualifier_exp =  ' - msg=' . strval($msg_number) . '; part=' . $part_number . ' - while looking for ' . $needed_mime_type;
+
         // Multi-part, so recurse to scan further parts
         if ($structure->type == 1) {
-            $this->log_message('Found mime multi-part with ' . integer_format(count($structure->parts)) . ' parts');
+            $this->log_message('Found mime multi-part with ' . integer_format(count($structure->parts)) . ' parts' . $qualifier_exp);
 
             foreach ($structure->parts as $index => $sub_structure) {
                 if ($part_number != '') {
@@ -396,7 +398,7 @@ abstract class EmailIntegration
                 } else {
                     $prefix = '';
                 }
-                $data = $this->_imap_get_part($stream, $msg_number, $mime_type, $attachments, $attachment_size_total, $input_charset, $sub_structure, $prefix . strval($index + 1));
+                $data = $this->_imap_get_part($stream, $msg_number, $needed_mime_type, $attachments, $attachment_size_total, $input_charset, $sub_structure, $prefix . strval($index + 1));
                 if ($data !== null) {
                     return $data;
                 }
@@ -407,20 +409,24 @@ abstract class EmailIntegration
 
         $part_mime_type = $this->_imap_get_mime_type($structure);
 
+        $always_skipped = array('TEXT/X-VCARD', 'APPLICATION/PGP-SIGNATURE');
+
         // Anything 'attachment' will be considered as 'application/octet-stream' so long as it is not plain text or HTML
-        if ($mime_type == 'APPLICATION/OCTET-STREAM') {
+        if ($needed_mime_type == 'APPLICATION/OCTET-STREAM') {
             $disposition = $structure->ifdisposition ? strtoupper($structure->disposition) : '';
             if (
-                ($disposition == 'ATTACHMENT') ||
+                (isset($structure->bytes)) &&
                 (
-                    ($structure->type != 2) &&
-                    (isset($structure->bytes)) &&
-                    (!in_array($part_mime_type, array('TEXT/PLAIN', 'TEXT/HTML', 'TEXT/X-VCARD', 'APPLICATION/PGP-SIGNATURE')))
+                    ($disposition == 'ATTACHMENT') ||
+                    (
+                        ($structure->type != 2) &&
+                        (!in_array($part_mime_type, array_merge($always_skipped, array('TEXT/PLAIN', 'TEXT/HTML'))))
+                    )
                 )
             ) {
                 $filename = $structure->parameters[0]->value;
 
-                $this->log_message('Found attachment, ' . $filename);
+                $this->log_message('Found attachment, ' . $filename . $qualifier_exp);
 
                 // Check it's a reasonable file-size
                 if ($attachment_size_total + $structure->bytes >= 1024 * 1024 * 20/*20MB is quite enough, thank you*/) {
@@ -453,12 +459,16 @@ abstract class EmailIntegration
 
                 $attachment_size_total += $structure->bytes;
             } else {
-                if ($part_mime_type == 'APPLICATION/OCTET-STREAM') {
-                    if ($structure->type == 2) {
-                        $this->log_message('Found binary section, but cannot process as not an attachment due to structure type of ' . strval($structure->type));
-                    }
+                if ($disposition == 'ATTACHMENT') {
                     if (!isset($structure->bytes)) {
-                        $this->log_message('Found binary section, but cannot process as not an attachment due to missing data');
+                        $this->log_message('Found attachment section, but cannot process as not an attachment due to missing data' . $qualifier_exp);
+                    }
+                } elseif ($part_mime_type == 'APPLICATION/OCTET-STREAM') {
+                    if (!isset($structure->bytes)) {
+                        $this->log_message('Found binary section, but cannot process as not an attachment due to missing data' . $qualifier_exp);
+                    }
+                    if ($structure->type == 2) {
+                        $this->log_message('Found binary section, but cannot process as not an attachment due to structure type of ' . strval($structure->type) . $qualifier_exp);
                     }
                 }
             }
@@ -467,10 +477,10 @@ abstract class EmailIntegration
         }
 
         // If mime type matches
-        if ($part_mime_type == $mime_type) {
+        if ($part_mime_type == $needed_mime_type) {
             require_code('character_sets');
 
-            $this->log_message('Found relevant mime section, ' . $part_mime_type);
+            $this->log_message('Found relevant mime section, ' . $part_mime_type . $qualifier_exp);
 
             if ($part_number == '') {
                 $part_number = '1';
@@ -503,7 +513,9 @@ abstract class EmailIntegration
             return $data;
         }
 
-        $this->log_message('Found non-understood section with mime-type ' . $part_mime_type . ' and structure type ' . strval($structure->type));
+        if (($part_mime_type != 'TEXT/HTML') && ($part_mime_type != 'TEXT/PLAIN') && ($part_mime_type != 'APPLICATION/OCTET-STREAM')) {
+            $this->log_message('Found non-understood section with mime-type ' . $part_mime_type . ' and structure type ' . strval($structure->type) . $qualifier_exp);
+        }
 
         return null;
     }
