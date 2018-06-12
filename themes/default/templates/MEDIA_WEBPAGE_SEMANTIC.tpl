@@ -10,7 +10,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
-		<div class="float-surrounder">
+		<div class="clearfix">
 			{$PARAGRAPH,{DESCRIPTION`}}
 		</div>
 	{+END}

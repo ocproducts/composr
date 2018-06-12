@@ -19,7 +19,7 @@
 					<div class="box box---ecom-purchase-stage-choose"><div class="box-inner">
 						<h2>{ITEM_NAME*}</h2>
 
-						<div class="float-surrounder">
+						<div class="clearfix">
 							{+START,IF_NON_EMPTY,{IMAGE_URL}}
 								<img width="48" height="48" src="{$THUMBNAIL,{IMAGE_URL*},48x48}" alt="" class="right float-separation" />
 							{+END}

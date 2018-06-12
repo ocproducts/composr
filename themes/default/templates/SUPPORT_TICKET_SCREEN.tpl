@@ -100,7 +100,7 @@
 		</div>
 
 		{+START,IF_PASSED,PAGINATION}
-			<div class="float-surrounder">
+			<div class="clearfix">
 				{PAGINATION}
 			</div>
 		{+END}

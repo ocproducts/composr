@@ -95,7 +95,7 @@ class Hook_preview_menu
             if (count($menu_types) > 1) {
                 $output->attach('<h3>' . escape_html($menu_type) . '</h3>');
             }
-            $output->attach(div($_output, '', 'float-surrounder'));
+            $output->attach(div($_output, '', 'clearfix'));
         }
 
         delete_menu($menu_id);

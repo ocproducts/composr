@@ -1,7 +1,7 @@
 {+START,INCLUDE,CNS_MEMBER_DIRECTORY_SCREEN_FILTERS}{+END}
 
 {$SET,fancy_screen,1}
-<div class="block-main-members block-main-members--{DISPLAY_MODE%}{+START,IF_NON_EMPTY,{ITEM_WIDTH}} has-item-width{+END} float-surrounder">
+<div class="block-main-members block-main-members--{DISPLAY_MODE%}{+START,IF_NON_EMPTY,{ITEM_WIDTH}} has-item-width{+END} clearfix">
 	{+START,LOOP,MEMBER_BOXES}
 		{+START,IF,{$EQ,{DISPLAY_MODE},avatars,photos}}
 			<div data-mouseover-activate-tooltip="['{BOX;^*}','auto']"{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END}>
@@ -63,7 +63,7 @@
 {$SET,fancy_screen,0}
 
 {+START,IF,{$OR,{INCLUDE_FORM},{$IS_NON_EMPTY,{PAGINATION}}}}
-	<div class="box results-table-under"><div class="box-inner float-surrounder">
+	<div class="box results-table-under"><div class="box-inner clearfix">
 		{+START,IF,{INCLUDE_FORM}}
 			{+START,IF_NON_EMPTY,{SORT}}
 				<div class="results-table-sorter">

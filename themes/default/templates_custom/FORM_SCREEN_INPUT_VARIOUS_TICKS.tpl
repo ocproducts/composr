@@ -18,7 +18,7 @@
 	{+END}
 
 	{+START,IF,{$NOT,{SIMPLE_STYLE}}}
-		<div class="various-ticks float-surrounder">
+		<div class="various-ticks clearfix">
 			{+START,LOOP,OUT}
 				<div class="input-individual-tick">
 					<label for="i_{NAME*}"><input title="{DESCRIPTION*}" tabindex="{TABINDEX*}" class="input-tick"{+START,IF,{CHECKED}} checked="checked"{+END} type="checkbox" id="i_{NAME*}" name="{NAME*}" value="1"{+START,IF,{DISABLED}} disabled="disabled"{+END} /> {PRETTY_NAME*}</label>

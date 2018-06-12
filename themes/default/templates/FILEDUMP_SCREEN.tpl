@@ -9,7 +9,7 @@
 	{TITLE}
 
 	<div class="filedump-screen">
-		<div class="float-surrounder"><div class="tabs" role="tablist">
+		<div class="clearfix"><div class="tabs" role="tablist">
 			<a aria-controls="g-thumbnails" role="tab" href="#!" id="t-thumbnails" class="tab tab-active tab-first js-click-select-tab-g" data-tp-tab="thumbnails"><span>{!VIEW_THUMBNAILS}</span></a>
 
 			<a aria-controls="g-listing" role="tab" href="#!" id="t-listing" class="tab{+START,IF_EMPTY,{CREATE_FOLDER_FORM}{UPLOAD_FORM}} tab-last{+END} js-click-select-tab-g" data-tp-tab="listing"><span>{!VIEW_LISTING}</span></a>
@@ -35,7 +35,7 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					{+START,IF_NON_EMPTY,{THUMBNAILS}}
-						<div class="float-surrounder filedump-thumbnails">
+						<div class="clearfix filedump-thumbnails">
 							{+START,LOOP,THUMBNAILS}
 								<div class="box"><div class="box-inner">
 									{+START,IF,{CHOOSABLE}}
@@ -70,7 +70,7 @@
 				{+END}
 
 				{+START,IF_NON_EMPTY,{PAGINATION_THUMBNAILS}}
-					<div class="float-surrounder force-margin">
+					<div class="clearfix force-margin">
 						{PAGINATION_THUMBNAILS}
 					</div>
 				{+END}
@@ -104,7 +104,7 @@
 				{+END}
 
 				{+START,IF_NON_EMPTY,{PAGINATION_LISTING}}
-					<div class="float-surrounder force-margin">
+					<div class="clearfix force-margin">
 						{PAGINATION_LISTING}
 					</div>
 				{+END}

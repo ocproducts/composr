@@ -16,7 +16,7 @@
 		<span>{!ZE_HOW_TO_SAVE}</span>
 	</p>
 
-	<div class="float-surrounder" id="ze-panels-wrap">
+	<div class="clearfix" id="ze-panels-wrap">
 		<div id="p-panel-left" class="ze-panel" data-mouseover-class="{ 'ze-panel-expanded': 1 }" data-mouseout-class="{ 'ze-panel-expanded': 0 }">
 			{LEFT_EDITOR}
 		</div>

@@ -22,7 +22,7 @@
 	{+END}
 {+END}
 {+START,IF_NON_EMPTY,{$TRIM,{$GET,BUTTONS}}}
-	<div class="float-surrounder">
+	<div class="clearfix">
 		<div class="trinav-left">
 			<p class="buttons-group">
 				{$GET,BUTTONS}

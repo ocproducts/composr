@@ -1,4 +1,4 @@
-<div class="float-surrounder">
+<div class="clearfix">
 	<div class="confluence-left">
 		{$SET,confluence_menu,{$?,{$CONFIG_OPTION,single_public_zone},,site}:docs:{ROOT_ID}}
 
@@ -6,7 +6,7 @@
 	</div>
 
 	<div class="confluence-main">
-		<div class="float-surrounder">
+		<div class="clearfix">
 			{HTML}
 		</div>
 	</div>

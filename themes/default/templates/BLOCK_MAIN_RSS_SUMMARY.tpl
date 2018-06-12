@@ -1,4 +1,4 @@
-<div class="float-surrounder rss-summary">
+<div class="clearfix rss-summary">
 	<h3><a href="{FULL_URL_RAW*}">{$TRUNCATE_LEFT,{NEWS_TITLE`},70,1,1}</a></h3>
 
 	{+START,IF_EMPTY,{CATEGORY_IMG}}

@@ -1,4 +1,4 @@
-<div class="float-surrounder">
+<div class="clearfix">
 	{+START,IF,{$ADDON_INSTALLED,search}}
 		{$SET,search_url,{$SELF_URL}}
 		<form class="filedump-filter" role="search" title="{!SEARCH}" data-disable-buttons-on-submit="{}" action="{$URL_FOR_GET_FORM*,{$GET,search_url},search,type_filter,sort,place,recurse,file}#tab--{TAB%}" method="get" autocomplete="off">

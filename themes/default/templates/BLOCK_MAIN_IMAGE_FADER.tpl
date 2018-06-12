@@ -17,7 +17,7 @@
 	<div class="gallery-tease-pic-wrap" data-view="BlockMainImageFader" data-view-params="{+START,PARAMS_JSON,RAND_FADER_IMAGE,MILL,TITLES,HTML,IMAGES}{_*}{+END}" data-keep-fix="{TITLES}{HTML}{IMAGES}{MILL}">
 		<div class="gallery-tease-pic">
 		<div class="box box---gallery-tease-pic"><div class="box-inner">
-			<div class="float-surrounder">
+			<div class="clearfix">
 				<div class="gallery-tease-pic-pic">
 					<div class="img-thumb-wrap">
 						<a href="{GALLERY_URL*}"><img class="img-thumb" id="image-fader-{$GET%,RAND_FADER_IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{FIRST_URL}}" alt="" /></a>

@@ -1,4 +1,4 @@
-<div class="search-option float-surrounder">
+<div class="search-option clearfix">
 	{+START,IF_NON_PASSED_OR_FALSE,HAS_RANGE}
 		<label for="sd_{NAME*}">{DISPLAY*}:</label>
 

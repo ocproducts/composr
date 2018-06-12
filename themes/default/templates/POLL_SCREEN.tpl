@@ -18,7 +18,7 @@
 {$SET,bound_catalogue_entry,{$CATALOGUE_ENTRY_FOR,poll,{ID}}}
 {+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
 
-<div class="float-surrounder lined-up-boxes">
+<div class="clearfix lined-up-boxes">
 	{+START,IF_NON_EMPTY,{TRACKBACK_DETAILS}}
 		<div class="trackbacks right">
 			{TRACKBACK_DETAILS}

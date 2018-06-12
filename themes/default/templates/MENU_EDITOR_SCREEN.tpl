@@ -18,7 +18,7 @@
 			<form title="{!PRIMARY_PAGE_FORM}" id="edit-form" action="{URL*}" method="post" autocomplete="off" class="js-submit-modsecurity-workaround" data-submit-pd="1">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
-				<div class="float-surrounder menu-edit-main">
+				<div class="clearfix menu-edit-main">
 					<div class="menu-editor-rh-side">
 						<h2>{!HELP}</h2>
 
@@ -43,7 +43,7 @@
 					</p>
 				</div>
 
-				<div id="mini-form-hider" style="display: none" class="float-surrounder">
+				<div id="mini-form-hider" style="display: none" class="clearfix">
 					<div class="menu-editor-rh-side">
 						<a title="{!TOGGLE_DOCKED_FIELD_EDITING}" class="dock-button js-click-toggle-docked-field-editing">
 							{+START,INCLUDE,ICON}

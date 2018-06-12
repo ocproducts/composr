@@ -24,7 +24,7 @@
 
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<div class="float-surrounder">
+		<div class="clearfix">
 			{$,Tree list}
 			<div class="template-editor-file-selector">
 				<div class="inner">
@@ -39,8 +39,8 @@
 
 			{$,Tabs}
 			<div class="template-editor-tabs">
-				<div class="float-surrounder">
-					<div class="float-surrounder">
+				<div class="clearfix">
+					<div class="clearfix">
 						<div class="tabs spaced-out-tabs" role="tablist" id="template-editor-tab-headers"></div>
 					</div>
 					<div class="tab-surround" id="template-editor-tab-bodies"></div>

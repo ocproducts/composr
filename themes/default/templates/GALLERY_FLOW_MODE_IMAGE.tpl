@@ -9,7 +9,7 @@
 		</div>
 	{+END}
 
-	<div class="float-surrounder lined-up-boxes">
+	<div class="clearfix lined-up-boxes">
 		<div class="gallery-entry-details right">
 			<section class="box box---gallery-flow-mode-image"><div class="box-inner">
 				<h3>{!DETAILS}</h3>

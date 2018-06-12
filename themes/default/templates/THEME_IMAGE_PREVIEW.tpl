@@ -1,7 +1,7 @@
 <div class="box box---theme-image-preview"><div class="box-inner">
 	<h2>{!CURRENT}</h2>
 
-	<div class="float-surrounder">
+	<div class="clearfix">
 		<img class="{$?,{$GT,{WIDTH},300},theme-image-preview-wide,theme-image-preview}" src="{URL*}" alt="{!THEME_IMAGE}" />
 
 		<p>{!THEME_IMAGE_CURRENTLY_LIKE,{WIDTH*},{HEIGHT*}}</p>

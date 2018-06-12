@@ -15,7 +15,7 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{ENTRIES}}
-			<div class="float-surrounder display-type-{DISPLAY_TYPE*} raw-ajax-grow-spot">
+			<div class="clearfix display-type-{DISPLAY_TYPE*} raw-ajax-grow-spot">
 				{ENTRIES}
 			</div>
 		{+END}
@@ -31,7 +31,7 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}
-			<div class="pagination-spacing float-surrounder ajax-block-wrapper-links">
+			<div class="pagination-spacing clearfix ajax-block-wrapper-links">
 				{PAGINATION}
 			</div>
 

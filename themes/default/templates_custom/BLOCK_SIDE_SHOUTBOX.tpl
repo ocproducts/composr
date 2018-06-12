@@ -17,7 +17,7 @@
 					<p><input autocomplete="off" type="text" id="shoutbox-message" name="shoutbox_message" alt="{!MESSAGE}" class="wide-field" /></p>
 				</div>
 
-				<div class="float-surrounder">
+				<div class="clearfix">
 					<button class="btn btn-primary btn-scri buttons--send js-click-btn-send-message" style="margin: 0" type="submit">{+START,INCLUDE,ICON}NAME=buttons/send{+END} Send</button>
 					<button class="btn btn-primary btn-scri spare--8 js-click-btn-shake-screen" style="margin: 0" type="submit" title="Shake the screen of all active website visitors">{+START,INCLUDE,ICON}NAME=spare/8{+END} Shake</button>
 				</div>

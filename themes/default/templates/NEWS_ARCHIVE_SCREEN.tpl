@@ -1,6 +1,6 @@
 {TITLE}
 
-<div class="float-surrounder" itemprop="significantLinks">
+<div class="clearfix" itemprop="significantLinks">
 	{CONTENT}
 </div>
 

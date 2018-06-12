@@ -8,7 +8,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{CONTENT}}
-		<div class="index-screen-fancier-screen-entries float-surrounder" itemprop="significantLinks">
+		<div class="index-screen-fancier-screen-entries clearfix" itemprop="significantLinks">
 			{+START,IF_PASSED_AND_TRUE,ARRAY}
 				{+START,LOOP,CONTENT}
 					{+START,IF_NON_EMPTY,{_loop_var}}
@@ -43,7 +43,7 @@
 	{+END}
 
 	{+START,IF_PASSED,PAGINATION}
-		<div class="float-surrounder">
+		<div class="clearfix">
 			{PAGINATION}
 		</div>
 	{+END}

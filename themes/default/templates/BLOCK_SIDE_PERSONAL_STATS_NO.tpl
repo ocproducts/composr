@@ -17,12 +17,12 @@
 
 				{+START,IF,{$CONFIG_OPTION,password_cookies}}
 					<div class="login-block-cookies">
-						<div class="float-surrounder">
+						<div class="clearfix">
 							<label for="ps-remember">{!REMEMBER_ME}</label>
 							<input {+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-checkbox-remember-me-confirm{+END}" type="checkbox" value="1" id="ps-remember" name="remember" />
 						</div>
 						{+START,IF,{$CONFIG_OPTION,is_on_invisibility}}
-							<div class="float-surrounder">
+							<div class="clearfix">
 								<label for="login_invisible">{!INVISIBLE}</label>
 								<input type="checkbox" value="1" id="login_invisible" name="login_invisible" />
 							</div>

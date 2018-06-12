@@ -1,4 +1,4 @@
-<div class="global-middle-outer float-surrounder">
+<div class="global-middle-outer clearfix">
 	<article class="global-middle">
 		{$COMCODE,{START}}
 	</article>

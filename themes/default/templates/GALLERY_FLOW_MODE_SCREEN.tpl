@@ -72,7 +72,7 @@
 		RIGHT=1
 	{+END}
 
-	<div class="float-surrounder lined-up-boxes flow-mode-details">
+	<div class="clearfix lined-up-boxes flow-mode-details">
 		{+START,IF_NON_EMPTY,{MEMBER_DETAILS}}
 			<div class="right">
 				<div class="box box---gallery-flow-mode-screen--member"><div class="box-inner">

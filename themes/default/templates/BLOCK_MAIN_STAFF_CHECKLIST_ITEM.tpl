@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,core_adminzone_dashboard}
 
 <div class="checklist-row">
-	<div class="float-surrounder">
+	<div class="clearfix">
 		{+START,IF_PASSED,INFO}{+START,IF_NON_EMPTY,{INFO}}
 			<p class="checklist-task-status">{INFO*}
 				{+START,IF_PASSED,CONFIG_URL}

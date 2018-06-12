@@ -13,7 +13,7 @@
 </div>
 
 
-<div class="float-surrounder">
+<div class="clearfix">
 	{+START,IF,{$HAS_PRIVILEGE,use_pt}}
 		<div class="cns-whisper-choose-box right">
 			<div class="box box---cns-whisper-choice-screen"><div class="box-inner">

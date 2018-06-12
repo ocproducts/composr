@@ -1,5 +1,5 @@
 <div class="cns-edit-forum-grouping">
-	<div class="float-surrounder">
+	<div class="clearfix">
 		<div class="cns-edit-forum-type">
 			{!FORUM_GROUPING}
 		</div>

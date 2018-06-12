@@ -58,7 +58,7 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{PAGINATION}}
-	<div class="float-surrounder">
+	<div class="clearfix">
 		<br />
 		{PAGINATION}
 	</div>

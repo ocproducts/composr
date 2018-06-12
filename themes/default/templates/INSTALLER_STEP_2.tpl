@@ -8,7 +8,7 @@
 <form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 	{HIDDEN}
 
-	<div class="float-surrounder">
+	<div class="clearfix">
 		<div id="install-newsletter">
 			<p class="accessibility-hidden"><label for="email">{!EMAIL_ADDRESS}</label></p>
 			<div>

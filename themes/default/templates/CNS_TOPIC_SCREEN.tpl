@@ -10,7 +10,7 @@
 	<div class="cns-topic-{THREADED*}">
 		{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}{+START,IF_NON_EMPTY,{BUTTON_SCREENS}{ID}}
 			<div class="non-accessibility-redundancy cns-topic-buttons">
-				<div class="float-surrounder">
+				<div class="clearfix">
 					<div class="buttons-group cns-buttons-screen">
 						{+START,IF,{$NOT,{TICKET_FORUM}}}
 							{+START,INCLUDE,NOTIFICATION_BUTTONS}
@@ -33,7 +33,7 @@
 		{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}
 			{+START,IF_NON_EMPTY,{PAGINATION}}
 				<div class="non-accessibility-redundancy">
-					<div class="pagination-spacing float-surrounder">
+					<div class="pagination-spacing clearfix">
 						{$REPLACE, id="blp-, id="blp2-,{$REPLACE, for="blp-, for="blp2-,{$REPLACE, id="r-, id="r2-,{$REPLACE, for="r-, for="r2-,{PAGINATION}}}}}
 					</div>
 				</div>
@@ -133,13 +133,13 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}
-			<div class="float-surrounder pagination-spacing">
+			<div class="clearfix pagination-spacing">
 				{PAGINATION}
 			</div>
 		{+END}
 
 		{+START,IF_NON_EMPTY,{POSTS}}
-			<div class="float-surrounder cns-topic-buttons">
+			<div class="clearfix cns-topic-buttons">
 				{+START,IF_NON_EMPTY,{BUTTON_SCREENS}{ID}}
 					<div class="buttons-group cns-buttons-screen">
 						{+START,IF,{$NOT,{TICKET_FORUM}}}

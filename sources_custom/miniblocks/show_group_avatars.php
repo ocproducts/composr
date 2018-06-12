@@ -63,7 +63,7 @@ $limit = isset($map['limit']) ? intval($map['limit']) : 200;
 
 require_code('cns_members2');
 
-echo '<div class="float-surrounder">';
+echo '<div class="clearfix">';
 
 $query = 'SELECT m.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m WHERE ' . $where . ' ORDER BY ' . $order;
 $rows = $GLOBALS['FORUM_DB']->query($query, $limit);

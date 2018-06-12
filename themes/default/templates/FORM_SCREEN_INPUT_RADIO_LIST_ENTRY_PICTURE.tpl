@@ -1,6 +1,6 @@
 {$,Used by rarely used combo_get_image_paths function -- you probably want to be looking at FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY.tpl}
 
-<div class="float-surrounder">
+<div class="clearfix">
 	<div class="left">
 		{+START,IF,{$NOT,{CHECKED}}}
 			<input class="input-radio" type="radio" id="{NAME*}_{VALUE|*}" name="{NAME*}" value="{VALUE*}" />

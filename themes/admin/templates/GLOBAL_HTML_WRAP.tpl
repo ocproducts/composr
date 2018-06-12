@@ -63,7 +63,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 		</div>
 
 		{$,The main panels and content; float-surrounder contains the layout into a rendering box so that the footer etc can sit underneath}
-		<div class="global-middle-outer float-surrounder">
+		<div class="global-middle-outer clearfix">
 			<article class="global-middle" role="main">
 				{$,Breadcrumbs}
 				{+START,IF,{$IN_STR,{$BREADCRUMBS},<a }}{+START,IF,{$SHOW_HEADER}}
@@ -135,7 +135,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 	{$,This is the main site footer}
 	{+START,IF,{$SHOW_FOOTER}}
-		<footer class="float-surrounder" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+		<footer class="clearfix" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
 			<div class="footer_inner">
 				<div class="global-footer-left block-desktop">
 					{+START,SET,FOOTER_BUTTONS}

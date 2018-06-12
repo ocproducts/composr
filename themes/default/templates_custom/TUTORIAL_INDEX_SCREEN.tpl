@@ -1,6 +1,6 @@
 {TITLE}
 
-<div class="float-surrounder">
+<div class="clearfix">
 	<div class="left" style="padding-right: 2em">
 		<h2>Tags</h2>
 

@@ -1,6 +1,6 @@
 {$SET,confirm_delete_message,{!CONFIRM_DELETE,{$STRIP_TAGS,{TASK_TITLE}}}}
 <div data-view="BlockMainStaffChecklistCustomTask" data-view-params="{+START,PARAMS_JSON,ID,confirm_delete_message}{_*}{+END}" data-vw-task-done="{TASK_DONE*}" class="checklist-row js-click-mark-task js-keypress-mark-task">
-	<div class="float-surrounder">
+	<div class="clearfix">
 		<p class="checklist-task-status">
 			<span>{!ADDED_SIMPLE,<strong>{ADD_TIME*}</strong>}{+START,IF_NON_EMPTY,{RECUR_INTERVAL}}, {!RECUR_EVERY,{RECUR_INTERVAL*},{RECUR_EVERY*}}{+END}</span>
 

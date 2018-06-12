@@ -1,4 +1,4 @@
-<div class="search-option float-surrounder">
+<div class="search-option clearfix">
 	<label for="sd_{NAME*}">{DISPLAY*}:</label>
 	<div>
 		<input maxlength="255" class="wide-field search-option-value" type="text" id="sd_{NAME*}" name="{NAME*}" value="{SPECIAL*}" />

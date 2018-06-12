@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,chat}
 
 <div class="chat-lobby-im-participant" data-tpl="chatLobbyImParticipant">
-	<div class="float-surrounder">
+	<div class="clearfix">
 		{+START,IF_NON_EMPTY,{AVATAR_URL}}
 			<img class="chat-participant-avatar" style="display: block" id="avatar--{ID*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" alt="{!AVATAR}" />
 		{+END}

@@ -126,7 +126,7 @@
 	<section class="box box---room-info"><div class="box-inner">
 		<h3>{!W_ROOM_INFORMATION}</h3>
 
-		<div class="float-surrounder">
+		<div class="clearfix">
 			<div class="buildr-room-chat results-table">
 				<h4 class="buildr-posttop">{!MESSAGES}</h4>
 				<div>
@@ -168,7 +168,7 @@
 		</div>
 
 		{+START,IF_NON_EMPTY,{ITEMS}{ITEMS_SALE}}
-			<div class="float-surrounder">
+			<div class="clearfix">
 				{+START,IF_NON_EMPTY,{ITEMS}}
 					<h4>{!W_ITEMS_IN_ROOM}</h4>
 
@@ -555,7 +555,7 @@
 				</h2>
 
 				<div class="toggleable-tray js-tray-content" style="{HIDE_ADDITIONS*}"{+START,IF,{HIDE_ADDITIONS}} aria-expanded="false"{+END}>
-					<div class="float-surrounder buildr-icons-wrap">
+					<div class="clearfix buildr-icons-wrap">
 						<div class="buildr-icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
 							<a href="{$PAGE_LINK*,_SELF:_SELF:addrealm}"><img alt="{!W_ADD_REALM}" width="68" height="68" src="{$IMG*,buildr/realms}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addrealm}">{!W_ADD_REALM}</a>
 						</div>
@@ -610,7 +610,7 @@
 
 				{+START,IF,{$OR,{$IS_NON_EMPTY,{IS_ROOM_OWNER}},{$IS_NON_EMPTY,{IS_REALM_OWNER}}}}
 					<br />
-					<div class="float-surrounder buildr-icons-wrap">
+					<div class="clearfix buildr-icons-wrap">
 						{+START,IF,{IS_ROOM_OWNER}}
 							<div class="buildr-icon" style="width: {$?,{IS_REALM_OWNER},25%,50%};">
 								<a href="{$PAGE_LINK*,_SELF:_SELF:editroom}"><img alt="{!W_EDIT_ROOM}" width="68" height="68" src="{$IMG*,buildr/addroom}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:editroom}">{!W_EDIT_ROOM}</a>

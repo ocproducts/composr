@@ -31,7 +31,7 @@
 	{+END}
 
 	{+START,IF_NON_PASSED_OR_FALSE,ENTRY_SCREEN}
-		<div class="float-surrounder">
+		<div class="clearfix">
 			{+START,IF,{$NOT,{GIVE_CONTEXT}}}
 				<p class="left">
 					<a rel="back_to_top" target="_self" href="#" title="{!BACK_TO_TOP}">

@@ -1,4 +1,4 @@
-<div class="float-surrounder zebra-{$CYCLE,addon_export,0,1}">
+<div class="clearfix zebra-{$CYCLE,addon_export,0,1}">
 	<form title="{!EXPORT_ADDON}: {NAME*}" action="{URL*}" method="post" class="{$CYCLE*,zz,zebra-0,zebra-1}" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 

@@ -12,7 +12,7 @@
 	<div class="box box---chat-lobby-screen-rooms box-prominent"><div class="box-inner">
 		<h2>{!CHATROOMS_LOBBY_TITLE}</h2>
 
-		<div class="float-surrounder">
+		<div class="clearfix">
 			{+START,IF_NON_EMPTY,{ADD_CHATROOM_URL}{PRIVATE_CHATROOM}{BLOCKING_LINK}{MOD_LINK}{SETEFFECTS_LINK}}
 				<nav class="chat-actions">
 					<h3>{!OTHER_ACTIONS}</h3>
@@ -63,7 +63,7 @@
 			<div class="box box---chat-lobby-screen-im box-prominent"><div class="box-inner">
 				<h2>{!INSTANT_MESSAGING}</h2>
 
-				<div class="float-surrounder chat-im-convos-inner">
+				<div class="clearfix chat-im-convos-inner">
 					<div class="chat-lobby-convos">
 						<div class="chat-lobby-convos-tabs" id="chat-lobby-convos-tabs" style="display: none"></div>
 						<div class="chat-lobby-convos-areas" id="chat-lobby-convos-areas">

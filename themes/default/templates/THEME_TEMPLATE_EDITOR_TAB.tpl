@@ -513,7 +513,7 @@
 
 {$,Buttons}
 
-<div class="float-surrounder buttons-group">
+<div class="clearfix buttons-group">
 	<button data-disable-on-click="1" class="btn btn-primary btn-scr buttons--save js-btn-save-content" type="submit">{+START,INCLUDE,ICON}NAME=buttons/save{+END} {!SAVE}</button>
 
 	{+START,SET,preview_buttons}

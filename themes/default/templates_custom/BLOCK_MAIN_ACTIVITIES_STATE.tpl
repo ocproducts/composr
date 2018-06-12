@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,activity_feed}
 
-<div id="status-updates" class="float-surrounder" data-view="BlockMainActivitiesState">
+<div id="status-updates" class="clearfix" data-view="BlockMainActivitiesState">
 	{+START,IF_NON_EMPTY,{TITLE}}
 		<h2 class="status-icon">{TITLE*}</h2>
 	{+END}

@@ -224,7 +224,7 @@ For example, take the [tt]CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP.tpl[/tt] templat
 	{+END}
 
 	{+START,IF_NON_PASSED_OR_FALSE,ENTRY_SCREEN}
-		<div class="float-surrounder">
+		<div class="clearfix">
 			{+START,IF,{$NOT,{GIVE_CONTEXT}}}
 				<p class="left">
 					<a target="_self" href="#"><img class="top-vertical-alignment" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" width="24" height="24" src="{$IMG*,icons/tool_buttons/top}" /></a>

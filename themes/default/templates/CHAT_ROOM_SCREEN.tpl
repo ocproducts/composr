@@ -12,7 +12,7 @@
 
 	{+START,SET,posting_box}
 		<div class="chat-posting-area">
-			<div class="float-surrounder">
+			<div class="clearfix">
 				<div class="left">
 					<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
@@ -98,7 +98,7 @@
 					{!CHAT_OPTIONS_DESCRIPTION}
 				</p>
 
-				<div class="float-surrounder">
+				<div class="clearfix">
 					<div class="chat-colour-option">
 						<p>
 							<label for="text_colour">{!CHAT_OPTIONS_COLOUR_NAME}:</label>

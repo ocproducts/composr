@@ -52,7 +52,7 @@
 		{+START,IF_NON_EMPTY,{NO_TIMES}}
 			<h4 class="checklist-header">{!OTHER_MAINTENANCE}</h4>
 
-			<div class="float-surrounder checklist-other-maintenance">
+			<div class="clearfix checklist-other-maintenance">
 				{NO_TIMES}
 			</div>
 		{+END}

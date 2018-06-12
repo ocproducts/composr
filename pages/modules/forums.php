@@ -138,6 +138,6 @@ class Module_forums
         require_code('integrator');
         $result = reprocess_url($access_url, $base_url);
 
-        return do_template('COMCODE_SURROUND', array('_GUID' => '4d5a8ce37df94f7d61f1a96f5689b9c0', 'CLASS' => 'float-surrounder', 'CONTENT' => protect_from_escaping($result)));
+        return do_template('COMCODE_SURROUND', array('_GUID' => '4d5a8ce37df94f7d61f1a96f5689b9c0', 'CLASS' => 'clearfix', 'CONTENT' => protect_from_escaping($result)));
     }
 }

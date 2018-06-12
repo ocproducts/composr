@@ -63,7 +63,7 @@
 </table>
 
 {+START,IF_NON_EMPTY,{PAGINATION}}
-	<div class="float-surrounder">
+	<div class="clearfix">
 		{PAGINATION}
 	</div>
 {+END}

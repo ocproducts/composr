@@ -30,7 +30,7 @@
 
 	{+START,SET,RESULTS_TABLE_PAGINATION}
 		{+START,IF_NON_EMPTY,{SORT}{PAGINATION}}
-			<div class="box results-table-under"><div class="box-inner float-surrounder">
+			<div class="box results-table-under"><div class="box-inner clearfix">
 				{+START,IF_NON_EMPTY,{SORT}}
 					<div class="results-table-sorter">
 						{SORT}

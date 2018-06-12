@@ -1,4 +1,4 @@
-<div class="float-surrounder" itemscope="itemscope" itemtype="http://schema.org/VideoObject">
+<div class="clearfix" itemscope="itemscope" itemtype="http://schema.org/VideoObject">
 	<div class="media-box">
 		{VIDEO_PLAYER}
 	</div>

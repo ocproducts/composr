@@ -13,7 +13,7 @@
 	</h2>
 
 	<div class="toggleable-tray js-tray-content">
-		<div class="cns-information-bar float-surrounder">
+		<div class="cns-information-bar clearfix">
 			<div class="cns-guest-column cns-guest-column-a">
 				<form title="{!_LOGIN}" class="inline js-submit-check-field-login-username" action="{LOGIN_URL*}" method="post" autocomplete="on">
 					{$INSERT_SPAMMER_BLACKHOLE}

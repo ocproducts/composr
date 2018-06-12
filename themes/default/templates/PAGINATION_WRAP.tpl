@@ -1,7 +1,7 @@
 {+START,IF_PASSED,TEXT_ID}{$SET,TEXT_ID,{TEXT_ID}}{+END}
 
 <div class="pagination">
-	<div class="float-surrounder">
+	<div class="clearfix">
 		{PER_PAGE}
 
 		<nav>

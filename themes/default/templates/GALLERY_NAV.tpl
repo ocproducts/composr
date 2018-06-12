@@ -68,7 +68,7 @@
 	{$,Different positioning of slideshow button for mobiles, due to limited space}
 	{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
 		{+START,IF,{$NOT,{SLIDESHOW}}}
-			<div class="float-surrounder block-mobile">
+			<div class="clearfix block-mobile">
 				<div class="right block-mobile">
 					<a class="btn btn-primary btn-scr buttons--slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{+START,INCLUDE,ICON}NAME=buttons/slideshow{+END} {!_SLIDESHOW}</span></a>
 				</div>

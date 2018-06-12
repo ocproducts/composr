@@ -10,7 +10,7 @@
 			{+END}
 
 			{+START,IF,{UNDERNEATH}}
-				<div class="float-surrounder">
+				<div class="clearfix">
 					<p>
 						<label for="search_under">{!SEARCH_UNDERNEATH}:</label>
 					</p>

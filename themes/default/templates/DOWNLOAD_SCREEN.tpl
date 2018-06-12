@@ -7,7 +7,7 @@
 
 	{WARNING_DETAILS}
 
-	<div class="float-surrounder">
+	<div class="clearfix">
 		<div class="download-metadata">
 			<div class="download-now-wrapper">
 				<div class="box box---download-screen" data-toggleable-tray="{}">

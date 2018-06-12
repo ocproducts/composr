@@ -9,10 +9,10 @@
 
 	{+START,IF,{$NOT,{$IS_GUEST}}}
 		<div class="box box---support-tickets-screen"><div class="box-inner vertical-alignment">
-			<form title="{!FILTER}" class="float-surrounder js-form-submit-scroll-to-top" id="ticket-type-form" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" autocomplete="off">
+			<form title="{!FILTER}" class="clearfix js-form-submit-scroll-to-top" id="ticket-type-form" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" autocomplete="off">
 				{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},ticket_type_id,open}
 
-				<div class="float-surrounder ticket-filters">
+				<div class="clearfix ticket-filters">
 					<div class="inline ticket-type-filter">
 						<label class="field-name" for="ticket_type_id">{!TICKET_TYPE}:</label>
 						<select id="ticket_type_id" name="ticket_type_id" class="input-list-required">

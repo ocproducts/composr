@@ -415,7 +415,7 @@
 	color: {$GET,red_highlight_text};
 }
 
-.chat-lobby-im-participant .float-surrounder a {
+.chat-lobby-im-participant .clearfix a {
 	display: block;
 }
 

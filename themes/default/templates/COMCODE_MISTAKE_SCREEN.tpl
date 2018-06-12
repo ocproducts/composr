@@ -9,7 +9,7 @@
 		TEXT={!COMCODE_ERROR,<a href="#errorat" target="_self">{MESSAGE}</a>,{LINE*}}
 	{+END}
 
-	<div class="float-surrounder">
+	<div class="clearfix">
 		<div class="comcode-error-help-div">
 			<h2>{!WHAT_IS_COMCODE}</h2>
 

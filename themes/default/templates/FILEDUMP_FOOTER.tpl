@@ -1,6 +1,6 @@
 <hr class="spaced-rule" />
 
-<div class="float-surrounder">
+<div class="clearfix">
 	<div class="left">
 		<label for="action-{I*}">{!ACTION}:</label>
 		<select id="action-{I*}" name="action">

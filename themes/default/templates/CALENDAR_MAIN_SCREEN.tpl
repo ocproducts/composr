@@ -1,6 +1,6 @@
 {TITLE}
 
-<div class="float-surrounder">
+<div class="clearfix">
 	<div class="calendar-top-navigation">
 		<div class="calendar-date-span-link"><div class="calendar-date-span-link-inner">
 			{+START,IF_NON_EMPTY,{YEAR_URL}}
@@ -73,7 +73,7 @@
 	</h2>
 
 	<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
-		<div class="float-surrounder">
+		<div class="clearfix">
 			{+START,IF_NON_EMPTY,{EVENT_TYPES_1}}
 				<div class="right event-interest-box"><section class="box"><div class="box-inner">
 					<form title="{!INTERESTS}" method="post" action="{INTERESTS_URL*}" autocomplete="off">

@@ -1,4 +1,4 @@
-<div class="float-surrounder">
+<div class="clearfix">
 	<div class="svg-graph">
 		<object type="image/svg+xml" data="{GRAPH*}">
 			{!GRAPH}

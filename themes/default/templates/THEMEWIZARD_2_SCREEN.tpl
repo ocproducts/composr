@@ -1,6 +1,6 @@
 {TITLE}
 
-<div class="float-surrounder">
+<div class="clearfix">
 	<div class="themewizard-info-box">
 		<div class="box box---themewizard-2-screen"><div class="box-inner">
 			<h2>{!SEED_COLOUR}</h2>

@@ -16,7 +16,7 @@
 	{+END}
 
 	{+START,IF_NON_EMPTY,{SUMMARY}}
-		<div class="float-surrounder">
+		<div class="clearfix">
 			{$PARAGRAPH,{SUMMARY}}
 		</div>
 	{+END}

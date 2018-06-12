@@ -1,4 +1,4 @@
-<div class="float-surrounder">
+<div class="clearfix">
 	<div class="award-extra-details">
 		<h3>{AWARD_DATE*}</h3>
 

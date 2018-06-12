@@ -14,7 +14,7 @@
 
 	{WARNING_DETAILS}
 
-	<div class="float-surrounder">
+	<div class="clearfix">
 		{+START,IF_NON_EMPTY,{SUBSCRIBE_URL}}
 			<div class="event-right">
 				{+START,IF_NON_EMPTY,{SUBSCRIBED}}
@@ -36,7 +36,7 @@
 					{+START,IF_NON_EMPTY,{SUBSCRIPTIONS}}
 						<ul class="event-subscriptions">
 							{+START,LOOP,SUBSCRIPTIONS}
-								<li class="float-surrounder">
+								<li class="clearfix">
 									{TIME*}
 
 									<span class="horiz-field-sep associated-link"><a href="{UNSUBSCRIBE_URL*}" title="{!UNSUBSCRIBE}: {TIME*}">{!UNSUBSCRIBE}</a></span>
@@ -61,7 +61,7 @@
 			<div class="box box---calendar-event-screen-description"><div class="box-inner">
 				<h2>{!DESCRIPTION}</h2>
 
-				<div class="float-surrounder">
+				<div class="clearfix">
 					{+START,IF_NON_EMPTY,{LOGO}}
 						<img class="event-type-image" width="24" height="24" src="{$IMG*,{LOGO}}" alt="{TYPE*}" title="{TYPE*}" />
 					{+END}
@@ -76,7 +76,7 @@
 		</div>
 	</div>
 
-	<div class="float-surrounder">
+	<div class="clearfix">
 		<div class="event-right">
 			{+START,IF_NON_EMPTY,{TRACKBACK_DETAILS}}
 				<div class="trackbacks right">

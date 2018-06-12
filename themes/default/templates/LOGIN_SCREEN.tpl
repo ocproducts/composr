@@ -17,7 +17,7 @@
 
 				{PASSION}
 
-				<div class="float-surrounder">
+				<div class="clearfix">
 					<table class="map-table autosized-table login-page-form">
 						<tbody>
 							<tr>

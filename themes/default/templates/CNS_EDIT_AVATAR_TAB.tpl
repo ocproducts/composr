@@ -1,4 +1,4 @@
-<div class="float-surrounder">
+<div class="clearfix">
 	<div class="cns-avatar-page-old-avatar">
 		{AVATAR}
 	</div>

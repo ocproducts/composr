@@ -5,7 +5,7 @@
 	</div>
 
 	{$,Tab buttons}
-	<div class="float-surrounder">
+	<div class="clearfix">
 		<div class="ze-tabs tabs" role="tablist">
 			{+START,IF_PASSED,PREVIEW}
 				<a aria-controls="view-{ID*}" role="tab" title="{!PREVIEW}: {ID*}" href="#!" id="view-tab-{ID*}" class="tab tab-first tab-selected js-click-select-tab" data-js-tab="view">
@@ -79,7 +79,7 @@
 				{+START,IF_NON_EMPTY,{COMCODE_EDITOR}}
 					<div>
 						<div class="post-special-options">
-							<div class="float-surrounder" role="toolbar">
+							<div class="clearfix" role="toolbar">
 								{COMCODE_EDITOR}
 							</div>
 						</div>

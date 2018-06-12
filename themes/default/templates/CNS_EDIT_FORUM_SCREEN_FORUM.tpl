@@ -1,5 +1,5 @@
 <div class="cns-edit-forum-forum zebra-{$CYCLE,f_colour,0,1}">
-	<div class="float-surrounder">
+	<div class="clearfix">
 		<div class="cns-edit-forum-type">
 			<span class="horiz-field-sep associated-link"><a rel="edit" href="{EDIT_URL*}" title="{!EDIT}: {FORUM*} ({ID*})">{!EDIT}</a></span>
 		</div>

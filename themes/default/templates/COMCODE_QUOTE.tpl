@@ -7,7 +7,7 @@
 {+START,IF,{$NOT,{$TAPATALK}}}
 	<blockquote class="comcode-quote"{+START,IF_PASSED,CITE} cite="{CITE*}"{+END}>
 		<div class="comcode-quote-inner">
-			<div class="float-surrounder">
+			<div class="clearfix">
 				{+START,IF,{$MOBILE}}
 					{$PREG_REPLACE,<blockquote.*>.*</blockquote>,,{CONTENT},s}
 				{+END}

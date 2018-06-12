@@ -16,7 +16,7 @@
 			{+START,IF,{$NEQ,{INPUT_FIELDS},1}}
 				{+START,LOOP,INPUT_FIELDS}
 					{+START,IF_EMPTY,{INPUT}}
-						<div class="search-option float-surrounder">
+						<div class="search-option clearfix">
 							<label for="search-{_loop_key*}">{LABEL*}:</label><br />
 							{+START,IF,{$EQ,{_loop_key},content}}
 								<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="js-keyup-update-ajax-search-list" type="text" id="search-{_loop_key*}" name="content" value="{$_GET*,content}" />

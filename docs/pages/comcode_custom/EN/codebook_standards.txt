@@ -2131,7 +2131,7 @@ A common example broad styling you should avoid is removing all bullets and spac
 | Manually
 | We know this is a very common technique, but we don't use it in Composr. Instead, wrap all your floats inside...
 [code="HTML"]
-<div class="float-surrounder">
+<div class="clearfix">
     (floats)
 </div>
 [/code]

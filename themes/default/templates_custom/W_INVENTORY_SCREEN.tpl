@@ -1,6 +1,6 @@
 {TITLE}
 
-<div class="float-surrounder">
+<div class="clearfix">
 	{+START,IF_NON_EMPTY,{AVATAR}}
 		<div class="buildr-avatar">
 			<img alt="{!AVATAR}" src="{AVATAR*}" />

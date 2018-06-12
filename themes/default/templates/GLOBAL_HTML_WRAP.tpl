@@ -148,7 +148,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 		{$,This is the main site footer}
 		{+START,IF,{$SHOW_FOOTER}}
-			<footer class="float-surrounder" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo">
+			<footer class="clearfix" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo">
 				<div class="footer-inner container">
 					<div class="global-footer-left block-desktop">
 						{+START,SET,FOOTER_BUTTONS}

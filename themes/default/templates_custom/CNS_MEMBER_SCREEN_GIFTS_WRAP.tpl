@@ -14,7 +14,7 @@
 	<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
 		{+START,LOOP,GIFTS}
 			<div class="box box---cns-member-screen-gifts-wrap"><div class="box-inner">
-				<div class="float-surrounder">
+				<div class="clearfix">
 					{+START,IF_NON_EMPTY,{IMAGE_URL}}
 						<img width="50" src="{$THUMBNAIL*,{IMAGE_URL},50}" class="left float-separation" />
 					{+END}

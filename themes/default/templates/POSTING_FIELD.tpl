@@ -74,8 +74,8 @@
 			<textarea cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="{NAME*}_parsed">{DEFAULT_PARSED*}</textarea>
 		{+END}
 
-		<div class="float-surrounder">
-			<div role="toolbar" class="float-surrounder post-options-wrap">
+		<div class="clearfix">
+			<div role="toolbar" class="clearfix post-options-wrap">
 				<div id="post-special-options2" style="display: none">
 					{COMCODE_EDITOR_SMALL}
 				</div>

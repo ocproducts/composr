@@ -151,7 +151,7 @@
         var pastCommandPrompt = document.createElement('p');
         var pastCommand = document.createElement('div');
 
-        newCommand.className = 'command float-surrounder';
+        newCommand.className = 'command clearfix';
         pastCommandPrompt.className = 'past-command-prompt';
         pastCommand.className = 'past-command';
 

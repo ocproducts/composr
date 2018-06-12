@@ -70,7 +70,7 @@
 		{+END}
 	{+END}
 
-	<div class="float-surrounder lined-up-boxes">
+	<div class="clearfix lined-up-boxes">
 		{+START,IF_NON_EMPTY,{MEMBER_DETAILS}}
 			<div class="right">
 				<div class="box box---gallery-regular-mode-screen"><div class="box-inner">

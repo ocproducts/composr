@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,activity_feed}
 
 <div data-require-javascript="activity_feed" data-tpl="cnsMemberProfileActivities" data-tpl-params="{+START,PARAMS_JSON,SYNDICATIONS}{_*}{+END}">
-	<div class="float-surrounder">
+	<div class="clearfix">
 		{+START,IF,{$EQ,{MEMBER_ID},{$MEMBER}}}
 			{$BLOCK,block=main_activities_state,member={MEMBER_ID},mode=some_members,param=}
 		{+END}
