@@ -42,6 +42,22 @@ abstract class EmailIntegration
     const STRIP_TEXT = 3;
 
     /**
+     * Log a message, if the log has been created.
+     *
+     * @param  string $message Message
+     */
+    protected function log_message($message)
+    {
+        $path = get_custom_file_base() . '/data_custom/mail_integration.log';
+        if (is_file($path)) {
+            $myfile = fopen($path, 'ab');
+            $log_line = date('Y-m-d H:i:s') . ': ' . $message . "\n";
+            fwrite($myfile, $log_line);
+            fclose($myfile);
+        }
+    }
+
+    /**
      * Send out an e-mail message.
      *
      * @param  string $subject Subject
@@ -57,6 +73,8 @@ abstract class EmailIntegration
         if ($to_email == '') {
             return;
         }
+
+        $this->log_message('Sending outgoing e-mail to ' . $to_email . ' (' . $subject . ')');
 
         $headers = '';
 
@@ -121,6 +139,8 @@ abstract class EmailIntegration
         require_code('mail2');
 
         if (!function_exists('imap_open')) {
+            $this->log_message('IMAP is not available');
+
             warn_exit(do_lang_tempcode('IMAP_NEEDED'));
         }
 
@@ -144,9 +164,13 @@ abstract class EmailIntegration
             $password = get_option('mail_password');
         }
 
+        $this->log_message('Starting an incoming e-mail scan on ' . $host . ' (' . $username . ')');
+
         $server_spec = _imap_server_spec($host, $port, $type);
         $mbox = @imap_open($server_spec . $folder, $username, $password, CL_EXPUNGE);
         if ($mbox !== false) {
+            $this->log_message('Successfully opened server connection');
+
             $reprocess = (get_param_integer('test', 0) == 1 && $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()));
             $list = imap_search($mbox, $reprocess ? '' : 'UNSEEN');
             if ($list === false) {
@@ -160,6 +184,8 @@ abstract class EmailIntegration
                 $subject = $header->subject;
                 $this->strip_system_code($subject, self::STRIP_SUBJECT);
 
+                $this->log_message('Found an unread e-mail, ' . $subject);
+
                 // Find overall character set
                 $input_charset = 'ISO-8859-1';
                 $matches = array();
@@ -170,14 +196,13 @@ abstract class EmailIntegration
                 // Find body parts and attachments
                 $attachments = array();
                 $attachment_size_total = 0;
-                $body = $this->_imap_get_part($mbox, $l, 'TEXT/HTML', $attachments, $attachment_size_total, $input_charset);
+                $_body_text = $this->_imap_get_part($mbox, $l, 'TEXT/PLAIN', $attachments, $attachment_size_total, $input_charset);
+                $_body_html = $this->_imap_get_part($mbox, $l, 'TEXT/HTML', $attachments, $attachment_size_total, $input_charset);
                 imap_clearflag_full($mbox, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
-                if ($body === null) { // Convert from plain text
-                    $body = $this->_imap_get_part($mbox, $l, 'TEXT/PLAIN', $attachments, $attachment_size_total, $input_charset);
-                    imap_clearflag_full($mbox, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
-                    $body = $this->email_comcode_from_text($body);
-                } else { // Convert from HTML
-                    $body = $this->email_comcode_from_html($body);
+                if (($_body_text === null) || ($_body_html === null)) {
+                    $this->log_message('Could not find a plain text or HTML body');
+                    imap_setflag_full($mbox, $l, '\\Seen');
+                    continue;
                 }
                 $this->_imap_get_part($mbox, $l, 'APPLICATION/OCTET-STREAM', $attachments, $attachment_size_total, $input_charset);
                 imap_clearflag_full($mbox, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
@@ -204,14 +229,19 @@ abstract class EmailIntegration
                 }
 
                 // Continue to real processing
-                if (!$this->is_non_human_email($subject, $body, $full_header, $from_email)) {
+                if (!$this->is_non_human_email($subject, $_body_text, $_body_html, $full_header, $from_email)) {
+                    $this->log_message('E-mail is being processed (From e-mail=' . $from_email . ', From name=' . $from_name . ', From subject=' . $subject . ')');
+
                     $this->process_incoming_message(
                         $from_email,
                         $from_name,
                         $subject,
-                        $body,
+                        $_body_text,
+                        $_body_html,
                         $attachments
                     );
+                } else {
+                    $this->log_message('E-mail was considered non-human');
                 }
 
                 imap_setflag_full($mbox, $l, '\\Seen');
@@ -219,7 +249,7 @@ abstract class EmailIntegration
 
             // Cleanup
             $mail_delete_after = get_option('mail_delete_after');
-            if ($mail_delete_after != '') {
+            if (($mail_delete_after != '') && ($mail_delete_after != '0')) {
                 $cutoff = time() - 60 * 60 * 24 * intval($mail_delete_after);
                 $list = imap_search($mbox, 'SEEN BEFORE "' . date('j-M-Y', $cutoff) . '"');
                 if ($list === false) {
@@ -237,10 +267,14 @@ abstract class EmailIntegration
             $error = imap_last_error();
             imap_errors(); // Works-around weird PHP bug where "Retrying PLAIN authentication after [AUTHENTICATIONFAILED] Authentication failed. (errflg=1) in Unknown on line 0" may get spit out into any stream (even the backup log)
 
+            $this->log_message('Failed to open server connection (' . $error . ')');
+
             if (!is_cli()) {
                 warn_exit(do_lang_tempcode('IMAP_ERROR', $error), false, true);
             }
         }
+
+        $this->log_message('Finished incoming e-mail scan');
     }
 
     /**
@@ -249,12 +283,15 @@ abstract class EmailIntegration
      * @param  EMAIL $from_email From e-mail
      * @param  string $from_name From name
      * @param  string $subject E-mail subject
-     * @param  string $body E-mail body
-     * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
+     * @param  ?string $_body_text E-mail body in text format (null: not present)
+     * @param  ?string $_body_html E-mail body in HTML format (null: not present)
+     * @param  array $attachments Map of attachments (name to file data)
      */
-    protected function process_incoming_message($from_email, $from_name, $subject, $body, $attachments)
+    protected function process_incoming_message($from_email, $from_name, $subject, $_body_text, $_body_html, $attachments)
     {
         $email_bounce_to = $from_email;
+
+        $_body_types = array(&$_body_text, &$_body_html);
 
         // De-forward
         $forwarded = false;
@@ -262,35 +299,41 @@ abstract class EmailIntegration
             if (substr(strtolower($subject), 0, strlen($prefix)) == $prefix) {
                 $subject = substr($subject, strlen($prefix));
                 $forwarded = true;
-                $body = preg_replace('#^(\[semihtml\])?(<br />\n)*-------- Original Message --------(\n|<br />)+#', '${1}', $body);
-                $body = preg_replace('#^(\[semihtml\])?(<br />\n)*Begin forwarded message:(\n|<br />)*#', '${1}', $body);
-                $body = preg_replace('#^(\[semihtml\])?(<br />\n)*<div>Begin forwarded message:</div>(\n|<br />)*#', '${1}', $body);
-                $body = preg_replace('#^(\[semihtml\])?(<br />\n)*<div>(<br />\n)*<div>Begin forwarded message:</div>(\n|<br />)*#', '${1}<div>', $body);
+
+                foreach ($_body_types as &$_body_type) {
+                    $_body_type = preg_replace('#^(<br />\n)*-------- Original Message --------(\n|<br />)+#', '', $_body_type);
+                    $_body_type = preg_replace('#^(<br />\n)*Begin forwarded message:(\n|<br />)*#', '', $_body_type);
+                    $_body_type = preg_replace('#^(<br />\n)*<div>Begin forwarded message:</div>(\n|<br />)*#', '', $_body_type);
+                    $_body_type = preg_replace('#^(<br />\n)*<div>(<br />\n)*<div>Begin forwarded message:</div>(\n|<br />)*#', '<div>', $_body_type);
+                }
             }
         }
         if ($forwarded) {
             if ($this->find_member_id($from_email) === null) {
                 foreach (array('Reply-To', 'From') as $from_header_type) {
                     $matches = array();
-                    if (preg_match('#' . $from_header_type . ':(.*)#is', $body, $matches) != 0) {
-                        $from_email_alt = null;
-                        $from_name_alt = null;
-                        $test = $this->get_email_address_from_header($matches[1]);
-                        if ($test !== null) {
-                            $from_email_alt = $test[0];
-                            $from_name_alt = $test[1];
-                        }
-                        if (($from_email_alt !== null) && ($this->find_member_id($from_email_alt) !== null)) {
-                            $from_email = $from_email_alt;
-                            $from_name = $from_name_alt;
-                            break;
+
+                    foreach ($_body_types as &$_body_type) {
+                        if (preg_match('#' . $from_header_type . ':(.*)#is', $_body_type, $matches) != 0) {
+                            $from_email_alt = null;
+                            $from_name_alt = null;
+                            $test = $this->get_email_address_from_header($matches[1]);
+                            if ($test !== null) {
+                                $from_email_alt = $test[0];
+                                $from_name_alt = $test[1];
+                            }
+                            if (($from_email_alt !== null) && ($this->find_member_id($from_email_alt) !== null)) {
+                                $from_email = $from_email_alt;
+                                $from_name = $from_name_alt;
+                                break 2;
+                            }
                         }
                     }
                 }
             }
         }
 
-        $this->_process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $body, $attachments);
+        $this->_process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $_body_text, $_body_html, $attachments);
     }
 
     /**
@@ -300,10 +343,11 @@ abstract class EmailIntegration
      * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      * @param  string $from_name From name
      * @param  string $subject E-mail subject
-     * @param  string $body E-mail body
-     * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
+     * @param  ?string $_body_text E-mail body in text format (null: not present)
+     * @param  ?string $_body_html E-mail body in HTML format (null: not present)
+     * @param  array $attachments Map of attachments (name to file data)
      */
-    abstract protected function _process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $body, $attachments);
+    abstract protected function _process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $_body_text, $_body_html, $attachments);
 
     /**
      * Get the mime type for a part of the IMAP structure.
@@ -327,53 +371,115 @@ abstract class EmailIntegration
      *
      * @param  resource $stream IMAP connection object
      * @param  integer $msg_number Message number
-     * @param  string $mime_type Mime type we need (in upper case)
-     * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
+     * @param  string $needed_mime_type Mime type we need (in upper case)
+     * @param  array $attachments Map of attachments (name to file data); only populated if $needed_mime_type is appropriate for an attachment
      * @param  integer $attachment_size_total Total size of attachments in bytes
      * @param  string $input_charset The character set of the e-mail
      * @param  ?object $structure IMAP message structure (null: look up)
      * @param  string $part_number Message part number (blank: root)
      * @return ?string The message part (null: could not find one)
      */
-    protected function _imap_get_part($stream, $msg_number, $mime_type, &$attachments, &$attachment_size_total, $input_charset, $structure = null, $part_number = '')
+    protected function _imap_get_part($stream, $msg_number, $needed_mime_type, &$attachments, &$attachment_size_total, $input_charset, $structure = null, $part_number = '')
     {
         if ($structure === null) {
             $structure = imap_fetchstructure($stream, $msg_number);
         }
 
+        $qualifier_exp =  ' - msg=' . strval($msg_number) . '; part=' . $part_number . ' - while looking for ' . $needed_mime_type;
+
+        // Multi-part, so recurse to scan further parts
+        if ($structure->type == 1) {
+            $this->log_message('Found mime multi-part with ' . integer_format(count($structure->parts)) . ' parts' . $qualifier_exp);
+
+            foreach ($structure->parts as $index => $sub_structure) {
+                if ($part_number != '') {
+                    $prefix = $part_number . '.';
+                } else {
+                    $prefix = '';
+                }
+                $data = $this->_imap_get_part($stream, $msg_number, $needed_mime_type, $attachments, $attachment_size_total, $input_charset, $sub_structure, $prefix . strval($index + 1));
+                if ($data !== null) {
+                    return $data;
+                }
+            }
+
+            return null;
+        }
+
         $part_mime_type = $this->_imap_get_mime_type($structure);
 
-        if ($mime_type == 'APPLICATION/OCTET-STREAM') { // Anything 'attachment' will be considered as 'application/octet-stream' so long as it is not plain text or HTML
+        $always_skipped = array('TEXT/X-VCARD', 'APPLICATION/PGP-SIGNATURE');
+
+        // Anything 'attachment' will be considered as 'application/octet-stream' so long as it is not plain text or HTML
+        if ($needed_mime_type == 'APPLICATION/OCTET-STREAM') {
             $disposition = $structure->ifdisposition ? strtoupper($structure->disposition) : '';
             if (
-                ($disposition == 'ATTACHMENT') ||
+                (isset($structure->bytes)) &&
                 (
-                    ($structure->type != 1) &&
-                    ($structure->type != 2) &&
-                    (isset($structure->bytes)) &&
-                    (!in_array($part_mime_type, array('TEXT/PLAIN', 'TEXT/HTML', 'TEXT/X-VCARD', 'APPLICATION/PGP-SIGNATURE')))
+                    ($disposition == 'ATTACHMENT') ||
+                    (
+                        ($structure->type != 2) &&
+                        (!in_array($part_mime_type, array_merge($always_skipped, array('TEXT/PLAIN', 'TEXT/HTML'))))
+                    )
                 )
             ) {
                 $filename = $structure->parameters[0]->value;
 
-                if ($attachment_size_total + $structure->bytes < 1024 * 1024 * 20/*20MB is quite enough, thank you*/) {
-                    $data = imap_fetchbody($stream, $msg_number, $part_number);
-                    if ($structure->encoding == 3) {
-                        $data = imap_base64($data);
-                    } elseif ($structure->encoding == 4) {
-                        $data = imap_qprint($data);
-                    }
+                $this->log_message('Found attachment, ' . $filename . $qualifier_exp);
 
-                    $attachments[$filename] = $data;
-
-                    $attachment_size_total += $structure->bytes;
-                } else {
+                // Check it's a reasonable file-size
+                if ($attachment_size_total + $structure->bytes >= 1024 * 1024 * 20/*20MB is quite enough, thank you*/) {
                     $new_filename = 'errors-' . $filename . '.txt';
-                    $attachments[] = array($new_filename => '20MB filesize limit exceeded');
+                    $attachments[$new_filename] = array(
+                        'error' => '20MB filesize limit exceeded',
+                        'data' => null,
+                        'cid' => isset($structure->id) ? $structure->id : null,
+                        'cid_referenced' => false,
+                        'composr_id' => null,
+                    );
+                    return null;
+                }
+
+                // Read in data
+                $data = imap_fetchbody($stream, $msg_number, $part_number);
+                if ($structure->encoding == 3) {
+                    $data = imap_base64($data);
+                } elseif ($structure->encoding == 4) {
+                    $data = imap_qprint($data);
+                }
+
+                $attachments[$filename] = array(
+                    'error' => null,
+                    'data' => $data,
+                    'cid' => isset($structure->id) ? trim($structure->id, '<>') : null,
+                    'cid_referenced' => false,
+                    'composr_id' => null,
+                );
+
+                $attachment_size_total += $structure->bytes;
+            } else {
+                if ($disposition == 'ATTACHMENT') {
+                    if (!isset($structure->bytes)) {
+                        $this->log_message('Found attachment section, but cannot process as not an attachment due to missing data' . $qualifier_exp);
+                    }
+                } elseif ($part_mime_type == 'APPLICATION/OCTET-STREAM') {
+                    if (!isset($structure->bytes)) {
+                        $this->log_message('Found binary section, but cannot process as not an attachment due to missing data' . $qualifier_exp);
+                    }
+                    if ($structure->type == 2) {
+                        $this->log_message('Found binary section, but cannot process as not an attachment due to structure type of ' . strval($structure->type) . $qualifier_exp);
+                    }
                 }
             }
-        } elseif ($part_mime_type == $mime_type) { // If mime type matches
+
+            return null;
+        }
+
+        // If mime type matches
+        if ($part_mime_type == $needed_mime_type) {
             require_code('character_sets');
+
+            $this->log_message('Found relevant mime section, ' . $part_mime_type . $qualifier_exp);
 
             if ($part_number == '') {
                 $part_number = '1';
@@ -406,18 +512,8 @@ abstract class EmailIntegration
             return $data;
         }
 
-        if ($structure->type == 1) { // Multi-part, so recurse to scan further parts
-            foreach ($structure->parts as $index => $sub_structure) {
-                if ($part_number != '') {
-                    $prefix = $part_number . '.';
-                } else {
-                    $prefix = '';
-                }
-                $data = $this->_imap_get_part($stream, $msg_number, $mime_type, $attachments, $attachment_size_total, $input_charset, $sub_structure, $prefix . strval($index + 1));
-                if ($data !== null) {
-                    return $data;
-                }
-            }
+        if (($part_mime_type != 'TEXT/HTML') && ($part_mime_type != 'TEXT/PLAIN') && ($part_mime_type != 'APPLICATION/OCTET-STREAM')) {
+            $this->log_message('Found non-understood section with mime-type ' . $part_mime_type . ' and structure type ' . strval($structure->type) . $qualifier_exp);
         }
 
         return null;
@@ -431,10 +527,11 @@ abstract class EmailIntegration
      * @param  string $mail_nonmatch_policy Non-match policy
      * @set post_as_guest create_account block
      * @param  string $subject Subject line
-     * @param  string $body Message body
+     * @param  ?string $_body_text E-mail body in text format (null: not present)
+     * @param  ?string $_body_html E-mail body in HTML format (null: not present)
      * @return ?MEMBER The member ID (null: none)
      */
-    protected function handle_missing_member($from_email, $email_bounce_to, $mail_nonmatch_policy, $subject, $body)
+    protected function handle_missing_member($from_email, $email_bounce_to, $mail_nonmatch_policy, $subject, $_body_text, $_body_html)
     {
         $member_id = null;
 
@@ -477,6 +574,12 @@ abstract class EmailIntegration
                 require_code('cns_members_action');
                 $member_id = cns_make_member($username, $password, $from_email);
 
+                if ($_body_html === null) {
+                    $body = $this->email_comcode_from_text($_body_text);
+                } else {
+                    $body = $this->email_comcode_from_html($_body_html, $member_id);
+                }
+
                 // Send creation e-mail
                 $system_subject = do_lang('MAIL_INTEGRATION_AUTOMATIC_ACCOUNT_SUBJECT', $subject, $from_email, array(get_site_name(), $username), get_site_default_lang());
                 $system_message = do_lang('MAIL_INTEGRATION_AUTOMATIC_ACCOUNT_MAIL', strip_comcode($body), $from_email, array($subject, get_site_name(), $username, $password), get_site_default_lang());
@@ -487,7 +590,7 @@ abstract class EmailIntegration
             case 'block':
             default:
                 // E-mail back, saying user not found
-                $this->send_bounce_email__cannot_bind($subject, $body, $from_email, $email_bounce_to);
+                $this->send_bounce_email__cannot_bind($subject, $_body_text, $_body_html, $from_email, $email_bounce_to);
                 break;
         }
 
@@ -540,7 +643,14 @@ abstract class EmailIntegration
         $errors = array();
 
         $num_attachments_handed = 0;
-        foreach ($attachments as $filename => $filedata) {
+        foreach ($attachments as $filename => &$attachment) {
+            if ($attachment['error'] !== null) {
+                $errors[] = $attachment['error'];
+                break;
+            }
+
+            $filedata = $attachment['data'];
+
             if (($max_attachments_per_post !== null) && ($max_attachments_per_post <= $num_attachments_handed)) {
                 $errors[] = do_lang('MAIL_INTEGRATION_ATTACHMENT_TOO_MANY', integer_format($num_attachments_handed), integer_format($max_attachments_per_post));
                 break;
@@ -582,21 +692,69 @@ abstract class EmailIntegration
             ), true);
             $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => 'null', 'r_referer_id' => '', 'a_id' => $attachment_id));
 
-            $body .= "\n\n" . '[attachment framed="1" thumb="1"]' . strval($attachment_id) . '[/attachment]';
-
             $num_attachments_handed++;
+
+            $attachment['data'] = null; // Not needed anymore
+
+            $attachment['composr_id'] = $attachment_id;
+        }
+
+        $this->substitute_cid_attachments($attachments, $body);
+
+        foreach ($attachments as $filename => &$attachment) {
+            if (!$attachment['cid_referenced']) {
+                $body .= "\n\n" . '[attachment framed="1" thumb="1"]' . strval($attachment['composr_id']) . '[/attachment]';
+            }
         }
 
         return $errors;
     }
 
     /**
+     * Substitute CID references with Composr attachments.
+     *
+     * @param  array $attachments Attachments
+     * @param  string $body Comcode body (altered by reference)
+     */
+    protected function substitute_cid_attachments(&$attachments, &$body)
+    {
+        $matches = array();
+
+        $num_matches = preg_match_all('#\[cid:([^\[\]]+)\]#', $body, $matches);
+        for ($i = 0; $i < $num_matches; $i++) {
+            $cid = $matches[1][$i];
+            foreach ($attachments as $filename => &$attachment) {
+                if (($attachment['cid'] === $cid) && ($attachment['composr_id'] !== null)) {
+                    $rep = '[attachment thumb="0" framed="0"]' . strval($attachment['composr_id']) . '[/attachment]';
+                    $body = str_replace($matches[0][$i], $rep, $body);
+                    $attachment['cid_referenced'] = true;
+                    continue 2;
+                }
+            }
+        }
+
+        $num_matches = preg_match_all('#(\ssrc=")cid:([^"]*)(")#', $body, $matches);
+        for ($i = 0; $i < $num_matches; $i++) {
+            $cid = html_entity_decode($matches[2][$i], ENT_QUOTES);
+            foreach ($attachments as $filename => &$attachment) {
+                if (($attachment['cid'] === $cid) && ($attachment['composr_id'] !== null)) {
+                    $rep = $matches[1][$i] . find_script('attachment') . '?id=' . strval($attachment['composr_id']) . $matches[3][$i];
+                    $body = str_replace($matches[0][$i], $rep, $body);
+                    $attachment['cid_referenced'] = true;
+                    continue 2;
+                }
+            }
+        }
+    }
+
+    /**
      * Convert e-mail HTML to Comcode.
      *
      * @param  string $body HTML body
+     * @param  MEMBER $member_id Member ID
      * @return string Comcode version
      */
-    protected function email_comcode_from_html($body)
+    protected function email_comcode_from_html($body, $member_id)
     {
         $body = unixify_line_format($body);
 
@@ -617,9 +775,8 @@ abstract class EmailIntegration
         $body = preg_replace('#<blockquote[^<>]*>#i', '[quote]', $body);
         $body = preg_replace('#</blockquote>#i', '[/quote]', $body);
 
-        $body = preg_replace('<img [^<>]*src="cid:[^"]*"[^<>]*>', '', $body); // We will get this as an attachment instead
-
         // Strip signature
+        /* Not clear enough, and we can't do reliably across different clients - so best make it so we can show signatures well
         do {
             $pos = strpos($body, '<div apple-content-edited="true">');
             if ($pos !== false) {
@@ -642,11 +799,12 @@ abstract class EmailIntegration
                 }
             }
         } while ($pos !== false);
+        */
 
         $body = cms_trim($body, true);
 
         require_code('comcode_from_html');
-        $body = semihtml_to_comcode($body, true);
+        $body = semihtml_to_comcode($body, false, false, $member_id);
 
         // Trim too much white-space
         $body = preg_replace('#\[quote\](\s|<br />)+#s', '[quote]', $body);
@@ -702,12 +860,13 @@ abstract class EmailIntegration
      * See if we need to skip over an e-mail message, due to it not being from a human.
      *
      * @param  string $subject Subject line
-     * @param  string $body Message body
+     * @param  ?string $_body_text E-mail body in text format (null: not present)
+     * @param  ?string $_body_html E-mail body in HTML format (null: not present)
      * @param  string $full_header Message headers
      * @param  EMAIL $from_email From address
      * @return boolean Whether it should not be processed
      */
-    protected function is_non_human_email($subject, $body, $full_header, $from_email)
+    protected function is_non_human_email($subject, $_body_text, $_body_html, $full_header, $from_email)
     {
         if (array_key_exists($from_email, find_system_email_addresses())) {
             return true;
@@ -715,13 +874,16 @@ abstract class EmailIntegration
 
         $full_header = "\r\n" . strtolower($full_header);
         if (strpos($full_header, "\r\nfrom: <>") !== false) {
+            $this->log_message('Considered non-human due to: empty-from field');
+
             return true;
         }
         if ((strpos($full_header, "\r\nauto-submitted: ") !== false) && (strpos($full_header, "\r\nauto-submitted: no") === false)) {
+            $this->log_message('Considered non-human due to: auto-submitted header');
+
             return true;
         }
 
-        $junk = false;
         $junk_strings = array(
             'Delivery Status Notification',
             'Delivery Notification',
@@ -734,11 +896,17 @@ abstract class EmailIntegration
             'Undeliverable',
         );
         foreach ($junk_strings as $j) {
-            if ((stripos($subject, $j) !== false) || (stripos($body, $j) !== false)) {
-                $junk = true;
+            if (
+                (stripos($subject, $j) !== false) ||
+                (($_body_text !== null) && (stripos($_body_text, $j) !== false)) ||
+                (($_body_html !== null) && (stripos($_body_html, $j) !== false))
+            ) {
+                $this->log_message('Considered non-human due to: recognised automated subject line');
+
+                return true;
             }
         }
-        return $junk;
+        return false;
     }
 
     /**
@@ -754,7 +922,7 @@ abstract class EmailIntegration
             return null;
         }
 
-        return array($addresses[0]->mailbox . '@' . $addresses[0]->host, $addresses[0]->personal);
+        return array($addresses[0]->mailbox . '@' . $addresses[0]->host, isset($addresses[0]->personal) ? $addresses[0]->personal : 'localhost');
     }
 
     /**
@@ -790,11 +958,12 @@ abstract class EmailIntegration
      * Send out an e-mail about us not recognising an e-mail address for an incoming e-mail.
      *
      * @param  string $subject Subject line of original message
-     * @param  string $body Body of original message
+     * @param  ?string $_body_text E-mail body in text format (null: not present)
+     * @param  ?string $_body_html E-mail body in HTML format (null: not present)
      * @param  EMAIL $email E-mail address we tried to bind to
      * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      */
-    abstract protected function send_bounce_email__cannot_bind($subject, $body, $email, $email_bounce_to);
+    abstract protected function send_bounce_email__cannot_bind($subject, $_body_text, $_body_html, $email, $email_bounce_to);
 
     /**
      * Send out a system (advisory) e-mail.

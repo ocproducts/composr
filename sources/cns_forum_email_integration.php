@@ -134,8 +134,12 @@ class ForumEmailIntegration extends EmailIntegration
     {
         $test = cns_has_mailing_list_style();
         if ($test[0] == 0) {
+            $this->log_message('No mailing-list forums to deal with');
+
             return; // Possibly due to not being fully configured yet
         }
+
+        $this->log_message('Starting overall incoming e-mail scan process (forums)');
 
         $sql = 'SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums';
         $sql_sup = ' WHERE ' . db_string_not_equal_to('f_mail_username', '') . ' AND ' . db_string_not_equal_to('f_mail_email_address', '');
@@ -152,6 +156,8 @@ class ForumEmailIntegration extends EmailIntegration
 
             $this->_incoming_scan($type, $host, $port, $folder, $username, $password);
         }
+
+        $this->log_message('Finished overall incoming e-mail scan process (forums)');
     }
 
     /**
@@ -161,18 +167,38 @@ class ForumEmailIntegration extends EmailIntegration
      * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      * @param  string $from_name From name
      * @param  string $subject E-mail subject
-     * @param  string $body E-mail body
+     * @param  ?string $_body_text E-mail body in text format (null: not present)
+     * @param  ?string $_body_html E-mail body in HTML format (null: not present)
      * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
      */
-    protected function _process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $body, $attachments)
+    protected function _process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $_body_text, $_body_html, $attachments)
     {
         // Try to bind to a from member
         $member_id = $this->find_member_id($from_email);
         if ($member_id === null) {
-            $member_id = $this->handle_missing_member($from_email, $email_bounce_to, $this->forum_row['f_mail_nonmatch_policy'], $subject, $body);
+            $member_id = $this->handle_missing_member($from_email, $email_bounce_to, $this->forum_row['f_mail_nonmatch_policy'], $subject, $_body_text, $_body_html);
+
+            if ($member_id !== null) {
+                if (is_guest($member_id)) {
+                    $this->log_message('Will be posting as guest');
+                } else {
+                    $this->log_message('Created a new member, #' . strval($member_id));
+                }
+            }
+        } else {
+            $this->log_message('Bound to a member, #' . strval($member_id));
         }
         if ($member_id === null) {
+            $this->log_message('Could not bind to a member');
+
             return;
+        }
+
+        $prefer_html = has_privilege($member_id, 'allow_html');
+        if (($_body_html === null) || ((!$prefer_html) && ($_body_text !== null))) {
+            $body = $this->email_comcode_from_text($_body_text);
+        } else {
+            $body = $this->email_comcode_from_html($_body_html, $member_id);
         }
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
@@ -180,7 +206,10 @@ class ForumEmailIntegration extends EmailIntegration
         // Check access
         if (!has_category_access($member_id, 'forums', strval($this->forum_id))) {
             $forum_name = $this->forum_row['f_name'];
-            $this->send_bounce_email__access_denied($subject, $body, $from_email, $email_bounce_to, $forum_name, $username);
+
+            $this->log_message('Access denied to the bound member for ' . $forum_name);
+
+            $this->send_bounce_email__access_denied($subject, $_body_text, $_body_html, $from_email, $email_bounce_to, $forum_name, $username, $member_id);
         }
 
         // Check there can be no forgery vulnerability
@@ -202,7 +231,7 @@ class ForumEmailIntegration extends EmailIntegration
 
         // Try and match to a topic
         $topic_id = null;
-        if (substr($subject, 0, 4) == 'Re: ') {
+        if (strtolower(substr($subject, 0, 4)) == 're: ') {
             $title = substr($subject, 4);
             $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('t_cache_first_title' => $title, 't_forum_id' => $this->forum_id), 'ORDER BY t_cache_last_time DESC');
         } else {
@@ -212,7 +241,10 @@ class ForumEmailIntegration extends EmailIntegration
 
         if ($is_starter) {
             require_code('cns_topics_action');
-            $topic_id = cns_make_topic($this->forum_id);
+            $topic_validated = has_privilege($member_id, 'bypass_validation_midrange_content', 'topics', array('forums', $this->forum_id));
+            $topic_id = cns_make_topic($this->forum_id, '', '', $topic_validated ? 1 : 0, 1, 0, 0, null, null, false);
+
+            $this->log_message('Created topic #' . strval($topic_id));
         }
 
         if (is_guest($member_id)) {
@@ -222,9 +254,14 @@ class ForumEmailIntegration extends EmailIntegration
         }
 
         require_code('cns_posts_action');
-        $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter, null, 0, $poster_name_if_guest, null, null, $member_id, null, null, null, true, true, $this->forum_id, true, $title, null, false, true);
+        $post_validated = has_privilege($member_id, 'bypass_validation_lowrange_content', 'topics', array('forums', $this->forum_id));
+        $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter, $post_validated ? 1 : 0, 0, $poster_name_if_guest, null, null, $member_id, null, null, null, false, true, $this->forum_id, true, $title, null, false, true);
+
+        $this->log_message('Created post #' . strval($post_id));
 
         if (count($attachment_errors) != 0) {
+            $this->log_message('Had some issues creating an attachment(s) [non-fatal], e-mailing them about it');
+
             $post_url = $GLOBALS['FORUM_DRIVER']->post_url($post_id, '');
 
             $this->send_bounce_email__attachment_errors($subject, $body, $from_email, $email_bounce_to, $attachment_errors, $post_url);
@@ -257,7 +294,7 @@ class ForumEmailIntegration extends EmailIntegration
                     $strings[] = do_lang('MAILING_LIST_SIMPLE_MAIL_regexp', null, null, null, $lang);
                 }
                 foreach ($strings as $s) {
-                    $body = preg_replace('#' . str_replace(array("\n", '---'), array("(\n|<br[^<>]*>)*", '<hr[^<>]*>'), $s) . '#i', '', $body);
+                    $body = preg_replace('#' . str_replace(array("\n", '---'), array("(\n|<br[^<>]*>)", '<hr[^<>]*>'), $s) . '#i', '', $body);
                 }
                 break;
 
@@ -277,12 +314,20 @@ class ForumEmailIntegration extends EmailIntegration
      * Send out an e-mail about us not recognising an e-mail address for an incoming e-mail.
      *
      * @param  string $subject Subject line of original message
-     * @param  string $body Body of original message
+     * @param  ?string $_body_text E-mail body in text format (null: not present)
+     * @param  ?string $_body_html E-mail body in HTML format (null: not present)
      * @param  EMAIL $email E-mail address we tried to bind to
      * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      */
-    protected function send_bounce_email__cannot_bind($subject, $body, $email, $email_bounce_to)
+    protected function send_bounce_email__cannot_bind($subject, $_body_text, $_body_html, $email, $email_bounce_to)
     {
+        $prefer_html = has_privilege($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'allow_html');
+        if (($_body_html === null) || ((!$prefer_html) && ($_body_text !== null))) {
+            $body = $this->email_comcode_from_text($_body_text);
+        } else {
+            $body = $this->email_comcode_from_html($_body_html, $GLOBALS['FORUM_DRIVER']->get_guest_id());
+        }
+
         $extended_subject = do_lang('MAILING_LIST_CANNOT_BIND_SUBJECT', $subject, $email, array(get_site_name()), get_site_default_lang());
         $extended_message = do_lang('MAILING_LIST_CANNOT_BIND_MAIL', strip_comcode($body), $email, array($subject, get_site_name()), get_site_default_lang());
 
@@ -293,14 +338,23 @@ class ForumEmailIntegration extends EmailIntegration
      * Send out an e-mail about us not having access to the forum.
      *
      * @param  string $subject Subject line of original message
-     * @param  string $body Body of original message
+     * @param  ?string $_body_text E-mail body in text format (null: not present)
+     * @param  ?string $_body_html E-mail body in HTML format (null: not present)
      * @param  EMAIL $email E-mail address we tried to bind to
      * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      * @param  string $forum_name Forum name
      * @param  string $username Bound username
+     * @param  MEMBER $member_id Member ID
      */
-    protected function send_bounce_email__access_denied($subject, $body, $email, $email_bounce_to, $forum_name, $username)
+    protected function send_bounce_email__access_denied($subject, $_body_text, $_body_html, $email, $email_bounce_to, $forum_name, $username, $member_id)
     {
+        $prefer_html = has_privilege($member_id, 'allow_html');
+        if (($_body_html === null) || ((!$prefer_html) && ($_body_text !== null))) {
+            $body = $this->email_comcode_from_text($_body_text);
+        } else {
+            $body = $this->email_comcode_from_html($_body_html, $member_id);
+        }
+
         $extended_subject = do_lang('MAILING_LIST_ACCESS_DENIED_SUBJECT', $subject, $email, array(get_site_name(), $forum_name, $username), get_site_default_lang());
         $extended_message = do_lang('MAILING_LIST_ACCESS_DENIED_MAIL', strip_comcode($body), $email, array($subject, get_site_name(), $forum_name, $username), get_site_default_lang());
 

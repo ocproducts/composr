@@ -103,6 +103,8 @@ class TicketsEmailIntegration extends EmailIntegration
      */
     public function incoming_scan()
     {
+        $this->log_message('Starting overall incoming e-mail scan process (support tickets)');
+
         $type = get_option('ticket_mail_server_type');
         $host = get_option('ticket_mail_server_host');
         $port = (get_option('ticket_mail_server_port') == '') ? null : intval(get_option('ticket_mail_server_port'));
@@ -111,6 +113,8 @@ class TicketsEmailIntegration extends EmailIntegration
         $password = get_option('ticket_mail_password');
 
         $this->_incoming_scan($type, $host, $port, $folder, $username, $password);
+
+        $this->log_message('Finished overall incoming e-mail scan process (support tickets)');
     }
 
     /**
@@ -120,10 +124,11 @@ class TicketsEmailIntegration extends EmailIntegration
      * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      * @param  string $from_name From name
      * @param  string $subject E-mail subject
-     * @param  string $body E-mail body
+     * @param  ?string $_body_text E-mail body converted from text format (null: not present)
+     * @param  ?string $_body_html E-mail body converted from HTML format (null: not present)
      * @param  array $attachments Map of attachments (name to file data); only populated if $mime_type is appropriate for an attachment
      */
-    protected function _process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $body, $attachments)
+    protected function _process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $_body_text, $_body_html, $attachments)
     {
         // Try to bind to an existing ticket
         $existing_ticket_id = null;
@@ -147,17 +152,32 @@ class TicketsEmailIntegration extends EmailIntegration
         $num_matches = preg_match_all('# \[([^\[\]]+)\]#', $subject, $matches);
         $tags = array();
         for ($i = 0; $i < $num_matches; $i++) {
-            $tags[] = $matches[1][$i];
+            $tag = $matches[1][$i];
+
+            $this->log_message('Detected tag ' . $tag);
+
+            $tags[] = $tag;
+
             $subject = str_replace($matches[0][$i], '', $subject);
         }
 
         // Try to bind to a from member
         $member_id = $this->find_member_id($from_email, $tags, $existing_ticket_id);
         if ($member_id === null) {
-            $member_id = $this->handle_missing_member($from_email, $email_bounce_to, get_option('ticket_mail_nonmatch_policy'), $subject, $body);
+            $member_id = $this->handle_missing_member($from_email, $email_bounce_to, get_option('ticket_mail_nonmatch_policy'), $subject, $_body_text, $_body_html);
         }
         if ($member_id === null) {
+            $this->log_message('Could not bind to a member');
+
             return;
+        } else {
+            $this->log_message('Bound to member #' . strval($member_id));
+        }
+
+        if ($_body_html === null) {
+            $body = $this->email_comcode_from_text($_body_text);
+        } else {
+            $body = $this->email_comcode_from_html($_body_html, $member_id);
         }
 
         // Remember the e-mail address to member ID mapping
@@ -168,6 +188,8 @@ class TicketsEmailIntegration extends EmailIntegration
             'email_address' => $from_email,
             'member_id' => $member_id,
         ));
+
+        $this->log_message('Recording ' . $from_email . ' as a valid posted for member #' . strval($member_id));
 
         // Check there can be no forgery vulnerability
         $member_id_comcode = $this->degrade_member_id_for_comcode($member_id);
@@ -207,6 +229,8 @@ class TicketsEmailIntegration extends EmailIntegration
 
             // Send e-mail (to staff)
             send_ticket_email($new_ticket_id, $subject, $body, $ticket_url, $from_email, $ticket_type_id, $member_id, true);
+
+            $this->log_message('Created new ticket, ' . $new_ticket_id);
         } else {
             // Reply to the ticket...
 
@@ -224,9 +248,13 @@ class TicketsEmailIntegration extends EmailIntegration
 
             // Send e-mail (to staff & to confirm receipt to $member_id)
             send_ticket_email($existing_ticket_id, $__title, $body, $ticket_url, $from_email, null, $member_id, true);
+
+            $this->log_message('Posted in ticket, ' . $existing_ticket_id);
         }
 
         if (count($attachment_errors) != 0) {
+            $this->log_message('Had some issues creating an attachment(s) [non-fatal], e-mailing them about it');
+
             $this->send_bounce_email__attachment_errors($subject, $body, $from_email, $email_bounce_to, $attachment_errors, $ticket_url);
         }
 
@@ -309,12 +337,19 @@ class TicketsEmailIntegration extends EmailIntegration
      * Send out an e-mail about us not recognising an e-mail address for an incoming e-mail.
      *
      * @param  string $subject Subject line of original message
-     * @param  string $body Body of original message
+     * @param  ?string $_body_text E-mail body in text format (null: not present)
+     * @param  ?string $_body_html E-mail body in HTML format (null: not present)
      * @param  EMAIL $email E-mail address we tried to bind to
      * @param  EMAIL $email_bounce_to E-mail address of sender (usually the same as $email, but not if it was a forwarded e-mail)
      */
-    protected function send_bounce_email__cannot_bind($subject, $body, $email, $email_bounce_to)
+    protected function send_bounce_email__cannot_bind($subject, $_body_text, $_body_html, $email, $email_bounce_to)
     {
+        if ($_body_html === null) {
+            $body = $this->email_comcode_from_text($_body_text);
+        } else {
+            $body = $this->email_comcode_from_html($_body_html, $GLOBALS['FORUM_DRIVER']->get_guest_id());
+        }
+
         $extended_subject = do_lang('TICKET_CANNOT_BIND_SUBJECT', $subject, $email, array(get_site_name()), get_site_default_lang());
         $extended_message = do_lang('TICKET_CANNOT_BIND_MAIL', strip_comcode($body), $email, array($subject, get_site_name()), get_site_default_lang());
 
