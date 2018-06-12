@@ -273,7 +273,7 @@ function db_encode_like($pattern)
 {
     $ret = $GLOBALS['DB_STATIC_OBJECT']->encode_like($pattern);
 
-    if (($GLOBALS['DEV_MODE']) || (!has_solemnly_declared(I_UNDERSTAND_SQL_INJECTION))) {
+    if (($GLOBALS['DEV_MODE']) || (!function_exists('has_solemnly_declared')) || (!has_solemnly_declared(I_UNDERSTAND_SQL_INJECTION))) {
         require_code('database_security_filter');
         $GLOBALS['DB_ESCAPE_STRING_LIST'][$ret] = true;
         $GLOBALS['DB_ESCAPE_STRING_LIST'][trim($ret, ' %')] = true;

@@ -54,7 +54,7 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
 
     if (!$is_vector) {
         // Do thumbnail conversion
-        if (is_video($full_url, true)) {
+        if (is_video($full_url, false, true)) {
             if (addon_installed('galleries')) {
                 require_code('galleries2');
                 create_video_thumb($full_url, $thumb_path);

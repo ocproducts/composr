@@ -135,7 +135,7 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
 
     if (stripos($text, '[url') !== false) {
         if (!in_array('url', $tags_to_preserve)) {
-            $text = preg_replace("#\[url( param)?=\"([^\"]*)\"[^\[\]]*\]\\1\[/url\]#", '\2', $text);
+            $text = preg_replace("#\[url( param)?=\"([^\"]*)\"[^\[\]]*\]\\2\[/url\]#", '\2', $text);
             $text = preg_replace("#\(\[url( param)?=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]\)#", '\2', $text);
             $text = preg_replace("#\[url( param)?=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\4' : '\4 (\2)', $text);
             $text = preg_replace("#\[url( param)?=\"([^\"]*)\"[^\[\]]*\]([^\[\]]*)\[/url\]#", '\2 (\4)', $text);
