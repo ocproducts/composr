@@ -345,6 +345,7 @@ class Module_admin_errorlog
             'permission_checks.log' => null,
             'queries.log' => null,
             'big_query_screens.log' => null,
+            'mail_integration.log' => null,
             'resource_fs.log' => 'commandr',
         );
         foreach ($logs_available as $filename => $addon_needed) {
