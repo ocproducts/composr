@@ -229,13 +229,25 @@ class ForumEmailIntegration extends EmailIntegration
             'USERNAME' => $username,
         ), null, false, null, '.txt', 'text'));
 
+        $title = $subject;
+        $possible_reply = /*false*/true; // Better to just let anything be a possible reply, more user-friendly
+        do {
+            $changed = false;
+            if (strtolower(substr($title, 0, 4)) == 're: ') {
+                $title = substr($title, 4);
+                $changed = true;
+                $possible_reply = true;
+            } elseif (strtolower(substr($title, 0, 4)) == 'fw: ') {
+                $title = substr($title, 4);
+                $changed = true;
+            }
+        }
+        while ($changed);
+
         // Try and match to a topic
         $topic_id = null;
-        if (strtolower(substr($subject, 0, 4)) == 're: ') {
-            $title = substr($subject, 4);
+        if ($possible_reply) {
             $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('t_cache_first_title' => $title, 't_forum_id' => $this->forum_id), 'ORDER BY t_cache_last_time DESC');
-        } else {
-            $title = $subject;
         }
         $is_starter = ($topic_id === null);
 
