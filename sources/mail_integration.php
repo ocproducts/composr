@@ -199,7 +199,7 @@ abstract class EmailIntegration
                 $_body_text = $this->_imap_get_part($mbox, $l, 'TEXT/PLAIN', $attachments, $attachment_size_total, $input_charset);
                 $_body_html = $this->_imap_get_part($mbox, $l, 'TEXT/HTML', $attachments, $attachment_size_total, $input_charset);
                 imap_clearflag_full($mbox, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
-                if (($_body_text === null) || ($_body_html === null)) {
+                if (($_body_text === null) && ($_body_html === null)) {
                     $this->log_message('Could not find a plain text or HTML body');
                     imap_setflag_full($mbox, $l, '\\Seen');
                     continue;
