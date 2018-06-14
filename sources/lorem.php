@@ -963,6 +963,7 @@ function is_full_screen_template($temp_name = null, $tempcode = null)
         $temp_name == 'templates/RESTORE_HTML_WRAP.tpl' ||
         $temp_name == 'templates/BASIC_HTML_WRAP.tpl' ||
         $temp_name == 'templates/STANDALONE_HTML_WRAP.tpl' ||
-        $temp_name == 'templates/MAIL.tpl'
+        $temp_name == 'templates/MAIL.tpl' ||
+        $temp_name == 'templates/MAIL_RAW.tpl'
     );
 }

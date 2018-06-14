@@ -372,6 +372,8 @@ class Module_admin_version
                 'm_url' => 'LONG_TEXT',
                 'm_queued' => 'BINARY',
                 'm_template' => 'ID_TEXT',
+                'm_sender_email' => 'SHORT_TEXT',
+                'm_plain_subject' => 'BINARY',
             ));
             $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'recentmessages', array('m_date_and_time'));
             $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'queued', array('m_queued'));
@@ -1100,6 +1102,9 @@ class Module_admin_version
             rename_config_option('imap_port', 'mail_server_port');
             rename_config_option('imap_username', 'mail_username');
             rename_config_option('imap_password', 'mail_password');
+
+            $GLOBALS['FORUM_DB']->add_table_field('logged_mail_messages', 'm_sender_email', 'SHORT_TEXT');
+            $GLOBALS['FORUM_DB']->add_table_field('logged_mail_messages', 'm_plain_subject', 'BINARY');
         }
     }
 

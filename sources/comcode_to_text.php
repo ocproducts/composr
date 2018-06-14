@@ -71,6 +71,9 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
         $text = str_replace('{$SITE_NAME}', get_site_name(), $text);
         $text = str_replace('{$SITE_NAME*}', escape_html(get_site_name()), $text);
 
+        $text = str_replace('{$BASE_URL}', get_base_url(), $text);
+        $text = str_replace('{$BASE_URL*}', get_base_url(), $text);
+
         if (stripos($text, '{') !== false) {
             // Remove directives etc
             do {
@@ -142,10 +145,6 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
             $text = preg_replace("#\[url( param)?=\"([^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\2' : '\2 (\4)', $text);
             $text = preg_replace("#(.*) \(\\1\)#", '\1', $text);
         }
-    }
-
-    if (!in_array('html', $tags_to_preserve)) {
-        $text = strip_html($text);
     }
 
     if (stripos($text, '[random') !== false) {
@@ -355,6 +354,16 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
             $text = str_replace(array('&ndash;', '&mdash;', '&hellip;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '...', '|', '"', '"', "'", "'"), $text);
         }
         $text = @html_entity_decode($text, ENT_QUOTES);
+    }
+
+    if (!in_array('html', $tags_to_preserve)) {
+        $text = strip_html($text);
+
+        foreach (array('html', 'semihtml') as $s) {
+            if (stripos($text, '[' . $s) !== false) {
+                $text = preg_replace('#\[/?' . $s . '[^\]]*\]#U', '', $text);
+            }
+        }
     }
 
     return trim($text);

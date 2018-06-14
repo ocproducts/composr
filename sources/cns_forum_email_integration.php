@@ -283,10 +283,10 @@ class ForumEmailIntegration extends EmailIntegration
     /**
      * Strip system code from an e-mail component.
      *
-     * @param  string $body E-mail component
+     * @param  string $text E-mail component
      * @param  integer $format A STRIP_* constant
      */
-    protected function strip_system_code(&$body, $format)
+    protected function strip_system_code(&$text, $format)
     {
         switch ($format) {
             case self::STRIP_SUBJECT:
@@ -296,7 +296,7 @@ class ForumEmailIntegration extends EmailIntegration
                     $strings[] = do_lang('MAILING_LIST_SIMPLE_SUBJECT_reply_regexp', null, null, null, $lang);
                 }
                 foreach ($strings as $s) {
-                    $body = preg_replace('#' . $s . '#', '', $body);
+                    $text = preg_replace('#' . $s . '#', '', $text);
                 }
                 break;
 
@@ -306,7 +306,13 @@ class ForumEmailIntegration extends EmailIntegration
                     $strings[] = do_lang('MAILING_LIST_SIMPLE_MAIL_regexp', null, null, null, $lang);
                 }
                 foreach ($strings as $s) {
-                    $body = preg_replace('#' . str_replace(array("\n", '---'), array("(\n|<br[^<>]*>)", '<hr[^<>]*>'), $s) . '#i', '', $body);
+                    $text = preg_replace('#' . str_replace(array("\n", '---'), array("(\n|<br[^<>]*>)", '<hr[^<>]*>'), $s) . '#is', '', $text);
+                }
+                $text = preg_replace('#(<[^/][^<>]*>\s*)*$#is', '', $text); // Remove left over tags on end (as the rest may have just been chopped off)
+                require_code('xhtml');
+                $text = xhtmlise_html($text, true); // Fix any HTML errors (e.g. uneven tags, which would break out layout)
+                if ((strpos($text, '[semihtml') !== false) && (strpos($text, '[/semihtml') === false)) {
+                    $text .= '[/semihtml]';
                 }
                 break;
 
@@ -316,7 +322,7 @@ class ForumEmailIntegration extends EmailIntegration
                     $strings[] = do_lang('MAILING_LIST_SIMPLE_MAIL_regexp', null, null, null, $lang);
                 }
                 foreach ($strings as $s) {
-                    $body = preg_replace('#' . $s . '#i', '', $body);
+                    $text = preg_replace('#' . $s . '#i', '', $text);
                 }
                 break;
         }

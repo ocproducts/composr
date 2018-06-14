@@ -202,9 +202,9 @@ class Mail_dispatcher_php extends Mail_dispatcher_base
 
         foreach ($to_emails as $i => $_to_email) {
             $additional = '';
-            if (($this->enveloper_override) && ($this->website_email != '')) {
-                if (is_email_address($this->website_email)) { // Required for security
-                    $additional = '-f ' . $this->website_email;
+            if (($this->enveloper_override) && ($this->_sender_email !== null)) {
+                if (is_email_address($this->_sender_email)) { // Required for security
+                    $additional = '-f ' . $this->_sender_email;
                 }
             }
             $_to_name = $to_names[$i];
@@ -482,6 +482,8 @@ abstract class Mail_dispatcher_base
     public $extra_cc_addresses = array();
     public $extra_bcc_addresses = array();
     public $require_recipient_valid_since = null;
+    public $sender_email = null;
+    public $plain_subject = false;
 
     // Configuration
     public $smtp_sockets_use = false;
@@ -496,6 +498,7 @@ abstract class Mail_dispatcher_base
     public $real_attachments = array();
     public $cid_attachments_url_mapping = array();
     public $cid_attachments = array();
+    protected $_sender_email = null;
 
     // For analysis of process from outside
     public $mime_data = null;
@@ -549,6 +552,8 @@ abstract class Mail_dispatcher_base
         $this->coming_out_of_queue = isset($advanced_parameters['coming_out_of_queue']) ? $advanced_parameters['coming_out_of_queue'] : false; // Whether to bypass queueing, because this code is running as a part of the queue management tools (null: auto-decide)
         $this->mail_template = isset($advanced_parameters['mail_template']) ? $advanced_parameters['mail_template'] : 'MAIL'; // The template used to show the e-mail
         $this->require_recipient_valid_since = isset($advanced_parameters['require_recipient_valid_since']) ? $advanced_parameters['require_recipient_valid_since'] : null; // Implement the Require-Recipient-Valid-Since header (null: no restriction)
+        $this->sender_email = isset($advanced_parameters['sender_email']) ? $advanced_parameters['sender_email'] : null; // E-mail address to use as a sender address (null: default)
+        $this->plain_subject = isset($advanced_parameters['plain_subject']) ? $advanced_parameters['plain_subject'] : false; // Avoid templating the subject to have an additional prefix/suffix
 
         $this->extra_cc_addresses = isset($advanced_parameters['extra_cc_addresses']) ? $advanced_parameters['extra_cc_addresses'] : array(); // Extra CC addresses to use (null: none)
         $this->extra_bcc_addresses = isset($advanced_parameters['extra_bcc_addresses']) ? $advanced_parameters['extra_bcc_addresses'] : array(); // Extra BCC addresses to use (null: none)
@@ -681,6 +686,18 @@ abstract class Mail_dispatcher_base
     {
         global $EMAIL_ATTACHMENTS;
 
+        // Our sender
+        if ($this->sender_email !== null) {
+            $this->_sender_email = $this->sender_email;
+        } else {
+            $system_addresses = find_system_email_addresses();
+            if ((get_option('use_true_from') == '1') || (preg_replace('#^.*@#', '', $from_email) == get_domain()) || (in_array(preg_replace('#^.*@#', '', $from_email), $system_addresses))) {
+                $this->_sender_email = $from_email;
+            } elseif ($this->website_email != '') {
+                $this->_sender_email = $this->website_email;
+            }
+        }
+
         // We use the boundary to separate message parts
         $_boundary = uniqid('Composr', true);
         $boundary = $_boundary . '_1';
@@ -688,8 +705,12 @@ abstract class Mail_dispatcher_base
         $boundary3 = $_boundary . '_3';
 
         // Our subject
-        $_subject_wrapped = do_template('MAIL_SUBJECT', array('_GUID' => '44a57c666bb00f96723256e26aade9e5', 'SUBJECT_LINE' => $subject_line), $lang, false, null, '.txt', 'text', $theme);
-        $subject_wrapped = trim($_subject_wrapped->evaluate($lang));
+        if ($this->plain_subject) {
+            $subject_wrapped = $subject_line;
+        } else {
+            $_subject_wrapped = do_template('MAIL_SUBJECT', array('_GUID' => '44a57c666bb00f96723256e26aade9e5', 'SUBJECT_LINE' => $subject_line), $lang, false, null, '.txt', 'text', $theme);
+            $subject_wrapped = trim($_subject_wrapped->evaluate($lang));
+        }
 
         // Apply text encoding if needed
         $regexp = '#^[\x' . dechex(32) . '-\x' . dechex(126) . ']*$#';
@@ -711,7 +732,7 @@ abstract class Mail_dispatcher_base
             $cache_sig = serialize(array(
                 $lang,
                 $this->mail_template,
-                $subject_line,
+                $subject_wrapped,
                 $theme,
                 crc32($message_raw),
             ));
@@ -742,7 +763,7 @@ abstract class Mail_dispatcher_base
                         'CSS' => '{CSS}',
                         'LOGOURL' => get_logo_url(''),
                         'LANG' => $lang,
-                        'TITLE' => $subject_line,
+                        'TITLE' => $subject_wrapped,
                         'CONTENT' => $_html_content,
                     ), $lang, false, 'MAIL', '.tpl', 'templates', $theme);
                 }
@@ -766,7 +787,7 @@ abstract class Mail_dispatcher_base
                      'CSS' => '{CSS}',
                      'LOGOURL' => get_logo_url(''),
                      'LANG' => $lang,
-                     'TITLE' => $subject_line,
+                     'TITLE' => $subject_wrapped,
                      'CONTENT' => $message_plain,
                  ), $lang, false, 'MAIL', '.txt', 'text', $theme));
 
@@ -781,15 +802,10 @@ abstract class Mail_dispatcher_base
 
         // Headers
         $headers = '';
-        if ($this->website_email != '') {
-            $system_addresses = find_system_email_addresses();
-            if ((get_option('use_true_from') == '1') || (preg_replace('#^.*@#', '', $from_email) == get_domain()) || (in_array(preg_replace('#^.*@#', '', $from_email), $system_addresses))) {
-                $headers .= 'From: "' . $from_name . '" <' . $from_email . '>' . $this->line_term;
-            } else {
-                $headers .= 'From: "' . $from_name . '" <' . $this->website_email . '>' . $this->line_term;
-            }
-            $headers .= 'Return-Path: <' . $this->website_email . '>' . $this->line_term;
-            $headers .= 'X-Sender: <' . $this->website_email . '>' . $this->line_term;
+        if ($this->_sender_email !== null) {
+            $headers .= 'From: "' . $from_name . '" <' . $this->_sender_email . '>' . $this->line_term;
+            $headers .= 'Return-Path: <' . $this->_sender_email . '>' . $this->line_term;
+            $headers .= 'X-Sender: <' . $this->_sender_email . '>' . $this->line_term;
         } // else maybe server won't let us set it due to whitelist security, and we must let it use it's default (i.e. accountname@hostname)
         $headers .= 'Reply-To: <' . $from_email . '>' . $this->line_term;
         if ($this->cc_addresses !== array()) {
@@ -1160,6 +1176,8 @@ abstract class Mail_dispatcher_base
             'm_url' => get_self_url_easy(true),
             'm_queued' => $queued ? 1 : 0,
             'm_template' => $this->mail_template,
+            'm_sender_email' => $this->sender_email,
+            'm_plain_subject' => $this->plain_subject ? 1 : 0,
         ), false, !$queued); // No errors if we don't NEED this to work
     }
 

@@ -3378,18 +3378,42 @@ function strip_html($in)
 
     $text = $in;
 
+    // Normalise line breaks
+    $text = preg_replace('#\s+#', ' ', $text);
+    $text = preg_replace('#(<br(\s[^<>]*)?' . '>)#i', '$1' . "\n", $text);
+
+    // Special stuff to strip
     $search = array(
         '#<script[^>]*?' . '>.*?</script>#si',  // Strip out JavaScript
         '#<style[^>]*?' . '>.*?</style>#siU',   // Strip style tags properly
         '#<![\s\S]*?--[ \t\n\r]*>#',            // Strip multi-line comments including CDATA
     );
     $text = preg_replace($search, '', $text);
+
+    // ASCII conversion
     if (get_charset() != 'utf-8') {
         $text = str_replace(array('&ndash;', '&mdash;', '&hellip;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '...', '|', '"', '"', "'", "'"), $text);
     }
-    $text = str_replace('><', '> <', $text);
+
+    require_code('webstandards2');
+    global $TAGS_BLOCK;
+    $_block_tags = '(' . implode('|', array_keys($TAGS_BLOCK)) . ')';
+
+    // Remove leading/trailing space from block tags
+    $text = preg_replace('#\s*(<' . $_block_tags . '(\s[^<>]*)?' . '>)#i', '$1', $text);
+    $text = preg_replace('#(</' . $_block_tags . '>)\s*#i', '$1', $text);
+
+    // Add space between block tags
+    $text = preg_replace('#(</' . $_block_tags . '>)(<' . $_block_tags . '(\s[^<>]*)?)#i', '$1 $3', $text);
+
+    // Strip remaining HTML tags
     $text = strip_tags($text);
-    return @html_entity_decode($text, ENT_QUOTES);
+    $text = @html_entity_decode($text, ENT_QUOTES);
+
+    // Trim each line (as spacing can't be perfected)
+    $text = preg_replace('#^ *(.*?) *$#m', '$1', $text);
+
+    return $text;
 }
 
 /**
