@@ -3745,3 +3745,35 @@ function cms_gethostbyname($hostname)
 
     return $ip_address;
 }
+
+/**
+ * Unpack some bytes to an integer, so we can do some bitwise arithmetic on them.
+ * Assumes unsigned, unless you request 4 bytes.
+ *
+ * @param  string $str Input string
+ * @param  ?integer $bytes How many bytes to read (null: as many as there are in $str)
+ * @set 1 2 4
+ * @param  boolean $little_endian Whether to use little endian (Intel order) as opposed to big endian (network/natural order)
+ * @return integer Read integer
+ */
+function cms_unpack_to_uinteger($str, $bytes = null, $little_endian = false)
+{
+    if ($bytes === null) {
+        $bytes = strlen($str);
+    }
+
+    switch ($bytes) {
+        case 1:
+            $result = unpack('C', $str);
+            break;
+        case 2:
+            $result = unpack($little_endian ? 'v' : 'n', $str);
+            break;
+        case 4:
+            $result = unpack($little_endian ? 'V' : 'N', $str);
+            break;
+        default:
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+    return $result[1];
+}
