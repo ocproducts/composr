@@ -270,7 +270,7 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
 
         $_confidence_level = floatval($rbl_response[2]) / 255.0;
         $threat_type = intval($rbl_response[3]);
-        if (($threat_type & 1) || ($threat_type & 2) || ($threat_type & 4)) {
+        if ((($threat_type & 1) != 0) || (($threat_type & 2) != 0) || (($threat_type & 4) != 0)) {
             if ($_confidence_level != 0.0) {
                 $spam_stale_threshold = intval(get_option('spam_stale_threshold'));
 

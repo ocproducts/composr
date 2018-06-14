@@ -515,9 +515,9 @@ function copy_exif_data($src_path, $dest_path, $reorientated = false)
     $exif_already_added = ($exif_data === null);
     $iptc_already_added = ($iptc_data === null);
 
-    while ((substr($existing_content, 0, 2) & 0xFFF0) === 0xFFE0) {
-        $segment_len = (substr($existing_content, 2, 2) & 0xFFFF);
-        $segment_number = (substr($existing_content, 1, 1) & 0x0F); // Last 4 bits of second byte is metadata segment number
+    while ((cms_unpack_to_uinteger(substr($existing_content, 0, 2)) & 0xFFF0) === 0xFFE0) {
+        $segment_len = (cms_unpack_to_uinteger(substr($existing_content, 2, 2)) & 0xFFFF);
+        $segment_number = (cms_unpack_to_uinteger(substr($existing_content, 1, 1)) & 0x0F); // Last 4 bits of second byte is metadata segment number
         if ($segment_len <= 2) {
             return false; // Error
         }

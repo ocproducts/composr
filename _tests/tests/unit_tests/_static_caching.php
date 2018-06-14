@@ -29,6 +29,11 @@ class _static_caching_test_set extends cms_test_case
 
         http_get_contents($url->evaluate()); // Prime cache
 
+        if (get_param_integer('early_debug', 0) == 1) {
+            var_dump($result);
+            exit();
+        }
+
         $time_before = microtime(true);
         $data = http_get_contents($url->evaluate());
         $time_after = microtime(true);
@@ -52,7 +57,7 @@ class _static_caching_test_set extends cms_test_case
 
         $config_file_path = get_file_base() . '/_config.php';
         $config_file = file_get_contents($config_file_path);
-        file_put_contents($config_file_path, $config_file . "\n\n\$SITE_INFO['fast_spider_cache'] = '1';\n\$SITE_INFO['any_guest_cached_too'] = '1';\n\$SITE_INFO['failover_mode'] = 'auto_off';\n\$SITE_INFO['failover_check_urls'] = '" . $test_url . "';\n\$SITE_INFO['failover_cache_miss_message'] = 'FAILOVER_CACHE_MISS';\n\$SITE_INFO['failover_email_contact'] = 'test@example.com';\$SITE_INFO['base_url'] = '" . get_base_url() . "';\n");
+        file_put_contents($config_file_path, $config_file . "\n\n\$SITE_INFO['fast_spider_cache'] = '1';\n\$SITE_INFO['any_guest_cached_too'] = '1';\n\$SITE_INFO['failover_mode'] = 'auto_off';\n\$SITE_INFO['failover_check_urls'] = '" . $test_url . "';\n\$SITE_INFO['failover_cache_miss_message'] = 'FAILOVER_CACHE_MISS';\n\$SITE_INFO['failover_email_contact'] = 'test@example.com';\$SITE_INFO['base_url'] = '" . addslashes(get_base_url()) . "';\n");
         fix_permissions($config_file_path);
 
         // This will empty the static cache, meaning when it is re-primed it actually will do so for fail-over (now that's enabled) priming rather than just outputting from the cache made in testStaticCacheWorks
