@@ -61,12 +61,12 @@ abstract class EmailIntegration
      * Send out an e-mail message.
      *
      * @param  string $subject Subject
-     * @param  string $message Message
+     * @param  string $message Message in Comcode
      * @param  MEMBER $to_member_id Member ID of recipient
      * @param  string $to_displayname Display name of recipient
      * @param  EMAIL $to_email E-mail address of recipient
      * @param  string $from_displayname Display name of sender
-     * @param  EMAIL $from_email E-mail address of sender (blank: use defined system e-mail address for Reply-To)
+     * @param  EMAIL $from_email E-mail address of sender (blank: use sender address for Reply-To)
      */
     protected function _outgoing_message($subject, $message, $to_member_id, $to_displayname, $to_email, $from_displayname, $from_email = '')
     {
@@ -76,23 +76,13 @@ abstract class EmailIntegration
 
         $this->log_message('Sending outgoing e-mail to ' . $to_email . ' (' . $subject . ')');
 
-        $headers = '';
-
-        // From
         $sender_email = $this->get_sender_email(); // Typically 'website_email' option
-        $headers .= 'From: ' . $from_displayname . ' <' . $sender_email . '>' . "\r\n";
 
-        // Reply-To
         if ($from_email == '') {
-            $from_email = $this->get_system_email();
+            $from_email = $sender_email;
         }
-        $headers .= 'Reply-To: ' . $from_displayname . ' <' . $from_email . '>';
 
-        // Subject
-        $tightened_subject = str_replace(array("\n", "\r"), array('', ''), $subject);
-
-        // Send
-        mail($to_displayname . ' <' . $to_email . '>', $tightened_subject, comcode_to_clean_text($message), $headers);
+        mail_wrap($subject, $message, array($to_email), $to_displayname, $from_email, $from_displayname, 3, null, true, $GLOBALS['FORUM_DRIVER']->get_guest_id(), false, false, false, 'MAIL_RAW', null, null, null, null, $sender_email, true);
     }
 
     /**
@@ -767,10 +757,20 @@ abstract class EmailIntegration
         $body = preg_replace('#.*<body[^<>]*>#is', '', $body);
         $body = preg_replace('#</body>.*#is', '', $body);
 
+        // Cleanup unwanted tags
+        foreach (array('base', 'link', 'meta') as $tag) {
+            $body = preg_replace('#</?' . $tag . '(\s[^<>]*)?>#i', '', $body);
+        }
+        foreach (array('title', 'style', 'script') as $tag) {
+            $body = preg_replace('#<' . $tag . '(\s[^<>]*)?>.*</' . $tag . '>#Uis', '', $body);
+        }
+
         // Cleanup some junk
         $body = str_replace(array('<<', '>>'), array('&lt;<', '>&gt;'), $body);
         $body = str_replace(array(' class="Apple-interchange-newline"', ' style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px;"', ' apple-width="yes" apple-height="yes"', '<br clear="all">', ' class="gmail_extra"', ' class="gmail_quote"', ' style="word-wrap:break-word"', ' style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "'), array('', '', '', '<br />', '', '', '', ''), $body);
         $body = preg_replace('# style="text-indent:0px.*"#U', '', $body); // Apple Mail long list of styles
+        $body = preg_replace('#<div(\s[^<>]*)style=".{50,}"#Us', '<div$1', $body); // Apple Mail long list of styles
+        $body = str_replace(' class=""', '', $body);
 
         // Convert quotes
         $body = preg_replace('#<div[^<>]*>On (.*) wrote:</div><br[^<>]*><blockquote[^<>]*>#i', '[quote="${1}"]', $body); // Apple Mail

@@ -36,12 +36,14 @@
  * @param  ?array $extra_cc_addresses Extra CC addresses to use (null: none)
  * @param  ?array $extra_bcc_addresses Extra BCC addresses to use (null: none)
  * @param  ?TIME $require_recipient_valid_since Implement the Require-Recipient-Valid-Since header (null: no restriction)
+ * @param  ?string $sender_email E-mail address to use as a sender address (null: default)
+ * @param  boolean $plain_subject Avoid templating the subject to have an additional prefix/suffix
  * @return boolean Success status
  */
-function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $priority = 3, $attachments = null, $no_cc = false, $as = null, $as_admin = false, $in_html = false, $coming_out_of_queue = false, $mail_template = 'MAIL', $bypass_queue = null, $extra_cc_addresses = null, $extra_bcc_addresses = null, $require_recipient_valid_since = null)
+function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $priority = 3, $attachments = null, $no_cc = false, $as = null, $as_admin = false, $in_html = false, $coming_out_of_queue = false, $mail_template = 'MAIL', $bypass_queue = null, $extra_cc_addresses = null, $extra_bcc_addresses = null, $require_recipient_valid_since = null, $sender_email = null, $plain_subject = false)
 {
     if (get_option('smtp_sockets_use') == '0') {
-        return non_overridden__mail_wrap($subject_line, $message_raw, $to_email, $to_name, $from_email, $from_name, $priority, $attachments, $no_cc, $as, $as_admin, $in_html, $coming_out_of_queue, $mail_template, $bypass_queue, $extra_cc_addresses, $extra_bcc_addresses, $require_recipient_valid_since);
+        return non_overridden__mail_wrap($subject_line, $message_raw, $to_email, $to_name, $from_email, $from_name, $priority, $attachments, $no_cc, $as, $as_admin, $in_html, $coming_out_of_queue, $mail_template, $bypass_queue, $extra_cc_addresses, $extra_bcc_addresses, $require_recipient_valid_since, $sender_email, $plain_subject);
     }
 
     if (running_script('stress_test_loader')) {
@@ -130,6 +132,8 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             'm_url' => get_self_url(true),
             'm_queued' => $through_queue ? 1 : 0,
             'm_template' => $mail_template,
+            'm_sender_email' => $sender_email,
+            'm_plain_subject' => $plain_subject ? 1 : 0,
         ), false, !$through_queue); // No errors if we don't NEED this to work
 
         if ($through_queue) {
@@ -215,8 +219,12 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     // Our subject
-    $subject = do_template('MAIL_SUBJECT', array('_GUID' => '44a57c666bb00f96723256e26aade9e5', 'SUBJECT_LINE' => $subject_line), $lang, false, null, '.txt', 'text', $theme);
-    $tightened_subject = $subject->evaluate($lang); // Note that this is slightly against spec, because characters aren't forced to be printable us-ascii. But it's better we allow this (which works in practice) than risk incompatibility via charset-base64 encoding.
+    if ($plain_subject) {
+        $tightened_subject = $subject_line;
+    } else {
+        $subject = do_template('MAIL_SUBJECT', array('_GUID' => '44a57c666bb00f96723256e26aade9e5', 'SUBJECT_LINE' => $subject_line), $lang, false, null, '.txt', 'text', $theme);
+        $tightened_subject = $subject->evaluate($lang); // Note that this is slightly against spec, because characters aren't forced to be printable us-ascii. But it's better we allow this (which works in practice) than risk incompatibility via charset-base64 encoding.
+    }
     $tightened_subject = str_replace(array("\r", "\n"), array('', ''), $tightened_subject);
 
     // Evaluate message. Needs doing early so we know if we have any headers
@@ -226,10 +234,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     if (!is_email_address($website_email)) { // Required for security
         $website_email = '';
     }
-    if ($website_email == '') {
-        $website_email = $from_email;
-    }
-    $cc_address = $no_cc ? '' : get_option("cc_address");
+    $cc_address = $no_cc ? '' : get_option('cc_address');
 
     global $CID_IMG_ATTACHMENT;
     $CID_IMG_ATTACHMENT = array();
@@ -239,7 +244,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $cache_sig = serialize(array(
             $lang,
             $mail_template,
-            $subject,
+            $tightened_subject,
             $theme,
             crc32($message_raw),
         ));
@@ -269,7 +274,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                     'CSS' => '{CSS}',
                     'LOGOURL' => get_logo_url(''),
                     'LANG' => $lang,
-                    'TITLE' => $subject,
+                    'TITLE' => $tightened_subject,
                     'CONTENT' => $_html_content,
                 ), $lang, false, 'MAIL', '.tpl', 'templates', $theme);
             }
@@ -291,7 +296,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 'CSS' => '{CSS}',
                 'LOGOURL' => get_logo_url(''),
                 'LANG' => $lang,
-                'TITLE' => $subject,
+                'TITLE' => $tightened_subject,
                 'CONTENT' => $message_plain,
             ), $lang, false, 'MAIL', '.txt', 'text', $theme));
 
@@ -476,11 +481,15 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $to_array[$_to_email] = is_array($to_name) ? $to_name[$i] : $to_name;
         }
     }
-    if ((get_option('use_true_from') == '1') || (preg_replace('#^.*@#', '', $from_email) == get_domain()) || (in_array(preg_replace('#^.*@#', '', $from_email), $system_addresses))) {
+    $system_addresses = find_system_email_addresses();
+    if (($website_email == '') || (get_option('use_true_from') == '1') || (preg_replace('#^.*@#', '', $from_email) == get_domain()) || (in_array(preg_replace('#^.*@#', '', $from_email), $system_addresses))) {
         $website_email = $from_email;
     }
-    $message = Swift_Message::newInstance($subject)
-        ->setFrom(array($website_email => $from_name))
+    if ($sender_email === null) {
+        $sender_email = $website_email;
+    }
+    $message = Swift_Message::newInstance($tightened_subject)
+        ->setFrom(array($sender_email => $from_name))
         ->setReplyTo(array($from_email => $from_name))
         ->setTo($to_array)
         ->setDate(time())

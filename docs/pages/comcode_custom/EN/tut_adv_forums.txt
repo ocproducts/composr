@@ -12,8 +12,7 @@ There is an option to allow people to e-mail in to the forums.
 
 This requires:
 1) The PHP IMAP extension to be installed
-2) The PHP [tt]mail[/tt] command must work (on most servers this means a local SMTP server must be running [which can just relay to another if you wish]; on Windows it means the PHP SMTP settings must be correctly configured)
-3) The system scheduler must be running (CRON)
+2) The system scheduler must be running (CRON)
 
 Also recommended:
 1) The mail server supports IMAP (not just POP3)
@@ -47,7 +46,6 @@ Be aware of the following:
  - Comcode will be processed with guest permissions if the poster would normally have "Use dangerous Comcode" privilege, due to us not being able to perfectly confirm the poster is who they say they are.
  - You may want to assign usergroups the "Subject to a more liberal HTML filter" privilege, so that complicated HTML e-mails don't look too ugly. If an e-mail has both HTML and text versions, the HTML version will only be used if this privilege is present.
  - Attachments provided are not fully protected from unauthorised access, due to the need for them be able to render with guest credentials.
- - There's no way for us to separate replies and original messages when replying by e-mail, so it would be good to advise your users to reply cleanly. We can remove some 'Forwarding' header text when e-mails are directly forwarded with no additional note, as a special case.
  - Post date/time will reflect the time of the e-mail being picked up, not the e-mail being sent. As long as the system scheduler is running frequently this should not be a problem.
 
 Debugging:

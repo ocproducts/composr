@@ -266,6 +266,9 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         $message_plain = str_replace('{$SITE_NAME}', get_site_name(), $message_plain);
         $message_plain = str_replace('{$SITE_NAME*}', get_site_name(), $message_plain);
 
+        $message_plain = str_replace('{$BASE_URL}', get_base_url(), $message_plain);
+        $message_plain = str_replace('{$BASE_URL*}', get_base_url(), $message_plain);
+
         if (stripos($message_plain, '{') !== false) {
             // Remove directives etc
             do {
@@ -344,10 +347,6 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
             $message_plain = preg_replace("#\[url( param)?=\"([^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\2' : '\2 (\4)', $message_plain);
             $message_plain = preg_replace("#(.*) \(\\1\)#", '\1', $message_plain);
         }
-    }
-
-    if (!in_array('html', $tags_to_preserve)) {
-        $message_plain = strip_html($message_plain);
     }
 
     if (stripos($message_plain, '[random') !== false) {
@@ -552,6 +551,16 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         $message_plain = preg_replace('#\n\n+#', "\n\n", $message_plain);
     }
 
+    if (!in_array('html', $tags_to_preserve)) {
+        $message_plain = strip_html($message_plain);
+
+        foreach (array('html', 'semihtml') as $s) {
+            if (stripos($message_plain, '[' . $s) !== false) {
+                $message_plain = preg_replace('#\[/?' . $s . '[^\]]*\]#U', '', $message_plain);
+            }
+        }
+    }
+
     return trim($message_plain);
 }
 
@@ -623,9 +632,11 @@ http://people.dsv.su.se/~jpalme/ietf/ietf-mail-attributes.html
  * @param  ?array $extra_cc_addresses Extra CC addresses to use (null: none)
  * @param  ?array $extra_bcc_addresses Extra BCC addresses to use (null: none)
  * @param  ?TIME $require_recipient_valid_since Implement the Require-Recipient-Valid-Since header (null: no restriction)
+ * @param  ?string $sender_email E-mail address to use as a sender address (null: default)
+ * @param  boolean $plain_subject Avoid templating the subject to have an additional prefix/suffix
  * @return boolean Success status
  */
-function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $priority = 3, $attachments = null, $no_cc = false, $as = null, $as_admin = false, $in_html = false, $coming_out_of_queue = false, $mail_template = 'MAIL', $bypass_queue = null, $extra_cc_addresses = null, $extra_bcc_addresses = null, $require_recipient_valid_since = null)
+function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $priority = 3, $attachments = null, $no_cc = false, $as = null, $as_admin = false, $in_html = false, $coming_out_of_queue = false, $mail_template = 'MAIL', $bypass_queue = null, $extra_cc_addresses = null, $extra_bcc_addresses = null, $require_recipient_valid_since = null, $sender_email = null, $plain_subject = false)
 {
     if (running_script('stress_test_loader')) {
         return false;
@@ -713,6 +724,8 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             'm_url' => get_self_url(true),
             'm_queued' => $through_queue ? 1 : 0,
             'm_template' => $mail_template,
+            'm_sender_email' => $sender_email,
+            'm_plain_subject' => $plain_subject ? 1 : 0,
         ), false, !$through_queue); // No errors if we don't NEED this to work
 
         if ($through_queue) {
@@ -829,8 +842,12 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     $boundary3 = $_boundary . '_3';
 
     // Our subject
-    $subject = do_template('MAIL_SUBJECT', array('_GUID' => '44a57c666bb00f96723256e26aade9e5', 'SUBJECT_LINE' => $subject_line), $lang, false, null, '.txt', 'text', $theme);
-    $tightened_subject = $subject->evaluate($lang); // Note that this is slightly against spec, because characters aren't forced to be printable us-ascii. But it's better we allow this (which works in practice) than risk incompatibility via charset-base64 encoding.
+    if ($plain_subject) {
+        $tightened_subject = $subject_line;
+    } else {
+        $subject = do_template('MAIL_SUBJECT', array('_GUID' => '44a57c666bb00f96723256e26aade9e5', 'SUBJECT_LINE' => $subject_line), $lang, false, null, '.txt', 'text', $theme);
+        $tightened_subject = $subject->evaluate($lang); // Note that this is slightly against spec, because characters aren't forced to be printable us-ascii. But it's better we allow this (which works in practice) than risk incompatibility via charset-base64 encoding.
+    }
     $tightened_subject = str_replace(array("\r", "\n"), array('', ''), $tightened_subject);
 
     $regexp = '#^[\x' . dechex(32) . '-\x' . dechex(126) . ']*$#';
@@ -862,7 +879,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $cache_sig = serialize(array(
             $lang,
             $mail_template,
-            $subject,
+            $tightened_subject,
             $theme,
             crc32($message_raw),
         ));
@@ -892,7 +909,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                     'CSS' => '{CSS}',
                     'LOGOURL' => get_logo_url(''),
                     'LANG' => $lang,
-                    'TITLE' => $subject,
+                    'TITLE' => $tightened_subject,
                     'CONTENT' => $_html_content,
                 ), $lang, false, 'MAIL', '.tpl', 'templates', $theme);
             }
@@ -914,7 +931,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 'CSS' => '{CSS}',
                 'LOGOURL' => get_logo_url(''),
                 'LANG' => $lang,
-                'TITLE' => $subject,
+                'TITLE' => $tightened_subject,
                 'CONTENT' => $message_plain,
             ), $lang, false, 'MAIL', '.txt', 'text', $theme));
 
@@ -929,18 +946,20 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     // Headers
     $website_email = get_option('website_email');
-    if ($website_email == '') {
-        $website_email = $from_email;
+    if (!is_email_address($website_email)) { // Required for security
+        $website_email = '';
     }
     $system_addresses = find_system_email_addresses();
-    if ((get_option('use_true_from') == '1') || (preg_replace('#^.*@#', '', $from_email) == get_domain()) || (in_array(preg_replace('#^.*@#', '', $from_email), $system_addresses))) {
-        $headers = 'From: "' . $from_name . '" <' . $from_email . '>' . $line_term;
-    } else {
-        $headers = 'From: "' . $from_name . '" <' . $website_email . '>' . $line_term;
+    if (($website_email == '') || (get_option('use_true_from') == '1') || (preg_replace('#^.*@#', '', $from_email) == get_domain()) || (in_array(preg_replace('#^.*@#', '', $from_email), $system_addresses))) {
+        $website_email = $from_email;
     }
-    $headers .= 'Reply-To: <' . $from_email . '>' . $line_term;
-    $headers .= 'Return-Path: <' . $website_email . '>' . $line_term;
-    $headers .= 'X-Sender: <' . $website_email . '>' . $line_term;
+    if ($sender_email === null) {
+        $sender_email = $website_email;
+    }
+    $headers = 'From: "' . $from_name . '" <' . $sender_email . '>' . $line_term;
+    $headers .= 'Reply-To: "' . $from_name . '" <' . $from_email . '>' . $line_term;
+    $headers .= 'Return-Path: <' . $sender_email . '>' . $line_term;
+    $headers .= 'X-Sender: <' . $sender_email . '>' . $line_term;
     $cc_address = $no_cc ? '' : get_option('cc_address');
     if ($cc_address != '') {
         if (get_option('bcc') == '0') {
@@ -1005,8 +1024,8 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $reply_to = $from_email;//$from_name.' <'.$from_email.'>'; GAE doesn't support nice format yet
 
         $mail_options = array(
-            'sender' => $website_email,
-            'subject' => $subject->evaluate($lang),
+            'sender' => $sender_email,
+            'subject' => $tightened_subject,
             'textBody' => $message_plain,
             'htmlBody' => $html_evaluated,
         );
@@ -1275,8 +1294,8 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
             $additional = '';
             if (get_option('enveloper_override') == '1') {
-                if (is_email_address($website_email)) { // Required for security
-                    $additional = '-f ' . $website_email;
+                if (is_email_address($sender_email)) { // Required for security
+                    $additional = '-f ' . $sender_email;
                 }
             }
             $_to_name = preg_replace('#@.*$#', '', is_array($to_name) ? $to_name[$i] : $to_name); // preg_replace is because some servers may reject sending names that look like e-mail addresses. Composr tries this from recommend module.
