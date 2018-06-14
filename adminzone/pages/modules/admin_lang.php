@@ -108,6 +108,7 @@ class Module_admin_lang
             }
 
             $lang = filter_naughty_harsh(get_param_string('lang', ''));
+            $lang_new = get_param_string('lang_new', $lang);
             if ($lang_new != '') {
                 $lang = $lang_new;
             }
