@@ -1798,6 +1798,24 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
                 infer_expression_type_to_variable_type('integer', $inner[1]);
             }
             return 'integer';
+        case 'BW_OR':
+        case 'BW_XOR':
+        case 'BW_AND':
+            $exp_1 = check_expression($inner[1], false, false, $function_guard);
+            $exp_2 = check_expression($inner[2], false, false, $function_guard);
+
+            $string_mode = ensure_type(array('string'), $exp_1, $c_pos, '', true, true) || ensure_type(array('string'), $exp_2, $c_pos, '', true, true);
+            $integer_mode = ensure_type(array('integer'), $exp_1, $c_pos, '', true, true) || ensure_type(array('integer'), $exp_2, $c_pos, '', true, true);
+            $arg_type = ($string_mode ? 'string' : 'integer');
+
+            $passes = ensure_type(array($arg_type), $exp_1, $c_pos, 'Can only bitwise 2 integers or 2 1-byte strings (got ' . $exp_1 . ')', true);
+
+            if (($passes) && ($string_mode || $integer_mode)) {
+                infer_expression_type_to_variable_type($arg_type, $inner[1]);
+                infer_expression_type_to_variable_type($arg_type, $inner[2]);
+            }
+
+            return $arg_type;
         case 'NEGATE':
             $type = check_expression($inner[1], false, false, $function_guard);
             ensure_type(array('integer', 'float'), $type, $c_pos, 'Can only negate a number');

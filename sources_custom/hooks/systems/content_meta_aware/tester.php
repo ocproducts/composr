@@ -57,7 +57,7 @@ class Hook_content_meta_aware_tester
             'view_page_link_pattern' => '_SEARCH:tester:report:_WILD',
             'edit_page_link_pattern' => '_SEARCH:tester:_edit:_WILD',
             'view_category_page_link_pattern' => null,
-            'add_url' => (has_submit_permission('mid', get_member(), get_ip_address(), 'tester')) ? (get_module_zone('tester') . ':tester:add') : null,
+            'add_url' => (function_exists('has_submit_permission') && has_submit_permission('mid', get_member(), get_ip_address(), 'tester')) ? (get_module_zone('tester') . ':tester:add') : null,
             'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('tester')) . ':tester',
 
             'support_url_monikers' => false,

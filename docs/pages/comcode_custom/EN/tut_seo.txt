@@ -102,7 +102,7 @@ If you cannot configure the CRON bridge scheduler for some reason, you can force
 build_sitemap_cache_table();
 sitemap_xml_build();
 [/code]
-You then need to manually submitt the URL of the Sitemap (which will show in the browser address bar after it's generated) to the search engines.
+You then need to manually submit the URL of the Sitemap (which will show in the browser address bar after it's generated) to the search engines.
 
 To test your Sitemap is generating correctly, open up [tt]http://yourbaseurl/data_custom/sitemaps/index.xml[/tt]. You should see an [abbr="eXtensible Markup Language"]XML[/abbr] document with reference to individual sitemap(s).
 

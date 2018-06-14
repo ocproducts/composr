@@ -397,6 +397,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/lang_descriptions.php',
             '_tests/tests/unit_tests/media.php',
             '_tests/tests/unit_tests/_lang_spelling.php',
+            '_tests/tests/unit_tests/unpack.php',
             '_tests/tests/unit_tests/versioning.php',
             '_tests/tests/unit_tests/dev_environment.php',
             '_tests/tests/unit_tests/filter_xml.php',

@@ -337,7 +337,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
 
     if (stripos($message_plain, '[url') !== false) {
         if (!in_array('url', $tags_to_preserve)) {
-            $message_plain = preg_replace("#\[url( param)?=\"([^\"]*)\"[^\[\]]*\]\\1\[/url\]#", '\2', $message_plain);
+            $message_plain = preg_replace("#\[url( param)?=\"([^\"]*)\"[^\[\]]*\]\\2\[/url\]#", '\2', $message_plain);
             $message_plain = preg_replace("#\(\[url( param)?=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]\)#", '\2', $message_plain);
             $message_plain = preg_replace("#\[url( param)?=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\4' : '\4 (\2)', $message_plain);
             $message_plain = preg_replace("#\[url( param)?=\"([^\"]*)\"[^\[\]]*\]([^\[\]]*)\[/url\]#", '\2 (\3)', $message_plain);
