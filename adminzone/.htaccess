@@ -1,5 +1,5 @@
 <FilesMatch "index.php">
-ErrorDocument 401 /adminzone/index.php?page=_modsecurity
+#ErrorDocument 401 /adminzone/index.php?page=_modsecurity   May be triggered via htauth
 ErrorDocument 402 /adminzone/index.php?page=_modsecurity
 ErrorDocument 403 /adminzone/index.php?page=_modsecurity
 #ErrorDocument 404 /adminzone/index.php?page=_modsecurity
