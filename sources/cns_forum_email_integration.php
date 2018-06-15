@@ -82,7 +82,9 @@ class ForumEmailIntegration extends EmailIntegration
 
         $extended_message = do_lang('MAILING_LIST_SIMPLE_MAIL_' . ($is_starter ? 'new' : 'reply'), $topic_title, strip_comcode($post), array($post_url, get_site_name(), $from_displayname), get_lang($to_member_id));
 
-        $this->_outgoing_message($extended_subject, $extended_message, $to_member_id, $to_displayname, $to_email, $from_displayname);
+        $reply_email = $this->forum_row['f_mail_email_address'];
+
+        $this->_outgoing_message($extended_subject, $extended_message, $to_member_id, $to_displayname, $to_email, $from_displayname, $reply_email);
     }
 
     /**
