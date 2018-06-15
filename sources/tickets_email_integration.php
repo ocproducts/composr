@@ -61,7 +61,9 @@ class TicketsEmailIntegration extends EmailIntegration
         $extended_message = do_lang('TICKET_SIMPLE_MAIL_' . ($new ? 'new' : 'reply'), get_site_name(), $ticket_type_name, array($ticket_url, $from_displayname, strip_comcode($message)), get_lang($to_member_id));
         $extended_from_displayname = do_lang('TICKET_SIMPLE_FROM', get_site_name(), $from_displayname, array(), get_lang($to_member_id));
 
-        $this->_outgoing_message($extended_subject, $extended_message, $to_member_id, $to_displayname, $to_email, $extended_from_displayname);
+        $reply_email = get_option('ticket_mail_email_address');
+
+        $this->_outgoing_message($extended_subject, $extended_message, $to_member_id, $to_displayname, $to_email, $extended_from_displayname, $reply_email);
     }
 
     /**
