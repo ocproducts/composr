@@ -1078,6 +1078,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'Query execution was interrupted') === false) &&
         (strpos($text, 'The MySQL server is running with the --read-only option so it cannot execute this statement') === false) &&
         (strpos($text, 'marked as crashed and should be repaired') === false) &&
+        (strpos($text, 'Can\'t find record in') === false) &&
         (strpos($text, 'connect to') === false) &&
         (strpos($text, 'Access denied for') === false) &&
         (strpos($text, 'command denied for') === false) && // MySQL
