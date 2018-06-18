@@ -3395,7 +3395,7 @@ function strip_html($in)
         $text = str_replace(array('&ndash;', '&mdash;', '&hellip;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '...', '|', '"', '"', "'", "'"), $text);
     }
 
-    require_code('webstandards2');
+    require_code('webstandards');
     global $TAGS_BLOCK;
     $_block_tags = '(' . implode('|', array_keys($TAGS_BLOCK)) . ')';
 

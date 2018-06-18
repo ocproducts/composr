@@ -62,7 +62,7 @@ function find_system_email_addresses($include_all = true)
     unset($addresses['']); // None-set values should not carry through
 
     $_addresses = array();
-    foreach ($addresses as $address) {
+    foreach (array_keys($addresses) as $address) {
         $domain = preg_replace('#^.*@#', '', $address);
         $_addresses[$address] = $domain;
     }
