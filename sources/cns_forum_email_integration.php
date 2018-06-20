@@ -80,7 +80,7 @@ class ForumEmailIntegration extends EmailIntegration
 
         $extended_subject = do_lang('MAILING_LIST_SIMPLE_SUBJECT_' . ($is_starter ? 'new' : 'reply'), $topic_title, get_site_name(), array($from_displayname), get_lang($to_member_id));
 
-        $extended_message = do_lang('MAILING_LIST_SIMPLE_MAIL_' . ($is_starter ? 'new' : 'reply'), $topic_title, strip_comcode($post), array($post_url, get_site_name(), $from_displayname), get_lang($to_member_id));
+        $extended_message = do_lang('MAILING_LIST_SIMPLE_MAIL_' . ($is_starter ? 'new' : 'reply'), $topic_title, $post, array($post_url, get_site_name(), $from_displayname), get_lang($to_member_id));
 
         $reply_email = $this->forum_row['f_mail_email_address'];
 
@@ -195,6 +195,19 @@ class ForumEmailIntegration extends EmailIntegration
 
             return;
         }
+        if ($GLOBALS['FORUM_DRIVER']->is_banned($member_id)) {
+            $this->log_message('Member is banned');
+
+            return;
+        }
+        if (
+            ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_validated') == 0) ||
+            ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_validated_email_confirm_code') != '')
+        ) {
+            $this->log_message('Member is not validated');
+
+            return;
+        }
 
         $prefer_html = has_privilege($member_id, 'allow_html');
         if (($_body_html === null) || ((!$prefer_html) && ($_body_text !== null))) {
@@ -271,6 +284,12 @@ class ForumEmailIntegration extends EmailIntegration
         $post_validated = has_privilege($member_id, 'bypass_validation_lowrange_content', 'topics', array('forums', $this->forum_id));
         $post_id = cns_make_post($topic_id, $title, $body, 0, $is_starter, $post_validated ? 1 : 0, 0, $poster_name_if_guest, null, null, $member_id, null, null, null, false, true, $this->forum_id, true, $title, null, false, true);
 
+        require_code('users2');
+        if ((has_actual_page_access(get_modal_user(), 'forumview')) && (has_category_access(get_modal_user(), 'forums', strval($this->forum_id)))) {
+            require_code('activities');
+            syndicate_described_activity($is_starter ? 'cns:ACTIVITY_ADD_TOPIC' : 'cns:ACTIVITY_ADD_POST_IN', $title, '', '', '_SEARCH:topicview:browse:' . strval($topic_id) . '#post_' . strval($post_id), '', '', 'cns_forum', 1, $member_id);
+        }
+
         $this->log_message('Created post #' . strval($post_id));
 
         if (count($attachment_errors) != 0) {
@@ -308,14 +327,11 @@ class ForumEmailIntegration extends EmailIntegration
                     $strings[] = do_lang('MAILING_LIST_SIMPLE_MAIL_regexp', null, null, null, $lang);
                 }
                 foreach ($strings as $s) {
-                    $text = preg_replace('#' . str_replace(array("\n", '---'), array("(\n|<br[^<>]*>)", '<hr[^<>]*>'), $s) . '#is', '', $text);
+                    $text = preg_replace('#' . $s . '#is', '', $text);
                 }
                 $text = preg_replace('#(<[^/][^<>]*>\s*)*$#is', '', $text); // Remove left over tags on end (as the rest may have just been chopped off)
                 require_code('xhtml');
                 $text = xhtmlise_html($text, true); // Fix any HTML errors (e.g. uneven tags, which would break out layout)
-                if ((strpos($text, '[semihtml') !== false) && (strpos($text, '[/semihtml') === false)) {
-                    $text .= '[/semihtml]';
-                }
                 break;
 
             case self::STRIP_TEXT:

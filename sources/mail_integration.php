@@ -323,6 +323,14 @@ abstract class EmailIntegration
             }
         }
 
+        // Mark CIDs as being referenced (no actual subsitution will happen because we haven't created the attachment IDs yet - we'll call again later)
+        if ($_body_text !== null) {
+            $this->substitute_cid_attachments($attachments, $_body_text);
+        }
+        if ($_body_html !== null) {
+            $this->substitute_cid_attachments($attachments, $_body_html);
+        }
+
         $this->_process_incoming_message($from_email, $email_bounce_to, $from_name, $subject, $_body_text, $_body_html, $attachments);
     }
 
@@ -692,7 +700,7 @@ abstract class EmailIntegration
         $this->substitute_cid_attachments($attachments, $body);
 
         foreach ($attachments as $filename => &$attachment) {
-            if (!$attachment['cid_referenced']) {
+            if ((!$attachment['cid_referenced']) && ($attachment['composr_id'] !== null)) {
                 $body .= "\n\n" . '[attachment framed="1" thumb="1"]' . strval($attachment['composr_id']) . '[/attachment]';
             }
         }
@@ -714,10 +722,12 @@ abstract class EmailIntegration
         for ($i = 0; $i < $num_matches; $i++) {
             $cid = $matches[1][$i];
             foreach ($attachments as $filename => &$attachment) {
-                if (($attachment['cid'] === $cid) && ($attachment['composr_id'] !== null)) {
-                    $rep = '[attachment thumb="0" framed="0"]' . strval($attachment['composr_id']) . '[/attachment]';
-                    $body = str_replace($matches[0][$i], $rep, $body);
+                if ($attachment['cid'] === $cid) {
                     $attachment['cid_referenced'] = true;
+                    if ($attachment['composr_id'] !== null) {
+                        $rep = '[attachment thumb="0" framed="0"]' . strval($attachment['composr_id']) . '[/attachment]';
+                        $body = str_replace($matches[0][$i], $rep, $body);
+                    }
                     continue 2;
                 }
             }
@@ -727,10 +737,12 @@ abstract class EmailIntegration
         for ($i = 0; $i < $num_matches; $i++) {
             $cid = html_entity_decode($matches[2][$i], ENT_QUOTES);
             foreach ($attachments as $filename => &$attachment) {
-                if (($attachment['cid'] === $cid) && ($attachment['composr_id'] !== null)) {
-                    $rep = $matches[1][$i] . find_script('attachment') . '?id=' . strval($attachment['composr_id']) . $matches[3][$i];
-                    $body = str_replace($matches[0][$i], $rep, $body);
+                if ($attachment['cid'] === $cid) {
                     $attachment['cid_referenced'] = true;
+                    if ($attachment['composr_id'] !== null) {
+                        $rep = $matches[1][$i] . find_script('attachment') . '?id=' . strval($attachment['composr_id']) . $matches[3][$i];
+                        $body = str_replace($matches[0][$i], $rep, $body);
+                    }
                     continue 2;
                 }
             }
@@ -764,8 +776,11 @@ abstract class EmailIntegration
         $body = str_replace(array('<<', '>>'), array('&lt;<', '>&gt;'), $body);
         $body = str_replace(array(' class="Apple-interchange-newline"', ' style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px;"', ' apple-width="yes" apple-height="yes"', '<br clear="all">', ' class="gmail_extra"', ' class="gmail_quote"', ' style="word-wrap:break-word"', ' style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "'), array('', '', '', '<br />', '', '', '', ''), $body);
         $body = preg_replace('# style="text-indent:0px.*"#U', '', $body); // Apple Mail long list of styles
-        $body = preg_replace('#<div(\s[^<>]*)style=".{50,}"#Us', '<div$1', $body); // Apple Mail long list of styles
+        $body = preg_replace('#<div(\s[^<>]*)style="[^"<>]{50,}"#Us', '<div$1', $body); // Apple Mail long list of styles
         $body = str_replace(' class=""', '', $body);
+        $body = str_replace('<o:p>&nbsp;</o:p>', '', $body);
+
+        $this->strip_system_code($body, self::STRIP_HTML);
 
         // Convert quotes
         $body = preg_replace('#<div[^<>]*>On (.*) wrote:</div><br[^<>]*><blockquote[^<>]*>#i', '[quote="${1}"]', $body); // Apple Mail
@@ -812,7 +827,6 @@ abstract class EmailIntegration
         $body = str_replace("\n\n\n", "\n\n", $body);
 
         // Tidy up the body
-        $this->strip_system_code($body, self::STRIP_HTML);
         $body = trim($body, "- \n\r");
 
         return $body;
