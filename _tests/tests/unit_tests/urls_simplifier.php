@@ -45,6 +45,7 @@ class urls_simplifier_test_set extends cms_test_case
         $tests = array(
             // encoded -> decoded
             'http://example.com/foo.jpg' => 'http://example.com/foo.jpg', // No changes desirable
+            'http://example.com:8080/foo.jpg' => 'http://example.com:8080/foo.jpg', // No changes desirable
             'http://example.com/foo%20bar.jpg' => 'http://example.com/foo bar.jpg', // We can decode spaces
             'http://example.com/foo%27s.jpg' => 'http://example.com/foo\'s.jpg', // We can decode "'"
             'http://example.com/foo.jpg#blah' => 'http://example.com/foo.jpg#blah', // We cannot decode "#"
@@ -70,6 +71,26 @@ class urls_simplifier_test_set extends cms_test_case
                 // Try double encoding
                 $got = $this->ob->encode($expected);
                 $this->assertTrue($got == $expected, str_replace('%', '%%', 'Double encoding failed ' . $from));
+            }
+        }
+    }
+
+    public function testPunycode()
+    {
+        if ((function_exists('idn_to_utf8')) && (get_charset() == 'utf-8')) {
+            $tests = array(
+                'http://xn--mnchen-3ya' => 'http://münchen',
+                'http://xn--mnchen-3ya:8080' => 'http://münchen:8080',
+            );
+
+            foreach ($tests as $from => $expected) {
+                $got = $this->ob->decode($from);
+                $this->assertTrue($got == $expected, 'Got ' . $got . ', expected ' . $expected);
+            }
+
+            foreach ($tests as $expected => $from) {
+                $got = $this->ob->encode($from);
+                $this->assertTrue($got == $expected, 'Got ' . $got . ', expected ' . $expected);
             }
         }
     }

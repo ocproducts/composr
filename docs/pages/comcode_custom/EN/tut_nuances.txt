@@ -52,7 +52,7 @@ Most resources in Composr that have commenting enabled create comment topics in 
 You should moderate comments from the forum as you would any other forum topic. On some forum drivers, however, the forum "latest post" area may not update properly to show new posts. It is best to have the comment topic forums ("Website comment topics" and "Website support tickets", by default) located on the root of the forum-view, as Composr will never update "last post" areas for parent-forum trees.
 
 The first post in comment topics is a special 'spacer post'. This is necessary because:
-1) To indicate what content the topic is for
+1) To indicate what content the topic is for, and provide a link back to it
 2) To allow the first true post in the topic to be deleted (with ordinary forum topics the first post can not usually be deleted because it is considered as setting the grounds for the topic)
 [/surround]
 

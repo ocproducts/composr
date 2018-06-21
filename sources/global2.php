@@ -373,7 +373,7 @@ function init__global2()
     }
     require_code('users'); // Users are important due to permissions
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast caching for Guests
-        if (($STATIC_CACHE_ENABLED) && ($_SERVER['REQUEST_METHOD'] != 'POST')) {
+        if (($STATIC_CACHE_ENABLED) && ($_SERVER['REQUEST_METHOD'] != 'POST') && (empty($_SERVER['PHP_AUTH_USER']))) {
             if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (is_guest(null, true)) && (get_param_integer('keep_failover', null) !== 0)) {
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__GUEST);

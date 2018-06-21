@@ -189,7 +189,7 @@ class HarmlessURLCoder
             $domain = preg_replace('#(^.*://)([^:/]*)(.*$)#', '$2', $str);
             $_domain = idn_to_ascii($domain);
             if ($_domain !== false) {
-                $str = preg_replace('#(^.*://)' . preg_quote($domain, '#') . '(.*$)#U', '$1' . $_domain . '$2', $str);
+                $str = preg_replace('#(^.*://)' . preg_quote($domain, '#') . '(.*$)#U', '${1}' . $_domain . '${2}', $str);
             }
         }
 

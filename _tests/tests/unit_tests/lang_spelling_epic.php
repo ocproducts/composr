@@ -2965,6 +2965,10 @@ class lang_spelling_epic_test_set extends cms_test_case
                     continue;
                 }
 
+                if ($path == 'data_custom/errorlog.php') {
+                    continue;
+                }
+
                 // Load and pre-process into plain text
                 $c = file_get_contents(get_file_base() . '/' . $path);
                 switch ($ext) {
