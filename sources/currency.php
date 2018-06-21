@@ -169,7 +169,7 @@ function currency_convert($amount, $from_currency = null, $to_currency = null, $
 
     // Case: Get using a free API
     if ($new_amount === null) {
-        $new_amount = _currency_convert__currency_conv_api($amount, $from_currency, $to_currency, $cache_minutes);
+        $new_amount = _currency_convert__currency_conv_api($amount, $from_currency, $to_currency);
         if ($new_amount !== null) {
             $save_caching = true;
         }
