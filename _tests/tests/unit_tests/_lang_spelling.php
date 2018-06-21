@@ -3279,6 +3279,10 @@ class _lang_spelling_test_set extends cms_test_case
                     continue;
                 }
 
+                if ($path == 'data_custom/errorlog.php') {
+                    continue;
+                }
+
                 $c = file_get_contents(get_file_base() . '/' . $path);
 
                 if ($ext == 'ini' || $ext == 'htm' || $ext == 'html' || $ext == 'txt') {
