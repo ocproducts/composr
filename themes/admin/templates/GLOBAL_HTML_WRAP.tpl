@@ -23,7 +23,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 	{+START,IF,{$SHOW_HEADER}}
 		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader">
 			{$,The main logo}
-			<h1 class="accessibility_hidden"><a class="logo_outer" target="_self" href="{$PAGE_LINK*,:}" rel="home"><img class="logo" src="{$LOGO_URL*}"{+START,IF,{$NOT,{$MOBILE}}} width="{$IMG_WIDTH*,{$LOGO_URL},1}" height="{$IMG_HEIGHT*,{$LOGO_URL},1}"{+END} title="{!HOME}" alt="{$SITE_NAME*}" /></a></h1>
+			<h1 class="accessibility_hidden">{$SITE_NAME*}</h1>
 
 			{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
 			<a accesskey="s" class="accessibility_hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>

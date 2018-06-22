@@ -45,8 +45,8 @@ function enable_debug_fs()
     $DEBUG_FS__BEHAVIOURS = DEBUG_FS__SLOW | DEBUG_FS__CASE_SENSITIVE;
 
     global $DEBUG_FS__LATENCY;
-    $DEBUG_FS__LATENCY = 10000; // 10ms
-    $DEBUG_FS__LATENCY = 1; // TODO
+    //$DEBUG_FS__LATENCY = 10000; // 10ms
+    $DEBUG_FS__LATENCY = 0;
 
     global $FILE_BASE;
     $FILE_BASE = 'debugfs://' . $FILE_BASE;
@@ -454,7 +454,7 @@ class DebugFsStreamWrapper
             return false;
         }
 
-        return (@fseek($this->file_handle, $whence) == 0);
+        return (@fseek($this->file_handle, $offset, $whence) == 0);
     }
 
     /**

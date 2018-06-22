@@ -31,6 +31,10 @@ class Hook_content_meta_aware_comcode_page
      */
     public function info($zone = null)
     {
+        if ($zone === null) {
+            $zone = @strval(get_page_zone('sitemap', false));
+        }
+
         return array(
             'support_custom_fields' => true,
 
@@ -63,7 +67,7 @@ class Hook_content_meta_aware_comcode_page
             'edit_page_link_pattern' => '_SEARCH:cms_comcode_pages:_edit:page_link=_WILD',
             'view_category_page_link_pattern' => '_WILD:',
             'add_url' => (function_exists('has_submit_permission') && has_submit_permission('high', get_member(), get_ip_address(), 'cms_comcode_pages')) ? (get_module_zone('cms_comcode_pages') . ':cms_comcode_pages:edit') : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : @strval(get_page_zone('sitemap', false))) . ':sitemap',
+            'archive_url' => $zone . ':sitemap',
 
             'support_url_monikers' => true,
 
