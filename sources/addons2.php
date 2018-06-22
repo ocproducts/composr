@@ -410,25 +410,38 @@ function find_addon_dependencies_on($addon)
     $list_a = collapse_1d_complexity('addon_name', $GLOBALS['SITE_DB']->query_select('addons_dependencies', array('addon_name'), array('addon_name_dependant_upon' => $addon, 'addon_name_incompatibility' => 0)));
 
     // From ocProducts addons
+    static $ocproducts_addon_dep_cache = null;
+    if ($ocproducts_addon_dep_cache === null) {
+        $ocproducts_addon_dep_cache = array();
+        $hooks = find_all_hooks('systems', 'addon_registry');
+        foreach (array_keys($hooks) as $hook) {
+            $_found_hook = false;
+            $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
+            if (file_exists($path)) {
+                $_found_hook = true;
+            } else {
+                $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
+                if (file_exists($path)) {
+                    $_found_hook = true;
+                }
+            }
+            if (!$_found_hook) {
+                continue; // May have been uninstalled, find_all_hooks could have stale caching
+            }
+
+            $_hook_bits = extract_module_functions($path, array('get_dependencies'));
+            if (is_null($_hook_bits[0])) {
+                $dep = array();
+            } else {
+                $dep = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : @eval($_hook_bits[0]);
+            }
+
+            $ocproducts_addon_dep_cache[$hook] = $dep['requires'];
+        }
+    }
     $list_b = array();
-    $hooks = find_all_hooks('systems', 'addon_registry');
-    foreach (array_keys($hooks) as $hook) {
-        $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
-        if (!file_exists($path)) {
-            $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
-        }
-        if (!file_exists($path)) {
-            continue; // May have been uninstalled, find_all_hooks could have stale caching
-        }
-
-        $_hook_bits = extract_module_functions($path, array('get_dependencies'));
-        if (is_null($_hook_bits[0])) {
-            $dep = array();
-        } else {
-            $dep = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : @eval($_hook_bits[0]);
-        }
-
-        if (in_array($addon, $dep['requires'])) {
+    foreach ($ocproducts_addon_dep_cache as $hook => $hook_requires) {
+        if (in_array($addon, $hook_requires)) {
             $list_b[] = $hook;
         }
     }
