@@ -2544,9 +2544,10 @@ function octdec($octal_string)
  * Open a directory for analysis.
  *
  * @param  PATH $path The path to the directory to open.
+ * @param  ?resource $context A stream context to attach to (null: no special context).
  * @return ~resource The directory handle (false: error).
  */
-function opendir($path)
+function opendir($path, $context = null)
 {
     return array();
 }
@@ -4565,7 +4566,7 @@ function filetype($file)
  *
  * @param  resource $handle File handle.
  * @param  string $format Formatting string.
- * @return array Data.
+ * @return ~array Data (false: error).
  */
 function fscanf($handle, $format)
 {
@@ -4576,7 +4577,7 @@ function fscanf($handle, $format)
  * Gets information about a file.
  *
  * @param  PATH $path File.
- * @return array Map of status information.
+ * @return ~array Map of status information (false: error).
  */
 function stat($path)
 {
@@ -4587,7 +4588,7 @@ function stat($path)
  * Gets information about a file using an open file pointer.
  *
  * @param  resource $handle File handle.
- * @return array Map of status information.
+ * @return ~array Map of status information (false: error).
  */
 function fstat($handle)
 {
@@ -5567,6 +5568,19 @@ function var_export($expression, $return = false)
 function stream_context_create($options = null, $params = null)
 {
     return array();
+}
+
+/**
+ * Reads remainder of a stream into a string.
+ *
+ * @param  resource $handle A stream resource.
+ * @param  integer $maxlength The maximum bytes to read (-1: no limit).
+ * @param  integer $offset Seek to the specified offset before reading. If this number is negative, no seeking will occur and reading will start from the current position.
+ * @return string Contents.
+ */
+function stream_get_contents($handle, $maxlength = -1, $offset = -1)
+{
+    return '';
 }
 
 /**

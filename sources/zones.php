@@ -70,7 +70,7 @@ function init__zones()
     $VIRTUALISED_ZONES_CACHE = null;
     if (is_null($MODULES_ZONES_CACHE)) {
         foreach ($MODULES_ZONES_CACHE_DEFAULT as $key => $val) {
-            if ((!$hardcoded) && (!is_file(get_file_base() . '/' . $val . '/pages/modules/' . $key . '.php'))) {
+            if ((!$hardcoded) && (!is_file(get_file_base() . (($val == '') ? '' : ('/' . $val)) . '/pages/modules/' . $key . '.php'))) {
                 unset($MODULES_ZONES_CACHE_DEFAULT[$key]);
             }
         }

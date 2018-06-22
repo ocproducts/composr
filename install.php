@@ -133,7 +133,7 @@ if (is_writable(get_file_base() . '/themes/default/templates_cached/' . user_lan
 }
 
 // Set up some globals
-global $INSTALL_LANG, $VERSION_BEING_INSTALLED, $CHMOD_ARRAY, $USER_LANG_CACHED;
+global $INSTALL_LANG, $VERSION_BEING_INSTALLED, $USER_LANG_CACHED;
 $INSTALL_LANG = fallback_lang();
 if (array_key_exists('default_lang', $_GET)) {
     $INSTALL_LANG = $_GET['default_lang'];
@@ -164,7 +164,6 @@ $VERSION_BEING_INSTALLED = strval(cms_version());
 if ($minor != '') {
     $VERSION_BEING_INSTALLED .= (is_numeric($minor[0]) ? '.' : '-') . $minor;
 }
-$CHMOD_ARRAY = get_chmod_array($INSTALL_LANG);
 
 $password_prompt = new Tempcode();
 
@@ -301,6 +300,9 @@ function prepare_installer_url($url)
     }
     if (get_param_integer('keep_quick_hybrid', 0) == 1) {
         $url .= '&keep_quick_hybrid=1';
+    }
+    if (get_param_integer('keep_debug_fs', 0) == 1) {
+        $url .= '&keep_debug_fs=1';
     }
     return $url;
 }
@@ -457,7 +459,7 @@ function step_1()
 
             $files = get_dir_contents('lang/' . $lang);
             foreach (array_keys($files) as $file) {
-                if (substr($file, -4) == '.ini') {
+                if ((substr($file, -4) == '.ini') && (($lang == fallback_lang()) || (is_file(get_file_base() . '/lang/' . fallback_lang() . '/' . $file)))) {
                     $lang_count[$lang] += count(better_parse_ini_file(get_file_base() . '/lang/' . $lang . '/' . $file));
                 }
             }
@@ -472,7 +474,7 @@ function step_1()
 
             $files = get_dir_contents('lang_custom/' . $lang);
             foreach (array_keys($files) as $file) {
-                if (substr($file, -4) == '.ini') {
+                if ((substr($file, -4) == '.ini') && (is_file(get_file_base() . '/lang/' . fallback_lang() . '/' . $file))) {
                     $lang_count[$lang] += count(better_parse_ini_file(get_custom_file_base() . '/lang_custom/' . $lang . '/' . $file));
                 }
             }
@@ -1620,9 +1622,10 @@ function step_5_ftp()
         // If the file user is different to the FTP user, we need to make it world writeable
         if (!is_suexec_like()) {
             // Chmod
-            global $CHMOD_ARRAY;
             $no_chmod = false;
-            foreach ($CHMOD_ARRAY as $chmod) {
+            global $INSTALL_LANG;
+            $chmod_array = get_chmod_array($INSTALL_LANG);
+            foreach ($chmod_array as $chmod) {
                 if ((file_exists($chmod)) && (!@ftp_site($conn, 'CHMOD 0777 ' . $chmod))) {
                     $no_chmod = true;
                 }
@@ -1667,12 +1670,13 @@ function step_5_checks_a()
     $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '48b15e3e8486e5654563a7c3b5e6af58', 'SOMETHING' => do_lang_tempcode('GOOD_PATH'))));
 
     // Check permissions
-    global $CHMOD_ARRAY;
     if (!file_exists(get_file_base() . '/_config.php')) {
         $myfile = @fopen(get_file_base() . '/_config.php', GOOGLE_APPENGINE ? 'wb' : 'wt');
         @fclose($myfile);
     }
-    foreach ($CHMOD_ARRAY as $chmod) {
+    global $INSTALL_LANG;
+    $chmod_array = get_chmod_array($INSTALL_LANG);
+    foreach ($chmod_array as $chmod) {
         test_writable($chmod);
     }
 

@@ -251,7 +251,7 @@ function cms_file_get_contents_safe($path)
         return false;
     }
     flock($tmp, LOCK_SH);
-    $contents = file_get_contents($path);
+    $contents = stream_get_contents($tmp);
     flock($tmp, LOCK_UN);
     fclose($tmp);
     return $contents;

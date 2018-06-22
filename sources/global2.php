@@ -332,6 +332,10 @@ function init__global2()
             }
         }
     }
+    if (get_param_integer('keep_debug_fs', 0) == 1) {
+        require_code('debug_fs');
+        enable_debug_fs();
+    }
     $CACHE_TEMPLATES = has_caching_for('template');
     require_code('lang'); // So that we can do language stuff (e.g. errors). Note that even though we have included a lot so far, we can't really use any of it until lang is loaded. Lang isn't loaded earlier as it itself has a dependency on Tempcode.
     if (!$MICRO_AJAX_BOOTUP) {

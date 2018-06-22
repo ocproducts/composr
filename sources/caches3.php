@@ -321,7 +321,8 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
     $themes = array_keys(find_all_themes());
     $langs = find_all_langs(true);
 
-    if ($raw_file_regexp !== null) {
+    static $all_template_data = null;
+    if (($raw_file_regexp !== null) && ($all_template_data === null)) {
         $all_template_data = array();
 
         $base_dirs = array(get_custom_file_base());

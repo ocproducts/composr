@@ -85,13 +85,19 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
         }
 
         // Load overrides now if they are there
+        $has_override_file = false;
         if ($type !== 'lang') {
             $lang_file = get_custom_file_base() . '/lang_custom/' . $lang . '/' . $codename . '.ini';
-            if ((!is_file($lang_file)) && (get_file_base() !== get_custom_file_base())) {
+            if (is_file($lang_file)) {
+                $has_override_file = true;
+            } elseif (get_file_base() !== get_custom_file_base()) {
                 $lang_file = get_file_base() . '/lang_custom/' . $lang . '/' . $codename . '.ini';
+                if (is_file($lang_file)) {
+                    $has_override_file = true;
+                }
             }
         }
-        if (($type !== 'lang') && (is_file($lang_file))) {
+        if ($has_override_file) {
             _get_lang_file_map($lang_file, $load_target, 'strings', false, true, $lang);
             $bad = false;
             $dirty = true; // Tainted from the official pack, so can't store server wide
@@ -152,7 +158,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
  * Get an array of all the INI entries in the specified language for a particular section.
  *
  * @param  LANGUAGE_NAME $lang The language
- * @param  ?ID_TEXT $file The language file (null: all language files)
+ * @param  ?ID_TEXT $file The language file (null: we are loading this section from all language files)
  * @param  string $section The section
  * @return array The INI entries
  */
