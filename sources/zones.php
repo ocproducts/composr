@@ -564,7 +564,7 @@ function get_comcode_zone($page_name, $error = true)
 function get_page_zone($page_name, $error = true)
 {
     // Optimisation for pages known to default as Comcode pages
-    if (in_array($page_name, array('privacy', 'sitemap', 'feedback'))) {
+    if (in_array($page_name, array('privacy', 'sitemap', 'feedback', 'panel_top', 'panel_bottom', 'panel_left', 'panel_right', 'rules', 'keymap', 'start'/*TODO: change in v11*/))) {
         $test = get_comcode_zone($page_name, false);
         if ($test !== null) {
             return $test;

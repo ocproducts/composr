@@ -334,10 +334,16 @@ function find_available_addons($installed_too = true)
     if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
             if (substr($file, -4) == '.tar') {
-                $files[] = array($file, filemtime(get_custom_file_base() . '/imports/addons/' . $file));
+                $files[] = array($file, null);
             }
         }
         closedir($dh);
+    }
+
+    // Find mtimes (in separate loop so as to not have to interleave fs-STAT calls between readdir calls (disk seeking)
+    foreach ($files as $i => $file_parts) {
+        $file = $file_parts[0];
+        $files[$i][1] = filemtime(get_custom_file_base() . '/imports/addons/' . $file)
     }
 
     sort_maps_by($files, '1');

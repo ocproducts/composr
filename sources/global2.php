@@ -332,7 +332,7 @@ function init__global2()
             }
         }
     }
-    if (get_param_integer('keep_debug_fs', 0) == 1) {
+    if (get_param_integer('keep_debug_fs', 0) != 0) {
         require_code('debug_fs');
         enable_debug_fs();
     }

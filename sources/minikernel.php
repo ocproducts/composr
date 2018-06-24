@@ -69,7 +69,7 @@ function init__minikernel()
     @header('Cache-Control: no-cache, max-age=0');
     @header('Pragma: no-cache'); // for proxies, and also IE
 
-    if (get_param_integer('keep_debug_fs', 0) == 1) {
+    if (get_param_integer('keep_debug_fs', 0) != 0) {
         require_code('debug_fs');
         enable_debug_fs();
     }

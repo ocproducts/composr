@@ -301,8 +301,9 @@ function prepare_installer_url($url)
     if (get_param_integer('keep_quick_hybrid', 0) == 1) {
         $url .= '&keep_quick_hybrid=1';
     }
-    if (get_param_integer('keep_debug_fs', 0) == 1) {
-        $url .= '&keep_debug_fs=1';
+    $kdfs = get_param_integer('keep_debug_fs', 0);
+    if ($kdfs != 0) {
+        $url .= '&keep_debug_fs=' . strval($kdfs);
     }
     return $url;
 }

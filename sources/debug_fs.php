@@ -27,9 +27,8 @@ function init__debug_fs()
         define('DEBUG_FS__CASE_SENSITIVE', 2);
     }
 
-    global $DEBUG_FS__LOG_FILE, $DEBUG_FS__LOG_LINE;
+    global $DEBUG_FS__LOG_FILE;
     $DEBUG_FS__LOG_FILE = null;
-    $DEBUG_FS__LOG_LINE = date('Y-m-d H:i:s') . ' ' . cms_srv('REQUEST_URI');
     if (is_file(get_file_base() . '/data_custom/debug_fs.log')) {
         $DEBUG_FS__LOG_FILE = fopen(get_file_base() . '/data_custom/debug_fs.log', 'ab');
         register_shutdown_function('close_debug_fs');
@@ -45,8 +44,11 @@ function enable_debug_fs()
     $DEBUG_FS__BEHAVIOURS = DEBUG_FS__SLOW | DEBUG_FS__CASE_SENSITIVE;
 
     global $DEBUG_FS__LATENCY;
-    //$DEBUG_FS__LATENCY = 10000; // 10ms
     $DEBUG_FS__LATENCY = 0;
+    $kdfs = get_param_integer('keep_debug_fs', 0);
+    if ($kdfs > 1) {
+        $DEBUG_FS__LATENCY = $kdfs * 1000;
+    }
 
     global $FILE_BASE;
     $FILE_BASE = 'debugfs://' . $FILE_BASE;
@@ -91,17 +93,6 @@ class DebugFsStreamWrapper
      */
     public function __destruct()
     {
-    }
-
-    /**
-     * Apply internal slow-down as required.
-     */
-    protected function apply_slowdown()
-    {
-        global $DEBUG_FS__BEHAVIOURS, $DEBUG_FS__LATENCY;
-        if ((($DEBUG_FS__BEHAVIOURS & DEBUG_FS__SLOW) != 0) && (php_function_allowed('usleep'))) {
-            usleep($DEBUG_FS__LATENCY);
-        }
     }
 
     /**
@@ -168,17 +159,36 @@ class DebugFsStreamWrapper
      *
      * @param  string $function The function call that is happening.
      * @param  ?PATH $path Path (null: N/A).
+     * @param  boolean $slowdown Whether to apply an automatic slow-down.
      */
-    protected function init_call($function, $path = null)
+    protected function init_call($function, $path = null, $slowdown = false)
     {
-        global $DEBUG_FS__LOG_FILE, $DEBUG_FS__LOG_LINE;
+        global $DEBUG_FS__LOG_FILE;
         if ($DEBUG_FS__LOG_FILE !== null) {
-            $line = $DEBUG_FS__LOG_LINE;
+            $line = date('Y-m-d H:i:s') . ' ' . cms_srv('REQUEST_URI');
             $line .= ' - ' . $function;
             if ($path !== null) {
                 $line .= ' - ' . $path;
             }
+            if ($slowdown) {
+                $line .= ' - ADDS LATENCY';
+            }
             fwrite($DEBUG_FS__LOG_FILE, $line . "\n");
+        }
+
+        if ($slowdown) {
+            $this->apply_slowdown();
+        }
+    }
+
+    /**
+     * Apply internal slow-down as required.
+     */
+    protected function apply_slowdown()
+    {
+        global $DEBUG_FS__BEHAVIOURS, $DEBUG_FS__LATENCY;
+        if ((($DEBUG_FS__BEHAVIOURS & DEBUG_FS__SLOW) != 0) && (php_function_allowed('usleep'))) {
+            usleep($DEBUG_FS__LATENCY);
         }
     }
 
@@ -195,9 +205,7 @@ class DebugFsStreamWrapper
      */
     public function dir_opendir($path, $options)
     {
-        $this->init_call('dir_opendir', $path);
-
-        $this->apply_slowdown();
+        $this->init_call('dir_opendir', $path, true);
 
         $this->strip_back_path($path);
 
@@ -270,9 +278,7 @@ class DebugFsStreamWrapper
      */
     public function mkdir($path, $mode, $options)
     {
-        $this->init_call('mkdir', $path);
-
-        $this->apply_slowdown();
+        $this->init_call('mkdir', $path, true);
 
         $this->strip_back_path($path);
 
@@ -292,9 +298,7 @@ class DebugFsStreamWrapper
      */
     public function rmdir($path, $options)
     {
-        $this->init_call('rmdir', $path);
-
-        $this->apply_slowdown();
+        $this->init_call('rmdir', $path, true);
 
         $this->strip_back_path($path);
 
@@ -315,9 +319,7 @@ class DebugFsStreamWrapper
      */
     public function unlink($path)
     {
-        $this->init_call('unlink', $path);
-
-        $this->apply_slowdown();
+        $this->init_call('unlink', $path, true);
 
         $this->strip_back_path($path);
 
@@ -337,9 +339,7 @@ class DebugFsStreamWrapper
      */
     public function url_stat($path, $flags)
     {
-        $this->init_call('url_stat', $path);
-
-        $this->apply_slowdown();
+        $this->init_call('url_stat', $path, true);
 
         $this->strip_back_path($path);
 
@@ -363,9 +363,7 @@ class DebugFsStreamWrapper
      */
     public function stream_open($path, $mode, $options, &$opened_path)
     {
-        $this->init_call('stream_open', $path);
-
-        $this->apply_slowdown();
+        $this->init_call('stream_open', $path, true);
 
         $this->strip_back_path($path);
 
@@ -428,9 +426,7 @@ class DebugFsStreamWrapper
      */
     public function stream_truncate($new_size)
     {
-        $this->init_call('stream_truncate');
-
-        $this->apply_slowdown();
+        $this->init_call('stream_truncate', null, true);
 
         if ($this->file_handle === false) {
             return false;
@@ -513,9 +509,7 @@ class DebugFsStreamWrapper
      */
     public function stream_lock($operation)
     {
-        $this->init_call('stream_lock');
-
-        $this->apply_slowdown();
+        $this->init_call('stream_lock', null, true);
 
         if ($this->file_handle === false) {
             return false;
@@ -546,9 +540,7 @@ class DebugFsStreamWrapper
      */
     public function stream_stat()
     {
-        $this->init_call('stream_stat');
-
-        $this->apply_slowdown();
+        $this->init_call('stream_stat', null, true);
 
         if ($this->file_handle === false) {
             return false;
@@ -586,9 +578,7 @@ class DebugFsStreamWrapper
      */
     public function rename($path_from, $path_to)
     {
-        $this->init_call('rename', $path_from);
-
-        $this->apply_slowdown();
+        $this->init_call('rename', $path_from, true);
 
         $this->strip_back_path($path_from);
         $this->strip_back_path($path_to);
@@ -613,9 +603,7 @@ class DebugFsStreamWrapper
      */
     public function stream_metadata($path, $option, $value)
     {
-        $this->init_call('stream_metadata', $path);
-
-        $this->apply_slowdown();
+        $this->init_call('stream_metadata', $path, true);
 
         $this->strip_back_path($path);
 
