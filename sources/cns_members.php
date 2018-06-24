@@ -139,8 +139,8 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
         // Load up filters
         $hooks = find_all_hooks('systems', 'cns_cpf_filter');
         $to_keep = array();
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/cns_cpf_filter/' . $hook);
+        foreach ($hooks as $hook => $hook_dir) {
+            require_code('hooks/systems/cns_cpf_filter/' . $hook, false, $hook_dir == 'sources_custom');
             $_hook = object_factory('Hook_cns_cpf_filter_' . $hook, true);
             if ($_hook === null) {
                 continue;

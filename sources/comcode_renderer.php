@@ -243,8 +243,8 @@ function _custom_comcode_import($connection)
 
         // From Comcode hooks
         $hooks = find_all_hooks('systems', 'comcode');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/comcode/' . filter_naughty_harsh($hook));
+        foreach ($hooks as $hook => $hook_dir) {
+            require_code('hooks/systems/comcode/' . filter_naughty_harsh($hook), false, $hook_dir == 'sources_custom');
             $object = object_factory('Hook_comcode_' . filter_naughty_harsh($hook), true);
 
             $tag = $object->get_tag();

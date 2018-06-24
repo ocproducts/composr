@@ -52,6 +52,13 @@ function get_default_addon_details()
  */
 function read_addon_info($addon, $get_dependencies_on_this = false, $row = null, $ini_info = null, $path = null)
 {
+    static $cache = array();
+    if (!$get_dependencies_on_this) {
+        if (isset($cache[$addon])) {
+            return $cache[$addon];
+        }
+    }
+
     // Hook file has highest priority...
 
     if ($path === null) {
@@ -137,6 +144,8 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
             $addon_info['dependencies_on_this'] = find_addon_dependencies_on($addon);
         }
 
+        $cache[$addon] = $addon_info;
+
         return $addon_info;
     }
 
@@ -170,6 +179,8 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
             $addon_info['dependencies_on_this'] = find_addon_dependencies_on($addon);
         }
 
+        $cache[$addon] = $addon_info;
+
         return $addon_info;
     }
 
@@ -202,6 +213,9 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
         if ($get_dependencies_on_this) {
             $addon_info['dependencies_on_this'] = find_addon_dependencies_on($addon);
         }
+
+        $cache[$addon] = $addon_info;
+
         return $addon_info;
     }
 

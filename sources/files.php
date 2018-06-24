@@ -714,7 +714,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                 if ($place == 'sources_custom') {
                     if (function_exists('filter_naughty_harsh')) {
                         require_code('addons');
-                        $addon_info = read_addon_info($hook);
+                        $hook_path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
+                        $addon_info = read_addon_info($hook, false, null, null, $hook_path);
                         $addon_files = array_merge($addon_files, array_map('strtolower', $addon_info['files']));
                     } else { // Running from outside Composr
                         require_code('hooks/systems/addon_registry/' . $hook);

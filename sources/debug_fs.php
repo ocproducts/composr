@@ -339,7 +339,7 @@ class DebugFsStreamWrapper
      */
     public function url_stat($path, $flags)
     {
-        $this->init_call('url_stat', $path, true);
+        $this->init_call('url_stat', $path);
 
         $this->strip_back_path($path);
 
@@ -540,7 +540,7 @@ class DebugFsStreamWrapper
      */
     public function stream_stat()
     {
-        $this->init_call('stream_stat', null, true);
+        $this->init_call('stream_stat', null);
 
         if ($this->file_handle === false) {
             return false;

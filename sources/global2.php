@@ -518,8 +518,8 @@ function init__global2()
     if (!running_script('upgrader')) {
         // Startup hooks
         $startup_hooks = find_all_hooks('systems', 'startup');
-        foreach (array_keys($startup_hooks) as $hook) {
-            require_code('hooks/systems/startup/' . filter_naughty_harsh($hook));
+        foreach ($startup_hooks as $hook => $hook_dir) {
+            require_code('hooks/systems/startup/' . filter_naughty_harsh($hook), false, $hook_dir == 'sources_custom');
             $ob = object_factory('Hook_startup_' . filter_naughty_harsh($hook), true);
             if ($ob === null) {
                 continue;

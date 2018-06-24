@@ -293,7 +293,7 @@ class Module_admin_setupwizard
         require_lang('addons');
 
         $addons_installed = find_installed_addons();
-        $addons_not_installed = list_to_map('name', find_available_addons(false));
+        $addons_not_installed = list_to_map('name', find_available_addons(false, false));
 
         $fields = '';
         $fields_advanced = '';
@@ -455,7 +455,7 @@ class Module_admin_setupwizard
                 }
             }
         }
-        $addons_not_installed = list_to_map('name', find_available_addons(false)); // Re-search for these, as more may have been downloaded above
+        $addons_not_installed = list_to_map('name', find_available_addons(false, false, list_to_map('file', $addons_not_installed))); // Re-search for these, as more may have been downloaded above
 
         $all_addons = $addons_installed + $addons_not_installed;
         foreach ($all_addons as $addon_name => $row) {
@@ -950,11 +950,9 @@ class Module_admin_setupwizard
         if ((post_param_integer('skip_4', 0) == 0) && (is_null($GLOBALS['CURRENT_SHARE_USER']))) {
             require_lang('addons');
             require_code('addons2');
-            $addons_installed = find_installed_addons();
+            $addons_installed = find_installed_addons(false, true, true);
             $uninstalling = array();
             foreach ($addons_installed as $i => $addon_info) {
-                $addon_info += read_addon_info($addon_info['name'], true);
-
                 if (post_param_integer('addon_' . $addon_info['name'], 0) == 0 && $addon_info['name'] != 'core' && substr($addon_info['name'], 0, 5) != 'core_') {
                     $uninstalling[$addon_info['name']] = $addon_info;
                 }
