@@ -436,11 +436,11 @@ function find_addon_dependencies_on($addon)
         foreach (array_keys($hooks) as $hook) {
             $_found_hook = false;
             $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
-            if (file_exists($path)) {
+            if (is_file($path)) {
                 $_found_hook = true;
             } else {
                 $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
-                if (file_exists($path)) {
+                if (is_file($path)) {
                     $_found_hook = true;
                 }
             }

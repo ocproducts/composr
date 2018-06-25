@@ -106,6 +106,7 @@ class Hook_addon_registry_pointstore
             'sources/hooks/systems/notifications/pointstore_request_forwarding.php',
             'sources/hooks/systems/notifications/pointstore_request_pop3.php',
             'sources/hooks/systems/notifications/pointstore_request_quota.php',
+            'sources/hooks/systems/config_categories/pointstore.php',
             'sources/hooks/systems/config/average_gamble_multiplier.php',
             'sources/hooks/systems/config/banner_hit.php',
             'sources/hooks/systems/config/banner_imp.php',

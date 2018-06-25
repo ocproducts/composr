@@ -842,10 +842,9 @@ class Module_admin_setupwizard
 
         disable_php_memory_limit();
 
-        // Clear some caching (we do it early AND at the end, in case we fail part way through and the user comes back to an inconsistent state)
-        $this->clear_caching();
-
         // Proceed...
+
+        set_mass_import_mode(true);
 
         require_code('config2');
         require_code('themes2');
@@ -950,6 +949,7 @@ class Module_admin_setupwizard
         if ((post_param_integer('skip_4', 0) == 0) && (is_null($GLOBALS['CURRENT_SHARE_USER']))) {
             require_lang('addons');
             require_code('addons2');
+            preload_all_ocproducts_addons_info();
             $addons_installed = find_installed_addons(false, true, true);
             $uninstalling = array();
             foreach ($addons_installed as $i => $addon_info) {
@@ -1107,9 +1107,6 @@ class Module_admin_setupwizard
         // We're done
         set_value('setupwizard_completed', '1');
 
-        // Clear some caching
-        $this->clear_caching();
-
         $url = build_url(array('page' => '_SELF', 'type' => 'step11'), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
@@ -1134,6 +1131,9 @@ class Module_admin_setupwizard
      */
     public function step11()
     {
+        // Clear some caching
+        $this->clear_caching();
+
         require_code('templates_donext');
 
         require_lang('zones');

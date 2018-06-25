@@ -36,7 +36,7 @@ class Hook_content_meta_aware_topic
             return null;
         }
 
-        if (is_null($zone)) {
+        if (($zone === null) && ($get_extended_data)) {
             $zone = get_module_zone('forumview');
             if (is_null($zone)) {
                 return null;

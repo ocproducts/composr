@@ -89,7 +89,7 @@ class Hook_check_functions_needed
             inet_ntop fputcsv is_nan is_finite is_infinite ob_flush array_chunk array_fill
             var_export array_intersect_key end fileinode get_class_methods get_class_vars
             get_object_vars gethostbyname htmlspecialchars stat str_ireplace stripos
-            key pi print set_exception_handler acos
+            key pi print set_exception_handler acos stream_get_contents
 END;
 
         if (function_exists('imagecreatefromstring')) {

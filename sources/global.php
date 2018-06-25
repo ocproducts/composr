@@ -116,7 +116,7 @@ function require_code($codename, $light_exit = false, $has_custom = null)
                 if (HHVM) {
                     hhvm_include($path_custom); // Include our custom
                 } else {
-                    include($path_orig);/*eval($a); would break opcode cache benefits*/ // Include our custom
+                    include($path_custom);/*eval($a); would break opcode cache benefits*/ // Include our custom
                 }
                 $functions_after = get_defined_functions();
                 $classes_after = get_declared_classes();
