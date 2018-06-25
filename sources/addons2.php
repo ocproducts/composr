@@ -265,7 +265,7 @@ function find_updated_addons()
  *
  * @param  boolean $just_non_bundled Whether to only return details on on-bundled addons
  * @param  boolean $get_info Whether to get full details about each addon
- * @param  boolean $get_dependencies_on_this Whether to search for dependencies (only applies if $get_info is true)
+ * @param  boolean $get_dependencies Whether to search for dependencies (only applies if $get_info is true)
  * @return array Map of maps describing the available addons (addon name => details)
  */
 function find_installed_addons($just_non_bundled = false, $get_info = true, $get_dependencies = false)

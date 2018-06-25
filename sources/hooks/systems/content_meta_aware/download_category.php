@@ -27,9 +27,10 @@ class Hook_content_meta_aware_download_category
      * Get content type details. Provides information to allow task reporting, randomisation, and add-screen linking, to function.
      *
      * @param  ?ID_TEXT $zone The zone to link through to (null: autodetect).
+     * @param  boolean $get_extended_data Populate additional data that is somewhat costly to compute (add_url, archive_url).
      * @return ?array Map of award content-type info (null: disabled).
      */
-    public function info($zone = null)
+    public function info($zone = null, $get_extended_data = false)
     {
         return array(
             'support_custom_fields' => true,
@@ -62,8 +63,8 @@ class Hook_content_meta_aware_download_category
             'view_page_link_pattern' => '_SEARCH:downloads:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_downloads:_edit_category:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:downloads:browse:_WILD',
-            'add_url' => (function_exists('has_submit_permission') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_downloads')) ? (get_module_zone('cms_downloads') . ':cms_downloads:add_category:parent_id=!') : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('downloads')) . ':downloads',
+            'add_url' => ($get_extended_data && function_exists('has_submit_permission') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_downloads')) ? (get_module_zone('cms_downloads') . ':cms_downloads:add_category:parent_id=!') : null,
+            'archive_url' => $get_extended_data ? (((!is_null($zone)) ? $zone : get_module_zone('downloads')) . ':downloads') : null,
 
             'support_url_monikers' => true,
 
