@@ -116,7 +116,7 @@ function require_code($codename, $light_exit = false, $has_custom = null)
                 if (HHVM) {
                     hhvm_include($path_custom); // Include our custom
                 } else {
-                    eval($a); // Include our custom
+                    include($path_orig);/*eval($a); would break opcode cache benefits*/ // Include our custom
                 }
                 $functions_after = get_defined_functions();
                 $classes_after = get_declared_classes();
@@ -166,7 +166,7 @@ function require_code($codename, $light_exit = false, $has_custom = null)
                     if (HHVM) {
                         hhvm_include($path_orig);
                     } else {
-                        eval($orig);
+                        include($path_orig);/*eval($orig); would break opcode cache benefits*/;
                     }
                 } else {
                     //static $log_file = null; if ($log_file === null) $log_file = fopen(get_file_base() . '/log.' . strval(time()) . '.txt', 'wb'); flock($log_file, LOCK_EX); fwrite($log_file, $path_orig . "\n"); flock($log_file, LOCK_UN);      Good for debugging errors in eval'd code
@@ -197,7 +197,7 @@ function require_code($codename, $light_exit = false, $has_custom = null)
                     if (HHVM) {
                         hhvm_include($path_orig);
                     } else {
-                        eval($orig);
+                        include($path_orig);/*eval($orig); would break opcode cache benefits*/;
                     }
                 }
                 if (isset($_GET['keep_show_parse_errors'])) {
@@ -218,7 +218,7 @@ function require_code($codename, $light_exit = false, $has_custom = null)
                     if (HHVM) {
                         hhvm_include($path_custom);
                     } else {
-                        eval($a);
+                        include($path_custom);/*eval($a); would break opcode cache benefits*/;
                     }
                 }
             }

@@ -91,7 +91,7 @@ class Hook_addon_registry_image_slider
     {
         return 'A block to show a slider from some gallery/galleries.
 
-For a demo, see this video tutorial: https://www.youtube.com/watch?v=IFIl_z4K0gE';
+For a demo, see this [url="video tutorial"]https://www.youtube.com/watch?v=IFIl_z4K0gE[/url].';
     }
 
     /**

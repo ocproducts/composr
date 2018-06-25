@@ -801,16 +801,16 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
                     if (get_custom_file_base() !== get_file_base()) {
                         $file_path = get_custom_file_base() . '/themes/' . $found[0] . $found[1] . $codename . $found[2];
                         if (is_file($file_path)) {
-                            $found_orig_file = false;
+                            $found_orig_file = true;
                         } else {
                             $file_path = get_file_base() . '/themes/' . $found[0] . $found[1] . $codename . $found[2];
                             if (is_file($file_path)) {
-                                $found_orig_file = false;
+                                $found_orig_file = true;
                             }
                         }
                     } else {
                         $file_path = get_custom_file_base() . '/themes/' . $found[0] . $found[1] . $codename . $found[2];
-                        $found_orig_file = false;
+                        $found_orig_file = true;
                     }
                     if (GOOGLE_APPENGINE) {
                         gae_optimistic_cache(true);
@@ -857,7 +857,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         }
     }
 
-    if (($loaded_this_once) && (!isset($LOADED_TPL_CACHE[$codename][$theme]))) { // On 3rd load (and onwards) it will be fully cached (1st = from disk with smart-decaching, 2nd = from disk [now], 3rd = from run-time cache)
+    if ((($loaded_this_once) || (($suffix == '.tpl') && (substr($codename, -7) !== '_SCREEN'))) && (!isset($LOADED_TPL_CACHE[$codename][$theme]))) { // On 3rd load (and onwards) it will be fully cached (1st = from disk with smart-decaching, 2nd = from disk [now], 3rd = from run-time cache)
         // Set run-time cache
         $LOADED_TPL_CACHE[$codename][$theme] = $_data;
     }

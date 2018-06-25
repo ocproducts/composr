@@ -2709,6 +2709,7 @@ function is_mobile($user_agent = null, $truth = false)
             }
         }
     }
+
     return $result;
 }
 
