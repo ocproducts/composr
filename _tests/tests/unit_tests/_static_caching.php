@@ -24,14 +24,19 @@ class _static_caching_test_set extends cms_test_case
         $config_file = file_get_contents($config_file_path);
         file_put_contents($config_file_path, $config_file . "\n\n\$SITE_INFO['fast_spider_cache'] = '1';\n\$SITE_INFO['any_guest_cached_too'] = '1';");
         fix_permissions($config_file_path);
+        if (php_function_allowed('usleep')) {
+            usleep(500000);
+        }
 
         $url = build_url(array('page' => ''), '');
 
-        http_get_contents($url->evaluate()); // Prime cache
+        $result = http_get_contents($url->evaluate()); // Prime cache
 
         if (get_param_integer('early_debug', 0) == 1) {
+            require_code('files2');
+            var_dump(get_directory_contents(get_custom_file_base() . '/caches/guest_pages'));
+
             var_dump($result);
-            exit();
         }
 
         $time_before = microtime(true);

@@ -449,7 +449,6 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/web_resources.php',
             '_tests/tests/unit_tests/lang_string_special_validity.php',
             '_tests/tests/unit_tests/media.php',
-            '_tests/tests/unit_tests/_lang_spelling.php',
             '_tests/tests/unit_tests/unpack.php',
             '_tests/tests/unit_tests/versioning.php',
             '_tests/tests/unit_tests/dev_environment.php',

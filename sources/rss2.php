@@ -277,11 +277,18 @@ function get_enclosure_details($url, $enclosure_url)
 {
     $enclosure_length = '0';
     if ((url_is_local($url)) && (file_exists(get_custom_file_base() . '/' . rawurldecode($url)))) {
-        $enclosure_length = strval(@filesize(get_custom_file_base() . '/' . rawurldecode($url)));
+        $path = get_custom_file_base() . '/' . rawurldecode($url);
+        if (!is_file($path)) {
+            return array(null, null);
+        }
+        $enclosure_length = strval(filesize($path));
         require_code('mime_types');
         $enclosure_type = get_mime_type(get_file_extension($url), false);
     } else {
         $http_response = cms_http_request($enclosure_url, array('trigger_error' => false, 'byte_limit' => 0));
+        if ($http_response->download_size === null) {
+            return array(null, null);
+        }
         $enclosure_length = strval($http_response->download_size);
         if ($enclosure_length === null) {
             $enclosure_length = strval(strlen(http_get_contents($enclosure_url)));

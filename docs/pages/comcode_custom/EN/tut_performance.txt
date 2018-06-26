@@ -600,12 +600,20 @@ Various [url="HTTP streaming techniques"]https://www.patreon.com/posts/18644315[
 [title="2"]Profiling[/title]
 
 A developer can run a profiler to work out bottlenecks in code, and decide optimisations.
-For hard-core programming, xdebug would be used. However, you can also run profiling on a live site using Composr's built-in profiler. This is enabled via a hidden option (described in the Code Book, and comments in [tt]sources/profiler.php[/tt]).
+For hard-core programming, xdebug would be used. Here are a few things to look at:
+ - Functions called a lot (function calls are costly, perhaps the function isn't really needed that much)
+ - Functions that take a long time to run individually (perhaps they can be optimised)
+ - Functions that take a long time to run in aggregate (perhaps they can be optimised)
+ - Disk operations called a log (e.g. [tt]is_file[/tt]) (perhaps they can be avoided)
+
+You can also run profiling on a live site using Composr's built-in profiler. This is enabled via a hidden option (described in the Code Book, and comments in [tt]sources/profiler.php[/tt]).
 
 If you have the stats addon you can also see what percentage of clock time each page is running for using this query:
 [code="SQL"]
 SELECT the_page,SUM(milliseconds),SUM(milliseconds)/((SELECT config_value FROM ocp_config WHERE the_name='stats_store_time')*24*60*60*1000)*100 FROM ocp_stats GROUP BY the_page ORDER BY SUM(milliseconds);
 [/code]
+
+If you create a [tt]data_custom/debug_fs.log[/tt] file then all disk activity will be written to it if you load the site with [tt]keep_debug_fs=1[/tt].
 
 [title="2"]Calculating hosting requirements[/title]
 

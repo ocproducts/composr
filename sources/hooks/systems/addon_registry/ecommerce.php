@@ -111,6 +111,7 @@ class Hook_addon_registry_ecommerce
             'themes/default/images/icons/menu/adminzone/audit/ecommerce/unfulfilled_invoices.svg',
             'themes/default/images/icons/menu/adminzone/audit/ecommerce/index.html',
             'themes/default/images/icons/menu/rich_content/ecommerce/index.html',
+            'sources/hooks/systems/config_categories/ecommerce.php',
             'sources/hooks/systems/resource_meta_aware/usergroup_subscription.php',
             'sources/hooks/systems/commandr_fs/usergroup_subscriptions.php',
             'sources/hooks/systems/config/payment_gateway_callback_password.php',

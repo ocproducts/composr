@@ -23,6 +23,10 @@ class crypt_test_set extends cms_test_case
         parent::setUp();
 
         require_code('crypt');
+
+        if (function_exists('set_time_limit')) {
+            @set_time_limit(60);
+        }
     }
 
     public function testRandomNumber()

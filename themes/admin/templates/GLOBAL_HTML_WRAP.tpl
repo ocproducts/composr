@@ -20,7 +20,7 @@
 	{+START,IF,{$SHOW_HEADER}}
 		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader">
 			{$,The main logo}
-			<h1 class="accessibility-hidden"><a class="logo-outer" target="_self" href="{$PAGE_LINK*,:}" rel="home"><img class="logo" src="{$LOGO_URL*}" title="{!HOME}" alt="{$SITE_NAME*}" /></a></h1>
+			<h1 class="accessibility-hidden">{$SITE_NAME*}</h1>
 
 			{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
 			<a accesskey="s" class="accessibility-hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>

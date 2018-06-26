@@ -1176,7 +1176,7 @@ abstract class Mail_dispatcher_base
             'm_url' => get_self_url_easy(true),
             'm_queued' => $queued ? 1 : 0,
             'm_template' => $this->mail_template,
-            'm_sender_email' => $this->sender_email,
+            'm_sender_email' => ($this->sender_email === null) ? '' : $this->sender_email,
             'm_plain_subject' => $this->plain_subject ? 1 : 0,
         ), false, !$queued); // No errors if we don't NEED this to work
     }

@@ -317,4 +317,24 @@ class config_test_set extends cms_test_case
             }
         }
     }
+
+    public function testConsistentCategoriesSet()
+    {
+        // Find all categories by searching
+        $hooks = find_all_hooks('systems', 'config');
+        $categories_found = array();
+        foreach (array_keys($hooks) as $hook) {
+            require_code('hooks/systems/config/' . filter_naughty_harsh($hook));
+            $ob = object_factory('Hook_config_' . filter_naughty_harsh($hook));
+            $option = $ob->get_details();
+            $categories_found[strtolower($option['category'])] = true;
+        }
+        ksort($categories_found);
+
+        // Find all categories by hooks
+        $categories = find_all_hooks('systems', 'config_categories');
+        ksort($categories);
+
+        $this->assertTrue(array_keys($categories_found) === array_keys($categories));
+    }
 }

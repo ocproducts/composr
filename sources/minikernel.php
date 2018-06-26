@@ -93,6 +93,11 @@ function init__minikernel()
     cms_ini_set('date.timezone', 'UTC');
 
     set_http_caching(null);
+
+    if (get_param_integer('keep_debug_fs', 0) != 0) {
+        require_code('debug_fs');
+        enable_debug_fs();
+    }
 }
 
 /**
@@ -1091,6 +1096,18 @@ function simulated_wildcard_match($context, $word, $full_cover = false)
     }
 
     return preg_match('#' . str_replace('#', '\#', $rexp) . '#i', $context) != 0;
+}
+
+/**
+ * Check to see if caching is enabled.
+ *
+ * @param  string $type Cache type
+ * @set block lang comcode_page template
+ * @return boolean Whether it has the caching
+ */
+function has_caching_for($type)
+{
+    return true;
 }
 
 /**

@@ -323,7 +323,7 @@ abstract class EmailIntegration
             }
         }
 
-        // Mark CIDs as being referenced (no actual subsitution will happen because we haven't created the attachment IDs yet - we'll call again later)
+        // Mark CIDs as being referenced (no actual substitution will happen because we haven't created the attachment IDs yet - we'll call again later)
         if ($_body_text !== null) {
             $this->substitute_cid_attachments($attachments, $_body_text);
         }

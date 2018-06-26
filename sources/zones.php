@@ -71,7 +71,7 @@ function init__zones()
     $VIRTUALISED_ZONES_CACHE = null;
     if ($MODULES_ZONES_CACHE === null) {
         foreach ($MODULES_ZONES_CACHE_DEFAULT as $key => $val) {
-            if ((!$hardcoded) && (!is_file(get_file_base() . '/' . $val . '/pages/modules/' . $key . '.php'))) {
+            if ((!$hardcoded) && (!is_file(get_file_base() . (($val == '') ? '' : ('/' . $val)) . '/pages/modules/' . $key . '.php'))) {
                 unset($MODULES_ZONES_CACHE_DEFAULT[$key]);
             }
         }
@@ -477,8 +477,8 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
         }
 
         if (
-            (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype))) ||
-            (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '_custom/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
+            (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . (($zone == '') ? '' : '/') . 'pages/' . $type . '/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype))) ||
+            (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . (($zone == '') ? '' : '/') . 'pages/' . $type . '_custom/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
         ) {
             if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][strtolower($module_name)])) && ($REDIRECT_CACHE[$zone][strtolower($module_name)]['r_is_transparent'] === 0) && ($REDIRECT_CACHE[$zone][strtolower($module_name)]['r_to_page'] === $module_name)) {
                 $zone = $REDIRECT_CACHE[$zone][strtolower($module_name)]['r_to_zone'];
@@ -498,8 +498,8 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
         foreach ($zones as $zone) {
             if (!array_key_exists($zone, $first_zones_flip)) {
                 if (
-                    (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype))) ||
-                    (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '_custom/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
+                    (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . (($zone == '') ? '' : '/') . 'pages/' . $type . '/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype))) ||
+                    (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . (($zone == '') ? '' : '/') . 'pages/' . $type . '_custom/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
                 ) {
                     if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][strtolower($module_name)])) && ($REDIRECT_CACHE[$zone][strtolower($module_name)]['r_is_transparent'] === 0) && ($REDIRECT_CACHE[$zone][strtolower($module_name)]['r_to_page'] === $module_name)) {
                         $zone = $REDIRECT_CACHE[$zone][strtolower($module_name)]['r_to_zone'];
@@ -570,6 +570,14 @@ function get_comcode_zone($page_name, $error = true)
  */
 function get_page_zone($page_name, $error = true)
 {
+    // Optimisation for pages known to default as Comcode pages
+    if (in_array($page_name, array('privacy', 'sitemap', 'feedback', 'panel_top', 'panel_bottom', 'panel_left', 'panel_right', 'rules', 'keymap', DEFAULT_ZONE_PAGE_NAME))) {
+        $test = get_comcode_zone($page_name, false);
+        if ($test !== null) {
+            return $test;
+        }
+    }
+
     $test = get_module_zone($page_name, 'modules', null, 'php', false);
     if ($test !== null) {
         return $test;
@@ -848,7 +856,7 @@ function find_all_zones($search = false, $get_titles = false, $force_all = false
 
         $zone['_zone_title'] = function_exists('get_translated_text') ? get_translated_text($zone['zone_title']) : $zone['zone_name'];
 
-        if (((isset($SITE_INFO['no_disk_sanity_checks'])) && ($SITE_INFO['no_disk_sanity_checks'] == '1')) || (is_file(get_file_base() . '/' . $zone['zone_name'] . '/index.php'))) {
+        if (((isset($SITE_INFO['no_disk_sanity_checks'])) && ($SITE_INFO['no_disk_sanity_checks'] == '1')) || (is_file(get_file_base() . '/' . $zone['zone_name'] . (($zone['zone_name'] == '') ? '' : '/') . 'index.php'))) {
             $zones[] = $zone['zone_name'];
             $zones_titled[$zone['zone_name']] = array($zone['zone_name'], $zone['_zone_title'], $zone['zone_default_page'], $zone);
         }
@@ -930,8 +938,8 @@ function find_all_hook_obs($type, $subtype, $classname_prefix)
 {
     $hooks = find_all_hooks($type, $subtype);
     ksort($hooks);
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/' . $type . '/' . $subtype . '/' . $hook);
+    foreach ($hooks as $hook => $hook_dir) {
+        require_code('hooks/' . $type . '/' . $subtype . '/' . $hook, false, $hook_dir == 'sources_custom');
         $ob = object_factory($classname_prefix . $hook, true);
         if ($ob !== null) {
             $hooks[$hook] = $ob;

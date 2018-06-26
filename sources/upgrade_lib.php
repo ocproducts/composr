@@ -61,7 +61,7 @@ function rebuild_zone_files()
     $zones = find_all_zones();
     foreach ($zones as $zone) {
         if (!in_array($zone, array('', 'cms', 'adminzone', 'site', 'forum', 'collaboration'/*LEGACY*/))) {
-            if (strpos(file_get_contents(get_custom_file_base() . '/' . $zone . '/index.php'), 'core') !== false) {
+            if (strpos(file_get_contents(get_custom_file_base() . '/' . $zone . (($zone == '') ? '' : '/') . 'index.php'), 'core') !== false) {
                 @file_put_contents(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/index.php', file_get_contents(get_custom_file_base() . '/site/index.php'));
                 fix_permissions(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/index.php');
                 sync_file(get_custom_file_base() . (($zone == '') ? '' : '/') . $zone . '/index.php');

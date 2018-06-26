@@ -99,7 +99,7 @@ class Block_main_content
 
         require_code('content');
         $object = get_content_object($content_type);
-        $info = $object->info();
+        $info = $object->info(null, true);
         if ($info === null) {
             return do_template('RED_ALERT', array('_GUID' => 'agcqadouhjf6yfynwluv02fjy17e1vw9', 'TEXT' => do_lang_tempcode('IMPOSSIBLE_TYPE_USED')));
         }

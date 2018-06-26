@@ -456,7 +456,7 @@ class Module_admin_setupwizard
         $hidden = static_evaluate_tempcode(build_keep_post_fields());
 
         $addons_installed = find_installed_addons();
-        $addons_not_installed = list_to_map('name', find_available_addons(false));
+        $addons_not_installed = list_to_map('name', find_available_addons(false, false));
 
         $fields = '';
         $fields_advanced = '';
@@ -613,7 +613,7 @@ class Module_admin_setupwizard
                 }
             }
         }
-        $addons_not_installed = list_to_map('name', find_available_addons(false)); // Re-search for these, as more may have been downloaded above
+        $addons_not_installed = list_to_map('name', find_available_addons(false, false, list_to_map('file', $addons_not_installed))); // Re-search for these, as more may have been downloaded above
 
         $all_addons = $addons_installed + $addons_not_installed;
         foreach ($all_addons as $addon_name => $row) {
@@ -1063,10 +1063,9 @@ class Module_admin_setupwizard
 
         disable_php_memory_limit();
 
-        // Clear some caching (we do it early AND at the end, in case we fail part way through and the user comes back to an inconsistent state)
-        $this->clear_caching();
-
         // Proceed...
+
+        set_mass_import_mode(true);
 
         require_code('config2');
         require_code('themes2');
@@ -1295,11 +1294,10 @@ class Module_admin_setupwizard
         if ((post_param_integer('skip_4', 0) == 0) && ($GLOBALS['CURRENT_SHARE_USER'] === null)) {
             require_lang('addons');
             require_code('addons2');
-            $addons_installed = find_installed_addons();
+            preload_all_ocproducts_addons_info();
+            $addons_installed = find_installed_addons(false, true, true);
             $uninstalling = array();
             foreach ($addons_installed as $i => $addon_info) {
-                $addon_info += read_addon_info($addon_info['name'], true);
-
                 if (post_param_integer('addon_' . $addon_info['name'], 0) == 0 && $addon_info['name'] != 'core' && substr($addon_info['name'], 0, 5) != 'core_') {
                     $uninstalling[$addon_info['name']] = $addon_info;
                 }
@@ -1474,9 +1472,6 @@ class Module_admin_setupwizard
         // We're done
         set_value('setupwizard_completed', '1');
 
-        // Clear some caching
-        $this->clear_caching();
-
         $url = build_url(array('page' => '_SELF', 'type' => 'step11'), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
@@ -1501,6 +1496,9 @@ class Module_admin_setupwizard
      */
     public function step11()
     {
+        // Clear some caching
+        $this->clear_caching();
+
         require_code('templates_donext');
 
         require_lang('zones');

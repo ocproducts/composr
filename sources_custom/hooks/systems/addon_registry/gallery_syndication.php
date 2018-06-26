@@ -94,7 +94,7 @@ For YouTube syndication you must first:
 3) Connect YouTube oAuth from Admin Zone > Setup > API access
 4) [url="Increase your YouTube video length limit"]http://support.google.com/youtube/bin/answer.py?hl=en&answer=71673[/url].
 
-[b]Unfortunately YouTube support is currently not functional[/b] (https://compo.sr/tracker/view.php?id=3166).';
+[b]Unfortunately YouTube support is [url="currently not functional"]https://compo.sr/tracker/view.php?id=3166[/url][/b].';
     }
 
     /**

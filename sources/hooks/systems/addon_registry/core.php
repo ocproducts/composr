@@ -1024,6 +1024,7 @@ class Hook_addon_registry_core
             'sources/global2.php',
             'sources/csp.php',
             'data/csp_logging.php',
+            'sources/debug_fs.php',
             'sources/character_sets.php',
             'sources/web_resources2.php',
             'sources/jsmin.php',

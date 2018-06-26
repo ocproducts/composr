@@ -185,7 +185,7 @@ class Block_main_multi_content
 
         require_code('content');
         $object = get_content_object($content_type);
-        $info = $object->info($zone, ($select_b == '') ? null : $select_b);
+        $info = $object->info($zone, true, ($select_b == '') ? null : $select_b);
         if ($info === null) {
             return do_template('RED_ALERT', array('_GUID' => 'tfvwtgk7hc76qnc54y4t8ckdwf2my0d7', 'TEXT' => do_lang_tempcode('IMPOSSIBLE_TYPE_USED')));
         }

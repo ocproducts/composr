@@ -27,9 +27,10 @@ class Hook_content_meta_aware_group
      * Get content type details. Provides information to allow task reporting, randomisation, and add-screen linking, to function.
      *
      * @param  ?ID_TEXT $zone The zone to link through to (null: autodetect)
+     * @param  boolean $get_extended_data Populate additional data that is somewhat costly to compute (add_url, archive_url)
      * @return ?array Map of award content-type info (null: disabled)
      */
-    public function info($zone = null)
+    public function info($zone = null, $get_extended_data = false)
     {
         if (get_forum_type() != 'cns' || !isset($GLOBALS['FORUM_DB'])) {
             return null;
@@ -69,8 +70,8 @@ class Hook_content_meta_aware_group
             'view_page_link_pattern' => '_SEARCH:groups:view:_WILD',
             'edit_page_link_pattern' => 'adminzone:admin_cns_groups:_edit:_WILD',
             'view_category_page_link_pattern' => null,
-            'add_url' => (function_exists('has_actual_page_access') && function_exists('get_member') && has_actual_page_access(get_member(), 'admin_cns_groups')) ? '_SEARCH:admin_cns_groups:add' : (addon_installed('cns_clubs') ? '_SEARCH:cms_cns_groups:add' : null),
-            'archive_url' => (($zone !== null) ? $zone : get_module_zone('groups')) . ':groups',
+            'add_url' => ($get_extended_data && function_exists('has_actual_page_access') && has_actual_page_access(get_member(), 'admin_cns_groups')) ? '_SEARCH:admin_cns_groups:add' : (addon_installed('cns_clubs') ? '_SEARCH:cms_cns_groups:add' : null),
+            'archive_url' => $get_extended_data ? ((($zone !== null) ? $zone : get_module_zone('groups')) . ':groups') : null,
 
             'support_url_monikers' => true,
 

@@ -645,6 +645,19 @@ function explode($separator, $string, $limit = null)
 }
 
 /**
+ * Reads remainder of a stream into a string.
+ *
+ * @param  resource $handle A stream resource
+ * @param  integer $maxlength The maximum bytes to read (-1: no limit)
+ * @param  integer $offset Seek to the specified offset before reading. If this number is negative, no seeking will occur and reading will start from the current position
+ * @return string Contents
+ */
+function stream_get_contents($handle, $maxlength = -1, $offset = -1)
+{
+    return '';
+}
+
+/**
  * Closes an open file pointer.
  *
  * @param  resource $handle The file pointer
@@ -2246,9 +2259,10 @@ function octdec($octal_string)
  * Open a directory for analysis.
  *
  * @param  PATH $path The path to the directory to open
+ * @param  ?resource $context A stream context to attach to (null: no special context)
  * @return ~resource The directory handle (false: error)
  */
-function opendir($path)
+function opendir($path, $context = null)
 {
     return array();
 }
@@ -2433,6 +2447,15 @@ function rawurlencode($str)
 function readdir($dir_handle)
 {
     return '';
+}
+
+/**
+ * Rewind directory handle.
+ *
+ * @param  resource $dir_handle Handle
+ */
+function rewinddir($dir_handle)
+{
 }
 
 /**
@@ -4261,7 +4284,7 @@ function fgetss($handle, $length = null, $allowable_tags = '')
  *
  * @param  resource $handle File handle
  * @param  string $format Formatting string
- * @return array Data
+ * @return ~array Data (false: error)
  */
 function fscanf($handle, $format)
 {
@@ -4272,7 +4295,7 @@ function fscanf($handle, $format)
  * Gets information about a file.
  *
  * @param  PATH $path File
- * @return array Map of status information
+ * @return ~array Map of status information (false: error)
  */
 function stat($path)
 {
@@ -4283,7 +4306,7 @@ function stat($path)
  * Gets information about a file using an open file pointer.
  *
  * @param  resource $handle File handle
- * @return array Map of status information
+ * @return ~array Map of status information (false: error)
  */
 function fstat($handle)
 {
@@ -5380,7 +5403,6 @@ imagecharup
 imagecolorclosesthwb
 fileinode
 soundex
-rewinddir
 quotemeta
 ezmlm_hash
 filetype
@@ -5484,7 +5506,6 @@ stream_filter_append
 stream_filter_prepend
 stream_filter_register
 stream_filter_remove
-stream_get_contents
 stream_get_filters
 stream_get_line
 stream_get_meta_data

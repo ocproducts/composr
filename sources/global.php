@@ -31,8 +31,9 @@ if ((strpos($script_name, '/sources/') !== false) || (strpos($script_name, '/sou
  *
  * @param  string $codename The codename for the source module to load (or a full relative path, ending with .php; if custom checking is needed, this must be the custom version)
  * @param  boolean $light_exit Whether to cleanly fail when a source file is missing
+ * @param  ?boolean $has_custom Whether this is going to be from under a custom directory (null: search). This is used for performance to avoid extra searching when we already know where a file is
  */
-function require_code($codename, $light_exit = false)
+function require_code($codename, $light_exit = false, $has_custom = null)
 {
     // Handle if already required...
 
@@ -80,23 +81,29 @@ function require_code($codename, $light_exit = false)
             }
         }
         if (isset($CODE_OVERRIDES[$codename])) {
-            $has_custom = $CODE_OVERRIDES[$codename];
-            if ($has_custom) {
-                $has_custom = is_file($path_custom); // Double-check still there
+            if ($has_custom === null) {
+                $has_custom = $CODE_OVERRIDES[$codename];
+                if ($has_custom) {
+                    $has_custom = is_file($path_custom); // Double-check still there
+                }
             }
             $has_orig = $CODE_OVERRIDES['!' . $codename];
             if ($has_orig) {
                 $has_orig = is_file($path_orig); // Double-check still there
             }
         } else {
-            $has_custom = is_file($path_custom);
+            if ($has_custom === null) {
+                $has_custom = is_file($path_custom);
+            }
             $has_orig = is_file($path_orig);
             $CODE_OVERRIDES[$codename] = $has_custom;
             $CODE_OVERRIDES['!' . $codename] = $has_orig;
             persistent_cache_set('CODE_OVERRIDES', $CODE_OVERRIDES);
         }
     } else {
-        $has_custom = is_file($path_custom);
+        if ($has_custom === null) {
+            $has_custom = is_file($path_custom);
+        }
     }
 
     if ((isset($SITE_INFO['safe_mode'])) && ($SITE_INFO['safe_mode'] === '1')) {
@@ -116,9 +123,9 @@ function require_code($codename, $light_exit = false)
             // Have a custom and original (i.e. override)...
 
             $orig = clean_php_file_for_eval(file_get_contents($path_orig), $path_orig);
-            $a = file_get_contents($path_custom);
+            $custom = clean_php_file_for_eval(file_get_contents($path_custom), $path_custom);
 
-            if (strpos($a, '/*FORCE_ORIGINAL_LOAD_FIRST*/') === false/*e.g. Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined - in such cases we put this comment in the code*/) {
+            if (strpos($custom, '/*FORCE_ORIGINAL_LOAD_FIRST*/') === false/*e.g. Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined - in such cases we put this comment in the code*/) {
                 $functions_before = get_defined_functions();
                 $classes_before = get_declared_classes();
                 call_included_code($path_custom, $codename, $light_exit); // Include our custom
@@ -295,7 +302,7 @@ if (!class_exists('Error')) {
  * @param  string $path File path
  * @param  string $codename The codename for the source module to load
  * @param  boolean $light_exit Whether to cleanly fail when a source file is missing
- * @param  ?string $code File contents (null: use include not eval)
+ * @param  ?string $code File contents (null: use include not eval, which we prefer when possible as we benefit from opcode caching)
  */
 function call_included_code($path, $codename, $light_exit, $code = null)
 {

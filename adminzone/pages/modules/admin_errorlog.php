@@ -347,6 +347,7 @@ class Module_admin_errorlog
             'big_query_screens.log' => null,
             'mail_integration.log' => null,
             'resource_fs.log' => 'commandr',
+            'debug_fs.log' => null,
         );
         foreach ($logs_available as $filename => $addon_needed) {
             if ((!isset($logs[$filename])) && (($addon_needed === null) || (addon_installed($addon_needed)))) {

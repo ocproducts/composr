@@ -142,6 +142,9 @@ class Hook_geocoding_google
             }
         }
 
+        if (!isset($r['geometry']['bounds'])) {
+            $r['geometry']['bounds'] = $r['geometry']['viewport'];
+        }
         $ne_latitude = $r['geometry']['bounds']['northeast']['lat'];
         $ne_longitude = $r['geometry']['bounds']['northeast']['lng'];
         $sw_latitude = $r['geometry']['bounds']['southwest']['lat'];

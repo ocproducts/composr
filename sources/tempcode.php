@@ -920,14 +920,21 @@ function do_template($codename, $parameters = array(), $lang = null, $light_erro
                 // We need to support smart-decaching
                 global $SITE_INFO;
                 $support_smart_decaching = support_smart_decaching();
+                $found_orig_file = false;
                 if ($support_smart_decaching) {
                     if (get_custom_file_base() !== get_file_base()) {
                         $file_path = get_custom_file_base() . '/themes/' . $found[0] . $found[1] . $codename . $found[2];
-                        if (!is_file($file_path)) {
+                        if (is_file($file_path)) {
+                            $found_orig_file = true;
+                        } else {
                             $file_path = get_file_base() . '/themes/' . $found[0] . $found[1] . $codename . $found[2];
+                            if (is_file($file_path)) {
+                                $found_orig_file = true;
+                            }
                         }
                     } else {
                         $file_path = get_custom_file_base() . '/themes/' . $found[0] . $found[1] . $codename . $found[2];
+                        $found_orig_file = true;
                     }
                     if (GOOGLE_APPENGINE) {
                         gae_optimistic_cache(true);
@@ -939,7 +946,7 @@ function do_template($codename, $parameters = array(), $lang = null, $light_erro
                 }
 
                 $may_use_cache = false;
-                if ((!$support_smart_decaching) || (($tcp_time !== false) && (is_file($file_path)))/*if in install can be found yet no file at path due to running from data.cms*/ && ($found !== null)) {
+                if ((!$support_smart_decaching) || (($tcp_time !== false) && ($found_orig_file))/*if in install can be found yet no file at path due to running from data.cms*/ && ($found !== null)) {
                     if ((!$support_smart_decaching) || ((filemtime($file_path) < $tcp_time) && ((empty($SITE_INFO['dependency__' . $file_path])) || (dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $file_path]), $tcp_time))))) {
                         $may_use_cache = true;
                     }
@@ -978,7 +985,7 @@ function do_template($codename, $parameters = array(), $lang = null, $light_erro
         }
     }
 
-    if (($loaded_this_once) && (!isset($LOADED_TPL_CACHE[$codename][$theme])) && (!$inlining_mode)) { // On 3rd load (and onwards) it will be fully cached
+    if ((($loaded_this_once) || (($suffix == '.tpl') && (substr($codename, -7) !== '_SCREEN'))) && (!isset($LOADED_TPL_CACHE[$codename][$theme])) && (!$inlining_mode)) { // On 3rd load (and onwards) it will be fully cached
         // Set run-time cache
         $LOADED_TPL_CACHE[$codename][$theme] = $_data;
     }

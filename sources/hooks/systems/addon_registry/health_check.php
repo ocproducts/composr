@@ -140,6 +140,7 @@ class Hook_addon_registry_health_check
         return array(
             'sources/hooks/systems/addon_registry/health_check.php',
             'lang/EN/health_check.ini',
+            'sources_custom/hooks/systems/config_categories/health_check.php',
             'sources/hooks/systems/health_checks/.htaccess',
             'sources/hooks/systems/health_checks/index.html',
             'sources/hooks/systems/health_checks/install_env.php',
