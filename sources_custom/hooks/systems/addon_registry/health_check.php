@@ -264,6 +264,7 @@ The Composr ecosystem also has:
             'sources_custom/hooks/systems/addon_registry/health_check.php',
             'lang_custom/EN/health_check.ini',
             'sources_custom/hooks/systems/config_categories/index.html',
+            'sources_custom/hooks/systems/config_categories/.htaccess',
             'sources_custom/hooks/systems/config_categories/health_check.php',
             'sources_custom/hooks/systems/health_checks/.htaccess',
             'sources_custom/hooks/systems/health_checks/index.html',

@@ -104,6 +104,7 @@ class Hook_addon_registry_core_configuration
             'themes/default/images/icons/48x48/menu/adminzone/setup/config/config.png',
             'sources/hooks/systems/sitemap/config_category.php',
             'sources/hooks/systems/config_categories/index.html',
+            'sources/hooks/systems/config_categories/.htaccess',
             'sources/hooks/systems/config_categories/accessibility.php',
             'sources/hooks/systems/config_categories/admin.php',
             'sources/hooks/systems/config_categories/blocks.php',
