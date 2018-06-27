@@ -328,60 +328,59 @@ function step_1()
     $warnings = new Tempcode();
     global $DATADOTCMS_FILE;
     if (!@is_resource($DATADOTCMS_FILE)) { // Do an integrity check - missing corrupt files
-        if ((array_key_exists('skip_disk_checks', $_GET)) || (file_exists(get_file_base() . '/.git'))) {
+        $sdc = get_param_integer('skip_disk_checks', null);
+        if (($sdc === 1) || (($sdc !== 0) && (file_exists(get_file_base() . '/.git')))) {
             if (!file_exists(get_file_base() . '/.git')) {
                 $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('INSTALL_SLOW_SERVER'))));
             }
         } else {
             $files = @unserialize(file_get_contents(get_file_base() . '/data/files.dat'));
-            if (($files !== false) && (!file_exists(get_file_base() . '/.git'))) {
+            if ($files !== false) {
                 $missing = array();
                 $corrupt = array();
 
+                // Volatile files (see also list in make_release.php)
+                $skipped_files_may_be_missing = array_flip(array(
+                    'data_custom/errorlog.php',
+                    'data_custom/execute_temp.php',
+                    '_config.php',
+                    'data_custom/functions.dat',
+                    'data/files_previous.dat',
+                    'data/spelling/aspell/bin/aspell-15.dll',
+                    'data/spelling/aspell/bin/en-only.rws',
+                ));
+                $skipped_files_may_be_changed = array_flip(array(
+                    'themes/map.ini',
+                    'sources/version.php',
+                    'data/files.dat',
+                    'data/modules/admin_stats/IP_Country.txt',
+                ));
+
                 foreach ($files as $file => $file_info) {
-                    // Volatile files (see also list in make_release.php)
-                    if ($file == 'data_custom/errorlog.php') {
-                        continue;
-                    }
-                    if ($file == 'data_custom/execute_temp.php') {
-                        continue;
-                    }
-                    if ($file == '_config.php') {
-                        continue;
-                    }
-                    if ($file == 'themes/map.ini') {
-                        continue;
-                    }
-                    if ($file == 'sources/version.php') {
-                        continue;
-                    }
-                    if ($file == 'data_custom/functions.dat') {
-                        continue;
-                    }
-                    if ($file == 'data/files.dat') {
-                        continue;
-                    }
-                    if ($file == 'data/files_previous.dat') {
-                        continue;
-                    }
-                    if ($file == 'data/modules/admin_stats/IP_Country.txt') {
-                        continue;
-                    }
-                    if ($file == 'data/spelling/aspell/bin/aspell-15.dll') {
-                        continue;
-                    }
-                    if ($file == 'data/spelling/aspell/bin/en-only.rws') {
-                        continue;
-                    }
-                    if (substr($file, -4) == '.ttf') {
+                    if (isset($skipped_files_may_be_missing[$file])) {
                         continue;
                     }
 
-                    $contents = @file_get_contents(get_file_base() . '/' . $file);
                     if (!file_exists(get_file_base() . '/' . $file)) {
                         $missing[] = $file;
-                    } elseif (($contents !== false) && (sprintf('%u', crc32(preg_replace('#[\r\n\t ]#', '', $contents))) != $file_info[0])) {
-                        $corrupt[] = $file;
+                    } else {
+                        if (substr($file, -4) == '.ttf') {
+                            continue;
+                        }
+                        if (substr($file, -11) == '/index.html') { // These are always empty, no need to check
+                            continue;
+                        }
+                        if (isset($skipped_files_may_be_changed[$file])) {
+                            continue;
+                        }
+                        if (substr($file, -4) == '.php') { // There are so many files, we can't check all - and .php files will give an error when called if corrupt
+                            continue;
+                        }
+
+                        $contents = @strval(file_get_contents(get_file_base() . '/' . $file));
+                        if (sprintf('%u', crc32(preg_replace('#[\r\n\t ]#', '', $contents))) != $file_info[0]) {
+                            $corrupt[] = $file;
+                        }
                     }
                 }
 
