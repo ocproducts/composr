@@ -62,7 +62,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			{$MESSAGES_TOP}
 		</div>
 
-		{$,The main panels and content; float-surrounder contains the layout into a rendering box so that the footer etc can sit underneath}
+		{$,The main panels and content; .clearfix contains the layout into a rendering box so that the footer etc can sit underneath}
 		<div class="global-middle-outer clearfix">
 			<article class="global-middle" role="main">
 				{$,Breadcrumbs}

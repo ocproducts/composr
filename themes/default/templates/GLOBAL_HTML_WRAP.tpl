@@ -78,7 +78,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				{$MESSAGES_TOP}
 			</div>
 	
-			{$,The main panels and content; float-surrounder contains the layout into a rendering box so that the footer etc can sit underneath}
+			{$,The main panels and content; .clearfix contains the layout into a rendering box so that the footer etc can sit underneath}
 			<div class="global-middle-outer">
 				{$SET,has_left_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}}}}
 				{$SET,has_right_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}}
