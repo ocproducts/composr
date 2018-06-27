@@ -23,7 +23,6 @@ function initialise_image_fader(data,id)
 	data.fp_animation_fader=document.createElement('img');
 	data.tease_title=document.getElementById('image_fader_title_'+id);
 	data.tease_scrolling_text=document.getElementById('image_fader_scrolling_text_'+id);
-	data.fp_animation_fader.className='img_thumb';
 	data.fp_animation.parentNode.insertBefore(data.fp_animation_fader,data.fp_animation);
 	data.fp_animation.parentNode.style.position='relative';
 	data.fp_animation.parentNode.style.display='block';
