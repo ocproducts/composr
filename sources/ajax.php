@@ -608,7 +608,7 @@ function script_script()
     if ($script != '') {
         $path = javascript_enforce(filter_naughty($script), get_param_string('theme', null));
         if ($path != '') {
-            echo str_replace('../../../', '', cms_file_get_contents_safe($path));
+            echo @str_replace('../../../', '', cms_file_get_contents_safe($path));
         }
     }
 
