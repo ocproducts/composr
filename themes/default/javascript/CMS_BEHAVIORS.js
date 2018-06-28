@@ -922,7 +922,7 @@
             els.forEach(function (stuckNav) {
                 window.addEventListener('scroll', $util.throttle(function () {
                     scrollListener(stuckNav);
-                }, 400));
+                }, 100));
             });
 
             /**
