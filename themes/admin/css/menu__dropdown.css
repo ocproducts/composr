@@ -12,78 +12,78 @@ For example:
  "nlevel" has the image to the left of the anchor, like with most of the other menu types.
 */
 
-.admin-navigation .dropdown-menu {
+.admin-navigation .menu-dropdown {
 	float: left;
 }
 
-.dropdown-menu-items {
+.menu-dropdown-items {
 	margin-bottom: 0;
 	padding-left: 0;
 	list-style: none;
 }
 
-.dropdown-menu-item-a,
-.dropdown-menu-item-a:visited,
-.dropdown-menu-item-a:hover {
+.menu-dropdown-item-a,
+.menu-dropdown-item-a:visited,
+.menu-dropdown-item-a:hover {
 	text-decoration: none;
 	transition: color  0.15s ease-in-out, background-color  0.15s ease-in-out;
 }
 
-.dropdown-menu-item-a {
+.menu-dropdown-item-a {
 	display: block;
 	text-decoration: none;
 }
 
-.dropdown-menu-item-a,
-.dropdown-menu-item-a:hover,
-.dropdown-menu-item-a:visited {
+.menu-dropdown-item-a,
+.menu-dropdown-item-a:hover,
+.menu-dropdown-item-a:visited {
 	display: block;
 	text-decoration: none;
 	color: inherit;
 }
 
-.dropdown-menu-item-icon {
+.menu-dropdown-item-icon {
 	margin-right: 0.3em;
 }
 
-.dropdown-menu-item-icon .icon {
+.menu-dropdown-item-icon .icon {
 	width: 16px;
 	height: 16px;
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.dropdown-menu-toggle-btn {
+	.menu-dropdown-toggle-btn {
 		text-decoration: none;
 		color: {$GET,WB} !important;
 		position: absolute;
 		padding: 0.75em;
 	}
 
-	.dropdown-menu-toggle-btn .icon {
+	.menu-dropdown-toggle-btn .icon {
 		width: 24px;
 		height: 24px;
 	}
 
-	.dropdown-menu-toggle-btn:hover {
+	.menu-dropdown-toggle-btn:hover {
 		color: {$GET,WB};
 	}
 
-	.dropdown-menu-toggle-btn:hover span {
+	.menu-dropdown-toggle-btn:hover span {
 		text-decoration: underline;
 	}
 
-	.dropdown-menu-toggle-btn * {
+	.menu-dropdown-toggle-btn * {
 		vertical-align: middle;
 	}
 
-	.dropdown-menu-toggle-btn::after {
+	.menu-dropdown-toggle-btn::after {
 		padding-left: 0.25em;
 		content: "\25bc"; /* Downward triangle arrow */
 		vertical-align: middle;
 		font-size: 0.85em;
 	}
 
-	.dropdown-menu-content {
+	.menu-dropdown-content {
 		display: none;
 		position: absolute;
 		top: 100%;
@@ -93,69 +93,69 @@ For example:
 		background-color: {$GET,area_5_background};
 	}
 
-	.dropdown-menu-item {
+	.menu-dropdown-item {
 		border-top: 1px solid {$GET,standard_border};
 		border-left: 1px solid {$GET,standard_border};
 		color: {$GET,BW};
 	}
 
-	.dropdown-menu-item.nlevel {
+	.menu-dropdown-item.nlevel {
 		margin-left: 2em;
 	}
 
-	.dropdown-menu-item.toplevel,
-	.dropdown-menu-item.nlevel {
+	.menu-dropdown-item.toplevel,
+	.menu-dropdown-item.nlevel {
 		background-color: {$GET,area_5_background};
 	}
 
-	.dropdown-menu-a.toplevel-link,
-	.dropdown-menu-a.nlevel-link {
+	.menu-dropdown-a.toplevel-link,
+	.menu-dropdown-a.nlevel-link {
 		padding: 1.2em 3em 1.2em 1em;
 		background: url('{$IMG;,icons/buttons/proceed}') transparent no-repeat top 1em right 1em;
 		background-size: 24px 24px;
 	}
 
-	.dropdown-menu-item.toplevel:hover,
-	.dropdown-menu-item.nlevel:hover,
-	.dropdown-menu a.toplevel-link:hover,
-	.dropdown-menu a.nlevel-link:hover,
-	.dropdown-menu-item.current > a.toplevel-link,
-	.dropdown-menu-item.current > a.nlevel-link {
+	.menu-dropdown-item.toplevel:hover,
+	.menu-dropdown-item.nlevel:hover,
+	.menu-dropdown a.toplevel-link:hover,
+	.menu-dropdown a.nlevel-link:hover,
+	.menu-dropdown-item.current > a.toplevel-link,
+	.menu-dropdown-item.current > a.nlevel-link {
 		background-color: {$GET,area_hover_2_background};
 	}
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
-	.dropdown-menu-toggle-btn {
+	.menu-dropdown-toggle-btn {
 		display: none;
 	}
 	
-   .dropdown-menu-item.toplevel {
+   .menu-dropdown-item.toplevel {
        float: left;
    }
 
-   .dropdown-menu-item-a {
+   .menu-dropdown-item-a {
        padding: 0.5em;
    }
 
-	.dropdown-menu-item.toplevel.menu-spacer {
+	.menu-dropdown-item.toplevel.menu-spacer {
 		height: 1.15em;
 		width: 4em;
 		padding: 0.5em;
 		float: left;
 	}
 
-   .dropdown-menu-item-a.toplevel-link {
+   .menu-dropdown-item-a.toplevel-link {
        padding: 15px 2em;
    }
 
-   .dropdown-menu-item.toplevel:hover > a,
-   .dropdown-menu-item-a.toplevel-link:hover,
-   .dropdown-menu-item-a.toplevel-link:focus {
+   .menu-dropdown-item.toplevel:hover > a,
+   .menu-dropdown-item-a.toplevel-link:hover,
+   .menu-dropdown-item-a.toplevel-link:focus {
        background: rgba(0, 0, 0, 0.05);
    }
 
-   .dropdown-menu-item.nlevel.has-children > a::after {
+   .menu-dropdown-item.nlevel.has-children > a::after {
        font-family: sans-serif;
        content: '\025BA'; /* Rightward triangle */
        float: right;
@@ -164,7 +164,7 @@ For example:
        transform: scale(0.6, 1);
    }
 
-	.dropdown-menu-items.nlevel {
+	.menu-dropdown-items.nlevel {
 		border-top: 1px solid {$GET,standard_border};
 		border-left: 1px solid {$GET,standard_border};
 		border-right: 1px solid {$GET,standard_border};
@@ -172,34 +172,34 @@ For example:
 		border-bottom-right-radius: {$GET,border_radius};
 	}
 	
-	.dropdown-menu-items.nlevel .dropdown-menu-item.last > a {
+	.menu-dropdown-items.nlevel .menu-dropdown-item.last > a {
 		border-bottom-left-radius: {$GET,border_radius};
 		border-bottom-right-radius: {$GET,border_radius};
 	}
 	
-	.dropdown-menu-items.nlevel .dropdown-menu-items.nlevel {
+	.menu-dropdown-items.nlevel .menu-dropdown-items.nlevel {
 		margin-top: -1px; /* To compensate for border size */
 		border-top-right-radius: {$GET,border_radius};
 	}
 	
-	.dropdown-menu-items.nlevel .dropdown-menu-items.nlevel .dropdown-menu-item.first > a {
+	.menu-dropdown-items.nlevel .menu-dropdown-items.nlevel .menu-dropdown-item.first > a {
 		border-top-right-radius: {$GET,border_radius};
 	}
 
-	.dropdown-menu .nlevel li {
+	.menu-dropdown .nlevel li {
 		white-space: nowrap;
 	}
 
-	.dropdown-menu-item.nlevel > a:hover,
-	.dropdown-menu-item.nlevel > a:focus,
-	.dropdown-menu-item.nlevel:hover > a,
-	.dropdown-menu-item.nlevel.current > a {
+	.menu-dropdown-item.nlevel > a:hover,
+	.menu-dropdown-item.nlevel > a:focus,
+	.menu-dropdown-item.nlevel:hover > a,
+	.menu-dropdown-item.nlevel.current > a {
 		background-color: {$GET,dropdown_menu_background_hover};
 		color: {$GET,a.hover};
 	}
 
-   .dropdown-menu-item.nlevel > a,
-   .dropdown-menu-item.nlevel .menu-spacer {
+   .menu-dropdown-item.nlevel > a,
+   .menu-dropdown-item.nlevel .menu-spacer {
 		background-color: {$GET,dropdown_menu_background};
 		font-weight: normal;
 		border-bottom: 1px solid {$GET,standard_border};
@@ -209,13 +209,13 @@ For example:
         white-space: normal;
 	}
 
-	.dropdown-menu .nlevel .menu-spacer {
+	.menu-dropdown .nlevel .menu-spacer {
 		display: block;
 		padding-right: 0;
 	}
 	
-	.dropdown-menu-item.nlevel > a,
-	.dropdown-menu-item.nlevel > a:visited {
+	.menu-dropdown-item.nlevel > a,
+	.menu-dropdown-item.nlevel > a:visited {
 		color: {$GET,a.link};
 	}
 /*{+END}*/

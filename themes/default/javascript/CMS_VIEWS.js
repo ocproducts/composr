@@ -1670,7 +1670,7 @@
     function DropdownMenu(params) {
         DropdownMenu.base(this, 'constructor', arguments);
 
-        this.menuContentEl = this.$('.dropdown-menu-content');
+        this.menuContentEl = this.$('.menu-dropdown-content');
 
         var that = this,
             isMobile = $cms.isCssMode('mobile'),
@@ -1692,15 +1692,15 @@
     $util.inherits(DropdownMenu, Menu, /**@lends $cms.views.DropdownMenu#*/{
         events: function () {
             var mobileEvents = {
-                'click .dropdown-menu-toggle-btn': 'toggleMenuContent',
-                'click .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'toggleSubMenu',
+                'click .menu-dropdown-toggle-btn': 'toggleMenuContent',
+                'click .menu-dropdown-item.has-children > .menu-dropdown-item-a': 'toggleSubMenu',
             };
 
             var desktopEvents = {
-                'mouseover .dropdown-menu-item': 'mouseoverMenuItem',
-                'mouseout .dropdown-menu-item': 'mouseoutMenuItem',
+                'mouseover .menu-dropdown-item': 'mouseoverMenuItem',
+                'mouseout .menu-dropdown-item': 'mouseoutMenuItem',
                 
-                'focus .dropdown-menu-item.has-children > .dropdown-menu-item-a': 'focusMenuItemAnchor',
+                'focus .menu-dropdown-item.has-children > .menu-dropdown-item-a': 'focusMenuItemAnchor',
                 
                 'clickout': 'unsetActiveMenuInstantly',
             };
@@ -1716,7 +1716,7 @@
         },
 
         toggleSubMenu: function (e, target) {
-            var popupEl = $dom.parent(target, '.dropdown-menu-item').querySelector('.dropdown-menu-items');
+            var popupEl = $dom.parent(target, '.menu-dropdown-item').querySelector('.menu-dropdown-items');
             e.preventDefault();
             $dom.toggle(popupEl);
         },
@@ -1729,12 +1729,12 @@
             }
             
             // if ((getActiveMenu() == null)) {
-            var misHovered = $dom.parent(target, '.dropdown-menu-items');
+            var misHovered = $dom.parent(target, '.menu-dropdown-items');
             setActiveMenu($dom.id(misHovered), this.menuId);
             // }
             
             if (target.classList.contains('has-children')) {
-                popupMenu(target.querySelector('.dropdown-menu-items'), target.classList.contains('toplevel') ? 'below' : 'right', this.menuId);
+                popupMenu(target.querySelector('.menu-dropdown-items'), target.classList.contains('toplevel') ? 'below' : 'right', this.menuId);
             }
             
         },
@@ -1744,7 +1744,7 @@
                 return;
             }
             
-            var isMisHovered = $dom.matches($dom.parent(target, '.dropdown-menu-items'), ':hover');
+            var isMisHovered = $dom.matches($dom.parent(target, '.menu-dropdown-items'), ':hover');
             
             if (isMisHovered) {
                 return;
@@ -1755,8 +1755,8 @@
         },
 
         focusMenuItemAnchor: function (e, target) {
-            var menuItem = $dom.parent(target, '.dropdown-menu-item'),
-                popupEl = menuItem.querySelector('.dropdown-menu-items');
+            var menuItem = $dom.parent(target, '.menu-dropdown-item'),
+                popupEl = menuItem.querySelector('.menu-dropdown-items');
 
             popupMenu(popupEl, menuItem.classList.contains('toplevel') ? 'below' : 'right', this.menuId, true);
         },
@@ -2185,7 +2185,7 @@
         if (!menuEl) {
             return;
         }
-        var tags = menuEl.querySelectorAll('.dropdown-menu-items.nlevel'),
+        var tags = menuEl.querySelectorAll('.menu-dropdown-items.nlevel'),
             activeMenuEl = (getActiveMenu() != null) ? document.getElementById(getActiveMenu()) : null,
             hideable;
 
