@@ -587,7 +587,7 @@ function sheet_script()
     if ($sheet != '') {
         $path = css_enforce(filter_naughty($sheet), get_param_string('theme', null));
         if ($path != '') {
-            echo str_replace('../../../', '', cms_file_get_contents_safe($path));
+            echo @str_replace('../../../', '', cms_file_get_contents_safe($path));
         }
     }
 
