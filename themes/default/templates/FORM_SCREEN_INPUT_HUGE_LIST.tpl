@@ -22,7 +22,7 @@
 		<select size="{+START,IF_PASSED,SIZE}{SIZE*}{+END}{+START,IF_NON_PASSED,SIZE}15{+END}" tabindex="{TABINDEX*}" class="input-list{REQUIRED*} form-control" id="{NAME*}" name="{NAME*}">
 		{+END}
 		{+START,IF,{$NOT,{INLINE_LIST}}}
-		<select tabindex="{TABINDEX*}" class="input-list" id="{NAME*}" name="{NAME*}" data-cms-select2="{ dropdownAutoWidth: true, containerCssClass: 'wide-field'}">
+		<select tabindex="{TABINDEX*}" class="input-list" id="{NAME*}" name="{NAME*}" data-cms-select2="{ dropdownAutoWidth: true }">
 		{+END}
 		{CONTENT}
 		</select>

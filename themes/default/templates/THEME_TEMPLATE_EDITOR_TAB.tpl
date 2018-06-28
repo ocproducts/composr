@@ -619,14 +619,14 @@
 
 		<p class="vertical-alignment">
 			<label for="css-equation-{FILE_ID*}">{!CSS_EQUATION_HELPER}</label>
-			<input name="css_equation" id="css-equation-{FILE_ID*}" type="text" value="100% seed" />
+			<input name="css_equation" id="css-equation-{FILE_ID*}" class="form-control form-control-inline" type="text" value="100% seed" />
 
 			<button class="btn btn-primary btn-scri buttons--calculate js-btn-equation-helper" type="submit">{+START,INCLUDE,ICON}NAME=buttons/calculate{+END} {!CALCULATE}</button>
 
 			&rarr;
 
 			<label class="accessibility-hidden" for="css-result-{FILE_ID*}">{!RESULT}</label>
-			<output><input readonly="readonly" name="css_result" id="css-result-{FILE_ID*}" type="text" value="({!RESULT})" /></output>
+			<output><input readonly="readonly" name="css_result" id="css-result-{FILE_ID*}" class="form-control form-control-inline" type="text" value="({!RESULT})" /></output>
 		</p>
 	</div></section>
 {+END}

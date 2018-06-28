@@ -86,7 +86,7 @@
 
 						<div class="inline">
 							<label for="tma-type">{!TOPIC_ACTIONS}:</label>
-							<select class="dropdown-actions" id="tma-type" name="type">
+							<select class="form-control form-control-inline dropdown-actions" id="tma-type" name="type">
 								<option value="browse">-</option>
 								{MODERATOR_ACTIONS}
 							</select><button class="btn btn-primary btn-sm buttons--proceed js-click-require-tma-type-selection" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
@@ -101,7 +101,7 @@
 
 							<div class="inline">
 								<label for="mpa-type">{!_MARKED_POST_ACTIONS}:</label>
-								<select id="mpa-type" name="type">
+								<select id="mpa-type" name="type" class="form-control form-control-inline">
 									{+START,IF,{$GT,{$SUBSTR_COUNT,{MARKED_POST_ACTIONS},<option},1}}
 										<option value="browse">-</option>
 									{+END}
@@ -118,7 +118,7 @@
 
 						<div class="inline">
 							<label for="comments_sort">{!SORT}:</label>
-							<select id="comments_sort" name="comments_sort">
+							<select id="comments_sort" name="comments_sort" class="form-control form-control-inline">
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE}</option>
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},newest}} selected="selected"{+END} value="newest">{!NEWEST_FIRST}</option>
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},oldest}} selected="selected"{+END} value="oldest">{!OLDEST_FIRST}</option>

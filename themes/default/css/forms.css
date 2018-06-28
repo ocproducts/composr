@@ -822,26 +822,28 @@ span.validated-checkbox+input[name="validated"].input-tick {
 	margin-bottom: 0.5em;
 }
 
-.fields-set-contents {
-	overflow: hidden;
+.fields-set-contents::after {
+	display: block;
+	clear: both;
+	content: "";
 }
-
+ 
 .fields-set-contents .associated-details {
 	margin-top: 0.2em;
 }
 
 /* Spruce up defaults for form fields */
 
-.form-table input[type="text"], .form-table input[type="email"], .form-table input[type="password"], .form-table textarea,
-.form-table-field-input select, .form-table-field-input textarea {
-	font-size: 1.12em;
-}
+/*.form-table input[type="text"], .form-table input[type="email"], .form-table input[type="password"], .form-table textarea,*/
+/*.form-table-field-input select, .form-table-field-input textarea {*/
+	/*font-size: 1.12em;*/
+/*}*/
 
-.form-table input[type="text"], .form-table input[type="email"], .form-table input[type="password"], .form-table textarea {
-	border-radius: 4px;
-	border: 1px solid {$GET,standard_border};
-	padding: 0.2em;
-}
+/*.form-table input[type="text"], .form-table input[type="email"], .form-table input[type="password"], .form-table textarea {*/
+	/*border-radius: 4px;*/
+	/*border: 1px solid {$GET,standard_border};*/
+	/*padding: 0.2em;*/
+/*}*/
 
 .form-table input[type="number"] {
 	width: 6em;

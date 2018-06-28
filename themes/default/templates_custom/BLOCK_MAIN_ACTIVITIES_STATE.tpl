@@ -13,7 +13,7 @@
 
 		<div class="status-controls">
 			{+START,IF,{$ADDON_INSTALLED,chat}}
-				<select name="privacy" size="1">
+				<select name="privacy" size="1" class="form-control form-control-inline">
 					<option selected="selected">
 						{!PUBLIC}
 					</option>

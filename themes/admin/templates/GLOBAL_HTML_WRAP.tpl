@@ -201,7 +201,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 							<div class="inline">
 								<p class="accessibility-hidden"><label for="special-page-type">{!SCREEN_DEV_TOOLS}</label></p>
-								<select id="special-page-type" name="special_page_type">{$STAFF_ACTIONS}</select>
+								<select id="special-page-type" name="special_page_type" class="form-control form-control-inline">{$STAFF_ACTIONS}</select>
 								<button class="btn btn-primary btn-sm buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED_SHORT}</button>
 							</div>
 						</form>

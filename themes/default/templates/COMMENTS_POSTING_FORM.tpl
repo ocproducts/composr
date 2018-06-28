@@ -66,7 +66,7 @@
 									</th>
 
 									<td>
-										<input id="poster_name_if_guest" name="poster_name_if_guest" type="text" tabindex="1" maxlength="255" size="24" />
+										<input id="poster_name_if_guest" class="form-control form-control-inline" name="poster_name_if_guest" type="text" tabindex="1" maxlength="255" size="24" />
 										{+START,IF_PASSED,JOIN_BITS}{+START,IF_NON_EMPTY,{JOIN_BITS}}
 											<span class="horiz-field-sep">{JOIN_BITS}</span>
 										{+END}{+END}
@@ -83,7 +83,7 @@
 
 									<td>
 										<div>
-											<input id="email" name="email" value="{$MEMBER_EMAIL*}" type="text" tabindex="2" maxlength="255" class="form-control{+START,IF,{$NOT,{EMAIL_OPTIONAL}}} input-text-required{+END}" />
+											<input id="email" class="form-control form-control-inline" name="email" value="{$MEMBER_EMAIL*}" type="text" tabindex="2" maxlength="255" class="form-control{+START,IF,{$NOT,{EMAIL_OPTIONAL}}} input-text-required{+END}" />
 										</div>
 
 										<div id="error-email" style="display: none" class="input-error-here">
@@ -106,7 +106,7 @@
 
 									<td>
 										<div>
-											<input id="title" name="title" value="{DEFAULT_TITLE*}" type="text" tabindex="3" maxlength="255" class="form-control" />
+											<input id="title" class="form-control form-control-inline" name="title" value="{DEFAULT_TITLE*}" type="text" tabindex="3" maxlength="255" class="form-control" />
 										</div>
 
 										<div id="error-title" style="display: none" class="input-error-here">

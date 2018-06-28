@@ -21,7 +21,7 @@
 								{+START,IF,{SUPPLEMENT_SUPPORTS_QUANTITY}}
 									{!QUANTITY}:
 
-									<select class="js-change-recalculate-booking-price" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity">
+									<select class="form-control form-control-inline js-change-recalculate-booking-price" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity">
 										{$SET,quantity,0}
 										{+START,WHILE,{$LT,{$GET,quantity},51}}
 											<option {+START,IF,{$EQ,{SUPPLEMENT_QUANTITY},{$GET,quantity}}} selected="selected"{+END} value="{$GET*,quantity}">{$NUMBER_FORMAT*,{$GET,quantity}}</option>

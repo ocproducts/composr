@@ -101,7 +101,7 @@
 
 		<p>
 			<label for="db_type">{!DB_CHOICE}</label>:
-			<select id="db_type" name="db_type">
+			<select id="db_type" name="db_type" class="form-control form-control-inline">
 				{DATABASES}
 			</select>
 		</p>

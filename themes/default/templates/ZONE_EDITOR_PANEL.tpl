@@ -126,13 +126,13 @@
 						<label for="redirect_{ID*}" class="field-name">{!DRAWS_FROM}:</label>
 					</p>
 					{+START,IF_NON_EMPTY,{ZONES}}
-						<select class="js-sel-zones-draw" id="redirect_{ID*}" name="redirect_{ID*}">
+						<select class="form-control form-control-inline js-sel-zones-draw" id="redirect_{ID*}" name="redirect_{ID*}">
 							<option value="{ZONE*}">{!NA}</option>
 							{ZONES}
 						</select>
 					{+END}
 					{+START,IF_EMPTY,{ZONES}}
-						<input maxlength="80" class="js-inp-zones-draw" size="20" id="redirect_{ID*}" name="redirect_{ID*}" value="{CURRENT_ZONE*}" type="text" />
+						<input maxlength="80" class="form-control form-control-inline js-inp-zones-draw" size="20" id="redirect_{ID*}" name="redirect_{ID*}" value="{CURRENT_ZONE*}" type="text" />
 					{+END}
 				</form>
 			{+END}

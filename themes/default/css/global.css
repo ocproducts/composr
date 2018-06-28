@@ -664,13 +664,13 @@ textarea, input, code {
 }
 
 /* Normally a browser default, but gets inherited on some phones */
-input[type="text"], input[type="password"], input[type="color"], input[type="email"], input[type="number"], input[type="range"], input[type="search"], input[type="tel"], input[type="url"], textarea, select {
-	background-color: {$GET,native_ui_background};
-	color: {$GET,native_ui_foreground};
-}
-input[type="text"]:disabled, input[type="password"]:disabled, input[type="color"]:disabled, input[type="email"]:disabled, input[type="number"]:disabled, input[type="range"]:disabled, input[type="search"]:disabled, input[type="tel"]:disabled, input[type="url"]:disabled, textarea:disabled, select:disabled {
-	color: gray;
-}
+/*input[type="text"], input[type="password"], input[type="color"], input[type="email"], input[type="number"], input[type="range"], input[type="search"], input[type="tel"], input[type="url"], textarea, select {*/
+	/*background-color: {$GET,native_ui_background};*/
+	/*color: {$GET,native_ui_foreground};*/
+/*}*/
+/*input[type="text"]:disabled, input[type="password"]:disabled, input[type="color"]:disabled, input[type="email"]:disabled, input[type="number"]:disabled, input[type="range"]:disabled, input[type="search"]:disabled, input[type="tel"]:disabled, input[type="url"]:disabled, textarea:disabled, select:disabled {*/
+	/*color: gray;*/
+/*}*/
 
 h1, h2, h3 {
 	border-bottom: 1px solid {$GET,pale_border};
@@ -4292,6 +4292,11 @@ ul.buttons-group, ul.associated-links-block-group {
 	border: 1px solid #ced4da;
 	border-radius: {$GET,border_radius};
 	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control-inline {
+	display: inline-block;
+	width: auto;
 }
 
 @media screen and (prefers-reduced-motion: reduce) {

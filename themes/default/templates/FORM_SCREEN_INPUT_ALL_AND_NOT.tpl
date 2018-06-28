@@ -1,5 +1,5 @@
 {RADIOS}
 
-<select tabindex="{TABINDEX*}" size="15" id="{BASE*}_list" name="{BASE*}_list[]" multiple="multiple">
+<select tabindex="{TABINDEX*}" size="15" id="{BASE*}_list" name="{BASE*}_list[]" multiple="multiple" class="form-control form-control-inline">
 	{LIST}
 </select>

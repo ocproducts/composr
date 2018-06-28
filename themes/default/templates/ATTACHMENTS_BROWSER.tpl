@@ -3,7 +3,7 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<label for="member_id">{!ATTACHMENTS_OF}:
-		<select id="member_id" name="member_id">
+		<select id="member_id" name="member_id" class="form-control form-control-inline">
 			{LIST}
 		</select></label>
 

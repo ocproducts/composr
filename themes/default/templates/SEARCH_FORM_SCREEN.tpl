@@ -119,7 +119,7 @@
 								<th class="form-table-field-name">{DAYS_LABEL*}</th>
 								<td class="form-table-field-input" colspan="2">
 									<div class="accessibility-hidden"><label for="search-days">{DAYS_LABEL*}</label></div>
-									<select id="search-days" name="days">
+									<select id="search-days" name="days" class="form-control form-control-inline">
 										<option selected="selected" value="-1">{!NA}</option>
 										<option {+START,IF,{$EQ,{DAYS},2}} selected="selected"{+END} value="2">{!SUBMIT_AGE_DAYS,2}</option>
 										<option {+START,IF,{$EQ,{DAYS},5}} selected="selected"{+END} value="5">{!SUBMIT_AGE_DAYS,5}</option>
@@ -178,7 +178,7 @@
 							<td class="form-table-field-input" colspan="2">
 								<div class="accessibility-hidden"><label for="search-direction">{!DIRECTION}</label></div>
 								<div class="accessibility-hidden"><label for="search-sort">{!SORT_BY}</label></div>
-								<select id="search-sort" name="sort">
+								<select id="search-sort" name="sort" class="form-control form-control-inline">
 									<option {+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE_SORT}</option>
 									<option {+START,IF,{$EQ,{SORT},add_date}} selected="selected"{+END} value="add_date">{!DATE}</option>
 									<option {+START,IF,{$EQ,{SORT},title}} selected="selected"{+END} value="title">{!TITLE}</option>
@@ -188,7 +188,7 @@
 										<option {+START,IF,{$EQ,{SORT},{_loop_key*}}} selected="selected"{+END} value="{_loop_key*}">{_loop_var*}</option>
 									{+END}
 								</select>
-								<select id="search-direction" name="direction">
+								<select id="search-direction" name="direction" class="form-control form-control-inline">
 									<option {+START,IF,{$EQ,{DIRECTION},ASC}} selected="selected"{+END} value="ASC">{!ASCENDING}</option>
 									<option {+START,IF,{$EQ,{DIRECTION},DESC}} selected="selected"{+END} value="DESC">{!DESCENDING}</option>
 								</select>

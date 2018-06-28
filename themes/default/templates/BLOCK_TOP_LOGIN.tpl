@@ -6,7 +6,7 @@
 			{+START,IF,{$DESKTOP}}
 				<div class="top-login-controls display-desktop">
 					<div class="accessibility-hidden"><label for="s-login-username">{$LOGIN_LABEL}</label></div>
-					<input maxlength="80" size="10" accesskey="l" type="text" placeholder="{!USERNAME}" id="s-login-username" name="login_username" />
+					<input maxlength="80" size="10" accesskey="l" type="text" placeholder="{!USERNAME}" id="s-login-username" name="login_username" class="form-control form-control-inline" />
 					<div class="accessibility-hidden"><label for="s-password">{!PASSWORD}</label></div>
 					<input maxlength="255" size="10" type="password" placeholder="{!PASSWORD}" name="password" id="s-password" />
 

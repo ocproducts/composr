@@ -21,8 +21,8 @@
 					<div>
 						<div class="accessibility-hidden"><label for="member-bar-login-username">{$LOGIN_LABEL}</label></div>
 						<div class="accessibility-hidden"><label for="member-bar-s-password">{!PASSWORD}</label></div>
-						<input size="15" type="text" placeholder="{!USERNAME}" id="member-bar-login-username" name="login_username" />
-						<input size="15" type="password" placeholder="{!PASSWORD}" name="password" id="member-bar-s-password" />
+						<input size="15" type="text" placeholder="{!USERNAME}" id="member-bar-login-username" class="form-control form-control-inline" name="login_username" />
+						<input size="15" type="password" placeholder="{!PASSWORD}" name="password" id="member-bar-s-password" class="form-control form-control-inline" />
 						{+START,IF,{$CONFIG_OPTION,password_cookies}}
 							<label for="remember">{!REMEMBER_ME}:</label>
 							<input class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-confirm-remember-me{+END}"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} type="checkbox" value="1" id="remember" name="remember" />

@@ -103,7 +103,7 @@
 								{$INSERT_SPAMMER_BLACKHOLE}
 
 								<label class="accessibility-hidden" for="friend_username">{!USERNAME}: </label>
-								<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="18" maxlength="80" class="js-keyup-input-update-ajax-member-list" type="text" placeholder="{!USERNAME}" id="friend_username" name="friend_username" />
+								<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="18" maxlength="80" class="form-control form-control-inline js-keyup-input-update-ajax-member-list" type="text" placeholder="{!USERNAME}" id="friend_username" name="friend_username" />
 								<button class="btn btn-primary btn-sm admin--add" type="submit">{+START,INCLUDE,ICON}NAME=admin/add{+END} {!ADD}</button>
 							</form>
 						{+END}

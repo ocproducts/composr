@@ -12,7 +12,7 @@
 			{$HIDDENS_FOR_GET_FORM,{$SELF_URL}}
 
 			<label class="accessibility-hidden" for="friends_search">{!SEARCH}</label>
-			<input autocomplete="off" maxlength="255" class="js-input-friends-search" type="search" id="friends_search" name="friends_search" value="{$_GET*,friends_search}" />
+			<input autocomplete="off" maxlength="255" class="form-control form-control-inline js-input-friends-search" type="search" id="friends_search" name="friends_search" value="{$_GET*,friends_search}" />
 			<button class="btn btn-primary btn-sm buttons--filter" type="submit">{+START,INCLUDE,ICON}NAME=buttons/filter{+END} {!FILTER}</button>
 		</form>
 
