@@ -203,16 +203,16 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de-t
 	vertical-align: middle;
 }
 /*{+START,CSS_MODE,desktop}*/
-	.form-table-field-input .wide-field {
+	.form-table-field-input .form-control {
 		width: 26em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.form-table-field-input .wide-field {
+	.form-table-field-input .form-control {
 		width: 100%;
 	}
 /*{+END}*/
-.form-table-field-input .wide-field {
+.form-table-field-input .form-control {
 	max-width: 100%;
 }
 

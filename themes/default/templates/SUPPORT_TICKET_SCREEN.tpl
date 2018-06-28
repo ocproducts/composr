@@ -66,7 +66,7 @@
 						<span class="field-name"><label for="ticket_type_id">{!TICKET_TYPE}:</label></span>
 					</th>
 					<td>
-						<select id="ticket_type_id" name="ticket_type_id" class="input-list-required wide-field">
+						<select id="ticket_type_id" name="ticket_type_id" class="input-list-required form-control">
 							<option value="">---</option>
 							{+START,LOOP,TYPES}
 								<option value="{TICKET_TYPE_ID*}"{+START,IF,{SELECTED}} selected="selected"{+END}>{NAME*}</option>{$,You can also use {LEAD_TIME} to get the ticket type's lead time}

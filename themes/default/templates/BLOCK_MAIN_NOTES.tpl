@@ -22,7 +22,7 @@
 
 				<div class="accessibility-hidden"><label for="n-block-{TITLE|}">{!NOTES}</label></div>
 				<div>
-					<textarea class="wide-field js-focus-textarea-expand js-blur-textarea-contract{+START,IF,{SCROLLS}} textarea-scroll{+END}" cols="80" id="n-block-{TITLE|}" rows="10" name="new">{CONTENTS*}</textarea>
+					<textarea class="form-control js-focus-textarea-expand js-blur-textarea-contract{+START,IF,{SCROLLS}} textarea-scroll{+END}" cols="80" id="n-block-{TITLE|}" rows="10" name="new">{CONTENTS*}</textarea>
 				</div>
 
 				<div class="buttons-group">

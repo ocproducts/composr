@@ -102,7 +102,7 @@
 		</p>
 
 		<div>
-			<textarea class="wide-field" id="m-notes" name="notes" cols="50" rows="10">{NOTES*}</textarea>
+			<textarea class="form-control" id="m-notes" name="notes" cols="50" rows="10">{NOTES*}</textarea>
 		</div>
 	</div></div>
 </form>

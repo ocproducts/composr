@@ -83,7 +83,7 @@
 
 									<td>
 										<div>
-											<input id="email" name="email" value="{$MEMBER_EMAIL*}" type="text" tabindex="2" maxlength="255" class="wide-field{+START,IF,{$NOT,{EMAIL_OPTIONAL}}} input-text-required{+END}" />
+											<input id="email" name="email" value="{$MEMBER_EMAIL*}" type="text" tabindex="2" maxlength="255" class="form-control{+START,IF,{$NOT,{EMAIL_OPTIONAL}}} input-text-required{+END}" />
 										</div>
 
 										<div id="error-email" style="display: none" class="input-error-here">
@@ -106,7 +106,7 @@
 
 									<td>
 										<div>
-											<input id="title" name="title" value="{DEFAULT_TITLE*}" type="text" tabindex="3" maxlength="255" class="wide-field" />
+											<input id="title" name="title" value="{DEFAULT_TITLE*}" type="text" tabindex="3" maxlength="255" class="form-control" />
 										</div>
 
 										<div id="error-title" style="display: none" class="input-error-here">
@@ -220,7 +220,7 @@
 
 								<td>
 									<div>
-										<textarea name="post" id="post" data-textarea-auto-height="" tabindex="6" accesskey="x" class="{$?,{TRUE_ATTACHMENT_UI},true-attachment-ui,faux-attachment-ui} wide-field js-focus-textarea-post" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_POST}{DEFAULT_POST*}{+END}</textarea>
+										<textarea name="post" id="post" data-textarea-auto-height="" tabindex="6" accesskey="x" class="{$?,{TRUE_ATTACHMENT_UI},true-attachment-ui,faux-attachment-ui} form-control js-focus-textarea-post" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_POST}{DEFAULT_POST*}{+END}</textarea>
 										<input type="hidden" name="comcode__post" value="1" />
 									</div>
 

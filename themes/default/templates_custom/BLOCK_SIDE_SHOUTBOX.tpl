@@ -14,7 +14,7 @@
 
 				<div>
 					<p class="accessibility-hidden"><label for="shoutbox-message">{!MESSAGE}</label></p>
-					<p><input autocomplete="off" type="text" id="shoutbox-message" name="shoutbox_message" alt="{!MESSAGE}" class="wide-field" /></p>
+					<p><input autocomplete="off" type="text" id="shoutbox-message" name="shoutbox_message" alt="{!MESSAGE}" class="form-control" /></p>
 				</div>
 
 				<div class="clearfix">

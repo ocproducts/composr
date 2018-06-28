@@ -4273,7 +4273,7 @@ ul.buttons-group, ul.associated-links-block-group {
 	margin-right: 0 !important;
 }
 
-.fields-set-contents .wide-field {
+.fields-set-contents .form-control {
 	max-width: 500px;
 }
 .multi-field + .multi-field {

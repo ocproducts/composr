@@ -5,7 +5,7 @@
 
 	<div>
 		<label for="sections_to_run" class="lonely-label">{!SECTIONS}:</label>
-		<select name="sections_to_run[]" id="sections_to_run" multiple="multiple" size="30" class="wide-field">
+		<select name="sections_to_run[]" id="sections_to_run" multiple="multiple" size="30" class="form-control">
 			{SECTIONS}
 		</select>
 	</div>

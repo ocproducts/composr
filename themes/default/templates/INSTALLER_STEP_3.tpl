@@ -57,7 +57,7 @@
 							<th class="form-table-field-name">{!FORUM_PATH}</th>
 							<td class="form-table-field-input">
 								<div class="accessibility-hidden"><label for="board_path">{!_FORUM_PATH}</label></div>
-								<div><input class="wide-field" type="text" size="60" id="board_path" name="board_path" value="{FORUM_PATH_DEFAULT*}" /></div>
+								<div><input class="form-control" type="text" size="60" id="board_path" name="board_path" value="{FORUM_PATH_DEFAULT*}" /></div>
 							</td>
 						</tr>
 					</tbody>

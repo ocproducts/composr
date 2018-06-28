@@ -507,7 +507,7 @@
 
 	<label class="accessibility-hidden" for="e_{FILE_ID*}">{!TEMPLATE}</label>
 	<div>
-		<textarea id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="wide-field js-ta-tpl-editor textarea-scroll">{CONTENTS*}</textarea>
+		<textarea id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="form-control js-ta-tpl-editor textarea-scroll">{CONTENTS*}</textarea>
 	</div>
 </div>
 
