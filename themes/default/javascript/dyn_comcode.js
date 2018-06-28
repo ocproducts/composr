@@ -35,7 +35,7 @@ function initialise_image_fader_title(data,v,k)
 	data['title'+k]=v;
 	if (k==0)
 	{
-		if (data.tease_title)
+		if (data.tease_title && data['title'+k])
 		{
 			set_inner_html(data.tease_title,data['title'+k]);
 		}
@@ -76,7 +76,7 @@ function initialise_image_fader_image(data,v,k,mill,total)
 			data.fp_animation.src=data['url'+k];
 			data.fp_animation_fader.style.left=((find_width(data.fp_animation_fader.parentNode)-find_width(data.fp_animation_fader))/2)+'px';
 			data.fp_animation_fader.style.top=((find_height(data.fp_animation_fader.parentNode)-find_height(data.fp_animation_fader))/2)+'px';
-			if (data.tease_title)
+			if (data.tease_title && data['title'+k])
 			{
 				set_inner_html(data.tease_title,data['title'+k]);
 			}

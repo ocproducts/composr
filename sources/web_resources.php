@@ -232,7 +232,10 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
 
             $_theme = $GLOBALS['FORUM_DRIVER']->get_theme();
             $keep = symbol_tempcode('KEEP');
-            $url = find_script('script') . '?script=' . urlencode($j) . $keep->evaluate() . '&theme=' . urlencode($_theme) . '&keep_theme=' . urlencode($_theme);
+            $url = find_script('script') . '?script=' . urlencode($j) . $keep->evaluate() . '&theme=' . urlencode($_theme);
+            if (get_param_string('keep_theme', null) !== $_theme) {
+                $url .= '&keep_theme=' . urlencode($_theme);
+            }
             $js->attach(do_template('JAVASCRIPT_NEED_FULL', array('_GUID' => 'a2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => $url)));
         } else {
             if (!$minify) {
@@ -484,7 +487,10 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
 
             $_theme = ($theme === null) ? $GLOBALS['FORUM_DRIVER']->get_theme() : $theme;
             $keep = symbol_tempcode('KEEP');
-            $url = find_script('sheet') . '?sheet=' . urlencode($c) . $keep->evaluate() . '&theme=' . urlencode($_theme) . '&keep_theme=' . urlencode($_theme);
+            $url = find_script('sheet') . '?sheet=' . urlencode($c) . $keep->evaluate() . '&theme=' . urlencode($_theme);
+            if (get_param_string('keep_theme', null) !== $_theme) {
+                $url .= '&keep_theme=' . urlencode($_theme);
+            }
             $css->attach(do_template('CSS_NEED_FULL', array('_GUID' => 'g2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => $url), user_lang(), false, null, '.tpl', 'templates', $theme));
         } else {
             if (!$minify) {
