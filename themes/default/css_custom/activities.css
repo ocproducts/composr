@@ -117,7 +117,6 @@ form.activities-remove input.remove-button::-moz-focus-inner {
 	overflow: auto;
 	height: 2.3em;
 	font-size: 1.2em;
-	box-sizing: content-box;
 }
 
 .status-controls {

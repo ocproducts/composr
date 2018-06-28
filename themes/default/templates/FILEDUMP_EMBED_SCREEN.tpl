@@ -16,7 +16,7 @@
 				<label for="generated_comcode" class="lonely-label">{!_COMCODE}:</label>
 				<form action="#" method="post" autocomplete="off">
 					<div>
-						<textarea id="generated_comcode" name="generated_comcode" cols="50" rows="10">{GENERATED*}</textarea>
+						<textarea id="generated_comcode" name="generated_comcode" class="form-control form-control-inline" cols="50" rows="10">{GENERATED*}</textarea>
 					</div>
 				</form>
 			</div>

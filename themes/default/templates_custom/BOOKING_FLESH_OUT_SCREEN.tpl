@@ -40,7 +40,7 @@
 
 						{+START,IF,{SUPPLEMENT_SUPPORTS_NOTES}}
 							<p class="lonely-label"><label for="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_notes">{!NOTES_FOR_US}:</label></p>
-							<textarea cols="50" rows="1" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_notes" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_notes">{SUPPLEMENT_NOTES*}</textarea>
+							<textarea cols="50" rows="1" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_notes" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_notes" class="form-control form-control-inline">{SUPPLEMENT_NOTES*}</textarea>
 						{+END}
 					</div>
 				{+END}
