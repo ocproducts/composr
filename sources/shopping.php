@@ -213,19 +213,36 @@ function delete_incomplete_orders()
 
 /**
  * Delete any pending orders for the current user. E.g. if cart purchase was cancelled, or cart was changed.
+ *
+ * @param  ?AUTO_LINK $keep_order_id ID of order to not keep (null: none)
+ * @param  ?string $purchase_through Only delete orders of this origin (null: no filter)
  */
-function delete_pending_orders_for_current_user()
+function delete_pending_orders_for_current_user($keep_order_id = null, $purchase_through = null)
 {
-    $where = array('order_status' => 'ORDER_STATUS_awaiting_payment');
+    $where = array(
+        'order_status' => 'ORDER_STATUS_awaiting_payment',
+    );
+    if ($purchase_through !== null) {
+        $where['purchase_through'] = $purchase_through;
+    }
     if (is_guest()) {
         $where['session_id'] = get_session_id();
     } else {
         $where['c_member'] = get_member();
     }
-    $orders = $GLOBALS['SITE_DB']->query_select('shopping_order', array('id'), $where);
+    $extra = ' AND add_date<' . strval(time() - 60 * 60 * 24 * 7); // If a week old, as otherwise a transaction may still come through
+    $orders = $GLOBALS['SITE_DB']->query_select('shopping_order', array('id', 'notes'), $where, $extra);
     foreach ($orders as $order) {
-        $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('order_id' => $order['id']));
-        $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $order['id']), '', 1);
+        if ($order['id'] !== $keep_order_id) {
+            if ($order['notes'] == '') {
+                $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('order_id' => $order['id']));
+                $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $order['id']), '', 1);
+            } else {
+                // Set to cancelled, as there are some notes on this order to be preserved
+                $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('order_status' => 'ORDER_STATUS_cancelled'), array('order_id' => $order['id']));
+                $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => 'ORDER_STATUS_cancelled'), array('id' => $order['id']), '', 1);
+            }
+        }
     }
 }
 
@@ -242,7 +259,7 @@ function render_cart_payment_form()
 {
     require_code('ecommerce');
 
-    $title = get_screen_title('PAYMENT_HEADING');
+    $title = get_screen_title('PAYMENT_HEADING', true, null, null, null, false);
 
     $cart_items = find_products_in_cart();
 
@@ -251,6 +268,8 @@ function render_cart_payment_form()
     $tax_opt_out = get_order_tax_opt_out_status();
 
     if (count($cart_items) > 0) {
+        // Create new order...
+
         $insert = array(
             'c_member' => get_member(),
             'session_id' => get_session_id(),
@@ -268,6 +287,10 @@ function render_cart_payment_form()
         }
 
         $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_order', $insert, true);
+
+        // Clear out any previous unpaid & empty cart orders...
+
+        delete_pending_orders_for_current_user($order_id, 'cart');
     } else {
         $order_id = null;
     }
@@ -332,7 +355,7 @@ function render_cart_payment_form()
                 'p_price' => $price,
                 'included_tax' => $tax,
                 'order_id' => $order_id,
-                'dispatch_status' => '',
+                'dispatch_status' => 'ORDER_STATUS_awaiting_payment',
             ),
             true
         );
