@@ -109,9 +109,10 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#99c7f8,hr,60% area_background + 40% seed}
 {$THEMEWIZARD_COLOR,#1b67b6,divider_line,76% seed + 24% BW}
 
-{$THEMEWIZARD_COLOR,#2388ef,button_background,100% seed}
-{$THEMEWIZARD_COLOR,#1e74cb,button_background_hover,85% button_background + 15% BW}
+{$THEMEWIZARD_COLOR,#ffffff,text_light,100% ffffff}
+{$THEMEWIZARD_COLOR,#212529,text_dark,100% 212529}
 
+{$THEMEWIZARD_COLOR,#2388ef,button_primary,100% seed}
 /* Borders */
 {$THEMEWIZARD_COLOR,#dddddd,standard_border,100% dddddd}
 {$THEMEWIZARD_COLOR,#9b9b9b,dark_border,70% standard_border + 30% BW}
@@ -991,12 +992,6 @@ input.input-username::-webkit-calendar-picker-indicator {
 	margin-left: auto;
 }
 
-.container::after {
-	display: block;
-	clear: both;
-	content: "";
-}
-
 .container-fluid {
 	width: 100%;
 	padding-right: 15px;
@@ -1005,10 +1000,41 @@ input.input-username::-webkit-calendar-picker-indicator {
 	margin-left: auto;
 }
 
-.container-fluid::after {
-	display: block;
-	clear: both;
-	content: "";
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	margin-right: -15px;
+	margin-left: -15px;
+}
+
+.no-gutters {
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.no-gutters > .col {
+	padding-right: 0;
+	padding-left: 0;
+}
+
+.col, .col-auto {
+	position: relative;
+	width: 100%;
+	min-height: 1px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+.col {
+	flex-basis: 0;
+	flex-grow: 1;
+	max-width: 100%;
+}
+
+.col-auto {
+	flex: 0 0 auto;
+	width: auto;
+	max-width: none;
 }
 
 #main-website #main-website-inner .global-middle-outer {
@@ -4830,47 +4856,48 @@ fieldset:disabled a.btn {
 }
 
 .btn-primary {
-	color: {$GET,WB};
-	background-color: {$GET,button_background};
-	border-color: {$GET,button_background};
+	color: {$GET,text_light};
+	background-color: {$GET,button_primary};
+	border-color: {$GET,button_primary};
 }
 
 .btn-primary:hover {
-	color: {$GET,WB};
-	background-color: {$GET,button_background_hover};
-	border-color: {$GET,button_background_hover};
+	color: {$GET,text_light};
+	background-color: {$COLOR_DARKEN,{$GET,button_primary},7.5%};
+	border-color: {$COLOR_DARKEN,{$GET,button_primary},10%};
 }
 
 .btn-primary:focus, .btn-primary.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,button_background},0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,button_primary},0.5};
 }
 
 .btn-primary.disabled, .btn-primary:disabled {
-	color: {$GET,WB};
-	background-color: {$GET,button_background};
-	border-color: {$GET,button_background};
+	color: {$GET,text_light};
+	background-color: {$GET,button_primary};
+	border-color: {$GET,button_primary};
 }
 
-.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active, .
+btn-primary:not(:disabled):not(.disabled).active,
 .show > .btn-primary.dropdown-toggle {
-	color: {$GET,WB};
-	background-color: #0062cc;
-	border-color: #005cbf;
+	color: {$GET,text_light};
+	background-color: {$COLOR_DARKEN,{$GET,button_primary},10%};
+	border-color: {$COLOR_DARKEN,{$GET,button_primary},12.5%};
 }
 
 .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
 .show > .btn-primary.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,button_background},0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,button_primary},0.5};
 }
 
 .btn-secondary {
-	color: {$GET,WB};
+	color: {$GET,text_light};
 	background-color: #6c757d;
 	border-color: #6c757d;
 }
 
 .btn-secondary:hover {
-	color: {$GET,WB};
+	color: {$GET,text_light};
 	background-color: #5a6268;
 	border-color: #545b62;
 }
@@ -4880,14 +4907,15 @@ fieldset:disabled a.btn {
 }
 
 .btn-secondary.disabled, .btn-secondary:disabled {
-	color: {$GET,WB};
+	color: {$GET,text_light};
 	background-color: #6c757d;
 	border-color: #6c757d;
 }
 
-.btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,
+.btn-secondary:not(:disabled):not(.disabled):active, 
+.btn-secondary:not(:disabled):not(.disabled).active,
 .show > .btn-secondary.dropdown-toggle {
-	color: {$GET,WB};
+	color: {$GET,text_light};
 	background-color: #545b62;
 	border-color: #4e555b;
 }
@@ -4899,25 +4927,25 @@ fieldset:disabled a.btn {
 }
 
 .btn-alternate {
-	color: {$GET,WB};
+	color: {$GET,text_light};
 	background-color: {$GET,seed_alternate};
 	border-color: {$GET,seed_alternate};
 }
 
 .btn-alternate:hover {
-	color: {$GET,WB};
-	background-color: #d97400;
-	border-color: #cc6e00;
+	color: {$GET,text_light};
+	background-color: {$COLOR_DARKEN,{$GET,seed_alternate},7.5%};
+	border-color: {$COLOR_DARKEN,{$GET,seed_alternate},10%};
 }
 
 .btn-alternate:focus, 
 .btn-alternate.focus {
-	box-shadow: 0 0 0 3px rgba(255, 137, 0, 0.5);
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed_alternate},0.5};
 }
 
 .btn-alternate.disabled, 
 .btn-alternate:disabled {
-	color: {$GET,WB};
+	color: {$GET,text_light};
 	background-color: {$GET,seed_alternate};
 	border-color: {$GET,seed_alternate};
 }
@@ -4925,15 +4953,15 @@ fieldset:disabled a.btn {
 .btn-alternate:not(:disabled):not(.disabled):active, 
 .btn-alternate:not(:disabled):not(.disabled).active, 
 .show > .btn-alternate.dropdown-toggle {
-	color: {$GET,WB};
-	background-color: #cc6e00;
-	border-color: #bf6700;
+	color: {$GET,text_light};
+	background-color: {$COLOR_DARKEN,{$GET,seed_alternate},10%};
+	border-color: {$COLOR_DARKEN,{$GET,seed_alternate},12.5%};
 }
 
 .btn-alternate:not(:disabled):not(.disabled):active:focus, 
 .btn-alternate:not(:disabled):not(.disabled).active:focus, 
 .show > .btn-alternate.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px rgba(255, 137, 0, 0.5);
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed_alternate},0.5};
 }
 
 .btn-success {
@@ -5465,6 +5493,16 @@ input[type="button"].btn-block {
 	width: 100%;
 }
 
+.btn-row {
+	display: flex;
+	margin: 0 -10px;
+	justify-content: space-between;
+}
+
+.btn-row .btn {
+	margin: 0 10px;
+	flex-grow: 1;
+}
 
 .fade {
 	transition: opacity 0.15s linear;

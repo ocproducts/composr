@@ -416,3 +416,110 @@ function _search_img_file($theme, $lang, $id, $dir = 'images')
     }
     return null;
 }
+
+/**
+ * Converts an RGB color value to HSL. Conversion formula adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Inspired by https://stackoverflow.com/a/9493060/362006
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and l in the set [0, 1].
+ *
+ * @param  string $red Red colour (0-255)
+ * @param  string $green Green colour (0-255)
+ * @param  string $blue Blue colour (0-255)
+ * @return array Triplet of components: H, S, L (0.0-1.0)
+ */
+function rgb_to_hsl($red, $green, $blue)
+{
+    $red = $red / 255.0;
+    $green = $green / 255.0;
+    $blue = $blue / 255.0;
+
+    $max = max($red, $green, $blue);
+    $min = min($red, $green, $blue);
+
+    $hue = 0.0;
+    $sat = 0.0;
+    $lht = ($max + $min) / 2;
+
+    if ($max === $min) {
+        $hue = $sat = 0; // achromatic
+    } else {
+        $diff = $max - $min;
+        $sat = $lht > 0.5 ? $diff / (2 - $max - $min) : $diff / ($max + $min);
+
+        switch ($max) {
+            case $red:
+                $hue = ($green - $blue) / $diff + ($green < $blue ? 6 : 0);
+                break;
+            case $green:
+                $hue = ($blue - $red) / $diff + 2;
+                break;
+            case $blue:
+                $hue = ($red - $green) / $diff + 4;
+                break;
+        }
+
+        $hue /= 6;
+    }
+
+    return array($hue, $sat, $lht);
+}
+
+/**
+ * @param $p
+ * @param $q
+ * @param $t
+ * @return float
+ */
+function hue_to_rgb($p, $q, $t) {
+    if($t < 0) {
+        $t += 1;
+    }
+
+    if($t > 1) {
+        $t -= 1;
+    }
+
+    if($t < 1/6) {
+        return floatval($p + ($q - $p) * 6 * $t);
+    }
+
+    if($t < 1/2) {
+        return floatval($q);
+    }
+
+    if($t < 2/3) {
+        return floatval($p + ($q - $p) * (2/3 - $t) * 6);
+    }
+
+    return floatval($p);
+}
+
+
+/**
+ * Converts an HSL color value to RGB. Conversion formula adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Inspired by https://stackoverflow.com/a/9493060/362006
+ * Assumes h, s, and l are contained in the set [0, 1] and
+ * returns r, g, and b in the set [0, 255].
+ *
+ * @param  float $hue (0.0-0.1)
+ * @param  float $sat (0.0-0.1)
+ * @param  float $lht (0.0-0.1)
+ * @return array Triplet of components: R, G, B (0-255)
+ */
+function hsl_to_rgb($hue, $sat, $lht)
+{
+    if($sat == 0){
+        $r = $g = $b = $lht; // achromatic
+    }else{
+        $q = $lht < 0.5 ? $lht * (1 + $sat) : $lht + $sat - $lht * $sat;
+        $p = 2 * $lht - $q;
+        $r = hue_to_rgb($p, $q, $hue + 1/3);
+        $g = hue_to_rgb($p, $q, $hue);
+        $b = hue_to_rgb($p, $q, $hue - 1/3);
+    }
+
+    return [round($r * 255), round($g * 255), round($b * 255)];
+}
+
+

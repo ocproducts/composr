@@ -39,27 +39,31 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				{$,Main menu}
 				<div class="global-navigation">
 					<div class="global-navigation-inner container">
-						{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type=dropdown}
-						
-						{$,Login form for guests}
-						{+START,IF,{$IS_GUEST}}{+START,IF,{$CONFIG_OPTION,block_top_login}}
-							<div class="top-form top-login">
-								{$BLOCK,block=top_login}
-							</div>
-						{+END}{+END}
+						<div class="row">
+							<div class="col">
+								{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type=dropdown}
 
-						{+START,IF,{$NOT,{$IS_GUEST}}}{+START,IF,{$OR,{$CONFIG_OPTION,block_top_notifications},{$CONFIG_OPTION,block_top_personal_stats}}}
-							<div class="top-buttons">
-								{+START,IF,{$CONFIG_OPTION,block_top_notifications}}{$BLOCK,block=top_notifications}{+END}
+								{$,Login form for guests}
+								{+START,IF,{$IS_GUEST}}{+START,IF,{$CONFIG_OPTION,block_top_login}}
+								<div class="top-form top-login">
+									{$BLOCK,block=top_login}
+								</div>
+								{+END}{+END}
 
-								{+START,IF,{$CONFIG_OPTION,block_top_personal_stats}}{$BLOCK,block=top_personal_stats}{+END}
+								{+START,IF,{$NOT,{$IS_GUEST}}}{+START,IF,{$OR,{$CONFIG_OPTION,block_top_notifications},{$CONFIG_OPTION,block_top_personal_stats}}}
+								<div class="top-buttons">
+									{+START,IF,{$CONFIG_OPTION,block_top_notifications}}{$BLOCK,block=top_notifications}{+END}
 
-								{$,Search box for logged in users [could show to guests, except space is lacking]}
-								{+START,IF,{$AND,{$ADDON_INSTALLED,search},{$DESKTOP},{$NOT,{$IS_GUEST}}}}{+START,IF,{$CONFIG_OPTION,block_top_search,1}} 
+									{+START,IF,{$CONFIG_OPTION,block_top_personal_stats}}{$BLOCK,block=top_personal_stats}{+END}
+
+									{$,Search box for logged in users [could show to guests, except space is lacking]}
+									{+START,IF,{$AND,{$ADDON_INSTALLED,search},{$DESKTOP},{$NOT,{$IS_GUEST}}}}{+START,IF,{$CONFIG_OPTION,block_top_search,1}}
 									{$BLOCK,block=top_search,block_id=desktop,failsafe=1,limit_to={$?,{$MATCH_KEY_MATCH,forum:_WILD},cns_posts,all_defaults}}
+									{+END}{+END}
+								</div>
 								{+END}{+END}
 							</div>
-						{+END}{+END}
+						</div>
 					</div>
 				</div>
 			</header>
