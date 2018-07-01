@@ -246,29 +246,30 @@
 		</div></section>
 
 		<div class="box box---w-main-screen" data-toggleable-tray="{}">
-			<h2 class="toggleable-tray-title js-tray-header">
-				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ACTIONS}</a>
-				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
-					{+START,INCLUDE,ICON}
+			<div class="box-inner">
+				<h2 class="toggleable-tray-title js-tray-header">
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ACTIONS}</a>
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
+						{+START,INCLUDE,ICON}
 						NAME=trays/expand
 						ICON_SIZE=24
-					{+END}
-				</a>
-			</h2>
+						{+END}
+					</a>
+				</h2>
 
-			<div class="toggleable-tray js-tray-content" style="{HIDE_ACTIONS*}"{+START,IF,{HIDE_ACTIONS}} aria-expanded="false"{+END}>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
+				<div class="toggleable-tray js-tray-content" style="{HIDE_ACTIONS*}"{+START,IF,{HIDE_ACTIONS}} aria-expanded="false"{+END}>
+					<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
+						{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned-table results-table wide-table autosized-table">
-						<colgroup>
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-						</colgroup>
-						<thead>
+						<table class="columned-table results-table wide-table autosized-table">
+							<colgroup>
+								<col style="width: 20%" />
+								<col style="width: 20%" />
+								<col style="width: 20%" />
+								<col style="width: 20%" />
+								<col style="width: 20%" />
+							</colgroup>
+							<thead>
 							<tr class="buildr-posttop">
 								<th>
 									{!ACTION}
@@ -286,8 +287,8 @@
 									{!PROCEED}
 								</th>
 							</tr>
-						</thead>
-						{+START,IF_NON_EMPTY,{ITEMS_HELD}}
+							</thead>
+							{+START,IF_NON_EMPTY,{ITEMS_HELD}}
 							<tr>
 								<td>
 									{!W_DROP}
@@ -382,28 +383,28 @@
 									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 								</td>
 							</tr>
-						{+END}
+							{+END}
 
-						<tr>
-							<td>
-								{!W_FIND_PERSON}
-							</td>
-							<td>
-								{PEOPLE}
-							</td>
-							<td>
-								{!NA}
-							</td>
-							<td>
-								<input type="text" size="20" name="param" class="form-control form-control-inline" />
-							</td>
-							<td>
-								<input type="hidden" name="type" value="findperson" />
-								<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
-							</td>
-						</tr>
+							<tr>
+								<td>
+									{!W_FIND_PERSON}
+								</td>
+								<td>
+									{PEOPLE}
+								</td>
+								<td>
+									{!NA}
+								</td>
+								<td>
+									<input type="text" size="20" name="param" class="form-control form-control-inline" />
+								</td>
+								<td>
+									<input type="hidden" name="type" value="findperson" />
+									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+								</td>
+							</tr>
 
-						{+START,IF,{IS_STAFF}}
+							{+START,IF,{IS_STAFF}}
 							<tr>
 								<td>
 									{!W_TELEPORT_PERSON}
@@ -536,42 +537,45 @@
 									<button class="btn btn-primary btn-scri buttons--proceed" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
 								</td>
 							</tr>
-						{+END}
-					</table>
-				</form>
+							{+END}
+						</table>
+					</form>
+				</div>
 			</div>
 		</div>
 
 		{+START,IF,{MAY_DO_STUFF}}
 			<div class="box box---w-main-screen" data-toggleable-tray="{}">
-				<h2 class="toggleable-tray-title js-tray-header">
-					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ADDITIONS}</a>
-					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
-						{+START,INCLUDE,ICON}
+				<div class="box-inner">
+					<h2 class="toggleable-tray-title js-tray-header">
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_ADDITIONS}</a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
+							{+START,INCLUDE,ICON}
 							NAME=trays/expand
 							ICON_SIZE=24
-						{+END}
-					</a>
-				</h2>
+							{+END}
+						</a>
+					</h2>
 
-				<div class="toggleable-tray js-tray-content" style="{HIDE_ADDITIONS*}"{+START,IF,{HIDE_ADDITIONS}} aria-expanded="false"{+END}>
-					<div class="clearfix buildr-icons-wrap">
-						<div class="buildr-icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
-							<a href="{$PAGE_LINK*,_SELF:_SELF:addrealm}"><img alt="{!W_ADD_REALM}" width="68" height="68" src="{$IMG*,buildr/realms}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addrealm}">{!W_ADD_REALM}</a>
-						</div>
-						<div class="buildr-icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
-							<a href="{$PAGE_LINK*,_SELF:_SELF:addroom}"><img alt="{!W_ADD_ADJOINING_ROOM}" width="68" height="68" src="{$IMG*,buildr/addroom}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addroom}">{!W_ADD_ADJOINING_ROOM}</a>
-						</div>
-						{+START,IF,{MAY_ADD_PORTAL}}
+					<div class="toggleable-tray js-tray-content" style="{HIDE_ADDITIONS*}"{+START,IF,{HIDE_ADDITIONS}} aria-expanded="false"{+END}>
+						<div class="clearfix buildr-icons-wrap">
+							<div class="buildr-icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
+								<a href="{$PAGE_LINK*,_SELF:_SELF:addrealm}"><img alt="{!W_ADD_REALM}" width="68" height="68" src="{$IMG*,buildr/realms}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addrealm}">{!W_ADD_REALM}</a>
+							</div>
+							<div class="buildr-icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
+								<a href="{$PAGE_LINK*,_SELF:_SELF:addroom}"><img alt="{!W_ADD_ADJOINING_ROOM}" width="68" height="68" src="{$IMG*,buildr/addroom}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addroom}">{!W_ADD_ADJOINING_ROOM}</a>
+							</div>
+							{+START,IF,{MAY_ADD_PORTAL}}
 							<div class="buildr-icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
 								<a href="{$PAGE_LINK*,_SELF:_SELF:addportal}"><img alt="{!W_ADD_PORTAL}" width="68" height="68" src="{$IMG*,buildr/addportal}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addportal}">{!W_ADD_PORTAL}</a>
 							</div>
-						{+END}
-						<div class="buildr-icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
-							<a href="{$PAGE_LINK*,_SELF:_SELF:additem}"><img alt="{!W_ADD_ITEM}" width="68" height="68" src="{$IMG*,buildr/additem}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:additem}">{!W_ADD_ITEM}</a>
-						</div>
-						<div class="buildr-icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
-							<a href="{$PAGE_LINK*,_SELF:_SELF:additemcopy}"><img alt="{!W_ADD_ITEM_COPY}" width="68" height="68" src="{$IMG*,buildr/additemcopy}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:additemcopy}">{!W_ADD_ITEM_COPY}</a>
+							{+END}
+							<div class="buildr-icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
+								<a href="{$PAGE_LINK*,_SELF:_SELF:additem}"><img alt="{!W_ADD_ITEM}" width="68" height="68" src="{$IMG*,buildr/additem}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:additem}">{!W_ADD_ITEM}</a>
+							</div>
+							<div class="buildr-icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
+								<a href="{$PAGE_LINK*,_SELF:_SELF:additemcopy}"><img alt="{!W_ADD_ITEM_COPY}" width="68" height="68" src="{$IMG*,buildr/additemcopy}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:additemcopy}">{!W_ADD_ITEM_COPY}</a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -579,18 +583,19 @@
 		{+END}
 
 		<div class="box box---w-main-screen" data-toggleable-tray="{}">
-			<h2 class="toggleable-tray-title js-tray-header">
-				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_MODIFICATIONS}</a>
-				<a class="js-click-set-hidemod-cookie toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
-					{+START,INCLUDE,ICON}
+			<div class="box-inner">
+				<h2 class="toggleable-tray-title js-tray-header">
+					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_MODIFICATIONS}</a>
+					<a class="js-click-set-hidemod-cookie toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
+						{+START,INCLUDE,ICON}
 						NAME=trays/expand
 						ICON_SIZE=24
-					{+END}
-				</a>
-			</h2>
+						{+END}
+					</a>
+				</h2>
 
-			<div class="toggleable-tray js-tray-content" style="{HIDE_MODIFICATIONS*}"{+START,IF,{HIDE_MODIFICATIONS}} aria-expanded="false"{+END}>
-				{+START,IF_NON_EMPTY,{ITEMS_OWNED}}
+				<div class="toggleable-tray js-tray-content" style="{HIDE_MODIFICATIONS*}"{+START,IF,{HIDE_MODIFICATIONS}} aria-expanded="false"{+END}>
+					{+START,IF_NON_EMPTY,{ITEMS_OWNED}}
 					<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off"><div>
 						{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -600,35 +605,36 @@
 					</div></form>
 
 					{+START,IF,{IS_STAFF}}
-						<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off"><div>
-							{$INSERT_SPAMMER_BLACKHOLE}
+					<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off"><div>
+						{$INSERT_SPAMMER_BLACKHOLE}
 
-							<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <button class="btn btn-primary btn-scri admin--merge" type="submit">{!W_MERGE_ITEMS}</button>
-						</div></form>
+						<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <button class="btn btn-primary btn-scri admin--merge" type="submit">{!W_MERGE_ITEMS}</button>
+					</div></form>
 					{+END}
-				{+END}
+					{+END}
 
-				{+START,IF,{$OR,{$IS_NON_EMPTY,{IS_ROOM_OWNER}},{$IS_NON_EMPTY,{IS_REALM_OWNER}}}}
+					{+START,IF,{$OR,{$IS_NON_EMPTY,{IS_ROOM_OWNER}},{$IS_NON_EMPTY,{IS_REALM_OWNER}}}}
 					<br />
 					<div class="clearfix buildr-icons-wrap">
 						{+START,IF,{IS_ROOM_OWNER}}
-							<div class="buildr-icon" style="width: {$?,{IS_REALM_OWNER},25%,50%};">
-								<a href="{$PAGE_LINK*,_SELF:_SELF:editroom}"><img alt="{!W_EDIT_ROOM}" width="68" height="68" src="{$IMG*,buildr/addroom}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:editroom}">{!W_EDIT_ROOM}</a>
-							</div>
-							<div class="buildr-icon" style="width: {$?,{IS_REALM_OWNER},25%,50%};">
-								<a href="{$PAGE_LINK*,_SELF:_SELF:confirm:btype=deleteroom}"><img alt="{!W_DELETE_ROOM}" width="68" height="68" src="{$IMG*,buildr/delroom}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:deleteroom}">{!W_DELETE_ROOM}</a>
-							</div>
+						<div class="buildr-icon" style="width: {$?,{IS_REALM_OWNER},25%,50%};">
+							<a href="{$PAGE_LINK*,_SELF:_SELF:editroom}"><img alt="{!W_EDIT_ROOM}" width="68" height="68" src="{$IMG*,buildr/addroom}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:editroom}">{!W_EDIT_ROOM}</a>
+						</div>
+						<div class="buildr-icon" style="width: {$?,{IS_REALM_OWNER},25%,50%};">
+							<a href="{$PAGE_LINK*,_SELF:_SELF:confirm:btype=deleteroom}"><img alt="{!W_DELETE_ROOM}" width="68" height="68" src="{$IMG*,buildr/delroom}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:deleteroom}">{!W_DELETE_ROOM}</a>
+						</div>
 						{+END}
 						{+START,IF,{IS_REALM_OWNER}}
-							<div class="buildr-icon" style="width: {$?,{IS_ROOM_OWNER},25%,50%};">
-								<a href="{$PAGE_LINK*,_SELF:_SELF:editrealm}"><img alt="{!W_EDIT_REALM}" width="68" height="68" src="{$IMG*,buildr/realms}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:editrealm}">{!W_EDIT_REALM}</a>
-							</div>
-							<div class="buildr-icon" style="width: {$?,{IS_ROOM_OWNER},25%,50%};">
-								<a href="{$PAGE_LINK*,_SELF:_SELF:confirm:btype=deleterealm}"><img alt="{!W_DELETE_REALM}" width="68" height="68" src="{$IMG*,buildr/delrealm}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:deleterealm}">{!W_DELETE_REALM}</a>
-							</div>
+						<div class="buildr-icon" style="width: {$?,{IS_ROOM_OWNER},25%,50%};">
+							<a href="{$PAGE_LINK*,_SELF:_SELF:editrealm}"><img alt="{!W_EDIT_REALM}" width="68" height="68" src="{$IMG*,buildr/realms}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:editrealm}">{!W_EDIT_REALM}</a>
+						</div>
+						<div class="buildr-icon" style="width: {$?,{IS_ROOM_OWNER},25%,50%};">
+							<a href="{$PAGE_LINK*,_SELF:_SELF:confirm:btype=deleterealm}"><img alt="{!W_DELETE_REALM}" width="68" height="68" src="{$IMG*,buildr/delrealm}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:deleterealm}">{!W_DELETE_REALM}</a>
+						</div>
 						{+END}
 					</div>
-				{+END}
+					{+END}
+				</div>
 			</div>
 		</div>
 	</div>

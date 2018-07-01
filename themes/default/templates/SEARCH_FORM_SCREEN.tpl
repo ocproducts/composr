@@ -24,6 +24,7 @@
 
 	{+START,IF_PASSED,RESULTS}
 	<div class="box" data-toggleable-tray="{}">
+	<div class="box-inner">
 	{+END}
 		{+START,IF_PASSED,RESULTS}
 			<h2 class="toggleable-tray-title js-tray-header">
@@ -205,6 +206,7 @@
 			</form>
 		</div>
 	{+START,IF_PASSED,RESULTS}
+	</div>
 	</div>
 	{+END}
 </div>

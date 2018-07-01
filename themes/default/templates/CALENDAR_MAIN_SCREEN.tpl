@@ -62,19 +62,20 @@
 {+END}
 
 <div class="box box---calendar-main-screen-interests" data-toggleable-tray="{}">
-	<h2 class="toggleable-tray-title js-tray-header">
-		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
-			{+START,INCLUDE,ICON}
+	<div class="box-inner">
+		<h2 class="toggleable-tray-title js-tray-header">
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
+				{+START,INCLUDE,ICON}
 				NAME=trays/expand
 				ICON_SIZE=24
-			{+END}
-		</a>
-		<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!INTERESTS}</a>
-	</h2>
+				{+END}
+			</a>
+			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!INTERESTS}</a>
+		</h2>
 
-	<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
-		<div class="clearfix">
-			{+START,IF_NON_EMPTY,{EVENT_TYPES_1}}
+		<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
+			<div class="clearfix">
+				{+START,IF_NON_EMPTY,{EVENT_TYPES_1}}
 				<div class="right event-interest-box"><section class="box"><div class="box-inner">
 					<form title="{!INTERESTS}" method="post" action="{INTERESTS_URL*}" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
@@ -90,8 +91,8 @@
 						</p>
 					</form>
 				</div></section></div>
-			{+END}
-			{+START,IF_NON_EMPTY,{EVENT_TYPES_2}}
+				{+END}
+				{+START,IF_NON_EMPTY,{EVENT_TYPES_2}}
 				<div class="left event-interest-box"><section class="box"><div class="box-inner">
 					<form title="{!FILTER}" action="{$URL_FOR_GET_FORM*,{FILTER_URL}}" method="get" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
@@ -109,7 +110,8 @@
 						</p>
 					</form>
 				</div></section></div>
-			{+END}
+				{+END}
+			</div>
 		</div>
 	</div>
 </div>
@@ -117,18 +119,20 @@
 {$, Commented out... bloat
 {+START,IF,{$ADDON_INSTALLED,syndication_blocks}}
 	<div class="box box---calendar-main-screen-feeds-to-overlay" data-toggleable-tray="{}">
-		<h2 class="toggleable-tray-title js-tray-header">
-			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
-				{+START,INCLUDE,ICON}
+		<div class="box-inner">
+			<h2 class="toggleable-tray-title js-tray-header">
+				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
+					{+START,INCLUDE,ICON}
 					NAME=trays/expand
 					ICON_SIZE=24
-				{+END}
-			</a>
-			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!FEEDS_TO_OVERLAY}</a>
-		</h2>
+					{+END}
+				</a>
+				<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!FEEDS_TO_OVERLAY}</a>
+			</h2>
 
-		<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
-			{RSS_FORM}
+			<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
+				{RSS_FORM}
+			</div>
 		</div>
 	</div>
 {+END}

@@ -13,7 +13,7 @@
 
 		<p class="accessibility-hidden"><label for="baddress">{!EMAIL_ADDRESS}</label></p>
 
-		<div>
+		<div class="form-group">
 			<input class="form-control" id="baddress" name="address{NID*}" placeholder="{!EMAIL_ADDRESS}" />
 		</div>
 

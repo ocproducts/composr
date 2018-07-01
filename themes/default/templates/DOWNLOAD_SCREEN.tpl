@@ -11,39 +11,40 @@
 		<div class="download-metadata">
 			<div class="download-now-wrapper">
 				<div class="box box---download-screen" data-toggleable-tray="{}">
-					{+START,IF_PASSED,LICENCE_HYPERLINK}
-					<p class="download-licence">
-						{!D_BEFORE_PROCEED_AGREE,{LICENCE_HYPERLINK}}
-					</p>
+					<div class="box-inner">
+						{+START,IF_PASSED,LICENCE_HYPERLINK}
+						<p class="download-licence">
+							{!D_BEFORE_PROCEED_AGREE,{LICENCE_HYPERLINK}}
+						</p>
 
-					<div class="toggleable-tray-title js-tray-header">
-						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
-							{+START,INCLUDE,ICON}
+						<div class="toggleable-tray-title js-tray-header">
+							<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
+								{+START,INCLUDE,ICON}
 								NAME=trays/expand
 								ICON_SIZE=24
-							{+END}
-						</a>
-						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!I_AGREE}</a>
-					</div>
-
-					<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
-					{+END}
-					{+START,IF_NON_PASSED,LICENCE_HYPERLINK}
-					<div class="box-inner">
-					{+END}
-						<div class="download-now" itemprop="significantLinks">
-							{+START,INCLUDE,ICON}
-								NAME=menu/rich_content/downloads
-							   ICON_SIZE=24
-							{+END} 
-							{+START,IF,{MAY_DOWNLOAD}}
-								<p class="download-link associated-link suggested-link"><a {+START,IF,{$NOT,{$INLINE_STATS}}} data-click-ga-track="{ category: '{!DOWNLOAD;^*}', action: '{ORIGINAL_FILENAME;^*}' }"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
-							{+END}
-							{+START,IF,{$NOT,{MAY_DOWNLOAD}}}
-								<p>{!NO_DOWNLOAD_ACCESS}</p>
-							{+END}
-							<p class="download-filesize">({FILE_SIZE*})</p>
+								{+END}
+							</a>
+							<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!I_AGREE}</a>
 						</div>
+
+						<div class="toggleable-tray js-tray-content" style="display: none" aria-expanded="false">
+						{+END}
+							<div class="download-now" itemprop="significantLinks">
+								{+START,INCLUDE,ICON}
+								NAME=menu/rich_content/downloads
+								ICON_SIZE=24
+								{+END}
+								{+START,IF,{MAY_DOWNLOAD}}
+								<p class="download-link associated-link suggested-link"><a {+START,IF,{$NOT,{$INLINE_STATS}}} data-click-ga-track="{ category: '{!DOWNLOAD;^*}', action: '{ORIGINAL_FILENAME;^*}' }"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
+								{+END}
+								{+START,IF,{$NOT,{MAY_DOWNLOAD}}}
+								<p>{!NO_DOWNLOAD_ACCESS}</p>
+								{+END}
+								<p class="download-filesize">({FILE_SIZE*})</p>
+							</div>
+						{+START,IF_PASSED,LICENCE_HYPERLINK}
+						</div>
+						{+END}
 					</div>
 				</div>
 			</div>

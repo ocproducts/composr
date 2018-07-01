@@ -93,29 +93,31 @@
 			</form>
 
 			<div class="box box---menu-editor-screen" data-toggleable-tray="{}">
-				<h2 class="toggleable-tray-title">
-					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
-						{+START,INCLUDE,ICON}
+				<div class="box-inner">
+					<h2 class="toggleable-tray-title">
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
+							{+START,INCLUDE,ICON}
 							NAME=trays/expand
 							ICON_SIZE=24
-						{+END}
-					</a>
-					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!DELETE_MENU}</a>
-				</h2>
+							{+END}
+						</a>
+						<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!DELETE_MENU}</a>
+					</h2>
 
-				<div class="toggleable-tray js-tray-content" id="delete-menu" style="display: none" aria-expanded="false">
-					<p>{!ABOUT_DELETE_MENU}</p>
+					<div class="toggleable-tray js-tray-content" id="delete-menu" style="display: none" aria-expanded="false">
+						<p>{!ABOUT_DELETE_MENU}</p>
 
-					<form title="{!DELETE}" action="{DELETE_URL*}" method="post" autocomplete="off">
-						{$INSERT_SPAMMER_BLACKHOLE}
+						<form title="{!DELETE}" action="{DELETE_URL*}" method="post" autocomplete="off">
+							{$INSERT_SPAMMER_BLACKHOLE}
 
-						<p class="proceed-button">
-							<input type="hidden" name="confirm" value="1" />
-							<input type="hidden" name="delete_confirm" value="1" />
+							<p class="proceed-button">
+								<input type="hidden" name="confirm" value="1" />
+								<input type="hidden" name="delete_confirm" value="1" />
 
-							<button class="btn btn-primary btn-scri admin--delete3" type="submit" data-cms-confirm-click="{!CONFIRM_DELETE*,{MENU_NAME}}">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</button>
-						</p>
-					</form>
+								<button class="btn btn-primary btn-scri admin--delete3" type="submit" data-cms-confirm-click="{!CONFIRM_DELETE*,{MENU_NAME}}">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</button>
+							</p>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

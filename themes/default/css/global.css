@@ -2158,8 +2158,7 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	color: inherit;
 }
 
-.box>.box-inner, 
-.box>.toggleable-tray {
+.box>.box-inner  {
 	margin: 10px 15px; /* not em so that header may be positioned properly */
 }
 .boxless-space .box>.box-inner, .boxless-space .box>.toggleable-tray {
@@ -2186,13 +2185,13 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	text-align: center;
 	font-weight: bold;
 	text-decoration: none;
-	font-size: 1em;
+	font-size: 1.1em;
 	border: 0;
 	letter-spacing: 0;
 
 	/* .box-inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
 	margin: -11px -16px 0 -16px;
-	padding: 0.4em 0.8em 0.4em 0.3em;
+	padding: 0.7em 0.8em 0.7em 0.3em;
 }
 .box-inner>h1 + *, 
 .box-inner>h2 + *, 
