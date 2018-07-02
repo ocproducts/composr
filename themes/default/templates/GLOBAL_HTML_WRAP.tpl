@@ -21,21 +21,30 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
 				<a accesskey="s" class="accessibility-hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
 
-				{$,The banner}
-				{+START,IF,{$DESKTOP}}
-					{$SET-,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner twice}
-					{+START,IF_NON_EMPTY,{$GET,BANNER}}
-						<div class="global-banner block-desktop">{$GET,BANNER}</div>
-					{+END}
-				{+END}
+				<div class="global-header-top container">
+					<div class="row">
+						<div class="col col-logo">
+							{$,The main logo}
+							<h1 class="logo-outer">
+								<a target="_self" href="{$PAGE_LINK*,:}" rel="home" title="{!HOME}" class="logo">
+									{$SITE_NAME*}
+									<!--<img class="logo" src="{$LOGO_URL*}" alt="{$SITE_NAME*}" />-->
+								</a>
+							</h1>
+						</div>
 
-				{$,The main logo}
-				<h1 class="logo-outer container">
-					<a target="_self" href="{$PAGE_LINK*,:}" rel="home">
-						<img class="logo" src="{$LOGO_URL*}" title="{!HOME}" alt="{$SITE_NAME*}" />
-					</a>
-				</h1>
-
+						<div class="col col-banner">
+							{$,The banner}
+							{+START,IF,{$DESKTOP}}
+							{$SET-,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner twice}
+							{+START,IF_NON_EMPTY,{$GET,BANNER}}
+							<div class="global-banner block-desktop">{$GET,BANNER}</div>
+							{+END}
+							{+END}
+						</div>
+					</div>
+				</div>
+				
 				{$,Main menu}
 				<div class="global-navigation">
 					<div class="global-navigation-inner container">

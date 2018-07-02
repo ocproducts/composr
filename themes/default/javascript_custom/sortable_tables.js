@@ -4,6 +4,13 @@
     $cms.templates.sortableTable = function sortableTable(params, container) {
         $dom.on(container, 'change', '.js-change-sortable-table-filter', function (e, select) {
             SortableTable.filter(select, select);
+        });        
+        
+        $dom.on(container, 'keyup', '.js-keyup-sortable-table-filter-input', function (e, select) {
+            setTimeout(function() { 
+                var isSearchableSubstring = Number(select.dataset.tpSearchableSubstring);
+                SortableTable.filter(select, select, null, isSearchableSubstring);
+            }, 0);
         });
     };
 }(window.$cms));
@@ -1030,20 +1037,28 @@ var SortableTable = (function(){
             func.insert(cell,colValues);
           }
           else {
-            var sel = '<select onchange="SortableTable.filter(this,this)" onclick="SortableTable.cancelBubble(event)" class="'+table.AutoFilterClassName+'"><option value="">'+table.FilterAllLabel+'</option>';
+            var selId = 'select-' + Math.floor(Math.random() * 100000);
+            var sel = '<select id="' + selId + '" class="form-control form-control-sm form-control-inline js-change-sortable-table-filter '+table.AutoFilterClassName+'"><option value="">'+table.FilterAllLabel+'</option>';
             for (var i=0; i<colValues.length; i++) {
               if (colValues[i] != '')
                 sel += '<option value="'+colValues[i]+'">'+colValues[i]+'</option>';
             }
             sel += '</select>';
             cell.innerHTML += " "+sel;
+            document.getElementById(selId).onclick = function (event) {
+                SortableTable.cancelBubble(event);
+            };
           }
         }
       }
 
       if (hasClass(cell,table.SearchableClassName)) {
-        var sel = '<input placeholder="{!SEARCH;^}" type="text" onkeyup="var _this=this; setTimeout(function() { SortableTable.filter(_this,_this,null,'+(hasClass(cell,table.SearchableSubstringsClassName)?'true':'false')+'); },0);" onclick="SortableTable.cancelBubble(event)" class="'+table.AutoFilterClassName+'" />';
-        cell.innerHTML += " "+sel;
+          var inputId = 'input-' + Math.floor(Math.random() * 100000);
+          var sel = '<input id="' + inputId + '" placeholder="{!SEARCH;^}" type="text" class="form-control form-control-sm form-control-inline js-keyup-sortable-table-filter-input '+table.AutoFilterClassName+'" data-tp-searchable-substring="' + (cell.classList.contains(table.SearchableSubstringsClassName) ? 1 : 0) + '"/>';
+          cell.innerHTML += " "+sel;
+          document.getElementById(inputId).onclick = function (event) {
+              SortableTable.cancelBubble(event);
+          };
       }
     });
     if (val = classValue(t,table.FilteredRowcountPrefix)) {

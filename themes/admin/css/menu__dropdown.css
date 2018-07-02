@@ -51,6 +51,11 @@ For example:
 	height: 16px;
 }
 
+.menu-dropdown-item-popup {
+	border-bottom: 1px solid {$GET,standard_border};
+	background: {$GET,WB};
+}
+
 /*{+START,CSS_MODE,mobile}*/
 	.menu-dropdown-toggle-btn {
 		text-decoration: none;

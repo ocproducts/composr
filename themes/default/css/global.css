@@ -674,7 +674,7 @@ textarea, input, code {
 /*}*/
 
 h1, h2, h3 {
-	border-bottom: 1px solid {$GET,pale_border};
+	/*border-bottom: 1px solid {$GET,pale_border};*/
 }
 
 /* An iframe screen */
@@ -1071,16 +1071,16 @@ header h1 {
 	}
 /*{+END}*/
 
+.global-header-top {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.global-header-top .col-logo {
+	align-self: flex-end;
+}
+
 .global-banner {
-	text-align: center;
-	background: url('{$IMG;,banner_frame}') center top no-repeat;
-	background-size: 766px 100px;
-	position: relative;
-	/*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
-		top: -16px;
-	/*{+END}*/
-	padding-top: 5px;
-	padding-bottom: 3px;
 }
 
 .global-banner + .logo-outer {
@@ -1106,14 +1106,15 @@ header h1 {
 	overflow: hidden;
 }
 
-.logo-outer a, .logo-outer img {
-	display: block;
-}
-
 .logo-outer .logo {
-	width: 100%;
+	/*width: 100%;*/
 	height: auto;
 	padding: 0; /* Only needed because some external CSS may mess with the common name of ".logo" */
+}
+
+.logo-outer .logo,
+.logo-outer .logo:hover {
+	text-decoration: none;
 }
 
 .global-navigation {
@@ -1370,12 +1371,12 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 }
 
 .global-side-panel h2 {
-	border-bottom: 1px solid;
+	/*border-bottom: 1px solid;*/
 	text-transform: lowercase;
 	font-weight: normal;
-	width: 50%;
+	/*width: 50%;*/
 	padding-left: 10px;
-	margin-left: 10px;
+	/*margin-left: 10px;*/
 }
 
 .global-side-panel {
@@ -1487,7 +1488,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 
 .global-message .icon-status--notice {
 	float: left;
-	margin-right: 0.3em;
+	margin-right: 0.5em;
 }
 
 .global-message span, .global-message img {
@@ -2191,7 +2192,7 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 
 	/* .box-inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
 	margin: -11px -16px 0 -16px;
-	padding: 0.7em 0.8em 0.7em 0.3em;
+	padding: 0.6em 0.8em 0.6em 0.3em;
 }
 .box-inner>h1 + *, 
 .box-inner>h2 + *, 
@@ -3521,7 +3522,7 @@ div.ajax-loading, p.ajax-loading {
 /*{+END}*/
 
 .comments-sorting-box {
-	margin-top: 0.45em;
+
 }
 /*{+START,CSS_MODE,desktop}*/
 	.comments-sorting-box {
@@ -4375,7 +4376,7 @@ ul.buttons-group, ul.associated-links-block-group {
 }
 
 select.form-control:not([size]):not([multiple]) {
-	height: 33px;
+	height: 36px;
 }
 
 select.form-control:focus::-ms-value {
@@ -5494,12 +5495,12 @@ input[type="button"].btn-block {
 
 .btn-row {
 	display: flex;
-	margin: 0 -10px;
+	margin: 0 -7px;
 	justify-content: space-between;
 }
 
 .btn-row .btn {
-	margin: 0 10px;
+	margin: 0 7px;
 	flex-grow: 1;
 }
 
