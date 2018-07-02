@@ -38,8 +38,8 @@ function do_next_manager_hooked($title, $text, $type, $main_title = null)
     require_lang('menus');
 
     $hooks = find_all_hooks('systems', 'page_groupings');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/page_groupings/' . filter_naughty_harsh($hook));
+    foreach ($hooks as $hook => $hook_dir) {
+        require_code('hooks/systems/page_groupings/' . filter_naughty_harsh($hook), false, $hook_dir == 'sources_custom');
         $object = object_factory('Hook_page_groupings_' . filter_naughty_harsh($hook), true);
         if (is_null($object)) {
             continue;

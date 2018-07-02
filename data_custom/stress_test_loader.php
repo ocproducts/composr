@@ -559,7 +559,7 @@ function do_work()
             'p_quantity' => 1,
             'p_price' => '12.00',
             'order_id' => $order_id,
-            'dispatch_status' => '',
+            'dispatch_status' => 'ORDER_STATUS_awaiting_payment',
             'included_tax' => '1.00',
         ));
     }

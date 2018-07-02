@@ -87,7 +87,7 @@ class Block_main_awards
 
         require_code('content');
         $object = get_content_object($award_type_row['a_content_type']);
-        $info = $object->info();
+        $info = $object->info(null, true);
         if (is_null($info)) {
             return do_lang_tempcode('IMPOSSIBLE_TYPE_USED');
         }

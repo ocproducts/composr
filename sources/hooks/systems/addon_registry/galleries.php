@@ -113,6 +113,7 @@ class Hook_addon_registry_galleries
             'themes/default/images/icons/48x48/menu/cms/galleries/index.html',
             'themes/default/images/icons/24x24/buttons/slideshow.png',
             'themes/default/images/icons/48x48/buttons/slideshow.png',
+            'sources/hooks/systems/config_categories/gallery.php',
             'sources/hooks/systems/reorganise_uploads/galleries.php',
             'data/zencoder_receive.php',
             'sources/hooks/systems/notifications/gallery_entry.php',

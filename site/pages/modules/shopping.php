@@ -245,7 +245,7 @@ class Module_shopping
         }
 
         if ($type == 'order_det') {
-            breadcrumb_set_parents(array(array('_SELF:orders:browse', do_lang_tempcode('MY_ORDERS'))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:my_orders', do_lang_tempcode('MY_ORDERS'))));
 
             $id = get_param_integer('id');
             $this->title = get_screen_title('_MY_ORDER_DETAILS', true, array(escape_html($id)));
@@ -646,6 +646,8 @@ class Module_shopping
 
             return $this->wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '3857e761ab75f314f4960805bc76b936', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
         }
+
+        // Cancelled cart order...
 
         delete_pending_orders_for_current_user(); // Don't lock the stock unless they go back to the cart again
 

@@ -325,12 +325,16 @@ function init__global2()
     }
     require_code('users'); // Users are important due to permissions
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast caching for Guests
-        if (($STATIC_CACHE_ENABLED) && (cms_srv('REQUEST_METHOD') != 'POST')) {
+        if (($STATIC_CACHE_ENABLED) && (cms_srv('REQUEST_METHOD') != 'POST') && (empty($_SERVER['PHP_AUTH_USER']))) {
             if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (is_guest(null, true)) && (get_param_integer('keep_failover', null) !== 0)) {
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__GUEST);
             }
         }
+    }
+    if (get_param_integer('keep_debug_fs', 0) != 0) {
+        require_code('debug_fs');
+        enable_debug_fs();
     }
     $CACHE_TEMPLATES = has_caching_for('template');
     require_code('lang'); // So that we can do language stuff (e.g. errors). Note that even though we have included a lot so far, we can't really use any of it until lang is loaded. Lang isn't loaded earlier as it itself has a dependency on Tempcode.
@@ -514,8 +518,8 @@ function init__global2()
     if (!running_script('upgrader')) {
         // Startup hooks
         $startup_hooks = find_all_hooks('systems', 'startup');
-        foreach (array_keys($startup_hooks) as $hook) {
-            require_code('hooks/systems/startup/' . filter_naughty_harsh($hook));
+        foreach ($startup_hooks as $hook => $hook_dir) {
+            require_code('hooks/systems/startup/' . filter_naughty_harsh($hook), false, $hook_dir == 'sources_custom');
             $ob = object_factory('Hook_startup_' . filter_naughty_harsh($hook), true);
             if ($ob === null) {
                 continue;
@@ -645,6 +649,8 @@ function memory_tracking()
  */
 function prepare_for_known_ajax_response()
 {
+    header('X-Robots-Tag: noindex');
+
     header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
     header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
 

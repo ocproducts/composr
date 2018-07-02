@@ -133,7 +133,7 @@ if (is_writable(get_file_base() . '/themes/default/templates_cached/' . user_lan
 }
 
 // Set up some globals
-global $INSTALL_LANG, $VERSION_BEING_INSTALLED, $CHMOD_ARRAY, $USER_LANG_CACHED;
+global $INSTALL_LANG, $VERSION_BEING_INSTALLED, $USER_LANG_CACHED;
 $INSTALL_LANG = fallback_lang();
 if (array_key_exists('default_lang', $_GET)) {
     $INSTALL_LANG = $_GET['default_lang'];
@@ -164,7 +164,6 @@ $VERSION_BEING_INSTALLED = strval(cms_version());
 if ($minor != '') {
     $VERSION_BEING_INSTALLED .= (is_numeric($minor[0]) ? '.' : '-') . $minor;
 }
-$CHMOD_ARRAY = get_chmod_array($INSTALL_LANG);
 
 $password_prompt = new Tempcode();
 
@@ -302,6 +301,10 @@ function prepare_installer_url($url)
     if (get_param_integer('keep_quick_hybrid', 0) == 1) {
         $url .= '&keep_quick_hybrid=1';
     }
+    $kdfs = get_param_integer('keep_debug_fs', 0);
+    if ($kdfs != 0) {
+        $url .= '&keep_debug_fs=' . strval($kdfs);
+    }
     return $url;
 }
 
@@ -325,60 +328,59 @@ function step_1()
     $warnings = new Tempcode();
     global $DATADOTCMS_FILE;
     if (!@is_resource($DATADOTCMS_FILE)) { // Do an integrity check - missing corrupt files
-        if ((array_key_exists('skip_disk_checks', $_GET)) || (file_exists(get_file_base() . '/.git'))) {
+        $sdc = get_param_integer('skip_disk_checks', null);
+        if (($sdc === 1) || (($sdc !== 0) && (file_exists(get_file_base() . '/.git')))) {
             if (!file_exists(get_file_base() . '/.git')) {
                 $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('INSTALL_SLOW_SERVER'))));
             }
         } else {
             $files = @unserialize(file_get_contents(get_file_base() . '/data/files.dat'));
-            if (($files !== false) && (!file_exists(get_file_base() . '/.git'))) {
+            if ($files !== false) {
                 $missing = array();
                 $corrupt = array();
 
+                // Volatile files (see also list in make_release.php)
+                $skipped_files_may_be_missing = array_flip(array(
+                    'data_custom/errorlog.php',
+                    'data_custom/execute_temp.php',
+                    '_config.php',
+                    'data_custom/functions.dat',
+                    'data/files_previous.dat',
+                    'data/spelling/aspell/bin/aspell-15.dll',
+                    'data/spelling/aspell/bin/en-only.rws',
+                ));
+                $skipped_files_may_be_changed = array_flip(array(
+                    'themes/map.ini',
+                    'sources/version.php',
+                    'data/files.dat',
+                    'data/modules/admin_stats/IP_Country.txt',
+                ));
+
                 foreach ($files as $file => $file_info) {
-                    // Volatile files (see also list in make_release.php)
-                    if ($file == 'data_custom/errorlog.php') {
-                        continue;
-                    }
-                    if ($file == 'data_custom/execute_temp.php') {
-                        continue;
-                    }
-                    if ($file == '_config.php') {
-                        continue;
-                    }
-                    if ($file == 'themes/map.ini') {
-                        continue;
-                    }
-                    if ($file == 'sources/version.php') {
-                        continue;
-                    }
-                    if ($file == 'data_custom/functions.dat') {
-                        continue;
-                    }
-                    if ($file == 'data/files.dat') {
-                        continue;
-                    }
-                    if ($file == 'data/files_previous.dat') {
-                        continue;
-                    }
-                    if ($file == 'data/modules/admin_stats/IP_Country.txt') {
-                        continue;
-                    }
-                    if ($file == 'data/spelling/aspell/bin/aspell-15.dll') {
-                        continue;
-                    }
-                    if ($file == 'data/spelling/aspell/bin/en-only.rws') {
-                        continue;
-                    }
-                    if (substr($file, -4) == '.ttf') {
+                    if (isset($skipped_files_may_be_missing[$file])) {
                         continue;
                     }
 
-                    $contents = @file_get_contents(get_file_base() . '/' . $file);
                     if (!file_exists(get_file_base() . '/' . $file)) {
                         $missing[] = $file;
-                    } elseif (($contents !== false) && (sprintf('%u', crc32(preg_replace('#[\r\n\t ]#', '', $contents))) != $file_info[0])) {
-                        $corrupt[] = $file;
+                    } else {
+                        if (substr($file, -4) == '.ttf') {
+                            continue;
+                        }
+                        if (substr($file, -11) == '/index.html') { // These are always empty, no need to check
+                            continue;
+                        }
+                        if (isset($skipped_files_may_be_changed[$file])) {
+                            continue;
+                        }
+                        if (substr($file, -4) == '.php') { // There are so many files, we can't check all - and .php files will give an error when called if corrupt
+                            continue;
+                        }
+
+                        $contents = @strval(file_get_contents(get_file_base() . '/' . $file));
+                        if (sprintf('%u', crc32(preg_replace('#[\r\n\t ]#', '', $contents))) != $file_info[0]) {
+                            $corrupt[] = $file;
+                        }
                     }
                 }
 
@@ -457,7 +459,7 @@ function step_1()
 
             $files = get_dir_contents('lang/' . $lang);
             foreach (array_keys($files) as $file) {
-                if (substr($file, -4) == '.ini') {
+                if ((substr($file, -4) == '.ini') && (($lang == fallback_lang()) || (is_file(get_file_base() . '/lang/' . fallback_lang() . '/' . $file)))) {
                     $lang_count[$lang] += count(better_parse_ini_file(get_file_base() . '/lang/' . $lang . '/' . $file));
                 }
             }
@@ -472,7 +474,7 @@ function step_1()
 
             $files = get_dir_contents('lang_custom/' . $lang);
             foreach (array_keys($files) as $file) {
-                if (substr($file, -4) == '.ini') {
+                if ((substr($file, -4) == '.ini') && (is_file(get_file_base() . '/lang/' . fallback_lang() . '/' . $file))) {
                     $lang_count[$lang] += count(better_parse_ini_file(get_custom_file_base() . '/lang_custom/' . $lang . '/' . $file));
                 }
             }
@@ -1620,9 +1622,10 @@ function step_5_ftp()
         // If the file user is different to the FTP user, we need to make it world writeable
         if (!is_suexec_like()) {
             // Chmod
-            global $CHMOD_ARRAY;
             $no_chmod = false;
-            foreach ($CHMOD_ARRAY as $chmod) {
+            global $INSTALL_LANG;
+            $chmod_array = get_chmod_array($INSTALL_LANG);
+            foreach ($chmod_array as $chmod) {
                 if ((file_exists($chmod)) && (!@ftp_site($conn, 'CHMOD 0777 ' . $chmod))) {
                     $no_chmod = true;
                 }
@@ -1667,12 +1670,13 @@ function step_5_checks_a()
     $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '48b15e3e8486e5654563a7c3b5e6af58', 'SOMETHING' => do_lang_tempcode('GOOD_PATH'))));
 
     // Check permissions
-    global $CHMOD_ARRAY;
     if (!file_exists(get_file_base() . '/_config.php')) {
         $myfile = @fopen(get_file_base() . '/_config.php', GOOGLE_APPENGINE ? 'wb' : 'wt');
         @fclose($myfile);
     }
-    foreach ($CHMOD_ARRAY as $chmod) {
+    global $INSTALL_LANG;
+    $chmod_array = get_chmod_array($INSTALL_LANG);
+    foreach ($chmod_array as $chmod) {
         test_writable($chmod);
     }
 

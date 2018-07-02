@@ -251,7 +251,7 @@ function cms_file_get_contents_safe($path)
         return false;
     }
     flock($tmp, LOCK_SH);
-    $contents = file_get_contents($path);
+    $contents = stream_get_contents($tmp);
     flock($tmp, LOCK_UN);
     fclose($tmp);
     return $contents;
@@ -796,9 +796,10 @@ function set_http_status_code($code)
  * @param  string $directory Subdirectory type to look in
  * @set    templates css
  * @param  boolean $non_custom_only Whether to only search in the default templates
+ * @param  boolean $fallback_other_themes Allow fallback to other themes, in case it is defined only in a specific theme we would not noprmally look in
  * @return ?array List of parameters needed for the _do_template function to be able to load the template (null: could not find the template)
  */
-function find_template_place($codename, $lang, $theme, $suffix, $directory, $non_custom_only = false)
+function find_template_place($codename, $lang, $theme, $suffix, $directory, $non_custom_only = false, $fallback_other_themes = true)
 {
     global $FILE_ARRAY, $CURRENT_SHARE_USER;
 
@@ -809,7 +810,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
     }
 
     if (addon_installed('less') && $suffix == '.css') {
-        $test = find_template_place($codename, $lang, $theme, '.less', $directory);
+        $test = find_template_place($codename, $lang, $theme, '.less', $directory, $non_custom_only, false);
         if (!is_null($test)) {
             $tp_cache[$sz] = $test;
             return $test;
@@ -840,7 +841,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
             $place = null;
         }
 
-        if (($place === null) && (!$non_custom_only)) { // Get desperate, search in themes other than current and default
+        if (($place === null) && (!$non_custom_only) && ($fallback_other_themes)) { // Get desperate, search in themes other than current and default
             $dh = opendir(get_file_base() . '/themes');
             while (($possible_theme = readdir($dh))) {
                 if (($possible_theme[0] !== '.') && ($possible_theme !== 'default') && ($possible_theme !== $theme) && ($possible_theme !== 'map.ini') && ($possible_theme !== 'index.html')) {
@@ -2709,6 +2710,7 @@ function is_mobile($user_agent = null, $truth = false)
             }
         }
     }
+
     return $result;
 }
 

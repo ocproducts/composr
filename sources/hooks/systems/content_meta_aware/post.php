@@ -27,15 +27,16 @@ class Hook_content_meta_aware_post
      * Get content type details. Provides information to allow task reporting, randomisation, and add-screen linking, to function.
      *
      * @param  ?ID_TEXT $zone The zone to link through to (null: autodetect).
+     * @param  boolean $get_extended_data Populate additional data that is somewhat costly to compute (add_url, archive_url).
      * @return ?array Map of award content-type info (null: disabled).
      */
-    public function info($zone = null)
+    public function info($zone = null, $get_extended_data = false)
     {
         if (get_forum_type() != 'cns' || !isset($GLOBALS['FORUM_DB'])) {
             return null;
         }
 
-        if (is_null($zone)) {
+        if (($zone === null) && ($get_extended_data)) {
             $zone = get_module_zone('forumview');
             if (is_null($zone)) {
                 return null;
@@ -74,7 +75,7 @@ class Hook_content_meta_aware_post
             'edit_page_link_pattern' => '_SEARCH:topics:edit_post:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:topicview:browse:_WILD',
             'add_url' => null,
-            'archive_url' => $zone . ':forumview',
+            'archive_url' => $get_extended_data ? ($zone . ':forumview') : null,
 
             'support_url_monikers' => false,
 

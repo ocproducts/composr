@@ -353,8 +353,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
     $print_mode = get_param_integer('wide_print', 0) === 1;
 
     $preparse_hooks = find_all_hooks('systems', 'comcode_preparse');
-    foreach (array_keys($preparse_hooks) as $preparse_hook) {
-        require_code('hooks/systems/comcode_preparse/' . $preparse_hook);
+    foreach ($preparse_hooks as $preparse_hook => $hook_dir) {
+        require_code('hooks/systems/comcode_preparse/' . $preparse_hook, false, $hook_dir == 'sources_custom');
         $preparse_ob = object_factory('Hook_comcode_preparse_' . $preparse_hook, true);
         if (is_null($preparse_ob)) {
             continue;

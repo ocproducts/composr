@@ -408,8 +408,8 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
     // Now implicit usergroup hooks
     if ($include_implicit) {
         $hooks = find_all_hooks('systems', 'cns_implicit_usergroups');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/cns_implicit_usergroups/' . $hook);
+        foreach ($hooks as $hook => $hook_dir) {
+            require_code('hooks/systems/cns_implicit_usergroups/' . $hook, false, $hook_dir == 'sources_custom');
             $ob = object_factory('Hook_implicit_usergroups_' . $hook);
             $group_ids = $ob->get_bound_group_ids();
             foreach ($group_ids as $group_id) {

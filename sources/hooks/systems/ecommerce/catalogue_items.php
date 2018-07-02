@@ -401,7 +401,7 @@ class Hook_ecommerce_catalogue_items
                 'p_quantity' => 1,
                 'p_price' => $product_det[1],
                 'order_id' => $order_id,
-                'dispatch_status' => '',
+                'dispatch_status' => 'ORDER_STATUS_awaiting_payment',
                 'included_tax' => $tax
             )
         );

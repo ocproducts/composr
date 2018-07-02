@@ -47,7 +47,7 @@ class Hook_checklist_awards
             if (is_null($hook_object)) {
                 continue;
             }
-            $details = $hook_object->info();
+            $details = $hook_object->info(null, true);
             if (!is_null($details)) {
                 $date = $GLOBALS['SITE_DB']->query_select_value_if_there('award_archive', 'date_and_time', array('a_type_id' => $award['id']), 'ORDER BY date_and_time DESC');
 
