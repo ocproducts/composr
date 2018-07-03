@@ -28,14 +28,14 @@
 	padding-left: 16px;
 }
 .sortable-table th.table-sorted-asc span {
-	background-image: url('{$IMG;,sortable_tables/sorted_up}');
-	background-size: 11px 16px;
+	background-image: url('{$IMG;,icons/sortable_tables/sorted_up}');
+	background-size: 16px 16px;
 	background-position: center left;
 	background-repeat: no-repeat;
 }
 .sortable-table th.table-sorted-desc span {
-	background-image: url('{$IMG;,sortable_tables/sorted_down}');
-	background-size: 11px 16px;
+	background-image: url('{$IMG;,icons/sortable_tables/sorted_down}');
+	background-size: 16px 16px;
 	background-position: center left;
 	background-repeat: no-repeat;
 }

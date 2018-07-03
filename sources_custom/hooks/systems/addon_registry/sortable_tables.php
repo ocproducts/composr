@@ -148,9 +148,12 @@ We will automatically detect what columns can be filtered, how to sort each colu
             'themes/default/css_custom/sortable_tables.css',
             'sources_custom/blocks/main_sortable_table.php',
             'uploads/website_specific/example.csv',
-            'themes/default/images_custom/sortable_tables/index.html',
-            'themes/default/images_custom/sortable_tables/sorted_down.svg',
-            'themes/default/images_custom/sortable_tables/sorted_up.svg',
+            'themes/default/images_custom/icons/sortable_tables/index.html',
+            'themes/default/images_custom/icons/sortable_tables/sorted_down.svg',
+            'themes/default/images_custom/icons/sortable_tables/sorted_up.svg',
+            'themes/default/images_custom/icons_monochrome/sortable_tables/index.html',
+            'themes/default/images_custom/icons_monochrome/sortable_tables/sorted_down.svg',
+            'themes/default/images_custom/icons_monochrome/sortable_tables/sorted_up.svg',
         );
     }
 }

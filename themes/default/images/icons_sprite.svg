@@ -4430,6 +4430,22 @@
 <rect y="18.784" fill="#F79523" width="3.943" height="1.972"/>
 <polygon fill="#A5DFF9" points="13.29,3.819 15.812,3.852 11.63,0 7.447,3.743 10.004,3.775 10.004,18.483 7.447,18.516   11.63,22.26 15.812,18.408 13.29,18.44 "/>
 </symbol>
+<symbol viewBox="0 0 16 16" id="sortable_tables__sorted_down">
+<rect x="2.745" y="1.275" fill="#F79523" width="9.61" height="1.311"/>
+<rect x="2.745" y="4.129" fill="#F79523" width="7.862" height="1.311"/>
+<rect x="2.745" y="6.982" fill="#F79523" width="6.116" height="1.313"/>
+<rect x="2.745" y="9.836" fill="#F79523" width="4.369" height="1.313"/>
+<rect x="2.745" y="12.689" fill="#F79523" width="2.621" height="1.311"/>
+<polygon fill="#3588A6" points="11.579,2.713 11.579,12.461 13.255,12.439 10.477,15 7.695,12.512 9.395,12.489 9.395,2.713  "/>
+</symbol>
+<symbol viewBox="0 0 16 16" id="sortable_tables__sorted_up">
+<rect x="2.745" y="1.638" fill="#F79523" width="9.61" height="1.311"/>
+<rect x="2.745" y="4.492" fill="#F79523" width="7.862" height="1.311"/>
+<rect x="2.745" y="7.345" fill="#F79523" width="6.116" height="1.313"/>
+<rect x="2.745" y="10.198" fill="#F79523" width="4.369" height="1.313"/>
+<rect x="2.745" y="13.052" fill="#F79523" width="2.621" height="1.311"/>
+<polygon fill="#3588A6" points="11.579,13.925 11.579,4.177 13.255,4.199 10.477,1.638 7.695,4.125 9.395,4.148 9.395,13.925 "/>
+</symbol>
 <symbol viewBox="-5.8 -5.5 48 48" id="spare__1">
 <polygon fill="#52CAF5" points="31.7,8.8 28,12.1 12.3,6.8 13.4,2.7 "/>
 <polygon fill="#3588A6" points="28.7,30.4 28,12.1 31.7,8.8 33.4,31.7 "/>
