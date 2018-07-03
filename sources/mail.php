@@ -724,7 +724,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             'm_url' => get_self_url(true),
             'm_queued' => $through_queue ? 1 : 0,
             'm_template' => $mail_template,
-            'm_sender_email' => $sender_email,
+            'm_sender_email' => ($sender_email === null) ? '' : $sender_email,
             'm_plain_subject' => $plain_subject ? 1 : 0,
         ), false, !$through_queue); // No errors if we don't NEED this to work
 
