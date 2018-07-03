@@ -134,6 +134,9 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#d7e6f5,point_of_interest_background,97% area_2_background + 2% BW}
 {$THEMEWIZARD_COLOR,#444444,footer_background,100% 444444}
 {$THEMEWIZARD_COLOR,#444444,footer_2_background,100% 444444}
+
+{$THEMEWIZARD_COLOR,#333333,tooltip_background,100% 333333}
+
 /* Backgrounds, employing color wheel theory */
 {$THEMEWIZARD_COLOR,#d3e7fc,area_highlight_background,20% seed + 80% WB}
 {$THEMEWIZARD_COLOR,#d3fbfc,area_highlight_left_complement_background,20% (seed hue_add -21) + 80% WB}
@@ -193,7 +196,7 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#59a6f4,cns_post_indicator,65% (seed sat_to 100) + 35% WB}
 {$THEMEWIZARD_COLOR,#59a6ff,cns_redirect_indicator,65% (seed sat_to 100) + 35% WB + 000038 - 061600}
 
-/* Range of bright varying colours */
+/* Range of bright varying colours, used for group colours */
 {$THEMEWIZARD_COLOR,#9c029a,gcol_1,100% #9C029A}
 {$THEMEWIZARD_COLOR,#fa0c00,gcol_2,100% #FA0C00}
 {$THEMEWIZARD_COLOR,#aa6a04,gcol_3,100% #AA6A04}
@@ -212,6 +215,10 @@ In mobile mode:
 
 {$SET,max_container_width,1366px}
 {$SET,border_radius,4px}
+
+{$SET,box_shadow_sm,0 2px 4px {$COLOR_RGBA,{$GET,BW},0.75}}
+{$SET,box_shadow,0 7px 14px {$COLOR_RGBA,{$GET,BW},0.15}}
+{$SET,box_shadow_lg,0 14px 42px {$COLOR_RGBA,{$GET,BW},0.175}}
 
 /*
 =========================
@@ -695,7 +702,7 @@ th>p:last-child, td>p:last-child {
 th, .fake-th {
 	background-color: {$GET,box_title_background};
 	color: {$GET,box_title_text};
-	font-weight: bold;
+	font-weight: 500;
 	text-align: center;
 }
 [aria-sort="ascending"].table-header-sorted, [aria-sort="descending"].table-header-sorted {
@@ -1012,7 +1019,8 @@ input.input-username::-webkit-calendar-picker-indicator {
 	margin-left: 0;
 }
 
-.no-gutters > .col {
+.no-gutters > .col,
+.no-gutters > .col-auto {
 	padding-right: 0;
 	padding-left: 0;
 }
@@ -1057,7 +1065,6 @@ input.input-username::-webkit-calendar-picker-indicator {
 }
 
 header {
-	background-color: {$GET,main_background};
 }
 
 header h1 {
@@ -1071,19 +1078,16 @@ header h1 {
 	}
 /*{+END}*/
 
-.global-header-top {
+header.with-ad .global-header-top {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
 
-.global-header-top .col-logo {
+header.with-ad .global-header-top .col-logo {
 	align-self: flex-end;
 }
 
-.global-banner {
-}
-
-.global-banner + .logo-outer {
+header.with-ad .global-banner + .logo-outer {
 	margin-top: 0;
 }
 
@@ -1117,54 +1121,100 @@ header h1 {
 	text-decoration: none;
 }
 
-.global-navigation {
+header.with-sticky-navbar {
+	padding-top: 70px;
+	position: relative;
+}
+
+header.with-combo-navbar .global-navigation {
+	border-bottom: 1px solid {$GET,standard_border};
+	background-color: {$GET,WB};
+}
+
+header.with-sticky-navbar .global-navigation {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	z-index: 100;
+}
+
+header.with-combo-navbar .col-logo {
+	flex: 0 0 auto;
+	width: auto;
+	max-width: none;
+}
+
+header.with-combo-navbar .logo,
+header.with-combo-navbar .logo:hover {
+	color: inherit;
+	font-size: 25px;
+	line-height: 69px;
+	display: block;
+}
+
+header.with-combo-navbar .col-navigation {
+	display: flex;
+	margin-left: auto;
+}
+
+header.with-combo-navbar {
+	color: {$GET,a.link};
+}
+
+header.with-ad .global-navigation {
 	background-color: {$GET,seed};
 	color: {$GET,WB};
 	min-height: 3.5em;
 }
 /*{+START,CSS_MODE,mobile}*/
-	.global-navigation {
+	header.with-ad .global-navigation {
 		position: relative;
 	}
 /*{+END}*/
 
-.global-navigation-inner {
+header.with-ad .global-navigation-inner {
 }
 /*{+START,CSS_MODE,mobile}*/
-	.global-navigation-inner {
+	header.with-ad .global-navigation-inner {
 		margin-left: 8em !important; /* Space for the menu button, which is position:absolute */
 	}
 /*{+END}*/
 
+.global-navigation .menu-dropdown {
+	display: flex;
+	margin-right: 20px;
+}
+
 .global-navigation .top-buttons, 
 .global-navigation .top-form {
-	float: right;
-	
+	display: flex;
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.global-navigation .top-buttons {
+	header.with-ad .global-navigation .top-buttons {
 		margin-left: 1.5em;
 	}
 /*{+END}*/
 
 .top-button-wrapper {
-	float: left;
+	display: flex;
 	position: relative;
 }
 
 .top-button {
 	position: relative;
-	float: left;
+	display: flex;
+	align-items: center;
+	padding: 0 10px;
 	text-decoration: none;
 	transition: color  0.15s ease-in-out, background-color  0.15s ease-in-out;
-	padding: 17px 10px;
 }
 
 .top-button,
 .top-button:hover,
 .top-button:visited {
-	color: {$GET,WB};
+	color: inherit;
 }
 
 .top-button:hover {
@@ -1205,7 +1255,7 @@ header h1 {
 }
 
 .global-navigation .top-login .bock-top-login-links {
-	margin-left: 0.5em;
+	margin-left: 0.8em;
 	width: auto;
 	padding-top: 2px; /* To force it align correctly with the form in a different block (which is taller) */
 	float: left;
@@ -1291,7 +1341,7 @@ header h1 {
 }
 
 .breadcrumbs {
-	font-weight: bold;
+	font-weight: 500;
 }
 
 .breadcrumbs .sep::after, .associated-breadcrumbs .sep::after {
@@ -2021,7 +2071,7 @@ div.red-alert, p.red-alert {
 }
 
 .field-name {
-	font-weight: bold;
+	font-weight: 500;
 }
 
 /* Used when a label is the only thing in front of a textarea/list */
@@ -2153,16 +2203,18 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 .global-side-panel .box-inner>h3, 
 .global-side-panel .box-inner>h4, 
 .global-side-panel .box-inner>h5, 
-.global-side-panel .box-inner>h6, 
-.global-side-panel .box>.toggleable-tray-title {
+.global-side-panel .box-inner>h6 {
 	background: none;
 	color: inherit;
+	margin: 0;
+	padding-top: 0;
 }
 
 .box>.box-inner  {
 	margin: 10px 15px; /* not em so that header may be positioned properly */
 }
-.boxless-space .box>.box-inner, .boxless-space .box>.toggleable-tray {
+.boxless-space .box>.box-inner, 
+.boxless-space .box>.toggleable-tray {
 	margin: 0;
 }
 .email-body .box .box-inner { /* Outlook.com does not support margins or complex use of the sibling selector */
@@ -2181,10 +2233,9 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 #standalone-html-wrap .box .box .box-inner>h3 {
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
-	background-color: {$GET,seed};
+	background-color: {$GET,box_title_background};
 	color: {$GET,box_title_text};
 	text-align: center;
-	font-weight: bold;
 	text-decoration: none;
 	font-size: 1.1em;
 	border: 0;
@@ -2192,7 +2243,7 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 
 	/* .box-inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
 	margin: -11px -16px 0 -16px;
-	padding: 0.6em 0.8em 0.6em 0.3em;
+	padding: 0.5em 0.8em 0.5em 0.3em;
 }
 .box-inner>h1 + *, 
 .box-inner>h2 + *, 
@@ -2417,7 +2468,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .toggleable-tray-button {
 	transition: opacity 0.2s linear !important;
 	outline: 0;
-	font-weight: bold;
+	font-weight: 500;
 	text-decoration: none;
 	color: inherit !important;
 	cursor: pointer;
@@ -2992,25 +3043,30 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	z-index: 10000;
 	opacity: 0.9;
 	word-wrap: break-word;
-	min-width: 6em;
+	/*min-width: 6em;*/
 }
+
 .tooltip-ownlayout {
 	padding: 0.5em;
-	border: 1px solid {$GET,point_of_interest_border};
-	box-shadow: 3px 3px 10px {$GET,point_of_interest_border};
-	border-radius: 10px;
-	color: {$GET,area_text} !important;
+	border-radius: {$GET,border_radius};
+	color: {$GET,WB};
 }
-.tooltip-ownlayout, .tooltip-nolayout th.de-th, .tooltip-nolayout td {
-	background-image: linear-gradient(to bottom, {$GET,area_faded_background}, {$GET,area_background});
+
+.tooltip-ownlayout, 
+.tooltip-nolayout th.de-th, 
+.tooltip-nolayout td {
+	background-color: {$GET,tooltip_background};
 }
+
 .tooltip .box {
 	margin: 0;
 }
+
 .tooltip img {
 	max-width: 100%;
 	max-height: 200px;
 }
+
 .tooltip .shunted-button {
 	display: none;
 }
@@ -3089,6 +3145,10 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 		max-width: 315px;
 	}
 /*{+END}*/
+
+.results-table-sorter label {
+	margin-right: 7px;
+}
 
 .pagination-spacing {
 	margin: 1em 0;
@@ -4064,7 +4124,7 @@ ul.associated-links-block-group.horizontal-links>li::before,
 	.horizontal-meta-details li::before,
 	.horizontal-links>li::before,
 	.horizontal-ticker li::before {
-		padding: 0 0.5em 0 0.1em;
+		padding: 0 0.5em 0 0.5em;
 		content: "\00b7" !important; /* a &middot; */
 	}
 /*{+END}*/
@@ -6454,7 +6514,7 @@ div.proceed-button-left-2 {
 	position: absolute;
 	z-index: 2000;
 	color: {$GET,body_color};
-	top: 100%;
+	top: 110%;
 	right: 0;
 	min-width: 20em;
 }
@@ -6716,14 +6776,18 @@ ul.nl, .nl ul {
 	transition: opacity 0.5s linear;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
+
 div:hover>.edit-menu-link-inline, div:hover>.edit-page-link-inline {
 	opacity: 1.0 !important;
 }
+
 .edit-menu-link-inline {
-	position: absolute;
-	float: left;
-	margin-left: 0.25em;
+	margin-left: -16px;
 }
+
+header.with-combo-navbar .edit-menu-link-inline {
+}
+
 .edit-page-link-inline {
 	position: absolute;
 	right: 1px;
@@ -7320,7 +7384,10 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 =========================
 */
 
-.overlay [role="toolbar"], .overlay .emoticon-chooser, .overlay .posting-rules, .overlay .required-field-warning {
+.overlay [role="toolbar"], 
+.overlay .emoticon-chooser, 
+.overlay .posting-rules, 
+.overlay .required-field-warning {
 	display: none;
 }
 
@@ -7357,19 +7424,26 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 	display: block;
 }
 
-.overlay .previous_button, .overlay .next_button {
+.overlay .previous_button, 
+.overlay .next_button {
 	position: absolute;
 	cursor: pointer;
 	top: calc(50% - {$DIV,74,2}px);
 	max-width: 20%;
 }
 
-.overlay .previous_button, .overlay .next_button {
+.overlay .previous_button, 
+.overlay .next_button {
 	opacity: 0;
 	transition-property : opacity;
 	transition-duration : 0.5s;
 }
-.overlay .previous_button:hover, .overlay .next_button:hover, .overlay.mousemove .previous_button, .overlay.mousemove .next_button, body.touch-enabled .overlay.mousemove .previous_button, body.touch-enabled .overlay.mousemove .next_button {
+.overlay .previous_button:hover, 
+.overlay .next_button:hover, 
+.overlay.mousemove .previous_button, 
+.overlay.mousemove .next_button, 
+body.touch-enabled .overlay.mousemove .previous_button, 
+body.touch-enabled .overlay.mousemove .next_button {
 	opacity: 1.0 !important;
 }
 

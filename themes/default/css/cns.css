@@ -621,7 +621,6 @@ hr.cns-sig-barrier {
 
 .cns-topic-list th, .cns-forum-grouping th {
 	padding: 0.5em;
-	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
 }
 
 /*{+START,CSS_MODE,mobile}*/
@@ -720,8 +719,7 @@ hr.cns-sig-barrier {
 }
 
 .cns-forum-topic-row-preview-button {
-	border: 1px solid {$GET,standard_border};
-	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_4_background});
+	background-color: {$GET,area_4_background};
 	font-size: 0.85em;
 	padding: 0.5em !important;
 	float: right;

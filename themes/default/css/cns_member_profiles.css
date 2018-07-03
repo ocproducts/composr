@@ -88,7 +88,7 @@ table.cns-profile-about-section {
 
 table.cns-profile-about-section th {
 	padding: 0.5em 0;
-	font-weight: bold !important;
+	font-weight: 500 !important;
 }
 /*{+START,CSS_MODE,desktop}*/
 	table.cns-profile-about-section th {

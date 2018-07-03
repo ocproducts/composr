@@ -289,7 +289,7 @@
             e.preventDefault();
             window.$coreNotifications.toggleMessagingBox('top-personal-stats');
         });
-        $dom.on(container, 'clickout', '.js-clickout-hide-top-personal-stats', function () {
+        $dom.on(container, 'clickout', function () {
             window.$coreNotifications.toggleMessagingBox('top-personal-stats', true);
         });
     };
@@ -325,7 +325,7 @@
 
         $dom.on(container, 'mouseover', '.js-mouseover-activate-member-tooltip', function (e, el) {
             el.cancelled = false;
-            $cms.loadSnippet('member_tooltip&member_id=' + submitter, null, true).then(function (result) {
+            $cms.loadSnippet('member_tooltip&member_id=' + submitter).then(function (result) {
                 if (!el.cancelled) {
                     $cms.ui.activateTooltip(el, e, result, 'auto', null, null, false, true);
                 }

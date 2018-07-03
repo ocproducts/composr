@@ -78,7 +78,7 @@
         });
         
         $dom.on(container, 'clickout', '.js-clickout-hide-top-web-notifications', function () {
-            window.$coreNotifications.toggleMessagingBox('web-notifications', true);
+            $coreNotifications.toggleMessagingBox('web-notifications', true);
         });
 
         $dom.on(container, 'mouseup', '.js-click-find-url-tab', function (e) {
@@ -94,7 +94,7 @@
             $coreNotifications.toggleMessagingBox('pts', true);
         });
 
-        function notificationsMarkAllRead(event) {
+        function notificationsMarkAllRead() {
             var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller&type=mark_all_read';
             if (window.maxNotificationsToShow !== undefined) {
                 url += '&max=' + window.maxNotificationsToShow;

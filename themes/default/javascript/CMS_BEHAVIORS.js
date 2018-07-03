@@ -109,7 +109,7 @@
                     elements = elements.concat(form.querySelectorAll('input[type="image"]')); // JS DOM does not include input[type="image"] ones in form.elements
 
                     for (j = 0; j < elements.length; j++) {
-                        if ((elements[j].title !== undefined) && (elements[j]['original-title'] === undefined/*check tipsy not used*/) && !elements[j].classList.contains('no-tooltip')) {
+                        if ((elements[j].title !== undefined) && !elements[j].classList.contains('no-tooltip')) {
                             convertTooltip(elements[j]);
                         }
                     }
@@ -717,11 +717,9 @@
                         return;
                     }
 
-                    //arguments: el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks
-                    var args = [el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, true];
-
                     try {
-                        $cms.ui.activateTooltip.apply(undefined, args);
+                        //arguments: el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks
+                        $cms.ui.activateTooltip(el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, true);
                     } catch (ex) {
                         $util.fatal('$cms.behaviors.cmsRichTooltip.attach(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
                     }
@@ -908,6 +906,47 @@
                     if (!anchorClicked && !e.defaultPrevented) {
                         $util.navigate(el);
                     }
+                });
+            });
+        }
+    };
+    
+    // Implementation for [data-sticky-navbar]
+    // Hides navbar when scrolling down
+    $cms.behaviors.stickyNavbar = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-sticky-navbar]'), 'behavior.stickyNavbar');
+            
+            els.forEach(function (stickyNavbar) {
+                var lastScrollY = 0,
+                    navbarHeight = $dom.height(stickyNavbar),
+                    movement = 0,
+                    lastDirection = 0;
+
+                window.addEventListener('scroll', function () {
+                    var sy = window.scrollY, margin;
+                    
+                    movement += sy - lastScrollY;
+
+                    if (sy > lastScrollY) { // Scrolled down
+                        if (lastDirection !== 1) {
+                            movement = 0;
+                        }
+                        margin = -Math.min(Math.abs(movement), navbarHeight);
+                        stickyNavbar.style.marginTop = margin + 'px';
+
+                        lastDirection = 1;
+                    } else { // Scrolled up
+                        if (lastDirection !== -1) {
+                            movement = 0;
+                        }
+                        margin = Math.min(Math.abs(movement), navbarHeight) - navbarHeight;
+                        stickyNavbar.style.marginTop = margin + 'px';
+
+                        lastDirection = -1;
+                    }
+
+                    lastScrollY = sy;
                 });
             });
         }

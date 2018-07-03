@@ -63,15 +63,17 @@
 {$SET,fancy_screen,0}
 
 {+START,IF,{$OR,{INCLUDE_FORM},{$IS_NON_EMPTY,{PAGINATION}}}}
-	<div class="box results-table-under"><div class="box-inner clearfix">
-		{+START,IF,{INCLUDE_FORM}}
-			{+START,IF_NON_EMPTY,{SORT}}
-				<div class="results-table-sorter">
-					{SORT}
-				</div>
+	<div class="box results-table-under">
+		<div class="box-inner clearfix">
+			{+START,IF,{INCLUDE_FORM}}
+				{+START,IF_NON_EMPTY,{SORT}}
+					<div class="results-table-sorter">
+						{SORT}
+					</div>
+				{+END}
 			{+END}
-		{+END}
 
-		{PAGINATION}
-	</div></div>
+			{PAGINATION}
+		</div>
+	</div>
 {+END}

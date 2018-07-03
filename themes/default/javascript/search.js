@@ -111,7 +111,7 @@
             window.$coreNotifications.toggleMessagingBox('top-search');
         });
 
-        $dom.on(container, 'clickout', '.js-clickout-hide-top-search', function () {
+        $dom.on(container, 'clickout', function () {
             window.$coreNotifications.toggleMessagingBox('top-search', true);
         });
     };

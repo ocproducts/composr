@@ -414,7 +414,7 @@
             this.topWindow.overlayZIndex || (this.topWindow.overlayZIndex = 999999); // Has to be higher than plupload, which is 99999
 
             this.el = $dom.create('div', { // Black out the background
-                'className': 'js-modal-background js-modal-type-' + this.type,
+                'className': 'cms-modal-background cms-modal-type-' + this.type,
                 'css': {
                     'background': 'rgba(0,0,0,0.7)',
                     'zIndex': this.topWindow.overlayZIndex++,
@@ -430,7 +430,7 @@
             this.topWindow.document.body.appendChild(this.el);
 
             this.overlayEl = this.el.appendChild($dom.create('div', { // The main overlay
-                'className': 'box overlay js-modal-overlay ' + this.type,
+                'className': 'box overlay cms-modal-overlay ' + this.type,
                 'role': 'dialog',
                 'css': {
                     // This will be updated immediately in resetDimensions
@@ -440,7 +440,7 @@
             }));
 
             this.containerEl = this.overlayEl.appendChild($dom.create('div', {
-                'className': 'box-inner js-modal-container',
+                'className': 'box-inner cms-modal-container',
                 'css': {
                     'width': 'auto',
                     'height': 'auto'
@@ -474,7 +474,7 @@
             }
 
             this.buttonContainerEl = $dom.create('p', {
-                'className': 'proceed-button js-modal-button-container'
+                'className': 'proceed-button cms-modal-button-container'
             });
 
             var self = this;
@@ -500,7 +500,7 @@
                         'title': '',
                         'name': 'overlay-iframe',
                         'id': 'overlay-iframe',
-                        'className': 'js-modal-overlay-iframe',
+                        'className': 'cms-modal-overlay-iframe',
                         'allowTransparency': 'true',
                         //'seamless': 'seamless',// Not supported, and therefore testable yet. Would be great for mobile browsing.
                         'css': {
@@ -583,10 +583,11 @@
                         'style': 'font-weight: bold;'
                     });
                     this.buttonContainerEl.appendChild(button);
+                    this.buttonContainerEl.appendChild(document.createTextNode(' '));
                     button = $dom.create('button', {
                         'type': 'button',
                         'html': '{$GET;^,icon_no} ' + this.noButton,
-                        'className': 'btn btn-primary btn-scri buttons--no js-onclick-do-option-no'
+                        'className': 'btn btn-secondary btn-scri buttons--no js-onclick-do-option-no'
                     });
                     this.buttonContainerEl.appendChild(button);
                     break;

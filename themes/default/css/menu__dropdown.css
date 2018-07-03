@@ -18,10 +18,6 @@ For example:
 	overflow: hidden;
 }
 
-.global-navigation .menu-dropdown {
-	float: left;
-}
-
 .menu-dropdown-items {
 	margin-bottom: 0;
 	padding-left: 0;
@@ -55,6 +51,10 @@ For example:
 .menu-dropdown-item-icon .icon {
 	width: 16px;
 	height: 16px;
+}
+
+.menu-dropdown-item-a.toplevel-link {
+	font-weight: 500;
 }
 
 /*{+START,CSS_MODE,mobile}*/
@@ -152,7 +152,7 @@ For example:
 	}
 
 	.menu-dropdown-item-a.toplevel-link {
-		padding: 19px 1em;
+		padding: 24px 16px;
 	}
 
 	.menu-dropdown-item.toplevel:hover > a,
