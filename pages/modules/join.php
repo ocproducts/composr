@@ -281,6 +281,8 @@ class Module_join
         // Activate user
         $GLOBALS['FORUM_DB']->query_update('f_members', array('m_validated_email_confirm_code' => ''), array('id' => $id), '', 1);
 
+        decache('main_members');
+
         if ($validated == 0) {
             return inform_screen($this->title, do_lang_tempcode('AWAITING_MEMBER_VALIDATION'));
         }
