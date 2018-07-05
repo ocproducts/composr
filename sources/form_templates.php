@@ -50,6 +50,9 @@ function init__form_templates()
     $_FORM_INPUT_PREFIX = null;
     $_FORM_INPUT_SUFFIX = null;
 
+    global $SKIPPING_LABELS;
+    $SKIPPING_LABELS = false;
+
     require_css('forms');
 
     if (function_exists('get_member')) {
@@ -2639,7 +2642,7 @@ function _form_input($name, $pretty_name, $description, $input, $required, $comc
     $help_zone = get_comcode_zone('userguide_comcode', false);
     $_comcode = (($help_zone === null) || (!$comcode)) ? new Tempcode() : do_template('COMCODE_MESSAGE', array('_GUID' => '7668b8365e34b2484be7c2c271f82e79', 'NAME' => $name, 'W' => $w, 'URL' => build_url(array('page' => 'userguide_comcode'), $help_zone)));
 
-    global $DOING_ALTERNATE_FIELDS_SET;
+    global $DOING_ALTERNATE_FIELDS_SET, $SKIPPING_LABELS;
     if ($DOING_ALTERNATE_FIELDS_SET !== null) {
         if ($DOING_ALTERNATE_FIELDS_SET == '') {
             return $input;
@@ -2649,7 +2652,7 @@ function _form_input($name, $pretty_name, $description, $input, $required, $comc
             '_GUID' => '23f2e2df7fcacc01d9f5158dc635e73d',
             'SET_NAME' => $DOING_ALTERNATE_FIELDS_SET,
             'REQUIRED' => $required,
-            'SKIP_LABEL' => $skip_label,
+            'SKIP_LABEL' => $skip_label || $SKIPPING_LABELS,
             'NAME' => $name,
             'PRETTY_NAME' => $pretty_name,
             'DESCRIPTION' => $description,
@@ -2663,7 +2666,7 @@ function _form_input($name, $pretty_name, $description, $input, $required, $comc
     $tpl = do_template('FORM_SCREEN_FIELD', array(
         '_GUID' => 'fa1402b7ad8319372f4bb5b152be7852',
         'REQUIRED' => $required,
-        'SKIP_LABEL' => $skip_label,
+        'SKIP_LABEL' => $skip_label || $SKIPPING_LABELS,
         'NAME' => $name,
         'PRETTY_NAME' => $pretty_name,
         'DESCRIPTION' => $description,

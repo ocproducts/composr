@@ -453,7 +453,7 @@ class Forum_driver_base
         }
 
         // Try hardcoded in URL
-        $theme = $is_current_member ? '-1' : filter_naughty(get_param_string('keep_theme', get_param_string('utheme', '-1')));
+        $theme = $is_current_member ? filter_naughty(get_param_string('keep_theme', get_param_string('utheme', '-1'))) : '-1';
         if ($theme != '-1') {
             if ((!is_dir(get_file_base() . '/themes/' . $theme)) && (!is_dir(get_custom_file_base() . '/themes/' . $theme))) { // Sanity check
                 require_code('site');

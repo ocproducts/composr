@@ -296,7 +296,7 @@ class Module_shopping
         }
 
         if ($type == 'order_details') {
-            breadcrumb_set_parents(array(array('_SELF:orders:browse', do_lang_tempcode('MY_ORDERS'))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:my_orders', do_lang_tempcode('MY_ORDERS'))));
 
             $id = get_param_integer('id');
             $this->title = get_screen_title('_ORDER_DETAILS', true, array(escape_html($id)));

@@ -375,12 +375,17 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
                             (substr($file_template_name, -3) == '.js')
                             ||
                             (substr($file_template_name, -4) == '.css')
+                            ||
+                            (substr($file_template_name, -3) == '.gz')
                         )
                     ) {
                         continue;
                     }
 
-                    $relevant_templates_in_cache[$file_template_name] = array($file, $path);
+                    if (!isset($relevant_templates_in_cache[$file_template_name])) {
+                        $relevant_templates_in_cache[$file_template_name] = array();
+                    }
+                    $relevant_templates_in_cache[$file_template_name][] = array($file, $path);
                 }
                 closedir($_dir);
             }
@@ -439,39 +444,41 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
         }
     }
 
-    foreach ($relevant_templates_in_cache as $file_template_name => $_bits) {
-        list($file, $path) = $_bits;
+    foreach ($relevant_templates_in_cache as $file_template_name => $_bits_arr) {
+        foreach ($_bits_arr as $_bits) {
+            list($file, $path) = $_bits;
 
-        // $raw_file_regexp filter
-        if ($raw_file_regexp !== null) {
-            $may_delete = false;
-            if (isset($all_template_data[$file_template_name])) {
-                foreach ($all_template_data[$file_template_name] as $c) {
-                    if (preg_match('#' . $raw_file_regexp . '#', $c) != 0) {
-                        $may_delete = true;
-                        break;
+            // $raw_file_regexp filter
+            if ($raw_file_regexp !== null) {
+                $may_delete = false;
+                if (isset($all_template_data[$file_template_name])) {
+                    foreach ($all_template_data[$file_template_name] as $c) {
+                        if (preg_match('#' . $raw_file_regexp . '#', $c) != 0) {
+                            $may_delete = true;
+                            break;
+                        }
                     }
                 }
+                if (!$may_delete) {
+                    continue;
+                }
             }
-            if (!$may_delete) {
-                continue;
-            }
-        }
 
-        // Do deletion
-        $i = 0;
-        while ((@unlink($path . $file) === false) && ($i < 5)) {
-            if (!file_exists($path . $file)) {
-                break; // Successful delete
+            // Do deletion
+            $i = 0;
+            while ((@unlink($path . $file) === false) && ($i < 5)) {
+                if (!file_exists($path . $file)) {
+                    break; // Successful delete
+                }
+                if (php_function_allowed('usleep')) {
+                    usleep(1000000); // May be race condition, lock
+                }
+                $i++;
             }
-            if (php_function_allowed('usleep')) {
-                usleep(1000000); // May be race condition, lock
-            }
-            $i++;
-        }
-        if ($i >= 5) {
-            if (file_exists($path . $file)) {
-                @unlink($path . $file) or intelligent_write_error($path . $file);
+            if ($i >= 5) {
+                if (file_exists($path . $file)) {
+                    @unlink($path . $file) or intelligent_write_error($path . $file);
+                }
             }
         }
 
@@ -480,8 +487,6 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
             if ((!$preserve_some) && (!isset($rebuilt[$file_template_name]))) {
                 if (/*filter what we'll do due to memory limitation*/in_array($file_template_name, array('global.css', 'cns.css', 'forms.css', 'menu__dropdown.css', 'ajax.js', 'editing.js', 'global.js', 'modalwindow.js', 'posting.js'))) {
                     if ((isset($GLOBALS['SITE_DB'])) && (function_exists('find_theme_image')) && (!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($GLOBALS['FORUM_DRIVER'] !== null)) {
-                        @unlink($path . $file . '.tcp'); // To stop it just coming back from the .tcp
-
                         if (substr($file_template_name, -3) == '.js') {
                             require_code('web_resources');
                             javascript_enforce(basename($file_template_name, '.js'), $theme);

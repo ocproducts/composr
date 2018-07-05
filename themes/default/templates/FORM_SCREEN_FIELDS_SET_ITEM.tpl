@@ -28,6 +28,8 @@
 			<span class="js-error-message"></span>
 		</div>
 
-		<input type="hidden" id="required-posted--{NAME*}" name="require__{NAME*}" value="{$?,{REQUIRED*},1,0}" />
+		{+START,IF,{REQUIRED}}
+			<input type="hidden" id="required-posted--{NAME*}" name="require__{NAME*}" value="1" />
+		{+END}
 	</div>
 </div>

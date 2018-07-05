@@ -125,6 +125,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config_categories/messages.php',
             'sources/hooks/systems/config_categories/user_interaction.php',
             'sources/hooks/systems/config_categories/index.html',
+            'sources/hooks/systems/config_categories/.htaccess',
             'sources/hooks/systems/config_categories/accessibility.php',
             'sources/hooks/systems/config_categories/admin.php',
             'sources/hooks/systems/config_categories/blocks.php',

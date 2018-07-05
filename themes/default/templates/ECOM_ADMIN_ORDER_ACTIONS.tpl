@@ -11,7 +11,9 @@
 
 			<option value="add_note">{!ADD_NOTE}</option>
 
-			<option value="del_order">{!CANCEL}</option>
+			{+START,IF,{$NEQ,{ORDER_STATUS},{!ORDER_STATUS_cancelled}}}
+				<option value="del_order">{!CANCEL}</option>
+			{+END}
 
 			{+START,IF,{$NEQ,{ORDER_STATUS},{!ORDER_STATUS_cancelled},{!ORDER_STATUS_awaiting_payment}}}
 				{+START,IF,{$NEQ,{ORDER_STATUS},{!ORDER_STATUS_dispatched}}}

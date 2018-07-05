@@ -287,11 +287,9 @@ function get_enclosure_details($url, $enclosure_url)
     } else {
         $http_response = cms_http_request($enclosure_url, array('trigger_error' => false, 'byte_limit' => 0));
         if ($http_response->download_size === null) {
-            return array(null, null);
-        }
-        $enclosure_length = strval($http_response->download_size);
-        if ($enclosure_length === null) {
             $enclosure_length = strval(strlen(http_get_contents($enclosure_url)));
+        } else {
+            $enclosure_length = strval($http_response->download_size);
         }
         $enclosure_type = $http_response->download_mime_type;
     }

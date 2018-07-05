@@ -654,7 +654,7 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
             }
             $fields->attach(form_input_tick(do_lang_tempcode('SOUND_ENABLED'), do_lang_tempcode('DESCRIPTION_SOUND_ENABLED'), 'sound_enabled', $sound_enabled == 1));
             $usergroup_list = new Tempcode();
-            $lgroups = $GLOBALS['CNS_DRIVER']->get_usergroup_list(true, true);
+            $lgroups = $GLOBALS['CNS_DRIVER']->get_usergroup_list(true, true, false, null, null, true);
             foreach ($lgroups as $key => $val) {
                 if ($key != db_get_first_id()) {
                     $usergroup_list->attach(form_input_list_entry(strval($key), ($pt_allow == '*') || count(array_intersect(array(strval($key)), explode(',', $pt_allow))) != 0, $val));

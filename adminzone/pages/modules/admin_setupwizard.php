@@ -121,6 +121,12 @@ class Module_admin_setupwizard
 
         $type = get_param_string('type', 'browse');
 
+        if (($type != 'browse') && ($type != 'step11')) {
+            if ((count($_POST) == 0) && (cms_srv('REQUEST_METHOD') != 'POST')) {
+                warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
+            }
+        }
+
         if ($type == 'browse') {
             return $this->step1(); // welcome
         }
