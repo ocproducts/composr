@@ -688,17 +688,17 @@ function delete_pending_orders_for_current_user($keep_order_id = null, $purchase
     }
 
     $extra = ' AND add_date<' . strval(time() - 60 * 60 * 24 * 7); // If a week old, as otherwise a transaction may still come through
-    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('id', 'notes'), $where, $extra);
+    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_orders', array('id', 'notes'), $where, $extra);
 
     foreach ($order_rows as $order_row) {
         if ($order_row['id'] !== $keep_order_id) {
             if ($order_row['notes'] == '') {
                 $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('order_id' => $order_row['id']));
-                $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $order_row['id']), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('shopping_orders', array('id' => $order_row['id']), '', 1);
             } else {
                 // Set to cancelled, as there are some notes on this order to be preserved
                 $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('order_status' => 'ORDER_STATUS_cancelled'), array('order_id' => $order_row['id']));
-                $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => 'ORDER_STATUS_cancelled'), array('id' => $order_row['id']), '', 1);
+                $GLOBALS['SITE_DB']->query_update('shopping_orders', array('order_status' => 'ORDER_STATUS_cancelled'), array('id' => $order_row['id']), '', 1);
             }
         }
     }

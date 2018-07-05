@@ -48,7 +48,7 @@
         initializeTitle: function (data, value, index) {
             data['title' + index] = value;
             if (index === 0) {
-                if (this.teaseTitleEl) {
+                if (this.teaseTitleEl && data['title' + index]) {
                     $dom.html(this.teaseTitleEl, data['title' + index]);
                 }
             }
@@ -81,7 +81,7 @@
                     self.fpAnimationEl.src = $util.srl(data['url' + index]);
                     self.fpAnimationFaderEl.style.left = ((self.fpAnimationFaderEl.parentNode.offsetWidth - self.fpAnimationFaderEl.offsetWidth) / 2) + 'px';
                     self.fpAnimationFaderEl.style.top = ((self.fpAnimationFaderEl.parentNode.offsetHeight - self.fpAnimationFaderEl.offsetHeight) / 2) + 'px';
-                    if (self.teaseTitleEl) {
+                    if (self.teaseTitleEl && data['title' + index]) {
                         $dom.html(self.teaseTitleEl, data['title' + index]);
                     }
                     if (self.teaseScrollingTextEl) {
