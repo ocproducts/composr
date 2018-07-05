@@ -278,11 +278,11 @@ function find_user_metadata($include_referer = true, $member_id = null)
 
     $data[do_lang('USERNAME')] = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
 
-    if (!is_guest()) {
+    if (!is_guest($member_id)) {
         $data[do_lang('MEMBER_ID')] = '#' . strval($member_id);
     }
 
-    if (!is_guest()) {
+    if (!is_guest($member_id)) {
         $data[do_lang('cns:PROFILE')] = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
     }
 
@@ -333,7 +333,7 @@ function find_user_metadata($include_referer = true, $member_id = null)
     if ($member_id == get_member()) {
         $region = get_region();
     } else {
-        if (!is_guest()) {
+        if (!is_guest($member_id)) {
             $region = get_cms_cpf('country');
         }
 
@@ -352,7 +352,7 @@ function find_user_metadata($include_referer = true, $member_id = null)
         $sql = 'SELECT date_and_time,the_page,s_get,title,member_id,ip,session_id,referer,browser,operating_system ';
         $sql .= 'FROM ' . get_table_prefix() . 'stats WHERE ';
         $sql .= db_string_equal_to('ip', $ip);
-        if (!is_guest()) {
+        if (!is_guest($member_id)) {
             $sql .= ' OR member_id=' . strval($member_id);
         }
         $sql .= ' OR ' . db_string_equal_to('session_id', get_session_id());

@@ -63,7 +63,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
     require_code('cns_members_action2');
     require_code('form_templates');
 
-    $_lead_source_description = either_param_string('_lead_source_description', '');
+    $_lead_source_description = either_param_string('_lead_source_description', do_lang('JOINED'));
 
     $hidden = new Tempcode();
     $hidden->attach(build_keep_post_fields(($_lead_source_description == '') ? array() : array('_lead_source_description')));

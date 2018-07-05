@@ -31,12 +31,21 @@ class Hook_task_sugarcrm_sync_message
      * @param  array $body_parts Body parts
      * @param  string $body_prefix The prefix text to the e-mail body (blank: none)
      * @param  string $body_suffix The suffix text to the e-mail body (blank: none)
+     * @param  ?array $get Copy of GET parameters (null: don't set)
+     * @param  ?array $post Copy of POST parameters (null: don't set)
      * @return mixed A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message) (false: re-try later, no specific error message)
      */
-    public function run($subject, $body, $to_email, $to_name, $from_email, $from_name, $attachments, $body_parts, $body_prefix, $body_suffix)
+    public function run($subject, $body, $to_email, $to_name, $from_email, $from_name, $attachments, $body_parts, $body_prefix, $body_suffix, $get = null, $post = null)
     {
         if (!addon_installed('sugarcrm')) {
             return null;
+        }
+
+        if ($get !== null) {
+            $_GET = $get;
+        }
+        if ($post !== null) {
+            $_POST = $post;
         }
 
         require_code('sugarcrm');

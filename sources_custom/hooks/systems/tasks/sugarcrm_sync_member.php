@@ -22,12 +22,21 @@ class Hook_task_sugarcrm_sync_member
      * Run the task hook.
      *
      * @param  MEMBER Member ID
+     * @param  ?array $get Copy of GET parameters (null: don't set)
+     * @param  ?array $post Copy of POST parameters (null: don't set)
      * @return mixed A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message) (false: re-try later, no specific error message)
      */
-    public function run($member_id)
+    public function run($member_id, $get = null, $post = null)
     {
         if (!addon_installed('sugarcrm')) {
             return null;
+        }
+
+        if ($get !== null) {
+            $_GET = $get;
+        }
+        if ($post !== null) {
+            $_POST = $post;
         }
 
         require_code('sugarcrm');

@@ -53,7 +53,7 @@ class Hook_upon_query_sugarcrm
 
             require_code('tasks');
             $_title = do_lang('SUGARCRM_MEMBER_SYNC');
-            call_user_func_array__long_task($_title, null, 'sugarcrm_sync_member', array(intval($matches[1])), false, false, false);
+            call_user_func_array__long_task($_title, null, 'sugarcrm_sync_member', array(intval($matches[1]), $_GET, $_POST), false, false, false);
 
             return;
         }

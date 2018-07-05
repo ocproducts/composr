@@ -22,7 +22,7 @@
 				{+START,IF_NON_EMPTY,{POINTS}}
 					<tr><th class="de-th"><abbr title="{!LIFETIME_POINTS,{$NUMBER_FORMAT*,{$AVAILABLE_POINTS,{MEMBER_ID}}}}">{!POINTS}</abbr>:</th><td>{POINTS*}</td></tr>
 				{+END}
-				<tr><th class="de-th">{!JOINED}:</th><td>{JOIN_DATE*}</td></tr>
+				<tr><th class="de-th">{!JOIN_DATE}:</th><td>{JOIN_DATE*}</td></tr>
 				{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:galleries}}}
 					{+START,IF_PASSED,IP_ADDRESS}
 						<tr><th class="de-th">{!IP_ADDRESS}:</th><td>{$TRUNCATE_LEFT,{IP_ADDRESS},15,1}</td></tr>
