@@ -33,6 +33,7 @@ class template_no_unused_test_set extends cms_test_case
         }
 
         $exceptions = array(
+            'MAIL_RAW',
             'BLOCK_MAIN_MEMBERS',
             'BLOCK_MAIN_MEMBERS_COMPLEX',
             'CAPTCHA_LOOSE',

@@ -250,7 +250,7 @@ function read_addon_info($addon_name, $get_dependencies_on_this = false, $row = 
             $addon_info['dependencies_on_this'] = find_addon_dependencies_on($addon_name);
         }
 
-        $ADDON_INFO_CACHE[$addon] = $addon_info;
+        $ADDON_INFO_CACHE[$addon_name] = $addon_info;
 
         return $addon_info;
     }

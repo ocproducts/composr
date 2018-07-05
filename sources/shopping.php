@@ -537,17 +537,17 @@ function copy_shopping_cart_to_order()
             return $order['id'];
         }
     }
- 
-    // Clear out any previous unpaid & empty cart orders...
 
-    delete_pending_orders_for_current_user($order_id, 'cart');
- 
     // Insert order...
 
     $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_orders', $shopping_order + array('add_date' => time()), true);
     foreach ($shopping_order_details as $map) {
         $GLOBALS['SITE_DB']->query_insert('shopping_order_details', $map + array('p_order_id' => $order_id));
     }
+
+    // Clear out any previous unpaid & empty cart orders...
+
+    delete_pending_orders_for_current_user($order_id, 'cart');
 
     return $order_id;
 }

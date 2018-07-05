@@ -121,7 +121,6 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/trusted_sites_1.php',
             'sources/hooks/systems/config/trusted_sites_2.php',
             'sources/hooks/systems/config/page_after_login.php',
-            'sources/hooks/systems/config_categories/.htaccess',
             'sources/hooks/systems/config_categories/messages.php',
             'sources/hooks/systems/config_categories/user_interaction.php',
             'sources/hooks/systems/config_categories/index.html',

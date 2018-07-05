@@ -124,7 +124,7 @@ class Module_admin_shopping
             $this->title = get_screen_title('ORDER_DETAILS');
         }
 
-        if ($type == 'export_orders' || $action == '_export_orders') {
+        if ($type == 'export_orders' || $type == '_export_orders') {
             $this->title = get_screen_title('EXPORT_ORDER_LIST');
         }
 
