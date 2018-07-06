@@ -32,7 +32,7 @@
 							<form title="{!_ASSIGNED_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:unassign:ticket_id={ID}:member_id={_loop_key}}" method="post" class="inline vertical-alignment" autocomplete="off">
 								{$INSERT_SPAMMER_BLACKHOLE}
 
-								<button class="btn btn-primary btn-sm admin--delete3" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!REMOVE}</button>
+								<button class="btn btn-danger btn-sm" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!REMOVE}</button>
 							</form>
 						{+END}
 					</li>

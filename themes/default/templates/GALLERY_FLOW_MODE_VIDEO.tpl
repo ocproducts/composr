@@ -59,13 +59,14 @@
 					</tbody>
 				</table>
 
-				<ul class="horizontal-links associated-links-block-group">
+				<ul class="horizontal-links with-icons associated-links-block-group">
 					<li>
-						{+START,INCLUDE,ICON}
-							NAME=feedback/comment
-							ICON_SIZE=24
-						{+END}
-						<a href="{VIEW_URL*}">{$COMMENT_COUNT,images,{ID}}</a>
+						<a href="{VIEW_URL*}">
+							{+START,INCLUDE,ICON}
+								NAME=feedback/comment
+								ICON_SIZE=24
+							{+END}{$COMMENT_COUNT,images,{ID}}
+						</a>
 					</li>
 				</ul>
 

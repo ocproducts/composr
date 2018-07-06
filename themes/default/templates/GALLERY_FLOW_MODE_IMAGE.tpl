@@ -64,14 +64,15 @@
 					</tbody>
 				</table>
 
-				<ul class="horizontal-links associated-links-block-group">
+				<ul class="horizontal-links with-icons associated-links-block-group">
 					{+START,IF,{$ADDON_INSTALLED,recommend}}
 						<li>
-							{+START,INCLUDE,ICON}
-								NAME=file_types/email_link
-								SIZE=24
-							{+END}
-							<a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{FULL_URL},{$SITE_NAME}}}">{!SEND_AS_ECARD}</a>
+							<a href="{$PAGE_LINK*,:recommend:browse:subject={!ECARD_FOR_YOU_SUBJECT}:page_title={!SEND_AS_ECARD}:s_message={!ECARD_FOR_YOU,{$SELF_URL},{FULL_URL},{$SITE_NAME}}}">
+								{+START,INCLUDE,ICON}
+									NAME=file_types/email_link
+									SIZE=24
+								{+END}{!SEND_AS_ECARD}
+							</a>
 						</li>
 					{+END}
 					<li>

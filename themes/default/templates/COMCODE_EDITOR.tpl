@@ -14,13 +14,13 @@
 		<div class="posting-form-wrap-buttons">
 			{MICRO_BUTTONS}
 
-			<select id="f_face" name="f_face" class="form-control form-control-inline">
+			<select id="f_face" name="f_face" class="form-control form-control-sm form-control-inline">
 				<option value="/">[{!FONT}]</option>
 				{+START,LOOP,={$FONTS}}
 					<option value="{_loop_var*}" style="font-family: '{_loop_var;*}'">{_loop_var*}</option>
 				{+END}
 			</select>
-			<select id="f_size" name="f_size" class="form-control form-control-inline">
+			<select id="f_size" name="f_size" class="form-control form-control-sm form-control-inline">
 				<option value="">[{!SIZE}]</option>
 				{+START,IF,{$EQ,{$CONFIG_OPTION,wysiwyg_font_units},em}}
 					{+START,LOOP,0.8\,1\,1.5\,2\,2.5\,3\,4}
@@ -33,7 +33,7 @@
 					{+END}
 				{+END}
 			</select>
-			<select id="f_colour" name="f_colour" class="form-control form-control-inline">
+			<select id="f_colour" name="f_colour" class="form-control form-control-sm form-control-inline">
 				<option value="">[{!COLOUR}]</option>
 				<option value="black" style="color: black">{!BLACK}</option>
 				<option value="blue" style="color: blue">{!BLUE}</option>

@@ -911,42 +911,48 @@
         }
     };
     
-    // Implementation for [data-sticky-navbar]
-    // Hides navbar when scrolling down
+    // Implementation for [data-sticky-navbar="{ hideOnScroll: false|true }"]
+    // Hides navbar when scrolling downwards, shows it again when scrolled upwards
+    // Adds .is-scrolled class when the navbar is scrolled along
     $cms.behaviors.stickyNavbar = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-sticky-navbar]'), 'behavior.stickyNavbar');
             
             els.forEach(function (stickyNavbar) {
-                var lastScrollY = 0,
+                var options = $dom.data(stickyNavbar, 'stickyNavbar'),
+                    lastScrollY = 0,
                     navbarHeight = $dom.height(stickyNavbar),
                     movement = 0,
                     lastDirection = 0;
 
                 window.addEventListener('scroll', function () {
-                    var sy = window.scrollY, margin;
+                    stickyNavbar.classList.toggle('is-scrolled', window.scrollY > 0);
                     
-                    movement += sy - lastScrollY;
+                    if (options.hideOnScroll) {
+                        var sy = window.scrollY, margin;
 
-                    if (sy > lastScrollY) { // Scrolled down
-                        if (lastDirection !== 1) {
-                            movement = 0;
+                        movement += sy - lastScrollY;
+
+                        if (sy > lastScrollY) { // Scrolled down
+                            if (lastDirection !== 1) {
+                                movement = 0;
+                            }
+                            margin = -Math.min(Math.abs(movement), navbarHeight);
+                            stickyNavbar.style.marginTop = margin + 'px';
+
+                            lastDirection = 1;
+                        } else { // Scrolled up
+                            if (lastDirection !== -1) {
+                                movement = 0;
+                            }
+                            margin = Math.min(Math.abs(movement), navbarHeight) - navbarHeight;
+                            stickyNavbar.style.marginTop = margin + 'px';
+
+                            lastDirection = -1;
                         }
-                        margin = -Math.min(Math.abs(movement), navbarHeight);
-                        stickyNavbar.style.marginTop = margin + 'px';
 
-                        lastDirection = 1;
-                    } else { // Scrolled up
-                        if (lastDirection !== -1) {
-                            movement = 0;
-                        }
-                        margin = Math.min(Math.abs(movement), navbarHeight) - navbarHeight;
-                        stickyNavbar.style.marginTop = margin + 'px';
-
-                        lastDirection = -1;
+                        lastScrollY = sy;
                     }
-
-                    lastScrollY = sy;
                 });
             });
         }

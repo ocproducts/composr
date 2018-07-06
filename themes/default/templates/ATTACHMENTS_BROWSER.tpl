@@ -23,7 +23,7 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<input type="hidden" name="delete_{ID*}" value="1" />
-					<button data-cms-confirm-click="{!ARE_YOU_SURE_DELETE*}" type="submit" class="btn btn-primary btn-scri admin--delete3">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</button>
+					<button data-cms-confirm-click="{!ARE_YOU_SURE_DELETE*}" type="submit" class="btn btn-danger btn-scri">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</button>
 				</form>
 			{+END}
 		</div>

@@ -13,13 +13,13 @@
             options.balanceheight = false;
         }
 
-        var sliders = window.jQuery('#' + params.sliderId);
-        sliders.unslider(options);
+        var $sliderEl = window.jQuery('#' + params.sliderId);
+        $sliderEl.unslider(options);
 
-        sliders.on('swipeleft', function(e) {
-            unslider.prev();
-        }).on('swiperight', function(e) {
-            unslider.next();
+        $sliderEl.on('swipeleft', function() {
+            $sliderEl.unslider('prev');
+        }).on('swiperight', function() {
+            $sliderEl.unslider('next');
         });
 	};
 }(window.$cms));

@@ -974,7 +974,8 @@ span.validated-checkbox+input[name="validated"].input-tick {
 	border: 1px dotted {$GET,native_ui_foreground};
 }
 
-#wysiwyg-editor .comcode-fake-table > div, #wysiwyg-editor .fp-col-block {
+#wysiwyg-editor .comcode-fake-table > div, 
+#wysiwyg-editor .fp-col-block {
 	outline: 1px dotted;
 	margin: 1px 0;
 }

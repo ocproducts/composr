@@ -11,7 +11,7 @@
 		{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}{+START,IF_NON_EMPTY,{BUTTON_SCREENS}{ID}}
 			<div class="non-accessibility-redundancy cns-topic-buttons">
 				<div class="clearfix">
-					<div class="buttons-group cns-buttons-screen">
+					<div class="btn-row buttons-group cns-buttons-screen">
 						{+START,IF,{$NOT,{TICKET_FORUM}}}
 							{+START,INCLUDE,NOTIFICATION_BUTTONS}
 								NOTIFICATIONS_TYPE=cns_topic
@@ -78,54 +78,58 @@
 
 		{+START,IF,{$OR,{$IS_NON_EMPTY,{MODERATOR_ACTIONS}},{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}},{THREADED}}}
 			<div class="box cns-topic-control-functions{+START,IF,{$NOR,{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}},{THREADED}}} block-desktop{+END}"><div class="box-inner">
-				{+START,IF,{$DESKTOP}}<span class="field-name inline-desktop">{!CONTROL_FUNCTIONS}:</span>{+END}
-
 				{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}
-					<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz-field-sep-rightward" autocomplete="off">
+					<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" autocomplete="off">
 						{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
-
-						<div class="inline">
-							<label for="tma-type">{!TOPIC_ACTIONS}:</label>
-							<select class="form-control form-control-inline dropdown-actions" id="tma-type" name="type">
+						<label for="tma-type">{!TOPIC_ACTIONS}:</label>
+						<div class="input-group">
+							<select class="form-control form-control-sm dropdown-actions" id="tma-type" name="type">
 								<option value="browse">-</option>
 								{MODERATOR_ACTIONS}
-							</select><button class="btn btn-primary btn-sm buttons--proceed js-click-require-tma-type-selection" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+							</select>
+							<div class="input-group-append">
+								<button class="btn btn-primary btn-sm buttons--proceed js-click-require-tma-type-selection" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+							</div>
 						</div>
 					</form>
 				{+END}
 
 				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{MARKED_POST_ACTIONS}}
-						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz-field-sep-rightward block-desktop js-form-marked-post-actions" autocomplete="off">
+						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="display-desktop js-form-marked-post-actions" autocomplete="off">
 							{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
-
-							<div class="inline">
-								<label for="mpa-type">{!_MARKED_POST_ACTIONS}:</label>
-								<select id="mpa-type" name="type" class="form-control form-control-inline">
+							<label for="mpa-type">{!_MARKED_POST_ACTIONS}:</label>
+							<div class="input-group">
+								<select id="mpa-type" name="type" class="form-control form-control-sm">
 									{+START,IF,{$GT,{$SUBSTR_COUNT,{MARKED_POST_ACTIONS},<option},1}}
-										<option value="browse">-</option>
+									<option value="browse">-</option>
 									{+END}
 									{MARKED_POST_ACTIONS}
-								</select><button class="btn btn-primary btn-sm buttons--proceed js-click-check-marked-form-and-submit" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+								</select>
+								<div class="input-group-append">
+									<button class="btn btn-primary btn-sm buttons--proceed js-click-check-marked-form-and-submit" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+								</div>
 							</div>
 						</form>
 					{+END}
 				{+END}
 
 				{+START,IF,{THREADED}}
-					<form class="inline" action="{$SELF_URL*}" method="post" autocomplete="off">
+					<form action="{$SELF_URL*}" method="post" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
-
-						<div class="inline">
-							<label for="comments_sort">{!SORT}:</label>
-							<select id="comments_sort" name="comments_sort" class="form-control form-control-inline">
+					
+						<label for="comments_sort">{!SORT}:</label>
+						<div class="input-group">
+							<select id="comments_sort" name="comments_sort" class="form-control form-control-sm">
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE}</option>
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},newest}} selected="selected"{+END} value="newest">{!NEWEST_FIRST}</option>
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},oldest}} selected="selected"{+END} value="oldest">{!OLDEST_FIRST}</option>
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},average_rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
 								<option {+START,IF,{$EQ,{$_POST,comments_sort,oldest},compound_rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
 							</select>
-							<button type="submit" class="btn btn-primary btn-sm buttons--sort">{+START,INCLUDE,ICON}NAME=buttons/sort{+END} {!SORT}</button>
+							<div class="input-group-append">
+								<button type="submit" class="btn btn-primary btn-sm buttons--sort">{+START,INCLUDE,ICON}NAME=buttons/sort{+END} {!SORT}</button>
+							</div>
 						</div>
 					</form>
 				{+END}
@@ -141,7 +145,7 @@
 		{+START,IF_NON_EMPTY,{POSTS}}
 			<div class="clearfix cns-topic-buttons">
 				{+START,IF_NON_EMPTY,{BUTTON_SCREENS}{ID}}
-					<div class="buttons-group cns-buttons-screen">
+					<div class="btn-row buttons-group cns-buttons-screen">
 						{+START,IF,{$NOT,{TICKET_FORUM}}}
 							{+START,INCLUDE,NOTIFICATION_BUTTONS}
 								NOTIFICATIONS_TYPE=cns_topic

@@ -86,48 +86,49 @@
 	{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}
 		{+START,IF,{$DESKTOP}}
 			<div class="box cns-topic-actions block-desktop"><div class="box-inner">
-				<span class="field-name">
-					<label for="fma-type">{!TOPIC_ACTIONS}: </label>
-				</span>
-				<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline" autocomplete="off">
+				<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" autocomplete="off">
 					{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
-
-					<div class="inline">
-						<select class="form-control form-control-inline dropdown-actions" name="type" id="fma-type">
+					<label for="fma-type">{!TOPIC_ACTIONS}: </label>
+					<div class="input-group">
+						<select class="form-control form-control-sm dropdown-actions" name="type" id="fma-type">
 							<option value="browse">-</option>
 							{MODERATOR_ACTIONS}
-						</select><button class="btn btn-primary btn-sm buttons--proceed js-click-btn-add-form-marked-posts" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+						</select>
+						<div class="input-group-append">
+							<button class="btn btn-primary btn-sm buttons--proceed js-click-btn-add-form-marked-posts" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+						</div>
 					</div>
 				</form>
 
 				{+START,IF,{MAY_CHANGE_MAX}}
-					<form title="{!PER_PAGE}" class="inline" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab--pts{+END}" method="get" autocomplete="off">
+					<form title="{!PER_PAGE}" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab--pts{+END}" method="get" autocomplete="off">
 						{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},forum_max}
-
-						<div class="inline">
-							<label for="forum_max">{!PER_PAGE}:</label>
-							<select name="forum_max" id="forum_max" class="form-control form-control-inline js-select-change-submit-form">
+						
+						<label for="forum_max">{!PER_PAGE}:</label>
+						<div class="input-group">
+							<select name="forum_max" id="forum_max" class="form-control form-control-sm js-select-change-submit-form">
 								<option value="10"{$?,{$EQ,{MAX},10}, selected="selected",}>10</option>
 								<option value="20"{$?,{$EQ,{MAX},20}, selected="selected",}>20</option>
 								<option value="30"{$?,{$EQ,{MAX},30}, selected="selected",}>30</option>
 								<option value="50"{$?,{$EQ,{MAX},50}, selected="selected",}>50</option>
 								<option value="100"{$?,{$EQ,{MAX},100}, selected="selected",}>100</option>
 								<option value="300"{$?,{$EQ,{MAX},300}, selected="selected",}>300</option>
-							</select><button class="btn btn-primary btn-sm buttons--proceed js-click-btn-add-form-marked-posts" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+							</select>
+							<div class="input-group-append">
+								<button class="btn btn-primary btn-sm buttons--proceed js-click-btn-add-form-marked-posts" type="submit">{+START,INCLUDE,ICON}NAME=buttons/proceed{+END} {!PROCEED}</button>
+							</div>
 						</div>
 					</form>
 
-					<form title="{!PER_PAGE}" class="inline" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab--pts{+END}" method="get" autocomplete="off">
+					<form title="{!PER_PAGE}" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab--pts{+END}" method="get" autocomplete="off">
 						{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},max}
 
-						<div class="inline">
-							<label for="order">{!SORT}:</label>
-							<select class="form-control form-control-inline js-select-change-submit-form" name="order" id="order">
-								<option value="last_post"{$?,{$EQ,{ORDER},last_post}, selected="selected",}>{!FORUM_ORDER_BY_LAST_POST}</option>
-								<option value="first_post"{$?,{$EQ,{ORDER},first_post}, selected="selected",}>{!FORUM_ORDER_BY_FIRST_POST}</option>
-								<option value="title"{$?,{$EQ,{ORDER},title}, selected="selected",}>{!FORUM_ORDER_BY_TITLE}</option>
-							</select>
-						</div>
+						<label for="order">{!SORT}:</label>
+						<select class="form-control form-control-sm js-select-change-submit-form" name="order" id="order">
+							<option value="last_post"{$?,{$EQ,{ORDER},last_post}, selected="selected",}>{!FORUM_ORDER_BY_LAST_POST}</option>
+							<option value="first_post"{$?,{$EQ,{ORDER},first_post}, selected="selected",}>{!FORUM_ORDER_BY_FIRST_POST}</option>
+							<option value="title"{$?,{$EQ,{ORDER},title}, selected="selected",}>{!FORUM_ORDER_BY_TITLE}</option>
+						</select>
 					</form>
 				{+END}
 			</div></div>

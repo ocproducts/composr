@@ -37,7 +37,7 @@
 		{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}
 			<div class="non-accessibility-redundancy cns-forum-buttons">
 				<div class="clearfix">
-					<div class="buttons-group cns-buttons-screen">
+					<div class="btn-row buttons-group cns-buttons-screen">
 						{+START,IF_PASSED,ID}
 							{+START,INCLUDE,NOTIFICATION_BUTTONS}
 								NOTIFICATIONS_TYPE=cns_topic
@@ -57,7 +57,7 @@
 
 {+START,IF,{$NOT,{$WIDE_HIGH}}}
 	<div class="clearfix cns-forum-buttons">
-		<div class="buttons-group cns-buttons-screen">
+		<div class="btn-row buttons-group cns-buttons-screen">
 			{+START,IF_PASSED,ID}
 				{+START,INCLUDE,NOTIFICATION_BUTTONS}
 					NOTIFICATIONS_TYPE=cns_topic

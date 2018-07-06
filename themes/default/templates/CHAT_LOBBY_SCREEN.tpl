@@ -90,7 +90,7 @@
 										<button class="btn btn-primary btn-scri menu--social--chat--chat js-click-btn-im-start-ticked-people" type="button">{+START,INCLUDE,ICON}NAME=menu/social/chat/chat{+END} {!START_IM}</button>
 									{+END}
 									{+START,IF_NON_EMPTY,{URL_REMOVE_FRIENDS}}
-										<button data-click-pd="1" class="btn btn-primary btn-scri admin--delete3 js-click-btn-dump-friends-confirm" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DUMP_FRIENDS}</button>
+										<button data-click-pd="1" class="btn btn-danger btn-scri js-click-btn-dump-friends-confirm" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DUMP_FRIENDS}</button>
 									{+END}
 								</div>
 							</form>

@@ -157,9 +157,9 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#784612,slightly_seeded_complement_text,50% (seed hue_add 128) + 50% BW}
 
 /* Special colour for box titles */
-{$THEMEWIZARD_COLOR,#ffffff,box_title_text,100% WB}
-{$THEMEWIZARD_COLOR,#cccccc,box_title_text_hover,80% WB + 20% BW}
-{$THEMEWIZARD_COLOR,#2388ef,box_title_background,100% seed}
+{$THEMEWIZARD_COLOR,#212529,box_title_text,100% text_dark}
+{$THEMEWIZARD_COLOR,#1e74cb,box_title_text_hover,100% a.hover}
+{$THEMEWIZARD_COLOR,#ebebeb,box_title_background,100% main_2_background}
 {$THEMEWIZARD_COLOR,#6aaef5,box_title_background_2,68% seed + 32% WB}
 
 /* Special colour for code/quote boxes */
@@ -216,7 +216,7 @@ In mobile mode:
 {$SET,max_container_width,1366px}
 {$SET,border_radius,4px}
 
-{$SET,box_shadow_sm,0 2px 4px {$COLOR_RGBA,{$GET,BW},0.75}}
+{$SET,box_shadow_sm,0 2px 4px {$COLOR_RGBA,{$GET,BW},0.075}}
 {$SET,box_shadow,0 7px 14px {$COLOR_RGBA,{$GET,BW},0.15}}
 {$SET,box_shadow_lg,0 14px 42px {$COLOR_RGBA,{$GET,BW},0.175}}
 
@@ -924,9 +924,11 @@ img.icon {
 /*{+END}*/
 
 /* Cool effect to change how text selection looks; not valid CSS, but is safe */
-.website-body ::selection {
-	background-color: {$GET,yellow_highlight_background};
+::selection {
+	background-color: {$GET,seed};
+	color: {$GET,text_light};
 }
+
 comcode-{$REPLACE,\,,::selection \,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}}, tempcode ::selection {
 	background-color: {$GET,green_highlight_text};
 }
@@ -1121,9 +1123,8 @@ header.with-ad .global-banner + .logo-outer {
 	text-decoration: none;
 }
 
-header.with-sticky-navbar {
-	padding-top: 70px;
-	position: relative;
+header.with-combo-navbar {
+	color: {$GET,a.link};
 }
 
 header.with-combo-navbar .global-navigation {
@@ -1131,13 +1132,6 @@ header.with-combo-navbar .global-navigation {
 	background-color: {$GET,WB};
 }
 
-header.with-sticky-navbar .global-navigation {
-	position: fixed;
-	left: 0;
-	right: 0;
-	top: 0;
-	z-index: 100;
-}
 
 header.with-combo-navbar .col-logo {
 	flex: 0 0 auto;
@@ -1158,8 +1152,44 @@ header.with-combo-navbar .col-navigation {
 	margin-left: auto;
 }
 
-header.with-combo-navbar {
-	color: {$GET,a.link};
+header.with-sticky-navbar {
+	padding-top: 70px;
+	position: relative;
+}
+
+header.with-sticky-navbar .global-navigation {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	z-index: 100;
+}
+
+header.with-white-navbar .global-navigation.is-scrolled {
+	box-shadow: {$GET,box_shadow_sm};
+}
+
+header.with-white-navbar .menu-dropdown-item.toplevel:hover > a,
+header.with-white-navbar .menu-dropdown-item-a.toplevel-link:hover,
+header.with-white-navbar .menu-dropdown-item-a.toplevel-link:focus {
+	color: {$GET,a.hover};
+}
+
+header.with-seed-navbar .global-navigation {
+	color: {$GET,WB};
+	background: {$GET,seed};
+}
+
+header.with-seed-navbar .logo,
+header.with-seed-navbar .menu-dropdown-item-a.toplevel-link,
+header.with-seed-navbar .top-button {
+	color: {$GET,WB};
+}
+
+header.with-seed-navbar .menu-dropdown-item.toplevel:hover > a,
+header.with-seed-navbar .menu-dropdown-item-a.toplevel-link:hover,
+header.with-seed-navbar .menu-dropdown-item-a.toplevel-link:focus {
+	background: rgba(0, 0, 0, 0.05);
 }
 
 header.with-ad .global-navigation {
@@ -1217,8 +1247,12 @@ header.with-ad .global-navigation-inner {
 	color: inherit;
 }
 
-.top-button:hover {
+header.with-seed-navbar .top-button:hover {
 	background: rgba(0, 0, 0, 0.05);
+}
+
+header.with-white-navbar .top-button:hover {
+	color: {$GET,a.hover};
 }
 
 .top-button > .icon {
@@ -1341,7 +1375,10 @@ header.with-ad .global-navigation-inner {
 }
 
 .breadcrumbs {
-	font-weight: 500;
+}
+
+.breadcrumbs span {
+	vertical-align: middle;
 }
 
 .breadcrumbs .sep::after, .associated-breadcrumbs .sep::after {
@@ -1358,10 +1395,8 @@ header.with-ad .global-navigation-inner {
 	margin-right: 4px;
 	width: 24px;
 	height: 24px;
-}
-
-.breadcrumbs-img, .breadcrumbs span .breadcrumbs-img a {
-	vertical-align: middle;
+	vertical-align: bottom;
+	color: {$GET,a.link};
 }
 
 .title-tagline {
@@ -1699,7 +1734,6 @@ footer .global-minilinks .footer-links {
 
 /*{+START,CSS_MODE,desktop}*/
 	.footer-links > li::before {
-		vertical-align: -20%;
 		padding: 0 0.5em 0 0.1em;
 		content: "\00b7" !important; /* a &middot; */
 	}
@@ -2208,6 +2242,7 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	color: inherit;
 	margin: 0;
 	padding-top: 0;
+	border-bottom: none;
 }
 
 .box>.box-inner  {
@@ -2231,8 +2266,8 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 .toggleable-tray-title, 
 #standalone-html-wrap .box .box .box-inner>h2, 
 #standalone-html-wrap .box .box .box-inner>h3 {
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
+	border-top-left-radius: {$GET,border_radius};
+	border-top-right-radius: {$GET,border_radius};
 	background-color: {$GET,box_title_background};
 	color: {$GET,box_title_text};
 	text-align: center;
@@ -2242,8 +2277,9 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	letter-spacing: 0;
 
 	/* .box-inner set us in the wrong position, so fiddle around a bit to move us back to be flush */
-	margin: -11px -16px 0 -16px;
+	margin: -10px -15px 0 -15px;
 	padding: 0.5em 0.8em 0.5em 0.3em;
+	border-bottom: 1px solid {$GET,standard_border};
 }
 .box-inner>h1 + *, 
 .box-inner>h2 + *, 
@@ -2455,6 +2491,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 
 .toggleable-tray-title-heading {
 	min-height: 20px;
+	display: flex;
 }
 
 .toggleable-tray-title {
@@ -2690,6 +2727,15 @@ hr.spaced-rule {
 .inline {
 	display: inline;
 }
+
+.inline-flex {
+	display: inline-flex;
+}
+
+.flex {
+	display: flex;
+}
+
 .left {
 	float: left;
 }
@@ -3794,8 +3840,14 @@ div .post-buttons>*, div .buttons-group-faded>* {
 }
 
 .comments-posting-form-end {
-	overflow: hidden;
 }
+
+.comments-posting-form-end::after {
+	display: block;
+	clear: both;
+	content: "";
+}
+
 /*{+START,CSS_MODE,desktop}*//*{+START,IF,{$NOT,{!takes_lots_of_space}}}*/
 	.comments-posting-form-end {
 		margin: 0 0 1em 13.5em;
@@ -3804,13 +3856,19 @@ div .post-buttons>*, div .buttons-group-faded>* {
 
 .comments-posting-form-end .proceed-button.contains-preview-button {
 	text-align: left;
+	margin-left: 1em;
+	display: flex;
 }
 .comments-captcha {
 	margin-left: 14.5em !important;
 }
+
+.comments-posting-form-end .btn {
+	margin-right: 1em;
+}
+
 .comments-posting-form-end #submit-button.near-preview-button {
-	float: right;
-	margin-right: 1em !important;
+	margin-left: auto;
 }
 
 .comments-captcha {
@@ -4197,17 +4255,28 @@ ul.associated-link>li, .horizontal-meta-details>li, .horizontal-links>li, ul.hor
 ul.associated-link>li {
 	display: block !important; /* Undoes "display: inline" above */
 }
+
+ul.horizontal-links.with-icons li .icon {
+	margin-right: 0.3em;
+}
+
 ul.horizontal-links li img {
 	max-width: 20px;
 }
 ul.associated-link li img {
 	max-width: 14px;
 }
-ul.horizontal-links li img, ul.associated-link li img, ul.horizontal-links a, ul.horizontal-links form {
+ul.horizontal-links li img, 
+ul.associated-link li img, 
+ul.horizontal-links a, 
+ul.horizontal-links form {
 	vertical-align: middle;
 }
 /*{+START,CSS_MODE,mobile}*/
-	ul.horizontal-links li img, ul.associated-link li img, ul.horizontal-links a, ul.horizontal-links form {
+	ul.horizontal-links li img, 
+	ul.associated-link li img, 
+	ul.horizontal-links a, 
+	ul.horizontal-links form {
 		white-space: nowrap !important;
 	}
 /*{+END}*/
@@ -5556,11 +5625,17 @@ input[type="button"].btn-block {
 .btn-row {
 	display: flex;
 	margin: 0 -7px;
-	justify-content: space-between;
 }
 
 .btn-row .btn {
 	margin: 0 7px;
+}
+
+.btn-row-stretched {
+	justify-content: space-between;
+}
+
+.btn-row-stretched .btn {
 	flex-grow: 1;
 }
 
@@ -6535,15 +6610,14 @@ NB: Form buttons are wrapped in either:
 */
 
 
-.admin--delete3,
 .buttons-group .admin--edit,
 .buttons-group .admin--wiki-edit-tree,
 .buttons-group .admin--merge,
 .buttons-group .admin--move {
-	background-color: {$GET,required_background};
-	color: {$GET,slightly_seeded_text} !important;
-	text-shadow: none !important;
-	border-color: {$GET,red_highlight_text};
+	/*background-color: {$GET,required_background};*/
+	/*color: {$GET,slightly_seeded_text} !important;*/
+	/*text-shadow: none !important;*/
+	/*border-color: {$GET,red_highlight_text};*/
 }
 /*
 =========================
@@ -6783,9 +6857,6 @@ div:hover>.edit-menu-link-inline, div:hover>.edit-page-link-inline {
 
 .edit-menu-link-inline {
 	margin-left: -16px;
-}
-
-header.with-combo-navbar .edit-menu-link-inline {
 }
 
 .edit-page-link-inline {

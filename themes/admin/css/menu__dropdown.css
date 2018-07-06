@@ -13,7 +13,6 @@ For example:
 */
 
 .admin-navigation .menu-dropdown {
-	float: left;
 }
 
 .menu-dropdown-items {
@@ -54,6 +53,10 @@ For example:
 .menu-dropdown-item-popup {
 	border-bottom: 1px solid {$GET,standard_border};
 	background: {$GET,WB};
+}
+
+.menu-dropdown-item-a.toplevel-link {
+	font-weight: 500;
 }
 
 /*{+START,CSS_MODE,mobile}*/
@@ -135,9 +138,18 @@ For example:
 		display: none;
 	}
 	
-   .menu-dropdown-item.toplevel {
-       float: left;
-   }
+	.menu-dropdown-items-main {
+		display: flex;
+	}
+	
+	.menu-dropdown-item.toplevel {
+		border-right: 1px solid rgba(0,0,0,0.1);
+		flex-grow: 1;
+	}
+
+	.menu-dropdown-item.toplevel.first {
+		border-left: 1px solid rgba(0,0,0,0.1);
+	}
 
    .menu-dropdown-item-a {
        padding: 0.5em;
@@ -151,8 +163,20 @@ For example:
 	}
 
    .menu-dropdown-item-a.toplevel-link {
-       padding: 15px 2em;
+		padding: 15px 0;
+		text-align: center;
    }
+
+	.menu-dropdown-item-a.toplevel-link .menu-dropdown-item-icon {
+		text-align: center;
+		margin: 0.5em 0;
+		display: block;
+	}
+
+	.menu-dropdown-item-a.toplevel-link .menu-dropdown-item-icon .icon {
+		width: 24px;
+		height: 24px;
+	}
 
    .menu-dropdown-item.toplevel:hover > a,
    .menu-dropdown-item-a.toplevel-link:hover,

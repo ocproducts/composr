@@ -78,8 +78,7 @@ a.top-left-toggle .icon {
 .add-custom-task {
 	margin-top: 0.5em;
 	border: 1px solid {$GET,pale_border};
-	padding-top: 0.2em;
-	padding-bottom: 0.2em;
+	padding: 0.2em;
 	font-size: 0.9em;
 	overflow: hidden;
 }

@@ -60,7 +60,7 @@
 				{BUTTONS}
 
 				{+START,IF_NON_EMPTY,{COMCODE_HELP}{CHATCODE_HELP}}
-					<ul class="horizontal-links horiz-field-sep associated-links-block-group">
+					<ul class="horizontal-links with-icons horiz-field-sep associated-links-block-group">
 						{+START,IF_NON_EMPTY,{COMCODE_HELP}}
 							<li><a data-open-as-overlay="{}" class="link-exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_HELP*}">{+START,INCLUDE,ICON}NAME=editor/comcode{+END}</a></li>
 						{+END}

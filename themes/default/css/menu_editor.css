@@ -157,6 +157,6 @@ Branch layout (inner)
 	cursor: text !important;
 }
 
-.menu-editor-branch .admin--delete3 {
+.menu-editor-branch .btn-danger {
 	float: right;
 }

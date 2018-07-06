@@ -11,7 +11,7 @@
 		{TRACKBACKS}
 
 		<p class="proceed-button">
-			<button data-disable-on-click="1" class="btn btn-primary btn-scr admin--delete3" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</button>
+			<button data-disable-on-click="1" class="btn btn-danger btn-scr" type="submit">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</button>
 		</p>
 	</form>
 {+END}

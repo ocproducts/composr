@@ -19,8 +19,8 @@
 				</div>
 			{+END}
 
-			<ul class="horizontal-links bock-top-login-links">
-				{+START,IF_NON_EMPTY,{JOIN_URL}}<li><a href="{JOIN_URL*}">{+START,INCLUDE,ICON}NAME=menu/site_meta/user_actions/join{+END} {!_JOIN}</a></li>{+END}
+			<ul class="horizontal-links with-icons bock-top-login-links">
+				{+START,IF_NON_EMPTY,{JOIN_URL}}<li><a href="{JOIN_URL*}">{+START,INCLUDE,ICON}NAME=menu/site_meta/user_actions/join{+END}{!_JOIN}</a></li>{+END}
 				<li><a data-open-as-overlay="{}" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{+START,INCLUDE,ICON}NAME=menu/site_meta/user_actions/login{+END} {+START,IF,{$DESKTOP}}<span class="inline-desktop">{!OPTIONS}</span>{+END}<span class="inline-mobile">{!_LOGIN}</span></a></li>
 			</ul>
 		</form>

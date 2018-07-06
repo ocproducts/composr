@@ -155,12 +155,6 @@ For example:
 		padding: 24px 16px;
 	}
 
-	.menu-dropdown-item.toplevel:hover > a,
-	.menu-dropdown-item-a.toplevel-link:hover,
-	.menu-dropdown-item-a.toplevel-link:focus {
-		background: rgba(0, 0, 0, 0.05);
-	}
-
 	.menu-dropdown-item.toplevel.has-children > a::after {
 		font-family: sans-serif;
 		content: "\025BC"; /* Downward triangle */

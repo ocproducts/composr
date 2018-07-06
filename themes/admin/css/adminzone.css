@@ -13,15 +13,27 @@ header {
 	background-color: {$GET,seed};
 	color: {$GET,WB};
 	margin-bottom: 1em;
+	display: flex;
 }
 
-header::after {
-	display: block;
-	clear: both;
-	content: "";
+.logo-outer {
+	align-self: center;
+	margin: 0 25px;
+}
+
+.logo,
+.logo:hover {
+	color: {$GET,WB};
+	text-decoration: none;
+	font-size: 25px;	
 }
 
 /*{+START,CSS_MODE,desktop}*/
+	.admin-navigation {
+		flex-grow: 1;
+		max-width: {$GET,max_container_width};
+	}
+
 	.admin-navigation-inner {
 		display: none;
 	}

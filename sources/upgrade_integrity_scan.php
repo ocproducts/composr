@@ -640,7 +640,7 @@ function upgrader_addon_remove_screen()
     $out .= '<form action="upgrader.php?type=_addon_remove" method="post">';
     $out .= '<p><label for="addons">Addons to remove:</label><br /><textarea name="addons" id="addons" class="form-control" rows="10"></textarea>';
     $icon = do_template('ICON', array('NAME' => 'admin/delete3'));
-    $out .= '<button class="btn btn-primary btn-scr admin--delete3" type="submit">' . $icon->evaluate() . ' Remove addon files</button>';
+    $out .= '<button class="btn btn-danger btn-scr" type="submit">' . $icon->evaluate() . ' Remove addon files</button>';
     $out .= post_fields_relay();
     $out .= '</form>';
 

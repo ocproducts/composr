@@ -41,14 +41,15 @@
 
 			<hr />
 
-			<ul class="horizontal-links associated-links-block-group">
+			<ul class="horizontal-links with-icons associated-links-block-group">
 				<li>{SORTING}</li>
 				<li>
-					{+START,INCLUDE,ICON}
-						NAME=buttons/proceed
-						ICON_SIZE=24
-					{+END}
-					<a {+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!_SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{$PAGE_LINK*,_SELF:galleries:{FIRST_ENTRY_ID*}:slideshow=1:wide_high=1}">{!_SLIDESHOW}</a>
+					<a {+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!_SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{$PAGE_LINK*,_SELF:galleries:{FIRST_ENTRY_ID*}:slideshow=1:wide_high=1}">
+						{+START,INCLUDE,ICON}
+							NAME=buttons/proceed
+							ICON_SIZE=24
+						{+END}{!_SLIDESHOW}
+					</a>
 				</li>
 			</ul>
 

@@ -17,7 +17,7 @@
 					<p><input autocomplete="off" type="text" id="shoutbox-message" name="shoutbox_message" alt="{!MESSAGE}" class="form-control" /></p>
 				</div>
 
-				<div class="btn-row">
+				<div class="btn-row btn-row-stretched">
 					<button class="btn btn-primary btn-scri buttons--send js-click-btn-send-message" type="submit">{+START,INCLUDE,ICON}NAME=buttons/send{+END} Send</button>
 					<button class="btn btn-alternate btn-scri spare--8 js-click-btn-shake-screen" type="submit" title="Shake the screen of all active website visitors">{+START,INCLUDE,ICON}NAME=spare/8{+END} Shake</button>
 				</div>

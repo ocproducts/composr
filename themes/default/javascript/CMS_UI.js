@@ -369,7 +369,7 @@
             el.tooltipOn = true;
             tooltipEl.style.display = 'block';
             if ((tooltipEl.style.width === 'auto') && ((tooltipEl.children.length !== 1) || (tooltipEl.firstElementChild.localName !== 'img'))) {
-                tooltipEl.style.width = ($dom.width(tooltipEl) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
+                tooltipEl.style.width = (Math.min($dom.width(tooltipEl), 1024) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
             }
 
             if (!noDelay) {

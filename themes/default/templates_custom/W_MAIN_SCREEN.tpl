@@ -601,7 +601,7 @@
 
 						<label for="item">{!W_ITEMS}</label>: {ITEMS_OWNED} <input type="hidden" name="type" value="edititem" />
 						<button class="btn btn-primary btn-scri js-click-set-type-edititem admin--edit" type="submit">{+START,INCLUDE,ICON}NAME=admin/edit{+END} {!W_EDIT_ITEM}</button>
-						<button class="btn btn-primary btn-scri js-click-set-type-confirm admin--delete3" type="submit">{!W_DELETE_ITEM}</button>
+						<button class="btn btn-danger btn-scri js-click-set-type-confirm" type="submit">{!W_DELETE_ITEM}</button>
 					</div></form>
 
 					{+START,IF,{IS_STAFF}}

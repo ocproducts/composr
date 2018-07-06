@@ -39,7 +39,7 @@
 			{+END}
 		</a>
 
-		<button class="btn btn-primary btn-sm admin--delete3 horiz-field-sep js-click-delete-menu-branch" type="button" id="del_{I*}" name="del_{I*}">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</button>
+		<button class="btn btn-danger btn-sm horiz-field-sep js-click-delete-menu-branch" type="button" id="del_{I*}" name="del_{I*}">{+START,INCLUDE,ICON}NAME=admin/delete3{+END} {!DELETE}</button>
 	</div>
 
 	<div class="menu-editor-branch-indent" id="branch-{I*}-follow-1" style="{DISPLAY*}">

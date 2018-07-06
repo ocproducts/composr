@@ -114,7 +114,8 @@ This file defines styles for Conversr (abbreviated as CNS).
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.cns-forum-box-left {
+	.cns-forum-box-left,
+	.ocf-forum-box-left {
 		border-top-left-radius: 10px;
 	}
 	.cns-forum-box-right {
@@ -178,7 +179,7 @@ div.cns-table-footer>div>div {
 	.cns-buttons-screen {
 		text-align: right;
 		float: right;
-		margin: 1.5em 0 1.5em 1em !important;
+		margin: 1.5em -7px 1.5em 1em !important;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
@@ -271,7 +272,7 @@ div.cns-table-footer>div>div {
 }
 
 .cns-topic .cns-forum-box-left, .cns-post-details {
-	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
+	background-color: {$GET,box_title_background};
 	color: {$GET,box_title_text};
 }
 .cns-topic .cns-forum-box-left, .cns-post-details, .cns-post-details a, .cns-post-details a:hover {
@@ -446,6 +447,10 @@ div.cns-table-footer>div>div {
 	vertical-align: top;
 }
 
+.cns-post-main-column.buttons-group .btn {
+	margin-right: 10px;
+}
+
 /*{+START,CSS_MODE,desktop}*/
 	.cns-post-main-column.buttons-group {
 		padding: 1em;
@@ -517,19 +522,24 @@ hr.cns-sig-barrier {
 	}
 /*{+END}*/
 
+.cns-topic-control-functions form {
+	display: inline-flex;
+	margin-right: 1em;
+}
+
+.cns-topic-control-functions label {
+	margin-bottom: 0;
+	align-self: center;
+	padding-right: 1em;
+}
+
 .cns-topic-control-functions select {
 	max-width: 10.5em;
 }
 
-.cns-topic-control-functions label,
-.cns-topic-control-functions span,
-.cns-topic-control-functions input,
-.cns-topic-control-functions select {
-	vertical-align: middle;
-}
 
 /*{+START,CSS_MODE,mobile}*/
-	.cns-topic-control-functions .horiz-field-sep-rightward {
+	.cns-topic-control-functions form {
 		width: 100%;
 	}
 	.cns-topic-control-functions label {
@@ -547,14 +557,21 @@ hr.cns-sig-barrier {
 
 .cns-topic-actions {
 	margin: 1em 0;
-	font-size: 0.85em;
-}
-.cns-topic-actions div, .cns-topic-actions span, .cns-topic-actions label, .cns-topic-actions form {
-	vertical-align: middle;
-	display: inline-block;
 }
 
-.cns-topic-control-functions label, .cns-topic-actions label {
+.cns-topic-actions form {
+	display: inline-flex;
+	margin-right: 1em;
+}
+
+.cns-topic-actions label {
+	margin-bottom: 0;
+	align-self: center;
+	padding-right: 1em;
+}
+
+.cns-topic-control-functions label, 
+.cns-topic-actions label {
 	white-space: nowrap;
 }
 
@@ -600,12 +617,14 @@ hr.cns-sig-barrier {
 }
 
 .cns-forum-grouping-toggleable-tray-button {
-	float: right;
 	border-bottom: 0;
-	margin-left: 0.5em;
+	padding-left: 0.5em;
+	margin-left: auto;
+	align-self: center;
 }
 
 .cns-forum-grouping-toggleable-tray-button .toggleable-tray-button .icon {
+	color: {$GET,seed_alternate};
 	padding-right: 0 !important;
 }
 
