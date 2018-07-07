@@ -55,8 +55,10 @@ function cache_and_carry($func, $args, $timeout = null)
         $_ret = call_user_func_array($func, $args);
         require_code('files');
         if ($func == 'cms_http_request') {
-            $ret = array($_ret->data, $_ret->download_mime_type, $_ret->download_size, $_ret->download_url, $_ret->message, $_ret->message_b, $_ret->new_cookies, $_ret->filename, $_ret->charset, $_ret->download_mtime);
-            cms_file_put_contents_safe($path, serialize($ret), FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
+            if ($_ret->data !== null) {
+                $ret = array($_ret->data, $_ret->download_mime_type, $_ret->download_size, $_ret->download_url, $_ret->message, $_ret->message_b, $_ret->new_cookies, $_ret->filename, $_ret->charset, $_ret->download_mtime);
+                cms_file_put_contents_safe($path, serialize($ret), FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
+            }
         } else {
             $ret = is_string($_ret) ? $_ret : serialize($_ret);
             cms_file_put_contents_safe($path, $ret, FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
