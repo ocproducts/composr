@@ -204,13 +204,13 @@ For example:
 	.menu-dropdown-item.nlevel > a:focus, 
 	.menu-dropdown-item.nlevel:hover > a,
 	.menu-dropdown-item.nlevel.current > a {
-		background-color: {$GET,dropdown_menu_background_hover};
+		background-color: {$GET,dropdown_menu_item_background_hover};
 		color: {$GET,a.hover};
 	}
 
 	.menu-dropdown-item.nlevel > a, 
 	.menu-dropdown-item.nlevel .menu-spacer {
-		background-color: {$GET,dropdown_menu_background};
+		background-color: {$GET,dropdown_menu_item_background};
 		font-weight: normal;
 		border-bottom: 1px solid {$GET,standard_border};
 	}

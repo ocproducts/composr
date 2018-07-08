@@ -10,10 +10,11 @@ html>body#main-website {
 }
 
 header {
-	background-color: {$GET,seed};
-	color: {$GET,WB};
+	background-color: {$GET,WB};
+	color: {$GET,a.link};
 	margin-bottom: 1em;
 	display: flex;
+	border-bottom: 1px solid {$GET,standard_border};
 }
 
 .logo-outer {
@@ -23,7 +24,6 @@ header {
 
 .logo,
 .logo:hover {
-	color: {$GET,WB};
 	text-decoration: none;
 	font-size: 25px;	
 }

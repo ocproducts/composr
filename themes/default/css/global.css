@@ -68,7 +68,7 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#e3f0fd,fixed_width_background,11% (seed sat_to 100) + 89% WB}
 {$THEMEWIZARD_COLOR,#78b6f5,fixed_width_border,61% seed + 39% WB}
 {$THEMEWIZARD_COLOR,#ffffff,main_background,100% WB}
-{$THEMEWIZARD_COLOR,#ebebeb,main_2_background,92% WB + 8% BW}
+{$THEMEWIZARD_COLOR,#f2f2f2,main_2_background,95% WB + 5% BW}
 
 /* Colours to mirror UI conventions (i.e. non-thematic) */
 {$THEMEWIZARD_COLOR,#000000,native_ui_foreground,100% 000000}
@@ -159,8 +159,8 @@ In mobile mode:
 /* Special colour for box titles */
 {$THEMEWIZARD_COLOR,#212529,box_title_text,100% text_dark}
 {$THEMEWIZARD_COLOR,#1e74cb,box_title_text_hover,100% a.hover}
-{$THEMEWIZARD_COLOR,#ebebeb,box_title_background,100% main_2_background}
-{$THEMEWIZARD_COLOR,#6aaef5,box_title_background_2,68% seed + 32% WB}
+{$THEMEWIZARD_COLOR,#f2f2f2,box_title_background,100% main_2_background}
+{$THEMEWIZARD_COLOR,#5aa6f3,box_title_background_2,75% seed + 25% WB}
 
 /* Special colour for code/quote boxes */
 {$THEMEWIZARD_COLOR,#7bb8f5,code_title_background,60% seed + 40% WB}
@@ -169,8 +169,8 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#6aaef5,code_border,68% seed + 32% WB}
 
 /* Drop down menus should look 'above' the site */
-{$THEMEWIZARD_COLOR,#f8f8f8,dropdown_menu_background,100% f8f8f8}
-{$THEMEWIZARD_COLOR,#ffffff,dropdown_menu_background_hover,100% WB}
+{$THEMEWIZARD_COLOR,#f8f8f8,dropdown_menu_item_background,100% f8f8f8}
+{$THEMEWIZARD_COLOR,#ffffff,dropdown_menu_item_background_hover,100% WB}
 
 /* Global-level messages should stand out compared to other styling */
 {$THEMEWIZARD_COLOR,#ebe773,message_border,100% EBE773} /* Intentionally coloured on all themes */
@@ -671,15 +671,6 @@ textarea, input, code {
 	font-size: 1em;
 }
 
-/* Normally a browser default, but gets inherited on some phones */
-/*input[type="text"], input[type="password"], input[type="color"], input[type="email"], input[type="number"], input[type="range"], input[type="search"], input[type="tel"], input[type="url"], textarea, select {*/
-	/*background-color: {$GET,native_ui_background};*/
-	/*color: {$GET,native_ui_foreground};*/
-/*}*/
-/*input[type="text"]:disabled, input[type="password"]:disabled, input[type="color"]:disabled, input[type="email"]:disabled, input[type="number"]:disabled, input[type="range"]:disabled, input[type="search"]:disabled, input[type="tel"]:disabled, input[type="url"]:disabled, textarea:disabled, select:disabled {*/
-	/*color: gray;*/
-/*}*/
-
 h1, h2, h3 {
 	/*border-bottom: 1px solid {$GET,pale_border};*/
 }
@@ -731,9 +722,8 @@ th a, th a:hover, th a:visited, .fake-th a, .fake-th a:hover, .fake-th a:visited
 	color: {$GET,box_title_text};
 }
 thead>tr>th, .boxless-space .box>table>thead>tr>th, .pte-set-box .box>table>thead>tr>th {
-	background-color: {$GET,box_title_background};
-	color: {$GET,box_title_text};
-	background-repeat: repeat-x;
+	background-color: {$GET,box_title_background_2};
+	color: {$GET,text_light};
 }
 .light-table th, .light-table .fake-th, .light-table thead>tr>th, .light-table .boxless-space .box>table>thead>tr>th, .light-table .pte-set-box .box>table>thead>tr>th {
 	background-color: {$GET,area_6_background};
@@ -762,20 +752,6 @@ th.de-th {
 }
 th.de-th a, th.de-th a:hover, th.de-th a:visited {
 	color: {$GET,slightly_seeded_text};
-}
-
-hr {
-	height: 0;
-	border: 0;
-	border-bottom: 2px dotted {$GET,hr};
-}
-
-img {
-	border: 0; /* Some (older?) browsers imply a border for linked images */
-}
-
-blockquote {
-	margin: 1em 0;
 }
 
 iframe {
@@ -946,9 +922,6 @@ input.input-username::-webkit-calendar-picker-indicator {
 
 /* Consider .website-body as 'body': it is just we cannot put our styles directly on body because sometimes this gets used in things we should not mess with such as the WYSIWYG editors frame (which is #wysiwyg-editor) and e-mails */
 .website-body {
-	padding: 0 !important;
-	margin: 0;
-	color: {$GET,slightly_seeded_text};
 	background-color: {$GET,main_background};
 }
 
@@ -2301,7 +2274,6 @@ td>.comcode-quote:first-child, .fake-table-cell>.comcode-quote:first-child, .fak
 	margin: 0;
 	text-align: left;
 	font-size: 1.15em;
-	font-weight: normal;
 }
 
 .box-inner>h1 a, 
@@ -2345,12 +2317,13 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 
 /* If we want a box to stand out less, give it 'pale-box' */
 .pale-box.box, .pale-box .box {
-	border: 1px solid {$GET,pale_border} !important;
+	border: 1px solid {$GET,pale_border};
 }
 .pale-box.box h2, .pale-box .box h2, .pale-box.box h3, .pale-box .box h3 {
 	background-color: {$GET,point_of_interest_background} !important;
 	background-image: none;
-	color: {$GET,area_key_text} !important;
+	color: {$GET,area_key_text};
+	border-bottom: 1px solid {$GET,pale_border};
 }
 
 /* If you want to mark a region as box-less, wrap a div with class 'boxless-space' around it -- it'll invoke a very different kind of modern styling */
@@ -2380,42 +2353,12 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 .boxless-space .box>.box-inner>h5, 
 .boxless-space .box>.box-inner>h6, 
 .boxless-space .box>.toggleable-tray-title {
-	background: url('{$IMG_INLINE;,boxes/boxless_title_leadin_rightcomp}') no-repeat !important;
-	background-size: 18px 18px !important;
-	color: {$GET,slightly_seeded_right_complement_text} !important;
 	text-align: left;
-	font-size: 15px;
-	margin: 0.5em 0 !important;
-	font-family: Arial;
-	padding: 1px 0 2px 21px !important;
-	width: auto;
-	font-weight: bold;
 	text-transform: uppercase;
 	border-radius: 0;
+	padding-left: 0;
 }
-.global-side-panel .boxless-space .box>.box-inner>h1, 
-.global-side-panel .boxless-space .box>.box-inner>h2, 
-.global-side-panel .boxless-space .box>.box-inner>h3, 
-.global-side-panel .boxless-space .box>.box-inner>h4, 
-.global-side-panel .boxless-space .box>.box-inner>h5, 
-.global-side-panel .boxless-space .box>.box-inner>h6,
-.boxless-space .box .box>.box-inner>h1, 
-.boxless-space .box .box>.box-inner>h2, 
-.boxless-space .box .box>.box-inner>h3, 
-.boxless-space .box .box>.box-inner>h4, 
-.boxless-space .box .box>.box-inner>h5, 
-.boxless-space .box .box>.box-inner>h6 {
-	background: url('{$IMG_INLINE;,boxes/boxless_title_leadin_leftcomp}') no-repeat !important;
-	background-size: 18px 18px !important;
-	color: {$GET,slightly_seeded_left_complement_text} !important;
-}
-.global-side-panel .boxless-space .box>.box-inner>h1, 
-.global-side-panel .boxless-space .box>.box-inner>h2, 
-.global-side-panel .boxless-space .box>.box-inner>h3, 
-.global-side-panel .boxless-space .box>.box-inner>h4, 
-.global-side-panel .boxless-space .box>.box-inner>h5, 
-.global-side-panel .boxless-space .box>.box-inner>h6 {
-}
+
 .boxless-space .buttons-group, 
 .boxless-space .associated-links-block-group, 
 .boxless-space .media-box, .boxless-space .proceed-button {
@@ -3361,7 +3304,6 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 }
 .compacted-subbox-stream.less-compact .box-inner>h3 {
 	font-size: 1.3em;
-	margin-bottom: 1em;
 }
 
 .category-sorter {
@@ -4978,7 +4920,6 @@ input.magic-image-edit-link {
 	cursor: pointer;
 }
 
-
 a.btn.disabled,
 fieldset:disabled a.btn {
 	pointer-events: none;
@@ -5298,16 +5239,16 @@ btn-primary:not(:disabled):not(.disabled).active,
 }
 
 .btn-outline-primary {
-	color: #007bff;
+	color: {$GET,seed};
 	background-color: transparent;
 	background-image: none;
-	border-color: #007bff;
+	border-color: {$GET,seed};
 }
 
 .btn-outline-primary:hover {
 	color: {$GET,WB};
-	background-color: #007bff;
-	border-color: #007bff;
+	background-color: {$GET,seed};
+	border-color: {$GET,seed};
 }
 
 .btn-outline-primary:focus, .btn-outline-primary.focus {
@@ -5315,15 +5256,15 @@ btn-primary:not(:disabled):not(.disabled).active,
 }
 
 .btn-outline-primary.disabled, .btn-outline-primary:disabled {
-	color: #007bff;
+	color: {$GET,seed};
 	background-color: transparent;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled):active, .btn-outline-primary:not(:disabled):not(.disabled).active,
 .show > .btn-outline-primary.dropdown-toggle {
 	color: {$GET,WB};
-	background-color: #007bff;
-	border-color: #007bff;
+	background-color: {$GET,seed};
+	border-color: {$GET,seed};
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled):active:focus, .btn-outline-primary:not(:disabled):not(.disabled).active:focus,
@@ -5571,7 +5512,7 @@ btn-primary:not(:disabled):not(.disabled).active,
 
 .btn-link {
 	font-weight: 400;
-	color: #007bff;
+	color: {$GET,seed};
 	background-color: transparent;
 }
 
@@ -5847,7 +5788,7 @@ input[type="button"].btn-block {
 .dropdown-item.active, .dropdown-item:active {
 	color: #fff;
 	text-decoration: none;
-	background-color: #007bff;
+	background-color: {$GET,seed};
 }
 
 .dropdown-item.disabled, .dropdown-item:disabled {
@@ -6178,7 +6119,7 @@ input[type="button"].btn-block {
 
 .custom-control-input:checked ~ .custom-control-label::before {
 	color: #fff;
-	background-color: #007bff;
+	background-color: {$GET,seed};
 }
 
 .custom-control-input:focus ~ .custom-control-label::before {
@@ -6237,7 +6178,7 @@ input[type="button"].btn-block {
 }
 
 .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
-	background-color: #007bff;
+	background-color: {$GET,seed};
 }
 
 .custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
@@ -6245,7 +6186,7 @@ input[type="button"].btn-block {
 }
 
 .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
-	background-color: #007bff;
+	background-color: {$GET,seed};
 }
 
 .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::after {
@@ -6265,7 +6206,7 @@ input[type="button"].btn-block {
 }
 
 .custom-radio .custom-control-input:checked ~ .custom-control-label::before {
-	background-color: #007bff;
+	background-color: {$GET,seed};
 }
 
 .custom-radio .custom-control-input:checked ~ .custom-control-label::after {
@@ -6416,7 +6357,7 @@ input[type="button"].btn-block {
 	width: 1rem;
 	height: 1rem;
 	margin-top: -0.25rem;
-	background-color: #007bff;
+	background-color: {$GET,seed};
 	border: 0;
 	border-radius: 1rem;
 	-webkit-appearance: none;
@@ -6445,7 +6386,7 @@ input[type="button"].btn-block {
 .custom-range::-moz-range-thumb {
 	width: 1rem;
 	height: 1rem;
-	background-color: #007bff;
+	background-color: {$GET,seed};
 	border: 0;
 	border-radius: 1rem;
 	-moz-appearance: none;
@@ -6474,7 +6415,7 @@ input[type="button"].btn-block {
 .custom-range::-ms-thumb {
 	width: 1rem;
 	height: 1rem;
-	background-color: #007bff;
+	background-color: {$GET,seed};
 	border: 0;
 	border-radius: 1rem;
 	appearance: none;
