@@ -1053,19 +1053,6 @@ header h1 {
 	}
 /*{+END}*/
 
-header.with-ad .global-header-top {
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
-
-header.with-ad .global-header-top .col-logo {
-	align-self: flex-end;
-}
-
-header.with-ad .global-banner + .logo-outer {
-	margin-top: 0;
-}
-
 .text-banner {
 	width: 13.5em;
 	font-family: 'Arial', sans-serif;
@@ -1165,25 +1152,6 @@ header.with-seed-navbar .menu-dropdown-item-a.toplevel-link:focus {
 	background: rgba(0, 0, 0, 0.05);
 }
 
-header.with-ad .global-navigation {
-	background-color: {$GET,seed};
-	color: {$GET,WB};
-	min-height: 3.5em;
-}
-/*{+START,CSS_MODE,mobile}*/
-	header.with-ad .global-navigation {
-		position: relative;
-	}
-/*{+END}*/
-
-header.with-ad .global-navigation-inner {
-}
-/*{+START,CSS_MODE,mobile}*/
-	header.with-ad .global-navigation-inner {
-		margin-left: 8em !important; /* Space for the menu button, which is position:absolute */
-	}
-/*{+END}*/
-
 .global-navigation .menu-dropdown {
 	display: flex;
 	margin-right: 20px;
@@ -1193,12 +1161,6 @@ header.with-ad .global-navigation-inner {
 .global-navigation .top-form {
 	display: flex;
 }
-
-/*{+START,CSS_MODE,desktop}*/
-	header.with-ad .global-navigation .top-buttons {
-		margin-left: 1.5em;
-	}
-/*{+END}*/
 
 .top-button-wrapper {
 	display: flex;
@@ -1442,7 +1404,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	color: {$GET,slightly_seeded_gray_text};
 }
 
-.global-middle-faux>.global-side-panel {
+.global-middle-faux > .global-side-panel {
 	width: auto;
 }
 
@@ -6463,20 +6425,6 @@ input[type="button"].btn-block {
 .button-faded {
 	opacity: 0.5 !important;
 }
-
-/*.button-screen {*/
-	/*padding: 7px;*/
-/*}*/
-
-/*.button-screen-item {*/
-	/*padding: 5px 7px;*/
-	/*text-align: center;*/
-/*}*/
-
-/*.button-micro {*/
-	/*padding: 4px 6px;*/
-	/*font-size: 12px;*/
-/*}*/
 
 .buttons--previous-none,
 .buttons--next-none {
