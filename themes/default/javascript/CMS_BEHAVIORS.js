@@ -1020,6 +1020,524 @@
             }
         }
     };
+    
+    // Implementation for [data-ride="carousel"]
+    // Port of Bootstrap 4 Carousel http://getbootstrap.com/docs/4.1/components/carousel/
+    // Disables itself if Bootstrap version detected
+    $cms.behaviors.rideCarousel = {
+        attach: function (context) {
+            if (window.jQuery && window.jQuery.fn.carousel) {
+                // Bootstrap Carousel already loaded!
+                return;
+            }
+
+            var carousels = $util.once($dom.$$$(context, '[data-ride="carousel"]'), 'behavior.rideCarousel');
+
+            carousels.forEach(function (carousel) {
+                $dom.load.then(function () {
+                    $dom.Carousel._jQueryInterface.call([carousel], $dom.data(carousel));
+                });
+            });
+        }
+    };
+    
+    (function () {
+        var VERSION                = '4.1.1';
+        var DATA_KEY               = 'bs.carousel';
+        var EVENT_KEY              = '.' + DATA_KEY;
+        var DATA_API_KEY           = '.data-api';
+        var ARROW_LEFT_KEYCODE     = 37; // KeyboardEvent.which value for left arrow key
+        var ARROW_RIGHT_KEYCODE    = 39; // KeyboardEvent.which value for right arrow key
+        var TOUCHEVENT_COMPAT_WAIT = 500; // Time for mouse compat events to fire after touch
+
+        var Default = {
+            interval : 5000,
+            keyboard : true,
+            slide    : false,
+            pause    : 'hover',
+            wrap     : true
+        };
+
+        var Direction = {
+            NEXT     : 'next',
+            PREV     : 'prev',
+            LEFT     : 'left',
+            RIGHT    : 'right'
+        };
+
+        var Event = {
+            SLIDE          : 'slide' + EVENT_KEY,
+            SLID           : 'slid' + EVENT_KEY,
+            KEYDOWN        : 'keydown' + EVENT_KEY,
+            MOUSEENTER     : 'mouseenter' + EVENT_KEY,
+            MOUSELEAVE     : 'mouseleave' + EVENT_KEY,
+            TOUCHEND       : 'touchend' + EVENT_KEY,
+            LOAD_DATA_API  : 'load' + EVENT_KEY + DATA_API_KEY,
+            CLICK_DATA_API : 'click' + EVENT_KEY + DATA_API_KEY,
+        };
+
+        var ClassName = {
+            CAROUSEL : 'cms-carousel',
+            ACTIVE   : 'active',
+            SLIDE    : 'slide',
+            RIGHT    : 'cms-carousel-item-right',
+            LEFT     : 'cms-carousel-item-left',
+            NEXT     : 'cms-carousel-item-next',
+            PREV     : 'cms-carousel-item-prev',
+            ITEM     : 'cms-carousel-item'
+        };
+
+        var Selector = {
+            ACTIVE      : '.active',
+            ACTIVE_ITEM : '.active.cms-carousel-item',
+            ITEM        : '.cms-carousel-item',
+            NEXT_PREV   : '.cms-carousel-item-next, .cms-carousel-item-prev',
+            INDICATORS  : '.cms-carousel-indicators',
+            DATA_SLIDE  : '[data-slide], [data-slide-to]',
+            DATA_RIDE   : '[data-ride="carousel"]'
+        };
+
+        $dom.Carousel = Carousel;
+        /**
+         * @constructor Carousel
+         */
+        function Carousel(element, config) {
+            this._items              = null;
+            this._interval           = null;
+            this._intervalPassed     = 0;
+            this._progressInterval   = null;
+            this._activeElement      = null;
+
+            this._isPaused           = false;
+            this._isSliding          = false;
+
+            this.touchTimeout        = null;
+
+            this._config             = this._getConfig(config);
+            this._element            = element;
+            this._indicatorsElement  = this._element.querySelector(Selector.INDICATORS);
+
+            this._addEventListeners();
+        }
+
+        Carousel.VERSION = VERSION;
+        Carousel.Default = Default;
+
+        $util.properties(Carousel.prototype, /**@lends Carousel#*/{
+            // Public
+            next: function next() {
+                if (!this._isSliding) {
+                    this._slide(Direction.NEXT);
+                }
+            },
+
+            nextWhenVisible: function nextWhenVisible() {
+                // Don't call next when the page isn't visible
+                // or the carousel or its parent isn't visible
+                if (!document.hidden && ($dom.isVisible(this._element) && $dom.css(this._element, 'visibility') !== 'hidden')) {
+                    this.next();
+                }
+            },
+
+            prev: function prev() {
+                if (!this._isSliding) {
+                    this._slide(Direction.PREV);
+                }
+            },
+
+            pause: function pause(event) {
+                if (!event) {
+                    this._isPaused = true;
+                }
+
+                if (this._element.querySelector(Selector.NEXT_PREV)) {
+                    $dom.trigger(this._element, 'transitionend');
+                    this.cycle(true);
+                }
+
+                this._intervalPassed = 0;
+                this._element.style.removeProperty('--cms-carousel-progress-percentage');
+                clearInterval(this._interval);
+                clearInterval(this._progressInterval);
+                this._interval = null;
+                this._progressInterval = null;
+            },
+
+            cycle: function cycle(event) {
+                if (!event) {
+                    this._isPaused = false;
+                }
+
+                if (this._interval) {
+                    clearInterval(this._interval);
+                    this._interval = null;
+                }
+
+                if (this._progressInterval) {
+                    clearInterval(this._progressInterval);
+                    this._progressInterval = null;
+                    this._element.style.removeProperty('--cms-carousel-progress-percentage');
+                }
+                
+                if (this._config.interval && !this._isPaused) {
+                    var self = this;
+                    this._interval = setInterval(function () { self.nextWhenVisible(); }, this._config.interval);
+                    this._progressInterval = setInterval(function () {
+                        self._intervalPassed += 10;
+                        var progressPercentage = self._intervalPassed / self._config.interval;
+                        self._element.style.setProperty('--cms-carousel-progress-percentage', (progressPercentage * 100).toFixed(2) + '%');
+                    }, 10);
+                }
+            },
+
+            to: function to(index) {
+                var self = this;
+
+                this._activeElement = this._element.querySelector(Selector.ACTIVE_ITEM);
+
+                var activeIndex = this._getItemIndex(this._activeElement);
+
+                if (index > this._items.length - 1 || index < 0) {
+                    return;
+                }
+
+                if (this._isSliding) {
+                    $dom.one(this._element, Event.SLID, function () { self.to(index); });
+                    return;
+                }
+
+                if (activeIndex === index) {
+                    this.pause();
+                    this.cycle();
+                    return;
+                }
+
+                var direction = index > activeIndex ? Direction.NEXT : Direction.PREV;
+
+                this._slide(direction, this._items[index]);
+            },
+
+            dispose: function dispose() {
+                $dom.off(this._element, EVENT_KEY);
+                $dom.removeData(this._element, DATA_KEY);
+
+                this._items             = null;
+                this._config            = null;
+                this._element           = null;
+                this._interval          = null;
+                this._isPaused          = null;
+                this._isSliding         = null;
+                this._activeElement     = null;
+                this._indicatorsElement = null;
+            },
+
+            // Private
+
+            _getConfig: function _getConfig(config) {
+                config = $util.extend({}, Default, config);
+                return config;
+            },
+
+            _addEventListeners: function _addEventListeners() {
+                var self = this;
+
+                if (this._config.keyboard) {
+                    $dom.on(this._element, Event.KEYDOWN, function (event) { self._keydown(event); });
+                }
+
+                if (this._config.pause === 'hover') {
+                    $dom.on(this._element, Event.MOUSEENTER, function (event) { self.pause(event); });
+                    $dom.on(this._element, Event.MOUSELEAVE, function (event) { self.cycle(event); });
+
+                    if ('ontouchstart' in document.documentElement) {
+                        // If it's a touch-enabled device, mouseenter/leave are fired as
+                        // part of the mouse compatibility events on first tap - the carousel
+                        // would stop cycling until user tapped out of it;
+                        // here, we listen for touchend, explicitly pause the carousel
+                        // (as if it's the second time we tap on it, mouseenter compat event
+                        // is NOT fired) and after a timeout (to allow for mouse compatibility
+                        // events to fire) we explicitly restart cycling
+                        $dom.on(this._element, Event.TOUCHEND, function () {
+                            self.pause();
+                            if (self.touchTimeout) {
+                                clearTimeout(self.touchTimeout);
+                            }
+                            self.touchTimeout = setTimeout(function (event) { self.cycle(event); }, TOUCHEVENT_COMPAT_WAIT + self._config.interval);
+                        });
+                    }
+                }
+            },
+
+            _keydown: function _keydown(event) {
+                if (/input|textarea/i.test(event.target.tagName)) {
+                    return;
+                }
+
+                switch (event.which) {
+                    case ARROW_LEFT_KEYCODE:
+                        event.preventDefault();
+                        this.prev();
+                        break;
+                    case ARROW_RIGHT_KEYCODE:
+                        event.preventDefault();
+                        this.next();
+                        break;
+                    default:
+                }
+            },
+
+            _getItemIndex: function _getItemIndex(element) {
+                this._items = element && element.parentNode ? [].slice.call(element.parentNode.querySelectorAll(Selector.ITEM)) : [];
+                return this._items.indexOf(element);
+            },
+
+            _getItemByDirection: function _getItemByDirection(direction, activeElement) {
+                var isNextDirection = direction === Direction.NEXT;
+                var isPrevDirection = direction === Direction.PREV;
+                var activeIndex     = this._getItemIndex(activeElement);
+                var lastItemIndex   = this._items.length - 1;
+                var isGoingToWrap   = isPrevDirection && activeIndex === 0 ||
+                    isNextDirection && activeIndex === lastItemIndex;
+
+                if (isGoingToWrap && !this._config.wrap) {
+                    return activeElement;
+                }
+
+                var delta     = direction === Direction.PREV ? -1 : 1;
+                var itemIndex = (activeIndex + delta) % this._items.length;
+
+                return itemIndex === -1 ? this._items[this._items.length - 1] : this._items[itemIndex];
+            },
+
+            _triggerSlideEvent: function _triggerSlideEvent(relatedTarget, eventDirectionName) {
+                var targetIndex = this._getItemIndex(relatedTarget);
+                var fromIndex = this._getItemIndex(this._element.querySelector(Selector.ACTIVE_ITEM));
+                var slideEvent = $dom.createEvent(Event.SLIDE, {
+                    relatedTarget: relatedTarget,
+                    direction: eventDirectionName,
+                    from: fromIndex,
+                    to: targetIndex
+                });
+                
+                return $dom.trigger(this._element, slideEvent);
+            },
+
+            _setActiveIndicatorElement: function _setActiveIndicatorElement(element) {
+                if (this._indicatorsElement) {
+                    var indicators = [].slice.call(this._indicatorsElement.querySelectorAll(Selector.ACTIVE));
+                    indicators.forEach(function (indicator) {
+                        indicator.classList.remove(ClassName.ACTIVE);
+                    });
+
+                    var nextIndicator = this._indicatorsElement.children[this._getItemIndex(element)];
+
+                    if (nextIndicator) {
+                        nextIndicator.classList.add(ClassName.ACTIVE);
+                    }
+                }
+            },
+
+            _slide: function _slide(direction, element) {
+                var activeElement = this._element.querySelector(Selector.ACTIVE_ITEM);
+                var activeElementIndex = this._getItemIndex(activeElement);
+                var nextElement   = element || activeElement && this._getItemByDirection(direction, activeElement);
+                var nextElementIndex = this._getItemIndex(nextElement);
+                var isCycling = Boolean(this._interval);
+
+                var directionalClassName;
+                var orderClassName;
+                var eventDirectionName;
+
+                if (direction === Direction.NEXT) {
+                    directionalClassName = ClassName.LEFT;
+                    orderClassName = ClassName.NEXT;
+                    eventDirectionName = Direction.LEFT;
+                } else {
+                    directionalClassName = ClassName.RIGHT;
+                    orderClassName = ClassName.PREV;
+                    eventDirectionName = Direction.RIGHT;
+                }
+
+                if (nextElement && nextElement.classList.contains(ClassName.ACTIVE)) {
+                    this._isSliding = false;
+                    return;
+                }
+
+                var isDefaultPrevented = !this._triggerSlideEvent(nextElement, eventDirectionName);
+                
+                if (isDefaultPrevented) {
+                    return;
+                }
+
+                if (!activeElement || !nextElement) {
+                    // Some weirdness is happening, so we bail
+                    return;
+                }
+
+                this._isSliding = true;
+
+                if (isCycling) {
+                    this.pause();
+                }
+
+                this._setActiveIndicatorElement(nextElement);
+
+                var slidEvent = $dom.createEvent(Event.SLID, {
+                    relatedTarget: nextElement,
+                    direction: eventDirectionName,
+                    from: activeElementIndex,
+                    to: nextElementIndex
+                });
+
+                if (this._element.classList.contains(ClassName.SLIDE)) {
+                    this._intervalPassed = 0;
+                    nextElement.classList.add(orderClassName);
+
+                    Util.reflow(nextElement);
+                    activeElement.classList.add(directionalClassName);
+                    nextElement.classList.add(directionalClassName);
+
+                    var transitionDuration = Util.getTransitionDurationFromElement(activeElement);
+
+                    var self = this;
+                    $dom.one(activeElement, 'transitionend', function () {
+                        nextElement.classList.remove(directionalClassName);
+                        nextElement.classList.remove(orderClassName);
+                        nextElement.classList.add(ClassName.ACTIVE);
+
+                        activeElement.classList.remove(ClassName.ACTIVE);
+                        activeElement.classList.remove(orderClassName);
+                        activeElement.classList.remove(directionalClassName);
+
+                        self._isSliding = false;
+                        
+                        setTimeout(function () { $dom.trigger(self._element, slidEvent); }, 0);
+                    });
+
+                    setTimeout(function () {
+                        $dom.trigger(activeElement, 'transitionend');
+                    }, transitionDuration);
+                } else {
+                    activeElement.classList.remove(ClassName.ACTIVE);
+                    nextElement.classList.add(ClassName.ACTIVE);
+
+                    this._isSliding = false;
+                    $dom.trigger(this._element, slidEvent);
+                }
+
+                if (isCycling) {
+                    this.cycle();
+                }
+            }
+        });
+
+        Carousel._jQueryInterface = function _jQueryInterface(config) {
+            return this.forEach(function (el) {
+                var data = $dom.data(el, DATA_KEY);
+                var _config = $util.extend({}, Default, $dom.data(el));
+
+                if (typeof config === 'object') {
+                    _config = $util.extend({}, _config, config);
+                }
+
+                var action = typeof config === 'string' ? config : _config.slide;
+
+                if (!data) {
+                    data = new Carousel(el, _config);
+                    $dom.data(el, DATA_KEY, data);
+                }
+
+                if (typeof config === 'number') {
+                    data.to(config);
+                } else if (typeof action === 'string') {
+                    if (typeof data[action] === 'undefined') {
+                        throw new TypeError('No method named "' + action + '"');
+                    }
+                    data[action]();
+                } else if (_config.interval) {
+                    data.pause();
+                    data.cycle();
+                }
+            });
+        };
+
+        Carousel._dataApiClickHandler = function _dataApiClickHandler(event) {
+            var selector = Util.getSelectorFromElement(this);
+
+            if (!selector) {
+                return;
+            }
+
+            var target = document.querySelector(selector);
+
+            if (!target || !target.classList.contains(ClassName.CAROUSEL)) {
+                return;
+            }
+
+            var config = $util.extend({}, $dom.data(target), $dom.data(this));
+
+            var slideIndex = this.getAttribute('data-slide-to');
+
+            if (slideIndex) {
+                config.interval = false;
+            }
+
+            Carousel._jQueryInterface.call([target], config);
+
+            if (slideIndex) {
+                $dom.data(target, DATA_KEY).to(slideIndex);
+            }
+
+            event.preventDefault();
+        };
+
+        var Util = {
+            getSelectorFromElement: function getSelectorFromElement(element) {
+                var selector = element.getAttribute('data-target');
+                if (!selector || selector === '#') {
+                    selector = element.getAttribute('href') || '';
+                }
+
+                try {
+                    return document.querySelector(selector) ? selector : null;
+                } catch (err) {
+                    return null;
+                }
+            },
+
+            getTransitionDurationFromElement: function getTransitionDurationFromElement(element) {
+                if (!element) {
+                    return 0;
+                }
+
+                // Get transition-duration of the element
+                var transitionDuration = $dom.css(element, 'transition-duration');
+                var floatTransitionDuration = parseFloat(transitionDuration);
+
+                // Return 0 if element or transition duration is not found
+                if (!floatTransitionDuration) {
+                    return 0;
+                }
+
+                // If multiple durations are defined, take the first
+                transitionDuration = transitionDuration.split(',')[0];
+
+                return parseFloat(transitionDuration) * 1000;
+            },
+
+            reflow: function reflow(element) {
+                return element.offsetHeight;
+            }
+        };
+
+        /**
+         * ------------------------------------------------------------------------
+         * Data Api implementation
+         * ------------------------------------------------------------------------
+         */
+
+        $dom.on(document, Event.CLICK_DATA_API, Selector.DATA_SLIDE, Carousel._dataApiClickHandler);
+    }());
 
     function openLinkAsOverlay(options) {
         options = $util.defaults({

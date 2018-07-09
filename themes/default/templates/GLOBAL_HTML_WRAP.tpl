@@ -63,8 +63,42 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			</div>
 		</header>
 		{+END}
-		
-		
+
+		{+START,IF,{$MATCH_KEY_MATCH,:home}}
+			<div id="hero-carousel" class="cms-carousel slide cms-carousel-home-hero" data-ride="carousel">
+				<ol class="cms-carousel-indicators">
+					<li data-target="#hero-carousel" data-slide-to="0" class="active"></li>
+					<li data-target="#hero-carousel" data-slide-to="1"></li>
+					<li data-target="#hero-carousel" data-slide-to="2"></li>
+					<li data-target="#hero-carousel" data-slide-to="3"></li>
+				</ol>
+				<div class="cms-carousel-inner">
+					<div class="cms-carousel-item active">
+						<img style="display: block; width: 100%" src="https://loremflickr.com/1600/800?x=1" alt="First slide">
+					</div>
+					<div class="cms-carousel-item">
+						<img style="display: block; width: 100%" src="https://loremflickr.com/1600/800?x=2" alt="Second slide">
+					</div>
+					<div class="cms-carousel-item">
+						<img style="display: block; width: 100%" src="https://loremflickr.com/1600/800?x=3" alt="Third slide">
+					</div>
+					<div class="cms-carousel-item">
+						<img style="display: block; width: 100%" src="https://loremflickr.com/1600/800?x=4" alt="Fourth slide">
+					</div>
+				</div>
+				<a class="cms-carousel-control-prev" href="#hero-carousel" role="button" data-slide="prev">
+					<span class="cms-carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="cms-carousel-control-next" href="#hero-carousel" role="button" data-slide="next">
+					<span class="cms-carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+				<div class="cms-carousel-progress-bar">
+					<div class="cms-carousel-progress-bar-fill"></div>
+				</div>
+			</div>
+		{+END}
 
 		<div class="container">
 			{$,By default the top panel contains the admin menu, community menu, member bar, etc}
