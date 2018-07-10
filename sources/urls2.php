@@ -312,14 +312,22 @@ function _qualify_url($url, $url_base, $base_is_full_url)
  */
 function _convert_url_to_path($url)
 {
+    $url = preg_replace('#\?\d+$#', '', $url);
     if (strpos($url, '?') !== false) {
         return null;
     }
-    if ((strpos($url, '://') === false) || (substr($url, 0, strlen(get_base_url()) + 1) == get_base_url() . '/') || (substr($url, 0, strlen(get_custom_base_url()) + 1) == get_custom_base_url() . '/')) {
-        if (substr($url, 0, strlen(get_base_url()) + 1) == get_base_url() . '/') {
-            $file_path_stub = urldecode(substr($url, strlen(get_base_url()) + 1));
-        } elseif (substr($url, 0, strlen(get_custom_base_url()) + 1) == get_custom_base_url() . '/') {
-            $file_path_stub = urldecode(substr($url, strlen(get_custom_base_url()) + 1));
+    $url = str_replace('://www.', '://', $url);
+    $bu = str_replace('://www.', '://', get_base_url());
+    $cbu = str_replace('://www.', '://', get_custom_base_url());
+    if (
+        (strpos($url, '://') === false) ||
+        (substr($url, 0, strlen($bu) + 1) == $bu . '/') ||
+        (substr($url, 0, strlen($cbu) + 1) == $cbu . '/')
+    ) {
+        if (substr($url, 0, strlen($bu) + 1) == $bu . '/') {
+            $file_path_stub = urldecode(substr($url, strlen($bu) + 1));
+        } elseif (substr($url, 0, strlen($cbu) + 1) == $cbu . '/') {
+            $file_path_stub = urldecode(substr($url, strlen($cbu) + 1));
         } else {
             $file_path_stub = urldecode($url);
         }
