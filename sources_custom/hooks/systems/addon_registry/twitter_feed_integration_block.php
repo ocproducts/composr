@@ -143,7 +143,7 @@ First set up an app on Twitter, then use Comcode like:
             'lang_custom/EN/twitter_feed.ini',
             'sources_custom/blocks/twitter_feed.php',
             'themes/default/templates_custom/BLOCK_TWITTER_FEED.tpl',
-            'themes/default/templates_custom/BLOCK_TWITTER_FEED_STYLE.tpl',
+            'themes/default/templates_custom/BLOCK_TWITTER_FEED_TWEET.tpl',
             'themes/default/images_custom/twitter_feed/bird_black_16.png',
             'themes/default/images_custom/twitter_feed/bird_black_32.png',
             'themes/default/images_custom/twitter_feed/bird_black_48.png',
