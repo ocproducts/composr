@@ -499,7 +499,7 @@ class Forum_driver_base
 
         // Get from member setting
         require_code('permissions');
-        $theme = filter_naughty($this->_get_theme($member_id));
+        $theme = filter_naughty($this->_get_theme(false, $member_id));
         if (empty($theme)) { // Cleanup bad data
             $theme = '-1';
         }
