@@ -1,77 +1,69 @@
 <section class="box box___block_main_quotes"><div class="box_inner">
 	{+START,IF_NON_EMPTY,{TWITTER_TITLE}}<h3>{TWITTER_TITLE*}</h3>{+END}
+
 	{+START,IF_EMPTY,{TWITTER_ERROR}}
 		{+START,IF,{$EQ,{STYLE},1}}
-			{+START,BOX,@{USER_SCREEN_NAME*} Twitter Profile Details,,accordion,tray_open,,,}
-				<table width="100%">
-					<tr>
-						{+START,IF,{SHOW_PROFILE_IMAGE}}
-						<td style="text-align: center" width="56">
-							&nbsp;<img src="{USER_PROFILE_IMG_URL*}" />&nbsp;
-						</td>
-						<td style="background-color: rgb(204, 204, 204); padding: 0; width: 1px"></td>
-						{+END}
-						<td style="text-align: left">
-							<table width="100%">
-								<tr>
-									<td style="text-align: left">
-										<font size="+1"><b>{USER_NAME*}</b></font><br />
-										<b><a href="{USER_PAGE_URL*}" target="_blank">@{USER_SCREEN_NAME*}</a></b><br /><br />
-										{USER_DESCRIPTION*}<br /><br />
-										{USER_LOCATION*} &nbsp;&nbsp;&nbsp; <a href="{USER_URL*}" target="_blank">{USER_URL*}</a><br />
-										Joined on {$FROM_TIMESTAMP*,%d %B %Y\, %I:%M:%S %p,{$TO_TIMESTAMP*,{USER_CREATED_AT}}}
-									</td>
-									<td style="width: 8px"></td>
-									<td style="text-align: right;vertical-align: middle" nowrap>
-										{+START,IF,{$EQ,{FOLLOW_BUTTON_SIZE},1}}
-											{FOLLOW_BUTTON_NORMAL`}<br />
-										{+END}
-										{+START,IF,{$EQ,{FOLLOW_BUTTON_SIZE},2}}
-											{FOLLOW_BUTTON_LARGE`}<br />
-										{+END}
-										{+START,IF,{$EQ,{FOLLOW_BUTTON_SIZE},0}}
-											<img src="{$IMG*,{TWITTER_LOGO_IMG_CODE}}" />
-										{+END}
-										<br />
-										<font size="+1">{USER_STATUS_COUNT*}</font> Tweets<br />
-										<hr style='height:1px;' />
-										<font size="+1">{USER_FOLLOWING_COUNT*}</font> Following<br />
-										<hr style='height:1px;' />
-										<font size="+1">{USER_FOLLOWERS_COUNT*}</font> Followers<br />
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
+			{+START,IF_NON_EMPTY,{USER_SCREEN_NAME}}
+				{+START,BOX,@{USER_SCREEN_NAME*} Twitter Profile Details,accordion,,tray_open}
+					{+START,IF,{SHOW_PROFILE_IMAGE}}
+						<img style="float: left" alt="Profile image of @{USER_SCREEN_NAME*}" src="{USER_PROFILE_IMG_URL*}" />
+					{+END}
+
+					<div style="{+START,IF,{SHOW_PROFILE_IMAGE}}float:left; border-left: 1px solid #ccc; padding: 0; margin-left: 0.5em; padding-left: 0.5em; width: calc(100% - 48px - 1em - 1px);{+END}">
+						<div style="float: right; text-align: right; padding-left: 1em">
+							{+START,IF,{$EQ,{FOLLOW_BUTTON_SIZE},0}}
+								<img src="{$IMG*,{TWITTER_LOGO_IMG_CODE}}" />
+							{+END}
+							{+START,IF,{$EQ,{FOLLOW_BUTTON_SIZE},1}}
+								{FOLLOW_BUTTON_NORMAL`}<br />
+							{+END}
+							{+START,IF,{$EQ,{FOLLOW_BUTTON_SIZE},2}}
+								{FOLLOW_BUTTON_LARGE`}<br />
+							{+END}
+							<br />
+
+							<span style="font-size: 1.2em;">{USER_STATUS_COUNT*}</span> Tweets<br />
+							<hr style="height: 1px;" />
+							<span style="font-size: 1.2em;">{USER_FOLLOWING_COUNT*}</span> Following<br />
+							<hr style="height: 1px;" />
+							<span style="font-size: 1.2em;">{USER_FOLLOWERS_COUNT*}</span> Followers<br />
+						</div>
+
+						<div>
+							<span style="font-size: 1.2em;"><strong>{USER_NAME*}</strong></span><br />
+							<strong><a href="{USER_PAGE_URL*}" title="@{USER_SCREEN_NAME*} {!LINK_NEW_WINDOW}" target="_blank">@{USER_SCREEN_NAME*}</a></strong><br /><br />
+							{USER_DESCRIPTION`}<br /><br />
+							{USER_LOCATION*} &nbsp;&nbsp;&nbsp; <a href="{USER_URL*}" title="@{USER_SCREEN_NAME*} Home page {!LINK_NEW_WINDOW}" target="_blank">{USER_URL*}</a><br />
+							Joined on {$FROM_TIMESTAMP*,%d %B %Y\, %I:%M:%S %p,{$TO_TIMESTAMP*,{USER_CREATED_AT}}}
+						</div>
+					</div>
+				{+END}
 			{+END}
-			<div class="webstandards_checker_off">
-				{CONTENT`}
-			</div>
 		{+END}
 
-		{+START,IF,{$OR,{$EQ,{STYLE},2},{$EQ,{STYLE},3}}}
-			<div class="webstandards_checker_off">
-				{CONTENT`}
-			</div>
-		{+END}
-
-	{+END}
-
-	{+START,IF_NON_EMPTY,{TWITTER_ERROR}}
-		<div class="webstandards_checker_off">
-			{+START,IF,{$IS_STAFF}}
-			   <b>Twitter Name:</b> <a href='http://www.twitter.com/{USER_SCREEN_NAME&*}' target='_blank'>{USER_SCREEN_NAME*}</a><br />
-				<b>Error:</b> {TWITTER_ERROR`}<br />
-				You are seeing the block error message(s) because you are an admin.<br />
-				Normal web site guests and members won't see this.<br />
-			{+END}
-			{+START,IF,{$NOT,{$IS_ADMIN}}}
-				Sorry, we are experiencing technical difficulties with Twitter.<br />
-				Please check back later.<br />
-			{+END}
+		<div>
+			{CONTENT}
 		</div>
 	{+END}
 
+	{+START,IF_NON_EMPTY,{TWITTER_ERROR}}
+		<p class="webstandards_checker_off">
+			{+START,IF,{$IS_STAFF}}
+				{+START,IF_NON_EMPTY,{USER_SCREEN_NAME}}
+				   <strong>Twitter Name:</strong> <a href="http://www.twitter.com/{USER_SCREEN_NAME&*}" title="@{USER_SCREEN_NAME*} {!LINK_NEW_WINDOW}" target="_blank">{USER_SCREEN_NAME*}</a><br />
+				{+END}
+				<strong>Error:</strong> {TWITTER_ERROR`}<br />
+				You are seeing the block error message(s) because you are staff.<br />
+				Normal web site guests and members won't see this.
+			{+END}
+
+			{+START,IF,{$NOT,{$IS_STAFF}}}
+				Sorry, we are experiencing technical difficulties with Twitter.<br />
+				Please check back later.
+			{+END}
+		</p>
+	{+END}
+
+	{$,The JS here makes the tweet buttons nicer}
 	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 </div></section>
