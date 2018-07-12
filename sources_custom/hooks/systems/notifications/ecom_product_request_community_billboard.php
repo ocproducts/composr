@@ -27,7 +27,7 @@ class Hook_notification_ecom_product_request_community_billboard extends Hook_no
     public function list_handled_codes()
     {
         $list = array();
-        $list['community_billboard_request'] = array(do_lang('ecommerce:ECOMMERCE'), do_lang('community_billboard:NOTIFICATION_TYPE_community_billboard_request'));
+        $list['ecom_request_community_billboard'] = array(do_lang('ecommerce:ECOMMERCE'), do_lang('community_billboard:NOTIFICATION_TYPE_ecom_request_community_billboard'));
         return $list;
     }
 }
