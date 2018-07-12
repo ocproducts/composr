@@ -31,8 +31,9 @@ if ((strpos($script_name, '/sources/') !== false) || (strpos($script_name, '/sou
  *
  * @param  string $codename The codename for the source module to load (or a full relative path, ending with .php; if custom checking is needed, this must be the custom version)
  * @param  boolean $light_exit Whether to cleanly fail when a source file is missing
+ * @param  ?boolean $has_custom Whether this is going to be from under a custom directory (null: search). This is used for performance to avoid extra searching when we already know where a file is
  */
-function require_code($codename, $light_exit = false)
+function require_code($codename, $light_exit = false, $has_custom = null)
 {
     global $REQUIRED_CODE, $FILE_BASE, $SITE_INFO;
     if (isset($REQUIRED_CODE[$codename])) {
@@ -69,23 +70,29 @@ function require_code($codename, $light_exit = false)
             }
         }
         if (isset($CODE_OVERRIDES[$codename])) {
-            $has_custom = $CODE_OVERRIDES[$codename];
-            if ($has_custom) {
-                $has_custom = is_file($path_custom); // Double-check still there
+            if ($has_custom === null) {
+                $has_custom = $CODE_OVERRIDES[$codename];
+                if ($has_custom) {
+                    $has_custom = is_file($path_custom); // Double-check still there
+                }
             }
             $has_orig = $CODE_OVERRIDES['!' . $codename];
             if ($has_orig) {
                 $has_orig = is_file($path_orig); // Double-check still there
             }
         } else {
-            $has_custom = is_file($path_custom);
+            if ($has_custom === null) {
+                $has_custom = is_file($path_custom);
+            }
             $has_orig = is_file($path_orig);
             $CODE_OVERRIDES[$codename] = $has_custom;
             $CODE_OVERRIDES['!' . $codename] = $has_orig;
             persistent_cache_set('CODE_OVERRIDES', $CODE_OVERRIDES);
         }
     } else {
-        $has_custom = is_file($path_custom);
+        if ($has_custom === null) {
+            $has_custom = is_file($path_custom);
+        }
     }
 
     if ((isset($SITE_INFO['safe_mode'])) && ($SITE_INFO['safe_mode'] === '1')) {
@@ -101,7 +108,7 @@ function require_code($codename, $light_exit = false)
         }
         if (($path_custom !== $path_orig) && ($has_orig)) {
             $orig = str_replace(array('?' . '>', '<' . '?php'), array('', ''), file_get_contents($path_orig));
-            $a = file_get_contents($path_custom);
+            $a = str_replace(array('?' . '>', '<' . '?php'), array('', ''), file_get_contents($path_custom));
 
             if ((strpos($codename, '.php') === false) || (strpos($a, 'class Mx_') === false)/*Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined*/) {
                 $functions_before = get_defined_functions();
@@ -109,7 +116,7 @@ function require_code($codename, $light_exit = false)
                 if (HHVM) {
                     hhvm_include($path_custom); // Include our custom
                 } else {
-                    include($path_custom); // Include our custom
+                    include($path_custom);/*eval($a); would break opcode cache benefits*/ // Include our custom
                 }
                 $functions_after = get_defined_functions();
                 $classes_after = get_declared_classes();
@@ -159,7 +166,7 @@ function require_code($codename, $light_exit = false)
                     if (HHVM) {
                         hhvm_include($path_orig);
                     } else {
-                        include($path_orig);
+                        include($path_orig);/*eval($orig); would break opcode cache benefits*/;
                     }
                 } else {
                     //static $log_file = null; if ($log_file === null) $log_file = fopen(get_file_base() . '/log.' . strval(time()) . '.txt', 'wb'); flock($log_file, LOCK_EX); fwrite($log_file, $path_orig . "\n"); flock($log_file, LOCK_UN);      Good for debugging errors in eval'd code
@@ -190,7 +197,7 @@ function require_code($codename, $light_exit = false)
                     if (HHVM) {
                         hhvm_include($path_orig);
                     } else {
-                        include($path_orig);
+                        include($path_orig);/*eval($orig); would break opcode cache benefits*/;
                     }
                 }
                 if (isset($_GET['keep_show_parse_errors'])) {
@@ -211,7 +218,7 @@ function require_code($codename, $light_exit = false)
                     if (HHVM) {
                         hhvm_include($path_custom);
                     } else {
-                        include($path_custom);
+                        include($path_custom);/*eval($a); would break opcode cache benefits*/;
                     }
                 }
             }

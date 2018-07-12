@@ -1327,6 +1327,8 @@ class Module_purchase
         }
 
         if ($subtype == 'cancel') {
+            delete_pending_orders_for_current_user();
+
             if ($message !== null) {
                 $result = do_template('ECOM_PURCHASE_STAGE_FINISH', array(
                     '_GUID' => '859c31e8f0f02a2a46951be698dd22cf',

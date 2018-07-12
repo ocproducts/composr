@@ -68,6 +68,11 @@ function init__minikernel()
     @header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
     @header('Cache-Control: no-cache, max-age=0');
     @header('Pragma: no-cache'); // for proxies, and also IE
+
+    if (get_param_integer('keep_debug_fs', 0) != 0) {
+        require_code('debug_fs');
+        enable_debug_fs();
+    }
 }
 
 /**
@@ -947,6 +952,18 @@ function simulated_wildcard_match($context, $word, $full_cover = false)
     }
 
     return preg_match('#' . str_replace('#', '\#', $rexp) . '#i', $context) != 0;
+}
+
+/**
+ * Check to see if caching is enabled.
+ *
+ * @param  string $type Cache type
+ * @set block lang comcode_page template
+ * @return boolean Whether it has the caching
+ */
+function has_caching_for($type)
+{
+    return true;
 }
 
 /**

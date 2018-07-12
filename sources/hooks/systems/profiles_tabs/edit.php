@@ -67,7 +67,12 @@ class Hook_profiles_tabs_edit
         require_lang('cns');
         require_css('cns');
 
+        require_code('form_templates');
+
         $GLOBALS['NO_QUERY_LIMIT'] = true;
+
+        global $SKIPPING_LABELS;
+        $SKIPPING_LABELS = true;
 
         $order = 200;
 

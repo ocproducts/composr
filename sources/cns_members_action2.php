@@ -602,7 +602,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
             }
             //$fields->attach(form_input_tick(do_lang_tempcode('AUTO_NOTIFICATION_CONTRIB_CONTENT'), do_lang_tempcode('DESCRIPTION_AUTO_NOTIFICATION_CONTRIB_CONTENT'), 'auto_monitor_contrib_content', $auto_monitor_contrib_content == 1));  Now on notifications tab, even though it is technically an account setting
             $usergroup_list = new Tempcode();
-            $lgroups = $GLOBALS['CNS_DRIVER']->get_usergroup_list(true, true);
+            $lgroups = $GLOBALS['CNS_DRIVER']->get_usergroup_list(true, true, false, null, null, true);
             foreach ($lgroups as $key => $val) {
                 if ($key != db_get_first_id()) {
                     $usergroup_list->attach(form_input_list_entry(strval($key), ($pt_allow == '*') || count(array_intersect(array(strval($key)), explode(',', $pt_allow))) != 0, $val));

@@ -27,9 +27,10 @@ class Hook_content_meta_aware_wiki_page
      * Get content type details. Provides information to allow task reporting, randomisation, and add-screen linking, to function.
      *
      * @param  ?ID_TEXT $zone The zone to link through to (null: autodetect).
+     * @param  boolean $get_extended_data Populate additional data that is somewhat costly to compute (add_url, archive_url).
      * @return ?array Map of award content-type info (null: disabled).
      */
-    public function info($zone = null)
+    public function info($zone = null, $get_extended_data = false)
     {
         return array(
             'support_custom_fields' => true,
@@ -62,8 +63,8 @@ class Hook_content_meta_aware_wiki_page
             'view_page_link_pattern' => '_SEARCH:wiki:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_wiki:edit_page:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:wiki:browse:_WILD',
-            'add_url' => (function_exists('has_submit_permission') && has_submit_permission('cat_low', get_member(), get_ip_address(), 'cms_wiki')) ? (get_module_zone('cms_wiki') . ':cms_wiki:add_page') : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('wiki')) . ':wiki',
+            'add_url' => ($get_extended_data && function_exists('has_submit_permission') && has_submit_permission('cat_low', get_member(), get_ip_address(), 'cms_wiki')) ? (get_module_zone('cms_wiki') . ':cms_wiki:add_page') : null,
+            'archive_url' => $get_extended_data ? (((!is_null($zone)) ? $zone : get_module_zone('wiki')) . ':wiki') : null,
 
             'support_url_monikers' => false,
 

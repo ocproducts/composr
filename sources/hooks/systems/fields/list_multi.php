@@ -239,7 +239,7 @@ class Hook_fields_list_multi extends ListFieldHook
 
         $tmp_name = 'field_' . strval($field['id']);
 
-        if ((fractional_edit()) && (is_null(post_param_string('require__' . $tmp_name, null)))) {
+        if ((fractional_edit()) && (is_null(post_param_string('require__' . $tmp_name, null))) && (is_null(post_param_string('label_for__' . $tmp_name, null)))) {
             return STRING_MAGIC_NULL; // Was not on UI
         }
 

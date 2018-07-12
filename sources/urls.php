@@ -640,7 +640,7 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
         $URL_MONIKERS_ENABLED_CACHE = url_monikers_enabled();
     }
     if ($URL_MONIKERS_ENABLED_CACHE) {
-        $test = find_id_moniker($vars, $zone_name);
+        $test = find_id_moniker($vars, $zone_name, false);
         if ($test !== null) {
             if (substr($test, 0, 1) === '/') { // relative to zone root
                 $parts = explode('/', substr($test, 1), 3);
@@ -931,7 +931,7 @@ function url_is_local($url)
         return true;
     }
     $first_char = $url[0];
-    return (strpos($url, '://') === false) && ($first_char !== '{') && (substr($url, 0, 7) !== 'mailto:') && (substr($url, 0, 5) !== 'data:') && ($first_char !== '%');
+    return (strpos($url, '://') === false) && ($first_char !== '{') && (substr($url, 0, 7) !== 'mailto:') && (substr($url, 0, 5) !== 'data:') && (substr($url, 0, 8) !== 'debugfs:') && ($first_char !== '%');
 }
 
 /**
@@ -1261,9 +1261,10 @@ function load_moniker_hooks()
  *
  * @param  array $url_parts The URL component map (must contain 'page', 'type', and 'id' if this function is to do anything).
  * @param  ID_TEXT $zone The URL zone name (only used for Comcode Page URL monikers).
+ * @param  boolean $search_redirects Whether to consider that the page may have been redirected. We'll generally set this to false when linking, as we know that redirects will be considered elsewhere in the stack anyway.
  * @return ?string The moniker ID (null: could not find)
  */
-function find_id_moniker($url_parts, $zone)
+function find_id_moniker($url_parts, $zone, $search_redirects = true)
 {
     if (!isset($url_parts['page'])) {
         return null;
@@ -1284,7 +1285,7 @@ function find_id_moniker($url_parts, $zone)
         load_moniker_hooks();
     }
     if (!array_key_exists('id', $url_parts)) {
-        if (@is_file(get_file_base() . '/' . $zone . '/pages/modules/' . $page . '.php')) {// Wasteful of resources
+        if (($page != 'start'/*TODO: Change in v11*/) && (@is_file(get_file_base() . '/' . $zone . (($zone == '') ? '' : '/') . 'pages/modules/' . $page . '.php'))) { // Wasteful of resources
             return null;
         }
         if (($zone == '') && (get_option('collapse_user_zones') == '1')) {
@@ -1297,10 +1298,12 @@ function find_id_moniker($url_parts, $zone)
         if (!function_exists('_request_page')) {
             return null; // In installer
         }
-        $page_place = _request_page(str_replace('-', '_', $page), $zone);
-        if ($page_place[0] == 'REDIRECT') {
-            $page = $page_place[1]['r_to_page'];
-            $zone = $page_place[1]['r_to_zone'];
+        if ($search_redirects) {
+            $page_place = _request_page(str_replace('-', '_', $page), $zone);
+            if ($page_place[0] == 'REDIRECT') {
+                $page = $page_place[1]['r_to_page'];
+                $zone = $page_place[1]['r_to_zone'];
+            }
         }
 
         $url_parts['type'] = '';

@@ -99,22 +99,19 @@ class Block_main_staff_website_monitoring
 
         require_code('files');
         $p = array();
-        $result = http_download_file('http://data.alexa.com/data?cli=10&dat=s&url=' . urlencode($url), null, false, false, 'Composr', null, null, null, null, null, null, null, null, 1.0);
-        if (preg_match('#<POPULARITY [^<>]*TEXT="([0-9]+){1,}"#si', $result, $p) != 0) {
+        $_url = 'https://www.alexa.com/minisiteinfo/' . urlencode($url);
+        $result = http_download_file($_url, null, false, false, 'Composr', null, null, null, null, null, null, null, null, 1.0);
+        if (preg_match('#([\d,]+)\s*</a>\s*</div>\s*<div class="label">Alexa Traffic Rank#s', $result, $p) != 0) {
             $rank = integer_format(intval($p[1]));
         } else {
             $rank = do_lang('NA');
         }
-        if (preg_match('#<LINKSIN [^<>]*NUM="([0-9]+){1,}"#si', $result, $p) != 0) {
+        if (preg_match('#([\d,]+)\s*</a>\s*</div>\s*<div class="label">Sites Linking In#s', $result, $p) != 0) {
             $links = integer_format(intval($p[1]));
         } else {
             $links = '0';
         }
-        if (preg_match('#<SPEED [^<>]*PCT="([0-9]+){1,}"#si', $result, $p) != 0) {
-            $speed = 'Top ' . integer_format(100 - intval($p[1])) . '%';
-        } else {
-            $speed = '?';
-        }
+        $speed = '?';
 
         // we would like, but cannot get (without an API key)...
         /*

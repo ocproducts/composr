@@ -41,18 +41,20 @@
 		var data=[];
 		{+START,LOOP,NEWS}
 			{+START,SET,layout}
-				<h3><a href="{URL*`}">{TITLE`}</a></h3>
+				{+START,IF_NON_EMPTY,{TITLE}}
+					<h3><a href="{URL*`}">{TITLE`}</a></h3>
+				{+END}
 
 				<div class="meta_details" role="note">
 					<ul class="meta_details_list">
 						<li>{!POSTED_TIME_SIMPLE,{DATE*`}}</li>
 						{+START,SET,author_details}
-							{+START,IF,{$IS_NON_EMPTY,{AUTHOR_URL}}}
+							{+START,IF_NON_EMPTY,{AUTHOR_URL}}
 								{!BY_SIMPLE,<a href="{AUTHOR_URL*`}" title="{!AUTHOR`}: {AUTHOR*`}">{AUTHOR*`}</a>}
-								{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
+								{+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={$AUTHOR_MEMBER,{AUTHOR}}{+END}
 							{+END}
 
-							{+START,IF,{$IS_EMPTY,{AUTHOR_URL}}}
+							{+START,IF_EMPTY,{AUTHOR_URL}}
 								{+START,IF_NON_EMPTY,{$USERNAME*,{SUBMITTER}}}
 									{!BY_SIMPLE,<a rel="author" href="{$MEMBER_PROFILE_URL*`,{SUBMITTER}}">{$USERNAME*`,{SUBMITTER}}</a>}
 									{+START,INCLUDE,MEMBER_TOOLTIP}{+END}

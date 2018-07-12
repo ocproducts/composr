@@ -110,7 +110,9 @@ function cache_and_carry($func, $args, $timeout = null)
         require_code('files');
         if ($func == 'http_download_file') {
             $ret = array($_ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME);
-            cms_file_put_contents_safe($path, serialize($ret), FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
+            if ($_ret !== null) {
+                cms_file_put_contents_safe($path, serialize($ret), FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
+            }
         } else {
             $ret = is_string($_ret) ? $_ret : serialize($_ret);
             cms_file_put_contents_safe($path, $ret, FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS);
