@@ -219,6 +219,7 @@ class SugarWrapper
                     'user_name' => $this->username,
                     'password' => $password
                 ),
+                'application' => 'Composr / ' . get_site_name(),
                 'name_value_list' => array(
                     array(
                         'name' => 'notifyonsave',
@@ -499,8 +500,8 @@ class SugarWrapper
      * @param array $values the data of the record to be set in the form:
      * <pre>
      * array(
-     *     'id' => 'some value',
-     *     'field_name' => 'some other value'
+     *     array('name' => 'id', 'value' => 'some value',
+     *     array('name' => 'field_name', 'value' => 'some other value',
      * )
      * </pre>
      * @return array

@@ -83,16 +83,9 @@ function get_or_create_sugarcrm_account($company, $timestamp = null)
         $timestamp = time();
     }
 
-    $response = $SUGARCRM->get(
-        'Accounts',
-        array('id'),
-        array(
-            'where' => 'name=\'' . db_escape_string($company) . '\'',
-        )
-    );
-    if (isset($response[0])) {
-        $account_id = $response[0];
-    } else {
+    $account_id = get_sugarcrm_account($company);
+
+    if ($account_id === null) {
         $account_map = array(
             array('name' => 'name', 'value' => $company),
             array('name' => 'date_entered', 'value' => timestamp_to_sugarcrm_date_string($timestamp)),
@@ -105,6 +98,23 @@ function get_or_create_sugarcrm_account($company, $timestamp = null)
         $account_id = $response['id'];
     }
     return $account_id;
+}
+
+function get_sugarcrm_account($company)
+{
+    global $SUGARCRM;
+
+    $response = $SUGARCRM->get(
+        'Accounts',
+        array('id'),
+        array(
+            'where' => 'name=\'' . db_escape_string($company) . '\'',
+        )
+    );
+    if (isset($response[0])) {
+        return $response[0];
+    }
+    return null;
 }
 
 function get_sugarcrm_contact($email_address, $account_id = null)
@@ -183,14 +193,7 @@ function save_composr_account_into_sugarcrm_as_configured($member_id, $timestamp
     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
     $email_address = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
 
-    require_code('cns_members');
-    $_cpfs = cns_get_all_custom_fields_match_member($member_id);
-    $cpfs = array();
-    foreach ($_cpfs as $cpf_title => $cpf) {
-        if ($cpf_title != do_lang('cns:SMART_TOPIC_NOTIFICATION')) {
-            $cpfs[$cpf_title] = $cpf['RAW'];
-        }
-    }
+    $cpfs = read_composr_cpfs($member_id);
 
     $posted_data = $_POST + $_GET + $_COOKIE;
 
@@ -199,6 +202,10 @@ function save_composr_account_into_sugarcrm_as_configured($member_id, $timestamp
     $sync_types = get_option('sugarcrm_member_sync_types');
 
     $contact_id = null;
+
+    if (in_array($sync_types, array('contacts', 'both', 'both_guarded'))) {
+        $contact_id = save_account_into_sugarcrm($member_id, $member_mappings, $username, null, null, $email_address, $cpfs, $posted_data, $timestamp);
+    }
 
     if (in_array($sync_types, array('leads', 'leads_guarded', 'both', 'both_guarded'))) {
         // User metadata
@@ -213,10 +220,6 @@ function save_composr_account_into_sugarcrm_as_configured($member_id, $timestamp
         $data = array(do_lang('AUTOMATIC_NOTE') => $body) + $cpfs;
 
         save_message_into_sugarcrm('leads', $member_mappings, '', $body, $email_address, $username, $attachments, $data, $posted_data, $timestamp, strpos($sync_types, '_guarded') !== false);
-    }
-
-    if (in_array($sync_types, array('contacts', 'both', 'both_guarded'))) {
-        $contact_id = save_account_into_sugarcrm($member_mappings, $username, null, null, $email_address, $cpfs, $posted_data, $timestamp);
     }
 
     return $contact_id;
@@ -259,20 +262,22 @@ function save_message_into_sugarcrm($sync_type, $mappings, $subject, $body, $fro
         }
     }
 
-    // Find Contact (no auto-creation, will link to contact manually set up in SugarCRM or from a joined member - by binding to e-mail address as a key - or just won't find one which is fine)
-    $contact_details = get_sugarcrm_contact($from_email);
-
     // Find company name
     if (empty($data_extended['company'])) {
-        if ($contact_details === null) {
-            $company = get_option('sugarcrm_default_company');
-        } else {
-            $company = $contact_details['account_name'];
-        }
+        $company = get_option('sugarcrm_default_company');
     } else {
         $company = $data_extended['company'];
     }
     unset($data['company']);
+
+    // Find Contact (we will link to contact manually set up in SugarCRM or from a joined member - by binding to e-mail address as a key - or just won't find one which is fine, no auto-creation)
+    $account_id = get_sugarcrm_account($company);
+    if ($sync_type == 'leads') {
+        $contact_details = get_sugarcrm_contact($from_email, $account_id);
+        if (($contact_details === null) && ($account_id !== null)) {
+            $contact_details = get_sugarcrm_contact($from_email); // Okay, we don't need to be so specific
+        }
+    }
 
     // Name fields
     list($first_name, $last_name) = deconstruct_long_name($from_name);
@@ -283,11 +288,9 @@ function save_message_into_sugarcrm($sync_type, $mappings, $subject, $body, $fro
     );
     switch ($sync_type) {
         case 'cases':
-            // Find/create Account
-            if ($contact_details === null) {
+            // Create Account if needed
+            if ($account_id === null) {
                 $account_id = get_or_create_sugarcrm_account($company, $timestamp);
-            } else {
-                $account_id = $contact_details['account_id'];
             }
 
             $sugarcrm_data += array(
@@ -394,6 +397,15 @@ function save_message_into_sugarcrm($sync_type, $mappings, $subject, $body, $fro
     );
     $entity_id = $response['id'];
 
+    // Create relationship between Contact (if exists) and Lead 
+    if ($sync_type == 'leads') {
+        if (($from_email != '') && ($contact_details !== null)) {
+            $contact_id = $contact_details['id'];
+            sugarcrm_log_action('set_relationship', array('Contacts', $contact_id, 'leads', array($entity_id)));
+            $SUGARCRM->set_relationship('Contacts', $contact_id, 'leads', array($entity_id));
+        }
+    }
+
     // Create Contact underneath Case (for Lead it is part of the main set of Lead fields)
     if (($sync_type == 'cases') && ($last_name != '')) {
         $sugarcrm_data = array(
@@ -471,7 +483,7 @@ function sugarcrm_log_action($action_type, $params)
     }
 }
 
-function save_account_into_sugarcrm($mappings, $username, $first_name, $last_name, $email_address, $data, $posted_data, $timestamp = null)
+function save_account_into_sugarcrm($member_id, $mappings, $username, $first_name, $last_name, $email_address, $data, $posted_data, $timestamp = null)
 {
     global $SUGARCRM;
 
@@ -503,6 +515,8 @@ function save_account_into_sugarcrm($mappings, $username, $first_name, $last_nam
     // Find/create Contact
     $contact_details = get_sugarcrm_contact($email_address, $account_id);
     if ($contact_details === null) {
+        $metadata_field = get_option('sugarcrm_contact_metadata_field');
+
         $sugarcrm_data = array(
             'account_id' => array('name' => 'account_id', 'value' => $account_id),
             'date_entered' => array('name' => 'date_entered', 'value' => timestamp_to_sugarcrm_date_string($timestamp)),
@@ -516,6 +530,12 @@ function save_account_into_sugarcrm($mappings, $username, $first_name, $last_nam
 
             'lead_source' => array('name' => 'lead_source', 'value' => $lead_source),
         );
+
+        if ($metadata_field != '') {
+            require_code('user_metadata_display');
+            $metadata_url = generate_secure_user_metadata_display_url($member_id);
+            $sugarcrm_data[$metadata_field] = $metadata_url;
+        }
 
         foreach ($mappings as $_mapping) {
             if (strpos($_mapping, '=') !== false) {
@@ -553,4 +573,69 @@ function save_account_into_sugarcrm($mappings, $username, $first_name, $last_nam
 function or_unknown($str)
 {
     return empty($str) ? do_lang('UNKNOWN') : $str;
+}
+
+function sync_contact_metadata_into_sugarcrm()
+{
+    $metadata_field = get_option('sugarcrm_contact_metadata_field');
+    if ($metadata_field == '') {
+        // Not configured
+        return;
+    }
+
+    $company_field = get_option('sugarcrm_composr_company_field');
+
+    global $SUGARCRM;
+
+    require_code('user_metadata_display');
+
+    // Find all local members with an e-mail address
+    $sql = 'SELECT id,m_email_address FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . db_string_not_equal_to('m_email_address', '') . ' ORDER BY id';
+    $start = 0;
+    $max = 100;
+    do {
+        $rows = $GLOBALS['FORUM_DB']->query($sql, $max, $start);
+
+        foreach ($rows as $row) {
+            // For each member, write the metadata URL into SugarCRM
+
+            $cpfs = read_composr_cpfs($row['id']);
+            $company = isset($cpfs[$company_field]) ? $cpfs[$company_field] : get_option('sugarcrm_default_company');
+            $account_id = get_sugarcrm_account($company);
+            $contact_details = get_sugarcrm_contact($row['m_email_address'], $account_id);
+            if (($contact_details === null) && ($account_id !== null)) {
+                $contact_details = get_sugarcrm_contact($row['m_email_address']); // Okay, we don't need to be so specific
+            }
+
+            if ($contact_details !== null) {
+                $metadata_url = generate_secure_user_metadata_display_url($row['id']);
+
+                $sugarcrm_data = array(
+                    array('name' => 'id', 'value' => $contact_details['id']),
+                    array('name' => $metadata_field, 'value' => $metadata_url),
+                );
+                sugarcrm_log_action('Contacts', array(array_values($sugarcrm_data)));
+                $response = $SUGARCRM->set(
+                    'Contacts',
+                    array_values($sugarcrm_data)
+                );
+            }
+        }
+
+        $max += 100;
+    }
+    while (count($rows) == $max);
+}
+
+function read_composr_cpfs($member_id)
+{
+    require_code('cns_members');
+    $_cpfs = cns_get_all_custom_fields_match_member($member_id);
+    $cpfs = array();
+    foreach ($_cpfs as $cpf_title => $cpf) {
+        if ($cpf_title != do_lang('cns:SMART_TOPIC_NOTIFICATION')) {
+            $cpfs[$cpf_title] = $cpf['RAW'];
+        }
+    }
+    return $cpfs;
 }

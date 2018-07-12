@@ -264,9 +264,10 @@ function save_user_metadata($include_referer = false, $member_id = null)
  *
  * @param  boolean $include_referer Whether to include the referer
  * @param  ?MEMBER $member_id Member to lookup (null: current user)
+ * @param  boolean $advanced Whether to include advanced data
  * @return array Data
  */
-function find_user_metadata($include_referer = true, $member_id = null)
+function find_user_metadata($include_referer = true, $member_id = null, $advanced = false)
 {
     if ($member_id === null) {
         $member_id = get_member();
@@ -345,13 +346,15 @@ function find_user_metadata($include_referer = true, $member_id = null)
         $data['~' . do_lang('LOCATION')] = $region;
     }
 
-    $data[do_lang('URL')] = get_self_url_easy(true);
+    if ((running_script('index')) || (running_script('form_to_email'))) {
+        $data[do_lang('URL')] = get_self_url_easy(true);
+    }
 
     if (addon_installed('stats')) {
         $history = array();
         $sql = 'SELECT date_and_time,the_page,s_get,title,member_id,ip,session_id,referer,browser,operating_system ';
         $sql .= 'FROM ' . get_table_prefix() . 'stats WHERE ';
-        $sql .= db_string_equal_to('ip', $ip);
+        $sql .= db_string_equal_to('ip', $ip) . ' AND member_id=' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id());
         if (!is_guest($member_id)) {
             $sql .= ' OR member_id=' . strval($member_id);
         }
@@ -361,6 +364,7 @@ function find_user_metadata($include_referer = true, $member_id = null)
             $pages2 = $GLOBALS['SITE_DB']->query($sql . ' ORDER BY date_and_time ASC', 50);
             $pages = array_merge($pages, array(null), array_reverse($pages2));
         }
+
         $l_date_time = do_lang('DATE_TIME', null, null, null, get_site_default_lang());
         $l_url = do_lang('URL', null, null, null, get_site_default_lang());
         $l_title = do_lang('TITLE', null, null, null, get_site_default_lang());
@@ -370,6 +374,9 @@ function find_user_metadata($include_referer = true, $member_id = null)
         $l_referer = do_lang('REFERER', null, null, null, get_site_default_lang());
         $l_browser = do_lang('USER_AGENT', null, null, null, get_site_default_lang());
         $l_os = do_lang('USER_OS', null, null, null, get_site_default_lang());
+
+        $first_browser = null;
+
         foreach ($pages as $myrow) {
             if ($myrow === null) {
                 $history[] = array('_' => do_lang('TOO_MANY_PAGES_LOGGED', null, null, null, get_site_default_lang()));
@@ -393,19 +400,38 @@ function find_user_metadata($include_referer = true, $member_id = null)
 
             $h[$l_title] = $myrow['title'];
 
-            $h[$l_member_id] = '#' . strval($myrow['member_id']);
+            if ($myrow['member_id'] != $member_id) {
+                if (is_guest($myrow['member_id'])) {
+                    $h[$l_member_id] = do_lang('GUEST');
+                } else {
+                    $h[$l_member_id] = '#' . strval($myrow['member_id']);
+                }
+            }
 
-            $h[$l_ip_address] = $myrow['ip'];
+            if ($myrow['ip'] != $ip) {
+                $h[$l_ip_address] = $myrow['ip'];
+            }
 
-            $h[$l_session_id] = $myrow['session_id'];
+            if ($advanced) {
+                $h[$l_session_id] = $myrow['session_id'];
+            }
 
-            $h[$l_referer] = $myrow['referer'];
+            if ($myrow['referer'] != '') {
+                $h[$l_referer] = $myrow['referer'];
+            }
 
-            $h[$l_browser] = $myrow['browser'];
+            $this_browser = preg_replace('#\d#', '', $myrow['browser'] . ' ' . $myrow['operating_system']);
+            if (($first_browser === null) || ($first_browser != $this_browser)) {
+                $h[$l_browser] = $myrow['browser'];
 
-            $h[$l_os] = $myrow['operating_system'];
+                $h[$l_os] = $myrow['operating_system'];
+            }
 
             $history[] = $h;
+
+            if ($first_browser === null) {
+                $first_browser = $this_browser;
+            }
         }
         $data[do_lang('HISTORY')] = $history;
     }

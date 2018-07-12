@@ -206,7 +206,7 @@ class Curl
             CURLOPT_NOBODY => $this->method === static::HEAD,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_USERAGENT => $this->userAgent,
-            CURLOPT_SSL_VERIFYPEER => false
+            CURLOPT_SSL_VERIFYPEER => false,
         );
 
         if (!in_array($this->method, [static::GET, static::HEAD, static::POST])) {
