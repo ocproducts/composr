@@ -55,7 +55,7 @@
 		{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$CONFIG_OPTION,enable_previews}}
 			<button class="button-screen buttons--preview js-click-do-form-preview" id="preview-button" accesskey="p" tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button">{+START,INCLUDE,ICON}NAME=buttons/preview{+END} {!PREVIEW}</button>
 		{+END}{+END}
-		<button class="button-screen js-click-do-form-submit"{+START,IF_NON_PASSED_OR_FALSE,SECONDARY_FORM} id="submit-button" accesskey="u"{+END} tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button">{+START,INCLUDE,ICON}NAME={SUBMIT_ICON}{+END} {SUBMIT_NAME*}</button>
+		<button class="button-screen js-click-do-form-submit"{+START,IF_NON_PASSED_OR_FALSE,SECONDARY_FORM}{+START,IF_NON_PASSED,BUTTON_ID} id="submit-button"{+END} accesskey="u"{+END}{+START,IF_PASSED,BUTTON_ID} id="{BUTTON_ID*}"{+END} tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button">{+START,INCLUDE,ICON}NAME={SUBMIT_ICON}{+END} {SUBMIT_NAME*}</button>
 	</p>
 
 	{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$CONFIG_OPTION,enable_previews}}

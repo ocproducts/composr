@@ -231,10 +231,10 @@
     };
 
     $cms.functions.hookProfilesTabsEditDeleteRenderTab = function hookProfilesTabsEditDeleteRenderTab() {
-        var suffix = $cms.filter.id('{!cns:DELETE_MEMBER;^}').toLowerCase();
+        var suffix = $cms.filter.id('{!cns:DELETE;^}').toLowerCase();
 
         window['load_tab__edit__' + suffix] = function () {
-            var submitButton = document.getElementById('submit-button'),
+            var submitButton = document.getElementById('account-submit-button'),
                 deleteCheckbox = document.getElementById('delete'),
                 tab = document.getElementById('t-edit--' + suffix);
 
@@ -248,7 +248,7 @@
 
     $cms.functions.hookProfilesTabsEditSettingsRenderTab = function hookProfilesTabsEditSettingsRenderTab() {
         var form = document.getElementById('main-form'),
-            submitBtn = document.getElementById('submit-button'),
+            submitBtn = document.getElementById('account-submit-button'),
             validValue;
 
         form.addEventListener('submit', function submitCheck(e) {

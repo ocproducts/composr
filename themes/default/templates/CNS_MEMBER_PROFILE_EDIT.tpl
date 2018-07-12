@@ -82,6 +82,7 @@
 			FORM_NAME=main-form
 			SUPPORT_AUTOSAVE=1
 			SECONDARY_FORM=1
+			BUTTON_ID=account-submit-button
 		{+END}
 	{+END}
 </form>
