@@ -1240,7 +1240,7 @@ abstract class Mail_dispatcher_base
     {
         $file_path_stub = convert_url_to_path($img);
         $mime_type = get_mime_type(get_file_extension($img), has_privilege($as, 'comcode_dangerous'));
-        $filename = basename($img);
+        $filename = preg_replace('#\?\d+$#', '', basename($img));
         if ($file_path_stub !== null) {
             $total_filesize += @filesize($file_path_stub);
             if ($total_filesize > 1024 * 1024 * 5) {
@@ -1330,7 +1330,7 @@ abstract class Mail_dispatcher_base
      */
     protected function mail_css_rep_callback($matches)
     {
-        $filename = basename($matches[1]);
+        $filename = preg_replace('#\?\d+$#', '', basename($matches[1]));
         if (($filename != 'block_background.svg') && ($filename != 'keyboard.png') && ($filename != 'email_link.svg') && ($filename != 'external_link.svg')) {
             /*CSS CIDs do not work with Thunderbird, but data does
             $cid = uniqid('', true) . '@' . get_domain();
