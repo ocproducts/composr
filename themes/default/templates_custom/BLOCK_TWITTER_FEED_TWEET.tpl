@@ -33,7 +33,7 @@
 {+START,IF,{$EQ,{STYLE},2}}
 	<div class="float_surrounder" style="margin-bottom: 1em">
 		{+START,IF,{SHOW_PROFILE_IMAGE}}
-			<img style="float: left" alt="Profile image of @{USER_SCREEN_NAME*}" src="{USER_PROFILE_IMG_URL*}" />
+			<img style="float: left" alt="Profile image of @{USER_SCREEN_NAME*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{USER_PROFILE_IMG_URL}}" />
 		{+END}
 
 		<div style="float: right; padding-left: 1em">
@@ -74,7 +74,7 @@
 {+START,IF,{$EQ,{STYLE},3}}
 	<div class="float_surrounder">
 		{+START,IF,{SHOW_PROFILE_IMAGE}}
-			<img style="float: left" alt="Profile image of @{USER_SCREEN_NAME*}" src="{USER_PROFILE_IMG_URL*}" />
+			<img style="float: left" alt="Profile image of @{USER_SCREEN_NAME*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{USER_PROFILE_IMG_URL}}" />
 		{+END}
 
 		<div style="{+START,IF,{SHOW_PROFILE_IMAGE}}float:left; border-left: 1px solid #ccc; padding: 0; margin-left: 0.5em; padding-left: 0.5em; width: calc(100% - 48px - 1em - 1px);{+END}">
@@ -87,7 +87,7 @@
 			</div>
 
 			<div style="margin-top: 1em">
-				{+START,BOX,Click for more details,accordion,,tray_closed}
+				{+START,BOX,Click for more details,,,tray_closed}
 					<div class="float_surrounder">
 						<div style="float: right; padding-left: 1em">
 							{+START,IF,{$EQ,{FOLLOW_BUTTON_SIZE},0}}

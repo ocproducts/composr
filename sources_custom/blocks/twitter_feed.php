@@ -308,7 +308,7 @@ class Block_twitter_feed
             'FOLLOW_BUTTON_NORMAL' => $follow_button_normal,
             'FOLLOW_BUTTON_LARGE' => $follow_button_large,
             'USER_NAME' => $status['user']['name'],
-            'USER_SCREEN_NAME' => $status['user']['screen_name'],
+            'USER_SCREEN_NAME' => $user_screen_name,
             'USER_LOCATION' => $status['user']['location'],
             'USER_URL' => $status['user']['url'],
             'USER_DESCRIPTION' => $twitter_userdescription,
