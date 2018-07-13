@@ -124,6 +124,7 @@ class Hook_addon_registry_points
             'sources/hooks/systems/config/points_show_personal_stats_total_points.php',
             'sources/hooks/systems/config/points_voting.php',
             'sources/hooks/systems/realtime_rain/points.php',
+            'sources/hooks/systems/config_categories/points.php',
             'sources/hooks/modules/admin_setupwizard/leader_board.php',
             'sources/hooks/systems/addon_registry/points.php',
             'sources/hooks/modules/admin_import_types/points.php',

@@ -97,20 +97,12 @@ class Module_admin_orders
             }
         }
 
-        $action = either_param_string('action', '');
-
-        if ($type == 'order_det' || $action == 'order_act' || $action == '_add_note' || $action == 'order_export' || $action == '_order_export') {
-            breadcrumb_set_parents(array(array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:browse', do_lang_tempcode('ORDERS')), array('_SELF:_SELF:show_orders', do_lang_tempcode('SHOW_ORDERS'))));
-        }
-
-        if ($action == 'order_act') {
-            if ($action != 'add_note') {
-                breadcrumb_set_self(do_lang_tempcode('DONE'));
-            }
-        }
-
-        if ($action == '_add_note' || $action == '_order_export') {
-            breadcrumb_set_self(do_lang_tempcode('DONE'));
+        if ($type == 'order_det' || $type == 'order_export' || $type == '_order_export') {
+            breadcrumb_set_parents(array(
+                array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')),
+                array('_SELF:_SELF:browse', do_lang_tempcode('ORDERS')),
+                array('_SELF:_SELF:show_orders', do_lang_tempcode('SHOW_ORDERS')),
+            ));
         }
 
         if ($type == 'order_det') {
@@ -121,12 +113,25 @@ class Module_admin_orders
             $this->title = get_screen_title('EXPORT_ORDER_LIST');
         }
 
+        if ($type == '_order_export') {
+            breadcrumb_set_self(do_lang_tempcode('DONE'));
+        }
+
         if ($type == 'order_act') {
+            $order_id = get_param_integer('id');
             $action = either_param_string('action');
 
+            breadcrumb_set_parents(array(
+                array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')),
+                array('_SELF:_SELF:browse', do_lang_tempcode('ORDERS')),
+                array('_SELF:_SELF:show_orders', do_lang_tempcode('SHOW_ORDERS')),
+                array('_SELF:_SELF:order_det:' . strval($order_id), do_lang_tempcode('CART_ORDER', strval($order_id))),
+            ));
+
             if ($action == 'add_note') {
-                $id = get_param_integer('id');
-                $this->title = get_screen_title('ADD_NOTE_TITLE', true, array(escape_html(strval($id))));
+                $this->title = get_screen_title('ADD_NOTE_TITLE', true, array(escape_html(strval($order_id))));
+
+                breadcrumb_set_self(do_lang_tempcode('ADD_NOTE'));
             }
 
             if ($action == 'dispatch') {
@@ -144,11 +149,25 @@ class Module_admin_orders
             if ($action == 'hold') {
                 $this->title = get_screen_title('ORDER_STATUS_onhold');
             }
+
+            if ($action != 'add_note') {
+                breadcrumb_set_self(do_lang_tempcode('DONE'));
+            }
         }
 
         if ($type == '_add_note') {
-            $id = post_param_integer('order_id');
-            $this->title = get_screen_title('ADD_NOTE_TITLE', true, array(escape_html($id)));
+            $order_id = post_param_integer('order_id');
+
+            breadcrumb_set_parents(array(
+                array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')),
+                array('_SELF:_SELF:browse', do_lang_tempcode('ORDERS')),
+                array('_SELF:_SELF:show_orders', do_lang_tempcode('SHOW_ORDERS')),
+                array('_SELF:_SELF:order_det:' . strval($order_id), do_lang_tempcode('CART_ORDER', strval($order_id))),
+            ));
+
+            $this->title = get_screen_title('ADD_NOTE_TITLE', true, array(escape_html($order_id)));
+
+            breadcrumb_set_self(do_lang_tempcode('DONE'));
         }
 
         return null;

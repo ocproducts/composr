@@ -46,12 +46,12 @@ function _find_text_file_path($codename, $lang)
     $path = '';
     do {
         $lang = $langs[$i];
-        $path = get_custom_file_base() . '/text_custom/' . $lang . '/' . $codename . '.txt';
+        $path = get_custom_file_base() . '/text_custom/' . $lang . (($lang == '') ? '' : '/') . $codename . '.txt';
         if (!is_file($path)) {
-            $path = get_file_base() . '/text_custom/' . $lang . '/' . $codename . '.txt';
+            $path = get_file_base() . '/text_custom/' . $lang . (($lang == '') ? '' : '/') . $codename . '.txt';
         }
         if (!is_file($path)) {
-            $path = get_file_base() . '/text/' . $lang . '/' . $codename . '.txt';
+            $path = get_file_base() . '/text/' . $lang . (($lang == '') ? '' : '/') . $codename . '.txt';
         }
         $i++;
     } while ((!is_file($path)) && (array_key_exists($i, $langs)));

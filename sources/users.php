@@ -279,8 +279,8 @@ function get_member($quick_only = false)
 
     // Try via additional login providers. They can choose whether to respect existing $member of get_session_id() settings. Some may do an account linkage, so we need to let them decide what to do.
     $hooks = find_all_hooks('systems', 'login_providers');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/login_providers/' . $hook);
+    foreach ($hooks as $hook => $hook_dir) {
+        require_code('hooks/systems/login_providers/' . $hook, false, $hook_dir == 'sources_custom');
         $ob = object_factory('Hook_login_provider_' . $hook);
         if (!is_null($ob)) {
             $member = $ob->try_login($member);
@@ -332,8 +332,8 @@ function get_member($quick_only = false)
 
         // Run hooks, if any exist
         $hooks = find_all_hooks('systems', 'upon_login');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/upon_login/' . filter_naughty_harsh($hook));
+        foreach ($hooks as $hook => $hook_dir) {
+            require_code('hooks/systems/upon_login/' . filter_naughty_harsh($hook), false, $hook_dir == 'sources_custom');
             $ob = object_factory('Hook_upon_login_' . filter_naughty_harsh($hook), true);
             if ($ob === null) {
                 continue;

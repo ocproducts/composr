@@ -78,22 +78,7 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
         $page = $this->_make_zone_concrete($zone, $page_link);
 
         // Find all categories
-        $hooks = find_all_hooks('systems', 'config');
-        $categories = array();
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/config/' . filter_naughty_harsh($hook));
-            $ob = object_factory('Hook_config_' . filter_naughty_harsh($hook));
-            $option = $ob->get_details();
-            if ((is_null($GLOBALS['CURRENT_SHARE_USER'])) || ($option['shared_hosting_restricted'] == 0)) {
-                if (!is_null($ob->get_default())) {
-                    $category = $option['category'];
-                    if (!isset($categories[$category])) {
-                        $categories[$category] = 0;
-                    }
-                    $categories[$category]++;
-                }
-            }
-        }
+        $categories = array_map('strtoupper', array_keys(find_all_hooks('systems', 'config_categories')));
         uksort($categories, 'strnatcasecmp');
 
         if ($child_cutoff !== null) {
@@ -102,7 +87,7 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
             }
         }
 
-        foreach (array_keys($categories) as $category) {
+        foreach ($categories as $category) {
             $child_page_link = $zone . ':' . $page . ':category:' . $category;
             $node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather);
             if (($callback === null || $return_anyway) && ($node !== null)) {

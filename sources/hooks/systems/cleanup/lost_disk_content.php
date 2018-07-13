@@ -54,7 +54,7 @@ class Hook_cleanup_lost_disk_content
         do {
             $zones = $GLOBALS['SITE_DB']->query_select('zones', array('*'), null, '', $max, $start);
             foreach ($zones as $zone) {
-                if ((!is_file(get_custom_file_base() . '/' . $zone['zone_name'] . '/index.php')) && (!is_file(get_file_base() . '/' . $zone['zone_name'] . '/index.php'))) {
+                if ((!is_file(get_custom_file_base() . '/' . $zone['zone_name'] . (($zone['zone_name'] == '') ? '' : '/') . 'index.php')) && (!is_file(get_file_base() . '/' . $zone['zone_name'] . (($zone['zone_name'] == '') ? '' : '/') . 'index.php'))) {
                     $to_delete[] = $zone['zone_name'];
                 }
             }

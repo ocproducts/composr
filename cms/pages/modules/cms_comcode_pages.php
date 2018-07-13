@@ -733,7 +733,7 @@ class Module_cms_comcode_pages
         $zone = $this->zone;
         $file = $this->file;
 
-        if (($zone != '') && (!file_exists(get_file_base() . '/' . $zone . '/pages'))) {
+        if (($zone != '') && (!file_exists(get_file_base() . '/' . $zone . (($zone == '') ? '' : '/') . 'pages'))) {
             warn_exit(do_lang_tempcode('NO_SUCH_ZONE'));
         }
 

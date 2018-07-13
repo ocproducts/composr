@@ -1,0 +1,2257 @@
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Tempcode programming[/title]
+
+Tempcode is Composr's template programming language. On the simplest level, it provides a substitution mechanism so that parameters and global symbols (like the current user's username, or the time) can be inserted into a template.
+
+It also serves as a complete programming language with support for control structures, built-in core functions and variable substitutions.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Syntax[/title]
+
+The "syntax" of a language is simply the grammar. Tempcode's syntax is extremely simple.
+
+Tempcode provides four constructs other than the plain text of the template itself:
+1) [b]Parameters[/b]: [tt]{PARAMETER}[/tt] where PARAMETER is a code-name of something that was actually passed to the template.
+2) [b]Language strings[/b]: [tt]{!STRING,<parameters>...}[/tt] where STRING is a real language string from a loaded language file (e.g. Banner code could use strings from banners.ini, but most other code could not; global.ini contains strings usable anywhere).
+3) [b]Symbols[/b]: [tt]{$SYMBOL,<parameters>...}[/tt] where SYMBOL is a real symbol Composr supports. Embedding a symbol is like making a function call or running a command in the complex place, or a substitution in the simple case.
+4) [b]Directives[/b]: [tt]{+START,DIRECTIVE,<parameters>...}...{+END}[/tt] where DIRECTIVE is a real directive Composr supports. Directives essentially wrap portions of the template, controlling that portion; they are generally used for types of condition checking (e.g. IF) or loops. There are also directives like [tt]{+IMPLODE,<parameters>...}[/tt] that do not wrap, but work outside the normal "string manipulation" bounds that symbols do.
+
+[title="3"]Escaping[/title]
+
+Any of the above 4 Tempcode constructs may be escaped. By "escaped", I mean made to fit in an encoding scheme, such as HTML or URLs, such that special text characters do not interact with that encoding scheme in an insecure/corrupting way). This is done with ease using escaping filters, just by placing the character associated with the mode of escaping before the closing '}'.
+For example, [tt]{BLAH*}[/tt] will add the parameter BLAH, escaped for HTML output.
+
+The following escaping filters are provided ([color="green"]green[/color] indicates common usage, [color="red"]red[/color] indicates advanced usage)...
+
+[semihtml]
+<table class="wide_table columned_table results_table">
+	<colspan>
+		<col style="width: 3em" />
+		<col style="width: 17em" />
+		<col style="width: 10em" />
+		<col style="width: 10em" />
+	</colspan>
+
+	<thead>
+		<tr>
+			<th>Character</th>
+			<th>Purpose</th>
+			<th colspan="2">Example</th>
+		</tr>
+		<tr>
+			<th></th>
+			<th></th>
+			<th><em>Before</em></th>
+			<th><em>After</em></th>
+		</tr>
+	</thead>
+
+	<thead>
+		<tr>
+			<th colspan="4">HTML and XML</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](*)[/tt]</td>
+			<td>Text embedded within HTML.</td>
+			<td>[tt]Hello &amp; Goodbye[/tt]</td>
+			<td>[tt]Hello &amp;amp; Goodbye[/tt]</td>
+		</tr>
+		<tr style="background-color: #FFDDDD">
+			<td>[tt]=[/tt]</td>
+			<td>HTML escaping (like above), if you are 100% sure you want the data escaping, even if it comes from something that might already be in HTML such as a language string.</td>
+			<td colspan="2"><em>as above</em></td>
+		</tr>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](|)[/tt]</td>
+			<td>Make something appropriate for use as an HTML/XML ID, usually to be referenced by JavaScript and CSS.</td>
+			<td>[tt]This is a -terrible- ID[/tt]</td>
+			<td>[tt]This__is__a____terrible____ID[/tt]</td>
+		</tr>
+	</tbody>
+
+	<thead>
+		<tr>
+			<th colspan="4">JavaScript</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](/)[/tt]</td>
+			<td>Works around a special JavaScript SGML-issue: anything looking like HTML tags within a [tt]&lt;script&gt;[/tt] tag must be specially-escaped.</td>
+			<td>[tt]print('&lt;/p&gt;');[/tt]</td>
+			<td>[tt]print('&lt;\/p&gt;');[/tt]</td>
+		</tr>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt]%[/tt]</td>
+			<td>Make something appropriate as a strict codename. This is used where JavaScript code is involved for the highest level of security.</td>
+			<td>[tt]This[/tt]</td>
+			<td>[tt]This[/tt]</td>
+		</tr>
+		<tr style="background-color: #DDFFDD">
+			<td colspan="2"></td>
+			<td>[tt]This is[/tt]</td>
+			<td><em>Hack-attack triggered</em></td>
+		</tr>
+	</tbody>
+
+	<thead>
+		<tr>
+			<th colspan="4">CSS</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt]'[/tt]</td>
+			<td>Make something appropriate for use as a CSS value (anything that isn't a part of a very constrained non-string value is replaced with underscore).</td>
+			<td>[tt]green and red[/tt]</td>
+			<td>[tt]green_and_red[/tt]</td>
+		</tr>
+	</tbody>
+
+	<thead>
+		<tr>
+			<th colspan="4"><em>Both</em> JavaScript <em>and</em> CSS</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](;)[/tt]</td>
+			<td>Make something fit between JavaScript/CSS-style single quotes.</td>
+			<td>[tt]Who's here[/tt]</td>
+			<td>[tt]Who\'s here[/tt]</td>
+		</tr>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](#)[/tt]</td>
+			<td>Make something fit between JavaScript/CSS-style double quotes.</td>
+			<td>[tt]She said, "Hello"[/tt]</td>
+			<td>[tt]She said, \"Hello\"[/tt]</td>
+		</tr>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](~)[/tt]</td>
+			<td>Where new lines are not allowed (text is drawn up to reside on a single line).</td>
+			<td>[tt]a<br />b[/tt]</td>
+			<td>[tt]ab[/tt]</td>
+		</tr>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](^)[/tt]</td>
+			<td>Where new lines become [tt]\n[/tt] (multiple lines drawn together with \n as a separator).</td>
+			<td>[tt]a<br />b[/tt]</td>
+			<td>[tt]a\nb[/tt]</td>
+		</tr>
+	</tbody>
+
+	<thead>
+		<tr>
+			<th colspan="4">Comcode</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt](@)[/tt]</td>
+			<td>Make sure something doesn't look like a Comcode tag.</td>
+			<td>[tt]Use the [url] tag[/tt]</td>
+			<td>[tt]Use the \[url] tag[/tt]</td>
+		</tr>
+	</tbody>
+
+	<thead>
+		<tr>
+			<th colspan="4">URLs</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background-color: #DDFFDD">
+			<td>[tt]&amp;[/tt]</td>
+			<td>Make sure something fits in as a URL parameter, with special Comcode URL escaping also.</td>
+			<td>[tt]a&amp;b[/tt]</td>
+			<td>[tt]a:amp:b[/tt]</td>
+		</tr>
+		<tr style="background-color: #FFDDDD">
+			<td>[tt].[/tt]</td>
+			<td>Make sure something fits in as a URL parameter, if you don't want extra Composr URL escaping to happen. Use this when building up non-Composr URLs.</td>
+			<td>[tt]a&amp;b[/tt]</td>
+			<td>[tt]a%26b[/tt]</td>
+		</tr>
+	</tbody>
+
+	<thead>
+		<tr>
+			<th colspan="4">Special <em>(not actually for escaping)</em></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background-color: #FFDDDD">
+			<td>[tt]-[/tt]</td>
+			<td colspan="3">Special code to indicate that a construct should not be pre-processed. This is useful very occasionally if you want to stop something like a block being preloaded if it is buried under a Tempcode IF directive and hence doesn't always run. Stopping pre-processing will stop any JavaScript or [abbr="Cascading Style Sheets"]CSS[/abbr] dependencies being called up, however.</td>
+		</tr>
+		<tr style="background-color: #FFDDDD">
+			<td>[tt]+[/tt]</td>
+			<td colspan="3">Must be used as the only escaping character. This indicates that something:
+[list]
+[*] should not be escaped
+[*] definitely is passed into the template (no user-friendly warnings will be given if it is not)
+[*] should be output directly, the way PHP wants (so will not follows the normal rules for Tempcode display of boolean values or arrays)
+[/list]
+This is substantially faster in terms of the amount of memory, CPU time, and storage. However, it should only really be used by programmers knowing exactly what they are doing.
+</td>
+		</tr>
+	</tbody>
+</table>
+[/semihtml]
+
+It is absolutely crucial that Tempcode programmers use the proper escaping. Without it, all kinds of insecurities and unreliabilities can develop. About 50% of parameters in the default Composr templates actually use HTML escaping so that plain text placed inside a template does not interfere with the HTML structure itself and displays literally.
+
+If you're wondering what the characters refer to: nothing. They are just characters that are easy to type on a regular keyboard. We like the ability to be able to apply the escapings in this shorthand, in the same way that maths benefits from concise symbolic shorthand.
+
+[title="3"]The Tempcode tree (advanced)[/title]
+
+Templates are composed together into a tree structure, and then the tree structure is output. This is discussed in further detail in the [page="_SEARCH:tut_structure"]Composr site structure tutorial[/page].
+
+[title="2"]Philosophy[/title]
+
+Tempcode is quite different from other templating languages, and it's worth covering that.
+
+Most templating languages will try to either:
+[list="a"]
+[*] use XML, to add programming constructs into the mark-up itself
+[*] allow PHP code, or an abstraction of PHP code, to run within the templates
+[/list]
+
+Our approach is distinctly different, as we uphold four strong principles:
+1) templates should be editable in an HTML editor without Tempcode being broken (although the HTML editor at this time must be able to support 'fragments of HTML')
+2) templates should not contain code on the same level as PHP, for security reasons (a theme should not be able to delete files, for instance)
+3) there should be a very clear separation of role between templates and code; code should not be put into templates simply because it is convenient, as this muddies the architecture, causing maintenance issues
+4) templates should not 'execute': Tempcode should act as a filter/token-placer for output, reshaping output, rather than intertwining code with it. This is again, an architectural issue
+
+[title="3"]Advanced philosophy (experts only)[/title]
+
+For those interested in 'programming language semantics', Tempcode is neither a functional or imperative language, but has aspects of both. A functional language essentially is focused on output being controlled by a complex mathematical expression. An imperative language essentially is focused on output being controlled by a sequence of commands. With Tempcode, output is focused on the stream of text coming from a template, and the composition of these streams; 'symbols' and 'directives' can control, manipulate and add to the stream, but they are more like embedded functional-language function-chains and control-tags than imperative code. Sequences of commands can be simulated by placing symbols and directives next to each other in the output stream and using variable manipulation features to bridge data across the portions of the output stream.
+
+Popular template languages such as 'Velocity' or 'Smarty' are able (and often used) to function in a similar sense to this, but their language design is imperative at core, and the result simply is just far less elegant. Tempcode just 'feels right', with its clean syntax and PHP-separation, while other languages look literally like conventional programming code has been added inside the template in an ad-hoc way (even if the full programming syntax has been simplified a bit).
+
+[title="2"]Placing theme images[/title]
+
+[box="Party like it's 1999" float="right"]
+[center][semihtml]
+<img src="{$IMG*,under_construction_animated}" alt="Under Construction" title="Under Construction" />
+[/semihtml]
+
+(this guy's back must
+be really hurting by now)[/center]
+[/box]
+This is your first practical example of Tempcode, and perhaps the most common use of Tempcode symbols.
+
+To insert an image into your template, use Composr's image symbol: [tt]{$IMG,codename}[/tt]. Replace [tt]codename[/tt] with the image code for the image you want to use. This will turn into the image's URL. Be aware that this does not insert any HTML for you, so to use it fully:
+[code="HTML"]<img src="{$IMG*,under_construction_animated}" alt="Under Construction" title="Under Construction" />[/code]
+This would insert the image [tt]http://yourbaseurl/themes/default/images/under_construction_animated.png[/tt] into your page, as shown on the right.
+
+The advantage to using the Composr code instead of hand coding the image is two-fold. First, you can have different versions of theme images for different languages and themes. Secondly, if you ever move the image, you don't have to edit every page that ever used it to point to the new location. You can edit images from within the themes management screen (go to Admin Zone > Style > Themes).
+
+[title="2"]Symbols[/title]
+
+[title="3"]Numbers and logic[/title]
+
+Tempcode does not have explicit data-types, everything is text. However we may interpret the text in symbols as follows:
+ - Tempcode number: the text is assumed to be a number written as a normal decimal string (e.g. 12345). Numbers should not contain any special formatting other than the British English decimal point (.) symbol.
+ - Tempcode boolean: the text is assumed to be 0 (meaning false) or 1 (meaning true).
+
+[title="3"]Further notes[/title]
+
+If a symbol is missing important parameters, it generally is skipped entirely.
+
+Some of the more advanced symbols are not fully laid-out, but they are all defined in [tt]sources/symbols.php[/tt] or [tt]sources/symbols2.php[/tt] in an obvious way, so advanced users can read this file.
+
+You are very unlikely to ever want to use rows in red, as they are intended for use by core Composr code.
+
+[title="3"]General[/title]
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>(blank)</td>
+			<td>Place a comment. E.g... [/html][tt]{$,this is a comment}[/tt][html]</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$RAND}</td>
+			<td>A random number between 0 and 2147483647</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SET_RAND,a,b,c}</td>
+			<td>A random choice from the given parameters</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CYCLE,cyclename,a,b,c}</td>
+			<td>Cycle through parameters in a sequence (intended for use across template calls to create, for example, striping effects). The first parameter is the name of the cycle, and the following parameters are the parameters of the cycle. The pointer for the named cycle will move forward/around each time the cycle symbol is referenced (e.g. [/html][tt]{$CYCLE,mycycle,a,b,c,d}[/tt][html] would produce "a" the first time it's called, "b" the next, "c" next, then "d", then back to "a" again). If you only provide one parameter then the cycles current index is returned. If only two parameters are provided then the second parameter is split up by commas; this is useful for programming cycles on a higher level (e.g. for making chequered patterns using floats).</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$RESET_CYCLE,cyclename}</td>
+			<td>Reset a named cycle sequence</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MAILTO}</td>
+			<td>Get an obfuscated "mailto: " string (obfuscated to make it hard for e-mail scavengers to detect)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HONEYPOT_LINK}</td>
+			<td>If a Project Honeypot script is installed, this will insert a link to it, using a different method for different page names to increase the likeliness of a bot snag.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$INSERT_SPAMMER_BLACKHOLE}</td>
+			<td>If spammer blackholes are enabled, this inserts a field into a form to create the blackhole. Blackholes allow automatic detection and banning of would-be spammers. Additionally, the CSRF-prevention security token is injected via this symbol.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CSS_DIMENSION_REDUCE,30px,2}</td>
+			<td>Reduce a CSS dimension by a certain number of px. If the input is not in px, no function is performed and the output stays as the input.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$BETA_CSS_PROPERTY,&lt;css rule&gt;}</td>
+			<td>Adds browser vendor prefixes to a CSS rule that is not widely supported yet. This effectively marks the CSS rule out, and theoretically allows new Composr versions to alter how that rule is handled without direct changes to your theme CSS.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$REQUIRE_JAVASCRIPT,example}</td>
+			<td>Include a JavaScript file in the output stream. If you set the second parameter to '1', then loading will be deferred until the end of the page. If you include a template into itself, then it will actually include the original version at the point of your include. This is useful for extending the default templates without duplicating them.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FACILITATE_AJAX_BLOCK_CALL,block code,differing parameters}</td>
+			<td>This symbol generates a string parameter suitable for the Composr JavaScript <kbd>call_block</kbd> function, which is used to make an AJAX call to load up a block and overwrite the contents of a specific div with it. Calling this symbol has the side-effects of triggering an include of Composr's AJAX code, and setting up a permission so that the server-side AJAX handler knows that the current session is authorised to load up this pattern of block. The symbol is best used by example -- see how it is currently used by code.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$REQUIRE_CSS,css_example}</td>
+			<td>Include a CSS file in the output stream</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$ANCHOR,anchorname}</td>
+			<td>Place a named HTML anchor (intended for use from in Comcode)</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$CSS_TEMPCODE}</td>
+			<td>Get the Tempcode for all the CSS includes for this page</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$PAGE_TITLE}</td>
+			<td>Get the currently set page title/td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SET_TITLE,xxx}</td>
+			<td>Set the current page title (affects things like the <kbd>&lt;title&rt;</kbd>)</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$EXTRA_HEAD}</td>
+			<td>Get the contents of this global Tempcode variable (used by some parts of the system to inject extra markup)</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$EXTRA_FOOT}</td>
+			<td>Get the contents of this global Tempcode variable (used by some parts of the system to inject extra markup)</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$JS_TEMPCODE}</td>
+			<td>Get the Tempcode for all the JS includes for this page</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]Format conversion and obfuscation[/title]
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$ESCAPE,what_to_escape,optional_escaping_type}</td>
+			<td>Perform escaping on the first parameter. Uses the same escaping as integrated template escaping, except a numeric constant (defined in the second parameter) is used to determine the escaping, rather than special characters (see sources/tempcode.php for a list of all the constants). Defaults to HTML escaping.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$OBFUSCATE,to_obfuscate}</td>
+			<td>Obfuscate a string to make it harder for e-mail scavengers</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$STRIP_TAGS,&lt;strong&gt;example&lt;/strong&gt;}</td>
+			<td>Remove HTML from some text</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$STRIP_HTML,&lt;strong&gt;example&lt;/strong&gt;}</td>
+			<td>Turn some HTML into a plain-text string (i.e. no HTML entities either)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$ENTITY_DECODE,this &amp;amp; that}</td>
+			<td>Decode XML or HTML entities, so that written-out XML turns into actual parsed XML</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$TRUNCATE_LEFT,something long,5,1,0,0,0.2}</td>
+			<td>Truncate a string, keeping what's on the left as priority. First parameter is the text to truncate. Second parameter is the truncation length. Optional third parameter is a binary value for whether to show a tooltip. Optional fourth parameter is a binary value for whether the input text is already in HTML format (output text is always in HTML format). Optional fifth parameter is a binary value for whether the length desired should be based on readable characters rather than XHTML characters. Optional sixth parameter is a decimal fraction (e.g. 0.2) that represents the tolerance that can be used to preserve grammar (paragraphs and sentence).</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$TRUNCATE_RIGHT,something long,5,1,0,0,0.2}</td>
+			<td>As above, truncating to keep what's on the right as priority.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$TRUNCATE_SPREAD,something long,5,1,0,0,0.2}</td>
+			<td>As above, truncating to keep an equal left/right portion.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$TRUNCATE_EXPAND,something long,5,1,0,0,0.2}</td>
+			<td>As above, with any truncated text going underneath an expander.</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$ALTERNATOR_TRUNCATED,something long,5,if truncated,if not truncated,1}</td>
+			<td>A complex symbol to allow alternation between situations when something would and would not become truncated.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$PARAGRAPH,something}</td>
+			<td>Add a paragraph around the contents, but only if it does not already contain any block-level elements. This is needed to combine valid (X)HTML for arbitrary Comcode insertion with the desire to have neat semantics and automatic margining.</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$CLEAN_FILE_SIZE,10000}</td>
+			<td>Convert a number of bytes into a nice clean human readable file size.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$TRIM, abc }</td>
+			<td>Trim any textual or XHTML white-space from the given string.</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$DEEP_CLEAN, abc }</td>
+			<td>Apply the deep clean process on the parameter. Clean common ugly patterns out, such as leading white-space, all-caps, or paste-from-Word problems.</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]Users, Members, and Usergroups[/title]
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$MEMBER}</td>
+			<td>The Member-ID of the current user</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IS_GUEST}</td>
+			<td>Whether the current user is a Guest</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$USERNAME,2}</td>
+			<td>The username of the current user / given user (optionally takes a member ID, otherwise assumes the current user). If the second parameter is passed as '1', the display name is used (if configured).</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$DISPLAYED_USERNAME,admin}</td>
+			<td>Turns a username into a display name, using the configured display name generator (if there is one -- otherwise, no change)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$AVATAR,2}</td>
+			<td>The member's avatar (optionally takes a member ID, else assumes current user)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MEMBER_EMAIL,2}</td>
+			<td>The member's e-mail address (optionally takes a member ID, else assumes current user)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$PHOTO,2}</td>
+			<td>The member's photo (optionally takes a member ID, else assumes current user)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MEMBER_PROFILE_URL,2}</td>
+			<td>The member's profile URL (optionally takes a member ID, else assumes current user)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CNS_MEMBER_HTML,2}</td>
+			<td>The member's information box (optionally takes a member ID, else assumes current user)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CNS_RANK_IMAGE,2}</td>
+			<td>The member's rank images in composed HTML format (optionally takes a member ID, else assumes current user)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IS_IN_GROUP,1-3}</td>
+			<td>Find whether the current member is in a usergroup (parameters together constitute an [/html][concept]Selectcode[/concept][html] list, except if the last is primary or secondary then this specifies that the check be limited to checking such usergroup membership).</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CPF_VALUE,Some Custom Field}</td>
+			<td>Find the raw (unrendered) value of a custom profile field (pass in the ID number of a custom profile field, which can be found from the URL of where you to edit it -- or pass in the human-readable name of the field -- or pass in a field name from the <kbd>f_members</kbd> table). If you pass a second parameter, it will specify the member ID to use (if not passed, it will default to the current member). Note that Tempcode is not context-sensitive apart from the parameters passed into a template. The current member is whoever is logged in; if you are editing a template displaying a member's details (e.g. <kbd>CNS_MEMBER_PROFILE_SCREEN</kbd>) then you will need to explicitly specify the member ID in the second parameter using the member ID passed into that template (typically <kbd>{MEMBER_ID}</kbd>).</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]Date and time[/title]
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$DATE_AND_TIME}</td>
+			<td>The formatted current date and time (may take optional parameters, not discussed here)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$DATE}</td>
+			<td>The formatted current date (may take optional parameters, not discussed here)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$TIME}</td>
+			<td>The formatted time (may take optional parameters, not discussed here)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SECONDS_PERIOD,12345}</td>
+			<td>Show the number of hours/minutes/seconds in a given period of seconds</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FROM_TIMESTAMP,%d %B %Y,123456780}</td>
+			<td>Converts a time-stamp to a formatted date/time (optional first parameter is a strftime-style date/time formatting string, optional second parameter is a timestamp). If no parameters given it will simply return the current timestamp.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$TO_TIMESTAMP,April 1st 2009}</td>
+			<td>Converts a formatted date/time to a timestamp via auto-recognition (first parameter is a timestamp). If no parameters given it will simply return the current timestamp.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MAKE_RELATIVE_DATE,123456789}</td>
+			<td>Converts a timestamp into a textually described relative time (e.g. "10 minutes" [ago]).</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$TIME_PERIOD,1234}</td>
+			<td>Converts a number of seconds into a textually described time period (e.g. "10 minutes").</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]Catalogues[/title]
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$CATALOGUE_ENTRY_BACKREFS,123}</td>
+			<td>Get a comma-separated list of IDs of catalogue entries that reference the given catalogue entry. A second parameter may be given, which is a limit on how many to return. A third parameter may be set as the name of a content type if the backrefs should be resolved to linked content entries (for the case where the linkage is via custom fields rather than a pure catalogue). A fourth parameter of the rating type code may be given if sort-by-rating is needed (highest rated first).</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CATALOGUE_ENTRY_FIELD_VALUE,123,0}</td>
+			<td>Get the value of a field in a specific catalogue entry (example would be 1st field in entry #123).</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CATALOGUE_ENTRY_FIELD_VALUE_PLAIN,123,0}</td>
+			<td>As per <kbd>CATALOGUE_ENTRY_FIELD_VALUE</kbd&gt;, but without any display processing on the value.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CATALOGUE_ENTRY_FOR,download,3}</td>
+			<td>Get the ID of the auto-maintained catalogue entry bound to the given content entry, i.e. where the content entries custom fields are stored. This can then be used with the <kbd>CATALOGUE_ENTRY_FIELD_VALUE</kbd> symbol (above) or the <kbd>CATALOGUE_ENTRY_ALL_FIELD_VALUES</kbd> symbol (below).</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,123}</td>
+			<td>Show a field-map view of all fields in the entry. You can also pass in a second param with the value '1' if you want raw field rows, rather than a table (useful for adding field-map data into an existing table).</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]Galleries[/title]
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$GALLERY_VIDEO_FOR_URL,uploads/galleries/foo.mov}</td>
+			<td>Get the gallery video ID for a named URL, importing to a new video if needed. This is useful for managing documentation out of git, referencing videos that will then be synchronised with Youtube upon first reference. You'll likely use this symbol to pass as a parameter to the <kbd>main_content</kbd> block.</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]Locations / Currencies[/title]
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$CURRENCY,123,USD}</td>
+			<td>Do a currency conversion / Get the currency (first parameter is a number for the amount in the site's default currency, second parameter is the source currency, optional third parameter is the target currency [defaults to the site currency])</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CURRENCY_SYMBOL}</td>
+			<td>Get the nice currency symbol for the site's default currency</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COUNTRY}</td>
+			<td>Find the current user's country</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COUNTRY_CODE_TO_NAME,UK}</td>
+			<td>Convert an ISO country code to a written country name</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COUNTRY_NAME_TO_CODE,United Kingdom}</td>
+			<td>Convert a written country name to an ISO country code</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$REGION}</td>
+			<td>Find the current user's region (usually the same as the country, but may be customised within Composr to be more-specific)</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]Environmental querying[/title]
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$_GET,page}</td>
+			<td>Extract the requested script GET parameter</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IS_VIRTUALISED_REQUEST}</td>
+			<td>Find if this is a virtualised page load, via something like the <kbd>main_include_module</kbd> block</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$QUERY_STRING}</td>
+			<td>Extract all requested script parameters (the 'query string', i.e. part of the URL after "?")</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$_POST,title}</td>
+			<td>Extract the requested script POST parameter</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$_POSTED}</td>
+			<td>Whether the current request was sent with POST parameters (i.e. it was a form post)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$ZONE}</td>
+			<td>The zone the user is in</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$PAGE}</td>
+			<td>The page the user is in</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CANONICAL_URL}</td>
+			<td>Get the canonical URL (for search engines)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SELF_URL,0,0,0,a=b}</td>
+			<td>Get URL to current screen. You don't need to give any parameters, but if you do: the first is whether to go to the website home page if you are at where you're at due to a form post, the second is whether to included posted parameters as parameters in the URL, the first is whether to avoid the URL Scheme facility, and further parameters are additional URL parameters.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SELF_PAGE_LINK}</td>
+			<td>Get page-link to current screen.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$METADATA,created}</td>
+			<td>Fetch a defined dublin core metadata property (by code name), relating to the current content. Also supports some Facebook connect fields, HTML SEO metadata (keywords, meta_description). You can also query HTML SEO metadata for specific content item, by giving two additional parameters: the content type and the content ID</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$REFRESH}</td>
+			<td>HTML code for a site refresh, if one is in progress</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FEEDS}</td>
+			<td>HTML code for RSS/Atom feeds</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+		  <td>{$RUNNING_SCRIPT,index}</td>
+		  <td>Find whether an entry script is running</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MATCH_KEY_MATCH,_WILD:downloads:browse}</td>
+			<td>Whether the given [/html][concept]match-key[/concept][html] matches the current URL</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MOBILE}</td>
+			<td>Whether a Smartphone (for example) is being used. Composr is designed to be pretty good at detecting this, but if you need to specify additional user agent strings you can make a <kbd>text_custom/mobile_devices.txt</kbd> file with <kbd>mobileuseragentsubstring=0|1</kbd> lines in it (e.g. <kbd>iphone=1</kbd> for iPhone to be detected as mobile, and <kbd>ipad=0</kbd> for iPad to not be detected as mobile). If you want to detect smartphones in CSS we suggest you either use this symbol (which the default theme uses) or if you prefer use <a target="_blank" title="CSS media queries (this link will open in a new window)" href="http://css-tricks.com/css-media-queries/">CSS media queries</a> inside your CSS files to create override rules</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$THEME}</td>
+			<td>The user's current theme</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$JS_ON}</td>
+			<td>Whether JavaScript is enabled (Tempcode boolean)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$LANG}</td>
+			<td>The user's current language</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$BROWSER_UA}</td>
+			<td>The user's browser, based on their user-agent string</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$OS}</td>
+			<td>The user's OS, based on their user-agent string</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$DEV_MODE}</td>
+			<td>Whether development mode is on (adds in extra errors, to pick up on coding standard violations)</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$NO_SAFE_MODE}</td>
+			<td>Detect if PHP safe mode isn't on the server</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$BROWSER_MATCHES,wysiwyg}</td>
+			<td>Find whether the current browser matches a named property / has a feature. Possible properties: wysiwyg, windows, mac, linux, mobile, ie, ie8, ie8+, ie9, ie9+, gecko, safari (covers Google Chrome also), ios, android, bot</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$USER_AGENT}</td>
+			<td>The user-agent string of the current user</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IP_ADDRESS}</td>
+			<td>The IP address of the current user</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$TIMEZONE}</td>
+			<td>The server timezone</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HTTP_STATUS_CODE}</td>
+			<td>Find the HTTP status code (e.g. 404) for the current request, usually 200</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$BROWSER,wysiwyg,You have WYSIWYG,You do not have WYSIWYG}</td>
+			<td>Conditionally chooses between two input strings, based on a browser property (see above for a list of properties). First parameter is the property, second and third are the conditional strings.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$GEOLOCATE,12.45.67.89}</td>
+			<td>Find the/a user's ISO country-code (optionally takes an IP address, otherwise defaults to current user's IP). Requires the stats addon to be installed, and for the geolocation data to have been installed into the database (usually this is automatic)</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$FORCE_PREVIEWS}</td>
+			<td>Find whether the user has forced previews to show</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$PREVIEW_URL}</td>
+			<td>Find the URL to perform a preview for the form on the current screen</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$CURRENTLY_INVISIBLE}</td>
+			<td>Whether the current user is set to be invisible</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$CAN_SPELLCHECK}</td>
+			<td>Whether spellchecking is possible</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$SESSION}</td>
+			<td>Get the session ID for the current member</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$VERSION_NUMBER}</td>
+			<td>Get the Composr version number</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CHARSET}</td>
+			<td>Get the character set</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$DECIMAL_POINT}</td>
+			<td>Find the decimal point character for the current locale (e.g. <kbd>.</kbd>)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HEADER_TEXT}</td>
+			<td>Get the header text (put in the page title)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SHOW_HEADER}</td>
+			<td>Whether the header will be shown</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SHOW_FOOTER}</td>
+			<td>Whether the footer will be shown</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$WIDE}</td>
+			<td>Whether the side panels will be shown</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$WIDE_HIGH}</td>
+			<td>Whether the side panels, header, and footer, will be shown</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$LOGO_URL}</td>
+			<td>The logo URL for the current zone</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$HAS_SU}</td>
+			<td>Whether the current user is allowed to use the Switch User feature</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$STAFF_ACTIONS}</td>
+			<td>A drop-down of contextual actions for the current screen</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HELPER_PANEL_TUTORIAL}</td>
+			<td>The helper panel's tutorial</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HELPER_PANEL_TEXT}</td>
+			<td>The helper panel's text</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MESSAGES_TOP}</td>
+			<td>Attached messages, for prominent display</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MESSAGES_BOTTOM}</td>
+			<td>Attached messages, for less prominent display</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$LATE_MESSAGES}</td>
+			<td>Attached messages that happened after output started (after main page generation). These will usually be errors relating to the output process itself.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$BREADCRUMBS}</td>
+			<td>The breadcrumbs</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FORUM_CONTEXT}</td>
+			<td>The ID of the forum currently within, or blank</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MATURITY_FILTER_REQUESTED}</td>
+			<td>Do a header check, to see if family-friendly browsing experience was requested by the user's safe header preference. This symbol only works when Composr is installed on a server with the PHP Apache module, unless a new <kbd>HTTP_PREFER</kbd> server variable is added (see <a href="http://php.net/manual/en/function.apache-request-headers.php">apache-request-headers</a> &ndash; read <strong>callum85's</strong> comment for details).</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$TAPATALK}</td>
+			<td>Whether output is being generated for a Tapatalk client</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]Placement, and general Composr interfacing[/title]
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$FIND_SCRIPT}</td>
+			<td>Find the URL to a named Composr entry script (e.g. <kbd>dload</kbd>)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FIND_SCRIPT_NOHTTP}</td>
+			<td>Find the URL to a named Composr entry script (e.g. <kbd>dload</kbd>), but as a relative URL to domain name root</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MAKE_URL_ABSOLUTE,someurl}</td>
+			<td>Take what may be a relative URL (relative to site base URL), and make sure it is an absolute URL</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$ENSURE_PROTOCOL_SUITABILITY,someurl}</td>
+			<td>Make sure a URL is safe to embed in the current page if the current page is HTTPS, e.g. by proxying a non-HTTPS URL</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IMG,bottom}</td>
+			<td>Find a named theme image code's URL (takes the theme image code). Note that this gets the image URL, it does not write the HTML out for an image element based upon it (you need to do that yourself).</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IMG_MTIME,bottom}</td>
+			<td>Find the last-modification unix timestamp for a theme image. This is useful for adding a cache-busting parameter after an image URL and ?, e.g. <kbd>&lt;img src="{$IMG*,bottom}?{$IMG_MTIME%,bottom}" /&gt;</kbd>.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IMG_INLINE,bottom}</td>
+			<td>Find a named theme image code's data URL. It works the same as <kbd>{$IMG,...}</kbd> except the image data gets embedded directly. If there's more than 32kb of data, the normal URL will be used instead.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IMG_WIDTH,bottom}</td>
+			<td>Find the width of the theme image/URL (particularly useful for making web pages render faster). Uses the persistent cache to remember values, if possible.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IMG_HEIGHT,bottom}</td>
+			<td>Find the height of the theme image/URL (particularly useful for making web pages render faster). Uses the persistent cache to remember values, if possible.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CDN_FILTER,URL}</td>
+			<td>Take an absolute URL, under the main base URL's domain, and change it to work under the Content Delivery Network. Only use this if you know the particular URL you pass will be available via the CDN.</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$KEEP,0,1}</td>
+			<td>Stuff to append to a Composr URL for 'keep parameter' passing (Composr passes any parameters between screens if their names start <kbd>keep_</kbd>, and this symbol enables that). The first parameter should be '1' if you need to place this directly on the front of a URL. The second parameter should '1' if you need to always attach a session ID (i.e. if you are creating a link that might be used somewhere outside the current cookie context, e.g. to feed into a download manager)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$EXTEND_URL,http://example.com/index.php?foo=a,bar=b}</td>
+			<td>Add parameter(s) onto a URL. Starts by appending ? or &amp; by analysis of existing URL structure. Does not handle URL encoding of the appended parameter, which you should do first if applicable.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$BLOCK,block=main_search,zone=site}</td>
+			<td>Place a block into the template. Takes any number of parameters (but at least 1 for the block name), each of which defines a block parameter and its value. Parameters must include the block name, which is encoded against the special reserved name <kbd>block</kbd> (<strong>not</strong> just placed in there as a lone parameter). For example: [/html][tt]{$BLOCK,block=main_news,filter=1\,2\,3}[/tt][html]</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$LOAD_PAGE,about,site}</td>
+			<td>Load a page into a template (first parameter is the page name, optional second parameter is the zone name which defaults to the current zone)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$RATING,downloads,3}</td>
+			<td>Show a content type's rating. The first parameter is the content-type's code (usually the page name it's viewed from, e.g. downloads) and the second parameter is the ID for the resource.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$NUM_RATINGS,downloads,3}</td>
+			<td>Find the number of users who have rated something.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SHOW_RATINGS,downloads,3,100}</td>
+			<td>Show the last 100 ratings on something.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$ALREADY_RATED,downloads,3}</td>
+			<td>Find if the current user has already rated something.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$VIEWS,download_downloads,download_views,3}</td>
+			<td>Show how many views a content type has had. The first parameter is the table to read from, the second parameter is the name of the field (it must contain 'views' -- the code will not allow arbitrary field calling for security reasons) the third parameter is the ID for the resource.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$REVIEW_STATUS,download,3}</td>
+			<td>Show the periodic content review status for the given content, if configured for the content and set as publicly visible.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$LOAD_PANEL,panel_left,site}</td>
+			<td>Load a panel-page into a template (first parameter is the page name, optional second parameter is the zone name which defaults to the current zone)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$PAGE_LINK,site:about}</td>
+			<td>Link to a page, using [/html][concept]page-link[/concept][html] syntax (e.g. "_SELF:pagename:type:1")</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$ADDON_INSTALLED,galleries}</td>
+			<td>Find whether an addon is installed (first parameter is the code-name of the addon)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$AWARD_ID,2}</td>
+			<td>Find the content ID assigned to the given award</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$NOTIFICATIONS_ENABLED,download,3}</td>
+			<td>Find whether notifications are enabled for something</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$NOTIFICATIONS_AVAILABLE,download}</td>
+			<td>Find whether notifications are allowed for this notification type (i.e. not locked down)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$LAST_VISIT_TIME}</td>
+			<td>The last visit time of the current user</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$NUM_NEW_TOPICS}</td>
+			<td>The number of topics posted since the last time the current user visited</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$NUM_NEW_POSTS}</td>
+			<td>The number of posts posted since the last time the current user visited</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SESSION_HASHED}</td>
+			<td>A hashed version of the session ID, used as a unique identifier without revealing the user's session</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IS_HTTPAUTH_LOGIN}</td>
+			<td>Whether the user has an HTTP-auth login</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MEMBER_PROFILE_URL,3}</td>
+			<td>Get the URL to a member profile</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$LOGIN_LABEL}</td>
+			<td>The label for the username field when logging in (the label depends on how login options are configured, e.g. Username, E-mail address, Username / E-mail address)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$STOCK_CHECK,Product id}</td>
+			<td>Get the stock count for an eCommerce product</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$IS_FRIEND,2,3}</td>
+			<td>Detect if the second parameter/member ID (or current member if no second parameter) has befriended the first parameter/member ID.</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]Composr configuration querying[/title]
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$SITE_NAME}</td>
+			<td>The site name</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HEADER_TEXT}</td>
+			<td>The header text of the current screen, taken from current zone's setting unless content is being viewed specifies it</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$ZONE_HEADER_TEXT}</td>
+			<td>The header text of the current zone</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COPYRIGHT}</td>
+			<td>The site copyright</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$STAFF_ADDRESS_PURE}</td>
+			<td>The staff address, without obfuscation</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$STAFF_ADDRESS}</td>
+			<td>The obfuscated staff address</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$DOMAIN}</td>
+			<td>The domain name of the site</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SITE_SCOPE}</td>
+			<td>The site scope</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FORUM_BASE_URL}</td>
+			<td>The forum base URL</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$BASE_URL}</td>
+			<td>The base URL to the installation</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CUSTOM_BASE_URL}</td>
+			<td>The base URL to custom data in the installation (usually the same as BASE_URL)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$BASE_URL_NOHTTP} / {$CUSTOM_BASE_URL_NOHTTP}</td>
+			<td>The base URL to the installation, but just the path, no protocol or domain name. This is useful in JS files (which cache as strings, not Tempcode) because it doesn't cause JS security errors when HTTPS and HTTP variants of a site are both in action.</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$SSW}</td>
+			<td>Whether Sunday is the start of the week (Tempcode boolean)</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$VALID_FILE_TYPES}</td>
+			<td>Get a comma-separated list of valid file types</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$INLINE_STATS}</td>
+			<td>Whether to show view/download counts inside the public visible website (Tempcode boolean)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SHOW_DOCS}</td>
+			<td>Whether documentation links are configured to be shown</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CONFIG_OPTION,optionname}</td>
+			<td>Get the value of a config option</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$VALUE_OPTION,optionname}</td>
+			<td>Get the value of a hidden option/value</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HIDE_HELP_PANEL}</td>
+			<td>Whether the help panel has been hidden</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$BRAND_NAME}</td>
+			<td>The brand name, defaults to Composr</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$BRAND_BASE_URL}</td>
+			<td>The brand URL, defaults to http://compo.sr</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$TUTORIAL_URL}</td>
+			<td>A tutorial URL, linking under the brand URL's docs zone</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COPPA_ON}</td>
+			<td>Whether COPPA is configured to be on</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]Composr permission querying[/title]
+
+Permission checks are useful if you want to show screen contents in a way that somehow reflects your configured permission scheme.
+These are advanced symbols, and mirror Composr's internal API. The parameters are not discussed here, but you may find them from looking at the code.
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$IS_STAFF,2}</td>
+			<td>Is the current user / given user staff (optionally give it a member ID else works on current member, returns Tempcode boolean)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IS_ADMIN,2}</td>
+			<td>Is the current user / given user a super admin (optionally give it a member ID else works on current member, returns Tempcode boolean)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HAS_PRIVILEGE,submit_midrange_content}</td>
+			<td>Member has a privilege (returns Tempcode boolean)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HAS_ZONE_ACCESS,adminzone}</td>
+			<td>Member has access to a zone (returns Tempcode boolean)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HAS_PAGE_ACCESS,admin_stats,adminzone}</td>
+			<td>Member has access to a page (but NOT necessarily the zone it is in) (returns Tempcode boolean)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HAS_ACTUAL_PAGE_ACCESS,admin_stats,adminzone}</td>
+			<td>Member has access to a page and its zone (returns Tempcode boolean)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HAS_CATEGORY_ACCESS,downloads,3}</td>
+			<td>Member has access to a category (returns Tempcode boolean)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HAS_SUBMIT_PERMISSION,mid,12.34.56.78,2,cms_example,category,345}</td>
+			<td>Member has the specified kind of submit permission (returns Tempcode boolean). Parameters: range, IP address, member, CMS page, category, category_id.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HAS_DELETE_PERMISSION,mid,2,2,cms_example,category,345}</td>
+			<td>Member has the specified kind of delete permission (returns Tempcode boolean). Parameters: range, owner, member, CMS page, category, category_id.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HAS_EDIT_PERMISSION,mid,2,2,cms_example,category,345}</td>
+			<td>Member has the specified kind of edit permission (returns Tempcode boolean). Parameters: range, owner, member, CMS page, category, category_id.</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]Composr interfacing, specific/advanced features[/title]
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$TOTAL_POINTS,3}</td>
+			<td>Get the total points the specified member has</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$POINTS_USED,3}</td>
+			<td>Get the total points the specified member has used (spent).</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$AVAILABLE_POINTS,3}</td>
+			<td>Get the total points in the specified member's account; some of these will probably have been spent already</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$CNS}</td>
+			<td>Whether Conversr is being used (returns Tempcode boolean)</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$HAS_FORUM,General Chat}</td>
+			<td>Whether a forum is available (returns Tempcode boolean)</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$VERSION}</td>
+			<td>The major version of Composr being used</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$MEMBER_OVERRIDE}</td>
+			<td>The Member-ID of the Account being viewed (e.g. if you're staff looking in somebody else's account then this would find the member ID, otherwise it is your own member ID)</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$COOKIE_PATH}</td>
+			<td>Get the cookie save path</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$COOKIE_DOMAIN}</td>
+			<td>Get the cookie save domain</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$IS_A_COOKIE_LOGIN}</td>
+			<td>Find if a cookie login is active</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$SESSION_COOKIE_NAME}</td>
+			<td>Get the name for the session cookie</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$BANNER,some_banner_type}</td>
+			<td>Display a banner of specific type (first parameter is the banner type, second is an optional binary value for whether the banners should be limited to only internal banners)</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$ATTACHMENT_DOWNLOADS,3}</td>
+			<td>Find how many downloads an attachment has had (first parameter is the ID number of an attachment)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COMMENT_COUNT,downloads,3}</td>
+			<td>Find the number of comments made for a resource (first parameter is the resource type code, second parameter is the resource ID)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$THUMBNAIL,http://example.com/pic.png,40x60,galleries}</td>
+			<td>Generate a thumbnail URL from another image URL</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$SUPPORTS_FRACTIONAL_EDITABLE,cms:cms_example,1}</td>
+			<td>Whether some content has permissions to be editable inline, via the <kbd>FRACTIONAL_EDITABLE</kbd> directive. Described in the [page="_SEARCH:sup_inline_editing"]Inline editing in Composr[/page] tutorial.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$GROUP_ID,0,3}</td>
+			<td>Find a member's nth usergroup (counting from zero), starting with the primary usergroup (first parameter is n, second parameter is member ID which defaults to the current member)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$GROUP_NAME,0,3}</td>
+			<td>Find the name of a members nth usergroup (counting from zero), starting with the primary usergroup (first parameter is n, second parameter is member ID which defaults to the current member)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$URL_FOR_GET_FORM,someurl}</td>
+			<td>Strips out the query string parameters from a URL, so that this URL can be used as the action for a GET form</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$HIDDENS_FOR_GET_FORM,someurl}</td>
+			<td>Takes the query string parameters of a URL and turns them into hidden form inputs, so that a GET form will relay them</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FIND_ID_VIA_URL_MONIKER,&lt;content-type&gt;,&lt;url-moniker&gt;}</td>
+			<td>Finds the ID for a given content type's URL moniker</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FIND_URL_MONIKER_VIA_ID,&lt;page&gt;,&lt;type&gt;,&lt;id&gt;}</td>
+			<td>Finds the URL moniker for an item of content's type/ID</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FIND_GUID_VIA_ID,&lt;resource-type&gt;,&lt;resource-id&gt;}</td>
+			<td>Find the resource GUID from the resource ID</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FIND_COMMANDR_FS_FILENAME_VIA_ID,&lt;resource-type&gt;,&lt;resource-id&gt;}</td>
+			<td>Find the Commandr-fs (repository) filename from the resource ID. There is an optional third parameter, which may be set to 1 if you want the resource sub-path to also be included. Sub-paths are relative to the repository-fs path for the resource-type.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FIND_LABEL_VIA_ID,&lt;resource-type&gt;,&lt;resource-id&gt;}</td>
+			<td>Find the resource label from the resource ID</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FIND_ID_VIA_LABEL,&lt;resource-type&gt;,&lt;label&gt;}</td>
+			<td>Find the resource ID from the resource label</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FIND_ID_VIA_GUID,&lt;guid&gt;}</td>
+			<td>Find the resource ID from the resource GUID. It is assumed you as the programmer already know the resource-type.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FIND_ID_VIA_COMMANDR_FS_FILENAME,&lt;resource-type&gt;,&lt;filename&gt;}</td>
+			<td>Find the resource ID from the Commandr-fs (repository) filename</td>
+		</tr>
+	    <tr style="background: #FFDDDD">
+	    	<td>{$DISPLAY_CONCEPT,concept_name}</td>
+	    	<td>Displays a link to a concept, if it has been saved already from a concept table.</td>
+	    </tr>
+	    <tr style="background: #FFDDDD">
+	    	<td>{$SET_TUTORIAL_LINK,tutorial_id,page-link}</td>
+	    	<td>Creates a tutorial link for the given tutorial_id to the given page-link. Needs doing in Tempcode because the Comcode parser doesn't know the target page for Comcode being parsed.</td>
+	    </tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CPF_LIST,&lt;field-title&gt;}</td>
+			<td>Find all the possible values for a custom profile field in a loop-iterable string</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$AUTHOR_MEMBER,author_name}</td>
+			<td>Find the member ID associated with an author, or guest ID if none</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="4"]Thumbnail generation[/title]
+
+The [tt]{$THUMBNAIL}[/tt] tag is actually much more sophisticated and powerful than described above. It's full syntax is as follows...
+
+Usage: [tt]{$THUMBNAIL,source_image,widthxheight,output_dir,filename,fallback_image,type,where,background,only_make_smaller}[/tt]
+where:
+ - [tt]source_image[/tt] is the URL to the full image
+ - [tt]widthxheight[/tt] is the desired width/height for the thumbnail. For types (see below) of width or height or crop you can omit either of the width or height for automatically calculated proportionality (e.g. [tt]x20[/tt] for just a height). If you specify both for crop it crops to the exact specified box rather than to the implied proportional box.
+ - [tt]output_dir[/tt] is the name of a directory under Composr's [tt]uploads[/tt] directory
+ - [tt]filename[/tt] is the name of the thumbnail filename. If not provided it will be automatically chosen based on the source_image and an articulation of the thumbnail settings
+ - [tt]fallback_image[/tt] is the URL to the image to use if no thumbnail could be generated. If not provided the source_image will be used
+ - [tt]type[/tt] is either:
+  - [tt]box[/tt] for an image which should be maximally fitted into the given box dimensions (the default)
+  - [tt]width[/tt] for an image which is stretched to the given width and a height in proportion to that
+  - [tt]height[/tt] for an image which is stretched to the given height and a width in proportion to that
+  - [tt]crop[/tt] for an image which has been shrunk until one of its dimensions matched that given and the rest has been chopped off
+  - [tt]pad[/tt] for an image which has been shrunk until it completely fits within the given dimensions, and then padded out
+  - [tt]pad_vert_crop_vert[/tt] for an image that may only have cropping or padding done above/below and therefore gets stretched to force that to be the case
+  - [tt]pad_horiz_crop_horiz[/tt] for an image that may only have cropping or padding done left/right and therefore gets stretched to force that to be the case
+ - The [tt]where[/tt] argument is not needed for [tt]width[/tt] or [tt]height[/tt] type thumbnails. For [tt]crop[/tt] & [tt]pad[/tt] types it is where to crop/pad:
+  - [tt]start[/tt]
+  - [tt]end[/tt]
+  - [tt]both[/tt] (assuming bottom-to-top and right-to-left)
+  - If the [tt]where[/tt] option is omitted for cropped thumbnails then it will be centred. For padded thumbnails it will resize the image to get rid of any need for padding (ie. "padding none").
+ - For [tt]pad[/tt] types the background is used to pad the image:
+  - a hex code for a specific colour (with alpha)
+  - or, [tt]none[/tt] for no padding (ie. the image dimensions are not those given, but will fit inside them).
+  - or, if the option is omitted for padded thumbnails then the average colour of the image is used.
+ - [tt]only_make_smaller[/tt] can be set to "1" if the image should not be resized at all if it is already smaller than the requested thumbnail size
+
+[title="3"]Logic[/title]
+
+Note that all logic symbols return Tempcode boolean values (except [tt]?[/tt]). This makes them suitable for nesting with each other, or using with the 'IF' directive.
+Understanding of these symbols requires an understanding of basic boolean operations but they are fairly intuitive (e.g. 'AND' will return true if all its parameters are true).
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$EQ,a,b}</td>
+			<td>Test for string equality (pass in any number of strings to check they are all the same)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$NEQ,a,b}</td>
+			<td>Test for string inequality (this is the same as [/html][tt]{$NOT,{$EQ,...}}[/tt])[html]</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$NOT,1}</td>
+			<td>Boolean NOT (pass in one Tempcode boolean to get the opposite boolean out)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$OR,1,1}</td>
+			<td>Boolean OR (pass in any number of Tempcode booleans to check that one is true)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$NOR,1,1}</td>
+			<td>Boolean NOR (this is the same as [/html][tt]{$NOT,{$OR,...}}[/tt][html]). NOR means "Neither"</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$XOR,1,1}</td>
+			<td>Boolean XOR (pass in two Tempcode booleans to check that just one of them is true but not both of them). XOR means "one or the other but not both"</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$AND,1,1}</td>
+			<td>Boolean AND (pass in any number of Tempcode booleans to check they are all true)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$NAND,1,1}</td>
+			<td>Boolean NAND (this is the same as [/html][tt]{$NOT,{$AND,...}}[/tt][html]). NAND means "Not both"</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$LT,1,2}</td>
+			<td>Test for numerical less-than inequality (pass in a Tempcode number)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$GT,1,2}</td>
+			<td>Test for numerical greater-than inequality (pass in a Tempcode number)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IS_EMPTY,this obviously is not blank}</td>
+			<td>Find whether a string is blank</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IS_NON_EMPTY,this obviously is not blank}</td>
+			<td>Find whether a string is not blank</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$?,1,shows if true,shows if not true}</td>
+			<td>
+				Do an inline IF test, outputting the second parameter if the first evaluates to true and the third (optional parameter) if it does not<br /><br />
+				<kbd>{$?,0,yes,no}</kbd> &rarr; <kbd>no</kbd><br />
+				<kbd>{$?,1,yes,no}</kbd> &rarr; <kbd>yes</kbd><br />
+				<kbd>{$?,0,yes}</kbd> &rarr; (blank)<br />
+				<kbd>{$?,1,yes}</kbd> &rarr; <kbd>yes</kbd>
+			</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]Arithmetic[/title]
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$NEGATE,3}</td>
+			<td>Negate a number</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MULT,3,3}</td>
+			<td>Multiply two numbers</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$ROUND,3.2}</td>
+			<td>Round a number</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MAX,3,4}</td>
+			<td>Find the maximum between two numbers</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MIN,3,4}</td>
+			<td>Find the minimum between two numbers</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$MOD,3}</td>
+			<td>Make the given number positive (e.g. -3 becomes 3, 3 becomes 3)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$REM,10,3}</td>
+			<td>Find the remainder if the first number is divided by the second</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$DIV,10,3}</td>
+			<td>Divide two numbers to get an integer result</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$DIV_CEIL,10,3}</td>
+			<td>Divide two numbers to get an integer result, but round up</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$DIV_FLOAT,10,3}</td>
+			<td>Do a division to get a decimal result</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SUBTRACT,4,3}</td>
+			<td>Perform a subtraction</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$ADD,4,3}</td>
+			<td>Add two numbers</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]String manipulation[/title]
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$REPLACE,exemplar,something,this is exemplar}</td>
+			<td>Do a string replace (three parameters: what's being replaced, what's being replaced with, what's being replaced in)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$AT,something,3}</td>
+			<td>Extract a string character (first parameter is the string, second parameter is the index of the character to get counting from 0)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$STRPOS,something,hi}</td>
+			<td>Find the position of a string substring (first parameter is the search string, second parameter is the substring, returns Tempcode number)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IN_STR,something,in}</td>
+			<td>Find whether a substring is in a string (first parameter is the search string, second parameter is the substring, returns Tempcode boolean)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SUBSTR_COUNT,abacus,a}</td>
+			<td>Find how many times a substring appears (first parameter is the search string, second parameter is the substring, returns Tempcode number)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SUBSTR,something,2,2}</td>
+			<td>Extract a string substring (first parameter is the string, second parameter is the index of where to extract from, third parameter is the extraction length)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$LENGTH,something}</td>
+			<td>Find the length of a string (give it a string, returns a Tempcode number)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$PAD_LEFT,12,4,0}</td>
+			<td>Pad something out on the left. This example produces 0012</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$PAD_RIGHT,12,4,0}</td>
+			<td>Pad something out on the right. This example produces 1200</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$WCASE,A b C}</td>
+			<td>Convert string to word case</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$LCASE,A b C}</td>
+			<td>Convert string to lower case</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$UCASE,A b C}</td>
+			<td>Convert string to upper case</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$WORDWRAP,blah blah blah,4,&lt;br /&gt;,1}</td>
+			<td>Word-wrap a string (first parameter is the string, second parameter is the maximum line length, optional third parameter is the divider string which defaults to an HTML line-break, optional fourth parameter is a binary value specifying whether to force hard cuts)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$PREG_MATCH,\d,1 2 3}</td>
+			<td>See if something matches a regular expression (first parameter is the regexp, second parameter is the subject string)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$PREG_REPLACE,\d,a,1 2 3}</td>
+			<td>Perform a regular expression replace (first parameter is the regexp, second parameter is the replacement string, third parameter is the subject string)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COMMA_LIST_REVERSE,a\,b\,c}</td>
+			<td>Reverse a comma-separated list</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COMMA_LIST_GET,a=1\,b=2,a}</td>
+			<td>Find a value from a comma-separated list.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COMMA_LIST_SET,a=1\,b=2,a,2}</td>
+			<td>Set a value in a comma-separated list.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COMMA_LIST_FROM_BREADCRUMBS}</td>
+			<td>Convert breadcrumbs to a comma-separated list.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COMMA_LIST_POP,a\,b\,c}</td>
+			<td>Remove the last element from a comma-separated list and throw that element away.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COMMA_LIST_SHIFT,a\,b\,c}</td>
+			<td>Remove the first element from a comma-separated list and throw that element away.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COMMA_LIST_PUSH,a\,b\,c,d}</td>
+			<td>Add an element to the end of a comma-separated list.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COMMA_LIST_UNSHIFT,b\,c\,d,a}</td>
+			<td>Add an element to the start of a comma-separated list.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COMMA_LIST_NICIFY,a\,b\,c}</td>
+			<td>Put a space after commas in a comma-separated list.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$NUMBER_FORMAT,1234}</td>
+			<td>Make a number (integer) look nice, with commas etc (takes a Tempcode number)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FLOAT_FORMAT,1234.5678}</td>
+			<td>Make a decimal number look nice, with commas etc, to 2 decimal places (takes a Tempcode number)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$TEMPCODE,{$MEMBER}}</td>
+			<td>Evaluates the given parameter as Tempcode (takes a string). This is useful for <strong>very</strong> rare situations where you want to write in symbols as parameters to Comcode tags where the parameter is treated as a plain-string. This is only useful in Comcode, when typing Tempcode you can nest Tempcode constructs almost however you like.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$COMCODE,[b]Comcode[/b],0}</td>
+			<td>Evaluates the given parameter as Comcode (takes a string). This is useful in conjunction with the above (<kbd>TEMPCODE</kbd>), as anything passed into a symbol won't be evaluated as Comcode. If the second parameter is omitted or set to 1, then Comcode will be parsed with administrative permissions &ndash; be careful about that, as you don't want to process user content like that.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$URLDECODE,a%20b}</td>
+			<td>Remove URL encoding</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SMART_LINK_STRIP,<a href="http://example.com/">hello</a>,3}</td>
+			<td>Remove links from the given HTML, if the member ID does not have a positive post count (a temporary measure to disincentivise spammers)</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]Tempcode variables[/title]
+
+You can store and retrieve values in Tempcode variables. These work across templates, and also work in any-order due to the Composr Tempcode pre-processor (i.e. something can be [tt]SET[/tt] after the [tt]GET[/tt] for it).
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Symbol name / example</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>{$ISSET,test}</td>
+			<td>Find whether a Tempcode variable is set (give it the name of a variable, returns Tempcode boolean)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$INIT,test,1}</td>
+			<td>Initialise a Tempcode variable to a value, but only if it is not yet set (give it the name of a variable, and a value, returns nothing)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$SET,test,1}</td>
+			<td>Set a Tempcode variable to a value (give it the name of a variable, and a value, returns nothing). Bear in mind that the Composr Tempcode-preprocessor will likely cause your code to run once in every code branch before it outputs (meaning even code inside IF directives that never are true will still pre-process), and once again as it outputs. So always reinitialise your variables in your template to make sure they are not dirty from the pre-processing stage. This behaviour may seem strange, but it is necessary for performance, comprehensive caching, and reasons of Composr needing conditionless output foresight.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$GET,test}</td>
+			<td>Get the value of a Tempcode variable (give it the name of a variable, returns the value). If you set the 2nd parameter to "1" then the Tempcode cache will be reset for the value being received (allowing it to reevaluate the value, i.e. operate fully dynamically). This must be set on all GET calls to the same value, otherwise the Tempcode may be flattened prematurely. The <kbd>-</kbd> must be used to do the initial SET.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$THEME_WIZARD_COLOR,#RRGGBB,name,equation}</td>
+			<td>Sets a theme wizard colour that can be retrieved from <kbd>name</kbd> as a Tempcode variable. The equation is actually ignored during Tempcode evaluation but is picked up by the Theme Wizard.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$INC,test}</td>
+			<td>Increment a Tempcode variable (give it the name of a variable, returns nothing)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$DEC,test}</td>
+			<td>Decrement a Tempcode variable (give it the name of a variable, returns nothing)</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="2"]Directives[/title]
+
+Note that you cannot use directives for symbol parameters because directives control code flow rather than inline calculations. The way Tempcode logic is internally structured cannot parse/hold it. You can almost always use the <kbd>?</kbd> symbol to guide inline calculations instead.
+
+[html]
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>Directive name</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr style="background: #DDFFDD">
+			<td>BOX</td>
+			<td>These allow the 'standard box' layout convention to be used without duplicating a lot of HTML in different templates. CSS could never provide this itself, as the box 'styling' actually involves a large chunk of complex structure.
+		          <br />The parameters to the directive are (all may be blank or left out):<ol>
+						<li>the title (blank means no title is used)</li>
+						<li>the type of the box (there will be a template, <kbd>STANDARDBOX_&lt;type&gt;</kbd> for any valid type code; the default is <kbd>default</kbd>). [/html][tt]default[/tt] and [tt]accordion[/tt][html] come as standard.</li>
+						<li>the CSS width</li>
+						<li>'|' separated list of options (meaning dependant upon templates interpretation)</li>
+						<li>'|' separated list of meta information (key|value|key|value|...) (e.g. [/html][tt]Name|Allen|Gender|Male|Country|USA[/tt][html])</li>
+						<li>'|' separated list of link information (linkhtml|...)  (e.g. [/html][tt]<a href="http://example.com">Example</a>|<a href="http://google.com">Example</a>[/tt][html])</li>
+						<li>the links added to the top left of the box (Defaults to false)</li>
+			</ol></td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>CSS_INHERIT</td>
+			<td>Include another theme's CSS into your CSS file, so you only need to specify differences. The parameters are: CSS file name, theme name, seed colour [optional]. The contents of the directive should be left blank.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>INCLUDE</td>
+			<td>Include a template in another and pass parameters (this makes a template very much like a function in a conventional programming language). Note that the automated smart-decaching (for developers manually editing template files) will not work on manually edited included templates because Composr's optimiser means that the actual template is "compiled into" the template that calls it and thus not regularly individually checked. If you try to include a template into itself, and don't give any new parameters, Composr will include the default version of that template in (if you do give parameters, or are running HipHop-PHP, you'll probably get a fatal error instead)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>WHILE</td>
+			<td>Do a loop until the Tempcode boolean used as the directive parameter evaluates to false.</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>LOOP</td>
+			<td>
+	            Do a loop over an array. This is not used much in default templates and only works if arrays are actually what is passed into the template (unless the third operating mode is used, see below).
+	            It operates in 3 possible ways:<ol>
+	                <li>With a template parameter that is a simple 1-dimensional list of strings. E.g. <kbd>'EXAMPLE'=>array('a','b','c')</kbd> could be looped via <kbd>{+START,LOOP,EXAMPLE}...{+END}</kbd>. Within the directive <kbd>{_loop_key}</kbd> and <kbd>{_loop_var}</kbd> are bound (so it's a little like a PHP foreach loop). This will not work from within Comcode, only templates.</li>
+	                <li>With a template parameter that is a 2-dimensional array structure, a list of maps of key names to strings. E.g. 'EXAMPLE'=>array(array('FOO'=>'a1', 'BAR'=>'b1'), array('FOO'=>'a2', 'BAR'=>'b2'))</kbd> could be looped via <kbd>{+START,LOOP,EXAMPLE}...{+END}</kbd>. Within the directive <kbd>{_loop_key}</kbd> and <kbd>{FOO}</kbd> and <kbd>{BAR}</kbd> are bound. This will not work from within Comcode, only templates.</li>
+	                <li>With no template parameter, just a hard-coded list within the template. E.g. <kbd>{+START,LOOP,a\,b\,c}...{+END}</kbd>. Within the directive <kbd>{_loop_key}</kbd> and <kbd>{_loop_var}</kbd> are bound (so it's a little like a PHP foreach loop with hard-coded data). The "\" is required to encode a comma-separated list within a single directive parameter.</li>
+	            </ol>
+	            If also has support for automatic HTML table columnisation and sorting, as an advanced feature (very rarely used). If you want to use that check at the implementation in the PHP code to see how it works.
+	        </td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>IF_PASSED/IF_NON_PASSED</td>
+			<td>Find if a named parameter was passed (Do <strong>not</strong> encase the parameter with {})</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>IF_PASSED_AND_TRUE/IF_NON_PASSED_OR_FALSE</td>
+			<td>Find if a named parameter was passed and its truth state (useful for robust optional boolean parameters that default to false)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>IF_EMPTY/IF_NON_EMPTY</td>
+			<td>Find if some Tempcode evaluates to empty. This is <strong>extremely</strong> useful, as it allows you to, for example, now show a table if it has no rows passed in. From a programming point of view, it allows us to avoid making new templates and improve accessibility compliance.</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>IF_ARRAY_EMPTY/IF_ARRAY_NON_EMPTY</td>
+			<td>Find if an array is empty.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>IF</td>
+			<td>This simply tests a condition. This condition is often generated by nesting symbols together. For example, [/html][tt]{+START,IF,{$EQ,{A},{B}}}...{+END}[/tt][html]</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>OF</td>
+			<td>This is a non-wrapping directive that extracts a string from an array at a certain array position.</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>IMPLODE</td>
+			<td>This is a non-wrapping directive that turns an array into a string by placing a separator between each element.</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>COUNT</td>
+			<td>Find the number of elements in an array.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>SET</td>
+			<td>Like the SET symbol, but sets with surrounded block of code rather than the second parameter.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>RECONTEXTUALISE_IDS</td>
+			<td>Prefixes all the IDs contained within (prefix is given as the first parameter). Reassociates form labels correctly. This directive is useful if you need to have the same form on an HTML page more than once.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>PARAM_INFO</td>
+			<td>Shows all parameters in the current scope. Very useful for debugging what goes into a template. Use without and directive contents like, <samp>{+START,PARAM_INFO}{+END}</samp></td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>FRACTIONAL_EDITABLE,The [i]Title[/i],title,cms:cms_example,1,1,1</td>
+			<td>Used to make a string of some content editable inline. Described in the [page="_SEARCH:sup_inline_editing"]Inline editing in Composr[/page] tutorial.</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>IN_ARRAY</td>
+			<td>See if something is contained in an array, returning a boolean. This only works with arrays passed into templates (not something like a delimited-list). This is rarely used because it can't be embedded easily within wider expressions. Usually you will use <kbd>IF_IN_ARRAY</kbd>.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>IF_IN_ARRAY,example,PASSED_IN_ARRAY,output if it is</td>
+			<td>Output something if something is in an array. This only works with arrays passed into templates (not something like a delimited-list). First parameter is a string to check for, second parameter is the name of an array, third parameter is what to output.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>IF_NOT_IN_ARRAY,example,PASSED_IN_ARRAY,output if it is not</td>
+			<td>Opposite of IF_IN_ARRAY</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>NO_PREPROCESS</td>
+			<td>Don't do any pre-processing under this directive. This improves performance for complex Tempcode trees (especially for conditionally displayed blocks), but it does mean that things like CSS and JavaScript includes that are required by blocks may not be detected.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>CASES</td>
+			<td>Show different output based on the value of something</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>COMMENT</td>
+			<td>A comment (i.e. does nothing)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>NO_PREPROCESSING</td>
+			<td>Avoid preprocessing of anything inside the directive. This is needed for complex cases such as when you need to do heavy optimisation of unusual code paths, or unusual GET/SET situations with shared variables which may not always exist (and need to be evaluated therefore in a strictly linear way).</td>
+		</tr>
+	</tbody>
+</table>
+[/html]
+
+[title="3"]Directive examples[/title]
+
+The most important directives are:
+ - [tt]IF_NON_EMPTY[/tt]
+ - [tt]IF_EMPTY[/tt]
+ - [tt]IF[/tt]
+
+[title="4"]IF_NON_EMPTY[/title]
+
+This directive is commonly used when a box or explanation needs placing around something, unless that something happens to be blank (empty).
+For example, the following is a fairly typical thing to see in a template:
+[code="HTML"]
+{+START,IF_NON_EMPTY,{DOWNLOADS}}
+	<p>We have the following downloads:</p>
+	{DOWNLOADS}
+{+END}
+[/code]
+
+The [tt]IF_NON_EMPTY[/tt] directive evaluates [tt]{DOWNLOADS}[/tt], to see if it is blank. If it is not blank, the contents of the directive is output, otherwise nothing happens.
+As you can see from this example, we need to check for emptiness so we don't show a boxed message about downloads that refers to nothingness.
+
+[title="4"]IF_EMPTY[/title]
+
+An alternative approach to the above example is to include a special message upon emptiness, rather than skipping over. We might do this if the content being displayed is critical and thus the emptiness must be explicitly acknowledged:
+[code="HTML"]
+<p>We have the following downloads:</p>
+{DOWNLOADS}
+{+START,IF_EMPTY,{DOWNLOADS}}
+	<p class="nothing_here">(none)</p>
+{+END}
+[/code]
+
+Note here how we are displaying [tt]{DOWNLOADS}[/tt] even if it is empty. Obviously if it is empty, nothing would display, so we can get away with it. If we were being pedantic we might have wrote the following:
+[code="HTML"]
+<p>We have the following downloads:</p>
+{+START,IF_NON_EMPTY,{DOWNLOADS}}
+	{DOWNLOADS}
+{+END}
+{+START,IF_EMPTY,{DOWNLOADS}}
+	<p class="nothing_here">(none)</p>
+{+END}
+[/code]
+and arguably this does better demonstrate what we're trying to do, even though the behaviour is the same (ignoring invisible differences in HTML white-space).
+
+It's often useful to be a bit clever with the emptiness-checking directives. For example:
+[code="HTML"]
+<p>We have the following downloads and images:</p>
+{DOWNLOADS}
+{IMAGES}
+{+START,IF_EMPTY,{DOWNLOADS}{IMAGES}}
+	<p class="nothing_here">(none)</p>
+{+END}
+[/code]
+
+In this example, the directive checks if the [tt]{DOWNLOADS}{IMAGES}[/tt] is blank, which is exactly the same as checking if they are both blank (because blank next to blank is still just blank).
+
+[title="4"]IF[/title]
+
+The 'IF' directive allows particular complex calculations to be done. For a simple example, we can replicate the trick in the last example in a more formal way:
+[code="HTML"]
+<p>We have the following downloads and images:</p>
+{DOWNLOADS}
+{IMAGES}
+{+START,IF,{$AND,{$IS_EMPTY,{DOWNLOADS}},{$IS_EMPTY,{IMAGES}}}}
+	<p class="nothing_here">(none)</p>
+{+END}
+[/code]
+
+This checks to see if "DOWNLOADS is empty and IMAGES is empty".
+
+Tempcode uses what is called a "prefix notation", and is similar to the way you write mathematical functions. For example, in common maths:
+[code="Maths"]
+f(a,b)
+[/code]
+is how you would write "evaluate function 'f' with parameters 'a' and 'b'.
+In the similar Tempcode notation you would write (assuming 'A' and 'B' are template parameters and 'F' is a real Tempcode symbol):
+[code="Tempcode"]
+{$F,{A},{B}}
+[/code]
+
+Here's another 'IF' directive showing a more complex computation:
+[code="HTML"]
+{+START,IF,{$LT,{ADD_DATE_RAW},{$SUBTRACT,{$FROM_TIMESTAMP},86400}}}
+	<p>This content on {$SITE_NAME} is more than one day old.</p>
+{+END}
+[/code]
+
+Background: a unix timestamp is a common measurement of time on computers -- it represents the number of seconds since 1970 and because of its nature as a simple decimal number, is very useful for performing arithmetic.
+This example checks to see if [tt]ADD_DATE_RAW[/tt] is less than the current unix timestamp minus 86400. 86400 is the number of seconds in a day, so in other words the example checks to see if [tt]ADD_DATE_RAW[/tt] is at least a day in the past. Because [tt]ADD_DATE_RAW[/tt] is often passed into templates that display content, it checks to see if the content is at least a day old.
+
+I threw [tt]{$SITE_NAME}[/tt] into the example just to demonstrate symbols are not only for use in IF directives -- this one is being used to perform a simple placement of the website name. All symbols do is compute results, so those results might be used for further computations as parameters to computational symbols (such as 'SUBTRACT'), or they might be passed into a directive, or they might be simply output. It merely depends on where they are placed.
+
+Tempcode is extremely powerful, and hopefully now you can see how symbols, directives, and parameters, can come together to allow great things to happen!
+
+[box]
+See [tt]tempcode_test.txt[/tt] for more examples on how to use symbols and directives.
+[/box]
+
+[title="4"]CASES[/title]
+
+[code="Tempcode"]
+Capital city:
+{+START,CASES,{COUNTRY}}
+	UK=London
+	Ireland=Dublin
+	=Unknown
+{+END}
+[/code]
+
+Based on the value of "Country", a different value would be shown. We have coded cases for the UK and Ireland, and anything else would default to "Unknown".
+
+Be wary that you can't have multi-line strings for the case sections. This includes not having multi-lines within any of the Tempcode parameters/expressions.
+
+Mode #1 is substring matching:
+[code="Tempcode"]
+Healthiness:
+{+START,CASES,{FOOD_ITEM},1}
+	Cake=Unhealthy
+	Pie=Unhealthy
+	Salad=Healthy
+	=Unknown
+{+END}
+[/code]
+(Imagine [tt]FOOD_ITEM[/tt] contains something like [tt]Chocolate Cake[/tt] or [tt]Banoffee Pie[/tt].)
+
+Mode #2 is regular expression matching:
+[code="Tempcode"]
+Head of state:
+{+START,CASES,{COUNTRY},2}
+	^(Canada|Australia|United Kingdom)$=King/Queen
+	^USA$=POTUS
+	=Unknown
+{+END}
+[/code]
+
+[title="2"]Encapsulation[/title]
+
+You can encapsulate Tempcode within comments of other languages, in order to not break editor syntax highlighting, and so WYSIWYG editors don't corrupt the code.
+
+Examples...
+
+HTML comments...
+[code="HTML"]
+<!-- {+START,IF,{$MOBILE}} -->
+Example
+<!-- {+END} -->
+[/code]
+
+CSS comments...
+[code="CSS"]
+/* {+START,IF,{$MOBILE}} */
+Example
+/* {+END} */
+[/code]
+
+HTML attributes...
+[code="HTML"]
+<span x-tempcode-1="{+START,IF,{$MOBILE}}" class="mobile" x-tempcode-2="{+END}">Example</span>
+[/code]
+
+[title="2"]Detailed worked examples[/title]
+
+This section will provide real-world examples of using Tempcode. It goes into a minimal amount of PHP programming to provide a context for using a new template file and a context as to how Comcode pages, blocks, and templates, hold together. It explains things in terms of direct file editing rather than editing using the forms within Composr.
+
+If you are not comfortable with creating new code files you may want to glance over those parts. Ordinary themers would normally work by editing existing template files, or by placing Tempcode directly onto Comcode pages.
+
+[title="3"]Creating a new block[/title]
+
+Lets start by adding a new sample block to our front page so that we can test different examples of Tempcode. Go to the [tt]sources_custom/blocks[/tt] folder and create and add a new empty file named [tt]main_first_block.php[/tt].
+
+Now lets add something to our block file. Edit [tt]main_first_block.php[/tt] using your favorite text editor and add the following:
+[code="PHP"]
+<?php
+
+class Block_main_first_block
+{
+	function run()
+	{
+		return do_template('BLOCK_MAIN_FIRST_BLOCK',array());
+	}
+}
+[/code]
+
+In this code we are simply creating a new class for our block and then defining the standard [tt]run()[/tt] method which is executed when the block is invoked. We are calling a template file [tt]BLOCK_MAIN_FIRST_BLOCK.tpl[/tt] in the [tt]run()[/tt] method using the [tt]do_template()[/tt] function. This tells the system to use this template file for our block. Our next step is creating a template file for the block.
+
+[title="3"]Creating a template file[/title]
+
+Go to the [tt]themes/default[/tt] folder. There you should find two main templates folder [tt]templates[/tt] and [tt]templates_custom[/tt]. The main [tt]templates[/tt] folder has all the predefined templates which the system is using already (&dagger;) so we don't have to make any changes there. The [tt]templates_custom[/tt] folder will have all the user defined templates or the customised templates, so our template file will go there.
+Create a new blank file [tt]BLOCK_MAIN_FIRST_BLOCK.tpl[/tt] and save it in to [tt]templates_custom[/tt]. [tt].tpl[/tt] is the default extension we give to template files.
+
+&dagger; Actually this isn't quite true. The [tt]css[_custom][/tt], [tt]javascript[_custom][/tt] and [tt]text[_custom][/tt] folders also hold templates. Even CSS files are handled as templates in Composr.
+
+[title="3"]Adding the block to front page[/title]
+
+Now that we have the block and template file ready, lets add the block to our front page so that we can test the examples. To add a block to the front page we will have to make the changes in the comcode file [tt]start.txt[/tt] which contains all the blocks which show up on the front page.
+[tt]start.txt[/tt] file is located in [tt]pages/comcode_custom/EN[/tt] (the same rule as templates applies here as well, i.e. the customised comcode files should go in to [tt]_custom[/tt] folder).
+
+[media width="150" description="Our empty box" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp1.png[/media]
+Edit [tt]start.txt[/tt] file using your text editor, and add this on the end:
+[code="Comcode"]
+[box="first block"][block]main_first_block[/block][/box]
+[/code]
+
+This Comcode adds the block to our front page.
+
+The box defines the outer section of the block and the string parameter passed to it ("first block") will be placed in the title of our box. We could have instead done the box inside the template using Tempcode or direct HTML if we had chosen to, but we wanted to mix some extra Comcode in with our example too.
+
+The block tag includes our new block. Within the block tags we have provided the name of our new block, [tt]main_first_block[/tt].
+
+If you go to your front page now you should see that a new box has been added with the title "first block" on the top. The box is empty right now as we are yet to add any content to the [block's] template file,
+
+Now that we have a block set up on the front page, we can Test some Tempcode examples here by simply adding code to our template file ([tt]BLOCK_MAIN_FIRST_BLOCK.tpl[/tt]).
+
+Let's proceed to our first example...
+
+[title="3"]Set randomisation example[/title]
+
+[media width="150" description="Set randomisation example" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp2.png[/media]
+This example demonstrates how a built-in Tempcode construct, the [tt]SET_RAND[/tt] symbol, can be used to randomly make a selection from given options.
+
+Go ahead and paste the following example code into our [tt]BLOCK_MAIN_FIRST_BLOCK.tpl[/tt] file and reload the front page to see the results.
+
+[code="HTML"]
+<p style="color: {$SET_RAND,red,green,blue,#EE1167};">
+	I think you are a {$SET_RAND,lovely,beautiful,groovy} person.<br />
+	We randomly selected a word, and randomly picked a text colour.
+</p>
+[/code]
+
+(Caching should not be an issue as our test block has not defined any block caching, and (assume you haven't disabled it) the smart cache should detect the template has changed.)
+
+This would resolve to some HTML such as:
+[code="HTML"]
+<p style="color: green">
+	I think you are a groovy person.<br />
+	We randomly selected a word, and randomly picked a text colour.
+</p>
+[/code]
+
+[title="3"]Number randomisation example[/title]
+
+[media width="150" description="Number randomisation example. We had to refresh a few times to see this, because as expected it was empty 3/4 of the time." float="right"]data_custom/images/docs/tut_tempcode/poweroftemp6.png[/media]
+In this example we use the symbol [tt]RAND[/tt] to pick a random number between 0 and 3 and the number. This number will then be passed to an [tt]IF[/tt] directive that checks if the number is less than 1 using the [tt]LT[/tt] symbol. Go ahead and try this in the template file to see the results.
+
+[code="HTML"]
+{+START,IF,{$LT,{$RAND,3},1}}
+	<p>
+		This shows 1/4 of the time. How does it work? RAND picks a random number between 0 and 3, so the number will be less than 1 1/4 of the time.
+	</p>
+{+END}
+[/code]
+
+[title="3"]Obfuscation example[/title]
+
+Tempcode is also equipped with security features such as obfuscating an e-mail, getting an obfuscated [tt]mailto:[/tt] string which makes it hard for e-mail scavengers to read it -- hence preventing spam.
+
+[code="HTML"]
+<p>
+    I want to let people {$OBFUSCATE,mailto:me@example.com}, but I don't want spam so I will confuse spam-bots.
+</p>
+[/code]
+
+[title="3"]Truncation example[/title]
+
+The [tt]TRUNCATE_LEFT[/tt] symbol can be used to trim data from the left, the [tt]TRUNCATE_RIGHT[/tt] symbol to do the same from right, and the [tt]TRUNCATE_SPREAD[/tt] symbol to keep an equal left/right portion.
+
+All the three functions have the same parameter order, which is as follows:
+[code="Tempcode"]
+{$TRUNCATE_LEFT, data, truncation length, optional binary value to show a tool tip, optional binary value for whether the input text is already in HTML format}
+[/code]
+
+[code="HTML"]
+<p>
+    {$TRUNCATE_LEFT,Sometimes you get data that is too long for your layout.,10,1,1}
+</p>
+[/code]
+
+[title="3"]Match-key example[/title]
+
+[media width="150" description="Match-key example, running from start page (nothing would be seen if we placed the block on another page)" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp7.png[/media]
+We can use that to show a specific message only if a match-key is satisfied.
+
+A match-key is basically the same thing as a page-link. The only difference is that a match-key is used for matching and will also match any page-links with additional parameters not mentioned in the match-key -- i.e. the match is performed against the parameters in the match-key, all other parameters are ignored. As you are probably already comfortable with the term "page-link", we'll use that henceforth.
+
+[code="HTML"]
+{+START,IF,{$MATCH_KEY_MATCH,site:start}}
+	<p>
+		I want this displayed only for the start page<br />
+		(the page-link means "'site' zone, 'start' page)
+	</p>
+{+END}
+[/code]
+
+You can test this next example in the [tt]DOWNLOAD_CATEGORY_SCREEN.tpl[/tt] file:
+[code="HTML"]
+{+START,IF,{$MATCH_KEY_MATCH,site:downloads:browse:3}}
+	<p>
+		Maybe I want to add this message to DOWNLOAD_CATEGORY_SCREEN.tpl but to only display if viewing download category 3.<br />
+		(the page-link means "'site' zone, 'downloads' page, 'browse' screen type, '3' ID)
+	</p>
+{+END}
+[/code]
+
+This is an alternative way of achieving the same result as above. We perform a string equality (using the [tt]EQ[/tt] symbol) on the [tt]id[/tt] parameter; if it is equal then the message will be displayed.
+
+[code="HTML"]
+{+START,IF,{$EQ,{$_GET,id},3}}
+	<p>
+		Or we could do it this way, given DOWNLOAD_CATEGORY_SCREEN.tpl is always under site:downloads:browse anyway, and the 'id' parameter is the only thing altering.
+	</p>
+{+END}
+[/code]
+
+[title="3"]User-agent detection example[/title]
+
+It's sometimes useful to know which browser is being used by the user to view the web page. We might have to make some tweaks specifically for browsers like Internet Explorer to ensure cross-browser compatibility -- or perhaps we want to give out messages to users to tell them to upgrade their browsers. Ideally we would never have to do this, but the world of web browsers is kind of the wild-west, and things are always advancing and changing.
+
+[code="HTML"]
+{+START,IF,{$BROWSER_MATCHES,ie}}
+	<p>
+		You're an Internet Explorer user.
+	</p>
+{+END}
+[/code]
+
+[title="3"]Admin check example[/title]
+
+[media width="150" description="Admin check example (we're logged in as admin so we do see it)" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp3.png[/media]
+This example shows how we could display messages or alerts specifically for admins.
+
+[code="HTML"]
+{+START,IF,{$IS_ADMIN}}
+	<p>
+		Only admins see this.
+	</p>
+{+END}
+[/code]
+
+[title="3"]Group membership example[/title]
+
+This functionality is similar to the above [tt]IS_ADMIN[/tt], but it works by usergroup. If the member belongs to any of usergroups 1, 3, 4 or 5, then the message will be displayed.
+
+[media width="150" description="Group membership example (viewed from a test user in one of these usergroups)" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp4.png[/media]
+[code="HTML"]
+{+START,IF,{$IS_IN_GROUP,1,3-5}}
+	<p>
+		Only members in groups 1/3/4/5 see this.
+	</p>
+{+END}
+[/code]
+
+(here we used [page="_SEARCH:tut_selectcode"]Selectcode[/page] to show how we can do a range)
+
+[title="3"]Guest check example[/title]
+
+This example shows different content to guests and non-guests:
+[code="HTML"]
+{+START,IF,{$IS_GUEST}}
+	<p>
+		Only guests see this.
+	</p>
+{+END}
+{+START,IF,{$NOT,{$IS_GUEST}}}
+	<p>
+		Only non-guests see this (you are {$USERNAME*}).
+	</p>
+{+END}
+[/code]
+
+[title="3"]Thumbnail example[/title]
+
+This example is dynamically changing the image resolution of your avatar, using the [tt]THUMBNAIL[/tt] symbol and the [tt]AVATAR[/tt] symbol. The second parameter of the [tt]THUMBNAIL[/tt] symbol defines the resolution we are generating.
+
+[code="HTML"]
+<img alt="Your avatar made into a really tiny thumbnail" title="Your avatar made into a really tiny thumbnail" src="{$THUMBNAIL*,{$AVATAR},20x20}" />
+[/code]
+
+[title="3"]Zebra striping example[/title]
+
+[media width="150" description="Zebra striping example" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp5.png[/media]
+This example shows some zebra striping, within a set of boxes put out by a loop.
+
+We can use loops within Tempcode using the [tt]LOOP[/tt] directive, and the loop variable can be fetched within the loop using the [tt]_loop_var[/tt] parameter.
+
+This example is not about loops; we just use loops as a way of putting out multiple boxes -- really we are trying to show how zebra striping can work. Zebra striping can also work between multiple attached instances of the same template, which is a far more common example, but would have been a bit harder for us to demonstrate via sample code.
+
+In this example, it loops from A to I and in the loop it uses the [tt]CYCLE[/tt] symbol to go through the parameters passed to it (two colours) in a sequence. The first loop iteration will result in a [tt]div[/tt] element with a background property set to the first value (i.e [tt]#EEE[/tt]) and [tt]_loop_var[/tt] will display the current loop value for that (i.e. A). Then it proceeds through the loop, but the cycle is repeating between just two values (our zebra stripes) even though the loop goes on for nine values.
+
+[code="HTML"]
+<div>
+	Zebra-striping by setting up a named cycle (we use the loop to simulate an arbitrary repeating situation to use the cycle within):
+	{+START,LOOP,A\,B\,C\,D\,E\,F\,G\,H\,I}
+		<div style="background: {$CYCLE,bgcol,#EEE,#AAA}">
+			{_loop_var}
+		</div>
+	{+END}
+</div>
+[/code]
+
+[title="2"]GUIDs[/title]
+
+There is a design issue that comes to us when we design template structure... do we re-use templates so that editing is easier, load is decreased, and consistency is raised; or do we allow maximum customisation of different aspects of the system by not re-using templates?
+We have tended to stick to a middle ground between these extremes, and re-used templates when the usage pattern was almost identical. For example, almost all of Composr uses the same form field templates, but Wiki+ posts use different templates to forum posts. However, there are still places where we re-use templates in situations that sites may wish to develop in separate directions.
+
+The solution to this is to make use of the GUID each template usage is given when it is used.
+Each [tt]do_template[/tt] call in Composr, which loads up a template, passes in a parameter, [tt]_GUID[/tt]. The GUIDs may then be used along with tempcode directives to control what the template outputs.
+The template editor has special support for the GUIDs, showing what GUIDs a template is used with and providing links to view the code associated with each GUID. It also provides a feature to automatically insert an 'IF' directive that differentiates against one of the GUIDs to provide a place to put output that will only be shown for it.
+
+If you enter the template editor from the 'Template tree' screen then you will be told the GUID that was used by the node in the tree that you selected.
+
+[concepts
+ 1_key="Symbol"           1_value="A special element that may be inserted into"
+ 2_key="Parameter"        2_value="A parameter to a template; only parameters that the code calling the template supports may be used"
+ 3_key="Directive"        3_value="A tool used to surround an area of a template between a START and an END, to apply something to it (such as only using it conditionally)"
+ 4_key="Variable"         4_value="A named piece of memory used by Tempcode symbols that manipulate variables, or informally some internal other piece of Composr memory that Tempcode has a way of accessing"
+ 5_key="Construct"        5_value="A Tempcode symbol, parameter, or language reference"
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
+ - [page="_SEARCH:tut_releasing_themes"]Releasing a theme[/page]
+ - [page="_SEARCH:tut_themes"]Themeing your site[/page]
+ - [page="_SEARCH:tut_structure"]Composr site structure[/page]
+ - [page="_SEARCH:codebook"]Composr Code Book[/page]
+
+{$SET,tutorial_tags,core_themeing,Design & Themeing,Power tools,regular}{$SET,tutorial_add_date,Sep 2008}{$SET,tutorial_summary,You'll be shocked at how much themeing control you can muster using Tempcode. Learn all about it...}[block]main_tutorial_rating[/block]

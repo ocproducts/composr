@@ -24,9 +24,10 @@
  * @param  ?PATH $path The path to the TAR archive (null: write out directly to stdout)
  * @param  string $mode The mode to open the TAR archive (rb=read, wb=write)
  * @set    rb wb w+b
+ * @param  boolean $known_exists Whether we know the file currently exists (performance optimisation)
  * @return array The TAR file handle
  */
-function tar_open($path, $mode)
+function tar_open($path, $mode, $known_exists = false)
 {
     if (is_null($path)) {
         $myfile = mixed();
@@ -34,7 +35,7 @@ function tar_open($path, $mode)
 
         cms_ob_end_clean();
     } else {
-        $exists = file_exists($path) && (strpos($mode, 'a') !== false);
+        $exists = ($known_exists ? true : file_exists($path)) && (strpos($mode, 'a') !== false);
         $myfile = @fopen($path, $mode);
         if ($myfile === false) {
             if (substr($mode, 0, 1) == 'r') {

@@ -93,10 +93,10 @@ class Hook_profiles_tabs_edit_delete
 
         require_code('tempcode_compiler');
         $javascript = static_evaluate_tempcode(template_to_tempcode("
-			window.load_tab__edit__{\$LCASE,{!DELETE_MEMBER|*}}=function() {
-				var submit_button=document.getElementById('submit_button');
+			window.load_tab__edit__{\$LCASE,{!DELETE|*}}=function() {
+				var submit_button=document.getElementById('account_submit_button');
 				var delete_checkbox=document.getElementById('delete');
-				var tab=document.getElementById('t_edit__{\$LCASE,{!DELETE_MEMBER|*}}');
+				var tab=document.getElementById('t_edit__{\$LCASE,{!DELETE|*}}');
 
 				submit_button.disabled=!delete_checkbox.checked;
 

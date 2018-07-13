@@ -1161,6 +1161,7 @@ class Hook_addon_registry_core
             'sources/shared_installs.php',
             'sources/override_api.php',
             'sources/global2.php',
+            'sources/debug_fs.php',
             'sources/character_sets.php',
             'sources/css_and_js.php',
             'sources/jsmin.php',

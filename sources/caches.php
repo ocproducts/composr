@@ -52,7 +52,7 @@ function init__caches()
     $PERSISTENT_CACHE = null;
 
     $use_persistent_cache = (!empty($SITE_INFO['use_persistent_cache'])); // Default to off because badly configured caches can result in lots of very slow misses
-    if (($use_persistent_cache) && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
+    if ($use_persistent_cache) {
         if ((class_exists('Memcached')) && (($SITE_INFO['use_persistent_cache'] == 'memcached') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
             require_code('persistent_caching/memcached');
             $PERSISTENT_CACHE = new Persistent_caching_memcached();
@@ -154,10 +154,6 @@ class Self_learning_cache
     {
         $this->bucket_name = $bucket_name;
         $dir = get_custom_file_base() . '/caches/self_learning';
-        if (!is_dir($dir)) {
-            require_code('files2');
-            make_missing_directory($dir);
-        }
         //$this->path = $dir . '/' . filter_naughty(str_replace(array('/', '\\', ':'), array('__', '__', '__'), $bucket_name)) . '.gcd'; Windows has a 260 character path limit, so we can't do it this way
         $this->path = $dir . '/' . filter_naughty(md5($bucket_name)) . '.gcd';
         $this->load();
@@ -202,6 +198,12 @@ class Self_learning_cache
                     $this->invalidate(); // Corrupt
                 }
             } else {
+                $dir = get_custom_file_base() . '/caches/self_learning';
+                if (!is_dir($dir)) {
+                    require_code('files2');
+                    make_missing_directory($dir);
+                }
+
                 $this->data = null;
             }
         }

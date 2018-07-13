@@ -265,9 +265,10 @@ function find_updated_addons()
  *
  * @param  boolean $just_non_bundled Whether to only return details on on-bundled addons
  * @param  boolean $get_info Whether to get full details about each addon
+ * @param  boolean $get_dependencies Whether to search for dependencies (only applies if $get_info is true)
  * @return array Map of maps describing the available addons (addon name => details)
  */
-function find_installed_addons($just_non_bundled = false, $get_info = true)
+function find_installed_addons($just_non_bundled = false, $get_info = true, $get_dependencies = false)
 {
     $addons_installed = array();
 
@@ -275,9 +276,10 @@ function find_installed_addons($just_non_bundled = false, $get_info = true)
 
     if (!$just_non_bundled) {
         // Find installed addons- file system method (for coded addons). Coded addons don't need to be in the DB, although they will be if they are (re)installed after the original Composr installation finished.
-        foreach (array_keys($hooks) as $addon) {
+        foreach ($hooks as $addon => $hook_dir) {
             if (substr($addon, 0, 4) != 'core') {
-                $addons_installed[$addon] = $get_info ? read_addon_info($addon) : null;
+                $hook_path = get_file_base() . '/' . $hook_dir . '/hooks/systems/addon_registry/' . filter_naughty_harsh($addon) . '.php';
+                $addons_installed[$addon] = $get_info ? read_addon_info($addon, $get_dependencies, null, null, $hook_path) : null;
             }
         }
     }
@@ -292,7 +294,7 @@ function find_installed_addons($just_non_bundled = false, $get_info = true)
         }
 
         if (!isset($addons_installed[$addon])) {
-            $addons_installed[$addon] = $get_info ? read_addon_info($addon) : null;
+            $addons_installed[$addon] = $get_info ? read_addon_info($addon, $get_dependencies) : null;
         }
     }
 
@@ -322,10 +324,17 @@ function find_addon_effective_mtime($addon_name)
  * Find all the available addons (addons in imports/addons that are not necessarily installed).
  *
  * @param  boolean $installed_too Whether to include addons that are installed already
+ * @param  boolean $gather_mtimes Whether to gather mtimes of the TARs and sort by them
+ * @param  ?array $already_known Addons we already have details for, performance optimisation (null: none)
  * @return array Maps of maps describing the available addons (filename => details)
  */
-function find_available_addons($installed_too = true)
+function find_available_addons($installed_too = true, $gather_mtimes = true, $already_known = null)
 {
+    // TODO: Change already_known in v11
+    if ($already_known === null) {
+        $already_known = array();
+    }
+
     $addons_available_for_installation = array();
     $files = array();
 
@@ -334,10 +343,16 @@ function find_available_addons($installed_too = true)
     if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
             if (substr($file, -4) == '.tar') {
-                $files[] = array($file, filemtime(get_custom_file_base() . '/imports/addons/' . $file));
+                $files[] = array($file, null);
             }
         }
         closedir($dh);
+    }
+
+    // Find mtimes (in separate loop so as to not have to interleave fs-STAT calls between readdir calls (disk seeking)
+    foreach ($files as $i => $file_parts) {
+        $file = $file_parts[0];
+        $files[$i][1] = $gather_mtimes ? filemtime(get_custom_file_base() . '/imports/addons/' . $file) : 0;
     }
 
     sort_maps_by($files, '1');
@@ -345,13 +360,18 @@ function find_available_addons($installed_too = true)
     foreach ($files as $_file) {
         $file = $_file[0];
 
+        if (isset($already_known[$file])) {
+            $addons_available_for_installation[$file] = $already_known[$file];
+            continue;
+        }
+
         if ((!$installed_too) && (addon_installed(preg_replace('#-\d+#', '', basename($file, '.tar')), true))) {
             continue;
         }
 
         $full = get_custom_file_base() . '/imports/addons/' . $file;
         require_code('tar');
-        $tar = tar_open($full, 'rb');
+        $tar = tar_open($full, 'rb', true);
         $info_file = tar_get_file($tar, 'addon.inf', true);
         tar_close($tar);
 
@@ -368,7 +388,6 @@ function find_available_addons($installed_too = true)
             }
 
             $files_rows = tar_get_directory($tar);
-            $mtime = filemtime($full);
             $info['files'] = array();
             foreach ($files_rows as $file_row) {
                 $info['files'][] = $file_row['path'];
@@ -377,7 +396,7 @@ function find_available_addons($installed_too = true)
             $info += get_default_addon_details();
 
             // Special details for installable addons
-            $info['mtime'] = $mtime;
+            $info['mtime'] = $_file[1];
             $info['tar_path'] = $full;
 
             foreach ($addons_available_for_installation as $i => $a) { // Deduplicate, may be multiple versions in imports/addons
@@ -410,25 +429,38 @@ function find_addon_dependencies_on($addon)
     $list_a = collapse_1d_complexity('addon_name', $GLOBALS['SITE_DB']->query_select('addons_dependencies', array('addon_name'), array('addon_name_dependant_upon' => $addon, 'addon_name_incompatibility' => 0)));
 
     // From ocProducts addons
+    static $ocproducts_addon_dep_cache = null;
+    if ($ocproducts_addon_dep_cache === null) {
+        $ocproducts_addon_dep_cache = array();
+        $hooks = find_all_hooks('systems', 'addon_registry');
+        foreach (array_keys($hooks) as $hook) {
+            $_found_hook = false;
+            $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
+            if (is_file($path)) {
+                $_found_hook = true;
+            } else {
+                $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
+                if (is_file($path)) {
+                    $_found_hook = true;
+                }
+            }
+            if (!$_found_hook) {
+                continue; // May have been uninstalled, find_all_hooks could have stale caching
+            }
+
+            $_hook_bits = extract_module_functions($path, array('get_dependencies'));
+            if (is_null($_hook_bits[0])) {
+                $dep = array();
+            } else {
+                $dep = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : @eval($_hook_bits[0]);
+            }
+
+            $ocproducts_addon_dep_cache[$hook] = $dep['requires'];
+        }
+    }
     $list_b = array();
-    $hooks = find_all_hooks('systems', 'addon_registry');
-    foreach (array_keys($hooks) as $hook) {
-        $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
-        if (!file_exists($path)) {
-            $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
-        }
-        if (!file_exists($path)) {
-            continue; // May have been uninstalled, find_all_hooks could have stale caching
-        }
-
-        $_hook_bits = extract_module_functions($path, array('get_dependencies'));
-        if (is_null($_hook_bits[0])) {
-            $dep = array();
-        } else {
-            $dep = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : @eval($_hook_bits[0]);
-        }
-
-        if (in_array($addon, $dep['requires'])) {
+    foreach ($ocproducts_addon_dep_cache as $hook => $hook_requires) {
+        if (in_array($addon, $hook_requires)) {
             $list_b[] = $hook;
         }
     }

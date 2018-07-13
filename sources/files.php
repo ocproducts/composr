@@ -114,7 +114,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 4, $retry_depth =
     }
 
     // Save
-    $num_bytes_written = @file_put_contents($path, $contents, LOCK_EX);
+    $num_bytes_written = @file_put_contents($path, $contents, (strpos($path, '://') !== false) ? 0 : LOCK_EX);
     if (php_function_allowed('disk_free_space')) {
         if ($disk_space !== false) {
             $disk_space -= $num_bytes_written;
@@ -212,8 +212,11 @@ function _cms_file_put_contents_safe_failed($error_message, $path, $flags = 4)
     $looping = true;
 
     if (($flags & FILE_WRITE_FAILURE_SOFT) != 0) {
-        require_code('site');
-        attach_message($error_message, 'warn');
+        global $IN_MINIKERNEL_VERSION;
+        if (!$IN_MINIKERNEL_VERSION) {
+            require_code('site');
+            attach_message($error_message, 'warn');
+        }
     } else { // default to hard error
         warn_exit($error_message);
     }
@@ -711,7 +714,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                 if ($place == 'sources_custom') {
                     if (function_exists('filter_naughty_harsh')) {
                         require_code('addons');
-                        $addon_info = read_addon_info($hook);
+                        $hook_path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($hook) . '.php';
+                        $addon_info = read_addon_info($hook, false, null, null, $hook_path);
                         $addon_files = array_merge($addon_files, array_map('strtolower', $addon_info['files']));
                     } else { // Running from outside Composr
                         require_code('hooks/systems/addon_registry/' . $hook);

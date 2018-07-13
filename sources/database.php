@@ -1724,8 +1724,8 @@ class DatabaseConnector
             if ((!running_script('restore')) && (function_exists('find_all_hooks')) && (!isset($GLOBALS['DOING_USERS_INIT'])/*can't check for safe mode meaning can't get a full hook list yet*/)) {
                 $UPON_QUERY_HOOKS_CACHE = array();
                 $hooks = find_all_hooks('systems', 'upon_query');
-                foreach (array_keys($hooks) as $hook) {
-                    require_code('hooks/systems/upon_query/' . filter_naughty_harsh($hook));
+                foreach ($hooks as $hook => $hook_dir) {
+                    require_code('hooks/systems/upon_query/' . filter_naughty_harsh($hook), false, $hook_dir == 'sources_custom');
                     $UPON_QUERY_HOOKS_CACHE[$hook] = object_factory('Hook_upon_query_' . filter_naughty_harsh($hook), true);
                 }
             }
