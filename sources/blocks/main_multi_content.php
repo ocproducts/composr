@@ -184,7 +184,7 @@ class Block_main_multi_content
 
         require_code('content');
         $object = get_content_object($content_type);
-        $info = $object->info($zone, ($select_b == '') ? null : $select_b);
+        $info = $object->info($zone, true, ($select_b == '') ? null : $select_b);
         if ($info === null) {
             return paragraph(do_lang_tempcode('IMPOSSIBLE_TYPE_USED'), '', 'red_alert');
         }

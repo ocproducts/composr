@@ -60,7 +60,7 @@ safe_ini_set('ocproducts.xss_detect', '0');
 if ($script != '') {
     $path = javascript_enforce(filter_naughty_harsh($script));
     if ($path != '') {
-        echo file_get_contents($path);
+        echo @file_get_contents($path);
     }
 }
 

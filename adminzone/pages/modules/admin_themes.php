@@ -888,7 +888,7 @@ class Module_admin_themes
 
             case 'templates':
                 $add_one = null;
-                $edit_this = array('_SELF', array('type' => '_edit_templates', 'f0file' => str_replace('templates_custom/', 'templates/', $file), 'theme' => $theme), '_SELF');
+                $edit_this = array('_SELF', array('type' => '_edit_templates', 'f0file' => str_replace('_custom/', '/', $file), 'theme' => $theme), '_SELF');
                 $edit_one = array('_SELF', array('type' => 'edit_templates', 'theme' => $theme), '_SELF');
                 $section_title = do_lang_tempcode('TEMPLATES');
                 $content_type = do_lang('TEMPLATE');
@@ -1471,6 +1471,22 @@ class Module_admin_themes
             if ($file[0] == '!') {
                 warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
             }
+            $directory = dirname($file);
+            if ($directory == '.' || $directory == '') {
+                $directory = get_param_string('directory', 'templates');
+                $file = $directory . '/' . $file;
+            }
+            $ext = get_file_extension($file);
+            if ($ext == '') {
+                $ext = ltrim(get_param_string('suffix', '.tpl'), '.');
+                $file .= '.' . $ext;
+            }
+
+            // De-dupe
+            if (in_array($file, $files_seen)) {
+                continue;
+            }
+            $files_seen[] = $file;
 
             // Screen preview feature
             if (get_param_string('preview_url', '') == '') {
@@ -1481,12 +1497,6 @@ class Module_admin_themes
                     $preview_url = $_preview_url->evaluate();
                 }
             }
-
-            // De-dupe
-            if (in_array($file, $files_seen)) {
-                continue;
-            }
-            $files_seen[] = $file;
 
             // Syntax highlighting
             $syntax = 'html';
@@ -1517,11 +1527,6 @@ class Module_admin_themes
             $codename = basename($file);
 
             // The file we're LOADING from for edit
-            $ext = get_file_extension($file);
-            if ($ext == '') {
-                $ext = ltrim(get_param_string('suffix', '.tpl'), '.');
-                $file .= '.' . $ext;
-            }
             $_default_load_path = find_template_place(basename($file, '.' . $ext), null, $theme, '.' . $ext, dirname($file));
             $contents = '';
             $revisions = new Tempcode();

@@ -70,7 +70,7 @@ class Hook_sitemap_group extends Hook_sitemap_content
         $page = $this->_make_zone_concrete($zone, $page_link);
 
         $where = '1=1';
-        if (has_privilege(get_member(), 'see_hidden_groups')) {
+        if (!has_privilege(get_member(), 'see_hidden_groups')) {
             $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups(get_member());
             //May be cached so don't make member-specific $where .= ' AND (g_hidden=0 OR g.id IN (' . implode(',', array_map('strval', $members_groups)) . '))';
             $where .= ' AND g_hidden=0';

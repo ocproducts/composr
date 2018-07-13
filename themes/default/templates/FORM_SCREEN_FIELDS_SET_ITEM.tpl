@@ -20,7 +20,9 @@
 
 		<div id="error_{NAME*}" style="display: none" class="input_error_here"></div>
 
-		<input type="hidden" id="required_posted__{NAME*}" name="require__{NAME*}" value="{$?,{REQUIRED*},1,0}" />
+		{+START,IF,{REQUIRED}}
+			<input type="hidden" id="required_posted__{NAME*}" name="require__{NAME*}" value="1" />
+		{+END}
 
 		<script>// <![CDATA[
 			set_up_change_monitor('form_table_field_input__{NAME;/}');

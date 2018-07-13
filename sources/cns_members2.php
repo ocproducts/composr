@@ -164,8 +164,8 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
         // Poster detail hooks
         $hooks = find_all_hooks('modules', 'topicview');
         $hook_objects = array();
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/modules/topicview/' . filter_naughty_harsh($hook));
+        foreach ($hooks as $hook => $hook_dir) {
+            require_code('hooks/modules/topicview/' . filter_naughty_harsh($hook), false, $hook_dir == 'sources_custom');
             $object = object_factory('Hook_topicview_' . filter_naughty_harsh($hook), true);
             if ($object === null) {
                 continue;

@@ -1716,7 +1716,7 @@ Note that you cannot use directives for symbol parameters because directives con
 			<td>These allow the 'standard box' layout convention to be used without duplicating a lot of HTML in different templates. CSS could never provide this itself, as the box 'styling' actually involves a large chunk of complex structure.
 		          <br />The parameters to the directive are (all may be blank or left out):<ol>
 						<li>the title (blank means no title is used)</li>
-						<li>the type of the table (there will be a template, <kbd>STANDARDBOX_&lt;type&gt;</kbd> for any valid type code; the default is <kbd>default</kbd>). [/html][tt]default[/tt] and [tt]accordion[/tt][html] come as standard.</li>
+						<li>the type of the box (there will be a template, <kbd>STANDARDBOX_&lt;type&gt;</kbd> for any valid type code; the default is <kbd>default</kbd>). [/html][tt]default[/tt] and [tt]accordion[/tt][html] come as standard.</li>
 						<li>the CSS width</li>
 						<li>'|' separated list of options (meaning dependant upon templates interpretation)</li>
 						<li>'|' separated list of meta information (key|value|key|value|...) (e.g. [/html][tt]Name|Allen|Gender|Male|Country|USA[/tt][html])</li>

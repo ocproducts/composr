@@ -267,9 +267,10 @@ function get_enclosure_details($url, $enclosure_url)
         $enclosure_type = get_mime_type(get_file_extension($url), false);
     } else {
         http_download_file($enclosure_url, 0, false);
-        $enclosure_length = strval($GLOBALS['HTTP_DOWNLOAD_SIZE']);
-        if (is_null($enclosure_length)) {
-            $enclosure_length = strval(strlen(http_download_file($enclosure_url)));
+        if ($GLOBALS['HTTP_DOWNLOAD_SIZE'] === null) {
+            $enclosure_length = @strval(strlen(http_download_file($enclosure_url, null, false)));
+        } else {
+            $enclosure_length = strval($GLOBALS['HTTP_DOWNLOAD_SIZE']);
         }
         $enclosure_type = $GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'];
     }

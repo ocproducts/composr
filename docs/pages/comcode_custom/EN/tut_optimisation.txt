@@ -573,6 +573,8 @@ If you have the stats addon you can also see what percentage of clock time each 
 SELECT the_page,SUM(milliseconds),SUM(milliseconds)/((SELECT config_value FROM ocp_config WHERE the_name='stats_store_time')*24*60*60*1000)*100 FROM ocp_stats GROUP BY the_page ORDER BY SUM(milliseconds);
 [/code]
 
+If you create a [tt]data_custom/debug_fs.log[/tt] file then all disk activity will be written to it if you load the site with [tt]keep_debug_fs=1[/tt].
+
 [title="2"]Calculating hosting requirements[/title]
 
 This section contains a simple methodology with made up figures...

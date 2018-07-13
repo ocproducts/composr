@@ -27,9 +27,10 @@ class Hook_content_meta_aware_member
      * Get content type details. Provides information to allow task reporting, randomisation, and add-screen linking, to function.
      *
      * @param  ?ID_TEXT $zone The zone to link through to (null: autodetect).
+     * @param  boolean $get_extended_data Populate additional data that is somewhat costly to compute (add_url, archive_url).
      * @return ?array Map of award content-type info (null: disabled).
      */
-    public function info($zone = null)
+    public function info($zone = null, $get_extended_data = false)
     {
         if (get_forum_type() != 'cns' || !isset($GLOBALS['FORUM_DB'])) {
             return null;
@@ -69,8 +70,8 @@ class Hook_content_meta_aware_member
             'edit_page_link_pattern_post' => '_SEARCH:members:view:_WILD:only_tab=edit:only_subtab=settings',
             'edit_page_link_field' => 'edit_username',
             'view_category_page_link_pattern' => null,
-            'add_url' => (function_exists('has_actual_page_access') && has_actual_page_access(get_member(), 'admin_cns_members')) ? '_SEARCH:admin_cns_members:step1' : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('members')) . ':members',
+            'add_url' => ($get_extended_data && function_exists('has_actual_page_access') && has_actual_page_access(get_member(), 'admin_cns_members')) ? '_SEARCH:admin_cns_members:step1' : null,
+            'archive_url' => $get_extended_data ? (((!is_null($zone)) ? $zone : get_module_zone('members')) . ':members') : null,
 
             'support_url_monikers' => (get_option('username_profile_links') == '0'),
 

@@ -84,12 +84,6 @@ function javascript_enforce($j, $theme = null, $allow_defer = false)
         $theme = @method_exists($GLOBALS['FORUM_DRIVER'], 'get_theme') ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
     }
     $dir = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . filter_naughty(user_lang());
-    if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] != '1')) {
-        if (!is_dir($dir)) {
-            require_code('files2');
-            make_missing_directory($dir);
-        }
-    }
     $js_cache_path = $dir . '/' . filter_naughty($j);
     if (!$minify) {
         $js_cache_path .= '_non_minified';
@@ -131,6 +125,13 @@ function javascript_enforce($j, $theme = null, $allow_defer = false)
 
         if ($allow_defer) {
             return 'defer';
+        }
+
+        if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] != '1')) {
+            if (!is_dir($dir)) {
+                require_code('files2');
+                make_missing_directory($dir);
+            }
         }
 
         require_code('css_and_js');
@@ -231,7 +232,10 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
 
             $_theme = $GLOBALS['FORUM_DRIVER']->get_theme();
             $keep = symbol_tempcode('KEEP');
-            $url = find_script('script') . '?script=' . urlencode($j) . $keep->evaluate() . '&theme=' . urlencode($_theme) . '&keep_theme=' . urlencode($_theme);
+            $url = find_script('script') . '?script=' . urlencode($j) . $keep->evaluate() . '&theme=' . urlencode($_theme);
+            if (get_param_string('keep_theme', null) !== $_theme) {
+                $url .= '&keep_theme=' . urlencode($_theme);
+            }
             $js->attach(do_template('JAVASCRIPT_NEED_FULL', array('_GUID' => 'a2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => $url)));
         } else {
             if (!$minify) {
@@ -312,12 +316,6 @@ function css_enforce($c, $theme = null, $allow_defer = false)
     }
     $active_theme = $theme;
     $dir = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . filter_naughty(user_lang());
-    if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] != '1')) {
-        if (!is_dir($dir)) {
-            require_code('files2');
-            make_missing_directory($dir);
-        }
-    }
     $css_cache_path = $dir . '/' . filter_naughty($c);
     if (!$minify) {
         $css_cache_path .= '_non_minified';
@@ -368,6 +366,13 @@ function css_enforce($c, $theme = null, $allow_defer = false)
             $deferred_one = true;
 
             return 'defer';
+        }
+
+        if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] != '1')) {
+            if (!is_dir($dir)) {
+                require_code('files2');
+                make_missing_directory($dir);
+            }
         }
 
         require_code('css_and_js');
@@ -482,7 +487,10 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
 
             $_theme = ($theme === null) ? $GLOBALS['FORUM_DRIVER']->get_theme() : $theme;
             $keep = symbol_tempcode('KEEP');
-            $url = find_script('sheet') . '?sheet=' . urlencode($c) . $keep->evaluate() . '&theme=' . urlencode($_theme) . '&keep_theme=' . urlencode($_theme);
+            $url = find_script('sheet') . '?sheet=' . urlencode($c) . $keep->evaluate() . '&theme=' . urlencode($_theme);
+            if (get_param_string('keep_theme', null) !== $_theme) {
+                $url .= '&keep_theme=' . urlencode($_theme);
+            }
             $css->attach(do_template('CSS_NEED_FULL', array('_GUID' => 'g2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => $url), user_lang(), false, null, '.tpl', 'templates', $theme));
         } else {
             if (!$minify) {

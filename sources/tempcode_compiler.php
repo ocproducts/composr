@@ -367,7 +367,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                             }
                         }
 
-                        if (($first_param === '"IMG"') && (strpos($_opener_params, ',') === false)) { // Needed to ensure correct binding
+                        if ((($first_param === '"IMG"') || ($first_param === '"IMG_INLINE"')) && (strpos($_opener_params, ',') === false)) { // Needed to ensure correct binding
                             $_opener_params .= ',"0","' . php_addslashes($theme) . '"';
                         }
 

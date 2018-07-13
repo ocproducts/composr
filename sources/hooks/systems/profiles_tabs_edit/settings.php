@@ -308,7 +308,7 @@ class Hook_profiles_tabs_edit_settings
                 {
                     if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value!=form.elements['edit_password'].value))
                     {
-                        document.getElementById('submit_button').disabled=false;
+                        document.getElementById('account_submit_button').disabled=false;
                         window.fauxmodal_alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
                         return false;
                     }
@@ -318,7 +318,7 @@ class Hook_profiles_tabs_edit_settings
                         var url='" . addslashes($script) . "?';
                         if (!do_ajax_field_test(url,'password='+window.encodeURIComponent(form.elements['edit_password'].value)))
                         {
-                            document.getElementById('submit_button').disabled=false;
+                            document.getElementById('account_submit_button').disabled=false;
                             return false;
                         }
                     }

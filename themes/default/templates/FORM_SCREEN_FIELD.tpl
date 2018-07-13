@@ -62,7 +62,9 @@
 		<div id="error_{$GET,randomised_id}" style="display: none" class="input_error_here"{+START,IF_PASSED,PATTERN_ERROR} data-errorRegexp="{PATTERN_ERROR*}"{+END}></div>
 
 		{+START,IF_NON_EMPTY,{NAME}}
-			<input type="hidden" id="required_posted__{$GET,randomised_id}" name="require__{NAME*}" value="{$?,{REQUIRED*},1,0}" />
+			{+START,IF,{REQUIRED}}
+				<input type="hidden" id="required_posted__{$GET,randomised_id}" name="require__{NAME*}" value="1" />
+			{+END}
 		{+END}
 
 		<script>// <![CDATA[
