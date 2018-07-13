@@ -381,16 +381,12 @@ class Block_twitter_feed
 function block_twitter_feed__cache_on($map)
 {
     return array(
-        array_key_exists('api_key', $map) ? $map['api_key'] : '',
-        array_key_exists('api_secret', $map) ? $map['api_secret'] : '',
         array_key_exists('twitter_logo_size', $map) ? intval($map['twitter_logo_size']) : 2,
         array_key_exists('twitter_logo_color', $map) ? intval($map['twitter_logo_color']) : 1,
         array_key_exists('max_statuses', $map) ? intval($map['max_statuses']) : 10,
         array_key_exists('style', $map) ? intval($map['style']) : 1,
         array_key_exists('title', $map) ? $map['title'] : '',
         array_key_exists('screen_name', $map) ? $map['screen_name'] : 'coolweens',
-        array_key_exists('template_main', $map) ? $map['template_main'] : '',
-        array_key_exists('template_style', $map) ? $map['template_style'] : '',
         array_key_exists('show_profile_image', $map) ? $map['show_profile_image'] : '1',
         array_key_exists('follow_button_size', $map) ? $map['follow_button_size'] : '1'
     );
