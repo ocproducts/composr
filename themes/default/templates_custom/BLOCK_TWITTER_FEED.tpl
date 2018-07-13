@@ -4,9 +4,9 @@
 	{+START,IF_EMPTY,{TWITTER_ERROR}}
 		{+START,IF,{$EQ,{STYLE},1}}
 			{+START,IF_NON_EMPTY,{USER_SCREEN_NAME}}
-				{+START,BOX,@{USER_SCREEN_NAME*} Twitter Profile Details,accordion,,tray_open}
+				{+START,BOX,@{USER_SCREEN_NAME*} Twitter Profile Details,,,tray_open}
 					{+START,IF,{SHOW_PROFILE_IMAGE}}
-						<img style="float: left" alt="Profile image of @{USER_SCREEN_NAME*}" src="{USER_PROFILE_IMG_URL*}" />
+						<img style="float: left" alt="Profile image of @{USER_SCREEN_NAME*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{USER_PROFILE_IMG_URL}}" />
 					{+END}
 
 					<div style="{+START,IF,{SHOW_PROFILE_IMAGE}}float:left; border-left: 1px solid #ccc; padding: 0; margin-left: 0.5em; padding-left: 0.5em; width: calc(100% - 48px - 1em - 1px);{+END}">
