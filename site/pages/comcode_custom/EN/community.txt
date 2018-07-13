@@ -161,8 +161,7 @@
 		</h2>
 
 		<div class="ltCnt"><div style="padding:0 1em 1em 1em; min-height: 400px">
-			<a data-height="400" data-chrome="noheader" class="twitter-timeline"  href="https://twitter.com/search?q=composr_cms%20OR%20composrcms" data-widget-id="829702311119351808">Tweets about composr_cms OR composrcms</a>
-			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+			[block cache="0" title="" screen_name="@composr_cms OR #composr_cms OR #composrcms OR from:composr_cms" style="2"]twitter_feed[/block]
 		</div></div>
 	</div>
 </div>
