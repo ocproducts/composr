@@ -3068,7 +3068,7 @@ class Twitter
 
         // validate
         if (!isset($response['oauth_token'], $response['oauth_token_secret'])) {
-            throw new Exception(implode(', ', array_keys($response)));
+            throw new Exception(json_encode($response));
         }
 
         // set some properties
