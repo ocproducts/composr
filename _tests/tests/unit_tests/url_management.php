@@ -88,7 +88,7 @@ class url_management_test_set extends cms_test_case
         $URL_REMAPPINGS = null;
         set_option('url_scheme', 'SIMPLE');
         $url = build_url(array('page' => 'd'), '');
-        $this->assertTrue(strpos($url->evaluate(), '.') === false);
+        $this->assertTrue(strpos($url->evaluate(), '.htm') === false && strpos($url->evaluate(), '.php') === false);
 
         $SITE_INFO['block_url_schemes'] = '1';
         $CAN_TRY_URL_SCHEMES_CACHE = null;
