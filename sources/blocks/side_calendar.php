@@ -170,7 +170,7 @@ class Block_side_calendar
                 $day_url = build_url($map2, $zone);
 
                 if (!array_key_exists($j, $entries)) {
-                    $class = 'free_time';
+                    $class = 'free-time';
                     $__entries->attach(do_template('CALENDAR_YEAR_MONTH_DAY_FREE', array('_GUID' => 'd9ac194adf9fef87f3ee0161f0582b88', 'CURRENT' => date('Y-m-d', utctime_to_usertime()) == $date, 'DAY_URL' => $day_url, 'DATE' => $date_formatted, 'DAY' => strval($j), 'CLASS' => $class)));
                 } elseif (is_array($entries[$j])) {
                     $class = 'single';
