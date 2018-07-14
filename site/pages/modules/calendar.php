@@ -887,11 +887,11 @@ class Module_calendar
             $_streams = new Tempcode();
             foreach ($streams as $stream) {
                 $down = '1';
-                $priority = 'free_time';
+                $priority = 'free-time';
                 $entry = null;
 
                 if (!array_key_exists($i, $stream)) {
-                    $class = 'free_time_hourly';
+                    $class = 'free-time-hourly';
                     $text = '&nbsp;';
                     $entry = static_evaluate_tempcode(do_template('CALENDAR_DAY_ENTRY_FREE', array('_GUID' => '0091fbb877164ac797cb88b4571b5d35', 'CLASS' => $class, 'TEXT' => $text))); /*XHTMLXHTML*/
                 } else {
@@ -959,7 +959,7 @@ class Module_calendar
         for ($i = 0; $i < 24; $i++) {
             $streams[$i] = array();
             for ($j = 0; $j < 7; $j++) {
-                $streams[$i][$j] = array('free_time', '', $i);
+                $streams[$i][$j] = array('free-time', '', $i);
             }
         }
         for ($j = 0; $j < 7; $j++) {
@@ -1260,7 +1260,7 @@ class Module_calendar
             }
 
             if ($entries->is_empty()) {
-                $class = 'free_time';
+                $class = 'free-time';
                 $text = '&nbsp;';
                 $entries = do_template('CALENDAR_MONTH_ENTRY_FREE', array('_GUID' => 'a5e193c8c14deb17ac629e0de74458a2', 'CLASS' => $class, 'TEXT' => $text));
             }
@@ -1402,7 +1402,7 @@ class Module_calendar
                 $day_url = build_url($map, '_SELF');
 
                 if (!array_key_exists($j, $entries)) {
-                    $class = 'free_time';
+                    $class = 'free-time';
                     $__entries->attach(do_template('CALENDAR_YEAR_MONTH_DAY_FREE', array('_GUID' => 'cccf839895121ae14fd1948ed4024d4b', 'CURRENT' => date('Y-m-d') == $date, 'DAY_URL' => $day_url, 'DATE' => $date_formatted, 'DAY' => strval($j), 'CLASS' => $class)));
                 } elseif (is_array($entries[$j])) {
                     $class = 'single';
