@@ -21,7 +21,7 @@
 		{+END}
 	{+END}
 
-	<div data-tpl="inputCaptcha" data-tpl-params="{+START,PARAMS_JSON,CAPTCHA}{_*}{+END}">
+	<div class="input-captcha" data-tpl="inputCaptcha" data-tpl-params="{+START,PARAMS_JSON,CAPTCHA}{_*}{+END}">
 		{+START,IF,{$CONFIG_OPTION,js_captcha}}
 			{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
 				<div id="captcha-spot"></div>

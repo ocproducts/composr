@@ -1932,67 +1932,72 @@
     /**
      * Smoothly scroll to another position on the page
      * @memberof $dom
-     * @param { HTMLElement|number} destY
+     * @param { Element|number} destY
      * @param [expectedScrollY]
-     * @param [dir]
-     * @param [eventAfter]
+     * @param [direction]
+     * @param [callback]
+     * @param [_recursing] - Internal only
      */
-    $dom.smoothScroll = function smoothScroll(destY, expectedScrollY, dir, eventAfter) {
+    $dom.smoothScroll = function smoothScroll(destY, expectedScrollY, direction, callback, _recursing) {
         if ($util.isEl(destY)) {
             destY = $dom.findPosY(destY, true);
+        } else if (typeof destY === 'string') {
+            destY = $dom.findPosY($dom.$id(destY), true);
+        }
+        
+        if (!_recursing && document.querySelector('header.with-sticky-navbar')) {
+            destY -= document.querySelector('header.with-sticky-navbar').offsetHeight;
+        }
+
+        if (destY < 0) {
+            destY = 0;
         }
 
         if (!$cms.configOption('enable_animations')) {
             try {
-                scrollTo(0, destY);
+                window.scrollTo(0, destY);
             } catch (ignore) {}
             return;
         }
 
-        var scrollY = window.pageYOffset;
-        if (typeof destY === 'string') {
-            destY = $dom.findPosY($dom.$id(destY), true);
-        }
-        if (destY < 0) {
-            destY = 0;
-        }
+        var scrollY = window.scrollY;
         if ((expectedScrollY != null) && (Number(expectedScrollY) !== scrollY)) {
             // We must terminate, as the user has scrolled during our animation and we do not want to interfere with their action -- or because our last scroll failed, due to us being on the last scroll screen already
             return;
         }
 
-        dir = (destY > scrollY) ? 1 : -1;
+        direction = (destY > scrollY) ? 1 : -1;
 
-        var distanceToGo = (destY - scrollY) * dir;
-        var dist = Math.round(dir * (distanceToGo / 25));
+        var distanceToGo = (destY - scrollY) * direction,
+            distance = Math.round(direction * (distanceToGo / 25));
 
-        if (dir === -1 && dist > -25) {
-            dist = -25;
+        if (direction === -1 && distance > -25) {
+            distance = -25;
         }
-        if (dir === 1 && dist < 25) {
-            dist = 25;
+        if (direction === 1 && distance < 25) {
+            distance = 25;
         }
 
-        if (((dir === 1) && (scrollY + dist >= destY)) || ((dir === -1) && (scrollY + dist <= destY)) || (distanceToGo > 2000)) {
+        if (((direction === 1) && (scrollY + distance >= destY)) || ((direction === -1) && (scrollY + distance <= destY)) || (distanceToGo > 2000)) {
             try {
-                scrollTo(0, destY);
+                window.scrollTo(0, destY);
             } catch (e) {}
 
-            if (eventAfter) {
-                eventAfter();
+            if (callback) {
+                callback();
             }
             return;
         }
 
         try {
-            scrollBy(0, dist);
+            window.scrollBy(0, distance);
         } catch (e) {
             return; // May be stopped by pop-up blocker
         }
 
-        setTimeout(function () {
-            $dom.smoothScroll(destY, scrollY + dist, dir, eventAfter);
-        }, 30);
+        requestAnimationFrame(function () {
+            $dom.smoothScroll(destY, scrollY + distance, direction, callback, true);
+        });
     };
 
     /**

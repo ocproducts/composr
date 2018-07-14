@@ -1092,11 +1092,6 @@
             window.name = '_site_opener';
         }
 
-        // Are we dealing with a touch device?
-        if ($cms.browserMatches('touch_enabled')) {
-            document.body.classList.add('touch-enabled');
-        }
-
         if ($cms.seesJavascriptErrorAlerts()) {
             this.initialiseErrorMechanism();
         }

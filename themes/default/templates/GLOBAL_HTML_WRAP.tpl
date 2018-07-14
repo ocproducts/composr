@@ -8,7 +8,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 {$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
 
 {$,We deploy as HTML5 but code and conform strictly to XHTML5}
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}">
+<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="has-sticky-navbar {$?,{$MATCH_KEY_MATCH,:home},has-hero-carousel,has-no-hero-carousel}">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>
@@ -18,12 +18,12 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 	<div id="main-website-inner">
 		{+START,IF,{$SHOW_HEADER}}
 		{$,Add CSS class .with-white-navbar for a white navbar, .with-seed-navbar for seed-colored navbar}
-		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" class="with-combo-navbar with-sticky-navbar with-white-navbar">
+		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" class="with-white-navbar with-sticky-navbar" data-sticky-navbar="{ hideOnScroll: false }">
 			{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
 			<a accesskey="s" class="accessibility-hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
 
 			{$,Main menu}
-			<div class="global-navigation" data-sticky-navbar="{ hideOnScroll: false }">
+			<div class="global-navigation">
 				<div class="global-navigation-inner container">
 					<div class="row">
 						<div class="col-auto col-logo">
@@ -65,25 +65,29 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 		{+END}
 
 		{+START,IF,{$MATCH_KEY_MATCH,:home}}
-			<div id="hero-carousel" class="cms-carousel slide cms-carousel-home-hero" data-ride="carousel">
-				<ol class="cms-carousel-indicators">
-					<li data-target="#hero-carousel" data-slide-to="0" class="active"></li>
-					<li data-target="#hero-carousel" data-slide-to="1"></li>
-					<li data-target="#hero-carousel" data-slide-to="2"></li>
-					<li data-target="#hero-carousel" data-slide-to="3"></li>
-				</ol>
+			<div id="hero-carousel" class="cms-carousel slide cms-carousel-home-hero has-multiple-items" data-ride="carousel">
+				<!--<ol class="cms-carousel-indicators">-->
+					<!--<li data-target="#hero-carousel" data-slide-to="0" class="active"></li>-->
+					<!--<li data-target="#hero-carousel" data-slide-to="1"></li>-->
+					<!--<li data-target="#hero-carousel" data-slide-to="2"></li>-->
+				<!--</ol>-->
+				<a href="#!" class="cms-carousel-scroll-button">
+					<div class="cms-carousel-scroll-button-icon">
+						{+START,INCLUDE,ICON}NAME=results/sortablefield_desc{+END}
+					</div>
+					<div class="cms-carousel-scroll-button-caption">
+						Scroll Down
+					</div>
+				</a>
 				<div class="cms-carousel-inner">
 					<div class="cms-carousel-item active">
-						<img style="display: block; width: 100%" src="https://loremflickr.com/1600/800?x=1" alt="First slide">
+						<h1 style="text-align: center; margin-top: 100px; color: white;">Slide 1</h1>
 					</div>
 					<div class="cms-carousel-item">
-						<img style="display: block; width: 100%" src="https://loremflickr.com/1600/800?x=2" alt="Second slide">
+						<h1 style="text-align: center; margin-top: 100px; color: white;">Slide 2</h1>
 					</div>
 					<div class="cms-carousel-item">
-						<img style="display: block; width: 100%" src="https://loremflickr.com/1600/800?x=3" alt="Third slide">
-					</div>
-					<div class="cms-carousel-item">
-						<img style="display: block; width: 100%" src="https://loremflickr.com/1600/800?x=4" alt="Fourth slide">
+						<h1 style="text-align: center; margin-top: 100px; color: white;">Slide 3</h1>
 					</div>
 				</div>
 				<a class="cms-carousel-control-prev" href="#hero-carousel" role="button" data-slide="prev">

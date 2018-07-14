@@ -45,8 +45,8 @@
 }
 
 .cns-stats-usersonline-2 {
-	border-left: 1px solid {$GET,dark_border};
-	border-bottom: 1px solid {$GET,dark_border};
+	border-left: 1px solid {$GET,standard_border};
+	border-bottom: 1px solid {$GET,standard_border};
 	padding: 0.5em;
 }
 
@@ -65,7 +65,7 @@
 }
 
 .cns-stats-main-2 {
-	border-left: 1px solid {$GET,dark_border};
+	border-left: 1px solid {$GET,standard_border};
 	padding: 0.5em;
 	line-height: 1.4em;
 }

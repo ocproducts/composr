@@ -219,12 +219,16 @@ abbr.dtstart, abbr.dtend {
 
 .calendar-date-span-link-inner {
 	border: 1px solid {$GET,standard_border};
-	background-image: linear-gradient(to bottom, {$GET,area_4_background}, {$GET,area_5_background});
+	background: {$GET,area_5_background};
 	color: {$GET,area_key_text};
 	padding: 0.3em;
 	margin-left: -1px; /* To stop the double borders at join points */
 	padding: 0.5em 0;
 	min-height: 1.3em;
+}
+
+.calendar-date-span-link.current > .calendar-date-span-link-inner {
+	background: {$GET,area_current_background};
 }
 
 .calendar-date-span-link:first-child .calendar-date-span-link-inner {

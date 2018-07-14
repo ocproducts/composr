@@ -26,7 +26,7 @@
 				{+START,LOOP,EFFECTS}
 					<tr class="form-table-field-spacer">
 						<th colspan="2" class="table-heading-cell">
-							<span class="faux-h2">{EFFECT_TITLE*}</span>
+							<span class="h2">{EFFECT_TITLE*}</span>
 						</th>
 					</tr>
 

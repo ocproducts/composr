@@ -111,10 +111,10 @@ table.cns-profile-about-section .associated-details {
 	margin: -0.5em 0 0 -0.5em;
 }
 
-.cns-profile-friends>.box {
+.cns-profile-friends > .box {
 	margin: 0.5em 0 0 0.5em;
 	border: 1px solid {$GET,standard_border};
-	background: {$GET,area_background} !important;
+	background: {$GET,area_5_background};
 }
 
 .cns-account-links ul.nl li {

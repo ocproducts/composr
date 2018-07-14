@@ -925,8 +925,12 @@
                     movement = 0,
                     lastDirection = 0;
 
+                stickyNavbar.classList.toggle('is-scrolled', window.scrollY > 0);
+                stickyNavbar.classList.toggle('is-not-scrolled', window.scrollY === 0);
+
                 window.addEventListener('scroll', function () {
                     stickyNavbar.classList.toggle('is-scrolled', window.scrollY > 0);
+                    stickyNavbar.classList.toggle('is-not-scrolled', window.scrollY === 0);
                     
                     if (options.hideOnScroll) {
                         var sy = window.scrollY, margin;
@@ -1000,8 +1004,8 @@
                         }
                         stuckNav.parentNode.style.height = height + 'px';
                         stuckNav.style.position = 'fixed';
-                        stuckNav.style.top = '0px';
-                        stuckNav.style.zIndex = '1000';
+                        stuckNav.style.top = document.querySelector('header.with-sticky-navbar') ? document.querySelector('header.with-sticky-navbar').offsetHeight + 'px' : '0px';
+                        stuckNav.style.zIndex = '50';
                         stuckNav.style.width = stuckNavWidth + 'px';
                     } else {
                         stuckNav.parentNode.style.width = '';
@@ -1042,8 +1046,7 @@
     };
     
     (function () {
-        var VERSION                = '4.1.1';
-        var DATA_KEY               = 'bs.carousel';
+        var DATA_KEY               = 'cms.carousel';
         var EVENT_KEY              = '.' + DATA_KEY;
         var DATA_API_KEY           = '.data-api';
         var ARROW_LEFT_KEYCODE     = 37; // KeyboardEvent.which value for left arrow key
@@ -1104,8 +1107,7 @@
         function Carousel(element, config) {
             this._items              = null;
             this._interval           = null;
-            this._intervalPassed     = 0;
-            this._progressInterval   = null;
+            this._intervalStartedAt  = null;
             this._activeElement      = null;
 
             this._isPaused           = false;
@@ -1118,9 +1120,9 @@
             this._indicatorsElement  = this._element.querySelector(Selector.INDICATORS);
 
             this._addEventListeners();
+            this._setProgressBar();
         }
-
-        Carousel.VERSION = VERSION;
+        
         Carousel.Default = Default;
 
         $util.properties(Carousel.prototype, /**@lends Carousel#*/{
@@ -1154,13 +1156,10 @@
                     $dom.trigger(this._element, 'transitionend');
                     this.cycle(true);
                 }
-
-                this._intervalPassed = 0;
-                this._element.style.removeProperty('--cms-carousel-progress-percentage');
+                
                 clearInterval(this._interval);
-                clearInterval(this._progressInterval);
                 this._interval = null;
-                this._progressInterval = null;
+                this._intervalStartedAt = null;
             },
 
             cycle: function cycle(event) {
@@ -1171,22 +1170,15 @@
                 if (this._interval) {
                     clearInterval(this._interval);
                     this._interval = null;
-                }
-
-                if (this._progressInterval) {
-                    clearInterval(this._progressInterval);
-                    this._progressInterval = null;
-                    this._element.style.removeProperty('--cms-carousel-progress-percentage');
+                    this._intervalStartedAt = null;
                 }
                 
                 if (this._config.interval && !this._isPaused) {
                     var self = this;
-                    this._interval = setInterval(function () { self.nextWhenVisible(); }, this._config.interval);
-                    this._progressInterval = setInterval(function () {
-                        self._intervalPassed += 10;
-                        var progressPercentage = self._intervalPassed / self._config.interval;
-                        self._element.style.setProperty('--cms-carousel-progress-percentage', (progressPercentage * 100).toFixed(2) + '%');
-                    }, 10);
+                    self._intervalStartedAt = Date.now();
+                    this._interval = setInterval(function () {
+                        self.nextWhenVisible();
+                    }, this._config.interval);
                 }
             },
 
@@ -1240,6 +1232,10 @@
 
             _addEventListeners: function _addEventListeners() {
                 var self = this;
+                
+                $dom.on(this._element, 'click' + EVENT_KEY, '.cms-carousel-scroll-button', function () {
+                    $dom.smoothScroll(self._element.nextElementSibling);
+                });
 
                 if (this._config.keyboard) {
                     $dom.on(this._element, Event.KEYDOWN, function (event) { self._keydown(event); });
@@ -1337,6 +1333,16 @@
                 }
             },
 
+            _setProgressBar: function _setProgressBar() {
+                if (this._intervalStartedAt == null) {
+                    this._element.querySelector('.cms-carousel-progress-bar-fill').style.removeProperty('width');
+                } else {
+                    var progressPercentage = (Date.now() - this._intervalStartedAt) / this._config.interval;
+                    this._element.querySelector('.cms-carousel-progress-bar-fill').style.width = (progressPercentage * 100) + '%';
+                }
+                requestAnimationFrame(this._setProgressBar.bind(this));
+            },
+
             _slide: function _slide(direction, element) {
                 var activeElement = this._element.querySelector(Selector.ACTIVE_ITEM);
                 var activeElementIndex = this._getItemIndex(activeElement);
@@ -1390,14 +1396,11 @@
                 });
 
                 if (this._element.classList.contains(ClassName.SLIDE)) {
-                    this._intervalPassed = 0;
                     nextElement.classList.add(orderClassName);
 
-                    Util.reflow(nextElement);
+                    reflow(nextElement);
                     activeElement.classList.add(directionalClassName);
                     nextElement.classList.add(directionalClassName);
-
-                    var transitionDuration = Util.getTransitionDurationFromElement(activeElement);
 
                     var self = this;
                     $dom.one(activeElement, 'transitionend', function () {
@@ -1413,10 +1416,6 @@
                         
                         setTimeout(function () { $dom.trigger(self._element, slidEvent); }, 0);
                     });
-
-                    setTimeout(function () {
-                        $dom.trigger(activeElement, 'transitionend');
-                    }, transitionDuration);
                 } else {
                     activeElement.classList.remove(ClassName.ACTIVE);
                     nextElement.classList.add(ClassName.ACTIVE);
@@ -1431,38 +1430,36 @@
             }
         });
 
-        Carousel._jQueryInterface = function _jQueryInterface(config) {
-            return this.forEach(function (el) {
-                var data = $dom.data(el, DATA_KEY);
-                var _config = $util.extend({}, Default, $dom.data(el));
+        Carousel._interface = function _interface(el, config) {
+            var data = $dom.data(el, DATA_KEY);
+            var _config = $util.extend({}, Default, $dom.data(el));
 
-                if (typeof config === 'object') {
-                    _config = $util.extend({}, _config, config);
+            if (typeof config === 'object') {
+                _config = $util.extend({}, _config, config);
+            }
+
+            var action = typeof config === 'string' ? config : _config.slide;
+
+            if (!data) {
+                data = new Carousel(el, _config);
+                $dom.data(el, DATA_KEY, data);
+            }
+
+            if (typeof config === 'number') {
+                data.to(config);
+            } else if (typeof action === 'string') {
+                if (typeof data[action] === 'undefined') {
+                    throw new TypeError('No method named "' + action + '"');
                 }
-
-                var action = typeof config === 'string' ? config : _config.slide;
-
-                if (!data) {
-                    data = new Carousel(el, _config);
-                    $dom.data(el, DATA_KEY, data);
-                }
-
-                if (typeof config === 'number') {
-                    data.to(config);
-                } else if (typeof action === 'string') {
-                    if (typeof data[action] === 'undefined') {
-                        throw new TypeError('No method named "' + action + '"');
-                    }
-                    data[action]();
-                } else if (_config.interval) {
-                    data.pause();
-                    data.cycle();
-                }
-            });
+                data[action]();
+            } else if (_config.interval) {
+                data.pause();
+                data.cycle();
+            }
         };
 
         Carousel._dataApiClickHandler = function _dataApiClickHandler(event) {
-            var selector = Util.getSelectorFromElement(this);
+            var selector = getSelectorFromElement(this);
 
             if (!selector) {
                 return;
@@ -1482,7 +1479,7 @@
                 config.interval = false;
             }
 
-            Carousel._jQueryInterface.call([target], config);
+            Carousel._interface(target, config);
 
             if (slideIndex) {
                 $dom.data(target, DATA_KEY).to(slideIndex);
@@ -1491,45 +1488,23 @@
             event.preventDefault();
         };
 
-        var Util = {
-            getSelectorFromElement: function getSelectorFromElement(element) {
-                var selector = element.getAttribute('data-target');
-                if (!selector || selector === '#') {
-                    selector = element.getAttribute('href') || '';
-                }
-
-                try {
-                    return document.querySelector(selector) ? selector : null;
-                } catch (err) {
-                    return null;
-                }
-            },
-
-            getTransitionDurationFromElement: function getTransitionDurationFromElement(element) {
-                if (!element) {
-                    return 0;
-                }
-
-                // Get transition-duration of the element
-                var transitionDuration = $dom.css(element, 'transition-duration');
-                var floatTransitionDuration = parseFloat(transitionDuration);
-
-                // Return 0 if element or transition duration is not found
-                if (!floatTransitionDuration) {
-                    return 0;
-                }
-
-                // If multiple durations are defined, take the first
-                transitionDuration = transitionDuration.split(',')[0];
-
-                return parseFloat(transitionDuration) * 1000;
-            },
-
-            reflow: function reflow(element) {
-                return element.offsetHeight;
+        function getSelectorFromElement(element) {
+            var selector = element.getAttribute('data-target');
+            if (!selector || selector === '#') {
+                selector = element.getAttribute('href') || '';
             }
-        };
 
+            try {
+                return document.querySelector(selector) ? selector : null;
+            } catch (err) {
+                return null;
+            }
+        }
+
+        function reflow(element) {
+            return element.offsetHeight;
+        }
+        
         /**
          * ------------------------------------------------------------------------
          * Data Api implementation

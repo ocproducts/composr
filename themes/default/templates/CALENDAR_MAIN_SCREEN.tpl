@@ -2,7 +2,7 @@
 
 <div class="clearfix">
 	<div class="calendar-top-navigation">
-		<div class="calendar-date-span-link"><div class="calendar-date-span-link-inner">
+		<div class="calendar-date-span-link {+START,IF_EMPTY,{YEAR_URL}}current{+END}"><div class="calendar-date-span-link-inner">
 			{+START,IF_NON_EMPTY,{YEAR_URL}}
 				<a href="{YEAR_URL*}">{!YEARLY}</a>
 			{+END}
@@ -10,7 +10,7 @@
 				<span>{!YEARLY}</span>
 			{+END}
 		</div></div>
-		<div class="calendar-date-span-link"><div class="calendar-date-span-link-inner">
+		<div class="calendar-date-span-link {+START,IF_EMPTY,{MONTH_URL}}current{+END}"><div class="calendar-date-span-link-inner">
 			{+START,IF_NON_EMPTY,{MONTH_URL}}
 				<a href="{MONTH_URL*}">{!MONTHLY}</a>
 			{+END}
@@ -18,7 +18,7 @@
 				<span>{!MONTHLY}</span>
 			{+END}
 		</div></div>
-		<div class="calendar-date-span-link"><div class="calendar-date-span-link-inner">
+		<div class="calendar-date-span-link {+START,IF_EMPTY,{WEEK_URL}}current{+END}"><div class="calendar-date-span-link-inner">
 			{+START,IF_NON_EMPTY,{WEEK_URL}}
 				<a href="{WEEK_URL*}">{!WEEKLY}</a>
 			{+END}
@@ -26,7 +26,7 @@
 				<span>{!WEEKLY}</span>
 			{+END}
 		</div></div>
-		<div class="calendar-date-span-link"><div class="calendar-date-span-link-inner">
+		<div class="calendar-date-span-link {+START,IF_EMPTY,{DAY_URL}}current{+END}"><div class="calendar-date-span-link-inner">
 			{+START,IF_NON_EMPTY,{DAY_URL}}
 				<a href="{DAY_URL*}">{!DAILY}</a>
 			{+END}

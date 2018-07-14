@@ -1,14 +1,14 @@
 {+START,IF,{$NOR,{$GET,login_screen},{$MATCH_KEY_MATCH,_WILD:login}}}
 	<div data-tpl="blockTopLogin">
-		<form title="{!_LOGIN}" action="{LOGIN_URL*}" method="post" class="top-login js-form-top-login" autocomplete="on">
+		<form title="{!_LOGIN}" action="{LOGIN_URL*}" method="post" class="form-inline top-login js-form-top-login" autocomplete="on">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			{+START,IF,{$DESKTOP}}
 				<div class="top-login-controls display-desktop">
 					<div class="accessibility-hidden"><label for="s-login-username">{$LOGIN_LABEL}</label></div>
-					<input maxlength="80" size="10" accesskey="l" type="text" placeholder="{!USERNAME}" id="s-login-username" name="login_username" class="form-control form-control-inline" />
+					<input maxlength="80" size="10" accesskey="l" type="text" placeholder="{!USERNAME}" id="s-login-username" name="login_username" class="form-control" />
 					<div class="accessibility-hidden"><label for="s-password">{!PASSWORD}</label></div>
-					<input maxlength="255" size="10" type="password" placeholder="{!PASSWORD}" name="password" id="s-password" class="form-control form-control-inline" />
+					<input maxlength="255" size="10" type="password" placeholder="{!PASSWORD}" name="password" id="s-password" class="form-control" />
 
 					{+START,IF,{$CONFIG_OPTION,password_cookies}}
 						<label class="accessibility-hidden" for="s-remember">{!REMEMBER_ME}</label>

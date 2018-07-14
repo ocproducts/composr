@@ -40,6 +40,10 @@
 	}
 /*{+END}*/
 
+.form-standard-end {
+	margin-top: 14px;
+}
+
 .required-field-warning {
 	border: 1px solid {$GET,standard_border};
 	overflow: hidden;
@@ -176,14 +180,18 @@ Curved borders would be cool, but it does not work well with the carefully defin
 	margin-top: 4px;
 }
 
-.form-table-field-name, .form-table-field-input, .form-table-huge-field,
+.form-table-field-name, 
+.form-table-field-input, 
+.form-table-huge-field,
 th.form-table-field-name, /* Extra specificity to take precedence over th.de-th */
-.form-table-field-spacer>th, .form-table-field-spacer>td, .form-table-description-above-cell, .form-table-description-under-cell
-{
-	border: 1px solid {$GET,pale_border};
-	color: {$GET,slightly_seeded_text} !important;
+.form-table-field-spacer>th, 
+.form-table-field-spacer>td, 
+.form-table-description-above-cell, 
+.form-table-description-under-cell {
+	border: 1px solid {$GET,standard_border};
+	color: {$GET,slightly_seeded_text};
 	padding: 0.5em 0.75em;
-	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_2_background});
+	background: {$GET,area_5_background};
 }
 .form-table-field-input>div:first-child>p:first-child {
 	margin-top: 0;
@@ -192,10 +200,14 @@ th.form-table-field-name, /* Extra specificity to take precedence over th.de-th 
 	margin-top: 0;
 }
 
-.form-table-field-name a, .form-table-field-input a, .form-table-huge-field a,
+.form-table-field-name a,
+.form-table-field-input a,
+.form-table-huge-field a,
 th.form-table-field-name a, /* Extra specificity to take precedence over th.de-th */
-.form-table-field-spacer>th a, .form-table-field-spacer>td a, .form-table-description-above-cell a, .form-table-description-under-cell a
-{
+.form-table-field-spacer > th a,
+.form-table-field-spacer > td a,
+.form-table-description-above-cell a,
+.form-table-description-under-cell a {
 	color: {$GET,a.link};
 }
 
@@ -304,6 +316,10 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de-t
 .input-tick-required, .input-float-required, .input-text-required, .input-upload-required {
 }
 
+.input-captcha {
+	display: inline-flex;
+}
+
 .input-dimensions {
 	display: inline-block;
 }
@@ -316,6 +332,10 @@ th.form-table-field-name a, /* Extra specificity to take precedence over th.de-t
 
 .upload-field {
 	max-width: 31em; /* Upload field HTML is complex, we need to force size down so that the help icon can align correctly */
+}
+
+.upload-field .btn {
+	margin-left: 0.5em;
 }
 
 /*{+START,CSS_MODE,mobile}*/

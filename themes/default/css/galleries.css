@@ -152,7 +152,7 @@
 		margin: 0 1em;
 	}
 /*{+END}*/
-.flow-mode-thumb:hover, body.touch-enabled .flow-mode-thumb {
+.flow-mode-thumb:hover, html.is-touch-enabled .flow-mode-thumb {
 	opacity: 1.0;
 	transition: opacity 0.2s linear !important;
 }

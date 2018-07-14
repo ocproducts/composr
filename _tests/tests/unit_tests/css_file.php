@@ -518,7 +518,7 @@ class css_file_test_set extends cms_test_case
             'topic-list-topic',
             'toplevel',
             'toplevel-link',
-            'touch-enabled',
+            'is-touch-enabled',
             'tpl',
             'tpl-dropdown-row-a',
             'tpl-dropdown-row-b',

@@ -271,8 +271,9 @@ div.cns-table-footer>div>div {
 	/*{+END}*/
 }
 
-.cns-topic .cns-forum-box-left, .cns-post-details {
-	background-color: {$GET,box_title_background};
+.cns-topic .cns-forum-box-left, 
+.cns-post-details {
+	background-color: {$GET,area_background};
 	color: {$GET,box_title_text};
 }
 .cns-topic .cns-forum-box-left, .cns-post-details, .cns-post-details a, .cns-post-details a:hover {
@@ -694,6 +695,16 @@ hr.cns-sig-barrier {
 	vertical-align: middle;
 }
 
+.cns-forum-new-post-indicator .icon-cns-general--no-new-posts,
+.cns-forum-new-post-indicator .icon-cns-general--no-new-posts-redirect {
+	color: {$GET,seed_secondary};
+}
+
+.cns-forum-new-post-indicator .icon-cns-general--new-posts,
+.cns-forum-new-post-indicator .icon-cns-general--new-posts-redirect {
+	color: {$GET,seed_alternate};
+}
+
 .cns-forum-num-topics {
 	text-align: center !important;
 }
@@ -715,6 +726,10 @@ hr.cns-sig-barrier {
 		margin: 0.5em 0;
 	}
 /*{+END}*/
+
+.cns-forum-topic-title-bits-left .icon {
+	color: {$GET,seed_alternate};
+}
 
 .cns-forum-topic-description {
 	font-size: 0.85em;
@@ -797,6 +812,15 @@ hr.cns-sig-barrier {
 
 .cns-join-1 {
 	text-align: center;
+}
+
+.btns-cns-join-step1 {
+	display: flex;
+	justify-content: center;
+}
+
+.btns-cns-join-step1 .btn {
+	margin: 0 7px;
 }
 
 .cns-emoticon-cell {

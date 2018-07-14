@@ -59,6 +59,7 @@ In mobile mode:
 
 /* Used to initiate equations (although running the Theme Wizard replaces these with what the user chooses - which is how it works) */
 {$THEMEWIZARD_COLOR,#2388ef,seed,100% 2388ef}
+{$THEMEWIZARD_COLOR,#6c757d,seed_secondary,100% 6c757d}
 {$THEMEWIZARD_COLOR,#ff8900,seed_alternate,100% ff8900}
 {$THEMEWIZARD_COLOR,#ffffff,WB,100% FFFFFF}
 {$THEMEWIZARD_COLOR,#000000,BW,100% 000000}
@@ -125,15 +126,15 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#ebf4fe,area_3_background,60% area_2_background + 40% WB}
 {$THEMEWIZARD_COLOR,#d3e7fc,area_4_background,20% seed + 80% WB}
 {$THEMEWIZARD_COLOR,#f8fbfe,area_5_background,3% seed + 97% WB}
-{$THEMEWIZARD_COLOR,#6da4de,area_6_background,65% (seed val_to 80) + 35% WB}
+{$THEMEWIZARD_COLOR,#f2f2f2,area_6_background,100% main_2_background}
+{$THEMEWIZARD_COLOR,#6da4de,area_light_background,65% (seed val_to 80) + 35% WB}
 {$THEMEWIZARD_COLOR,#ecf5fd,area_faded_background,80% area_background + 20% WB}
-{$THEMEWIZARD_COLOR,#d3e7fc,area_zebra_background,20% seed + 80% WB}
+{$THEMEWIZARD_COLOR,#f2f2f2,area_zebra_background,100% area_6_background}
 {$THEMEWIZARD_COLOR,#e9d5de,area_hover_background,92% (area_background hue_to 92) + 8% BW}
 {$THEMEWIZARD_COLOR,#d3e7fc,area_hover_2_background,20% seed + 80% WB}
-{$THEMEWIZARD_COLOR,#c8daeb,area_current_background,93% (area_background sat_to 15) + 7% BW}
+{$THEMEWIZARD_COLOR,#ffffff,area_current_background,100% WB}
 {$THEMEWIZARD_COLOR,#d7e6f5,point_of_interest_background,97% area_2_background + 2% BW}
-{$THEMEWIZARD_COLOR,#444444,footer_background,100% 444444}
-{$THEMEWIZARD_COLOR,#444444,footer_2_background,100% 444444}
+{$THEMEWIZARD_COLOR,#333333,footer_background,100% 333333}
 
 {$THEMEWIZARD_COLOR,#333333,tooltip_background,100% 333333}
 
@@ -726,7 +727,7 @@ thead>tr>th, .boxless-space .box>table>thead>tr>th, .pte-set-box .box>table>thea
 	color: {$GET,text_light};
 }
 .light-table th, .light-table .fake-th, .light-table thead>tr>th, .light-table .boxless-space .box>table>thead>tr>th, .light-table .pte-set-box .box>table>thead>tr>th {
-	background-color: {$GET,area_6_background};
+	background-color: {$GET,area_light_background};
 }
 .box>table>thead>tr>th {
 	background-color: {$GET,point_of_interest_background};
@@ -1083,41 +1084,44 @@ header h1 {
 	text-decoration: none;
 }
 
-header.with-combo-navbar {
+html.has-hero-carousel.is-not-scrolled header.with-white-navbar {
+	color: {$GET,WB};
+	background: rgba(0, 0, 0, 0.1);
+	border-bottom: 1px solid transparent;
+	transition: background-color 0.15s ease-in-out, border-bottom 0.15s ease-in-out;
+}
+
+html.has-sticky-navbar {
+	padding-top: 70px;
+}
+
+html.has-no-hero-carousel header,
+html.is-scrolled header {
 	color: {$GET,a.link};
-}
-
-header.with-combo-navbar .global-navigation {
-	border-bottom: 1px solid {$GET,standard_border};
 	background-color: {$GET,WB};
+	border-bottom: 1px solid {$GET,standard_border};
 }
 
-
-header.with-combo-navbar .col-logo {
+header .col-logo {
 	flex: 0 0 auto;
 	width: auto;
 	max-width: none;
 }
 
-header.with-combo-navbar .logo,
-header.with-combo-navbar .logo:hover {
+header .logo,
+header .logo:hover {
 	color: inherit;
 	font-size: 25px;
 	line-height: 69px;
 	display: block;
 }
 
-header.with-combo-navbar .col-navigation {
+header .col-navigation {
 	display: flex;
 	margin-left: auto;
 }
 
 header.with-sticky-navbar {
-	padding-top: 70px;
-	position: relative;
-}
-
-header.with-sticky-navbar .global-navigation {
 	position: fixed;
 	left: 0;
 	right: 0;
@@ -1125,14 +1129,22 @@ header.with-sticky-navbar .global-navigation {
 	z-index: 100;
 }
 
-header.with-white-navbar .global-navigation.is-scrolled {
-	box-shadow: {$GET,box_shadow_sm};
+html.has-hero-carousel.is-not-scrolled header.with-white-navbar .menu-dropdown-item.toplevel:hover > a,
+html.has-hero-carousel.is-not-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link:hover,
+html.has-hero-carousel.is-not-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link:focus,
+html.has-hero-carousel.is-not-scrolled header.with-white-navbar .top-button:hover {
+	color: #ccc;
 }
 
-header.with-white-navbar .menu-dropdown-item.toplevel:hover > a,
-header.with-white-navbar .menu-dropdown-item-a.toplevel-link:hover,
-header.with-white-navbar .menu-dropdown-item-a.toplevel-link:focus {
+html.has-hero-carousel.is-scrolled header.with-white-navbar .menu-dropdown-item.toplevel:hover > a,
+html.has-hero-carousel.is-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link:hover,
+html.has-hero-carousel.is-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link:focus,
+html.has-hero-carousel.is-scrolled header.with-white-navbar .top-button:hover {
 	color: {$GET,a.hover};
+}
+
+html.is-scrolled header.with-white-navbar {
+	box-shadow: {$GET,box_shadow_sm};
 }
 
 header.with-seed-navbar .global-navigation {
@@ -1148,7 +1160,8 @@ header.with-seed-navbar .top-button {
 
 header.with-seed-navbar .menu-dropdown-item.toplevel:hover > a,
 header.with-seed-navbar .menu-dropdown-item-a.toplevel-link:hover,
-header.with-seed-navbar .menu-dropdown-item-a.toplevel-link:focus {
+header.with-seed-navbar .menu-dropdown-item-a.toplevel-link:focus,
+header.with-seed-navbar .top-button:hover {
 	background: rgba(0, 0, 0, 0.05);
 }
 
@@ -1182,14 +1195,6 @@ header.with-seed-navbar .menu-dropdown-item-a.toplevel-link:focus {
 	color: inherit;
 }
 
-header.with-seed-navbar .top-button:hover {
-	background: rgba(0, 0, 0, 0.05);
-}
-
-header.with-white-navbar .top-button:hover {
-	color: {$GET,a.hover};
-}
-
 .top-button > .icon {
 	width: 24px;
 	height: 24px;
@@ -1220,14 +1225,18 @@ header.with-white-navbar .top-button:hover {
 }
 
 .global-navigation .top-login-controls {
-	float: left;
+	display: flex;
+	align-items: center;
+	margin: 0 -5px;
+}
+
+.global-navigation .top-login-controls > * {
+	margin: 0 5px;
 }
 
 .global-navigation .top-login .bock-top-login-links {
 	margin-left: 0.8em;
 	width: auto;
-	padding-top: 2px; /* To force it align correctly with the form in a different block (which is taller) */
-	float: left;
 }
 
 .global-navigation .top-login .bock-top-login-links a {
@@ -1500,6 +1509,10 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	margin: 0; /* Probably inside a frame, hence already indented outside said frame */
 }
 
+.global-messages {
+	overflow: auto;
+}
+
 .global-message {
 	min-height: 21px;
 	margin-top: 0.75em;
@@ -1533,7 +1546,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 footer {
 	clear: both;
 	margin-top: 2em;
-	background-image: linear-gradient(to bottom, {$GET,footer_background}, {$GET,footer_2_background});
+	background: {$GET,footer_background};
 	color: {$GET,footer_text};
 }
 /*{+START,CSS_MODE,desktop}*/
@@ -1597,10 +1610,6 @@ footer .global-footer-left .horizontal-buttons>li {
 
 footer .su-form *, footer .special-page-type-form * {
 	vertical-align: middle;
-}
-
-footer .su-form input[type="text"] {
-	border: 0;
 }
 
 footer .special-page-type-form select, footer .special-page-type-form select option.label {
@@ -2141,7 +2150,7 @@ th.metadata-title {
 	max-width: 100%;
 	height: auto;
 }
-.img-thumb:hover, body.touch-enabled .img-thumb, .img-thumb-opaque .img-thumb {
+.img-thumb:hover, .is-touch-enabled .img-thumb, .img-thumb-opaque .img-thumb {
 	opacity: 1.0;
 	transition: opacity 0.2s linear !important;
 }
@@ -2428,17 +2437,17 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 }
 
 .toggleable-tray-button {
-	transition: opacity 0.2s linear !important;
+	transition: opacity 0.2s linear;
 	outline: 0;
 	font-weight: 500;
 	text-decoration: none;
-	color: inherit !important;
+	color: inherit;
 	cursor: pointer;
 }
 
 .toggleable-tray-button .icon {
 	float: right;
-	margin: 0 0 0 0.3em !important;
+	margin: 0 0 0 0.3em;
 	height: 24px;
 	width: 24px;
 }
@@ -2695,7 +2704,7 @@ hr.spaced-rule {
 	white-space: nowrap;
 }
 
-.inline-lined-up>* {
+.inline-lined-up > * {
 	white-space: normal;
 	display: inline-block;
 }
@@ -2749,7 +2758,7 @@ ul.horizontal-links.horiz-field-sep {
 table.scrollable-inside {
 	table-layout: fixed; /* For permission setting stuff that can scroll off */
 }
-.results-table.forceful>*>tr>th, .results-table.forceful>*>tr>td {
+.results-table.forceful > * > tr > th, .results-table.forceful > * > tr > td {
 	/* Undo HTML-sourced style if .forceful is set */
 	border-bottom: 0;
 }
@@ -2822,7 +2831,7 @@ table.scrollable-inside {
 }
 
 .highlighted-table-cell {
-	background-color: {$GET,area_current_background};
+	background-color: {$GET,area_4_background};
 }
 
 .results-table {
@@ -2886,16 +2895,25 @@ table.scrollable-inside {
 	border-bottom: 1px solid {$GET,standard_border};
 }
 
-table>*>.zebra-0>th, table>*>.zebra-0>td, div.zebra-0, table.zebra>tbody>tr:nth-child(even)>th, table.zebra>tbody>tr:nth-child(even)>td {
-	background-color: {$GET,area_zebra_background} !important;
+table > * > .zebra-0 > th, 
+table > * > .zebra-0 > td, 
+div.zebra-0, 
+table.zebra > tbody > tr:nth-child(even) > th, 
+table.zebra > tbody > tr:nth-child(even) > td {
+	background-color: {$GET,area_zebra_background};
 	color: {$GET,slightly_seeded_text};
 }
-table>*>.zebra-1>th, table>*>.zebra-1>td, div.zebra-1, table.zebra>tbody>tr:nth-child(odd)>th, table.zebra>tbody>tr:nth-child(even)>td {
-	background-color: {$GET,area_background} !important;
+table > * > .zebra-1 > th, 
+table > * > .zebra-1 > td, 
+div.zebra-1, 
+table.zebra > tbody > tr:nth-child(odd) > th, 
+table.zebra > tbody > tr:nth-child(even) > td {
+	background-color: {$GET,area_5_background};
 	color: {$GET,slightly_seeded_text};
 }
 div.zebra-0, div.zebra-1 {
 	border: 1px solid {$GET,standard_border};
+	border-top: 0;
 	padding: 0.5em;
 }
 div.zebra-0 p, div.zebra-1 p {
@@ -3632,7 +3650,10 @@ div .post-buttons>*, div .buttons-group-faded>* {
 	opacity: 1.0 !important;
 }
 
-.post-buttons:hover>*, body.touch-enabled .post-buttons>*, .buttons-group-faded:hover>*, body.touch-enabled .buttons-group-faded>* {
+.post-buttons:hover>*, 
+.is-touch-enabled .post-buttons>*, 
+.buttons-group-faded:hover>*, 
+.is-touch-enabled .buttons-group-faded>* {
 	opacity: 1.0 !important;
 }
 
@@ -3986,7 +4007,8 @@ dl.meta-details-list>dt, dl.meta-details-list>dd {
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	min-height: 26px;
 }
-.staff-actions:hover, body.touch-enabled .staff-actions {
+.staff-actions:hover, 
+.is-touch-enabled .staff-actions {
 	opacity: 1.0;
 }
 .staff-actions .field-name.standard-field-name {
@@ -4168,7 +4190,7 @@ ul.associated-link {
 }
 ul.horizontal-meta-details, ul.horizontal-links, ul.horizontal-links-comma, ul.horizontal-buttons, .horizontal-ticker {
 	/* As these go across horizontally, we need to do this to allow centering to work for the group */
-	display: inline-block !important;
+	display: inline-block;
 	width: 100%;
 }
 ul.associated-link>li, .horizontal-meta-details>li, .horizontal-links>li, ul.horizontal-links-comma>li, .horizontal-buttons>li, .horizontal-ticker>li {
@@ -6773,12 +6795,47 @@ NB: Form buttons are wrapped in either:
 	text-align: center;
 }
 
-.cms-carousel-home-hero {
-	margin-top: -70px;
-	min-height: 100vmin;
-	background: #555;
-	overflow: hidden;
+.cms-carousel-scroll-button {
+	position: absolute;
+	bottom: 20px;
+	z-index: 15;
+	text-align: center;
+	color: {$GET,WB};
+	font-weight: 500;
+	width: 100px;
+	left: 50%;
+	margin-left: -50px;
+}
+
+.cms-carousel-scroll-button:hover {
+	color: {$GET,WB};
+	opacity: 0.8;
+	text-decoration: none;
+}
+
+.cms-carousel-scroll-button-icon {
+	height: 24px;
+	width: 24px;
+	margin: 0 auto 10px auto;
 	position: relative;
+}
+
+.cms-carousel-scroll-button-icon .icon {
+	width: 24px;
+	height: 24px;
+	left: 50%;
+	margin-left: -12px;
+	position: absolute;
+	animation: 1s linear 0s infinite alternate bounce-cms-carousel-scroll-button-icon;
+}
+
+@keyframes bounce-cms-carousel-scroll-button-icon {
+	from {
+		top: 0;
+	}
+	to {
+		top: -10px;
+	}
 }
 
 .cms-carousel-progress-bar {
@@ -6791,8 +6848,18 @@ NB: Form buttons are wrapped in either:
 
 .cms-carousel-progress-bar-fill {
 	background: {$GET,seed};
-	width: var(--cms-carousel-progress-percentage, 0%);
+	width: 0%;
 	height: 5px;
+	/*transition: width 0.15s linear*/
+}
+
+.cms-carousel-home-hero {
+	min-height: 100vmin;
+	background: #555;
+	overflow: hidden;
+	position: relative;
+	margin-top: -70px;
+	padding-top: 70px;
 }
 
 /*
@@ -6918,7 +6985,8 @@ a.tab>span {
 	opacity: 1.0 !important;
 }
 
-.tab:hover, body.touch-enabled .tab {
+.tab:hover, 
+.is-touch-enabled .tab {
 	opacity: 1.0;
 }
 
@@ -7688,9 +7756,9 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 .overlay .previous_button:hover, 
 .overlay .next_button:hover, 
 .overlay.mousemove .previous_button, 
-.overlay.mousemove .next_button, 
-body.touch-enabled .overlay.mousemove .previous_button, 
-body.touch-enabled .overlay.mousemove .next_button {
+.overlay.mousemove .next_button,
+.is-touch-enabled .overlay.mousemove .previous_button,
+.is-touch-enabled .overlay.mousemove .next_button {
 	opacity: 1.0 !important;
 }
 
@@ -7700,6 +7768,16 @@ body.touch-enabled .overlay.mousemove .next_button {
 
 .overlay .next_button {
 	right: 1.5em;
+}
+
+.cms-modal-button-container {
+	display: flex;
+	justify-content: center;
+	margin: 1em -7px;
+}
+
+.cms-modal-button-container .btn {
+	margin: 0 7px;
 }
 
 #lightbox-meta {

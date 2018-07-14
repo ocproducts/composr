@@ -10,18 +10,21 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 */
 
 .modern-tabs {
-	border: 1px solid {$GET,dark_border};
+	border: 1px solid {$GET,standard_border};
 	background-color: {$GET,WB};
+	border-radius: {$GET,border_radius};
 }
 
 .modern-tab-headers {
 	overflow: hidden;
-	background-color: {$GET,box_title_background};
+	background-color: {$GET,area_5_background};
+	border-radius: {$GET,border_radius};
+	display: flex;
 }
 
-.modern-tab-headers>div {
-	color: {$GET,WB};
-	float: left;
+.modern-tab-headers > div {
+	color: {$GET,a.link};
+	flex-grow: 1;
 	overflow: hidden;
 }
 
@@ -31,13 +34,13 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	}
 /*{+END}*/
 
-.modern-tab-headers>div:last-child {
-	float: none;
+.modern-tab-headers > div.tab-active {
+	background-color: {$GET,WB};
+	color: {$GET,text_dark};
 }
 
-.modern-tab-headers>div.tab-active {
-	background-color: {$GET,WB};
-	color: {$GET,seed};
+.modern-tab-headers > div.tab-active > a {
+	border-bottom-color: transparent;
 }
 
 .modern-tab-headers>div * {
@@ -51,7 +54,8 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 }
 /*{+START,CSS_MODE,desktop}*/
 	.modern-tab-headers>div>a {
-		border-right: 1px solid {$GET,WB};
+		border-right: 1px solid {$GET,standard_border};
+		border-bottom: 1px solid {$GET,standard_border};
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
@@ -120,13 +124,17 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 }
 
 .modern-subtab-headers {
-	background: {$GET,seed_alternate};
+	background: {$GET,box_title_background_2};
 	margin-right: 8px;
 }
 
 .modern-subtab-headers > div {
 	color: {$GET,WB};
 	position: relative;
+}
+
+.modern-subtab-headers > div.tab-active {
+	background-color: {$GET,seed_secondary};
 }
 
 .modern-subtab-headers > div:last-child {
@@ -139,7 +147,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	/*background-size: 8px 16px;*/
 	font-family: sans-serif;
 	content: '\025BA'; /* Rightward triangle */
-	color: {$GET,seed_alternate};
+	color: {$GET,seed_secondary};
 	transform: scale(0.6, 1);
 	position: absolute;
 	right: -10px;

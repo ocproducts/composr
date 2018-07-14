@@ -15,7 +15,7 @@
 		<input {+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} maxlength="6" size="8" class="form-control form-control-inline input-text-required" type="text" id="captcha" name="captcha" />
 	{+END}
 
-	<div data-tpl="inputCaptcha" data-tpl-params="{+START,PARAMS_JSON,CAPTCHA}{_*}{+END}">
+	<div class="input-captcha" data-tpl="inputCaptcha" data-tpl-params="{+START,PARAMS_JSON,CAPTCHA}{_*}{+END}">
 		{+START,IF,{$CONFIG_OPTION,js_captcha}}
 			<div id="captcha-spot"></div>
 		{+END}

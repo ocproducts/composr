@@ -56,9 +56,6 @@
 	margin: 0.25em 0;
 }
 
-.block-main-members--boxes .box-inner {
-	margin: 0;
-}
 .block-main-members--boxes .cns-member-box-avatar {
 	float: right;
 	margin-top: 0.5em; /* balance the th/td to the left, which have some padding above */

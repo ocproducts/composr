@@ -8,12 +8,16 @@
 {$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
 <div data-tpl="blockMainFriendsList" data-tpl-params="{+START,PARAMS_JSON,ajax_block_main_friends_list_wrapper,block_call_url}{_*}{+END}">
 	<div id="{$GET*,ajax_block_main_friends_list_wrapper}">
-		<form target="_self" class="right" role="search" title="{!FRIENDS}, {!SEARCH}" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}#tab--friends" method="get" autocomplete="off">
+		<form target="_self" class="right form-inline" role="search" title="{!FRIENDS}, {!SEARCH}" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}#tab--friends" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$SELF_URL}}
 
 			<label class="accessibility-hidden" for="friends_search">{!SEARCH}</label>
-			<input autocomplete="off" maxlength="255" class="form-control form-control-inline js-input-friends-search" type="search" id="friends_search" name="friends_search" value="{$_GET*,friends_search}" />
-			<button class="btn btn-primary btn-sm buttons--filter" type="submit">{+START,INCLUDE,ICON}NAME=buttons/filter{+END} {!FILTER}</button>
+			<div class="input-group">
+				<input autocomplete="off" maxlength="255" class="form-control form-control-sm js-input-friends-search" type="search" id="friends_search" name="friends_search" value="{$_GET*,friends_search}" />
+				<div class="input-group-append">
+					<button class="btn btn-primary btn-sm buttons--filter" type="submit">{+START,INCLUDE,ICON}NAME=buttons/filter{+END} {!FILTER}</button>
+				</div>
+			</div>
 		</form>
 
 		<p>{!DESCRIPTION_FRIENDS,{$USERNAME*,{MEMBER_ID},1}}</p>

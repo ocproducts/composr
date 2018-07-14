@@ -10,7 +10,7 @@
 	{+START,SET,posting_field}
 		{+START,IF_PASSED,POST_COMMENT}
 			{+START,IF_NON_EMPTY,{POST_COMMENT}}
-				<p class="faux-h2"><label for="{NAME*}">{POST_COMMENT*}</label></p>
+				<p class="h2"><label for="{NAME*}">{POST_COMMENT*}</label></p>
 
 				<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_TAGS,{POST_COMMENT*}}" />
 			{+END}
@@ -146,7 +146,7 @@
 				{+END}
 			</a>
 
-			<span class="faux-h2 toggleable-tray-button js-click-pf-toggle-subord-fields">
+			<span class="h2 toggleable-tray-button js-click-pf-toggle-subord-fields">
 				{!ATTACHMENTS}
 
 				{+START,IF,{$DESKTOP}}

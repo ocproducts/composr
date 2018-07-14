@@ -216,7 +216,7 @@
 .chat-lobby-convos-area-messages .chat-message>div {
 	margin-right: 40px;
 }
-.chat-message>div:hover, body.touch-enabled .chat-message>div {
+.chat-message>div:hover, html.is-touch-enabled .chat-message>div {
 	opacity: 1;
 }
 .chat-operator-staff a, .chat-operator-staff a:visited, .chat-operator-staff a:hover {

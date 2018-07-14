@@ -29,6 +29,18 @@
 (function ($cms, $util, $dom) {
     'use strict';
 
+    // Are we dealing with a touch device?
+    document.documentElement.classList.toggle('is-touch-enabled', 'ontouchstart' in document.documentElement);
+    document.documentElement.classList.toggle('is-not-touch-enabled', 'ontouchstart' in document.documentElement);
+    
+    document.documentElement.classList.toggle('is-scrolled', window.scrollY > 0);
+    document.documentElement.classList.toggle('is-not-scrolled', window.scrollY === 0);
+
+    window.addEventListener('scroll', function () {
+        document.documentElement.classList.toggle('is-scrolled', window.scrollY > 0);
+        document.documentElement.classList.toggle('is-not-scrolled', window.scrollY === 0);
+    });
+
     $dom.ready.then(function () {
         // Allow form submissions by removing this listener attached early in dom_init.js
         window.removeEventListener('submit', $dom.preventFormSubmissionUntilDomReadyListener, /*useCapture*/true);
