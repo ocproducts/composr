@@ -74,7 +74,11 @@ function make_colour_chooser(name,color,context,tabindex,label,className)
 	if (typeof $("#"+name).spectrum!='undefined')
 	{
 		var test=document.createElement('input');
-		test.type='color';
+		try
+		{
+			test.type='color';
+		}
+		catch (e) {}
 		if (test.type=='text')
 		{
 			$("#"+name).spectrum({
