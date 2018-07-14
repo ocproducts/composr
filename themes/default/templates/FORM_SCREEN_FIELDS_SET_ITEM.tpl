@@ -32,7 +32,7 @@
 	set_up_change_monitor('form_table_field_input__{NAME;/}');
 
 	var block=document.getElementById('{$GET%,field_set_id}');
-	add_event_listener_abstract(block,'click',function() { /*{$,LEGACY: Doesn't work on Firefox if clicking the actual form elements, as they are disabled}*/
+	add_event_listener_abstract(block,'click',function() {
 		click_link(document.getElementById('choose_{NAME;/}'));
 	});
 //]]></script>
