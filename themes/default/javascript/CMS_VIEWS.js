@@ -415,6 +415,7 @@
 
             this.el = $dom.create('div', { // Black out the background
                 'className': 'cms-modal-background cms-modal-type-' + this.type,
+                'tabIndex': '-1',
                 'css': {
                     'background': 'rgba(0,0,0,0.7)',
                     'zIndex': this.topWindow.overlayZIndex++,
@@ -673,10 +674,17 @@
             } else if (this.el.querySelector('button')) {
                 this.el.querySelector('button').focus();
             }
+            
+            // Enforce focus to stay inside the overlay
+            $dom.on(document, 'focusin.modalWindow' + this.uid, function (e) {
+                if ((document !== e.target) && (self.el !== e.target) && !self.el.contains(e.target)) {
+                    self.el.focus();
+                }
+            });
 
             setTimeout(function () { // Timeout needed else keyboard activation of overlay opener may cause instant shutdown also
-                $dom.on(document, 'keyup.modalWindow' + this.uid, self.keyup.bind(self));
-                $dom.on(document, 'mousemove.modalWindow' + this.uid, self.mousemove.bind(self));
+                $dom.on(document, 'keyup.modalWindow' + self.uid, self.keyup.bind(self));
+                $dom.on(document, 'mousemove.modalWindow' + self.uid, self.mousemove.bind(self));
             }, 100);
         },
 
@@ -713,6 +721,7 @@
                 this.el.remove();
                 this.el = null;
 
+                $dom.off(document, 'focusin.modalWindow' + this.uid);
                 $dom.off(document, 'keyup.modalWindow' + this.uid);
                 $dom.off(document, 'mousemove.modalWindow' + this.uid);
             }
