@@ -587,6 +587,11 @@
         if (el) {
             $cms.form.setUpChangeMonitor(el.parentElement);
         }
+
+        var block = document.getElementById('field_set_' + params.name);
+        block.addEventListener('click', function() {
+            $DOM.trigger(document.getElementById('choose-{NAME;/}'), 'click');
+        });
     };
 
     $cms.templates.formScreenFieldSpacer = function (params, container) {

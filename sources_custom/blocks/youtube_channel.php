@@ -75,7 +75,7 @@ class Block_youtube_channel
         if ($channel_tempstyle) {
             $channel_tempstyle = '_' . $channel_tempstyle;
         }
-        $channel_templatestyle = 'BLOCK_YOUTUBE_CHANNEL_STYLE' . $channel_tempstyle;
+        $channel_templatestyle = 'BLOCK_YOUTUBE_CHANNEL_VIDEO' . $channel_tempstyle;
         $channel_startvideo = array_key_exists('start_video', $map) ? intval($map['start_video']) : 1;
         $channel_maxvideos = array_key_exists('max_videos', $map) ? intval($map['max_videos']) : 25;
         $channel_showplayer = array_key_exists('show_player', $map) ? intval($map['show_player']) : 1;

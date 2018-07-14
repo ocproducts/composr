@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
-<div class="fields-set-item" data-tpl="formScreenFieldsSetItem" data-tpl-params="{+START,PARAMS_JSON,NAME}{_*}{+END}">
+<div class="fields-set-item" data-tpl="formScreenFieldsSetItem" data-tpl-params="{+START,PARAMS_JSON,NAME}{_*}{+END}" id="field_set_{NAME%}">
 	<div class="fields-set-radio">
 		<label for="choose-{NAME*}"><span class="accessibility-hidden">{!CHOOSE}</span> {PRETTY_NAME*}</label>
 		<input type="radio" name="{SET_NAME*}" id="choose-{NAME*}" value="{NAME*}" />

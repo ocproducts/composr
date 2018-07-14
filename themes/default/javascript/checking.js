@@ -751,6 +751,7 @@
 
         if (button) {
             button.disabled = isLocked;
+            button.style.pointerEvents = 'none'; // Allows clicking even when disabled
         }
     };
 

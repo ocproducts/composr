@@ -76,7 +76,10 @@
 
         if (window.jQuery.fn.spectrum !== undefined) {
             var test = document.createElement('input');
-            test.type = 'color';
+            try {
+                test.type = 'color';
+            }
+            catch (e) {};
             if (test.type === 'text') {
                 window.jQuery("#" + name).spectrum({
                     color: color

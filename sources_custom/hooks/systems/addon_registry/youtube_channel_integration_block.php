@@ -140,7 +140,7 @@ You must first configure Google/YouTube API access:
             'themes/default/images_custom/youtube_channel_integration/youtube_channel_integration_icon.png',
             'themes/default/images_custom/youtube_channel_integration/index.html',
             'themes/default/templates_custom/BLOCK_YOUTUBE_CHANNEL.tpl',
-            'themes/default/templates_custom/BLOCK_YOUTUBE_CHANNEL_STYLE.tpl',
+            'themes/default/templates_custom/BLOCK_YOUTUBE_CHANNEL_VIDEO.tpl',
             'sources_custom/hooks/systems/config/youtube_channel_block_update_time.php',
         );
     }
