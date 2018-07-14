@@ -34,7 +34,7 @@ Here are some areas to consider, and suggestions:
  - Writing documents (e.g. Microsoft Office, LibreOffice, Zoho Docs, Google Docs) -- sadly, no Open Source tool can currently match Microsoft Office in terms of stability, ease of use, and performance
  - Source code control system (e.g. Git, Bitbucket)
  - Issue tracker (e.g. MantisBT, Bitbucket issues, GitHub issues, JIRA)
- - Standard IDE (e.g. PhpStorm, Netbeans, TextMate)
+ - Standard IDE (e.g. CodeLobster, Netbeans, PhpStorm, TextMate)
  - Analytics (e.g. Google Analytics)
  - Stack software (e.g. LAMP)
  - Framework software (e.g. Composr CMS for advanced sites, Wordpress for blogs, Magento for eCommerce, Symphony for business process implementations)

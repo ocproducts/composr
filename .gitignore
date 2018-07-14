@@ -44,6 +44,7 @@ test_a
 /data_custom/modules/web_notifications/latest.dat
 /cms_sitemap.xml
 /*.clpprj
+/*.csprj
 /.project
 /data_custom/latest_activity.txt
 tmpfile__*

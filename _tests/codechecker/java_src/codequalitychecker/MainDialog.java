@@ -146,15 +146,13 @@ public class MainDialog extends JFrame {
         errors.addMouseListener(new Dialog1_errors_actionAdapterClick(this));
         scrollPaneErrors.setBounds(new Rectangle(406, 14, 375, 517));
         jLabel1.setToolTipText("");
-        jLabel1.setText(
-                "<html>This is your project workspace. Set it by setting your code "
-                + "directory in the options.</html>");
+        jLabel1.setText("<html>This is your project workspace. Set it by setting your code directory in the options.</html>");
         jLabel1.setBounds(new Rectangle(26, 490, 339, 37));
         jLabel2.setText(
-                "<html>Either double click a file from the left, click examine selected "
-                + "files, or just drag and drop files here from your OS.<br>"
-                + "<br>Any errors will show up in this pane, and you\'ll be able "
-                + "to view the involved code in the chosen editor via a double-click.</html>");
+            "<html>Either double click a file from the left, click examine selected "
+            + "files, or just drag and drop files here from your OS.<br>"
+            + "<br>Any errors will show up in this pane, and you\'ll be able "
+            + "to view the involved code in the chosen editor via a double-click.</html>");
         jLabel2.setBounds(new Rectangle(415, 380, 350, 130));
         panel1.add(aboutBtn);
         panel1.add(countBtn);
@@ -194,11 +192,27 @@ public class MainDialog extends JFrame {
         }
 
         int n;
-        n = JOptionPane.showOptionDialog(this, "Would you like to skip files underneath any directory with '*_custom' in the name?", "Question", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        n = JOptionPane.showOptionDialog(
+            this,
+            "Would you like to skip files underneath any directory with '*_custom' in the name?",
+            "Question", JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            null,
+            null
+        );
         if (n == JOptionPane.YES_OPTION) {
             skip_custom = true;
         }
-        n = JOptionPane.showOptionDialog(this, "Would you like to sort by date?", "Question", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        n = JOptionPane.showOptionDialog(
+            this,
+            "Would you like to sort by date?",
+            "Question", JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            null,
+            null
+        );
         if (n == JOptionPane.YES_OPTION) {
             sort_new = true;
         }
@@ -358,7 +372,7 @@ public class MainDialog extends JFrame {
     }
 
     public void specialBtn_actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(this,  "Open up a web browser to the testing-tools directory, so the index.php loads and displays all available tools.");
+        JOptionPane.showMessageDialog(this, "Open up a web browser to the testing-tools directory, so the index.php loads and displays all available tools.");
     }
 
     private ArrayList<String> decompose_line(String line) {
@@ -486,7 +500,12 @@ public class MainDialog extends JFrame {
             this.jLabel1.setVisible(false);
             this.jLabel2.setVisible(false);
         } catch (java.io.IOException e2) {
-            JOptionPane.showMessageDialog(this, "Failure executing PHP backend. (" + e2.toString() + ")", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(
+                this,
+                "Failure executing PHP backend. (" + e2.toString() + ")",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
             tempProgress.setVisible(false);
             return;
         }
@@ -502,7 +521,7 @@ public class MainDialog extends JFrame {
         }
         String line = "code_quality.php spacedpaths=1";
         if (!no_path) {
-            line = line + " path="  + Main.projectPath;
+            line = line + " path=" + Main.projectPath;
         } else {
             line = line + " path=\"\"";
         }
@@ -553,49 +572,51 @@ public class MainDialog extends JFrame {
             return;
         }
 
-        String params = "";
+        String params;
         String line;
-        if (Main.textEditorPath.toLowerCase().endsWith("ClPhpEd.exe")) {
-            params = " /g" + decomposed.get(3) + ":" + decomposed.get(2);
-            line = Main.textEditorPath + " \""
-                    + (((((String) decomposed.get(1)).charAt(1) == ':')
-                    || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
-        } else if (Main.textEditorPath.toLowerCase().endsWith("context.exe")) {
-            params = " /g" + decomposed.get(3) + ":" + decomposed.get(2);
-            line = Main.textEditorPath + " \""
-                    + (((((String) decomposed.get(1)).charAt(1) == ':')
-                    || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
-        } else if ((Main.textEditorPath.toLowerCase().endsWith("netbeans")) || (Main.textEditorPath.toLowerCase().endsWith("netbeans.exe"))) {
-            line = Main.textEditorPath + " --open \""
-                    + (((((String) decomposed.get(1)).charAt(1) == ':')
-                    || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                            : Main.projectPath) + File.separator + decomposed.get(1) + "\":" + decomposed.get(2);
-        } else if (Main.textEditorPath.toLowerCase().endsWith("jedit.exe")) {
+        String filePath = (((((String) decomposed.get(1)).charAt(1) == ':') || (((String) decomposed.get(1)).charAt(0) == '/')) ? "" : Main.projectPath) + File.separator + decomposed.get(1);
+        if (filePath.contains(" ")) {
+            filePath = "\"" + filePath + "\"";
+        }
+        if (Main.textEditorPath.toLowerCase().endsWith("jedit.exe") || Main.textEditorPath.toLowerCase().endsWith("jedit")) {
             params = " +line:" + decomposed.get(2);
-            line = Main.textEditorPath + " \""
-                    + (((((String) decomposed.get(1)).charAt(1) == ':')
-                    || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
+            line = Main.textEditorPath + " " + filePath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("notepad++.exe")) {
+            params = " -multiInst " + filePath + " -n" + decomposed.get(2);
+            line = Main.textEditorPath + params;
         } else if (Main.textEditorPath.toLowerCase().endsWith("kate")) {
-            params = " --line " + decomposed.get(2) + " --column "
-                    + decomposed.get(3);
-            line = Main.textEditorPath + " \""
-                    + (((((String) decomposed.get(1)).charAt(1) == ':')
-                    || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
+            params = " --line " + decomposed.get(2) + " --column " + decomposed.get(3);
+            line = Main.textEditorPath + " " + filePath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("geany")) {
+            params = " +" + decomposed.get(2);
+            line = Main.textEditorPath + " " + filePath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("bbedit")) {
+            params = " +" + decomposed.get(2);
+            line = Main.textEditorPath + " " + filePath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("clphped.exe")) {
+            params = " /g" + filePath + ":" + decomposed.get(2);
+            line = Main.textEditorPath + " " + filePath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("codelobsteride.exe") || Main.textEditorPath.toLowerCase().endsWith("codelobsteride") || Main.textEditorPath.toLowerCase().endsWith("codelobster")) {
+            params = ""; // TODO: Add line number support, once told about it
+            line = Main.textEditorPath + " " + filePath + params;
+        } else if ((Main.textEditorPath.toLowerCase().endsWith("netbeans.exe")) || (Main.textEditorPath.toLowerCase().endsWith("netbeans"))) {
+            params = " --open " + filePath + ":" + decomposed.get(2);
+            line = Main.textEditorPath + params;
         } else if (Main.textEditorPath.toLowerCase().endsWith("mate")) {
-            params = " -wl" + decomposed.get(2);
-            line = Main.textEditorPath + " " + params + " "
-                    + (((((String) decomposed.get(1)).charAt(1) == ':')
-                    || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                            : Main.projectPath) + File.separator + decomposed.get(1);
+            params = " -wl" + decomposed.get(2) + " " + filePath;
+            line = Main.textEditorPath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("atom.exe") || Main.textEditorPath.toLowerCase().endsWith("atom.sh") || Main.textEditorPath.toLowerCase().endsWith("atom")) {
+            params = ":" + decomposed.get(2);
+            line = Main.textEditorPath + " " + filePath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("code.exe") || Main.textEditorPath.toLowerCase().endsWith("code")) {
+            params = " -g " + filePath + ":" + decomposed.get(2);
+            line = Main.textEditorPath + params;
+        } else if (Main.textEditorPath.toLowerCase().endsWith("pspad.exe")) {
+            params = " \\" + decomposed.get(2);
+            line = Main.textEditorPath + params + " " + filePath;
         } else {
-            line = Main.textEditorPath + " \""
-                    + (((((String) decomposed.get(1)).charAt(1) == ':')
-                    || (((String) decomposed.get(1)).charAt(0) == '/')) ? ""
-                            : Main.projectPath) + File.separator + decomposed.get(1) + "\"" + params;
+            params = "";
+            line = Main.textEditorPath + " " + filePath + params;
         }
 
         if (this.errors.getSelectedIndex() == -1) {
