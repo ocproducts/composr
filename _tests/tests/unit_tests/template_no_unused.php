@@ -166,7 +166,7 @@ class template_no_unused_test_set extends cms_test_case
             'BLOCK_MAIN_CHOOSE_TO_BOOK',
             'BLOCK_SIDE_BOOK_DATE_RANGE',
             'BLOCK_TWITTER_FEED',
-            'BLOCK_TWITTER_FEED_STYLE',
+            'BLOCK_TWITTER_FEED_TWEET',
             'BLOCK_YOUTUBE_CHANNEL',
             'BLOCK_YOUTUBE_CHANNEL_STYLE',
             'BOOK_DATE_CHOOSE',

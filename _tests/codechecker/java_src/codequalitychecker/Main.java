@@ -64,29 +64,35 @@ public class Main {
                 projectPath = ".." + File.separator + ".." + File.separator;
             }
             if (!new File(textEditorPath).exists()) {
-                if (new File(
-                        "C:\\Program Files\\Macromedia\\Dreamweaver 9\\Dreamweaver.exe").
-                        exists()) {
-                    textEditorPath = "C:\\Program Files\\Macromedia\\Dreamweaver 9\\Dreamweaver.exe";
-                } else {
-                    if (new File("C:\\Program Files\\jedit\\jedit.exe").
-                            exists()) {
-                        textEditorPath = "C:\\Program Files\\jedit\\jedit.exe";
-                    } else {
-                        if (new File(
-                                "C:\\Program Files\\ConTEXT\\ConTEXT.exe").exists()) {
-                            textEditorPath = "C:\\Program Files\\ConTEXT\\ConTEXT.exe";
-                        } else {
-                            if (new File("/usr/bin/kate").exists()) {
-                                textEditorPath = "/usr/bin/kate";
-                            } else {
-                                if (new File(
-                                        "C:\\Program Files (x86)\\Codelobster Software\\CodelobsterPHPEdition\\ClPhpEd.exe").
-                                        exists()) {
-                                    textEditorPath = "C:\\Program Files (x86)\\Codelobster Software\\CodelobsterPHPEdition\\ClPhpEd.exe";
-                                }
-                            }
-                        }
+                List<String> pathsToSearch = Arrays.asList(
+                    "C:\\Program Files\\jedit\\jedit.exe",
+                    "/Applications/jEdit.app/Contents/MacOS/jedit",
+                    "/usr/local/bin/jedit",
+                    "/usr/bin/jedit",
+                    "C:\\Program Files\\Notepad++\\notepad++.exe",
+                    "/usr/bin/kate",
+                    "/usr/local/bin/geany",
+                    "/usr/bin/geany",
+                    "/usr/local/bin/bbedit",
+                    "C:\\Program Files (x86)\\Codelobster Software\\CodelobsterPHPEdition\\ClPhpEd.exe",
+                    "C:\\Program Files (x86)\\Codelobster Software\\CodeLobster IDE\\CodeLobsterIDE.exe",
+                    "/Applications/CodeLobsterIDE.app/Contents/MacOS/CodeLobsterIDE",
+                    "/usr/bin/codelobster", // TODO: Add line number support, once told about it
+                    "C:\\Program Files\\NetBeans 8.2\\bin\\netbeans.exe",
+                    "/Applications/NetBeans/NetBeans 8.2.app/Contents/Resources/NetBeans/bin/netbeans",
+                    "/usr/local/bin/netbeans",
+                    "C:\\Users\\IEUser\\AppData\\Local\\atom\\atom.exe",
+                    "/Applications/Atom.app/Contents/Resources/app/atom.sh",
+                    "/usr/bin/atom",
+                    "/usr/local/bin/atom",
+                    "C:\\Program Files\\Microsoft VS Code\\Code.exe",
+                    "/usr/local/bin/code",
+                    "C:\\Program Files (x86)\\PSPad editor\\PSPad.exe"
+                );
+                for (String pathToSearch : pathsToSearch) {
+                    if (new File(pathToSearch).exists()) {
+                        textEditorPath = pathToSearch;
+                        break;
                     }
                 }
             }

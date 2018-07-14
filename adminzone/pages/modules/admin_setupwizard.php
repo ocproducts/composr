@@ -1109,6 +1109,8 @@ class Module_admin_setupwizard
             }
         }
 
+        decache('menu');
+
         // We're done
         set_value('setupwizard_completed', '1');
 

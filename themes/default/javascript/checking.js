@@ -904,7 +904,11 @@ function set_locked(field,is_locked,chosen_ob)
 		}
 	}
 	field.disabled=is_locked;
-	if (button) button.disabled=is_locked;
+	if (button)
+	{
+		button.disabled=is_locked;
+		button.style.pointerEvents='none'; // Allows clicking even when disabled
+	}
 }
 
 function set_required(field_name,is_required)

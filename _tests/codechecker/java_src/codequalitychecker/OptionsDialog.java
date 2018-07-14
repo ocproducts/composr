@@ -91,18 +91,15 @@ public class OptionsDialog extends JDialog {
         textEditorPath.setBounds(new Rectangle(114, 21, 228, 19));
         textEditorPath.setText(Main.textEditorPath);
         spelling.setActionCommand("spelling");
-        spelling.setText(
-                "Spell checking (PHP must have pspell or enchant installed)");
+        spelling.setText("Spell checking (PHP must have pspell or enchant installed)");
         flags.setLayout(verticalFlowLayout1);
         api.setToolTipText("");
         api.setActionCommand("api");
-        api.setText(
-                "Do API checks (recommended, esp as it helps determine type)");
+        api.setText("Do API checks (recommended, esp as it helps determine type)");
         mixed.setActionCommand("mixed");
         mixed.setText("Flag variables that have no determinable type");
         checks.setActionCommand("checks");
-        checks.setText(
-                "Flag areas that need special checking (e.g. file permissions)");
+        checks.setText("Flag areas that need special checking (e.g. file permissions)");
         security.setActionCommand("security");
         security.setText("Flag security hotspots (e.g. query and exec)");
         pedantic.setToolTipText("");
