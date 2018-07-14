@@ -1,4 +1,6 @@
-<div class="fields_set_item">
+{$SET,field_set_id,field_set_{$RAND}}
+
+<div class="fields_set_item" id="{$GET%,field_set_id}">
 	<div class="fields_set_radio">
 		<input type="radio" name="{SET_NAME*}" id="choose_{NAME*}" />
 		<label for="choose_{NAME*}"><span class="accessibility_hidden">{!CHOOSE}</span> {PRETTY_NAME*}</label>
@@ -23,9 +25,14 @@
 		{+START,IF,{REQUIRED}}
 			<input type="hidden" id="required_posted__{NAME*}" name="require__{NAME*}" value="1" />
 		{+END}
-
-		<script>// <![CDATA[
-			set_up_change_monitor('form_table_field_input__{NAME;/}');
-		//]]></script>
 	</div>
 </div>
+
+<script>// <![CDATA[
+	set_up_change_monitor('form_table_field_input__{NAME;/}');
+
+	var block=document.getElementById('{$GET%,field_set_id}');
+	add_event_listener_abstract(block,'click',function() {
+		click_link(document.getElementById('choose_{NAME;/}'));
+	});
+//]]></script>
