@@ -113,7 +113,6 @@ In mobile mode:
 {$THEMEWIZARD_COLOR,#ffffff,text_light,100% ffffff}
 {$THEMEWIZARD_COLOR,#212529,text_dark,100% 212529}
 
-{$THEMEWIZARD_COLOR,#2388ef,button_primary,100% seed}
 /* Borders */
 {$THEMEWIZARD_COLOR,#dddddd,standard_border,100% dddddd}
 {$THEMEWIZARD_COLOR,#9b9b9b,dark_border,70% standard_border + 30% BW}
@@ -160,6 +159,7 @@ In mobile mode:
 /* Special colour for box titles */
 {$THEMEWIZARD_COLOR,#212529,box_title_text,100% text_dark}
 {$THEMEWIZARD_COLOR,#1e74cb,box_title_text_hover,100% a.hover}
+{$THEMEWIZARD_COLOR,#ffffff,box_title_text_2,100% text_light}
 {$THEMEWIZARD_COLOR,#f2f2f2,box_title_background,100% main_2_background}
 {$THEMEWIZARD_COLOR,#5aa6f3,box_title_background_2,75% seed + 25% WB}
 
@@ -716,10 +716,11 @@ th, .fake-th {
 .columned-table[itemprop="significantLinks"] tbody tr th,
 .columned-table[itemprop="significantLinks"] tbody tr .fake-th { /* itemprop is for precedence */
 	background-color: {$GET,box_title_background_2} !important;
-	color: {$GET,box_title_text} !important;
+	color: {$GET,box_title_text_2} !important;
 	text-align: left;
 }
 th a, th a:hover, th a:visited, .fake-th a, .fake-th a:hover, .fake-th a:visited {
+	font-weight: bold;
 	color: {$GET,box_title_text};
 }
 thead>tr>th, .boxless-space .box>table>thead>tr>th, .pte-set-box .box>table>thead>tr>th {
@@ -1110,7 +1111,6 @@ header .col-logo {
 
 header .logo,
 header .logo:hover {
-	color: inherit;
 	font-size: 25px;
 	line-height: 69px;
 	display: block;
@@ -1129,18 +1129,17 @@ header.with-sticky-navbar {
 	z-index: 100;
 }
 
+html.has-hero-carousel.is-not-scrolled header.with-white-navbar .logo,
+html.has-hero-carousel.is-not-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link,
+html.has-hero-carousel.is-not-scrolled header.with-white-navbar .top-button {
+	color: {$GET,WB};
+}
+
 html.has-hero-carousel.is-not-scrolled header.with-white-navbar .menu-dropdown-item.toplevel:hover > a,
 html.has-hero-carousel.is-not-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link:hover,
 html.has-hero-carousel.is-not-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link:focus,
 html.has-hero-carousel.is-not-scrolled header.with-white-navbar .top-button:hover {
-	color: #ccc;
-}
-
-html.has-hero-carousel.is-scrolled header.with-white-navbar .menu-dropdown-item.toplevel:hover > a,
-html.has-hero-carousel.is-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link:hover,
-html.has-hero-carousel.is-scrolled header.with-white-navbar .menu-dropdown-item-a.toplevel-link:focus,
-html.has-hero-carousel.is-scrolled header.with-white-navbar .top-button:hover {
-	color: {$GET,a.hover};
+	color: {$COLOR_RGBA,{$GET,WB},0.8};
 }
 
 html.is-scrolled header.with-white-navbar {
@@ -1187,12 +1186,6 @@ header.with-seed-navbar .top-button:hover {
 	padding: 0 10px;
 	text-decoration: none;
 	transition: color  0.15s ease-in-out, background-color  0.15s ease-in-out;
-}
-
-.top-button,
-.top-button:hover,
-.top-button:visited {
-	color: inherit;
 }
 
 .top-button > .icon {
@@ -2423,11 +2416,6 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 
 /* Expanding and contracting, mostly for boxes but not necessarily always */
 
-.toggleable-tray-title-heading {
-	min-height: 20px;
-	display: flex;
-}
-
 .toggleable-tray-title {
 	font-size: 1.1em;
 	font-weight: bold;
@@ -3038,7 +3026,17 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 .tooltip-ownlayout {
 	padding: 0.5em;
 	border-radius: {$GET,border_radius};
-	color: {$GET,WB};
+	color: {$GET,WB} !important;
+}
+
+.tooltip-ownlayout a {
+	color: {$GET,WB} !important;
+	font-weight: bold;
+}
+
+.tooltip-ownlayout div.red-alert,
+.tooltip-ownlayout p.red-alert {
+	background: transparent;
 }
 
 .tooltip-ownlayout, 
@@ -4931,73 +4929,74 @@ fieldset:disabled a.btn {
 
 .btn-primary {
 	color: {$GET,text_light};
-	background-color: {$GET,button_primary};
-	border-color: {$GET,button_primary};
+	background-color: {$GET,seed};
+	border-color: {$GET,seed};
 }
 
 .btn-primary:hover {
 	color: {$GET,text_light};
-	background-color: {$COLOR_DARKEN,{$GET,button_primary},7.5%};
-	border-color: {$COLOR_DARKEN,{$GET,button_primary},10%};
+	background-color: {$COLOR_DARKEN,{$GET,seed},7.5%};
+	border-color: {$COLOR_DARKEN,{$GET,seed},10%};
 }
 
 .btn-primary:focus, .btn-primary.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,button_primary},0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed},0.5};
 }
 
 .btn-primary.disabled, .btn-primary:disabled {
 	color: {$GET,text_light};
-	background-color: {$GET,button_primary};
-	border-color: {$GET,button_primary};
+	background-color: {$GET,seed};
+	border-color: {$GET,seed};
 }
 
 .btn-primary:not(:disabled):not(.disabled):active, .
 btn-primary:not(:disabled):not(.disabled).active,
 .show > .btn-primary.dropdown-toggle {
 	color: {$GET,text_light};
-	background-color: {$COLOR_DARKEN,{$GET,button_primary},10%};
-	border-color: {$COLOR_DARKEN,{$GET,button_primary},12.5%};
+	background-color: {$COLOR_DARKEN,{$GET,seed},10%};
+	border-color: {$COLOR_DARKEN,{$GET,seed},12.5%};
 }
 
-.btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
+.btn-primary:not(:disabled):not(.disabled):active:focus, 
+.btn-primary:not(:disabled):not(.disabled).active:focus,
 .show > .btn-primary.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,button_primary},0.5};
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed},0.5};
 }
 
 .btn-secondary {
 	color: {$GET,text_light};
-	background-color: #6c757d;
-	border-color: #6c757d;
+	background-color: {$GET,seed_secondary};
+	border-color: {$GET,seed_secondary};
 }
 
 .btn-secondary:hover {
 	color: {$GET,text_light};
-	background-color: #5a6268;
-	border-color: #545b62;
+	background-color: {$COLOR_DARKEN,{$GET,seed_secondary},7.5%};
+	border-color: {$COLOR_DARKEN,{$GET,seed_secondary},10%};
 }
 
 .btn-secondary:focus, .btn-secondary.focus {
-	box-shadow: 0 0 0 3px rgba(108, 117, 125, 0.5);
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed_secondary},0.5};
 }
 
 .btn-secondary.disabled, .btn-secondary:disabled {
 	color: {$GET,text_light};
-	background-color: #6c757d;
-	border-color: #6c757d;
+	background-color: {$GET,seed_secondary};
+	border-color: {$GET,seed_secondary};
 }
 
 .btn-secondary:not(:disabled):not(.disabled):active, 
 .btn-secondary:not(:disabled):not(.disabled).active,
 .show > .btn-secondary.dropdown-toggle {
 	color: {$GET,text_light};
-	background-color: #545b62;
-	border-color: #4e555b;
+	background-color: {$COLOR_DARKEN,{$GET,seed_secondary},10%};
+	border-color: {$COLOR_DARKEN,{$GET,seed_secondary},12.5%};
 }
 
 .btn-secondary:not(:disabled):not(.disabled):active:focus, 
 .btn-secondary:not(:disabled):not(.disabled).active:focus,
 .show > .btn-secondary.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px rgba(108, 117, 125, 0.5);
+	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed_secondary},0.5};
 }
 
 .btn-alternate {
@@ -5277,16 +5276,16 @@ btn-primary:not(:disabled):not(.disabled).active,
 }
 
 .btn-outline-secondary {
-	color: #6c757d;
+	color: {$GET,seed_secondary};
 	background-color: transparent;
 	background-image: none;
-	border-color: #6c757d;
+	border-color: {$GET,seed_secondary};
 }
 
 .btn-outline-secondary:hover {
 	color: {$GET,WB};
-	background-color: #6c757d;
-	border-color: #6c757d;
+	background-color: {$GET,seed_secondary};
+	border-color: {$GET,seed_secondary};
 }
 
 .btn-outline-secondary:focus, .btn-outline-secondary.focus {
@@ -5294,15 +5293,15 @@ btn-primary:not(:disabled):not(.disabled).active,
 }
 
 .btn-outline-secondary.disabled, .btn-outline-secondary:disabled {
-	color: #6c757d;
+	color: {$GET,seed_secondary};
 	background-color: transparent;
 }
 
 .btn-outline-secondary:not(:disabled):not(.disabled):active, .btn-outline-secondary:not(:disabled):not(.disabled).active,
 .show > .btn-outline-secondary.dropdown-toggle {
 	color: {$GET,WB};
-	background-color: #6c757d;
-	border-color: #6c757d;
+	background-color: {$GET,seed_secondary};
+	border-color: {$GET,seed_secondary};
 }
 
 .btn-outline-secondary:not(:disabled):not(.disabled):active:focus, .btn-outline-secondary:not(:disabled):not(.disabled).active:focus,
@@ -6478,7 +6477,7 @@ input[type="button"].btn-block {
 	text-align: center;
 }
 .proceed-button:last-child {
-	margin-bottom: 0;
+	/*margin-bottom: 0;*/
 }
 div.proceed-button-left {
 	text-align: left;
@@ -7699,6 +7698,21 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 =========================
 */
 
+.cms-modal-background {
+	background: rgba(0, 0, 0, 0.7);
+	overflow: hidden;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	outline: 0;
+	position: fixed;
+}
+
+.cms-modal-overlay {
+	position: fixed;
+}
+
 .overlay [role="toolbar"], 
 .overlay .emoticon-chooser, 
 .overlay .posting-rules, 
@@ -7739,34 +7753,34 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 	display: block;
 }
 
-.overlay .previous_button, 
-.overlay .next_button {
+.overlay .previous-button, 
+.overlay .next-button {
 	position: absolute;
 	cursor: pointer;
 	top: calc(50% - {$DIV,74,2}px);
 	max-width: 20%;
 }
 
-.overlay .previous_button, 
-.overlay .next_button {
+.overlay .previous-button, 
+.overlay .next-button {
 	opacity: 0;
 	transition-property : opacity;
 	transition-duration : 0.5s;
 }
-.overlay .previous_button:hover, 
-.overlay .next_button:hover, 
-.overlay.mousemove .previous_button, 
-.overlay.mousemove .next_button,
-.is-touch-enabled .overlay.mousemove .previous_button,
-.is-touch-enabled .overlay.mousemove .next_button {
+.overlay .previous-button:hover, 
+.overlay .next-button:hover, 
+.overlay.mousemove .previous-button, 
+.overlay.mousemove .next-button,
+.is-touch-enabled .overlay.mousemove .previous-button,
+.is-touch-enabled .overlay.mousemove .next-button {
 	opacity: 1.0 !important;
 }
 
-.overlay .previous_button {
+.overlay .previous-button {
 	left: 1.5em;
 }
 
-.overlay .next_button {
+.overlay .next-button {
 	right: 1.5em;
 }
 

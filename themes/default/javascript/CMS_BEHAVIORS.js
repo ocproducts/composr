@@ -925,14 +925,9 @@
                     movement = 0,
                     lastDirection = 0;
 
-                stickyNavbar.classList.toggle('is-scrolled', window.scrollY > 0);
-                stickyNavbar.classList.toggle('is-not-scrolled', window.scrollY === 0);
-
                 window.addEventListener('scroll', function () {
-                    stickyNavbar.classList.toggle('is-scrolled', window.scrollY > 0);
-                    stickyNavbar.classList.toggle('is-not-scrolled', window.scrollY === 0);
-                    
-                    if (options.hideOnScroll) {
+                    if ($cms.isCssMode('mobile')) { 
+                        // Mobile: hide navbar on scroll down and re-show on scroll up
                         var sy = window.scrollY, margin;
 
                         movement += sy - lastScrollY;
@@ -1039,7 +1034,7 @@
 
             carousels.forEach(function (carousel) {
                 $dom.load.then(function () {
-                    $dom.Carousel._jQueryInterface.call([carousel], $dom.data(carousel));
+                    $dom.Carousel._interface(carousel, $dom.data(carousel));
                 });
             });
         }

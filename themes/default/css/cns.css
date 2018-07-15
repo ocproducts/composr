@@ -209,6 +209,7 @@ div.cns-table-footer>div>div {
 
 .cns-on, .cns-on td {
 	background-color: {$GET,area_current_background} !important;
+	border-color: {$GET,pale_border} !important;
 }
 
 .cns-off {
@@ -615,6 +616,19 @@ hr.cns-sig-barrier {
 
 .cns-pt-category-filters {
 	font-weight: bold;
+}
+
+
+.cns-forum-grouping-heading {
+	margin: 14px 4px;
+	min-height: 20px;
+	display: flex;
+	align-items: center;
+}
+
+.cns-forum-grouping-heading .associated-details {
+	margin-left: 7px;
+	font-size: 14px;
 }
 
 .cns-forum-grouping-toggleable-tray-button {

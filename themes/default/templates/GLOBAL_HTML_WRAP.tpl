@@ -8,7 +8,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 {$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
 
 {$,We deploy as HTML5 but code and conform strictly to XHTML5}
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="has-sticky-navbar {$?,{$MATCH_KEY_MATCH,:home},has-hero-carousel,has-no-hero-carousel}">
+<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="has-sticky-navbar {$?,{$MATCH_KEY_MATCH,:home},has-hero-carousel,has-no-hero-carousel} is-not-scrolled">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>
@@ -18,7 +18,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 	<div id="main-website-inner">
 		{+START,IF,{$SHOW_HEADER}}
 		{$,Add CSS class .with-white-navbar for a white navbar, .with-seed-navbar for seed-colored navbar}
-		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" class="with-white-navbar with-sticky-navbar" data-sticky-navbar="{ hideOnScroll: false }">
+		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" class="with-white-navbar with-sticky-navbar" data-sticky-navbar="{}">
 			{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
 			<a accesskey="s" class="accessibility-hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
 

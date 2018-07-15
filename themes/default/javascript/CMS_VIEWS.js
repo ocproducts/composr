@@ -414,17 +414,10 @@
             this.topWindow.overlayZIndex || (this.topWindow.overlayZIndex = 999999); // Has to be higher than plupload, which is 99999
 
             this.el = $dom.create('div', { // Black out the background
-                'className': 'cms-modal-background cms-modal-type-' + this.type,
-                'tabIndex': '-1',
+                'className': 'cms-modal cms-modal-background cms-modal-type-' + this.type,
+                'tabIndex': '-1', // So that we can enforce focus, see the 'focusin.modalWindow' event listener attached in this._setElement()
                 'css': {
-                    'background': 'rgba(0,0,0,0.7)',
-                    'zIndex': this.topWindow.overlayZIndex++,
-                    'overflow': 'hidden',
-                    'position': $cms.isMobile() ? 'absolute' : 'fixed',
-                    'left': '0',
-                    'top': '0',
-                    'width': '100%',
-                    'height': '100%'
+                    'zIndex': this.topWindow.overlayZIndex++
                 }
             });
 
@@ -432,12 +425,7 @@
 
             this.overlayEl = this.el.appendChild($dom.create('div', { // The main overlay
                 'className': 'box overlay cms-modal-overlay ' + this.type,
-                'role': 'dialog',
-                'css': {
-                    // This will be updated immediately in resetDimensions
-                    'position': $cms.isMobile() ? 'static' : 'fixed',
-                    'margin': '0 auto' // Centering for iOS/Android which is statically positioned (so the container height as auto can work)
-                }
+                'role': 'dialog'
             }));
 
             this.containerEl = this.overlayEl.appendChild($dom.create('div', {
@@ -453,7 +441,7 @@
                 overlayHeader = $dom.create('h3', {
                     'html': this.title,
                     'css': {
-                        'display': (this.title === '') ? 'none' : 'block'
+                        'display': (this.title === '') ? 'none' : ''
                     }
                 });
                 this.containerEl.appendChild(overlayHeader);
@@ -477,8 +465,8 @@
             this.buttonContainerEl = $dom.create('p', {
                 'className': 'proceed-button cms-modal-button-container'
             });
-
-            var self = this;
+            
+            const self = this;
 
             $dom.on(this.overlayEl, 'click', function (e) {
                 if ($cms.isMobile() && (self.type === 'lightbox')) { // IDEA: Swipe detect would be better, but JS does not have this natively yet
@@ -580,8 +568,7 @@
                     button = $dom.create('button', {
                         'type': 'button',
                         'html': '{$GET;^,icon_yes} ' + this.yesButton,
-                        'className': 'btn btn-primary btn-scri buttons--yes js-onclick-do-option-yes',
-                        'style': 'font-weight: bold;'
+                        'className': 'btn btn-primary btn-scri buttons--yes js-onclick-do-option-yes'
                     });
                     this.buttonContainerEl.appendChild(button);
                     this.buttonContainerEl.appendChild(document.createTextNode(' '));
@@ -610,10 +597,7 @@
                         button = $dom.create('button', {
                             'type': 'button',
                             'html': this.yesButton,
-                            'className': 'btn btn-primary btn-scri buttons--yes js-onclick-do-option-yes',
-                            'css': {
-                                'font-weight': 'bold'
-                            }
+                            'className': 'btn btn-primary btn-scri buttons--yes js-onclick-do-option-yes'
                         });
                         this.buttonContainerEl.appendChild(button);
                     }

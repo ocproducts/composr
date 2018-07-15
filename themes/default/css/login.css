@@ -12,7 +12,6 @@
 		background: url('{$IMG;,background_image}') no-repeat 20px 44px;
 		background-size: 216px 255px;
 		text-align: center;
-		width: 80%;
 		padding: 0.5em;
 		margin: 0 auto;
 		min-height: 300px;
@@ -83,13 +82,8 @@ table.login-page-form {
 }
 
 .login-page-options .associated-details {
-	display: inline-block;
+	display: inline-flex;
 }
-/*{+START,CSS_MODE,desktop__overlay}*/
-	.login-page-options .associated-details {
-		padding-left: 2em;
-	}
-/*{+END}*/
 
 .login-note {
 	font-size: 0.85em;

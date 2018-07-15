@@ -25,23 +25,10 @@ For example:
 }
 
 .menu-dropdown-item-a,
-.menu-dropdown-item-a:visited,
 .menu-dropdown-item-a:hover {
+	display: block;
 	text-decoration: none;
 	transition: color  0.15s ease-in-out, background-color  0.15s ease-in-out;
-}
-
-.menu-dropdown-item-a {
-	display: block;
-	text-decoration: none;
-}
-
-.menu-dropdown-item-a,
-.menu-dropdown-item-a:hover,
-.menu-dropdown-item-a:visited {
-	display: block;
-	text-decoration: none;
-	color: inherit;
 }
 
 .menu-dropdown-item-icon {
