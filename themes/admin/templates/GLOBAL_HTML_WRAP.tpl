@@ -26,7 +26,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader">
 			{$,The main logo}
 			<h1 class="logo-outer">
-				<a class="logo" target="_self" href="#!" rel="home">
+				<a class="logo" target="_self" href="{$PAGE_LINK*,adminzone:}" rel="home">
 					<!--<img class="logo" src="{$LOGO_URL*}" title="{!HOME}" alt="{$SITE_NAME*}" />-->
 					{$SITE_NAME*}
 				</a>

@@ -95,6 +95,12 @@
 }
 
 /*{+START,CSS_MODE,desktop}*/
+	.box---chat-screen-options::after {
+		display: block;
+		clear: both;
+		content: "";
+	}
+
 	.chat-room-options, .chat-room-actions {
 		float: left;
 		width: 50%;
@@ -169,7 +175,7 @@
 
 .chat-message {
 	border: 1px solid {$GET,pale_border};
-	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_2_background});
+	background: {$GET,area_background};
 	padding: 0.5em;
 	margin: 1em 0;
 	overflow: hidden;
@@ -253,7 +259,7 @@
 /*{+START,CSS_MODE,desktop}*/
 	.chat-lobby-friends {
 		float: left;
-		width: 16.5em;
+		/*width: 16.5em;*/
 	}
 /*{+END}*/
 
@@ -390,7 +396,8 @@
 }
 
 .friend-actions {
-	margin: 1em 0;
+	margin-top: 1em;
+	margin-bottom: 1em;
 }
 
 .friend-actions input {

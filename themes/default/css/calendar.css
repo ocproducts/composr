@@ -77,16 +77,23 @@ abbr.dtstart, abbr.dtend {
 	border: 1px solid {$GET,standard_border};
 }
 
+.calendar-year-month-day {
+	text-align: center;
+}
+
 .calendar-year-month-day div {
 	display: inline;
 	width: 100%;
 	height: 30px;
 }
 
-.calendar-year-month-day img {
-	float: right;
-	display: block;
+.calendar-year-month-day-num-events {
+	background: {$GET,tooltip_background};
+	color: {$GET,WB};
+	padding: 0 2px;
+	font-size: 0.8em;
 }
+
 
 /*
 =========================

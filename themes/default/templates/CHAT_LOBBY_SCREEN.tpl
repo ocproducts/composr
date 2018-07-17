@@ -84,7 +84,7 @@
 									{FRIENDS}
 								</div>
 
-								<div class="friend-actions">
+								<div class="friend-actions btn-row">
 									{+START,IF,{CAN_IM}}
 										<button class="btn btn-primary btn-scri admin--add-to-category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite-ongoing-im-button" type="button">{+START,INCLUDE,ICON}NAME=admin/add_to_category{+END} {!INVITE_CURRENT_IM}</button>
 										<button class="btn btn-primary btn-scri menu--social--chat--chat js-click-btn-im-start-ticked-people" type="button">{+START,INCLUDE,ICON}NAME=menu/social/chat/chat{+END} {!START_IM}</button>
