@@ -220,7 +220,7 @@ class Module_admin_staff
     {
         $GLOBALS['FORUM_DRIVER']->set_custom_field($id, 'role', $role);
 
-        log_it('EDIT_STAFF', strval($id));
+        log_it('EDIT_STAFF', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($id));
     }
 
     /**
@@ -237,7 +237,7 @@ class Module_admin_staff
         $sites .= substr(get_site_name(), 0, 200);
         $GLOBALS['FORUM_DRIVER']->set_custom_field($id, 'sites', $sites);
 
-        log_it('ADD_STAFF', strval($id));
+        log_it('ADD_STAFF', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($id));
     }
 
     /**
@@ -261,6 +261,6 @@ class Module_admin_staff
 
         $GLOBALS['FORUM_DRIVER']->set_custom_field($id, 'sites', $sites);
 
-        log_it('REMOVE_STAFF', strval($id));
+        log_it('REMOVE_STAFF', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($id));
     }
 }

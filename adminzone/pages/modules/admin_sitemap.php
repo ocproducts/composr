@@ -593,7 +593,7 @@ class Module_admin_sitemap
                     }
                 }
 
-                log_it('MOVE_PAGES', $page);
+                log_it('MOVE_PAGES', $page, $new_zone);
             }
         }
         if (is_null($moved_something)) {

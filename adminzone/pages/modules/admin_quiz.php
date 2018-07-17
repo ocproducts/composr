@@ -623,9 +623,12 @@ class Module_admin_quiz
             warn_exit(do_lang_tempcode('NOTHING_SELECTED'));
         }
 
+        $quiz_id = null;
         foreach ($to_delete as $result_id) {
             $entry_rows = $GLOBALS['SITE_DB']->query_select('quiz_entries', array('q_quiz', 'q_member'), array('id' => $result_id), '', 1);
             if (isset($entry_rows[0])) {
+                $quiz_id = $entry_rows[0]['q_quiz'];
+
                 $to_delete_sub = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('quiz_entries', array('id'), $entry_rows[0]));
                 foreach ($to_delete_sub as $_result_id) {
                     $GLOBALS['SITE_DB']->query_delete('quiz_entries', array('id' => $_result_id), '', 1);
@@ -634,7 +637,12 @@ class Module_admin_quiz
             }
         }
 
-        log_it('DELETE_QUIZ_RESULTS');
+        if ($quiz_id !== null) {
+            $quiz_title = $GLOBALS['SITE_DB']->query_select_value_if_there('quizzes', 'q_name', array('id' => $quiz_id));
+            if ($quiz_title !== null) {
+                log_it('DELETE_QUIZ_RESULTS', strval($quiz_id), get_translated_text($quiz_title));
+            }
+        }
 
         return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
     }

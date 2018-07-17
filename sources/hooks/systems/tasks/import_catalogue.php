@@ -48,7 +48,7 @@ class Hook_task_import_catalogue
         require_code('catalogues2');
         require_lang('catalogues');
 
-        log_it('IMPORT_CATALOGUE_ENTRIES');
+        log_it('IMPORT_CATALOGUE_ENTRIES', $catalogue_name);
 
         $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name));
 

@@ -7913,7 +7913,21 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EDIT_PAGE
         EDIT_POST
         EDIT_TICKET
+        EDIT_THIS_TICKET_TYPE
+        EDIT_THIS_CATALOGUE
+        EDIT_THIS_CATALOGUE_CATEGORY
+        EDIT_THIS_CATALOGUE_ENTRY
+        EDIT_THIS_NEWS_CATEGORY
+        EDIT_THIS_NEWS
+        EDIT_THIS_PERIODIC_NEWSLETTER
+        EDIT_THIS_IMAGE
+        EDIT_THIS_VIDEO
+        EDIT_THIS_DOWNLOAD_CATEGORY
+        EDIT_THIS_DOWNLOAD
+        EDIT_THIS_DOWNLOAD_LICENCE
         EDIT_TICKET_TYPE
+        EDIT_THIS_ZONE
+        EDIT_THIS_TEMPLATE
         EDIT_TOPIC
         EDIT_TOPIC_POLL
         EMAIL

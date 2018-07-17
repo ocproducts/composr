@@ -448,7 +448,7 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
         }
 
         $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_forum_id=' . strval($to) . ',t_pt_from=NULL,t_pt_to=NULL WHERE t_forum_id' . (is_null($from) ? ' IS NULL' : ('=' . strval($from))) . ' AND (' . $or_list . ')', null, null, false, true);
-        log_it('MOVE_TOPICS', do_lang('MULTIPLE'));
+        log_it('MOVE_TOPICS', do_lang('MULTIPLE'), strval($topics[0]));
 
         $post_count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT SUM(t_cache_num_posts) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE ' . $or_list, false, true);
 

@@ -51,9 +51,14 @@ function cns_edit_post_template($id, $title, $text, $forum_multi_code, $use_defa
  */
 function cns_delete_post_template($id)
 {
+    $title = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_post_templates', 't_title', array('id' => $id));
+    if ($title === null) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post_template'));
+    }
+
     $GLOBALS['FORUM_DB']->query_delete('f_post_templates', array('id' => $id), '', 1);
 
-    log_it('DELETE_POST_TEMPLATE', strval($id));
+    log_it('DELETE_POST_TEMPLATE', strval($id), $title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');

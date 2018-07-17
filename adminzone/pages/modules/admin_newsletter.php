@@ -1676,7 +1676,7 @@ class Module_admin_newsletter extends Standard_crud_module
             }
         }
 
-        log_it('NEWSLETTER_SEND');
+        log_it('NEWSLETTER_SEND', $subject);
 
         return actual_send_newsletter($message, $subject, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $template);
     }
