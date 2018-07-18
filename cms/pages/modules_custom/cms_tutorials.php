@@ -59,6 +59,8 @@ class Module_cms_tutorials extends Standard_crud_module
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        $this->edit_this_label = do_lang_tempcode('EDIT_THIS_TUTORIAL');
+
         require_code('tutorials');
 
         if (!module_installed('tutorials')) {

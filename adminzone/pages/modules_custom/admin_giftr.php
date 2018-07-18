@@ -186,6 +186,8 @@ class Module_admin_giftr extends Standard_crud_module
      */
     public function run_start($type)
     {
+        $this->edit_this_label = do_lang_tempcode('EDIT_THIS_GIFT');
+
         if (get_forum_type() != 'cns') {
             warn_exit(do_lang_tempcode('NO_CNS'));
         } else {

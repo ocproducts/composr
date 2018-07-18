@@ -1111,14 +1111,14 @@ class Module_cms_downloads_cat extends Standard_crud_module
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'add', 'cat' => $category_id), '_SELF'), // Add one
-            (is_null($id) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_downloads', array('downloads', $category_id)))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id), '_SELF'), // Edit this
+            (is_null($id) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_downloads', array('downloads', $category_id)))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id), '_SELF', do_lang_tempcode('EDIT_THIS_DOWNLOAD')), // Edit this
             has_privilege(get_member(), 'edit_own_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => 'edit'), '_SELF') : null, // Edit one
             is_null($id) ? null : array('downloads', array('type' => 'entry', 'id' => $id), get_module_zone('downloads')), // View this
             array('downloads', array('type' => 'browse'), get_module_zone('downloads')), // View archive
             null, // Add to category
             has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => 'add_category'), '_SELF') : null, // Add one category
             has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => 'edit_category'), '_SELF') : null, // Edit one category
-            has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => '_edit_category', 'id' => $category_id), '_SELF') : null, // Edit this category
+            has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => '_edit_category', 'id' => $category_id), '_SELF', do_lang_tempcode('EDIT_THIS_DOWNLOAD_CATEGORY')) : null, // Edit this category
             array('downloads', array('type' => 'browse', 'id' => ($category_id == db_get_first_id()) ? null : $category_id), get_module_zone('downloads')), // View this category
             /* SPECIALLY TYPED 'LINKS' */
             $special_links,

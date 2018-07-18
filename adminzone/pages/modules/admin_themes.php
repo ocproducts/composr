@@ -890,7 +890,7 @@ class Module_admin_themes
 
             case 'templates':
                 $add_one = null;
-                $edit_this = array('_SELF', array('type' => '_edit_templates', 'f0file' => str_replace('_custom/', '/', $file), 'theme' => $theme), '_SELF');
+                $edit_this = array('_SELF', array('type' => '_edit_templates', 'f0file' => str_replace('_custom/', '/', $file), 'theme' => $theme), '_SELF', do_lang_tempcode('EDIT_THIS_TEMPLATE'));
                 $edit_one = array('_SELF', array('type' => 'edit_templates', 'theme' => $theme), '_SELF');
                 $section_title = do_lang_tempcode('TEMPLATES');
                 $content_type = do_lang('TEMPLATE');

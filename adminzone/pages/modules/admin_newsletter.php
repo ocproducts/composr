@@ -143,6 +143,8 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $this->cache_level_counts = array();
 
+        $this->edit_this_label = do_lang_tempcode('EDIT_THIS_PERIODIC_NEWSLETTER');
+
         $this->extra_donext_entries = array(
             array('menu/site_meta/newsletters', array('_SELF', array('type' => 'new'), '_SELF'), do_lang('NEWSLETTER_SEND')),
             array('menu/adminzone/tools/newsletter/newsletter_from_changes', array('_SELF', array('type' => 'whatsnew'), '_SELF'), do_lang('WHATSNEW'), 'DOC_WHATSNEW'),

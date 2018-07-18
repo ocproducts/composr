@@ -165,6 +165,8 @@ class Module_admin_disastr extends Standard_crud_module
             cns_require_all_forum_stuff();
         }
 
+        $this->edit_this_label = do_lang_tempcode('EDIT_THIS_DISEASE');
+
         require_code('cns_groups_action');
         require_code('cns_forums_action');
         require_code('cns_groups_action2');

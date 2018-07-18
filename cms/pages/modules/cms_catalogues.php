@@ -939,7 +939,7 @@ class Module_cms_catalogues extends Standard_crud_module
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'add_entry', 'catalogue_name' => $c_name, 'category_id' => $category_id), '_SELF'), // Add one
-            (is_null($id) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues', array('catalogues_category', $category_id)))) ? null : array('_SELF', array('type' => '_edit_entry', 'id' => $id, 'catalogue_name' => $c_name), '_SELF'), // Edit this
+            (is_null($id) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues', array('catalogues_category', $category_id)))) ? null : array('_SELF', array('type' => '_edit_entry', 'id' => $id, 'catalogue_name' => $c_name), '_SELF', do_lang_tepmcode('EDIT_THIS_CATALOGUE_ENTRY')), // Edit this
             has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_entry', 'catalogue_name' => $c_name), '_SELF') : null, // Edit one
             is_null($id) ? null : array('catalogues', array('type' => 'entry', 'id' => $id), get_module_zone('catalogues')), // View this
             null, // View archive
@@ -1526,7 +1526,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
             null, // Add to category
             has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'add_category', 'catalogue_name' => $catalogue_name), '_SELF') : null, // Add one category
             has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_category', 'catalogue_name' => $catalogue_name), '_SELF') : null, // Edit one category
-            (is_null($id) || (!has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_catalogues'))) ? null : array('_SELF', array('type' => '_edit_category', 'id' => $id, 'catalogue_name' => $catalogue_name), '_SELF'), // Edit this category
+            (is_null($id) || (!has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_catalogues'))) ? null : array('_SELF', array('type' => '_edit_category', 'id' => $id, 'catalogue_name' => $catalogue_name), '_SELF', do_lang_tempcode('EDIT_THIS_CATALOGUE_CATEGORY')), // Edit this category
             is_null($id) ? null : array('catalogues', array('type' => 'category', 'id' => $id), get_module_zone('catalogues')), // View this category
 
             /* SPECIALLY TYPED 'LINKS' */
@@ -2224,7 +2224,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
             array(),
             array(
                 $is_custom_fields ? null : array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array('type' => 'add_catalogue'), '_SELF')),
-                is_null($name) ? null : array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $name), '_SELF')),
+                is_null($name) ? null : array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $name), '_SELF', do_lang_tempcode('EDIT_THIS_CATALOGUE'))),
                 $is_custom_fields ? null : array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array('type' => 'edit_catalogue'), '_SELF')),
                 (is_null($name) || $is_custom_fields) ? null : array('menu/rich_content/catalogues/catalogues', array('catalogues', $this->is_tree_catalogue ? array('type' => 'category', 'catalogue_name' => $name) : array('type' => 'index', 'id' => $name, 'tree' => $this->is_tree_catalogue ? 1 : 0), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE'))
             ),
