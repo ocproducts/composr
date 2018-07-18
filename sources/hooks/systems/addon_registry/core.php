@@ -1277,6 +1277,11 @@ class Hook_addon_registry_core
             'themes/default/images/icons/tool_buttons/version_desktop.svg',
             'themes/default/images/icons/tool_buttons/version_mobile.svg',
             'themes/default/images/icons/tool_buttons/sitemap.svg',
+
+            // Hero images
+            'themes/detault/images/bastei_bridge_3014467_1920.jpg',
+            'themes/detault/images/rustic_945421_1920.jpg',
+            'themes/detault/images/waterfall_1081997_1920.jpg',
         );
     }
 

@@ -1087,7 +1087,7 @@ header h1 {
 
 html.has-hero-carousel.is-not-scrolled header.with-white-navbar {
 	color: {$GET,WB};
-	background: rgba(0, 0, 0, 0.1);
+	background: rgba(0, 0, 0, 0.5);
 	border-bottom: 1px solid transparent;
 	transition: background-color 0.15s ease-in-out, border-bottom 0.15s ease-in-out;
 }
@@ -1096,7 +1096,7 @@ html.has-sticky-navbar {
 	padding-top: 70px;
 }
 
-html.has-no-hero-carousel header,
+html:not(.has-hero-carousel) header,
 html.is-scrolled header {
 	color: {$GET,a.link};
 	background-color: {$GET,WB};
@@ -1318,11 +1318,13 @@ header.with-seed-navbar .top-button:hover {
 	vertical-align: middle;
 }
 
-.breadcrumbs .sep::after, .associated-breadcrumbs .sep::after {
+.breadcrumbs .sep::after, 
+.associated-breadcrumbs .sep::after {
 	content: " \00A0\00BB " !important;
 	display: inline-block;
 	font-size: 0.9em;
 	opacity: 0.5;
+	vertical-align: text-top;
 }
 .breadcrumbs .sep:last-child::after, .associated-breadcrumbs .sep:last-child::after {
 	content: "" !important;
@@ -6588,12 +6590,9 @@ NB: Form buttons are wrapped in either:
 .cms-carousel-item {
 	position: relative;
 	display: none;
-	-ms-flex-align: center;
 	align-items: center;
 	width: 100%;
-	transition: -webkit-transform 0.6s ease;
 	transition: transform 0.6s ease;
-	transition: transform 0.6s ease, -webkit-transform 0.6s ease;
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
 	-webkit-perspective: 1000px;
@@ -6620,42 +6619,36 @@ NB: Form buttons are wrapped in either:
 
 .cms-carousel-item-next.cms-carousel-item-left,
 .cms-carousel-item-prev.cms-carousel-item-right {
-	-webkit-transform: translateX(0);
 	transform: translateX(0);
 }
 
-@supports ((-webkit-transform-style: preserve-3d) or (transform-style: preserve-3d)) {
+@supports (transform-style: preserve-3d) {
 	.cms-carousel-item-next.cms-carousel-item-left,
 	.cms-carousel-item-prev.cms-carousel-item-right {
-		-webkit-transform: translate3d(0, 0, 0);
 		transform: translate3d(0, 0, 0);
 	}
 }
 
 .cms-carousel-item-next,
 .active.cms-carousel-item-right {
-	-webkit-transform: translateX(100%);
 	transform: translateX(100%);
 }
 
-@supports ((-webkit-transform-style: preserve-3d) or (transform-style: preserve-3d)) {
+@supports (transform-style: preserve-3d) {
 	.cms-carousel-item-next,
 	.active.cms-carousel-item-right {
-		-webkit-transform: translate3d(100%, 0, 0);
 		transform: translate3d(100%, 0, 0);
 	}
 }
 
 .cms-carousel-item-prev,
 .active.cms-carousel-item-left {
-	-webkit-transform: translateX(-100%);
 	transform: translateX(-100%);
 }
 
-@supports ((-webkit-transform-style: preserve-3d) or (transform-style: preserve-3d)) {
+@supports (transform-style: preserve-3d) {
 	.cms-carousel-item-prev,
 	.active.cms-carousel-item-left {
-		-webkit-transform: translate3d(-100%, 0, 0);
 		transform: translate3d(-100%, 0, 0);
 	}
 }
@@ -6682,17 +6675,15 @@ NB: Form buttons are wrapped in either:
 .cms-carousel-fade .cms-carousel-item.active,
 .cms-carousel-fade .active.cms-carousel-item-left,
 .cms-carousel-fade .active.cms-carousel-item-prev {
-	-webkit-transform: translateX(0);
 	transform: translateX(0);
 }
 
-@supports ((-webkit-transform-style: preserve-3d) or (transform-style: preserve-3d)) {
+@supports (transform-style: preserve-3d) {
 	.cms-carousel-fade .cms-carousel-item-next,
 	.cms-carousel-fade .cms-carousel-item-prev,
 	.cms-carousel-fade .cms-carousel-item.active,
 	.cms-carousel-fade .active.cms-carousel-item-left,
 	.cms-carousel-fade .active.cms-carousel-item-prev {
-		-webkit-transform: translate3d(0, 0, 0);
 		transform: translate3d(0, 0, 0);
 	}
 }
@@ -6702,11 +6693,8 @@ NB: Form buttons are wrapped in either:
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	display: -ms-flexbox;
 	display: flex;
-	-ms-flex-align: center;
 	align-items: center;
-	-ms-flex-pack: center;
 	justify-content: center;
 	width: 15%;
 	color: #fff;
@@ -6871,20 +6859,60 @@ NB: Form buttons are wrapped in either:
 	/*transition: width 0.15s linear*/
 }
 
-.cms-carousel-home-hero {
+.cms-carousel-full-screen {
 	min-height: 100vmin;
+}
+
+.cms-carousel-home-hero {
 	background: #555;
 	overflow: hidden;
 	position: relative;
 	margin-top: -70px;
-	padding-top: 70px;
+	color: {$GET,WB};
+	/*padding-top: 70px;*/
 }
 
-/*
-=========================
-====Frame Interfaces=====
-=========================
-*/
+.cms-carousel-home-hero .cms-carousel-inner {
+	min-height: inherit;
+	overflow: hidden;
+}
+
+.cms-carousel-home-hero .cms-carousel-item {
+	min-height: inherit;
+	overflow: hidden;
+}
+
+.cms-carousel-home-hero .cms-carousel-item-inner {
+	width: 100%;
+	min-height: inherit;
+	overflow: hidden;
+	background: rgba(0, 0, 0, 0.3); 
+	padding-top: 190px; 
+	padding-bottom: 50px; 
+	text-align: center;
+}
+
+/*{+START,CSS_MODE,mobile}*/
+ .cms-carousel-home-hero .cms-carousel-item-inner {
+	 padding-top: 100px;
+	 padding-bottom: 0;
+ }
+/*{+END}*/
+
+.cms-carousel-home-hero .cms-carousel-contrast-box {
+	display: table;
+	margin: 0 auto;
+	padding: 15px 30px;
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: {$GET,border_radius};
+	margin-bottom: 40px;
+}
+
+	/*
+   =========================
+   ====Frame Interfaces=====
+   =========================
+   */
 
 .dynamic-iframe {
 	width: 100%;

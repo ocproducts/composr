@@ -1020,7 +1020,7 @@
         }
     };
     
-    // Implementation for [data-ride="carousel"]
+    // Implementation for [data-cms-carousel]
     // Port of Bootstrap 4 Carousel http://getbootstrap.com/docs/4.1/components/carousel/
     // Disables itself if Bootstrap version detected
     $cms.behaviors.rideCarousel = {
@@ -1030,7 +1030,7 @@
                 return;
             }
 
-            var carousels = $util.once($dom.$$$(context, '[data-ride="carousel"]'), 'behavior.rideCarousel');
+            var carousels = $util.once($dom.$$$(context, '[data-cms-carousel]'), 'behavior.rideCarousel');
 
             carousels.forEach(function (carousel) {
                 $dom.load.then(function () {
@@ -1049,11 +1049,12 @@
         var TOUCHEVENT_COMPAT_WAIT = 500; // Time for mouse compat events to fire after touch
 
         var Default = {
-            interval : 5000,
-            keyboard : true,
-            slide    : false,
-            pause    : 'hover',
-            wrap     : true
+            interval  : 5000,
+            keyboard  : true,
+            slide     : false,
+            pause     : 'hover',
+            wrap      : true,
+            animateHeight: false
         };
 
         var Direction = {
@@ -1091,8 +1092,7 @@
             ITEM        : '.cms-carousel-item',
             NEXT_PREV   : '.cms-carousel-item-next, .cms-carousel-item-prev',
             INDICATORS  : '.cms-carousel-indicators',
-            DATA_SLIDE  : '[data-slide], [data-slide-to]',
-            DATA_RIDE   : '[data-ride="carousel"]'
+            DATA_SLIDE  : '[data-slide], [data-slide-to]'
         };
 
         $dom.Carousel = Carousel;
@@ -1113,6 +1113,7 @@
             this._config             = this._getConfig(config);
             this._element            = element;
             this._indicatorsElement  = this._element.querySelector(Selector.INDICATORS);
+            this._scrollDownElement  = this._element.querySelector('.cms-carousel-scroll-button');
 
             this._addEventListeners();
             this._setProgressBar();
@@ -1168,7 +1169,7 @@
                     this._intervalStartedAt = null;
                 }
                 
-                if (this._config.interval && !this._isPaused) {
+                if (this._config.interval && !this._isPaused && (this._element.querySelectorAll('.cms-carousel-item').length > 1)) {
                     var self = this;
                     self._intervalStartedAt = Date.now();
                     this._interval = setInterval(function () {
@@ -1226,7 +1227,16 @@
             },
 
             _addEventListeners: function _addEventListeners() {
-                var self = this;
+                const self = this;
+                
+                if (self._scrollDownElement) {
+                    // Hide when carousel is larger than viewport or it's mobile mode
+                    $dom.toggle(self._scrollDownElement, (self._element.offsetHeight >= window.innerHeight) && $cms.isCssMode('desktop'));
+
+                    $dom.on(window, 'resize orientationchange', function () {
+                        $dom.toggle(self._scrollDownElement, (self._element.offsetHeight >= window.innerHeight) && $cms.isCssMode('desktop'));
+                    });
+                }
                 
                 $dom.on(this._element, 'click' + EVENT_KEY, '.cms-carousel-scroll-button', function () {
                     $dom.smoothScroll(self._element.nextElementSibling);
@@ -1339,6 +1349,8 @@
             },
 
             _slide: function _slide(direction, element) {
+                const self = this;
+                
                 var activeElement = this._element.querySelector(Selector.ACTIVE_ITEM);
                 var activeElementIndex = this._getItemIndex(activeElement);
                 var nextElement   = element || activeElement && this._getItemByDirection(direction, activeElement);
@@ -1397,7 +1409,15 @@
                     activeElement.classList.add(directionalClassName);
                     nextElement.classList.add(directionalClassName);
 
-                    var self = this;
+                    if (this._config.animateHeight && (activeElement.offsetHeight !== nextElement.offsetHeight)) {
+                        self._element.animate([
+                            { height: activeElement.offsetHeight + 'px' },
+                            { height: nextElement.offsetHeight + 'px' }
+                        ], {
+                            duration: this._config.animateHeight
+                        });
+                    }
+                    
                     $dom.one(activeElement, 'transitionend', function () {
                         nextElement.classList.remove(directionalClassName);
                         nextElement.classList.remove(orderClassName);
@@ -1427,7 +1447,7 @@
 
         Carousel._interface = function _interface(el, config) {
             var data = $dom.data(el, DATA_KEY);
-            var _config = $util.extend({}, Default, $dom.data(el));
+            var _config = $util.extend({}, Default, $dom.data(el, 'cmsCarousel'));
 
             if (typeof config === 'object') {
                 _config = $util.extend({}, _config, config);
