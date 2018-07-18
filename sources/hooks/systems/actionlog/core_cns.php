@@ -21,14 +21,14 @@
 /**
  * Hook class.
  */
-class Hook_actionlog_core_cns
+class Hook_actionlog_core_cns extends Hook_actionlog
 {
     /**
-     * Get details of actionlog entry types handled by this hook.
+     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
      *
      * @return array Map of handler data in standard format
      */
-    public function get_handlers()
+    protected function get_handlers()
     {
         if (get_forum_type() != 'cns') {
             return array();
@@ -185,8 +185,8 @@ class Hook_actionlog_core_cns
             'DELETE_MEMBER' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
-                'identifier_index' => null,
-                'written_context_index' => null,
+                'identifier_index' => 0,
+                'written_context_index' => 1,
                 'followup_page_links' => array(
                     'MEMBER_DIRECTORY' => 'TODO',
                 ),

@@ -696,7 +696,7 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
 
     $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => $page, 'm_resource_type' => '', 'm_resource_id' => $zone));
 
-    log_it('DELETE_PAGES', $page);
+    log_it('DELETE_PAGES', $zone . ':' . $page);
 
     require_code('sitemap_xml');
     notify_sitemap_node_delete($zone . ':' . $page);

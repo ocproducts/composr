@@ -21,14 +21,14 @@
 /**
  * Hook class.
  */
-class Hook_actionlog_chat
+class Hook_actionlog_chat extends Hook_actionlog
 {
     /**
-     * Get details of actionlog entry types handled by this hook.
+     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
      *
      * @return array Map of handler data in standard format
      */
-    public function get_handlers()
+    protected function get_handlers()
     {
         if (!addon_installed('chat')) {
             return array();
@@ -99,7 +99,7 @@ class Hook_actionlog_chat
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'chat',
                 'identifier_index' => 0,
-                'written_context_index' => null,
+                'written_context_index' => 1,
                 'followup_page_links' => array(
                     'CHATROOM' => 'TODO',
                     'EDIT_THIS_CHATROOM' => 'TODO',

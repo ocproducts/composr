@@ -21,14 +21,14 @@
 /**
  * Hook class.
  */
-class Hook_actionlog_health_check
+class Hook_actionlog_health_check extends Hook_actionlog
 {
     /**
-     * Get details of actionlog entry types handled by this hook.
+     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
      *
      * @return array Map of handler data in standard format
      */
-    public function get_handlers()
+    protected function get_handlers()
     {
         if (!addon_installed('composr_homesite_support_credits')) {
             return array();
@@ -39,8 +39,8 @@ class Hook_actionlog_health_check
         return array(
             'CHARGE_CUSTOMER' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
-                'cma_hook' => null,
-                'identifier_index' => null,
+                'cma_hook' => 'member',
+                'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_PROFILE' => 'TODO',

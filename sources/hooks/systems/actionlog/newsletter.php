@@ -21,14 +21,14 @@
 /**
  * Hook class.
  */
-class Hook_actionlog_newsletter
+class Hook_actionlog_newsletter extends Hook_actionlog
 {
     /**
-     * Get details of actionlog entry types handled by this hook.
+     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
      *
      * @return array Map of handler data in standard format
      */
-    public function get_handlers()
+    protected function get_handlers()
     {
         if (!addon_installed('newsletter')) {
             return array();
@@ -108,7 +108,7 @@ class Hook_actionlog_newsletter
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
-                'written_context_index' => null,
+                'written_context_index' => 0,
                 'followup_page_links' => array(
                     'MANAGE_NEWSLETTER' => 'TODO',
                 ),

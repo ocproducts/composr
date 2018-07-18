@@ -21,14 +21,14 @@
 /**
  * Hook class.
  */
-class Hook_actionlog_authors
+class Hook_actionlog_authors extends Hook_actionlog
 {
     /**
-     * Get details of actionlog entry types handled by this hook.
+     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
      *
      * @return array Map of handler data in standard format
      */
-    public function get_handlers()
+    protected function get_handlers()
     {
         if (!addon_installed('authors')) {
             return array();
@@ -61,7 +61,7 @@ class Hook_actionlog_authors
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'author',
                 'identifier_index' => 1,
-                'written_context_index' => 1,
+                'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_AUTHOR' => 'TODO',
                     'MERGE_AUTHORS' => 'TODO',

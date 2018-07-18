@@ -707,7 +707,7 @@ class Module_cms_chat
 
             decache('side_shoutbox');
 
-            log_it('DELETE_ALL_MESSAGES', strval($room_id));
+            log_it('DELETE_ALL_MESSAGES', strval($room_id), $row['room_name']);
 
             // Redirect
             $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');

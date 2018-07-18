@@ -23,10 +23,87 @@
  *
  * @ignore
  */
-function init__global2()
+function init__actionlog()
 {
     define('ACTIONLOG_FLAGS_NONE', 0);
     define('ACTIONLOG_FLAG__USER_ACTION', 1); // Used when we use the action log for non-admin actions (as we have no dedicated log for something)
+}
+
+abstract class Hook_actionlog
+{
+    /**
+     * Get extended action log details if the action log entry type is handled by this hook and we have them.
+     *
+     * @param  array Action log row
+     * @return ?array Map of extended data in standard format (null: not available from this hook) (false: hook has responsibility but has failed)
+     */
+    public function get_extended_actionlog_data($actionlog_row)
+    {
+        $handlers = $this->get_handlers();
+
+        $type = $actionlog_row['the_type'];
+
+        if (array_key_exists($type, $handlers)) {
+            $handler_data = $handlers[$type];
+
+            $identifier = null;
+            if ($handler_data['identifier_index'] === 0) {
+                $identifier = $actionlog_row['param_a'];
+            } elseif ($handler_data['identifier_index'] === 1) {
+                $identifier = $actionlog_row['param_b'];
+            }
+            if ($identifier === '') {
+                // Fail (note null does not fail, it just means we have no identifier which is fine)
+                return false
+            }
+
+            $written_context = null;
+            if ($handler_data['written_context_index'] === 0) {
+                $written_context = $actionlog_row['param_a'];
+            } elseif ($handler_data['written_context_index'] === 1) {
+                $written_context = $actionlog_row['param_b'];
+            }
+            if ($written_context === null && $identifier !== null && $handler_data['cma_hook'] !== null) {
+                // Work out from CMA hook as we don't have it directly in the action log entry
+                require_code('content');
+                list($written_context) = content_get_details($handler_data['cma_hook'], $content_id);
+            }
+            if ($written_context === null || $written_context === '') {
+                // Fail
+                return false;
+            }
+
+            $followup_page_links = array();
+            $_followup_page_links = $handler_data['followup_page_links'];
+            foreach ($_followup_page_links as $i => &$page_link) {
+                if (strpos($page_link, '_ID_') !== false) {
+                    if ($identifier !== null) {
+                        $page_link = str_replace('_ID_', $id, $page_link);
+                        $followup_page_links[] = $page_link;
+                    }
+                } else {
+                    $followup_page_links[] = $page_link;
+                }
+            }
+
+            return array(
+                'written_context' => $written_context,
+                'followup_page_links' => $followup_page_links,
+            );
+        }
+
+        return null;
+    }
+
+    /**
+     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     *
+     * @return array Map of handler data in standard format
+     */
+    protected function get_handlers()
+    {
+        return array();
+    }
 }
 
 /**

@@ -4155,6 +4155,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EDIT_SELECTED_FIELD
         EDIT_STAFF
         EDIT_TEMPLATES
+        EDIT_TEMPLATE
         EDIT_TEXT
         EDIT_THEME
         EDIT_THEME_IMAGE

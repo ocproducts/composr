@@ -21,14 +21,14 @@
 /**
  * Hook class.
  */
-class Hook_actionlog_backups
+class Hook_actionlog_backups extends Hook_actionlog
 {
     /**
-     * Get details of actionlog entry types handled by this hook.
+     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
      *
      * @return array Map of handler data in standard format
      */
-    public function get_handlers()
+    protected function get_handlers()
     {
         if (!addon_installed('backups')) {
             return array();
@@ -37,7 +37,7 @@ class Hook_actionlog_backups
         require_lang('backups');
 
         return array(
-            'MAKE_BACKUP' => array(
+            'BACKUP' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,

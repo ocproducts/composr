@@ -21,14 +21,14 @@
 /**
  * Hook class.
  */
-class Hook_actionlog_core
+class Hook_actionlog_core extends Hook_actionlog
 {
     /**
-     * Get details of actionlog entry types handled by this hook.
+     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
      *
      * @return array Map of handler data in standard format
      */
-    public function get_handlers()
+    protected function get_handlers()
     {
         require_lang('zones');
         require_lang('addons');
@@ -97,7 +97,7 @@ class Hook_actionlog_core
             'DELETE_PAGES' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
-                'identifier_index' => null,
+                'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'COMCODE_PAGE_ADD' => 'TODO',
@@ -106,7 +106,7 @@ class Hook_actionlog_core
             'EXPORT_ADDON' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
-                'identifier_index' => null,
+                'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'ADDONS' => 'TODO',
@@ -115,7 +115,7 @@ class Hook_actionlog_core
             'INSTALL_ADDON' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
-                'identifier_index' => null,
+                'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'ADDONS' => 'TODO',
@@ -124,7 +124,7 @@ class Hook_actionlog_core
             'UNINSTALL_ADDON' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
-                'identifier_index' => null,
+                'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'ADDONS' => 'TODO',
@@ -133,8 +133,8 @@ class Hook_actionlog_core
             'CHECK_LIST_ADD' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
-                'identifier_index' => null,
-                'written_context_index' => null,
+                'identifier_index' => 0,
+                'written_context_index' => 1,
                 'followup_page_links' => array(
                     'DASHBOARD' => 'TODO',
                 ),
@@ -142,8 +142,8 @@ class Hook_actionlog_core
             'CHECK_LIST_DELETE' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
-                'identifier_index' => null,
-                'written_context_index' => null,
+                'identifier_index' => 0,
+                'written_context_index' => 1,
                 'followup_page_links' => array(
                     'DASHBOARD' => 'TODO',
                 ),
@@ -151,8 +151,8 @@ class Hook_actionlog_core
             'CHECK_LIST_MARK_DONE' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
-                'identifier_index' => null,
-                'written_context_index' => null,
+                'identifier_index' => 0,
+                'written_context_index' => 1,
                 'followup_page_links' => array(
                     'DASHBOARD' => 'TODO',
                 ),
@@ -160,8 +160,8 @@ class Hook_actionlog_core
             'CHECK_LIST_MARK_UNDONE' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
-                'identifier_index' => null,
-                'written_context_index' => null,
+                'identifier_index' => 0,
+                'written_context_index' => 1,
                 'followup_page_links' => array(
                     'DASHBOARD' => 'TODO',
                 ),
@@ -205,7 +205,7 @@ class Hook_actionlog_core
             'CONFIGURATION' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
-                'identifier_index' => null,
+                'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'OPTION_CATEGORY' => 'TODO',
@@ -260,7 +260,7 @@ class Hook_actionlog_core
             'ADD_MENU_ITEM' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'menu_item',
-                'identifier_index' => null,
+                'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
                     'EDIT_MENU' => 'TODO',
@@ -269,7 +269,7 @@ class Hook_actionlog_core
             'EDIT_MENU_ITEM' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'menu_item',
-                'identifier_index' => null,
+                'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
                     'EDIT_MENU' => 'TODO',
@@ -278,7 +278,7 @@ class Hook_actionlog_core
             'DELETE_MENU_ITEM' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'menu_item',
-                'identifier_index' => null,
+                'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
                     'EDIT_MENU' => 'TODO',
@@ -356,7 +356,7 @@ class Hook_actionlog_core
             'RENAME_THEME' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
-                'identifier_index' => null,
+                'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'MANAGE_THEMES' => 'TODO',
@@ -372,10 +372,10 @@ class Hook_actionlog_core
                     'MANAGE_THEMES' => 'TODO',
                 ),
             ),
-            'EDIT_TEMPLATES' => array(
+            'EDIT_TEMPLATE' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
-                'identifier_index' => 0,
+                'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'EDIT_TEMPLATE' => 'TODO',

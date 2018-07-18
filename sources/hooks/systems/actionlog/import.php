@@ -21,14 +21,14 @@
 /**
  * Hook class.
  */
-class Hook_actionlog_import
+class Hook_actionlog_import extends Hook_actionlog
 {
     /**
-     * Get details of actionlog entry types handled by this hook.
+     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
      *
      * @return array Map of handler data in standard format
      */
-    public function get_handlers()
+    protected function get_handlers()
     {
         if (!addon_installed('import')) {
             return array();
