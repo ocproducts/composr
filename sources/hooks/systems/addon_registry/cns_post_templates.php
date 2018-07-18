@@ -108,6 +108,7 @@ class Hook_addon_registry_cns_post_templates
             'themes/default/templates/CNS_POST_TEMPLATE_SELECT.tpl',
             'adminzone/pages/modules/admin_cns_post_templates.php',
             'lang/EN/cns_post_templates.ini',
+            'sources/hooks/systems/actionlog/cns_post_templates.php',
         );
     }
 

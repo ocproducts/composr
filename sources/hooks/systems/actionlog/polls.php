@@ -38,6 +38,7 @@ class Hook_actionlog_polls
 
         return array(
             'ADD_POLL' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'poll',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -48,6 +49,7 @@ class Hook_actionlog_polls
                 ),
             ),
             'EDIT_POLL' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'poll',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -58,6 +60,7 @@ class Hook_actionlog_polls
                 ),
             ),
             'CHOOSE_POLL' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'poll',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -68,6 +71,7 @@ class Hook_actionlog_polls
                 ),
             ),
             'DELETE_POLL' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'poll',
                 'identifier_index' => 0,
                 'written_context_index' => 1,

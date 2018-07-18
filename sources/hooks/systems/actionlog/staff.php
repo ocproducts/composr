@@ -38,6 +38,7 @@ class Hook_actionlog_staff
 
         return array(
             'ADD_STAFF' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -48,6 +49,7 @@ class Hook_actionlog_staff
                 ),
             ),
             'EDIT_STAFF' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -58,6 +60,7 @@ class Hook_actionlog_staff
                 ),
             ),
             'REMOVE_STAFF' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,

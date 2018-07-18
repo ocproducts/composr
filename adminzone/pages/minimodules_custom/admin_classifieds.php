@@ -71,6 +71,8 @@ if (count($_POST) != 0) {
         }
     }
 
+    log_it('CLASSIFIEDS_PRICING');
+
     attach_message(do_lang_tempcode('SUCCESS', 'inform'));
 }
 

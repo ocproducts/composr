@@ -167,6 +167,7 @@ class Hook_addon_registry_iotds
             'site/pages/modules_custom/iotds.php',
             'uploads/iotds_addon/index.html',
             'uploads/iotds_addon_thumbs/index.html',
+            'sources_custom/hooks/systems/actionlog/iotds.php',
         );
     }
 

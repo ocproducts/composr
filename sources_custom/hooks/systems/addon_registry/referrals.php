@@ -158,6 +158,7 @@ Allows people to specify who referred them when they join your site or other con
             'adminzone/pages/comcode_custom/EN/referrals.txt',
             'adminzone/pages/modules_custom/admin_referrals.php',
             'sources_custom/hooks/systems/startup/referrals.php',
+            'sources_custom/hooks/systems/actionlog/referrals.php',
         );
     }
 

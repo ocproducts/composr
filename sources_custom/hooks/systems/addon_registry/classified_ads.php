@@ -176,6 +176,7 @@ This addon does not itself handle the transaction to purchase what is being adve
             'themes/default/templates_custom/CLASSIFIEDS_PRICING_SCREEN.tpl',
             'themes/default/templates_custom/CLASSIFIEDS.tpl',
             'sources_custom/hooks/systems/config/max_classified_listings_per_page.php',
+            'sources_custom/hooks/systems/actionlog/classified_ads.php',
         );
     }
 }

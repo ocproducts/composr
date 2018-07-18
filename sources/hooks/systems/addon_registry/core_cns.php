@@ -430,6 +430,7 @@ class Hook_addon_registry_core_cns
             'themes/default/css/cns_admin.css',
             'themes/default/css/cns_header.css',
             'themes/default/css/cns_footer.css',
+            'sources/hooks/systems/actionlog/core_cns.php',
 
             // Files for post map functionality
             'themes/default/templates/CNS_POST_MAP.tpl',

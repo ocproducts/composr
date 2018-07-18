@@ -889,6 +889,8 @@ class Virtual_shell
 
         $this->fs = object_factory('commandr_fs');
 
+        log_it('COMMANDR_COMMAND', $this->output[STREAM_STDCOMMAND]);
+
         // Start parsing with the command
         $this->_extract_command();
         if (trim($this->parsed_input[SECTION_COMMAND]) == '') {

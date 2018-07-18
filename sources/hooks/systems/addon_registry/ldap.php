@@ -121,6 +121,7 @@ class Hook_addon_registry_ldap
             'adminzone/pages/modules/admin_cns_ldap.php',
             'sources/cns_ldap.php',
             'sources/hooks/systems/page_groupings/ldap.php',
+            'sources/hooks/systems/actionlog/ldap.php',
         );
     }
 

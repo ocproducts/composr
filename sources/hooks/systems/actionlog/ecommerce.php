@@ -38,6 +38,7 @@ class Hook_actionlog_ecommerce
 
         return array(
             'ADD_USERGROUP_SUBSCRIPTION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'usergroup_subscription',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -47,6 +48,7 @@ class Hook_actionlog_ecommerce
                 ),
             ),
             'EDIT_USERGROUP_SUBSCRIPTION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'usergroup_subscription',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -56,6 +58,7 @@ class Hook_actionlog_ecommerce
                 ),
             ),
             'DELETE_USERGROUP_SUBSCRIPTION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'usergroup_subscription',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -64,11 +67,21 @@ class Hook_actionlog_ecommerce
                 ),
             ),
             'CREATE_INVOICE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_PROFILE' => 'TODO',
+                    'CREATE_INVOICE' => 'TODO',
+                ),
+            ),
+            'DELETE_INVOICE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => 'member',
+                'identifier_index' => null,
+                'written_context_index' => null,
+                'followup_page_links' => array(
                     'CREATE_INVOICE' => 'TODO',
                 ),
             ),

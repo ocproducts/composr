@@ -335,6 +335,8 @@ class Module_admin_giftr extends Standard_crud_module
 
         $id = $GLOBALS['SITE_DB']->query_insert('giftr', array('name' => $name, 'image' => $url, 'price' => $price, 'enabled' => $enabled, 'category' => $category), true);
 
+        log_it('ADD_GIFT', strval($id), $name);
+
         return strval($id);
     }
 
@@ -363,6 +365,8 @@ class Module_admin_giftr extends Standard_crud_module
         }
         $GLOBALS['SITE_DB']->query_update('giftr', $map, array('id' => intval($id)), '', 1);
 
+        log_it('EDIT_GIFT', $id, $name);
+
         return null;
     }
 
@@ -373,9 +377,16 @@ class Module_admin_giftr extends Standard_crud_module
      */
     public function delete_actualisation($id)
     {
+        $name = $GLOBALS['SITE_DB']->query_select_value_if_there('giftr', 'name', array('id' => intval($id)));
+        if ($name === null) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+
         require_code('files2');
         delete_upload('uploads/giftr_addon', 'giftr', 'image', 'id', intval($id));
 
         $GLOBALS['SITE_DB']->query_delete('giftr', array('id' => intval($id)), '', 1);
+
+        log_it('DELETR_GIFT', $id, $name);
     }
 }

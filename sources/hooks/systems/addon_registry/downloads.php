@@ -180,6 +180,7 @@ class Hook_addon_registry_downloads
             'sources/hooks/systems/tasks/index_download.php',
             'site/download_gateway.php',
             'themes/default/templates/DOWNLOAD_GATEWAY_SCREEN.tpl',
+            'sources/hooks/systems/actionlog/downloads.php',
         );
     }
 

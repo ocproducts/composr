@@ -372,6 +372,8 @@ class Module_admin_cns_members
             content_review_set('member', strval($id));
         }
 
+        log_it('ADD_MEMBER', strval($id), $username);
+
         $special_links = array();
 
         if (addon_installed('galleries')) {
@@ -737,6 +739,8 @@ class Module_admin_cns_members
         $usergroups = isset($_POST['usergroups']) ? $_POST['usergroups'] : array();
         $order_by = post_param_string('order_by');
 
+        log_it('DOWNLOAD_MEMBER_CSV');
+
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('DOWNLOAD_MEMBER_CSV'), $this->title, 'download_member_csv', array($filter_by_allow == 1, $extension, $preset, $fields_to_use, $usergroups, $order_by));
     }
@@ -801,6 +805,8 @@ class Module_admin_cns_members
         } else {
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
         }
+
+        log_it('IMPORT_MEMBER_CSV');
 
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('IMPORT_MEMBER_CSV'), $this->title, 'import_member_csv', array($default_password, $use_temporary_passwords, $target_path));

@@ -350,6 +350,8 @@ class Module_admin_backup
         require_code('tasks');
         $ret = call_user_func_array__long_task(do_lang('BACKUP'), $this->title, 'make_backup', array($file, $b_type, $max_size));
 
+        log_it('BACKUP', $file, $b_type);
+
         $url = build_url(array('page' => '_SELF'), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('BACKUP_INFO_1', escape_html($file . (function_exists('gzopen') ? '.tar.gz' : '.tar'))));
     }
@@ -385,6 +387,8 @@ class Module_admin_backup
             warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path)));
         }
         sync_file($path);
+
+        log_it('DELETE_BACKUP', $file);
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');

@@ -429,7 +429,7 @@ class CMSModerationWrite
             $GLOBALS['FORUM_DB']->query_update('f_members', array('m_on_probation_until' => $expires), array('id' => $user_id), '', 1);
 
             require_code('cns_general_action2');
-            cns_mod_log_it('PUT_ON_PROBATION', strval($user_id), $username, $reason);
+            cns_mod_log_it('START_PROBATION', strval($user_id), $username, $reason);
         }
 
         return true;

@@ -38,6 +38,7 @@ class Hook_actionlog_wiki
 
         return array(
             'WIKI_ADD_PAGE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'wiki_page',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -46,6 +47,7 @@ class Hook_actionlog_wiki
                 ),
             ),
             'WIKI_EDIT_PAGE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'wiki_page',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -54,6 +56,7 @@ class Hook_actionlog_wiki
                 ),
             ),
             'WIKI_DELETE_PAGE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'wiki_page',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -62,6 +65,7 @@ class Hook_actionlog_wiki
                 ),
             ),
             'WIKI_EDIT_TREE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'wiki_page',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -70,6 +74,7 @@ class Hook_actionlog_wiki
                 ),
             ),
             'WIKI_MAKE_POST' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'wiki_post',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -79,6 +84,7 @@ class Hook_actionlog_wiki
                 ),
             ),
             'WIKI_EDIT_POST' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'wiki_post',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -88,6 +94,7 @@ class Hook_actionlog_wiki
                 ),
             ),
             'WIKI_DELETE_POST' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'wiki_post',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -96,6 +103,7 @@ class Hook_actionlog_wiki
                 ),
             ),
             'MERGE_WIKI_POSTS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'wiki_page',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -104,6 +112,7 @@ class Hook_actionlog_wiki
                 ),
             ),
             'WIKI_MOVE_POST' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'wiki_post',
                 'identifier_index' => 0,
                 'written_context_index' => null,

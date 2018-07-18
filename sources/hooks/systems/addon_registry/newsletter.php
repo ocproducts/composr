@@ -155,6 +155,7 @@ class Hook_addon_registry_newsletter
             'themes/default/templates/PERIODIC_NEWSLETTER_REMOVE.tpl',
             'sources/hooks/systems/tasks/send_newsletter.php',
             'data/incoming_bounced_email.php',
+            'sources/hooks/systems/actionlog/newsletter.php',
         );
     }
 

@@ -38,6 +38,7 @@ class Hook_actionlog_tickets
 
         return array(
             'ADD_TICKET_TYPE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'ticket_type',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -47,6 +48,7 @@ class Hook_actionlog_tickets
                 ),
             ),
             'EDIT_TICKET_TYPE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'ticket_type',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -56,6 +58,7 @@ class Hook_actionlog_tickets
                 ),
             ),
             'DELETE_TICKET_TYPE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'ticket_type',
                 'identifier_index' => 0,
                 'written_context_index' => 1,

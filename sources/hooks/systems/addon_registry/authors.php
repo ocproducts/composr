@@ -121,6 +121,7 @@ class Hook_addon_registry_authors
             'sources/hooks/systems/content_meta_aware/author.php',
             'sources/hooks/systems/commandr_fs/authors.php',
             'sources/hooks/systems/sitemap/author.php',
+            'sources/hooks/systems/actionlog/authors.php',
         );
     }
 

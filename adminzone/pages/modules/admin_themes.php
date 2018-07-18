@@ -855,6 +855,8 @@ class Module_admin_themes
             }
 
             $this->save_theme_changes($to);
+
+            log_it('EDIT_THEME', $to, post_param_string('title'));
         }
 
         return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'), $to, '', 'theme', $to);

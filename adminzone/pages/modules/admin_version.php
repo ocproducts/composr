@@ -35,7 +35,7 @@ class Module_admin_version
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 17;
+        $info['version'] = 18;
         $info['locked'] = true;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -991,6 +991,10 @@ class Module_admin_version
                 'usage_tally' => 'INTEGER',
             ));
             $GLOBALS['SITE_DB']->create_index('post_tokens', 'generation_time', array('generation_time'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 18)) {
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'actionlogs SET param_a=param_b,param_b=param_a WHERE ' . db_string_equal_to('the_type', 'UNSILENCE_TOPIC') . ' OR ' . db_string_equal_to('the_type', 'UNSILENCE_FORUM'));
         }
     }
 

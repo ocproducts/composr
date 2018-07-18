@@ -338,6 +338,7 @@ class Hook_addon_registry_cns_forum
             'sources/hooks/systems/tasks/cns_recache.php',
             'sources/hooks/systems/tasks/cns_topics_recache.php',
             'sources/hooks/systems/tasks/notify_topics_moved.php',
+            'sources/hooks/systems/actionlog/cns_forum.php',
         );
     }
 

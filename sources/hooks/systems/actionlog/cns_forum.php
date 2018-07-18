@@ -42,6 +42,7 @@ class Hook_actionlog_cns_forum
 
         return array(
             'ADD_FORUM_GROUPING' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'forum_grouping',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -52,6 +53,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'EDIT_FORUM_GROUPING' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'forum_grouping',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -62,6 +64,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'DELETE_FORUM_GROUPING' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'forum_grouping',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -71,6 +74,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'ADD_FORUM' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'forum',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -81,6 +85,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'EDIT_FORUM' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'forum',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -91,6 +96,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'DELETE_FORUM' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'forum',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -99,6 +105,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'EDIT_TOPIC' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'topic',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -107,6 +114,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'EDIT_TOPIC_POLL' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'topic',
                 'identifier_index' => null,
                 'written_context_index' => 1,
@@ -115,6 +123,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'DELETE_TOPIC' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'topic',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -123,6 +132,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'DELETE_TOPIC_POLL' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => 1
@@ -131,6 +141,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'MOVE_TOPICS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'forum',
                 'identifier_index' => 1,
                 'written_context_index' => null,
@@ -139,6 +150,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'EDIT_POST' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'post',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -148,6 +160,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'DELETE_POST' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'topic',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -156,6 +169,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'DELETE_POSTS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'topic',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -164,6 +178,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'VALIDATE_POST' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'post',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -173,6 +188,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'UNVALIDATE_POST' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'post',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -182,6 +198,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'MOVE_POSTS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'topic',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -190,6 +207,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'MAKE_ANONYMOUS_POST' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE | ACTIONLOG_FLAG__USER_ACTION,
                 'cma_hook' => 'post',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -199,6 +217,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'SILENCE_FROM_FORUM' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -208,6 +227,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'UNSILENCE_FORUM' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -217,6 +237,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'SILENCE_FROM_TOPIC' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -226,6 +247,7 @@ class Hook_actionlog_cns_forum
                 ),
             ),
             'UNSILENCE_TOPIC' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => null,

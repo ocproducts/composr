@@ -348,6 +348,8 @@ class Module_admin_newsletter extends Standard_crud_module
             $action_title = do_lang('IMPORT_NEWSLETTER_SUBSCRIBERS');
         }
 
+        log_it('IMPORT_NEWSLETTER_SUBSCRIBERS');
+
         require_code('tasks');
         return call_user_func_array__long_task($action_title, $this->title, 'import_newsletter_subscribers', array($_language, $newsletter_id, $level, $target_path));
     }

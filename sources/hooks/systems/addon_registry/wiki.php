@@ -152,6 +152,7 @@ class Hook_addon_registry_wiki
             'sources/hooks/systems/rss/wiki.php',
             'sources/hooks/systems/module_permissions/wiki_page.php',
             'sources/hooks/systems/notifications/wiki.php',
+            'sources/hooks/systems/actionlog/wiki.php',
         );
     }
 

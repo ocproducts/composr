@@ -102,6 +102,7 @@ class Hook_addon_registry_match_key_permissions
             'themes/default/images/icons/48x48/menu/adminzone/security/permissions/match_keys.png',
             'sources/hooks/systems/commandr_fs_extended_config/match_key_messages.php',
             'sources/hooks/systems/addon_registry/match_key_permissions.php',
+            'sources/hooks/systems/actionlog/match_key_permissions.php',
         );
     }
 }

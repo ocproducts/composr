@@ -38,6 +38,7 @@ class Hook_actionlog_booking
 
         return array(
             'ADD_BOOKABLE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -47,6 +48,7 @@ class Hook_actionlog_booking
                 ),
             ),
             'EDIT_BOOKABLE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -56,6 +58,7 @@ class Hook_actionlog_booking
                 ),
             ),
             'DELETE_BOOKABLE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -64,6 +67,7 @@ class Hook_actionlog_booking
                 ),
             ),
             'ADD_BOOKABLE_BLACKED' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -73,6 +77,7 @@ class Hook_actionlog_booking
                 ),
             ),
             'EDIT_BOOKABLE_BLACKED' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -82,6 +87,7 @@ class Hook_actionlog_booking
                 ),
             ),
             'DELETE_BOOKABLE_BLACKED' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -90,6 +96,7 @@ class Hook_actionlog_booking
                 ),
             ),
             'ADD_BOOKABLE_SUPPLEMENT' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -99,6 +106,7 @@ class Hook_actionlog_booking
                 ),
             ),
             'EDIT_BOOKABLE_SUPPLEMENT' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -108,6 +116,7 @@ class Hook_actionlog_booking
                 ),
             ),
             'DELETE_BOOKABLE_SUPPLEMENT' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,

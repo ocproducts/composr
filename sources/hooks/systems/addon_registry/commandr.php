@@ -233,6 +233,7 @@ class Hook_addon_registry_commandr
             'sources/hooks/systems/snippets/commandr.php',
             'sources/commandr.php',
             'sources/commandr_fs.php',
+            'sources/hooks/systems/actionlog/commandr.php',
         );
     }
 

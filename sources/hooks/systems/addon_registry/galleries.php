@@ -248,6 +248,7 @@ class Hook_addon_registry_galleries
             'sources/hooks/systems/config/manual_gallery_parent.php',
             'sources/hooks/systems/config/enable_ecards.php',
             'sources/hooks/systems/tasks/download_gallery.php',
+            'sources/hooks/systems/actionlog/galleries.php',
         );
     }
 

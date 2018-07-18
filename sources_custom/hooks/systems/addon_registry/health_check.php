@@ -333,6 +333,7 @@ The Composr ecosystem also has:
             'data_custom/health_check.php',
             'adminzone/pages/modules_custom/admin_health_check.php',
             'sources_custom/hooks/systems/page_groupings/health_check.php',
+            'sources_custom/hooks/systems/actionlog/health_check.php',
         );
     }
 }

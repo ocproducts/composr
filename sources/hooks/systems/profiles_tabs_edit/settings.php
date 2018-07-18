@@ -117,15 +117,16 @@ class Hook_profiles_tabs_edit_settings
                 if (has_privilege($member_id_viewing, 'probate_members')) {
                     $on_probation_until = post_param_date('on_probation_until');
 
+                    require_code('cns_general_action2');
                     $current__on_probation_until = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_on_probation_until');
                     if (((is_null($on_probation_until)) || ($on_probation_until <= time())) && ($current__on_probation_until > time())) {
-                        log_it('STOP_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
+                        cns_mod_log_it('STOP_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
                     } elseif ((!is_null($on_probation_until)) && ($on_probation_until > time()) && ($current__on_probation_until <= time())) {
-                        log_it('START_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
+                        cns_mod_log_it('START_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
                     } elseif ((!is_null($on_probation_until)) && ($current__on_probation_until > $on_probation_until) && ($on_probation_until > time()) && ($current__on_probation_until > time())) {
-                        log_it('REDUCE_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
+                        cns_mod_log_it('REDUCE_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
                     } elseif ((!is_null($on_probation_until)) && ($current__on_probation_until < $on_probation_until) && ($on_probation_until > time()) && ($current__on_probation_until > time())) {
-                        log_it('EXTEND_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
+                        cns_mod_log_it('EXTEND_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
                     }
                 } else {
                     $on_probation_until = null;

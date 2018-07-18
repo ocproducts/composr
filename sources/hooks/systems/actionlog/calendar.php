@@ -38,6 +38,7 @@ class Hook_actionlog_calendar
 
         return array(
             'ADD_EVENT_TYPE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'calendar_type',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -48,6 +49,7 @@ class Hook_actionlog_calendar
                 ),
             ),
             'EDIT_EVENT_TYPE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'calendar_type',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -58,6 +60,7 @@ class Hook_actionlog_calendar
                 ),
             ),
             'DELETE_EVENT_TYPE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'calendar_type',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -66,6 +69,7 @@ class Hook_actionlog_calendar
                 ),
             ),
             'ADD_CALENDAR_EVENT' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'event',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -76,6 +80,7 @@ class Hook_actionlog_calendar
                 ),
             ),
             'EDIT_CALENDAR_EVENT' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'event',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -86,6 +91,7 @@ class Hook_actionlog_calendar
                 ),
             ),
             'DELETE_CALENDAR_EVENT' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'event',
                 'identifier_index' => 0,
                 'written_context_index' => 1,

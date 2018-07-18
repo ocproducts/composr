@@ -188,6 +188,7 @@ When creating new gifts please only use images which are free to use, we suggest
             'data_custom/images/giftr/index.html',
             'themes/default/templates_custom/BLOCK_MAIN_BOTTOM_BAR.tpl',
             'themes/default/templates_custom/CNS_USER_MEMBER.tpl',
+            'sources_custom/hooks/systems/actionlog/giftr.php',
         );
     }
 }

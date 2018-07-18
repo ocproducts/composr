@@ -842,6 +842,8 @@ class Module_admin_customers
             'reason' => post_param_string('reason', ''),
         ));
 
+        log_it('CHARGE_CUSTOMER', strval($member_id), strval($amount));
+
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'browse', 'username' => $username), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));

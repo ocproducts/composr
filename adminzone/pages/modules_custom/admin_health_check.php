@@ -90,7 +90,7 @@ class Module_admin_health_check
     }
 
     /**
-     * Show a log of referrals.
+     * Health check UI / Run the health check.
      *
      * @return Tempcode The UI
      */
@@ -122,6 +122,8 @@ class Module_admin_health_check
             $categories = run_health_check($has_fails, $sections_to_run, $passes, $skips, $manual_checks, $automatic_repair);
 
             $results = do_template('HEALTH_CHECK_RESULTS', array('_GUID' => 'f428b63eacc19bdd041d2b1a1d2f1155', 'CATEGORIES' => $categories));
+
+            log_it('HEALTH_CHECK');
         } else {
             $results = null;
         }

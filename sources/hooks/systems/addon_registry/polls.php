@@ -132,6 +132,7 @@ class Hook_addon_registry_polls
             'sources/hooks/systems/trackback/polls.php',
             'sources/polls.php',
             'sources/blocks/main_poll.php',
+            'sources/hooks/systems/actionlog/polls.php',
         );
     }
 

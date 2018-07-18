@@ -42,6 +42,7 @@ class Hook_actionlog_cns_cpfs
 
         return array(
             'ADD_CUSTOM_PROFILE_FIELD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'cpf',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -51,6 +52,7 @@ class Hook_actionlog_cns_cpfs
                 ),
             ),
             'EDIT_CUSTOM_PROFILE_FIELD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'cpf',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -60,6 +62,7 @@ class Hook_actionlog_cns_cpfs
                 ),
             ),
             'DELETE_CUSTOM_PROFILE_FIELD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'cpf',
                 'identifier_index' => 0,
                 'written_context_index' => 1,

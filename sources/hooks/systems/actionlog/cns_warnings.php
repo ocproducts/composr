@@ -40,38 +40,9 @@ class Hook_actionlog_cns_warnings
 
         require_lang('cns_warnings');
 
-        $unban_ip_followup_page_links = array();
-        $unban_ip_followup_page_links['VIEW_PROFILE'] = 'TODO';
-
-        if (addon_installed('securitylogging')) {
-            require_lang('submitban');
-            $unban_ip_followup_page_links['IP_BANS'] = 'TODO';
-
-            require_lang('actionlog');
-            $unban_ip_followup_page_links['VIEW_ACTIONLOGS'] = 'TODO';
-        }
-
-        if (addon_installed('securitylogging')) {
-            require_lang('lookup');
-            $unban_ip_followup_page_links['INVESTIGATE_USER'] = 'TODO';
-        }
-
         return array(
-            'UNBAN_IP' => array(
-                'cma_hook' => 'member',
-                'identifier_index' => 0,
-                'written_context_index' => null,
-                'followup_page_links' => $unban_ip_followup_page_links,
-            ),
             'MARK_AS_SPAMMER' => array(
-                'cma_hook' => 'member',
-                'identifier_index' => 0,
-                'written_context_index' => 1,
-                'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
-                ),
-            ),
-            'PUT_ON_PROBATION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -80,6 +51,7 @@ class Hook_actionlog_cns_warnings
                 ),
             ),
             'START_PROBATION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -88,22 +60,7 @@ class Hook_actionlog_cns_warnings
                 ),
             ),
             'STOP_PROBATION' => array(
-                'cma_hook' => 'member',
-                'identifier_index' => 0,
-                'written_context_index' => 1,
-                'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
-                ),
-            ),
-            'REMOVE_FROM_PROBATION' => array(
-                'cma_hook' => 'member',
-                'identifier_index' => 0,
-                'written_context_index' => 1,
-                'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
-                ),
-            ),
-            'UNDO_PROBATION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -112,6 +69,7 @@ class Hook_actionlog_cns_warnings
                 ),
             ),
             'EXTEND_PROBATION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -120,6 +78,7 @@ class Hook_actionlog_cns_warnings
                 ),
             ),
             'REDUCE_PROBATION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,

@@ -147,6 +147,7 @@ class Hook_addon_registry_tickets
             'sources/hooks/systems/config/ticket_auto_assign.php',
             'data/incoming_ticket_email.php',
             'sources/hooks/systems/commandr_fs_extended_member/ticket_known_emailers.php',
+            'sources/hooks/systems/actionlog/tickets.php',
         );
     }
 

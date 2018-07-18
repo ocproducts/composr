@@ -38,6 +38,7 @@ class Hook_actionlog_welcome_emails
 
         return array(
             'ADD_WELCOME_EMAIL' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'welcome_email',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -47,6 +48,7 @@ class Hook_actionlog_welcome_emails
                 ),
             ),
             'EDIT_WELCOME_EMAIL' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'welcome_email',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -56,6 +58,7 @@ class Hook_actionlog_welcome_emails
                 ),
             ),
             'DELETE_WELCOME_EMAIL' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'welcome_email',
                 'identifier_index' => 0,
                 'written_context_index' => 1,

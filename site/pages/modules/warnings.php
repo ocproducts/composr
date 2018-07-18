@@ -285,7 +285,8 @@ class Module_warnings extends Standard_crud_module
         }
         $GLOBALS['FORUM_DB']->query_update('f_warnings', array('p_probation' => 0), array('id' => $id), '', 1);
 
-        log_it('UNDO_PROBATION', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
+        require_code('cns_general_action2');
+        cns_mod_log_it('STOP_PROBATION', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');
@@ -307,7 +308,7 @@ class Module_warnings extends Standard_crud_module
         remove_ip_ban($banned_ip);
         $GLOBALS['FORUM_DB']->query_update('f_warnings', array('p_banned_ip' => ''), array('id' => $id), '', 1);
 
-        log_it('UNBAN_IP', strval($id), $banned_ip);
+        log_it('IP_UNBANNED', $banned_ip, strval($member_id));
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');
@@ -327,7 +328,8 @@ class Module_warnings extends Standard_crud_module
         $GLOBALS['FORUM_DB']->query_update('f_members', array('m_is_perm_banned' => 0), array('id' => $member_id), '', 1);
         $GLOBALS['FORUM_DB']->query_update('f_warnings', array('p_banned_member' => 0), array('id' => $id), '', 1);
 
-        log_it('UNBAN_MEMBER', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
+        require_code('cns_general_action2');
+        cns_mod_log_it('UNBAN_MEMBER', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');
@@ -353,7 +355,8 @@ class Module_warnings extends Standard_crud_module
         ));
         $GLOBALS['FORUM_DB']->query_update('f_warnings', array('p_silence_from_topic' => null), array('id' => $id), '', 1);
 
-        log_it('UNSILENCE_TOPIC', strval($member_id), strval($id));
+        require_code('cns_general_action2');
+        cns_mod_log_it('UNSILENCE_TOPIC', strval($member_id), strval($id));
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');
@@ -379,7 +382,8 @@ class Module_warnings extends Standard_crud_module
         ));
         $GLOBALS['FORUM_DB']->query_update('f_warnings', array('p_silence_from_forum' => null), array('id' => $id), '', 1);
 
-        log_it('UNSILENCE_FORUM', strval($member_id)), strval($id);
+        require_code('cns_general_action2');
+        cns_mod_log_it('UNSILENCE_FORUM', strval($member_id)), strval($id);
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');
@@ -914,7 +918,7 @@ class Module_warnings extends Standard_crud_module
                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_on_probation_until' => $on_probation_until), array('id' => $member_id), '', 1);
 
                 require_code('cns_general_action2');
-                cns_mod_log_it('PUT_ON_PROBATION', strval($member_id), $username);
+                cns_mod_log_it('START_PROBATION', strval($member_id), $username);
             }
         }
 

@@ -161,6 +161,8 @@ The documentation is primarily maintained on our website, and this archive is on
             'adminzone/pages/minimodules_custom/doc_index_build.php',
             'cms/pages/modules_custom/cms_tutorials.php',
             'sources_custom/hooks/modules/search/tutorials_external.php',
+            'sources_custom/hooks/systems/actionlog/composr_tutorials.php',
+
             'docs/pages/modules_custom/tutorials.php',
             'docs/index.php',
             'docs/pages/.htaccess',

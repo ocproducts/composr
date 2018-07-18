@@ -114,6 +114,7 @@ class Hook_addon_registry_staff
             'site/pages/modules/staff.php',
             'lang/EN/staff.ini',
             'sources/hooks/systems/cns_cpf_filter/staff_filter.php',
+            'sources/hooks/systems/actionlog/staff.php',
         );
     }
 

@@ -38,6 +38,7 @@ class Hook_actionlog_community_billboard
 
         return array(
             'ADD_COMMUNITY_BILLBOARD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -47,6 +48,7 @@ class Hook_actionlog_community_billboard
                 ),
             ),
             'EDIT_COMMUNITY_BILLBOARD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -56,6 +58,7 @@ class Hook_actionlog_community_billboard
                 ),
             ),
             'CHOOSE_COMMUNITY_BILLBOARD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -65,6 +68,7 @@ class Hook_actionlog_community_billboard
                 ),
             ),
             'DELETE_COMMUNITY_BILLBOARD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,

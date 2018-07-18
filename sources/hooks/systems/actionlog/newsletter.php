@@ -38,6 +38,7 @@ class Hook_actionlog_newsletter
 
         return array(
             'ADD_NEWSLETTER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'newsletter',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -47,6 +48,7 @@ class Hook_actionlog_newsletter
                 ),
             ),
             'EDIT_NEWSLETTER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'newsletter',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -56,6 +58,7 @@ class Hook_actionlog_newsletter
                 ),
             ),
             'DELETE_NEWSLETTER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'newsletter',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -64,6 +67,7 @@ class Hook_actionlog_newsletter
                 ),
             ),
             'ADD_PERIODIC_NEWSLETTER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'periodic_newsletter',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -73,6 +77,7 @@ class Hook_actionlog_newsletter
                 ),
             ),
             'EDIT_PERIODIC_NEWSLETTER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'periodic_newsletter',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -82,6 +87,7 @@ class Hook_actionlog_newsletter
                 ),
             ),
             'DELETE_PERIODIC_NEWSLETTER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'periodic_newsletter',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -90,6 +96,7 @@ class Hook_actionlog_newsletter
                 ),
             ),
             'IMPORT_NEWSLETTER_SUBSCRIBERS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -98,6 +105,7 @@ class Hook_actionlog_newsletter
                 ),
             ),
             'NEWSLETTER_SEND' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,

@@ -38,6 +38,7 @@ class Hook_actionlog_wordfilter
 
         return array(
             'ADD_WORDFILTER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -47,6 +48,7 @@ class Hook_actionlog_wordfilter
                 ),
             ),
             'DELETE_WORDFILTER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 0,

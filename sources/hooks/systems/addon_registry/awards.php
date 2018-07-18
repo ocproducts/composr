@@ -117,6 +117,7 @@ class Hook_addon_registry_awards
             'sources/hooks/systems/block_ui_renderers/awards.php',
             'sources/hooks/systems/commandr_fs/award_types.php',
             'sources/hooks/systems/config/awarded_items_per_page.php',
+            'sources/hooks/systems/actionlog/awards.php',
         );
     }
 

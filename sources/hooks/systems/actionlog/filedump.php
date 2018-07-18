@@ -38,6 +38,7 @@ class Hook_actionlog_filedump
 
         return array(
             'FILEDUMP_CREATE_FOLDER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -46,6 +47,7 @@ class Hook_actionlog_filedump
                 ),
             ),
             'FILEDUMP_DELETE_FOLDER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -54,6 +56,7 @@ class Hook_actionlog_filedump
                 ),
             ),
             'FILEDUMP_UPLOAD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -62,6 +65,7 @@ class Hook_actionlog_filedump
                 ),
             ),
             'FILEDUMP_MOVE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -70,6 +74,7 @@ class Hook_actionlog_filedump
                 ),
             ),
             'FILEDUMP_DELETE_FILE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,

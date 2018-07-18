@@ -1092,6 +1092,8 @@ class Module_cms_catalogues extends Standard_crud_module
         require_code('files');
         cms_file_put_contents_safe($csv_path, $fixed_contents, FILE_WRITE_FAILURE_SILENT);
 
+        log_it('IMPORT_CATALOGUE_ENTRIES', $catalogue_name);
+
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('CATALOGUE_IMPORT'), $this->title, 'import_catalogue', array($catalogue_name, $key_field, $new_handling, $delete_handling, $update_handling, $meta_keywords_field, $meta_description_field, $notes_field, $allow_rating, $allow_comments, $allow_trackbacks, $csv_path));
     }
@@ -1126,6 +1128,8 @@ class Module_cms_catalogues extends Standard_crud_module
      */
     public function _export_catalogue($catalogue_name)
     {
+        log_it('EXPORT_CATALOGUE_ENTRIES', $catalogue_name);
+
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('CATALOGUE_EXPORT'), $this->title, 'export_catalogue', array($catalogue_name));
     }

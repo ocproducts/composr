@@ -333,7 +333,16 @@ class Module_admin_invoices
             return do_template('CONFIRM_SCREEN', array('_GUID' => '45707062c00588c33726b256e8f9ba40', 'TITLE' => $this->title, 'FIELDS' => $hidden, 'PREVIEW' => $text, 'URL' => $url));
         }
 
-        $GLOBALS['SITE_DB']->query_delete('invoices', array('id' => get_param_integer('id')), '', 1);
+        $id = get_param_integer('id');
+
+        $type_code = $GLOBALS['SITE_DB']->query_select_value_if_there('invoices', 'i_type_code', array('id' => $id));
+        if ($id === null) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+
+        $GLOBALS['SITE_DB']->query_delete('invoices', array('id' => $id), '', 1);
+
+        log_it('DELETE_INVOICE', strval($id), $type_code);
 
         $url = build_url(array('page' => '_SELF', 'type' => post_param_string('from', 'browse')), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));

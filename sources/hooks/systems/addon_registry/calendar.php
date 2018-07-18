@@ -189,6 +189,7 @@ class Hook_addon_registry_calendar
             'themes/default/images/calendar/system_command.png',
             'sources/hooks/systems/notifications/member_calendar_changes.php',
             'sources/hooks/systems/commandr_fs_extended_member/calendar_interests.php',
+            'sources/hooks/systems/actionlog/calendar.php',
         );
     }
 

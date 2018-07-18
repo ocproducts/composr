@@ -38,6 +38,7 @@ class Hook_actionlog_news
 
         return array(
             'ADD_NEWS_CATEGORY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'news_category',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -49,6 +50,7 @@ class Hook_actionlog_news
                 ),
             ),
             'EDIT_NEWS_CATEGORY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'news_category',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -60,6 +62,7 @@ class Hook_actionlog_news
                 ),
             ),
             'DELETE_NEWS_CATEGORY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'news_category',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -68,6 +71,7 @@ class Hook_actionlog_news
                 ),
             ),
             'ADD_NEWS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'news',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -78,6 +82,7 @@ class Hook_actionlog_news
                 ),
             ),
             'EDIT_NEWS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'news',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -88,6 +93,7 @@ class Hook_actionlog_news
                 ),
             ),
             'DELETE_NEWS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'news',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -96,6 +102,7 @@ class Hook_actionlog_news
                 ),
             ),
             'IMPORT_NEWS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,

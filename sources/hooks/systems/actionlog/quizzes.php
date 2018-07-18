@@ -38,6 +38,7 @@ class Hook_actionlog_quizzes
 
         return array(
             'ADD_QUIZ' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'quiz',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -48,6 +49,7 @@ class Hook_actionlog_quizzes
                 ),
             ),
             'EDIT_QUIZ' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'quiz',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -58,6 +60,7 @@ class Hook_actionlog_quizzes
                 ),
             ),
             'DELETE_QUIZ' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'quiz',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -66,6 +69,7 @@ class Hook_actionlog_quizzes
                 ),
             ),
             'DELETE_QUIZ_RESULTS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'quiz',
                 'identifier_index' => 0,
                 'written_context_index' => 1,

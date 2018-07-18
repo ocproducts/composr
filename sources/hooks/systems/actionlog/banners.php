@@ -38,6 +38,7 @@ class Hook_actionlog_banners
 
         return array(
             'ADD_BANNER_TYPE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'banner_type',
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -47,6 +48,7 @@ class Hook_actionlog_banners
                 ),
             ),
             'EDIT_BANNER_TYPE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'banner_type',
                 'identifier_index' => 1,
                 'written_context_index' => 1,
@@ -56,6 +58,7 @@ class Hook_actionlog_banners
                 ),
             ),
             'DELETE_BANNER_TYPE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'banner_type',
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -64,6 +67,7 @@ class Hook_actionlog_banners
                 ),
             ),
             'ADD_BANNER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'banner',
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -74,6 +78,7 @@ class Hook_actionlog_banners
                 ),
             ),
             'EDIT_BANNER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'banner',
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -84,6 +89,7 @@ class Hook_actionlog_banners
                 ),
             ),
             'DELETE_BANNER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'banner',
                 'identifier_index' => 0,
                 'written_context_index' => 0,

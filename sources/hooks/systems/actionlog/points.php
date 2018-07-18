@@ -38,6 +38,7 @@ class Hook_actionlog_points
 
         return array(
             'UNDO_CHARGE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,

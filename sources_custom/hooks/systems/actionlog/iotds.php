@@ -38,6 +38,7 @@ class Hook_actionlog_iotds
 
         return array(
             'ADD_IOTD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'iotd',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -48,6 +49,7 @@ class Hook_actionlog_iotds
                 ),
             ),
             'EDIT_IOTD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'iotd',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -58,6 +60,7 @@ class Hook_actionlog_iotds
                 ),
             ),
             'CHOOSE_IOTD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'iotd',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -68,6 +71,7 @@ class Hook_actionlog_iotds
                 ),
             ),
             'DELETE_IOTD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'iotd',
                 'identifier_index' => 0,
                 'written_context_index' => 1,

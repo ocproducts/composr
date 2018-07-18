@@ -38,6 +38,7 @@ class Hook_actionlog_downloads
 
         return array(
             'ADD_DOWNLOAD_CATEGORY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'download_category',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -49,6 +50,7 @@ class Hook_actionlog_downloads
                 ),
             ),
             'EDIT_DOWNLOAD_CATEGORY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'download_category',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -60,6 +62,7 @@ class Hook_actionlog_downloads
                 ),
             ),
             'DELETE_DOWNLOAD_CATEGORY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'download_category',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -68,6 +71,7 @@ class Hook_actionlog_downloads
                 ),
             ),
             'ADD_DOWNLOAD_LICENCE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'download_licence',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -77,6 +81,7 @@ class Hook_actionlog_downloads
                 ),
             ),
             'EDIT_DOWNLOAD_LICENCE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'download_licence',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -86,6 +91,7 @@ class Hook_actionlog_downloads
                 ),
             ),
             'DELETE_DOWNLOAD_LICENCE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'download_licence',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -94,6 +100,7 @@ class Hook_actionlog_downloads
                 ),
             ),
             'ADD_DOWNLOAD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'download',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -104,6 +111,7 @@ class Hook_actionlog_downloads
                 ),
             ),
             'EDIT_DOWNLOAD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'download',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -114,6 +122,7 @@ class Hook_actionlog_downloads
                 ),
             ),
             'DELETE_DOWNLOAD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'download',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -122,6 +131,7 @@ class Hook_actionlog_downloads
                 ),
             ),
             'FILESYSTEM_DOWNLOADS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -130,6 +140,7 @@ class Hook_actionlog_downloads
                 ),
             ),
             'FTP_DOWNLOADS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,

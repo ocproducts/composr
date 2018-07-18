@@ -168,6 +168,8 @@ class Module_admin_trackbacks
             }
         }
 
+        log_it('DELETE_TRACKBACKS');
+
         // Show it worked / Refresh
         $text = do_lang_tempcode('SUCCESS');
         $url = get_param_string('redirect', null);

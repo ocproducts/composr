@@ -42,12 +42,41 @@ class Hook_actionlog_cns_post_templates
 
         return array(
             'ADD_POST_TEMPLATE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'post_template',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
                     'EDIT_THIS_POST_TEMPLATE' => 'TODO',
                     'ADD_POST_TEMPLATE' => 'TODO',
+                ),
+            ),
+            'EDIT_POST_TEMPLATE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => 'post_template',
+                'identifier_index' => 0,
+                'written_context_index' => 1,
+                'followup_page_links' => array(
+                    'EDIT_THIS_POST_TEMPLATE' => 'TODO',
+                    'ADD_POST_TEMPLATE' => 'TODO',
+                ),
+            ),
+            'DELETE_POST_TEMPLATE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => 'post_template',
+                'identifier_index' => 0,
+                'written_context_index' => 1,
+                'followup_page_links' => array(
+                    'ADD_POST_TEMPLATE' => 'TODO',
+                ),
+            ),
+            'IMPORT_STOCK_RESPONSES_PT' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => null,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'POST_TEMPLATES' => 'TODO',
                 ),
             ),
         );

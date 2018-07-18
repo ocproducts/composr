@@ -112,6 +112,7 @@ class Hook_addon_registry_aggregate_types
             'sources/aggregate_types.php',
             'sources/hooks/modules/admin_import_types/aggregate_types.php',
             'sources/hooks/systems/page_groupings/aggregate_types.php',
+            'sources/hooks/systems/actionlog/aggregate_types.php',
         );
     }
 }

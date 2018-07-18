@@ -19,6 +19,17 @@
  */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__global2()
+{
+    define('ACTIONLOG_FLAGS_NONE', 0);
+    define('ACTIONLOG_FLAG__USER_ACTION', 1); // Used when we use the action log for non-admin actions (as we have no dedicated log for something)
+}
+
+/**
  * Try and make an action log entry into a proper link.
  *
  * @param  ID_TEXT $type Action type

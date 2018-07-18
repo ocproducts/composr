@@ -38,6 +38,7 @@ class Hook_actionlog_custom_comcode
 
         return array(
             'ADD_CUSTOM_COMCODE_TAG' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'custom_comcode_tag',
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -47,6 +48,7 @@ class Hook_actionlog_custom_comcode
                 ),
             ),
             'EDIT_CUSTOM_COMCODE_TAG' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'custom_comcode_tag',
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -56,6 +58,7 @@ class Hook_actionlog_custom_comcode
                 ),
             ),
             'DELETE_CUSTOM_COMCODE_TAG' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'custom_comcode_tag',
                 'identifier_index' => 0,
                 'written_context_index' => 0,

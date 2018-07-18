@@ -102,6 +102,7 @@ class Hook_addon_registry_xml_fields
             'themes/default/images/icons/48x48/menu/adminzone/setup/xml_fields.png',
             'data/xml_config/fields.xml',
             'sources/hooks/systems/addon_registry/xml_fields.php',
+            'sources/hooks/systems/actionlog/xml_fields.php',
         );
     }
 }

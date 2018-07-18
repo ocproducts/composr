@@ -40,8 +40,6 @@ class Hook_task_import_member_csv
         require_code('hooks/systems/tasks/download_member_csv');
         $download_ob = new Hook_task_download_member_csv();
 
-        log_it('IMPORT_MEMBER_CSV');
-
         $GLOBALS['NO_QUERY_LIMIT'] = true;
 
         $num_added = 0;

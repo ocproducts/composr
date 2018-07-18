@@ -38,6 +38,7 @@ class Hook_actionlog_authors
 
         return array(
             'DEFINE_AUTHOR' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'author',
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -48,6 +49,7 @@ class Hook_actionlog_authors
                 ),
             ),
             'DELETE_AUTHOR' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'author',
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -56,6 +58,7 @@ class Hook_actionlog_authors
                 ),
             ),
             'MERGE_AUTHORS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'author',
                 'identifier_index' => 1,
                 'written_context_index' => 1,

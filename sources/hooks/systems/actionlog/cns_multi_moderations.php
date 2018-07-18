@@ -42,6 +42,7 @@ class Hook_actionlog_cns_multi_moderations
 
         return array(
             'ADD_MULTI_MODERATION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'multi_moderation',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -51,6 +52,7 @@ class Hook_actionlog_cns_multi_moderations
                 ),
             ),
             'EDIT_MULTI_MODERATION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'multi_moderation',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -60,6 +62,7 @@ class Hook_actionlog_cns_multi_moderations
                 ),
             ),
             'DELETE_MULTI_MODERATION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'multi_moderation',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -68,6 +71,7 @@ class Hook_actionlog_cns_multi_moderations
                 ),
             ),
             'PERFORM_MULTI_MODERATION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'multi_moderation',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -77,6 +81,7 @@ class Hook_actionlog_cns_multi_moderations
                 ),
             ),
             'IMPORT_STOCK_RESPONSES' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,

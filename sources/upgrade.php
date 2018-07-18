@@ -209,11 +209,15 @@ function upgrade_script()
                     break;
 
                 case 'open_site':
+                    log_it('FU_OPEN_SITE');
+
                     set_option('site_closed', '0');
                     echo '<p>' . do_lang('SUCCESS') . '</p>';
                     break;
 
                 case 'close_site':
+                    log_it('FU_CLOSE_SITE');
+
                     set_option('closed', do_lang('FU_CLOSED_FOR_UPGRADES', get_site_name()));
                     set_option('site_closed', '1');
                     echo '<p>' . do_lang('SUCCESS') . '</p>';
@@ -254,6 +258,8 @@ function upgrade_script()
                     $dry_run = (post_param_integer('dry_run', 0) == 1);
                     if ($dry_run) {
                         echo '<p>' . do_lang('FU_DOING_DRY_RUN') . '</p>';
+                    } else {
+                        log_it('FU_DOWNLOAD');
                     }
 
                     // Turn off limits, this may be exhaustive
@@ -515,6 +521,8 @@ function upgrade_script()
 
                 case 'db_upgrade':
                     $something_done = false;
+
+                    log_it('FU_DATABASE_UPGRADE');
 
                     clear_caches_2();
 

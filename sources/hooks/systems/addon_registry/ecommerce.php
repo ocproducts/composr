@@ -224,6 +224,7 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/symbols/CURRENCY_SYMBOL.php',
             'sources/hooks/systems/commandr_fs_extended_member/invoices.php',
             'sources/hooks/systems/commandr_fs_extended_member/subscriptions.php',
+            'sources/hooks/systems/actionlog/ecommerce.php',
         );
     }
 

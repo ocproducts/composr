@@ -126,6 +126,7 @@ class Hook_addon_registry_custom_comcode
             'sources/hooks/systems/comcode/index.html',
             'sources_custom/hooks/systems/comcode/index.html',
             'sources/hooks/systems/commandr_fs/custom_comcode_tags.php',
+            'sources/hooks/systems/actionlog/custom_comcode.php',
         );
     }
 

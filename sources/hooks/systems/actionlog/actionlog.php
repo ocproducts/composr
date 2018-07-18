@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    post_templates
+ * @package    actionlog
  */
 
 /**
  * Hook class.
  */
-class Hook_actionlog_post_templates
+class Hook_actionlog_ssl
 {
     /**
      * Get details of actionlog entry types handled by this hook.
@@ -30,36 +30,19 @@ class Hook_actionlog_post_templates
      */
     public function get_handlers()
     {
-        if (!addon_installed('post_templates')) {
+        if (!addon_installed('actionlog')) {
             return array();
         }
 
-        require_lang('cns_post_templates');
+        require_lang('actionlog');
 
         return array(
-            'DELETE_POST_TEMPLATE' => array(
-                'cma_hook' => 'post_template',
-                'identifier_index' => 0,
-                'written_context_index' => 1,
-                'followup_page_links' => array(
-                    'ADD_POST_TEMPLATE' => 'TODO',
-                ),
-            ),
-            'EDIT_POST_TEMPLATE' => array(
-                'cma_hook' => 'post_template',
-                'identifier_index' => 0,
-                'written_context_index' => 1,
-                'followup_page_links' => array(
-                    'EDIT_THIS_POST_TEMPLATE' => 'TODO',
-                    'ADD_POST_TEMPLATE' => 'TODO',
-                ),
-            ),
-            'IMPORT_STOCK_RESPONSES_PT' => array(
+            'DELETE_REVISION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'POST_TEMPLATES' => 'TODO',
                 ),
             ),
         );

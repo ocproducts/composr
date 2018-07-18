@@ -43,26 +43,31 @@ class Hook_actionlog_core
 
         return array(
             'ADD_ZONE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'zone',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
                     'VIEW' => 'TODO',
                     'EDIT_THIS_ZONE' => 'TODO',
+                    'ZONE_EDITOR' => 'TODO',
                     'ADD_ZONE' => 'TODO',
                 ),
             ),
             'EDIT_ZONE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'zone',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
                     'VIEW' => 'TODO',
                     'EDIT_THIS_ZONE' => 'TODO',
+                    'ZONE_EDITOR' => 'TODO',
                     'ADD_ZONE' => 'TODO',
                 ),
             ),
             'DELETE_ZONE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'zone',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -71,6 +76,7 @@ class Hook_actionlog_core
                 ),
             ),
             'COMCODE_PAGE_EDIT' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'comcode_page',
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -81,6 +87,7 @@ class Hook_actionlog_core
                 ),
             ),
             'MOVE_PAGES' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -88,6 +95,7 @@ class Hook_actionlog_core
                 ),
             ),
             'DELETE_PAGES' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -96,6 +104,7 @@ class Hook_actionlog_core
                 ),
             ),
             'EXPORT_ADDON' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -104,6 +113,7 @@ class Hook_actionlog_core
                 ),
             ),
             'INSTALL_ADDON' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -112,6 +122,7 @@ class Hook_actionlog_core
                 ),
             ),
             'UNINSTALL_ADDON' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -120,6 +131,7 @@ class Hook_actionlog_core
                 ),
             ),
             'CHECK_LIST_ADD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -128,6 +140,7 @@ class Hook_actionlog_core
                 ),
             ),
             'CHECK_LIST_DELETE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -136,6 +149,7 @@ class Hook_actionlog_core
                 ),
             ),
             'CHECK_LIST_MARK_DONE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -144,6 +158,7 @@ class Hook_actionlog_core
                 ),
             ),
             'CHECK_LIST_MARK_UNDONE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -152,6 +167,7 @@ class Hook_actionlog_core
                 ),
             ),
             'STAFF_LINKS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -160,6 +176,7 @@ class Hook_actionlog_core
                 ),
             ),
             'SITE_WATCHLIST' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -168,6 +185,7 @@ class Hook_actionlog_core
                 ),
             ),
             'NOTES' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -176,6 +194,7 @@ class Hook_actionlog_core
                 ),
             ),
             'CLEANUP_TOOLS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -184,6 +203,7 @@ class Hook_actionlog_core
                 ),
             ),
             'CONFIGURATION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -193,6 +213,7 @@ class Hook_actionlog_core
                 ),
             ),
             'TRANSLATE_CODE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -201,6 +222,7 @@ class Hook_actionlog_core
                 ),
             ),
             'TRANSLATE_CONTENT' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -209,6 +231,7 @@ class Hook_actionlog_core
                 ),
             ),
             'ADD_MENU' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'menu',
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -217,6 +240,7 @@ class Hook_actionlog_core
                 ),
             ),
             'EDIT_MENU' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'menu',
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -225,6 +249,7 @@ class Hook_actionlog_core
                 ),
             ),
             'DELETE_MENU' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'menu',
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -233,6 +258,7 @@ class Hook_actionlog_core
                 ),
             ),
             'ADD_MENU_ITEM' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'menu_item',
                 'identifier_index' => null,
                 'written_context_index' => 1,
@@ -241,6 +267,7 @@ class Hook_actionlog_core
                 ),
             ),
             'EDIT_MENU_ITEM' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'menu_item',
                 'identifier_index' => null,
                 'written_context_index' => 1,
@@ -249,6 +276,7 @@ class Hook_actionlog_core
                 ),
             ),
             'DELETE_MENU_ITEM' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'menu_item',
                 'identifier_index' => null,
                 'written_context_index' => 1,
@@ -257,6 +285,7 @@ class Hook_actionlog_core
                 ),
             ),
             'NOTIFICATIONS_LOCKDOWN' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -265,39 +294,48 @@ class Hook_actionlog_core
                 ),
             ),
             'PRIVILEGES' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'PRIVILEGES' => 'TODO',
+                    'PERMISSIONS_TREE' => 'TODO',
                 ),
             ),
             'PAGE_ACCESS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'PAGE_ACCESS' => 'TODO',
-                ),
-            ),
-            'PAGE_MATCH_KEY_ACCESS' => array(
-                'cma_hook' => null,
-                'identifier_index' => null,
-                'written_context_index' => null,
-                'followup_page_links' => array(
-                    'PAGE_MATCH_KEY_ACCESS' => 'TODO',
+                    'PERMISSIONS_TREE' => 'TODO',
                 ),
             ),
             'ADD_THEME' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => null,
+                'followup_page_links' => array(
+                    'EDIT_THEME' => 'TODO',
+                    'THEMEWIZARD' => 'TODO',
+                    'MANAGE_THEMES' => 'TODO',
+                ),
+            ),
+            'EDIT_THEME' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => 0,
+                'written_context_index' => 1,
                 'followup_page_links' => array(
                     'EDIT_THEME' => 'TODO',
                     'MANAGE_THEMES' => 'TODO',
                 ),
             ),
             'DELETE_THEME' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -306,6 +344,7 @@ class Hook_actionlog_core
                 ),
             ),
             'COPY_THEME' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 1,
                 'written_context_index' => null,
@@ -315,6 +354,7 @@ class Hook_actionlog_core
                 ),
             ),
             'RENAME_THEME' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -323,6 +363,7 @@ class Hook_actionlog_core
                 ),
             ),
             'EDIT_CSS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -332,6 +373,7 @@ class Hook_actionlog_core
                 ),
             ),
             'EDIT_TEMPLATES' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -341,6 +383,7 @@ class Hook_actionlog_core
                 ),
             ),
             'ADD_THEME_IMAGE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -350,6 +393,7 @@ class Hook_actionlog_core
                 ),
             ),
             'EDIT_THEME_IMAGE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -359,11 +403,74 @@ class Hook_actionlog_core
                 ),
             ),
             'DELETE_THEME_IMAGE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
                     'ADD_THEME_IMAGE' => 'TODO',
+                ),
+            ),
+            'CLEANUP_TOOLS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => null,
+                'written_context_index' => 0,
+                'followup_page_links' => array(
+                    'CLEANUP_TOOLS' => 'TODO',
+                ),
+            ),
+            'DELETE_TRACKBACKS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => null,
+                'written_context_index' => 0,
+                'followup_page_links' => array(
+                    'MANAGE_TRACKBACKS' => 'TODO',
+                ),
+            ),
+            'GROUP_MEMBER_TIMEOUTS' => array)
+                'cma_hook' => null,
+                'identifier_index' => null,
+                'written_context_index' => 0,
+                'followup_page_links' => array(
+                    'GROUP_MEMBER_TIMEOUTS' => 'TODO',
+                ),
+            ),
+            'FU_OPEN_SITE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => null,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'FU_UPGRADER_TITLE' => 'TODO',
+                ),
+            ),
+            'FU_CLOSE_SITE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => null,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'FU_UPGRADER_TITLE' => 'TODO',
+                ),
+            ),
+            'FU_DOWNLOAD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => null,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'FU_UPGRADER_TITLE' => 'TODO',
+                ),
+            ),
+            'FU_DATABASE_UPGRADE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => null,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'FU_UPGRADER_TITLE' => 'TODO',
                 ),
             ),
         );

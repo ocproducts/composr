@@ -38,6 +38,7 @@ class Hook_actionlog_ssl
 
         return array(
             'SSL_CONFIGURATION' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,

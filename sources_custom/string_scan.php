@@ -1912,6 +1912,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COMCODE_PAGE_DEFAULT_REVIEW_FREQ
         COMCODE_PAGE_EDIT
         COMCODE_PAGE_EDIT_THIS
+        DELETE_BACKUP
+        COMMANDR_COMMAND
         COMCODE_PAGE_MANAGEMENT
         COMCODE_PAGE_OWN_EDIT
         COMCODE_PAGE_VIEW_THIS
@@ -6037,7 +6039,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PURCHASE_ORDER
         PUT_IN_CATEGORY
         PUT_IN_SEARCH
-        PUT_ON_PROBATION
         QUERIES_WITHOUT_CACHE
         QUERY
         QUERY_FAILED
@@ -6099,7 +6100,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         RELEVANCE_LEVEL
         REMEMBER_ME_BY_DEFAULT
         REMEMBER_PASSWORD
-        REMOVE_FROM_PROBATION
         REMOVE_PERIODIC
         REMOVE_PERIODIC_NEWSLETTER
         REMOVE_PROBATION_DAYS

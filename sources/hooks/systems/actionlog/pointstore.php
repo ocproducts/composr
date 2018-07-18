@@ -38,6 +38,7 @@ class Hook_actionlog_pointstore
 
         return array(
             'POINTSTORE_ADD_MAIL_FORWARDER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => 0,
@@ -46,6 +47,7 @@ class Hook_actionlog_pointstore
                 ),
             ),
             'POINTSTORE_ADD_MAIL_POP3' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => 0,
@@ -54,6 +56,7 @@ class Hook_actionlog_pointstore
                 ),
             ),
             'POINTSTORE_AMEND_CUSTOM_PERMISSIONS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -62,6 +65,7 @@ class Hook_actionlog_pointstore
                 ),
             ),
             'POINTSTORE_AMEND_CUSTOM_PRODUCTS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -70,6 +74,7 @@ class Hook_actionlog_pointstore
                 ),
             ),
             'POINTSTORE_CHANGED_PRICES' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,

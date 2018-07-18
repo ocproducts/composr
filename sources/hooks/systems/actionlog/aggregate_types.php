@@ -38,6 +38,7 @@ class Hook_actionlog_aggregate_types
 
         return array(
             'EDIT_AGGREGATE_TYPES' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -47,6 +48,7 @@ class Hook_actionlog_aggregate_types
                 ),
             ),
             'ADD_AGGREGATE_TYPE_INSTANCE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'aggregate_type_instance',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -57,6 +59,7 @@ class Hook_actionlog_aggregate_types
                 ),
             ),
             'EDIT_AGGREGATE_TYPE_INSTANCE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'aggregate_type_instance',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -67,6 +70,7 @@ class Hook_actionlog_aggregate_types
                 ),
             ),
             'DELETE_AGGREGATE_TYPE_INSTANCE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'aggregate_type_instance',
                 'identifier_index' => 0,
                 'written_context_index' => 1,

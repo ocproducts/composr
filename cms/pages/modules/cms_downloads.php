@@ -243,6 +243,8 @@ class Module_cms_downloads extends Standard_crud_module
         $server_url = post_param_string('server_url');
         $subfolders = post_param_integer('subfolders', 0);
 
+        log_it('FTP_DOWNLOADS');
+
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('FTP_DOWNLOADS'), $this->title, 'import_ftp_downloads', array($destination, $server_url, $subfolders));
     }
@@ -283,6 +285,8 @@ class Module_cms_downloads extends Standard_crud_module
         $server_path = post_param_string('server_path');
 
         $subfolders = post_param_integer('subfolders', 0);
+
+        log_it('FILESYSTEM_DOWNLOADS');
 
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('FILESYSTEM_DOWNLOADS'), $this->title, 'import_filesystem_downloads', array($destination, $server_path, $subfolders));

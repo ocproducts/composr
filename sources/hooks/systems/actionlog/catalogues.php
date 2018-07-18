@@ -38,6 +38,7 @@ class Hook_actionlog_catalogues
 
         return array(
             'ADD_CATALOGUE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'catalogue',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -49,6 +50,7 @@ class Hook_actionlog_catalogues
                 ),
             ),
             'EDIT_CATALOGUE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'catalogue',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -60,6 +62,7 @@ class Hook_actionlog_catalogues
                 ),
             ),
             'DELETE_CATALOGUE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'catalogue',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -68,6 +71,7 @@ class Hook_actionlog_catalogues
                 ),
             ),
             'ADD_CATALOGUE_CATEGORY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'catalogue_category',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -79,6 +83,7 @@ class Hook_actionlog_catalogues
                 ),
             ),
             'EDIT_CATALOGUE_CATEGORY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'catalogue_category',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -90,6 +95,7 @@ class Hook_actionlog_catalogues
                 ),
             ),
             'DELETE_CATALOGUE_CATEGORY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'catalogue_category',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -98,6 +104,7 @@ class Hook_actionlog_catalogues
                 ),
             ),
             'ADD_CATALOGUE_ENTRY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'catalogue_entry',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -108,6 +115,7 @@ class Hook_actionlog_catalogues
                 ),
             ),
             'EDIT_CATALOGUE_ENTRY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'catalogue_entry',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -118,6 +126,7 @@ class Hook_actionlog_catalogues
                 ),
             ),
             'DELETE_CATALOGUE_ENTRY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'catalogue_entry',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -126,8 +135,19 @@ class Hook_actionlog_catalogues
                 ),
             ),
             'IMPORT_CATALOGUE_ENTRIES' => array(
-                'cma_hook' => null,
-                'identifier_index' => null,
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => 'catalogue',
+                'identifier_index' => 0,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'MANAGE_CATALOGUES' => 'TODO',
+                    'VIEW' => 'TODO',
+                ),
+            ),
+            'EXPORT_CATALOGUE_ENTRIES' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => 'catalogue',
+                'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'MANAGE_CATALOGUES' => 'TODO',

@@ -139,6 +139,7 @@ class Hook_addon_registry_quizzes
             'sources/quiz2.php',
             'sources/hooks/systems/preview/quiz.php',
             'themes/default/css/quizzes.css',
+            'sources/hooks/systems/actionlog/quizzes.php',
         );
     }
 

@@ -272,6 +272,8 @@ class Module_admin_debrand
             }
         }
 
+        log_it('SUPER_DEBRAND');
+
         // Decache
         require_code('caches3');
         erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_CONFIG);

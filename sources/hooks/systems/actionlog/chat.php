@@ -38,6 +38,7 @@ class Hook_actionlog_chat
 
         return array(
             'ADD_CHATROOM' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'chat',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -48,6 +49,7 @@ class Hook_actionlog_chat
                 ),
             ),
             'EDIT_CHATROOM' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'chat',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -58,6 +60,7 @@ class Hook_actionlog_chat
                 ),
             ),
             'DELETE_CHATROOM' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'chat',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -66,6 +69,7 @@ class Hook_actionlog_chat
                 ),
             ),
             'DELETE_ALL_CHATROOMS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -74,6 +78,7 @@ class Hook_actionlog_chat
                 ),
             ),
             'EDIT_MESSAGE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -82,6 +87,7 @@ class Hook_actionlog_chat
                 ),
             ),
             'DELETE_MESSAGE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -90,6 +96,7 @@ class Hook_actionlog_chat
                 ),
             ),
             'DELETE_ALL_MESSAGES' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'chat',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -100,6 +107,7 @@ class Hook_actionlog_chat
                 ),
             ),
             'CHAT_BAN' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'chat',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -109,6 +117,7 @@ class Hook_actionlog_chat
                 ),
             ),
             'CHAT_UNBAN' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'chat',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -118,6 +127,7 @@ class Hook_actionlog_chat
                 ),
             ),
             'BLOCK_MEMBER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE | ACTIONLOG_FLAG__USER_ACTION,
                 'cma_hook' => 'member',
                 'identifier_index' => 1,
                 'written_context_index' => null,
@@ -127,6 +137,7 @@ class Hook_actionlog_chat
                 ),
             ),
             'UNBLOCK_MEMBER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE | ACTIONLOG_FLAG__USER_ACTION,
                 'cma_hook' => 'member',
                 'identifier_index' => 1,
                 'written_context_index' => null,
@@ -136,6 +147,7 @@ class Hook_actionlog_chat
                 ),
             ),
             'MAKE_FRIEND' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE | ACTIONLOG_FLAG__USER_ACTION,
                 'cma_hook' => 'member',
                 'identifier_index' => 1,
                 'written_context_index' => null,
@@ -145,6 +157,7 @@ class Hook_actionlog_chat
                 ),
             ),
             'DUMP_FRIEND' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE | ACTIONLOG_FLAG__USER_ACTION,
                 'cma_hook' => 'member',
                 'identifier_index' => 1,
                 'written_context_index' => null,

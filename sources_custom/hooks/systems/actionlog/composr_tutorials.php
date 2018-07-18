@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    tutorials
+ * @package    composr_tutorials
  */
 
 /**
  * Hook class.
  */
-class Hook_actionlog_tutorials
+class Hook_actionlog_composr_tutorials
 {
     /**
      * Get details of actionlog entry types handled by this hook.
@@ -30,7 +30,7 @@ class Hook_actionlog_tutorials
      */
     public function get_handlers()
     {
-        if (!addon_installed('tutorials')) {
+        if (!addon_installed('composr_tutorials')) {
             return array();
         }
 
@@ -38,6 +38,7 @@ class Hook_actionlog_tutorials
 
         return array(
             'ADD_TUTORIAL' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -48,6 +49,7 @@ class Hook_actionlog_tutorials
                 ),
             ),
             'EDIT_TUTORIAL' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -58,6 +60,7 @@ class Hook_actionlog_tutorials
                 ),
             ),
             'DELETE_TUTORIAL' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => 0,
                 'written_context_index' => 1,

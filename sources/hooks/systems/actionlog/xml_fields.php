@@ -38,6 +38,7 @@ class Hook_actionlog_xml_fields
 
         return array(
             'FIELD_FILTERS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,

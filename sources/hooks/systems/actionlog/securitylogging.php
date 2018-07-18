@@ -38,6 +38,7 @@ class Hook_actionlog_securitylogging
 
         return array(
             'IP_BANNED' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => 0,
@@ -48,6 +49,7 @@ class Hook_actionlog_securitylogging
                 ),
             ),
             'IP_UNBANNED' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => 0,
@@ -58,6 +60,7 @@ class Hook_actionlog_securitylogging
                 ),
             ),
             'SYNDICATED_IP_BAN' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => 0,
@@ -68,6 +71,7 @@ class Hook_actionlog_securitylogging
                 ),
             ),
             'MADE_IP_BANNABLE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => 0,
@@ -77,6 +81,7 @@ class Hook_actionlog_securitylogging
                 ),
             ),
             'MADE_IP_UNBANNABLE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => 0,
@@ -86,6 +91,7 @@ class Hook_actionlog_securitylogging
                 ),
             ),
             'SUBMITTER_BANNED' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -96,6 +102,7 @@ class Hook_actionlog_securitylogging
                 ),
             ),
             'SUBMITTER_UNBANNED' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,

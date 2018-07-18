@@ -38,6 +38,7 @@ class Hook_actionlog_breadcrumbs
 
         return array(
             'BREADCRUMB_OVERRIDES' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,

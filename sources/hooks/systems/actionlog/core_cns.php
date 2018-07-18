@@ -38,6 +38,7 @@ class Hook_actionlog_core_cns
 
         return array(
             'ADD_EMOTICON' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'emoticon',
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -47,6 +48,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'EDIT_EMOTICON' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'emoticon',
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -56,6 +58,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'DELETE_EMOTICON' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'emoticon',
                 'identifier_index' => 0,
                 'written_context_index' => 0,
@@ -64,6 +67,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'IMPORT_EMOTICONS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -72,6 +76,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'ADD_GROUP' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'group',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -82,6 +87,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'EDIT_GROUP' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'group',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -92,6 +98,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'DELETE_GROUP' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'group',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -100,6 +107,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'MEMBER_PROMOTED_AUTOMATICALLY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -108,6 +116,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'MEMBER_ADDED_TO_GROUP' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -117,6 +126,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'MEMBER_PRIMARY_GROUP_CHANGED' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -126,6 +136,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'MEMBER_REMOVED_FROM_GROUP' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -135,6 +146,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'IMPORT_MEMBER_CSV' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -142,7 +154,27 @@ class Hook_actionlog_core_cns
                     'MEMBERS' => 'TODO',
                 ),
             ),
+            'DOWNLOAD_MEMBER_CSV' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => null,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'MEMBERS' => 'TODO',
+                ),
+            ),
+            'ADD_MEMBER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => 'member',
+                'identifier_index' => 0,
+                'written_context_index' => 1,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => 'TODO',
+                    'ADD_MEMBER' => 'TODO',
+                ),
+            ),
             'EDIT_MEMBER_PROFILE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -151,6 +183,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'DELETE_MEMBER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -159,6 +192,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'DELETE_LURKERS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => null,
@@ -167,6 +201,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'MERGE_MEMBERS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 1,
                 'written_context_index' => null,
@@ -175,7 +210,35 @@ class Hook_actionlog_core_cns
                     'VIEW_PROFILE' => 'TODO',
                 ),
             ),
+            'ADD_WARNING' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => 0,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => 'TODO',
+                ),
+            ),
+            'EDIT_WARNING' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => 0,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => 'TODO',
+                ),
+            ),
+            'DELETE_WARNING' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => 0,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => 'TODO',
+                ),
+            ),
             'BAN_MEMBER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -184,6 +247,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'UNBAN_MEMBER' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -192,6 +256,7 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'LOST_PASSWORD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE | ACTIONLOG_FLAG__USER_ACTION,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => null,
@@ -200,6 +265,16 @@ class Hook_actionlog_core_cns
                 ),
             ),
             'RESET_PASSWORD' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE | ACTIONLOG_FLAG__USER_ACTION,
+                'cma_hook' => 'member',
+                'identifier_index' => 0,
+                'written_context_index' => 1,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => 'TODO',
+                ),
+            ),
+            'EMAIL' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE | ACTIONLOG_FLAG__USER_ACTION,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,
                 'written_context_index' => 1,

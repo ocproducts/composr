@@ -199,6 +199,7 @@ class Hook_addon_registry_catalogues
             'sources/hooks/systems/config/catalogues_subcat_narrowin.php',
             'sources/hooks/systems/tasks/export_catalogue.php',
             'sources/hooks/systems/tasks/import_catalogue.php',
+            'sources/hooks/systems/actionlog/catalogues.php',
         );
     }
 

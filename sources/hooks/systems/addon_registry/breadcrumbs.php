@@ -104,6 +104,7 @@ class Hook_addon_registry_breadcrumbs
             'sources/hooks/systems/addon_registry/breadcrumbs.php',
             'data/xml_config/breadcrumbs.xml',
             'sources/breadcrumbs.php',
+            'sources/hooks/systems/actionlog/breadcrumbs.php',
         );
     }
 }

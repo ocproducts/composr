@@ -38,6 +38,7 @@ class Hook_actionlog_galleries
 
         return array(
             'ADD_GALLERY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'gallery',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -50,6 +51,7 @@ class Hook_actionlog_galleries
                 ),
             ),
             'EDIT_GALLERY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'gallery',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -62,6 +64,7 @@ class Hook_actionlog_galleries
                 ),
             ),
             'DELETE_GALLERY' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'gallery',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -70,6 +73,7 @@ class Hook_actionlog_galleries
                 ),
             ),
             'ADD_IMAGE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'image',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -80,6 +84,7 @@ class Hook_actionlog_galleries
                 ),
             ),
             'EDIT_IMAGE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'image',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -90,6 +95,7 @@ class Hook_actionlog_galleries
                 ),
             ),
             'DELETE_IMAGE' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'image',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -98,6 +104,7 @@ class Hook_actionlog_galleries
                 ),
             ),
             'ADD_VIDEO' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'video',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -108,6 +115,7 @@ class Hook_actionlog_galleries
                 ),
             ),
             'EDIT_VIDEO' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'video',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
@@ -118,6 +126,7 @@ class Hook_actionlog_galleries
                 ),
             ),
             'DELETE_VIDEO' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'video',
                 'identifier_index' => 0,
                 'written_context_index' => 1,
