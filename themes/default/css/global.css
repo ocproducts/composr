@@ -1650,7 +1650,7 @@ footer .invisible-ref-point {
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
 	footer .global-copyright {
-		margin: 0.5em 0;
+		padding: 0.5em 0;
 	}
 /*{+END}*/
 
@@ -1690,14 +1690,30 @@ footer .global-minilinks .footer-links {
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
+   footer .global-minilinks {
+		padding-top: 1em;
+	}
+	
 	footer .global-minilinks .footer-links li {
 		min-width: 7em;
 		margin-right: 1em;
 		display: inline-block;
 		list-style-type: none;
 		padding: 0.25em 0 0.25em 18px;
-		background: url('{$IMG_INLINE;,icons/buttons/proceed2}') 0 5px no-repeat;
-		background-size: 14px 14px;
+	}
+
+	footer .global-minilinks .footer-links li::before {
+		font-family: sans-serif;
+		color: {$GET,seed};
+		content: '\025BA'; /* Rightward triangle */
+		vertical-align: middle;
+		padding-right: 1em;
+		display: inline-block;
+		transform: scale(0.5, 1);
+	}
+
+   footer .global-copyright {
+		text-align: center;
 	}
 /*{+END}*/
 
