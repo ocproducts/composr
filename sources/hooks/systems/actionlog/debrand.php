@@ -43,7 +43,7 @@ class Hook_actionlog_debrand extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'SUPER_DEBRAND' => 'TODO',
+                    'SUPER_DEBRAND' => '_SEARCH:admin_debrand',
                 ),
             ),
         );

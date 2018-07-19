@@ -47,8 +47,8 @@ class Hook_actionlog_cns_cpfs extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_CUSTOM_PROFILE_FIELD' => 'TODO',
-                    'ADD_CUSTOM_PROFILE_FIELD' => 'TODO',
+                    'EDIT_THIS_CUSTOM_PROFILE_FIELD' => '_SEARCH:admin_cns_customprofilefields:_edit:_ID_',
+                    'ADD_CUSTOM_PROFILE_FIELD' => '_SEARCH:admin_cns_customprofilefields:add',
                 ),
             ),
             'EDIT_CUSTOM_PROFILE_FIELD' => array(
@@ -57,8 +57,8 @@ class Hook_actionlog_cns_cpfs extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_CUSTOM_PROFILE_FIELD' => 'TODO',
-                    'ADD_CUSTOM_PROFILE_FIELD' => 'TODO',
+                    'EDIT_THIS_CUSTOM_PROFILE_FIELD' => '_SEARCH:admin_cns_customprofilefields:_edit:_ID_',
+                    'ADD_CUSTOM_PROFILE_FIELD' => '_SEARCH:admin_cns_customprofilefields:add',
                 ),
             ),
             'DELETE_CUSTOM_PROFILE_FIELD' => array(
@@ -67,7 +67,7 @@ class Hook_actionlog_cns_cpfs extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_CUSTOM_PROFILE_FIELD' => 'TODO',
+                    'ADD_CUSTOM_PROFILE_FIELD' => '_SEARCH:admin_cns_customprofilefields:add',
                 ),
             ),
         );

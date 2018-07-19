@@ -103,7 +103,7 @@ class Module_cms_authors
             $this->author = $author;
         }
 
-        if ($type == '__ad') {
+        if ($type == '__add') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('AUTHOR_MANAGE'))));
             breadcrumb_set_self(do_lang_tempcode('DONE'));
 
@@ -146,8 +146,8 @@ class Module_cms_authors
         if ($type == '_add') {
             return $this->_add();
         }
-        if ($type == '__ad') {
-            return $this->__ad();
+        if ($type == '__add') {
+            return $this->__add();
         }
         if ($type == '_merge') {
             return $this->_merge();
@@ -234,7 +234,7 @@ class Module_cms_authors
             }
         }
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => '__ad', 'author' => $author), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '__add', 'author' => $author), '_SELF');
         $submit_name = do_lang_tempcode('SAVE');
 
         $fields = new Tempcode();
@@ -291,7 +291,7 @@ class Module_cms_authors
      *
      * @return Tempcode The UI
      */
-    public function __ad()
+    public function __add()
     {
         require_code('content2');
         $author = post_param_string('author', get_param_string('author'));

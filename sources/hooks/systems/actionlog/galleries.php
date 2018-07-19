@@ -43,11 +43,11 @@ class Hook_actionlog_galleries extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_GALLERY' => 'TODO',
-                    'ADD_GALLERY' => 'TODO',
-                    'ADD_IMAGE' => 'TODO',
-                    'ADD_VIDEO' => 'TODO',
+                    'VIEW' => '_SEARCH:galleries:browse:_ID_',
+                    'EDIT_THIS_GALLERY' => '_SEARCH:cms_galleries:_edit_category:_ID_',
+                    'ADD_GALLERY' => '_SEARCH:cms_galleries:add_category',
+                    'ADD_IMAGE' => '_SEARCH:cms_galleries:add',
+                    'ADD_VIDEO' => '_SEARCH:cms_galleries:add_other',
                 ),
             ),
             'EDIT_GALLERY' => array(
@@ -56,11 +56,11 @@ class Hook_actionlog_galleries extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_GALLERY' => 'TODO',
-                    'ADD_GALLERY' => 'TODO',
-                    'ADD_IMAGE' => 'TODO',
-                    'ADD_VIDEO' => 'TODO',
+                    'VIEW' => '_SEARCH:galleries:browse:_ID_',
+                    'EDIT_THIS_GALLERY' => '_SEARCH:cms_galleries:_edit_category:_ID_',
+                    'ADD_GALLERY' => '_SEARCH:cms_galleries:add_category',
+                    'ADD_IMAGE' => '_SEARCH:cms_galleries:add',
+                    'ADD_VIDEO' => '_SEARCH:cms_galleries:add_other',
                 ),
             ),
             'DELETE_GALLERY' => array(
@@ -69,7 +69,7 @@ class Hook_actionlog_galleries extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_GALLERY' => 'TODO',
+                    'ADD_GALLERY' => '_SEARCH:cms_galleries:add_category',
                 ),
             ),
             'ADD_IMAGE' => array(
@@ -78,9 +78,9 @@ class Hook_actionlog_galleries extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_IMAGE' => 'TODO',
-                    'ADD_IMAGE' => 'TODO',
+                    'VIEW' => '_SEARCH:galleries:image:_ID_',
+                    'EDIT_THIS_IMAGE' => '_SEARCH:cms_galleries:_edit:_ID_',
+                    'ADD_IMAGE' => '_SEARCH:cms_galleries:add',
                 ),
             ),
             'EDIT_IMAGE' => array(
@@ -89,9 +89,9 @@ class Hook_actionlog_galleries extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_IMAGE' => 'TODO',
-                    'ADD_IMAGE' => 'TODO',
+                    'VIEW' => '_SEARCH:galleries:image:_ID_',
+                    'EDIT_THIS_IMAGE' => '_SEARCH:cms_galleries:_edit:_ID_',
+                    'ADD_IMAGE' => '_SEARCH:cms_galleries:add',
                 ),
             ),
             'DELETE_IMAGE' => array(
@@ -100,7 +100,7 @@ class Hook_actionlog_galleries extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_IMAGE' => 'TODO',
+                    'ADD_IMAGE' => '_SEARCH:cms_galleries:add',
                 ),
             ),
             'ADD_VIDEO' => array(
@@ -109,9 +109,9 @@ class Hook_actionlog_galleries extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_VIDEO' => 'TODO',
-                    'ADD_VIDEO' => 'TODO',
+                    'VIEW' => '_SEARCH:galleries:video:_ID_',
+                    'EDIT_THIS_VIDEO' => '_SEARCH:cms_galleries:_edit_other:_ID_',
+                    'ADD_VIDEO' => '_SEARCH:cms_galleries:add_other',
                 ),
             ),
             'EDIT_VIDEO' => array(
@@ -120,9 +120,9 @@ class Hook_actionlog_galleries extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_VIDEO' => 'TODO',
-                    'ADD_VIDEO' => 'TODO',
+                    'VIEW' => '_SEARCH:galleries:video:_ID_',
+                    'EDIT_THIS_VIDEO' => '_SEARCH:cms_galleries:_edit_other:_ID_',
+                    'ADD_VIDEO' => '_SEARCH:cms_galleries:add_other',
                 ),
             ),
             'DELETE_VIDEO' => array(
@@ -131,7 +131,7 @@ class Hook_actionlog_galleries extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_VIDEO' => 'TODO',
+                    'ADD_VIDEO' => '_SEARCH:cms_galleries:add_other',
                 ),
             ),
         );

@@ -43,8 +43,8 @@ class Hook_actionlog_custom_comcode extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_THIS_CUSTOM_COMCODE_TAG' => 'TODO',
-                    'ADD_CUSTOM_COMCODE_TAG' => 'TODO',
+                    'EDIT_THIS_CUSTOM_COMCODE_TAG' => '_SEARCH:admin_custom_comcode:_edit:_ID_',
+                    'ADD_CUSTOM_COMCODE_TAG' => '_SEARCH:admin_custom_comcode:add',
                 ),
             ),
             'EDIT_CUSTOM_COMCODE_TAG' => array(
@@ -53,8 +53,8 @@ class Hook_actionlog_custom_comcode extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_THIS_CUSTOM_COMCODE_TAG' => 'TODO',
-                    'ADD_CUSTOM_COMCODE_TAG' => 'TODO',
+                    'EDIT_THIS_CUSTOM_COMCODE_TAG' => '_SEARCH:admin_custom_comcode:_edit:_ID_',
+                    'ADD_CUSTOM_COMCODE_TAG' => '_SEARCH:admin_custom_comcode:add',
                 ),
             ),
             'DELETE_CUSTOM_COMCODE_TAG' => array(
@@ -63,7 +63,7 @@ class Hook_actionlog_custom_comcode extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'ADD_CUSTOM_COMCODE_TAG' => 'TODO',
+                    'ADD_CUSTOM_COMCODE_TAG' => '_SEARCH:admin_custom_comcode:add',
                 ),
             ),
         );

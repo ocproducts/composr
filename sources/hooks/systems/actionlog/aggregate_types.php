@@ -43,8 +43,8 @@ class Hook_actionlog_aggregate_types extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'AGGREGATE_TYPES' => 'TODO',
-                    'ADD_AGGREGATE_TYPE_INSTANCE' => 'TODO',
+                    'AGGREGATE_TYPES' => '_SEARCH:admin_aggregate_types',
+                    'ADD_AGGREGATE_TYPE_INSTANCE' => '_SEARCH:admin_aggregate_types:add',
                 ),
             ),
             'ADD_AGGREGATE_TYPE_INSTANCE' => array(
@@ -53,9 +53,9 @@ class Hook_actionlog_aggregate_types extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_AGGREGATE_TYPE_INSTANCE' => 'TODO',
-                    'ADD_AGGREGATE_TYPE_INSTANCE' => 'TODO',
-                    'AGGREGATE_TYPES' => 'TODO',
+                    'EDIT_THIS_AGGREGATE_TYPE_INSTANCE' => '_SEARCH:admin_aggregate_types:_edit:_ID_',
+                    'ADD_AGGREGATE_TYPE_INSTANCE' => '_SEARCH:admin_aggregate_types:add',
+                    'AGGREGATE_TYPES' => '_SEARCH:admin_aggregate_types',
                 ),
             ),
             'EDIT_AGGREGATE_TYPE_INSTANCE' => array(
@@ -64,9 +64,9 @@ class Hook_actionlog_aggregate_types extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_AGGREGATE_TYPE_INSTANCE' => 'TODO',
-                    'ADD_AGGREGATE_TYPE_INSTANCE' => 'TODO',
-                    'AGGREGATE_TYPES' => 'TODO',
+                    'EDIT_THIS_AGGREGATE_TYPE_INSTANCE' => '_SEARCH:admin_aggregate_types:_edit:_ID_',
+                    'ADD_AGGREGATE_TYPE_INSTANCE' => '_SEARCH:admin_aggregate_types:add',
+                    'AGGREGATE_TYPES' => '_SEARCH:admin_aggregate_types',
                 ),
             ),
             'DELETE_AGGREGATE_TYPE_INSTANCE' => array(
@@ -75,7 +75,7 @@ class Hook_actionlog_aggregate_types extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_AGGREGATE_TYPE_INSTANCE' => 'TODO',
+                    'ADD_AGGREGATE_TYPE_INSTANCE' => '_SEARCH:admin_aggregate_types:add',
                 ),
             ),
         );

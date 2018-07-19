@@ -43,8 +43,8 @@ class Hook_actionlog_awards extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_AWARD_TYPE' => 'TODO',
-                    'EDIT_THIS_AWARD_TYPE' => 'TODO',
+                    'EDIT_THIS_AWARD_TYPE' => '_SEARCH:admin_awards:_edit:_ID_',
+                    'ADD_AWARD_TYPE' => '_SEARCH:admin_awards:add',
                 ),
             ),
             'EDIT_AWARD_TYPE' => array(
@@ -53,8 +53,8 @@ class Hook_actionlog_awards extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_AWARD_TYPE' => 'TODO',
-                    'EDIT_THIS_AWARD_TYPE' => 'TODO',
+                    'EDIT_THIS_AWARD_TYPE' => '_SEARCH:admin_awards:_edit:_ID_',
+                    'ADD_AWARD_TYPE' => '_SEARCH:admin_awards:add',
                 ),
             ),
             'DELETE_AWARD_TYPE' => array(
@@ -63,7 +63,7 @@ class Hook_actionlog_awards extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_AWARD_TYPE' => 'TODO',
+                    'ADD_AWARD_TYPE' => '_SEARCH:admin_awards:add',
                 ),
             ),
             'GIVE_AWARD' => array(
@@ -72,8 +72,8 @@ class Hook_actionlog_awards extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PAST_WINNERS' => 'TODO',
-                    'EDIT_THIS_AWARD_TYPE' => 'TODO',
+                    'VIEW_PAST_WINNERS' => '_SEARCH:awards:award:_ID_',
+                    'EDIT_THIS_AWARD_TYPE' => '_SEARCH:admin_awards:_edit:_ID_',
                 ),
             ),
         );

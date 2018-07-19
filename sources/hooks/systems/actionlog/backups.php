@@ -43,7 +43,7 @@ class Hook_actionlog_backups extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'BACKUPS' => 'TODO',
+                    'BACKUPS' => '_SEARCH:admin_backups',
                 ),
             ),
             'DELETE_BACKUP' => array(
@@ -52,7 +52,7 @@ class Hook_actionlog_backups extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'BACKUPS' => 'TODO',
+                    'BACKUPS' => '_SEARCH:admin_backups',
                 ),
             ),
         );

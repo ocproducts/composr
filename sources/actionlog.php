@@ -75,14 +75,16 @@ abstract class Hook_actionlog
 
             $followup_page_links = array();
             $_followup_page_links = $handler_data['followup_page_links'];
-            foreach ($_followup_page_links as $i => &$page_link) {
-                if (strpos($page_link, '_ID_') !== false) {
-                    if ($identifier !== null) {
-                        $page_link = str_replace('_ID_', $id, $page_link);
+            foreach ($_followup_page_links as $i => $page_link) {
+                if ($page_link !== null) {
+                    if (strpos($page_link, '_ID_') !== false) {
+                        if ($identifier !== null) {
+                            $page_link = str_replace('_ID_', $id, $page_link);
+                            $followup_page_links[] = $page_link;
+                        }
+                    } else {
                         $followup_page_links[] = $page_link;
                     }
-                } else {
-                    $followup_page_links[] = $page_link;
                 }
             }
 

@@ -43,8 +43,8 @@ class Hook_actionlog_banners extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_THIS_BANNER_TYPE' => 'TODO',
-                    'ADD_BANNER' => 'TODO',
+                    'EDIT_THIS_BANNER_TYPE' => '_SEARCH:cms_banners:_edit_category:_ID_',
+                    'ADD_BANNER' => '_SEARCH:cms_banners:add',
                 ),
             ),
             'EDIT_BANNER_TYPE' => array(
@@ -53,8 +53,8 @@ class Hook_actionlog_banners extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_BANNER_TYPE' => 'TODO',
-                    'ADD_BANNER' => 'TODO',
+                    'EDIT_THIS_BANNER_TYPE' => '_SEARCH:cms_banners:_edit_category:_ID_',
+                    'ADD_BANNER' => '_SEARCH:cms_banners:add',
                 ),
             ),
             'DELETE_BANNER_TYPE' => array(
@@ -63,7 +63,7 @@ class Hook_actionlog_banners extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'ADD_BANNER_TYPE' => 'TODO',
+                    'ADD_BANNER_TYPE' => '_SEARCH:cms_banners:add_category',
                 ),
             ),
             'ADD_BANNER' => array(
@@ -73,8 +73,8 @@ class Hook_actionlog_banners extends Hook_actionlog
                 'written_context_index' => 0,
                 'followup_page_links' => array(
                     'VIEW' => 'TODO',
-                    'EDIT_THIS_BANNER' => 'TODO',
-                    'ADD_BANNER' => 'TODO',
+                    'EDIT_THIS_BANNER_TYPE' => '_SEARCH:cms_banners:_edit_category:_ID_',
+                    'ADD_BANNER' => '_SEARCH:cms_banners:add',
                 ),
             ),
             'EDIT_BANNER' => array(
@@ -84,8 +84,8 @@ class Hook_actionlog_banners extends Hook_actionlog
                 'written_context_index' => 0,
                 'followup_page_links' => array(
                     'VIEW' => 'TODO',
-                    'EDIT_THIS_BANNER' => 'TODO',
-                    'ADD_BANNER' => 'TODO',
+                    'EDIT_THIS_BANNER' => '_SEARCH:cms_banners:_edit:_ID_',
+                    'ADD_BANNER' => '_SEARCH:cms_banners:add',
                 ),
             ),
             'DELETE_BANNER' => array(
@@ -94,7 +94,7 @@ class Hook_actionlog_banners extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'ADD_BANNER' => 'TODO',
+                    'ADD_BANNER' => '_SEARCH:cms_banners:add',
                 ),
             ),
         );

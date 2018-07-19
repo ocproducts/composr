@@ -43,9 +43,9 @@ class Hook_actionlog_calendar extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'CALENDAR' => 'TODO',
-                    'EDIT_THIS_EVENT_TYPE' => 'TODO',
-                    'ADD_EVENT_TYPE' => 'TODO',
+                    'CALENDAR' => '_SEARCH:calendar',
+                    'EDIT_THIS_EVENT_TYPE' => '_SEARCH:cms_calendar:_edit_category:_ID_',
+                    'ADD_EVENT_TYPE' => 'SEARCH:cms_calendar:add_category',
                 ),
             ),
             'EDIT_EVENT_TYPE' => array(
@@ -54,9 +54,9 @@ class Hook_actionlog_calendar extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'CALENDAR' => 'TODO',
-                    'EDIT_THIS_EVENT_TYPE' => 'TODO',
-                    'ADD_EVENT_TYPE' => 'TODO',
+                    'CALENDAR' => '_SEARCH:calendar',
+                    'EDIT_THIS_EVENT_TYPE' => '_SEARCH:cms_calendar:_edit_category:_ID_',
+                    'ADD_EVENT_TYPE' => '_SEARCH:cms_calendar:add_category',
                 ),
             ),
             'DELETE_EVENT_TYPE' => array(
@@ -65,7 +65,7 @@ class Hook_actionlog_calendar extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_EVENT_TYPE' => 'TODO',
+                    'ADD_EVENT_TYPE' => '_SEARCH:cms_calendar:add_category',
                 ),
             ),
             'ADD_CALENDAR_EVENT' => array(
@@ -74,9 +74,9 @@ class Hook_actionlog_calendar extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_CALENDAR_EVENT' => 'TODO',
-                    'ADD_CALENDAR_EVENT' => 'TODO',
+                    'VIEW' => '_SEARCH:calendar:view:_ID_',
+                    'EDIT_THIS_CALENDAR_EVENT' => '_SEARCH:cms_calendar:_edit:_ID_',
+                    'ADD_CALENDAR_EVENT' => '_SEARCH:cms_calendar:add',
                 ),
             ),
             'EDIT_CALENDAR_EVENT' => array(
@@ -85,9 +85,9 @@ class Hook_actionlog_calendar extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_CALENDAR_EVENT' => 'TODO',
-                    'ADD_CALENDAR_EVENT' => 'TODO',
+                    'VIEW' => '_SEARCH:calendar:view:_ID_',
+                    'EDIT_THIS_CALENDAR_EVENT' => '_SEARCH:cms_calendar:_edit:_ID_',
+                    'ADD_CALENDAR_EVENT' => '_SEARCH:cms_calendar:add',
                 ),
             ),
             'DELETE_CALENDAR_EVENT' => array(
@@ -96,7 +96,7 @@ class Hook_actionlog_calendar extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_CALENDAR_EVENT' => 'TODO',
+                    'ADD_CALENDAR_EVENT' => '_SEARCH:cms_calendar:add',
                 ),
             ),
         );

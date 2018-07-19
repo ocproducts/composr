@@ -47,8 +47,8 @@ class Hook_actionlog_cns_multi_moderations extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_MULTI_MODERATION' => 'TODO',
-                    'ADD_MULTI_MODERATION' => 'TODO',
+                    'EDIT_THIS_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:_edit:_ID_',
+                    'ADD_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:add',
                 ),
             ),
             'EDIT_MULTI_MODERATION' => array(
@@ -57,8 +57,8 @@ class Hook_actionlog_cns_multi_moderations extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_MULTI_MODERATION' => 'TODO',
-                    'ADD_MULTI_MODERATION' => 'TODO',
+                    'EDIT_THIS_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:_edit:_ID_',
+                    'ADD_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:add',
                 ),
             ),
             'DELETE_MULTI_MODERATION' => array(
@@ -67,7 +67,7 @@ class Hook_actionlog_cns_multi_moderations extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_MULTI_MODERATION' => 'TODO',
+                    'ADD_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:add',
                 ),
             ),
             'PERFORM_MULTI_MODERATION' => array(
@@ -76,8 +76,8 @@ class Hook_actionlog_cns_multi_moderations extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_TOPIC' => 'TODO',
-                    'EDIT_THIS_MULTI_MODERATION' => 'TODO',
+                    'VIEW_TOPIC' => null,
+                    'EDIT_THIS_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:_edit:_ID_',
                 ),
             ),
             'IMPORT_STOCK_RESPONSES' => array(
@@ -86,7 +86,7 @@ class Hook_actionlog_cns_multi_moderations extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'MULTI_MODERATIONS' => 'TODO',
+                    'MULTI_MODERATIONS' => '_SEARCH:admin_cns_multi_moderations',
                 ),
             ),
         );

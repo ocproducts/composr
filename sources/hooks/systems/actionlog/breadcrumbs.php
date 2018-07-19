@@ -43,7 +43,7 @@ class Hook_actionlog_breadcrumbs extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'BREADCRUMB_OVERRIDES' => 'TODO',
+                    'BREADCRUMB_OVERRIDES' => '_SEARCH:admin_config:xml_breadcrumbs',
                 ),
             ),
         );

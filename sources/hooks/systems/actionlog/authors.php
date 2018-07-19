@@ -43,9 +43,9 @@ class Hook_actionlog_authors extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'VIEW_AUTHOR' => 'TODO',
-                    'DEFINE_AUTHOR' => 'TODO',
-                    'ADD_AUTHOR' => 'TODO',
+                    'VIEW_AUTHOR' => '_SEARCH:authors:browse:_ID_',
+                    'EDIT_THIS_AUTHOR' => '_SEARCH:cms_authors:_add:author=_ID_',
+                    'ADD_AUTHOR' => '_SEARCH:cms_authors:_add',
                 ),
             ),
             'DELETE_AUTHOR' => array(
@@ -54,7 +54,7 @@ class Hook_actionlog_authors extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'ADD_AUTHOR' => 'TODO',
+                    'ADD_AUTHOR' => '_SEARCH:cms_authors:_add',
                 ),
             ),
             'MERGE_AUTHORS' => array(
@@ -63,8 +63,9 @@ class Hook_actionlog_authors extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_AUTHOR' => 'TODO',
-                    'MERGE_AUTHORS' => 'TODO',
+                    'VIEW_AUTHOR' => '_SEARCH:authors:browse:_ID_',
+                    'EDIT_THIS_AUTHOR' => '_SEARCH:cms_authors:_add:author=_ID_',
+                    'ADD_AUTHOR' => '_SEARCH:cms_authors:_add',
                 ),
             ),
         );

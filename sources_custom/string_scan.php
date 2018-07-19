@@ -7107,6 +7107,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         AVATARS_THEMATIC
         AVATARS_MISC
         ADD_AUTHOR
+        EDIT_THIS_AUTHOR
         ADD_CALENDAR_EVENT
         ADD_CATALOGUE_ENTRY
         ADD_CLUB
