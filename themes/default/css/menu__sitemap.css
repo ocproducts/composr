@@ -44,7 +44,7 @@
 }
 
 .menu-type--sitemap>ul>li>span>a.toggleable-tray-button .icon {
-	margin-top: 4px !important;
+	margin-top: -4px !important;
 }
 
 /* Level 1 */
@@ -63,7 +63,7 @@
 }
 
 .menu-type--sitemap>ul>li>ul>li>span>a.toggleable-tray-button .icon {
-	margin-top: 3px;
+	margin-top: -3px;
 }
 
 /* Level 2 */
@@ -81,4 +81,10 @@
 .menu-type--sitemap ul li li {
 	font-weight: normal;
 	margin-left: 22px;
+}
+
+.menu-sitemap-item-a .icon {
+	width: 20px;
+	height: 20px;
+	float: none;
 }

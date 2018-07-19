@@ -1,11 +1,11 @@
 {$SET,js_menu,{$NOT,{$BROWSER_MATCHES,bot}}}
 {$SET,img,{$?,{$AND,{$IS_EMPTY,{IMG}},{$LT,{THE_LEVEL},3}},{$IMG,icons/content_types/page},{IMG}}}
 {+START,IF,{$NOT,{$GET,js_menu}}}
-	<li class="{$?,{CURRENT},current,non-current} has-img">
+	<li class="menu-sitemap-item {$?,{CURRENT},current,non-current} has-img">
 		<span>
 			<img alt="" width="24" height="24" src="{$GET*,img}" />
 			{+START,IF_NON_EMPTY,{URL}}
-				<a {+START,IF_NON_EMPTY,{TOOLTIP}} title="{$STRIP_TAGS,{CAPTION}}{+START,IF_NON_EMPTY,{TOOLTIP}}: {TOOLTIP*}{+END}"{+END} href="{URL*}">{CAPTION}</a>
+				<a class="menu-sitemap-item-a" {+START,IF_NON_EMPTY,{TOOLTIP}} title="{$STRIP_TAGS,{CAPTION}}{+START,IF_NON_EMPTY,{TOOLTIP}}: {TOOLTIP*}{+END}"{+END} href="{URL*}">{CAPTION}</a>
 			{+END}
 			{+START,IF_EMPTY,{URL}}
 				<span>{CAPTION}</span>

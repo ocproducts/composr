@@ -588,8 +588,8 @@
 					<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!">{!W_ENVIRONMENT_MODIFICATIONS}</a>
 					<a class="js-click-set-hidemod-cookie toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!EXPAND}">
 						{+START,INCLUDE,ICON}
-						NAME=trays/expand
-						ICON_SIZE=24
+							NAME=trays/expand
+							ICON_SIZE=24
 						{+END}
 					</a>
 				</h2>

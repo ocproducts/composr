@@ -1531,12 +1531,12 @@
 
         if ((!next && $cms.isIcon(icon, 'trays/expand')) || (next && (next.style.display === 'none'))) {/* Expanding now */
             $dom.parent(icon, 'a').title = '{!CONTRACT;^}';
-            $cms.setIcon(icon, 'trays/contract', '{$IMG;,icons/trays/contract}');
+            $cms.setIcon(icon, 'trays/contract', '{$IMG;,icons_monochrome/trays/contract}');
             newDisplayState = ''; // default state from CSS
             newDisplayState2 = ''; // default state from CSS
         } else { /* Contracting now */
             $dom.parent(icon, 'a').title = '{!EXPAND;^}';
-            $cms.setIcon(icon, 'trays/expand', '{$IMG;,icons/trays/expand}');
+            $cms.setIcon(icon, 'trays/expand', '{$IMG;,icons_monochrome/trays/expand}');
             newDisplayState = 'none';
             newDisplayState2 = 'none';
         }

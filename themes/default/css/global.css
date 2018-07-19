@@ -2450,7 +2450,7 @@ a.toggleable-tray-button { /* Override above for toggleable-tray-button */
 	outline: 0;
 	font-weight: 500;
 	text-decoration: none;
-	color: inherit;
+	/*color: inherit;*/
 	cursor: pointer;
 }
 
