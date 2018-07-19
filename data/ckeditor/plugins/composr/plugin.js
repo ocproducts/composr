@@ -1,4 +1,5 @@
 (function () {
+
 	CKEDITOR.plugins.add('composr', {
 		hidpi: true,
 
@@ -76,7 +77,7 @@
 							}
 
 							if (prompt.toLowerCase() === window.lang_INPUTSYSTEM_ATTACHMENT.toLowerCase()) {
-								$util.navigate(document.getElementById('upload-button-file' + window.numAttachments));
+								$dom.trigger(document.getElementById('upload-button-file' + window.numAttachments), 'click');
 							}
 
 							if (prompt.toLowerCase() === window.lang_INPUTSYSTEM_MEDIA.toLowerCase()) {
