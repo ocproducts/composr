@@ -12,7 +12,7 @@
 {+END}
 
 {+START,IF,{TOP_LEVEL}}
-<li class="menu-dropdown-item toplevel {$?,{CURRENT},current,non-current}{$?,{$GET,HAS_CHILDREN}, has-children}{$?,{FIRST}, first}{$?,{LAST}, last} {+START,IF_PASSED,SIBLINGS}siblings-{SIBLINGS*}{+END}">
+<li class="menu-dropdown-item toplevel {$?,{CURRENT},current,non-current}{$?,{$GET,HAS_CHILDREN}, has-children}{$?,{FIRST}, first}{+START,IF_PASSED,SIBLINGS} siblings-{SIBLINGS*}{+END}">
 	<a {+START,INCLUDE,MENU_LINK_PROPERTIES}{+END} class="menu-dropdown-item-a toplevel-link">
 		{+START,IF_NON_EMPTY,{$GET,img}}<span class="menu-dropdown-item-icon">{$GET,img_html}</span>{+END}
 		<span class="menu-dropdown-item-caption">{CAPTION}</span>
