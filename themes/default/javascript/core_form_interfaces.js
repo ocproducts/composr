@@ -1522,8 +1522,8 @@
 
     // Hide a 'tray' of trs in a form
     function toggleSubordinateFields(anchor, helpId) {
-        var icon = anchor.querySelector('.icon'),
-            fieldInput = $dom.parent(icon, '.form-table-field-spacer'),
+        var fieldInput = $dom.parent(anchor, '.form-table-field-spacer'),
+            icon = fieldInput.querySelector('.toggleable-tray-button .icon'),
             next = fieldInput.nextElementSibling,
             newDisplayState, newDisplayState2;
 
@@ -1540,13 +1540,13 @@
         }
 
         if ((!next && $cms.isIcon(icon, 'trays/expand')) || (next && (next.style.display === 'none'))) {/* Expanding now */
-            anchor.title = '{!CONTRACT;^}';
-            $cms.setIcon(icon, 'trays/contract', '{$IMG;,icons/trays/contract}');
+            $dom.parent(icon, 'a').title = '{!CONTRACT;^}';
+            $cms.setIcon(icon, 'trays/contract', '{$IMG;,icons_monochrome/trays/contract}');
             newDisplayState = ''; // default state from CSS
             newDisplayState2 = ''; // default state from CSS
         } else { /* Contracting now */
-            anchor.title = '{!EXPAND;^}';
-            $cms.setIcon(icon, 'trays/expand', '{$IMG;,icons/trays/expand}');
+            $dom.parent(icon, 'a').title = '{!EXPAND;^}';
+            $cms.setIcon(icon, 'trays/expand', '{$IMG;,icons_monochrome/trays/expand}');
             newDisplayState = 'none';
             newDisplayState2 = 'none';
         }
@@ -1573,7 +1573,7 @@
         if (helpId === undefined) {
             helpId = icon.parentNode.id + '-help';
         }
-
+        
         var help = document.getElementById(helpId);
 
         while (help !== null) {
