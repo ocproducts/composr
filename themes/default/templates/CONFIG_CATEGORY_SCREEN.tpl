@@ -14,7 +14,7 @@
 
 	<ul>
 		{+START,LOOP,_GROUPS}
-			<li><a href="#group_{_loop_key*}">{_loop_var}</a></li>
+			<li><a href="#group-{_loop_key*}">{_loop_var}</a></li>
 		{+END}
 	</ul>
 
