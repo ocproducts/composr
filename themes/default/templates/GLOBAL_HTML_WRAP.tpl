@@ -8,7 +8,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 {$SET,page_link_privacy,{$PAGE_LINK,:privacy}}
 
 {$,We deploy as HTML5 but code and conform strictly to XHTML5}
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="has-sticky-navbar {$?,{$MATCH_KEY_MATCH,:home},has-hero-carousel} is-not-scrolled">
+<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global" data-view-params="{+START,PARAMS_JSON,page_link_privacy}{_*}{+END}" class="has-sticky-navbar {$?,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}},has-hero-carousel} is-not-scrolled">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>
@@ -64,7 +64,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 		</header>
 		{+END}
 
-		{+START,IF,{$MATCH_KEY_MATCH,:home}}
+		{+START,IF,{$OR,{$MATCH_KEY_MATCH,:home},{$MATCH_KEY_MATCH,site:home}}}
 			{$,You can use a "cms-carousel-fade" class to make the carousel use fade effect instead of sliding}
 			{$,You can use a "cms-carousel-full-screen" class to make the carousel full-screen}
 			<div id="hero-carousel" class="slide cms-carousel cms-carousel-full-screen cms-carousel-home-hero has-multiple-items" data-cms-carousel="{ interval: false, animateHeight: 600 }">
@@ -80,53 +80,53 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 					<div class="cms-carousel-scroll-button-caption">Scroll Down</div>
 				</a>
 				<div class="cms-carousel-inner">
-					<div class="cms-carousel-item active" style="background-image: url('{$IMG;*,hero/bastei-bridge-3014467_1920}'); background-position: center; background-size: cover;">
+					<div class="cms-carousel-item active" style="background-image: url('{$IMG;*,hero/bastei_bridge_3014467_1920}'); background-position: center; background-size: cover;">
 						<div class="cms-carousel-item-inner">
 							<div class="container">
 								<h1 class="cms-carousel-contrast-box">Content Management System for Next Generation Websites</h1>
 								<h3 class="cms-carousel-contrast-box">Need a website? Tired of primitive systems that don't meet your requirements?</h3>
 								<div style="max-width: 660px; line-height: 1.8;" class="h5 cms-carousel-contrast-box">
-									<div style="margin-bottom: 20px;">
+									<div style="margin-bottom: 10px;">
 										Composr is Open Source so our community download runs without limits. Our services will give you that critical 'pro edge'.
 									</div>
 									<div style="margin-bottom: 10px;">
-										<a href="#!" style="margin-right: 20px;" class="btn btn-lg btn-outline-light">See How it Works</a>
-										<a href="#!" class="btn btn-lg btn-light">Download Now</a>
+										<a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
+										<a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="cms-carousel-item" style="background-image: url('{$IMG;*,hero/waterfall-1081997_1920}'); background-position: center; background-size: cover;">
-						<div class="cms-carousel-item-inner">
-							<div class="container">
-								<h1 class="cms-carousel-contrast-box">Think Ahead.</h1>
-								<h3 class="cms-carousel-contrast-box">Boost your online business growth!</h3>
-								<div style="max-width: 630px; line-height: 1.8;" class="h5 cms-carousel-contrast-box">
-									<div style="margin-bottom: 20px;">
-										With tons of features at your fingertips, let your creativity loose. Welcome your visitors with elegance and flexibility.
-									</div>
-									<div style="margin-bottom: 10px;">
-										<a href="#!" style="margin-right: 20px;" class="btn btn-lg btn-outline-light">See How it Works</a>
-										<a href="#!" class="btn btn-lg btn-light">Download Now</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="cms-carousel-item" style="background-image: url('{$IMG;*,hero/rustic-945421_1920}'); background-position: center; background-size: cover;">
+					<div class="cms-carousel-item" style="background-image: url('{$IMG;*,hero/waterfall_1081997_1920}'); background-position: center; background-size: cover;">
 						<div class="cms-carousel-item-inner">
 							<div class="container">
 								<h1 class="cms-carousel-contrast-box">Leader In Design</h1>
 								<h3 class="cms-carousel-contrast-box">Form and Function Revolutionized!</h3>
 								<div style="max-width: 675px; line-height: 1.8;" class="h5 cms-carousel-contrast-box">
-									<div style="margin-bottom: 20px;">
+									<div style="margin-bottom: 10px;">
 										We have created an awesome new theme that will help users, designers, developers,
 										and companies create websites for their startups quickly and easily.
 									</div>
 									<div style="margin-bottom: 10px;">
-										<a href="#!" style="margin-right: 20px;" class="btn btn-lg btn-outline-light">See How it Works</a>
-										<a href="#!" class="btn btn-lg btn-light">Download Now</a>
+										<a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
+										<a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="cms-carousel-item" style="background-image: url('{$IMG;*,hero/rustic_945421_1920}'); background-position: center; background-size: cover;">
+						<div class="cms-carousel-item-inner">
+							<div class="container">
+								<h1 class="cms-carousel-contrast-box">Think Ahead.</h1>
+								<h3 class="cms-carousel-contrast-box">Boost your online business growth!</h3>
+								<div style="max-width: 630px; line-height: 1.8;" class="h5 cms-carousel-contrast-box">
+									<div style="margin-bottom: 10px;">
+										With tons of features at your fingertips, let your creativity loose. Welcome your visitors with elegance and flexibility.
+									</div>
+									<div>
+										<a href="#!" style="margin: 10px;" class="btn btn-lg btn-outline-light">See How it Works</a>
+										<a href="#!" style="margin: 10px;" class="btn btn-lg btn-light">Download Now</a>
 									</div>
 								</div>
 							</div>

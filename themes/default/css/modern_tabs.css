@@ -51,6 +51,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	display: inline-block;
 	padding: 1em;
 	cursor: pointer;
+	font-weight: 500;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.modern-tab-headers>div>a {
@@ -166,6 +167,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	display: block;
 	cursor: pointer;
 	min-width: 160px;
+	font-weight: 500;
 }
 
 .modern-subtab-headers>div>a, .modern-subtab-headers>div>a:visited, .modern-subtab-headers>div>a:active, .modern-subtab-headers>div>a:hover {

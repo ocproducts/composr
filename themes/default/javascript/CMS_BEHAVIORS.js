@@ -911,7 +911,7 @@
         }
     };
     
-    // Implementation for [data-sticky-navbar="{ hideOnScroll: false|true }"]
+    // Implementation for [data-sticky-navbar]
     // Hides navbar when scrolling downwards, shows it again when scrolled upwards
     // Adds .is-scrolled class when the navbar is scrolled along
     $cms.behaviors.stickyNavbar = {
@@ -919,20 +919,25 @@
             var els = $util.once($dom.$$$(context, '[data-sticky-navbar]'), 'behavior.stickyNavbar');
             
             els.forEach(function (stickyNavbar) {
-                var options = $dom.data(stickyNavbar, 'stickyNavbar'),
-                    lastScrollY = 0,
+                var lastScrollY = 0,
                     navbarHeight = $dom.height(stickyNavbar),
                     movement = 0,
                     lastDirection = 0;
 
                 window.addEventListener('scroll', function () {
+                    if (window.scrollY === 0) {
+                        movement = 0;
+                        stickyNavbar.style.marginTop = '';
+                        return;
+                    }
+                    
                     if ($cms.isCssMode('mobile')) { 
                         // Mobile: hide navbar on scroll down and re-show on scroll up
-                        var sy = window.scrollY, margin;
+                        var margin;
 
-                        movement += sy - lastScrollY;
+                        movement += window.scrollY - lastScrollY;
 
-                        if (sy > lastScrollY) { // Scrolled down
+                        if (window.scrollY > lastScrollY) { // Scrolled down
                             if (lastDirection !== 1) {
                                 movement = 0;
                             }
@@ -950,7 +955,7 @@
                             lastDirection = -1;
                         }
 
-                        lastScrollY = sy;
+                        lastScrollY = window.scrollY;
                     }
                 });
             });
@@ -1227,10 +1232,10 @@
             },
 
             _addEventListeners: function _addEventListeners() {
-                const self = this;
+                var self = this;
                 
                 if (self._scrollDownElement) {
-                    // Hide when carousel is larger than viewport or it's mobile mode
+                    // Hide "Scroll Down" button when carousel is larger than viewport or it's mobile mode
                     $dom.toggle(self._scrollDownElement, (self._element.offsetHeight >= window.innerHeight) && $cms.isCssMode('desktop'));
 
                     $dom.on(window, 'resize orientationchange', function () {
@@ -1349,7 +1354,7 @@
             },
 
             _slide: function _slide(direction, element) {
-                const self = this;
+                var self = this;
                 
                 var activeElement = this._element.querySelector(Selector.ACTIVE_ITEM);
                 var activeElementIndex = this._getItemIndex(activeElement);
@@ -1410,7 +1415,7 @@
                     nextElement.classList.add(directionalClassName);
 
                     if (this._config.animateHeight && (activeElement.offsetHeight !== nextElement.offsetHeight)) {
-                        self._element.animate([
+                        this._element.animate([
                             { height: activeElement.offsetHeight + 'px' },
                             { height: nextElement.offsetHeight + 'px' }
                         ], {
