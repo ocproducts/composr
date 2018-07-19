@@ -639,7 +639,6 @@ hr.cns-sig-barrier {
 }
 
 .cns-forum-grouping-toggleable-tray-button .toggleable-tray-button .icon {
-	color: {$GET,seed_alternate};
 	padding-right: 0 !important;
 }
 
@@ -716,7 +715,7 @@ hr.cns-sig-barrier {
 
 .cns-forum-new-post-indicator .icon-cns-general--new-posts,
 .cns-forum-new-post-indicator .icon-cns-general--new-posts-redirect {
-	color: {$GET,seed_alternate};
+	color: {$GET,seed};
 }
 
 .cns-forum-num-topics {
@@ -742,7 +741,7 @@ hr.cns-sig-barrier {
 /*{+END}*/
 
 .cns-forum-topic-title-bits-left .icon {
-	color: {$GET,seed_alternate};
+	color: {$GET,seed};
 }
 
 .cns-forum-topic-description {

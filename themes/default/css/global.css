@@ -60,7 +60,6 @@ In mobile mode:
 /* Used to initiate equations (although running the Theme Wizard replaces these with what the user chooses - which is how it works) */
 {$THEMEWIZARD_COLOR,#2388ef,seed,100% 2388ef}
 {$THEMEWIZARD_COLOR,#6c757d,seed_secondary,100% 6c757d}
-{$THEMEWIZARD_COLOR,#ff8900,seed_alternate,100% ff8900}
 {$THEMEWIZARD_COLOR,#ffffff,WB,100% FFFFFF}
 {$THEMEWIZARD_COLOR,#000000,BW,100% 000000}
 /*Theme seed is: 2388ef*/
@@ -1450,7 +1449,7 @@ body#main-website #main-website-inner, html>body div.global-middle-faux {
 	}
 
 	#panel-bottom {
-		margin: 0 1em;
+		/*margin: 0 1em;*/
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
@@ -1783,7 +1782,7 @@ body .accessibility-hidden { /* Contents should be made visible (or interpreted)
 .nothing-here::before,
 .more-here::before {
 	font-family: sans-serif;
-	color: {$GET,seed_alternate};
+	color: {$GET,seed};
 	content: '\025BA'; /* Rightward triangle */
 	vertical-align: middle;
 	padding-right: 1em;
@@ -3035,6 +3034,10 @@ div.zebra-0+div.zebra-1, div.zebra-1+div.zebra-0 {
 	color: {$GET,WB} !important;
 }
 
+.tooltip-ownlayout * {
+	color: {$GET,WB} !important;
+}
+
 .tooltip-ownlayout a {
 	color: {$GET,WB} !important;
 	font-weight: bold;
@@ -3915,7 +3918,7 @@ ul.actions-list-super-compact > li {
 ul.actions-list > li > .icon,
 ul.actions-list-compact > li > .icon,
 ul.actions-list-super-compact > li > .icon {
-	color: {$GET,seed_alternate};
+	color: {$GET,seed};
 	width: 14px;
 	height: 14px;
 }
@@ -5003,44 +5006,6 @@ fieldset:disabled a.btn {
 .btn-secondary:not(:disabled):not(.disabled).active:focus,
 .show > .btn-secondary.dropdown-toggle:focus {
 	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed_secondary},0.5};
-}
-
-.btn-alternate {
-	color: {$GET,text_light};
-	background-color: {$GET,seed_alternate};
-	border-color: {$GET,seed_alternate};
-}
-
-.btn-alternate:hover {
-	color: {$GET,text_light};
-	background-color: {$COLOR_DARKEN,{$GET,seed_alternate},7.5%};
-	border-color: {$COLOR_DARKEN,{$GET,seed_alternate},10%};
-}
-
-.btn-alternate:focus, 
-.btn-alternate.focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed_alternate},0.5};
-}
-
-.btn-alternate.disabled, 
-.btn-alternate:disabled {
-	color: {$GET,text_light};
-	background-color: {$GET,seed_alternate};
-	border-color: {$GET,seed_alternate};
-}
-
-.btn-alternate:not(:disabled):not(.disabled):active, 
-.btn-alternate:not(:disabled):not(.disabled).active, 
-.show > .btn-alternate.dropdown-toggle {
-	color: {$GET,text_light};
-	background-color: {$COLOR_DARKEN,{$GET,seed_alternate},10%};
-	border-color: {$COLOR_DARKEN,{$GET,seed_alternate},12.5%};
-}
-
-.btn-alternate:not(:disabled):not(.disabled):active:focus, 
-.btn-alternate:not(:disabled):not(.disabled).active:focus, 
-.show > .btn-alternate.dropdown-toggle:focus {
-	box-shadow: 0 0 0 3px {$COLOR_RGBA,{$GET,seed_alternate},0.5};
 }
 
 .btn-success {
