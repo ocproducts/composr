@@ -590,7 +590,7 @@
 
         var block = document.getElementById('field_set_' + params.name);
         block.addEventListener('click', function() {
-            $DOM.trigger(document.getElementById('choose-{NAME;/}'), 'click');
+            $dom.trigger(document.getElementById('choose-' + params.name), 'click');
         });
     };
 
