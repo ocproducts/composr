@@ -1269,6 +1269,8 @@ function has_no_forum()
  */
 function addon_installed($addon, $check_hookless = false)
 {
+    require_code('database');
+
     global $ADDON_INSTALLED_CACHE;
     if ($ADDON_INSTALLED_CACHE == array()) {
         if (function_exists('persistent_cache_get')) {
