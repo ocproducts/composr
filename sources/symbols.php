@@ -6656,7 +6656,7 @@ function ecv_IS_ICON_IN_SVG_SPRITE($lang, $escaped, $param)
     if ($sprite === null) {
         require_code('themes');
         $theme = isset($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
-        $is_monochrome = function_exists('get_option') && (get_option('use_monochrome_icons') === '1');
+        $is_monochrome = function_exists('get_theme_option') && (get_theme_option('use_monochrome_icons') === '1');
         $path = get_file_base() . '/themes/' . $theme . '/images/icons' . ($is_monochrome ? '_monochrome' : '') . '_sprite.svg';
         $sprite = '';
 
