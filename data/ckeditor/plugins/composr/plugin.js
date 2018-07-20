@@ -36,7 +36,7 @@
 				aub = document.getElementById('js-attachment-upload-button'),
 				doingAttachmentUploads = Boolean(aub) && (aub.classList.contains('for-field-' + editor.element.$.id));
 
-			if (doingAttachmentUploads) {
+			if ((typeof window.rebuildAttachmentButtonForNext === 'function') && doingAttachmentUploads) { // NB: The window.rebuildAttachmentButtonForNext type check is important, don't remove
 				if (!aub || $dom.notDisplayed($dom.parent(aub, '#post-special-options, #post-special-options2, .post-special-options'))) { // If attachment button was not placed elsewhere
 					// Attach Plupload to the Image button on the WYSIWYG editor
 					setTimeout(function () {

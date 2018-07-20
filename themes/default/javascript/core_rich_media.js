@@ -14,7 +14,7 @@
             window.$plupload.preinitFileInput("attachment_multi", "file" + params.i, params.postingFieldName, params.filter);
         }
 
-        if (params.syndicationJson !== undefined) {
+        if (params.syndicationJson != null) {
             $cms.requireJavascript('editing').then(function () {
                 window.$editing.showUploadSyndicationOptions("file" + params.i, params.syndicationJson, !!params.noQuota);
             });
@@ -318,6 +318,7 @@
         }
     });
 
+    $cms.views.AttachmentsBrowser = AttachmentsBrowser;
     /**
      * @memberof $cms.views
      * @class
@@ -412,15 +413,15 @@
     };
 
     $cms.templates.attachments = function attachments(params, container) {
+        window.attachmentTemplate = strVal(params.attachmentTemplate);
         window.maxAttachments = Number(params.maxAttachments) || 0;
         window.numAttachments = Number(params.numAttachments) || 0;
 
         var postingFieldName = strVal(params.postingFieldName);
 
         if ($cms.browserMatches('simplified_attachments_ui')) {
-            window.attachmentTemplate = strVal(params.attachmentTemplate);
             window.numAttachments = 1;
-            window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext;
+            window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext; // Must only be defined when 'simplified_attachments_ui' is enabled
 
             $dom.load.then(function () {
                 var aub = document.getElementById('js-attachment-upload-button');

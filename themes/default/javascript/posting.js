@@ -45,9 +45,11 @@
             addTo.appendChild(newDiv);
         }
 
-        // Rebuild uploader button, if we have a singular button
-        window.rebuildAttachmentButtonForNext(postingFieldName);
-
+        // Rebuild uploader button, if we have a singular button. NB: The window.rebuildAttachmentButtonForNext type check is important, don't remove.
+        if (typeof window.rebuildAttachmentButtonForNext === 'function') {
+            window.rebuildAttachmentButtonForNext(postingFieldName);
+        }
+        
         $dom.triggerResize();
     }
 
@@ -190,6 +192,8 @@
                             $posting.showPreviewImagesForAttachmentComcodes(post);
                         });
                     }
+
+                    resolvePromise();
                 });
             }
 
