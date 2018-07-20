@@ -43,8 +43,10 @@
             addTo.appendChild(newDiv);
         }
 
-        // Rebuild uploader button, if we have a singular button
-        window.rebuildAttachmentButtonForNext(postingFieldName);
+        // Rebuild uploader button, if we have a singular button. NB: The window.rebuildAttachmentButtonForNext type check is important, don't remove.
+        if (typeof window.rebuildAttachmentButtonForNext === 'function') {
+            window.rebuildAttachmentButtonForNext(postingFieldName);
+        }
 
         $dom.triggerResize();
     }
@@ -73,7 +75,7 @@
         number = Number(number);
         filename = strVal(filename);
         multi = Boolean(multi);
-
+        
         return new Promise(function (resolvePromise) {
             var post = document.getElementById(fieldName),
                 tmpForm = post.form;
@@ -175,6 +177,7 @@
                 return $util.promiseSequence(promiseCalls).then(function () {
                     // Add field for next one
                     var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened in-between
+                    
                     if (addAnotherField) {
                         addAttachment(window.numAttachments + 1, fieldName);
                     }
@@ -186,6 +189,8 @@
                             $posting.showPreviewImagesForAttachmentComcodes(post);
                         });
                     }
+
+                    resolvePromise();
                 });
             }
 
@@ -242,6 +247,7 @@
                     promise.then(function () {
                         // Add field for next one
                         var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened in-between
+         
                         if (addAnotherField) {
                             addAttachment(window.numAttachments + 1, fieldName);
                         }

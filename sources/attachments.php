@@ -335,6 +335,7 @@ function attachments_script()
 function attachment_popup_script()
 {
     require_lang('comcode');
+    require_javascript('core_rich_media');
     require_javascript('editing');
 
     $db = (get_page_name() == 'topics') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];

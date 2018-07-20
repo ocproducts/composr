@@ -1069,12 +1069,11 @@
 
     $cms.templates.formScreenInputUploadMulti = function formScreenInputUploadMulti(params, container) {
         var nameStub = strVal(params.nameStub),
-            index = strVal(params.i),
-            syndicationJson = strVal(params.syndicationJson);
+            index = strVal(params.i);
 
-        if (params.syndicationJson !== undefined) {
+        if (params.syndicationJson != null) {
             $cms.requireJavascript('editing').then(function () {
-                window.$editing.showUploadSyndicationOptions(nameStub, syndicationJson);
+                window.$editing.showUploadSyndicationOptions(nameStub, params.syndicationJson);
             });
         }
 

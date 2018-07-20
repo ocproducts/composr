@@ -14242,7 +14242,7 @@
         name = strVal(name);
         postingFieldName = strVal(postingFieldName) || 'post';
         numFiles = Number(numFiles) || 0;
-
+        
         if (!pageType.includes('attachment')) {
             return;
         }
