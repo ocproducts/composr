@@ -158,7 +158,7 @@ function peek_suppress_error_death()
 /**
  * PHP's environment can be a real mess across servers. Cleanup the best we can.
  * See phpstub.php for info on what environmental data we can rely on.
- * See Chris's own comments on http://php.net/manual/en/reserved.variables.server.php also
+ * See Chris's own comments on http://php.net/manual/en/reserved.variables.server.php also.
  */
 function fixup_bad_php_env_vars()
 {

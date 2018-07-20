@@ -347,6 +347,13 @@ class Module_admin_svg_sprites
         ));
     }
 
+    /**
+     * Override icon paths.
+     *
+     * @param  array $icon_paths Icon paths
+     * @param  array $overriding_icon_paths Overriding icon paths
+     * @return array
+     */
     public function _override_icon_paths($icon_paths, $overriding_icon_paths)
     {
         $base_path_regex = '^' . preg_quote(get_file_base(), '#') . '/themes/[\w\-]+/images(_custom)?/icons(_monochrome)?/';
