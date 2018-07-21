@@ -186,6 +186,8 @@ class css_file_test_set extends cms_test_case
                     while (($file = readdir($dh)) !== false) {
                         // Exceptions
                         $exceptions = array(
+                            '.',
+                            '..',
                             'columns.css',
                             'google_search.css',
                             'jquery_ui.css',
@@ -283,6 +285,7 @@ class css_file_test_set extends cms_test_case
             'input-',
             'align',
             'display-type-',
+            'icon-',
         );
         if (preg_match('#^' . implode('|', $prefix_exceptions) . '#', $class) != 0) {
             return true;
@@ -734,6 +737,7 @@ class css_file_test_set extends cms_test_case
             'time-spin-btn-container',
             'time-spin-btn-down',
             'time-spin-btn-up',
+            'checklist-delete',
             'ui-accordion',
             'ui-accordion-content',
             'ui-accordion-header',
