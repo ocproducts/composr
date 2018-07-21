@@ -223,7 +223,7 @@ class theme_images_test_set extends cms_test_case
 
             foreach ($images_there as $image => $is_used) {
                 // Exceptions
-                if (in_array($image, array('cns_emoticons/none', 'audio_thumb', 'button1', 'button2', 'na', 'under_construction_animated', '-logo', 'standalone_logo', 'maps/star_highlight'))) { // Used dynamically
+                if (in_array($image, array('icons_sprite', 'icons_monochrome_sprite', 'cns_emoticons/none', 'audio_thumb', 'button1', 'button2', 'na', 'under_construction_animated', '-logo', 'standalone_logo', 'maps/star_highlight'))) { // Used dynamically
                     continue;
                 }
                 if (in_array($image, array('icons/calendar/activity', 'icons/calendar/duty', 'icons/calendar/festival', 'icons/calendar/rss'))) { // Not used by default but useful
@@ -232,7 +232,7 @@ class theme_images_test_set extends cms_test_case
                 if (in_array($image, array('tracker/credit', 'icons/calendar/booking', 'youtube_channel_integration/youtube_channel_integration_icon'))) { // Addon files not used by default but useful
                     continue;
                 }
-                if (preg_match('#^([12]x/)?(chatcode_editor|results|cns_post_map|cns_general|progress_indicator|comcode_editor|realtime_rain|logo|cns_default_avatars|flags|icons/spare|icons|twitter_feed)/#', $image) != 0) { // Dynamic choices / dynamic sets
+                if (preg_match('#^([12]x/)?(chatcode_editor|results|cns_post_map|cns_general|progress_indicator|comcode_editor|realtime_rain|logo|cns_default_avatars|flags|icons/spare|icons|icons_monochrome|twitter_feed)/#', $image) != 0) { // Dynamic choices / dynamic sets
                     continue;
                 }
                 if (preg_match('#^calendar/priority_#', $image) != 0) { // Dynamic set
