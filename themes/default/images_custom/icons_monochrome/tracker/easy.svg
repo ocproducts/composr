@@ -3,8 +3,7 @@
 	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
 ]>
 <svg version="1.1"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-	 x="0px" y="0px" width="16px" height="16px" viewBox="-0.746 -0.747 16 16" xml:space="preserve">
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="-0.746 -0.747 16 16">
 <defs>
 </defs>
 <path d="M13.585,0H0.923C0.413,0,0,0.413,0,0.922v12.662c0,0.51,0.413,0.924,0.923,0.924h12.662c0.509,0,0.923-0.414,0.923-0.924
