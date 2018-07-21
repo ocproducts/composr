@@ -508,6 +508,10 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>{$IS_FRIEND,2,3}</td>
 			<td>Detect if the second parameter/member ID (or current member if no second parameter) has befriended the first parameter/member ID.</td>
 		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$IS_ICON_IN_SVG_SPRITE,admin/add}</td>
+			<td>Detect if the provided icon name/path is compiled in an SVG sprite (internal use only).</td>
+		</tr>
 	</tbody>
 </table>
 [/html]
