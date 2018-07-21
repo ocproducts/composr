@@ -7745,6 +7745,18 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SPAM
         DESCRIPTION_DELETE_CONTENT
         DESCRIPTION_DELETE_THIS
+        USE_MONOCHROME_ICONS
+        SVG_SPRITES
+        PREVIEW_SVG_SPRITE
+        PREVIEW_SPRITE
+        GENERATE_SVG_SPRITE
+        GENERATE_SPRITE
+        CHOOSE_THEME
+        MONOCHROME_ICONS
+        PLEASE_GENERATE_SPRITE
+        ADDED_ICON
+        GENERATING_SPRITE
+        PREVIEWING_SPRITE
     ')));
 
     $non_admin_files = array(
