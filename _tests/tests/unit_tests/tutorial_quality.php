@@ -118,6 +118,10 @@ class tutorial_quality_test_set extends cms_test_case
         $path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($path);
         while (($file = readdir($dh)) !== false) {
+            if (($file === '.') || ($file === '..')) {
+                continue;
+            }
+
             $only = get_param_string('only', null);
             if (($only !== null) && ($only != $file)) {
                 continue;
