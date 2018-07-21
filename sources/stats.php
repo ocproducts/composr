@@ -32,7 +32,7 @@ function get_alexa_rank($url)
     }
 
     $_url = 'https://www.alexa.com/minisiteinfo/' . urlencode($url);
-    $result = http_get_contents($_url, array('trigger_error' => false, 'timeout' => 1.0));
+    $result = http_get_contents($_url, array('trigger_error' => false, 'timeout' => 2.0));
     if ($result === null) {
         return array('', '');
     }
