@@ -378,6 +378,10 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
 {
     global $SITE_INFO;
 
+    if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+        fatal_exit('Windows is not supported for this operation.');
+    }
+
     // Create database
     $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $SITE_INFO['mysql_root_password'], 'cms_');
     $master_conn->query('DROP DATABASE IF EXISTS `demonstratr_site_' . $codename . '`');
