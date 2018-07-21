@@ -486,10 +486,10 @@
                     self.option('right');
                 }
             });
-
-            /*{$SET,icon_proceed,{+START,INCLUDE,ICON}NAME=buttons/proceed{+END}}*/
-            /*{$SET,icon_yes,{+START,INCLUDE,ICON}NAME=buttons/yes{+END}}*/
-            /*{$SET,icon_no,{+START,INCLUDE,ICON}NAME=buttons/no{+END}}*/
+            
+            /*{+START,SET,icon_proceed}*//*{+START,INCLUDE,ICON}NAME=buttons/proceed{+END}*//*{+END}*/
+            /*{+START,SET,icon_yes}*//*{+START,INCLUDE,ICON}NAME=buttons/yes{+END}*//*{+END}*/
+            /*{+START,SET,icon_no}*//*{+START,INCLUDE,ICON}NAME=buttons/no{+END}*//*{+END}*/
 
             switch (this.type) {
                 case 'iframe':
@@ -634,7 +634,7 @@
             // Cancel button handled either via button in corner (if there's no other buttons) or another button in the panel (if there's other buttons)
             if (this.cancelButton) {
                 if (this.buttonContainerEl.firstElementChild) {
-                    /*{$SET,icon_cancel,{+START,INCLUDE,ICON}NAME=buttons/cancel{+END}}*/
+                    /*{+START,SET,icon_cancel}*//*{+START,INCLUDE,ICON}NAME=buttons/cancel{+END}*//*{+END}*/
                     button = $dom.create('button', {
                         'type': 'button',
                         'html': '{$GET;^,icon_cancel} ' + this.cancelButton,

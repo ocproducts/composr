@@ -385,7 +385,7 @@
         proceedDiv.style.marginTop = '1em';
 
         // Cancel button
-        /*{$SET,icon_cancel,{+START,INCLUDE,ICON}NAME=buttons/cancel{+END}}*/
+        /*{+START,SET,icon_cancel}*//*{+START,INCLUDE,ICON}NAME=buttons/cancel{+END}*//*{+END}*/
         var button = document.createElement('button');
         button.type = 'button';
         button.className = 'buttons--cancel button-screen-item';
@@ -398,7 +398,7 @@
         proceedDiv.appendChild(button);
 
         // Submit button
-        /*{$SET,proceed_icon,{+START,INCLUDE,ICON}NAME=buttons/proceed{+END}}*/
+        /*{+START,SET,proceed_icon}*//*{+START,INCLUDE,ICON}NAME=buttons/proceed{+END}*//*{+END}*/
         button = document.createElement('button');
         button.type = 'submit';
         button.className = 'buttons--proceed button-screen-item';

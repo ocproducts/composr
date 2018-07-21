@@ -50,7 +50,7 @@
         var button = document.createElement('button');
         button.type = 'button';
         button.className = 'button-micro buttons--calculate';
-        /*{$SET,icon_calculate,{+START,INCLUDE,ICON}NAME=buttons/calculate{+END}}*/
+        /*{+START,SET,icon_calculate}*//*{+START,INCLUDE,ICON}NAME=buttons/calculate{+END}*//*{+END}*/
         $dom.html(button, '{$GET;^,icon_calculate} {!backups:CALCULATE_SIZE;^}');
         submitButton.parentNode.insertBefore(button, submitButton);
         button.addEventListener('click', function () {

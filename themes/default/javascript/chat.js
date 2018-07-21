@@ -1270,7 +1270,7 @@
         //div.style.left=($dom.getWindowWidth()/2-140)+'px';
         div.style.right = '1em';
         div.style.bottom = ((document.body.querySelectorAll('.im-event').length) * 185 + 20) + 'px';
-        /*{$SET,icon_buttons_proceed2,{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END}}*/
+        /*{+START,SET,icon_buttons_proceed2}*//*{+START,INCLUDE,ICON}NAME=buttons/proceed2{+END}*//*{+END}*/
         var links = document.createElement('ul');
         links.className = 'actions-list';
 
