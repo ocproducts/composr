@@ -1572,7 +1572,7 @@
         if (helpId === undefined) {
             helpId = icon.parentNode.id + '-help';
         }
-        
+
         var help = document.getElementById(helpId);
 
         while (help !== null) {

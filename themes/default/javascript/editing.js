@@ -195,7 +195,7 @@
                 if (typeof window.rebuildAttachmentButtonForNext === 'function') { // NB: The window.rebuildAttachmentButtonForNext type check is important, don't remove.
                     window.rebuildAttachmentButtonForNext(id, 'js-attachment-upload-button');
                 }
-                
+
                 // Unload editor
                 var wysiwygData = window.wysiwygEditors[id].getData();
                 try {

@@ -415,10 +415,10 @@
     $cms.templates.attachments = function attachments(params, container) {
         window.attachmentTemplate = strVal(params.attachmentTemplate);
         window.maxAttachments = Number(params.maxAttachments) || 0;
-        window.numAttachments = Number(params.numAttachments) || 0; 
+        window.numAttachments = Number(params.numAttachments) || 0;
 
         var postingFieldName = strVal(params.postingFieldName);
-        
+
         if ($cms.browserMatches('simplified_attachments_ui')) {
             window.numAttachments = 1;
             window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext; // Must only be defined when 'simplified_attachments_ui' is enabled

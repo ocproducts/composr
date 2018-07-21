@@ -75,7 +75,7 @@
         number = Number(number);
         filename = strVal(filename);
         multi = Boolean(multi);
-        
+
         return new Promise(function (resolvePromise) {
             var post = document.getElementById(fieldName),
                 tmpForm = post.form;
@@ -177,7 +177,7 @@
                 return $util.promiseSequence(promiseCalls).then(function () {
                     // Add field for next one
                     var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened in-between
-                    
+
                     if (addAnotherField) {
                         addAttachment(window.numAttachments + 1, fieldName);
                     }
@@ -247,7 +247,7 @@
                     promise.then(function () {
                         // Add field for next one
                         var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened in-between
-         
+
                         if (addAnotherField) {
                             addAttachment(window.numAttachments + 1, fieldName);
                         }
