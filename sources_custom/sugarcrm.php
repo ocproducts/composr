@@ -397,7 +397,7 @@ function save_message_into_sugarcrm($sync_type, $mappings, $subject, $body, $fro
     );
     $entity_id = $response['id'];
 
-    // Create relationship between Contact (if exists) and Lead 
+    // Create relationship between Contact (if exists) and Lead
     if ($sync_type == 'leads') {
         if (($from_email != '') && ($contact_details !== null)) {
             $contact_id = $contact_details['id'];

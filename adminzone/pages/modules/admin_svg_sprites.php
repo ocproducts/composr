@@ -172,11 +172,11 @@ class Module_admin_svg_sprites
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme(''); // Default to the theme for the Welcome zone
         $theme_entries = create_selection_list_themes($theme, false, true);
         $theme_field = form_input_list(do_lang_tempcode('CHOOSE_THEME'), make_string_tempcode(''), 'theme', $theme_entries);
-        $monochrome_field = form_input_tick(do_lang_tempcode('MONOCHROME_ICONS'), '', 'monochrome', get_theme_option('use_monochrome_icons') === '1');
+        $monochrome_field = form_input_tick(do_lang_tempcode('MONOCHROME_ICONS'), '', 'monochrome', get_option('use_monochrome_icons') === '1');
 
-        $fields = '';
-        $fields .= $theme_field;
-        $fields .= $monochrome_field;
+        $fields = new Tempcode();
+        $fields->attach($theme_field);
+        $fields->attach($monochrome_field);
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_preview_svg_sprite'), '_SELF');
         $submit_name = do_lang_tempcode('PREVIEW_SPRITE');
@@ -205,24 +205,23 @@ class Module_admin_svg_sprites
 
         $theme = post_param_string('theme');
         $monochrome = post_param_integer('monochrome', 0);
-
-        $sprite_path = get_file_base() . '/themes/' . $theme . '/images/icons' . ($monochrome ? '_monochrome' : '') . '_sprite.svg';
+        $sprite_path = get_file_base() . '/themes/' . $theme . '/images/icons' . (($monochrome === 1) ? '_monochrome' : '') . '_sprite.svg';
 
         if (!file_exists($sprite_path)) {
             warn_exit(do_lang('PLEASE_GENERATE_SPRITE', $theme));
         }
 
         $svg_xml = simplexml_load_string(file_get_contents($sprite_path));
-        $sprite_url = find_theme_image('icons' . ($monochrome ? '_monochrome' : '') . '_sprite', true, false, $theme);
+        $sprite_url = find_theme_image('icons' . (($monochrome === 1) ? '_monochrome' : '') . '_sprite', true, false, $theme);
 
-        $icons = '';
+        $icons = new Tempcode();
         foreach ($svg_xml->symbol as $symbol) {
             $symbol_id = (string)$symbol['id'];
-            $icons .= do_template('PREVIEW_SVG_SPRITE_ICON', array(
+            $icons->attach(do_template('PREVIEW_SVG_SPRITE_ICON', array(
                 'SPRITE_URL' => $sprite_url,
                 'SYMBOL_ID' => $symbol_id,
                 'ICON_NAME' => str_replace('__', '/', $symbol_id),
-            ))->evaluate();
+            )));
         }
 
         return do_template('PREVIEW_SVG_SPRITE_SCREEN', array(
@@ -244,11 +243,11 @@ class Module_admin_svg_sprites
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme(''); // Default to the theme for the Welcome zone
         $theme_entries = create_selection_list_themes($theme, false, true);
         $theme_field = form_input_list(do_lang_tempcode('CHOOSE_THEME'), make_string_tempcode(''), 'theme', $theme_entries);
-        $monochrome_field = form_input_tick(do_lang_tempcode('MONOCHROME_ICONS'), '', 'monochrome', get_theme_option('use_monochrome_icons') === '1');
+        $monochrome_field = form_input_tick(do_lang_tempcode('MONOCHROME_ICONS'), '', 'monochrome', get_option('use_monochrome_icons') === '1');
 
-        $fields = '';
-        $fields .= $theme_field;
-        $fields .= $monochrome_field;
+        $fields = new Tempcode();
+        $fields->attach($theme_field);
+        $fields->attach($monochrome_field);
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_generate_svg_sprite'), '_SELF');
         $submit_name = do_lang_tempcode('GENERATE_SPRITE');
@@ -279,11 +278,11 @@ class Module_admin_svg_sprites
 
         $icon_paths = array();
 
-        $default_theme_icons_dir = get_file_base() . '/themes/default/images/icons' . ($monochrome ? '_monochrome' : '');
-        $default_theme_custom_icons_dir = get_file_base() . '/themes/default/images_custom/icons' . ($monochrome ? '_monochrome' : '');
+        $default_theme_icons_dir = get_file_base() . '/themes/default/images/icons' . (($monochrome === 1) ? '_monochrome' : '');
+        $default_theme_custom_icons_dir = get_file_base() . '/themes/default/images_custom/icons' . (($monochrome === 1) ? '_monochrome' : '');
 
-        $theme_icons_dir = get_file_base() . '/themes/' . $theme . '/images/icons' . ($monochrome ? '_monochrome' : '');
-        $theme_custom_icons_dir = get_file_base() . '/themes/' . $theme . '/images_custom/icons' . ($monochrome ? '_monochrome' : '');
+        $theme_icons_dir = get_file_base() . '/themes/' . $theme . '/images/icons' . (($monochrome === 1) ? '_monochrome' : '');
+        $theme_custom_icons_dir = get_file_base() . '/themes/' . $theme . '/images_custom/icons' . (($monochrome === 1) ? '_monochrome' : '');
 
         if (file_exists($default_theme_icons_dir)) {
             $icon_paths = get_directory_contents($default_theme_icons_dir, $default_theme_icons_dir, IGNORE_ACCESS_CONTROLLERS, true, true, array('svg'));
@@ -317,7 +316,7 @@ class Module_admin_svg_sprites
 
         ksort($icon_paths);
 
-        $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
+        $output = '<' . '?xml version="1.0" encoding="utf-8"?' . '>' . "\n";
         $output .= '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' . "\n";
 
         foreach ($icon_paths as $icon_name => $icon_path) {
@@ -334,7 +333,7 @@ class Module_admin_svg_sprites
 
         $output .= "</svg>\n";
 
-        $sprite_path = get_file_base() . '/themes/default/images/icons' . ($monochrome ? '_monochrome' : '') . '_sprite.svg';
+        $sprite_path = get_file_base() . '/themes/default/images/icons' . (($monochrome === 1) ? '_monochrome' : '') . '_sprite.svg';
         $icons_added = array_keys($icon_paths);
 
         file_put_contents($sprite_path, $output);
