@@ -5770,6 +5770,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MODULE_TRANS_NAME_admin_setupwizard
         MODULE_TRANS_NAME_admin_sitemap
         MODULE_TRANS_NAME_admin_ssl
+        MODULE_TRANS_NAME_admin_svg_sprites
         MODULE_TRANS_NAME_admin_stats
         MODULE_TRANS_NAME_admin_themes
         MODULE_TRANS_NAME_admin_themewizard
