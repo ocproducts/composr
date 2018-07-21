@@ -127,9 +127,6 @@ class _broken_links_test_set extends cms_test_case
         if (empty($url)) {
             return;
         }
-        if (preg_match('#^http://www\.stumbleupon\.com/submit\?url=#', $url) != 0) {
-            return;
-        }
         if (preg_match('#^http://digg\.com/submit\?phase=2&url=#', $url) != 0) {
             return;
         }

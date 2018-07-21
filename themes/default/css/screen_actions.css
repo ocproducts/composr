@@ -71,10 +71,6 @@
 	background-image: url('{$IMG_INLINE;,icons/24x24/links/twitter}');
 }
 
-.screen_actions .stumbleupon {
-	background-image: url('{$IMG_INLINE;,icons/24x24/links/stumbleupon}');
-}
-
 .screen_actions .digg {
 	background-image: url('{$IMG_INLINE;,icons/24x24/links/digg}');
 }
@@ -98,10 +94,6 @@
 
 	.screen_actions .twitter {
 		background-image: url('{$IMG;,icons/48x48/links/twitter}');
-	}
-
-	.screen_actions .stumbleupon {
-		background-image: url('{$IMG;,icons/48x48/links/stumbleupon}');
 	}
 
 	.screen_actions .digg {
