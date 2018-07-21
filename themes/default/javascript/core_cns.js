@@ -231,7 +231,7 @@
     };
 
     $cms.functions.hookProfilesTabsEditDeleteRenderTab = function hookProfilesTabsEditDeleteRenderTab() {
-        var suffix = $cms.filter.id('{!cns:DELETE;^}').toLowerCase();
+        var suffix = $cms.filter.id('{!DELETE;^}').toLowerCase();
 
         window['load_tab__edit__' + suffix] = function () {
             var submitButton = document.getElementById('account-submit-button'),
