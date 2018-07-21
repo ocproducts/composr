@@ -4,8 +4,7 @@
 	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
 ]>
 <svg version="1.1"
-	 xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48px" height="48px" viewBox="-4.304 -2.643 48 48"
-	 xml:space="preserve">
+	 xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48px" height="48px" viewBox="-4.304 -2.643 48 48">
 <defs>
 </defs>
 <path id="Baidu_2_" d="M9.735,15.941c0.254,3.63-1.713,6.727-4.397,6.915c-2.682,0.188-5.062-2.604-5.315-6.233

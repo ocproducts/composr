@@ -4,8 +4,7 @@
 	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
 ]>
 <svg version="1.1"
-	 xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48px" height="48px" viewBox="-5.915 -3.697 48 48"
-	 xml:space="preserve">
+	 xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48px" height="48px" viewBox="-5.915 -3.697 48 48">
 <defs>
 </defs>
 <polygon points="0,0 0,7.885 2.447,7.885 2.447,2.538 33.724,2.538 33.724,38.066 2.447,38.066 2.447,31.27 0,31.27 0,40.605 

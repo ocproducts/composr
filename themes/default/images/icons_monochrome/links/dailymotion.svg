@@ -4,8 +4,7 @@
 	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
 ]>
 <svg version="1.1"
-	 xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48px" height="48px" viewBox="-7.616 -2.725 48 48"
-	 xml:space="preserve">
+	 xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48px" height="48px" viewBox="-7.616 -2.725 48 48">
 <defs>
 </defs>
 <path id="Dailymotion_1_" d="M23.675,1.941v13.166c0,0-3.389-4.717-10.12-3.687c-2.903,0.443-5.818,1.662-8.058,3.582

@@ -4,8 +4,7 @@
 	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
 ]>
 <svg version="1.1"
-	 xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48px" height="48px" viewBox="-1.915 -6.822 48 48"
-	 xml:space="preserve">
+	 xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48px" height="48px" viewBox="-1.915 -6.822 48 48">
 <defs>
 </defs>
 <path id="Playstation_2_" d="M23.784,34.355l-6.743-2.891V0c0,0,14.65,2.461,16.668,8.562c2.018,6.101-1.125,10.052-2.229,10.169

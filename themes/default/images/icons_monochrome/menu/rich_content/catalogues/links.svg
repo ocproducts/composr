@@ -4,8 +4,7 @@
 	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
 ]>
 <svg version="1.1"
-	 xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48px" height="48px" viewBox="-2.688 -2.25 48 48"
-	 xml:space="preserve">
+	 xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48px" height="48px" viewBox="-2.688 -2.25 48 48">
 <defs>
 </defs>
 <path d="M39.4,0H3.224C1.443,0,0,1.343,0,3v37.5c0,1.657,1.443,3,3.224,3H39.4c1.779,0,3.225-1.343,3.225-3V3
