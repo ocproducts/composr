@@ -145,7 +145,7 @@ class Module_admin_svg_sprites
     }
 
     /**
-     * @return Tempcode The UI
+     * @return Tempcode The browse UI
      */
     public function browse()
     {
@@ -162,7 +162,7 @@ class Module_admin_svg_sprites
     }
 
     /**
-     * @return Tempcode The UI
+     * @return Tempcode The Choose theme to preview UI
      */
     public function preview_svg_sprite()
     {
@@ -196,7 +196,7 @@ class Module_admin_svg_sprites
     }
 
     /**
-     * @return Tempcode The UI
+     * @return Tempcode The Preview SVG sprite UI
      */
     public function _preview_svg_sprite()
     {
@@ -233,7 +233,7 @@ class Module_admin_svg_sprites
     }
 
     /**
-     * @return Tempcode The UI
+     * @return Tempcode The Choose Theme UI
      */
     public function generate_svg_sprite()
     {
@@ -267,7 +267,7 @@ class Module_admin_svg_sprites
     }
 
     /**
-     * @return Tempcode The UI
+     * @return Tempcode The Generating Sprite UI
      */
     public function _generate_svg_sprite()
     {
