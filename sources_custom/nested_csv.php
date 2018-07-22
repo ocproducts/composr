@@ -42,7 +42,7 @@ function get_nested_csv_structure()
             null,
             null,
             null,
-            0,
+            null,
             null // show on join form
         );
     } else {
