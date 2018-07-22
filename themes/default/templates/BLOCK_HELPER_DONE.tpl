@@ -142,14 +142,18 @@
 					ob.bind('Error',shutdown_overlay);
 
 					// Keep copying the upload indicator
-					var progress=get_inner_html(target_window.document.getElementById('fsUploadProgress_'+field));
-					window.setInterval(function() {
-						if (progress!='')
-						{
-							set_inner_html(loading_space,progress);
-							loading_space.className='spaced flash';
-						}
-					},100);
+					var image_progress_element=target_window.document.getElementById('fsUploadProgress_'+field);
+					if (image_progress_element)
+					{
+						var progress=get_inner_html(image_progress_element);
+						window.setInterval(function() {
+							if (progress!='')
+							{
+								set_inner_html(loading_space,progress);
+								loading_space.className='spaced flash';
+							}
+						},100);
+					}
 
 					attached_event_action=true;
 				}
