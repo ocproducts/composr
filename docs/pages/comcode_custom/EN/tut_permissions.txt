@@ -178,6 +178,12 @@ There are FirePHP equivalents in other browsers, but for simplicity we have focu
 
 As an alternative to FirePHP, you can create an empty writable [tt]data_custom/permission_checks.log[/tt] file. All failed permission checks will be logged to it.
 
+If you set a hidden value in Commandr then all checks will be logged (with pass status):
+[code="Commandr"]
+:set_value('permission_log_success_too', '1');
+[/code]
+Just note that this will make the logs very large very quickly.
+
 Just don't leave the file there or it'll get very big, very fast!
 
 [title="3"]Refreshing forms[/title]
