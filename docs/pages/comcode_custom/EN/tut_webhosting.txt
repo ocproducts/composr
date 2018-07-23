@@ -171,8 +171,6 @@ If you want automatic thumbnail generation you need a server with FFMPEG on it. 
 
 If LDAP integration is required (for corporate network authentication integration), the PHP LDAP extension ([tt]ldap[/tt]) is required.
 
-If Tornevall integration is required, the PHP SOAP extension ([tt]soap[/tt]) is required.
-
 If encrypted CPFs (Custom Profile Fields) are needed (see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page] tutorial) the PHP OpenSSL extension ([tt]openssl[/tt]) is required.
 
 If Composr-fed DKIM is needed the PHP OpenSSL extension ([tt]openssl[/tt]) is required.
