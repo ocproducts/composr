@@ -419,7 +419,7 @@
             }
 
             var editorSettings = {};
-            /*{+START,INCLUDE,WYSIWYG_SETTINGS,.js,javascript}*//*{+END}*/
+            /*{+START,INCLUDE,WYSIWYG_SETTINGS,.js,javascript}{+END}*/
 
             if (window.CKEDITOR.instances[element.id]) {
                 // Workaround "The instance "xxx" already exists" error in Google Chrome

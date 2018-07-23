@@ -1,4 +1,4 @@
-/*{+START,INCLUDE,core_rich_media,.js,javascript,,1}*//*{+END}*/
+/*{+START,INCLUDE,core_rich_media,.js,javascript,,1}{+END}*/
 
 (function ($cms) {
     $cms.templates.mediaAudioWebsafe = function mediaAudioWebsafe(params) {

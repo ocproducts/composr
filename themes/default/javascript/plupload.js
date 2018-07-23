@@ -14470,8 +14470,8 @@
         rep.disabled = true;
         rep.name = name + '_old';
         rep.id = name + '_old';
-        /*{+START,SET,icon_upload}*//*{+START,INCLUDE,ICON}NAME=buttons/upload{+END}*//*{+END}*/
-        /*{+START,SET,icon_clear}*//*{+START,INCLUDE,ICON}NAME=buttons/clear{+END}*//*{+END}*/
+        /*{+START,SET,icon_upload}{+START,INCLUDE,ICON}NAME=buttons/upload{+END}{+END}*/
+        /*{+START,SET,icon_clear}{+START,INCLUDE,ICON}NAME=buttons/clear{+END}{+END}*/
         $dom.append(
             rep.parentNode,
             '<div id="main-div-' + name + '" style="display: inline-block;">' +

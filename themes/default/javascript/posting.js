@@ -128,7 +128,7 @@
                 defaults.description = filepath; // Default caption to local file path
             }
 
-            /*{+START,INCLUDE,ATTACHMENT_UI_DEFAULTS,.js,javascript}*//*{+END}*/
+            /*{+START,INCLUDE,ATTACHMENT_UI_DEFAULTS,.js,javascript}{+END}*/
 
             if (!showOverlay) {
                 var comcode = '[' + tag;
