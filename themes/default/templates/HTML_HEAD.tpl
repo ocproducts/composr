@@ -1,7 +1,7 @@
 {$, - Note you will need to empty the template cache manually if you change this file manually due to the way it is included - }
 
 {$,The character set of the page}
-<meta charset="{$CHARSET*}" />
+<meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />
 
 {$,Page title}
 <title>{+START,IF_NON_PASSED,TITLE}{+START,IF_NON_EMPTY,{$HEADER_TEXT}}{$HEADER_TEXT*} &ndash; {+END}{$SITE_NAME*}{+END}{+START,IF_PASSED,TITLE}{TITLE}{+END}</title>
@@ -124,7 +124,7 @@
 
 {$,Google fonts}
 {+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_fonts}}
-	<link href="//fonts.googleapis.com/css?family={+START,LOOP,={$CONFIG_OPTION,google_fonts}}{+START,IF_NON_EMPTY,{_loop_key}}|{+END}{_loop_var&*}{+END}:400,400i,600,600i" rel="stylesheet" />
+	<link href="//fonts.googleapis.com/css?family={+START,LOOP,={$CONFIG_OPTION,google_fonts}}{+START,IF_NON_EMPTY,{_loop_key}}|{+END}{_loop_var&*}{+END}:400,400i,600,600i" rel="stylesheet" {$CSP_NONCE_HTML} />
 {+END}
 
 {$,If the page is doing a refresh include the markup for that}
