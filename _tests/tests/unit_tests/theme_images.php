@@ -223,7 +223,7 @@ class theme_images_test_set extends cms_test_case
 
             foreach ($images_there as $image => $is_used) {
                 // Exceptions
-                if (in_array($image, array('icons_sprite', 'icons_monochrome_sprite', 'cns_emoticons/none', 'audio_thumb', 'button1', 'button2', 'na', 'under_construction_animated', '-logo', 'standalone_logo', 'maps/star_highlight'))) { // Used dynamically
+                if (in_array($image, array('icons_sprite', 'icons_monochrome_sprite', 'cns_emoticons/none', 'audio_thumb', 'button1', 'button2', 'na', 'under_construction_animated', '-logo', 'standalone_logo', 'maps/star_highlight', 'google_translate'))) { // Used dynamically
                     continue;
                 }
                 if (in_array($image, array('icons/calendar/activity', 'icons/calendar/duty', 'icons/calendar/festival', 'icons/calendar/rss'))) { // Not used by default but useful
