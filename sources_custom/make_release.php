@@ -202,8 +202,8 @@ function make_installers($skip_file_grab = false)
 
         chdir($builds_path . '/builds/' . $version_dotted);
         $cmd = 'zip -r -9 ' . cms_escapeshellarg($quick_zip) . ' ' . cms_escapeshellarg('data.cms') . ' ' . cms_escapeshellarg('install.php');
-        $cmd_result = shell_exec($cmd . ' 2>&1');
-        if (!is_string($cmd_result)) {
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
+        if (!_is_exec_success($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
         $output2 = $cmd . ':' . "\n" . $cmd_result;
@@ -211,8 +211,8 @@ function make_installers($skip_file_grab = false)
 
         chdir(get_file_base() . '/data_custom/builds');
         $cmd = 'zip -r -9 ' . cms_escapeshellarg($quick_zip) . ' ' . cms_escapeshellarg('readme.txt');
-        $cmd_result = shell_exec($cmd . ' 2>&1');
-        if (!is_string($cmd_result)) {
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
+        if (!_is_exec_success($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
         $output2 = $cmd . ':' . "\n" . $cmd_result;
@@ -232,8 +232,8 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'zip -r -9 ' . cms_escapeshellarg($manual_zip) . ' *';
-        $cmd_result = shell_exec($cmd . ' 2>&1');
-        if (!is_string($cmd_result)) {
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
+        if (!_is_exec_success($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
         $output2 = $cmd . ':' . "\n" . $cmd_result;
@@ -256,18 +256,19 @@ function make_installers($skip_file_grab = false)
         // Do the main work...
 
         chdir($builds_path . '/builds/build/' . $version_branch);
-        $cmd = 'tar -cvf ' . cms_escapeshellarg($bundled) . ' *';
-        $cmd_result = shell_exec($cmd . ' 2>&1');
-        if (!is_string($cmd_result)) {
+        $cmd = 'tar --force-local -cvf ' . cms_escapeshellarg($bundled) . ' *'; // --force-level is required for Windows style absolute paths https://stackoverflow.com/a/37996249/362006
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
+
+        if (!_is_exec_success($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
         $output2 = $cmd . ':' . "\n" . $cmd_result;
         //$out .= do_build_archive_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
 
         chdir(get_file_base() . '/data_custom/builds');
-        $cmd = 'tar -rvf ' . cms_escapeshellarg($bundled) . ' readme.txt';
-        $cmd_result = shell_exec($cmd . ' 2>&1');
-        if (!is_string($cmd_result)) {
+        $cmd = 'tar --force-local -rvf ' . cms_escapeshellarg($bundled) . ' readme.txt'; // --force-level is required for Windows style absolute paths https://stackoverflow.com/a/37996249/362006
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
+        if (!_is_exec_success($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
         $output2 = $cmd . ':' . "\n" . $cmd_result;
@@ -275,7 +276,7 @@ function make_installers($skip_file_grab = false)
 
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'gzip -n ' . cms_escapeshellarg($bundled);
-        $cmd_result = shell_exec($cmd . ' 2>&1');
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             if (is_file($bundled . '.gz')) {
                 $cmd_result = '(no output)'; // gzip produces no output normally anyway, which means shell_exec returns null
@@ -329,8 +330,8 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/build');
         $cmd = 'zip -r -9 -v ' . cms_escapeshellarg($mszip) . ' composr manifest.xml parameters.xml install1.sql install2.sql install3.sql install4.sql user.sql postinstall.sql';
-        $cmd_result = shell_exec($cmd . ' 2>&1');
-        if (!is_string($cmd_result)) {
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
+        if (!_is_exec_success($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
         $output2 = $cmd . ':' . "\n" . $cmd_result;
@@ -422,8 +423,8 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/aps');
         $cmd = 'zip -r -9 -v ' . cms_escapeshellarg($aps_zip) . ' htdocs images scripts test APP-LIST.xml APP-META.xml';
-        $cmd_result = shell_exec($cmd . ' 2>&1');
-        if (!is_string($cmd_result)) {
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
+        if (!_is_exec_success($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
         $output2 = $cmd . ':' . "\n" . $cmd_result;
@@ -434,7 +435,7 @@ function make_installers($skip_file_grab = false)
 
         // Delete the copied files
         deldir_contents($builds_path . '/builds/aps/');
-        rmdir($builds_path . '/builds/aps/');
+        @rmdir($builds_path . '/builds/aps/'); // @ silents random "Resource temporarily unavailable" error on Windows
 
         chdir(get_file_base());
     }
@@ -446,8 +447,8 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'tar --exclude=_config.php --exclude=install.php -cvf ' . cms_escapeshellarg($omni_upgrader) . ' *';
-        $cmd_result = shell_exec($cmd . ' 2>&1');
-        if (!is_string($cmd_result)) {
+        $cmd_result = _shell_exec_bin($cmd . ' 2>&1');
+        if (!_is_exec_success($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
         $output2 = $cmd . ':' . "\n" . $cmd_result;
@@ -493,6 +494,36 @@ function make_installers($skip_file_grab = false)
     $_MODIFIED_FILES = array();
 
     return $out;
+}
+
+function _shell_exec_bin($cmd)
+{
+    static $bin_path;
+
+    if ($bin_path === null) {
+        if ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') && file_exists('C:\cygwin64\bin\\')) {
+            $bin_path = 'C:\cygwin64\bin\\';
+        } else {
+            $bin_path = '';
+        }
+    }
+
+    return shell_exec($bin_path . $cmd);
+}
+
+function _is_exec_success($output)
+{
+    $win_error = "' is not recognized as an internal or external command,\noperable program or batch file.\n";
+    if ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') && _ends_with($output, $win_error)) {
+        return false;
+    }
+
+    return is_string($output);
+}
+
+function _ends_with($str, $sub)
+{
+    return substr($str, -strlen($sub)) === $sub;
 }
 
 // Used in the APS build process
@@ -648,7 +679,7 @@ function populate_build_files_list($dir = '', $pretend_dir = '')
             $_out = populate_build_files_list($dir . $file . '/', $pretend_dir . $file . '/');
             if ($num_files == count($MAKE_INSTALLERS__FILE_ARRAY)) { // Empty, effectively (maybe was from a non-bundled addon) - don't use it
                 array_pop($MAKE_INSTALLERS__DIR_ARRAY);
-                rmdir($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file);
+                @rmdir($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file); // Silent random "Resource temporarily unavailable" error on Windows
             } else {
                 $out .= $_out;
             }
@@ -1052,19 +1083,8 @@ function _download_latest_data_ip_country()
 
     $tmp_name_csv = cms_tempnam();
 
-    if (php_function_allowed('gzopen') && php_function_allowed('gzeof') && php_function_allowed('gzread')) {
-        $gzip_fp = gzopen($tmp_name_gzip, 'rb');
-        $csv_fp = fopen($tmp_name_csv, 'w');
-
-        while (!gzeof($gzip_fp)) {
-            $uncompressed = gzread($gzip_fp, 4096); // Read in 4KB chunks so we don't exceed memory limits
-            fwrite($csv_fp, $uncompressed, strlen($uncompressed));
-        }
-        gzclose($gzip_fp);
-        fclose($csv_fp);
-    } else {
-        shell_exec('gunzip -c ' . cms_escapeshellarg($tmp_name_gzip) . ' > ' . cms_escapeshellarg($tmp_name_csv));
-    }
+    $cmd = 'gzip -d -c ' . cms_escapeshellarg($tmp_name_gzip) . ' > ' . cms_escapeshellarg($tmp_name_csv);
+    _shell_exec_bin($cmd);
 
     $lines = explode("\n", unixify_line_format(file_get_contents($tmp_name_csv)));
     foreach ($lines as $line) {
