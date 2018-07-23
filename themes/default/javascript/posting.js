@@ -247,7 +247,7 @@ function generate_background_preview(post)
 	var form=post.form;
 	for (var i=0;i<form.elements.length;i++)
 	{
-		if ((!form.elements[i].disabled) && (typeof form.elements[i].name!='undefined') && (form.elements[i].name!=''))
+		if ((!form.elements[i].disabled) && (typeof form.elements[i].name!='undefined') && (form.elements[i].name!='') && (((form.elements[i].type!='radio') && (form.elements[i].type!='checkbox')) || (form.elements[i].checked)) && (form.elements[i].name!='captcha'))
 		{
 			var name=form.elements[i].name;
 			var value=clever_find_value(form,form.elements[i]);
