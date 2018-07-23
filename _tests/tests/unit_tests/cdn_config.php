@@ -20,6 +20,10 @@ class cdn_config_test_set extends cms_test_case
 {
     public function testCDNConfig()
     {
+        if (get_domain() != 'localhost') {
+            $this->assertTrue(false, 'Test can only run on localhost');
+        }
+
         require_code('images');
 
         set_option('cdn', 'localhost,127.0.0.1');
