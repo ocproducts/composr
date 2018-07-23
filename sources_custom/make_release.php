@@ -15,6 +15,11 @@
 
 /*EXTRA FUNCTIONS: shell_exec|DOM.*|pretty_print_dom_document*/
 
+/*
+Using Windows? This will only run if you install Cygwin 'tar', 'gzip', 'gunzip' into your path.
+Even then, we do not regularly test it.
+*/
+
 function init__make_release()
 {
     require_code('files2');
@@ -1070,6 +1075,10 @@ function _download_latest_data_ip_country()
     }
 
     if (empty($csv_data)) {
+        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+            fatal_exit('Failed to extract MaxMind IP address data - the build process is not regularly tested on Windows - you need to install certain Cygwin tools, even then it may not work');
+        }
+
         fatal_exit('Failed to extract MaxMind IP address data');
     }
 
