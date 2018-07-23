@@ -49,7 +49,7 @@ class geocoding_test_set extends cms_test_case
         $errormsg = '';
         $address = reverse_geocode(52.516667, 13.388889, $errormsg);
         if ((get_param_integer('debug', 0) == 1) || ($address === null))  {
-            var_dump($errormsg);
+            var_dump($errormsg->evaluate());
             var_dump($address);
         }
         $this->assertTrue($address[2] == 'Berlin');

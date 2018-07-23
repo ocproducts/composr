@@ -414,6 +414,8 @@ class Hook_addon_registry_news
      */
     public function tpl_preview__news_archive_screen()
     {
+        require_lang('news');
+
         $content = do_lorem_template('NEWS_BRIEF', array(
             'DATE' => placeholder_date(),
             'FULL_URL' => placeholder_url(),
@@ -441,6 +443,7 @@ class Hook_addon_registry_news
      */
     public function tpl_preview__news_chicklets()
     {
+        require_lang('news');
         require_css('news');
 
         return array(
@@ -459,6 +462,8 @@ class Hook_addon_registry_news
      */
     public function tpl_preview__block_side_news()
     {
+        require_lang('news');
+
         $contents = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $contents->attach(do_lorem_template('BLOCK_SIDE_NEWS_SUMMARY', array(
@@ -524,6 +529,8 @@ class Hook_addon_registry_news
      */
     public function tpl_preview__block_bottom_news()
     {
+        require_lang('news');
+
         $contents_arr = array();
         foreach (placeholder_array() as $k => $v) {
             $contents_arr[] = array(

@@ -7240,7 +7240,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADD_TO_DIGG
         ADD_TO_FACEBOOK
         ADD_TO_FAVORITES
-        ADD_TO_STUMBLEUPON
         ADD_TO_TWITTER
         ADD_WIKI_PAGE_BODY
         ADD_WIKI_PAGE_SUBJECT

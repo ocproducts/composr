@@ -75,7 +75,7 @@ class sitemap_test_set extends cms_test_case
         $this->assertTrue(isset($this->flattened['adminzone:admin_config:base']));
 
         // Test we have an arbitrary resource, just to ensure things are still generating deeply
-        $this->assertTrue(isset($this->flattened[get_module_zone('calendar') . ':calendar:browse:int_1=1']));
+        $this->assertTrue(isset($this->flattened[get_module_zone('calendar') . ':calendar:browse:int_2=1']));
     }
 
     public function testPageGroupingHelpDocsDefined()

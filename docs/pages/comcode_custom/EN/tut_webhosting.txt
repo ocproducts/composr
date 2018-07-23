@@ -124,8 +124,6 @@ Do not try and install Composr on an ad-sponsored free webhost. The banners and 
 
 If LDAP integration is required (for corporate network authentication integration), the PHP LDAP extension is required.
 
-If Tornevall integration is required, the PHP SOAP extension is required.
-
 If you need to be able to easily remove 'bounce' e-mails from newsletter subscriber lists, you will need the PHP IMAP extension. If your IMAP server requires SSL (like gmail) then you will need to have IMAP-SSL support inside PHP (or you will get "invalid remote specification" errors).
 
 If encrypted CPFs (custom profile fields) are needed (see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page] tutorial), or Composr-fed DKIM, the PHP OpenSSL extension is required.
