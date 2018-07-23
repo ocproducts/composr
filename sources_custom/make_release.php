@@ -1050,10 +1050,23 @@ function _download_latest_data_ip_country()
     cms_http_request('http://download.db-ip.com/free/dbip-country-' . date('Y-m') . '.csv.gz', array('write_to_file' => $myfile, 'timeout' => 30.0));
     fclose($myfile);
 
-    $tmp_name_tar = cms_tempnam();
-    shell_exec('gunzip -c ' . cms_escapeshellarg($tmp_name_gzip) . ' > ' . cms_escapeshellarg($tmp_name_tar));
+    $tmp_name_csv = cms_tempnam();
 
-    $lines = explode("\n", unixify_line_format(file_get_contents($tmp_name_tar)));
+    if (php_function_allowed('gzopen') && php_function_allowed('gzeof') && php_function_allowed('gzread')) {
+        $gzip_fp = gzopen($tmp_name_gzip, 'rb');
+        $csv_fp = fopen($tmp_name_csv, 'w');
+
+        while (!gzeof($gzip_fp)) {
+            $uncompressed = gzread($gzip_fp, 4096); // Read in 4KB chunks so we don't exceed memory limits
+            fwrite($csv_fp, $uncompressed, strlen($uncompressed));
+        }
+        gzclose($gzip_fp);
+        fclose($csv_fp);
+    } else {
+        shell_exec('gunzip -c ' . cms_escapeshellarg($tmp_name_gzip) . ' > ' . cms_escapeshellarg($tmp_name_csv));
+    }
+
+    $lines = explode("\n", unixify_line_format(file_get_contents($tmp_name_csv)));
     foreach ($lines as $line) {
         $x = str_getcsv($line);
 
@@ -1085,7 +1098,7 @@ function _download_latest_data_ip_country()
     cms_file_put_contents_safe(get_file_base() . '/data/modules/admin_stats/IP_Country.txt', $csv_data);
 
     @unlink($tmp_name_gzip);
-    @unlink($tmp_name_tar);
+    @unlink($tmp_name_csv);
 }
 
 function _download_latest_data_no_banning()
