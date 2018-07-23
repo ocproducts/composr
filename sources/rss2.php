@@ -287,7 +287,8 @@ function get_enclosure_details($url, $enclosure_url)
     } else {
         $http_response = cms_http_request($enclosure_url, array('trigger_error' => false, 'byte_limit' => 0));
         if ($http_response->download_size === null) {
-            $enclosure_length = strval(strlen(http_get_contents($enclosure_url)));
+            $_data = http_get_contents($enclosure_url, array('trigger_error' => false));
+            $enclosure_length = ($_data === null) ? '0' : strval(strlen($_data));
         } else {
             $enclosure_length = strval($http_response->download_size);
         }
