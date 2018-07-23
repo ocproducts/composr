@@ -1,1 +1,1 @@
-{$REQUIRE_JAVASCRIPT,chat}<a href="#!" data-click-do-input="['{B;}', '{FIELD_NAME;}']" title="{TITLE}" class="comcode-micro-button"><img alt="{TITLE}" height="20" src="{$IMG*,comcode_editor/{B}}"></a>
+{$REQUIRE_JAVASCRIPT,chat}<a href="#!" data-click-do-input="['{B;}', '{FIELD_NAME;}']" title="{TITLE}" class="comcode-micro-button"><img alt="{TITLE}" height="20" src="{$IMG*,comcode_editor/{B}}" /></a>

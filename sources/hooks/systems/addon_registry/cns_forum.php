@@ -383,7 +383,7 @@ class Hook_addon_registry_cns_forum
             'templates/CNS_MEMBER_PROFILE_POSTS.tpl' => 'cns_member_profile_posts',
             'templates/CNS_MEMBER_PROFILE_PTS.tpl' => 'cns_member_profile_pts',
             'templates/CNS_VFORUM_FILTERING.tpl' => 'cns_vforum_filtering',
-            'templates/CNS_POST_FROM_MAILING_LIST.txt' => 'cns_post_from_mailing_list',
+            'text/CNS_POST_FROM_MAILING_LIST.txt' => 'cns_post_from_mailing_list',
         );
     }
 

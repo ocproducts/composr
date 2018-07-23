@@ -186,6 +186,10 @@ class template_previews_test_set extends cms_test_case
                         'templates/MEMBER_BAR_SEARCH.tpl',
                         'templates/NOTIFICATION_BUTTONS.tpl',
                         'templates/NOTIFICATION_TYPES.tpl',
+                        'templates/CNS_MEMBER_PROFILE_FIELDS.tpl',
+                        'templates/CNS_MEMBER_PROFILE_FIELD.tpl',
+                        'templates/ICON.tpl',
+                        'templates/RED_ALERT.tpl',
                     ))) {
                         continue;
                     }

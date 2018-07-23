@@ -17,7 +17,9 @@
 			<select id="f_face" name="f_face">
 				<option value="/">[{!FONT}]</option>
 				{+START,LOOP,={$FONTS}}
-					<option value="{_loop_var*}" style="font-family: '{_loop_var;*}'">{_loop_var*}</option>
+					{+START,IF_NON_EMPTY,{_loop_var}}
+						<option value="{_loop_var*}" style="font-family: '{_loop_var;*}'">{_loop_var*}</option>
+					{+END}
 				{+END}
 			</select>
 			<select id="f_size" name="f_size">

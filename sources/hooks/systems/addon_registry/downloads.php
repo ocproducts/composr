@@ -198,6 +198,7 @@ class Hook_addon_registry_downloads
             'templates/DOWNLOAD_GALLERY_IMAGE_CELL.tpl' => 'download_screen',
             'templates/DOWNLOAD_GALLERY_ROW.tpl' => 'download_screen',
             'templates/DOWNLOAD_SCREEN.tpl' => 'download_screen',
+            'templates/RED_ALERT.tpl' => 'download_screen',
             'templates/DOWNLOAD_GATEWAY_SCREEN.tpl' => 'download_gateway_screen',
         );
     }

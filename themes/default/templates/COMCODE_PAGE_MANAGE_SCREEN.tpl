@@ -21,7 +21,7 @@
 
 	<h2 class="force_margin">{!COMCODE_PAGE_ADD}</h2>
 
-	<a id="comcode_page_add" />
+	<a id="comcode_page_add"></a>
 
 	{+START,IF_PASSED,EXTRA}
 		{EXTRA}
