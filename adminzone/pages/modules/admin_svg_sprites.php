@@ -172,7 +172,7 @@ class Module_admin_svg_sprites
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme(''); // Default to the theme for the Welcome zone
         $theme_entries = create_selection_list_themes($theme, false, true);
         $theme_field = form_input_list(do_lang_tempcode('CHOOSE_THEME'), make_string_tempcode(''), 'theme', $theme_entries);
-        $monochrome_field = form_input_tick(do_lang_tempcode('MONOCHROME_ICONS'), '', 'monochrome', get_option('use_monochrome_icons') === '1');
+        $monochrome_field = form_input_tick(do_lang_tempcode('MONOCHROME_ICONS'), '', 'monochrome', get_theme_option('use_monochrome_icons') === '1');
 
         $fields = new Tempcode();
         $fields->attach($theme_field);
@@ -243,7 +243,7 @@ class Module_admin_svg_sprites
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme(''); // Default to the theme for the Welcome zone
         $theme_entries = create_selection_list_themes($theme, false, true);
         $theme_field = form_input_list(do_lang_tempcode('CHOOSE_THEME'), make_string_tempcode(''), 'theme', $theme_entries);
-        $monochrome_field = form_input_tick(do_lang_tempcode('MONOCHROME_ICONS'), '', 'monochrome', get_option('use_monochrome_icons') === '1');
+        $monochrome_field = form_input_tick(do_lang_tempcode('MONOCHROME_ICONS'), '', 'monochrome', get_theme_option('use_monochrome_icons') === '1');
 
         $fields = new Tempcode();
         $fields->attach($theme_field);
