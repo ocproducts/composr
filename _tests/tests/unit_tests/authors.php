@@ -31,7 +31,7 @@ class authors_test_set extends cms_test_case
         $this->assertTrue('author1' == $GLOBALS['SITE_DB']->query_select_value('authors', 'author', array('author' => 'author1')));
     }
 
-    public function testMergeauthors()
+    public function testMergeAuthors()
     {
         merge_authors('author1', 'author2');
     }

@@ -6,7 +6,7 @@
 			{+END}{+END}
 
 			{+START,IF_NON_PASSED,FRACTIONAL_EDIT_FIELD_NAME}
-				<a class="subtle-link" href="{URL*}">{TITLE*}</a>
+				<h3>{+START,IF_NON_EMPTY,{URL}}<a class="subtle-link" href="{URL*}">{+END}{TITLE*}{+START,IF_NON_EMPTY,{URL}}</a>{+END}</h3>
 			{+END}
 		</h3>
 	{+END}{+END}

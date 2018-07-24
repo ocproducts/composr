@@ -92,7 +92,7 @@ class Module_notifications
             $this->row = $row;
 
             if (strpos(get_translated_text($row['d_message']), '[html') !== false) {
-                load_csp(CSP_PRETTY_STRICT, ($row['d_from_member_id'] < $GLOBALS['FORUM_DRIVER']->get_guest_id()) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : $row['d_from_member_id']);
+                load_csp(unserialize(CSP_PRETTY_STRICT), ($row['d_from_member_id'] < $GLOBALS['FORUM_DRIVER']->get_guest_id()) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : $row['d_from_member_id']);
             }
         } else {
             $this->title = get_screen_title('NOTIFICATIONS');

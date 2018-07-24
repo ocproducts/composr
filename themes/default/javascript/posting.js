@@ -273,7 +273,7 @@
         var form = postTextArea.form;
 
         for (var i = 0; i < form.elements.length; i++) {
-            if (!form.elements[i].disabled && (form.elements[i].name !== undefined) && (form.elements[i].name !== '')) {
+            if (!form.elements[i].disabled && (form.elements[i].name !== undefined) && (form.elements[i].name !== '') && (((form.elements[i].type != 'radio') && (form.elements[i].type != 'checkbox')) || (form.elements[i].checked)) && (form.elements[i].name != 'captcha')) {
                 var name = form.elements[i].name,
                     value = $cms.form.cleverFindValue(form, form.elements[i]);
 

@@ -114,7 +114,8 @@ We require:
 If running Apache:
  - The server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security).
  - If you want URL Schemes, [tt]mod_rewrite[/tt] must be enabled.
-
+ - The following Apache modules are recommended (for maximum performance): [tt]mod_headers[/tt], [tt]mod_setenvif[/tt], [tt]mod_env[/tt], [tt]mod_deflate[/tt], [tt]mod_filter[/tt]
+ 
 &dagger; By suEXEC-style web server we mean either:
 [list="a"]
 [*] an environment where the web server user has recursive write access over the web directories (most Windows servers)

@@ -486,7 +486,7 @@
                     self.option('right');
                 }
             });
-            
+
             /*{+START,SET,icon_proceed}{+START,INCLUDE,ICON}NAME=buttons/proceed{+END}{+END}*/
             /*{+START,SET,icon_yes}{+START,INCLUDE,ICON}NAME=buttons/yes{+END}{+END}*/
             /*{+START,SET,icon_no}{+START,INCLUDE,ICON}NAME=buttons/no{+END}{+END}*/

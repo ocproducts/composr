@@ -207,8 +207,6 @@ class Hook_addon_registry_core_cns
             'themes/default/templates/CNS_MEMBER_DIRECTORY_SCREEN.tpl',
             'themes/default/templates/CNS_MEMBER_PROFILE_SCREEN.tpl',
             'themes/default/templates/CNS_MEMBER_PROFILE_ABOUT.tpl',
-            'themes/default/templates/CNS_MEMBER_PROFILE_FIELDS.tpl',
-            'themes/default/templates/CNS_MEMBER_PROFILE_FIELD.tpl',
             'themes/default/templates/CNS_MEMBER_PROFILE_EDIT.tpl',
             'themes/default/templates/CNS_MEMBER_BOX_CUSTOM_FIELD.tpl',
             'themes/default/templates/CNS_USER_MEMBER.tpl',

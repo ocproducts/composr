@@ -7971,7 +7971,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADD_TO_CART
         CHECKOUT
         ADD_TO_FACEBOOK
-        ADD_TO_STUMBLEUPON
         ADD_TO_TWITTER
         ADD_TO_LINKEDIN
         ADD_TO_PINTEREST
@@ -8480,8 +8479,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEFAULT_CPF_stack_exchange_DESCRIPTION
         DEFAULT_CPF_stack_overflow_NAME
         DEFAULT_CPF_stack_overflow_DESCRIPTION
-        DEFAULT_CPF_sn_stumbleupon_NAME
-        DEFAULT_CPF_sn_stumbleupon_DESCRIPTION
         DEFAULT_CPF_im_telegram_NAME
         DEFAULT_CPF_im_telegram_DESCRIPTION
         DEFAULT_CPF_sn_tumblr_NAME

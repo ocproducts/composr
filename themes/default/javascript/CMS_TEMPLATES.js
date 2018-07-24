@@ -42,10 +42,6 @@
             $cms.gaTrack(null,'social__twitter');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-stumbleupon', function (e, link) {
-            $cms.gaTrack(null,'social__stumbleupon');
-        });
-
         $dom.on(container, 'click', '.js-click-action-add-to-digg', function (e, link) {
             $cms.gaTrack(null,'social__digg');
         });

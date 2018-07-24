@@ -213,10 +213,12 @@ function fixup_bad_php_env_vars()
 
     $document_root = empty($_SERVER['DOCUMENT_ROOT']) ? '' : $_SERVER['DOCUMENT_ROOT'];
     if (empty($document_root)) {
+        // Note on Windows we really do use '/' in DOCUMENT_ROOT
+
         $document_root = '';
         $path_components = explode(DIRECTORY_SEPARATOR, get_file_base());
         foreach ($path_components as $i => $path_component) {
-            $document_root .= $path_component . DIRECTORY_SEPARATOR;
+            $document_root .= $path_component . '/';
             if (in_array($path_component, array('public_html', 'www', 'webroot', 'httpdocs', 'wwwroot', 'Documents'))) {
                 break;
             }
@@ -228,7 +230,8 @@ function fixup_bad_php_env_vars()
     $php_self = empty($_SERVER['PHP_SELF']) ? '' : $_SERVER['PHP_SELF'];
     if ((empty($php_self)) || (/*or corrupt*/strpos($php_self, '.php') === false)) {
         // We're really desperate if we have to derive this, but here we go
-        $_SERVER['PHP_SELF'] = '/' . preg_replace('#^' . preg_quote($document_root, '#') . '/#', '', $script_filename);
+        $regexp = '#^' . preg_quote(str_replace('/', DIRECTORY_SEPARATOR, $document_root) . DIRECTORY_SEPARATOR, '#') . '#';
+        $_SERVER['PHP_SELF'] = '/' . str_replace(DIRECTORY_SEPARATOR, '/', preg_replace($regexp, '', str_replace('/', DIRECTORY_SEPARATOR, $script_filename)));
         $path_info = empty($_SERVER['PATH_INFO']) ? '' : $_SERVER['PATH_INFO'];
         if (!empty($path_info)) { // Add in path-info if we have it
             $_SERVER['PHP_SELF'] .= $path_info;

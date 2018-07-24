@@ -448,7 +448,6 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             'snapchat',
             'soundcloud',
             'spotify',
-            'stumbleupon',
             'tumblr',
             'vimeo',
             'whatsapp',

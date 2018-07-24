@@ -391,7 +391,7 @@ function load_redirect_cache()
         $REDIRECT_CACHE = array();
     }
 
-    if (addon_installed('redirects_editor')) {
+    if ((addon_installed('redirects_editor')) && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
         $redirect = persistent_cache_get('REDIRECT');
         if ($redirect === null) {
             $redirect = $GLOBALS['SITE_DB']->query_select('redirects', array('*')/*Actually for performance we will load all and cache them , array('r_from_zone' => get_zone_name())*/);
@@ -974,7 +974,7 @@ function find_all_hooks($type, $subtype)
         $subtype = filter_naughty($subtype);
     }
     $dir = get_file_base() . '/sources/hooks/' . $type . '/' . $subtype;
-    $dh = @scandir($dir);
+    $dh = is_dir($dir) ? scandir($dir) : false;
     if ($dh !== false) {
         foreach ($dh as $file) {
             $basename = basename($file, '.php');
@@ -986,7 +986,7 @@ function find_all_hooks($type, $subtype)
 
     if ((!isset($GLOBALS['DOING_USERS_INIT'])) && ((!in_safe_mode()) || ($GLOBALS['RELATIVE_PATH'] === '_tests') && ($subtype === 'addon_registry'))) { // The !isset is because of if the user init causes a DB query to load sessions which loads DB hooks which checks for safe mode which leads to a permissions check for safe mode and thus a failed user check (as sessions not loaded yet)
         $dir = get_file_base() . '/sources_custom/hooks/' . $type . '/' . $subtype;
-        $dh = @scandir($dir);
+        $dh = is_dir($dir) ? scandir($dir) : false;
         if ($dh !== false) {
             foreach ($dh as $file) {
                 $basename = basename($file, '.php');

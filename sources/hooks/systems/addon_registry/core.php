@@ -169,7 +169,6 @@ class Hook_addon_registry_core
             'themes/default/images/icons/links/google_plus.svg',
             'themes/default/images/icons/links/skype.svg',
             'themes/default/images/icons/links/jabber.svg',
-            'themes/default/images/icons/links/stumbleupon.svg',
             'themes/default/images/icons/links/favorites.svg',
             'themes/default/images/icons/links/discord.svg',
             'themes/default/images/icons/links/dropbox.svg',
@@ -1847,8 +1846,8 @@ class Hook_addon_registry_core
             lorem_globalise(do_lorem_template('BLOCK_MAIN_COMCODE_PAGE_CHILDREN', array(
                 'BLOCK_ID' => lorem_word(),
                 'CHILDREN' => $children,
-                'THE_PAGE' => lorem_phrase(),
-                'THE_ZONE' => lorem_phrase(),
+                'PAGE' => lorem_phrase(),
+                'ZONE' => lorem_phrase(),
                 'TITLE' => lorem_phrase(),
             )), null, '', true)
         );
