@@ -30,8 +30,9 @@ if (!addon_installed('meta_toolkit')) {
 This code is the frontend to make Composr builds.
 
 If running on Windows, you need to install the following commands in your path...
- - Infozip's zip.exe and unzip.exe
- - gunzip.exe, gzip.exe, and tar.exe
+ - Infozip's zip.exe (ftp://ftp.info-zip.org/pub/infozip/win32/zip231xn-x64.zip)
+ - gzip.exe (http://gnuwin32.sourceforge.net/packages/gzip.htm), and tar.exe (http://gnuwin32.sourceforge.net/packages/gtar.htm)
+You may want to put them in your git 'cmd' directory, as that is in your path.
 */
 
 restrictify();
@@ -215,7 +216,7 @@ function phase_1()
     $old_tree = ($is_old_tree ? '1' : '0');
 
     if (post_param_integer('skip', 0) == 0) {
-        echo make_installers();
+        echo make_installers(get_param_integer('keep_skip_file_grab', 0) == 1);
     }
 
     $post_url = static_evaluate_tempcode(get_self_url(false, false, array('type' => '2')));

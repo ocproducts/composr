@@ -2357,7 +2357,6 @@ class lang_spelling_epic_test_set extends cms_test_case
             'strtoupper',
             'strval',
             'stucked',
-            'stumbleupon',
             'stylesheet',
             'stylesheets',
             'stylings',

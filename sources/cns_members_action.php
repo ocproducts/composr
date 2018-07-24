@@ -693,12 +693,6 @@ function _cns_predefined_custom_field_details()
             'section' => '',
             'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
         ),
-        'sn_stumbleupon' => array(
-            'type' => 'url',
-            'icon' => 'icons/links/stumbleupon',
-            'section' => '',
-            'tempcode' => '<a title="{NAME*} {!LINK_NEW_WINDOW}" href="{RAW*}" rel="me">{NAME*}</a>',
-        ),
         'vimeo' => array(
             'type' => 'url',
             'icon' => 'icons/links/vimeo',

@@ -32,6 +32,12 @@ class ssl_test_set extends cms_test_case
             return;
         }
 
+        $test = http_download_file('https://' . get_domain(), null, false);
+		if ($test === null) {
+			$this->assertTrue(false, 'SSL not running on this machine');
+			return;
+		}
+
         global $HTTPS_PAGES_CACHE;
         $HTTPS_PAGES_CACHE = null;
 

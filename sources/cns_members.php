@@ -122,7 +122,7 @@ function cns_is_httpauth_member($member_id)
  * @param  ?BINARY $required That are required (null: don't care)
  * @param  ?BINARY $show_in_posts That are to be shown in posts (null: don't care)
  * @param  ?BINARY $show_in_post_previews That are to be shown in post previews (null: don't care)
- * @param  BINARY $special_start That start 'cms_'
+ * @param  ?BINARY $special_start That start 'cms_' (null: don't care)
  * @param  ?boolean $show_on_join_form That are to go on the join form (null: don't care)
  * @param  array $adjusted_config_options A map of adjusted config options; actually it is field_<id>=0|1 for the purposes of this function, and overrides cf_show_on_join_form
  * @return array A list of rows of such fields
@@ -160,8 +160,10 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
         if ($show_in_post_previews !== null) {
             $where .= ' AND cf_show_in_post_previews=' . strval($show_in_post_previews);
         }
-        if ($special_start == 1) {
+        if ($special_start === 1) {
             $where .= ' AND ' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name') . ' LIKE \'' . db_encode_like('cms\_%') . '\'';
+        } elseif ($special_start === 0) {
+            $where .= ' AND ' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name') . ' NOT LIKE \'' . db_encode_like('cms\_%') . '\'';
         }
         if ($show_on_join_form !== null) {
             $where .= ' AND (cf_show_on_join_form=' . strval($show_on_join_form);
@@ -192,7 +194,7 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
         foreach ($_result as $row) {
             $row['trans_name'] = get_translated_text($row['cf_name'], $GLOBALS['FORUM_DB']);
 
-            if ((substr($row['trans_name'], 0, 4) == 'cms_') && ($special_start == 0)) {
+            if ((substr($row['trans_name'], 0, 4) == 'cms_') && ($special_start !== 1)) {
                 // See if it gets filtered
                 if (!isset($to_keep[substr($row['trans_name'], 4)])) {
                     continue;
@@ -236,7 +238,7 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
  * @param  ?BINARY $required That are required (null: don't care)
  * @param  ?BINARY $show_in_posts That are to be shown in posts (null: don't care)
  * @param  ?BINARY $show_in_post_previews That are to be shown in post previews (null: don't care)
- * @param  BINARY $special_start That start 'cms_'
+ * @param  ?BINARY $special_start That start 'cms_' (null: don't care)
  * @param  ?boolean $show_on_join_form That are to go on the join form (null: don't care)
  * @return array A mapping of field title to a map of details: 'RAW' as the raw field value, 'RENDERED' as the rendered field value, 'FIELD_ID' to the field ID, 'EDITABILITY' defining if fractional editing can work on this
  */

@@ -20,6 +20,8 @@ Using Windows? This will only run if you install Cygwin 'tar', 'gzip', 'gunzip' 
 Even then, we do not regularly test it.
 */
 
+/* See the note at the top of the other make_release.php file for usage on Windows */
+
 function init__make_release()
 {
     require_code('files2');
@@ -37,6 +39,12 @@ function init__make_release()
 
 function make_installers($skip_file_grab = false)
 {
+    foreach (array('zip', 'tar', 'gzip') as $cmd) {
+        if (shell_exec($cmd . ' -h') == '') {
+            warn_exit('Missing command in path: ' . $cmd);
+        }
+    }
+
     global $MAKE_INSTALLERS__FILE_ARRAY, $MAKE_INSTALLERS__DIR_ARRAY, $MAKE_INSTALLERS__TOTAL_DIRS, $MAKE_INSTALLERS__TOTAL_FILES;
 
     require_code('files');

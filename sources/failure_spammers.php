@@ -49,7 +49,7 @@ function syndicate_spammer_report($ip_addr, $username, $email, $reason, $trigger
 
         $payload = json_encode(array('ip' => array($ip_addr)));
 
-        $_result = http_get_contents($torn_url, array('http_verb' => 'PUT', 'raw_post' => true, 'post_params' => array($payload), 'trigger_error' => false));
+        $_result = http_get_contents($torn_url, array('http_verb' => 'PUT', 'raw_post' => true, 'post_params' => array($payload), 'trigger_error' => false, 'raw_content_type' => 'application/json'));
 
         if ($trigger_error) {
             $result = @json_decode($_result);

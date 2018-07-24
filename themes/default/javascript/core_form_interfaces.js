@@ -963,13 +963,16 @@
                     ob.bind('Error', shutdownOverlay);
 
                     // Keep copying the upload indicator
-                    var progress = $dom.html(targetWin.document.getElementById('fsUploadProgress_' + field));
-                    setInterval(function () {
-                        if (progress !== '') {
-                            $dom.html(loadingSpace, progress);
-                            loadingSpace.className = 'spaced';
-                        }
-                    }, 100);
+                    var imageProgressElement = targetWin.document.getElementById('fsUploadProgress_' + field);
+                    if (imageProgressElement) {
+                        var progress = $dom.html(imageProgressElement);
+                        setInterval(function () {
+                            if (progress !== '') {
+                                $dom.html(loadingSpace, progress);
+                                loadingSpace.className = 'spaced';
+                            }
+                        }, 100);
+                    }
 
                     attachedEventAction = true;
                 }

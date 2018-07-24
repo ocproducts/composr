@@ -169,7 +169,6 @@ class Hook_addon_registry_core
             'themes/default/images/icons/links/google_plus.svg',
             'themes/default/images/icons/links/skype.svg',
             'themes/default/images/icons/links/jabber.svg',
-            'themes/default/images/icons/links/stumbleupon.svg',
             'themes/default/images/icons/links/favorites.svg',
             'themes/default/images/icons/links/discord.svg',
             'themes/default/images/icons/links/dropbox.svg',
