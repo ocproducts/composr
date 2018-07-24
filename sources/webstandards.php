@@ -388,7 +388,8 @@ function init__webstandards()
         'col' => true,
         'source' => true,
         'nobr' => true,
-    );
+        'use' => true, // Used by SVG icons
+     );
 
     // B's may not appear under A
     global $PROHIBITIONS;
