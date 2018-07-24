@@ -208,6 +208,10 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
  */
 function render_media_url($url, $url_safe, $attributes, $as_admin = false, $source_member = null, $acceptable_media = 15, $limit_to = null, $url_to_scan_against = null, $original_filename = null)
 {
+    if ($GLOBALS['IN_MINIKERNEL_VERSION']) {
+        return null;
+    }
+
     $hooks = find_media_renderers(
         ($url_to_scan_against === null) ? (is_object($url) ? $url->evaluate() : $url) : $url_to_scan_against,
         $attributes,

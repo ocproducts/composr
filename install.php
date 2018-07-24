@@ -409,7 +409,7 @@ function step_1()
     // Health Checks
     $_warnings = installer_health_checks();
     foreach ($_warnings as $_warning) {
-        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => $_warning)));
+        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => comcode_to_tempcode($_warning))));
     }
 
     // Some checks relating to installation permissions

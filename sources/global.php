@@ -41,6 +41,7 @@ function require_code($codename, $light_exit = false, $has_custom = null)
     if (isset($REQUIRED_CODE[$codename])) {
         return;
     }
+
     $ok_per_safe_mode = (!function_exists('in_safe_mode')) || ($REQUIRING_CODE) || (!in_safe_mode());
     if (isset($REQUIRED_CODE[$codename])) {
         return; // In case it changed through the above safe mode check
@@ -323,12 +324,16 @@ function call_included_code($path, $codename, $light_exit, $code = null)
             $result = eval($code);
         }
 
-        $errormsg = cms_error_get_last();
-        if (($errormsg == '') || ($errormsg === $errormsg_before)) {
+        if ($result === false) {
+            $errormsg = cms_error_get_last();
+            if (($errormsg == '') || ($errormsg === $errormsg_before)) {
+                $errormsg = '';
+            }
+            if (stripos($errormsg, 'deprecated') !== false) {
+                $errormsg = ''; // Deprecated errors can leak through because even though we return true in our error handler, error handlers won't run recursively, so if this code is loaded during an error it'll stream through deprecated stuff here
+            }
+        } else {
             $errormsg = '';
-        }
-        if (stripos($errormsg, 'deprecated') !== false) {
-            $errormsg = ''; // Deprecated errors can leak through because even though we return true in our error handler, error handlers won't run recursively, so if this code is loaded during an error it'll stream through deprecated stuff here
         }
     }
     catch (Exception $e) {
@@ -354,7 +359,7 @@ function call_included_code($path, $codename, $light_exit, $code = null)
         }
 
         if ((!function_exists('do_lang')) || (!function_exists('fatal_exit')) || ($codename === 'failure')) {
-            critical_error('PASSON', $errormsg . ' ins ' . $path);
+            critical_error('PASSON', $errormsg . ' in ' . $path);
         }
 
         $error_lang_str = (is_file($path) ? 'CORRUPT_SOURCE_FILE' : 'MISSING_SOURCE_FILE');
@@ -409,7 +414,8 @@ function cms_error_get_last()
             break;
     }
 
-    return '<strong>' . strtoupper($type) . '</strong> [' . strval($error['type']) . '] ' . $error['message'] . ' in ' . $error['file'] . ' on line ' . strval($error['line']);
+    $ret = '<strong>' . strtoupper($type) . '</strong> [' . strval($error['type']) . '] ' . $error['message'] . ' in ' . $error['file'] . ' on line ' . strval($error['line']);
+    return $ret;
 }
 
 /**

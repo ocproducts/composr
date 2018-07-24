@@ -939,7 +939,7 @@ function do_template($codename, $parameters = array(), $lang = null, $light_erro
                     if (GOOGLE_APPENGINE) {
                         gae_optimistic_cache(true);
                     }
-                    $tcp_time = @filemtime($tcp_path);
+                    $tcp_time = is_file($tcp_path) ? @filemtime($tcp_path) : false;
                     if (GOOGLE_APPENGINE) {
                         gae_optimistic_cache(false);
                     }
@@ -1523,7 +1523,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 $tp_value = request_page($page, false, $zone, null, $being_included);
 
                 if ($virtual_state) {
-                    $tp_value = make_string_tempcode($tp_value->evaluate());
+                    $tp_value = make_string_tempcode(($tp_value === null) ? '' : $tp_value->evaluate());
 
                     // Get things back to prior state
                     set_execution_context(
@@ -2514,7 +2514,7 @@ function tempcode_include($filepath)
         $ret = @include($filepath);
         gae_optimistic_cache(false);
     } else {
-        $ret = @include($filepath);
+        $ret = is_file($filepath) ? include($filepath) : false;
     }
 
     return $ret;

@@ -506,7 +506,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
 
     foreach (array_keys($langs) as $lang) {
         $path = get_custom_file_base() . '/site/pages/html_custom/' . $lang . '/';
-        $_dir = @opendir($path);
+        $_dir = is_dir($path) ? opendir($path) : false;
         if ($_dir !== false) {
             while (false !== ($file = readdir($_dir))) {
                 if (substr($file, -14) == '_tree_made.htm') {

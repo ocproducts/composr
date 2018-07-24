@@ -282,12 +282,16 @@ function init__global2()
     }
 
     require_code('version');
-    @header('X-Content-Type-Options: nosniff');
-    @header('X-XSS-Protection: 1');
+    if (!headers_sent()) {
+        header('X-Content-Type-Options: nosniff');
+        header('X-XSS-Protection: 1');
+    }
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) {
         // Marker that Composr running
         //@header('X-Powered-By: Composr ' . cms_version_pretty() . ' (PHP ' . phpversion() . ')');
-        @header('X-Powered-By: Composr'); // Better to keep it vague, for security reasons
+        if (!headers_sent()) {
+            header('X-Powered-By: Composr'); // Better to keep it vague, for security reasons
+        }
 
         // Get ready for query logging if requested
         $QUERY_LOG = false;
@@ -661,6 +665,7 @@ function fixup_bad_php_env_vars()
         // We're really desperate if we have to derive this, but here we go
         $regexp = '#^' . preg_quote(str_replace('/', DIRECTORY_SEPARATOR, $document_root) . DIRECTORY_SEPARATOR, '#') . '#';
         $_SERVER['PHP_SELF'] = '/' . str_replace(DIRECTORY_SEPARATOR, '/', preg_replace($regexp, '', str_replace('/', DIRECTORY_SEPARATOR, $script_filename)));
+        $path_info = empty($_SERVER['PATH_INFO']) ? '' : $_SERVER['PATH_INFO'];
         if (!empty($path_info)) { // Add in path-info if we have it
             $_SERVER['PHP_SELF'] .= $path_info;
         }

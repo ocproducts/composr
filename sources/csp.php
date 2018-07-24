@@ -98,14 +98,14 @@ function init__csp()
     $CSP_ENABLED = false;
 
     if (!defined('CSP_PRETTY_STRICT')) {
-        define('CSP_PRETTY_STRICT', array(
+        define('CSP_PRETTY_STRICT', serialize(array(
             'csp_enabled' => '1',
             'csp_whitelisted_plugins' => '',
 
             'csp_allow_inline_js' => '0',
-        ));
+        )));
 
-        define('CSP_VERY_STRICT', array(
+        define('CSP_VERY_STRICT', serialize(array(
             'csp_enabled' => '1',
             'csp_exceptions' => '',
             'csp_whitelisted_plugins' => '',
@@ -118,7 +118,7 @@ function init__csp()
 
             // Not usually configurable but may be forced
             'csp_allow_inline_js' => '0',
-        ));
+        )));
     }
 }
 
@@ -136,7 +136,7 @@ function load_csp($options = null, $enable_more_open_html_for = null)
 
     static $previous_state = null; // Initial state is defaulting to strict
     if ($previous_state === null) {
-        $previous_state = CSP_VERY_STRICT;
+        $previous_state = unserialize(CSP_VERY_STRICT);
     }
 
     if ($options === null) { // Full clean state from configuration
@@ -321,10 +321,12 @@ function load_csp($options = null, $enable_more_open_html_for = null)
 
     // Output the CSP header...
 
-    if ($report_only) {
-        @header('Content-Security-Policy-Report-Only: ' . $header);
-    } else {
-        @header('Content-Security-Policy: ' . $header);
+    if (!headers_sent()) {
+        if ($report_only) {
+            header('Content-Security-Policy-Report-Only: ' . $header);
+        } else {
+            header('Content-Security-Policy: ' . $header);
+        }
     }
 }
 

@@ -355,7 +355,9 @@ class Self_learning_cache
         $this->already_invalidated = true;
 
         if ($this->path !== null) {
-            @unlink($this->path);
+            if (file_exists($this->path)) {
+                @unlink($this->path);
+            }
         } else {
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
