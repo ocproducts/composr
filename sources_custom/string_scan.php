@@ -7971,7 +7971,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADD_TO_CART
         CHECKOUT
         ADD_TO_FACEBOOK
-        ADD_TO_FAVORITES
         ADD_TO_TWITTER
         ADD_TO_LINKEDIN
         ADD_TO_PINTEREST

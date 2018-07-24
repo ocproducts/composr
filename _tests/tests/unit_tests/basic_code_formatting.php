@@ -289,6 +289,9 @@ class basic_code_formatting_test_set extends cms_test_case
             if (preg_match('#^(' . implode('|', $exceptions) . ')/#', $path) != 0) {
                 continue;
             }
+            if ($path == '_tests/codechecker/checker.ini') {
+                continue;
+            }
 
             $ext = get_file_extension(get_file_base() . '/' . $path);
 
@@ -334,6 +337,7 @@ class basic_code_formatting_test_set extends cms_test_case
                     'themes/default/templates/CROP_TEXT_MOUSE_OVER.tpl',
                     'themes/default/templates/CNS_USER_MEMBER.tpl',
                     'themes/default/templates/ICON.tpl',
+                    'themes/default/templates/MENU_LINK_PROPERTIES.tpl',
                 ))) {
                     $expected_breaks = 0;
                 }

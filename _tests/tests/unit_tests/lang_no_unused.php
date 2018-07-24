@@ -25,7 +25,7 @@ class lang_no_unused_test_set extends cms_test_case
 
         disable_php_memory_limit();
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(100);
+            set_time_limit(300);
         }
 
         $all_code = '';

@@ -39,8 +39,8 @@ function init__make_release()
 
 function make_installers($skip_file_grab = false)
 {
-    foreach (array('zip', 'tar', 'gzip') as $cmd) {
-        if (shell_exec($cmd . ' -h') == '') {
+    foreach (array('zip', 'tar', 'gzip', 'gunzip') as $cmd) {
+        if (shell_exec($cmd . ' -h 2>&1') == '') {
             warn_exit('Missing command in path: ' . $cmd);
         }
     }
@@ -1059,7 +1059,8 @@ function _download_latest_data_ip_country()
     fclose($myfile);
 
     $tmp_name_tar = cms_tempnam();
-    shell_exec('gunzip -c ' . cms_escapeshellarg($tmp_name_gzip) . ' > ' . cms_escapeshellarg($tmp_name_tar));
+    $cmd = 'gunzip -d -c ' . cms_escapeshellarg($tmp_name_gzip) . ' > ' . cms_escapeshellarg($tmp_name_tar);
+    shell_exec($cmd);
 
     $lines = explode("\n", unixify_line_format(file_get_contents($tmp_name_tar)));
     foreach ($lines as $line) {

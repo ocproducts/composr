@@ -464,8 +464,6 @@ class Hook_addon_registry_core_cns
             'templates/CNS_MEMBER_PROFILE_ABOUT.tpl' => 'cns_member_profile_screen',
             'templates/CNS_MEMBER_PROFILE_FIELDS.tpl' => 'cns_member_profile_screen',
             'templates/CNS_MEMBER_PROFILE_FIELD.tpl' => 'cns_member_profile_screen',
-            'templates/CNS_MEMBER_PROFILE_FIELDS.tpl' => 'cns_member_profile_screen',
-            'templates/CNS_MEMBER_PROFILE_FIELD.tpl' => 'cns_member_profile_screen',
             'templates/CNS_MEMBER_PROFILE_EDIT.tpl' => 'cns_member_profile_screen',
             'templates/CNS_USERS_ONLINE_SCREEN.tpl' => 'cns_users_online_screen',
             'templates/CNS_GROUP_DIRECTORY_SCREEN.tpl' => 'cns_group_directory_screen',

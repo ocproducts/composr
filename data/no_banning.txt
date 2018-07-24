@@ -4359,7 +4359,7 @@ dsl081-243-066.sfo1.dsl.speakeasy.net
 
 # Indy Library
 # UA "Mozilla/3.0 (compatible; Indy Library)"
-# An e-mail harvester
+# An email harvester
 # Probably running from many independent locations/IPs
 211.101.236.91
 211.101.236.162
