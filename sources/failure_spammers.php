@@ -49,18 +49,18 @@ function syndicate_spammer_report($ip_addr, $username, $email, $reason, $trigger
         $username = get_option('tornevall_api_username');
         $password = get_option('tornevall_api_password');
 
-		$payload = json_encode(array('ip' => array($ip_addr)));
+        $payload = json_encode(array('ip' => array($ip_addr)));
 
-		$_result = http_download_file($torn_url, null, $trigger_error, false, 'Composr', array($payload), null, null, null, null, null, null, null, 6.0, true, null, null, 'PUT', 'application/json');
+        $_result = http_download_file($torn_url, null, $trigger_error, false, 'Composr', array($payload), null, null, null, null, null, null, null, 6.0, true, null, null, 'PUT', 'application/json');
         if ($trigger_error) {
-			$result = @json_decode($_result);
-			if (isset($result['response'])) {
-	            if (isset($result['errors'])) {
-	                attach_message('dnsbl.tornevall.org: ' . $result['errors']['faultstring'], 'warn');
-	            }
-			} else {
-				attach_message('dnsbl.tornevall.org: ' . do_lang('INTERNAL_ERROR'), 'warn');
-			}
+            $result = @json_decode($_result);
+            if (isset($result['response'])) {
+                if (isset($result['errors'])) {
+                    attach_message('dnsbl.tornevall.org: ' . $result['errors']['faultstring'], 'warn');
+                }
+            } else {
+                attach_message('dnsbl.tornevall.org: ' . do_lang('INTERNAL_ERROR'), 'warn');
+            }
         }
 
         $did_something = true;
