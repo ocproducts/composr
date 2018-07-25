@@ -46,7 +46,7 @@ class Hook_actionlog_news extends Hook_actionlog
                     'VIEW' => '_SEARCH:news:browse:{ID}',
                     'EDIT_THIS_NEWS_CATEGORY' => '_SEARCH:cms_news:_edit_category:{ID}',
                     'ADD_NEWS_CATEGORY' => '_SEARCH:cms_news:add_category',
-                    'ADD_NEWS' => '_SEARCH:cms_news:add',
+                    'ADD_NEWS' => '_SEARCH:cms_news:add:cat={ID}',
                 ),
             ),
             'EDIT_NEWS_CATEGORY' => array(
@@ -58,7 +58,7 @@ class Hook_actionlog_news extends Hook_actionlog
                     'VIEW' => '_SEARCH:news:browse:{ID}',
                     'EDIT_THIS_NEWS_CATEGORY' => '_SEARCH:cms_news:_edit_category:{ID}',
                     'ADD_NEWS_CATEGORY' => '_SEARCH:cms_news:add_category',
-                    'ADD_NEWS' => '_SEARCH:cms_news:add',
+                    'ADD_NEWS' => '_SEARCH:cms_news:add:cat={ID}',
                 ),
             ),
             'DELETE_NEWS_CATEGORY' => array(
@@ -78,7 +78,7 @@ class Hook_actionlog_news extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:news:view:{ID}',
                     'EDIT_THIS_NEWS' => '_SEARCH:cms_news:_edit:{ID}',
-                    'ADD_NEWS' => '_SEARCH:cms_news:add',
+                    'ADD_NEWS' => '_SEARCH:cms_news:add:cat=TODO',
                 ),
             ),
             'EDIT_NEWS' => array(
@@ -89,7 +89,7 @@ class Hook_actionlog_news extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:news:view:{ID}',
                     'EDIT_THIS_NEWS' => '_SEARCH:cms_news:_edit:{ID}',
-                    'ADD_NEWS' => '_SEARCH:cms_news:add',
+                    'ADD_NEWS' => '_SEARCH:cms_news:add:cat=TODO',
                 ),
             ),
             'DELETE_NEWS' => array(

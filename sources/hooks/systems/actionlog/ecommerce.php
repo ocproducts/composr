@@ -72,7 +72,7 @@ class Hook_actionlog_ecommerce extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_PROFILE' => array('FORUM_DRIVER__PROFILE_URL', 'TODO'),
                     'CREATE_INVOICE' => '_SEARCH:admin_invoices:add',
                 ),
             ),

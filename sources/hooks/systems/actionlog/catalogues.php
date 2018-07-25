@@ -111,7 +111,7 @@ class Hook_actionlog_catalogues extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:catalogues:entry:{ID}',
                     'EDIT_THIS_CATALOGUE_ENTRY' => '_SEARCH:cms_catalogues:_edit_entry:{ID}',
-                    'ADD_CATALOGUE_ENTRY' => '_SEARCH:cms_catalogues:add_entry',
+                    'ADD_CATALOGUE_ENTRY' => '_SEARCH:cms_catalogues:add_entry:category_id=TODO',
                 ),
             ),
             'EDIT_CATALOGUE_ENTRY' => array(
@@ -122,7 +122,7 @@ class Hook_actionlog_catalogues extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:catalogues:entry:{ID}',
                     'EDIT_THIS_CATALOGUE_ENTRY' => '_SEARCH:cms_catalogues:_edit_entry:{ID}',
-                    'ADD_CATALOGUE_ENTRY' => '_SEARCH:cms_catalogues:add_entry',
+                    'ADD_CATALOGUE_ENTRY' => '_SEARCH:cms_catalogues:add_entry:category_id=TODO',
                 ),
             ),
             'DELETE_CATALOGUE_ENTRY' => array(

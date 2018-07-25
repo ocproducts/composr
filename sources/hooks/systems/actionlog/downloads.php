@@ -46,7 +46,7 @@ class Hook_actionlog_downloads extends Hook_actionlog
                     'VIEW' => '_SEARCH:downloads:browse',
                     'EDIT_THIS_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:_edit_category:{ID}',
                     'ADD_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:add_category',
-                    'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add',
+                    'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add:cat={ID}',
                 ),
             ),
             'EDIT_DOWNLOAD_CATEGORY' => array(
@@ -58,7 +58,7 @@ class Hook_actionlog_downloads extends Hook_actionlog
                     'VIEW' => '_SEARCH:downloads:browse',
                     'EDIT_THIS_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:_edit_category:{ID}',
                     'ADD_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:add_category',
-                    'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add',
+                    'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add:cat={ID}',
                 ),
             ),
             'DELETE_DOWNLOAD_CATEGORY' => array(
@@ -107,7 +107,7 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:downloads:entry:{ID}',
                     'EDIT_THIS_DOWNLOAD' => '_SEARCH:cms_downloads:_edit:{ID}',
-                    'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add',
+                    'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add:cat=TODO',
                 ),
             ),
             'EDIT_DOWNLOAD' => array(
@@ -118,7 +118,7 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:downloads:entry:{ID}',
                     'EDIT_THIS_DOWNLOAD' => '_SEARCH:cms_downloads:_edit:{ID}',
-                    'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add',
+                    'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add:cat=TODO',
                 ),
             ),
             'DELETE_DOWNLOAD' => array(

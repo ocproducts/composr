@@ -135,7 +135,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
-                'written_context_index' => 1
+                'written_context_index' => 1,
                 'followup_page_links' => array(
                     'VIEW_TOPIC' => 'TODO',
                 ),

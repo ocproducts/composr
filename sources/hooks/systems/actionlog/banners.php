@@ -44,7 +44,7 @@ class Hook_actionlog_banners extends Hook_actionlog
                 'written_context_index' => 0,
                 'followup_page_links' => array(
                     'EDIT_THIS_BANNER_TYPE' => '_SEARCH:cms_banners:_edit_category:{ID}',
-                    'ADD_BANNER' => '_SEARCH:cms_banners:add',
+                    'ADD_BANNER' => '_SEARCH:cms_banners:add:b_type={ID}',
                 ),
             ),
             'EDIT_BANNER_TYPE' => array(
@@ -54,7 +54,7 @@ class Hook_actionlog_banners extends Hook_actionlog
                 'written_context_index' => 1,
                 'followup_page_links' => array(
                     'EDIT_THIS_BANNER_TYPE' => '_SEARCH:cms_banners:_edit_category:{ID}',
-                    'ADD_BANNER' => '_SEARCH:cms_banners:add',
+                    'ADD_BANNER' => '_SEARCH:cms_banners:add:b_type={ID}',
                 ),
             ),
             'DELETE_BANNER_TYPE' => array(
@@ -74,7 +74,7 @@ class Hook_actionlog_banners extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => 'TODO',
                     'EDIT_THIS_BANNER_TYPE' => '_SEARCH:cms_banners:_edit_category:{ID}',
-                    'ADD_BANNER' => '_SEARCH:cms_banners:add',
+                    'ADD_BANNER' => '_SEARCH:cms_banners:add:b_type=TODO',
                 ),
             ),
             'EDIT_BANNER' => array(
@@ -85,7 +85,7 @@ class Hook_actionlog_banners extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => 'TODO',
                     'EDIT_THIS_BANNER' => '_SEARCH:cms_banners:_edit:{ID}',
-                    'ADD_BANNER' => '_SEARCH:cms_banners:add',
+                    'ADD_BANNER' => '_SEARCH:cms_banners:add:b_type=TODO',
                 ),
             ),
             'DELETE_BANNER' => array(

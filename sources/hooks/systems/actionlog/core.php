@@ -412,15 +412,6 @@ class Hook_actionlog_core extends Hook_actionlog
                     'ADD_THEME_IMAGE' => TODO ? '_SEARCH:admin_themes:add_image:theme={1}' : null,
                 ),
             ),
-            'CLEANUP_TOOLS' => array(
-                'flags' => ACTIONLOG_FLAGS_NONE,
-                'cma_hook' => null,
-                'identifier_index' => null,
-                'written_context_index' => 0,
-                'followup_page_links' => array(
-                    'CLEANUP_TOOLS' => '_SEARCH:admin_cleanup',
-                ),
-            ),
             'DELETE_TRACKBACKS' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
@@ -430,7 +421,7 @@ class Hook_actionlog_core extends Hook_actionlog
                     'MANAGE_TRACKBACKS' => '_SEARCH:admin_trackbacks',
                 ),
             ),
-            'GROUP_MEMBER_TIMEOUTS' => array)
+            'GROUP_MEMBER_TIMEOUTS' => array(
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => 0,

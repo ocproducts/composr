@@ -29,13 +29,19 @@ function init__actionlog()
     define('ACTIONLOG_FLAG__USER_ACTION', 1); // Used when we use the action log for non-admin actions (as we have no dedicated log for something)
 }
 
+/**
+ * Base action log object.
+ * Used for ameliorating action log entries.
+ *
+ * @package    core_notifications
+ */
 abstract class Hook_actionlog
 {
     /**
      * Get extended action log details if the action log entry type is handled by this hook and we have them.
      *
-     * @param  array Action log row
-     * @return ?array Map of extended data in standard format (null: not available from this hook) (false: hook has responsibility but has failed)
+     * @param  array $actionlog_row Action log row
+     * @return ?~array Map of extended data in standard format (null: not available from this hook) (false: hook has responsibility but has failed)
      */
     public function get_extended_actionlog_data($actionlog_row)
     {
@@ -54,7 +60,7 @@ abstract class Hook_actionlog
             }
             if ($identifier === '') {
                 // Fail (note null does not fail, it just means we have no identifier which is fine)
-                return false
+                return false;
             }
 
             $written_context = null;
@@ -66,7 +72,7 @@ abstract class Hook_actionlog
             if ($written_context === null && $identifier !== null && $handler_data['cma_hook'] !== null) {
                 // Work out from CMA hook as we don't have it directly in the action log entry
                 require_code('content');
-                list($written_context) = content_get_details($handler_data['cma_hook'], $content_id);
+                list($written_context) = content_get_details($handler_data['cma_hook'], $identifier);
             }
             if ($written_context === null || $written_context === '') {
                 // Fail
@@ -77,39 +83,97 @@ abstract class Hook_actionlog
                 'ID' => $identifier,
                 '0' => ($actionlog_row['param_a'] == '') ? null : $actionlog_row['param_a'],
                 '1' => ($actionlog_row['param_b'] == '') ? null : $actionlog_row['param_b'],
-                '0_EVEN_EMPTY' => $actionlog_row['param_a'],
-                '1_EVEN_EMPTY' => $actionlog_row['param_b'],
+                '0__EVEN_EMPTY' => $actionlog_row['param_a'],
+                '1__EVEN_EMPTY' => $actionlog_row['param_b'],
             );
+            if (method_exists($this, 'get_extended_actionlog_bindings')) {
+                $this->get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, $bindings);
+            }
 
-            $followup_page_links = array();
-            $_followup_page_links = $handler_data['followup_page_links'];
-            foreach ($_followup_page_links as $i => $page_link) {
+            $followup_urls = array();
+            $followup_page_links = $handler_data['followup_page_links'];
+            foreach ($followup_page_links as $i => $page_link) {
                 if ($page_link !== null) {
-                    $error = false;
-                    foreach ($bindings as $binding_from => $binding_to) {
-                        $_binding_from = '{' . $binding_from . '}';
-                        if (strpos($page_link, $_binding_from) !== false) {
-                            if ($binding_to !== null) {
-                                $page_link = str_replace($_binding_from, $binding_to, $page_link);
-                            } else {
-                                $error = true;
+                    if (is_array($page_link)) {
+                        // Some kind of special encoding where a page-link isn't going to work for us
+                        $success = true;
+                        foreach ($page_link as $special_part) {
+                            $success = $success && $this->apply_string_parameter_substitutions($special_part, $bindings);
+                        }
+                        if ($success) {
+                            if (!isset($page_link[0])) {
+                                warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+                            }
+
+                            switch ($page_link[0]) {
+                                case 'FORUM_DRIVER__PROFILE_URL':
+                                    if (count($page_link) != 2) {
+                                        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+                                    }
+
+                                    $url = $GLOBALS['FORUM_DRIVER']->member_profile_url(intval($page_link[1]), true);
+                                    $followup_urls[] = $url;
+                                    break;
+
+                                default:
+                                    warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
                             }
                         }
                     }
 
-                    if (!$error) {
-                        $followup_page_links[] = $page_link;
+                    $success = $this->apply_string_parameter_substitutions($page_link, $bindings);
+                    if ($success) {
+                        $url = page_link_to_url($page_link);
+                        $followup_urls[] = $url;
                     }
                 }
             }
 
             return array(
                 'written_context' => $written_context,
-                'followup_page_links' => $followup_page_links,
+                'followup_urls' => $followup_urls,
             );
         }
 
         return null;
+    }
+
+    /**
+     * Apply any page-link/URL parameter value substitutions to a string.
+     *
+     * @param  string $string The string to apply to, changed by reference
+     * @param  array $bindings Mapping of bindings to apply
+     * @return ~boolean Whether successful applying the bindings (false: null or missing binding)
+     */
+    protected function apply_string_parameter_substitutions(&$string, $bindings)
+    {
+        foreach ($bindings as $binding_from => $binding_to) {
+            $_binding_from = '{' . $binding_from . '}';
+            if (strpos($string, $_binding_from) !== false) {
+                if ($binding_to !== null) {
+                    $string = str_replace($_binding_from, $binding_to, $string);
+                } else {
+                    return false; // required binding is null
+                }
+            }
+
+            // Now optional version too
+            $_binding_from = '{' . $binding_from . '__OPTIONAL}';
+            if (strpos($string, $_binding_from) !== false) {
+                if ($binding_to !== null) {
+                    $string = str_replace($_binding_from, $binding_to, $string);
+                } else {
+                    // Just strip the page-link/URL binding
+                    $string = preg_replace('#[:&]\w+=' . preg_quote($_binding_from, '#') . '#', '', $string);
+                }
+            }
+        }
+
+        if (strpos($string, '{') !== false) {
+            return false; // Missing binding
+        }
+
+        return true;
     }
 
     /**
@@ -140,7 +204,7 @@ function actionlog_linkage($type, $a, $b, $_a, $_b)
         $type_str = $type;
     }
 
-    // TODO: This will be replaced later with a more thorough system #115 on tracker
+    // TODO
     if (($type == 'EDIT_TEMPLATES') && (strpos($a, ',') === false)) {
         if ($b == '') {
             $b = 'default';

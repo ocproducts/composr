@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_actionlog_ssl extends Hook_actionlog
+class Hook_actionlog_actionlog extends Hook_actionlog
 {
     /**
      * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.

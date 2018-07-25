@@ -46,6 +46,7 @@ class Hook_actionlog_calendar extends Hook_actionlog
                     'CALENDAR' => '_SEARCH:calendar',
                     'EDIT_THIS_EVENT_TYPE' => '_SEARCH:cms_calendar:_edit_category:{ID}',
                     'ADD_EVENT_TYPE' => 'SEARCH:cms_calendar:add_category',
+                    'ADD_CALENDER_EVENT' => 'SEARCH:cms_calendar:add:e_type={ID}',
                 ),
             ),
             'EDIT_EVENT_TYPE' => array(
@@ -57,6 +58,7 @@ class Hook_actionlog_calendar extends Hook_actionlog
                     'CALENDAR' => '_SEARCH:calendar',
                     'EDIT_THIS_EVENT_TYPE' => '_SEARCH:cms_calendar:_edit_category:{ID}',
                     'ADD_EVENT_TYPE' => '_SEARCH:cms_calendar:add_category',
+                    'ADD_CALENDER_EVENT' => 'SEARCH:cms_calendar:add:e_type={ID}',
                 ),
             ),
             'DELETE_EVENT_TYPE' => array(
@@ -76,7 +78,7 @@ class Hook_actionlog_calendar extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:calendar:view:{ID}',
                     'EDIT_THIS_CALENDAR_EVENT' => '_SEARCH:cms_calendar:_edit:{ID}',
-                    'ADD_CALENDAR_EVENT' => '_SEARCH:cms_calendar:add',
+                    'ADD_CALENDAR_EVENT' => '_SEARCH:cms_calendar:add:e_type=TODO',
                 ),
             ),
             'EDIT_CALENDAR_EVENT' => array(
@@ -87,7 +89,7 @@ class Hook_actionlog_calendar extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:calendar:view:{ID}',
                     'EDIT_THIS_CALENDAR_EVENT' => '_SEARCH:cms_calendar:_edit:{ID}',
-                    'ADD_CALENDAR_EVENT' => '_SEARCH:cms_calendar:add',
+                    'ADD_CALENDAR_EVENT' => '_SEARCH:cms_calendar:add:e_type=TODO',
                 ),
             ),
             'DELETE_CALENDAR_EVENT' => array(

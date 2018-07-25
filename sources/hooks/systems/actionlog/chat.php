@@ -113,7 +113,7 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'CHATROOM' => 'TODO',
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_PROFILE' => array('FORUM_DRIVER__PROFILE_URL', 'TODO'),
                 ),
             ),
             'CHAT_UNBAN' => array(
@@ -123,7 +123,7 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'CHATROOM' => 'TODO',
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_PROFILE' => array('FORUM_DRIVER__PROFILE_URL', 'TODO'),
                 ),
             ),
             'BLOCK_MEMBER' => array(
@@ -132,8 +132,8 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'SUBMITTER' => 'TODO', // TODO: Consider non-CNS
-                    'TARGET' => 'TODO', // TODO: Consider non-CNS
+                    'SUBMITTER' => array('FORUM_DRIVER__PROFILE_URL', 'TODO'),
+                    'TARGET' => array('FORUM_DRIVER__PROFILE_URL', 'TODO'),
                 ),
             ),
             'UNBLOCK_MEMBER' => array(
