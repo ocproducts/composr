@@ -360,7 +360,7 @@ class Module_wiki
             }
         }
 
-        if ($type == 'mg' || $type == 'do') {
+        if ($type == 'merge' || $type == '_merge') {
             $this->title = get_screen_title('MERGE_WIKI_POSTS');
         }
 
@@ -398,10 +398,10 @@ class Module_wiki
         if ($type == 'revisions') {
             return $this->revisions();
         }
-        if ($type == 'mg') {
+        if ($type == 'merge') {
             return $this->do_wiki_merge_interface();
         }
-        if ($type == 'do') {
+        if ($type == '_merge') {
             return $this->do_wiki_merge();
         }
         if ($type == 'move') {
@@ -764,7 +764,7 @@ class Module_wiki
     {
         $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', false, true)), '_SELF');
         $redir_url = $_redir_url->evaluate();
-        $merge_url = build_url(array('page' => '_SELF', 'type' => 'do', 'id' => get_param_string('id', false, true), 'redirect' => $redir_url), '_SELF', null, true);
+        $merge_url = build_url(array('page' => '_SELF', 'type' => '_merge', 'id' => get_param_string('id', false, true), 'redirect' => $redir_url), '_SELF', null, true);
 
         $merged = '';
         $markers = $this->get_markers();

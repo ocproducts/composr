@@ -43,7 +43,7 @@ class Hook_actionlog_health_check extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'HEALTH_CHECK' => 'TODO',
+                    'HEALTH_CHECK' => '_SEARCH:admin_health_check',
                 ),
             ),
         );

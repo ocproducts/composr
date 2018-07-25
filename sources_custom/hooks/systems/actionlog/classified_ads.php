@@ -43,7 +43,7 @@ class Hook_actionlog_classifieds extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'CLASSIFIEDS' => 'TODO',
+                    'CLASSIFIEDS' => '_SEARCH:admin_classifieds',
                 ),
             ),
         );

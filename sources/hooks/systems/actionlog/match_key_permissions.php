@@ -43,7 +43,7 @@ class Hook_actionlog_match_key_permissions extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'PAGE_MATCH_KEY_ACCESS' => 'TODO',
+                    'PAGE_MATCH_KEY_ACCESS' => '_SEARCH:admin_permissions:match_keys',
                 ),
             ),
         );

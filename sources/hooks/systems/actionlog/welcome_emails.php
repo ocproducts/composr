@@ -43,8 +43,8 @@ class Hook_actionlog_welcome_emails extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_WELCOME_EMAIL' => 'TODO',
-                    'ADD_WELCOME_EMAIL' => 'TODO',
+                    'EDIT_THIS_WELCOME_EMAIL' => '_SEARCH:admin_cns_welcome_emails:_edit:_ID_',
+                    'ADD_WELCOME_EMAIL' => '_SEARCH:admin_cns_welcome_emails:add',
                 ),
             ),
             'EDIT_WELCOME_EMAIL' => array(
@@ -53,8 +53,8 @@ class Hook_actionlog_welcome_emails extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_WELCOME_EMAIL' => 'TODO',
-                    'ADD_WELCOME_EMAIL' => 'TODO',
+                    'EDIT_THIS_WELCOME_EMAIL' => '_SEARCH:admin_cns_welcome_emails:_edit:_ID_',
+                    'ADD_WELCOME_EMAIL' => '_SEARCH:admin_cns_welcome_emails:add',
                 ),
             ),
             'DELETE_WELCOME_EMAIL' => array(
@@ -63,7 +63,7 @@ class Hook_actionlog_welcome_emails extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_WELCOME_EMAIL' => 'TODO',
+                    'ADD_WELCOME_EMAIL' => '_SEARCH:admin_cns_welcome_emails:add',
                 ),
             ),
         );

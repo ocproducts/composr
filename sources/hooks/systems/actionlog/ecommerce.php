@@ -43,8 +43,8 @@ class Hook_actionlog_ecommerce extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_USERGROUP_SUBSCRIPTION' => 'TODO',
-                    'ADD_USERGROUP_SUBSCRIPTION' => 'TODO',
+                    'EDIT_THIS_USERGROUP_SUBSCRIPTION' => '_SEARCH:admin_ecommerce:_edit:_ID_',
+                    'ADD_USERGROUP_SUBSCRIPTION' => '_SEARCH:admin_ecommerce:add',
                 ),
             ),
             'EDIT_USERGROUP_SUBSCRIPTION' => array(
@@ -53,8 +53,8 @@ class Hook_actionlog_ecommerce extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_USERGROUP_SUBSCRIPTION' => 'TODO',
-                    'ADD_USERGROUP_SUBSCRIPTION' => 'TODO',
+                    'EDIT_THIS_USERGROUP_SUBSCRIPTION' => '_SEARCH:admin_ecommerce:_edit:_ID_',
+                    'ADD_USERGROUP_SUBSCRIPTION' => '_SEARCH:admin_ecommerce:add',
                 ),
             ),
             'DELETE_USERGROUP_SUBSCRIPTION' => array(
@@ -63,7 +63,7 @@ class Hook_actionlog_ecommerce extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_USERGROUP_SUBSCRIPTION' => 'TODO',
+                    'ADD_USERGROUP_SUBSCRIPTION' => '_SEARCH:admin_ecommerce:add',
                 ),
             ),
             'CREATE_INVOICE' => array(
@@ -73,7 +73,7 @@ class Hook_actionlog_ecommerce extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_PROFILE' => 'TODO',
-                    'CREATE_INVOICE' => 'TODO',
+                    'CREATE_INVOICE' => '_SEARCH:admin_invoices:add',
                 ),
             ),
             'DELETE_INVOICE' => array(
@@ -82,7 +82,7 @@ class Hook_actionlog_ecommerce extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'CREATE_INVOICE' => 'TODO',
+                    'CREATE_INVOICE' => '_SEARCH:admin_invoices:add',
                 ),
             ),
         );

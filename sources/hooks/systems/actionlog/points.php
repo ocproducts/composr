@@ -43,8 +43,8 @@ class Hook_actionlog_points extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
-                    'GIFT_TRANSACTIONS' => 'TODO',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'GIFT_TRANSACTIONS' => '_SEARCH:admin_points',
                 ),
             ),
         );

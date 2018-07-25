@@ -43,7 +43,7 @@ class Hook_actionlog_filedump extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    '_FILEDUMP' => 'TODO',
+                    '_FILEDUMP' => '_SEARCH:filedump',
                 ),
             ),
             'FILEDUMP_DELETE_FOLDER' => array(
@@ -52,7 +52,7 @@ class Hook_actionlog_filedump extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    '_FILEDUMP' => 'TODO',
+                    '_FILEDUMP' => '_SEARCH:filedump',
                 ),
             ),
             'FILEDUMP_UPLOAD' => array(
@@ -61,7 +61,7 @@ class Hook_actionlog_filedump extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    '_FILEDUMP' => 'TODO',
+                    '_FILEDUMP' => '_SEARCH:filedump',
                 ),
             ),
             'FILEDUMP_MOVE' => array(
@@ -70,7 +70,7 @@ class Hook_actionlog_filedump extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    '_FILEDUMP' => 'TODO',
+                    '_FILEDUMP' => '_SEARCH:filedump',
                 ),
             ),
             'FILEDUMP_DELETE_FILE' => array(
@@ -79,7 +79,7 @@ class Hook_actionlog_filedump extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    '_FILEDUMP' => 'TODO',
+                    '_FILEDUMP' => '_SEARCH:filedump',
                 ),
             ),
         );

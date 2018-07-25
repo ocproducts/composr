@@ -48,10 +48,10 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_ZONE' => 'TODO',
-                    'ZONE_EDITOR' => 'TODO',
-                    'ADD_ZONE' => 'TODO',
+                    'VIEW' => '_ID_:',
+                    'EDIT_THIS_ZONE' => '_SEARCH:admin_zones:_edit:_ID_',
+                    'ZONE_EDITOR' => '_SEARCH:admin_zones:_editor:_ID_',
+                    'ADD_ZONE' => '_SEARCH:admin_zones:add',
                 ),
             ),
             'EDIT_ZONE' => array(
@@ -60,10 +60,10 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_ZONE' => 'TODO',
-                    'ZONE_EDITOR' => 'TODO',
-                    'ADD_ZONE' => 'TODO',
+                    'VIEW' => '_ID_:',
+                    'EDIT_THIS_ZONE' => '_SEARCH:admin_zones:_edit:_ID_',
+                    'ZONE_EDITOR' => '_SEARCH:admin_zones:_editor:_ID_',
+                    'ADD_ZONE' => '_SEARCH:admin_zones:add',
                 ),
             ),
             'DELETE_ZONE' => array(
@@ -72,7 +72,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_ZONE' => 'TODO',
+                    'ADD_ZONE' => '_SEARCH:admin_zones:add',
                 ),
             ),
             'COMCODE_PAGE_EDIT' => array(
@@ -81,9 +81,9 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'COMCODE_PAGE_EDIT_THIS' => 'TODO',
-                    'COMCODE_PAGE_MANAGEMENT' => 'TODO',
+                    'VIEW' => '_1_:_0_',
+                    'COMCODE_PAGE_EDIT_THIS' => '_SEARCH:cms_comcode_pages:_edit:page_link=_1_%3A_0_',
+                    'COMCODE_PAGE_MANAGEMENT' => '_SEARCH:cms_comcode_pages',
                 ),
             ),
             'MOVE_PAGES' => array(
@@ -100,7 +100,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'COMCODE_PAGE_ADD' => 'TODO',
+                    'COMCODE_PAGE_MANAGEMENT' => '_SEARCH:cms_comcode_pages',
                 ),
             ),
             'EXPORT_ADDON' => array(
@@ -109,7 +109,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'ADDONS' => 'TODO',
+                    'ADDONS' => '_SEARCH:admin_addons',
                 ),
             ),
             'INSTALL_ADDON' => array(
@@ -118,7 +118,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'ADDONS' => 'TODO',
+                    'ADDONS' => '_SEARCH:admin_addons',
                 ),
             ),
             'UNINSTALL_ADDON' => array(
@@ -127,7 +127,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'ADDONS' => 'TODO',
+                    'ADDONS' => '_SEARCH:admin_addons',
                 ),
             ),
             'CHECK_LIST_ADD' => array(
@@ -136,7 +136,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'DASHBOARD' => 'TODO',
+                    'DASHBOARD' => 'adminzone:',
                 ),
             ),
             'CHECK_LIST_DELETE' => array(
@@ -145,7 +145,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'DASHBOARD' => 'TODO',
+                    'DASHBOARD' => 'adminzone:',
                 ),
             ),
             'CHECK_LIST_MARK_DONE' => array(
@@ -154,7 +154,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'DASHBOARD' => 'TODO',
+                    'DASHBOARD' => 'adminzone:',
                 ),
             ),
             'CHECK_LIST_MARK_UNDONE' => array(
@@ -163,7 +163,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'DASHBOARD' => 'TODO',
+                    'DASHBOARD' => 'adminzone:',
                 ),
             ),
             'STAFF_LINKS' => array(
@@ -172,7 +172,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'DASHBOARD' => 'TODO',
+                    'DASHBOARD' => 'adminzone:',
                 ),
             ),
             'SITE_WATCHLIST' => array(
@@ -181,7 +181,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'DASHBOARD' => 'TODO',
+                    'DASHBOARD' => 'adminzone:',
                 ),
             ),
             'NOTES' => array(
@@ -190,7 +190,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'DASHBOARD' => 'TODO',
+                    'DASHBOARD' => 'adminzone:',
                 ),
             ),
             'CLEANUP_TOOLS' => array(
@@ -199,7 +199,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'CLEANUP_TOOLS' => 'TODO',
+                    'CLEANUP_TOOLS' => '_SEARCH:admin_cleanup',
                 ),
             ),
             'CONFIGURATION' => array(
@@ -208,8 +208,8 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'OPTION_CATEGORY' => 'TODO',
-                    'CONFIGURATION' => 'TODO',
+                    'OPTION_CATEGORY' => '_SEARCH:admin_config:category:_ID_',
+                    'CONFIGURATION' => '_SEARCH:admin_config',
                 ),
             ),
             'TRANSLATE_CODE' => array(
@@ -218,7 +218,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'TRANSLATE_CODE' => 'TODO',
+                    'TRANSLATE_CODE' => '_SEARCH:admin_lang',
                 ),
             ),
             'TRANSLATE_CONTENT' => array(
@@ -227,7 +227,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'TRANSLATE_CONTENT' => 'TODO',
+                    'TRANSLATE_CONTENT' => multi_lang_content() ? '_SEARCH:admin_lang:content' : null,
                 ),
             ),
             'ADD_MENU' => array(
@@ -236,7 +236,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_MENU' => 'TODO',
+                    'EDIT_MENU' => '_SEARCH:admin_menus:_edit:_ID_',
                 ),
             ),
             'EDIT_MENU' => array(
@@ -245,7 +245,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_MENU' => 'TODO',
+                    'EDIT_MENU' => '_SEARCH:admin_menus:_edit:_ID_',
                 ),
             ),
             'DELETE_MENU' => array(
@@ -254,7 +254,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'MENU_MANAGEMENT' => 'TODO',
+                    'MENU_MANAGEMENT' => '_SEARCH:admin_menus',
                 ),
             ),
             'ADD_MENU_ITEM' => array(
@@ -290,7 +290,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'NOTIFICATIONS_LOCKDOWN' => 'TODO',
+                    'NOTIFICATIONS_LOCKDOWN' => '_SEARCH:admin_notifications',
                 ),
             ),
             'PRIVILEGES' => array(
@@ -299,8 +299,8 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'PRIVILEGES' => 'TODO',
-                    'PERMISSIONS_TREE' => 'TODO',
+                    'PRIVILEGES' => '_SEARCH:admin_permissions:privileges',
+                    'PERMISSIONS_TREE' => '_SEARCH:admin_permissions',
                 ),
             ),
             'PAGE_ACCESS' => array(
@@ -309,8 +309,8 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'PAGE_ACCESS' => 'TODO',
-                    'PERMISSIONS_TREE' => 'TODO',
+                    'PAGE_ACCESS' => '_SEARCH:admin_permissions:page',
+                    'PERMISSIONS_TREE' => '_SEARCH:admin_permissions',
                 ),
             ),
             'ADD_THEME' => array(
@@ -319,9 +319,9 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'EDIT_THEME' => 'TODO',
-                    'THEMEWIZARD' => 'TODO',
-                    'MANAGE_THEMES' => 'TODO',
+                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:_ID_',
+                    'THEMEWIZARD' => '_SEARCH:admin_themewizard',
+                    'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
             'EDIT_THEME' => array(
@@ -330,8 +330,8 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THEME' => 'TODO',
-                    'MANAGE_THEMES' => 'TODO',
+                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:_ID_',
+                    'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
             'DELETE_THEME' => array(
@@ -340,7 +340,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'MANAGE_THEMES' => 'TODO',
+                    'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
             'COPY_THEME' => array(
@@ -349,8 +349,8 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'EDIT_THEME' => 'TODO',
-                    'MANAGE_THEMES' => 'TODO',
+                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:_ID_',
+                    'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
             'RENAME_THEME' => array(
@@ -359,7 +359,8 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'MANAGE_THEMES' => 'TODO',
+                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:_ID_',
+                    'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
             'EDIT_CSS' => array(
@@ -369,7 +370,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'EDIT_CSS' => 'TODO',
-                    'MANAGE_THEMES' => 'TODO',
+                    'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
             'EDIT_TEMPLATE' => array(
@@ -379,7 +380,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'EDIT_TEMPLATE' => 'TODO',
-                    'MANAGE_THEMES' => 'TODO',
+                    'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
             'ADD_THEME_IMAGE' => array(
@@ -388,8 +389,8 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_THEME_IMAGE' => 'TODO',
-                    'ADD_THEME_IMAGE' => 'TODO',
+                    'EDIT_THEME_IMAGE' => '_SEARCH:admin_themes:_edit_image:_ID_:theme=_1_',
+                    'ADD_THEME_IMAGE' => '_SEARCH:admin_themes:add_image:theme=_1_',
                 ),
             ),
             'EDIT_THEME_IMAGE' => array(
@@ -398,8 +399,8 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_THEME_IMAGE' => 'TODO',
-                    'ADD_THEME_IMAGE' => 'TODO',
+                    'EDIT_THEME_IMAGE' => '_SEARCH:admin_themes:_edit_image:_ID_:theme=_1_',
+                    'ADD_THEME_IMAGE' => '_SEARCH:admin_themes:add_image:theme=_1_',
                 ),
             ),
             'DELETE_THEME_IMAGE' => array(
@@ -408,7 +409,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'ADD_THEME_IMAGE' => 'TODO',
+                    'ADD_THEME_IMAGE' => TODO ? '_SEARCH:admin_themes:add_image:theme=_1_' : null,
                 ),
             ),
             'CLEANUP_TOOLS' => array(
@@ -417,7 +418,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'CLEANUP_TOOLS' => 'TODO',
+                    'CLEANUP_TOOLS' => '_SEARCH:admin_cleanup',
                 ),
             ),
             'DELETE_TRACKBACKS' => array(
@@ -426,7 +427,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'MANAGE_TRACKBACKS' => 'TODO',
+                    'MANAGE_TRACKBACKS' => '_SEARCH:admin_trackbacks',
                 ),
             ),
             'GROUP_MEMBER_TIMEOUTS' => array)
@@ -434,7 +435,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'GROUP_MEMBER_TIMEOUTS' => 'TODO',
+                    'GROUP_MEMBER_TIMEOUTS' => '_SEARCH:admin_group_member_timeouts',
                 ),
             ),
             'FU_OPEN_SITE' => array(
@@ -443,7 +444,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'FU_UPGRADER_TITLE' => 'TODO',
+                    'FU_UPGRADER_TITLE' => '_SEARCH:admin_config:upgrader',
                 ),
             ),
             'FU_CLOSE_SITE' => array(
@@ -452,7 +453,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'FU_UPGRADER_TITLE' => 'TODO',
+                    'FU_UPGRADER_TITLE' => '_SEARCH:admin_config:upgrader',
                 ),
             ),
             'FU_DOWNLOAD' => array(
@@ -461,7 +462,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'FU_UPGRADER_TITLE' => 'TODO',
+                    'FU_UPGRADER_TITLE' => '_SEARCH:admin_config:upgrader',
                 ),
             ),
             'FU_DATABASE_UPGRADE' => array(
@@ -470,7 +471,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'FU_UPGRADER_TITLE' => 'TODO',
+                    'FU_UPGRADER_TITLE' => '_SEARCH:admin_config:upgrader',
                 ),
             ),
         );

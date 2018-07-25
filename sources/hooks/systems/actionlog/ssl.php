@@ -43,7 +43,7 @@ class Hook_actionlog_ssl extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'SSL_CONFIGURATION' => 'TODO',
+                    'SSL_CONFIGURATION' => '_SEARCH:admin_ssl',
                 ),
             ),
         );

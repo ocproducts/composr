@@ -43,7 +43,7 @@ class Hook_actionlog_wiki extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    '_WIKI_PAGE' => 'TODO',
+                    '_WIKI_PAGE' => '_SEARCH:wiki:browse:_ID_',
                 ),
             ),
             'WIKI_EDIT_PAGE' => array(
@@ -52,7 +52,7 @@ class Hook_actionlog_wiki extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    '_WIKI_PAGE' => 'TODO',
+                    '_WIKI_PAGE' => '_SEARCH:wiki:browse:_ID_',
                 ),
             ),
             'WIKI_DELETE_PAGE' => array(
@@ -61,7 +61,7 @@ class Hook_actionlog_wiki extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'WIKI_HOME' => 'TODO',
+                    'WIKI_HOME' => '_SEARCH:wiki',
                 ),
             ),
             'WIKI_EDIT_TREE' => array(
@@ -70,7 +70,7 @@ class Hook_actionlog_wiki extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    '_WIKI_PAGE' => 'TODO',
+                    '_WIKI_PAGE' => '_SEARCH:wiki:browse:_ID_',
                 ),
             ),
             'WIKI_MAKE_POST' => array(
@@ -80,7 +80,7 @@ class Hook_actionlog_wiki extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     '_WIKI_PAGE' => 'TODO',
-                    'WIKI_EDIT_POST' => 'TODO',
+                    'WIKI_EDIT_POST' => '_SEARCH:wiki:post:post_id=_ID_',
                 ),
             ),
             'WIKI_EDIT_POST' => array(
@@ -90,7 +90,7 @@ class Hook_actionlog_wiki extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     '_WIKI_PAGE' => 'TODO',
-                    'WIKI_EDIT_POST' => 'TODO',
+                    'WIKI_EDIT_POST' => '_SEARCH:wiki:post:post_id=_ID_',
                 ),
             ),
             'WIKI_DELETE_POST' => array(
@@ -108,7 +108,7 @@ class Hook_actionlog_wiki extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    '_WIKI_PAGE' => 'TODO',
+                    '_WIKI_PAGE' => '_SEARCH:wiki:browse:_ID_',
                 ),
             ),
             'WIKI_MOVE_POST' => array(
@@ -118,7 +118,7 @@ class Hook_actionlog_wiki extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     '_WIKI_PAGE' => 'TODO',
-                    'WIKI_EDIT_POST' => 'TODO',
+                    'WIKI_EDIT_POST' => '_SEARCH:wiki:post:post_id=_ID_',
                 ),
             ),
         );

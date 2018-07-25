@@ -47,9 +47,9 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_FORUM_GROUPING' => 'TODO',
-                    'ADD_FORUM_GROUPING' => 'TODO',
-                    'ADD_FORUM' => 'TODO',
+                    'EDIT_THIS_FORUM_GROUPING' => '_SEARCH:admin_cns_forum_groupings:_edit:_ID_',
+                    'ADD_FORUM_GROUPING' => '_SEARCH:admin_cns_forum_groupings:add',
+                    'ADD_FORUM' => '_SEARCH:admin_cns_forums:add:forum_grouping_id=_ID_',
                 ),
             ),
             'EDIT_FORUM_GROUPING' => array(
@@ -58,9 +58,9 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_FORUM_GROUPING' => 'TODO',
-                    'ADD_FORUM_GROUPING' => 'TODO',
-                    'ADD_FORUM' => 'TODO',
+                    'EDIT_THIS_FORUM_GROUPING' => '_SEARCH:admin_cns_forum_groupings:_edit:_ID_',
+                    'ADD_FORUM_GROUPING' => '_SEARCH:admin_cns_forum_groupings:add',
+                    'ADD_FORUM' => '_SEARCH:admin_cns_forums:add:forum_grouping_id=_ID_',
                 ),
             ),
             'DELETE_FORUM_GROUPING' => array(
@@ -69,8 +69,8 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_FORUM_GROUPING' => 'TODO',
-                    'ADD_FORUM' => 'TODO',
+                    'ADD_FORUM_GROUPING' => '_SEARCH:admin_cns_forum_groupings:add',
+                    'ADD_FORUM' => '_SEARCH:admin_cns_forums:add',
                 ),
             ),
             'ADD_FORUM' => array(
@@ -79,9 +79,9 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'FORUM' => 'TODO',
-                    'EDIT_THIS_FORUM' => 'TODO',
-                    'ADD_FORUM' => 'TODO',
+                    'FORUM' => '_SEARCH:forumview:browse:_ID_',
+                    'EDIT_THIS_FORUM' => '_SEARCH:admin_cns_forums:_edit:_ID_',
+                    'ADD_FORUM' => '_SEARCH:admin_cns_forums:add',
                 ),
             ),
             'EDIT_FORUM' => array(
@@ -90,9 +90,9 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'FORUM' => 'TODO',
-                    'EDIT_THIS_FORUM' => 'TODO',
-                    'ADD_FORUM' => 'TODO',
+                    'FORUM' => '_SEARCH:forumview:browse:_ID_',
+                    'EDIT_THIS_FORUM' => '_SEARCH:admin_cns_forums:_edit:_ID_',
+                    'ADD_FORUM' => '_SEARCH:admin_cns_forums:add',
                 ),
             ),
             'DELETE_FORUM' => array(
@@ -101,7 +101,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_FORUM' => 'TODO',
+                    'ADD_FORUM' => '_SEARCH:admin_cns_forums:add',
                 ),
             ),
             'EDIT_TOPIC' => array(
@@ -110,7 +110,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_TOPIC' => 'TODO',
+                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:_ID_',
                 ),
             ),
             'EDIT_TOPIC_POLL' => array(
@@ -119,7 +119,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_TOPIC' => 'TODO',
+                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:_ID_',
                 ),
             ),
             'DELETE_TOPIC' => array(
@@ -128,7 +128,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'FORUM' => 'TODO',
+                    'FORUM' => '_SEARCH:forumview',
                 ),
             ),
             'DELETE_TOPIC_POLL' => array(
@@ -146,7 +146,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'FORUM' => 'TODO',
+                    'FORUM' => '_SEARCH:forumview:browse:_ID_',
                 ),
             ),
             'EDIT_POST' => array(
@@ -156,7 +156,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_TOPIC' => 'TODO',
-                    'EDIT_POST' => 'TODO',
+                    'EDIT_POST' => '_SEARCH:topics:edit_post:_ID_',
                 ),
             ),
             'DELETE_POST' => array(
@@ -165,7 +165,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_TOPIC' => 'TODO',
+                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:_ID_',
                 ),
             ),
             'DELETE_POSTS' => array(
@@ -174,7 +174,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_TOPIC' => 'TODO',
+                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:_ID_',
                 ),
             ),
             'VALIDATE_POST' => array(
@@ -184,7 +184,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_TOPIC' => 'TODO',
-                    'EDIT_POST' => 'TODO',
+                    'EDIT_POST' => '_SEARCH:topics:edit_post:_ID_',
                 ),
             ),
             'UNVALIDATE_POST' => array(
@@ -194,7 +194,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_TOPIC' => 'TODO',
-                    'EDIT_POST' => 'TODO',
+                    'EDIT_POST' => '_SEARCH:topics:edit_post:_ID_',
                 ),
             ),
             'MOVE_POSTS' => array(
@@ -203,7 +203,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_TOPIC' => 'TODO',
+                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:_ID_',
                 ),
             ),
             'MAKE_ANONYMOUS_POST' => array(
@@ -213,7 +213,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_TOPIC' => 'TODO',
-                    'EDIT_POST' => 'TODO',
+                    'EDIT_POST' => '_SEARCH:topics:edit_post:_ID_',
                 ),
             ),
             'SILENCE_FROM_FORUM' => array(
@@ -222,7 +222,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
                     'FORUM' => 'TODO',
                 ),
             ),
@@ -232,7 +232,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
                     'FORUM' => 'TODO',
                 ),
             ),
@@ -242,7 +242,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
                     'VIEW_TOPIC' => 'TODO',
                 ),
             ),
@@ -252,7 +252,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
                     'VIEW_TOPIC' => 'TODO',
                 ),
             ),

@@ -43,8 +43,8 @@ class Hook_actionlog_workflows extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_WORKFLOW' => 'TODO',
-                    'ADD_WORKFLOW' => 'TODO',
+                    'EDIT_WORKFLOW' => '_SEARCH:admin_workflows:_edit:_ID_',
+                    'ADD_WORKFLOW' => '_SEARCH:admin_workflows:add',
                 ),
             ),
             'EDIT_WORKFLOW' => array(
@@ -53,8 +53,8 @@ class Hook_actionlog_workflows extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_WORKFLOW' => 'TODO',
-                    'ADD_WORKFLOW' => 'TODO',
+                    'EDIT_WORKFLOW' => '_SEARCH:admin_workflows:_edit:_ID_',
+                    'ADD_WORKFLOW' => '_SEARCH:admin_workflows:add',
                 ),
             ),
             'DELETE_WORKFLOW' => array(
@@ -63,7 +63,7 @@ class Hook_actionlog_workflows extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_WORKFLOW' => 'TODO',
+                    'ADD_WORKFLOW' => '_SEARCH:admin_workflows:add',
                 ),
             ),
         );

@@ -80,13 +80,11 @@ class Module_admin_points
 
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('POINTS'))));
             breadcrumb_set_self(do_lang_tempcode('EXPORT'));
-        } else {
-            set_helper_panel_tutorial('tut_points');
-        }
 
-        if ($type == 'export') {
             $this->title = get_screen_title('EXPORT_POINTS');
             $GLOBALS['OUTPUT_STREAMING'] = false;
+        } else {
+            set_helper_panel_tutorial('tut_points');
         }
 
         if ($type == 'browse') {

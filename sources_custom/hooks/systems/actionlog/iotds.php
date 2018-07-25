@@ -43,9 +43,9 @@ class Hook_actionlog_iotds extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_IOTD' => 'TODO',
-                    'ADD_IOTD' => 'TODO',
+                    'VIEW' => '_SEARCH:iotds:view:_ID_',
+                    'EDIT_THIS_IOTD' => '_SEARCH:cms_iotds:_edit:_ID_',
+                    'ADD_IOTD' => '_SEARCH:cms_iotds:add',
                 ),
             ),
             'EDIT_IOTD' => array(
@@ -54,9 +54,9 @@ class Hook_actionlog_iotds extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_IOTD' => 'TODO',
-                    'ADD_IOTD' => 'TODO',
+                    'VIEW' => '_SEARCH:iotds:view:_ID_',
+                    'EDIT_THIS_IOTD' => '_SEARCH:cms_iotds:_edit:_ID_',
+                    'ADD_IOTD' => '_SEARCH:cms_iotds:add',
                 ),
             ),
             'CHOOSE_IOTD' => array(
@@ -65,9 +65,9 @@ class Hook_actionlog_iotds extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_IOTD' => 'TODO',
-                    'ADD_IOTD' => 'TODO',
+                    'VIEW' => '_SEARCH:iotds:view:_ID_',
+                    'EDIT_THIS_IOTD' => '_SEARCH:cms_iotds:_edit:_ID_',
+                    'ADD_IOTD' => '_SEARCH:cms_iotds:add',
                 ),
             ),
             'DELETE_IOTD' => array(
@@ -76,7 +76,7 @@ class Hook_actionlog_iotds extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_IOTD' => 'TODO',
+                    'ADD_IOTD' => '_SEARCH:cms_iotds:add',
                 ),
             ),
         );

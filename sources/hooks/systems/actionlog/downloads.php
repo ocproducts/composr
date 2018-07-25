@@ -43,10 +43,10 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_DOWNLOAD_CATEGORY' => 'TODO',
-                    'ADD_DOWNLOAD_CATEGORY' => 'TODO',
-                    'ADD_DOWNLOAD' => 'TODO',
+                    'VIEW' => '_SEARCH:downloads:browse',
+                    'EDIT_THIS_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:_edit_category:_ID_',
+                    'ADD_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:add_category',
+                    'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add',
                 ),
             ),
             'EDIT_DOWNLOAD_CATEGORY' => array(
@@ -55,10 +55,10 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_DOWNLOAD_CATEGORY' => 'TODO',
-                    'ADD_DOWNLOAD_CATEGORY' => 'TODO',
-                    'ADD_DOWNLOAD' => 'TODO',
+                    'VIEW' => '_SEARCH:downloads:browse',
+                    'EDIT_THIS_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:_edit_category:_ID_',
+                    'ADD_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:add_category',
+                    'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add',
                 ),
             ),
             'DELETE_DOWNLOAD_CATEGORY' => array(
@@ -67,7 +67,7 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_DOWNLOAD_CATEGORY' => 'TODO',
+                    'ADD_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:add_category',
                 ),
             ),
             'ADD_DOWNLOAD_LICENCE' => array(
@@ -76,8 +76,8 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_DOWNLOAD_LICENCE' => 'TODO',
-                    'ADD_DOWNLOAD_LICENCE' => 'TODO',
+                    'EDIT_THIS_DOWNLOAD_LICENCE' => '_SEARCH:cms_downloads:_edit_other:_ID_',
+                    'ADD_DOWNLOAD_LICENCE' => '_SEARCH:cms_downloads:add_other',
                 ),
             ),
             'EDIT_DOWNLOAD_LICENCE' => array(
@@ -86,8 +86,8 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_DOWNLOAD_LICENCE' => 'TODO',
-                    'ADD_DOWNLOAD_LICENCE' => 'TODO',
+                    'EDIT_THIS_DOWNLOAD_LICENCE' => '_SEARCH:cms_downloads:_edit_other:_ID_',
+                    'ADD_DOWNLOAD_LICENCE' => '_SEARCH:cms_downloads:add_other',
                 ),
             ),
             'DELETE_DOWNLOAD_LICENCE' => array(
@@ -96,7 +96,7 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_DOWNLOAD_LICENCE' => 'TODO',
+                    'ADD_DOWNLOAD_LICENCE' => '_SEARCH:cms_downloads:add_other',
                 ),
             ),
             'ADD_DOWNLOAD' => array(
@@ -105,9 +105,9 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_DOWNLOAD' => 'TODO',
-                    'ADD_DOWNLOAD' => 'TODO',
+                    'VIEW' => '_SEARCH:downloads:entry:_ID_',
+                    'EDIT_THIS_DOWNLOAD' => '_SEARCH:cms_downloads:_edit:_ID_',
+                    'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add',
                 ),
             ),
             'EDIT_DOWNLOAD' => array(
@@ -116,9 +116,9 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_DOWNLOAD' => 'TODO',
-                    'ADD_DOWNLOAD' => 'TODO',
+                    'VIEW' => '_SEARCH:downloads:entry:_ID_',
+                    'EDIT_THIS_DOWNLOAD' => '_SEARCH:cms_downloads:_edit:_ID_',
+                    'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add',
                 ),
             ),
             'DELETE_DOWNLOAD' => array(
@@ -127,7 +127,7 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_DOWNLOAD' => 'TODO',
+                    'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add',
                 ),
             ),
             'FILESYSTEM_DOWNLOADS' => array(
@@ -136,7 +136,7 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'DOWNLOADS_HOME' => 'TODO',
+                    'DOWNLOADS_HOME' => '_SEARCH:downloads',
                 ),
             ),
             'FTP_DOWNLOADS' => array(
@@ -145,7 +145,7 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'DOWNLOADS_HOME' => 'TODO',
+                    'DOWNLOADS_HOME' => '_SEARCH:downloads',
                 ),
             ),
         );

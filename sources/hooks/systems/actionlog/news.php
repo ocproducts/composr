@@ -43,10 +43,10 @@ class Hook_actionlog_news extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_NEWS_CATEGORY' => 'TODO',
-                    'ADD_NEWS_CATEGORY' => 'TODO',
-                    'ADD_NEWS' => 'TODO',
+                    'VIEW' => '_SEARCH:news:browse:_ID_',
+                    'EDIT_THIS_NEWS_CATEGORY' => '_SEARCH:cms_news:_edit_category:_ID_',
+                    'ADD_NEWS_CATEGORY' => '_SEARCH:cms_news:add_category',
+                    'ADD_NEWS' => '_SEARCH:cms_news:add',
                 ),
             ),
             'EDIT_NEWS_CATEGORY' => array(
@@ -55,10 +55,10 @@ class Hook_actionlog_news extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_NEWS_CATEGORY' => 'TODO',
-                    'ADD_NEWS_CATEGORY' => 'TODO',
-                    'ADD_NEWS' => 'TODO',
+                    'VIEW' => '_SEARCH:news:browse:_ID_',
+                    'EDIT_THIS_NEWS_CATEGORY' => '_SEARCH:cms_news:_edit_category:_ID_',
+                    'ADD_NEWS_CATEGORY' => '_SEARCH:cms_news:add_category',
+                    'ADD_NEWS' => '_SEARCH:cms_news:add',
                 ),
             ),
             'DELETE_NEWS_CATEGORY' => array(
@@ -67,7 +67,7 @@ class Hook_actionlog_news extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_NEWS_CATEGORY' => 'TODO',
+                    'ADD_NEWS_CATEGORY' => '_SEARCH:cms_news:add_category',
                 ),
             ),
             'ADD_NEWS' => array(
@@ -76,9 +76,9 @@ class Hook_actionlog_news extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_NEWS' => 'TODO',
-                    'ADD_NEWS' => 'TODO',
+                    'VIEW' => '_SEARCH:news:view:_ID_',
+                    'EDIT_THIS_NEWS' => '_SEARCH:cms_news:_edit:_ID_',
+                    'ADD_NEWS' => '_SEARCH:cms_news:add',
                 ),
             ),
             'EDIT_NEWS' => array(
@@ -87,9 +87,9 @@ class Hook_actionlog_news extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_NEWS' => 'TODO',
-                    'ADD_NEWS' => 'TODO',
+                    'VIEW' => '_SEARCH:news:view:_ID_',
+                    'EDIT_THIS_NEWS' => '_SEARCH:cms_news:_edit:_ID_',
+                    'ADD_NEWS' => '_SEARCH:cms_news:add',
                 ),
             ),
             'DELETE_NEWS' => array(
@@ -98,7 +98,7 @@ class Hook_actionlog_news extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_NEWS' => 'TODO',
+                    'ADD_NEWS' => '_SEARCH:cms_news:add',
                 ),
             ),
             'IMPORT_NEWS' => array(
@@ -107,7 +107,7 @@ class Hook_actionlog_news extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'MANAGE_NEWS' => 'TODO',
+                    'MANAGE_NEWS' => '_SEARCH:cms_news',
                 ),
             ),
         );

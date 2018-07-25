@@ -43,8 +43,8 @@ class Hook_actionlog_disastr extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_DISEASE' => 'TODO',
-                    'ADD_DISEASE' => 'TODO',
+                    'EDIT_THIS_DISEASE' => '_SEARCH:admin_disastr:_edit:_ID_',
+                    'ADD_DISEASE' => '_SEARCH:admin_disastr:add',
                 ),
             ),
             'EDIT_DISEASE' => array(
@@ -53,8 +53,8 @@ class Hook_actionlog_disastr extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_DISEASE' => 'TODO',
-                    'ADD_DISEASE' => 'TODO',
+                    'EDIT_THIS_DISEASE' => '_SEARCH:admin_disastr:_edit:_ID_',
+                    'ADD_DISEASE' => '_SEARCH:admin_disastr:add',
                 ),
             ),
             'DELETE_DISEASE' => array(
@@ -63,7 +63,7 @@ class Hook_actionlog_disastr extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_DISEASE' => 'TODO',
+                    'ADD_DISEASE' => '_SEARCH:admin_disastr:add',
                 ),
             ),
         );

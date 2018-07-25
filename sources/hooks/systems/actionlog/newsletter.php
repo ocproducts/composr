@@ -43,8 +43,8 @@ class Hook_actionlog_newsletter extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_NEWSLETTER' => 'TODO',
-                    'ADD_NEWSLETTER' => 'TODO',
+                    'EDIT_THIS_NEWSLETTER' => '_SEARCH:admin_newsletter:_edit:_ID_',
+                    'ADD_NEWSLETTER' => '_SEARCH:admin_newsletter:add',
                 ),
             ),
             'EDIT_NEWSLETTER' => array(
@@ -53,8 +53,8 @@ class Hook_actionlog_newsletter extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_NEWSLETTER' => 'TODO',
-                    'ADD_NEWSLETTER' => 'TODO',
+                    'EDIT_THIS_NEWSLETTER' => '_SEARCH:admin_newsletter:_edit:_ID_',
+                    'ADD_NEWSLETTER' => '_SEARCH:admin_newsletter:add',
                 ),
             ),
             'DELETE_NEWSLETTER' => array(
@@ -63,7 +63,7 @@ class Hook_actionlog_newsletter extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_NEWSLETTER' => 'TODO',
+                    'ADD_NEWSLETTER' => '_SEARCH:admin_newsletter:add',
                 ),
             ),
             'ADD_PERIODIC_NEWSLETTER' => array(
@@ -72,8 +72,7 @@ class Hook_actionlog_newsletter extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_PERIODIC_NEWSLETTER' => 'TODO',
-                    'ADD_PERIODIC_NEWSLETTER' => 'TODO',
+                    'ADD_PERIODIC_NEWSLETTER' => '_SEARCH:admin_newsletter:whatsnew',
                 ),
             ),
             'EDIT_PERIODIC_NEWSLETTER' => array(
@@ -82,8 +81,7 @@ class Hook_actionlog_newsletter extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_PERIODIC_NEWSLETTER' => 'TODO',
-                    'ADD_PERIODIC_NEWSLETTER' => 'TODO',
+                    'ADD_PERIODIC_NEWSLETTER' => '_SEARCH:admin_newsletter:whatsnew',
                 ),
             ),
             'DELETE_PERIODIC_NEWSLETTER' => array(
@@ -92,7 +90,7 @@ class Hook_actionlog_newsletter extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_PERIODIC_NEWSLETTER' => 'TODO',
+                    'ADD_PERIODIC_NEWSLETTER' => '_SEARCH:admin_newsletter:whatsnew',
                 ),
             ),
             'IMPORT_NEWSLETTER_SUBSCRIBERS' => array(
@@ -101,7 +99,7 @@ class Hook_actionlog_newsletter extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'MANAGE_NEWSLETTER' => 'TODO',
+                    'MANAGE_NEWSLETTER' => '_SEARCH:admin_newsletter',
                 ),
             ),
             'NEWSLETTER_SEND' => array(
@@ -110,7 +108,7 @@ class Hook_actionlog_newsletter extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'MANAGE_NEWSLETTER' => 'TODO',
+                    'MANAGE_NEWSLETTER' => '_SEARCH:admin_newsletter',
                 ),
             ),
         );

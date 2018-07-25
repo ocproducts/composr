@@ -81,7 +81,7 @@ function actual_delete_theme_image($id, $theme = null, $lang = null)
         cleanup_theme_images($old_url);
     }
 
-    log_it('DELETE_THEME_IMAGE', $id);
+    log_it('DELETE_THEME_IMAGE', $id, $theme);
 }
 
 /**

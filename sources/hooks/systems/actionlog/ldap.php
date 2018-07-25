@@ -43,7 +43,7 @@ class Hook_actionlog_ldap extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'LDAP_SYNC' => 'TODO',
+                    'LDAP_SYNC' => '_SEARCH:admin_ldap',
                 ),
             ),
         );

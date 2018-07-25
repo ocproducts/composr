@@ -43,7 +43,7 @@ class Hook_actionlog_referrals extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'REFERRALS' => 'TODO',
+                    'REFERRALS' => '_SEARCH:admin_referrals',
                 ),
             ),
         );

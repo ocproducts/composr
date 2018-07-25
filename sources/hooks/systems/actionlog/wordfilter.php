@@ -43,8 +43,8 @@ class Hook_actionlog_wordfilter extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'MANAGE_WORDFILTER' => 'TODO',
-                    'ADD_WORDFILTER' => 'TODO',
+                    'MANAGE_WORDFILTER' => '_SEARCH:admin_wordfilter',
+                    'ADD_WORDFILTER' => '_SEARCH:admin_wordfilter:add',
                 ),
             ),
             'DELETE_WORDFILTER' => array(
@@ -53,7 +53,7 @@ class Hook_actionlog_wordfilter extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'MANAGE_WORDFILTER' => 'TODO',
+                    'MANAGE_WORDFILTER' => '_SEARCH:admin_wordfilter',
                 ),
             ),
         );

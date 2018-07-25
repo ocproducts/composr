@@ -43,9 +43,9 @@ class Hook_actionlog_quizzes extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'ADD_QUIZ' => 'TODO',
-                    'EDIT_THIS_QUIZ' => 'TODO',
+                    'VIEW' => '_SEARCH:quiz:do:_ID_',
+                    'ADD_QUIZ' => '_SEARCH:cms_quiz:add',
+                    'EDIT_THIS_QUIZ' => '_SEARCH:cms_quiz:_edit:_ID_',
                 ),
             ),
             'EDIT_QUIZ' => array(
@@ -54,9 +54,9 @@ class Hook_actionlog_quizzes extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'ADD_QUIZ' => 'TODO',
-                    'EDIT_THIS_QUIZ' => 'TODO',
+                    'VIEW' => '_SEARCH:quiz:do:_ID_',
+                    'ADD_QUIZ' => '_SEARCH:cms_quiz:add',
+                    'EDIT_THIS_QUIZ' => '_SEARCH:cms_quiz:_edit:_ID_',
                 ),
             ),
             'DELETE_QUIZ' => array(
@@ -65,7 +65,7 @@ class Hook_actionlog_quizzes extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_QUIZ' => 'TODO',
+                    'ADD_QUIZ' => '_SEARCH:cms_quiz:add',
                 ),
             ),
             'DELETE_QUIZ_RESULTS' => array(
@@ -74,9 +74,9 @@ class Hook_actionlog_quizzes extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'ADD_QUIZ' => 'TODO',
-                    'EDIT_THIS_QUIZ' => 'TODO',
+                    'VIEW' => '_SEARCH:quiz:do:_ID_',
+                    'ADD_QUIZ' => '_SEARCH:cms_quiz:add',
+                    'EDIT_THIS_QUIZ' => '_SEARCH:cms_quiz:_edit:_ID_',
                 ),
             ),
         );

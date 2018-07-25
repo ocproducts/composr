@@ -47,7 +47,7 @@ class Hook_actionlog_cns_warnings extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
                 ),
             ),
             'START_PROBATION' => array(
@@ -56,7 +56,7 @@ class Hook_actionlog_cns_warnings extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
                 ),
             ),
             'STOP_PROBATION' => array(
@@ -65,7 +65,7 @@ class Hook_actionlog_cns_warnings extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
                 ),
             ),
             'EXTEND_PROBATION' => array(
@@ -74,7 +74,7 @@ class Hook_actionlog_cns_warnings extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
                 ),
             ),
             'REDUCE_PROBATION' => array(
@@ -83,7 +83,7 @@ class Hook_actionlog_cns_warnings extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
                 ),
             ),
         );

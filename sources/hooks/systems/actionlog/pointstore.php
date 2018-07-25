@@ -43,7 +43,7 @@ class Hook_actionlog_pointstore extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'POINTSTORE_MANAGE_INVENTORY' => 'TODO',
+                    'POINTSTORE_MANAGE_INVENTORY' => '_SEARCH:admin_pointstore:p',
                 ),
             ),
             'POINTSTORE_ADD_MAIL_POP3' => array(
@@ -52,7 +52,7 @@ class Hook_actionlog_pointstore extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'POINTSTORE_MANAGE_INVENTORY' => 'TODO',
+                    'POINTSTORE_MANAGE_INVENTORY' => '_SEARCH:admin_pointstore:p',
                 ),
             ),
             'POINTSTORE_AMEND_CUSTOM_PERMISSIONS' => array(
@@ -61,7 +61,7 @@ class Hook_actionlog_pointstore extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'POINTSTORE_MANAGE_INVENTORY' => 'TODO',
+                    'POINTSTORE_MANAGE_INVENTORY' => '_SEARCH:admin_pointstore:p',
                 ),
             ),
             'POINTSTORE_AMEND_CUSTOM_PRODUCTS' => array(
@@ -70,7 +70,7 @@ class Hook_actionlog_pointstore extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'POINTSTORE_MANAGE_INVENTORY' => 'TODO',
+                    'POINTSTORE_MANAGE_INVENTORY' => '_SEARCH:admin_pointstore:p',
                 ),
             ),
             'POINTSTORE_CHANGED_PRICES' => array(
@@ -79,7 +79,7 @@ class Hook_actionlog_pointstore extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'POINTSTORE_MANAGE_INVENTORY' => 'TODO',
+                    'POINTSTORE_MANAGE_INVENTORY' => '_SEARCH:admin_pointstore:p',
                 ),
             ),
         );

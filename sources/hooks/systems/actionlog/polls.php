@@ -43,9 +43,9 @@ class Hook_actionlog_polls extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_POLL' => 'TODO',
-                    'ADD_POLL' => 'TODO',
+                    'VIEW' => '_SEARCH:polls:view:_ID_',
+                    'EDIT_THIS_POLL' => '_SEARCH:cms_polls:_edit:_ID_',
+                    'ADD_POLL' => '_SEARCH:cms_polls:add',
                 ),
             ),
             'EDIT_POLL' => array(
@@ -54,9 +54,9 @@ class Hook_actionlog_polls extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_POLL' => 'TODO',
-                    'ADD_POLL' => 'TODO',
+                    'VIEW' => '_SEARCH:polls:view:_ID_',
+                    'EDIT_THIS_POLL' => '_SEARCH:cms_polls:_edit:_ID_',
+                    'ADD_POLL' => '_SEARCH:cms_polls:add',
                 ),
             ),
             'CHOOSE_POLL' => array(
@@ -65,9 +65,9 @@ class Hook_actionlog_polls extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
-                    'EDIT_THIS_POLL' => 'TODO',
-                    'ADD_POLL' => 'TODO',
+                    'VIEW' => '_SEARCH:polls:view:_ID_',
+                    'EDIT_THIS_POLL' => '_SEARCH:cms_polls:_edit:_ID_',
+                    'ADD_POLL' => '_SEARCH:cms_polls:add',
                 ),
             ),
             'DELETE_POLL' => array(
@@ -76,7 +76,7 @@ class Hook_actionlog_polls extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_POLL' => 'TODO',
+                    'ADD_POLL' => '_SEARCH:cms_polls:add',
                 ),
             ),
         );

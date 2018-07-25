@@ -92,7 +92,7 @@
 
 		{+START,IF_NON_EMPTY,{POSTS}}
 			{+START,IF,{$AND,{$JS_ON},{STAFF_ACCESS}}}
-				<form class="inline" title="{!MERGE_WIKI_POSTS}" action="{$PAGE_LINK*,_SEARCH:wiki:mg:{ID},1}" method="post" autocomplete="off">
+				<form class="inline" title="{!MERGE_WIKI_POSTS}" action="{$PAGE_LINK*,_SEARCH:wiki:merge:{ID},1}" method="post" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div class="inline">

@@ -43,7 +43,7 @@ class Hook_actionlog_redirects_editor extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'REDIRECTS' => 'TODO',
+                    'REDIRECTS' => '_SEARCH:admin_redirects',
                 ),
             ),
         );

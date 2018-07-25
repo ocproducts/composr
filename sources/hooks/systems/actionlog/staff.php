@@ -43,9 +43,9 @@ class Hook_actionlog_staff extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_ALL_STAFF' => 'TODO',
-                    'MANAGE_STAFF' => 'TODO',
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_ALL_STAFF' => '_SEARCH:staff',
+                    'MANAGE_STAFF' => '_SEARCH:admin_staff',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
                 ),
             ),
             'EDIT_STAFF' => array(
@@ -54,9 +54,9 @@ class Hook_actionlog_staff extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_ALL_STAFF' => 'TODO',
-                    'MANAGE_STAFF' => 'TODO',
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_ALL_STAFF' => '_SEARCH:staff',
+                    'MANAGE_STAFF' => '_SEARCH:admin_staff',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
                 ),
             ),
             'REMOVE_STAFF' => array(
@@ -65,9 +65,9 @@ class Hook_actionlog_staff extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_ALL_STAFF' => 'TODO',
-                    'MANAGE_STAFF' => 'TODO',
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_ALL_STAFF' => '_SEARCH:staff',
+                    'MANAGE_STAFF' => '_SEARCH:admin_staff',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
                 ),
             ),
         );

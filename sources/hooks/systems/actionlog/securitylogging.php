@@ -43,9 +43,9 @@ class Hook_actionlog_securitylogging extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'IP_BANS' => 'TODO',
-                    'VIEW_ACTIONLOGS' => 'TODO',
-                    'INVESTIGATE_USER' => 'TODO',
+                    'IP_BANS' => '_SEARCH:admin_ip_ban',
+                    'VIEW_ACTIONLOGS' => '_SEARCH:admin_actionlog',
+                    'INVESTIGATE_USER' => '_SEARCH:admin_lookup:TODO',
                 ),
             ),
             'IP_UNBANNED' => array(
@@ -54,9 +54,9 @@ class Hook_actionlog_securitylogging extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'IP_BANS' => 'TODO',
-                    'VIEW_ACTIONLOGS' => 'TODO',
-                    'INVESTIGATE_USER' => 'TODO',
+                    'IP_BANS' => '_SEARCH:admin_ip_ban',
+                    'VIEW_ACTIONLOGS' => '_SEARCH:admin_actionlog',
+                    'INVESTIGATE_USER' => '_SEARCH:admin_lookup:TODO',
                 ),
             ),
             'SYNDICATED_IP_BAN' => array(
@@ -65,9 +65,9 @@ class Hook_actionlog_securitylogging extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'IP_BANS' => 'TODO',
-                    'VIEW_ACTIONLOGS' => 'TODO',
-                    'INVESTIGATE_USER' => 'TODO',
+                    'IP_BANS' => '_SEARCH:admin_ip_ban',
+                    'VIEW_ACTIONLOGS' => '_SEARCH:admin_actionlog',
+                    'INVESTIGATE_USER' => '_SEARCH:admin_lookup:TODO',
                 ),
             ),
             'MADE_IP_BANNABLE' => array(
@@ -76,8 +76,8 @@ class Hook_actionlog_securitylogging extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'IP_BANS' => 'TODO',
-                    'INVESTIGATE_USER' => 'TODO',
+                    'IP_BANS' => '_SEARCH:admin_ip_ban',
+                    'INVESTIGATE_USER' => '_SEARCH:admin_lookup:TODO',
                 ),
             ),
             'MADE_IP_UNBANNABLE' => array(
@@ -86,8 +86,8 @@ class Hook_actionlog_securitylogging extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'IP_BANS' => 'TODO',
-                    'INVESTIGATE_USER' => 'TODO',
+                    'IP_BANS' => '_SEARCH:admin_ip_ban',
+                    'INVESTIGATE_USER' => '_SEARCH:admin_lookup:TODO',
                 ),
             ),
             'SUBMITTER_BANNED' => array(
@@ -96,9 +96,9 @@ class Hook_actionlog_securitylogging extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
-                    'VIEW_ACTIONLOGS' => 'TODO',
-                    'INVESTIGATE_USER' => 'TODO',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_ACTIONLOGS' => '_SEARCH:admin_actionlog',
+                    'INVESTIGATE_USER' => '_SEARCH:admin_lookup:TODO',
                 ),
             ),
             'SUBMITTER_UNBANNED' => array(
@@ -107,9 +107,9 @@ class Hook_actionlog_securitylogging extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
-                    'VIEW_ACTIONLOGS' => 'TODO',
-                    'INVESTIGATE_USER' => 'TODO',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_ACTIONLOGS' => '_SEARCH:admin_actionlog',
+                    'INVESTIGATE_USER' => '_SEARCH:admin_lookup:TODO',
                 ),
             ),
         );

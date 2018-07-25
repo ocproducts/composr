@@ -43,7 +43,7 @@ class Hook_actionlog_xml_fields extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'FIELD_FILTERS' => 'TODO',
+                    'FIELD_FILTERS' => '_SEARCH:admin_config:xml_fields',
                 ),
             ),
         );

@@ -43,8 +43,10 @@ class Hook_actionlog_booking extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_BOOKABLE' => '_SEARCH:cms_booking',
-                    'ADD_BOOKABLE' => 'TODO',
+                    'EDIT_THIS_BOOKABLE' => '_SEARCH:cms_booking:_edit:_ID_',
+                    'ADD_BOOKABLE' => '_SEARCH:cms_booking:add',
+                    'ADD_SUPPLEMENT' => '_SEARCH:cms_booking:add_category',
+                    'ADD_BOOKABLE_BLACKED' => '_SEARCH:cms_booking:add_other',
                 ),
             ),
             'EDIT_BOOKABLE' => array(
@@ -53,8 +55,10 @@ class Hook_actionlog_booking extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_BOOKABLE' => 'TODO',
-                    'ADD_BOOKABLE' => 'TODO',
+                    'EDIT_THIS_BOOKABLE' => '_SEARCH:cms_booking:_edit:_ID_',
+                    'ADD_BOOKABLE' => '_SEARCH:cms_booking:add',
+                    'ADD_SUPPLEMENT' => '_SEARCH:cms_booking:add_category',
+                    'ADD_BOOKABLE_BLACKED' => '_SEARCH:cms_booking:add_other',
                 ),
             ),
             'DELETE_BOOKABLE' => array(
@@ -63,7 +67,7 @@ class Hook_actionlog_booking extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_BOOKABLE' => 'TODO',
+                    'ADD_BOOKABLE' => '_SEARCH:cms_booking:add',
                 ),
             ),
             'ADD_BOOKABLE_BLACKED' => array(
@@ -72,8 +76,8 @@ class Hook_actionlog_booking extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_BOOKABLE_BLACKED' => 'TODO',
-                    'ADD_BOOKABLE_BLACKED' => 'TODO',
+                    'EDIT_THIS_BOOKABLE_BLACKED' => '_SEARCH:cms_booking:_edit_other:_ID_',
+                    'ADD_BOOKABLE_BLACKED' => '_SEARCH:cms_booking:add_other',
                 ),
             ),
             'EDIT_BOOKABLE_BLACKED' => array(
@@ -82,8 +86,8 @@ class Hook_actionlog_booking extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_BOOKABLE_BLACKED' => 'TODO',
-                    'ADD_BOOKABLE_BLACKED' => 'TODO',
+                    'EDIT_THIS_BOOKABLE_BLACKED' => '_SEARCH:cms_booking:_edit_other:_ID_',
+                    'ADD_BOOKABLE_BLACKED' => '_SEARCH:cms_booking:add_other',
                 ),
             ),
             'DELETE_BOOKABLE_BLACKED' => array(
@@ -92,7 +96,7 @@ class Hook_actionlog_booking extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_BOOKABLE_BLACKED' => 'TODO',
+                    'ADD_BOOKABLE_BLACKED' => '_SEARCH:cms_booking:add_other',
                 ),
             ),
             'ADD_BOOKABLE_SUPPLEMENT' => array(
@@ -101,8 +105,8 @@ class Hook_actionlog_booking extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_BOOKABLE_SUPPLEMENT' => 'TODO',
-                    'ADD_BOOKABLE_SUPPLEMENT' => 'TODO',
+                    'EDIT_THIS_BOOKABLE_SUPPLEMENT' => '_SEARCH:cms_booking:_edit_category:_ID_',
+                    'ADD_BOOKABLE_SUPPLEMENT' => '_SEARCH:cms_booking:add_category',
                 ),
             ),
             'EDIT_BOOKABLE_SUPPLEMENT' => array(
@@ -111,8 +115,8 @@ class Hook_actionlog_booking extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_BOOKABLE_SUPPLEMENT' => 'TODO',
-                    'ADD_BOOKABLE_SUPPLEMENT' => 'TODO',
+                    'EDIT_THIS_BOOKABLE_SUPPLEMENT' => '_SEARCH:cms_booking:_edit_category:_ID_',
+                    'ADD_BOOKABLE_SUPPLEMENT' => '_SEARCH:cms_booking:add_category',
                 ),
             ),
             'DELETE_BOOKABLE_SUPPLEMENT' => array(
@@ -121,7 +125,7 @@ class Hook_actionlog_booking extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_BOOKABLE_SUPPLEMENT' => 'TODO',
+                    'ADD_BOOKABLE_SUPPLEMENT' => '_SEARCH:cms_booking:add_category',
                 ),
             ),
         );

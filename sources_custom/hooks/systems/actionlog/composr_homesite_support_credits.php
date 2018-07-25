@@ -43,8 +43,8 @@ class Hook_actionlog_health_check extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
-                    'CHARGE_CUSTOMER' => 'TODO',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'CHARGE_CUSTOMER' => '_SEARCH:admin_customers:charge:member_id=_ID_',
                 ),
             ),
         );
