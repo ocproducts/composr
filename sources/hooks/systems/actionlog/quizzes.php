@@ -43,9 +43,9 @@ class Hook_actionlog_quizzes extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:quiz:do:_ID_',
+                    'VIEW' => '_SEARCH:quiz:do:{ID}',
                     'ADD_QUIZ' => '_SEARCH:cms_quiz:add',
-                    'EDIT_THIS_QUIZ' => '_SEARCH:cms_quiz:_edit:_ID_',
+                    'EDIT_THIS_QUIZ' => '_SEARCH:cms_quiz:_edit:{ID}',
                 ),
             ),
             'EDIT_QUIZ' => array(
@@ -54,9 +54,9 @@ class Hook_actionlog_quizzes extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:quiz:do:_ID_',
+                    'VIEW' => '_SEARCH:quiz:do:{ID}',
                     'ADD_QUIZ' => '_SEARCH:cms_quiz:add',
-                    'EDIT_THIS_QUIZ' => '_SEARCH:cms_quiz:_edit:_ID_',
+                    'EDIT_THIS_QUIZ' => '_SEARCH:cms_quiz:_edit:{ID}',
                 ),
             ),
             'DELETE_QUIZ' => array(
@@ -74,9 +74,9 @@ class Hook_actionlog_quizzes extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:quiz:do:_ID_',
+                    'VIEW' => '_SEARCH:quiz:do:{ID}',
                     'ADD_QUIZ' => '_SEARCH:cms_quiz:add',
-                    'EDIT_THIS_QUIZ' => '_SEARCH:cms_quiz:_edit:_ID_',
+                    'EDIT_THIS_QUIZ' => '_SEARCH:cms_quiz:_edit:{ID}',
                 ),
             ),
         );

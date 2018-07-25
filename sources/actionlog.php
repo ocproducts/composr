@@ -73,16 +73,31 @@ abstract class Hook_actionlog
                 return false;
             }
 
+            $bindings = array(
+                'ID' => $identifier,
+                '0' => ($actionlog_row['param_a'] == '') ? null : $actionlog_row['param_a'],
+                '1' => ($actionlog_row['param_b'] == '') ? null : $actionlog_row['param_b'],
+                '0_EVEN_EMPTY' => $actionlog_row['param_a'],
+                '1_EVEN_EMPTY' => $actionlog_row['param_b'],
+            );
+
             $followup_page_links = array();
             $_followup_page_links = $handler_data['followup_page_links'];
             foreach ($_followup_page_links as $i => $page_link) {
                 if ($page_link !== null) {
-                    if (strpos($page_link, '_ID_') !== false) {
-                        if ($identifier !== null) {
-                            $page_link = str_replace('_ID_', $id, $page_link);
-                            $followup_page_links[] = $page_link;
+                    $error = false;
+                    foreach ($bindings as $binding_from => $binding_to) {
+                        $_binding_from = '{' . $binding_from . '}';
+                        if (strpos($page_link, $_binding_from) !== false) {
+                            if ($binding_to !== null) {
+                                $page_link = str_replace($_binding_from, $binding_to, $page_link);
+                            } else {
+                                $error = true;
+                            }
                         }
-                    } else {
+                    }
+
+                    if (!$error) {
                         $followup_page_links[] = $page_link;
                     }
                 }

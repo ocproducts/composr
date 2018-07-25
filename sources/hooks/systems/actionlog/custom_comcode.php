@@ -43,7 +43,7 @@ class Hook_actionlog_custom_comcode extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_THIS_CUSTOM_COMCODE_TAG' => '_SEARCH:admin_custom_comcode:_edit:_ID_',
+                    'EDIT_THIS_CUSTOM_COMCODE_TAG' => '_SEARCH:admin_custom_comcode:_edit:{ID}',
                     'ADD_CUSTOM_COMCODE_TAG' => '_SEARCH:admin_custom_comcode:add',
                 ),
             ),
@@ -53,7 +53,7 @@ class Hook_actionlog_custom_comcode extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_THIS_CUSTOM_COMCODE_TAG' => '_SEARCH:admin_custom_comcode:_edit:_ID_',
+                    'EDIT_THIS_CUSTOM_COMCODE_TAG' => '_SEARCH:admin_custom_comcode:_edit:{ID}',
                     'ADD_CUSTOM_COMCODE_TAG' => '_SEARCH:admin_custom_comcode:add',
                 ),
             ),

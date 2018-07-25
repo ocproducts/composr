@@ -43,7 +43,7 @@ class Hook_actionlog_workflows extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_WORKFLOW' => '_SEARCH:admin_workflows:_edit:_ID_',
+                    'EDIT_WORKFLOW' => '_SEARCH:admin_workflows:_edit:{ID}',
                     'ADD_WORKFLOW' => '_SEARCH:admin_workflows:add',
                 ),
             ),
@@ -53,7 +53,7 @@ class Hook_actionlog_workflows extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_WORKFLOW' => '_SEARCH:admin_workflows:_edit:_ID_',
+                    'EDIT_WORKFLOW' => '_SEARCH:admin_workflows:_edit:{ID}',
                     'ADD_WORKFLOW' => '_SEARCH:admin_workflows:add',
                 ),
             ),

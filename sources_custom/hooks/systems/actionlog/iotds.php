@@ -43,8 +43,8 @@ class Hook_actionlog_iotds extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:iotds:view:_ID_',
-                    'EDIT_THIS_IOTD' => '_SEARCH:cms_iotds:_edit:_ID_',
+                    'VIEW' => '_SEARCH:iotds:view:{ID}',
+                    'EDIT_THIS_IOTD' => '_SEARCH:cms_iotds:_edit:{ID}',
                     'ADD_IOTD' => '_SEARCH:cms_iotds:add',
                 ),
             ),
@@ -54,8 +54,8 @@ class Hook_actionlog_iotds extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:iotds:view:_ID_',
-                    'EDIT_THIS_IOTD' => '_SEARCH:cms_iotds:_edit:_ID_',
+                    'VIEW' => '_SEARCH:iotds:view:{ID}',
+                    'EDIT_THIS_IOTD' => '_SEARCH:cms_iotds:_edit:{ID}',
                     'ADD_IOTD' => '_SEARCH:cms_iotds:add',
                 ),
             ),
@@ -65,8 +65,8 @@ class Hook_actionlog_iotds extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:iotds:view:_ID_',
-                    'EDIT_THIS_IOTD' => '_SEARCH:cms_iotds:_edit:_ID_',
+                    'VIEW' => '_SEARCH:iotds:view:{ID}',
+                    'EDIT_THIS_IOTD' => '_SEARCH:cms_iotds:_edit:{ID}',
                     'ADD_IOTD' => '_SEARCH:cms_iotds:add',
                 ),
             ),

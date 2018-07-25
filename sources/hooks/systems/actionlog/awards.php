@@ -43,7 +43,7 @@ class Hook_actionlog_awards extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_AWARD_TYPE' => '_SEARCH:admin_awards:_edit:_ID_',
+                    'EDIT_THIS_AWARD_TYPE' => '_SEARCH:admin_awards:_edit:{ID}',
                     'ADD_AWARD_TYPE' => '_SEARCH:admin_awards:add',
                 ),
             ),
@@ -53,7 +53,7 @@ class Hook_actionlog_awards extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_AWARD_TYPE' => '_SEARCH:admin_awards:_edit:_ID_',
+                    'EDIT_THIS_AWARD_TYPE' => '_SEARCH:admin_awards:_edit:{ID}',
                     'ADD_AWARD_TYPE' => '_SEARCH:admin_awards:add',
                 ),
             ),
@@ -72,8 +72,8 @@ class Hook_actionlog_awards extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PAST_WINNERS' => '_SEARCH:awards:award:_ID_',
-                    'EDIT_THIS_AWARD_TYPE' => '_SEARCH:admin_awards:_edit:_ID_',
+                    'VIEW_PAST_WINNERS' => '_SEARCH:awards:award:{ID}',
+                    'EDIT_THIS_AWARD_TYPE' => '_SEARCH:admin_awards:_edit:{ID}',
                 ),
             ),
         );

@@ -47,7 +47,7 @@ class Hook_actionlog_cns_post_templates extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_POST_TEMPLATE' => '_SEARCH:admin_cns_post_templates:_edit:_ID_',
+                    'EDIT_THIS_POST_TEMPLATE' => '_SEARCH:admin_cns_post_templates:_edit:{ID}',
                     'ADD_POST_TEMPLATE' => '_SEARCH:admin_cns_post_templates:add',
                 ),
             ),
@@ -57,7 +57,7 @@ class Hook_actionlog_cns_post_templates extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_POST_TEMPLATE' => '_SEARCH:admin_cns_post_templates:_edit:_ID_',
+                    'EDIT_THIS_POST_TEMPLATE' => '_SEARCH:admin_cns_post_templates:_edit:{ID}',
                     'ADD_POST_TEMPLATE' => '_SEARCH:admin_cns_post_templates:add',
                 ),
             ),

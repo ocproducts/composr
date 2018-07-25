@@ -53,7 +53,7 @@ class Hook_actionlog_aggregate_types extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_AGGREGATE_TYPE_INSTANCE' => '_SEARCH:admin_aggregate_types:_edit:_ID_',
+                    'EDIT_THIS_AGGREGATE_TYPE_INSTANCE' => '_SEARCH:admin_aggregate_types:_edit:{ID}',
                     'ADD_AGGREGATE_TYPE_INSTANCE' => '_SEARCH:admin_aggregate_types:add',
                     'AGGREGATE_TYPES' => '_SEARCH:admin_aggregate_types',
                 ),
@@ -64,7 +64,7 @@ class Hook_actionlog_aggregate_types extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_AGGREGATE_TYPE_INSTANCE' => '_SEARCH:admin_aggregate_types:_edit:_ID_',
+                    'EDIT_THIS_AGGREGATE_TYPE_INSTANCE' => '_SEARCH:admin_aggregate_types:_edit:{ID}',
                     'ADD_AGGREGATE_TYPE_INSTANCE' => '_SEARCH:admin_aggregate_types:add',
                     'AGGREGATE_TYPES' => '_SEARCH:admin_aggregate_types',
                 ),

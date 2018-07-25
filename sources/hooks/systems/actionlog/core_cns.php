@@ -43,7 +43,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_THIS_EMOTICON' => '_SEARCH:admin_cns_emoticons:_edit:_ID_',
+                    'EDIT_THIS_EMOTICON' => '_SEARCH:admin_cns_emoticons:_edit:{ID}',
                     'ADD_EMOTICON' => '_SEARCH:admin_cns_emoticons:add',
                 ),
             ),
@@ -53,7 +53,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_THIS_EMOTICON' => '_SEARCH:admin_cns_emoticons:_edit:_ID_',
+                    'EDIT_THIS_EMOTICON' => '_SEARCH:admin_cns_emoticons:_edit:{ID}',
                     'ADD_EMOTICON' => '_SEARCH:admin_cns_emoticons:add',
                 ),
             ),
@@ -81,8 +81,8 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:groups:view:_ID_',
-                    'EDIT_THIS_GROUP' => '_SEARCH:admin_cns_groups:_edit:_ID_',
+                    'VIEW' => '_SEARCH:groups:view:{ID}',
+                    'EDIT_THIS_GROUP' => '_SEARCH:admin_cns_groups:_edit:{ID}',
                     'ADD_GROUP' => '_SEARCH:admin_cns_groups:add',
                 ),
             ),
@@ -92,8 +92,8 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:groups:view:_ID_',
-                    'EDIT_THIS_GROUP' => '_SEARCH:admin_cns_groups:_edit:_ID_',
+                    'VIEW' => '_SEARCH:groups:view:{ID}',
+                    'EDIT_THIS_GROUP' => '_SEARCH:admin_cns_groups:_edit:{ID}',
                     'ADD_GROUP' => '_SEARCH:admin_cns_groups:add',
                 ),
             ),
@@ -112,7 +112,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                 ),
             ),
             'MEMBER_ADDED_TO_GROUP' => array(
@@ -121,7 +121,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                     'USERGROUP' => 'TODO',
                 ),
             ),
@@ -131,7 +131,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                     'USERGROUP' => 'TODO',
                 ),
             ),
@@ -141,7 +141,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                     'USERGROUP' => 'TODO',
                 ),
             ),
@@ -169,7 +169,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                     'ADD_MEMBER' => '_SEARCH:admin_cns_members:step1',
                 ),
             ),
@@ -179,7 +179,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                 ),
             ),
             'DELETE_MEMBER' => array(
@@ -207,7 +207,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'MERGE_MEMBERS' => '_SEARCH:admin_cns_merge_members',
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                 ),
             ),
             'ADD_WARNING' => array(
@@ -216,7 +216,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_1_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{1}',
                 ),
             ),
             'EDIT_WARNING' => array(
@@ -225,7 +225,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_1_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{1}',
                 ),
             ),
             'DELETE_WARNING' => array(
@@ -234,7 +234,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_1_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{1}',
                 ),
             ),
             'BAN_MEMBER' => array(
@@ -243,7 +243,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                 ),
             ),
             'UNBAN_MEMBER' => array(
@@ -261,7 +261,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                 ),
             ),
             'RESET_PASSWORD' => array(
@@ -270,7 +270,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                 ),
             ),
             'EMAIL' => array(
@@ -279,7 +279,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                 ),
             ),
         );

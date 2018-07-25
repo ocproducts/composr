@@ -43,7 +43,7 @@ class Hook_actionlog_community_billboard extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_COMMUNITY_BILLBOARD' => '_SEARCH:admin_community_billboard:_edit:_ID_',
+                    'EDIT_THIS_COMMUNITY_BILLBOARD' => '_SEARCH:admin_community_billboard:_edit:{ID}',
                     'ADD_COMMUNITY_BILLBOARD' => '_SEARCH:admin_community_billboard:add',
                 ),
             ),
@@ -53,7 +53,7 @@ class Hook_actionlog_community_billboard extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_COMMUNITY_BILLBOARD' => '_SEARCH:admin_community_billboard:_edit:_ID_',
+                    'EDIT_THIS_COMMUNITY_BILLBOARD' => '_SEARCH:admin_community_billboard:_edit:{ID}',
                     'ADD_COMMUNITY_BILLBOARD' => '_SEARCH:admin_community_billboard:add',
                 ),
             ),
@@ -63,7 +63,7 @@ class Hook_actionlog_community_billboard extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_COMMUNITY_BILLBOARD' => '_SEARCH:admin_community_billboard:_edit:_ID_',
+                    'EDIT_THIS_COMMUNITY_BILLBOARD' => '_SEARCH:admin_community_billboard:_edit:{ID}',
                     'ADD_COMMUNITY_BILLBOARD' => '_SEARCH:admin_community_billboard:add',
                 ),
             ),

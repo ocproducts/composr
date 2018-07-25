@@ -43,7 +43,7 @@ class Hook_actionlog_welcome_emails extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_WELCOME_EMAIL' => '_SEARCH:admin_cns_welcome_emails:_edit:_ID_',
+                    'EDIT_THIS_WELCOME_EMAIL' => '_SEARCH:admin_cns_welcome_emails:_edit:{ID}',
                     'ADD_WELCOME_EMAIL' => '_SEARCH:admin_cns_welcome_emails:add',
                 ),
             ),
@@ -53,7 +53,7 @@ class Hook_actionlog_welcome_emails extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_WELCOME_EMAIL' => '_SEARCH:admin_cns_welcome_emails:_edit:_ID_',
+                    'EDIT_THIS_WELCOME_EMAIL' => '_SEARCH:admin_cns_welcome_emails:_edit:{ID}',
                     'ADD_WELCOME_EMAIL' => '_SEARCH:admin_cns_welcome_emails:add',
                 ),
             ),

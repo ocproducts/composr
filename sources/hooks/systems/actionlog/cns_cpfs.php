@@ -47,7 +47,7 @@ class Hook_actionlog_cns_cpfs extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_CUSTOM_PROFILE_FIELD' => '_SEARCH:admin_cns_customprofilefields:_edit:_ID_',
+                    'EDIT_THIS_CUSTOM_PROFILE_FIELD' => '_SEARCH:admin_cns_customprofilefields:_edit:{ID}',
                     'ADD_CUSTOM_PROFILE_FIELD' => '_SEARCH:admin_cns_customprofilefields:add',
                 ),
             ),
@@ -57,7 +57,7 @@ class Hook_actionlog_cns_cpfs extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_CUSTOM_PROFILE_FIELD' => '_SEARCH:admin_cns_customprofilefields:_edit:_ID_',
+                    'EDIT_THIS_CUSTOM_PROFILE_FIELD' => '_SEARCH:admin_cns_customprofilefields:_edit:{ID}',
                     'ADD_CUSTOM_PROFILE_FIELD' => '_SEARCH:admin_cns_customprofilefields:add',
                 ),
             ),

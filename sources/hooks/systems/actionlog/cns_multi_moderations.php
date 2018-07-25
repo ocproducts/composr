@@ -47,7 +47,7 @@ class Hook_actionlog_cns_multi_moderations extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:_edit:_ID_',
+                    'EDIT_THIS_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:_edit:{ID}',
                     'ADD_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:add',
                 ),
             ),
@@ -57,7 +57,7 @@ class Hook_actionlog_cns_multi_moderations extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:_edit:_ID_',
+                    'EDIT_THIS_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:_edit:{ID}',
                     'ADD_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:add',
                 ),
             ),
@@ -77,7 +77,7 @@ class Hook_actionlog_cns_multi_moderations extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_TOPIC' => null,
-                    'EDIT_THIS_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:_edit:_ID_',
+                    'EDIT_THIS_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:_edit:{ID}',
                 ),
             ),
             'IMPORT_STOCK_RESPONSES' => array(

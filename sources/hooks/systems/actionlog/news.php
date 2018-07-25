@@ -43,8 +43,8 @@ class Hook_actionlog_news extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:news:browse:_ID_',
-                    'EDIT_THIS_NEWS_CATEGORY' => '_SEARCH:cms_news:_edit_category:_ID_',
+                    'VIEW' => '_SEARCH:news:browse:{ID}',
+                    'EDIT_THIS_NEWS_CATEGORY' => '_SEARCH:cms_news:_edit_category:{ID}',
                     'ADD_NEWS_CATEGORY' => '_SEARCH:cms_news:add_category',
                     'ADD_NEWS' => '_SEARCH:cms_news:add',
                 ),
@@ -55,8 +55,8 @@ class Hook_actionlog_news extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:news:browse:_ID_',
-                    'EDIT_THIS_NEWS_CATEGORY' => '_SEARCH:cms_news:_edit_category:_ID_',
+                    'VIEW' => '_SEARCH:news:browse:{ID}',
+                    'EDIT_THIS_NEWS_CATEGORY' => '_SEARCH:cms_news:_edit_category:{ID}',
                     'ADD_NEWS_CATEGORY' => '_SEARCH:cms_news:add_category',
                     'ADD_NEWS' => '_SEARCH:cms_news:add',
                 ),
@@ -76,8 +76,8 @@ class Hook_actionlog_news extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:news:view:_ID_',
-                    'EDIT_THIS_NEWS' => '_SEARCH:cms_news:_edit:_ID_',
+                    'VIEW' => '_SEARCH:news:view:{ID}',
+                    'EDIT_THIS_NEWS' => '_SEARCH:cms_news:_edit:{ID}',
                     'ADD_NEWS' => '_SEARCH:cms_news:add',
                 ),
             ),
@@ -87,8 +87,8 @@ class Hook_actionlog_news extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:news:view:_ID_',
-                    'EDIT_THIS_NEWS' => '_SEARCH:cms_news:_edit:_ID_',
+                    'VIEW' => '_SEARCH:news:view:{ID}',
+                    'EDIT_THIS_NEWS' => '_SEARCH:cms_news:_edit:{ID}',
                     'ADD_NEWS' => '_SEARCH:cms_news:add',
                 ),
             ),

@@ -48,9 +48,9 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_ID_:',
-                    'EDIT_THIS_ZONE' => '_SEARCH:admin_zones:_edit:_ID_',
-                    'ZONE_EDITOR' => '_SEARCH:admin_zones:_editor:_ID_',
+                    'VIEW' => '{ID}:',
+                    'EDIT_THIS_ZONE' => '_SEARCH:admin_zones:_edit:{ID}',
+                    'ZONE_EDITOR' => '_SEARCH:admin_zones:_editor:{ID}',
                     'ADD_ZONE' => '_SEARCH:admin_zones:add',
                 ),
             ),
@@ -60,9 +60,9 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_ID_:',
-                    'EDIT_THIS_ZONE' => '_SEARCH:admin_zones:_edit:_ID_',
-                    'ZONE_EDITOR' => '_SEARCH:admin_zones:_editor:_ID_',
+                    'VIEW' => '{ID}:',
+                    'EDIT_THIS_ZONE' => '_SEARCH:admin_zones:_edit:{ID}',
+                    'ZONE_EDITOR' => '_SEARCH:admin_zones:_editor:{ID}',
                     'ADD_ZONE' => '_SEARCH:admin_zones:add',
                 ),
             ),
@@ -81,8 +81,8 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW' => '_1_:_0_',
-                    'COMCODE_PAGE_EDIT_THIS' => '_SEARCH:cms_comcode_pages:_edit:page_link=_1_%3A_0_',
+                    'VIEW' => '{1}:{0}',
+                    'COMCODE_PAGE_EDIT_THIS' => '_SEARCH:cms_comcode_pages:_edit:page_link={1}%3A{0}',
                     'COMCODE_PAGE_MANAGEMENT' => '_SEARCH:cms_comcode_pages',
                 ),
             ),
@@ -208,7 +208,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'OPTION_CATEGORY' => '_SEARCH:admin_config:category:_ID_',
+                    'OPTION_CATEGORY' => '_SEARCH:admin_config:category:{ID}',
                     'CONFIGURATION' => '_SEARCH:admin_config',
                 ),
             ),
@@ -236,7 +236,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_MENU' => '_SEARCH:admin_menus:_edit:_ID_',
+                    'EDIT_MENU' => '_SEARCH:admin_menus:_edit:{ID}',
                 ),
             ),
             'EDIT_MENU' => array(
@@ -245,7 +245,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_MENU' => '_SEARCH:admin_menus:_edit:_ID_',
+                    'EDIT_MENU' => '_SEARCH:admin_menus:_edit:{ID}',
                 ),
             ),
             'DELETE_MENU' => array(
@@ -319,7 +319,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:_ID_',
+                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:{ID}',
                     'THEMEWIZARD' => '_SEARCH:admin_themewizard',
                     'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
@@ -330,7 +330,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:_ID_',
+                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:{ID}',
                     'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
@@ -349,7 +349,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:_ID_',
+                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:{ID}',
                     'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
@@ -359,7 +359,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:_ID_',
+                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:{ID}',
                     'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
@@ -389,8 +389,8 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_THEME_IMAGE' => '_SEARCH:admin_themes:_edit_image:_ID_:theme=_1_',
-                    'ADD_THEME_IMAGE' => '_SEARCH:admin_themes:add_image:theme=_1_',
+                    'EDIT_THEME_IMAGE' => '_SEARCH:admin_themes:_edit_image:{ID}:theme={1}',
+                    'ADD_THEME_IMAGE' => '_SEARCH:admin_themes:add_image:theme={1}',
                 ),
             ),
             'EDIT_THEME_IMAGE' => array(
@@ -399,8 +399,8 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_THEME_IMAGE' => '_SEARCH:admin_themes:_edit_image:_ID_:theme=_1_',
-                    'ADD_THEME_IMAGE' => '_SEARCH:admin_themes:add_image:theme=_1_',
+                    'EDIT_THEME_IMAGE' => '_SEARCH:admin_themes:_edit_image:{ID}:theme={1}',
+                    'ADD_THEME_IMAGE' => '_SEARCH:admin_themes:add_image:theme={1}',
                 ),
             ),
             'DELETE_THEME_IMAGE' => array(
@@ -409,7 +409,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'ADD_THEME_IMAGE' => TODO ? '_SEARCH:admin_themes:add_image:theme=_1_' : null,
+                    'ADD_THEME_IMAGE' => TODO ? '_SEARCH:admin_themes:add_image:theme={1}' : null,
                 ),
             ),
             'CLEANUP_TOOLS' => array(

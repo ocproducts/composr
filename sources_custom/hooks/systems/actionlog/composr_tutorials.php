@@ -44,7 +44,7 @@ class Hook_actionlog_composr_tutorials extends Hook_actionlog
                 'written_context_index' => 1,
                 'followup_page_links' => array(
                     'VIEW' => 'TODO',
-                    'EDIT_THIS_TUTORIAL' => '_SEARCH:cms_tutorials:_edit:_ID_',
+                    'EDIT_THIS_TUTORIAL' => '_SEARCH:cms_tutorials:_edit:{ID}',
                     'ADD_TUTORIAL' => '_SEARCH:cms_tutorials:add',
                 ),
             ),
@@ -55,7 +55,7 @@ class Hook_actionlog_composr_tutorials extends Hook_actionlog
                 'written_context_index' => 1,
                 'followup_page_links' => array(
                     'VIEW' => 'TODO',
-                    'EDIT_THIS_TUTORIAL' => '_SEARCH:cms_tutorials:_edit:_ID_',
+                    'EDIT_THIS_TUTORIAL' => '_SEARCH:cms_tutorials:_edit:{ID}',
                     'ADD_TUTORIAL' => '_SEARCH:cms_tutorials:add',
                 ),
             ),

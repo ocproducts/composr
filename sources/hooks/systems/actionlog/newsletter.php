@@ -43,7 +43,7 @@ class Hook_actionlog_newsletter extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_NEWSLETTER' => '_SEARCH:admin_newsletter:_edit:_ID_',
+                    'EDIT_THIS_NEWSLETTER' => '_SEARCH:admin_newsletter:_edit:{ID}',
                     'ADD_NEWSLETTER' => '_SEARCH:admin_newsletter:add',
                 ),
             ),
@@ -53,7 +53,7 @@ class Hook_actionlog_newsletter extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_NEWSLETTER' => '_SEARCH:admin_newsletter:_edit:_ID_',
+                    'EDIT_THIS_NEWSLETTER' => '_SEARCH:admin_newsletter:_edit:{ID}',
                     'ADD_NEWSLETTER' => '_SEARCH:admin_newsletter:add',
                 ),
             ),

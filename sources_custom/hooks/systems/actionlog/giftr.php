@@ -43,7 +43,7 @@ class Hook_actionlog_giftr extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_GIFT' => '_SEARCH:admin_giftr:_edit:_ID_',
+                    'EDIT_THIS_GIFT' => '_SEARCH:admin_giftr:_edit:{ID}',
                     'ADD_GIFT' => '_SEARCH:admin_giftr:add',
                 ),
             ),
@@ -53,7 +53,7 @@ class Hook_actionlog_giftr extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_GIFT' => '_SEARCH:admin_giftr:_edit:_ID_',
+                    'EDIT_THIS_GIFT' => '_SEARCH:admin_giftr:_edit:{ID}',
                     'ADD_GIFT' => '_SEARCH:admin_giftr:add',
                 ),
             ),

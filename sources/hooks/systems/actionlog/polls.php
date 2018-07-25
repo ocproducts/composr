@@ -43,8 +43,8 @@ class Hook_actionlog_polls extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:polls:view:_ID_',
-                    'EDIT_THIS_POLL' => '_SEARCH:cms_polls:_edit:_ID_',
+                    'VIEW' => '_SEARCH:polls:view:{ID}',
+                    'EDIT_THIS_POLL' => '_SEARCH:cms_polls:_edit:{ID}',
                     'ADD_POLL' => '_SEARCH:cms_polls:add',
                 ),
             ),
@@ -54,8 +54,8 @@ class Hook_actionlog_polls extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:polls:view:_ID_',
-                    'EDIT_THIS_POLL' => '_SEARCH:cms_polls:_edit:_ID_',
+                    'VIEW' => '_SEARCH:polls:view:{ID}',
+                    'EDIT_THIS_POLL' => '_SEARCH:cms_polls:_edit:{ID}',
                     'ADD_POLL' => '_SEARCH:cms_polls:add',
                 ),
             ),
@@ -65,8 +65,8 @@ class Hook_actionlog_polls extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:polls:view:_ID_',
-                    'EDIT_THIS_POLL' => '_SEARCH:cms_polls:_edit:_ID_',
+                    'VIEW' => '_SEARCH:polls:view:{ID}',
+                    'EDIT_THIS_POLL' => '_SEARCH:cms_polls:_edit:{ID}',
                     'ADD_POLL' => '_SEARCH:cms_polls:add',
                 ),
             ),

@@ -43,7 +43,7 @@ class Hook_actionlog_ecommerce extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_USERGROUP_SUBSCRIPTION' => '_SEARCH:admin_ecommerce:_edit:_ID_',
+                    'EDIT_THIS_USERGROUP_SUBSCRIPTION' => '_SEARCH:admin_ecommerce:_edit:{ID}',
                     'ADD_USERGROUP_SUBSCRIPTION' => '_SEARCH:admin_ecommerce:add',
                 ),
             ),
@@ -53,7 +53,7 @@ class Hook_actionlog_ecommerce extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_USERGROUP_SUBSCRIPTION' => '_SEARCH:admin_ecommerce:_edit:_ID_',
+                    'EDIT_THIS_USERGROUP_SUBSCRIPTION' => '_SEARCH:admin_ecommerce:_edit:{ID}',
                     'ADD_USERGROUP_SUBSCRIPTION' => '_SEARCH:admin_ecommerce:add',
                 ),
             ),

@@ -44,7 +44,7 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'written_context_index' => 1,
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:downloads:browse',
-                    'EDIT_THIS_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:_edit_category:_ID_',
+                    'EDIT_THIS_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:_edit_category:{ID}',
                     'ADD_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:add_category',
                     'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add',
                 ),
@@ -56,7 +56,7 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'written_context_index' => 1,
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:downloads:browse',
-                    'EDIT_THIS_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:_edit_category:_ID_',
+                    'EDIT_THIS_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:_edit_category:{ID}',
                     'ADD_DOWNLOAD_CATEGORY' => '_SEARCH:cms_downloads:add_category',
                     'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add',
                 ),
@@ -76,7 +76,7 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_DOWNLOAD_LICENCE' => '_SEARCH:cms_downloads:_edit_other:_ID_',
+                    'EDIT_THIS_DOWNLOAD_LICENCE' => '_SEARCH:cms_downloads:_edit_other:{ID}',
                     'ADD_DOWNLOAD_LICENCE' => '_SEARCH:cms_downloads:add_other',
                 ),
             ),
@@ -86,7 +86,7 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_DOWNLOAD_LICENCE' => '_SEARCH:cms_downloads:_edit_other:_ID_',
+                    'EDIT_THIS_DOWNLOAD_LICENCE' => '_SEARCH:cms_downloads:_edit_other:{ID}',
                     'ADD_DOWNLOAD_LICENCE' => '_SEARCH:cms_downloads:add_other',
                 ),
             ),
@@ -105,8 +105,8 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:downloads:entry:_ID_',
-                    'EDIT_THIS_DOWNLOAD' => '_SEARCH:cms_downloads:_edit:_ID_',
+                    'VIEW' => '_SEARCH:downloads:entry:{ID}',
+                    'EDIT_THIS_DOWNLOAD' => '_SEARCH:cms_downloads:_edit:{ID}',
                     'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add',
                 ),
             ),
@@ -116,8 +116,8 @@ class Hook_actionlog_downloads extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => '_SEARCH:downloads:entry:_ID_',
-                    'EDIT_THIS_DOWNLOAD' => '_SEARCH:cms_downloads:_edit:_ID_',
+                    'VIEW' => '_SEARCH:downloads:entry:{ID}',
+                    'EDIT_THIS_DOWNLOAD' => '_SEARCH:cms_downloads:_edit:{ID}',
                     'ADD_DOWNLOAD' => '_SEARCH:cms_downloads:add',
                 ),
             ),

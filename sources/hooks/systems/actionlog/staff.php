@@ -45,7 +45,7 @@ class Hook_actionlog_staff extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW_ALL_STAFF' => '_SEARCH:staff',
                     'MANAGE_STAFF' => '_SEARCH:admin_staff',
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                 ),
             ),
             'EDIT_STAFF' => array(
@@ -56,7 +56,7 @@ class Hook_actionlog_staff extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW_ALL_STAFF' => '_SEARCH:staff',
                     'MANAGE_STAFF' => '_SEARCH:admin_staff',
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                 ),
             ),
             'REMOVE_STAFF' => array(
@@ -67,7 +67,7 @@ class Hook_actionlog_staff extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW_ALL_STAFF' => '_SEARCH:staff',
                     'MANAGE_STAFF' => '_SEARCH:admin_staff',
-                    'VIEW_PROFILE' => '_SEARCH:members:view:_ID_',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                 ),
             ),
         );
