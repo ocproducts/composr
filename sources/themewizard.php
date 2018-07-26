@@ -239,7 +239,9 @@ function find_theme_image_themewizard_preview($id, $silent_fail = false)
  */
 function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/default_logos/1', $background_theme_image = 'logo/default_backgrounds/banner1', $raw = false, $theme = null, $standalone_version = false)
 {
-    header('X-Robots-Tag: noindex');
+    if (!headers_sent()) {
+        header('X-Robots-Tag: noindex');
+    }
 
     require_code('character_sets');
     require_code('files');
