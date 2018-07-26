@@ -86,9 +86,7 @@ abstract class Hook_actionlog
                 '0__EVEN_EMPTY' => $actionlog_row['param_a'],
                 '1__EVEN_EMPTY' => $actionlog_row['param_b'],
             );
-            if (method_exists($this, 'get_extended_actionlog_bindings')) {
-                $this->get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, $bindings);
-            }
+            $this->get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, $bindings);
 
             $followup_urls = array();
             $followup_page_links = $handler_data['followup_page_links'];
@@ -136,6 +134,18 @@ abstract class Hook_actionlog
         }
 
         return null;
+    }
+
+    /**
+     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  ?string $identifier The identifier associated with this action log entry (null: unknown / none)
+     * @param  ?string $written_context The written context associated with this action log entry (null: unknown / none)
+     * @param  array $bindings Default bindings
+     */
+    protected function get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, &$bindings)
+    {
     }
 
     /**
