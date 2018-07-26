@@ -24,7 +24,7 @@
 class Hook_actionlog_catalogues extends Hook_actionlog
 {
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */
@@ -78,7 +78,7 @@ class Hook_actionlog_catalogues extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:catalogues:index:{ID}',
                     'EDIT_THIS_CATALOGUE_CATEGORY' => '_SEARCH:cms_catalogues:_edit_category:{ID}',
-                    'ADD_CATALOGUE_CATEGORY' => '_SEARCH:cms_catalogues:add_category:catalogue_name=TODO',
+                    'ADD_CATALOGUE_CATEGORY' => '_SEARCH:cms_catalogues:add_category:catalogue_name={CATALOGUE_NAME}',
                     'ADD_CATALOGUE_ENTRY' => '_SEARCH:cms_catalogues:add_entry:category_id={ID}',
                 ),
             ),
@@ -90,7 +90,7 @@ class Hook_actionlog_catalogues extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:catalogues:index:{ID}',
                     'EDIT_THIS_CATALOGUE_CATEGORY' => '_SEARCH:cms_catalogues:_edit_category:{ID}',
-                    'ADD_CATALOGUE_CATEGORY' => '_SEARCH:cms_catalogues:add_category:catalogue_name=TODO',
+                    'ADD_CATALOGUE_CATEGORY' => '_SEARCH:cms_catalogues:add_category:catalogue_name={CATALOGUE_NAME}',
                     'ADD_CATALOGUE_ENTRY' => '_SEARCH:cms_catalogues:add_entry:category_id={ID}',
                 ),
             ),
@@ -111,7 +111,7 @@ class Hook_actionlog_catalogues extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:catalogues:entry:{ID}',
                     'EDIT_THIS_CATALOGUE_ENTRY' => '_SEARCH:cms_catalogues:_edit_entry:{ID}',
-                    'ADD_CATALOGUE_ENTRY' => '_SEARCH:cms_catalogues:add_entry:category_id=TODO',
+                    'ADD_CATALOGUE_ENTRY' => '_SEARCH:cms_catalogues:add_entry:category_id={CAT}',
                 ),
             ),
             'EDIT_CATALOGUE_ENTRY' => array(
@@ -122,7 +122,7 @@ class Hook_actionlog_catalogues extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:catalogues:entry:{ID}',
                     'EDIT_THIS_CATALOGUE_ENTRY' => '_SEARCH:cms_catalogues:_edit_entry:{ID}',
-                    'ADD_CATALOGUE_ENTRY' => '_SEARCH:cms_catalogues:add_entry:category_id=TODO',
+                    'ADD_CATALOGUE_ENTRY' => '_SEARCH:cms_catalogues:add_entry:category_id={CAT}',
                 ),
             ),
             'DELETE_CATALOGUE_ENTRY' => array(
@@ -155,5 +155,38 @@ class Hook_actionlog_catalogues extends Hook_actionlog
                 ),
             ),
         );
+    }
+
+    /**
+     * Get details of action log entry types handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  ?string $identifier The identifier associated with this action log entry (null: unknown / none)
+     * @param  ?string $written_context The written context associated with this action log entry (null: unknown / none)
+     * @param  array $bindings Default bindings
+     */
+    protected function get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, &$bindings)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'ADD_CATALOGUE_CATEGORY':
+            case 'EDIT_CATALOGUE_CATEGORY':
+                $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'c_name', array('id' => intval($identifier)));
+                if ($catalogue_name !== null) {
+                    $bindings += array(
+                        'CATALOGUE_NAME' => $catalogue_name,
+                    );
+                }
+                break;
+
+            case 'ADD_CATALOGUE_ENTRY':
+            case 'EDIT_CATALOGUE_ENTRY':
+                $cat = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'cc_id', array('id' => intval($identifier)));
+                if ($cat !== null) {
+                    $bindings += array(
+                        'CAT' => strval($cat),
+                    );
+                }
+                break;
+        }
     }
 }

@@ -24,7 +24,7 @@
 class Hook_actionlog_cns_cpfs extends Hook_actionlog
 {
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */

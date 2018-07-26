@@ -346,6 +346,7 @@ class CMSModerationWrite
         }
 
         $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_cache_forum_id', array('id' => $post_id));
+        $title = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_title', array('id' => $post_id));
 
         if (!cns_may_moderate_forum($forum_id)) {
             access_denied('I_ERROR');
@@ -357,12 +358,12 @@ class CMSModerationWrite
             require_code('cns_topics_action2');
             $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_validated' => 1), array('id' => $post_id), '', 1);
 
-            cns_mod_log_it('VALIDATE_POST', strval($post_id));
+            cns_mod_log_it('VALIDATE_POST', strval($post_id), $title);
         } else {
             require_code('cns_topics_action2');
             $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_validated' => 0), array('id' => $post_id), '', 1);
 
-            cns_mod_log_it('UNVALIDATE_POST', strval($post_id));
+            cns_mod_log_it('UNVALIDATE_POST', strval($post_id), $title);
         }
 
         return true;

@@ -24,7 +24,7 @@
 class Hook_actionlog_galleries extends Hook_actionlog
 {
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */
@@ -80,7 +80,7 @@ class Hook_actionlog_galleries extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:galleries:image:{ID}',
                     'EDIT_THIS_IMAGE' => '_SEARCH:cms_galleries:_edit:{ID}',
-                    'ADD_IMAGE' => '_SEARCH:cms_galleries:add:cat=TODO',
+                    'ADD_IMAGE' => '_SEARCH:cms_galleries:add:cat={CAT,OPTIONAL}',
                 ),
             ),
             'EDIT_IMAGE' => array(
@@ -91,7 +91,7 @@ class Hook_actionlog_galleries extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:galleries:image:{ID}',
                     'EDIT_THIS_IMAGE' => '_SEARCH:cms_galleries:_edit:{ID}',
-                    'ADD_IMAGE' => '_SEARCH:cms_galleries:add:cat=TODO',
+                    'ADD_IMAGE' => '_SEARCH:cms_galleries:add:cat={CAT,OPTIONAL}',
                 ),
             ),
             'DELETE_IMAGE' => array(
@@ -111,7 +111,7 @@ class Hook_actionlog_galleries extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:galleries:video:{ID}',
                     'EDIT_THIS_VIDEO' => '_SEARCH:cms_galleries:_edit_other:{ID}',
-                    'ADD_VIDEO' => '_SEARCH:cms_galleries:add_other:cat=TODO',
+                    'ADD_VIDEO' => '_SEARCH:cms_galleries:add_other:cat={CAT,OPTIONAL}',
                 ),
             ),
             'EDIT_VIDEO' => array(
@@ -122,7 +122,7 @@ class Hook_actionlog_galleries extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:galleries:video:{ID}',
                     'EDIT_THIS_VIDEO' => '_SEARCH:cms_galleries:_edit_other:{ID}',
-                    'ADD_VIDEO' => '_SEARCH:cms_galleries:add_other:cat=TODO',
+                    'ADD_VIDEO' => '_SEARCH:cms_galleries:add_other:cat={CAT,OPTIONAL}',
                 ),
             ),
             'DELETE_VIDEO' => array(
@@ -135,5 +135,38 @@ class Hook_actionlog_galleries extends Hook_actionlog
                 ),
             ),
         );
+    }
+
+    /**
+     * Get details of action log entry types handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  ?string $identifier The identifier associated with this action log entry (null: unknown / none)
+     * @param  ?string $written_context The written context associated with this action log entry (null: unknown / none)
+     * @param  array $bindings Default bindings
+     */
+    protected function get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, &$bindings)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'ADD_IMAGE':
+            case 'EDIT_IMAGE':
+                $cat = $GLOBALS['SITE_DB']->query_select_value_if_there('images', 'cat', array('id' => intval($identifier)));
+                if ($cat !== null) {
+                    $bindings += array(
+                        'CAT' => $cat,
+                    );
+                }
+                break;
+
+            case 'ADD_VIDEO':
+            case 'EDIT_VIDEO':
+                $cat = $GLOBALS['SITE_DB']->query_select_value_if_there('videos', 'cat', array('id' => intval($identifier)));
+                if ($cat !== null) {
+                    $bindings += array(
+                        'CAT' => $cat,
+                    );
+                }
+                break;
+        }
     }
 }

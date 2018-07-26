@@ -24,7 +24,7 @@
 class Hook_actionlog_news extends Hook_actionlog
 {
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */
@@ -78,7 +78,7 @@ class Hook_actionlog_news extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:news:view:{ID}',
                     'EDIT_THIS_NEWS' => '_SEARCH:cms_news:_edit:{ID}',
-                    'ADD_NEWS' => '_SEARCH:cms_news:add:cat=TODO',
+                    'ADD_NEWS' => '_SEARCH:cms_news:add:cat={CAT,OPTIONAL}',
                 ),
             ),
             'EDIT_NEWS' => array(
@@ -89,7 +89,7 @@ class Hook_actionlog_news extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:news:view:{ID}',
                     'EDIT_THIS_NEWS' => '_SEARCH:cms_news:_edit:{ID}',
-                    'ADD_NEWS' => '_SEARCH:cms_news:add:cat=TODO',
+                    'ADD_NEWS' => '_SEARCH:cms_news:add:cat={CAT,OPTIONAL}',
                 ),
             ),
             'DELETE_NEWS' => array(
@@ -111,5 +111,28 @@ class Hook_actionlog_news extends Hook_actionlog
                 ),
             ),
         );
+    }
+
+    /**
+     * Get details of action log entry types handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  ?string $identifier The identifier associated with this action log entry (null: unknown / none)
+     * @param  ?string $written_context The written context associated with this action log entry (null: unknown / none)
+     * @param  array $bindings Default bindings
+     */
+    protected function get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, &$bindings)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'ADD_NEWS':
+            case 'EDIT_NEWS':
+                $category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'news_category', array('id' => intval($identifier)));
+                if ($category_id !== null) {
+                    $bindings += array(
+                        'CAT' => strval($category_id),
+                    );
+                }
+                break;
+        }
     }
 }

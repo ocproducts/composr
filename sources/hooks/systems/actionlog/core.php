@@ -24,7 +24,7 @@
 class Hook_actionlog_core extends Hook_actionlog
 {
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */
@@ -263,7 +263,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_MENU' => 'TODO',
+                    'EDIT_MENU' => '_SEARCH:admin_menus:edit:{MENU}',
                 ),
             ),
             'EDIT_MENU_ITEM' => array(
@@ -272,7 +272,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_MENU' => 'TODO',
+                    'EDIT_MENU' => '_SEARCH:admin_menus:edit:{MENU}',
                 ),
             ),
             'DELETE_MENU_ITEM' => array(
@@ -281,7 +281,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_MENU' => 'TODO',
+                    'EDIT_MENU' => '_SEARCH:admin_menus',
                 ),
             ),
             'NOTIFICATIONS_LOCKDOWN' => array(
@@ -369,7 +369,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'EDIT_CSS' => 'TODO',
+                    'EDIT_CSS' => '_SEARCH:admin_themes:edit_css:file={0}:theme={1}',
                     'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
@@ -379,7 +379,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'EDIT_TEMPLATE' => 'TODO',
+                    'EDIT_TEMPLATE' => '_SEARCH:admin_themes:edit_template:f0file={0}:theme={1}',
                     'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
@@ -409,7 +409,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'ADD_THEME_IMAGE' => TODO ? '_SEARCH:admin_themes:add_image:theme={1}' : null,
+                    'ADD_THEME_IMAGE' => '_SEARCH:admin_themes:add_image:theme={1}',
                 ),
             ),
             'DELETE_TRACKBACKS' => array(
@@ -466,5 +466,84 @@ class Hook_actionlog_core extends Hook_actionlog
                 ),
             ),
         );
+    }
+
+    /**
+     * Get written context for an action log entry handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  array $handler_data Handler data
+     */
+    protected function get_written_context($actionlog_row, $handler_data)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'ADD_THEME':
+            case 'DELETE_THEME':
+                $theme = $actionlog_row['param_a'];
+                $path = get_custom_file_base() . '/themes/' . $theme . '/theme.ini';
+                if (!is_file($path)) {
+                    $path = get_file_base() . '/themes/' . $theme . '/theme.ini';
+                }
+                if (is_file($path)) {
+                    $details = better_parse_ini_file($path);
+                    if (array_key_exists('title', $details)) {
+                        return $details['title'];
+                    }
+                }
+                return $theme;
+
+            case 'COPY_THEME':
+            case 'RENAME_THEME':
+                $theme = $actionlog_row['param_b'];
+                $path = get_custom_file_base() . '/themes/' . $theme . '/theme.ini';
+                if (!is_file($path)) {
+                    $path = get_file_base() . '/themes/' . $theme . '/theme.ini';
+                }
+                if (is_file($path)) {
+                    $details = better_parse_ini_file($path);
+                    if (array_key_exists('title', $details)) {
+                        return $details['title'];
+                    }
+                }
+                return $theme;
+
+            case 'CLEANUP_TOOLS':
+                $hook = $actionlog_row['param_a'];
+                if ($hook != '') {
+                    $_hook = 'hooks/systems/cleanup/' . $hook;
+                    if ((is_file(get_file_base() . '/sources/' . $_hook . '.php')) || (is_file(get_file_base() . '/sources_custom/' . $_hook . '.php'))) {
+                        require_code($_hook);
+                        $ob = object_factory('Hook_cleanup_' . $hook);
+                        $info = $ob->info();
+                        return $info['title']->evaluate();
+                    }
+                }
+                break;
+        }
+
+        return parent::get_written_context($actionlog_row, $handler_data);
+    }
+
+    /**
+     * Get details of action log entry types handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  ?string $identifier The identifier associated with this action log entry (null: unknown / none)
+     * @param  ?string $written_context The written context associated with this action log entry (null: unknown / none)
+     * @param  array $bindings Default bindings
+     */
+    protected function get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, &$bindings)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'ADD_MENU_ITEM':
+            case 'EDIT_MENU_ITEM':
+                $menu = $GLOBALS['SITE_DB']->query_select_value_if_there('menu_items', 'i_menu', array('id' => intval($identifier)));
+                if ($menu !== null) {
+                    $bindings += array(
+                        'MENU' => $menu,
+                    );
+                }
+                break;
+        }
     }
 }

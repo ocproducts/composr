@@ -24,7 +24,7 @@
 class Hook_actionlog_calendar extends Hook_actionlog
 {
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */
@@ -78,7 +78,7 @@ class Hook_actionlog_calendar extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:calendar:view:{ID}',
                     'EDIT_THIS_CALENDAR_EVENT' => '_SEARCH:cms_calendar:_edit:{ID}',
-                    'ADD_CALENDAR_EVENT' => '_SEARCH:cms_calendar:add:e_type=TODO',
+                    'ADD_CALENDAR_EVENT' => '_SEARCH:cms_calendar:add:e_type={TYPE,OPTIONAL}',
                 ),
             ),
             'EDIT_CALENDAR_EVENT' => array(
@@ -89,7 +89,7 @@ class Hook_actionlog_calendar extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:calendar:view:{ID}',
                     'EDIT_THIS_CALENDAR_EVENT' => '_SEARCH:cms_calendar:_edit:{ID}',
-                    'ADD_CALENDAR_EVENT' => '_SEARCH:cms_calendar:add:e_type=TODO',
+                    'ADD_CALENDAR_EVENT' => '_SEARCH:cms_calendar:add:e_type={TYPE,OPTIONAL}',
                 ),
             ),
             'DELETE_CALENDAR_EVENT' => array(
@@ -102,5 +102,28 @@ class Hook_actionlog_calendar extends Hook_actionlog
                 ),
             ),
         );
+    }
+
+    /**
+     * Get details of action log entry types handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  ?string $identifier The identifier associated with this action log entry (null: unknown / none)
+     * @param  ?string $written_context The written context associated with this action log entry (null: unknown / none)
+     * @param  array $bindings Default bindings
+     */
+    protected function get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, &$bindings)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'ADD_CALENDAR_EVENT':
+            case 'EDIT_CALENDAR_EVENT':
+                $type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('calendar_events', 'e_type', array('id' => intval($identifier)));
+                if ($type_id !== null) {
+                    $bindings += array(
+                        'TYPE' => strval($type_id),
+                    );
+                }
+                break;
+        }
     }
 }

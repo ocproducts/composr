@@ -24,7 +24,7 @@
 class Hook_actionlog_cns_warnings extends Hook_actionlog
 {
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */
@@ -41,6 +41,33 @@ class Hook_actionlog_cns_warnings extends Hook_actionlog
         require_lang('cns_warnings');
 
         return array(
+            'ADD_WARNING' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => 0,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{1}',
+                ),
+            ),
+            'EDIT_WARNING' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => 0,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{1}',
+                ),
+            ),
+            'DELETE_WARNING' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
+                'cma_hook' => null,
+                'identifier_index' => 0,
+                'written_context_index' => null,
+                'followup_page_links' => array(
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{1}',
+                ),
+            ),
             'MARK_AS_SPAMMER' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
@@ -87,5 +114,27 @@ class Hook_actionlog_cns_warnings extends Hook_actionlog
                 ),
             ),
         );
+    }
+
+    /**
+     * Get written context for an action log entry handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  array $handler_data Handler data
+     */
+    protected function get_written_context($actionlog_row, $handler_data)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'ADD_WARNING':
+            case 'EDIT_WARNING':
+            case 'DELETE_WARNING':
+                $written_context = $GLOBALS['FORUM_DRIVER']->get_username(intval($actionlog_row['param_b']));
+                if ($written_context === null) {
+                    return '#' . $actionlog_row['param_b'];
+                }
+                return $written_context;
+        }
+
+        return parent::get_written_context($actionlog_row, $handler_data);
     }
 }

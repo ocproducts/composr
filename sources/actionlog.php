@@ -25,6 +25,8 @@
  */
 function init__actionlog()
 {
+    require_lang('actionlog');
+
     define('ACTIONLOG_FLAGS_NONE', 0);
     define('ACTIONLOG_FLAG__USER_ACTION', 1); // Used when we use the action log for non-admin actions (as we have no dedicated log for something)
 }
@@ -52,28 +54,13 @@ abstract class Hook_actionlog
         if (array_key_exists($type, $handlers)) {
             $handler_data = $handlers[$type];
 
-            $identifier = null;
-            if ($handler_data['identifier_index'] === 0) {
-                $identifier = $actionlog_row['param_a'];
-            } elseif ($handler_data['identifier_index'] === 1) {
-                $identifier = $actionlog_row['param_b'];
-            }
+            $identifier = $this->get_identifier($actionlog_row, $handler_data);
             if ($identifier === '') {
                 // Fail (note null does not fail, it just means we have no identifier which is fine)
                 return false;
             }
 
-            $written_context = null;
-            if ($handler_data['written_context_index'] === 0) {
-                $written_context = $actionlog_row['param_a'];
-            } elseif ($handler_data['written_context_index'] === 1) {
-                $written_context = $actionlog_row['param_b'];
-            }
-            if ($written_context === null && $identifier !== null && $handler_data['cma_hook'] !== null) {
-                // Work out from CMA hook as we don't have it directly in the action log entry
-                require_code('content');
-                list($written_context) = content_get_details($handler_data['cma_hook'], $identifier);
-            }
+            $written_context = $this->get_written_context($actionlog_row, $handler_data);
             if ($written_context === null || $written_context === '') {
                 // Fail
                 return false;
@@ -137,7 +124,46 @@ abstract class Hook_actionlog
     }
 
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get identifier for an action log entry handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  array $handler_data Handler data
+     */
+    protected function get_identifier($actionlog_row, $handler_data)
+    {
+        $identifier = null;
+        if ($handler_data['identifier_index'] === 0) {
+            $identifier = $actionlog_row['param_a'];
+        } elseif ($handler_data['identifier_index'] === 1) {
+            $identifier = $actionlog_row['param_b'];
+        }
+        return $identifier;
+    }
+
+    /**
+     * Get written context for an action log entry handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  array $handler_data Handler data
+     */
+    protected function get_written_context($actionlog_row, $handler_data)
+    {
+        $written_context = null;
+        if ($handler_data['written_context_index'] === 0) {
+            $written_context = $actionlog_row['param_a'];
+        } elseif ($handler_data['written_context_index'] === 1) {
+            $written_context = $actionlog_row['param_b'];
+        }
+        if ($written_context === null && $identifier !== null && $handler_data['cma_hook'] !== null) {
+            // Work out from CMA hook as we don't have it directly in the action log entry
+            require_code('content');
+            list($written_context) = content_get_details($handler_data['cma_hook'], $identifier);
+        }
+        return $written_context;
+    }
+
+    /**
+     * Get details of action log entry types handled by this hook.
      *
      * @param  array $actionlog_row Action log row
      * @param  ?string $identifier The identifier associated with this action log entry (null: unknown / none)
@@ -146,6 +172,7 @@ abstract class Hook_actionlog
      */
     protected function get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, &$bindings)
     {
+        // For overriding
     }
 
     /**
@@ -168,7 +195,7 @@ abstract class Hook_actionlog
             }
 
             // Now optional version too
-            $_binding_from = '{' . $binding_from . '__OPTIONAL}';
+            $_binding_from = '{' . $binding_from . ',OPTIONAL}';
             if (strpos($string, $_binding_from) !== false) {
                 if ($binding_to !== null) {
                     $string = str_replace($_binding_from, $binding_to, $string);
@@ -187,7 +214,7 @@ abstract class Hook_actionlog
     }
 
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */

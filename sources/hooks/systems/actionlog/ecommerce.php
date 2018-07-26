@@ -24,7 +24,7 @@
 class Hook_actionlog_ecommerce extends Hook_actionlog
 {
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */
@@ -72,7 +72,7 @@ class Hook_actionlog_ecommerce extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => array('FORUM_DRIVER__PROFILE_URL', 'TODO'),
+                    'VIEW_PROFILE' => array('FORUM_DRIVER__PROFILE_URL', '{MEMBER_ID}'),
                     'CREATE_INVOICE' => '_SEARCH:admin_invoices:add',
                 ),
             ),
@@ -86,5 +86,27 @@ class Hook_actionlog_ecommerce extends Hook_actionlog
                 ),
             ),
         );
+    }
+
+    /**
+     * Get details of action log entry types handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  ?string $identifier The identifier associated with this action log entry (null: unknown / none)
+     * @param  ?string $written_context The written context associated with this action log entry (null: unknown / none)
+     * @param  array $bindings Default bindings
+     */
+    protected function get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, &$bindings)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'CREATE_INVOICE':
+                $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('invoices'/*TODO: Change to ecom_invoices in v11*/, 'i_member_id', array('id' => intval($identifier)));
+                if ($member_id !== null) {
+                    $bindings += array(
+                        'MEMBER_ID' => strval($member_id),
+                    );
+                }
+                break;
+        }
     }
 }

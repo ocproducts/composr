@@ -24,7 +24,7 @@
 class Hook_actionlog_banners extends Hook_actionlog
 {
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */
@@ -74,7 +74,7 @@ class Hook_actionlog_banners extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:banners:view:{ID}',
                     'EDIT_THIS_BANNER_TYPE' => '_SEARCH:cms_banners:_edit_category:{ID}',
-                    'ADD_BANNER' => '_SEARCH:cms_banners:add:b_type={CAT}',
+                    'ADD_BANNER' => '_SEARCH:cms_banners:add:b_type={CAT,OPTIONAL}',
                 ),
             ),
             'EDIT_BANNER' => array(
@@ -85,7 +85,7 @@ class Hook_actionlog_banners extends Hook_actionlog
                 'followup_page_links' => array(
                     'VIEW' => '_SEARCH:banners:view:{ID}',
                     'EDIT_THIS_BANNER' => '_SEARCH:cms_banners:_edit:{ID}',
-                    'ADD_BANNER' => '_SEARCH:cms_banners:add:b_type={CAT}',
+                    'ADD_BANNER' => '_SEARCH:cms_banners:add:b_type={CAT,OPTIONAL}',
                 ),
             ),
             'DELETE_BANNER' => array(
@@ -101,7 +101,7 @@ class Hook_actionlog_banners extends Hook_actionlog
     }
 
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get details of action log entry types handled by this hook.
      *
      * @param  array $actionlog_row Action log row
      * @param  ?string $identifier The identifier associated with this action log entry (null: unknown / none)
@@ -110,8 +110,16 @@ class Hook_actionlog_banners extends Hook_actionlog
      */
     protected function get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, &$bindings)
     {
-        // TODO
-        switch ($actionlog_row['TODO']) {
+        switch ($actionlog_row['the_type']) {
+            case 'ADD_BANNER':
+            case 'EDIT_BANNER':
+                $b_type = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'b_type', array('name' => $identifier));
+                if ($b_type !== null) {
+                    $bindings += array(
+                        'CAT' => $b_type,
+                    );
+                }
+                break;
         }
     }
 }

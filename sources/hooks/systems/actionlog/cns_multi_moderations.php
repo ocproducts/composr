@@ -24,7 +24,7 @@
 class Hook_actionlog_cns_multi_moderations extends Hook_actionlog
 {
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */
@@ -90,5 +90,23 @@ class Hook_actionlog_cns_multi_moderations extends Hook_actionlog
                 ),
             ),
         );
+    }
+
+    /**
+     * Get written context for an action log entry handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  array $handler_data Handler data
+     */
+    protected function get_written_context($actionlog_row, $handler_data)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'PERFORM_MULTI_MODERATION':
+                $written_context = null;
+                // TODO
+                return $written_context;
+        }
+
+        return parent::get_written_context($actionlog_row, $handler_data);
     }
 }

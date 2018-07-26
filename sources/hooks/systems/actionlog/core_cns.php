@@ -24,7 +24,7 @@
 class Hook_actionlog_core_cns extends Hook_actionlog
 {
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */
@@ -122,7 +122,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
-                    'USERGROUP' => 'TODO',
+                    'USERGROUP' => '_SEARCH:groups:view:{1}',
                 ),
             ),
             'MEMBER_PRIMARY_GROUP_CHANGED' => array(
@@ -132,7 +132,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
-                    'USERGROUP' => 'TODO',
+                    'USERGROUP' => '_SEARCH:groups:view:{1}',
                 ),
             ),
             'MEMBER_REMOVED_FROM_GROUP' => array(
@@ -142,7 +142,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
-                    'USERGROUP' => 'TODO',
+                    'USERGROUP' => '_SEARCH:groups:view:{1}',
                 ),
             ),
             'IMPORT_MEMBER_CSV' => array(
@@ -210,33 +210,6 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                     'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                 ),
             ),
-            'ADD_WARNING' => array(
-                'flags' => ACTIONLOG_FLAGS_NONE,
-                'cma_hook' => null,
-                'identifier_index' => 0,
-                'written_context_index' => null,
-                'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:{1}',
-                ),
-            ),
-            'EDIT_WARNING' => array(
-                'flags' => ACTIONLOG_FLAGS_NONE,
-                'cma_hook' => null,
-                'identifier_index' => 0,
-                'written_context_index' => null,
-                'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:{1}',
-                ),
-            ),
-            'DELETE_WARNING' => array(
-                'flags' => ACTIONLOG_FLAGS_NONE,
-                'cma_hook' => null,
-                'identifier_index' => 0,
-                'written_context_index' => null,
-                'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:{1}',
-                ),
-            ),
             'BAN_MEMBER' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => 'member',
@@ -252,7 +225,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_PROFILE' => 'TODO',
+                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                 ),
             ),
             'LOST_PASSWORD' => array(

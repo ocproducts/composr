@@ -24,7 +24,7 @@
 class Hook_actionlog_cns_forum extends Hook_actionlog
 {
     /**
-     * Get details of action log entry types handled by this hook. For internal use, although may be used by the base class.
+     * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */
@@ -137,7 +137,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW_TOPIC' => 'TODO',
+                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:{TOPIC}',
                 ),
             ),
             'MOVE_TOPICS' => array(
@@ -155,7 +155,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_TOPIC' => 'TODO',
+                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:{TOPIC}',
                     'EDIT_POST' => '_SEARCH:topics:edit_post:{ID}',
                 ),
             ),
@@ -183,7 +183,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_TOPIC' => 'TODO',
+                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:{TOPIC}',
                     'EDIT_POST' => '_SEARCH:topics:edit_post:{ID}',
                 ),
             ),
@@ -193,7 +193,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_TOPIC' => 'TODO',
+                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:{TOPIC}',
                     'EDIT_POST' => '_SEARCH:topics:edit_post:{ID}',
                 ),
             ),
@@ -212,7 +212,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_TOPIC' => 'TODO',
+                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:{ID}',
                     'EDIT_POST' => '_SEARCH:topics:edit_post:{ID}',
                 ),
             ),
@@ -223,7 +223,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
-                    'FORUM' => 'TODO',
+                    'FORUM' => '_SEARCH:forumview:browse:{1}',
                 ),
             ),
             'UNSILENCE_FORUM' => array(
@@ -233,7 +233,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
-                    'FORUM' => 'TODO',
+                    'FORUM' => '_SEARCH:forumview:browse:{1}',
                 ),
             ),
             'SILENCE_FROM_TOPIC' => array(
@@ -243,7 +243,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
-                    'VIEW_TOPIC' => 'TODO',
+                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:{1}',
                 ),
             ),
             'UNSILENCE_TOPIC' => array(
@@ -253,9 +253,43 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
-                    'VIEW_TOPIC' => 'TODO',
+                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:{1}',
                 ),
             ),
         );
+    }
+
+    /**
+     * Get details of action log entry types handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  ?string $identifier The identifier associated with this action log entry (null: unknown / none)
+     * @param  ?string $written_context The written context associated with this action log entry (null: unknown / none)
+     * @param  array $bindings Default bindings
+     */
+    protected function get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, &$bindings)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'DELETE_TOPIC_POLL':
+                $parts = explode(':', $identifier, 2);
+                if (array_key_exists(1, $parts)) {
+                    $bindings += array(
+                        'TOPIC' => $parts[0],
+                    );
+                }
+                break;
+
+            case 'EDIT_POST':
+            case 'VALIDATE_POST':
+            case 'UNVALIDATE_POST':
+            case 'MAKE_ANONYMOUS_POST':
+                $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => intval($identifier)));
+                if ($topic_id !== null) {
+                    $bindings += array(
+                        'TOPIC' => strval($topic_id),
+                    );
+                }
+                break;
+        }
     }
 }
