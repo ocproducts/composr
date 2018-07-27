@@ -7,6 +7,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: pspell\_.+|enchant\_.+*/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -3239,14 +3241,11 @@ class _lang_spelling_test_set extends cms_test_case
             'pages' => 'php',
             'site' => 'php',
             'docs' => 'php',
-            'pages' => 'php',
             'forum' => 'php',
             'adminzone' => 'php',
             'cms' => 'php',
             'collaboration' => 'php', // TODO: Remove in v11
             'buildr' => 'php',
-
-            'themes/default' => 'css',
 
             'themes/default' => 'js',
 

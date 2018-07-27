@@ -80,6 +80,7 @@ class http_test_set extends cms_test_case
         $write = fopen($write_path, 'wb');
         $result = http_download_file('http://example.com/', null, false, true, 'Composr', null, null, null, null, null, $write);
         $this->assertTrue(strpos(file_get_contents($write_path), 'Example Domain') !== false);
+		fclose($write);
         unlink($write_path);
     }
 
@@ -89,6 +90,7 @@ class http_test_set extends cms_test_case
         $write = fopen($write_path, 'wb');
         $result = http_download_file('https://example.com/', null, false, true, 'Composr', null, null, null, null, null, $write);
         $this->assertTrue(strpos(file_get_contents($write_path), 'Example Domain') !== false);
+		fclose($write);
         unlink($write_path);
     }
 }

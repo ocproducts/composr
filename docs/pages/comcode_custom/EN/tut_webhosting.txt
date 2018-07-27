@@ -108,6 +108,7 @@ Composr recommends:
  - A PHP environment with Safe Mode disabled, but [tt]open_basedir[/tt] enabled -- or a suEXEC/IIS server (explained further down)
  - A PHP memory limit of 64MB
  - At least 100MB of disk space
+ - If running Apache, the following Apache modules (for maximum performance): [tt]mod_headers[/tt], [tt]mod_setenvif[/tt], [tt]mod_env[/tt], [tt]mod_deflate[/tt], [tt]mod_filter[/tt]
 
 &dagger; If you do not have the PHP FTP extension, then you will need either:
 [list="a"]
@@ -123,8 +124,6 @@ It is best, however, to transcode manually offline/off-server to avoid resource 
 Do not try and install Composr on an ad-sponsored free webhost. The banners and tracking they inject will interfere with the mechanisms of Composr.
 
 If LDAP integration is required (for corporate network authentication integration), the PHP LDAP extension is required.
-
-If Tornevall integration is required, the PHP SOAP extension is required.
 
 If you need to be able to easily remove 'bounce' e-mails from newsletter subscriber lists, you will need the PHP IMAP extension. If your IMAP server requires SSL (like gmail) then you will need to have IMAP-SSL support inside PHP (or you will get "invalid remote specification" errors).
 

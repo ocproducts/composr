@@ -27,6 +27,7 @@ class template_no_unused_test_set extends cms_test_case
 
         $all_code = '';
         $files = $this->do_dir(get_file_base(), '', 'php');
+        $files[] = 'install.php';
         foreach ($files as $file) {
             $all_code .= file_get_contents($file);
         }

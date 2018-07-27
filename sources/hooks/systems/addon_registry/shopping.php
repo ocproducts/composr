@@ -210,6 +210,8 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__shopping_cart_stage_pay()
     {
+        require_lang('ecommerce');
+
         return array(
             lorem_globalise(do_lorem_template('ECOM_SHOPPING_CART_STAGE_PAY', array(
                 'TRANSACTION_BUTTON' => placeholder_button(),
@@ -226,6 +228,8 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__administrative__ecom_admin_orders_screen()
     {
+        require_lang('ecommerce');
+
         return array(
             lorem_globalise(do_lorem_template('ECOM_ADMIN_ORDERS_SCREEN', array(
                 'TITLE' => lorem_title(),
@@ -311,6 +315,8 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__administrative__ecom_admin_orders_details_screen()
     {
+        require_lang('ecommerce');
+
         $order_actions = do_lorem_template('ECOM_ADMIN_ORDER_ACTIONS', array(
             'ORDER_TITLE' => lorem_phrase(),
             'ORDER_ACTUALISE_URL' => placeholder_url(),
@@ -359,6 +365,8 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__ecommerce_item_details()
     {
+        require_lang('ecommerce');
+
         return array(
             lorem_globalise(do_lorem_template('ECOM_ITEM_DETAILS', array(
                 'FIELDS' => placeholder_fields(),
@@ -375,6 +383,8 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__ecom_cart_button_via_paypal()
     {
+        require_lang('ecommerce');
+
         $items = array();
         foreach (placeholder_array() as $k => $v) {
             $items[] = array(
@@ -405,6 +415,8 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__shopping_cart_screen()
     {
+        require_lang('ecommerce');
+
         //results_table starts
         //results_entry starts
 
@@ -511,6 +523,8 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__ecom_orders_screen()
     {
+        require_lang('ecommerce');
+
         $orders = array();
         foreach (placeholder_array() as $v) {
             $orders[] = array(
@@ -540,6 +554,8 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__ecom_orders_details_screen()
     {
+        require_lang('ecommerce');
+
         $orders = array();
         foreach (placeholder_array() as $v) {
             $orders[] = array(
@@ -753,6 +769,8 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__ecom_cart_link_screen()
     {
+        require_lang('ecommerce');
+
         $cart_link = do_lorem_template('ECOM_CART_LINK', array(
             'URL' => placeholder_url(),
             'TITLE' => lorem_phrase(),
@@ -774,6 +792,7 @@ class Hook_addon_registry_shopping
     public function tpl_preview__results_products_table()
     {
         require_css('catalogues');
+        require_lang('ecommerce');
 
         //results_entry starts
         $array = placeholder_array();
