@@ -45,7 +45,9 @@ class _broken_links_test_set extends cms_test_case
     {
         set_option('is_on_comcode_page_cache', '1');
 
-        @set_time_limit(10000);
+        if (function_exists('set_time_limit')) {
+            @set_time_limit(10000);
+        }
 
         $path = get_file_base() . '/docs/pages/comcode_custom/' . fallback_lang();
         $files = get_directory_contents($path, $path);
