@@ -43,7 +43,7 @@ class Hook_actionlog_tickets extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_TICKET_TYPE' => '_SEARCH:admin_tickets:edit:{ID}',
+                    'EDIT_THIS_TICKET_TYPE' => '_SEARCH:admin_tickets:edit:ticket_type_id={ID}',
                     'ADD_TICKET_TYPE' => '_SEARCH:admin_tickets',
                 ),
             ),
@@ -53,7 +53,7 @@ class Hook_actionlog_tickets extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THIS_TICKET_TYPE' => '_SEARCH:admin_tickets:edit:{ID}',
+                    'EDIT_THIS_TICKET_TYPE' => '_SEARCH:admin_tickets:edit:ticket_type_id={ID}',
                     'ADD_TICKET_TYPE' => '_SEARCH:admin_tickets',
                 ),
             ),

@@ -45,7 +45,7 @@ class Hook_actionlog_booking extends Hook_actionlog
                 'followup_page_links' => array(
                     'EDIT_THIS_BOOKABLE' => '_SEARCH:cms_booking:_edit:{ID}',
                     'ADD_BOOKABLE' => '_SEARCH:cms_booking:add',
-                    'ADD_SUPPLEMENT' => '_SEARCH:cms_booking:add_category',
+                    'ADD_BOOKABLE_SUPPLEMENT' => '_SEARCH:cms_booking:add_category',
                     'ADD_BOOKABLE_BLACKED' => '_SEARCH:cms_booking:add_other',
                 ),
             ),
@@ -57,7 +57,7 @@ class Hook_actionlog_booking extends Hook_actionlog
                 'followup_page_links' => array(
                     'EDIT_THIS_BOOKABLE' => '_SEARCH:cms_booking:_edit:{ID}',
                     'ADD_BOOKABLE' => '_SEARCH:cms_booking:add',
-                    'ADD_SUPPLEMENT' => '_SEARCH:cms_booking:add_category',
+                    'ADD_BOOKABLE_SUPPLEMENT' => '_SEARCH:cms_booking:add_category',
                     'ADD_BOOKABLE_BLACKED' => '_SEARCH:cms_booking:add_other',
                 ),
             ),

@@ -1077,6 +1077,9 @@ class Module_admin_themes
         if (!file_exists($path)) {
             $path = get_file_base() . '/themes/default/css/' . $file;
         }
+        if (!file_exists($path)) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
         $css = unixify_line_format(cms_file_get_contents_safe($path));
 
         if (addon_installed('actionlog')) {

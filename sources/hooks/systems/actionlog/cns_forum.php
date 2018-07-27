@@ -216,46 +216,6 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                     'EDIT_POST' => '_SEARCH:topics:edit_post:{ID}',
                 ),
             ),
-            'SILENCE_FROM_FORUM' => array(
-                'flags' => ACTIONLOG_FLAGS_NONE,
-                'cma_hook' => 'member',
-                'identifier_index' => 0,
-                'written_context_index' => null,
-                'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
-                    'FORUM' => '_SEARCH:forumview:browse:{1}',
-                ),
-            ),
-            'UNSILENCE_FORUM' => array(
-                'flags' => ACTIONLOG_FLAGS_NONE,
-                'cma_hook' => 'member',
-                'identifier_index' => 0,
-                'written_context_index' => null,
-                'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
-                    'FORUM' => '_SEARCH:forumview:browse:{1}',
-                ),
-            ),
-            'SILENCE_FROM_TOPIC' => array(
-                'flags' => ACTIONLOG_FLAGS_NONE,
-                'cma_hook' => 'member',
-                'identifier_index' => 0,
-                'written_context_index' => null,
-                'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
-                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:{1}',
-                ),
-            ),
-            'UNSILENCE_TOPIC' => array(
-                'flags' => ACTIONLOG_FLAGS_NONE,
-                'cma_hook' => 'member',
-                'identifier_index' => 0,
-                'written_context_index' => null,
-                'followup_page_links' => array(
-                    'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
-                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:{1}',
-                ),
-            ),
         );
     }
 
@@ -337,36 +297,6 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 }
 
                 $written_context = do_lang('SOMETHING_TO', integer_format(intval($actionlog_row['param_b'])), $topic_title);
-                return $written_context;
-
-            case 'SILENCE_FROM_FORUM':
-            case 'UNSILENCE_FORUM':
-                $username = $GLOBALS['FORUM_DRIVER']->get_username(intval($actionlog_row['param_a']));
-                if ($username === null) {
-                    $username = '#' . $actionlog_row['param_b'];
-                }
-
-                $forum_name = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => intval($actionlog_row['param_b'])));
-                if ($forum_name === null) {
-                    $forum_name = '#' . $actionlog_row['param_b'];
-                }
-
-                $written_context = do_lang('SOMETHING_TO', $username, $forum_name);
-                return $written_context;
-
-            case 'SILENCE_FROM_TOPIC':
-            case 'UNSILENCE_TOPIC':
-                $username = $GLOBALS['FORUM_DRIVER']->get_username(intval($actionlog_row['param_a']));
-                if ($username === null) {
-                    $username = '#' . $actionlog_row['param_b'];
-                }
-
-                $topic_title = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_cache_first_title', array('id' => intval($actionlog_row['param_b'])));
-                if ($topic_title === null) {
-                    $topic_title = '#' . $actionlog_row['param_b'];
-                }
-
-                $written_context = do_lang('SOMETHING_TO', $username, $topic_title);
                 return $written_context;
         }
 

@@ -44,7 +44,6 @@ class Hook_actionlog_wordfilter extends Hook_actionlog
                 'written_context_index' => 0,
                 'followup_page_links' => array(
                     'MANAGE_WORDFILTER' => '_SEARCH:admin_wordfilter',
-                    'ADD_WORDFILTER' => '_SEARCH:admin_wordfilter:add',
                 ),
             ),
             'DELETE_WORDFILTER' => array(

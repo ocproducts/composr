@@ -237,7 +237,7 @@ class Hook_actionlog_core_cns extends Hook_actionlog
                     'VIEW_PROFILE' => '_SEARCH:members:view:{ID}',
                 ),
             ),
-            'RESET_PASSWORD' => array(
+            'LOST_PASSWORD' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE | ACTIONLOG_FLAG__USER_ACTION,
                 'cma_hook' => 'member',
                 'identifier_index' => 0,

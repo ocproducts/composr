@@ -30,7 +30,7 @@ class Hook_actionlog_backups extends Hook_actionlog
      */
     public function get_handlers()
     {
-        if (!addon_installed('backups')) {
+        if (!addon_installed('backup')) {
             return array();
         }
 

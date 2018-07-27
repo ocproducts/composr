@@ -40,6 +40,9 @@ class Hook_actionlog_core extends Hook_actionlog
         require_lang('notifications');
         require_lang('permissions');
         require_lang('themes');
+        require_lang('upgrade');
+        require_lang('group_member_timeouts');
+        require_lang('trackbacks');
 
         return array(
             'ADD_ZONE' => array(
@@ -82,7 +85,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW' => '{1}:{0}',
-                    'COMCODE_PAGE_EDIT_THIS' => '_SEARCH:cms_comcode_pages:_edit:page_link={1}%3A{0}',
+                    'COMCODE_PAGE_EDIT_THIS' => '_SEARCH:cms_comcode_pages:_edit:page_link={1}%3A{0}:lang=' . get_site_default_lang(),
                     'COMCODE_PAGE_MANAGEMENT' => '_SEARCH:cms_comcode_pages',
                 ),
             ),
@@ -236,7 +239,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_MENU' => '_SEARCH:admin_menus:_edit:{ID}',
+                    'EDIT_MENU' => '_SEARCH:admin_menus:edit:{ID}',
                 ),
             ),
             'EDIT_MENU' => array(
@@ -245,7 +248,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_MENU' => '_SEARCH:admin_menus:_edit:{ID}',
+                    'EDIT_MENU' => '_SEARCH:admin_menus:edit:{ID}',
                 ),
             ),
             'DELETE_MENU' => array(
@@ -319,7 +322,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:{ID}',
+                    'EDIT_THEME' => '_SEARCH:admin_themes:edit_theme:theme={ID}',
                     'THEMEWIZARD' => '_SEARCH:admin_themewizard',
                     'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
@@ -330,7 +333,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:{ID}',
+                    'EDIT_THEME' => '_SEARCH:admin_themes:edit_theme:theme={ID}',
                     'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
@@ -349,7 +352,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:{ID}',
+                    'EDIT_THEME' => '_SEARCH:admin_themes:edit_theme:theme={ID}',
                     'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
@@ -359,7 +362,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'EDIT_THEME' => '_SEARCH:admin_themes:_edit_theme:{ID}',
+                    'EDIT_THEME' => '_SEARCH:admin_themes:edit_theme:theme={ID}',
                     'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
@@ -373,7 +376,7 @@ class Hook_actionlog_core extends Hook_actionlog
                     'MANAGE_THEMES' => '_SEARCH:admin_themes',
                 ),
             ),
-            'EDIT_TEMPLATE' => array(
+            'EDIT_TEMPLATES' => array(
                 'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
@@ -389,7 +392,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_THEME_IMAGE' => '_SEARCH:admin_themes:_edit_image:{ID}:theme={1}',
+                    'EDIT_THEME_IMAGE' => '_SEARCH:admin_themes:edit_image:{ID}:theme={1}:lang=' . get_site_default_lang(),
                     'ADD_THEME_IMAGE' => '_SEARCH:admin_themes:add_image:theme={1}',
                 ),
             ),
@@ -399,7 +402,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 0,
                 'followup_page_links' => array(
-                    'EDIT_THEME_IMAGE' => '_SEARCH:admin_themes:_edit_image:{ID}:theme={1}',
+                    'EDIT_THEME_IMAGE' => '_SEARCH:admin_themes:edit_image:{ID}:theme={1}:lang=' . get_site_default_lang(),
                     'ADD_THEME_IMAGE' => '_SEARCH:admin_themes:add_image:theme={1}',
                 ),
             ),

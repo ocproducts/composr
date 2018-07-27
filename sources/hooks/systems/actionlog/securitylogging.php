@@ -35,6 +35,7 @@ class Hook_actionlog_securitylogging extends Hook_actionlog
         }
 
         require_lang('submitban');
+        require_lang('lookup');
 
         return array(
             'IP_BANNED' => array(

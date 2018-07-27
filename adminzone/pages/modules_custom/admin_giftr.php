@@ -389,6 +389,6 @@ class Module_admin_giftr extends Standard_crud_module
 
         $GLOBALS['SITE_DB']->query_delete('giftr', array('id' => intval($id)), '', 1);
 
-        log_it('DELETR_GIFT', $id, $name);
+        log_it('DELETE_GIFT', $id, $name);
     }
 }

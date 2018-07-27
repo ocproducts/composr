@@ -383,7 +383,7 @@ class Module_warnings extends Standard_crud_module
         $GLOBALS['FORUM_DB']->query_update('f_warnings', array('p_silence_from_forum' => null), array('id' => $id), '', 1);
 
         require_code('cns_general_action2');
-        cns_mod_log_it('UNSILENCE_FORUM', strval($member_id)), strval($id);
+        cns_mod_log_it('UNSILENCE_FORUM', strval($member_id), strval($id));
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');

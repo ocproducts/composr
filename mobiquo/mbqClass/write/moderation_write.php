@@ -473,7 +473,7 @@ class CMSModerationWrite
             $GLOBALS['FORUM_DB']->query_update('f_members', array('m_on_probation_until' => null), array('id' => $user_id), '', 1);
 
             require_code('cns_general_action2');
-            cns_mod_log_it('REMOVE_FROM_PROBATION', strval($user_id), $username);
+            cns_mod_log_it('STOP_PROBATION', strval($user_id), $username);
         }
 
         return true;

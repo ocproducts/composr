@@ -4197,6 +4197,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EDIT_USERGROUP_SUBSCRIPTION
         EDIT_VIDEO
         EDIT_WARNING
+        DELETE_WARNING
         EDIT_WELCOME_EMAIL
         EDIT_WIKI_PAGE_BODY
         EDIT_WIKI_PAGE_SUBJECT

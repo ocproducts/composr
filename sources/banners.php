@@ -154,6 +154,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         if (($source != '') && ($unique)) {
             $rows = $GLOBALS['SITE_DB']->query_select('banners', array('hits_from', 'campaign_remaining'), array('name' => $source));
             if (!array_key_exists(0, $rows)) {
+                set_http_status_code('404');
                 warn_exit(do_lang_tempcode('BANNER_MISSING_SOURCE'));
             }
             $myrow = $rows[0];
