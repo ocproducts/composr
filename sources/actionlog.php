@@ -60,7 +60,7 @@ abstract class Hook_actionlog
                 return false;
             }
 
-            $written_context = $this->get_written_context($actionlog_row, $handler_data);
+            $written_context = $this->get_written_context($actionlog_row, $handler_data, $identifier);
             if ($written_context === null || $written_context === '') {
                 // Fail
                 return false;
@@ -128,6 +128,7 @@ abstract class Hook_actionlog
      *
      * @param  array $actionlog_row Action log row
      * @param  array $handler_data Handler data
+     * @return string Identifier
      */
     protected function get_identifier($actionlog_row, $handler_data)
     {
@@ -145,8 +146,10 @@ abstract class Hook_actionlog
      *
      * @param  array $actionlog_row Action log row
      * @param  array $handler_data Handler data
+     * @param  ?string $identifier Identifier (null: none)
+     * @return string Written context
      */
-    protected function get_written_context($actionlog_row, $handler_data)
+    protected function get_written_context($actionlog_row, $handler_data, $identifier)
     {
         $written_context = null;
         if ($handler_data['written_context_index'] === 0) {
