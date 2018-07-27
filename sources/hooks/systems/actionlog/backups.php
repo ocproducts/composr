@@ -57,4 +57,27 @@ class Hook_actionlog_backups extends Hook_actionlog
             ),
         );
     }
+
+    /**
+     * Get written context for an action log entry handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  array $handler_data Handler data
+     */
+    protected function get_written_context($actionlog_row, $handler_data)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'BACKUP':
+                require_lang('backups');
+                $type = do_lang(strtoupper($actionlog_row['param_b']) . '_BACKUP', null, null, null, null, false);
+                if ($type === null) {
+                    $type = '?';
+                }
+
+                $written_context = do_lang('BACKUP_WITH_TYPE', $actionlog_row['param_a'], $type);
+                return $written_context;
+        }
+
+        return parent::get_written_context($actionlog_row, $handler_data);
+    }
 }

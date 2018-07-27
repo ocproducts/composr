@@ -76,7 +76,7 @@ class Hook_actionlog_cns_multi_moderations extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_TOPIC' => null,
+                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:{1}',
                     'EDIT_THIS_MULTI_MODERATION' => '_SEARCH:admin_cns_multi_moderations:_edit:{ID}',
                 ),
             ),
@@ -102,8 +102,19 @@ class Hook_actionlog_cns_multi_moderations extends Hook_actionlog
     {
         switch ($actionlog_row['the_type']) {
             case 'PERFORM_MULTI_MODERATION':
-                $written_context = null;
-                // TODO
+                $_multi_moderation_name = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_multi_moderations', 'mm_name', array('id' => intval($actionlog_row['param_a'])));
+                if ($_multi_moderation_name === null) {
+                    $multi_moderation_name = '#' . $actionlog_row['param_a'];
+                } else {
+                    $multi_moderation_name = get_translated_text($_multi_moderation_name, $GLOBALS['FORUM_DB']);
+                }
+
+                $topic_title = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_cache_first_title', array('id' => intval($actionlog_row['param_b'])));
+                if ($topic_title === null) {
+                    $topic_title = '#' . $actionlog_row['param_b'];
+                }
+
+                $written_context = do_lang('SOMETHING_ON', $multi_moderation_name, $topic_title);
                 return $written_context;
         }
 

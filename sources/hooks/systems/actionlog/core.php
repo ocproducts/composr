@@ -519,6 +519,22 @@ class Hook_actionlog_core extends Hook_actionlog
                     }
                 }
                 break;
+
+            case 'COMCODE_PAGE_EDIT':
+                $written_context = $actionlog_row['param_b'] . ':' . $actionlog_row['param_a'];
+                return $written_context;
+
+            case 'EDIT_CSS':
+                $written_context = do_lang('SOMETHING_IN', $actionlog_row['param_b'], $actionlog_row['param_a']);
+                return $written_context;
+
+            case 'EDIT_TEMPLATES':
+                $written_context = do_lang('SOMETHING_IN', $actionlog_row['param_a'], $actionlog_row['param_b']);
+                return $written_context;
+
+            case 'MOVE_PAGES':
+                $written_context = do_lang('SOMETHING_TO', $actionlog_row['param_a'], $actionlog_row['param_b']);
+                return $written_context;
         }
 
         return parent::get_written_context($actionlog_row, $handler_data);

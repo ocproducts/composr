@@ -131,7 +131,15 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_news_summary_required
         OWNER
         POST_BY_X_IN_Y
-        SOMETHING_MOVED
+        SOMETHING_TO
+        SOMETHING_FROM
+        SOMETHING_IN
+        SOMETHING_ON
+        MEMBER_BEFRIENDED
+        MEMBER_UNFRIENDED
+        MEMBER_BLOCKED
+        MEMBER_UNBLOCKED
+        BACKUP_WITH_TYPE
         DEEPER_CONFIGURATION
         LOST_DISK_CONTENT
         DESCRIPTION_LOST_DISK_CONTENT

@@ -43,7 +43,7 @@ class Hook_actionlog_composr_tutorials extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
+                    'VIEW' => '{URL}',
                     'EDIT_THIS_TUTORIAL' => '_SEARCH:cms_tutorials:_edit:{ID}',
                     'ADD_TUTORIAL' => '_SEARCH:cms_tutorials:add',
                 ),
@@ -54,7 +54,7 @@ class Hook_actionlog_composr_tutorials extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'VIEW' => 'TODO',
+                    'VIEW' => '{URL}',
                     'EDIT_THIS_TUTORIAL' => '_SEARCH:cms_tutorials:_edit:{ID}',
                     'ADD_TUTORIAL' => '_SEARCH:cms_tutorials:add',
                 ),
@@ -69,5 +69,28 @@ class Hook_actionlog_composr_tutorials extends Hook_actionlog
                 ),
             ),
         );
+    }
+
+    /**
+     * Get details of action log entry types handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  ?string $identifier The identifier associated with this action log entry (null: unknown / none)
+     * @param  ?string $written_context The written context associated with this action log entry (null: unknown / none)
+     * @param  array $bindings Default bindings
+     */
+    protected function get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, &$bindings)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'ADD_TUTORIAL':
+            case 'EDIT_TUTORIAL':
+                $url = $GLOBALS['SITE_DB']->query_select_value_if_there('tutorials_external', 't_url', array('id' => intval($identifier)));
+                if ($url !== null) {
+                    $bindings += array(
+                        'URL' => $url,
+                    );
+                }
+                break;
+        }
     }
 }

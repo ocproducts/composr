@@ -257,4 +257,39 @@ class Hook_actionlog_core_cns extends Hook_actionlog
             ),
         );
     }
+
+    /**
+     * Get written context for an action log entry handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  array $handler_data Handler data
+     */
+    protected function get_written_context($actionlog_row, $handler_data)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'MEMBER_ADDED_TO_GROUP':
+            case 'MEMBER_REMOVED_FROM_GROUP':
+            case 'MEMBER_PRIMARY_GROUP_CHANGED':
+                $username = $GLOBALS['FORUM_DRIVER']->get_username(intval($actionlog_row['param_a']));
+                if ($username === null) {
+                    $username = '#' . $actionlog_row['param_a'];
+                }
+
+                $_usergroup = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_name', array('id' => intval($actionlog_row['param_b'])));
+                if ($_usergroup === null) {
+                    $usergroup = '#' . $actionlog_row['param_b'];
+                } else {
+                    $usergroup = get_translated_text($_usergroup, $GLOBALS['FORUM_DB']);
+                }
+
+                $written_context = do_lang('SOMETHING_TO', $username, $usergroup);
+                return $written_context;
+
+            case 'MERGE_MEMBERS':
+                $written_context = do_lang('SOMETHING_TO', $actionlog_row['param_a'], $actionlog_row['param_b']);
+                return $written_context;
+        }
+
+        return parent::get_written_context($actionlog_row, $handler_data);
+    }
 }

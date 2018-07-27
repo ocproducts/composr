@@ -43,9 +43,9 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'CHATROOM' => 'TODO',
-                    'EDIT_THIS_CHATROOM' => 'TODO',
-                    'ADD_CHATROOM' => 'TODO',
+                    'CHATROOM' => '_SEARCH:chat:room:{ID}',
+                    'EDIT_THIS_CHATROOM' => '_SEARCH:admin_chat:_edit:{ID}',
+                    'ADD_CHATROOM' => '_SEARCH:admin_chat:add',
                 ),
             ),
             'EDIT_CHATROOM' => array(
@@ -54,9 +54,9 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'CHATROOM' => 'TODO',
-                    'EDIT_THIS_CHATROOM' => 'TODO',
-                    'ADD_CHATROOM' => 'TODO',
+                    'CHATROOM' => '_SEARCH:chat:room:{ID}',
+                    'EDIT_THIS_CHATROOM' => '_SEARCH:admin_chat:_edit:{ID}',
+                    'ADD_CHATROOM' => '_SEARCH:admin_chat:add',
                 ),
             ),
             'DELETE_CHATROOM' => array(
@@ -65,7 +65,7 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'ADD_CHATROOM' => 'TODO',
+                    'ADD_CHATROOM' => '_SEARCH:admin_chat:add',
                 ),
             ),
             'DELETE_ALL_CHATROOMS' => array(
@@ -74,7 +74,7 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'ADD_CHATROOM' => 'TODO',
+                    'ADD_CHATROOM' => '_SEARCH:admin_chat:add',
                 ),
             ),
             'EDIT_MESSAGE' => array(
@@ -83,7 +83,7 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'CHAT_MODERATION' => 'TODO',
+                    'CHAT_MODERATION' => '_SEARCH:cms_chat',
                 ),
             ),
             'DELETE_MESSAGE' => array(
@@ -92,7 +92,7 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'CHAT_MODERATION' => 'TODO',
+                    'CHAT_MODERATION' => '_SEARCH:cms_chat',
                 ),
             ),
             'DELETE_ALL_MESSAGES' => array(
@@ -101,9 +101,9 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => 1,
                 'followup_page_links' => array(
-                    'CHATROOM' => 'TODO',
-                    'EDIT_THIS_CHATROOM' => 'TODO',
-                    'ADD_CHATROOM' => 'TODO',
+                    'CHATROOM' => '_SEARCH:chat:room:{ID}',
+                    'EDIT_THIS_CHATROOM' => '_SEARCH:admin_chat:_edit:{ID}',
+                    'ADD_CHATROOM' => '_SEARCH:admin_chat:add',
                 ),
             ),
             'CHAT_BAN' => array(
@@ -112,8 +112,8 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'CHATROOM' => 'TODO',
-                    'VIEW_PROFILE' => array('FORUM_DRIVER__PROFILE_URL', 'TODO'),
+                    'CHATROOM' => '_SEARCH:chat:room:{ID}',
+                    'VIEW_PROFILE' => array('FORUM_DRIVER__PROFILE_URL', '{1}'),
                 ),
             ),
             'CHAT_UNBAN' => array(
@@ -122,8 +122,8 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'CHATROOM' => 'TODO',
-                    'VIEW_PROFILE' => array('FORUM_DRIVER__PROFILE_URL', 'TODO'),
+                    'CHATROOM' => '_SEARCH:chat:room:{ID}',
+                    'VIEW_PROFILE' => array('FORUM_DRIVER__PROFILE_URL', '{1}'),
                 ),
             ),
             'BLOCK_MEMBER' => array(
@@ -132,8 +132,8 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'SUBMITTER' => array('FORUM_DRIVER__PROFILE_URL', 'TODO'),
-                    'TARGET' => array('FORUM_DRIVER__PROFILE_URL', 'TODO'),
+                    'SUBMITTER' => array('FORUM_DRIVER__PROFILE_URL', '{ID}'),
+                    'TARGET' => array('FORUM_DRIVER__PROFILE_URL', '{1}'),
                 ),
             ),
             'UNBLOCK_MEMBER' => array(
@@ -142,8 +142,8 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'SUBMITTER' => 'TODO',
-                    'TARGET' => 'TODO',
+                    'SUBMITTER' => array('FORUM_DRIVER__PROFILE_URL', '{ID}'),
+                    'TARGET' => array('FORUM_DRIVER__PROFILE_URL', '{1}'),
                 ),
             ),
             'MAKE_FRIEND' => array(
@@ -152,8 +152,8 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'SUBMITTER' => 'TODO',
-                    'TARGET' => 'TODO',
+                    'SUBMITTER' => array('FORUM_DRIVER__PROFILE_URL', '{ID}'),
+                    'TARGET' => array('FORUM_DRIVER__PROFILE_URL', '{1}'),
                 ),
             ),
             'DUMP_FRIEND' => array(
@@ -162,10 +162,94 @@ class Hook_actionlog_chat extends Hook_actionlog
                 'identifier_index' => 1,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'SUBMITTER' => 'TODO',
-                    'TARGET' => 'TODO',
+                    'SUBMITTER' => array('FORUM_DRIVER__PROFILE_URL', '{ID}'),
+                    'TARGET' => array('FORUM_DRIVER__PROFILE_URL', '{1}'),
                 ),
             ),
         );
+    }
+
+    /**
+     * Get written context for an action log entry handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  array $handler_data Handler data
+     */
+    protected function get_written_context($actionlog_row, $handler_data)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'CHAT_BAN':
+            case 'CHAT_UNBAN':
+                $username = $GLOBALS['FORUM_DRIVER']->get_username(intval($actionlog_row['param_b']));
+                if ($username === null) {
+                    $username = '#' . $actionlog_row['param_b'];
+                }
+
+                $room_name = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'room_name', array('id' => intval($actionlog_row['param_a'])));
+                if ($room_name === null) {
+                    $room_name = '#' . $actionlog_row['param_a'];
+                }
+
+                $written_context = do_lang('SOMETHING_IN', $username, $room_name);
+                return $written_context;
+
+            case 'MAKE_FRIEND':
+                $username_likes = $GLOBALS['FORUM_DRIVER']->get_username(intval($actionlog_row['param_a']));
+                if ($username_likes === null) {
+                    $username_likes = '#' . $actionlog_row['param_a'];
+                }
+
+                $username_liked = $GLOBALS['FORUM_DRIVER']->get_username(intval($actionlog_row['param_b']));
+                if ($username_liked === null) {
+                    $username_liked = '#' . $actionlog_row['param_b'];
+                }
+
+                $written_context = do_lang('MEMBER_BEFRIENDED', $username_likes, $username_liked);
+                return $written_context;
+
+            case 'DUMP_FRIEND':
+                $username_likes = $GLOBALS['FORUM_DRIVER']->get_username(intval($actionlog_row['param_a']));
+                if ($username_likes === null) {
+                    $username_likes = '#' . $actionlog_row['param_a'];
+                }
+
+                $username_liked = $GLOBALS['FORUM_DRIVER']->get_username(intval($actionlog_row['param_b']));
+                if ($username_liked === null) {
+                    $username_liked = '#' . $actionlog_row['param_b'];
+                }
+
+                $written_context = do_lang('MEMBER_UNFRIENDED', $username_likes, $username_liked);
+                return $written_context;
+
+            case 'BLOCK_MEMBER':
+                $username_blocker = $GLOBALS['FORUM_DRIVER']->get_username(intval($actionlog_row['param_a']));
+                if ($username_blocker === null) {
+                    $username_blocker = '#' . $actionlog_row['param_a'];
+                }
+
+                $username_blocked = $GLOBALS['FORUM_DRIVER']->get_username(intval($actionlog_row['param_b']));
+                if ($username_blocked === null) {
+                    $username_blocked = '#' . $actionlog_row['param_b'];
+                }
+
+                $written_context = do_lang('MEMBER_BLOCKED', $username_blocker, $username_blocked);
+                return $written_context;
+
+            case 'UNBLOCK_MEMBER':
+                $username_blocker = $GLOBALS['FORUM_DRIVER']->get_username(intval($actionlog_row['param_a']));
+                if ($username_blocker === null) {
+                    $username_blocker = '#' . $actionlog_row['param_a'];
+                }
+
+                $username_blocked = $GLOBALS['FORUM_DRIVER']->get_username(intval($actionlog_row['param_b']));
+                if ($username_blocked === null) {
+                    $username_blocked = '#' . $actionlog_row['param_b'];
+                }
+
+                $written_context = do_lang('MEMBER_UNBLOCKED', $username_blocker, $username_blocked);
+                return $written_context;
+        }
+
+        return parent::get_written_context($actionlog_row, $handler_data);
     }
 }

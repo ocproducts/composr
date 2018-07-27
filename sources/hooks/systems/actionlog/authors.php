@@ -70,4 +70,21 @@ class Hook_actionlog_authors extends Hook_actionlog
             ),
         );
     }
+
+    /**
+     * Get written context for an action log entry handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  array $handler_data Handler data
+     */
+    protected function get_written_context($actionlog_row, $handler_data)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'MERGE_AUTHORS':
+                $written_context = do_lang('SOMETHING_TO', $actionlog_row['param_a'], $actionlog_row['param_b']);
+                return $written_context;
+        }
+
+        return parent::get_written_context($actionlog_row, $handler_data);
+    }
 }

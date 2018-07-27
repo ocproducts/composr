@@ -89,6 +89,33 @@ class Hook_actionlog_ecommerce extends Hook_actionlog
     }
 
     /**
+     * Get written context for an action log entry handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  array $handler_data Handler data
+     */
+    protected function get_written_context($actionlog_row, $handler_data)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'CREATE_INVOICE':
+                $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('invoices'/*TODO: Change to ecom_invoices in v11*/, 'i_member_id', array('id' => intval($actionlog_row['param_a'])));
+                if ($member_id !== null) {
+                    $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+                    if ($username === null) {
+                        $username = '#' . strval($member_id);
+                    }
+                } else {
+                    $username = do_lang('UNKNOWN');
+                }
+
+                $written_context = do_lang('SOMETHING_FROM', integer_format(intval($actionlog_row['param_b'])) . ' ' . get_option('currency'), $username);
+                return $written_context;
+        }
+
+        return parent::get_written_context($actionlog_row, $handler_data);
+    }
+
+    /**
      * Get details of action log entry types handled by this hook.
      *
      * @param  array $actionlog_row Action log row

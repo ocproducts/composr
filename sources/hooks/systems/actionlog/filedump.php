@@ -84,4 +84,28 @@ class Hook_actionlog_filedump extends Hook_actionlog
             ),
         );
     }
+
+    /**
+     * Get written context for an action log entry handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  array $handler_data Handler data
+     */
+    protected function get_written_context($actionlog_row, $handler_data)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'FILEDUMP_CREATE_FOLDER':
+            case 'FILEDUMP_DELETE_FOLDER':
+            case 'FILEDUMP_UPLOAD':
+            case 'FILEDUMP_DELETE_FILE':
+                $written_context = ($actionlog_row['param_b'] == '') ? '' : ($actionlog_row['param_b'] . '/') . $actionlog_row['param_a'];
+                return $written_context;
+
+            case 'FILEDUMP_MOVE':
+                $written_context = do_lang('SOMETHING_TO', $actionlog_row['param_a'], ($actionlog_row['param_b'] == '') ? do_lang('ROOT') : $actionlog_row['param_b']);
+                return $written_context;
+        }
+
+        return parent::get_written_context($actionlog_row, $handler_data);
+    }
 }
