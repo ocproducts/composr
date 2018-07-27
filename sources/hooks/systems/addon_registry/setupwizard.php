@@ -125,6 +125,7 @@ class Hook_addon_registry_setupwizard
             'sources/hooks/modules/admin_setupwizard/core.php',
             'sources/hooks/modules/admin_setupwizard_installprofiles/minimalistic.php',
             'themes/default/css/setupwizard.css',
+            'sources/hooks/systems/actionlog/setupwizard.php',
         );
     }
 
