@@ -21,14 +21,14 @@
 /**
  * Hook class.
  */
-class Hook_actionlog_health_check extends Hook_actionlog
+class Hook_actionlog_composr_homesite_support_credits extends Hook_actionlog
 {
     /**
      * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */
-    protected function get_handlers()
+    public function get_handlers()
     {
         if (!addon_installed('composr_homesite_support_credits')) {
             return array();
@@ -71,6 +71,6 @@ class Hook_actionlog_health_check extends Hook_actionlog
                 return $written_context;
         }
 
-        return parent::get_written_context($actionlog_row, $handler_data);
+        return parent::get_written_context($actionlog_row, $handler_data, $identifier);
     }
 }

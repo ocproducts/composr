@@ -28,7 +28,7 @@ class Hook_actionlog_ecommerce extends Hook_actionlog
      *
      * @return array Map of handler data in standard format
      */
-    protected function get_handlers()
+    public function get_handlers()
     {
         if (!addon_installed('ecommerce')) {
             return array();
@@ -114,7 +114,7 @@ class Hook_actionlog_ecommerce extends Hook_actionlog
                 return $written_context;
         }
 
-        return parent::get_written_context($actionlog_row, $handler_data);
+        return parent::get_written_context($actionlog_row, $handler_data, $identifier);
     }
 
     /**

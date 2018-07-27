@@ -28,7 +28,7 @@ class Hook_actionlog_aggregate_types extends Hook_actionlog
      *
      * @return array Map of handler data in standard format
      */
-    protected function get_handlers()
+    public function get_handlers()
     {
         if (!addon_installed('aggregate_types')) {
             return array();

@@ -21,14 +21,14 @@
 /**
  * Hook class.
  */
-class Hook_actionlog_classifieds extends Hook_actionlog
+class Hook_actionlog_classified_ads extends Hook_actionlog
 {
     /**
      * Get details of action log entry types handled by this hook.
      *
      * @return array Map of handler data in standard format
      */
-    protected function get_handlers()
+    public function get_handlers()
     {
         if (!addon_installed('classified_ads')) {
             return array();

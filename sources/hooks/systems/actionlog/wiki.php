@@ -28,7 +28,7 @@ class Hook_actionlog_wiki extends Hook_actionlog
      *
      * @return array Map of handler data in standard format
      */
-    protected function get_handlers()
+    public function get_handlers()
     {
         if (!addon_installed('wiki')) {
             return array();
@@ -146,7 +146,7 @@ class Hook_actionlog_wiki extends Hook_actionlog
                 return $written_context;
 
             case 'WIKI_EDIT_POST':
-                $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_posts', 'submitter', array('id' => intval($actionlog_row['param_a'])));
+                $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_posts', 'member_id', array('id' => intval($actionlog_row['param_a'])));
                 if ($member_id !== null) {
                     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
                     if ($username === null) {
@@ -175,6 +175,6 @@ class Hook_actionlog_wiki extends Hook_actionlog
                 return $written_context;
         }
 
-        return parent::get_written_context($actionlog_row, $handler_data);
+        return parent::get_written_context($actionlog_row, $handler_data, $identifier);
     }
 }

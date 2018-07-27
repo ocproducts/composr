@@ -104,12 +104,12 @@ abstract class Hook_actionlog
                                     warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
                             }
                         }
-                    }
-
-                    $success = $this->apply_string_parameter_substitutions($page_link, $bindings);
-                    if ($success) {
-                        $url = page_link_to_url($page_link);
-                        $followup_urls[] = $url;
+                    } else {
+                        $success = $this->apply_string_parameter_substitutions($page_link, $bindings);
+                        if ($success) {
+                            $url = page_link_to_url($page_link);
+                            $followup_urls[] = $url;
+                        }
                     }
                 }
             }
@@ -221,7 +221,7 @@ abstract class Hook_actionlog
      *
      * @return array Map of handler data in standard format
      */
-    protected function get_handlers()
+    public function get_handlers()
     {
         return array();
     }

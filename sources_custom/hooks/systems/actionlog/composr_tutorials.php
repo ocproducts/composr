@@ -28,7 +28,7 @@ class Hook_actionlog_composr_tutorials extends Hook_actionlog
      *
      * @return array Map of handler data in standard format
      */
-    protected function get_handlers()
+    public function get_handlers()
     {
         if (!addon_installed('composr_tutorials')) {
             return array();

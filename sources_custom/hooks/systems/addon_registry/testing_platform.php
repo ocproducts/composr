@@ -333,6 +333,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/firephp.php',
             '_tests/tests/unit_tests/auth.php',
             '_tests/tests/unit_tests/api_classes_documented.php',
+            '_tests/tests/unit_tests/actionlog.php',
             '_tests/tests/unit_tests/lang_ini_size.php',
             '_tests/tests/unit_tests/adminzone_search.php',
             '_tests/tests/unit_tests/_tracker_categories.php',

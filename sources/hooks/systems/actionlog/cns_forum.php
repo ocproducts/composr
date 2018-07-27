@@ -28,7 +28,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
      *
      * @return array Map of handler data in standard format
      */
-    protected function get_handlers()
+    public function get_handlers()
     {
         if (get_forum_type() != 'cns') {
             return array();
@@ -274,7 +274,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
             case 'VALIDATE_POST':
             case 'UNVALIDATE_POST':
             case 'MAKE_ANONYMOUS_POST':
-                $member_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_submitter', array('id' => intval($actionlog_row['param_a'])));
+                $member_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_poster', array('id' => intval($actionlog_row['param_a'])));
                 if ($member_id !== null) {
                     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
                     if ($username === null) {
@@ -348,7 +348,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
 
                 $forum_name = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => intval($actionlog_row['param_b'])));
                 if ($forum_name === null) {
-                    $forum_name = '#' . strval($topic_id);
+                    $forum_name = '#' . $actionlog_row['param_b'];
                 }
 
                 $written_context = do_lang('SOMETHING_TO', $username, $forum_name);
@@ -363,14 +363,14 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
 
                 $topic_title = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_cache_first_title', array('id' => intval($actionlog_row['param_b'])));
                 if ($topic_title === null) {
-                    $topic_title = '#' . strval($topic_id);
+                    $topic_title = '#' . $actionlog_row['param_b'];
                 }
 
                 $written_context = do_lang('SOMETHING_TO', $username, $topic_title);
                 return $written_context;
         }
 
-        return parent::get_written_context($actionlog_row, $handler_data);
+        return parent::get_written_context($actionlog_row, $handler_data, $identifier);
     }
 
     /**
