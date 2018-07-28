@@ -59,6 +59,9 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
         $message = new Tempcode();
         if (!is_null($sortables)) {
             foreach ($sortables as $_sortable => $text) {
+                if (is_array($text)) {
+                    $text = $text[0];
+                }
                 if (is_object($text)) {
                     $text = $text->evaluate();
                 }
@@ -100,7 +103,7 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
 /**
  * Get the Tempcode for a results sorter.
  *
- * @param  ?array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order (null: no sortables)
+ * @param  ?array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order or a pair of such and which direction to limit to (null: no sortables)
  * @param  ?ID_TEXT $sortable The current sortable (null: none)
  * @param  ?ID_TEXT $sort_order The order we are sorting in (null: none)
  * @set    ASC DESC
@@ -114,19 +117,33 @@ function results_sorter($sortables, $sortable = null, $sort_order = null, $sort_
 
     $selectors = new Tempcode();
     foreach ($sortables as $_sortable => $text) {
-        $text_ascending = new Tempcode();
-        $text_ascending->attach($text);
-        if ($_sortable != 'random') {
-            $text_ascending->attach(do_lang_tempcode('_ASCENDING'));
+        if (is_array($text)) {
+            $limit_direction = $text[1];
+            $text = $text[0];
+        } else {
+            $limit_direction = ($_sortable == 'random') ? 'ASC' : null;
         }
-        $text_descending = new Tempcode();
-        $text_descending->attach($text);
-        $text_descending->attach(do_lang_tempcode('_DESCENDING'));
-        $selector_value = $_sortable . ' ASC';
-        $selected = (($sortable . ' ' . $sort_order) == $selector_value);
-        $selectors->attach(do_template('PAGINATION_SORTER', array('_GUID' => '6a57bbaeed04743ba2cafa2d262a1c98', 'SELECTED' => $selected, 'NAME' => $text_ascending, 'VALUE' => $selector_value)));
-        $selector_value = $_sortable . ' DESC';
-        if ($_sortable != 'random') {
+
+        if ($limit_direction !== 'DESC') {
+            $text_ascending = new Tempcode();
+            $text_ascending->attach($text);
+            if ($limit_direction === null) {
+                $text_ascending->attach(do_lang_tempcode('_ASCENDING'));
+            }
+
+            $selector_value = $_sortable . ' ASC';
+            $selected = (($sortable . ' ' . $sort_order) == $selector_value);
+            $selectors->attach(do_template('PAGINATION_SORTER', array('_GUID' => '6a57bbaeed04743ba2cafa2d262a1c98', 'SELECTED' => $selected, 'NAME' => $text_ascending, 'VALUE' => $selector_value)));
+        }
+
+        if ($limit_direction !== 'ASC') {
+            $text_descending = new Tempcode();
+            $text_descending->attach($text);
+            if ($limit_direction === null) {
+                $text_descending->attach(do_lang_tempcode('_DESCENDING'));
+            }
+
+            $selector_value = $_sortable . ' DESC';
             $selected = (($sortable . ' ' . $sort_order) == $selector_value);
             $selectors->attach(do_template('PAGINATION_SORTER', array('_GUID' => 'bbf97817fa4f5e744a414b303a3d21fe', 'SELECTED' => $selected, 'NAME' => $text_descending, 'VALUE' => $selector_value)));
         }
@@ -233,6 +250,11 @@ function results_field_title($values, $sortables = null, $order_param = 'sort', 
         $found = mixed();
         foreach ($sortables as $key => $sortable) {
             $_value = is_object($value) ? $value->evaluate() : $value;
+
+            if (is_array($sortable)) {
+                $sortable = $sortable[0];
+            }
+
             if (((is_string($sortable)) && ($sortable == $_value)) || ((is_object($sortable)) && ($sortable->evaluate() == $_value))) {
                 $found = $key;
                 break;

@@ -485,12 +485,12 @@ class Hook_actionlog_core extends Hook_actionlog
             case 'CONFIGURATION':
                 $_hook = 'hooks/systems/config/' . $identifier;
                 if ((!is_file(get_file_base() . '/sources/' . $_hook . '.php')) && (!is_file(get_file_base() . '/sources_custom/' . $_hook . '.php'))) {
-                    return false;
+                    return $identifier;
                 }
                 require_code('hooks/systems/config/' . filter_naughty_harsh($identifier));
                 $ob = object_factory('Hook_config_' . filter_naughty_harsh($identifier), true);
                 if ($ob === null) {
-                    return false;
+                    return $identifier;
                 }
                 $option = $ob->get_details();
                 return do_lang($option['human_name']);
@@ -530,12 +530,12 @@ class Hook_actionlog_core extends Hook_actionlog
                 if ($hook != '') {
                     $_hook = 'hooks/systems/cleanup/' . $hook;
                     if ((!is_file(get_file_base() . '/sources/' . $_hook . '.php')) && (!is_file(get_file_base() . '/sources_custom/' . $_hook . '.php'))) {
-                        return false;
+                        return $hook;
                     }
                     require_code($_hook);
                     $ob = object_factory('Hook_cleanup_' . $hook, true);
                     if ($ob === null) {
-                        return false;
+                        return $hook;
                     }
                     $info = $ob->info();
                     return $info['title']->evaluate();

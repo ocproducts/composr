@@ -136,3 +136,16 @@ a.top_left_toggleicon:hover {
 	max-width: 100%;
 	height: auto;
 }
+
+/* Action log */
+
+.action_log_filters {
+	margin-bottom: 0.5em;
+	overflow: hidden;
+}
+
+.action_log_filter_part {
+	float: left;
+	margin-right: 2em;
+	padding-top: 0.2em;
+}

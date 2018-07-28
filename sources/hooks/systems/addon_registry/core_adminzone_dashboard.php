@@ -403,6 +403,9 @@ class Hook_addon_registry_core_adminzone_dashboard
             lorem_globalise(do_lorem_template('BLOCK_MAIN_STAFF_ACTIONS', array(
                 'BLOCK_PARAMS' => '',
                 'CONTENT' => lorem_paragraph_html(),
+                'FILTER_BY_MEMBER' => false,
+                'INCLUDE_DUPLICATES' => true,
+                'INCLUDE_USER_ACTIVITIES' => false,
             )), null, '', true)
         );
     }

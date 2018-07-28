@@ -192,7 +192,7 @@ function internalise_ajax_block_wrapper_links(url_stem,block_element,look_for,ex
 	if (!block_element) return;
 
 	if (typeof look_for=='undefined') look_for=[];
-	if (typeof extra_params=='undefined') extra_params=[];
+	if (typeof extra_params=='undefined') extra_params={};
 	if (typeof append=='undefined') append=false;
 	if (typeof forms_too=='undefined') forms_too=false;
 	if (typeof scroll_to_top=='undefined') scroll_to_top=true;
@@ -219,6 +219,7 @@ function internalise_ajax_block_wrapper_links(url_stem,block_element,look_for,ex
 				links.push(_link_wrappers[i]);
 		}
 	}
+
 	for (var i=0;i<links.length;i++)
 	{
 		if ((links[i].target) && (links[i].target=='_self') && ((!links[i].href) || (links[i].href.substr(0,1)!='#')))
@@ -227,7 +228,7 @@ function internalise_ajax_block_wrapper_links(url_stem,block_element,look_for,ex
 			{
 				var url_stub='';
 
-				var href=(this.nodeName.toLowerCase()=='a')?this.href:this.action;
+				var href=((this.nodeName.toLowerCase()=='a')?this.href:this.action).replace(/#.*$/,'');
 
 				// Any parameters matching a pattern must be sent in the URL to the AJAX block call
 				for (var j=0;j<look_for.length;j++)

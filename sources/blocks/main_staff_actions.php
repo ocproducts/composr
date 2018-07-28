@@ -37,7 +37,7 @@ class Block_main_staff_actions
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = true;
-        $info['parameters'] = array('max', 'include_duplicates', 'filter_by_member', 'user_activities_too', 'sort');
+        $info['parameters'] = array('max', 'filter_by_member', 'include_duplicates', 'include_user_activities', 'sort');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_main_staff_actions
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array((get_param_integer(\'include_duplicates\',array_key_exists(\'include_duplicates\',$map)?intval($map[\'include_duplicates\']):1) == 1),(get_param_integer(\'filter_by_member\',array_key_exists(\'filter_by_member\',$map)?intval($map[\'filter_by_member\']):1) == 1),(get_param_integer(\'filter_by_member\',array_key_exists(\'filter_by_member\',$map)?intval($map[\'user_activities_too\']):0) == 1)?get_member():null,get_param_integer(\'sa_start\',0),get_param_integer(\'sa_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):10),get_param_string(\'sa_sort\',array_key_exists(\'sort\',$map)?$map[\'sort\']:\'date_and_time DESC\'))';
+        $info['cache_on'] = 'array((get_param_integer(\'filter_by_member\',array_key_exists(\'filter_by_member\',$map)?intval($map[\'filter_by_member\']):0) == 1),(get_param_integer(\'include_duplicates\',isset($_GET[\'filter_by_member\']) ? 0 : (array_key_exists(\'include_duplicates\',$map)?intval($map[\'include_duplicates\']):1)) == 1),(get_param_integer(\'include_user_activities\',isset($_GET[\'filter_by_member\']) ? 0 : (array_key_exists(\'include_user_activities\',$map)?intval($map[\'include_user_activities\'])):0) == 1)?get_member():null,get_param_integer(\'sa_start\',0),get_param_integer(\'sa_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):10),get_param_string(\'sa_sort\',array_key_exists(\'sort\',$map)?$map[\'sort\']:\'date_and_time DESC\'))';
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 5;
         return $info;
     }
@@ -102,17 +102,17 @@ class Block_main_staff_actions
         require_css('adminzone_dashboard');
         require_code('actionlog');
 
-        $include_duplicates = (get_param_integer('include_duplicates', array_key_exists('include_duplicates', $map) ? intval($map['include_duplicates']) : 1) == 1);
-        $filter_by_member = (get_param_integer('filter_by_member', array_key_exists('filter_by_member', $map) ? intval($map['filter_by_member']) : 1) == 1);
-        $user_activities_too = (get_param_integer('filter_by_member', array_key_exists('filter_by_member', $map) ? intval($map['user_activities_too']) : 0) == 1);
+        $filter_by_member = (get_param_integer('filter_by_member', array_key_exists('filter_by_member', $map) ? intval($map['filter_by_member']) : 0) == 1);
+        $include_duplicates = (get_param_integer('include_duplicates', isset($_GET['filter_by_member']) ? 0 : (array_key_exists('include_duplicates', $map) ? intval($map['include_duplicates']) : 1)) == 1);
+        $include_user_activities = (get_param_integer('include_user_activities', isset($_GET['filter_by_member']) ? 0 : (array_key_exists('include_user_activities', $map) ? intval($map['include_user_activities']) : 0)) == 1);
 
         $start = get_param_integer('sa_start', 0);
         $max = get_param_integer('sa_max', array_key_exists('max', $map) ? intval($map['max']) : 10);
         $sort = get_param_string('sa_sort', array_key_exists('sort', $map) ? $map['sort'] : 'date_and_time DESC');
 
         $sortables = array(
-            'date_and_time' => do_lang_tempcode('DATE_TIME'),
-            'frequency' => do_lang_tempcode('POPULARITY'),
+            'date_and_time' => array(do_lang_tempcode('DATE_TIME'), 'DESC'),
+            'frequency' => array(do_lang_tempcode('POPULARITY'), 'DESC'),
         );
         $test = explode(' ', $sort, 2);
         if (count($test) == 1) {
@@ -183,7 +183,7 @@ class Block_main_staff_actions
                 $test = actionlog_linkage($myrow, $crop_length_a, $crop_length_b);
                 if ($test !== null) {
                     list($_a, $_b, $flags) = $test;
-                    if ((!$user_activities_too) && (($flags & ACTIONLOG_FLAG__USER_ACTION) != 0)) {
+                    if ((!$include_user_activities) && (($flags & ACTIONLOG_FLAG__USER_ACTION) != 0)) {
                         continue;
                     }
                 }
@@ -245,13 +245,16 @@ class Block_main_staff_actions
         }
         while (count($rows) > 0);
 
-        $content = results_table(do_lang_tempcode('ACTIONS'), $start, 'sa_start', $max, 'sa_max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sa_sort', new Tempcode(), null, null, 5);
+        $content = results_table(do_lang_tempcode('ACTIONS'), $start, 'sa_start', $max, 'sa_max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sa_sort', new Tempcode(), null, null, 5, '1c8645bc2a3ff5bec2e003142185561g', false, 'tray_actionlog');
 
         // Render block wrapper template around actions table
         return do_template('BLOCK_MAIN_STAFF_ACTIONS', array(
             '_GUID' => '16a5b384015504a6a57fc4ddedbe91a7',
             'BLOCK_PARAMS' => block_params_arr_to_str($map),
             'CONTENT' => $content,
+            'FILTER_BY_MEMBER' => $filter_by_member,
+            'INCLUDE_DUPLICATES' => $include_duplicates,
+            'INCLUDE_USER_ACTIVITIES' => $include_user_activities,
         ));
     }
 }
