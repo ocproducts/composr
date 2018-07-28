@@ -1846,8 +1846,8 @@ class Hook_addon_registry_core
             lorem_globalise(do_lorem_template('BLOCK_MAIN_COMCODE_PAGE_CHILDREN', array(
                 'BLOCK_ID' => lorem_word(),
                 'CHILDREN' => $children,
-                'PAGE' => lorem_phrase(),
-                'ZONE' => lorem_phrase(),
+                'THE_PAGE' => lorem_phrase(),
+                'THE_ZONE' => lorem_phrase(),
                 'TITLE' => lorem_phrase(),
             )), null, '', true)
         );
