@@ -506,6 +506,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_accessibility/accessibility_labels.png',
             'data_custom/images/docs/tut_accessibility/accessibility_lynx.png',
             'data_custom/images/docs/tut_accessibility/accessibility_webstandards_checker.png',
+            'data_custom/images/docs/tut_adminzone/adminzone_actionlog.png',
             'data_custom/images/docs/tut_adminzone/adminzone_first_glance.png',
             'data_custom/images/docs/tut_adminzone/adminzone_notes.png',
             'data_custom/images/docs/tut_adminzone/adminzone_todo_list.png',

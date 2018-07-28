@@ -70,7 +70,20 @@ This section provides a selection of useful links. The links may be edited via t
 
 [title="3"]Action log[/title]
 
+[surround]
+[media width="150" description="The action log" float="right"]data_custom/images/docs/tut_adminzone/adminzone_actionlog.png[/media]
 This section shows recent administrative/content actions on your website.
+
+Most actions will show a number of helpful followup links. For example, if you have added some news, you'll be able to view that news article, edit that news article, or add another to the same category. This makes it really easy to come back to what you were doing previously if you tend to get lost while navigating around the Admin Zone.
+
+You'll be able to see the full details of each logged action by clicking the date/time.
+
+You are able to filter in a number of ways:
+ - Focus on just your actions (change "Show actions for" to "Me only")
+ - Make the display more compact by discluding repeated actions (disable "Include repeated actions") -- if the sort order is by popularity then this will show each action type only once, otherwise it will show each action type and content combination only once
+ - Include major user activities, such as password resets (typically for keeping an eye on potential abuse)
+ - Sort by the most common actions (change "Sort by" to "Popularity") -- if you do this you probably want to disclude repeated actions too
+[/surround]
 
 [title="2"]Miscellaneous other Admin features[/title]
 
