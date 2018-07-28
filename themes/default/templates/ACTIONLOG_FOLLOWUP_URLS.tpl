@@ -1,4 +1,4 @@
-{WRITTEN_CONTEXT*}
+{WRITTEN_CONTEXT}
 
 {+START,IF_NON_EMPTY,{FOLLOWUP_URLS}}
 	<ul class="horizontal_links">

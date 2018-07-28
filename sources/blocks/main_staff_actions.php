@@ -124,7 +124,7 @@ class Block_main_staff_actions
                 /* do_lang_tempcode('IP_ADDRESS'),*/
                 do_lang_tempcode('DATE_TIME'),
                 do_lang_tempcode('ACTION'),
-                do_lang_tempcode('PARAMETERS'),
+                do_lang_tempcode('DESCRIPTION'),
                 null,
             ),
             $sortables,

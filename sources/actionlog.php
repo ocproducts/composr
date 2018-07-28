@@ -258,7 +258,7 @@ function actionlog_linkage($actionlog_row, $crop_length_a, $crop_length_b)
             }
 
             require_code('templates_interfaces');
-            $_written_context = protect_from_escaping(tpl_crop_text_mouse_over($extended_data['written_context'], $crop_length_a + $crop_length_b));
+            $_written_context = tpl_crop_text_mouse_over($extended_data['written_context'], $crop_length_a + $crop_length_b);
             $_a = do_template('ACTIONLOG_FOLLOWUP_URLS', array(
                 'WRITTEN_CONTEXT' => $_written_context,
                 'FOLLOWUP_URLS' => $extended_data['followup_urls'],

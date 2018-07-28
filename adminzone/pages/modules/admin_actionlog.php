@@ -226,7 +226,7 @@ class Module_admin_actionlog
             do_lang_tempcode('USERNAME'),
             do_lang_tempcode('DATE_TIME'),
             do_lang_tempcode('ACTION'),
-            do_lang_tempcode('PARAMETERS'),
+            do_lang_tempcode('DESCRIPTION'),
             null,
         );
         if (addon_installed('securitylogging')) {

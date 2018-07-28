@@ -211,7 +211,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'OPTION_CATEGORY' => '_SEARCH:admin_config:category:{ID}',
+                    'EDIT' => '{CONFIG_URL}',
                     'CONFIGURATION' => '_SEARCH:admin_config',
                 ),
             ),
@@ -573,6 +573,13 @@ class Hook_actionlog_core extends Hook_actionlog
     protected function get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, &$bindings)
     {
         switch ($actionlog_row['the_type']) {
+            case 'CONFIGURATION':
+                require_code('config2');
+                $bindings += array(
+                    'CONFIG_URL' => config_option_url($identifier),
+                );
+                break;
+
             case 'ADD_MENU_ITEM':
             case 'EDIT_MENU_ITEM':
                 $menu = $GLOBALS['SITE_DB']->query_select_value_if_there('menu_items', 'i_menu', array('id' => intval($identifier)));
