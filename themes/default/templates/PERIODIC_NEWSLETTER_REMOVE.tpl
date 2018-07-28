@@ -21,7 +21,7 @@
 
 	<a href="#!" data-cms-btn-go-back="1" title="{!NEXT_ITEM_BACK}">
 		{+START,INCLUDE,ICON}
-			NAME=admin/bac
+			NAME=admin/back
 			ICON_SIZE=48
 		{+END}
 	</a>
