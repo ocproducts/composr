@@ -111,7 +111,7 @@ class Block_main_staff_actions
         $sort = get_param_string('sa_sort', array_key_exists('sort', $map) ? $map['sort'] : 'date_and_time DESC');
 
         $sortables = array(
-            'date_and_time' => array(do_lang_tempcode('DATE_TIME'), 'DESC'),
+            'date_and_time' => array(do_lang_tempcode('TIME'), 'DESC'),
             'frequency' => array(do_lang_tempcode('POPULARITY'), 'DESC'),
         );
         $test = explode(' ', $sort, 2);

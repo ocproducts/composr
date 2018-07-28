@@ -2925,7 +2925,7 @@ function ecv_MAKE_RELATIVE_DATE($lang, $escaped, $param)
         } else {
             $value = display_time_period(time() - intval($param[0]));
             if ((array_key_exists(2, $param)) && ($param[2] == '1')) {
-                $value = do_lang('AGO', $value);
+                $value = do_lang('_AGO', $value);
             }
         }
     }

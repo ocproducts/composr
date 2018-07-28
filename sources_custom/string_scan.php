@@ -8183,7 +8183,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HIGHLIGHT_NAME_A
         HOME
         HOUR
-        AGO
+        _AGO
         HOVER_FOR_FULL
         HOVER_MOUSE_IMPORTANT
         HOW_REMOVE_CHAT_NOTIFICATION

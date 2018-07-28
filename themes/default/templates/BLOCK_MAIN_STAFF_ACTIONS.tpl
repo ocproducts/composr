@@ -16,7 +16,7 @@
 
 					<div class="action_log_filter_part">
 						<label for="filter_by_member">{!SHOW_ACTIONS_FOR}</label>:
-						<select onchange="/*guarded*/this.form.onsubmit();" name="filter_by_member" id="filter_by_member">
+						<select onchange="/*guarded*/if (!this.form.onsubmit || this.form.onsubmit()) this.form.submit();" name="filter_by_member" id="filter_by_member">
 							<option value="0"{+START,IF,{$NOT,{FILTER_BY_MEMBER}}} selected="selected"{+END}>All users</option>
 							<option value="1"{+START,IF,{FILTER_BY_MEMBER}} selected="selected"{+END}>Me only</option>
 						</select>
@@ -24,12 +24,12 @@
 
 					<div class="action_log_filter_part">
 						<label for="include_duplicates">{!INCLUDE_DUPLICATES}</label>:
-						<input onchange="/*guarded*/this.form.onsubmit();" type="checkbox" name="include_duplicates" id="include_duplicates" value="1"{+START,IF,{INCLUDE_DUPLICATES}} checked="checked"{+END} />
+						<input onchange="/*guarded*/if (!this.form.onsubmit || this.form.onsubmit()) this.form.submit();" type="checkbox" name="include_duplicates" id="include_duplicates" value="1"{+START,IF,{INCLUDE_DUPLICATES}} checked="checked"{+END} />
 					</div>
 
 					<div class="action_log_filter_part">
 						<label for="include_user_activities">{!INCLUDE_USER_ACTIVITIES}</label>:
-						<input onchange="/*guarded*/this.form.onsubmit();" type="checkbox" name="include_user_activities" id="include_user_activities" value="1"{+START,IF,{INCLUDE_USER_ACTIVITIES}} checked="checked"{+END} />
+						<input onchange="/*guarded*/if (!this.form.onsubmit || this.form.onsubmit()) this.form.submit();" type="checkbox" name="include_user_activities" id="include_user_activities" value="1"{+START,IF,{INCLUDE_USER_ACTIVITIES}} checked="checked"{+END} />
 					</div>
 
 					<input type="submit" class="accessibility_hidden button_micro buttons__filter" value="{!FILTER}" />
