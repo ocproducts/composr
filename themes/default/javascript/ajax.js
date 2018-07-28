@@ -274,7 +274,7 @@ function internalise_ajax_block_wrapper_links(url_stem,block_element,look_for,ex
 					try
 					{
 						window.has_js_state=true;
-						history.pushState({js: true},document.title,href.replace('&ajax=1','').replace(/&zone=[{$URL_CONTENT_REGEXP_JS}]+/,''));
+						// Just causes problems with 2nd level AJAX requests history.pushState({js: true},document.title,href.replace('&ajax=1','').replace(/&zone=[{$URL_CONTENT_REGEXP_JS}]+/,''));
 					}
 					catch (e) {}; // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History': A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
 				}

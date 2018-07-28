@@ -67,7 +67,7 @@ class Module_admin_actionlog
     {
         $type = get_param_string('type', 'browse');
 
-        require_lang('actionlog');
+        require_code('actionlog');
 
         if ($type == 'browse') {
             set_helper_panel_tutorial('tut_trace');
@@ -226,7 +226,7 @@ class Module_admin_actionlog
             do_lang_tempcode('USERNAME'),
             do_lang_tempcode('DATE_TIME'),
             do_lang_tempcode('ACTION'),
-            do_lang_tempcode('DESCRIPTION'),
+            do_lang_tempcode('DETAILS'),
             null,
         );
         if (addon_installed('securitylogging')) {
@@ -313,8 +313,6 @@ class Module_admin_actionlog
 
         // Render...
 
-        require_code('actionlog');
-
         $fields = new Tempcode();
         $pos = 0;
         while ((count($rows) != 0) && (($pos - $start) < $max)) {
@@ -342,10 +340,11 @@ class Module_admin_actionlog
                 $myrow = $rows[$best];
 
                 $username = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($myrow['member_id'], false, '', false);
+
                 $mode = array_key_exists('l_reason', $myrow) ? 'cns' : 'cms';
                 $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $myrow['id'], 'mode' => $mode), '_SELF');
                 $mode_nice = ($mode == 'cms') ? 'Composr' : 'Conversr';
-                $date = hyperlink($url, get_timezoned_date($myrow['date_and_time']), false, true, $mode_nice . '/' . $row['the_type'] . '/' . strval($myrow['id']), null, null, null, '_top');
+                $date = hyperlink($url, get_timezoned_date($myrow['date_and_time']), false, true, '#' . strval($myrow['id']), null, null, null, '_top');
 
                 if (!is_null($myrow['param_a'])) {
                     $a = $myrow['param_a'];
@@ -361,7 +360,7 @@ class Module_admin_actionlog
                 require_code('templates_interfaces');
                 $crop_length_a = 12;
                 $crop_length_b = 15;
-                $_a = tpl_crop_text_mouse_over($a, ($b == '') ? ($crop_length_a + $crop_length_b) : $crop_length_a);
+                $_a = tpl_crop_text_mouse_over($a, ($b == '') ? ($crop_length_a + $crop_length_b + 3/*A bit of extra tolerance*/) : $crop_length_a);
                 $_b = ($b == '') ? null : tpl_crop_text_mouse_over($b, $crop_length_b);
 
                 $type_str = do_lang($myrow['the_type'], $_a, $_b, null, null, false);
@@ -437,6 +436,11 @@ class Module_admin_actionlog
             'PARAMETER_A' => is_null($row['param_a']) ? '' : $row['param_a'],
             'PARAMETER_B' => is_null($row['param_b']) ? '' : $row['param_b'],
         );
+
+        $test = actionlog_linkage($row);
+        if ($test !== null) {
+            $fields['DETAILS'] = $test[0];
+        }
 
         if (array_key_exists('ip', $row)) {
             $fields['IP_ADDRESS'] = escape_html($row['ip']);

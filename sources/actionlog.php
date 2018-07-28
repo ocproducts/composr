@@ -115,6 +115,7 @@ abstract class Hook_actionlog
             }
 
             return array(
+                'flags' => $handler_data['flags'],
                 'written_context' => $written_context,
                 'followup_urls' => $followup_urls,
             );
@@ -231,11 +232,11 @@ abstract class Hook_actionlog
  * Try and make an action log entry into a proper link.
  *
  * @param  array $actionlog_row Action log row
- * @param  integer $crop_length_a Crop length for parameter
- * @param  integer $crop_length_b Crop length for parameter
- * @return ?array Tuple: possible link, possible link and may be null, map of followup URLs (null: could not construct a nice link)
+ * @param  ?integer $crop_length_a Crop length for parameter (null: no cropping)
+ * @param  ?integer $crop_length_b Crop length for parameter (null: no cropping)
+ * @return ?array Tuple: enhanced label, enhanced label that may be null, flags, map of followup URLs (null: could not construct a nice link)
  */
-function actionlog_linkage($actionlog_row, $crop_length_a, $crop_length_b)
+function actionlog_linkage($actionlog_row, $crop_length_a = null, $crop_length_b = null)
 {
     static $hook_obs = null;
     if ($hook_obs === null) {
@@ -258,13 +259,17 @@ function actionlog_linkage($actionlog_row, $crop_length_a, $crop_length_b)
             }
 
             require_code('templates_interfaces');
-            $_written_context = tpl_crop_text_mouse_over($extended_data['written_context'], $crop_length_a + $crop_length_b);
+            if ($crop_length_a === null || $crop_length_b === null) {
+                $_written_context = make_string_tempcode(escape_html($extended_data['written_context']));
+            } else {
+                $_written_context = tpl_crop_text_mouse_over($extended_data['written_context'], $crop_length_a + $crop_length_b + 3/*A bit of extra tolerance*/);
+            }
             $_a = do_template('ACTIONLOG_FOLLOWUP_URLS', array(
                 'WRITTEN_CONTEXT' => $_written_context,
                 'FOLLOWUP_URLS' => $extended_data['followup_urls'],
             ));
             $_b = null;
-            return array($_a, $_b);
+            return array($_a, $_b, $extended_data['flags'], $extended_data['followup_urls']);
         }
     }
 

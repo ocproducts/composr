@@ -186,7 +186,6 @@ class lang_no_unused_test_set extends cms_test_case
             'BAD_CARD_DATE',
             'MISSING_ADDON',
             'NO_SANDBOX',
-            'HOURS_AGO',
             '_VIEW_IMAGE',
             '_VIEW_VIDEO',
             'EDIT_WARNING',

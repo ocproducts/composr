@@ -146,6 +146,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TICKETS_STAFF
         NO_CNS
         DOCS
+        ACTION_WHEN
+        ACTION_WHEN_LAST
         EXPLANATION_WITH_DEFAULT
         PROJECT_SPONSORS
         PROJECT_SPONSORS_LABEL
@@ -7649,7 +7651,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HOURS
         DAY
         DAYS
-        DAYS_AGO
         DAYS_LAST_VISIT
         JANUARY
         FEBRUARY
@@ -8182,7 +8183,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HIGHLIGHT_NAME_A
         HOME
         HOUR
-        HOURS_AGO
+        AGO
         HOVER_FOR_FULL
         HOVER_MOUSE_IMPORTANT
         HOW_REMOVE_CHAT_NOTIFICATION
@@ -8459,7 +8460,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MINIMUM_SELECTIONS
         MINUTE
         MINUTES
-        MINUTES_AGO
         MISSING_RESOURCE
         MISSING_RESOURCE_SUBSTRING
         MJG_NOTIFICATION_MAIL

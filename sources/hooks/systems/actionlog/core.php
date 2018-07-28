@@ -211,8 +211,8 @@ class Hook_actionlog_core extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'EDIT' => '{CONFIG_URL}',
-                    'CONFIGURATION' => '_SEARCH:admin_config',
+                    'EDIT_LINK' => '{CONFIG_URL}',
+                    'OPTION_CATEGORIES' => '_SEARCH:admin_config',
                 ),
             ),
             'TRANSLATE_CODE' => array(

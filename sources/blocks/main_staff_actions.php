@@ -37,7 +37,7 @@ class Block_main_staff_actions
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = true;
-        $info['parameters'] = array('max');
+        $info['parameters'] = array('max', 'include_duplicates', 'filter_by_member', 'user_activities_too', 'sort');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_main_staff_actions
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(get_param_integer(\'sa_start\',0),array_key_exists(\'max\',$map)?intval($map[\'max\']):get_param_integer(\'sa_max\',10),get_param_string(\'sa_sort\',\'date_and_time\'),get_param_string(\'sort_order\',\'DESC\'))';
+        $info['cache_on'] = 'array((get_param_integer(\'include_duplicates\',array_key_exists(\'include_duplicates\',$map)?intval($map[\'include_duplicates\']):1) == 1),(get_param_integer(\'filter_by_member\',array_key_exists(\'filter_by_member\',$map)?intval($map[\'filter_by_member\']):1) == 1),(get_param_integer(\'filter_by_member\',array_key_exists(\'filter_by_member\',$map)?intval($map[\'user_activities_too\']):0) == 1)?get_member():null,get_param_integer(\'sa_start\',0),get_param_integer(\'sa_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):10),get_param_string(\'sa_sort\',array_key_exists(\'sort\',$map)?$map[\'sort\']:\'date_and_time DESC\'))';
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 5;
         return $info;
     }
@@ -99,15 +99,22 @@ class Block_main_staff_actions
         }
 
         require_all_lang();
-
         require_css('adminzone_dashboard');
-
         require_code('actionlog');
 
+        $include_duplicates = (get_param_integer('include_duplicates', array_key_exists('include_duplicates', $map) ? intval($map['include_duplicates']) : 1) == 1);
+        $filter_by_member = (get_param_integer('filter_by_member', array_key_exists('filter_by_member', $map) ? intval($map['filter_by_member']) : 1) == 1);
+        $user_activities_too = (get_param_integer('filter_by_member', array_key_exists('filter_by_member', $map) ? intval($map['user_activities_too']) : 0) == 1);
+
         $start = get_param_integer('sa_start', 0);
-        $max = array_key_exists('max', $map) ? intval($map['max']) : get_param_integer('sa_max', 10);
-        $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'),/*Not enough space 'ip' => do_lang_tempcode('IP_ADDRESS'),*/'the_type' => do_lang_tempcode('ACTION'));
-        $test = explode(' ', get_param_string('sa_sort', 'date_and_time DESC'), 2);
+        $max = get_param_integer('sa_max', array_key_exists('max', $map) ? intval($map['max']) : 10);
+        $sort = get_param_string('sa_sort', array_key_exists('sort', $map) ? $map['sort'] : 'date_and_time DESC');
+
+        $sortables = array(
+            'date_and_time' => do_lang_tempcode('DATE_TIME'),
+            'frequency' => do_lang_tempcode('POPULARITY'),
+        );
+        $test = explode(' ', $sort, 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -121,10 +128,10 @@ class Block_main_staff_actions
         $fields_title = results_field_title(
             array(
                 do_lang_tempcode('USERNAME'),
-                /* do_lang_tempcode('IP_ADDRESS'),*/
-                do_lang_tempcode('DATE_TIME'),
+                /*do_lang_tempcode('IP_ADDRESS'),*/
+                do_lang_tempcode($include_duplicates ? 'ACTION_WHEN_LAST' : 'ACTION_WHEN'),
                 do_lang_tempcode('ACTION'),
-                do_lang_tempcode('DESCRIPTION'),
+                do_lang_tempcode('DETAILS'),
                 null,
             ),
             $sortables,
@@ -132,20 +139,25 @@ class Block_main_staff_actions
             $sortable . ' ' . $sort_order
         );
 
+        $where = array();
+        if ($filter_by_member) {
+            $where['member_id'] = get_member();
+        }
+
+        if ($sortable == 'frequency') {
+            $_sortable = '(SELECT COUNT(*) FROM ' . get_table_prefix() . 'actionlogs x WHERE x.the_type=r.the_type)' . ' ' . $sort_order . ',date_and_time' . ' ' . $sort_order;
+        } else {
+            $_sortable = $sortable . ' ' . $sort_order;
+        }
+
         $fields = new Tempcode();
         $done = 0;
-        $max_rows = $max;//Don't want to encourage pagination (there's a better module they can go to) $GLOBALS['SITE_DB']->query_select_value('actionlogs','COUNT(*)');
+        $max_rows = $GLOBALS['SITE_DB']->query_select_value('actionlogs', 'COUNT(*)', $where);
         $done_already = array();
+        $_start = $start;
         do {
-            $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('the_type', 'param_a', 'param_b', 'member_id', 'ip', 'date_and_time'), null, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
+            $rows = $GLOBALS['SITE_DB']->query_select('actionlogs r', array('*'), $where, 'ORDER BY ' . $_sortable, $max, $_start);
             foreach ($rows as $myrow) {
-                $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
-                if (is_null($username)) {
-                    $username = do_lang('UNKNOWN');
-                }
-
-                $date = escape_html_tempcode(get_timezoned_date_tempcode($myrow['date_and_time']));
-
                 if (!is_null($myrow['param_a'])) {
                     $a = $myrow['param_a'];
                 } else {
@@ -158,9 +170,9 @@ class Block_main_staff_actions
                 }
 
                 require_code('templates_interfaces');
-                $crop_length_a = 8;
-                $crop_length_b = 15;
-                $_a = tpl_crop_text_mouse_over($a, ($b == '') ? ($crop_length_a + $crop_length_b) : $crop_length_a);
+                $crop_length_a = 17;
+                $crop_length_b = 22;
+                $_a = tpl_crop_text_mouse_over($a, ($b == '') ? ($crop_length_a + $crop_length_b + 3/*A bit of extra tolerance*/) : $crop_length_a);
                 $_b = ($b == '') ? null : tpl_crop_text_mouse_over($b, $crop_length_b);
 
                 $type_str = do_lang($myrow['the_type'], $_a, $_b, null, null, false);
@@ -170,22 +182,51 @@ class Block_main_staff_actions
 
                 $test = actionlog_linkage($myrow, $crop_length_a, $crop_length_b);
                 if ($test !== null) {
-                    list($_a, $_b) = $test;
+                    list($_a, $_b, $flags) = $test;
+                    if ((!$user_activities_too) && (($flags & ACTIONLOG_FLAG__USER_ACTION) != 0)) {
+                        continue;
+                    }
                 }
 
-                $sz_key = serialize(array($myrow['the_type'], $_a->evaluate(), ($_b === null) ? null : $_b->evaluate()));
-                if (array_key_exists($sz_key, $done_already)) {
-                    continue;
+                if (!$include_duplicates) {
+                    if ($sortable == 'frequency') {
+                        $sz_key = serialize(array($myrow['the_type']));
+                    } else {
+                        $sz_key = serialize(array($myrow['the_type'], $_a->evaluate(), ($_b === null) ? null : $_b->evaluate()));
+                    }
+                    if (array_key_exists($sz_key, $done_already)) {
+                        continue;
+                    }
+                    $done_already[$sz_key] = true;
                 }
-                $done_already[$sz_key] = true;
+
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
+                if ($username === null) {
+                    $username = do_lang('UNKNOWN');
+                }
 
                 $ip = tpl_crop_text_mouse_over($myrow['ip'], 12);
+
+                $mode = array_key_exists('l_reason', $myrow) ? 'cns' : 'cms';
+                $url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => $myrow['id'], 'mode' => $mode), get_module_zone('admin_actionlog'));
+                $mode_nice = ($mode == 'cms') ? 'Composr' : 'Conversr';
+                $date = hyperlink(
+                    $url,
+                    symbol_tempcode('MAKE_RELATIVE_DATE', array(strval($myrow['date_and_time']), '1', '1'), array(ENTITY_ESCAPED)),
+                    false,
+                    false,
+                    '#' . strval($myrow['id']),
+                    null,
+                    null,
+                    null,
+                    '_top'
+                );
 
                 $fields->attach(results_entry(
                     array(
                         escape_html($username),
                         /*Not enough space $ip,*/
-                        escape_html($date),
+                        $date,
                         $type_str,
                         $_a,
                         $_b
@@ -200,7 +241,7 @@ class Block_main_staff_actions
                 }
             }
 
-            $start += $max;
+            $_start += $max;
         }
         while (count($rows) > 0);
 
