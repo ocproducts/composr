@@ -132,48 +132,77 @@ class Block_main_staff_actions
             $sortable . ' ' . $sort_order
         );
 
-        $max_rows = $max;//Don't want to encourage pagination (there's a better module they can go to) $GLOBALS['SITE_DB']->query_select_value('actionlogs','COUNT(*)');
-        $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('the_type', 'param_a', 'param_b', 'member_id', 'ip', 'date_and_time'), null, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
         $fields = new Tempcode();
-        foreach ($rows as $myrow) {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
-            if (is_null($username)) {
-                $username = do_lang('UNKNOWN');
+        $done = 0;
+        $max_rows = $max;//Don't want to encourage pagination (there's a better module they can go to) $GLOBALS['SITE_DB']->query_select_value('actionlogs','COUNT(*)');
+        $done_already = array();
+        do {
+            $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('the_type', 'param_a', 'param_b', 'member_id', 'ip', 'date_and_time'), null, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
+            foreach ($rows as $myrow) {
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
+                if (is_null($username)) {
+                    $username = do_lang('UNKNOWN');
+                }
+
+                $date = escape_html_tempcode(get_timezoned_date_tempcode($myrow['date_and_time']));
+
+                if (!is_null($myrow['param_a'])) {
+                    $a = $myrow['param_a'];
+                } else {
+                    $a = '';
+                }
+                if (!is_null($myrow['param_b'])) {
+                    $b = $myrow['param_b'];
+                } else {
+                    $b = '';
+                }
+
+                require_code('templates_interfaces');
+                $crop_length_a = 8;
+                $crop_length_b = 15;
+                $_a = tpl_crop_text_mouse_over($a, ($b == '') ? ($crop_length_a + $crop_length_b) : $crop_length_a);
+                $_b = ($b == '') ? null : tpl_crop_text_mouse_over($b, $crop_length_b);
+
+                $type_str = do_lang($myrow['the_type'], $_a, $_b, null, null, false);
+                if ($type_str === null) {
+                    $type_str = $myrow['the_type'];
+                }
+
+                $test = actionlog_linkage($myrow, $crop_length_a, $crop_length_b);
+                if ($test !== null) {
+                    list($_a, $_b) = $test;
+                }
+
+                $sz_key = serialize(array($myrow['the_type'], $_a->evaluate(), ($_b === null) ? null : $_b->evaluate()));
+                if (array_key_exists($sz_key, $done_already)) {
+                    continue;
+                }
+                $done_already[$sz_key] = true;
+
+                $ip = tpl_crop_text_mouse_over($myrow['ip'], 12);
+
+                $fields->attach(results_entry(
+                    array(
+                        escape_html($username),
+                        /*Not enough space $ip,*/
+                        escape_html($date),
+                        $type_str,
+                        $_a,
+                        $_b
+                    ),
+                    false
+                ));
+
+                $done++;
+
+                if ($done == $max) {
+                    break 2;
+                }
             }
 
-            $date = escape_html_tempcode(get_timezoned_date_tempcode($myrow['date_and_time']));
-
-            if (!is_null($myrow['param_a'])) {
-                $a = $myrow['param_a'];
-            } else {
-                $a = '';
-            }
-            if (!is_null($myrow['param_b'])) {
-                $b = $myrow['param_b'];
-            } else {
-                $b = '';
-            }
-
-            require_code('templates_interfaces');
-            $crop_length_a = 8;
-            $crop_length_b = 15;
-            $_a = tpl_crop_text_mouse_over($a, ($b == '') ? ($crop_length_a + $crop_length_b) : $crop_length_a);
-            $_b = ($b == '') ? null : tpl_crop_text_mouse_over($b, $crop_length_b);
-
-            $type_str = do_lang($myrow['the_type'], $_a, $_b, null, null, false);
-            if ($type_str === null) {
-                $type_str = $myrow['the_type'];
-            }
-
-            $test = actionlog_linkage($myrow, $crop_length_a, $crop_length_b);
-            if ($test !== null) {
-                list($_a, $_b) = $test;
-            }
-
-            $ip = tpl_crop_text_mouse_over($myrow['ip'], 12);
-
-            $fields->attach(results_entry(array(escape_html($username)/*Not enough space ,$ip*/, escape_html($date), $type_str, $_a, $_b), false));
+            $start += $max;
         }
+        while (count($rows) > 0);
 
         $content = results_table(do_lang_tempcode('ACTIONS'), $start, 'sa_start', $max, 'sa_max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sa_sort', new Tempcode(), null, null, 5);
 
