@@ -137,12 +137,14 @@ class Hook_actionlog_wiki extends Hook_actionlog
         switch ($actionlog_row['the_type']) {
             case 'WIKI_MAKE_POST':
             case 'WIKI_DELETE_POST':
-                $page_title = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'title', array('id' => intval($actionlog_row['param_b'])));
-                if ($page_title === null) {
-                    return '#' . $actionlog_row['param_b'];
+                $_page_title = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'title', array('id' => intval($actionlog_row['param_b'])));
+                if ($_page_title === null) {
+                    $page_title = '#' . $actionlog_row['param_b'];
+                } else {
+                    $page_title = get_translated_text($_page_title);
                 }
 
-                $written_context = do_lang('SOMETHING_IN', '#' . $actionlog_row['param_a'], get_translated_text($page_title));
+                $written_context = do_lang('SOMETHING_IN', '#' . $actionlog_row['param_a'], $page_title);
                 return $written_context;
 
             case 'WIKI_EDIT_POST':

@@ -77,7 +77,7 @@ abstract class Hook_actionlog
 
             $followup_urls = array();
             $followup_page_links = $handler_data['followup_page_links'];
-            foreach ($followup_page_links as $i => $page_link) {
+            foreach ($followup_page_links as $caption => $page_link) {
                 if ($page_link !== null) {
                     if (is_array($page_link)) {
                         // Some kind of special encoding where a page-link isn't going to work for us
@@ -108,7 +108,7 @@ abstract class Hook_actionlog
                         $success = $this->apply_string_parameter_substitutions($page_link, $bindings);
                         if ($success) {
                             $url = page_link_to_url($page_link);
-                            $followup_urls[] = $url;
+                            $followup_urls[do_lang($caption)] = $url;
                         }
                     }
                 }
@@ -230,55 +230,42 @@ abstract class Hook_actionlog
 /**
  * Try and make an action log entry into a proper link.
  *
- * @param  ID_TEXT $type Action type
- * @param  string $a First parameter
- * @param  string $b Second parameter
- * @param  Tempcode $_a First parameter (cropped)
- * @param  Tempcode $_b Second parameter (cropped)
- * @return ?array Pair: first parameter as possible link, second parameter as possible link (null: could not construct a nice link)
+ * @param  array $actionlog_row Action log row
+ * @param  integer $crop_length_a Crop length for parameter
+ * @param  integer $crop_length_b Crop length for parameter
+ * @return ?array Tuple: possible link, possible link and may be null, map of followup URLs (null: could not construct a nice link)
  */
-function actionlog_linkage($type, $a, $b, $_a, $_b)
+function actionlog_linkage($actionlog_row, $crop_length_a, $crop_length_b)
 {
-    $type_str = do_lang($type, $a, $b, null, null, false);
-    if (is_null($type_str)) {
-        $type_str = $type;
+    static $hook_obs = null;
+    if ($hook_obs === null) {
+        $hooks = find_all_hooks('systems', 'actionlog'); // TODO: Change in v11
+        $hook_obs = array();
+        foreach (array_keys($hooks) as $hook) {
+            require_code('hooks/systems/actionlog/' . $hook);
+            $ob = object_factory('Hook_actionlog_' . $hook, true);
+            if ($ob !== null) {
+                $hook_obs[$hook] = $ob;
+            }
+        }
     }
 
-    // TODO
-    if (($type == 'EDIT_TEMPLATES') && (strpos($a, ',') === false)) {
-        if ($b == '') {
-            $b = 'default';
+    foreach ($hook_obs as $hook => $ob) {
+        $extended_data = $ob->get_extended_actionlog_data($actionlog_row);
+        if ($extended_data !== null) {
+            if ($extended_data === false) {
+                return null;
+            }
+
+            require_code('templates_interfaces');
+            $_written_context = protect_from_escaping(tpl_crop_text_mouse_over($extended_data['written_context'], $crop_length_a + $crop_length_b));
+            $_a = do_template('ACTIONLOG_FOLLOWUP_URLS', array(
+                'WRITTEN_CONTEXT' => $_written_context,
+                'FOLLOWUP_URLS' => $extended_data['followup_urls'],
+            ));
+            $_b = null;
+            return array($_a, $_b);
         }
-        $tmp_url = build_url(array('page' => 'admin_themes', 'type' => '_edit_templates', 'theme' => $b, 'f0file' => $a), get_module_zone('admin_themes'));
-        $a = basename($a, '.tpl');
-        require_code('templates_interfaces');
-        $_a = tpl_crop_text_mouse_over($a, 14);
-        $_a = hyperlink($tmp_url, $_a, false, false, $type_str);
-        return array($_a, $_b);
-    }
-    if ($type == 'EDIT_CSS') {
-        if ($b == '') {
-            $b = 'global.css';
-        }
-        $tmp_url = build_url(array('page' => 'admin_themes', 'type' => 'edit_css', 'theme' => $a, 'file' => $b), get_module_zone('admin_themes'));
-        $b = basename($b, '.css');
-        $_b = hyperlink($tmp_url, $_b, false, false, $type_str);
-        return array($_a, $_b);
-    }
-    if ($type == 'COMCODE_PAGE_EDIT') {
-        $tmp_url = build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'page_link' => $b . ':' . $a), get_module_zone('cms_comcode_pages'));
-        $_a = hyperlink($tmp_url, $_a, false, false, $type_str);
-        return array($_a, $_b);
-    }
-    if ($type == 'ADD_CATALOGUE_ENTRY' || $type == 'EDIT_CATALOGUE_ENTRY') {
-        $tmp_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $a), get_module_zone('catalogues'));
-        $_b = hyperlink($tmp_url, ($b == '') ? $_a : $_b, false, false, $type_str);
-        return array($_a, $_b);
-    }
-    if (($type == 'ADD_CATALOGUE_CATEGORY' || $type == 'EDIT_CATALOGUE_CATEGORY') && ($b != '')) {
-        $tmp_url = build_url(array('page' => 'catalogues', 'type' => 'category', 'id' => (!is_numeric($a)) ? $b : $a), get_module_zone('catalogues'));
-        $_b = hyperlink($tmp_url, $_b, false, false, $type_str);
-        return array($_a, $_b);
     }
 
     return null; // Could not get a match

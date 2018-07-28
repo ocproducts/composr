@@ -222,7 +222,13 @@ class Module_admin_actionlog
         }
 
         require_code('templates_results_table');
-        $field_titles = array(do_lang_tempcode('USERNAME'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTION'), do_lang_tempcode('PARAMETER_A'), do_lang_tempcode('PARAMETER_B'));
+        $field_titles = array(
+            do_lang_tempcode('USERNAME'),
+            do_lang_tempcode('DATE_TIME'),
+            do_lang_tempcode('ACTION'),
+            do_lang_tempcode('PARAMETERS'),
+            null,
+        );
         if (addon_installed('securitylogging')) {
             $field_titles[] = do_lang_tempcode('BANNED');
         }
@@ -353,16 +359,18 @@ class Module_admin_actionlog
                 }
 
                 require_code('templates_interfaces');
-                $_a = tpl_crop_text_mouse_over($a, 12);
-                $_b = tpl_crop_text_mouse_over($b, 15);
+                $crop_length_a = 12;
+                $crop_length_b = 15;
+                $_a = tpl_crop_text_mouse_over($a, ($b == '') ? ($crop_length_a + $crop_length_b) : $crop_length_a);
+                $_b = ($b == '') ? null : tpl_crop_text_mouse_over($b, $crop_length_b);
 
                 $type_str = do_lang($myrow['the_type'], $_a, $_b, null, null, false);
-                if (is_null($type_str)) {
+                if ($type_str === null) {
                     $type_str = $myrow['the_type'];
                 }
 
-                $test = actionlog_linkage($myrow['the_type'], $a, $b, $_a, $_b);
-                if (!is_null($test)) {
+                $test = actionlog_linkage($myrow, $crop_length_a, $crop_length_b);
+                if ($test !== null) {
                     list($_a, $_b) = $test;
                 }
 

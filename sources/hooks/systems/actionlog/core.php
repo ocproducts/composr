@@ -482,6 +482,19 @@ class Hook_actionlog_core extends Hook_actionlog
     protected function get_written_context($actionlog_row, $handler_data, $identifier)
     {
         switch ($actionlog_row['the_type']) {
+            case 'CONFIGURATION':
+                $_hook = 'hooks/systems/config/' . $identifier;
+                if ((!is_file(get_file_base() . '/sources/' . $_hook . '.php')) && (!is_file(get_file_base() . '/sources_custom/' . $_hook . '.php'))) {
+                    return false;
+                }
+                require_code('hooks/systems/config/' . filter_naughty_harsh($identifier));
+                $ob = object_factory('Hook_config_' . filter_naughty_harsh($identifier), true);
+                if ($ob === null) {
+                    return false;
+                }
+                $option = $ob->get_details();
+                return do_lang($option['human_name']);
+
             case 'ADD_THEME':
             case 'DELETE_THEME':
                 $theme = $actionlog_row['param_a'];
@@ -516,12 +529,16 @@ class Hook_actionlog_core extends Hook_actionlog
                 $hook = $actionlog_row['param_a'];
                 if ($hook != '') {
                     $_hook = 'hooks/systems/cleanup/' . $hook;
-                    if ((is_file(get_file_base() . '/sources/' . $_hook . '.php')) || (is_file(get_file_base() . '/sources_custom/' . $_hook . '.php'))) {
-                        require_code($_hook);
-                        $ob = object_factory('Hook_cleanup_' . $hook);
-                        $info = $ob->info();
-                        return $info['title']->evaluate();
+                    if ((!is_file(get_file_base() . '/sources/' . $_hook . '.php')) && (!is_file(get_file_base() . '/sources_custom/' . $_hook . '.php'))) {
+                        return false;
                     }
+                    require_code($_hook);
+                    $ob = object_factory('Hook_cleanup_' . $hook, true);
+                    if ($ob === null) {
+                        return false;
+                    }
+                    $info = $ob->info();
+                    return $info['title']->evaluate();
                 }
                 break;
 

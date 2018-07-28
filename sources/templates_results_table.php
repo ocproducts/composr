@@ -152,12 +152,44 @@ function results_sorter($sortables, $sortable = null, $sort_order = null, $sort_
  */
 function results_entry($values, $auto_escape, $tplset = null, $guid = '9e340dd14173c7320b57243d607718ab')
 {
+    $i = 0;
     $cells = new Tempcode();
+    $_values = array_values($values);
+    $cnt = count($_values);
     foreach ($values as $class => $value) {
+        if ($value === null) {
+            continue;
+        }
+
+        $colspan = 1;
+        for ($j = $i + 1; $j < $cnt; $j++) {
+            if ($_values[$j] !== null) {
+                break;
+            }
+
+            $colspan++;
+        }
+        if ($colspan == 1) {
+            $colspan = null;
+        }
+
         if (($auto_escape) && (!is_object($value))) {
             $value = escape_html($value);
         }
-        $cells->attach(do_template(is_null($tplset) ? 'RESULTS_TABLE_FIELD' : ('RESULTS_TABLE_' . $tplset . '_FIELD'), array('_GUID' => $guid, 'VALUE' => $value, 'CLASS' => (is_string($class)) ? $class : ''), null, false, 'RESULTS_TABLE_FIELD'));
+        $cells->attach(do_template(
+            ($tplset === null) ? 'RESULTS_TABLE_FIELD' : ('RESULTS_TABLE_' . $tplset . '_FIELD'),
+            array(
+                '_GUID' => $guid,
+                'VALUE' => $value,
+                'CLASS' => (is_string($class)) ? $class : '',
+                'COLSPAN' => ($colspan === null) ? null : strval($colspan),
+            ),
+            null,
+            false,
+            'RESULTS_TABLE_FIELD'
+        ));
+
+        $i++;
     }
 
     return do_template(is_null($tplset) ? 'RESULTS_TABLE_ENTRY' : ('RESULTS_TABLE_' . $tplset . '_ENTRY'), array('_GUID' => $guid, 'VALUES' => $cells), null, false, 'RESULTS_TABLE_ENTRY');
@@ -180,7 +212,24 @@ function results_field_title($values, $sortables = null, $order_param = 'sort', 
     }
 
     $cells = new Tempcode();
-    foreach ($values as $value) {
+    $cnt = count($values);
+    foreach ($values as $i => $value) {
+        if ($value === null) {
+            continue;
+        }
+
+        $colspan = 1;
+        for ($j = $i + 1; $j < $cnt; $j++) {
+            if ($values[$j] !== null) {
+                break;
+            }
+
+            $colspan++;
+        }
+        if ($colspan == 1) {
+            $colspan = null;
+        }
+
         $found = mixed();
         foreach ($sortables as $key => $sortable) {
             $_value = is_object($value) ? $value->evaluate() : $value;
@@ -194,9 +243,21 @@ function results_field_title($values, $sortables = null, $order_param = 'sort', 
             $sort_url_desc = get_self_url(false, false, array($order_param => $found . ' DESC'), true);
             $sort_asc_selected = ($current_ordering == $found . ' ASC');
             $sort_desc_selected = ($current_ordering == $found . ' DESC');
-            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE_SORTABLE', array('_GUID' => 'e71df89abff7c7d51907867924dbfa7e', 'VALUE' => $value, 'SORT_ASC_SELECTED' => $sort_asc_selected, 'SORT_DESC_SELECTED' => $sort_desc_selected, 'SORT_URL_DESC' => $sort_url_desc, 'SORT_URL_ASC' => $sort_url_asc)));
+            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE_SORTABLE', array(
+                '_GUID' => 'e71df89abff7c7d51907867924dbfa7e',
+                'VALUE' => $value,
+                'SORT_ASC_SELECTED' => $sort_asc_selected,
+                'SORT_DESC_SELECTED' => $sort_desc_selected,
+                'SORT_URL_DESC' => $sort_url_desc,
+                'SORT_URL_ASC' => $sort_url_asc,
+                'COLSPAN' => ($colspan === null) ? null : strval($colspan),
+            )));
         } else {
-            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE', array('_GUID' => '80e9de91bb9e479766bc8568a790735c', 'VALUE' => $value)));
+            $cells->attach(do_template('RESULTS_TABLE_FIELD_TITLE', array(
+                '_GUID' => '80e9de91bb9e479766bc8568a790735c',
+                'VALUE' => $value,
+                'COLSPAN' => ($colspan === null) ? null : strval($colspan),
+            )));
         }
     }
 

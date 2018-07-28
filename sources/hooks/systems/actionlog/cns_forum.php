@@ -212,7 +212,7 @@ class Hook_actionlog_cns_forum extends Hook_actionlog
                 'identifier_index' => 0,
                 'written_context_index' => null,
                 'followup_page_links' => array(
-                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:{ID}',
+                    'VIEW_TOPIC' => '_SEARCH:topicview:browse:{TOPIC}',
                     'EDIT_POST' => '_SEARCH:topics:edit_post:{ID}',
                 ),
             ),

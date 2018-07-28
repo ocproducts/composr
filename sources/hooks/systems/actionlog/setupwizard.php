@@ -30,7 +30,7 @@ class Hook_actionlog_setupwizard extends Hook_actionlog
      */
     public function get_handlers()
     {
-        if (!addon_installed('actionlog')) {
+        if (!addon_installed('setupwizard')) {
             return array();
         }
 

@@ -1,4 +1,4 @@
-<th{+START,IF,{SORT_ASC_SELECTED}} aria-sort="ascending"{+END}{+START,IF,{SORT_DESC_SELECTED}} aria-sort="descending"{+END}>
+<th{+START,IF,{SORT_ASC_SELECTED}} aria-sort="ascending"{+END}{+START,IF,{SORT_DESC_SELECTED}} aria-sort="descending"{+END}{+START,IF_PASSED,COLSPAN} colspan="{COLSPAN*}"{+END}>
 	{VALUE*}
 
 	<span class="table_header_sorting">

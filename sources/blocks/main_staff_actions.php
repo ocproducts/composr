@@ -118,7 +118,19 @@ class Block_main_staff_actions
         inform_non_canonical_parameter('sa_sort');
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('USERNAME'),/* do_lang_tempcode('IP_ADDRESS'),*/do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTION'), do_lang_tempcode('PARAMETER_A'), do_lang_tempcode('PARAMETER_B')), $sortables, 'sa_sort', $sortable . ' ' . $sort_order);
+        $fields_title = results_field_title(
+            array(
+                do_lang_tempcode('USERNAME'),
+                /* do_lang_tempcode('IP_ADDRESS'),*/
+                do_lang_tempcode('DATE_TIME'),
+                do_lang_tempcode('ACTION'),
+                do_lang_tempcode('PARAMETERS'),
+                null,
+            ),
+            $sortables,
+            'sa_sort',
+            $sortable . ' ' . $sort_order
+        );
 
         $max_rows = $max;//Don't want to encourage pagination (there's a better module they can go to) $GLOBALS['SITE_DB']->query_select_value('actionlogs','COUNT(*)');
         $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('the_type', 'param_a', 'param_b', 'member_id', 'ip', 'date_and_time'), null, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
@@ -143,16 +155,18 @@ class Block_main_staff_actions
             }
 
             require_code('templates_interfaces');
-            $_a = tpl_crop_text_mouse_over($a, 8);
-            $_b = tpl_crop_text_mouse_over($b, 15);
+            $crop_length_a = 8;
+            $crop_length_b = 15;
+            $_a = tpl_crop_text_mouse_over($a, ($b == '') ? ($crop_length_a + $crop_length_b) : $crop_length_a);
+            $_b = ($b == '') ? null : tpl_crop_text_mouse_over($b, $crop_length_b);
 
             $type_str = do_lang($myrow['the_type'], $_a, $_b, null, null, false);
-            if (is_null($type_str)) {
+            if ($type_str === null) {
                 $type_str = $myrow['the_type'];
             }
 
-            $test = actionlog_linkage($myrow['the_type'], $a, $b, $_a, $_b);
-            if (!is_null($test)) {
+            $test = actionlog_linkage($myrow, $crop_length_a, $crop_length_b);
+            if ($test !== null) {
                 list($_a, $_b) = $test;
             }
 

@@ -108,7 +108,7 @@ function script_load_stuff_staff()
 		{
 			var url_pattern=url_patterns[j].pattern,hook=url_patterns[j].hook;
 
-			if ((links[i].href) && (!links[i].onmouseover))
+			if ((links[i].href) && (!links[i].onmouseover) && (links[i].className.indexOf('no_auto_tooltip')==-1))
 			{
 				var id=links[i].href.match(url_pattern);
 				if (id)
