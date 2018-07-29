@@ -928,6 +928,14 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $url .= '/';
     }
 
+    // HTTP authentication in URL
+    if ($auth === null) {
+        $matches = array();
+        if (preg_match('#^https?://([^:@/]+):([^:@/]+)@#', $url, $matches) != 0) {
+            $auth = array($matches[1], $matches[2]);
+        }
+    }
+
     // Initialisation
     global $DOWNLOAD_LEVEL, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_CHARSET, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_DOWNLOAD_MTIME, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME;
     $DOWNLOAD_LEVEL++;
