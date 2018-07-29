@@ -201,6 +201,7 @@ class Module_admin_svg_sprites
     public function _preview_svg_sprite()
     {
         require_code('themes');
+        require_code('xml');
         require_css('adminzone');
 
         $theme = post_param_string('theme');
@@ -211,12 +212,16 @@ class Module_admin_svg_sprites
             warn_exit(do_lang('PLEASE_GENERATE_SPRITE', $theme));
         }
 
-        $svg_xml = simplexml_load_string(file_get_contents($sprite_path));
+        $svg_xml = new CMS_simple_xml_reader(file_get_contents($sprite_path));
+        $svg_xml_children = $svg_xml->gleamed[3];
         $sprite_url = find_theme_image('icons' . (($monochrome === 1) ? '_monochrome' : '') . '_sprite', true, false, $theme);
 
         $icons = new Tempcode();
-        foreach ($svg_xml->symbol as $symbol) {
-            $symbol_id = (string)$symbol['id'];
+        foreach ($svg_xml_children as $symbol) {
+            if (!is_array($symbol) || ($symbol[0] !== 'http://www.w3.org/2000/svg:symbol')) {
+                continue;
+            }
+            $symbol_id = (string)$symbol[1]['id'];
             $icons->attach(do_template('PREVIEW_SVG_SPRITE_ICON', array(
                 'SPRITE_URL' => $sprite_url,
                 'SYMBOL_ID' => $symbol_id,
@@ -272,6 +277,7 @@ class Module_admin_svg_sprites
     public function _generate_svg_sprite()
     {
         require_code('files2');
+        require_code('xml');
 
         $theme = post_param_string('theme');
         $monochrome = post_param_integer('monochrome', 0);
@@ -320,13 +326,14 @@ class Module_admin_svg_sprites
         $output .= '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' . "\n";
 
         foreach ($icon_paths as $icon_name => $icon_path) {
-            $xml = simplexml_load_string(file_get_contents($icon_path));
-            $output .= '<symbol viewBox="' . $xml['viewBox'] . '" id="' . str_replace('/', '__', $icon_name) . '">' . "\n";
-            foreach ($xml->children() as $child) {
-                if (($child->getName() === 'defs') && (trim($child) === '')) {
+            $xml = new CMS_simple_xml_reader(file_get_contents($icon_path));
+            $output .= '<symbol viewBox="' . $xml->gleamed[1]['viewBox'] . '" id="' . str_replace('/', '__', $icon_name) . '">' . "\n";
+            foreach ($xml->gleamed[3] as $child) {
+                if (!is_array($child)) {
+                    // whitespace?
                     continue;
                 }
-                $output .= $child->asXML() . "\n";
+                $output .= $xml->pull_together(array($child), array('' => 'http://www.w3.org/2000/svg', 'xlink:' => 'http://www.w3.org/1999/xlink')) . "\n";
             }
             $output .= "</symbol>\n";
         }
