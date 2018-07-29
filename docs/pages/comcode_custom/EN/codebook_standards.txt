@@ -633,6 +633,13 @@ Block access when closed
 | All development
 | Manually
 | Any URL that a user may reasonably navigate to manually that is not passed through [tt]index.php[/tt], must show the closed site message by its own means. Look to see how other code does it for example.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Use [tt]log_it[/tt] calls
+| Usability
+| Composr development +
+| Manually
+| For any non-trivial admin action, do a [tt]log_it[/tt] call for it, and implement good quality metadata in an [tt]actionlog[/tt] hook for that.
 |}
 
 [title="4"]Addons[/title]
