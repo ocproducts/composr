@@ -339,7 +339,7 @@ class Module_admin_actionlog
                 $mode = array_key_exists('l_reason', $myrow) ? 'cns' : 'cms';
                 $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $myrow['id'], 'mode' => $mode), '_SELF');
                 $mode_nice = ($mode == 'cms') ? 'Composr' : 'Conversr';
-                $date = hyperlink($url, get_timezoned_date($myrow['date_and_time']), false, true, $mode_nice . '/' . $row['the_type'] . '/' . strval($myrow['id']), null, null, null, '_top');
+                $date = hyperlink($url, get_timezoned_date($myrow['date_and_time']), false, true, $mode_nice . '/' . $myrow['the_type'] . '/' . strval($myrow['id']), null, null, null, '_top');
 
                 if (!is_null($myrow['param_a'])) {
                     $a = $myrow['param_a'];
