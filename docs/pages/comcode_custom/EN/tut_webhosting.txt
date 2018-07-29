@@ -108,6 +108,7 @@ Composr recommends:
  - A PHP environment with Safe Mode disabled, but [tt]open_basedir[/tt] enabled -- or a suEXEC/IIS server (explained further down)
  - A PHP memory limit of 64MB
  - At least 100MB of disk space
+ - Generally, if you are using shared web hosting then we advise picking a host that does nightly backups that you have access to restore -- we've seen a lot of web hosts not take any responsibility for backup, and it does need doing at the server level to work effectively
  - If running Apache, the following Apache modules (for maximum performance): [tt]mod_headers[/tt], [tt]mod_setenvif[/tt], [tt]mod_env[/tt], [tt]mod_deflate[/tt], [tt]mod_filter[/tt]
 
 &dagger; If you do not have the PHP FTP extension, then you will need either:
