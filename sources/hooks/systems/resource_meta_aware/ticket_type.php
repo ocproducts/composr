@@ -66,7 +66,7 @@ class Hook_resource_meta_aware_ticket_type
             'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => null,
-            'edit_page_link_pattern' => '_SEARCH:admin_tickets:_edit:_WILD',
+            'edit_page_link_pattern' => '_SEARCH:admin_tickets:_edit:ticket_type_id=_WILD',
             'view_category_page_link_pattern' => null,
             'add_url' => ($get_extended_data && function_exists('get_member') && has_actual_page_access(get_member(), 'admin_tickets')) ? (get_module_zone('admin_tickets') . ':admin_tickets:add') : null,
             'archive_url' => null,

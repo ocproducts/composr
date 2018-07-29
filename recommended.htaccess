@@ -92,6 +92,9 @@ Options +SymLinksIfOwnerMatch -MultiViews
 
 RewriteEngine on
 
+# Needed to pass HTTP-auth header on PHP CGI (it's not automatic, unlike PHP Module)
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 # If rewrites are directing to bogus URLs, try adding a "RewriteBase /" line, or a "RewriteBase /subdir" line if you're in a subdirectory. Requirements vary from server to server.
 
 # Serve pre-compressed CSS/JS files if they exist and the client accepts gzip

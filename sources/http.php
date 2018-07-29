@@ -388,6 +388,14 @@ abstract class HttpDownloader
             $url .= '/';
         }
 
+        // HTTP authentication in URL
+        if ($this->auth === null) {
+            $matches = array();
+            if (preg_match('#^https?://([^:@/]+):([^:@/]+)@#', $url, $matches) != 0) {
+                $this->auth = array($matches[1], $matches[2]);
+            }
+        }
+
         // Work out what we'll be connecting to...
 
         $this->url_parts = @parse_url(normalise_idn_url($url));

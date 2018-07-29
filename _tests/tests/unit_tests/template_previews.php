@@ -29,7 +29,9 @@ class template_previews_test_set extends cms_test_case
         parent::setUp();
 
         $a = scandir(get_file_base() . '/_tests/screens_tested');
-        sleep(3);
+        if (function_exists('sleep')) {
+            sleep(3);
+        }
         $b = scandir(get_file_base() . '/_tests/screens_tested');
         if (count($b) > count($a)) {
             exit('Already running');

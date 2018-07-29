@@ -380,7 +380,7 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
     $directory = $resource['directory'];
 
     foreach ($directory as $file) {
-        if (($file['path'] != 'addon.inf') && ($file['path'] != 'addon_install_code.php') && (($files === null) || (in_array($file['path'], $files)))) {
+        if (($file['path'] != 'addon.inf') && ($file['path'] != 'mod.inf'/*LEGACY*/) && ($file['path'] != 'addon_install_code.php') && (($files === null) || (in_array($file['path'], $files)))) {
             // Special case for directories. Composr doesn't add directory records, but at least 7-zip does
             if (substr($file['path'], -1) == '/') {
                 if (!$use_afm) {
