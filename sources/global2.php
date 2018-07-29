@@ -2068,7 +2068,7 @@ function cms_ob_end_clean()
  *
  * @param  string $haystack
  * @param  string $needle
- * @return bool
+ * @return boolean
  */
 function starts_with($haystack, $needle)
 {
@@ -2081,7 +2081,7 @@ function starts_with($haystack, $needle)
  *
  * @param  string $haystack
  * @param  string $needle
- * @return bool
+ * @return boolean
  */
 function ends_with($haystack, $needle)
 {
