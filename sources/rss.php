@@ -85,7 +85,7 @@ class CMS_RSS
             $data = @file_get_contents($url);
         } else {
             $GLOBALS['HTTP_CHARSET'] = '';
-            $data = http_download_file($url, null, false);
+            $data = http_download_file($url, null, false, false, 'Composr', null, null, null, null, null, null, null, $auth);
         }
 
         if (is_null($data)) {
