@@ -32,7 +32,6 @@ public class MainDialog extends JFrame {
     JButton optionsBtn = new JButton();
     JButton scanSignaturesBtn = new JButton();
     JButton countBtn = new JButton();
-    JButton specialBtn = new JButton();
     JList files = null;
     JList errors = null;
     JLabel jLabel1 = new JLabel();
@@ -106,12 +105,12 @@ public class MainDialog extends JFrame {
         ClearErrorsBtn.setActionCommand("ClearErrorsBtn");
         ClearErrorsBtn.addActionListener(new Dialog1_ClearErrorsBtn_actionAdapter(this));
         ClearErrorsBtn.setText("<html>Clear error list</html>");
-        aboutBtn.setBounds(new Rectangle(715, 538, 65, 37));
+        aboutBtn.setBounds(new Rectangle(636, 538, 65, 37));
         aboutBtn.setMargin(new Insets(0, 0, 0, 0));
         aboutBtn.setActionCommand("aboutBtn");
         aboutBtn.setText("<html>About</html>");
         aboutBtn.addActionListener(new Dialog1_aboutBtn_actionAdapter(this));
-        optionsBtn.setBounds(new Rectangle(639, 538, 72, 37));
+        optionsBtn.setBounds(new Rectangle(560, 538, 72, 37));
         optionsBtn.setMargin(new Insets(0, 0, 0, 0));
         optionsBtn.setActionCommand("optionsBtn");
         optionsBtn.setText("<html>Options</html>");
@@ -128,12 +127,6 @@ public class MainDialog extends JFrame {
         countBtn.setText("<html>Line Count</html>");
         countBtn.addActionListener(new Dialog1_countBtn_actionAdapter(this));
         countBtn.setBackground(new Color(215, 245, 229));
-        specialBtn.setBounds(new Rectangle(560, 538, 75, 37));
-        specialBtn.setMargin(new Insets(0, 0, 0, 0));
-        specialBtn.setActionCommand("countBtn");
-        specialBtn.setText("<html>Special tools</html>");
-        specialBtn.addActionListener(new Dialog1_specialBtn_actionAdapter(this));
-        specialBtn.setBackground(new Color(215, 245, 229));
         panel1.setMinimumSize(new Dimension(790, 590));
         files.setBackground(new Color(215, 245, 229));
         files.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -144,7 +137,7 @@ public class MainDialog extends JFrame {
         errors.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         errors.addKeyListener(new Dialog1_errors_actionAdapterKey(this));
         errors.addMouseListener(new Dialog1_errors_actionAdapterClick(this));
-        scrollPaneErrors.setBounds(new Rectangle(406, 14, 375, 517));
+        scrollPaneErrors.setBounds(new Rectangle(406, 14, 885, 517));
         jLabel1.setToolTipText("");
         jLabel1.setText("<html>This is your project workspace. Set it by setting your code directory in the options.</html>");
         jLabel1.setBounds(new Rectangle(26, 490, 339, 37));
@@ -156,7 +149,6 @@ public class MainDialog extends JFrame {
         jLabel2.setBounds(new Rectangle(415, 380, 350, 130));
         panel1.add(aboutBtn);
         panel1.add(countBtn);
-        panel1.add(specialBtn);
         panel1.add(examineFilesBtn);
         panel1.add(scanSignaturesBtn);
         panel1.add(ViewCodeBtn);
@@ -170,7 +162,7 @@ public class MainDialog extends JFrame {
         panel1.add(jLabel2);
         panel1.add(scrollPaneErrors);
         this.getContentPane().add(panel1, java.awt.BorderLayout.WEST);
-        panel1.setPreferredSize(new Dimension(790, 590));
+        panel1.setPreferredSize(new Dimension(1300, 590));
 
         this.setVisible(true);
 
@@ -369,10 +361,6 @@ public class MainDialog extends JFrame {
         }
 
         JOptionPane.showMessageDialog(this, "There are " + count + " lines of code in these files (excluding blank lines).");
-    }
-
-    public void specialBtn_actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(this, "Open up a web browser to the testing-tools directory, so the index.php loads and displays all available tools.");
     }
 
     private ArrayList<String> decompose_line(String line) {
@@ -842,20 +830,6 @@ class Dialog1_countBtn_actionAdapter implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         adaptee.countBtn_actionPerformed(e);
-    }
-}
-
-class Dialog1_specialBtn_actionAdapter implements ActionListener {
-
-    private final MainDialog adaptee;
-
-    Dialog1_specialBtn_actionAdapter(MainDialog adaptee) {
-        this.adaptee = adaptee;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        adaptee.specialBtn_actionPerformed(e);
     }
 }
 
