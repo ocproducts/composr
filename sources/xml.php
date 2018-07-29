@@ -153,6 +153,7 @@ class CMS_simple_xml_reader
         }
         xml_set_object($xml_parser, $this);
         @xml_parser_set_option($xml_parser, XML_OPTION_TARGET_ENCODING, get_charset());
+        xml_parser_set_option($xml_parser, XML_OPTION_CASE_FOLDING, 0); // Preserve element name case
         xml_set_element_handler($xml_parser, 'startElement', 'endElement');
         xml_set_character_data_handler($xml_parser, 'startText');
 
@@ -177,14 +178,7 @@ class CMS_simple_xml_reader
      */
     public function startElement($parser, $name, $attributes)
     {
-        array_push($this->tag_stack, strtolower($name));
-        if ($attributes != array()) {
-            $attributes_lowered = array();
-            foreach ($attributes as $key => $val) {
-                $attributes_lowered[strtolower($key)] = $val;
-            }
-            $attributes = $attributes_lowered;
-        }
+        array_push($this->tag_stack, $name);
         array_push($this->attribute_stack, $attributes);
         array_push($this->children_stack, array());
         array_push($this->text_stack, '');
@@ -231,24 +225,53 @@ class CMS_simple_xml_reader
     /**
      * Pull a portion of an XML tree structure back into textual XML.
      *
-     * @param  array $children Level of XML tree
+     * @param  array $xml_children Level of XML tree
+     * @param  array $xml_namespaces XML namespaces array( 'ns-prefix:' => 'http://example.com/namespace-uri' )
      * @return string The combined XML
      */
-    public function pull_together($children)
+    public function pull_together($xml_children, $xml_namespaces = array())
     {
         $data = '';
-        foreach ($children as $_) {
+        foreach ($xml_children as $_) {
             if (is_array($_)) {
                 list($tag, $attributes, , $children) = $_;
+                $tag = $this->_fix_namespace($tag, $xml_namespaces);
                 $drawn = '';
                 foreach ($attributes as $key => $val) {
-                    $drawn .= $key . '=' . xmlentities($val);
+                    $key = $this->_fix_namespace($key, $xml_namespaces);
+                    $drawn .= ' ' . $key . '="' . xmlentities($val) . '"';
                 }
-                $data .= '<' . $tag . $drawn . '>' . $this->pull_together($children) . '</' . $tag . '>';
+                if (count($children) > 0) {
+                    $data .= '<' . $tag . $drawn . '>' . $this->pull_together($children, $xml_namespaces) . '</' . $tag . '>';
+                } else {
+                    // No child nodes, self-close
+                    $data .= '<' . $tag . $drawn . '/>';
+                }
             } else {
                 $data .= xmlentities($_);
             }
         }
         return $data;
+    }
+
+    /**
+     * Element names and attributes have complete namespace URIs as a prefix for some reason, this fixes that
+     *
+     * @param  string $node_name Node name
+     * @param  array $xml_namespaces XML namespaces array( 'ns-prefix:' => 'http://example.com/namespace-uri' )
+     * @return string
+     */
+    protected function _fix_namespace($node_name, $xml_namespaces)
+    {
+        if (strpos($node_name, ':') === false) {
+            return $node_name;
+        }
+
+        $tmp = explode(':', $node_name);
+        $node_name_wo_uri = array_pop($tmp);
+        $node_uri = implode(':', $tmp); // Need to do it this way because the URL protocol also has a colon
+        $ns_prefix = array_search($node_uri, $xml_namespaces);
+
+        return ($ns_prefix !== false) ? ($ns_prefix . $node_name_wo_uri) : $node_name;
     }
 }
