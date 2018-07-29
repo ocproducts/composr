@@ -11,14 +11,6 @@ Spellcheck toggle button. Works on Chrome/Firefox/Safari/IE10
             editor.element.$.spellcheck=true;
             editor.window.$.document.body.spellcheck=true;
 
-            editor.window.$.document.body.oncontextmenu=function(event) { // Runs before CKEditor handler
-                if (!event) event=window.event;
-
-                // Do not let CKEditor handler happen
-                if (typeof event.stopImmediatePropagation!='undefined') event.stopImmediatePropagation();
-                return true; // Let native handler happen
-            };
-
             var oldData=editor.getData();
             if (!oldData.match(/<br( \/)?>\s*$/))
             {
@@ -29,6 +21,13 @@ Spellcheck toggle button. Works on Chrome/Firefox/Safari/IE10
             fauxmodal_alert(window.lang_SPELLCHECKER_ENABLED,function() {
                 editor.focus();
             },window.lang_SPELLCHECKER_LABEL);
+
+            editor.window.$.document.body.oncontextmenu=function(event) { // Runs before CKEditor handler
+                if (!event) event=window.event;
+                // Do not let CKEditor handler happen
+                if (typeof event.stopImmediatePropagation!='undefined') event.stopImmediatePropagation();
+                return true; // Let native handler happen
+            };
         },
 
         disableSpellChecker: function(editor) {
