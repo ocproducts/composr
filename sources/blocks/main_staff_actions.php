@@ -37,7 +37,7 @@ class Block_main_staff_actions
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = true;
-        $info['parameters'] = array('max');
+        $info['parameters'] = array('max', 'filter_by_member', 'include_duplicates', 'include_user_activities', 'sort');
         return $info;
     }
 
@@ -49,7 +49,7 @@ class Block_main_staff_actions
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(get_param_integer(\'sa_start\',0),array_key_exists(\'max\',$map)?intval($map[\'max\']):get_param_integer(\'sa_max\',10),get_param_string(\'sa_sort\',\'date_and_time\'),get_param_string(\'sort_order\',\'DESC\'))';
+        $info['cache_on'] = 'array((get_param_integer(\'filter_by_member\',array_key_exists(\'filter_by_member\',$map)?intval($map[\'filter_by_member\']):0) == 1),(get_param_integer(\'include_duplicates\',isset($_GET[\'filter_by_member\']) ? 0 : (array_key_exists(\'include_duplicates\',$map)?intval($map[\'include_duplicates\']):1)) == 1),(get_param_integer(\'include_user_activities\',isset($_GET[\'filter_by_member\']) ? 0 : (array_key_exists(\'include_user_activities\',$map)?intval($map[\'include_user_activities\'])):0) == 1)?get_member():null,get_param_integer(\'sa_start\',0),get_param_integer(\'sa_max\',array_key_exists(\'max\',$map)?intval($map[\'max\']):10),get_param_string(\'sa_sort\',array_key_exists(\'sort\',$map)?$map[\'sort\']:\'date_and_time DESC\'))';
         $info['ttl'] = (get_value('disable_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 5;
         return $info;
     }
@@ -99,17 +99,24 @@ class Block_main_staff_actions
         }
 
         require_all_lang();
-
         require_css('adminzone_dashboard');
-
         require_code('actionlog');
 
         $block_id = get_block_id($map);
 
+        $filter_by_member = (get_param_integer('filter_by_member', array_key_exists('filter_by_member', $map) ? intval($map['filter_by_member']) : 0) == 1);
+        $include_duplicates = (get_param_integer('include_duplicates', isset($_GET['filter_by_member']) ? 0 : (array_key_exists('include_duplicates', $map) ? intval($map['include_duplicates']) : 1)) == 1);
+        $include_user_activities = (get_param_integer('include_user_activities', isset($_GET['filter_by_member']) ? 0 : (array_key_exists('include_user_activities', $map) ? intval($map['include_user_activities']) : 0)) == 1);
+
         $start = get_param_integer('sa_start', 0);
-        $max = array_key_exists('max', $map) ? intval($map['max']) : get_param_integer('sa_max', 10);
-        $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'),/*Not enough space 'ip' => do_lang_tempcode('IP_ADDRESS'),*/'the_type' => do_lang_tempcode('ACTION'));
-        $test = explode(' ', get_param_string('sa_sort', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX), 2);
+        $max = get_param_integer('sa_max', array_key_exists('max', $map) ? intval($map['max']) : 10);
+        $sort = get_param_string('sa_sort', array_key_exists('sort', $map) ? $map['sort'] : 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX);
+
+        $sortables = array(
+            'date_and_time' => array(do_lang_tempcode('TIME'), 'DESC'),
+            'frequency' => array(do_lang_tempcode('POPULARITY'), 'DESC'),
+        );
+        $test = explode(' ', $sort, 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -120,54 +127,127 @@ class Block_main_staff_actions
         inform_non_canonical_parameter('sa_sort');
 
         require_code('templates_results_table');
-        $header_row = results_header_row(array(
-            do_lang_tempcode('USERNAME'),
-            /* do_lang_tempcode('IP_ADDRESS'),*/
-            do_lang_tempcode('DATE_TIME'),
-            do_lang_tempcode('ACTION'),
-            do_lang_tempcode('PARAMETER_A'),
-            do_lang_tempcode('PARAMETER_B'),
-        ), $sortables, 'sa_sort', $sortable . ' ' . $sort_order);
+        $header_row = results_header_row(
+            array(
+                do_lang_tempcode('USERNAME'),
+                /*do_lang_tempcode('IP_ADDRESS'),*/
+                do_lang_tempcode($include_duplicates ? 'ACTION_WHEN_LAST' : 'ACTION_WHEN'),
+                do_lang_tempcode('ACTION'),
+                do_lang_tempcode('DETAILS'),
+                null,
+            ),
+            $sortables,
+            'sa_sort',
+            $sortable . ' ' . $sort_order
+        );
 
-        $max_rows = $max; // Don't want to encourage pagination (there's a better module they can go to) $GLOBALS['SITE_DB']->query_select_value('actionlogs','COUNT(*)');
-        $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('the_type', 'param_a', 'param_b', 'member_id', 'ip', 'date_and_time'), array(), 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
-        $result_entries = new Tempcode();
-        foreach ($rows as $myrow) {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
-
-            $date = escape_html_tempcode(get_timezoned_date_time_tempcode($myrow['date_and_time']));
-
-            if ($myrow['param_a'] !== null) {
-                $a = $myrow['param_a'];
-            } else {
-                $a = '';
-            }
-            if ($myrow['param_b'] !== null) {
-                $b = $myrow['param_b'];
-            } else {
-                $b = '';
-            }
-
-            require_code('templates_interfaces');
-            $_a = tpl_crop_text_mouse_over($a, 8);
-            $_b = tpl_crop_text_mouse_over($b, 15);
-
-            $type_str = do_lang($myrow['the_type'], $_a, $_b, null, null, false);
-            if ($type_str === null) {
-                $type_str = $myrow['the_type'];
-            }
-
-            $test = actionlog_linkage($myrow['the_type'], $a, $b, $_a, $_b);
-            if ($test !== null) {
-                list($_a, $_b) = $test;
-            }
-
-            $ip = tpl_crop_text_mouse_over($myrow['ip'], 12);
-
-            $result_entries->attach(results_entry(array(escape_html($username)/*Not enough space ,$ip*/, escape_html($date), $type_str, $_a, $_b), false));
+        $where = array();
+        if ($filter_by_member) {
+            $where['member_id'] = get_member();
         }
 
-        $content = results_table(do_lang_tempcode('ACTIONS'), $start, 'sa_start', $max, 'sa_max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sa_sort', new Tempcode(), array(), null, 5);
+        if ($sortable == 'frequency') {
+            $_sortable = '(SELECT COUNT(*) FROM ' . get_table_prefix() . 'actionlogs x WHERE x.the_type=r.the_type)' . ' ' . $sort_order . ',date_and_time' . ' ' . $sort_order;
+        } else {
+            $_sortable = $sortable . ' ' . $sort_order;
+        }
+
+        $result_entries = new Tempcode();
+        $done = 0;
+        $max_rows = $GLOBALS['SITE_DB']->query_select_value('actionlogs', 'COUNT(*)', $where);
+        $done_already = array();
+        $_start = $start;
+        do {
+            $rows = $GLOBALS['SITE_DB']->query_select('actionlogs r', array('*'), $where, 'ORDER BY ' . $_sortable, $max, $_start);
+            foreach ($rows as $myrow) {
+                if ($myrow['param_a'] !== null) {
+                    $a = $myrow['param_a'];
+                } else {
+                    $a = '';
+                }
+                if ($myrow['param_b'] !== null) {
+                    $b = $myrow['param_b'];
+                } else {
+                    $b = '';
+                }
+
+                require_code('templates_interfaces');
+                $crop_length_a = 17;
+                $crop_length_b = 22;
+                $_a = tpl_crop_text_mouse_over($a, ($b == '') ? ($crop_length_a + $crop_length_b + 3/*A bit of extra tolerance*/) : $crop_length_a);
+                $_b = ($b == '') ? null : tpl_crop_text_mouse_over($b, $crop_length_b);
+
+                $type_str = do_lang($myrow['the_type'], $_a, $_b, null, null, false);
+                if ($type_str === null) {
+                    $type_str = $myrow['the_type'];
+                }
+
+                $test = actionlog_linkage($myrow, $crop_length_a, $crop_length_b);
+                if ($test !== null) {
+                    list($_a, $_b, $flags) = $test;
+                    if ((!$include_user_activities) && (($flags & ACTIONLOG_FLAG__USER_ACTION) != 0)) {
+                        continue;
+                    }
+                }
+
+                if (!$include_duplicates) {
+                    if ($sortable == 'frequency') {
+                        $sz_key = serialize(array($myrow['the_type']));
+                    } else {
+                        $sz_key = serialize(array($myrow['the_type'], $_a->evaluate(), ($_b === null) ? null : $_b->evaluate()));
+                    }
+                    if (array_key_exists($sz_key, $done_already)) {
+                        continue;
+                    }
+                    $done_already[$sz_key] = true;
+                }
+
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
+                if ($username === null) {
+                    $username = do_lang('UNKNOWN');
+                }
+
+                $ip = tpl_crop_text_mouse_over($myrow['ip'], 12);
+
+                $mode = array_key_exists('l_reason', $myrow) ? 'cns' : 'cms';
+                $url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => $myrow['id'], 'mode' => $mode), get_module_zone('admin_actionlog'));
+                $mode_nice = ($mode == 'cms') ? 'Composr' : 'Conversr';
+                $date = hyperlink(
+                    $url,
+                    symbol_tempcode('MAKE_RELATIVE_DATE', array(strval($myrow['date_and_time']), '1', '1'), array(ENTITY_ESCAPED)),
+                    false,
+                    false,
+                    '#' . strval($myrow['id']),
+                    null,
+                    null,
+                    null,
+                    '_top'
+                );
+
+                $result_entries->attach(results_entry(
+                    array(
+                        escape_html($username),
+                        /*Not enough space $ip,*/
+                        $date,
+                        $type_str,
+                        $_a,
+                        $_b
+                    ),
+                    false
+                ));
+
+                $done++;
+
+                if ($done == $max) {
+                    break 2;
+                }
+            }
+
+            $_start += $max;
+        }
+        while (count($rows) > 0);
+
+        $content = results_table(do_lang_tempcode('ACTIONS'), $start, 'sa_start', $max, 'sa_max', $max_rows, $header_row, $result_entries, $sortables, $sortable, $sort_order, 'sa_sort', new Tempcode(), array(), null, 5, '1c8645bc2a3ff5bec2e003142185561g', false, 'tray_actionlog');
 
         // Render block wrapper template around actions table
         return do_template('BLOCK_MAIN_STAFF_ACTIONS', array(
@@ -175,6 +255,9 @@ class Block_main_staff_actions
             'BLOCK_ID' => $block_id,
             'BLOCK_PARAMS' => block_params_arr_to_str($map),
             'CONTENT' => $content,
+            'FILTER_BY_MEMBER' => $filter_by_member,
+            'INCLUDE_DUPLICATES' => $include_duplicates,
+            'INCLUDE_USER_ACTIVITIES' => $include_user_activities,
         ));
     }
 }

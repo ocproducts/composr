@@ -368,7 +368,7 @@ public class MainDialog extends JFrame {
             } // No contribution to count
         }
 
-        JOptionPane.showMessageDialog(this, "There are " + count + " lines of code in these files (discluding blank lines).");
+        JOptionPane.showMessageDialog(this, "There are " + count + " lines of code in these files (excluding blank lines).");
     }
 
     public void specialBtn_actionPerformed(ActionEvent e) {

@@ -105,6 +105,7 @@ class Hook_addon_registry_ssl
             'sources/hooks/systems/page_groupings/ssl.php',
             'lang/EN/ssl.ini',
             'sources/hooks/systems/commandr_fs_extended_config/https_settings.php',
+            'sources/hooks/systems/actionlog/ssl.php',
         );
     }
 

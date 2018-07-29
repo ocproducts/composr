@@ -497,7 +497,7 @@ function delete_all_chatrooms()
  */
 function chatroom_ban_to($member_id, $id)
 {
-    log_it('CHAT_BAN', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
+    log_it('CHAT_BAN', strval($id), strval($member_id));
 
     $disallow_list = $GLOBALS['SITE_DB']->query_select_value('chat_rooms', 'disallow_list', array('id' => $id));
     if ($disallow_list == '') {
@@ -516,7 +516,7 @@ function chatroom_ban_to($member_id, $id)
  */
 function chatroom_unban_to($member_id, $id)
 {
-    log_it('CHAT_UNBAN', strval($id), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
+    log_it('CHAT_UNBAN', strval($id), strval($member_id));
 
     $disallow_list = $GLOBALS['SITE_DB']->query_select_value('chat_rooms', 'disallow_list', array('id' => $id));
     $_disallow_list = explode(',', $disallow_list);

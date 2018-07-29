@@ -718,7 +718,7 @@ class Module_admin_customers
             warn_exit(do_lang_tempcode('NO_CNS'));
         }
 
-        if (strpos(get_db_type(), 'mysql') !== false) {
+        if (strpos(get_db_type(), 'mysql') === false) {
             warn_exit('This works with MySQL only');
         }
 
@@ -802,7 +802,7 @@ class Module_admin_customers
                 $num_credits = $_fields['field_' . strval($cpf_id)];
             }
 
-            $text = paragraph(do_lang_tempcode('CUSTOMER_CURRENTLY_HAS', escape_html(number_format($num_credits))));
+            $text = paragraph(do_lang_tempcode('CUSTOMER_CURRENTLY_HAS', escape_html(integer_format($num_credits))));
         } else {
             $text = new Tempcode();
         }
@@ -880,6 +880,8 @@ class Module_admin_customers
             'date_and_time' => time(),
             'reason' => post_param_string('reason', ''),
         ));
+
+        log_it('CHARGE_CUSTOMER', strval($member_id), strval($amount));
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'browse', 'username' => $username), '_SELF');

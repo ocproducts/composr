@@ -69,6 +69,8 @@ function _upgrader_file_upgrade_screen()
     $dry_run = (post_param_integer('dry_run', 0) == 1);
     if ($dry_run) {
         $out .= '<p>' . do_lang('UPGRADER_DOING_DRY_RUN') . '</p>';
+    } else {
+        log_it('UPGRADER_DOWNLOAD');
     }
 
     // Turn off limits, this may be exhaustive

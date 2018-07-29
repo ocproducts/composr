@@ -941,7 +941,7 @@ class Module_cms_catalogues extends Standard_crud_module
             null,
             /* TYPED-ORDERED LIST OF 'LINKS' */
             array('_SELF', array('type' => 'add_entry', 'catalogue_name' => $c_name, 'category_id' => $category_id), '_SELF'), // Add one
-            (($id === null) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues', array('catalogues_category', $category_id)))) ? null : array('_SELF', array('type' => '_edit_entry', 'id' => $id, 'catalogue_name' => $c_name), '_SELF'), // Edit this
+            (($id === null) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues', array('catalogues_category', $category_id)))) ? null : array('_SELF', array('type' => '_edit_entry', 'id' => $id, 'catalogue_name' => $c_name), '_SELF', do_lang_tempcode('EDIT_THIS_CATALOGUE_ENTRY')), // Edit this
             has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_entry', 'catalogue_name' => $c_name), '_SELF') : null, // Edit one
             ($id === null) ? null : array('catalogues', array('type' => 'entry', 'id' => $id), get_module_zone('catalogues')), // View this
             null, // View archive
@@ -1086,6 +1086,8 @@ class Module_cms_catalogues extends Standard_crud_module
         require_code('files');
         cms_file_put_contents_safe($csv_path, $fixed_contents, FILE_WRITE_FAILURE_SILENT);
 
+        log_it('IMPORT_CATALOGUE_ENTRIES', $catalogue_name);
+
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('CATALOGUE_IMPORT'), $this->title, 'import_catalogue', array($catalogue_name, $key_field, $new_handling, $delete_handling, $update_handling, $meta_keywords_field, $meta_description_field, $notes_field, $allow_rating, $allow_comments, $allow_trackbacks, $csv_path));
     }
@@ -1120,6 +1122,8 @@ class Module_cms_catalogues extends Standard_crud_module
      */
     public function _export_catalogue($catalogue_name)
     {
+        log_it('EXPORT_CATALOGUE_ENTRIES', $catalogue_name);
+
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('EXPORT_CATALOGUE_ENTRIES'), $this->title, 'export_catalogue', array($catalogue_name));
     }
@@ -1516,7 +1520,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
             null, // View archive
             has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'add_category', 'catalogue_name' => $catalogue_name), '_SELF') : null, // Add one category
             has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_category', 'catalogue_name' => $catalogue_name), '_SELF') : null, // Edit one category
-            (($id === null) || (!has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_catalogues'))) ? null : array('_SELF', array('type' => '_edit_category', 'id' => $id, 'catalogue_name' => $catalogue_name), '_SELF'), // Edit this category
+            (($id === null) || (!has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_catalogues'))) ? null : array('_SELF', array('type' => '_edit_category', 'id' => $id, 'catalogue_name' => $catalogue_name), '_SELF', do_lang_tempcode('EDIT_THIS_CATALOGUE_CATEGORY')), // Edit this category
             ($id === null) ? null : array('catalogues', array('type' => 'category', 'id' => $id), get_module_zone('catalogues')), // View this category
 
             /* SPECIALLY TYPED 'LINKS' */
@@ -2218,7 +2222,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
             array(),
             array(
                 $is_custom_fields ? null : array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array('type' => 'add_catalogue'), '_SELF')),
-                ($name === null) ? null : array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $name), '_SELF')),
+                ($name === null) ? null : array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $name), '_SELF', do_lang_tempcode('EDIT_THIS_CATALOGUE'))),
                 $is_custom_fields ? null : array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array('type' => 'edit_catalogue'), '_SELF')),
                 (($name === null) || $is_custom_fields) ? null : array('menu/rich_content/catalogues/catalogues', array('catalogues', $this->is_tree_catalogue ? array('type' => 'category', 'catalogue_name' => $name) : array('type' => 'index', 'id' => $name, 'tree' => $this->is_tree_catalogue ? 1 : 0), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE')),
             ),

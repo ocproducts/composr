@@ -45,8 +45,6 @@ class Hook_task_import_wordpress
         require_code('news2');
         require_code('files');
 
-        log_it('IMPORT_NEWS');
-
         push_lax_comcode(true);
 
         $data = _get_wordpress_db_data();

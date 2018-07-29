@@ -155,6 +155,7 @@ class Hook_addon_registry_tickets
             'themes/default/templates/BLOCK_MAIN_CONTACT_US.tpl',
             'sources/blocks/main_contact_us.php',
             'themes/default/javascript/tickets.js',
+            'sources/hooks/systems/actionlog/tickets.php',
         );
     }
 

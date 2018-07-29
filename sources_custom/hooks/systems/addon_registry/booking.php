@@ -170,6 +170,7 @@ You may wish to deny access to the usergroup and member directories when using t
             'sources_custom/hooks/systems/config/bookings_max_ahead_months.php',
             'sources_custom/hooks/systems/config/bookings_show_warnings_for_months.php',
             'sources_custom/hooks/systems/config/member_booking_only.php',
+            'sources_custom/hooks/systems/actionlog/booking.php',
         );
     }
 }

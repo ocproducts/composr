@@ -1528,7 +1528,11 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
             } else {
                 $filedump_options = array();
             }
-            $filedump_default = (preg_match('#^uploads/filedump/#', $default) != 0) ? $default : '';
+            if ($default === null) {
+                $filedump_default = '';
+            } else {
+                $filedump_default = (preg_match('#^uploads/filedump/#', $default) != 0) ? $default : '';
+            }
             $filedump_field_description = do_lang_tempcode('DESCRIPTION_ALTERNATE_URL_FILEDUMP', escape_html($filedump_url->evaluate()));
             $filedump_widget = form_input_tree_list(do_lang_tempcode('FILEDUMP'), $filedump_field_description, $field_filedump, '', 'choose_filedump_file', $filedump_options, $required, $filedump_default, false);
             $field_set->attach($filedump_widget);

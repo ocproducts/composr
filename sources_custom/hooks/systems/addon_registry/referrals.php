@@ -161,6 +161,7 @@ Allows people to specify who referred them when they join your site or other con
             'sources_custom/hooks/systems/startup/referrals.php',
             'sources_custom/hooks/systems/referrals/.htaccess',
             'sources_custom/hooks/systems/referrals/index.html',
+            'sources_custom/hooks/systems/actionlog/referrals.php',
         );
     }
 

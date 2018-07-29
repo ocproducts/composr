@@ -19,68 +19,256 @@
  */
 
 /**
- * Try and make an action log entry into a proper link.
+ * Standard code module initialisation function.
  *
- * @param  ID_TEXT $type Action type
- * @param  string $a First parameter
- * @param  string $b Second parameter
- * @param  Tempcode $_a First parameter (cropped)
- * @param  Tempcode $_b Second parameter (cropped)
- * @return ?array Pair: first parameter as possible link, second parameter as possible link (null: could not construct a nice link)
+ * @ignore
  */
-function actionlog_linkage($type, $a, $b, $_a, $_b)
+function init__actionlog()
 {
-    $type_str = do_lang($type, $a, $b, null, null, false);
-    if ($type_str === null) {
-        $type_str = $type;
+    require_lang('actionlog');
+
+    if (!defined('ACTIONLOG_FLAGS_NONE')) {
+        define('ACTIONLOG_FLAGS_NONE', 0);
+        define('ACTIONLOG_FLAG__USER_ACTION', 1); // Used when we use the action log for non-admin actions (as we have no dedicated log for something)
+    }
+}
+
+/**
+ * Base action log object.
+ * Used for ameliorating action log entries.
+ *
+ * @package    core_notifications
+ */
+abstract class Hook_actionlog
+{
+    /**
+     * Get extended action log details if the action log entry type is handled by this hook and we have them.
+     *
+     * @param  array $actionlog_row Action log row
+     * @return ?~array Map of extended data in standard format (null: not available from this hook) (false: hook has responsibility but has failed)
+     */
+    public function get_extended_actionlog_data($actionlog_row)
+    {
+        $handlers = $this->get_handlers();
+
+        $type = $actionlog_row['the_type'];
+
+        if (array_key_exists($type, $handlers)) {
+            $handler_data = $handlers[$type];
+
+            $identifier = $this->get_identifier($actionlog_row, $handler_data);
+            if ($identifier === '') {
+                // Fail (note null does not fail, it just means we have no identifier which is fine)
+                return false;
+            }
+
+            $written_context = $this->get_written_context($actionlog_row, $handler_data, $identifier);
+            if ($written_context === null || $written_context === '') {
+                // Fail
+                return false;
+            }
+
+            $bindings = array(
+                'ID' => $identifier,
+                '0' => ($actionlog_row['param_a'] == '') ? null : $actionlog_row['param_a'],
+                '1' => ($actionlog_row['param_b'] == '') ? null : $actionlog_row['param_b'],
+                '0__EVEN_EMPTY' => $actionlog_row['param_a'],
+                '1__EVEN_EMPTY' => $actionlog_row['param_b'],
+            );
+            $this->get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, $bindings);
+
+            $followup_urls = array();
+            $followup_page_links = $handler_data['followup_page_links'];
+            foreach ($followup_page_links as $caption => $page_link) {
+                if ($page_link !== null) {
+                    if (is_array($page_link)) {
+                        // Some kind of special encoding where a page-link isn't going to work for us
+                        $success = true;
+                        foreach ($page_link as $special_part) {
+                            $success = $success && $this->apply_string_parameter_substitutions($special_part, $bindings);
+                        }
+                        if ($success) {
+                            if (!isset($page_link[0])) {
+                                warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+                            }
+
+                            switch ($page_link[0]) {
+                                case 'FORUM_DRIVER__PROFILE_URL':
+                                    if (count($page_link) != 2) {
+                                        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+                                    }
+
+                                    $url = $GLOBALS['FORUM_DRIVER']->member_profile_url(intval($page_link[1]), true);
+                                    $followup_urls[] = $url;
+                                    break;
+
+                                default:
+                                    warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+                            }
+                        }
+                    } else {
+                        $success = $this->apply_string_parameter_substitutions($page_link, $bindings);
+                        if ($success) {
+                            $url = page_link_to_url($page_link);
+                            $followup_urls[do_lang($caption)] = $url;
+                        }
+                    }
+                }
+            }
+
+            return array(
+                'flags' => $handler_data['flags'],
+                'written_context' => $written_context,
+                'followup_urls' => $followup_urls,
+            );
+        }
+
+        return null;
     }
 
-    // TODO: This will be replaced later with a more thorough system #115 on tracker
-    if (($type == 'EDIT_TEMPLATE') && (strpos($a, ',') === false)) {
-        if ($b == '') {
-            $b = 'default';
+    /**
+     * Get identifier for an action log entry handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  array $handler_data Handler data
+     * @return string Identifier
+     */
+    protected function get_identifier($actionlog_row, $handler_data)
+    {
+        $identifier = null;
+        if ($handler_data['identifier_index'] === 0) {
+            $identifier = $actionlog_row['param_a'];
+        } elseif ($handler_data['identifier_index'] === 1) {
+            $identifier = $actionlog_row['param_b'];
         }
-        $tmp_url = build_url(array('page' => 'admin_themes', 'type' => 'edit_templates', 'theme' => $b, 'f0file' => $a), get_module_zone('admin_themes'));
-        $a = basename($a, '.tpl');
-        require_code('templates_interfaces');
-        $_a = tpl_crop_text_mouse_over($a, 14);
-        $_a = hyperlink($tmp_url, $_a, false, false, $type_str);
-        return array($_a, $_b);
+        return $identifier;
     }
-    if ($type == 'COMCODE_PAGE_EDIT') {
-        $tmp_url = build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'page_link' => $b . ':' . $a), get_module_zone('cms_comcode_pages'));
-        $_a = hyperlink($tmp_url, $_a, false, false, $type_str);
-        return array($_a, $_b);
+
+    /**
+     * Get written context for an action log entry handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  array $handler_data Handler data
+     * @param  ?string $identifier Identifier (null: none)
+     * @return string Written context
+     */
+    protected function get_written_context($actionlog_row, $handler_data, $identifier)
+    {
+        $written_context = null;
+        if ($handler_data['written_context_index'] === 0) {
+            $written_context = $actionlog_row['param_a'];
+        } elseif ($handler_data['written_context_index'] === 1) {
+            $written_context = $actionlog_row['param_b'];
+        }
+        if ($written_context === null && $identifier !== null && $handler_data['cma_hook'] !== null) {
+            // Work out from CMA hook as we don't have it directly in the action log entry
+            require_code('content');
+            list($written_context) = content_get_details($handler_data['cma_hook'], $identifier);
+        }
+        return $written_context;
     }
-    if ($type == 'ADD_CATALOGUE_ENTRY' || $type == 'EDIT_CATALOGUE_ENTRY') {
-        $tmp_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $a), get_module_zone('catalogues'));
-        $_b = hyperlink($tmp_url, ($b == '') ? $_a : $_b, false, false, $type_str);
-        return array($_a, $_b);
+
+    /**
+     * Get details of action log entry types handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  ?string $identifier The identifier associated with this action log entry (null: unknown / none)
+     * @param  ?string $written_context The written context associated with this action log entry (null: unknown / none)
+     * @param  array $bindings Default bindings
+     */
+    protected function get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, &$bindings)
+    {
+        // For overriding
     }
-    if (($type == 'ADD_CATALOGUE_CATEGORY' || $type == 'EDIT_CATALOGUE_CATEGORY') && ($b != '')) {
-        $tmp_url = build_url(array('page' => 'catalogues', 'type' => 'category', 'id' => (!is_numeric($a)) ? $b : $a), get_module_zone('catalogues'));
-        $_b = hyperlink($tmp_url, $_b, false, false, $type_str);
-        return array($_a, $_b);
+
+    /**
+     * Apply any page-link/URL parameter value substitutions to a string.
+     *
+     * @param  string $string The string to apply to, changed by reference
+     * @param  array $bindings Mapping of bindings to apply
+     * @return ~boolean Whether successful applying the bindings (false: null or missing binding)
+     */
+    protected function apply_string_parameter_substitutions(&$string, $bindings)
+    {
+        foreach ($bindings as $binding_from => $binding_to) {
+            if (is_integer($binding_from)) {
+                $binding_from = strval($binding_from);
+            }
+
+            $_binding_from = '{' . $binding_from . '}';
+            if (strpos($string, $_binding_from) !== false) {
+                if ($binding_to !== null) {
+                    $string = str_replace($_binding_from, $binding_to, $string);
+                } else {
+                    return false; // required binding is null
+                }
+            }
+
+            // Now optional version too
+            $_binding_from = '{' . $binding_from . ',OPTIONAL}';
+            if (strpos($string, $_binding_from) !== false) {
+                if ($binding_to !== null) {
+                    $string = str_replace($_binding_from, $binding_to, $string);
+                } else {
+                    // Just strip the page-link/URL binding
+                    $string = preg_replace('#[:&]\w+=' . preg_quote($_binding_from, '#') . '#', '', $string);
+                }
+            }
+        }
+
+        if (strpos($string, '{') !== false) {
+            return false; // Missing binding
+        }
+
+        return true;
     }
-    if ($type == 'ADD_NEWS' || $type == 'EDIT_NEWS') {
-        $tmp_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $a), get_module_zone('news'));
-        $_b = hyperlink($tmp_url, ($b == '') ? $_a : $_b, false, false, $type_str);
-        return array($_a, $_b);
+
+    /**
+     * Get details of action log entry types handled by this hook.
+     *
+     * @return array Map of handler data in standard format
+     */
+    public function get_handlers()
+    {
+        return array();
     }
-    if ($type == 'ADD_NEWS_CATEGORY' || $type == 'EDIT_NEWS_CATEGORY') {
-        $tmp_url = build_url(array('page' => 'cms_news', 'type' => '_edit_category', 'id' => $a), get_module_zone('cms_news'));
-        $_b = hyperlink($tmp_url, ($b == '') ? $_a : $_b, false, false, $type_str);
-        return array($_a, $_b);
+}
+
+/**
+ * Try and make an action log entry into a proper link.
+ *
+ * @param  array $actionlog_row Action log row
+ * @param  ?integer $crop_length_a Crop length for parameter (null: no cropping)
+ * @param  ?integer $crop_length_b Crop length for parameter (null: no cropping)
+ * @return ?array Tuple: enhanced label, enhanced label that may be null, flags, map of followup URLs (null: could not construct a nice link)
+ */
+function actionlog_linkage($actionlog_row, $crop_length_a = null, $crop_length_b = null)
+{
+    static $hook_obs = null;
+    if ($hook_obs === null) {
+        $hook_obs = find_all_hook_obs('systems', 'actionlog', 'Hook_actionlog_');
     }
-    if ($type == 'ADD_DOWNLOAD' || $type == 'EDIT_DOWNLOAD') {
-        $tmp_url = build_url(array('page' => 'downloads', 'type' => 'entry', 'id' => $a), get_module_zone('downloads'));
-        $_b = hyperlink($tmp_url, ($b == '') ? $_a : $_b, false, false, $type_str);
-        return array($_a, $_b);
-    }
-    if ($type == 'ADD_DOWNLOAD_CATEGORY' || $type == 'EDIT_DOWNLOAD_CATEGORY') {
-        $tmp_url = build_url(array('page' => 'cms_downloads', 'type' => '_edit_category', 'id' => $a), get_module_zone('cms_downloads'));
-        $_b = hyperlink($tmp_url, ($b == '') ? $_a : $_b, false, false, $type_str);
-        return array($_a, $_b);
+
+    foreach ($hook_obs as $hook => $ob) {
+        $extended_data = $ob->get_extended_actionlog_data($actionlog_row);
+        if ($extended_data !== null) {
+            if ($extended_data === false) {
+                return null;
+            }
+
+            require_code('templates_interfaces');
+            if ($crop_length_a === null || $crop_length_b === null) {
+                $_written_context = make_string_tempcode(escape_html($extended_data['written_context']));
+            } else {
+                $_written_context = tpl_crop_text_mouse_over($extended_data['written_context'], $crop_length_a + $crop_length_b + 3/*A bit of extra tolerance*/);
+            }
+            $_a = do_template('ACTIONLOG_FOLLOWUP_URLS', array(
+                'WRITTEN_CONTEXT' => $_written_context,
+                'FOLLOWUP_URLS' => $extended_data['followup_urls'],
+            ));
+            $_b = null;
+            return array($_a, $_b, $extended_data['flags'], $extended_data['followup_urls']);
+        }
     }
 
     return null; // Could not get a match

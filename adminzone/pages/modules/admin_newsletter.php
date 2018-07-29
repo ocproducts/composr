@@ -153,6 +153,8 @@ class Module_admin_newsletter extends Standard_crud_module
         require_code('newsletter');
         require_css('newsletter');
 
+        $this->edit_this_label = do_lang_tempcode('EDIT_THIS_PERIODIC_NEWSLETTER');
+
         $this->extra_donext_entries = array(
             array('menu/site_meta/newsletters', array('_SELF', array('type' => 'new'), '_SELF'), do_lang('NEWSLETTER_SEND')),
             array('menu/adminzone/tools/newsletter/newsletter_from_changes', array('_SELF', array('type' => 'whatsnew'), '_SELF'), do_lang('WHATSNEW'), 'DOC_WHATSNEW'),
@@ -375,6 +377,8 @@ class Module_admin_newsletter extends Standard_crud_module
         } else {
             $action_title = do_lang('IMPORT_NEWSLETTER_SUBSCRIBERS');
         }
+
+        log_it('IMPORT_NEWSLETTER_SUBSCRIBERS');
 
         require_code('tasks');
         return call_user_func_array__long_task($action_title, $this->title, 'import_newsletter_subscribers', array($_language, $newsletter_id, $subscribe, $target_path));
@@ -1513,7 +1517,7 @@ class Module_admin_newsletter extends Standard_crud_module
             }
         }
 
-        log_it('NEWSLETTER_SEND');
+        log_it('NEWSLETTER_SEND', $subject);
 
         return send_newsletter($message, $subject, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $template);
     }

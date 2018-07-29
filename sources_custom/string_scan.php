@@ -227,6 +227,21 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_CATEGORY_TRANSACTION_FEES
         PAYMENT_GATEWAY_authorize
         PAYMENT_GATEWAY_ccbill
+        POST_BY_X_IN_Y
+        SOMETHING_TO
+        SOMETHING_FROM
+        SOMETHING_IN
+        SOMETHING_ON
+        ALL_USERS
+        INCLUDE_DUPLICATES
+        INCLUDE_USER_ACTIVITIES
+        ME_ONLY
+        SHOW_ACTIONS_FOR
+        MEMBER_BEFRIENDED
+        MEMBER_UNFRIENDED
+        MEMBER_BLOCKED
+        MEMBER_UNBLOCKED
+        BACKUP_WITH_TYPE
         DEEPER_CONFIGURATION
         TRANSCODING
         LOST_DISK_CONTENT
@@ -384,6 +399,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MOVE_PAGES
         NO_CNS
         DOCS
+        ACTION_WHEN
+        ACTION_WHEN_LAST
         EXPLANATION_WITH_DEFAULT
         PROJECT_SPONSORS
         CONFIG_OPTION_complex_lists
@@ -2300,6 +2317,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COMCODE_PAGE_DEFAULT_REVIEW_FREQ
         COMCODE_PAGE_EDIT
         COMCODE_PAGE_EDIT_THIS
+        DELETE_BACKUP
+        COMMANDR_COMMAND
         COMCODE_PAGE_MANAGEMENT
         COMCODE_PAGE_OWN_EDIT
         COMCODE_PAGE_VIEW_THIS
@@ -3463,6 +3482,14 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_yeehaw
         CONFIG_OPTION_mail_delete_after
         MAIL_DELETE_AFTER
+        BLOCK_main_staff_actions_PARAM_filter_by_member
+        BLOCK_main_staff_actions_PARAM_filter_by_member_TITLE
+        BLOCK_main_staff_actions_PARAM_include_duplicates
+        BLOCK_main_staff_actions_PARAM_include_duplicates_TITLE
+        BLOCK_main_staff_actions_PARAM_include_user_activities
+        BLOCK_main_staff_actions_PARAM_include_user_activities_TITLE
+        BLOCK_main_staff_actions_PARAM_sort
+        BLOCK_main_staff_actions_PARAM_sort_TITLE
         CONFIRM
         CONFIRM_CODE
         CONFIRM_DELETE_ALL_CHATROOMS
@@ -4644,6 +4671,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EDIT_QUIZ
         EDIT_SELECTED_FIELD
         EDIT_TEMPLATES
+        EDIT_TEMPLATE
         EDIT_TEXT
         EDIT_THEME
         EDIT_THEME_IMAGE
@@ -4675,6 +4703,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EDIT_USERGROUP_SUBSCRIPTION
         EDIT_VIDEO
         EDIT_WARNING
+        DELETE_WARNING
         EDIT_WELCOME_EMAIL
         EDIT_WIKI_PAGE_BODY
         EDIT_WIKI_PAGE_SUBJECT
@@ -6523,7 +6552,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PURCHASE_ORDER
         PUT_IN_CATEGORY
         PUT_IN_SEARCH
-        PUT_ON_PROBATION
         QUERIES_WITHOUT_CACHE
         QUERY
         QUERY_FAILED
@@ -6595,7 +6623,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         RELEVANCE_LEVEL
         REMEMBER_ME_BY_DEFAULT
         REMEMBER_PASSWORD
-        REMOVE_FROM_PROBATION
         REMOVE_PERIODIC
         REMOVE_PERIODIC_NEWSLETTER
         REMOVE_PROBATION_DAYS
@@ -7791,6 +7818,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         AVATARS_THEMATIC
         AVATARS_MISC
         ADD_AUTHOR
+        EDIT_THIS_AUTHOR
         ADD_CALENDAR_EVENT
         ADD_CATALOGUE_ENTRY
         ADD_CLUB
@@ -8364,7 +8392,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HOURS
         DAY
         DAYS
-        DAYS_AGO
         JANUARY
         FEBRUARY
         MARCH
@@ -8723,7 +8750,21 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EDIT_PAGE
         EDIT_POST
         EDIT_TICKET
+        EDIT_THIS_TICKET_TYPE
+        EDIT_THIS_CATALOGUE
+        EDIT_THIS_CATALOGUE_CATEGORY
+        EDIT_THIS_CATALOGUE_ENTRY
+        EDIT_THIS_NEWS_CATEGORY
+        EDIT_THIS_NEWS
+        EDIT_THIS_PERIODIC_NEWSLETTER
+        EDIT_THIS_IMAGE
+        EDIT_THIS_VIDEO
+        EDIT_THIS_DOWNLOAD_CATEGORY
+        EDIT_THIS_DOWNLOAD
+        EDIT_THIS_DOWNLOAD_LICENCE
         EDIT_TICKET_TYPE
+        EDIT_THIS_ZONE
+        EDIT_THIS_TEMPLATE
         EDIT_TOPIC
         EDIT_TOPIC_POLL
         EMAIL
@@ -8965,7 +9006,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HIGHLIGHTED_NAME
         HOME
         HOUR
-        HOURS_AGO
+        _AGO
         HOVER_FOR_FULL
         HOVER_MOUSE_IMPORTANT
         TAP_MOUSE_IMPORTANT
@@ -9250,7 +9291,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MINIMUM_SELECTIONS
         MINUTE
         MINUTES
-        MINUTES_AGO
         MISSING_RESOURCE
         MISSING_RESOURCE_SUBSTRING
         MJG_NOTIFICATION_MAIL

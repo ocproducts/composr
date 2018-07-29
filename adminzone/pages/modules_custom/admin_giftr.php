@@ -210,6 +210,8 @@ class Module_admin_giftr extends Standard_crud_module
      */
     public function run_start($type)
     {
+        $this->edit_this_label = do_lang_tempcode('EDIT_THIS_GIFT');
+
         cns_require_all_forum_stuff();
 
         require_code('cns_groups_action');
@@ -388,7 +390,7 @@ class Module_admin_giftr extends Standard_crud_module
         }
         $GLOBALS['SITE_DB']->query_update('giftr', $map, array('id' => $id), '', 1);
 
-        log_it('EDIT_GIFT', strval($id), $name);
+        log_it('EDIT_GIFT', $id, $name);
 
         return null;
     }

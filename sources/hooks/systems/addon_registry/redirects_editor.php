@@ -108,6 +108,7 @@ class Hook_addon_registry_redirects_editor
             'lang/EN/redirects.ini',
             'themes/default/css/redirects_editor.css',
             'themes/default/javascript/redirects_editor.js',
+            'sources/hooks/systems/actionlog/redirects_editor.php',
         );
     }
 

@@ -234,6 +234,7 @@ class Hook_addon_registry_galleries
             'sources/hooks/systems/config/search_galleries.php',
             'sources/hooks/systems/config/search_images.php',
             'sources/hooks/systems/config/search_videos.php',
+            'sources/hooks/systems/actionlog/galleries.php',
         );
     }
 

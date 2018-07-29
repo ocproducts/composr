@@ -137,6 +137,7 @@ class Hook_addon_registry_quizzes
             'themes/default/css/quizzes.css',
             'sources/hooks/systems/config/search_quiz.php',
             'themes/default/javascript/quizzes.js',
+            'sources/hooks/systems/actionlog/quizzes.php',
         );
     }
 

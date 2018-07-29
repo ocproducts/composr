@@ -251,7 +251,11 @@
     };
 
     $cms.templates.blockMainStaffActions = function (params) {
-        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
+        $dom.on(this.$('#filter_by_member, #include_duplicates, #include_user_activities'), 'change', function (e, el) {
+            el.form.submit();
+        });
+
+        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], { 'raw': 1, 'cache': 0 }, false, true);
     };
 
     $cms.templates.blockMainStaffTips = function (params) {

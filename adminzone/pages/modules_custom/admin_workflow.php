@@ -610,6 +610,8 @@ class Module_admin_workflow extends Standard_crud_module
         // Grab our data. We pass true so that it will create non-existent content for us (workflow and approval points)
         list($workflow_id, $workflow_name, $approval_points, $is_default) = $this->read_in_data(true);
 
+        log_it('ADD_WORKFLOW', strval($workflow_id), $workflow_name);
+
         return strval($workflow_id);
     }
 
@@ -669,6 +671,9 @@ class Module_admin_workflow extends Standard_crud_module
     public function edit_actualisation($id)
     {
         list($workflow_id, $workflow_name, $approval_points, $is_default) = $this->read_in_data(false);
+
+        log_it('EDIT_WORKFLOW', strval($workflow_id), $workflow_name);
+
         return null;
     }
 
@@ -679,6 +684,13 @@ class Module_admin_workflow extends Standard_crud_module
      */
     public function delete_actualisation($id)
     {
+        $workflow_name = $GLOBALS['SITE_DB']->query_select_value_if_there('workflows', 'workflow_name', array('id' => $id));
+        if ($workflow_name === null) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+
         delete_workflow(intval($id));
+
+        log_it('DELETE_WORKFLOW', $id, $workflow_name);
     }
 }

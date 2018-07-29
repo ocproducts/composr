@@ -107,6 +107,8 @@ class Hook_addon_registry_actionlog
             'sources/hooks/systems/rss/admin_recent_actions.php',
             'lang/EN/actionlog.ini',
             'themes/default/javascript/actionlog.js',
+            'sources/hooks/systems/actionlog/actionlog.php',
+            'themes/default/templates/ACTIONLOG_FOLLOWUP_URLS.tpl',
 
             // Revisions
             'sources/hooks/systems/config/store_revisions.php',
@@ -134,6 +136,7 @@ class Hook_addon_registry_actionlog
             'templates/REVISIONS_DIFF_ICON.tpl' => 'administrative__show_revision_diff_icon',
             'templates/REVISIONS_SCREEN.tpl' => 'revisions_screen',
             'templates/REVISION_UNDO.tpl' => 'revision_undo',
+            'templates/ACTIONLOG_FOLLOWUP_URLS.tpl' => 'administrative__actionlog_followup_urls',
         );
     }
 
@@ -199,6 +202,27 @@ class Hook_addon_registry_actionlog
     {
         return array(
             lorem_globalise(do_lorem_template('REVISION_UNDO', array(
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__actionlog_followup_urls()
+    {
+        $urls = array();
+        $urls[lorem_phrase()] = placeholder_url();
+        $urls[lorem_phrase() . ' 2'] = placeholder_url();
+
+        return array(
+            lorem_globalise(do_lorem_template('ACTIONLOG_FOLLOWUP_URLS', array(
+                'WRITTEN_CONTEXT' => lorem_phrase(),
+                'FOLLOWUP_URLS' => $urls,
             )), null, '', true)
         );
     }

@@ -431,6 +431,7 @@ class Hook_addon_registry_core_cns
             'sources/blocks/main_join.php',
             'themes/default/templates/BLOCK_MAIN_JOIN.tpl',
             'themes/default/templates/BLOCK_MAIN_JOIN_DONE.tpl',
+            'sources/hooks/systems/actionlog/core_cns.php',
 
             // Files for post map functionality
             'themes/default/templates/CNS_POST_MAP.tpl',

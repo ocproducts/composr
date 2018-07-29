@@ -1480,6 +1480,8 @@ class Module_admin_setupwizard
         // We're done
         set_value('setupwizard_completed', '1');
 
+        log_it('SETUPWIZARD');
+
         $url = build_url(array('page' => '_SELF', 'type' => 'step11'), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }

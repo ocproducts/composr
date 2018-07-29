@@ -1228,6 +1228,11 @@ class Hook_addon_registry_core
             'sources/hooks/systems/snippets/background_template_compilation.php',
             'themes/default/templates/PASSWORD_CHECK_JS.tpl',
             'themes/default/templates/SPONSORS_SCREEN.tpl',
+            'sources/hooks/systems/actionlog/.htaccess',
+            'sources/hooks/systems/actionlog/index.html',
+            'sources_custom/hooks/systems/actionlog/.htaccess',
+            'sources_custom/hooks/systems/actionlog/index.html',
+            'sources/hooks/systems/actionlog/core.php',
 
             // External endpoints (API) - no actual endpoints defined in core (or even bundled at time of writing), but may be added by other addons
             'data/endpoint.php',

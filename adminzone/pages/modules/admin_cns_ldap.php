@@ -224,6 +224,8 @@ class Module_admin_cns_ldap
             }
         }
 
+        log_it('LDAP_SYNC');
+
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }

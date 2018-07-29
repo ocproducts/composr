@@ -868,7 +868,7 @@ function step_4()
         if (isset($SITE_INFO['domain'])) {
             $domain = $SITE_INFO['domain'];
         }
-        if ((!file_exists(get_file_base() . '/.git')) || ($use_msn)) {
+        if ((!file_exists(get_file_base() . '/.git')) || ($use_msn == 1)) {
             if (isset($SITE_INFO['multi_lang_content'])) {
                 $multi_lang_content = intval($SITE_INFO['multi_lang_content']);
             }

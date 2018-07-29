@@ -377,7 +377,7 @@ class Module_wiki
             }
         }
 
-        if ($type == 'mg' || $type == 'do') {
+        if ($type == 'merge' || $type == '_merge') {
             $this->title = get_screen_title('MERGE_WIKI_POSTS');
         }
 
@@ -415,10 +415,10 @@ class Module_wiki
         if ($type == 'revisions') {
             return $this->revisions();
         }
-        if ($type == 'mg') {
+        if ($type == 'merge') {
             return $this->do_wiki_merge_interface();
         }
-        if ($type == 'do') {
+        if ($type == '_merge') {
             return $this->do_wiki_merge();
         }
         if ($type == 'move') {
@@ -819,7 +819,7 @@ class Module_wiki
     public function do_wiki_merge_interface()
     {
         $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX)), '_SELF');
-        $merge_url = build_url(array('page' => '_SELF', 'type' => 'do', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX), 'redirect' => protect_url_parameter($_redir_url)), '_SELF', array(), true);
+        $merge_url = build_url(array('page' => '_SELF', 'type' => '_merge', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX), 'redirect' => protect_url_parameter($_redir_url)), '_SELF', array(), true);
 
         $merged = '';
         $markers = $this->get_markers();
@@ -1017,13 +1017,15 @@ class Module_wiki
         }
 
         if ($mode == 'edit') {
-            $_id = get_param_wiki_chain('id', strval($GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'page_id', array('id' => $post_id))));
+            $page_id = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_posts', 'page_id', array('id' => $post_id));
+            if ($page_id === null) {
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'wiki_post'));
+            }
+
+            $_id = get_param_wiki_chain('id', strval($page_id));
             $id = $_id[0];
 
             $rows = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('*'), array('id' => $post_id), '', 1);
-            if (!array_key_exists(0, $rows)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'wiki_post'));
-            }
             $myrow = $rows[0];
 
             if (!has_category_access(get_member(), 'wiki_page', strval($myrow['page_id']))) {

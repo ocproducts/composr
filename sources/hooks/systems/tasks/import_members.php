@@ -40,8 +40,6 @@ class Hook_task_import_members
         require_code('hooks/systems/tasks/export_members');
         $download_ob = new Hook_task_export_members();
 
-        log_it('IMPORT_MEMBERS');
-
         push_query_limiting(false);
 
         $num_added = 0;

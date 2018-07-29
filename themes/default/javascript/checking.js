@@ -446,7 +446,7 @@
             return Promise.resolve(true);
         }
 
-        return  new Promise(function (resolveCheckFormPromise) {
+        return new Promise(function (resolveCheckFormPromise) {
             var erroneous = false,
                 totalFileSize = 0, alerted = false,
                 errorElement = null,

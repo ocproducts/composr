@@ -159,6 +159,7 @@ class Hook_addon_registry_community_billboard
             'sources_custom/hooks/systems/notifications/ecom_product_request_community_billboard.php',
             'sources_custom/hooks/systems/page_groupings/community_billboard.php',
             'themes/default/css_custom/community_billboard.css',
+            'sources_custom/hooks/systems/actionlog/community_billboard.php',
         );
     }
 

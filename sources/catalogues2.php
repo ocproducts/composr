@@ -147,8 +147,10 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
     );
     if (!is_array($title)) {
         $map += insert_lang('c_title', $title, 1);
+        $_title = $title;
     } else {
         $map += $title;
+        $_title = get_translated_text($title['c_title']);
     }
     if (!is_array($description)) {
         $map += insert_lang_comcode('c_description', $description, 2);
@@ -178,7 +180,7 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
         $category = null;
     }
 
-    log_it('ADD_CATALOGUE', $name);
+    log_it('ADD_CATALOGUE', $name, $_title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
@@ -382,7 +384,7 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
 
     delete_cache_entry('main_cc_embed');
 
-    log_it('EDIT_CATALOGUE', $name);
+    log_it('EDIT_CATALOGUE', $name, $title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         if ($old_name != $name) { // We want special stability in catalogue addressing
@@ -436,6 +438,7 @@ function actual_delete_catalogue($name)
         actual_delete_catalogue_field($field);
     }
     $GLOBALS['SITE_DB']->query_delete('catalogues', array('c_name' => $name), '', 1);
+    $_title = $myrow['c_title'];
     delete_lang($myrow['c_title']);
     delete_lang($myrow['c_description']);
     $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'catalogues_catalogue', 'category_name' => $name));
@@ -447,7 +450,7 @@ function actual_delete_catalogue($name)
 
     update_catalogue_content_ref('catalogue', $name, '');
 
-    log_it('DELETE_CATALOGUE', $name);
+    log_it('DELETE_CATALOGUE', $name, $_title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');

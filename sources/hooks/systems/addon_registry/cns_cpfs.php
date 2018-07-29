@@ -111,6 +111,7 @@ class Hook_addon_registry_cns_cpfs
             'sources/hooks/systems/commandr_fs/cpfs.php',
             'sources/hooks/systems/commandr_fs_extended_member/cpf_perms.php',
             'themes/default/javascript/cns_cpfs.js',
+            'sources/hooks/systems/actionlog/cns_cpfs.php',
         );
     }
 

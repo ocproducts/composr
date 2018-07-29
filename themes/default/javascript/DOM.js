@@ -2906,7 +2906,7 @@
 
         function submitFunc(e, el) {
             var blockCallUrl = $util.url(urlStem),
-                hrefUrl = $util.url((el.localName === 'a') ? el.href : el.action);
+                hrefUrl = $util.url((el.localName === 'a') ? el.href : el.action).replace(/#.*$/, '');
 
             e.preventDefault();
 
@@ -2960,7 +2960,7 @@
 
             try {
                 window.hasJsState = true;
-                window.history.pushState({ js: true }, document.title, hrefUrl.toString());
+                // Just causes problems with 2nd level AJAX requests window.history.pushState({ js: true }, document.title, hrefUrl.toString());
             } catch (ignore) {
                 // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
                 // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")

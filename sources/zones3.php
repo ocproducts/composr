@@ -222,7 +222,7 @@ function actual_edit_zone($zone, $title, $default_page, $header_text, $theme, $r
     require_code('zones2');
     save_zone_base_url($zone, $base_url);
 
-    log_it('EDIT_ZONE', $zone);
+    log_it('EDIT_ZONE', $zone, $title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
@@ -337,6 +337,7 @@ function actual_delete_zone_lite($zone)
         return;
     }
     $zone_title = $GLOBALS['SITE_DB']->query_select_value('zones', 'zone_title', array('zone_name' => $zone));
+    $_zone_title = get_translated_text($zone_title);
     delete_lang($zone_header_text);
     delete_lang($zone_title);
 
@@ -361,7 +362,7 @@ function actual_delete_zone_lite($zone)
     $ALL_ZONES_CACHE = null;
     $ALL_ZONES_TITLED_CACHE = null;
 
-    log_it('DELETE_ZONE', $zone);
+    log_it('DELETE_ZONE', $zone, $_zone_title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
@@ -850,7 +851,7 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
 
     $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_deprecated' => 1), array('m_resource_page' => $page, 'm_resource_type' => '', 'm_resource_id' => $zone));
 
-    log_it('DELETE_PAGES', $page);
+    log_it('DELETE_PAGES', $zone . ':' . $page);
 
     require_code('sitemap_xml');
     notify_sitemap_node_delete($zone . ':' . $page);

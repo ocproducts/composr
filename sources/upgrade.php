@@ -580,6 +580,8 @@ function upgrader_decache_screen()
  */
 function upgrader_open_site_screen()
 {
+    log_it('UPGRADER_OPEN_SITE');
+
     set_option('site_closed', '0');
     return '<p>' . do_lang('SUCCESS') . '</p>';
 }
@@ -592,6 +594,8 @@ function upgrader_open_site_screen()
  */
 function upgrader_close_site_screen()
 {
+    log_it('UPGRADER_CLOSE_SITE');
+
     set_option('closed', do_lang('UPGRADER_CLOSED_FOR_UPGRADES', get_site_name()));
     set_option('site_closed', '1');
     return '<p>' . do_lang('SUCCESS') . '</p>';

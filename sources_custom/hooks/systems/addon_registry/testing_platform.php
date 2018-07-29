@@ -372,6 +372,7 @@ We hope other users will appreciate your efforts and give you some gift points t
             '_tests/tests/unit_tests/firephp.php',
             '_tests/tests/unit_tests/auth.php',
             '_tests/tests/unit_tests/api_classes_documented.php',
+            '_tests/tests/unit_tests/actionlog.php',
             '_tests/tests/unit_tests/lang_ini_size.php',
             '_tests/tests/unit_tests/ip_addresses.php',
             '_tests/tests/unit_tests/seo_tracking.php',

@@ -314,7 +314,7 @@
 							{+START,IF_PASSED,SUBMIT_DAYS_AGO}
 								<tr>
 									<th class="de-th">{!LAST_SUBMIT_TIME}:</th>
-									<td>{!DAYS_AGO,{SUBMIT_DAYS_AGO}}</td>
+									<td>{!_AGO,{!DAYS,{SUBMIT_DAYS_AGO}}}</td>
 								</tr>
 							{+END}
 

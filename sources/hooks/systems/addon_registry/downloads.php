@@ -177,6 +177,7 @@ class Hook_addon_registry_downloads
             'sources/hooks/systems/config/search_downloads.php',
             'themes/default/javascript/downloads.js',
             'sources/hooks/systems/config/download_cat_access_late.php',
+            'sources/hooks/systems/actionlog/downloads.php',
         );
     }
 

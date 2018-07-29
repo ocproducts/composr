@@ -289,7 +289,7 @@ function actual_add_zone($zone, $title, $default_page = DEFAULT_ZONE_PAGE_NAME, 
 
     save_zone_base_url($zone, $base_url);
 
-    log_it('ADD_ZONE', $zone);
+    log_it('ADD_ZONE', $zone, $title);
 
     return $zone;
 }
