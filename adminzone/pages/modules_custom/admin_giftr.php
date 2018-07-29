@@ -390,7 +390,7 @@ class Module_admin_giftr extends Standard_crud_module
         }
         $GLOBALS['SITE_DB']->query_update('giftr', $map, array('id' => $id), '', 1);
 
-        log_it('EDIT_GIFT', $id, $name);
+        log_it('EDIT_GIFT', strval($id), $name);
 
         return null;
     }

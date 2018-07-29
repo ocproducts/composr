@@ -505,7 +505,7 @@ function make_installers($skip_file_grab = false)
 
 function _shell_exec_bin($cmd)
 {
-    static $bin_path;
+    static $bin_path = null;
 
     if ($bin_path === null) {
         if ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') && file_exists('C:\cygwin64\bin\\')) {
