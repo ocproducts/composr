@@ -27,8 +27,10 @@ function init__actionlog()
 {
     require_lang('actionlog');
 
-    define('ACTIONLOG_FLAGS_NONE', 0);
-    define('ACTIONLOG_FLAG__USER_ACTION', 1); // Used when we use the action log for non-admin actions (as we have no dedicated log for something)
+    if (!defined('ACTIONLOG_FLAGS_NONE')) {
+        define('ACTIONLOG_FLAGS_NONE', 0);
+        define('ACTIONLOG_FLAG__USER_ACTION', 1); // Used when we use the action log for non-admin actions (as we have no dedicated log for something)
+    }
 }
 
 /**

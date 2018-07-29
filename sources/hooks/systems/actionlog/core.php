@@ -425,6 +425,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 ),
             ),
             'GROUP_MEMBER_TIMEOUTS' => array(
+                'flags' => ACTIONLOG_FLAGS_NONE,
                 'cma_hook' => null,
                 'identifier_index' => null,
                 'written_context_index' => 0,

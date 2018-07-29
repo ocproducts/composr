@@ -158,22 +158,26 @@ class Hook_actionlog_wiki extends Hook_actionlog
                     $username = do_lang('UNKNOWN');
                 }
 
-                $page_title = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'title', array('id' => intval($actionlog_row['param_b'])));
-                if ($page_title === null) {
+                $_page_title = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'title', array('id' => intval($actionlog_row['param_b'])));
+                if ($_page_title === null) {
                     $page_title = '#' . $actionlog_row['param_b'];
+                } else {
+                    $page_title = get_translated_text($_page_title);
                 }
 
                 require_lang('wiki');
-                $written_context = do_lang('POST_BY_X_IN_Y', $username, get_translated_text($page_title));
+                $written_context = do_lang('POST_BY_X_IN_Y', $username, $page_title);
                 return $written_context;
 
             case 'WIKI_MOVE_POST':
-                $page_title = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'title', array('id' => intval($actionlog_row['param_b'])));
-                if ($page_title === null) {
-                    $page_title = '#' . $actionlog_row['param_a'];
+                $_page_title = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'title', array('id' => intval($actionlog_row['param_b'])));
+                if ($_page_title === null) {
+                    $page_title = '#' . $actionlog_row['param_b'];
+                } else {
+                    $page_title = get_translated_text($_page_title);
                 }
 
-                $written_context = do_lang('SOMETHING_TO', '#' . $actionlog_row['param_a'], get_translated_text($page_title));
+                $written_context = do_lang('SOMETHING_TO', '#' . $actionlog_row['param_a'], $page_title);
                 return $written_context;
         }
 

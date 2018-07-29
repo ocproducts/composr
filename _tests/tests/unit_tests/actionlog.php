@@ -76,6 +76,10 @@ class actionlog_test_set extends cms_test_case
                 $mappings_final = $ob->get_extended_actionlog_data($actionlog_row);
                 if ($mappings_final !== false) {
                     foreach ($mappings_final['followup_urls'] as $url) {
+                        if (is_object($url)) {
+                            $url = $url->evaluate();
+                        }
+
                         static $done_urls = array();
 
                         if (!array_key_exists($url, $done_urls)) {

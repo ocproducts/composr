@@ -156,7 +156,7 @@ class Block_main_staff_checklist
                 'RECUR_EVERY' => $recur_every,
                 'TASK_DONE' => ((!is_null($r['task_is_done'])) && (($r['recur_interval'] == 0) || (($r['recur_every'] != 'mins') || (time() < $r['task_is_done'] + 60 * $r['recur_interval'])) && (($r['recur_every'] != 'hours') || (time() < $r['task_is_done'] + 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'days') || (time() < $r['task_is_done'] + 24 * 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'months') || (time() < $r['task_is_done'] + 31 * 24 * 60 * 60 * $r['recur_interval'])))) ? 'checklist1' : 'not_completed',
                 'ID' => strval($r['id']),
-                'ADD_TIME' => do_lang_tempcode('AGO', do_lang_tempcode('DAYS', escape_html(integer_format(intval(round(floatval(time() - $r['add_date']) / 60.0 / 60.0 / 24.0)))))),
+                'ADD_TIME' => do_lang_tempcode('_AGO', do_lang_tempcode('DAYS', escape_html(integer_format(intval(round(floatval(time() - $r['add_date']) / 60.0 / 60.0 / 24.0)))))),
             )));
         }
 

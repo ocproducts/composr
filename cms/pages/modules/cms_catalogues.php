@@ -939,7 +939,7 @@ class Module_cms_catalogues extends Standard_crud_module
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'add_entry', 'catalogue_name' => $c_name, 'category_id' => $category_id), '_SELF'), // Add one
-            (is_null($id) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues', array('catalogues_category', $category_id)))) ? null : array('_SELF', array('type' => '_edit_entry', 'id' => $id, 'catalogue_name' => $c_name), '_SELF', do_lang_tepmcode('EDIT_THIS_CATALOGUE_ENTRY')), // Edit this
+            (is_null($id) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues', array('catalogues_category', $category_id)))) ? null : array('_SELF', array('type' => '_edit_entry', 'id' => $id, 'catalogue_name' => $c_name), '_SELF', do_lang_tempcode('EDIT_THIS_CATALOGUE_ENTRY')), // Edit this
             has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_entry', 'catalogue_name' => $c_name), '_SELF') : null, // Edit one
             is_null($id) ? null : array('catalogues', array('type' => 'entry', 'id' => $id), get_module_zone('catalogues')), // View this
             null, // View archive

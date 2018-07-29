@@ -17,8 +17,8 @@
 					<div class="action_log_filter_part">
 						<label for="filter_by_member">{!SHOW_ACTIONS_FOR}</label>:
 						<select onchange="/*guarded*/if (!this.form.onsubmit || this.form.onsubmit()) this.form.submit();" name="filter_by_member" id="filter_by_member">
-							<option value="0"{+START,IF,{$NOT,{FILTER_BY_MEMBER}}} selected="selected"{+END}>All users</option>
-							<option value="1"{+START,IF,{FILTER_BY_MEMBER}} selected="selected"{+END}>Me only</option>
+							<option value="0"{+START,IF,{$NOT,{FILTER_BY_MEMBER}}} selected="selected"{+END}>{!ALL_USERS}</option>
+							<option value="1"{+START,IF,{FILTER_BY_MEMBER}} selected="selected"{+END}>{!ME_ONLY}</option>
 						</select>
 					</div>
 

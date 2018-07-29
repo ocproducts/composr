@@ -348,7 +348,7 @@
 
 						<tr>
 							<th class="de_th">{!LAST_SUBMIT_TIME}:</th>
-							<td>{!AGO,{!DAYS,{SUBMIT_DAYS_AGO}}}</td>
+							<td>{!_AGO,{!DAYS,{SUBMIT_DAYS_AGO}}}</td>
 						</tr>
 
 						{+START,IF,{$ADDON_INSTALLED,securitylogging}}

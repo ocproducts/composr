@@ -80,9 +80,9 @@ You'll be able to see the full details of each logged action by clicking the dat
 
 You are able to filter in a number of ways:
  - Focus on just your actions (change "Show actions for" to "Me only")
- - Make the display more compact by discluding repeated actions (disable "Include repeated actions") -- if the sort order is by popularity then this will show each action type only once, otherwise it will show each action type and content combination only once
+ - Make the display more compact by excluding repeated actions (disable "Include repeated actions") -- if the sort order is by popularity then this will show each action type only once, otherwise it will show each action type and content combination only once
  - Include major user activities, such as password resets (typically for keeping an eye on potential abuse)
- - Sort by the most common actions (change "Sort by" to "Popularity") -- if you do this you probably want to disclude repeated actions too
+ - Sort by the most common actions (change "Sort by" to "Popularity") -- if you do this you probably want to exclude repeated actions too
 [/surround]
 
 [title="2"]Miscellaneous other Admin features[/title]

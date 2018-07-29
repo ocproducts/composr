@@ -315,7 +315,7 @@ function cns_edit_warning($warning_id, $explanation, $is_warning = 1)
     $GLOBALS['FORUM_DB']->query_update('f_members', array('m_cache_warnings' => $num_warnings), array('id' => $member_id), '', 1);
 
     require_code('cns_general_action2');
-    cns_mod_log_it('EDIT_WARNING', strval($id), strval($member_id));
+    cns_mod_log_it('EDIT_WARNING', strval($warning_id), strval($member_id));
 
     return $member_id;
 }
@@ -347,7 +347,7 @@ function cns_delete_warning($warning_id)
     $GLOBALS['FORUM_DB']->query_update('f_members', array('m_cache_warnings' => $num_warnings), array('id' => $member_id), '', 1);
 
     require_code('cns_general_action2');
-    cns_mod_log_it('DELETE_WARNING', strval($id), strval($member_id));
+    cns_mod_log_it('DELETE_WARNING', strval($warning_id), strval($member_id));
 
     return $member_id;
 }

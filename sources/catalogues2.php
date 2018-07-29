@@ -105,8 +105,10 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
     );
     if (!is_array($title)) {
         $map += insert_lang('c_title', $title, 1);
+        $_title = $title;
     } else {
         $map += $title;
+        $_title = $title['c_title'];
     }
     if (!is_array($description)) {
         $map += insert_lang_comcode('c_description', $description, 2);
@@ -136,7 +138,7 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
         $category = null;
     }
 
-    log_it('ADD_CATALOGUE', $name, $title);
+    log_it('ADD_CATALOGUE', $name, $_title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');

@@ -130,6 +130,19 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONTINUE_RESTORATION
         CONFIG_OPTION_news_summary_required
         OWNER
+        BLOCK_main_staff_actions_PARAM_filter_by_member_TITLE
+        BLOCK_main_staff_actions_PARAM_include_duplicates_TITLE
+        BLOCK_main_staff_actions_PARAM_include_user_activities_TITLE
+        BLOCK_main_staff_actions_PARAM_sort_TITLE
+        BLOCK_main_staff_actions_PARAM_filter_by_member
+        BLOCK_main_staff_actions_PARAM_include_duplicates
+        BLOCK_main_staff_actions_PARAM_include_user_activities
+        BLOCK_main_staff_actions_PARAM_sort
+        INCLUDE_DUPLICATES
+        INCLUDE_USER_ACTIVITIES
+        SHOW_ACTIONS_FOR
+        ME_ONLY
+        ALL_USERS
         POST_BY_X_IN_Y
         SOMETHING_TO
         SOMETHING_FROM

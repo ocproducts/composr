@@ -34,7 +34,7 @@ class Hook_actionlog_ldap extends Hook_actionlog
             return array();
         }
 
-        require_lang('backups');
+        require_lang('cns');
 
         return array(
             'LDAP_SYNC' => array(
