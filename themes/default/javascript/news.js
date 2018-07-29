@@ -60,7 +60,7 @@
 
         for (i = 0; i < news.length; i++) {
             data.push({
-                html: $dom.html('script#image-fader-' + rand + '-news-item-' + i + '-html'),
+                html: $dom.data('#image-fader-' + rand + '-news-item-' + i + '-html', 'tpHtml').html,
                 url:  news[i].url,
                 imageUrl: $util.srl(news[i].imageUrl)
             });

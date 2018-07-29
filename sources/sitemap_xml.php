@@ -335,8 +335,8 @@ function _sitemap_cache_node($node, $guest_access)
         return;
     }
 
-    $add_date = $node['extra_meta']['add_date'];
-    $edit_date = $node['extra_meta']['edit_date'];
+    $add_date = isset($node['extra_meta']['add_date']) ? $node['extra_meta']['add_date'] : null;
+    $edit_date = isset($node['extra_meta']['edit_date']) ? $node['extra_meta']['edit_date'] : null;
     $priority = $node['sitemap_priority'];
     $refreshfreq = $node['sitemap_refreshfreq'];
 

@@ -62,8 +62,5 @@
 			</div>
 		{+END}
 	{+END}
-
-	<script type="text/html" id="image-fader-{$GET,RAND_FADER_NEWS}-news-item-{_loop_key}-html" {$CSP_NONCE_HTML}>
-		{$GET,news_html}
-	</script>
+	<span id="image-fader-{$GET,RAND_FADER_NEWS}-news-item-{_loop_key}-html" data-tp-html="{ html: {$JSON_ENCODE*,{$GET,news_html}} }" style="display: none"></span>
 {+END}
