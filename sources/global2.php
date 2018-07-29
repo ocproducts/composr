@@ -2062,3 +2062,29 @@ function cms_ob_end_clean()
         }
     }
 }
+
+/**
+ * Check if a string starts with a substring
+ *
+ * @param  string $haystack
+ * @param  string $needle
+ * @return bool
+ */
+function starts_with($haystack, $needle)
+{
+    $length = strlen($needle);
+    return (substr($haystack, 0, $length) === $needle);
+}
+
+/**
+ * Check if a string ends with a substring
+ *
+ * @param  string $haystack
+ * @param  string $needle
+ * @return bool
+ */
+function ends_with($haystack, $needle)
+{
+    $length = strlen($needle);
+    return ($length === 0) || (substr($haystack, -$length) === $needle);
+}
