@@ -2064,11 +2064,11 @@ function cms_ob_end_clean()
 }
 
 /**
- * Check if a string starts with a substring
+ * Check if a string starts with a substring.
  *
- * @param  string $haystack
- * @param  string $needle
- * @return boolean
+ * @param  string $haystack The haystack
+ * @param  string $needle The needle
+ * @return boolean Whether the haystack starts with the needle
  */
 function starts_with($haystack, $needle)
 {
@@ -2077,11 +2077,11 @@ function starts_with($haystack, $needle)
 }
 
 /**
- * Check if a string ends with a substring
+ * Check if a string ends with a substring.
  *
- * @param  string $haystack
- * @param  string $needle
- * @return boolean
+ * @param  string $haystack The haystack
+ * @param  string $needle The needle
+ * @return boolean Whether the haystack ends with the needle
  */
 function ends_with($haystack, $needle)
 {

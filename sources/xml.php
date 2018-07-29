@@ -255,7 +255,7 @@ class CMS_simple_xml_reader
     }
 
     /**
-     * Element names and attributes have complete namespace URIs as a prefix for some reason, this fixes that
+     * Element names and attributes have complete namespace URIs as a prefix for some reason, this fixes that.
      *
      * @param  string $node_name Node name
      * @param  array $xml_namespaces XML namespaces array( 'ns-prefix:' => 'http://example.com/namespace-uri' )
