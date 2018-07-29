@@ -601,9 +601,7 @@
 
             inputs.forEach(function (input) {
                 $dom.on(input, 'change', function () {
-                    if ((input.form != null) && ((!input.form.onsubmit) || (input.form.onsubmit()))) {
-                        $dom.submit(input.form);
-                    }
+                    $dom.trigger(input.form, 'submit');
                 });
             });
         }

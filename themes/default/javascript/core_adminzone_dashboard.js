@@ -251,9 +251,12 @@
     };
 
     $cms.templates.blockMainStaffActions = function (params) {
-        $dom.on(this.$('#filter_by_member, #include_duplicates, #include_user_activities'), 'change', function (e, el) {
-            el.form.submit();
-        });
+        var changeFunc = function (e, el) {
+            $dom.trigger(el, 'submit');
+        };
+        $dom.on($dom.$('#filter_by_member'), 'change', changeFunc);
+        $dom.on($dom.$('#include_duplicates'), 'change', changeFunc);
+        $dom.on($dom.$('#include_user_activities'), 'change', changeFunc);
 
         $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], { 'raw': 1, 'cache': 0 }, false, true);
     };
