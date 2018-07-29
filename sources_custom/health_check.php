@@ -490,7 +490,7 @@ abstract class Hook_Health_Check
     {
         global $HEALTH_CHECK_PAGE_CONTENT_CACHE;
         if (!array_key_exists($page_link, $HEALTH_CHECK_PAGE_CONTENT_CACHE)) {
-            $HEALTH_CHECK_PAGE_CONTENT_CACHE[$page_link] = http_download_file($this->get_page_url($page_link), null, false, true);
+            $HEALTH_CHECK_PAGE_CONTENT_CACHE[$page_link] = http_download_file($this->get_page_url($page_link), null, false, true, 'Composr', null, null, null, null, null, null, null, null, 20.0);
 
             // Server blocked to access itself
             if ($page_link == ':') {
