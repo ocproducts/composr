@@ -911,6 +911,18 @@
         }
     };
 
+    // Implementation for [data-ajaxify-links="{...}"]
+    $cms.behaviors.ajaxifyLinks = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-ajaxify-links]'), 'behavior.ajaxifyLinks');
+
+            els.forEach(function (el) {
+                var options = objVal($dom.data(el, 'ajaxifyLinks'));
+                $dom.internaliseAjaxBlockWrapperLinks(options.urlStem, el, options.lookFor, options.extraParams, options.append, options.formsToo, options.scrollToTop);
+            });
+        }
+    };
+
     // Implementation for [data-stuck-nav]
     // Pinning to top if scroll out (LEGACY: CSS is going to have a better solution to this soon)
     $cms.behaviors.stuckNav = {
