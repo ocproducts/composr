@@ -248,7 +248,11 @@
             });
 
             window.addEventListener('pageshow', function () {
-                form.elements['captcha'].src += '&'; // Force it to reload latest captcha
+                var image = document.getElementById('captcha-image');
+                if (!image) {
+                    image = document.getElementById('captcha-frame');
+                }
+                image.src += '&'; // Force it to reload latest captcha
             });
         }
     });

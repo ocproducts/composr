@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_feedback_features}
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
 {$,Template uses auto-complete}
 {$REQUIRE_JAVASCRIPT,jquery}

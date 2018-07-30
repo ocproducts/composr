@@ -3357,7 +3357,7 @@ div .post-buttons>*, div .buttons-group-faded>* {
 }
 
 .comments-captcha {
-	width: 210px;
+	display: inline-block;
 	font-size: 0.85em;
 	text-align: center;
 }
@@ -3369,8 +3369,18 @@ div .post-buttons>*, div .buttons-group-faded>* {
 
 /*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key,1}}*/
 	.comments-captcha img, .comments-captcha iframe, .comments-captcha input {
-		margin: 0 5px 2px 5px;
 		vertical-align: middle;
+	}
+
+	input#captcha {
+		font-family: Courier;
+		font-size: 16px;
+		vertical-align: middle;
+		margin-left: 0.5em;
+		padding: 8px 5px;
+		letter-spacing: 3px;
+		text-transform: uppercase;
+		min-width: 6.2em;
 	}
 /*{+END}*/
 
@@ -3862,18 +3872,16 @@ ul.buttons-group, ul.associated-links-block-group {
 
 /*{+START,IF_EMPTY,{$CONFIG_OPTION,recaptcha_site_key,1}}*/
 	.captcha-frame {
-		width: 100px;
-		height: 42px;
-	}
+		vertical-align: middle;
 
-	.captcha {
-		font-size: 0.8em;
-		margin-bottom: 3px;
+		/*1px tolerance for rounding errors during zooming*/
+		width: 85px;
+		height: 37px;
 	}
 
 	.captcha a {
 		float: right;
-		margin: 10px 0 0 5px;
+		margin: 0px 10px 0 5px;
 	}
 /*{+END}*/
 

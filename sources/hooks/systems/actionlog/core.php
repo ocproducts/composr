@@ -85,7 +85,7 @@ class Hook_actionlog_core extends Hook_actionlog
                 'written_context_index' => null,
                 'followup_page_links' => array(
                     'VIEW' => '{1}:{0}',
-                    'COMCODE_PAGE_EDIT_THIS' => '_SEARCH:cms_comcode_pages:_edit:page_link={1}%3A{0}:lang=' . get_site_default_lang(),
+                    'COMCODE_PAGE_EDIT_THIS' => '_SEARCH:cms_comcode_pages:_edit:page_link={1__EVEN_EMPTY}%3A{0__EVEN_EMPTY}:lang=' . get_site_default_lang(),
                     'COMCODE_PAGE_MANAGEMENT' => '_SEARCH:cms_comcode_pages',
                 ),
             ),

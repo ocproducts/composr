@@ -1353,7 +1353,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                     if (array_key_exists($cell_i, $ratios)) {
                                                         $width = $ratios[$cell_i];
                                                     } else {
-                                                        $width = float_to_raw_string($total_box_width / $num_cells_in_row, 2) . '%';
+                                                        $width = (($num_cells_in_row == 0) ? float_to_raw_string($total_box_width, 2) : float_to_raw_string($total_box_width / $num_cells_in_row, 2)) . '%';
                                                     }
 
                                                     $tag_output->attach(do_template('COMCODE_FAKE_TABLE_WIDE_START_CELL', array(
