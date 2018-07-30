@@ -191,6 +191,10 @@ function save_message_into_sugarcrm_as_configured($subject, $body, $from_email, 
 function save_composr_account_into_sugarcrm_as_configured($member_id, $timestamp = null)
 {
     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+    if ($username === null) {
+        return null; // User already deleted
+    }
+
     $email_address = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
 
     $cpfs = read_composr_cpfs($member_id);

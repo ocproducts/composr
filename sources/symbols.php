@@ -765,7 +765,8 @@ function ecv($lang, $escaped, $type, $name, $param)
                     }
 
                     if (in_array('redundantclose', $options)) {
-                        $value = preg_replace('#\n*</(p|li|option)>#i', '', $value);
+                        $value = preg_replace('#\n*</(li|option)>#i', '', $value);
+                        $value = preg_replace('#\n*</p>(\s*<p)#i', '$1', $value);
                     }
 
                     if (in_array('quotes', $options)) {
