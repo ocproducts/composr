@@ -445,7 +445,7 @@
         }
     };
 
-    $cms.templates.internalizedAjaxScreen = function internalizedAjaxScreen(params, element) {
+    $cms.templates.internalisedAjaxScreen = function internalisedAjaxScreen(params, element) {
         var url = strVal(params.url),
             changeDetectionUrl = strVal(params.changeDetectionUrl),
             refreshTime = Number(params.refreshTime) || 0,
