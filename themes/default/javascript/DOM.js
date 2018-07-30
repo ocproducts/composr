@@ -2859,11 +2859,7 @@
         lookFor = arrVal(lookFor);
         append = Boolean(append);
         formsToo = Boolean(formsToo);
-        scrollToTop = (scrollToTop !== undefined) ? Boolean(scrollToTop) : true;
-
-        if (!blockElement) {
-            return;
-        }
+        scrollToTop = (scrollToTop != null) ? Boolean(scrollToTop) : true;
 
         var blockPosY = blockElement ? $dom.findPosY(blockElement, true) : 0;
 
@@ -2907,7 +2903,7 @@
 
         function submitFunc(e, el) {
             var blockCallUrl = $util.url(urlStem),
-                hrefUrl = $util.url((el.localName === 'a') ? el.href : el.action).replace(/#.*$/, '');
+                hrefUrl = $util.url(((el.localName === 'a') ? el.href : el.action).replace(/#.*$/, ''));
 
             e.preventDefault();
 
@@ -2932,14 +2928,14 @@
             }
 
             // Any POST parameters?
-            var j, postParams, paramName, paramValue;
+            var postParams, paramName, paramValue;
 
             if (el.localName === 'form') {
                 if (el.method.toLowerCase() === 'post') {
                     postParams = '';
                 }
 
-                for (j = 0; j < el.elements.length; j++) {
+                for (var j = 0; j < el.elements.length; j++) {
                     if (el.elements[j].name) {
                         paramName = el.elements[j].name;
                         paramValue = $cms.form.cleverFindValue(el, el.elements[j]);
@@ -2956,16 +2952,16 @@
                 }
             }
 
-            hrefUrl.searchParams.delete('ajax');
-            hrefUrl.searchParams.delete('zone');
-
-            try {
-                window.hasJsState = true;
-                // Just causes problems with 2nd level AJAX requests window.history.pushState({ js: true }, document.title, hrefUrl.toString());
-            } catch (ignore) {
-                // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
-                // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
-            }
+            /* Commented out because it causes problems with 2nd level AJAX requests */
+            // hrefUrl.searchParams.delete('ajax');
+            // hrefUrl.searchParams.delete('zone');
+            // window.hasJsState = true;
+            // try {
+            //     window.history.pushState({ js: true }, document.title, hrefUrl.toString());
+            // } catch (ignore) {
+            //     // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
+            //     // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
+            // }
 
             $cms.ui.clearOutTooltips();
 
