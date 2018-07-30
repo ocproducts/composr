@@ -43,6 +43,7 @@ class Hook_actionlog_filedump extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
+                    'FOLDER' => '_SEARCH:filedump:place={1}',
                     '_FILEDUMP' => '_SEARCH:filedump',
                 ),
             ),
@@ -52,6 +53,7 @@ class Hook_actionlog_filedump extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
+                    'FOLDER' => '_SEARCH:filedump:place={1}',
                     '_FILEDUMP' => '_SEARCH:filedump',
                 ),
             ),
@@ -61,6 +63,7 @@ class Hook_actionlog_filedump extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
+                    'FOLDER' => '_SEARCH:filedump:place={1}',
                     '_FILEDUMP' => '_SEARCH:filedump',
                 ),
             ),
@@ -70,6 +73,7 @@ class Hook_actionlog_filedump extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
+                    'FOLDER' => '_SEARCH:filedump:place={DIR}',
                     '_FILEDUMP' => '_SEARCH:filedump',
                 ),
             ),
@@ -79,6 +83,7 @@ class Hook_actionlog_filedump extends Hook_actionlog
                 'identifier_index' => null,
                 'written_context_index' => null,
                 'followup_page_links' => array(
+                    'FOLDER' => '_SEARCH:filedump:place={1}',
                     '_FILEDUMP' => '_SEARCH:filedump',
                 ),
             ),
@@ -100,14 +105,36 @@ class Hook_actionlog_filedump extends Hook_actionlog
             case 'FILEDUMP_DELETE_FOLDER':
             case 'FILEDUMP_UPLOAD':
             case 'FILEDUMP_DELETE_FILE':
-                $written_context = ($actionlog_row['param_b'] == '') ? '' : ($actionlog_row['param_b'] . '/') . $actionlog_row['param_a'];
+                $path = trim($actionlog_row['param_b'], '/');
+                $written_context = ($path == '') ? '' : ($path . '/') . $actionlog_row['param_a'];
                 return $written_context;
 
             case 'FILEDUMP_MOVE':
-                $written_context = do_lang('SOMETHING_TO', $actionlog_row['param_a'], ($actionlog_row['param_b'] == '') ? do_lang('ROOT') : $actionlog_row['param_b']);
+                $path = trim($actionlog_row['param_b'], '/');
+                $written_context = do_lang('SOMETHING_TO', $actionlog_row['param_a'], ($path) ? do_lang('ROOT') : $path);
                 return $written_context;
         }
 
         return parent::get_written_context($actionlog_row, $handler_data, $identifier);
+    }
+
+    /**
+     * Get details of action log entry types handled by this hook.
+     *
+     * @param  array $actionlog_row Action log row
+     * @param  ?string $identifier The identifier associated with this action log entry (null: unknown / none)
+     * @param  ?string $written_context The written context associated with this action log entry (null: unknown / none)
+     * @param  array $bindings Default bindings
+     */
+    protected function get_extended_actionlog_bindings($actionlog_row, $identifier, $written_context, &$bindings)
+    {
+        switch ($actionlog_row['the_type']) {
+            case 'FILEDUMP_MOVE':
+                $path = trim($actionlog_row['param_b'], '/');
+                $bindings += array(
+                    'DIR' => (strpos($path, '/') !== false) ? dirname($path) : '',
+                );
+                break;
+        }
     }
 }
