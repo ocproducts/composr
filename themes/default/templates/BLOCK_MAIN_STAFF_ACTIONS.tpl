@@ -1,10 +1,7 @@
 {$REQUIRE_JAVASCRIPT,checking}
 
-{$SET,ajax_block_main_staff_actions_wrapper,ajax-block-main-staff-actions-wrapper-{$RAND%}}
-{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS},raw=.*\,cache=.*}}
-
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
-	<section id="tray-actionlog" data-toggleable-tray="{ save: true }" data-tpl="blockMainStaffActions" data-tpl-params="{+START,PARAMS_JSON,ajax_block_main_staff_actions_wrapper,block_call_url}{_*}{+END}" class="box box---block-main-staff-actions">
+	<section id="tray-actionlog" data-toggleable-tray="{ save: true }" data-tpl="blockMainStaffActions" class="box box---block-main-staff-actions">
 		<h3 class="toggleable-tray-title js-tray-header">
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!CONTRACT}">
 				{+START,INCLUDE,ICON}
@@ -17,14 +14,13 @@
 
 		<div class="toggleable-tray js-tray-content">
 {+END}
-
-			<div id="{$GET*,ajax_block_main_staff_actions_wrapper}">
+			<div data-ajaxify-links="{ urlStem: '{$FACILITATE_AJAX_BLOCK_CALL;*,{BLOCK_PARAMS},raw=.*\,cache=.*}', lookFor: ['.*'], extraParams: { raw: 1, cache: 0 }, formsToo: true }">
 				<form class="action-log-filters" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}#tray_actionlog" method="get" target="_self">
 					{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,0,0,filter_by_member=<null>,include_duplicates=<null>,include_user_activities=<null>}}
 
 					<div class="action-log-filter-part">
 						<label for="filter_by_member">{!SHOW_ACTIONS_FOR}</label>:
-						<select name="filter_by_member" id="filter_by_member">
+						<select name="filter_by_member" id="filter_by_member" class="js-onchange-submit-form">
 							<option value="0"{+START,IF,{$NOT,{FILTER_BY_MEMBER}}} selected="selected"{+END}>{!ALL_USERS}</option>
 							<option value="1"{+START,IF,{FILTER_BY_MEMBER}} selected="selected"{+END}>{!ME_ONLY}</option>
 						</select>
@@ -32,12 +28,12 @@
 
 					<div class="action-log-filter-part">
 						<label for="include_duplicates">{!INCLUDE_DUPLICATES}</label>:
-						<input type="checkbox" name="include_duplicates" id="include_duplicates" value="1"{+START,IF,{INCLUDE_DUPLICATES}} checked="checked"{+END} />
+						<input type="checkbox" name="include_duplicates" id="include_duplicates" class="js-onchange-submit-form" value="1"{+START,IF,{INCLUDE_DUPLICATES}} checked="checked"{+END} />
 					</div>
 
 					<div class="action-log-filter-part">
 						<label for="include_user_activities">{!INCLUDE_USER_ACTIVITIES}</label>:
-						<input type="checkbox" name="include_user_activities" id="include_user_activities" value="1"{+START,IF,{INCLUDE_USER_ACTIVITIES}} checked="checked"{+END} />
+						<input type="checkbox" name="include_user_activities" id="include_user_activities" class="js-onchange-submit-form" value="1"{+START,IF,{INCLUDE_USER_ACTIVITIES}} checked="checked"{+END} />
 					</div>
 
 					<button data-disable-on-click="1" accesskey="u" class="accessibility-hidden button-micro buttons--filter" type="submit">{+START,INCLUDE,ICON}NAME=buttons/filter{+END} {!FILTER}</button>

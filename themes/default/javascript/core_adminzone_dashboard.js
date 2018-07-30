@@ -250,15 +250,10 @@
         }
     };
 
-    $cms.templates.blockMainStaffActions = function (params) {
-        var changeFunc = function (e, el) {
-            $dom.trigger(el, 'submit');
-        };
-        $dom.on($dom.$('#filter_by_member'), 'change', changeFunc);
-        $dom.on($dom.$('#include_duplicates'), 'change', changeFunc);
-        $dom.on($dom.$('#include_user_activities'), 'change', changeFunc);
-
-        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.ajaxBlockMainStaffActionsWrapper), ['.*'], { 'raw': 1, 'cache': 0 }, false, true);
+    $cms.templates.blockMainStaffActions = function (params, container) {
+        $dom.on(container, 'change', '.js-onchange-submit-form', function (e, el) {
+            $dom.trigger(el.form, 'submit');
+        });
     };
 
     $cms.templates.blockMainStaffTips = function (params) {
