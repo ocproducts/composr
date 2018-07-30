@@ -2855,6 +2855,7 @@
      */
     $dom.internaliseAjaxBlockWrapperLinks = function internaliseAjaxBlockWrapperLinks(urlStem, blockElement, lookFor, extraParams, append, formsToo, scrollToTop) {
         urlStem = strVal(urlStem);
+        blockElement = $dom.elArg(blockElement);
         lookFor = arrVal(lookFor);
         append = Boolean(append);
         formsToo = Boolean(formsToo);

@@ -45,7 +45,7 @@
 {+END}
 
 {+START,IF,{$EQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
-	<div data-require-javascript="chat" data-tpl="blockMainFriendsList">
+	<div data-tpl="blockMainFriendsList">
 		{+START,LOOP,FRIENDS_FORWARD}
 			<div class="box"><div class="box-inner">
 				{BOX}

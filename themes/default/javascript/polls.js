@@ -31,7 +31,7 @@
     });
 
     $cms.templates.blockMainPoll = function blockMainPoll(params) {
-        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*poll.*'], {}, false, true);
+        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.ajaxBlockMainPollWrapper), ['.*poll.*'], {}, false, true);
     };
 
     $cms.templates.pollAnswer = function pollAnswer(params, container) {

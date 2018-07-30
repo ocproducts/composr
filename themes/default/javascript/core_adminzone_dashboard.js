@@ -258,11 +258,11 @@
         $dom.on($dom.$('#include_duplicates'), 'change', changeFunc);
         $dom.on($dom.$('#include_user_activities'), 'change', changeFunc);
 
-        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], { 'raw': 1, 'cache': 0 }, false, true);
+        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.ajaxBlockMainStaffActionsWrapper), ['.*'], { 'raw': 1, 'cache': 0 }, false, true);
     };
 
     $cms.templates.blockMainStaffTips = function (params) {
-        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['^staff_tips_dismiss$', '^rand$'/*cache breaker*/], {}, false, true, false);
+        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.ajaxBlockMainStaffTipsWrapper), ['^staff_tips_dismiss$', '^rand$'/*cache breaker*/], {}, false, true, false);
     };
 
     function ajaxFormSubmitAdminHeadless(form, blockName, map) {
