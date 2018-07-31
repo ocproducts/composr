@@ -1462,7 +1462,7 @@ function find_id_moniker($url_parts, $zone, $search_redirects = true)
  */
 function extend_url(&$url, $append)
 {
-    if ($append != '') {
+    if (($append != '') && (strpos($url, '?' . $append) === false) && (strpos($url, '&' . $append) === false)) {
         $url .= ((strpos($url, '?') === false) ? '?' : '&') . $append;
     }
 }
