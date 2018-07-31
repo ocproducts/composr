@@ -17,6 +17,8 @@ php_value max_input_vars "2000"
 
 # This causes unstability (and is known/documented to) but some hosts turn it on
 php_value mbstring.func_overload "0"
+
+# SpamAssassin does not	like this
 php_flag mail.add_x_header off
 
 # Some free hosts prepend/append junk, which is not legitimate (breaks binary and AJAX scripts, potentially more)

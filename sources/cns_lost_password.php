@@ -110,7 +110,7 @@ function lost_password_emailer_step($username, $email_address)
         $old_server_name = $_SERVER['SERVER_NAME'];
 
         // Fiddle to try and anonymise details of the e-mail
-        $_SERVER['PHP_SELF'] = "/";
+        $_SERVER['PHP_SELF'] = '/';
         $_SERVER['SERVER_NAME'] = $_SERVER['SERVER_ADDR'];
 
         $from_email = get_option('website_email');
