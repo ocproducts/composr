@@ -7,4 +7,4 @@
 {+END}
 {+END}
 
-<div class="tpl-placeholder" style="display: none;" data-tpl="ajaxPagination" data-tpl-params="{+START,PARAMS_JSON,wrapper_id,block_call_url,infinite_scroll_call_url}{_*}{+END}"></div>
+<div class="tpl-placeholder" style="display: none;" data-tpl="ajaxPagination" data-tpl-params="{+START,PARAMS_JSON,WRAPPER_ID,block_call_url,infinite_scroll_call_url}{_*}{+END}"></div>

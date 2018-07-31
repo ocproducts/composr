@@ -338,7 +338,7 @@
     };
 
     $cms.templates.blockMainFriendsList = function (params, container) {
-        if (params.wrapperId && params.blockCallUrl) {
+        if (params.ajaxBlockMainFriendsListWrapper && params.blockCallUrl) {
             $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.ajaxBlockMainFriendsListWrapper), ['.*'], {}, false, true);
         }
 

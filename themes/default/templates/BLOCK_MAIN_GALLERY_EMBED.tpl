@@ -15,7 +15,10 @@
 						{PAGINATION}
 					</div>
 
-					{+START,INCLUDE,AJAX_PAGINATION}ALLOW_INFINITE_SCROLL=1{+END}
+					{+START,INCLUDE,AJAX_PAGINATION}
+						WRAPPER_ID={$GET,ajax_block_main_gallery_embed_wrapper}
+						ALLOW_INFINITE_SCROLL=1
+					{+END}
 				{+END}
 			</div>
 		{+END}

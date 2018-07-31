@@ -467,32 +467,28 @@
     };
 
     $cms.templates.ajaxPagination = function ajaxPagination(params) {
-        var wrapperEl = $dom.$id(params.wrapperId),
+        var wrapperEl = $dom.elArg('#' + params.wrapperId),
             blockCallUrl = params.blockCallUrl,
             infiniteScrollCallUrl = params.infiniteScrollCallUrl,
             infiniteScrollFunc;
+        
+        $dom.internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['^[^_]*_start$', '^[^_]*_max$'], {});
 
-        if (wrapperEl) {
-            $dom.internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['^[^_]*_start$', '^[^_]*_max$'], {});
+        if (infiniteScrollCallUrl) {
+            infiniteScrollFunc = $dom.internaliseInfiniteScrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
 
-            if (infiniteScrollCallUrl) {
-                infiniteScrollFunc = $dom.internaliseInfiniteScrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
+            $dom.on(window, {
+                scroll: infiniteScrollFunc,
+                touchmove: infiniteScrollFunc,
+                keydown: $dom.infiniteScrollingBlock,
+                mousedown: $dom.infiniteScrollingBlockHold,
+                mousemove: function () {
+                    // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
+                    $dom.infiniteScrollingBlockUnhold(infiniteScrollFunc);
+                }
+            });
 
-                $dom.on(window, {
-                    scroll: infiniteScrollFunc,
-                    touchmove: infiniteScrollFunc,
-                    keydown: $dom.infiniteScrollingBlock,
-                    mousedown: $dom.infiniteScrollingBlockHold,
-                    mousemove: function () {
-                        // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-                        $dom.infiniteScrollingBlockUnhold(infiniteScrollFunc);
-                    }
-                });
-
-                infiniteScrollFunc();
-            }
-        } else {
-            $util.inform('$cms.templates.ajaxPagination(): Wrapper element not found.');
+            infiniteScrollFunc();
         }
     };
 

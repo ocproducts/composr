@@ -2663,7 +2663,7 @@
     /**
      * @param event
      */
-    $dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold(event) {
+    $dom.infiniteScrollingBlock = function infiniteScrollingBlock(event) {
         if (event.keyCode === 35) { // 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
             infiniteScrollBlocked = true;
             setTimeout(function () {
@@ -2672,7 +2672,7 @@
         }
     };
 
-    $dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold() {
+    $dom.infiniteScrollingBlockHold = function infiniteScrollingBlockHold() {
         if (!infiniteScrollBlocked) {
             infiniteScrollBlocked = true;
             infiniteScrollMouseHeld = true;
@@ -2891,6 +2891,7 @@
 
         targets.forEach(function (target) {
             if ((target.target !== '_self') || (target.href && target.getAttribute('href').startsWith('#')) || (target.action && target.getAttribute('action').startsWith('#'))) {
+                // ^ Only internalise links and forms with [target="_self"] 
                 return; // (continue)
             }
 

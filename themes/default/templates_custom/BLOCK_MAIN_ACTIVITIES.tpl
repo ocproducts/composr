@@ -28,7 +28,10 @@
 		</div>
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}
-			{+START,INCLUDE,AJAX_PAGINATION}ALLOW_INFINITE_SCROLL=1{+END}
+			{+START,INCLUDE,AJAX_PAGINATION}
+				WRAPPER_ID={$GET,ajax_catalogue_products_category_embed_wrapper}
+				ALLOW_INFINITE_SCROLL=1
+			{+END}
 		{+END}
 	</div>
 {+END}
