@@ -179,9 +179,9 @@ function open_link_as_overlay(ob,width,height,target)
 	{
 		if (!modal.box_wrapper) return; /* Overlay closed already */
 
-		var real_width=is_video?img.videoWidth:img.width;
+		var real_width=is_video?img.videoWidth:img.naturalWidth;
 		var width=real_width;
-		var real_height=is_video?img.videoHeight:img.height;
+		var real_height=is_video?img.videoHeight:img.naturalHeight;
 		var height=real_height;
 
 		var max_dims=_get_max_lightbox_img_dims(modal,has_full_button);
