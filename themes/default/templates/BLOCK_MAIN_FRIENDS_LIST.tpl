@@ -36,7 +36,10 @@
 			internalise_ajax_block_wrapper_links('{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS}}',document.getElementById('{$GET;,ajax_block_main_friends_list_wrapper}'),['.*'],{ },false,true);
 		//]]></script>
 		{+START,IF_NON_EMPTY,{PAGINATION}}
-			{+START,INCLUDE,AJAX_PAGINATION}ALLOW_INFINITE_SCROLL=1{+END}
+			{+START,INCLUDE,AJAX_PAGINATION}
+				ALLOW_INFINITE_SCROLL=1
+				WRAPPER_ID={$GET,ajax_block_main_friends_list_wrapper}
+			{+END}
 		{+END}
 	</div>
 {+END}
