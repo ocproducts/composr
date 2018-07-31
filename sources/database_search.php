@@ -25,8 +25,6 @@
  */
 function init__database_search()
 {
-    require_code('search');
-
     $GLOBALS['TOTAL_SEARCH_RESULTS'] = 0;
 
     $maximum_result_count_point = get_value('maximum_result_count_point');

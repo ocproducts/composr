@@ -374,12 +374,14 @@ function find_available_addons($installed_too = true, $gather_mtimes = true, $al
         $tar = tar_open($full, 'rb', true);
         $info_file = tar_get_file($tar, 'addon.inf', true);
         if ($info_file === null) {
-            $info_file = tar_get_file($tar, 'mod.inf'); // LEGACY
+            $info_file = tar_get_file($tar, 'mod.inf', true); // LEGACY
         }
         tar_close($tar);
 
         if (!is_null($info_file)) {
             $info = better_parse_ini_file(null, $info_file['data']);
+
+            $info['file'] = $file;
 
             if (!empty($info['copyright_attribution'])) {
                 $info['copyright_attribution'] = explode("\n", $info['copyright_attribution']);

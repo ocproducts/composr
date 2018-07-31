@@ -3812,7 +3812,9 @@ function add_captcha_checking(form)
 		};
 	var showevent=(typeof window.onpageshow!='undefined')?'pageshow':'load';
 	add_event_listener_abstract(window,showevent,function() {
-		form.elements['captcha'].src+='&'; // Force it to reload latest captcha
+		var image=document.getElementById('captcha_image');
+		if (!image) image=document.getElementById('captcha_frame');
+		image.src+='&'; // Force it to reload latest captcha
 	});
 }
 
