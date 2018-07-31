@@ -1,83 +1,37 @@
-[title="2"]Liability[/title]
+Welcome to the Composr community. We are an open community of Composr CMS users & developers, and aim to be welcoming to all.
 
-We will not guarantee the accuracy, validity, integrity or security status of any content on this website, and will accept no liability from any issues that may result from it. We do not scan all hosted files for viruses.
+Please follow these simple rules...
 
-User posted content is out of our control unless we have known about the presence of it for at least one full week.
+Decorum:
+1) No profanity (swearing) or sexualised language. Some people will be offended by it, and the forums are designed to be a comfortable environment for everybody.
+2) No violent/sexual/bigoted content. This website is not a free speech platform, it's a community. Do not paste public links to said content without clear warning about it.
+3) Stay polite and don't intimidate. If someone is not being polite, report the post, don't escalate the situation.
+4) Do not spoil the experience of others for your own petty reasons.
 
-Trademarks remain the property of their respective owners.
+Rules for quality content:
+1) Do not double post.
+2) Do not 'bump' content unless at least full 5 days have passed since you posted it. If you need to find a quick response, try and get one in the chat room.
+3) Do not post spam. You may advertise your own Composr website and Composr-related services in a restrained way, but you may not advertise non-related products or services.
+4) Keep topics on-topic. Do not post "laundry lists" of unrelated questions in a single topic (even if it's your own topic), do not hijack other people's topics for unrelated discussion.
+5) Either write in clear English that is easy to understand, or post in your native language (we have automatic translation).
+6) Try and post in the most appropriate forum. You may have discussions completely unrelated to Composr, but only in the General Chat forum.
 
-[title="2"]Accounts and your behaviour[/title]
+The obvious:
+1) Do not try and impersonate anybody else.
+2) Do not try and hack anybody, or spread viruses.
+3) Do not intentionally undermine the privacy of other users, e.g. doxxing.
+4) Do not do any kind of illegal activity, such as promoting illicit drug use, grooming children, or any kind of criminal incitement.
 
-Do not join this website more than once (hence creating multiple accounts). If you cannot remember your password, use the 'lost password' feature, which is available on the login page. If problems persist, contact the staff.
+Regarding moderation:
+ - These rules may be enforced at the discretion of the moderators, with whatever punitive actions considered appropriate (warnings, post deletions, post edits, closing topics, bans, etc).
+ - Moderators also have the right to intercede for any reason if they feel it is important to maintain a quality experience for the users.
+ - Moderators have the ability to read private content, such as private topics and inline personal posts.
 
-Do not pose as, or wilfully act as, a member of staff.
-
-[title="2"]General posting/submission guidelines[/title]
-
-Do not post any copyrighted material for which you have no right to do so.
-
-Do not repeatedly use strong/harsh swearing or sexual references.
-
-Do not be too sexually graphic. Do not link to or post pornography, and only mild and non-sexually motivated nudity is allowed.
-
-Staff have the right to edit, censor, delete or otherwise modify any content message they feel is inappropriate, without any warning given to the poster.
-
-Do not submit any content that you know to contain viruses or commonly exploited security holes.
-
-Any content submitted to us, will not necessarily be removed by request. We are not bound to remove submitted content and anything submitted should be assumed to be staying on our servers, publicly accessible permanently. By submitting, you are aware of the consequences of this, and take responsibility of it, and may not at any time insist on content being withdrawn.
-
-Do not try to bypass the word filter: filtered words are placed in the filter in accordance with guidelines, and obvious misspellings or equally obnoxious alternatives, only serve to work against the wishes of the staff.
-
-Do not post spoilers (material that reveals information relating to the subject matter of this website before the majority of members have learnt it through the channels they would wish to) in your topic titles. If you wish to post spoilers inside a topic give good warning about their presence, or use the Comcode 'hide' tag.
-
-Do not post a link to a website that contains material that would be in violation of the rules if posted directly on this website. Special exceptions may be given by the staff when clear warnings are put in place.
-
-Do not incite illegal activity, either directly, or by educating with the obvious purpose to make it more achievable.
-
-Do not spam this website:
- - you must be moderately confident that anything posted will interest at least a minority of the members.
- - you must not post material more than once unless there is good reason, from the point of view of other members.
-
-Do not intentionally disrupt the enjoyment of this website by other users. 'Enjoyment' has a general meaning for the purposes of this rule -- for example, robust argument in a debate forum would be considered 'enjoyable', as debaters would wish for it.
-
-This website is private property and hence any form of censorship is allowed at the discretion of the staff -- you agree not to consider this website a forum for free speech if the staff consider it breaks the rules.
-
-[title="2"]Forum and Chat[/title]
-
-Be respectful of the opinions of other members, and do not discriminate it based on nationality, sexuality, gender, religion or race. Do not flame or degrade other members. If you have a problem with another member's actions, contact a member of staff.
-
-[title="2"]Forum[/title]
-
-Do not double post (post consecutively in a topic) on the forum unless...
- - You have new information to add after several days since your previous post was made
- - You are bumping a topic after several days of no replies
- - You are quoting various posts, and feel the need to do so in separate posts
-
-[title="2"]Chat[/title]
-
-In no circumstances may you use the chatrooms to start or continue sexually suggestive dialogue with any member under the age of consent (whichever age is highest between any geographic region where the hypothetical parties are located).
-
-[title="2"]Signatures[/title]
-
-Images in your signature should not exceed 50k in size, 468 pixels wide, or 110 pixels tall. For a guideline, this is about five lines of standard-sized text space. Text in your signature should also not exceed more than 5 lines of normal-sized text space.
-
-Remember that a big signature is not always a good signature. Keep it nice and simple. Feel free to advertise your website if you wish, if the link to it does not itself break site rules.
-
-[title="2"]Points[/title]
-
-Do not abuse the point system -- every gift point transaction must be justifiable to the staff, in both quantity and purpose.
-
-[title="2"]Hacking[/title]
-
-You may not, unless explicitly given permission by a high-ranking member of staff, try to hack into this website. For the purpose of this rule, 'hacking' includes any technique designed to compromise the security or stability of the website.
+Liability:
+1) It is user's own responsibility to scan content for viruses, etc.
+2) Any user breaking intellectual property laws is personally liable for it.
+3) No warranties are provided.
 
 [title="2"]Privacy[/title]
 
 Acceptance of these rules implies acceptance of the [page=":privacy"]privacy policy[/page] (which includes details of how this website uses cookies).
-
-
-[title="2"]Violation[/title]
-
-The staff reserve the right to ban any member who breaks any rule, whether the rule is agreed as broken by the alleged offender or not. No warning or explanations need be given.
-
-The staff also reserve the right to change these rules at any time.
