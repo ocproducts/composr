@@ -25,6 +25,23 @@ class blocks_test_set extends cms_test_case
         require_code('zones2');
     }
 
+    public function testBlockCacheSignatureParsing()
+    {
+        $blocks = find_all_blocks();
+        $map = array();
+        foreach (array_keys($blocks) as $codename) {
+            list($object) = do_block_hunt_file($codename, $map);
+            if ((is_object($object)) && (method_exists($object, 'caching_environment'))) {
+                $info = $object->caching_environment($map);
+                if ((isset($info['cache_on'])) && (is_string($info['cache_on']))) {
+                    $cache_on = $info['cache_on'];
+                    $result = @eval('/* Evaluating for ' . $block . ' */ return ' . $info['cache_on'] . ';');
+                    $this->assertTrue(is_array($result) || $result === null, 'Failed block cache signature: ' . $codename . '... ' . $info['cache_on']); // Will always pass actually, as if there's a parse error eval will crash with a fatal error, all other errors are suppressed
+                }
+            }
+        }
+    }
+
     public function testBlocksNotExiting()
     {
         $blocks = find_all_blocks();
