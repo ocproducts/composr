@@ -947,7 +947,7 @@ function do_template($codename, $parameters = array(), $lang = null, $light_erro
 
                 $may_use_cache = false;
                 if ((!$support_smart_decaching) || (($tcp_time !== false) && ($found_orig_file))/*if in install can be found yet no file at path due to running from data.cms*/ && ($found !== null)) {
-                    if ((!$support_smart_decaching) || ((filemtime($file_path) < $tcp_time) && ((empty($SITE_INFO['dependency__' . $file_path])) || (dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $file_path]), $tcp_time))))) {
+                    if ((!$support_smart_decaching) || ((is_file($file_path)) && (filemtime($file_path) < $tcp_time) && ((empty($SITE_INFO['dependency__' . $file_path])) || (dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $file_path]), $tcp_time))))) {
                         $may_use_cache = true;
                     }
                 }

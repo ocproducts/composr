@@ -111,7 +111,7 @@ class Hook_actionlog_filedump extends Hook_actionlog
 
             case 'FILEDUMP_MOVE':
                 $path = trim($actionlog_row['param_b'], '/');
-                $written_context = do_lang('SOMETHING_TO', $actionlog_row['param_a'], ($path) ? do_lang('ROOT') : $path);
+                $written_context = do_lang('SOMETHING_TO', $actionlog_row['param_a'], ($path == '') ? do_lang('ROOT') : $path);
                 return $written_context;
         }
 

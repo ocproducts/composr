@@ -20,7 +20,7 @@
  */
 class _installer_test_set extends cms_test_case
 {
-    public function testQuickInstallerBuildsAndDoesNotFullyCrash()
+    /*TODOpublic function testQuickInstallerBuildsAndDoesNotFullyCrash()
     {
         $limit_to = get_param_string('limit_to', '');
         if (($limit_to != '') && ($limit_to != 'testQuickInstallerBuildsAndDoesNotFullyCrash')) {
@@ -57,9 +57,9 @@ class _installer_test_set extends cms_test_case
         $http_result = cms_http_request($url);
 
         $this->assertTrue($http_result->message == '200');
-    }
+    }*/
 
-    public function testDoesNotFullyCrash()
+    /*TODOpublic function testDoesNotFullyCrash()
     {
         $limit_to = get_param_string('limit_to', '');
         if (($limit_to != '') && ($limit_to != 'testDoesNotFullyCrash')) {
@@ -81,7 +81,7 @@ class _installer_test_set extends cms_test_case
             exit();
         }
         $this->assertTrue($success, 'No submit button found'); // Has start button: meaning something worked
-    }
+    }*/
 
     public function testFullInstallSafeMode()
     {
@@ -101,7 +101,7 @@ class _installer_test_set extends cms_test_case
         }
     }
 
-    public function testFullInstallNormalMode()
+    /*TODOpublic function testFullInstallNormalMode()
     {
         $limit_to = get_param_string('limit_to', '');
         if (($limit_to != '') && ($limit_to != 'testFullInstallNormalMode')) {
@@ -117,7 +117,7 @@ class _installer_test_set extends cms_test_case
         if (!$result) {
             return;
         }
-    }
+    }*/
 
     protected function do_headless_install($safe_mode)
     {

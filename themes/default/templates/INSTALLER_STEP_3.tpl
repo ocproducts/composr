@@ -67,7 +67,7 @@
 			<div class="float-surrounder">
 				<p class="lonely-label">
 					<a class="toggleable-tray-button js-click-toggle-advanced-db-setup-section" data-tp-section="{!ADVANCED_DATABASE_SETUP~|*}" href="#!">{!ADVANCED_DATABASE_SETUP}</a>
-					<a class="toggleable-tray-button js-click-toggle-advanced-db-setup-section" data-tp-section="{!ADVANCED_DATABASE_SETUP~|*}" href="#!"><img id="img-{!ADVANCED_DATABASE_SETUP|*}" alt="{!EXPAND}: {$STRIP_TAGS,{!ADVANCED_DATABASE_SETUP}}" title="{!EXPAND}" width="24" height="24" src="{$BASE_URL*}/install.php?type=expand" /></a>
+					<a class="toggleable-tray-button js-click-toggle-advanced-db-setup-section" data-tp-section="{!ADVANCED_DATABASE_SETUP~|*}" href="#!"><img class="vertical-alignment" id="img-{!ADVANCED_DATABASE_SETUP|*}" alt="{!EXPAND}: {$STRIP_TAGS,{!ADVANCED_DATABASE_SETUP}}" title="{!EXPAND}" width="24" height="24" src="{$BASE_URL*}/install.php?type=expand" /></a>
 				</p>
 
 				<div id="{!ADVANCED_DATABASE_SETUP|*}" style="display: none">

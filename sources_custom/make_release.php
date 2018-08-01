@@ -15,13 +15,6 @@
 
 /*EXTRA FUNCTIONS: shell_exec|DOM.*|pretty_print_dom_document*/
 
-/*
-Using Windows? This will only run if you install Cygwin 'tar', 'gzip' into your path.
-Even then, we do not regularly test it.
-*/
-
-/* See the note at the top of the other make_release.php file for usage on Windows */
-
 function init__make_release()
 {
     require_code('files2');

@@ -839,7 +839,7 @@ if ($rate_limiting) {
             // Write out new state
             $RATE_LIMITING_DATA[$ip] = $pertinent;
             $RATE_LIMITING_DATA[$ip][] = $time;
-            file_put_contents($rate_limiter_path, '<' . '?php' . "\n\n" . '$RATE_LIMITING_DATA=' . var_export($RATE_LIMITING_DATA, true) . ';', LOCK_EX);
+            file_put_contents($rate_limiter_path, '<' . '?php' . "\n\n" . '$RATE_LIMITING_DATA=' . var_export($RATE_LIMITING_DATA, true) . ';' . "\n", LOCK_EX);
             //sync_file($rate_limiter_path); Not done. Each server should rate limit separately. Synching this data across servers would be too slow and not scalable
 
             // Save some memory

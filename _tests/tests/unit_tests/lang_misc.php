@@ -20,6 +20,16 @@ class lang_misc_test_set extends cms_test_case
 {
     protected $lang_file_mapping = array();
 
+    public function setUp()
+    {
+        parent::setUp();
+
+        disable_php_memory_limit();
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(300);
+        }
+    }
+
     public function testLangStringsWork()
     {
         $dir = get_file_base() . '/lang_custom/EX';

@@ -4033,13 +4033,24 @@ function is_maintained($code)
 {
     static $cache = array();
     if ($cache === array()) {
-        $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
-        // TODO: #3032 (must default charset to utf-8 if no BOM though)
-        fgetcsv($myfile); // Skip header row
-        while (($row = fgetcsv($myfile)) !== false) {
-            $cache[$row[0]] = !empty($row[3]);
+        global $FILE_ARRAY;
+        if (@is_array($FILE_ARRAY)) {
+            $file = file_array_get('data/maintenance_status.csv');
+            $lines = explode("\n", $file);
+            array_shift($lines); // Skip header row
+            foreach ($lines as $line) {
+                $row = str_getcsv($line);
+                $cache[$row[0]] = !empty($row[3]);
+            }
+        } else {
+            $myfile = fopen(get_file_base() . '/data/maintenance_status.csv', 'rb');
+            // TODO: #3032 (must default charset to utf-8 if no BOM though)
+            fgetcsv($myfile); // Skip header row
+            while (($row = fgetcsv($myfile)) !== false) {
+                $cache[$row[0]] = !empty($row[3]);
+            }
+            fclose($myfile);
         }
-        fclose($myfile);
     }
 
     if (isset($cache[$code])) {

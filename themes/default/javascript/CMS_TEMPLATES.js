@@ -471,7 +471,7 @@
             blockCallUrl = params.blockCallUrl,
             infiniteScrollCallUrl = params.infiniteScrollCallUrl,
             infiniteScrollFunc;
-        
+
         $dom.internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['^[^_]*_start$', '^[^_]*_max$'], {});
 
         if (infiniteScrollCallUrl) {

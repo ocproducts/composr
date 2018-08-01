@@ -2891,7 +2891,7 @@
 
         targets.forEach(function (target) {
             if ((target.target !== '_self') || (target.href && target.getAttribute('href').startsWith('#')) || (target.action && target.getAttribute('action').startsWith('#'))) {
-                // ^ Only internalise links and forms with [target="_self"] 
+                // ^ Only internalise links and forms with [target="_self"]
                 return; // (continue)
             }
 
