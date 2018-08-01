@@ -98,7 +98,6 @@ function init__global2()
     $SUPPRESS_ERROR_DEATH = array(false);
     $JAVASCRIPTS_DEFAULT = array(
         'global' => true,
-        'modalwindow' => true,
         'custom_globals' => true,
     );
     $RUNNING_SCRIPT_CACHE = array();
