@@ -298,6 +298,10 @@ function skippable_keep($key, $val)
  */
 function is_page_https($zone, $page)
 {
+    if ($GLOBALS['IN_MINIKERNEL_VERSION']) {
+        return false;
+    }
+
     static $off = null;
     if ($off === null) {
         global $SITE_INFO;
