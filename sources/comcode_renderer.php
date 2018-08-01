@@ -2415,7 +2415,7 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
         require_code('geshi');
         if (class_exists('GeSHi')) {
             require_code('developer_tools');
-            destrictify(false);
+            destrictify();
             $geshi = new GeSHi($evaluated, ($type == 'HTML') ? 'html5' : strtolower($type));
             $geshi->set_header_type(GESHI_HEADER_DIV);
             if ($numbers) {

@@ -29,7 +29,7 @@ class geshi_test_set extends cms_test_case
 ';
 
         require_code('developer_tools');
-        destrictify(false);
+        destrictify();
 
         $geshi = new GeSHi($input, 'html5');
         $geshi->set_header_type(GESHI_HEADER_DIV);

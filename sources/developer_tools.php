@@ -141,15 +141,11 @@ function semi_dev_mode_startup()
 /**
  * Remove Composr's strictness, to help integration of third-party code.
  *
- * @param  boolean $change_content_type Whether to also set the content type to plain-HTML
  * @param  boolean $db_too Whether to destrictify database commands over the Composr database driver
  */
-function destrictify($change_content_type = true, $db_too = false)
+function destrictify($db_too = false)
 {
     // Turn off strictness
-    if ((!headers_sent()) && ($change_content_type)) {
-        @header('Content-type: text/html; charset=' . get_charset());
-    }
     $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
     $GLOBALS['TITLE_CALLED'] = true;
     error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE);

@@ -576,7 +576,7 @@ class Module_admin_import
     {
         if (!$GLOBALS['DEV_MODE']) {
             require_code('developer_tools');
-            destrictify(true, true);
+            destrictify(true);
         }
 
         $refresh_url = get_self_url(true, false, array('type' => 'import'), true);
