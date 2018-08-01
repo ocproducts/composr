@@ -45,6 +45,7 @@ class Hook_health_check_install_env_php_lock_down extends Hook_Health_Check
         $this->process_checks_section('testNeededFunctions', 'Needed functions', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testFileUploads', 'File uploads', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testOpenBasedir', 'open_basedir', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testDeprecatedOptionsDisabled', 'Deprecated options in php.ini', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -313,5 +314,19 @@ END;
             $files = get_directory_contents('C:\\', '', null, false);
         }
         $this->assertTrue(count($files) == 0, do_lang('WARNING_OPEN_BASEDIR'));
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testDeprecatedOptionsDisabled($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        $ret = ini_get('always_populate_raw_post_data');
+        $this->assertTrue(($ret === false) || ($ret === '-1'), do_lang('WARNING_ISSUE_WITH_ALWAYS_POPULATE_RAW_POST_DATA'));
     }
 }

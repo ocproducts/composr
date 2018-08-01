@@ -143,6 +143,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         INSTALL_TEST_CONTENT
         DESCRIPTION_INSTALL_TEST_CONTENT
         WARNING_SERVER_SOFTWARE
+        WARNING_ISSUE_WITH_ALWAYS_POPULATE_RAW_POST_DATA
         WARNING_NON_MAINTAINED
         CONFIG_OPTION_reported_times
         REPORTED_TIMES
