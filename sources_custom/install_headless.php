@@ -15,7 +15,7 @@
 
 function do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver = 'cns', $board_path = null, $forum_base_url = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = array(), $do_index_test = true, $db_type = null)
 {
-    rename(get_file_base() . '/_config.php', get_file_base() . '/_config.php.bak');
+    copy(get_file_base() . '/_config.php', get_file_base() . '/_config.php.bak');
 
     $success = _do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver, $board_path, $forum_base_url, $database_forums, $username_forums, $password_forums, $extra_settings, $db_type);
 
@@ -24,7 +24,7 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
         $http_result = cms_http_request($url, array('trigger_error' => false, 'timeout' => 20.0));
         $success = ($http_result->message == '200');
 
-        if (/*(!$success) && */(isset($_GET['debug']))) {
+        if (/*(!$success) && */(isset($_GET['debug']) || isset($_SERVER['argv'][1]))) {
             @var_dump($url);
             @var_dump($http_result->message);
             $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags(preg_replace('#<script.*</script>#Us', '', $http_result->data)));
@@ -173,11 +173,11 @@ function _do_install_to($database, $username, $password, $table_prefix, $safe_mo
         if (count($get) > 0) {
             $url .= '&' . http_build_query($get);
         }
-        $http_result = cms_http_request($url, array('post_params' => $post));
+        $http_result = cms_http_request($url, array('post_params' => $post, 'timeout' => 60.0));
         $data = $http_result->data;
         $success = ($http_result->message == '200');
 
-        if (/*(!$success) && */(isset($_GET['debug']))) {
+        if (/*(!$success) && */(isset($_GET['debug']) || isset($_SERVER['argv'][1]))) {
             @var_dump($url);
             @var_dump($http_result->message);
             $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags(preg_replace('#<script.*</script>#Us', '', $data)));

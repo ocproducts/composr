@@ -20,7 +20,16 @@
  */
 class _installer_test_set extends cms_test_case
 {
-    /*TODOpublic function testQuickInstallerBuildsAndDoesNotFullyCrash()
+    public function setUp()
+    {
+        parent::setUp();
+
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(0);
+        }
+	}
+
+    public function testQuickInstallerBuildsAndDoesNotFullyCrash()
     {
         $limit_to = get_param_string('limit_to', '');
         if (($limit_to != '') && ($limit_to != 'testQuickInstallerBuildsAndDoesNotFullyCrash')) {
@@ -36,10 +45,6 @@ class _installer_test_set extends cms_test_case
         $_GET['skip_manual'] = '0';
         $_GET['skip_bundled'] = '0';
         $_GET['skip_mszip'] = '0';
-
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
 
         require_code('version2');
         require_code('make_release');
@@ -57,9 +62,9 @@ class _installer_test_set extends cms_test_case
         $http_result = cms_http_request($url);
 
         $this->assertTrue($http_result->message == '200');
-    }*/
+    }
 
-    /*TODOpublic function testDoesNotFullyCrash()
+    public function testDoesNotFullyCrash()
     {
         $limit_to = get_param_string('limit_to', '');
         if (($limit_to != '') && ($limit_to != 'testDoesNotFullyCrash')) {
@@ -76,12 +81,12 @@ class _installer_test_set extends cms_test_case
         $this->assertTrue($http_result->message == '200', 'Wrong HTTP status code ' . $http_result->message);
 
         $success = (strpos($http_result->data, 'type="submit"') !== false);
-        if ((!$success) && (isset($_GET['debug']))) {
+        if ((!$success) && (isset($_GET['debug']) || isset($_SERVER['argv'][1]))) {
             @var_dump($http_result->data);
             exit();
         }
         $this->assertTrue($success, 'No submit button found'); // Has start button: meaning something worked
-    }*/
+    }
 
     public function testFullInstallSafeMode()
     {
@@ -101,7 +106,7 @@ class _installer_test_set extends cms_test_case
         }
     }
 
-    /*TODOpublic function testFullInstallNormalMode()
+    public function testFullInstallNormalMode()
     {
         $limit_to = get_param_string('limit_to', '');
         if (($limit_to != '') && ($limit_to != 'testFullInstallNormalMode')) {
@@ -117,7 +122,7 @@ class _installer_test_set extends cms_test_case
         if (!$result) {
             return;
         }
-    }*/
+    }
 
     protected function do_headless_install($safe_mode)
     {
@@ -162,7 +167,7 @@ class _installer_test_set extends cms_test_case
             );
             $fail_message = 'Failed on trial #' . strval($i + 1) . ' ';
             $fail_message .= ($safe_mode ? '(safe mode)' : '(no safe mode)');
-            if (!isset($_GET['debug'])) {
+            if ((!isset($_GET['debug']) && !isset($_SERVER['argv'][1]))) {
                 $fail_message .= ' -- append &debug=1 to the URL to get debug output';
             }
             $this->assertTrue($success, $fail_message);
