@@ -1319,7 +1319,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                 array_shift($cells); // First one is non-existent empty
                                                 $spec = true;
 
-                                                $num_cells_in_row = intval((float)count($cells) / 2.0);
+                                                $num_cells_in_row = @intval((float)count($cells) / 2.0);
 
                                                 $inter_padding = 3.0;
 
