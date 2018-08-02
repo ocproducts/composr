@@ -266,6 +266,7 @@ class Hook_addon_registry_core_abstract_interfaces
             do_lorem_template('AJAX_PAGINATION', array(
                 'BLOCK_PARAMS' => '',
                 'ALLOW_INFINITE_SCROLL' => '1',
+                'WRAPPER_ID' => placeholder_id(),
             ))
         );
     }
