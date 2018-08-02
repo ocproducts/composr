@@ -10,8 +10,9 @@
 /**
  * @license		http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright	ocProducts Ltd
- * @package		simpletesting
+ * @package		testing_platform
  */
+
 require_once('unit_tester.php');
 require_once('reporter.php');
 require_once('browser.php');

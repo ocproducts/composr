@@ -143,6 +143,10 @@ class Hook_addon_registry_core_themeing
             'sources/hooks/systems/snippets/template_editor_load.php',
             'sources/hooks/systems/snippets/template_editor_save.php',
             'themes/default/javascript/core_themeing.js',
+            'adminzone/pages/modules/admin_svg_sprites.php',
+            'themes/default/templates/PREVIEW_SVG_SPRITE_ICON.tpl',
+            'themes/default/templates/PREVIEW_SVG_SPRITE_SCREEN.tpl',
+            'themes/default/templates/GENERATE_SVG_SPRITE_SCREEN.tpl',
         );
     }
 
@@ -171,6 +175,9 @@ class Hook_addon_registry_core_themeing
             'templates/TEMPLATE_TREE_ITEM_WRAP.tpl' => 'administrative__template_tree_screen',
             'templates/TEMPLATE_TREE_NODE.tpl' => 'administrative__template_tree_screen',
             'templates/TEMPLATE_TREE_SCREEN.tpl' => 'administrative__template_tree_screen',
+            'templates/PREVIEW_SVG_SPRITE_ICON.tpl' => 'administrative__preview_svg_sprite_icon',
+            'templates/PREVIEW_SVG_SPRITE_SCREEN.tpl' => 'administrative__preview_svg_sprite_screen',
+            'templates/GENERATE_SVG_SPRITE_SCREEN.tpl' => 'administrative__generate_svg_sprite_screen',
         );
     }
 
@@ -502,6 +509,74 @@ class Hook_addon_registry_core_themeing
             lorem_globalise(do_lorem_template('TEMPLATE_TREE_SCREEN', array(
                 'TITLE' => lorem_title(),
                 'TREE' => $tree,
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__preview_svg_sprite_icon()
+    {
+        require_lang('themes');
+
+        $symbol_id = 'admin__add';
+        return array(
+            lorem_globalise(do_lorem_template('PREVIEW_SVG_SPRITE_ICON', array(
+                'SPRITE_URL' => find_theme_image('icons_sprite'),
+                'SYMBOL_ID' => $symbol_id,
+                'ICON_NAME' => str_replace('__', '/', $symbol_id),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__preview_svg_sprite_screen()
+    {
+        require_lang('themes');
+
+        $symbol_id = 'admin__add';
+        $icons = do_template('PREVIEW_SVG_SPRITE_ICON', array(
+            'SPRITE_URL' => find_theme_image('icons_sprite'),
+            'SYMBOL_ID' => $symbol_id,
+            'ICON_NAME' => str_replace('__', '/', $symbol_id),
+        ));
+
+        return array(
+            lorem_globalise(do_lorem_template('PREVIEW_SVG_SPRITE_SCREEN', array(
+                'TITLE' => do_lang('themes:PREVIEW_SVG_SPRITE'),
+                'SPRITE_PATH' => get_file_base() . '/themes/default/images/icons_sprite.svg',
+                'ICONS' => $icons,
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__generate_svg_sprite_screen()
+    {
+        require_lang('themes');
+
+        return array(
+            lorem_globalise(do_lorem_template('GENERATE_SVG_SPRITE_SCREEN', array(
+                'TITLE' => do_lang('themes:GENERATE_SVG_SPRITE'),
+                'SPRITE_PATH' => get_file_base() . '/themes/default/images/icons_sprite.svg',
+                'ICONS_ADDED' => array('admin/add'),
             )), null, '', true)
         );
     }

@@ -1157,6 +1157,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/sup_running_agency/8.jpg',
             'data_custom/images/docs/sup_running_agency/9.jpg',
             'data_custom/images/docs/sup_running_agency/funny.jpg',
+            'data_custom/images/docs/tut_adv_forums/index.html',
             'data_custom/images/docs/tut_adv_forums/mailing_list.png',
             'data_custom/images/docs/tut_webhosting/image.png',
             'data_custom/images/docs/tut_webhosting/pick_webhost.png',

@@ -147,11 +147,6 @@ class Hook_addon_registry_themewizard
             'themes/default/images/logo/default_backgrounds/banner9.png',
             'themes/default/images/logo/default_backgrounds/banner10.png',
             'themes/default/javascript/themewizard.js',
-
-            'adminzone/pages/modules/admin_svg_sprites.php',
-            'themes/default/templates/PREVIEW_SVG_SPRITE_ICON.tpl',
-            'themes/default/templates/PREVIEW_SVG_SPRITE_SCREEN.tpl',
-            'themes/default/templates/GENERATE_SVG_SPRITE_SCREEN.tpl',
         );
     }
 
@@ -166,9 +161,6 @@ class Hook_addon_registry_themewizard
             'templates/THEMEWIZARD_2_PREVIEW.tpl' => 'administrative__themewizard_2_preview',
             'templates/THEMEWIZARD_2_SCREEN.tpl' => 'administrative__themewizard_2_screen',
             'templates/LOGOWIZARD_2.tpl' => 'administrative__logowizard_2',
-            'templates/PREVIEW_SVG_SPRITE_ICON.tpl' => 'administrative__preview_svg_sprite_icon',
-            'templates/PREVIEW_SVG_SPRITE_SCREEN.tpl' => 'administrative__preview_svg_sprite_screen',
-            'templates/GENERATE_SVG_SPRITE_SCREEN.tpl' => 'administrative__generate_svg_sprite_screen',
         );
     }
 
@@ -245,71 +237,6 @@ class Hook_addon_registry_themewizard
                 'PREVIEW' => $preview,
                 'FIELDS' => '',
                 'TITLE' => lorem_title(),
-            )), null, '', true)
-        );
-    }
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__preview_svg_sprite_icon()
-    {
-        require_lang('themes');
-
-        $symbol_id = 'admin__add';
-        return array(
-            lorem_globalise(do_lorem_template('PREVIEW_SVG_SPRITE_ICON', array(
-                'SPRITE_URL' => find_theme_image('icons_sprite'),
-                'SYMBOL_ID' => $symbol_id,
-                'ICON_NAME' => str_replace('__', '/', $symbol_id),
-            )), null, '', true)
-        );
-    }
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__preview_svg_sprite_screen()
-    {
-        require_lang('themes');
-
-        $symbol_id = 'admin__add';
-        $icons = do_template('PREVIEW_SVG_SPRITE_ICON', array(
-            'SPRITE_URL' => find_theme_image('icons_sprite'),
-            'SYMBOL_ID' => $symbol_id,
-            'ICON_NAME' => str_replace('__', '/', $symbol_id),
-        ));
-
-        return array(
-            lorem_globalise(do_lorem_template('PREVIEW_SVG_SPRITE_SCREEN', array(
-                'TITLE' => do_lang('themes:PREVIEW_SVG_SPRITE'),
-                'SPRITE_PATH' => get_file_base() . '/themes/default/images/icons_sprite.svg',
-                'ICONS' => $icons,
-            )), null, '', true)
-        );
-    }
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__generate_svg_sprite_screen()
-    {
-        require_lang('themes');
-
-        return array(
-            lorem_globalise(do_lorem_template('GENERATE_SVG_SPRITE_SCREEN', array(
-                'TITLE' => do_lang('themes:GENERATE_SVG_SPRITE'),
-                'SPRITE_PATH' => get_file_base() . '/themes/default/images/icons_sprite.svg',
-                'ICONS_ADDED' => array('admin/add'),
             )), null, '', true)
         );
     }
