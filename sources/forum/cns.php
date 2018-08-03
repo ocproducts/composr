@@ -613,6 +613,8 @@ class Forum_driver_cns extends Forum_driver_base
         $_lead_source_description = either_param_string('_lead_source_description', '');
         if ($_lead_source_description == '') {
             $_lead_source_description = get_self_url_easy();
+            global $METADATA;
+            $_lead_source_description = (isset($METADATA['real_page']) ? $METADATA['real_page'] : get_page_name()) . ' (' . get_self_url_easy() . ')';
         }
 
         $url_map = array('page' => 'join', '_lead_source_description' => $_lead_source_description);

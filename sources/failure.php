@@ -1423,7 +1423,7 @@ function _access_denied($class, $param, $force_login)
 
         $middle = load_module_page(_get_module_path('', 'login'), 'login');
         require_code('site');
-        if (get_value('no_tech_login_messages') !== '1') {
+        if ((get_value('no_tech_login_messages') !== '1') && (!is_guest())) {
             attach_message($message, 'warn');
         }
         $echo = globalise($middle, null, '', true);

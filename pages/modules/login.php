@@ -239,6 +239,12 @@ class Module_login
             }
         }
 
+        if (either_param_string('_lead_source_description', '') == '') {
+            global $METADATA;
+            $_lead_source_description = (isset($METADATA['real_page']) ? $METADATA['real_page'] : get_page_name()) . ' (' . get_self_url_easy() . ')';
+            $passion->attach(form_input_hidden('_lead_source_description', $_lead_source_description)); // Not specified, and we want the default for what the login screen is to be carried through (before real_page and get_self_url_easy is lost)
+        }
+
         // Lost password link
         if (get_forum_type() == 'cns' && !has_interesting_post_fields()) {
             require_lang('cns');
