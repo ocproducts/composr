@@ -104,11 +104,12 @@ class Forum_driver_base
      * Get a hyperlink (i.e. HTML link, not just a URL) to a forum member's member profile.
      *
      * @param  MEMBER $id The forum member
-     * @param  string $_username The username (blank: look it up)
+     * @param  string $_username The username / display name (blank: look it up)
      * @param  boolean $use_displayname Whether to use the displayname rather than the username (if we have them)
+     * @param  boolean $tempcode_okay Whether it is okay to return the result using Tempcode (more efficient, and allows keep_* parameters to propagate which you almost certainly want!)
      * @return Tempcode The hyperlink
      */
-    public function member_profile_hyperlink($id, $_username = '', $use_displayname = true)
+    public function member_profile_hyperlink($id, $_username = '', $use_displayname = true, $tempcode_okay = false)
     {
         if (is_guest($id)) {
             return ($_username == '') ? make_string_tempcode($this->get_username($this->get_guest_id())) : make_string_tempcode(escape_html($_username));

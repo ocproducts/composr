@@ -313,6 +313,8 @@ function report_content($content_type, $content_id, $report_post, $anonymous = 0
         // If there is already an open ticket for this report, let's make a post inside that ticket instead of making a new ticket and report
         $_report_post = do_lang('REPORTED_CONTENT_EXTRA', $report_post);
     } else {
+        $content_member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($content_member_id, $content_member, true, false);
+
         // Post will have extra information added around it
         $_report_post = static_evaluate_tempcode(do_template('REPORTED_CONTENT_FCOMCODE', array(
             '_GUID' => 'cb40aa1900eefcd24a0786b9d980fef6',
@@ -321,6 +323,7 @@ function report_content($content_type, $content_id, $report_post, $anonymous = 0
             'CONTENT_ID' => $content_id,
             'CONTENT_MEMBER' => $content_member,
             'CONTENT_MEMBER_ID' => strval($content_member_id),
+            'CONTENT_MEMBER_LINK' => $content_member_link,
             'CONTENT_TITLE' => $content_title,
             'CONTENT_RENDERED' => $content_rendered,
             'REPORT_POST' => $report_post,
