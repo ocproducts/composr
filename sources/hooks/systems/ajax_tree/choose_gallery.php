@@ -89,9 +89,9 @@ class Hook_ajax_tree_choose_gallery
             $selectable =
                 (($editable_filter !== true) || ($t['editable'])) &&
                 (($addable_filter !== true) || ($t['addable'])) &&
-                (((($t['accept_images'] == 1) || ($t['accept_videos'] == 1)) && ($t['is_member_synched'] == 0)) || (!$must_accept_something)) &&
-                ((($t['accept_videos'] == 1) && ($t['is_member_synched'] == 0)) || (!$must_accept_videos)) &&
-                ((($t['accept_images'] == 1) && ($t['is_member_synched'] == 0)) || (!$must_accept_images));
+                (((($t['accept_images']) || ($t['accept_videos'])) && (!$t['is_member_synched'])) || (!$must_accept_something)) &&
+                ((($t['accept_videos']) && (!$t['is_member_synched'])) || (!$must_accept_videos)) &&
+                ((($t['accept_images']) && (!$t['is_member_synched'])) || (!$must_accept_images));
 
             if ((!$has_children) || (strpos($_id, 'member_') !== false)) {
                 if (($editable_filter) && (!$t['editable'])) {
