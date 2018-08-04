@@ -402,13 +402,13 @@ function _build_pagination_cat_url($url_array, $post_array, $hash)
     global $COMPOUND_PARAMS_TO_SKIP;
 
     $url_array = array_merge($url_array, $post_array);
-    $skip_params = array('auth_key' => true, 'block_map' => true, 'snippet' => true, 'utheme' => true, 'ajax' => true); // Used for snippet.php AJAX block loading
+    $skipped_parameters = array('auth_key' => null, 'block_map' => null, 'snippet' => null, 'utheme' => null, 'ajax' => null); // Used for snippet.php AJAX block loading
     foreach (array_keys($post_array) as $key) {
         if (is_control_field($key, true, true)) {
-            $skip_params[] = $key;
+            $skipped_parameters[$key] = null;
         }
     }
-    $cat_url = build_url($url_array, '_SELF', $skip_params + $COMPOUND_PARAMS_TO_SKIP, true, false, false, $hash);
+    $cat_url = build_url($skipped_parameters + $url_array, '_SELF', $COMPOUND_PARAMS_TO_SKIP, true, false, false, $hash);
 
     return $cat_url;
 }

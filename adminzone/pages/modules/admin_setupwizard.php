@@ -198,7 +198,7 @@ class Module_admin_setupwizard
         $_done_once = get_value('setupwizard_completed');
         $done_once = $_done_once !== null;
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'step2'), '_SELF', array('keep_theme_seed', 'keep_theme_dark', 'keep_theme_source', 'keep_theme_algorithm'));
+        $post_url = build_url(array('page' => '_SELF', 'type' => 'step2'), '_SELF', array('keep_theme_seed' => true, 'keep_theme_dark' => true, 'keep_theme_source' => true, 'keep_theme_algorithm' => true));
         $text = new Tempcode();
         $addons_url = build_url(array('page' => 'admin_addons'), get_module_zone('admin_addons'));
         $text->attach(paragraph(do_lang_tempcode($done_once ? 'SETUPWIZARD_1_DESCRIBE_ALT' : 'SETUPWIZARD_1_DESCRIBE', escape_html($addons_url->evaluate()))));

@@ -365,7 +365,7 @@ class Module_login
 
         $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($url == '') {
-            $_url = build_url(array('page' => ''), '', array('keep_session' => 1));
+            $_url = build_url(array('page' => ''), '', array('keep_session' => true));
             $url = $_url->evaluate();
         }
         return redirect_screen($this->title, $url, do_lang_tempcode('_LOGGED_OUT'));

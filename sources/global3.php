@@ -3956,9 +3956,9 @@ function get_login_url()
     }
 
     if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login') || (get_page_name() == 'lost_password')) {
-        $_this_url = build_url(array('page' => ''), '_SELF', array('keep_session' => 1, 'redirect' => 1));
+        $_this_url = build_url(array('page' => ''), '_SELF', array('keep_session' => true));
     } else {
-        $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
+        $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => true, 'redirect' => true), true);
     }
 
     $url_map = array('page' => 'login', 'type' => 'browse');

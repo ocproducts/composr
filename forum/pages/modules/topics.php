@@ -1395,7 +1395,7 @@ class Module_topics
     {
         $title = get_screen_title('WHISPER');
 
-        $url = build_url(array('page' => '_SELF'), '_SELF', array('type' => 1), true, true);
+        $url = build_url(array('page' => '_SELF'), '_SELF', array('type' => true), true, true);
 
         $member_id = get_param_integer('intended_solely_for');
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);

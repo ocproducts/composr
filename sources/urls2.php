@@ -164,7 +164,7 @@ function _fixed_post_parser($key, $value)
 }
 
 /**
- * Relay all POST variables for this URL, to the URL embedded in the form.
+ * Relay all POST parameters for this URL, to the URL embedded in the form.
  *
  * @param  array $exclude A list of parameters to exclude
  * @param  boolean $force_everything Force field labels and descriptions to copy through even when there are huge numbers of parameters

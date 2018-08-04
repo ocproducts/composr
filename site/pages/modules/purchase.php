@@ -1221,7 +1221,7 @@ class Module_purchase
             ));
 
             $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'pay');
-            $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'type_code' => $type_code), '_SELF', array('include_message' => null), true);
+            $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'type_code' => $type_code), '_SELF', array('include_message' => true), true);
             $submit_name = do_lang_tempcode('MAKE_PAYMENT');
             $icon = 'menu/rich_content/ecommerce/purchase';
 
