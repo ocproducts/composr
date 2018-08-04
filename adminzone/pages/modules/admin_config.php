@@ -107,6 +107,7 @@ class Module_admin_config
 
         if ($type == 'browse') {
             set_helper_panel_tutorial('tut_adv_configuration');
+            set_helper_panel_text(comcode_lang_string('DOC_CONFIGURATION'));
 
             $this->title = get_screen_title('CONFIGURATION');
         }
