@@ -186,16 +186,19 @@ CRM software supported:
             'sources_custom/hooks/systems/config/sugarcrm_member_sync_types.php',
             'sources_custom/hooks/systems/config/sugarcrm_member_mappings.php',
             'sources_custom/hooks/systems/config/sugarcrm_contact_metadata_field.php',
+            'sources_custom/hooks/systems/config/sugarcrm_lead_metadata_field.php',
 
             'sources_custom/hooks/systems/config/sugarcrm_skip_string.php',
 
             'sources_custom/hooks/systems/tasks/sugarcrm_sync_message.php',
             'sources_custom/hooks/systems/tasks/sugarcrm_sync_member.php',
             'sources_custom/hooks/systems/tasks/sugarcrm_sync_contact_metadata.php',
+            'sources_custom/hooks/systems/tasks/sugarcrm_sync_lead_metadata.php',
 
             'data_custom/user_metadata_display.php',
             'sources_custom/user_metadata_display.php',
             'sources_custom/hooks/systems/cron/sugarcrm_sync_contact_metadata.php',
+            'sources_custom/hooks/systems/cron/sugarcrm_sync_lead_metadata.php',
         );
     }
 }
