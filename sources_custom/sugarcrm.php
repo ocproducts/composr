@@ -655,7 +655,7 @@ function sync_lead_metadata_into_sugarcrm()
         foreach ($rows as $row) {
             // For each member, write the metadata URL into SugarCRM
 
-            $where = "leads.id IN (SELECT bean_id FROM email_addr_bean_rel eabr JOIN email_addresses ea ON (eabr.email_address_id = ea.id) WHERE bean_module = 'Leads' AND ea.email_address='" . db_escape_string($row['m_email_address']) . "' AND eabr.deleted=0) AND (leads.status='New' OR leads.status='Assigned')";
+            $where = "leads.id IN (SELECT bean_id FROM email_addr_bean_rel eabr JOIN email_addresses ea ON (eabr.email_address_id = ea.id) WHERE bean_module = 'Leads' AND ea.email_address='" . db_escape_string($row['m_email_address']) . "' AND eabr.deleted=0) AND (leads.status='New' OR leads.status='Assigned') AND " . $metadata_field . "=''";
 
             $response = $SUGARCRM->get(
                 'Leads',
