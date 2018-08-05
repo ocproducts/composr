@@ -344,14 +344,8 @@
     };
 
     $cms.templates.blockSideShoutbox = function blockSideShoutbox(params, container) {
-        if (params.ajaxBlockSideShoutboxWrapper) {
-            $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.ajaxBlockSideShoutboxWrapper), [], {}, false, true);
-        }
-
-        $dom.on(container, 'submit', 'form.js-form-submit-side-shoutbox', function (e, form) {
-            if ($cms.form.checkFieldForBlankness(form.elements['shoutbox_message'])) {
-                $cms.ui.disableFormButtons(form);
-            } else {
+        $dom.on(container, 'click', '.js-onsubmit-check-message-not-blank', function (e, clicked) {
+            if (!$cms.form.checkFieldForBlankness(document.getElementById('shoutbox_message'))) {
                 e.preventDefault();
             }
         });

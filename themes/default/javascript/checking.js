@@ -897,10 +897,8 @@
      * @returns {boolean} - true if the field isn't empty, false otherwise
      */
     $cms.form.checkFieldForBlankness = function checkFieldForBlankness(field, alreadyShownMessage) {
-        if (!field) {
-            // Things can get confused on JS assigned to page-changing events
-            return true;
-        }
+        field = $dom.domArg(field);
+        alreadyShownMessage = Boolean(alreadyShownMessage);
 
         var value = field.value,
             errorEl = $dom.$('#error_' + field.id);

@@ -1,14 +1,11 @@
 {$REQUIRE_JAVASCRIPT,chat}
-
-{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
-{$SET,ajax_block_side_shoutbox_wrapper,ajax-block-side-shoutbox-wrapper-{$RAND%}}
-<div id="{$GET*,ajax_block_side_shoutbox_wrapper}" class="box-wrapper" data-tpl="blockSideShoutbox" data-tpl-params="{+START,PARAMS_JSON,ajax_block_side_shoutbox_wrapper,block_call_url}{_*}{+END}">
+<div class="box-wrapper" data-tpl="blockSideShoutbox" data-ajaxify="{ callUrl: '{$FACILITATE_AJAX_BLOCK_CALL;*,{BLOCK_PARAMS}}' }">
 	<section class="box box---block-side-shoutbox"><div class="box-inner">
 		<h3>{!SHOUTBOX}</h3>
 
 		{MESSAGES}
 
-		<form title="{!SHOUTBOX}" class="js-form-submit-side-shoutbox" target="_self" action="{URL*}" method="post" autocomplete="off">
+		<form title="{!SHOUTBOX}" data-ajaxify-target="1" action="{URL*}" method="post" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div>
@@ -17,7 +14,7 @@
 			</div>
 
 			<p class="proceed-button">
-				<button type="submit" class="button-screen-item buttons--send">{+START,INCLUDE,ICON}NAME=buttons/send{+END}{!SEND_MESSAGE}</button>
+				<button type="submit" class="button-screen-item buttons--send js-onsubmit-check-message-not-blank">{+START,INCLUDE,ICON}NAME=buttons/send{+END}{!SEND_MESSAGE}</button>
 			</p>
 		</form>
 	</div></section>
