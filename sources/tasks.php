@@ -178,10 +178,8 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
     if ($force_immediate) {
         if (($run_at_end_of_script) && (get_value('avoid_register_shutdown_function') !== '1')) {
             @ignore_user_abort(true); // Must keep going till completion
-            register_shutdown_function(function () use ($plain_title, $title, $hook, $args, $force_immediate, $send_notification) {
-                // Avoid specifying 'call_user_func_array__long_task' directly to workaround Xdebug bug #1556 https://bugs.xdebug.org/view.php?id=1556
-                call_user_func_array__long_task($plain_title, $title, $hook, $args, false, $force_immediate, $send_notification);
-            });
+
+            register_shutdown_function('call_user_func_array__long_task', $plain_title, $title, $hook, $args, false, $force_immediate, $send_notification);
             return new Tempcode();
         }
 
