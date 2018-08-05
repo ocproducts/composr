@@ -910,15 +910,98 @@
             });
         }
     };
-
-    // Implementation for [data-ajaxify-links="{...}"]
-    $cms.behaviors.ajaxifyLinks = {
+    
+    // Implementation for [data-ajaxify="{...}"] and [data-ajaxify-target="1"]
+    $cms.behaviors.ajaxify = {
         attach: function (context) {
-            var els = $util.once($dom.$$$(context, '[data-ajaxify-links]'), 'behavior.ajaxifyLinks');
+            var els = $util.once($dom.$$$(context, '[data-ajaxify]'), 'behavior.ajaxify');
 
-            els.forEach(function (el) {
-                var options = objVal($dom.data(el, 'ajaxifyLinks'));
-                $dom.internaliseAjaxBlockWrapperLinks(options.urlStem, el, options.lookFor, options.extraParams, options.append, options.formsToo, options.scrollToTop);
+            els.forEach(function (ajaxifyContainer) {
+                var options = objVal($dom.data(ajaxifyContainer, 'ajaxify')),
+                    callUrl = $util.url(options.callUrl),
+                    callParams = objVal(options.callParams),
+                    callParamsFromTarget = arrVal(options.callParamsFromTarget); 
+                    // ^ An array of regexes that we will match with query string params in the target's [href] or [action] URL and if matched, pass them along with the block call
+
+                for (var key in callParams) {
+                    callUrl.searchParams.set(key, callParams[key]);
+                }
+                
+                $dom.on(ajaxifyContainer, 'click', 'a[data-ajaxify-target]', doAjaxify);
+                $dom.on(ajaxifyContainer, 'submit', 'form[data-ajaxify-target]', doAjaxify);
+
+                function doAjaxify(e, target) {
+                    if ($dom.parent(target, '[data-ajaxify]') !== ajaxifyContainer) {
+                        return; // Child of a different ajaxify container.
+                    }
+                    
+                    e.preventDefault();
+                    
+                    var thisCallUrl = $util.url(callUrl),
+                        postParams = null,
+                        targetUrl = $util.url((target.localName === 'a') ? target.href : target.action);
+                    
+                    if (callParamsFromTarget.length > 0) {
+                        // Any parameters matching a pattern must be sent in the URL to the AJAX block call
+                        $util.eachIter(targetUrl.searchParams.entries(), function (param) {
+                            var paramName = param[0],
+                                paramValue = param[1];
+
+                            callParamsFromTarget.forEach(function (pattern) {
+                                pattern = new RegExp(pattern);
+
+                                if (pattern.test(paramName)) {
+                                    thisCallUrl.searchParams.set(paramName, paramValue);
+                                }
+                            });
+                        });
+                    }
+
+                    if (target.localName === 'form') {
+                        if (target.method.toLowerCase() === 'post') {
+                            postParams = '';
+                        }
+
+                        var paramName, paramValue;
+                        for (var j = 0; j < target.elements.length; j++) {
+                            if (target.elements[j].name) {
+                                paramName = target.elements[j].name;
+                                paramValue = $cms.form.cleverFindValue(target, target.elements[j]);
+
+                                if (target.method.toLowerCase() === 'post') {
+                                    if (postParams !== '') {
+                                        postParams += '&';
+                                    }
+                                    postParams += paramName + '=' + encodeURIComponent(paramValue);
+                                } else {
+                                    thisCallUrl.searchParams.set(paramName, paramValue);
+                                    targetUrl.searchParams.set(paramName, paramValue); // Used for setting new window URL
+                                }
+                            }
+                        }
+                    }
+
+                    $cms.ui.clearOutTooltips();
+
+                    // Make AJAX block call
+                    $cms.callBlock($util.rel(thisCallUrl), '', ajaxifyContainer, false, false, postParams).then(function () {
+                        window.scrollTo(0, $dom.findPosY(ajaxifyContainer, true));
+                        
+                        var newPageUrl = $cms.pageUrl();
+                        $util.eachIter(targetUrl.searchParams.entries(), function (param) {
+                            var paramName = param[0],
+                                paramValue = param[1],
+                                skip = /^(zone|page|type|id|raw|cache|auth_key|block_map|snippet|utheme|ajax)$/;
+                            
+                            if (!skip.test(paramName)) {
+                                newPageUrl.searchParams.set(paramName, paramValue);
+                            }
+                        });
+
+                        window.hasJsState = true;
+                        window.history.pushState({}, document.title, newPageUrl.toString());
+                    });
+                }
             });
         }
     };

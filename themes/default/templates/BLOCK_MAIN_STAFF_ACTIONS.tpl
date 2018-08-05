@@ -14,8 +14,8 @@
 
 		<div class="toggleable-tray js-tray-content">
 {+END}
-			<div data-ajaxify-links="{ urlStem: '{$FACILITATE_AJAX_BLOCK_CALL;*,{BLOCK_PARAMS},raw=.*\,cache=.*}', lookFor: ['.*'], extraParams: { raw: 1, cache: 0 }, formsToo: true }">
-				<form class="action-log-filters" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}#tray_actionlog" method="get" target="_self">
+			<div data-ajaxify="{ callUrl: '{$FACILITATE_AJAX_BLOCK_CALL;*,{BLOCK_PARAMS},raw=.*\,cache=.*}', callParams: { raw: 1, cache: 0 }, callParamsFromTarget: ['.*'] }">
+				<form class="action-log-filters" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}#tray_actionlog" method="get" data-ajaxify-target="1">
 					{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,0,0,filter_by_member=<null>,include_duplicates=<null>,include_user_activities=<null>}}
 
 					<div class="action-log-filter-part">

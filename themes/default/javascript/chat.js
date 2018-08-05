@@ -338,10 +338,6 @@
     };
 
     $cms.templates.blockMainFriendsList = function (params, container) {
-        if (params.ajaxBlockMainFriendsListWrapper && params.blockCallUrl) {
-            $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.ajaxBlockMainFriendsListWrapper), ['.*'], {}, false, true);
-        }
-
         $dom.on(container, 'keyup', '.js-input-friends-search', function (e, input) {
             $cms.form.updateAjaxSearchList(input, e);
         });

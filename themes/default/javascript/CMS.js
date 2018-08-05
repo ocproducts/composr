@@ -729,9 +729,9 @@
         url = strVal(url);
         newBlockParams = strVal(newBlockParams);
         scrollToTopOfWrapper = Boolean(scrollToTopOfWrapper);
-        postParams = (postParams !== undefined) ? postParams : null;
+        postParams = (postParams != null) ? postParams : null;
         inner = Boolean(inner);
-        showLoadingAnimation = (showLoadingAnimation !== undefined) ? Boolean(showLoadingAnimation) : true;
+        showLoadingAnimation = (showLoadingAnimation != null) ? Boolean(showLoadingAnimation) : true;
 
         if ((_blockDataCache[url] === undefined) && (newBlockParams !== '')) {
             // Cache start position. For this to be useful we must be smart enough to pass blank newBlockParams if returning to fresh state
