@@ -2854,6 +2854,8 @@
      * @param scrollToTop
      */
     $dom.internaliseAjaxBlockWrapperLinks = function internaliseAjaxBlockWrapperLinks(urlStem, blockElement, lookFor, extraParams, append, formsToo, scrollToTop) {
+        return;
+        
         urlStem = strVal(urlStem);
         blockElement = $dom.elArg(blockElement);
         lookFor = arrVal(lookFor);

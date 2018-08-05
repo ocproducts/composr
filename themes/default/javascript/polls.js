@@ -30,9 +30,7 @@
         }
     });
 
-    $cms.templates.blockMainPoll = function blockMainPoll(params) {
-        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.ajaxBlockMainPollWrapper), ['.*poll.*'], {}, false, true);
-    };
+    $cms.templates.blockMainPoll = function blockMainPoll(params) {};
 
     $cms.templates.pollAnswer = function pollAnswer(params, container) {
         var pollId = strVal(params.pid);

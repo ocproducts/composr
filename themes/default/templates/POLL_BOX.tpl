@@ -14,7 +14,7 @@
 	{+END}
 
 	<a id="poll-jump" rel="dovote"></a>
-	<form title="{!VOTE}" target="_self" action="{VOTE_URL*}" method="post" class="poll-form" autocomplete="off">
+	<form title="{!VOTE}" data-ajaxify-target="1" action="{VOTE_URL*}" method="post" class="poll-form" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>

@@ -257,7 +257,6 @@
     };
 
     $cms.templates.blockMainStaffTips = function (params) {
-        $dom.internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.ajaxBlockMainStaffTipsWrapper), ['^staff_tips_dismiss$', '^rand$'/*cache breaker*/], {}, false, true, false);
     };
 
     function ajaxFormSubmitAdminHeadless(form, blockName, map) {
