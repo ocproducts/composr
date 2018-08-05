@@ -870,7 +870,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
             warn_exit(do_lang_tempcode('_INVALID_EMAIL_ADDRESS', escape_html($email_address)));
         }
 
-        if ((get_option('one_per_email_address') != '0') && ($email_address != '') && ($email_address != STRING_MAGIC_NULL))
+        if ((get_option('one_per_email_address') != '0') && ($email_address != '') && ($email_address != $old_email_address) && ($email_address != STRING_MAGIC_NULL))
         {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email_address));
             if ((!is_null($test)) && ($test != $member_id)) {
