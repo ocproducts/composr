@@ -594,7 +594,8 @@ function sync_contact_metadata_into_sugarcrm()
     require_code('user_metadata_display');
 
     // Find all local members with an e-mail address
-    $sql = 'SELECT id,m_email_address FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . db_string_not_equal_to('m_email_address', '') . ' ORDER BY id';
+    $sql = 'SELECT id,m_email_address FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . db_string_not_equal_to('m_email_address', '');
+    $sql .= ' ORDER BY id';
     $start = 0;
     $max = 100;
     do {
@@ -626,7 +627,60 @@ function sync_contact_metadata_into_sugarcrm()
             }
         }
 
-        $max += 100;
+        $start += 100;
+    }
+    while (count($rows) == $max);
+}
+
+function sync_lead_metadata_into_sugarcrm()
+{
+    $metadata_field = get_option('sugarcrm_lead_metadata_field');
+    if ($metadata_field == '') {
+        // Not configured
+        return;
+    }
+
+    global $SUGARCRM;
+
+    require_code('user_metadata_display');
+
+    // Find all local members with an e-mail address
+    $sql = 'SELECT id,m_email_address FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . db_string_not_equal_to('m_email_address', '');
+    $sql .= ' ORDER BY id';
+    $start = 0;
+    $max = 100;
+    do {
+        $rows = $GLOBALS['FORUM_DB']->query($sql, $max, $start);
+
+        foreach ($rows as $row) {
+            // For each member, write the metadata URL into SugarCRM
+
+            $where = "leads.id IN (SELECT bean_id FROM email_addr_bean_rel eabr JOIN email_addresses ea ON (eabr.email_address_id = ea.id) WHERE bean_module = 'Leads' AND ea.email_address='" . db_escape_string($row['m_email_address']) . "' AND eabr.deleted=0) AND (leads.status='New' OR leads.status='Assigned') AND " . $metadata_field . "=''";
+
+            $response = $SUGARCRM->get(
+                'Leads',
+                array('id'),
+                array(
+                    'where' => $where,
+                )
+            );
+
+            foreach ($response as $lead) {
+                $metadata_url = generate_secure_user_metadata_display_url($row['id']);
+
+                $sugarcrm_data = array(
+                    array('name' => 'id', 'value' => $lead['id']),
+                    array('name' => $metadata_field, 'value' => $metadata_url),
+                );
+                sugarcrm_log_action('Leads', array(array_values($sugarcrm_data)));
+                $response = $SUGARCRM->set(
+                    'Leads',
+                    array_values($sugarcrm_data)
+                );
+            }
+        }
+
+        $start += 100;
     }
     while (count($rows) == $max);
 }
