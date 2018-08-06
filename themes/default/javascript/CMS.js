@@ -729,7 +729,7 @@
         url = strVal(url);
         newBlockParams = strVal(newBlockParams);
         scrollToTopOfWrapper = Boolean(scrollToTopOfWrapper);
-        postParams = (postParams != null) ? postParams : null;
+        postParams = (postParams != null) ? strVal(postParams) : null;
         inner = Boolean(inner);
         showLoadingAnimation = (showLoadingAnimation != null) ? Boolean(showLoadingAnimation) : true;
 
