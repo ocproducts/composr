@@ -1519,7 +1519,10 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                         require_code('banners');
                                         $banner_sql = banner_select_sql(null, true);
                                         $banner_sql .= ' AND t_comcode_inline=1 AND ' . db_string_not_equal_to('title_text', '');
-                                        $rows = $GLOBALS['SITE_DB']->query($banner_sql);
+                                        $rows = $GLOBALS['SITE_DB']->query($banner_sql, null, 0, true);
+                                        if ($rows === null) {
+                                            $rows = array(); // LEGACY: In case upgrader is struggling with an old database
+                                        }
 
                                         // Filter out what we don't have permission for
                                         if (get_option('use_banner_permissions', true) === '1') {

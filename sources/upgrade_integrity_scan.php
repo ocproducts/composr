@@ -41,52 +41,6 @@ function upgrader_integrity_scan_screen()
 }
 
 /**
- * Do upgrader screen: move/delete certain selected things, in follow up to an integrity scan.
- *
- * @ignore
- * @return string Output messages
- */
-function upgrader__integrity_scan_screen()
-{
-    foreach (array_keys($_POST) as $key) {
-        $val = post_param_string($key);
-        if (strpos($val, ':') !== false) {
-            $bits = explode(':', $val);
-            if ($bits[0] == 'delete') {
-                afm_delete_file($bits[1]);
-            } elseif ($bits[0] == 'move') {
-                afm_delete_file($bits[2]);
-                afm_move($bits[1], $bits[2]);
-            }
-
-            // Now delete empty directories
-            $_subdirs = explode('/', dirname($bits[1]));
-            $subdirs = array();
-            $buildup = '';
-            foreach ($_subdirs as $subdir) {
-                if ($buildup != '') {
-                    $buildup .= '/';
-                }
-                $buildup .= $subdir;
-
-                $subdirs[] = $buildup;
-            }
-            foreach (array_reverse($subdirs) as $subdir) {
-                $files = @scandir(get_file_base() . '/' . $subdir);
-                if (($files !== false) && (count(array_diff($files, array('..', '.', '.DS_Store'))) == 0)) {
-                    @unlink(get_file_base() . '/' . $subdir . '/.DS_Store');
-                    @rmdir(get_file_base() . '/' . $subdir);
-                }
-            }
-
-            unset($_POST[$key]); // We don't want it propagating with buttons, annoying and confusing
-        }
-    }
-
-    return '<p>' . do_lang('SUCCESS') . '</p>';
-}
-
-/**
  * Load up manifest of file checksums.
  *
  * @param  boolean $previous Whether to use data for the previous version
@@ -333,9 +287,47 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
             if ($addon != '') {
                 $ret_str .= do_lang('WARNING_FILE_ADDON', $addon);
             }
-            $ret_str .= '<p class="associated-details"><a href="#!" onclick="var checkmarks=this.parentNode.parentNode.getElementsByTagName(\'input\'); for (var i=0;i&lt;checkmarks.length;i++) { checkmarks[i].checked=true; } return false;">' . do_lang('UPGRADER_CHECK_ALL') . '</a></p>';
+            $ret_str .= '
+                <script>
+                    function tick_all(form)
+                    {
+                        var checkmarks = form.getElementsByTagName(\'input\');
+                        for (var i = 0; i < checkmarks.length; i++) {
+                            checkmarks[i].checked=true;
+                        }
+                        return false;
+                    }
+
+                    function solve_max_input_vars(form)
+                    {
+                        var hidden;
+                        if (typeof form.elements[\'_op_list\'] == \'undefined\') {
+                            hidden = document.createElement(\'input\');
+                            hidden.type = \'hidden\';
+                            hidden.name = \'_op_list\';
+                            form.appendChild(hidden);
+                        } else {
+                            hidden = form.elements[\'_op_list\'];
+                            hidden.value = \'\';
+                        }
+
+                        var checkmarks = form.getElementsByTagName(\'input\');
+                        for (var i = 0; i < checkmarks.length; i++) {
+                            if (checkmarks[i].checked) {
+                                if (hidden.value != \'\') {
+                                    hidden.value += "\n";
+                                }
+                                hidden.value += checkmarks[i].value;
+                                checkmarks[i].disabled = true;
+                            }
+                        }
+
+                        return true;
+                    }
+                </script>';
+            $ret_str .= '<p class="associated-details"><a href="#!" onclick="return tick_all(this.parentNode.parentNode.parentNode);">' . do_lang('UPGRADER_CHECK_ALL') . '</a></p>';
             $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
-            $ret_str .= '<button class="buttons--proceed button-screen" accesskey="c" type="submit">' . $proceed_icon->evaluate() . ' ' . do_lang('UPGRADER_AUTO_HANDLE') . '</button>';
+            $ret_str .= '<button onclick="return solve_max_input_vars(this.form);" class="buttons--proceed button-screen" accesskey="c" type="submit">' . $proceed_icon->evaluate() . ' ' . do_lang('UPGRADER_AUTO_HANDLE') . '</button>';
             $ret_str .= '</div>';
 
             $found_something = true;
@@ -619,6 +611,59 @@ function check_alien($dir, $rela = '', $raw = false, $addon_files = null, $old_f
     }
 
     return array($alien, $addon);
+}
+
+/**
+ * Do upgrader screen: move/delete certain selected things, in follow up to an integrity scan.
+ *
+ * @ignore
+ * @return string Output messages
+ */
+function upgrader__integrity_scan_screen()
+{
+    $_op_list = post_param_string('_op_list', null);
+    if ($_op_list !== null) {
+        foreach (explode("\n", $_op_list) as $op) {
+            $_POST[uniqid('')] = $op;
+        }
+    }
+
+    foreach (array_keys($_POST) as $key) {
+        $val = post_param_string($key);
+        if (strpos($val, ':') !== false) {
+            $bits = explode(':', $val);
+            if ($bits[0] == 'delete') {
+                afm_delete_file($bits[1]);
+            } elseif ($bits[0] == 'move') {
+                afm_delete_file($bits[2]);
+                afm_move($bits[1], $bits[2]);
+            }
+
+            // Now delete empty directories
+            $_subdirs = explode('/', dirname($bits[1]));
+            $subdirs = array();
+            $buildup = '';
+            foreach ($_subdirs as $subdir) {
+                if ($buildup != '') {
+                    $buildup .= '/';
+                }
+                $buildup .= $subdir;
+
+                $subdirs[] = $buildup;
+            }
+            foreach (array_reverse($subdirs) as $subdir) {
+                $files = @scandir(get_file_base() . '/' . $subdir);
+                if (($files !== false) && (count(array_diff($files, array('..', '.', '.DS_Store'))) == 0)) {
+                    @unlink(get_file_base() . '/' . $subdir . '/.DS_Store');
+                    @rmdir(get_file_base() . '/' . $subdir);
+                }
+            }
+
+            unset($_POST[$key]); // We don't want it propagating with buttons, annoying and confusing
+        }
+    }
+
+    return '<p>' . do_lang('SUCCESS') . '</p>';
 }
 
 /**
