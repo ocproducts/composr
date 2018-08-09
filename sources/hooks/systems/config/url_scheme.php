@@ -59,4 +59,24 @@ class Hook_config_url_scheme
         }
         return 'RAW';
     }
+
+    /**
+     * Code to run before the option is saved.
+     * If there is some kind of problem with the new value then we could attach an error message.
+     *
+     * @param $new_value string The new value
+     * @param $old_value string The old value
+     * @return boolean Whether to allow the save
+     */
+    public function presave_handler($new_value, $old_value)
+    {
+        // Make sure we haven't locked ourselves out due to absent URL Scheme support
+        $http_result = cms_http_request(get_base_url() . '/pg/keymap', array('trigger_error' => false, 'no_redirect' => true));
+        if (($http_result->data != '') && ($http_result->message == '404')) {
+            attach_message(do_lang_tempcode('BEFORE_MOD_REWRITE'), 'warn');
+            return false;
+        }
+
+        return true;
+    }
 }

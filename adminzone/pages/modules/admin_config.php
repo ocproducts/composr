@@ -713,34 +713,6 @@ class Module_admin_config
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        // Make sure we haven't locked ourselves out due to URL Scheme support
-        if (
-            (post_param_string('url_scheme', 'RAW') != 'RAW') &&
-            (substr($_SERVER['SERVER_SOFTWARE'], 0, 6) == 'Apache') &&
-            (
-                (!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) ||
-                (stripos(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess'), 'RewriteEngine on') === false) ||
-                ((function_exists('apache_get_modules')) && (!in_array('mod_rewrite', apache_get_modules())))
-            )
-        ) {
-            $http_result = cms_http_request(get_base_url() . '/pg/keymap', array('trigger_error' => false, 'no_redirect' => true));
-            if (($http_result->data != '') && ($http_result->message == '404')) {
-                warn_exit(do_lang_tempcode('BEFORE_MOD_REWRITE'));
-            }
-        }
-
-        // Empty thumbnail cache if needed
-        if (function_exists('imagetypes')) {
-            if ((post_param_string('thumb_width', null) !== null) && (post_param_string('thumb_width') != get_option('thumb_width'))) {
-                erase_thumb_cache();
-            }
-        }
-
-        // Empty language cache if needed
-        if ((post_param_string('yeehaw', null) !== null) && (post_param_string('yeehaw') != get_option('yeehaw'))) {
-            erase_cached_language();
-        }
-
         // Find all options in category
         $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
         $options = array();
@@ -750,7 +722,7 @@ class Module_admin_config
                 if (($GLOBALS['CURRENT_SHARE_USER'] === null) || ($option['shared_hosting_restricted'] == 0)) {
                     if ($ob->get_default() !== null) {
                         $option['ob'] = $ob;
-                        $options[$hook] = $option;
+                        $options[$hook] = array($option, $ob);
                     }
                 }
             }
@@ -762,8 +734,10 @@ class Module_admin_config
         }
 
         // Go through all options on the page, saving
-        foreach ($options as $name => $option) {
-            // Save
+        foreach ($options as $name => $option_parts) {
+            list($option, $ob) = $option_parts;
+
+            // Work out new value
             if ($option['type'] == 'tax_code') {
                 if (addon_installed('ecommerce')) {
                     require_code('ecommerce');
@@ -818,7 +792,17 @@ class Module_admin_config
                 // If the option was changed
                 $old_value = get_option($name);
                 if (($old_value != $value) || (!isset($CONFIG_OPTIONS_CACHE[$name]['c_set'])) || ($CONFIG_OPTIONS_CACHE[$name]['c_set'] == 0)) {
-                    set_option($name, $value);
+                    // Run pre-save code where it exists
+                    if (method_exists($ob, 'presave_handler') {
+                        $okay_to_save = $ob->presave_handler($value, $old_value);
+                    } else {
+                        $okay_to_save = true;
+                    }
+
+                    // Save
+                    if ($okay_to_save) {
+                        set_option($name, $value);
+                    }
                 }
             }
         }
