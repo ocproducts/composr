@@ -730,7 +730,7 @@ class Module_admin_config
 
         // Add in special ones
         if ($category == 'SITE') {
-            $options['timezone'] = array('shared_hosting_restricted' => 0, 'type' => 'special');
+            $options['timezone'] = array(array('shared_hosting_restricted' => 0, 'type' => 'special'), null);
         }
 
         // Go through all options on the page, saving
@@ -793,7 +793,7 @@ class Module_admin_config
                 $old_value = get_option($name);
                 if (($old_value != $value) || (!isset($CONFIG_OPTIONS_CACHE[$name]['c_set'])) || ($CONFIG_OPTIONS_CACHE[$name]['c_set'] == 0)) {
                     // Run pre-save code where it exists
-                    if (method_exists($ob, 'presave_handler') {
+                    if (($ob !== null) && (method_exists($ob, 'presave_handler'))) {
                         $okay_to_save = $ob->presave_handler($value, $old_value);
                     } else {
                         $okay_to_save = true;

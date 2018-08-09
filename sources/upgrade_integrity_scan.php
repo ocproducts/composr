@@ -289,16 +289,16 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
             }
             $ret_str .= '
                 <script>
-                    function tick_all(form)
+                    var tick_all = function (form)
                     {
                         var checkmarks = form.getElementsByTagName(\'input\');
                         for (var i = 0; i < checkmarks.length; i++) {
                             checkmarks[i].checked=true;
                         }
                         return false;
-                    }
+                    };
 
-                    function solve_max_input_vars(form)
+                    var solve_max_input_vars = function (form)
                     {
                         var hidden;
                         if (typeof form.elements[\'_op_list\'] == \'undefined\') {
@@ -323,7 +323,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
                         }
 
                         return true;
-                    }
+                    };
                 </script>';
             $ret_str .= '<p class="associated-details"><a href="#!" onclick="return tick_all(this.parentNode.parentNode.parentNode);">' . do_lang('UPGRADER_CHECK_ALL') . '</a></p>';
             $proceed_icon = do_template('ICON', array('NAME' => 'buttons/proceed'));
@@ -624,7 +624,7 @@ function upgrader__integrity_scan_screen()
     $_op_list = post_param_string('_op_list', null);
     if ($_op_list !== null) {
         foreach (explode("\n", $_op_list) as $op) {
-            $_POST[uniqid('')] = $op;
+            $_POST[uniqid('', true)] = $op;
         }
     }
 

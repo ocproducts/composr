@@ -64,8 +64,8 @@ class Hook_config_url_scheme
      * Code to run before the option is saved.
      * If there is some kind of problem with the new value then we could attach an error message.
      *
-     * @param $new_value string The new value
-     * @param $old_value string The old value
+     * @param  string $new_value The new value
+     * @param  string $old_value The old value
      * @return boolean Whether to allow the save
      */
     public function presave_handler($new_value, $old_value)
