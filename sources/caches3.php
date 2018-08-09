@@ -483,7 +483,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
         }
 
         // Recreate static files right away because of parallelism...
-        if ((!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($rebuild_some_deleted_files)) {
+        if ((!$GLOBALS['IN_MINIKERNEL_VERSION']) && (!running_script('upgrader')) && ($rebuild_some_deleted_files)) {
             if ((!$preserve_some) && (!isset($rebuilt[$file_template_name]))) {
                 if (/*filter what we'll do due to memory limitation*/in_array($file_template_name, array('global.css', 'cns.css', 'forms.css', 'menu__dropdown.css', 'ajax.js', 'editing.js', 'global.js', 'posting.js'))) {
                     if ((isset($GLOBALS['SITE_DB'])) && (function_exists('find_theme_image')) && (!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($GLOBALS['FORUM_DRIVER'] !== null)) {
@@ -536,7 +536,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
     cms_profile_end_for('erase_cached_templates');
 
     // Rebuild ones needed for this session
-    if (!$preserve_some && !$GLOBALS['IN_MINIKERNEL_VERSION']) {
+    if ((!$preserve_some) && (!$GLOBALS['IN_MINIKERNEL_VERSION']) && (!running_script('upgrader'))) {
         global $JAVASCRIPTS, $CSSS;
         if (is_array($JAVASCRIPTS)) {
             foreach (array_keys($JAVASCRIPTS) as $j) {

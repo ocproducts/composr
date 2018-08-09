@@ -52,6 +52,8 @@ function upgrade_script()
         return;
     }
 
+    load_csp(array('csp_enabled' => '0'));
+
     // Action handling...
 
     $type = get_param_string('type', 'browse');
