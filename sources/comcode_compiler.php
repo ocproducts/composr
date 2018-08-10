@@ -270,7 +270,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
                 case WYSIWYG_COMCODE__XML_INLINE:
                 default:
                     if ($semihtml) {
-                        $_embed = $embed->evaluate();
+                        $_embed = str_replace(array('<', '>'), array('&lt;', '&gt;'), $embed->evaluate());
                     } else {
                         $_embed = nl2br(escape_html($embed->evaluate()));
                     }
