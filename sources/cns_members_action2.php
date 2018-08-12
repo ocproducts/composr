@@ -1129,8 +1129,11 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
         require_code('mail');
         $_login_url = build_url(array('page' => 'login'), get_module_zone('login'), null, false, false, true);
         $login_url = $_login_url->evaluate();
+        $_username = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_username');
         // NB: Same mail also sent in settings.php (quick-validate feature)
-        mail_wrap(do_lang('VALIDATED_MEMBER_SUBJECT', get_site_name(), null, get_lang($member_id)), do_lang('MEMBER_VALIDATED', get_site_name(), $username, $login_url, get_lang($member_id)), array($email_address), $username, '', '', 3, null, false, null, false, false, false, 'MAIL', false, null, null, $join_time);
+        $vb_subject = do_lang('VALIDATED_MEMBER_SUBJECT', get_site_name(), null, get_lang($member_id));
+        $vm_body = do_lang('MEMBER_VALIDATED', get_site_name(), $_username, $login_url, get_lang($member_id));
+        mail_wrap($vm_subject, $vm_body, array($email_address), $_username, $login_url, '', 3, null, false, null, false, false, false, 'MAIL', false, null, null, $join_time);
     }
 
     $old_email_address = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address');
