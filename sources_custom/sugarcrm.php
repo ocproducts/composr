@@ -370,6 +370,16 @@ function save_message_into_sugarcrm($sync_type, $mappings, $subject, $body, $fro
             }
         }
 
+        $metadata_field = get_option('sugarcrm_lead_metadata_field');
+        if (($metadata_field != '') && ($from_email != '')) {
+            $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($from_email);
+            if ($member_id !== null) {
+                require_code('user_metadata_display');
+                $metadata_url = generate_secure_user_metadata_display_url($member_id);
+                $sugarcrm_data[$metadata_field] = array('name' => $metadata_field, 'value' => $metadata_url);
+            }
+        }
+
         // If there's an existing lead with this e-mail then put an addendum on the description to mention that
         /*$existing_leads = $SUGARCRM->search_by_module(        Opens too many files
             $from_email,
@@ -519,8 +529,6 @@ function save_account_into_sugarcrm($member_id, $mappings, $username, $first_nam
     // Find/create Contact
     $contact_details = get_sugarcrm_contact($email_address, $account_id);
     if ($contact_details === null) {
-        $metadata_field = get_option('sugarcrm_contact_metadata_field');
-
         $sugarcrm_data = array(
             'account_id' => array('name' => 'account_id', 'value' => $account_id),
             'date_entered' => array('name' => 'date_entered', 'value' => timestamp_to_sugarcrm_date_string($timestamp)),
@@ -535,10 +543,11 @@ function save_account_into_sugarcrm($member_id, $mappings, $username, $first_nam
             'lead_source' => array('name' => 'lead_source', 'value' => $lead_source),
         );
 
+        $metadata_field = get_option('sugarcrm_contact_metadata_field');
         if ($metadata_field != '') {
             require_code('user_metadata_display');
             $metadata_url = generate_secure_user_metadata_display_url($member_id);
-            $sugarcrm_data[$metadata_field] = $metadata_url;
+            $sugarcrm_data[$metadata_field] = array('name' => $metadata_field, 'value' => $metadata_url);
         }
 
         foreach ($mappings as $_mapping) {
