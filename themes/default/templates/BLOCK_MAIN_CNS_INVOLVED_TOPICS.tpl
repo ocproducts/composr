@@ -8,7 +8,10 @@
 			<p class="nothing_here">{!NO_ENTRIES,topic}</p>
 		{+END}
 
-		{+START,INCLUDE,AJAX_PAGINATION}ALLOW_INFINITE_SCROLL=1{+END}
+		{+START,INCLUDE,AJAX_PAGINATION}
+			ALLOW_INFINITE_SCROLL=1
+			WRAPPER_ID={$GET,ajax_block_main_cns_involved_topics_wrapper}
+		{+END}
 	</div>
 {+END}
 

@@ -47,7 +47,10 @@
 		//]]></script>
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}
-			{+START,INCLUDE,AJAX_PAGINATION}ALLOW_INFINITE_SCROLL=1{+END}
+			{+START,INCLUDE,AJAX_PAGINATION}
+				ALLOW_INFINITE_SCROLL=1
+				WRAPPER_ID={$GET,ajax_block_main_activities_wrapper}
+			{+END}
 		{+END}
 	</div>
 {+END}

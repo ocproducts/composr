@@ -3681,7 +3681,7 @@ function force_reload_on_back()
 	}
 }
 
-/* Reply to a topic using AJAX */
+/* Prepare the UI to reply to a post in a topic */
 function topic_reply(is_threaded,ob,id,replying_to_username,replying_to_post,replying_to_post_plain,explicit_quote)
 {
 	if (typeof explicit_quote=='undefined') explicit_quote=false;

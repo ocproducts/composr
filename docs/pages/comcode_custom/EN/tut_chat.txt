@@ -186,6 +186,12 @@ It is easy to imagine useful bots that could be created; as just one example, im
 
 Composr includes a 'shout-box' block, which is essentially a little portion of your menu that can be used for members to place short messages. Like all blocks, the shout-box is of course optional. The shout-box is tied to a specified chatroom, which by default, is the 'General Chat' chatroom.
 
+[title="2"]Disabling enter/leave room messages (advanced)[/title]
+
+If you wish to disable the enter/leave room messages you may translate the following [tt]chat[/tt] language strings to blank:
+ - [tt]ENTERED_THE_CHATROOM[/tt]
+ - [tt]LEFT_CHATROOM[/tt]
+
 [title="2"]Third-party approaches[/title]
 
 Composr's chatroom system is not perfect for everyone. There are four main areas where there are some natural limitations to the system:
