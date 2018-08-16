@@ -393,26 +393,27 @@ function cns_read_in_custom_fields($custom_fields, $member_id = null)
  * @param  ?TIME $on_probation_until When the member is on probation until (null: just finished probation / or effectively was never on it)
  * @param  BINARY $is_perm_banned Whether the member is permanently banned
  * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
- * @return array A pair: The form fields, Hidden fields (both Tempcode)
+ * @return array A tuple: The form fields, Hidden fields (both Tempcode), Whether separate sections were used
  */
 function cns_get_member_fields($mini_mode = true, $special_type = '', $member_id = null, $username = '', $email_address = '', $primary_group = null, $groups = null, $dob_day = null, $dob_month = null, $dob_year = null, $custom_fields = null, $timezone = null, $language = null, $theme = null, $preview_posts = 0, $reveal_age = 1, $views_signatures = 1, $auto_monitor_contrib_content = null, $smart_topic_notification = null, $mailing_list_style = null, $auto_mark_read = 1, $sound_enabled = null, $allow_emails = 1, $allow_emails_from_staff = 1, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $validated = 1, $on_probation_until = null, $is_perm_banned = 0, $adjusted_config_options = null)
 {
     $fields = new Tempcode();
     $hidden = new Tempcode();
 
-    list($_fields, $_hidden) = cns_get_member_fields_settings($mini_mode, $special_type, $member_id, $username, $email_address, $primary_group, $groups, $dob_day, $dob_month, $dob_year, $timezone, $language, $theme, $preview_posts, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $smart_topic_notification, $mailing_list_style, $auto_mark_read, $sound_enabled, $allow_emails, $allow_emails_from_staff, $highlighted_name, $pt_allow, $pt_rules_text, $validated, $on_probation_until, $is_perm_banned, $adjusted_config_options);
+    list($_fields, $_hidden, $added_section_1) = cns_get_member_fields_settings($mini_mode, $special_type, $member_id, $username, $email_address, $primary_group, $groups, $dob_day, $dob_month, $dob_year, $timezone, $language, $theme, $preview_posts, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $smart_topic_notification, $mailing_list_style, $auto_mark_read, $sound_enabled, $allow_emails, $allow_emails_from_staff, $highlighted_name, $pt_allow, $pt_rules_text, $validated, $on_probation_until, $is_perm_banned, $adjusted_config_options);
     $fields->attach($_fields);
     $hidden->attach($_hidden);
 
     if (!$mini_mode) {
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '14205f6bf83c469a1404d24967d7b6f6', 'TITLE' => do_lang_tempcode('PROFILE'))));
+        $added_section_1 = true;
     }
 
-    list($_fields, $_hidden) = cns_get_member_fields_profile($mini_mode, $member_id, $groups, $custom_fields, $adjusted_config_options);
+    list($_fields, $_hidden, $added_section_2) = cns_get_member_fields_profile($mini_mode, $member_id, $groups, $custom_fields, $adjusted_config_options);
     $fields->attach($_fields);
     $hidden->attach($_hidden);
 
-    return array($fields, $hidden);
+    return array($fields, $hidden, $added_section_1 || $added_section_2);
 }
 
 /**
@@ -448,7 +449,7 @@ function cns_get_member_fields($mini_mode = true, $special_type = '', $member_id
  * @param  ?TIME $on_probation_until When the member is on probation until (null: just finished probation / or effectively was never on it)
  * @param  BINARY $is_perm_banned Whether the member is permanently banned
  * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
- * @return array A pair: The form fields, Hidden fields (both Tempcode)
+ * @return array A pair: The form fields, Hidden fields (both Tempcode), Whether separate sections were used
  */
 function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $member_id = null, $username = '', $email_address = '', $primary_group = null, $groups = null, $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $language = null, $theme = null, $preview_posts = null, $reveal_age = 1, $views_signatures = 1, $auto_monitor_contrib_content = null, $smart_topic_notification = null, $mailing_list_style = null, $auto_mark_read = 1, $sound_enabled = null, $allow_emails = 1, $allow_emails_from_staff = 1, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $validated = 1, $on_probation_until = null, $is_perm_banned = 0, $adjusted_config_options = null)
 {
@@ -457,6 +458,8 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
     require_code('cns_field_editability');
     require_code('form_templates');
     require_code('encryption');
+
+    $added_section = false;
 
     if (($special_type == '') && ($member_id !== null)) {
         $special_type = get_member_special_type($member_id);
@@ -583,6 +586,7 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
     if (!$mini_mode) {
         if (($doing_timezones) || ($doing_langs) || ($doing_email_option) || ($doing_wide_option) || ($doing_theme_option) || ($doing_local_forum_options)) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3cd79bbea084ec1fe148edddad7d52b4', 'FORCE_OPEN' => ($member_id === null) ? true : null, 'TITLE' => do_lang_tempcode('SETTINGS'))));
+            $added_section = true;
         }
     }
     */
@@ -665,6 +669,7 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
                 $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '7e5deb351a7a5214fbff10049839e258', 'TITLE' => do_lang_tempcode('PRIVATE_TOPICS'))));
                 $fields->attach(form_input_multi_list(do_lang_tempcode('PT_ALLOW'), addon_installed('chat') ? do_lang_tempcode('PT_ALLOW_DESCRIPTION_CHAT') : do_lang_tempcode('PT_ALLOW_DESCRIPTION'), 'pt_allow', $usergroup_list));
                 $fields->attach(form_input_text_comcode(do_lang_tempcode('PT_RULES_TEXT'), do_lang_tempcode('PT_RULES_TEXT_DESCRIPTION'), 'pt_rules_text', $pt_rules_text, false));
+                $added_section = true;
             }
         }
 
@@ -686,6 +691,7 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
         // Some admin options...
         if (has_privilege(get_member(), 'member_maintenance')) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '04422238c372edd0b11c11a05feb6267', 'TITLE' => do_lang_tempcode('MEMBER_ACCESS'))));
+            $added_section = true;
 
             // Probation
             if (has_privilege(get_member(), 'probate_members')) {
@@ -745,11 +751,15 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
 
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');
-            $fields->attach(content_review_get_fields('member', ($member_id === null) ? null : strval($member_id)));
+            $content_review_fields = content_review_get_fields('member', ($member_id === null) ? null : strval($member_id));
+            if (!$content_review_fields->is_empty()) {
+                $fields->attach($content_review_fields);
+                $added_section = true;
+            }
         }
     }
 
-    return array($fields, $hidden);
+    return array($fields, $hidden, $added_section);
 }
 
 /**
@@ -760,7 +770,7 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
  * @param  ?array $groups A list of usergroups (null: default/current usergroups)
  * @param  ?array $custom_fields A map of custom fields values (field-id=>value) (null: not known)
  * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
- * @return array A pair: The form fields, Hidden fields (both Tempcode)
+ * @return @return array A tuple: The form fields, Hidden fields (both Tempcode), Whether separate sections were used
  */
 function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $groups = null, $custom_fields = null, $adjusted_config_options = null)
 {
@@ -768,6 +778,8 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
 
     $fields = new Tempcode();
     $hidden = new Tempcode();
+
+    $added_section = false;
 
     if ($groups === null) {
         $groups = ($member_id === null) ? cns_get_all_default_groups(true) : $GLOBALS['CNS_DRIVER']->get_members_groups($member_id);
@@ -854,12 +866,13 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
 
         if ($field_group_title != '') {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'af91e3c040a0a18a4d9cc1143c0d2007', 'TITLE' => $field_group_title)));
+            $added_section = true;
         }
         $fields->attach($extra_fields);
     }
     $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = false;
 
-    return array($fields, $hidden);
+    return array($fields, $hidden, $added_section);
 }
 
 /**
