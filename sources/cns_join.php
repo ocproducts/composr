@@ -87,7 +87,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
     }
 
     url_default_parameters__enable();
-    list($fields, $_hidden) = cns_get_member_fields(true, '', null, '', '', null, $groups, null, null, null, null, null, null, null, 0, 1, 1, null, null, null, 1, null, 1, 1, 0, '*', '', 1, null, 0, $adjusted_config_options);
+    list($fields, $_hidden, $added_section) = cns_get_member_fields(true, '', null, '', '', null, $groups, null, null, null, null, null, null, null, 0, 1, 1, null, null, null, 1, null, 1, 1, 0, '*', '', 1, null, 0, $adjusted_config_options);
     url_default_parameters__disable();
     $hidden->attach($_hidden);
 
@@ -100,7 +100,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
         }
     }
 
-    if (($captcha_if_enabled) && (get_option('recaptcha_site_key') == '')) {
+    if (($captcha_if_enabled) && (get_option('recaptcha_site_key') == '') && ($added_section)) {
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a8197832e4467b08e953535202235501', 'TITLE' => do_lang_tempcode('SPECIAL_REGISTRATION_FIELDS'))));
     }
 
