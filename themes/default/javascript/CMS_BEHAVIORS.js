@@ -912,6 +912,8 @@
     };
     
     // Implementation for [data-ajaxify="{...}"] and [data-ajaxify-target="1"]
+    // Mark ajaxified containers with [data-ajaxify="{...}"]
+    // Mark links and forms to ajaxify with [data-ajaxify-target="1"]
     $cms.behaviors.ajaxify = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-ajaxify]'), 'behavior.ajaxify');

@@ -1053,7 +1053,7 @@
         return window.JSON5.parse(strVal(source));
     };
 
-    $util.inform = function inform() {
+    $util.inform = $util.log = function inform() {
         if (window.$cms && window.$cms.isDevMode()) {
             return console.log.apply(undefined, arguments);
         }
@@ -1063,7 +1063,7 @@
         return console.warn.apply(undefined, arguments);
     };
 
-    $util.fatal = function fatal() {
+    $util.fatal = $util.error = function fatal() {
         return console.error.apply(undefined, arguments);
     };
 
