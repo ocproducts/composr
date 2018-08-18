@@ -16,13 +16,13 @@
 function user_metadata_display_script()
 {
     $member_id = get_param_integer('member_id', get_member());
-    $secure_key = get_param_string('secure_key');
+    $secure_key = get_param_string('secure_key', '');
     $expected_secure_key = generate_secure_user_metadata_display_key($member_id);
     $advanced = (get_param_integer('advanced', 0) == 1);
 
     if ($expected_secure_key != $secure_key) {
         if ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
-            warn_exit('secure_key should be ' . $expected_secure_key);
+            warn_exit(protect_from_escaping('The <kbd>secure_key</kbd> GET parameter should be set to <kbd>' . $expected_secure_key . '</kbd>'));
         }
 
         access_denied('I_ERROR');
@@ -53,6 +53,9 @@ function generate_recursive_map_table($metadata)
     $l_title = do_lang('TITLE', null, null, null, get_site_default_lang());
     $l_url = do_lang('URL', null, null, null, get_site_default_lang());
 
+    $l_username = do_lang('USERNAME', null, null, null, get_site_default_lang());
+    $l_profile = do_lang('cns:PROFILE', null, null, null, get_site_default_lang());
+
     $fields = array();
 
     foreach ($metadata as $key => $val) {
@@ -73,6 +76,7 @@ function generate_recursive_map_table($metadata)
 
     $_fields = new Tempcode();
     $skip_title = false;
+    $skip_profile = false;
     foreach ($fields as $_key => $_val) {
         if (is_numeric($_key)) {
             $_key = integer_format($_key);
@@ -82,14 +86,40 @@ function generate_recursive_map_table($metadata)
             continue;
         }
 
+        if (($_key == $l_profile) && ($skip_profile)) {
+            continue;
+        }
+
+        if (($_key == $l_username) && (array_key_exists($l_profile, $fields))) {
+            $_val = hyperlink($fields[$l_profile], $_val, true, true);
+            $skip_profile = true;
+        }
+
+        if (is_integer($_val)) {
+            $_val = integer_format($_val);
+        }
+        if (is_float($_val)) {
+            $_val = float_format($_val);
+        }
+        if (is_null($_val)) {
+            $_val = do_lang('NA');
+        }
+        if (is_bool($_val)) {
+            $_val = $_val ? do_lang('YES') : do_lang('NO');
+        }
+
         if ((!is_object($_val)) && (strpos($_val, '://') !== false) && (looks_like_url($_val))) {
-            if (($_key == $l_url) && (!empty($fields[$l_title]))) {
+            if (($_key == $l_url) && (array_key_exists($l_title, $fields))) {
                 $caption = $fields[$l_title];
+                if ($caption == '') {
+                    $caption = escape_html($_val);
+                }
                 $skip_title = true;
+                $_key = do_lang('PAGE');
             } else {
                 $caption = $_val;
             }
-            $_val = hyperlink($_val, $caption, true, true);
+            $_val = hyperlink($_val, $caption, true, false);
         }
 
         $_fields->attach(map_table_field($_key, $_val, is_object($_val)));

@@ -271,94 +271,139 @@ function find_user_metadata($include_referer = true, $member_id = null, $advance
 {
     if ($member_id === null) {
         $member_id = get_member();
+        $current_user = true;
+    } else {
+        $current_user = false;
     }
 
     require_lang('lookup');
 
     $data = array();
 
-    $data[do_lang('USERNAME')] = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-
+    $member_data = array();
+    $member_data[do_lang('USERNAME', null, null, null, get_site_default_lang())] = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
     if (!is_guest($member_id)) {
-        $data[do_lang('MEMBER_ID')] = '#' . strval($member_id);
+        $member_data[do_lang('MEMBER_ID', null, null, null, get_site_default_lang())] = '#' . strval($member_id);
     }
-
     if (!is_guest($member_id)) {
-        $data[do_lang('cns:PROFILE')] = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
+        $member_data[do_lang('cns:PROFILE', null, null, null, get_site_default_lang())] = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true, false);
     }
+    $data[do_lang('ACCOUNT', null, null, null, get_site_default_lang())] = $member_data;
 
-    if ($member_id == get_member()) {
+    if ($current_user) {
         $ip = get_ip_address();
     } else {
         $ip = $GLOBALS['FORUM_DRIVER']->get_member_ip($member_id);
     }
-    $data[do_lang('IP_ADDRESS')] = $ip;
 
     //$data['Session ID'] = get_session_id();   Don't want to pass this out too freely, not useful anyway
 
-    $data['Reverse-DNS/WHOIS'] = cms_gethostbyaddr($ip);
-
+    $location_data = array();
+    $got_geo_lookup = false;
     if (get_option('ipstack_api_key') != '') {
         $ip_stack_url = 'http://api.ipstack.com/' . rawurlencode($ip) . '?access_key=' . urlencode(get_option('ipstack_api_key'));
         $_json = http_get_contents($ip_stack_url, array('trigger_error' => false));
         $json = @json_decode($_json, true);
         if (is_array($json)) {
-            $data['~Geo-Lookup'] = $json;
+            $useful_fields = array(
+                'ip' => 'IP address',
+                'country_name' => 'Country',
+                'city' => 'City',
+                'zip' => 'Postal code',
+            );
+            foreach ($useful_fields as $desired_key => $lang_str) {
+                if (!empty($json[$desired_key])) {
+                    $location_data[$lang_str] = $json[$desired_key];
+                }
+            }
+            if (!empty($json['latitude'])) {
+                $location_data['GPS'] = float_format($json['latitude'], 6) . ',' . float_format($json['longitude'], 6);
+            }
+
+            $got_geo_lookup = true;
         }
     }
+    if (!$got_geo_lookup) {
+        $location_data[do_lang('IP_ADDRESS', null, null, null, get_site_default_lang())] = $ip;
 
-    if ($member_id == get_member()) {
+        $reverse_dns = cms_gethostbyaddr($ip);
+        if (strpos($reverse_dns, 'NXDOMAIN') === false) {
+            $location_data[do_lang('REVERSE_DNS_AND_WHOIS', null, null, null, get_site_default_lang())] = $reverse_dns;
+        }
+
+        require_code('locations');
+        if ($current_user) {
+            $region = get_region();
+        } else {
+            if (!is_guest($member_id)) {
+                $region = get_cms_cpf('country');
+            }
+
+            if ((empty($region)) && (addon_installed('stats'))) {
+                $region = geolocate_ip($ip);
+            }
+        }
+        if (!empty($region)) {
+            $location_data['~' . do_lang('LOCATION', null, null, null, get_site_default_lang())] = $region;
+        }
+
+        require_code('temporal2');
+        $location_data['~' . do_lang('TIMEZONE', null, null, null, get_site_default_lang())] = make_nice_timezone_name(get_users_timezone($member_id));
+    }
+    $data[do_lang('LOCATION', null, null, null, get_site_default_lang())] = $location_data;
+
+    if ($current_user) {
         $lang = user_lang();
     } else {
         $lang = get_lang_member($member_id);
     }
-    require_code('lang2');
-    $data[do_lang('LANGUAGE')] = lookup_language_full_name($lang);
+    if (multi_lang()) {
+        require_code('lang2');
+        $data[do_lang('LANGUAGE', null, null, null, get_site_default_lang())] = lookup_language_full_name($lang);
+    }
 
-    if (($include_referer) && ($member_id == get_member())) {
-        $referer = $_SERVER['HTTP_REFERER'];
+    if (($include_referer) && ($current_user)) {
+        $referer = cms_srv('HTTP_REFERER');
         if ($referer != '') {
-            $data[do_lang('REFERER')] = $referer;
+            $data[do_lang('REFERER', null, null, null, get_site_default_lang())] = $referer;
         }
     }
 
-    if ($member_id == get_member()) {
-        $data[do_lang('USER_AGENT')] = get_browser_string();
+    $l_browser = do_lang('USER_AGENT', null, null, null, get_site_default_lang());
+    $l_os = do_lang('USER_OS', null, null, null, get_site_default_lang());
 
-        $data[do_lang('USER_OS')] = get_os_string();
+    if ($current_user) {
+        $ua_data = array();
+        $ua_data[$l_browser] = get_browser_string();
+        $ua_data[$l_os] = get_os_string();
+        $data[$l_browser] = $ua_data;
     }
 
-    $data['~' . do_lang('TIMEZONE')] = get_users_timezone($member_id);
-
-    require_code('locations');
-    if ($member_id == get_member()) {
-        $region = get_region();
-    } else {
-        if (!is_guest($member_id)) {
-            $region = get_cms_cpf('country');
-        }
-
-        if ((empty($region)) && (addon_installed('stats'))) {
-            $region = geolocate_ip($ip);
-        }
-    }
-    if (!empty($region)) {
-        $data['~' . do_lang('LOCATION')] = $region;
-    }
-
-    if ((running_script('index')) || (running_script('form_to_email'))) {
-        $data[do_lang('URL')] = get_self_url_easy(true);
+    if (((running_script('index')) || (running_script('form_to_email'))) && ($current_user)) {
+        $data[do_lang('URL', null, null, null, get_site_default_lang())] = get_self_url_easy(true);
     }
 
     if (addon_installed('stats')) {
         $history = array();
-        $sql = 'SELECT date_and_time,the_page,s_get,title,member_id,ip,session_id,referer,browser,operating_system ';
-        $sql .= 'FROM ' . get_table_prefix() . 'stats WHERE ';
-        $sql .= db_string_equal_to('ip', $ip) . ' AND member_id=' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id());
+
+        $select = 'a.the_page,a.s_get,a.date_and_time,a.title,a.member_id,a.ip,a.session_id,a.referer,a.browser,a.operating_system';
+
+        $where = db_string_equal_to('ip', $ip) . ' AND member_id=' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id());
         if (!is_guest($member_id)) {
-            $sql .= ' OR member_id=' . strval($member_id);
+            $where .= ' OR member_id=' . strval($member_id);
         }
-        $sql .= ' OR ' . db_string_equal_to('session_id', get_session_id());
+        if ($current_user) {
+            $where .= ' OR ' . db_string_equal_to('session_id', get_session_id());
+        }
+
+        $tp = get_table_prefix();
+        if ($advanced) {
+            $sql = 'SELECT ' . $select . ' FROM ' . $tp . 'stats a WHERE ' . $where;
+        } else { // Filter to one-result-per-page
+            $inner_sql = 'SELECT the_page,MAX(date_and_time) AS date_and_time FROM ' . $tp . 'stats WHERE ' . $where . ' GROUP BY the_page';
+            $sql = 'SELECT ' . $select . ' FROM ' . $tp . 'stats a JOIN (' . $inner_sql . ') b ON a.the_page=b.the_page AND a.date_and_time=b.date_and_time WHERE ' . $where . ' GROUP BY the_page';
+        }
+
         $pages = $GLOBALS['SITE_DB']->query($sql . ' ORDER BY date_and_time DESC', 50);
         if (count($pages) == 50) { // We have more than 50, so we'll place in the bottom 50 too
             $pages2 = $GLOBALS['SITE_DB']->query($sql . ' ORDER BY date_and_time ASC', 50);
@@ -370,10 +415,8 @@ function find_user_metadata($include_referer = true, $member_id = null, $advance
         $l_title = do_lang('TITLE', null, null, null, get_site_default_lang());
         $l_member_id = do_lang('MEMBER_ID', null, null, null, get_site_default_lang());
         $l_ip_address = do_lang('IP_ADDRESS', null, null, null, get_site_default_lang());
-        $l_session_id = 'Session ID';
+        $l_session_id = do_lang('SESSION_ID', null, null, null, get_site_default_lang());
         $l_referer = do_lang('REFERER', null, null, null, get_site_default_lang());
-        $l_browser = do_lang('USER_AGENT', null, null, null, get_site_default_lang());
-        $l_os = do_lang('USER_OS', null, null, null, get_site_default_lang());
 
         $first_browser = null;
 
@@ -383,9 +426,16 @@ function find_user_metadata($include_referer = true, $member_id = null, $advance
                 continue;
             }
 
+            if ($myrow['the_page'] == '/access_denied') {
+                continue;
+            }
+            if (basename($myrow['the_page']) == '404.txt') {
+                continue;
+            }
+
             $h = array();
 
-            $h[$l_date_time] = get_timezoned_date_time(tz_time($myrow['date_and_time'], get_server_timezone()), false);
+            $h[$l_date_time] = get_timezoned_date(tz_time($myrow['date_and_time'], get_server_timezone()), true, false, false, true);
 
             $page_link = convert_page_string_to_page_link($myrow['the_page']);
             list($zone, $attributes) = page_link_decode($page_link);
@@ -400,31 +450,34 @@ function find_user_metadata($include_referer = true, $member_id = null, $advance
 
             $h[$l_title] = $myrow['title'];
 
-            if ($myrow['member_id'] != $member_id) {
+            if (($myrow['member_id'] != $member_id) && (($advanced) || (!is_guest($myrow['member_id'])))) {
                 if (is_guest($myrow['member_id'])) {
-                    $h[$l_member_id] = do_lang('GUEST');
+                    $h[$l_member_id] = do_lang('GUEST', null, null, null, get_site_default_lang());
                 } else {
                     $h[$l_member_id] = '#' . strval($myrow['member_id']);
                 }
             }
 
-            if ($myrow['ip'] != $ip) {
-                $h[$l_ip_address] = $myrow['ip'];
-            }
-
             if ($advanced) {
+                if ($myrow['ip'] != $ip) {
+                    $h[$l_ip_address] = $myrow['ip'];
+                }
+
                 $h[$l_session_id] = $myrow['session_id'];
             }
 
-            if ($myrow['referer'] != '') {
+            if (($myrow['referer'] != '') && (($advanced) || (/*external referer*/@parse_url($myrow['referer'], HTTP_HOST) != @parse_url(get_base_url(), HTTP_HOST)))) {
                 $h[$l_referer] = $myrow['referer'];
             }
 
+            $ua_data = array();
+            $ua_data[$l_browser] = $myrow['browser'];
+            $ua_data[$l_os] = $myrow['operating_system'];
             $this_browser = preg_replace('#\d#', '', $myrow['browser'] . ' ' . $myrow['operating_system']);
-            if (($first_browser === null) || ($first_browser != $this_browser)) {
-                $h[$l_browser] = $myrow['browser'];
-
-                $h[$l_os] = $myrow['operating_system'];
+            if ($first_browser === null) {
+                $data[do_lang('BROWSING_ENVIRONMENT', null, null, null, get_site_default_lang())] = $ua_data;
+            } elseif (($first_browser != $this_browser) && ($advanced)) {
+                $h[do_lang('BROWSING_ENVIRONMENT', null, null, null, get_site_default_lang())] = $ua_data;
             }
 
             $history[] = $h;
@@ -433,7 +486,7 @@ function find_user_metadata($include_referer = true, $member_id = null, $advance
                 $first_browser = $this_browser;
             }
         }
-        $data[do_lang('HISTORY')] = $history;
+        $data[do_lang($advanced ? 'HISTORY' : 'PAGES_SEEN', null, null, null, get_site_default_lang())] = $history;
     }
 
     //$data['Cookie'] = $_COOKIE;   Don't want to pass this out too freely, not useful anyway
@@ -450,12 +503,9 @@ function find_user_metadata($include_referer = true, $member_id = null, $advance
  */
 function convert_page_string_to_page_link($page, $show_lang = false)
 {
-    $page_converted = preg_replace('#/pages/[^/]*/#', '/', $page);
+    $page_converted = preg_replace('#(^|/)pages/.*/#', '/', $page);
     if ($page_converted == '') {
         return ':';
-    }
-    if ($page_converted[0] == '/') {
-        $page_converted = substr($page_converted, 1);
     }
     if ((substr($page_converted, -4) == '.php') || (substr($page_converted, -4) == '.htm') || (substr($page_converted, -4) == '.txt')) {
         $page_converted = substr($page_converted, 0, strlen($page_converted) - 4);

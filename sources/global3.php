@@ -4140,7 +4140,7 @@ function cms_gethostbyname($hostname)
     $ip_address = '';
 
     if ((php_function_allowed('shell_exec')) && (function_exists('get_value')) && (get_value('slow_php_dns') === '1')) {
-        $ip_address = preg_replace('#^.*has address (\d+\.\d+\.\d+).*#s', '$1', shell_exec('host ' . escapeshellarg_wrap($hostname)));
+        $ip_address = preg_replace('#^.*has address (\d+\.\d+\.\d+\.\d+).*#s', '$1', shell_exec('host ' . escapeshellarg_wrap($hostname)));
     }
 
     if ($ip_address == '') {

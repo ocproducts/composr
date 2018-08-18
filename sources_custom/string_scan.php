@@ -285,6 +285,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CACHE_CATALOGUES
         CHECKLIST_HEALTH_CHECK
         CLEAR_LOG
+        REVERSE_DNS_AND_WHOIS
+        SESSION_ID
+        BROWSING_ENVIRONMENT
+        PAGES_SEEN
         CMD_FS_SEARCH_HELP
         CMD_FS_SEARCH_HELP_PARAM_0
         CMD_FS_SEARCH_HELP_PARAM_1
