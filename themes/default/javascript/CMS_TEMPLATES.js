@@ -534,25 +534,29 @@
 
         if (onclickCallFunctions != null) {
             $dom.on(btn, 'click', function (e) {
+                var funcs = onclickCallFunctions.slice();
+                
                 e.preventDefault();
 
-                onclickCallFunctions.forEach(function (func) {
+                funcs.forEach(function (func) {
                     func.push(e);
                 });
 
-                $cms.executeJsFunctionCalls(onclickCallFunctions, btn);
+                $cms.executeJsFunctionCalls(funcs, btn);
             });
         }
 
         if (onmousedownCallFunctions != null) {
             $dom.on(btn, 'mousedown', function (e) {
+                var funcs = onmousedownCallFunctions.slice();
+                
                 e.preventDefault();
 
-                onmousedownCallFunctions.forEach(function (func) {
+                funcs.forEach(function (func) {
                     func.push(e);
                 });
 
-                $cms.executeJsFunctionCalls(onmousedownCallFunctions, btn);
+                $cms.executeJsFunctionCalls(funcs, btn);
             });
         }
     };
