@@ -989,6 +989,7 @@
                     $cms.callBlock($util.rel(thisCallUrl), '', ajaxifyContainer, false, false, postParams).then(function () {
                         window.scrollTo(0, $dom.findPosY(ajaxifyContainer, true));
                         
+                        /* Update current URL */
                         var newPageUrl = $cms.pageUrl();
                         $util.eachIter(targetUrl.searchParams.entries(), function (param) {
                             var paramName = param[0],
@@ -1003,6 +1004,19 @@
                         window.hasJsState = true;
                         window.history.pushState({}, document.title, newPageUrl.toString());
                     });
+                }
+            });
+        }
+    };
+
+    // Only for debugging purposes, finds and logs orphan [data-ajaxify-target] instances
+    $cms.behaviors.ajaxifyTarget = {
+        attach: function (context) {
+            var els = $util.once($dom.$$$(context, '[data-ajaxify-target]'), 'behavior.ajaxifyTarget');
+
+            els.forEach(function (ajaxifyTarget) {
+                if (!$dom.parent(ajaxifyTarget, '[data-ajaxify]')) {
+                    $util.error('[data-ajaxify-target] instance found without a corresponding [data-ajaxify] container.');
                 }
             });
         }
