@@ -173,11 +173,9 @@
         return ++_uniqueId;
     }
 
-    // Unique for every instance of $util
-    $util.id = 'util' + ('' + Math.random()).substr(2);
-
+    var _uids = new WeakMap();
     /**
-     * Used to uniquely identify objects/functions
+     * Provides a unique integer id to uniquely identify objects/functions
      * @param {object|function} obj
      * @returns {number}
      */
@@ -185,13 +183,14 @@
         if ((obj == null) || ((typeof obj !== 'object') && (typeof obj !== 'function'))) {
             throw new TypeError('$util.uid(): Parameter `obj` must be an object or a function.');
         }
-
-        if ($util.hasOwn(obj, $util.id)) {
-            return obj[$util.id];
+        
+        var id = _uids.get(obj);
+        
+        if (id === undefined) {
+            id = uniqueId();
+            _uids.set(obj, id);
         }
 
-        var id = uniqueId();
-        $util.properties(obj, $util.keyValue($util.id, id));
         return id;
     };
 
