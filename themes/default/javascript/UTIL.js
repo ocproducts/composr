@@ -927,7 +927,7 @@
      * @param iterable
      * @returns { Array }
      */
-    $util.arrayFromIterable = function arrayFromIterable(iterable) {
+    $util.iterableToArray = function iterableToArray(iterable) {
         var item, array = [];
 
         if (iterable != null) {

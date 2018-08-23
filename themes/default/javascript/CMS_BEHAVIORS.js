@@ -945,7 +945,7 @@
                     
                     if (callParamsFromTarget.length > 0) {
                         // Any parameters matching a pattern must be sent in the URL to the AJAX block call
-                        $util.eachIter(targetUrl.searchParams.entries(), function (param) {
+                        $util.iterableToArray(targetUrl.searchParams.entries()).forEach(function (param) {
                             var paramName = param[0],
                                 paramValue = param[1];
 
@@ -959,28 +959,46 @@
                         });
                     }
 
+                    var newWindowUrl = $cms.pageUrl(),
+                        rgxSkipParams = /^(zone|page|type|id|raw|cache|auth_key|block_map|snippet|utheme|ajax)$/; // Params that shouldn't be added to the window URL
+                    $util.iterableToArray(targetUrl.searchParams.entries()).forEach(function (param) {
+                        if (!rgxSkipParams.test(param[0])) {
+                            newWindowUrl.searchParams.set(param[0], param[1]);
+                        }
+                    });
+                    
                     if (target.localName === 'form') {
                         if (target.method.toLowerCase() === 'post') {
                             postParams = '';
                         }
 
-                        var paramName, paramValue;
-                        for (var j = 0; j < target.elements.length; j++) {
-                            if (target.elements[j].name) {
-                                paramName = target.elements[j].name;
-                                paramValue = $cms.form.cleverFindValue(target, target.elements[j]);
+                        $util.toArray(target.elements).forEach(function (element) {
+                            var paramValue;
 
-                                if (target.method.toLowerCase() === 'post') {
-                                    if (postParams !== '') {
-                                        postParams += '&';
-                                    }
-                                    postParams += paramName + '=' + encodeURIComponent(paramValue);
-                                } else {
-                                    thisCallUrl.searchParams.set(paramName, paramValue);
-                                    targetUrl.searchParams.set(paramName, paramValue); // Used for setting new window URL
+                            if (!element.name) {
+                                return;
+                            }
+                            
+                            if (element.disabled || ['submit', 'reset', 'button', 'file'].includes(element.type) || (['radio', 'checkbox'].includes(element.type) && !element.checked)) {
+                                // ^ Skip disabled fields, certain types and non-checked radio and checkbox fields
+                                newWindowUrl.searchParams.delete(element.name); // Element value might have been previously added to the window URL
+                                return;
+                            }
+
+                            paramValue = $cms.form.cleverFindValue(target, element);
+
+                            if (target.method.toLowerCase() === 'post') {
+                                if (postParams !== '') {
+                                    postParams += '&';
+                                }
+                                postParams += element.name + '=' + encodeURIComponent(paramValue);
+                            } else {
+                                thisCallUrl.searchParams.set(element.name, paramValue);
+                                if (!rgxSkipParams.test(element.name)) {
+                                    newWindowUrl.searchParams.set(element.name, paramValue);
                                 }
                             }
-                        }
+                        });
                     }
 
                     $cms.ui.clearOutTooltips();
@@ -988,21 +1006,8 @@
                     // Make AJAX block call
                     $cms.callBlock($util.rel(thisCallUrl), '', ajaxifyContainer, false, false, postParams).then(function () {
                         window.scrollTo(0, $dom.findPosY(ajaxifyContainer, true));
-                        
-                        /* Update current URL */
-                        var newPageUrl = $cms.pageUrl();
-                        $util.eachIter(targetUrl.searchParams.entries(), function (param) {
-                            var paramName = param[0],
-                                paramValue = param[1],
-                                skip = /^(zone|page|type|id|raw|cache|auth_key|block_map|snippet|utheme|ajax)$/;
-                            
-                            if (!skip.test(paramName)) {
-                                newPageUrl.searchParams.set(paramName, paramValue);
-                            }
-                        });
-
                         window.hasJsState = true;
-                        window.history.pushState({}, document.title, newPageUrl.toString());
+                        window.history.pushState({}, document.title, newWindowUrl.toString()); // Update window URL
                     });
                 }
             });
@@ -1016,7 +1021,7 @@
 
             els.forEach(function (ajaxifyTarget) {
                 if (!$dom.parent(ajaxifyTarget, '[data-ajaxify]')) {
-                    $util.error('[data-ajaxify-target] instance found without a corresponding [data-ajaxify] container.');
+                    $util.error('[data-ajaxify-target] instance found without a corresponding [data-ajaxify] container.', ajaxifyTarget);
                 }
             });
         }

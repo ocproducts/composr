@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,checking}
-<div class="box-wrapper" data-tpl="blockMainStaffTips" data-ajaxify="{ callUrl: '{$FACILITATE_AJAX_BLOCK_CALL;*,{BLOCK_PARAMS}}', callParamsFromTarget: ['^staff_tips_dismiss$', '^rand$'] }">
+<div class="box-wrapper" data-ajaxify="{ callUrl: '{$FACILITATE_AJAX_BLOCK_CALL;*,{BLOCK_PARAMS}}', callParamsFromTarget: ['^staff_tips_dismiss$', '^rand$'] }">
 	<section id="tray-{!TIPS|}" class="box box---block-main-staff-tips" data-toggleable-tray="{ save: true }">
 		<h3 class="toggleable-tray-title js-tray-header">
 			<a class="toggleable-tray-button js-tray-onclick-toggle-tray" href="#!" title="{!CONTRACT}">

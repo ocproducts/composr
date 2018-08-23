@@ -342,9 +342,9 @@
      * @returns {string}
      */
     $cms.form.cleverFindValue = function cleverFindValue(form, element) {
-        if ((element.nodeName === undefined) && $util.isArrayLike(element)) {
-            // A RadioNodeList? (returned by form.elements[<name of a radio input>])
-            element = element[0];
+        if ((typeof element === 'object') && (element instanceof window.RadioNodeList)) {
+            // A RadioNodeList (returned by form.elements[<name of a radio input>])
+            return element.value;
         }
 
         var value = '';
@@ -387,22 +387,6 @@
                         }
                         break;
 
-                    case 'hidden':
-                    case 'text':
-                    case 'color':
-                    case 'date':
-                    case 'datetime':
-                    case 'datetime-local':
-                    case 'email':
-                    case 'month':
-                    case 'number':
-                    case 'range':
-                    case 'search':
-                    case 'tel':
-                    case 'time':
-                    case 'url':
-                    case 'week':
-                    case 'password':
                     default:
                         value = element.value;
                         break;

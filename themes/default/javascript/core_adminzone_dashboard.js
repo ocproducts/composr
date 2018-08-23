@@ -256,9 +256,6 @@
         });
     };
 
-    $cms.templates.blockMainStaffTips = function (params) {
-    };
-
     function ajaxFormSubmitAdminHeadless(form, blockName, map) {
         var post = '';
 
