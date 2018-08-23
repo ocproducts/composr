@@ -231,7 +231,7 @@
 
         for (i = 0; i < files.options.length; i++) {
             $dom.on(files[i], 'mouseover', function (event) {
-                $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.getBaseUrlNohttp()) + '/uploads/galleries/' + encodeURI(this.value) + '" \/>', 'auto');
+                $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($util.rel($cms.getBaseUrl())) + '/uploads/galleries/' + encodeURI(this.value) + '" \/>', 'auto');
             });
             $dom.on(files[i], 'mousemove', function (event) {
                 $cms.ui.repositionTooltip(this, event);

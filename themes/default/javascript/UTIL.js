@@ -864,7 +864,7 @@
         };
     };
 
-    var _onced = {};
+    var _onced = Object.create(null);
     /**
      * @param objects
      * @param flag

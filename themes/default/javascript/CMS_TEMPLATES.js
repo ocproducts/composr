@@ -627,7 +627,7 @@
         } catch (e) {}
 
         var soundUrl = 'data/sounds/message_received.mp3',
-            baseUrl = (!soundUrl.includes('data_custom') && !soundUrl.includes('uploads/')) ? $cms.getBaseUrlNohttp() : $cms.getCustomBaseUrlNohttp(),
+            baseUrl = $util.rel((!soundUrl.includes('data_custom') && !soundUrl.includes('uploads/')) ? $cms.getBaseUrl() : $cms.getCustomBaseUrl()),
             soundObject = window.soundManager.createSound({ url: baseUrl + '/' + soundUrl });
 
         if (soundObject && document.hasFocus()/*don't want multiple tabs all pinging*/) {

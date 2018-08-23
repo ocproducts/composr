@@ -2385,7 +2385,7 @@ Do not omit semicolons
 | Stability
 | Product development only
 | Automated test ([tt]js_standards.php[/tt])
-| Use the relative version of the base URL ([tt]$cms.getBaseUrlNohttp[/tt]), just in case a JavaScript file is cached under HTTP but used under HTTPS (it would generate a security error) -- or if the JavaScript is working across multiple domains (another potential security error). When Composr runs on multiple domains all URLs will work on all domains, with the exception of page URLs.
+| Use the relative version of the base URL ([tt]$util.rel($cms.getBaseUrl())[/tt]), just in case a JavaScript file is cached under HTTP but used under HTTPS (it would generate a security error) -- or if the JavaScript is working across multiple domains (another potential security error). When Composr runs on multiple domains all URLs will work on all domains, with the exception of page URLs.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use relative script URLs[/color]
