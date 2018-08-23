@@ -1112,15 +1112,14 @@ class Module_galleries
         list($sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos) = $this->get_sort_order();
 
         if ((get_value('no_individual_gallery_view') === '1') && ($GLOBALS['SITE_DB']->query_select_value('galleries', 'flow_mode_interface', array('name' => $cat)) == '1')) {
-            require_code('site2');
-            assign_refresh(build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'probe_id' => $id, 'probe_type' => 'image'), '_SELF'), 0.0);
+            return redirect_screen($this->title, build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'probe_id' => $id, 'probe_type' => 'image'), '_SELF'));
         }
 
         // Views
         if ((get_db_type() != 'xml') && (get_value('disable_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['image_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('images')) {
-                $GLOBALS['SITE_DB']->query_update('images', array('image_views' => $myrow['image_views']), array('id' => $id), '', 1, 0, false, true);
+                $GLOBALS['SITE_DB']->query_update('images', array('image_views' => $myrow['image_views']), array('id' => $id), '', 1, 0, false, true); // Errors suppressed in case DB write access broken
             }
         }
 
@@ -1230,8 +1229,7 @@ class Module_galleries
         list($sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos) = $this->get_sort_order();
 
         if ((get_value('no_individual_gallery_view') === '1') && ($GLOBALS['SITE_DB']->query_select_value('galleries', 'flow_mode_interface', array('name' => $cat)) == '1')) {
-            require_code('site2');
-            assign_refresh(build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'probe_id' => $id, 'probe_type' => 'video'), '_SELF'), 0.0);
+            return redirect_screen($this->title, build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'probe_id' => $id, 'probe_type' => 'video'), '_SELF'));
         }
 
         // Views

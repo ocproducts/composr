@@ -242,7 +242,7 @@ function attachments_script()
         if ((strpos($full, "\n") !== false) || (strpos($full, "\r") !== false)) {
             log_hack_attack_and_exit('HEADER_SPLIT_HACK');
         }
-        header('Location: ' . escape_header($full));
+        header('Location: ' . escape_header($full)); // assign_refresh not used, as no UI here
         return;
     }
 

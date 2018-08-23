@@ -203,7 +203,8 @@ function simple_tracker_script()
         'c_url' => cms_mb_substr($url, 0, 255),
     ));
 
-    header('Location: ' . escape_header($url));
+    require_code('site2');
+    redirect_exit($url);
 }
 
 /**
@@ -535,7 +536,8 @@ function page_link_redirect_script()
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }
 
-    header('Location: ' . escape_header($x));
+    require_code('site2');
+    redirect_exit($x);
 }
 
 /**
@@ -665,7 +667,7 @@ function thumb_script()
     if ((strpos($url_thumb, "\n") !== false) || (strpos($url_thumb, "\r") !== false)) {
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }
-    header('Location: ' . escape_header($url_thumb));
+    header('Location: ' . escape_header($url_thumb)); // assign_refresh not used, as no UI here
 }
 
 /**

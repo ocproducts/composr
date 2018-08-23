@@ -64,7 +64,7 @@ function download_gateway_script()
         $tpl_wrapped = globalise($tpl, null, '', true, true);
         $tpl_wrapped->evaluate_echo();
     } else {
-        header('Location:' . escape_header($download_url->evaluate()));
+        header('Location:' . escape_header($download_url->evaluate())); // assign_refresh not used, as it needs to be an invisible hop
     }
 }
 
@@ -108,8 +108,7 @@ function dload_script()
     if (!has_category_access(get_member(), 'downloads', strval($myrow['category_id']))) {
         $redirect_url = get_download_category_purchase_url($myrow['category_id']);
         if ($redirect_url !== null) {
-            header('Location:' . $redirect_url->evaluate());
-            return;
+            return redirect_screen(null, $redirect_url);
         }
 
         access_denied('CATEGORY_ACCESS');
@@ -187,7 +186,7 @@ function dload_script()
         if ((strpos($full, "\n") !== false) || (strpos($full, "\r") !== false)) {
             log_hack_attack_and_exit('HEADER_SPLIT_HACK');
         }
-        header('Location: ' . escape_header($full));
+        header('Location: ' . escape_header($full)); // assign_refresh not used, as no UI here
         log_download($id, 0, $got_before !== null); // Bandwidth used is 0 for an external download
         return;
     }

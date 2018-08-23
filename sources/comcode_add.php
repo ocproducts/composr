@@ -347,13 +347,11 @@ function comcode_helper_script_replace()
         switch ($action) {
             case 'add':
                 $url = find_script('comcode_helper') . '?type=step1&field_name=' . urlencode(get_param_string('field_name')) . $keep->evaluate();
-                header('Location: ' . escape_header($url));
-                exit();
+                return redirect_screen(null, $url);
 
             case 'edit':
                 $url = str_replace('&type=replace', '&type=step2', get_self_url_easy());
-                header('Location: ' . escape_header($url));
-                exit();
+                return redirect_screen(null, $url);
 
             case 'delete':
                 require_javascript('posting');

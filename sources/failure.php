@@ -1330,7 +1330,7 @@ function _look_for_match_key_message($natural_text, $only_if_zone = false, $only
                 if (preg_match('#^https?://#', $message_raw) != 0) { // Looks like a URL
                     $url = $message_raw;
                     require_code('site2');
-                    assign_refresh($url, 0.0);
+                    assign_refresh($url, 0.0); // redirect_screen not used because there is already a legitimate output screen happening
                     $message = do_lang_tempcode('_REDIRECTING');
                 } elseif (preg_match('#^[' . URL_CONTENT_REGEXP . ']*:[' . URL_CONTENT_REGEXP . ']*#', $message_raw) != 0) { // Looks like a page-link
                     list($zone, $map, $hash) = page_link_decode($message_raw);
@@ -1339,7 +1339,7 @@ function _look_for_match_key_message($natural_text, $only_if_zone = false, $only
                     }
                     $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, false, $hash));
                     require_code('site2');
-                    assign_refresh($url, 0.0);
+                    assign_refresh($url, 0.0); // redirect_screen not used because there is already a legitimate output screen happening
                     $message = do_lang_tempcode('_REDIRECTING');
                 }
             }

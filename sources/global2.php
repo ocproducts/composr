@@ -84,7 +84,7 @@ function init__global2()
             if ((@strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false)) {
                 http_response_code(503);
             }
-            header('Location: ' . (is_file($RELATIVE_PATH . 'closed.html') ? 'closed.html' : '../closed.html'));
+            header('Location: ' . (is_file($RELATIVE_PATH . 'closed.html') ? 'closed.html' : '../closed.html')); // assign_refresh not used, as it is a pre-page situation
 
             $aaf = ini_get('auto_append_file');
             if (!empty($aaf)) {

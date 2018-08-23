@@ -341,7 +341,7 @@ function with_whitespace($in)
 /**
  * Redirect the user - transparently, storing a message that will be shown on their destination page.
  *
- * @param  Tempcode $title Title to display on redirect page
+ * @param  ?Tempcode $title Title to display on redirect page (null: standard redirection title)
  * @param  mixed $url Destination URL (may be Tempcode)
  * @param  ?mixed $text Message to show (may be Tempcode) (null: standard redirection message)
  * @param  boolean $intermediary_hop For intermediary hops, don't mark so as to read status messages - save them up for the next hop (which will not be intermediary)

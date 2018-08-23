@@ -21,7 +21,7 @@
 /**
  * Redirect the user - transparently, storing a message that will be shown on their destination page.
  *
- * @param  Tempcode $title Title to display on redirect page
+ * @param  ?Tempcode $title Title to display on redirect page (null: standard redirection title)
  * @param  mixed $url Destination URL (may be Tempcode)
  * @param  ?mixed $text Message (may be Tempcode) to show in the HTML of the redirect screen (which is usually never seen) and also after the redirect (null: standard redirection message which will only show in the HTML of the redirect screen and nothing after)
  * @param  boolean $intermediary_hop For intermediary hops, don't mark so as to read status messages - save them up for the next hop (which will not be intermediary)
@@ -50,7 +50,7 @@ function _redirect_screen($title, $url, $text = null, $intermediary_hop = false,
         }
     }
 
-    // Even if we have $FORCE_META_REFRESH we want to relay $text if provided --- our delay is zero so it won't be read in time by most users
+    // Even if we have $FORCE_META_REFRESH we want to relay $text if provided --- our delay may be as low zero so it won't always be read in time
     if ($text !== null) {
         $_message = is_object($text) ? $text->evaluate() : escape_html($text);
         if (($_message != '') && ($_message != do_lang('_REDIRECTING')) && (strpos($_message, 'cancel_sw_warn') === false)) {
@@ -73,6 +73,10 @@ function _redirect_screen($title, $url, $text = null, $intermediary_hop = false,
         }
         extend_url($url, 'redirected=1');
         $url .= $hash_bit;
+    }
+
+    if ($title === null) {
+        $title = get_screen_title('REDIRECTING');
     }
 
     if ($text === null) {

@@ -97,7 +97,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         $url = build_url($url_map, get_module_zone('admin_themes'));
 
         require_code('site2');
-        smart_redirect($url->evaluate());
+        redirect_exit($url->evaluate());
     }
 
     // Sitemap Editor
@@ -105,7 +105,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         $url = build_url(array('page' => 'admin_sitemap', 'type' => 'browse', 'id' => get_zone_name() . ':' . get_page_name()), get_module_zone('admin_sitemap'));
 
         require_code('site2');
-        smart_redirect($url->evaluate());
+        redirect_exit($url->evaluate());
     }
 
     // IDE linkage
@@ -499,7 +499,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             $url = build_url($url_map, get_module_zone('admin_themes'));
 
             require_code('site2');
-            smart_redirect($url->evaluate());
+            redirect_exit($url->evaluate());
         }
     }
 

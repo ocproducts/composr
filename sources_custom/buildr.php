@@ -54,13 +54,8 @@ function grab_new_owner($param_name)
 function buildr_refresh_with_message($message, $msg_type = 'inform')
 {
     $url = build_url(array('page' => 'buildr'), '_SELF');
-
-    $title = get_screen_title('MESSAGE');
-    $tpl = redirect_screen($title, $url, $message, false, $msg_type);
-
-    $echo = globalise($tpl, null, '', true);
-    $echo->evaluate_echo();
-    exit();
+    require_code('site2');
+    redirect_exit($url, get_screen_title('MESSAGE'), $message, false, $msg_type);
 }
 
 /**
@@ -391,7 +386,7 @@ function try_to_enter_room($member_id, $dx, $dy, $given_password)
             // Put trolled into the database
             $GLOBALS['SITE_DB']->query_update('w_members', array('trolled' => $trolled), array('id' => $member_id), '', 1);
             require_code('site2');
-            smart_redirect(get_self_url(true));
+            redirect_exit(get_self_url(true));
         }
     }
 

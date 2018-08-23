@@ -43,8 +43,7 @@ class Mx_join extends Module_join
         if (addon_installed('external_db_login') && get_forum_type() == 'cns') {
             $redirect_url = get_value('external_join_url', null, true);
             if (!empty($redirect_url)) {
-                header('Location: ' . escape_header($redirect_url));
-                exit();
+                return redirect_screen(null, $redirect_url);
             }
         }
 

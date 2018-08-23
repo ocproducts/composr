@@ -198,8 +198,6 @@ class Module_admin_oauth
         $auth_url .= '&access_type=offline';
         $auth_url .= '&state=' . urlencode($service_name);
 
-        require_code('site2');
-        assign_refresh($auth_url, 0.0);
         return redirect_screen($this->title, $auth_url);
     }
 

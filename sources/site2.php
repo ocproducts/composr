@@ -119,8 +119,32 @@ function get_page_warning_details($zone, $codename, $edit_url)
 }
 
 /**
+ * Assign a redirect to the specified URL and output a message.
+ * Call this if doing a redirect deep within code that would not normally be able to return a UI screen.
+ *
+ * @sets_output_state
+ *
+ * @param  mixed $url Refresh to this URL (URLPATH or Tempcode URL)
+ * @param  ?Tempcode $title Title to display on redirect page (null: standard redirection title)
+ * @param  ?mixed $text Message to show (may be Tempcode) (null: standard redirection message)
+ * @param  boolean $intermediary_hop For intermediary hops, don't mark so as to read status messages - save them up for the next hop (which will not be intermediary)
+ * @param  ID_TEXT $msg_type Code of message type to show
+ * @set warn inform fatal
+ */
+function redirect_exit($url, $title, $text, $intermediary_hop, $msg_type)
+{
+    assign_refresh($url, 0.0);
+
+    $middle = redirect_screen($title, $url, $text, $intermediary_hop, $msg_type);
+    $echo = globalise($middle, null, '', true);
+    $echo->evaluate_echo();
+    exit();
+}
+
+/**
  * Assign a page refresh to the specified URL.
- * This is almost always used before calling the redirect_screen function. It assumes Composr will output a full screen.
+ * This is almost always used within the redirect_screen function.
+ * It assumes Composr will output a full HTML screen. If you're not outputting HTML, use header('Location: ...');
  *
  * @sets_output_state
  *
@@ -167,12 +191,12 @@ function assign_refresh($url, $multiplier = 0.0)
 
     global $FORCE_META_REFRESH;
 
-    if (((!running_script('index')) && (!running_script('form_to_email'))) || ($must_show_message)) {
+    if (($must_show_message) || (get_option('force_meta_refresh') == '1')) {
         $FORCE_META_REFRESH = true;
     }
 
-    if ($FORCE_META_REFRESH) {
-        // Redirect via meta tag in standard Composr output
+    if (($FORCE_META_REFRESH) && (running_script('index'))) {
+        // Redirect via meta tag in standard Composr output. This ties to the {$REFRESH} symbol used in HTML_HEAD.tpl
         global $REFRESH_URL;
         $REFRESH_URL[0] = $url;
         $REFRESH_URL[1] = 2.5 * $multiplier;
@@ -183,24 +207,6 @@ function assign_refresh($url, $multiplier = 0.0)
             $GLOBALS['QUICK_REDIRECT'] = true;
         }
     }
-}
-
-/**
- * Assign a redirect to the specified URL, with no visual component.
- * If possible, use an HTTP header; but if output has already started, use a meta tag.
- *
- * @sets_output_state
- *
- * @param  mixed $url Refresh to this URL (URLPATH or Tempcode URL)
- */
-function smart_redirect($url)
-{
-    assign_refresh($url, 0.0);
-
-    $middle = redirect_screen(get_screen_title('REDIRECTING'), $url);
-    $echo = globalise($middle, null, '', true);
-    $echo->evaluate_echo();
-    exit();
 }
 
 /**

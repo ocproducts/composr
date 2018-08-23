@@ -285,16 +285,13 @@ class Hook_profiles_tabs_edit_settings
                 $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_GENERAL);
                 if ($redirect !== null) {
                     require_code('site2');
-                    assign_refresh($redirect, 0.0);
+                    assign_refresh($redirect, 0.0); // redirect_screen not used because there is already a legitimate output screen happening
                 }
 
                 if (($username !== null) && ($username != $username_old)) {
                     $title = get_screen_title('MEMBER_ACCOUNT', true, array(escape_html($username), escape_html($username)));
-                    $tpl = redirect_screen($title, get_self_url(), do_lang_tempcode('SUCCESS_SAVE'));
-
-                    $echo = globalise($tpl, null, '', true);
-                    $echo->evaluate_echo();
-                    exit();
+                    require_code('site2');
+                    redirect_exit(get_self_url(), $title, do_lang_tempcode('SUCCESS_SAVE'));
                 }
 
                 attach_message(do_lang_tempcode('SUCCESS_SAVE'), 'inform');

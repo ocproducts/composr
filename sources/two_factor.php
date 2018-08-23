@@ -63,11 +63,8 @@ function approve_ip_script()
         adjust_htaccess();
     }
 
-    $title = get_screen_title('CONFIRM');
-    $middle = redirect_screen($title, get_base_url() . $keep, do_lang_tempcode('SUCCESS'));
-    $echo = globalise($middle, null, '', true, true);
-    $echo->evaluate_echo();
-    exit();
+    require_code('site2');
+    redirect_exit(get_base_url() . $keep, get_screen_title('CONFIRM'), do_lang_tempcode('SUCCESS'));
 }
 
 /**

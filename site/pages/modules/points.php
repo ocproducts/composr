@@ -323,7 +323,7 @@ class Module_points
             if (is_object($url)) {
                 $url = $url->evaluate();
             }
-            return redirect_screen($this->title, $url . '#tab--points', '');
+            return redirect_screen($this->title, $url . '#tab--points');
         }
 
         require_code('points3');

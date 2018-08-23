@@ -51,7 +51,7 @@ function form_to_email_entry_script()
     $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
     if ($redirect != '') {
         require_code('site2');
-        $tpl = redirect_screen($title, $redirect, '');
+        $tpl = redirect_screen($title, $redirect);
     } else {
         $tpl = do_template('INFORM_SCREEN', array('_GUID' => 'e577a4df79eefd9064c14240cc99e947', 'TITLE' => $title, 'TEXT' => $text));
     }

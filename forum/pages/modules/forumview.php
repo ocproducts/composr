@@ -140,7 +140,7 @@ class Module_forumview
 
             if (($forum_info['f_redirection'] != '') && (looks_like_url($forum_info['f_redirection']))) {
                 require_code('site2');
-                smart_redirect($forum_info['f_redirection']);
+                redirect_exit($forum_info['f_redirection']);
             }
 
             set_short_title($forum_name);

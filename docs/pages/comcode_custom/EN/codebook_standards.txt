@@ -640,6 +640,13 @@ Use [tt]log_it[/tt] calls
 | Composr development +
 | Manually
 | For any non-trivial admin action, do a [tt]log_it[/tt] call for it, and implement good quality metadata in an [tt]actionlog[/tt] hook for that.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Use the correct redirection APIs
+| Portability
+| Composr development +
+| Manually
+| There are a number of internal functions to do redirects ([tt]redirect_screen[/tt], [tt]redirect_exit[/tt], [tt]assign_refresh[/tt]), supporting [tt]<meta>[/tt]-redirect for situations that don't allow HTTP-redirect, and attached-message hand-over. If you must output a [tt]Location[/tt] header manually then comment why you are doing so.
 |}
 
 [title="4"]Addons[/title]
