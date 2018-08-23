@@ -2390,7 +2390,7 @@
     $dom.empty = function empty(el) {
         el = $dom.elArg(el);
 
-        $util.forEach(el.children, function (child) {
+        $util.toArray(el.children).forEach(function (child) {
             $cms.detachBehaviors(child);
         });
 

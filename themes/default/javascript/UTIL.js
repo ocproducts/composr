@@ -118,12 +118,15 @@
      * @returns { string }
      */
     window.strVal = function strVal(val, defaultValue) {
-        var ret;
-
         if (defaultValue === undefined) {
             defaultValue = '';
         }
 
+        if (val == null) {
+            return defaultValue;
+        }
+
+        var ret;
         if (!val) {
             ret = (val === 0) ? '0' : '';
         } else if (val === true) {
@@ -139,7 +142,7 @@
             throw new TypeError('strVal(): Cannot coerce `val` of type "' + $util.typeName(val) + '" to a string.');
         }
 
-        return (ret !== '') ? ret : defaultValue;
+        return ret;
     };
 
     /**@namespace $util*/
@@ -148,11 +151,6 @@
      * @returns {boolean}
      */
     $util.hasOwn = Function.bind.call(Function.call, Object.prototype.hasOwnProperty);
-    /**
-     * @method
-     * @returns { Array }
-     */
-    $util.forEach = Function.bind.call(Function.call, Array.prototype.forEach);
     /**
      * @method
      * @returns { Array }

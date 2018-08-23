@@ -695,7 +695,7 @@
                 return opt.text; // optgroup
             }
 
-            var imageSources = JSON.parse(strVal(params.imageSources, '{}'));
+            var imageSources = JSON.parse(strVal(params.imageSources) || '{}');
 
             for (var imageName in imageSources) {
                 if (opt.id === imageName) {

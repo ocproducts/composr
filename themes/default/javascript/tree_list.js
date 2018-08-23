@@ -76,7 +76,7 @@
         /* Go through our tree list looking for a particular XML node */
         getElementByIdHack: function getElementByIdHack(id, type, ob, serverid) {
             id = strVal(id);
-            type = strVal(type, 'c');
+            type = strVal(type) || 'c';
             ob = ob || this.treeListData;
             serverid = !!serverid;
 
