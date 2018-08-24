@@ -405,21 +405,6 @@
         el.checked = strVal((typeof bool === 'function') ? bool.call(el, el.checked, el) : bool);
         $dom.trigger(el, 'change');
     };
-    /**
-     * @memberof $dom
-     * @param node
-     * @param newText
-     * @returns {string|*}
-     */
-    $dom.text = function text(node, newText) {
-        node = $dom.nodeArg(node);
-
-        if (newText === undefined) {
-            return node.textContent;
-        }
-
-        node.textContent = strVal((typeof newText === 'function') ? newText.call(node, node.textContent, node) : newText);
-    };
 
     $dom.waitForResources = function waitForResources(resourceEls) {
         if (resourceEls == null) {
@@ -2426,22 +2411,6 @@
         var promise = $dom.before(el, html);
         $dom.remove(el);
         return promise;
-    };
-
-    /**
-     * @memberof $dom
-     * @param el
-     * @param text
-     * @returns {string}
-     */
-    $dom.text = function text(el, text) {
-        el = $dom.elArg(el);
-
-        if (text === undefined) {
-            return el.textContent;
-        }
-
-        return el.textContent = strVal(text);
     };
 
     /**
