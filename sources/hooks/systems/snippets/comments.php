@@ -38,7 +38,7 @@ class Hook_snippet_comments
         $hash = get_param_string('hash');
 
         require_code('crypt');
-        if (ratchet_hash($serialized_options, get_site_salt()) != $hash) {
+        if (!ratchet_hash_verify($serialized_options, get_site_salt(), $hash)) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 

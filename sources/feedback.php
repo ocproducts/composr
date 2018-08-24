@@ -197,7 +197,8 @@ function post_comment_script()
     // Check security
     $hash = either_param_string('hash');
     require_code('crypt');
-    if (ratchet_hash($options, get_site_salt()) != $hash) {
+
+    if (!ratchet_hash_verify($options, get_site_salt(), $hash)) {
         header('Content-Type: text/plain; charset=' . get_charset());
         exit();
     }
