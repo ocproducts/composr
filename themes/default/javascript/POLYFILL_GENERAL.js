@@ -46,6 +46,11 @@
         return Number.isFinite(value) && (Math.floor(value) === value);
     });
 
+    // Not part of a standard but it should be.
+    definePolyfill(String.prototype, 'replaceAll', function replaceAll(search, replacement) {
+        return this.split(search).join('' + replacement);
+    });
+
     // Credit: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/includes
     definePolyfill(String.prototype, 'includes', function includes(search, start) {
         start = +start || 0;
