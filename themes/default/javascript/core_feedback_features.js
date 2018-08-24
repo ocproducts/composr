@@ -284,28 +284,31 @@
 
     $cms.templates.commentAjaxHandler = function (params) {
         var urlStem = params.urlStem,
-            wrapper = $dom.$('#comments-wrapper');
+            wrapperEl = $dom.$('#comments-wrapper');
 
         replaceCommentsFormWithAjax(params.options, params.hash, 'comments-form', 'comments-wrapper');
 
-        if (wrapper) {
-            $dom.internaliseAjaxBlockWrapperLinks(urlStem, wrapper, ['^start_comments$', '^max_comments$'], {});
+        if (wrapperEl) {
+            $dom.internaliseAjaxBlockWrapperLinks(urlStem, wrapperEl, ['^start_comments$', '^max_comments$'], {});
         }
 
         // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results
         if (params.infiniteScroll) {
             var infiniteScrollingCommentsWrapper = function () {
-                $dom.internaliseInfiniteScrolling(urlStem, wrapper);
+                $dom.internaliseInfiniteScrolling(urlStem, wrapperEl);
             };
 
-            $dom.on(window, 'scroll', infiniteScrollingCommentsWrapper);
-            $dom.on(window, 'keydown', $dom.infiniteScrollingBlock);
-            $dom.on(window, 'mousedown', $dom.infiniteScrollingBlockHold);
-            $dom.on(window, 'mousemove', function () {
-                $dom.infiniteScrollingBlockUnhold(infiniteScrollingCommentsWrapper);
+            $dom.on(window, {
+                scroll: infiniteScrollingCommentsWrapper,
+                touchmove: infiniteScrollingCommentsWrapper,
+                keydown: $dom.infiniteScrollingBlock,
+                mousedown: $dom.infiniteScrollingBlockHold,
+                mousemove: function () {
+                    // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
+                    $dom.infiniteScrollingBlockUnhold(infiniteScrollingCommentsWrapper);
+                }
             });
 
-            // ^ mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
             infiniteScrollingCommentsWrapper();
         }
     };

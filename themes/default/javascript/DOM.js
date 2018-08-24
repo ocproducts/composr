@@ -2633,7 +2633,7 @@
      * @param event
      */
     $dom.infiniteScrollingBlock = function infiniteScrollingBlock(event) {
-        if (event.keyCode === 35) { // 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
+        if (event.key === 'End') { // 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
             infiniteScrollBlocked = true;
             setTimeout(function () {
                 infiniteScrollBlocked = false;
