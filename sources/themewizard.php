@@ -605,7 +605,7 @@ function themewizard_script()
     if ($type == 'image') {
         $image = calculate_theme($seed, $source_theme, $algorithm, $show, $dark);
         if ($image === null) {
-            header('Location: ' . escape_header(find_theme_image($show)));
+            header('Location: ' . escape_header(find_theme_image($show))); // assign_refresh not used, as no UI here
             exit();
         }
 

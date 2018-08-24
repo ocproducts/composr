@@ -909,7 +909,7 @@ class Module_purchase
         }
         if ($message === null) {
             // Ah, not even a message to show - jump ahead
-            return redirect_screen($this->title, $url, '');
+            return redirect_screen($this->title, $url);
         }
         $text->attach($message);
 
@@ -950,7 +950,7 @@ class Module_purchase
         }
         if ($terms === '') {
             // Ah, not even any terms to show - jump ahead
-            return redirect_screen($this->title, $url, '');
+            return redirect_screen($this->title, $url);
         }
 
         $result = do_template('ECOM_PURCHASE_STAGE_TERMS', array(
@@ -1009,7 +1009,7 @@ class Module_purchase
             $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step), '_SELF', array(), true);
 
             // Ah, not even any fields to show - jump ahead
-            return redirect_screen($this->title, $url, '');
+            return redirect_screen($this->title, $url);
         }
 
         $result = do_template('ECOM_PURCHASE_STAGE_DETAILS', array(

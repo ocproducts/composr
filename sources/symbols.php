@@ -1585,12 +1585,11 @@ function ecv_($lang, $escaped, $param) // A Tempcode comment
  */
 function ecv_REFRESH($lang, $escaped, $param)
 {
+    // This symbol is only used by HTML_HEAD.tpl
+
     // Is this refreshing?
-    global $REFRESH_URL, $FORCE_META_REFRESH;
-    if ((!running_script('upgrader')) && (get_option('force_meta_refresh') == '1')) {
-        $FORCE_META_REFRESH = true;
-    }
-    if ((array_key_exists(0, $REFRESH_URL)) && ($REFRESH_URL[0] != '') && ($FORCE_META_REFRESH)) { // The page itself has actually told it to refresh itself DISABLED FOR ACCESSIBILITY REASONS: Now headers do refreshing when it's crucial
+    global $REFRESH_URL;
+    if ((array_key_exists(0, $REFRESH_URL)) && ($REFRESH_URL[0] != '')) { // The page itself has actually told it to refresh itself
         if (!array_key_exists(1, $REFRESH_URL)) {
             $REFRESH_URL[1] = 1;
         }

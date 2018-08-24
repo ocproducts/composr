@@ -62,7 +62,7 @@ function init__site()
             }
             set_http_status_code(301);
             require_code('urls');
-            header('Location: ' . escape_header(get_self_url(true, false, $non_canonical)));
+            header('Location: ' . escape_header(get_self_url(true, false, $non_canonical))); // assign_refresh not used, as it is a pre-page situation
             exit();
         }
         */
@@ -98,7 +98,7 @@ function init__site()
             ) {
                 require_code('permissions');
                 set_http_status_code(301);
-                header('Location: ' . escape_header(get_self_url(true)));
+                header('Location: ' . escape_header(get_self_url(true))); // assign_refresh not used, as it is a pre-page situation
                 exit();
             }
         }
@@ -107,7 +107,7 @@ function init__site()
     // Search engine having session in URL, we don't like this
     if ((get_bot_type() !== null) && ($_SERVER['REQUEST_METHOD'] != 'POST') && (get_param_string('keep_session', null) !== null)) {
         set_http_status_code(301);
-        header('Location: ' . escape_header(get_self_url(true, false, array('keep_session' => null, 'keep_print' => null))));
+        header('Location: ' . escape_header(get_self_url(true, false, array('keep_session' => null, 'keep_print' => null)))); // assign_refresh not used, as it is a pre-page situation
         exit();
     }
 
@@ -126,7 +126,7 @@ function init__site()
                     }
 
                     set_http_status_code(301);
-                    header('Location: ' . escape_header(get_self_url(true, false)));
+                    header('Location: ' . escape_header(get_self_url(true, false))); // assign_refresh not used, as it is a pre-page situation
                     exit();
                 }
             }
@@ -135,7 +135,7 @@ function init__site()
         // Detect bad access protocol
         if ((get_value('access_protocol_redirect') === '1') && ((substr(get_base_url(), 0, 8) == 'https://') && (!tacit_https()) || (substr(get_base_url(), 0, 7) == 'http://') && (tacit_https()))) {
             set_http_status_code(301);
-            header('Location: ' . escape_header(get_self_url(true, false)));
+            header('Location: ' . escape_header(get_self_url(true, false))); // assign_refresh not used, as it is a pre-page situation
             exit();
         }
 
@@ -803,7 +803,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                             set_http_status_code(301);
                             $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', array(), true);
                             $new_url = $_new_url->evaluate();
-                            header('Location: ' . escape_header($new_url));
+                            header('Location: ' . escape_header($new_url)); // assign_refresh not used, as it is a pre-page situation
                             exit();
                         }
                     } else {
@@ -828,7 +828,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                                 set_http_status_code(301);
                                 $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', array(), true);
                                 $new_url = $_new_url->evaluate();
-                                header('Location: ' . escape_header($new_url));
+                                header('Location: ' . escape_header($new_url)); // assign_refresh not used, as it is a pre-page situation
                                 exit();
                             }
                         }
@@ -1350,10 +1350,9 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
                     return $ret;
                 }
             } else {
-                $title = get_screen_title('REDIRECTING');
                 $url = build_url($bits[1], $redirect['r_to_zone'], array(), true);
                 set_http_status_code(301);
-                $ret = redirect_screen($title, $url, do_lang_tempcode('REDIRECTED_LINK'), true);
+                $ret = redirect_screen(null, $url, do_lang_tempcode('REDIRECTED_LINK'), true);
                 $REQUEST_PAGE_NEST_LEVEL--;
                 return $ret;
             }

@@ -457,7 +457,7 @@ class Module_wiki
             } while (!array_key_exists(0, $pages));
         }
         $redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $id), '_SELF');
-        return redirect_screen(get_screen_title('RANDOM_PAGE'), $redir_url, '');
+        return redirect_screen(get_screen_title('RANDOM_PAGE'), $redir_url);
     }
 
     /**

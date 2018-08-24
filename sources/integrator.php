@@ -97,7 +97,7 @@ function reprocess_url($url, $operation_base_url)
     $document = convert_to_internal_encoding($http_result->data, $http_result->charset);
 
     if (($http_result->download_mime_type != 'text/html') && ($http_result->download_mime_type != 'application/xhtml+xml')) {
-        header('Location: ' . escape_header($url));
+        header('Location: ' . escape_header($url)); // assign_refresh not used, as no UI here
         return '';
     }
 

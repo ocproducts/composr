@@ -68,7 +68,7 @@ function current_share_user()
 
     header('Content-type: text/plain; charset=' . get_charset());
     if ((!empty($SITE_INFO['no_website_redirect'])) && ($SITE_INFO['no_website_redirect'] == '1')) {
-        header('Location: ' . $SITE_INFO['no_website_redirect']);
+        header('Location: ' . $SITE_INFO['no_website_redirect']); // assign_refresh not used, as it is a pre-page situation
     }
     exit('No such website on the server, ' . $domain);
 }

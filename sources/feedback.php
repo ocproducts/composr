@@ -922,7 +922,8 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
 
     if (($post != '') && ($forum_tie) && ($show_success_message)) {
         require_code('site2');
-        assign_refresh($GLOBALS['FORUM_DRIVER']->topic_url($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $content_type . '_' . $content_id, do_lang('COMMENT')), $forum, true), 0.0);
+        $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $content_type . '_' . $content_id, do_lang('COMMENT')), $forum, true);
+        assign_refresh($topic_url, 0.0); // redirect_screen not used because there is already a legitimate output screen happening
     }
 
     if (($post != '') && ($show_success_message)) {

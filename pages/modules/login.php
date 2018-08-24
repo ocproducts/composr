@@ -306,7 +306,7 @@ class Module_login
                 }
 
                 require_code('site2');
-                assign_refresh($url, 0.0);
+                assign_refresh($url, 0.0); // redirect_screen not used because there is already a legitimate output screen happening
                 $post = new Tempcode();
                 $refresh = new Tempcode();
             } else {

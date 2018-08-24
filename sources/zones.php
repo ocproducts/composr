@@ -368,7 +368,7 @@ function get_zone_name()
                     if (($host === $val[0]) && (preg_match('#^' . (($val[1] === '') ? '' : ('/' . preg_quote($val[1]))) . '(/|$)#', $url_path) != 0)) {
                         require_code('urls');
                         set_http_status_code(301);
-                        header('Location: ' . escape_header(str_replace('://www.', '://', get_self_url_easy())));
+                        header('Location: ' . escape_header(str_replace('://www.', '://', get_self_url_easy()))); // assign_refresh not used, as it is a pre-page situation
                         exit();
                     }
                 }

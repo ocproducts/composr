@@ -1133,7 +1133,7 @@ class Module_warnings extends Standard_crud_module
 
         if ((get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) == '') || ($deleted_all)) {
             require_code('site2');
-            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0);
+            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0); // redirect_screen not used because there is already a legitimate output screen happening
             unset($_GET['redirect']);
         }
 
@@ -1151,7 +1151,7 @@ class Module_warnings extends Standard_crud_module
 
         if (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) == '') {
             require_code('site2');
-            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0);
+            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0); // redirect_screen not used because there is already a legitimate output screen happening
         }
     }
 
@@ -1181,7 +1181,7 @@ class Module_warnings extends Standard_crud_module
 
         if (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) == '') {
             require_code('site2');
-            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0);
+            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0); // redirect_screen not used because there is already a legitimate output screen happening
         }
     }
 }

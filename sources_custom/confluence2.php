@@ -34,7 +34,7 @@ function confluence_proxy_script()
 
     if ((preg_match('#^image/#i', $mime_type) != 0) || (stripos($mime_type, 'svg') !== false)) {
         $mime_type = 'application/octet-stream';
-        header('Location: ' . $url);
+        header('Location: ' . $url); // assign_refresh not used, as no UI here
     }
 
     header('Content-Type: ' . $mime_type);
