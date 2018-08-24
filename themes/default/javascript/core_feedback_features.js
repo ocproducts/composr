@@ -284,7 +284,7 @@
     };
 
     $cms.templates.commentAjaxHandler = function (params) {
-        var urlStem = params.urlStem,
+        var urlStem = '{$FIND_SCRIPT_NOHTTP;,post_comment}?options=' + encodeURIComponent(params.options) + '&hash=' + encodeURIComponent(params.hash),
             wrapperEl = $dom.$('#comments-wrapper');
 
         replaceCommentsFormWithAjax(params.options, params.hash, 'comments-form', 'comments-wrapper');
@@ -315,12 +315,12 @@
     };
 
     $cms.templates.postChildLoadLink = function (params, container) {
-        var ids = params.implodedIds,
-            id = params.id;
+        var ids = strVal(params.implodedIds),
+            id = strVal(params.id);
 
         $dom.on(container, 'click', '.js-click-threaded-load-more', function () {
             /* Load more from a threaded topic */
-            $cms.loadSnippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.commentsSerializedOptions) + '&hash=' + encodeURIComponent(window.commentsHash), null, true).then(function (html) {
+            $cms.loadSnippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.commentsSerializedOptions) + '&hash=' + encodeURIComponent(window.commentsHash)).then(function (html) {
                 var wrapper;
                 if (id !== '') {
                     wrapper = $dom.$('#post-children-' + id);
