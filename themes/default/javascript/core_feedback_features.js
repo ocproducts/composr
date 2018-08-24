@@ -101,7 +101,8 @@
         },
 
         focusTexareaPost: function (e, textarea) {
-            if (((textarea.value.replace(/\s/g, '') === '{!POST_WARNING;^}'.replace(/\s/g, '')) && ('{!POST_WARNING;^}' !== '')) || ((textarea.stripOnFocus != null) && (textarea.value == textarea.stripOnFocus))) {
+            var valueWithoutSpaces = textarea.value.replace(/\s/g, '');
+            if (((valueWithoutSpaces === '{!POST_WARNING;^}'.replace(/\s/g, '')) && ('{!POST_WARNING;^}' !== '')) || (valueWithoutSpaces === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}'.replace(/\s/g, '')) || ((textarea.stripOnFocus != null) && (textarea.value == textarea.stripOnFocus))) {
                 textarea.value = '';
             }
 
