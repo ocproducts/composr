@@ -2911,7 +2911,7 @@
             e.preventDefault();
 
             // Any parameters matching a pattern must be sent in the URL to the AJAX block call
-            $util.eachIter(hrefUrl.searchParams.entries(), function (param) {
+            $util.iterableToArray(hrefUrl.searchParams.entries()).forEach(function (param) {
                 var paramName = param[0],
                     paramValue = param[1];
 

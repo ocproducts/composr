@@ -294,7 +294,7 @@
 
         // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results
         if (params.infiniteScroll) {
-            var infiniteScrollingCommentsWrapper = function (event) {
+            var infiniteScrollingCommentsWrapper = function () {
                 $dom.internaliseInfiniteScrolling(urlStem, wrapper);
             };
 
@@ -515,7 +515,7 @@
                 // AJAX call
                 var snippetRequest = 'rating&type=' + encodeURIComponent(type) + '&id=' + encodeURIComponent(id) + '&content_type=' + encodeURIComponent(contentType) + '&template=' + encodeURIComponent(template) + '&content_url=' + encodeURIComponent($cms.protectURLParameter(contentUrl)) + '&content_title=' + encodeURIComponent(contentTitle);
 
-                $cms.loadSnippet(snippetRequest, 'rating=' + encodeURIComponent(number), true).then(function (message) {
+                $cms.loadSnippet(snippetRequest, 'rating=' + encodeURIComponent(number)).then(function (message) {
                     $dom.replaceWith(_replaceSpot, (template === '') ? ('<strong>' + message + '</strong>') : message);
                 });
 
