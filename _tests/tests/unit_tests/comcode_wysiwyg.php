@@ -70,7 +70,7 @@ class comcode_wysiwyg_test_set extends cms_test_case
         // semihtml...
 
         $in = "a<br />\nb";
-        $out = "<comcode-quote>a<br />\nb</comcode-quote>";
+        $out = "<comcode-quote>a&lt;br /&gt;\nb</comcode-quote>";
 
         $got = add_wysiwyg_comcode_markup('quote', array(), make_string_tempcode($in), /*$semihtml*/true);
         $this->assertTrue($out == $got);
@@ -91,7 +91,7 @@ class comcode_wysiwyg_test_set extends cms_test_case
         // semihtml...
 
         $in = "a<br />\nb";
-        $out = "<comcode-staff_note>a<br />\nb</comcode-staff_note>";
+        $out = "<comcode-staff_note>a&lt;br /&gt;\nb</comcode-staff_note>";
 
         $got = add_wysiwyg_comcode_markup('staff_note', array(), make_string_tempcode($in), /*$semihtml*/true);
         $this->assertTrue($out == $got);
@@ -112,7 +112,7 @@ class comcode_wysiwyg_test_set extends cms_test_case
         // semihtml...
 
         $in = "a<br />\nb";
-        $out = "<comcode-code>a<br />\nb</comcode-code>";
+        $out = "<comcode-code>a&lt;br /&gt;\nb</comcode-code>";
 
         $got = add_wysiwyg_comcode_markup('code', array(), make_string_tempcode($in), /*$semihtml*/true);
         $this->assertTrue($out == $got);
@@ -133,7 +133,7 @@ class comcode_wysiwyg_test_set extends cms_test_case
         // semihtml...
 
         $in = "a<br />\nb";
-        $out = "&#8203;<comcode-if_in_group>a<br />\nb</comcode-if_in_group>&#8203;";
+        $out = "&#8203;<comcode-if_in_group>a&lt;br /&gt;\nb</comcode-if_in_group>&#8203;";
 
         $got = add_wysiwyg_comcode_markup('if_in_group', array(), make_string_tempcode($in), /*$semihtml*/true);
         $this->assertTrue($out == $got);

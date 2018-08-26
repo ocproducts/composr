@@ -32,7 +32,7 @@ class Block_main_google_map_users
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('title', 'region', 'cluster', 'filter_usergroup', 'filter_term', 'geolocate_user', 'username_prefix', 'latitude', 'longitude', 'width', 'height',/*'api_key',no longer used*/'zoom', 'center');
+        $info['parameters'] = array('title', 'region', 'cluster', 'filter_usergroup', 'filter_term', 'geolocate_user', 'username_prefix', 'latitude', 'longitude', 'width', 'height', 'zoom', 'center');
         return $info;
     }
 
@@ -87,7 +87,6 @@ class Block_main_google_map_users
         if (is_numeric($map_height)) {
             $map_height .= 'px';
         }
-        $api_key = array_key_exists('api_key', $map) ? $map['api_key'] : '';
         $set_zoom = array_key_exists('zoom', $map) ? $map['zoom'] : '3';
         $set_center = array_key_exists('center', $map) ? $map['center'] : '0';
         $cluster = array_key_exists('cluster', $map) ? $map['cluster'] : '0';
