@@ -327,7 +327,7 @@
                 } else {
                     wrapper = container.parentNode;
                 }
-                container.parentNode.removeChild(container);
+                container.remove();
 
                 $dom.append(wrapper, html);
 
@@ -353,10 +353,7 @@
 
     /* Update a normal comments topic with AJAX replying */
     function replaceCommentsFormWithAjax(options, hash, commentsFormId, commentsWrapperId) {
-        var commentsForm = $dom.$id(commentsFormId);
-        if (!commentsForm) {
-            return;
-        }
+        var commentsForm = $dom.elArg('#' + commentsFormId);
 
         $dom.on(commentsForm, 'submit', function commentsAjaxListener(event) {
             var ret;
@@ -414,13 +411,13 @@
                     // Display
                     var oldAction = commentsForm.action;
                     $dom.replaceWith(commentsWrapper, xhr.responseText);
-                    commentsForm = $dom.$id(commentsFormId);
+                    commentsWrapper = document.getElementById(commentsWrapperId); // Because $dom.replaceWith() broke the references
+                    commentsForm = document.getElementById(commentsFormId);
                     commentsForm.action = oldAction; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
 
                     // Scroll back to comment
                     setTimeout(function () {
-                        var commentsWrapper = $dom.$id(commentsWrapperId); // outerhtml set will have broken the reference
-                        $dom.smoothScroll($dom.findPosY(commentsWrapper, true));
+                        $dom.smoothScroll(commentsWrapper);
                     }, 0);
 
                     // Force reload on back button, as otherwise comment would be missing
@@ -439,9 +436,6 @@
                             $dom.fadeIn(knownPosts[i]);
                         }
                     }
-
-                    // And re-attach this code (got killed by $dom.replaceWith())
-                    replaceCommentsFormWithAjax(options, hash);
                 } else { // Error: do a normal post so error can be seen
                     commentsForm.submit();
                 }
