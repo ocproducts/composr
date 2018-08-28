@@ -2745,7 +2745,7 @@
             // Remove old pagination-load-more's
             paginationLoadMore = wrapper.querySelector('.pagination-load-more');
             if (paginationLoadMore) {
-                paginationLoadMore.parentNode.removeChild(paginationLoadMore);
+                paginationLoadMore.remove();
             }
 
             return;
@@ -2781,23 +2781,19 @@
         }
 
         moreLinks.forEach(function (nextLink) {
-            var rel = nextLink.getAttribute('rel');
+            var startParam = nextLink.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
 
-            if (!rel || !rel.includes('next')) {
+            if (!nextLink.rel.includes('next') || !startParam) {
                 return;
             }
 
-            var matches = nextLink.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
+            var urlStub = (urlStem.includes('?') ? '&' : '?') + (startParam[1] + '=' + startParam[2]) + '&raw=1';
+            infiniteScrollPending = true;
 
-            if (matches) {
-                var urlStub = (urlStem.includes('?') ? '&' : '?') + (matches[1] + '=' + matches[2]) + '&raw=1';
-                infiniteScrollPending = true;
-
-                $cms.callBlock(urlStem + urlStub, '', wrapperInner, true).then(function () {
-                    infiniteScrollPending = false;
-                    $dom.internaliseInfiniteScrolling(urlStem, wrapper);
-                });
-            }
+            $cms.callBlock(urlStem + urlStub, '', wrapperInner, true).then(function () {
+                infiniteScrollPending = false;
+                $dom.internaliseInfiniteScrolling(urlStem, wrapper);
+            });
         });
     };
 
