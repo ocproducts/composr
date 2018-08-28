@@ -141,7 +141,7 @@ function mobiquo_json_simple_call($method, $params, $username = null)
 
     $mobiquo = basename(dirname(dirname(__FILE__)));
 
-    $url = get_base_url() . '/' . $mobiquo . '/mobiquo.php?method_name=' . rawurlencode($method);
+    $url = get_base_url() . '/' . $mobiquo . '/mobiquo.php?method_name=' . urlencode($method);
     if (!is_null($username)) {
         $url .= '&keep_su=' . urlencode($username);
     }
