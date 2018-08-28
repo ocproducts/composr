@@ -144,7 +144,7 @@ function get_keyset_pagination_settings($max_name, $max_default, $start_name, $c
  * @param  ?string $keyset_value Keyset-pagination reference value for the 'next' page of results (null: no keyset pagination)
  * @return Tempcode The results browser
  */
-function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $keep_post = false, $max_page_links = 5, $_selectors = null, $hash = '', $keyset_value = null)
+function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $keep_post = false, $max_page_links = 5, $_selectors = null, $hash = '', $keyset_value = null, $ajaxify = false)
 {
     inform_non_canonical_parameter($max_name);
     inform_non_canonical_parameter($start_name);
@@ -202,6 +202,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
         'URL' => $get_url,
         'MAX_NAME' => $max_name,
         'SELECTORS' => $selectors,
+        'AJAXIFY' => $ajaxify,
     ));
     $GLOBALS['INCREMENTAL_ID_GENERATOR']++;
 
@@ -213,7 +214,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
         if ($start > 0) {
             $url_array = array('page' => '_SELF', $start_name => running_script('index') ? null : 0, $start_name . '__keyed' => '');
             $cat_url = _build_pagination_cat_url($url_array, $post_array, $hash);
-            $first = do_template('PAGINATION_CONTINUE_FIRST', array('_GUID' => 'f5e510da318af9b37c3a4b23face5ae3', 'TITLE' => $title, 'P' => strval(1), 'FIRST_URL' => $cat_url));
+            $first = do_template('PAGINATION_CONTINUE_FIRST', array('_GUID' => 'f5e510da318af9b37c3a4b23face5ae3', 'TITLE' => $title, 'P' => strval(1), 'FIRST_URL' => $cat_url, 'AJAXIFY' => $ajaxify));
         } else {
             $first = new Tempcode();
         }
@@ -223,7 +224,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
             if ($start > 0) {
                 $url_array = array('page' => '_SELF', $start_name => strval(max($start - $max, 0)));
                 $cat_url = _build_pagination_cat_url($url_array, $post_array, $hash);
-                $previous = do_template('PAGINATION_PREVIOUS_LINK', array('_GUID' => 'ec4d4da9677b5b9c8cea08676337c6eb', 'TITLE' => $title, 'P' => integer_format(($max == 0) ? 1 : intval($start / $max)), 'URL' => $cat_url));
+                $previous = do_template('PAGINATION_PREVIOUS_LINK', array('_GUID' => 'ec4d4da9677b5b9c8cea08676337c6eb', 'TITLE' => $title, 'P' => integer_format(($max == 0) ? 1 : intval($start / $max)), 'URL' => $cat_url, 'AJAXIFY' => $ajaxify));
             } else {
                 $previous = do_template('PAGINATION_PREVIOUS');
             }
@@ -268,7 +269,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
                     if ($x == 0) {
                         $rel = 'first';
                     }
-                    $parts->attach(do_template('PAGINATION_PAGE_NUMBER_LINK', array('_GUID' => 'a6d1a0ba93e3b7deb6fe6f8f1c117c0f', 'NOFOLLOW' => ($x * $max > $max * 5) && ($bot), 'REL' => $rel, 'TITLE' => $title, 'URL' => $cat_url, 'P' => strval($x + 1))));
+                    $parts->attach(do_template('PAGINATION_PAGE_NUMBER_LINK', array('_GUID' => 'a6d1a0ba93e3b7deb6fe6f8f1c117c0f', 'NOFOLLOW' => ($x * $max > $max * 5) && ($bot), 'REL' => $rel, 'TITLE' => $title, 'URL' => $cat_url, 'P' => strval($x + 1), 'AJAXIFY' => $ajaxify)));
                 }
             }
         } else {
@@ -302,6 +303,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
                     'NUM_PAGES' => integer_format($num_pages),
                     'P' => integer_format(intval($p)),
                     'URL' => $cat_url,
+                    'AJAXIFY' => $ajaxify,
                 ));
         } else {
             $next = do_template('PAGINATION_NEXT');
@@ -311,7 +313,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
         if ($start + $max < $max_rows && $keyset_value === null) {
             $url_array = array('page' => '_SELF', ($num_pages - 1 == 0) ? null : $start_name => strval(($num_pages - 1) * $max));
             $cat_url = _build_pagination_cat_url($url_array, $post_array, $hash);
-            $last = do_template('PAGINATION_CONTINUE_LAST', array('_GUID' => '2934936df4ba90989e949a8ebe905522', 'TITLE' => $title, 'P' => strval($num_pages), 'LAST_URL' => $cat_url));
+            $last = do_template('PAGINATION_CONTINUE_LAST', array('_GUID' => '2934936df4ba90989e949a8ebe905522', 'TITLE' => $title, 'P' => strval($num_pages), 'LAST_URL' => $cat_url, 'AJAXIFY' => $ajaxify));
         } else {
             $last = new Tempcode();
         }
@@ -337,7 +339,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
             }
             $dont_auto_keep = array();
             $hidden = build_keep_form_fields('_SELF', true, $dont_auto_keep);
-            $pages_list = do_template('PAGINATION_LIST_PAGES', array('_GUID' => '9e1b394763619433f23b8ed95f5ac134', 'URL' => $get_url, 'HIDDEN' => $hidden, 'START_NAME' => $start_name, 'LIST' => $list));
+            $pages_list = do_template('PAGINATION_LIST_PAGES', array('_GUID' => '9e1b394763619433f23b8ed95f5ac134', 'URL' => $get_url, 'HIDDEN' => $hidden, 'START_NAME' => $start_name, 'LIST' => $list, 'AJAXIFY' => $ajaxify));
         } else {
             $pages_list = new Tempcode();
         }

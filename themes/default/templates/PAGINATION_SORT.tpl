@@ -1,4 +1,4 @@
-<form title="{!SORT}" action="{$URL_FOR_GET_FORM*,{URL}}{+START,IF_PASSED,HASH}#{HASH*}{+END}" method="get" data-ajaxify-target="1" class="inline" autocomplete="off">
+<form title="{!SORT}" action="{$URL_FOR_GET_FORM*,{URL}}{+START,IF_PASSED,HASH}#{HASH*}{+END}" method="get" {+START,IF_PASSED_AND_TRUE,AJAXIFY}data-ajaxify-target="1"{+END} class="inline" autocomplete="off">
 	{$HIDDENS_FOR_GET_FORM,{URL},{SORT}}
 
 	{$SET,RAND_PAGINATION,{$RAND}}

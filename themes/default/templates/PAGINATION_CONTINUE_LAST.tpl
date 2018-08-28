@@ -1,1 +1,1 @@
-<a rel="last" data-ajaxify-target="1" href="{LAST_URL*}" title="{!LAST}: {!RESULTS_LAUNCHER_JUMP,{P*},{TITLE*}}" class="light results-continue">{!LAST}</a>
+<a rel="last" {+START,IF_PASSED_AND_TRUE,AJAXIFY}data-ajaxify-target="1"{+END} href="{LAST_URL*}" title="{!LAST}: {!RESULTS_LAUNCHER_JUMP,{P*},{TITLE*}}" class="light results-continue">{!LAST}</a>
