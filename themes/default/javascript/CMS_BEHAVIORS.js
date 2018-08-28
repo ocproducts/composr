@@ -948,7 +948,7 @@
 
                 if (targetsSelector !== '') {
                     $dom.on(ajaxifyContainer, 'click', 'a', function (e, clicked) {
-                        if (clicked.dataset.ajaxifyTarget != null) {
+                        if ((clicked.dataset.ajaxifyTarget != null) || ($util.url(clicked.href).origin !== window.location.origin)) {
                             return;
                         }
                         var targets = $util.toArray(ajaxifyContainer.querySelectorAll(targetsSelector));
@@ -958,7 +958,7 @@
                     });
 
                     $dom.on(ajaxifyContainer, 'submit', 'form', function (e, submitted) {
-                        if (submitted.dataset.ajaxifyTarget != null) {
+                        if ((submitted.dataset.ajaxifyTarget != null) || ($util.url(submitted.action).origin !== window.location.origin)) {
                             return;
                         }
                         var targets = $util.toArray(ajaxifyContainer.querySelectorAll(targetsSelector));
