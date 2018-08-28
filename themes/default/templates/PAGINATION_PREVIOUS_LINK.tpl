@@ -1,1 +1,1 @@
-<a rel="prev{+START,IF_PASSED,REL} {REL*}{+END}" accesskey="j" data-ajaxify-target="1" href="{URL*}" title="&laquo;&nbsp;{!PREVIOUS}: {!RESULTS_LAUNCHER_JUMP,{P*},{TITLE*}}" class="light">&laquo;{+START,IF,{$DESKTOP}}<span class="inline-desktop">&nbsp;{!PREVIOUS}</span>{+END}</a>
+<a rel="prev{+START,IF_PASSED,REL} {REL*}{+END}" accesskey="j" href="{URL*}" title="&laquo;&nbsp;{!PREVIOUS}: {!RESULTS_LAUNCHER_JUMP,{P*},{TITLE*}}" class="light">&laquo;{+START,IF,{$DESKTOP}}<span class="inline-desktop">&nbsp;{!PREVIOUS}</span>{+END}</a>
