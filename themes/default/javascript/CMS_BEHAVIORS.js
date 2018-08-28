@@ -913,7 +913,7 @@
     
     // Implementation for [data-ajaxify="{...}"] and [data-ajaxify-target="1"]
     // Mark ajaxified containers with [data-ajaxify="{...}"]
-    // Mark links and forms to ajaxify with [data-ajaxify-target="1"]
+    // Mark links and forms to ajaxify with [data-ajaxify-target="1"] or specify a selector with the "targetsSelector" option
     $cms.behaviors.ajaxify = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-ajaxify]'), 'behavior.ajaxify');
@@ -921,16 +921,52 @@
             els.forEach(function (ajaxifyContainer) {
                 var options = objVal($dom.data(ajaxifyContainer, 'ajaxify')),
                     callUrl = $util.url(options.callUrl),
-                    callParams = objVal(options.callParams),
-                    callParamsFromTarget = arrVal(options.callParamsFromTarget); 
-                    // ^ An array of regexes that we will match with query string params in the target's [href] or [action] URL and if matched, pass them along with the block call
+                    // ^ Block call URL
+                    callParams = options.callParams,
+                    // ^ Can be a string or a map of additional query string parameters that will be added to the call URL.
+                    callParamsFromTarget = arrVal(options.callParamsFromTarget),
+                    // ^ An array of regexes that we will match with query string params in the target's [href] or [action] URL and if matched, pass them along with the block call.
+                    targetsSelector = strVal(options.targetsSelector);
+                    // ^ A selector can be provided for additional targets, by default only child elements with [data-ajaxify-target="1"] will be ajaxified.
 
-                for (var key in callParams) {
-                    callUrl.searchParams.set(key, callParams[key]);
+                if (typeof callParams === 'string') {
+                    var _callParams = $util.iterableToArray((new URLSearchParams(callParams)).entries());
+                    callParams = {};
+                    _callParams.forEach(function (param) {
+                        callParams[param[0]] = param[1];
+                    });
                 }
-                
+
+                if (callParams != null) {
+                    for (var key in callParams) {
+                        callUrl.searchParams.set(key, callParams[key]);
+                    }
+                }
+
                 $dom.on(ajaxifyContainer, 'click', 'a[data-ajaxify-target]', doAjaxify);
                 $dom.on(ajaxifyContainer, 'submit', 'form[data-ajaxify-target]', doAjaxify);
+
+                if (targetsSelector !== '') {
+                    $dom.on(ajaxifyContainer, 'click', 'a', function (e, clicked) {
+                        if (clicked.dataset.ajaxifyTarget != null) {
+                            return;
+                        }
+                        var targets = $util.toArray(ajaxifyContainer.querySelectorAll(targetsSelector));
+                        if (targets.includes(clicked)) {
+                            doAjaxify(e, clicked);
+                        }
+                    });
+
+                    $dom.on(ajaxifyContainer, 'submit', 'form', function (e, submitted) {
+                        if (submitted.dataset.ajaxifyTarget != null) {
+                            return;
+                        }
+                        var targets = $util.toArray(ajaxifyContainer.querySelectorAll(targetsSelector));
+                        if (targets.includes(submitted)) {
+                            doAjaxify(e, submitted);
+                        }
+                    });
+                }
 
                 function doAjaxify(e, target) {
                     if ($dom.parent(target, '[data-ajaxify]') !== ajaxifyContainer) {
