@@ -2629,6 +2629,25 @@
         infiniteScrollBlocked = false, // Blocked due to event tracking active
         infiniteScrollMouseHeld = false;
 
+    $dom.enableInternaliseInfiniteScrolling = function enableInternaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl) {
+        var infiniteScrolling = function () {
+            $dom.internaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl);
+        };
+
+        $dom.on(window, {
+            scroll: infiniteScrolling,
+            touchmove: infiniteScrolling,
+            keydown: $dom.infiniteScrollingBlock,
+            mousedown: $dom.infiniteScrollingBlockHold,
+            mousemove: function () {
+                // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
+                $dom.infiniteScrollingBlockUnhold(infiniteScrolling);
+            }
+        });
+
+        infiniteScrolling();
+    };
+    
     /**
      * @param event
      */
@@ -2695,7 +2714,7 @@
             // Remove old pagination-load-more's
             paginationLoadMore = wrapper.querySelector('.pagination-load-more');
             if (paginationLoadMore) {
-                paginationLoadMore.parentNode.removeChild(paginationLoadMore);
+                paginationLoadMore.remove();
             }
 
             // Add in new one
