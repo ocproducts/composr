@@ -80,8 +80,8 @@ abstract class Standard_crud_module
     public $add_one_label = null;
     public $add_one_cat_label = null;
     public $edit_this_label = null;
-    public $edit_one_label = null;
     public $edit_this_cat_label = null;
+    public $edit_one_label = null;
     public $edit_one_cat_label = null;
     public $entries_title = null;
     public $categories_title = null;
