@@ -285,7 +285,7 @@
 
     $cms.templates.commentAjaxHandler = function (params) {
         var urlStem = '{$FIND_SCRIPT_NOHTTP;,post_comment}?options=' + encodeURIComponent(params.options) + '&hash=' + encodeURIComponent(params.hash),
-            wrapperEl = $dom.$('#comments-wrapper');
+            wrapperEl = document.getElementById('comments-wrapper');
 
         replaceCommentsFormWithAjax(params.options, params.hash, 'comments-form', 'comments-wrapper');
 

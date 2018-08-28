@@ -468,10 +468,7 @@
 
     $cms.templates.ajaxPagination = function ajaxPagination(params) {
         var wrapperEl = $dom.elArg('#' + params.wrapperId),
-            blockCallUrl = params.blockCallUrl,
             infiniteScrollCallUrl = params.infiniteScrollCallUrl;
-
-        $dom.internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['^[^_]*_start$', '^[^_]*_max$'], {});
 
         if (infiniteScrollCallUrl) {
             $dom.enableInternaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl);

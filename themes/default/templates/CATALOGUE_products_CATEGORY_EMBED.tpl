@@ -1,6 +1,7 @@
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 	{$SET,ajax_catalogue_products_category_embed_wrapper,ajax-catalogue-products-category-embed-wrapper-{$RAND%}}
-	<div id="{$GET*,ajax_catalogue_products_category_embed_wrapper}" class="box-wrapper">
+	{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}{+START,IF_PASSED,EXTRA_GET_PARAMS}{EXTRA_GET_PARAMS}{+END}&page={$PAGE&}}
+	<div id="{$GET*,ajax_catalogue_products_category_embed_wrapper}" class="box-wrapper" data-ajaxify="{ callUrl: '{$GET;*,block_call_url}', callParamsFromTarget: ['^[^_]*_start$', '^[^_]*_max$'], targetsSelector: '.ajax-block-wrapper-links a, .ajax-block-wrapper-links form' }">
 		{+START,SET,sorting}
 			<div class="cart-info">
 				{$SET,show_sort_button,1}

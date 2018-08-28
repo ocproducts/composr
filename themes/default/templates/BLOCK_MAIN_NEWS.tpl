@@ -1,6 +1,8 @@
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 	{$SET,ajax_block_main_news_wrapper,ajax-block-main-news-wrapper-{$RAND%}}
-	<div id="{$GET*,ajax_block_main_news_wrapper}" class="box-wrapper">
+	{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}{+START,IF_PASSED,EXTRA_GET_PARAMS}{EXTRA_GET_PARAMS}{+END}&page={$PAGE&}}
+	<div id="{$GET*,ajax_block_main_news_wrapper}" class="box-wrapper" 
+		  data-ajaxify="{ callUrl: '{$GET;*,block_call_url}', callParamsFromTarget: ['^[^_]*_start$', '^[^_]*_max$'], targetsSelector: '.ajax-block-wrapper-links a, .ajax-block-wrapper-links form' }">
 		<section class="box box---block-main-news"><div class="box-inner compacted-subbox-stream{+START,IF,{$GET,large_news_posts}} less-compact{+END}">
 			{+START,IF,{$NOT,{BLOG}}}{+START,IF_NON_EMPTY,{TITLE}}
 				<h2>{TITLE}</h2>
