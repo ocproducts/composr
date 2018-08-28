@@ -2712,7 +2712,7 @@
             loadMoreLink.appendChild(loadMoreLinkA);
             paginations[paginations.length - 1].parentNode.insertBefore(loadMoreLink, paginations[paginations.length - 1].nextSibling);
 
-            moreLinks = pagination.getElementsByTagName('a');
+            moreLinks = $util.toArray(pagination.getElementsByTagName('a'));
             foundNewLinks = z;
         });
 
@@ -2726,7 +2726,7 @@
                     }
                 }
             } else { // Find links from an already-hidden pagination
-                moreLinks = pagination.getElementsByTagName('a');
+                moreLinks = $util.toArray(pagination.getElementsByTagName('a'));
                 if (moreLinks.length !== 0) {
                     return true; // (break)
                 }
