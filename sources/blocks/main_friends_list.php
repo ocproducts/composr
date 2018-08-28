@@ -159,7 +159,7 @@ class Block_main_friends_list
         }
 
         require_code('templates_pagination');
-        $pagination = pagination($text_id, $start, $block_id . '_start', $max, $block_id . '_max', $max_rows, false, 5, null, '', null, true);
+        $pagination = pagination($text_id, $start, $block_id . '_start', $max, $block_id . '_max', $max_rows);
 
         pop_db_scope_check();
 

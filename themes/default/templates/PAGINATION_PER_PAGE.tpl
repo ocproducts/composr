@@ -1,4 +1,4 @@
-<form title="{!PER_PAGE}" action="{$URL_FOR_GET_FORM*,{URL}}{+START,IF_PASSED,HASH}#{HASH*}{+END}" method="get" class="inline" {+START,IF_PASSED_AND_TRUE,AJAXIFY}data-ajaxify-target="1"{+END} autocomplete="off">
+<form title="{!PER_PAGE}" action="{$URL_FOR_GET_FORM*,{URL}}{+START,IF_PASSED,HASH}#{HASH*}{+END}" method="get" class="inline" data-ajaxify-target="1" autocomplete="off">
 	{$SET,RAND_PAGINATION_PER_PAGE,{$RAND}}
 
 	{HIDDEN}

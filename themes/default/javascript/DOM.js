@@ -2695,7 +2695,7 @@
             // Remove old pagination-load-more's
             paginationLoadMore = wrapper.querySelector('.pagination-load-more');
             if (paginationLoadMore) {
-                paginationLoadMore.remove();
+                paginationLoadMore.parentNode.removeChild(paginationLoadMore);
             }
 
             // Add in new one
