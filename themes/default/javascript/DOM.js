@@ -2093,7 +2093,7 @@
         name = strVal(name);
 
         name.split(' ').forEach(function (attribute) {
-            setAttr(el, attribute, null)
+            setAttr(el, attribute, null);
         });
     };
 
@@ -2600,10 +2600,10 @@
         }
         var i, iframes;
 
-        if (window.parent != window) {
+        if (window.parent !== window) {
             iframes = window.parent.document.querySelectorAll('iframe');
             for (i = 0; i < iframes.length; i++) {
-                if ((iframes[i].src === window.location.href) || (iframes[i].contentWindow === window) || ((iframes[i].id !== '') && (window.parent.frames[iframes[i].id] !== undefined) && (window.parent.frames[iframes[i].id] === window))) {
+                if ((iframes[i].src === window.location.href) || (iframes[i].contentWindow === window) || ((iframes[i].id !== '') && (window.parent.frames[iframes[i].id] === window))) {
                     if (iframes[i].style.height === '900px') {
                         iframes[i].style.height = 'auto';
                     }
@@ -2662,80 +2662,76 @@
     /**
      * @param urlStem
      * @param wrapper
-     * @returns {*}
      */
     $dom.internaliseInfiniteScrolling = function internaliseInfiniteScrolling(urlStem, wrapper) {
         if (infiniteScrollBlocked || infiniteScrollPending) {
             // Already waiting for a result
-            return false;
+            return;
         }
 
-        var paginations = wrapper.querySelectorAll('.pagination'),
+        var paginations = $util.toArray(wrapper.querySelectorAll('.pagination')),
             paginationLoadMore;
 
         if (paginations.length === 0) {
-            return false;
+            return;
         }
 
-        var moreLinks = [], foundNewLinks = null, z, pagination, m;
+        var moreLinks = [], foundNewLinks = null;
 
-        for (z = 0; z < paginations.length; z++) {
-            pagination = paginations[z];
-            if (pagination.style.display !== 'none') {
-                // Remove visibility of pagination, now we've replaced with AJAX load more link
-                var paginationParent = pagination.parentNode;
-                pagination.style.display = 'none';
-                var numNodeChildren = paginationParent.children.length;
-
-                if (numNodeChildren === 0) { // Remove empty pagination wrapper
-                    paginationParent.style.display = 'none';
-                }
-
-                // Add AJAX load more link before where the last pagination control was
-                // Remove old pagination-load-more's
-                paginationLoadMore = wrapper.querySelector('.pagination-load-more');
-                if (paginationLoadMore) {
-                    paginationLoadMore.parentNode.removeChild(paginationLoadMore);
-                }
-
-                // Add in new one
-                var loadMoreLink = document.createElement('div');
-                loadMoreLink.className = 'pagination-load-more';
-                var loadMoreLinkA = document.createElement('a');
-                $dom.html(loadMoreLinkA, '{!LOAD_MORE;^}');
-                loadMoreLinkA.href = '#!';
-                loadMoreLinkA.onclick = (function (moreLinks) {
-                    return function () {
-                        $dom.internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
-                        return false;
-                    };
-                }(moreLinks)); // Click link -- load
-                loadMoreLink.appendChild(loadMoreLinkA);
-                paginations[paginations.length - 1].parentNode.insertBefore(loadMoreLink, paginations[paginations.length - 1].nextSibling);
-
-                moreLinks = pagination.getElementsByTagName('a');
-                foundNewLinks = z;
+        paginations.forEach(function (pagination, z) {
+            if ($dom.notDisplayed(pagination)) {
+                return;
             }
-        }
+            // Remove visibility of pagination, now we've replaced with AJAX load more link
+            var paginationParent = pagination.parentNode;
+            pagination.style.display = 'none';
+            var numNodeChildren = paginationParent.children.length;
 
-        for (z = 0; z < paginations.length; z++) {
-            pagination = paginations[z];
+            if (numNodeChildren === 0) { // Remove empty pagination wrapper
+                paginationParent.style.display = 'none';
+            }
+
+            // Add AJAX load more link before where the last pagination control was
+            // Remove old pagination-load-more's
+            paginationLoadMore = wrapper.querySelector('.pagination-load-more');
+            if (paginationLoadMore) {
+                paginationLoadMore.parentNode.removeChild(paginationLoadMore);
+            }
+
+            // Add in new one
+            var loadMoreLink = document.createElement('div');
+            loadMoreLink.className = 'pagination-load-more';
+            var loadMoreLinkA = document.createElement('a');
+            $dom.html(loadMoreLinkA, '{!LOAD_MORE;^}');
+            loadMoreLinkA.href = '#!';
+            loadMoreLinkA.onclick = (function (moreLinks) {
+                return function () {
+                    $dom.internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+                };
+            }(moreLinks)); // Click link -- load
+            loadMoreLink.appendChild(loadMoreLinkA);
+            paginations[paginations.length - 1].parentNode.insertBefore(loadMoreLink, paginations[paginations.length - 1].nextSibling);
+
+            moreLinks = pagination.getElementsByTagName('a');
+            foundNewLinks = z;
+        });
+
+        paginations.some(function (pagination, z) {
             if (foundNewLinks != null) {// Cleanup old pagination
-                if (z != foundNewLinks) {
+                if (z !== foundNewLinks) {
                     var _moreLinks = pagination.getElementsByTagName('a');
                     var numLinks = _moreLinks.length;
                     for (var i = numLinks - 1; i >= 0; i--) {
-                        _moreLinks[i].parentNode.removeChild(_moreLinks[i]);
+                        _moreLinks[i].remove();
                     }
                 }
             } else { // Find links from an already-hidden pagination
-
                 moreLinks = pagination.getElementsByTagName('a');
                 if (moreLinks.length !== 0) {
-                    break;
+                    return true; // (break)
                 }
             }
-        }
+        });
 
         // Is more scrolling possible?
         var rel, foundRel = false;
@@ -2765,52 +2761,44 @@
 
         // Scroll down -- load
         if ((scrollY + windowHeight > wrapperBottom - windowHeight * 2) && (scrollY + windowHeight < pageHeight - 30)) {// If within windowHeight*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
-            return $dom.internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+            $dom.internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
         }
-
-        return false;
     };
 
     /**
      * @param urlStem
      * @param wrapper
      * @param moreLinks
-     * @returns {boolean}
      */
     $dom.internaliseInfiniteScrollingGo = function internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks) {
         if (infiniteScrollPending) {
-            return false;
+            return;
         }
 
-        var wrapperInner = $dom.$id(wrapper.id + '_inner');
+        var wrapperInner = document.getElementById(wrapper.id + '_inner');
         if (!wrapperInner) {
             wrapperInner = wrapper;
         }
 
-        var rel;
-        for (var i = 0; i < moreLinks.length; i++) {
-            rel = moreLinks[i].getAttribute('rel');
-            if (rel && rel.indexOf('next') !== -1) {
-                var nextLink = moreLinks[i];
-                var urlStub = '';
+        moreLinks.forEach(function (nextLink) {
+            var rel = nextLink.getAttribute('rel');
 
-                var matches = nextLink.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
-                if (matches) {
-                    urlStub += (urlStem.indexOf('?') === -1) ? '?' : '&';
-                    urlStub += matches[1] + '=' + matches[2];
-                    urlStub += '&raw=1';
-                    infiniteScrollPending = true;
-
-                    $cms.callBlock(urlStem + urlStub, '', wrapperInner, true).then(function () {
-                        infiniteScrollPending = false;
-                        $dom.internaliseInfiniteScrolling(urlStem, wrapper);
-                    });
-                    return false;
-                }
+            if (!rel || !rel.includes('next')) {
+                return;
             }
-        }
 
-        return false;
+            var matches = nextLink.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
+
+            if (matches) {
+                var urlStub = (urlStem.includes('?') ? '&' : '?') + (matches[1] + '=' + matches[2]) + '&raw=1';
+                infiniteScrollPending = true;
+
+                $cms.callBlock(urlStem + urlStub, '', wrapperInner, true).then(function () {
+                    infiniteScrollPending = false;
+                    $dom.internaliseInfiniteScrolling(urlStem, wrapper);
+                });
+            }
+        });
     };
 
     /**
