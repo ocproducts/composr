@@ -265,12 +265,17 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
                     }
                     $out .= $_embed;
                     break;
+
                 case WYSIWYG_COMCODE__XML_BLOCK_ESCAPED:
+                    $_embed = nl2br(escape_html($embed->evaluate()));
+                    $out .= $_embed;
+                    break;
+
                 case WYSIWYG_COMCODE__XML_BLOCK:
                 case WYSIWYG_COMCODE__XML_INLINE:
                 default:
                     if ($semihtml) {
-                        $_embed = str_replace(array('<', '>'), array('&lt;', '&gt;'), $embed->evaluate());
+                        $_embed = $embed->evaluate();
                     } else {
                         $_embed = nl2br(escape_html($embed->evaluate()));
                     }
