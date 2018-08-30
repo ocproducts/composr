@@ -566,7 +566,7 @@
         }
     };
 
-    var _invalidPatternCache = {};
+    var _invalidPatternCache = Object.create(null);
     // Implementation for [data-prevent-input="<REGEX FOR DISALLOWED CHARACTERS>"]
     // Prevents input of matching characters
     $cms.behaviors.preventInput = {
@@ -970,8 +970,12 @@
                 }
 
                 function doAjaxify(e, target) {
-                    if (($dom.parent(target, '[data-ajaxify]') !== ajaxifyContainer) || strVal(target.getAttribute((target.localName === 'a') ? 'href' : 'action')).startsWith('#')) {
-                        return; // Child of a different ajaxify container or hash href/action.
+                    if (
+                        e.defaultPrevented || // Default may have been prevented by a form validation function
+                        ($dom.parent(target, '[data-ajaxify]') !== ajaxifyContainer) || // Make sure we aren't dealing with the child of a different [data-ajaxify] container
+                        strVal(target.getAttribute((target.localName === 'a') ? 'href' : 'action')).startsWith('#') // Fragment identifier href/action
+                    ) {
+                        return;
                     }
 
                     e.preventDefault();

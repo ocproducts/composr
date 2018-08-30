@@ -291,7 +291,7 @@
 
         if (wrapperEl) {
             wrapperEl.dataset.ajaxify = '{ callUrl: ' + JSON.stringify(urlStem)+ ', callParamsFromTarget: ["^start_comments$", "^max_comments$"], targetsSelector: "a[target=_self], form[target=_self]"}';
-            $dom.attachBehaviors(wrapperEl);
+            $cms.attachBehaviors(wrapperEl);
         }
 
         // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results
@@ -555,7 +555,7 @@
             post.stripOnFocus = post.value;
             post.classList.add('field-input-non-filled');
         } else {
-            if ((post.stripOnFocus !== undefined) && (post.value == post.stripOnFocus)) {
+            if ((post.stripOnFocus !== undefined) && (post.value === post.stripOnFocus)) {
                 post.value = '';
             } else if (post.value !== '') {
                 post.value += '\n\n';
