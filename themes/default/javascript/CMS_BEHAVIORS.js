@@ -969,8 +969,8 @@
                 }
 
                 function doAjaxify(e, target) {
-                    if ($dom.parent(target, '[data-ajaxify]') !== ajaxifyContainer) {
-                        return; // Child of a different ajaxify container.
+                    if (($dom.parent(target, '[data-ajaxify]') !== ajaxifyContainer) || strVal(target.getAttribute((target.localName === 'a') ? 'href' : 'action')).startsWith('#')) {
+                        return; // Child of a different ajaxify container or hash href/action.
                     }
                     
                     e.preventDefault();
