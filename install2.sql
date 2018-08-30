@@ -3192,4 +3192,3 @@ CREATE TABLE cms_f_poll_votes (
     pv_ip varchar(40) NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
-

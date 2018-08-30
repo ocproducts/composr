@@ -910,7 +910,7 @@
             });
         }
     };
-    
+
     // Implementation for [data-ajaxify="{...}"] and [data-ajaxify-target="1"]
     // Mark ajaxified containers with [data-ajaxify="{...}"]
     // Mark links and forms to ajaxify with [data-ajaxify-target="1"]
@@ -922,13 +922,13 @@
                 var options = objVal($dom.data(ajaxifyContainer, 'ajaxify')),
                     callUrl = $util.url(options.callUrl),
                     callParams = objVal(options.callParams),
-                    callParamsFromTarget = arrVal(options.callParamsFromTarget); 
+                    callParamsFromTarget = arrVal(options.callParamsFromTarget);
                     // ^ An array of regexes that we will match with query string params in the target's [href] or [action] URL and if matched, pass them along with the block call
 
                 for (var key in callParams) {
                     callUrl.searchParams.set(key, callParams[key]);
                 }
-                
+
                 $dom.on(ajaxifyContainer, 'click', 'a[data-ajaxify-target]', doAjaxify);
                 $dom.on(ajaxifyContainer, 'submit', 'form[data-ajaxify-target]', doAjaxify);
 
@@ -936,13 +936,13 @@
                     if ($dom.parent(target, '[data-ajaxify]') !== ajaxifyContainer) {
                         return; // Child of a different ajaxify container.
                     }
-                    
+
                     e.preventDefault();
-                    
+
                     var thisCallUrl = $util.url(callUrl),
                         postParams = null,
                         targetUrl = $util.url((target.localName === 'a') ? target.href : target.action);
-                    
+
                     if (callParamsFromTarget.length > 0) {
                         // Any parameters matching a pattern must be sent in the URL to the AJAX block call
                         $util.iterableToArray(targetUrl.searchParams.entries()).forEach(function (param) {
@@ -966,7 +966,7 @@
                             newWindowUrl.searchParams.set(param[0], param[1]);
                         }
                     });
-                    
+
                     if (target.localName === 'form') {
                         if (target.method.toLowerCase() === 'post') {
                             postParams = '';
@@ -978,7 +978,7 @@
                             if (!element.name) {
                                 return;
                             }
-                            
+
                             if (element.disabled || ['submit', 'reset', 'button', 'file'].includes(element.type) || (['radio', 'checkbox'].includes(element.type) && !element.checked)) {
                                 // ^ Skip disabled fields, certain types and non-checked radio and checkbox fields
                                 newWindowUrl.searchParams.delete(element.name); // Element value might have been previously added to the window URL

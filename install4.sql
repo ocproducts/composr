@@ -1766,4 +1766,3 @@ INSERT INTO cms_zones (zone_name, zone_title, zone_default_page, zone_header_tex
 ALTER TABLE cms11_zones ADD FULLTEXT zone_header_text (zone_header_text);
 
 ALTER TABLE cms11_zones ADD FULLTEXT zone_title (zone_title);
-

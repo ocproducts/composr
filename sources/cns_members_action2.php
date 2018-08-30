@@ -770,7 +770,7 @@ function cns_get_member_fields_settings($mini_mode = true, $special_type = '', $
  * @param  ?array $groups A list of usergroups (null: default/current usergroups)
  * @param  ?array $custom_fields A map of custom fields values (field-id=>value) (null: not known)
  * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
- * @return @return array A tuple: The form fields, Hidden fields (both Tempcode), Whether separate sections were used
+ * @return array A tuple: The form fields, Hidden fields (both Tempcode), Whether separate sections were used
  */
 function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $groups = null, $custom_fields = null, $adjusted_config_options = null)
 {
@@ -932,7 +932,7 @@ function cns_edit_member($member_id, $username = null, $password = null, $email_
             warn_exit(do_lang_tempcode('_INVALID_EMAIL_ADDRESS', escape_html($email_address)));
         }
 
-        if ((get_option('one_per_email_address') != '0') && ($email_address != '') && ($email_address != STRING_MAGIC_NULL))
+        if ((get_option('one_per_email_address') != '0') && ($email_address != '') && ($email_address != $old_email_address) && ($email_address != STRING_MAGIC_NULL))
         {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email_address));
             if (($test !== null) && ($test != $member_id)) {
@@ -1206,8 +1206,11 @@ function cns_edit_member($member_id, $username = null, $password = null, $email_
         require_code('mail');
         $_login_url = build_url(array('page' => 'login'), get_module_zone('login'), array(), false, false, true);
         $login_url = $_login_url->evaluate();
+        $_username = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_username');
         // NB: Same mail also sent in settings.php (quick-validate feature)
-        dispatch_mail(do_lang('VALIDATED_MEMBER_SUBJECT', get_site_name(), null, get_lang($member_id)), do_lang('MEMBER_VALIDATED', get_site_name(), $username, $login_url, get_lang($member_id)), array($email_address), $username, '', '', array('require_recipient_valid_since' => $join_time));
+        $vm_subject = do_lang('VALIDATED_MEMBER_SUBJECT', get_site_name(), null, get_lang($member_id));
+        $vm_body = do_lang('MEMBER_VALIDATED', get_site_name(), $_username, $login_url, get_lang($member_id));
+        dispatch_mail($vm_subject, $vm_body, array($email_address), $username, '', '', array('require_recipient_valid_since' => $join_time));
     }
 
     $old_email_address = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address');

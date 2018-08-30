@@ -727,7 +727,7 @@ abstract class Resource_fs_base
             $name = 'unnamed';
         }
         require_code('urls2');
-        $max_moniker_length = intval(get_option('max_moniker_length'));
+        $max_moniker_length = min(80, intval(get_option('max_moniker_length')));
         return substr($name, 0, $max_moniker_length);
     }
 

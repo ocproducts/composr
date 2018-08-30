@@ -8790,4 +8790,3 @@ CREATE TABLE cms_custom_comcode (
 ALTER TABLE cms11_custom_comcode ADD FULLTEXT tag_description (tag_description);
 
 ALTER TABLE cms11_custom_comcode ADD FULLTEXT tag_title (tag_title);
-

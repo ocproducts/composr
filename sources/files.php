@@ -454,6 +454,9 @@ function should_ignore_file($path, $bitmask = 0)
         // Temporary files
         'temp' => '',
         'safe_mode_temp' => '', // LEGACY
+
+        // Composr testing platform
+        'checker.ini' => '_tests/codechecker',
     );
 
     $ignore_extensions = array( // Case insensitive, define in lower case

@@ -42,6 +42,7 @@
 			{+START,INCLUDE,AJAX_PAGINATION}
 				WRAPPER_ID={$GET,ajax_catalogue_products_category_embed_wrapper}
 				ALLOW_INFINITE_SCROLL={$EQ,{DISPLAY_TYPE},FIELDMAPS,GRID}
+				WRAPPER_ID={$GET,ajax_catalogue_products_category_embed_wrapper}
 			{+END}
 		{+END}
 	</div>

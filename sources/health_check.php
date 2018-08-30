@@ -495,7 +495,7 @@ abstract class Hook_Health_Check
      */
     protected function get_page_content($page_link = ':')
     {
-        $http_result = $this->get_page_http_content($page_link);
+        $http_result = $this->get_page_http_content($page_link, array('timeout' => 20.0));
         return $http_result->data;
     }
 

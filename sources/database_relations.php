@@ -607,8 +607,12 @@ function get_sql_dump($out_file, $include_drops = false, $output_statuses = fals
 
         if ($include_drops) {
             $queries = $db_static->drop_table_if_exists($db->get_table_prefix() . $table_name, $db->connection_write);
-            foreach ($queries as $sql) {
-                fwrite($out_file, $sql . ";\n\n");
+            foreach ($queries as $i => $sql) {
+                if ($i != 0) {
+                    fwrite($out_file, "\n");
+                }
+
+                fwrite($out_file, $sql . ";\n");
             }
         }
 
@@ -626,8 +630,12 @@ function get_sql_dump($out_file, $include_drops = false, $output_statuses = fals
             }
         }
         $queries = $db_static->create_table($db->get_table_prefix() . $table_name, $fields, $table_name, $db->connection_write, null);
-        foreach ($queries as $sql) {
-            fwrite($out_file, $sql . ";\n\n");
+        foreach ($queries as $i => $sql) {
+            if ($i != 0) {
+                fwrite($out_file, "\n");
+            }
+
+            fwrite($out_file, $sql . ";\n");
         }
 
         // Data
@@ -689,7 +697,11 @@ function get_sql_dump($out_file, $include_drops = false, $output_statuses = fals
 
         // Indexes
         $indexes = $db->query_select('db_meta_indices', array('*'), array('i_table' => $table_name));
-        foreach ($indexes as $index) {
+        foreach ($indexes as $i => $index) {
+            if ($i != 0) {
+                fwrite($out_file, "\n");
+            }
+
             $index_name = $index['i_name'];
 
             if ($index_name[0] == '#') {
@@ -713,7 +725,7 @@ function get_sql_dump($out_file, $include_drops = false, $output_statuses = fals
 
                 $queries = $db_static->create_index(get_table_prefix() . $table_name, $index_name, $_fields, $db->connection_write, $table_name, $unique_key_fields, $db);
                 foreach ($queries as $sql) {
-                    fwrite($out_file, $sql . ";\n\n");
+                    fwrite($out_file, $sql . ";\n");
                 }
             }
         }

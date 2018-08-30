@@ -106,9 +106,10 @@ function init__site()
 
     // Search engine having session in URL, we don't like this
     if ((get_bot_type() !== null) && ($_SERVER['REQUEST_METHOD'] != 'POST') && (get_param_string('keep_session', null) !== null)) {
-        set_http_status_code(301);
-        header('Location: ' . escape_header(get_self_url(true, false, array('keep_session' => null, 'keep_print' => null)))); // assign_refresh not used, as it is a pre-page situation
-        exit();
+        //Too risky, what if something sets it at run-time. Relying on canonical URL is better.
+        //set_http_status_code(301);
+        //header('Location: ' . escape_header(get_self_url(true, false, array('keep_session' => null, 'keep_print' => null)))); // assign_refresh not used, as it is a pre-page situation
+        //exit();
     }
 
     if ((running_script('index')) && (!is_cli())) {

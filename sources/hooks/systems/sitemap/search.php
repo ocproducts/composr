@@ -90,6 +90,7 @@ class Hook_sitemap_search extends Hook_sitemap_base
 
         $hooks = array();
         require_code('database_search');
+        require_code('search');
         foreach ($_hooks as $hook => $ob) {
             $info = $ob->info(false);
             if ($info === null) {

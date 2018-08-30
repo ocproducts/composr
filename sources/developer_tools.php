@@ -68,6 +68,7 @@ function semi_dev_mode_startup()
             (get_param_string('keep_devtest', null) === null)
         ) {
             $_GET['keep_devtest'] = '1';
+            require_code('site');
             attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or $cms.keep() (in JavaScript). While not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn', false, true);
         } else {
             $_GET['keep_devtest'] = '1';

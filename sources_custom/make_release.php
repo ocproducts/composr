@@ -1034,6 +1034,7 @@ function make_install_sql()
         } else {
             $segment = substr($contents, $from);
         }
+        $segment = trim($segment) . "\n";
         require_code('files');
         cms_file_put_contents_safe(get_file_base() . '/install' . strval($i + 1) . '.sql', $segment, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }

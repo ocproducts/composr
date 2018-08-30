@@ -25,8 +25,6 @@
  */
 function init__database_search()
 {
-    require_code('search');
-
     $GLOBALS['TOTAL_SEARCH_RESULTS'] = 0;
 
     $maximum_result_count_point = get_value('maximum_result_count_point');
@@ -1606,6 +1604,8 @@ function in_memory_search_match($filter, $title, $post = null)
 function build_content_where($content, $boolean_search, &$boolean_operator, $full_coverage = false)
 {
     list($body_words, $include_words, $exclude_words) = _boolean_search_prepare($content);
+
+    require_code('search');
 
     $under_radar = false;
     if ((is_under_radar($content)) && ($content != '')) {

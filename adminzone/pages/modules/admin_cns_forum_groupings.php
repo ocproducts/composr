@@ -115,8 +115,8 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
     {
         $this->extra_donext_whatever_title = do_lang('SECTION_FORUMS');
         $this->extra_donext_whatever = array(
-            array('admin/add', array('admin_cns_forums', array('type' => 'add'), get_module_zone('admin_cns_forums'))),
-            array('admin/edit', array('admin_cns_forums', array('type' => 'edit'), get_module_zone('admin_cns_forums'))),
+            array('admin/add', array('admin_cns_forums', array('type' => 'add'), get_module_zone('admin_cns_forums')), do_lang_tempcode('ADD_FORUM')),
+            array('admin/edit', array('admin_cns_forums', array('type' => 'edit'), get_module_zone('admin_cns_forums')), do_lang_tempcode('EDIT_FORUM')),
         );
 
         $this->add_one_cat_label = do_lang_tempcode('ADD_FORUM_GROUPING');
@@ -253,8 +253,8 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
     {
         $tmp = strval(cns_make_forum_grouping(post_param_string('title'), post_param_string('description'), post_param_integer('expanded_by_default', 0)));
         $this->extra_donext_whatever = array(
-            array('admin/add', array('admin_cns_forums', array('type' => 'add', 'forum_grouping_id' => $tmp), get_module_zone('admin_cns_forums'))),
-            array('admin/edit', array('admin_cns_forums', array('type' => 'edit'), get_module_zone('admin_cns_forums'))),
+            array('admin/add', array('admin_cns_forums', array('type' => 'add', 'forum_grouping_id' => $tmp), get_module_zone('admin_cns_forums')), do_lang_tempcode('ADD_FORUM')),
+            array('admin/edit', array('admin_cns_forums', array('type' => 'edit'), get_module_zone('admin_cns_forums')), do_lang_tempcode('EDIT_FORUM')),
         );
         return $tmp;
     }
@@ -268,8 +268,8 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
     {
         cns_edit_forum_grouping(intval($id), post_param_string('title'), post_param_string('description', STRING_MAGIC_NULL), post_param_integer('expanded_by_default', fractional_edit() ? INTEGER_MAGIC_NULL : 0));
         $this->extra_donext_whatever = array(
-            array('admin/add', array('admin_cns_forums', array('type' => 'add', 'forum_grouping_id' => $id), get_module_zone('admin_cns_forums'))),
-            array('admin/edit', array('admin_cns_forums', array('type' => 'edit'), get_module_zone('admin_cns_forums'))),
+            array('admin/add', array('admin_cns_forums', array('type' => 'add', 'forum_grouping_id' => $id), get_module_zone('admin_cns_forums')), do_lang_tempcode('ADD_FORUM')),
+            array('admin/edit', array('admin_cns_forums', array('type' => 'edit'), get_module_zone('admin_cns_forums')), do_lang_tempcode('EDIT_FORUM')),
         );
     }
 

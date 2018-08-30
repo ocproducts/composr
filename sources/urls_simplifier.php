@@ -187,7 +187,7 @@ class HarmlessURLCoder
     {
         if ((function_exists('idn_to_ascii')) && (strpos($str, '://') !== false) && (get_charset() == 'utf-8')) {
             $domain = preg_replace('#(^.*://)([^:/]*)(.*$)#', '$2', $str);
-            $_domain = idn_to_ascii($domain);
+            $_domain = @/*LEGACY @ to remove awkward temporary INTL_IDNA_VARIANT_2003 deprecation message that exists until PHP4*/idn_to_ascii($domain);
             if ($_domain !== false) {
                 $str = preg_replace('#(^.*://)' . preg_quote($domain, '#') . '(.*$)#U', '${1}' . $_domain . '${2}', $str);
             }

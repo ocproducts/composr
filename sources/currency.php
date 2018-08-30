@@ -119,7 +119,7 @@ function currency_convert_wrap($amount, $from_currency = null, $display_method =
  * @param  ?ID_TEXT $to_currency The end currency code (null: something appropriate for the user)
  * @param  integer $display_method A CURRENCY_DISPLAY_* constant
  * @param  ?ID_TEXT $force_via Force conversion via this API (null: no restriction)
- * @set ecb conv_api
+ * @set conv_api
  * @return mixed The new amount with the specified display method (CURRENCY_DISPLAY_RAW is a float, otherwise a string)
  */
 function currency_convert($amount, $from_currency = null, $to_currency = null, $display_method = 0, $force_via = null)

@@ -266,7 +266,7 @@ function find_remote_addons()
     }
     $stub = (get_param_integer('localhost', 0) == 1) ? get_base_url() : 'http://compo.sr';
     $v = 'Version ' . float_to_raw_string(cms_version_number(), 2, true);
-    $url = $stub . '/data/ajax_tree.php?hook=choose_download&id=' . rawurlencode($v) . '&file_type=tar&full_depth=1';
+    $url = $stub . '/data/ajax_tree.php?hook=choose_download&id=' . urlencode($v) . '&file_type=tar&full_depth=1';
     $contents = http_get_contents($url, array('trigger_error' => false));
     $matches = array();
     $num_matches = preg_match_all('#<entry id="(\d+)".* title="([^"]+)"#Us', $contents, $matches);

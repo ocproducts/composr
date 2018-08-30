@@ -32,7 +32,7 @@ class Block_main_google_map
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('select', 'filter', 'title', 'region', 'cluster', 'geolocate_user', 'latfield', 'longfield', 'catalogue', 'width', 'height',/* 'api_key',*/'zoom', 'center', 'latitude', 'longitude', 'show_links', 'min_latitude', 'max_latitude', 'min_longitude', 'max_longitude', 'star_entry', 'max_results', 'extra_sources', 'guid');
+        $info['parameters'] = array('select', 'filter', 'title', 'region', 'cluster', 'geolocate_user', 'latfield', 'longfield', 'catalogue', 'width', 'height', 'zoom', 'center', 'latitude', 'longitude', 'show_links', 'min_latitude', 'max_latitude', 'min_longitude', 'max_longitude', 'star_entry', 'max_results', 'extra_sources', 'guid');
         return $info;
     }
 
@@ -82,7 +82,6 @@ class Block_main_google_map
         if (is_numeric($map_height)) {
             $map_height .= 'px';
         }
-        $api_key = isset($map['api_key']) ? $map['api_key'] : '';
         $set_zoom = isset($map['zoom']) ? $map['zoom'] : '3';
         $set_center = isset($map['center']) ? $map['center'] : '0';
         $set_show_links = isset($map['show_links']) ? $map['show_links'] : '1';

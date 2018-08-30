@@ -535,7 +535,7 @@
         if (onclickCallFunctions != null) {
             $dom.on(btn, 'click', function (e) {
                 var funcs = onclickCallFunctions.slice();
-                
+
                 e.preventDefault();
 
                 funcs.forEach(function (func) {
@@ -549,7 +549,7 @@
         if (onmousedownCallFunctions != null) {
             $dom.on(btn, 'mousedown', function (e) {
                 var funcs = onmousedownCallFunctions.slice();
-                
+
                 e.preventDefault();
 
                 funcs.forEach(function (func) {
