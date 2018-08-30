@@ -871,12 +871,12 @@ class Module_cms_comcode_pages
             }
 
             if ($new) {
-                if (strpos($contents, '[title') === false) {
+                if ((strpos($contents, '[title') === false) && (substr($file, 0, 6) != 'panel_') && (substr($file, 0, 1) != '_')) {
                     $contents = '[title]' . titleify($file) . '[/title]' . "\n\n" . $contents;
-                }
 
-                if ((get_option('is_on_comcode_page_children') == '1') && (has_privilege(get_member(), 'comcode_dangerous')) && (get_param_string('page_template', null) === null)) {
-                    $contents .= "\n\n" . '[block]main_comcode_page_children[/block]';
+                    if ((get_option('is_on_comcode_page_children') == '1') && (has_privilege(get_member(), 'comcode_dangerous')) && (get_param_string('page_template', null) === null)) {
+                        $contents .= "\n\n" . '[block]main_comcode_page_children[/block]';
+                    }
                 }
             }
         } else {

@@ -95,8 +95,6 @@ function give_points($amount, $recipient_id, $sender_id, $reason, $anonymous = f
     require_lang('points');
     require_code('points');
 
-    $your_username = $GLOBALS['FORUM_DRIVER']->get_username($sender_id);
-    $your_displayname = $GLOBALS['FORUM_DRIVER']->get_username($sender_id, true);
     $map = array(
         'date_and_time' => time(),
         'amount' => $amount,
@@ -106,13 +104,23 @@ function give_points($amount, $recipient_id, $sender_id, $reason, $anonymous = f
     );
     $map += insert_lang_comcode('reason', $reason, 4);
     $GLOBALS['SITE_DB']->query_insert('gifts', $map);
-    $sender_gift_points_used = point_info($sender_id);
-    $sender_gift_points_used = array_key_exists('gift_points_used', $sender_gift_points_used) ? $sender_gift_points_used['gift_points_used'] : 0;
-    $GLOBALS['FORUM_DRIVER']->set_custom_field($sender_id, 'gift_points_used', strval($sender_gift_points_used + $amount));
-    $temp_points = point_info($recipient_id);
-    $GLOBALS['FORUM_DRIVER']->set_custom_field($recipient_id, 'points_gained_given', strval((array_key_exists('points_gained_given', $temp_points) ? $temp_points['points_gained_given'] : 0) + $amount));
+
+    $sender_point_info = point_info($sender_id);
+    $sender_gift_points_used_old = array_key_exists('gift_points_used', $sender_point_info) ? $sender_point_info['gift_points_used'] : 0;
+    $sender_gift_points_used_new = min(2147483647, $sender_gift_points_used_old + $amount);
+    $GLOBALS['FORUM_DRIVER']->set_custom_field($sender_id, 'gift_points_used', strval($sender_gift_points_used_new));
+
+    $recipient_point_info = point_info($recipient_id);
+    $recipient_points_given_new = array_key_exists('points_gained_given', $recipient_point_info) ? $recipient_point_info['points_gained_given'] : 0;
+    $recipient_points_given_new = min(2147483647, $recipient_points_given_new + $amount);
+    $GLOBALS['FORUM_DRIVER']->set_custom_field($recipient_id, 'points_gained_given', strval($recipient_points_given_new));
+
+    $your_username = $GLOBALS['FORUM_DRIVER']->get_username($sender_id);
+    $your_displayname = $GLOBALS['FORUM_DRIVER']->get_username($sender_id, true);
+
     $their_username = $GLOBALS['FORUM_DRIVER']->get_username($recipient_id, false, USERNAME_DEFAULT_ERROR);
     $their_displayname = $GLOBALS['FORUM_DRIVER']->get_username($recipient_id, true, USERNAME_DEFAULT_ERROR);
+
     $yes = $GLOBALS['FORUM_DRIVER']->get_member_email_allowed($recipient_id);
     if (($yes) && ($send_email)) {
         $_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $recipient_id), get_module_zone('points'), array(), false, false, true);
@@ -131,13 +139,13 @@ function give_points($amount, $recipient_id, $sender_id, $reason, $anonymous = f
 
     global $TOTAL_POINTS_CACHE, $POINT_INFO_CACHE;
     if (array_key_exists($recipient_id, $TOTAL_POINTS_CACHE)) {
-        $TOTAL_POINTS_CACHE[$recipient_id] += $amount;
+        $TOTAL_POINTS_CACHE[$recipient_id] = $recipient_points_given_new;
     }
     if ((array_key_exists($recipient_id, $POINT_INFO_CACHE)) && (array_key_exists('points_gained_given', $POINT_INFO_CACHE[$recipient_id]))) {
-        $POINT_INFO_CACHE[$recipient_id]['points_gained_given'] += $amount;
+        $POINT_INFO_CACHE[$recipient_id]['points_gained_given'] = $recipient_points_given_new;
     }
     if ((array_key_exists($sender_id, $POINT_INFO_CACHE)) && (array_key_exists('gift_points_used', $POINT_INFO_CACHE[$sender_id]))) {
-        $POINT_INFO_CACHE[$sender_id]['gift_points_used'] += $amount;
+        $POINT_INFO_CACHE[$sender_id]['gift_points_used'] = $sender_gift_points_used_new;
     }
 
     if (get_forum_type() == 'cns') {
@@ -226,6 +234,6 @@ function reverse_point_gift_transaction($id)
         $sender_gift_points_used = array_key_exists('gift_points_used', $_sender_gift_points_used) ? $_sender_gift_points_used['gift_points_used'] : 0;
         $GLOBALS['FORUM_DRIVER']->set_custom_field($sender_id, 'gift_points_used', strval($sender_gift_points_used - $amount));
     }
-    $temp_points = point_info($recipient_id);
-    $GLOBALS['FORUM_DRIVER']->set_custom_field($recipient_id, 'points_gained_given', strval((array_key_exists('points_gained_given', $temp_points) ? $temp_points['points_gained_given'] : 0) - $amount));
+    $recipient_point_info = point_info($recipient_id);
+    $GLOBALS['FORUM_DRIVER']->set_custom_field($recipient_id, 'points_gained_given', strval((array_key_exists('points_gained_given', $recipient_point_info) ? $recipient_point_info['points_gained_given'] : 0) - $amount));
 }

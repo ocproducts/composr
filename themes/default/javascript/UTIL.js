@@ -181,9 +181,9 @@
         if ((obj == null) || ((typeof obj !== 'object') && (typeof obj !== 'function'))) {
             throw new TypeError('$util.uid(): Parameter `obj` must be an object or a function.');
         }
-        
+
         var id = _uids.get(obj);
-        
+
         if (id === undefined) {
             id = uniqueId();
             _uids.set(obj, id);

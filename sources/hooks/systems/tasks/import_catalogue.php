@@ -327,7 +327,7 @@ class Hook_task_import_catalogue
                     } else {
                         $category_id = actual_add_catalogue_category($catalogue_name, $catalogue_title, '', '', $catalogue_root);
                         if (get_value('disable_cat_cat_perms') !== '1') {
-                            $this->set_permissions(strval($category_id));
+                            set_category_permissions_from_environment('catalogues_catalogue', strval($category_id));
                         }
 
                         $categories[$catalogue_title] = $category_id;
@@ -340,7 +340,7 @@ class Hook_task_import_catalogue
             } else {
                 $category_id = actual_add_catalogue_category($catalogue_name, $category_title, '', '', $catalogue_root);
                 if (get_value('disable_cat_cat_perms') !== '1') {
-                    $this->set_permissions(strval($category_id));
+                    set_category_permissions_from_environment('catalogues_catalogue', strval($category_id));
                 }
 
                 $categories[$category_title] = $category_id;
@@ -382,15 +382,5 @@ class Hook_task_import_catalogue
         }
 
         return null;
-    }
-
-    /**
-     * Set permissions of the news category from POST parameters.
-     *
-     * @param  ID_TEXT $id The category to set permissions for
-     */
-    public function set_permissions($id)
-    {
-        set_category_permissions_from_environment($this->permission_module, $id, $this->privilege_page);
     }
 }

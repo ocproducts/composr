@@ -77,8 +77,8 @@ abstract class Standard_crud_module
     protected $add_one_label = null;
     protected $add_one_cat_label = null;
     protected $edit_this_label = null;
-    protected $edit_one_label = null;
     protected $edit_this_cat_label = null;
+    protected $edit_one_label = null;
     protected $edit_one_cat_label = null;
     protected $entries_title = null;
     protected $categories_title = null;

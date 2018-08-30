@@ -261,10 +261,10 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                     if (!$subforum['intro_question']->is_empty()) {
                         if ($subforum['intro_answer'] == '') {
                             $keep = keep_symbol(array());
-                            $forum_rules_url = find_script('rules') . '?id=' . rawurlencode(strval($subforum['id'])) . $keep;
+                            $forum_rules_url = find_script('rules') . '?id=' . urlencode(strval($subforum['id'])) . $keep;
                         } else {
                             $keep = keep_symbol(array());
-                            $intro_question_url = find_script('rules') . '?id=' . rawurlencode(strval($subforum['id'])) . $keep;
+                            $intro_question_url = find_script('rules') . '?id=' . urlencode(strval($subforum['id'])) . $keep;
                         }
                     }
 

@@ -1,9 +1,9 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2016
+ Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -25,6 +25,10 @@ class Hook_task_sugarcrm_sync_lead_metadata
      */
     public function run()
     {
+        if (!addon_installed('sugarcrm')) {
+            return null;
+        }
+
         require_code('sugarcrm');
         sugarcrm_initialise_connection();
 

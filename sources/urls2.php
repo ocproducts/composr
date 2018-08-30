@@ -804,7 +804,7 @@ function _generate_moniker($moniker_src)
 {
     $moniker = strip_comcode($moniker_src);
 
-    $max_moniker_length = intval(get_option('max_moniker_length'));
+    $max_moniker_length = min(80, intval(get_option('max_moniker_length')));
 
     // Transliteration first
     if (get_option('moniker_transliteration') == '1') {

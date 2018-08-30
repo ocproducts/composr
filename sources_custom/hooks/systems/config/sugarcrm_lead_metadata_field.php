@@ -1,9 +1,9 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2016
+ Copyright (c) ocProducts, 2004-2018
 
- See text/EN/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licensing information.
 
 */
 
@@ -34,6 +34,8 @@ class Hook_config_sugarcrm_lead_metadata_field
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 4,
+            'required' => false,
+            'public' => false,
 
             'addon' => 'sugarcrm',
         );
@@ -46,6 +48,10 @@ class Hook_config_sugarcrm_lead_metadata_field
      */
     public function get_default()
     {
+        if (!addon_installed('sugarcrm')) {
+            return null;
+        }
+
         return '';
     }
 }

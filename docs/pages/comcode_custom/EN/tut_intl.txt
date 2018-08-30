@@ -234,6 +234,8 @@ Here's how the above sample cases would be translated:
 7) Again this one contains HTML entities. Translation in French may look like [tt]{1} dirige le &lsquo;{2}&rsquo; groupe d'utilisateurs[/tt].
 8) This contains some Tempcode. You would only translate the words 'Welcome back' and leave the [tt]{$SITE_NAME}[/tt] intact. Translation in French may look like [tt]WelBienvenue &#xE0; {$SITE_NAME}[/tt].
 
+If you use automatic translation then this code will probably get mangled. You need to carefully check all translated strings.
+
 [title="3"]Character sets[/title]
 
 There are three systems that are in common usage to allow diverse characters to be displayed in a document:

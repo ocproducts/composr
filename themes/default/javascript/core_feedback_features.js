@@ -509,7 +509,7 @@
     }
 
     /**
-     * Reply to a topic using AJAX
+     * Prepare the UI to reply to a post in a topic
      * @param isThreaded
      * @param id
      * @param replyingToUsername

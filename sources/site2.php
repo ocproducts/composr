@@ -131,7 +131,7 @@ function get_page_warning_details($zone, $codename, $edit_url)
  * @param  ID_TEXT $msg_type Code of message type to show
  * @set warn inform fatal
  */
-function redirect_exit($url, $title, $text, $intermediary_hop, $msg_type)
+function redirect_exit($url, $title = null, $text = null, $intermediary_hop = false, $msg_type = 'inform')
 {
     assign_refresh($url, 0.0);
 

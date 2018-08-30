@@ -1025,9 +1025,9 @@
             return;
         }
 
-        var realWidth = isVideo ? img.videoWidth : img.width,
+        var realWidth = isVideo ? img.videoWidth : img.naturalWidth,
             width = realWidth,
-            realHeight = isVideo ? img.videoHeight : img.height,
+            realHeight = isVideo ? img.videoHeight : img.naturalHeight,
             height = realHeight,
             lightboxImage = modal.topWindow.$dom.$id('lightbox-image'),
             lightboxMeta = modal.topWindow.$dom.$id('lightbox-meta'),

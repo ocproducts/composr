@@ -970,7 +970,7 @@ function get_webservice_result($error_message)
     }
 
     require_code('version2');
-    $http_result = cms_http_request('https://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . rawurlencode(get_version_dotted()) . '&error_message=' . rawurlencode($error_message) . '&product=' . rawurlencode($brand), array('trigger_error' => false));
+    $http_result = cms_http_request('https://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . urlencode(get_version_dotted()) . '&error_message=' . urlencode($error_message) . '&product=' . urlencode($brand), array('trigger_error' => false));
     $result = $http_result->data;
     if ($http_result->download_mime_type != 'text/plain') {
         return null;

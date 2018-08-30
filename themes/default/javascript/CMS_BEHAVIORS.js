@@ -910,7 +910,7 @@
             });
         }
     };
-    
+
     // Implementation for [data-ajaxify="{...}"] and [data-ajaxify-target="1"]
     // Mark ajaxified containers with [data-ajaxify="{...}"]
     // Mark links and forms to ajaxify with [data-ajaxify-target="1"] or specify a selector with the "targetsSelector" option
@@ -972,13 +972,13 @@
                     if (($dom.parent(target, '[data-ajaxify]') !== ajaxifyContainer) || strVal(target.getAttribute((target.localName === 'a') ? 'href' : 'action')).startsWith('#')) {
                         return; // Child of a different ajaxify container or hash href/action.
                     }
-                    
+
                     e.preventDefault();
-                    
+
                     var thisCallUrl = $util.url(callUrl),
                         postParams = null,
                         targetUrl = $util.url((target.localName === 'a') ? target.href : target.action);
-                    
+
                     if (callParamsFromTarget.length > 0) {
                         // Any parameters matching a pattern must be sent in the URL to the AJAX block call
                         $util.iterableToArray(targetUrl.searchParams.entries()).forEach(function (param) {
@@ -1002,7 +1002,7 @@
                             newWindowUrl.searchParams.set(param[0], param[1]);
                         }
                     });
-                    
+
                     if (target.localName === 'form') {
                         if (target.method.toLowerCase() === 'post') {
                             postParams = '';
@@ -1014,7 +1014,7 @@
                             if (!element.name) {
                                 return;
                             }
-                            
+
                             if (element.disabled || ['submit', 'reset', 'button', 'file'].includes(element.type) || (['radio', 'checkbox'].includes(element.type) && !element.checked)) {
                                 // ^ Skip disabled fields, certain types and non-checked radio and checkbox fields
                                 newWindowUrl.searchParams.delete(element.name); // Element value might have been previously added to the window URL

@@ -1301,7 +1301,7 @@
             }
 
             // Theme image editing hovers
-            var els = $dom.$$('*:not(.no_theme_img_click)'), i, el, isImage;
+            var els = $dom.$$('*:not(.no-theme-img-click)'), i, el, isImage;
             for (i = 0; i < els.length; i++) {
                 el = els[i];
                 isImage = (el.localName === 'img') || ((el.localName === 'input') && (el.type === 'image')) || $dom.css(el, 'background-image').includes('url');
@@ -1367,7 +1367,7 @@
                 div.style.zIndex = 10000;
                 div.style.textAlign = 'center';
                 // Intentionally using $IMG instead of $IMG_INLINE as data URIs trigger a CSP warning when used during a 'beforeunload' event handler for some reason.
-                $dom.html(div, '<div aria-busy="true" class="loading-box box"><h2>{!LOADING;^}</h2><img id="loading-image" alt="" width="20" height="20" src="{$IMG*;,loading}" /></div>');
+                $dom.html(div, '<div aria-busy="true" class="loading-box box"><h2>{!LOADING;^}</h2><img id="loading-image" alt="" width="20" height="20" src="' + $util.srl('{$IMG*;,loading}') + '" /></div>');
                 setTimeout(function () {
                     // Stupid workaround for Google Chrome not loading an image on unload even if in cache
                     if ($dom.$('#loading-image')) {

@@ -25,7 +25,7 @@ class Block_youtube_channel
         $info['organisation'] = 'HolleywoodStudio.com';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 11;
+        $info['version'] = 12;
         $info['locked'] = false;
         $info['parameters'] = array('name', 'playlist_id', 'title', 'template_main', 'template_style', 'start_video', 'max_videos', 'description_type', 'embed_allowed', 'show_player', 'player_align', 'player_width', 'player_height', 'style', 'nothumbplayer', 'thumbnail', 'formorelead', 'formoretext', 'formoreurl');
         return $info;
@@ -64,7 +64,7 @@ class Block_youtube_channel
         $thumbalt = array('default', 'mqdefault', 'hqdefault', '1', '2', '3', 'sddefault', 'maxresdefault');
 
         // Set up variables from parameters
-        $channel_name = array_key_exists('name', $map) ? trim($map['name']) : '';
+        $channel_name_param = array_key_exists('name', $map) ? trim($map['name']) : '';
         $channel_title = array_key_exists('title', $map) ? $map['title'] : 'YouTube';
         $channel_tempmain = array_key_exists('template_main', $map) ? $map['template_main'] : '';
         if ($channel_tempmain) {
@@ -90,7 +90,7 @@ class Block_youtube_channel
         $channel_formoreurl = array_key_exists('formoreurl', $map) ? $map['formoreurl'] : '';
         $channel_thumbnail = array_key_exists('thumbnail', $map) ? intval($map['thumbnail']) : 0;
         $channel_descriptiontype = strtolower(array_key_exists('description_type', $map) ? $map['description_type'] : 'long');
-        if ($channel_name == '') {
+        if ($channel_name_param == '') {
             $playlist_id = array_key_exists('playlist_id', $map) ? trim($map['playlist_id']) : '';
         } else {
             $playlist_id = '';
@@ -142,19 +142,55 @@ class Block_youtube_channel
         }
         $temp_nothumbplayer = $channel_nothumbplayer;
 
-        // Get playlist ID from YouTube API v3 using username so we can get the uploads playlist, or use the specified playlist ID if no username is specified.
-        if (!empty($channel_name)) {
-            $channel = json_decode(@file_get_contents("https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=$channel_name&fields=items(contentDetails(relatedPlaylists(uploads)))&key=$youtube_api_key"));
+        // Get playlist ID from YouTube API v3 using username or channel ID so we can get the uploads playlist, or use the specified playlist ID if no username is specified.
+        if (!empty($channel_name_param)) {
+            //Determine if name is username or channel id.
+            $channel_name = '';
+            if (strtolower(substr($channel_name_param, 0, 9)) == 'username=') {
+                $channel_name =  substr($channel_name_param, 9);
+                $channel = json_decode(@file_get_contents("https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=$channel_name&fields=items(contentDetails(relatedPlaylists(uploads)))&key=$youtube_api_key"));
 
-            // Check if we got a user upload playlist and assign it to a variable. If not, set an error.
-            if (isset($channel->items[0]->contentDetails->relatedPlaylists->uploads)) {
-                $playlist_id = $channel->items[0]->contentDetails->relatedPlaylists->uploads;
+                // Check if we got a user upload playlist and assign it to a variable. If not, set an error.
+                if (isset($channel->items[0]->contentDetails->relatedPlaylists->uploads)) {
+                    $playlist_id = $channel->items[0]->contentDetails->relatedPlaylists->uploads;
+                } else {
+                    $channel_error .= 'Error: Unable to get uploads playlist for <b>' . $channel_name_param . '</b>. Verify you have the correct username and API key.<br />';
+                }
+
+                // Set channel URL using username
+                $channel_url = 'http://www.youtube.com/user/' . $channel_name;
+            } elseif (strtolower(substr($channel_name_param, 0, 3)) == 'id=') {
+                $channel_id =  substr($channel_name_param, 3);
+                $channel = json_decode(@file_get_contents("https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails&id=$channel_id&fields=items(contentDetails(relatedPlaylists(uploads)))&key=$youtube_api_key"));
+
+                // Get channel title (channel name)
+                if (isset($channel->items[0]->items->snippet->title)) {
+                    $channel_name = $channel->items[0]->items->snippet->title;
+                }
+
+                // Check if we got a user upload playlist and assign it to a variable. If not, set an error.
+                if (isset($channel->items[0]->contentDetails->relatedPlaylists->uploads)) {
+                    $playlist_id = $channel->items[0]->contentDetails->relatedPlaylists->uploads;
+                } else {
+                    $channel_error .= 'Error: Unable to get uploads playlist for <b>' . $channel_name_param . '</b>. Verify you have the correct channel ID and API key.<br />';
+                }
+
+                // Set channel URL using username
+                $channel_url = 'http://www.youtube.com/channel/' . $channel_id;
             } else {
-                $channel_error .= 'Error: Unable to get uploads playlist for <b>' . $channel_name . '</b>. Verify you have the correct username and API key.<br />';
-            }
+                $channel_name = $channel_name_param;
+                $channel = json_decode(@file_get_contents("https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=$channel_name&fields=items(contentDetails(relatedPlaylists(uploads)))&key=$youtube_api_key"));
 
-            // Set channel URL using username
-            $channel_url = 'http://www.youtube.com/user/' . $channel_name;
+                // Check if we got a user upload playlist and assign it to a variable. If not, set an error.
+                if (isset($channel->items[0]->contentDetails->relatedPlaylists->uploads)) {
+                    $playlist_id = $channel->items[0]->contentDetails->relatedPlaylists->uploads;
+                } else {
+                    $channel_error .= 'Error: Unable to get uploads playlist for <b>' . $channel_name . '</b>. Verify you have the correct username and API key. If you entered a YouTube Channel ID, be sure the ID is prefixed with <b>id=</b>.<br />';
+                }
+
+                // Set channel URL using username
+                $channel_url = 'http://www.youtube.com/user/' . $channel_name;
+            }
         }
         if (empty($playlist_id)) {
             $channel_error .= 'Error: No channel username or playlist ID specified.<br />';
@@ -531,23 +567,24 @@ class Block_youtube_channel
  */
 function block_youtube_channel__cache_on($map)
 {
-    return array(array_key_exists('max_videos', $map) ? intval($map['max_videos']) : 25,
-                 array_key_exists('start_video', $map) ? intval($map['start_video']) : 1,
-                 array_key_exists('embed_player', $map) ? intval($map['embed_player']) : 1,
-                 array_key_exists('show_player', $map) ? intval($map['show_player']) : 1,
-                 array_key_exists('style', $map) ? intval($map['style']) : 1,
-                 array_key_exists('nothumbplayer', $map) ? intval($map['nothumbplayer']) : 0,
-                 array_key_exists('thumbnail', $map) ? intval($map['thumbnail']) : 0,
-                 array_key_exists('player_width', $map) ? intval($map['player_width']) : 480,
-                 array_key_exists('player_height', $map) ? intval($map['player_height']) : 270,
-                 array_key_exists('title', $map) ? $map['title'] : '',
-                 array_key_exists('player_align', $map) ? $map['player_align'] : 'center',
-                 array_key_exists('formorelead', $map) ? $map['formorelead'] : '',
-                 array_key_exists('formoretext', $map) ? $map['formoretext'] : '',
-                 array_key_exists('formoreurl', $map) ? $map['formoreurl'] : '',
-                 array_key_exists('name', $map) ? $map['name'] : '',
-                 array_key_exists('template_main', $map) ? $map['template_main'] : '',
-                 array_key_exists('description_type', $map) ? $map['description_type'] : 'long',
-                 array_key_exists('playlist_id', $map) ? $map['playlist_id'] : ''
+    return array(
+        array_key_exists('max_videos', $map) ? intval($map['max_videos']) : 25,
+        array_key_exists('start_video', $map) ? intval($map['start_video']) : 1,
+        array_key_exists('embed_player', $map) ? intval($map['embed_player']) : 1,
+        array_key_exists('show_player', $map) ? intval($map['show_player']) : 1,
+        array_key_exists('style', $map) ? intval($map['style']) : 1,
+        array_key_exists('nothumbplayer', $map) ? intval($map['nothumbplayer']) : 0,
+        array_key_exists('thumbnail', $map) ? intval($map['thumbnail']) : 0,
+        array_key_exists('player_width', $map) ? intval($map['player_width']) : 480,
+        array_key_exists('player_height', $map) ? intval($map['player_height']) : 270,
+        array_key_exists('title', $map) ? $map['title'] : '',
+        array_key_exists('player_align', $map) ? $map['player_align'] : 'center',
+        array_key_exists('formorelead', $map) ? $map['formorelead'] : '',
+        array_key_exists('formoretext', $map) ? $map['formoretext'] : '',
+        array_key_exists('formoreurl', $map) ? $map['formoreurl'] : '',
+        array_key_exists('name', $map) ? $map['name'] : '',
+        array_key_exists('template_main', $map) ? $map['template_main'] : '',
+        array_key_exists('description_type', $map) ? $map['description_type'] : 'long',
+        array_key_exists('playlist_id', $map) ? $map['playlist_id'] : '',
     );
 }

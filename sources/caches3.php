@@ -179,7 +179,7 @@ function erase_comcode_cache()
                     }
 
                     $db = get_db_for($table);
-                    $db->query('UPDATE ' . $db->get_table_prefix() . $table . ' SET ' . $field . '__text_parsed=\'\' WHERE ' . db_string_not_equal_to($field . '__text_parsed', '')/*this WHERE is so indexing helps*/);
+                    $db->query('UPDATE ' . $db->get_table_prefix() . $table . ' SET ' . $field . '__text_parsed=\'\' WHERE ' . db_string_not_equal_to($field . '__text_parsed', '')/*this WHERE is so indexing helps*/, null, null, true/*in case meta DB has an issue*/);
                 }
             }
         }

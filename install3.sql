@@ -1445,4 +1445,3 @@ CREATE TABLE cms_member_page_access (
 ALTER TABLE cms11_member_page_access ADD INDEX mzamember_id (member_id);
 
 ALTER TABLE cms11_member_page_access ADD INDEX mzaname (page_name,zone_name);
-

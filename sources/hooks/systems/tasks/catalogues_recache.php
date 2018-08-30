@@ -30,7 +30,7 @@ class Hook_task_catalogues_recache
      */
     public function run()
     {
-        if (!addon_installed('stats')) {
+        if (!addon_installed('catalogues')) {
             return null;
         }
 
