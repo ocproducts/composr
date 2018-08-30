@@ -501,28 +501,6 @@
         return obj;
     };
 
-    /**
-     * Iterates over iterable objects
-     * @param iterable
-     * @param callback
-     * @returns {*}
-     */
-    $util.eachIter = function eachIter(iterable, callback) {
-        var item, i = 0;
-
-        if (iterable == null) {
-            return iterable;
-        }
-
-        while (!(item = iterable.next()).done) {
-            if (callback.call(undefined, item.value, i++) === false) {
-                break;
-            }
-        }
-
-        return iterable;
-    };
-
     var EXTEND_DEEP = 1,
         EXTEND_TGT_OWN_ONLY = 2,
         EXTEND_SRC_OWN_ONLY = 4;
@@ -864,7 +842,7 @@
         };
     };
 
-    var _onced = {};
+    var _onced = Object.create(null);
     /**
      * @param objects
      * @param flag

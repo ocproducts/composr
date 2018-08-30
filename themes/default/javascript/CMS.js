@@ -157,19 +157,7 @@
      * @method
      * @returns {string}
      */
-    $cms.getBaseUrlNohttp = $util.constant(strVal('{$BASE_URL_NOHTTP;}'));
-    /**
-     * @memberof $cms
-     * @method
-     * @returns {string}
-     */
     $cms.getCustomBaseUrl = $util.constant(strVal('{$CUSTOM_BASE_URL;}'));
-    /**
-     * @memberof $cms
-     * @method
-     * @returns {string}
-     */
-    $cms.getCustomBaseUrlNohttp = $util.constant(strVal('{$CUSTOM_BASE_URL_NOHTTP;}'));
     /**
      * @memberof $cms
      * @method
@@ -301,7 +289,7 @@
     $cms.pageKeepSearchParams = function pageKeepSearchParams(forceSession) {
         var keepSp = new window.URLSearchParams();
 
-        $util.eachIter($cms.pageUrl().searchParams.entries(), function (entry) {
+        $util.iterableToArray($cms.pageUrl().searchParams.entries()).forEach(function (entry) {
             var name = entry[0],
                 value = entry[1];
 
@@ -864,7 +852,7 @@
 
         var keepSp = $cms.pageKeepSearchParams(true);
 
-        $util.eachIter(keepSp.entries(), function (entry) {
+        $util.iterableToArray(keepSp.entries()).forEach(function (entry) {
             var name = entry[0],
                 value = entry[1];
 

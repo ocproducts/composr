@@ -95,7 +95,7 @@
 			{+END}
 		{+END}
 
-		<div id="comments-wrapper">
+		<div>
 			{COMMENTS}
 		</div>
 

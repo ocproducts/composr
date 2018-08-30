@@ -402,7 +402,7 @@
     };
 
     function playSoundUrl(url) { // Used for testing different sounds
-        var baseUrl = (!url.includes('data_custom/') && !url.includes('uploads/')) ? $cms.getBaseUrlNohttp() : $cms.getCustomBaseUrlNohttp();
+        var baseUrl = $util.rel((!url.includes('data_custom/') && !url.includes('uploads/')) ? $cms.getBaseUrl() : $cms.getCustomBaseUrl());
         var soundObject = window.soundManager.createSound({url: baseUrl + '/' + url});
         if (soundObject) {
             soundObject.play();

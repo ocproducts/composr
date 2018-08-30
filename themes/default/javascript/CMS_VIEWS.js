@@ -1316,7 +1316,7 @@
             }
 
             /* Thumbnail tooltips */
-            if ($cms.isDevMode() || loc.replace($cms.getBaseUrlNohttp(), '').includes('/cms/')) {
+            if ($cms.isDevMode() || loc.replace($util.rel($cms.getBaseUrl()), '').includes('/cms/')) {
                 var urlPatterns = $cms.staffTooltipsUrlPatterns(),
                     links, pattern, hook, patternRgx;
 
@@ -1326,7 +1326,7 @@
                     patternRgx = new RegExp(pattern);
 
                     links.forEach(function (link) {
-                        if ((link.href) && (!link.onmouseover) && (link.classList.contains('no-auto-tooltip')==-1)) {
+                        if ((link.href) && (!link.onmouseover) && !link.classList.contains('no-auto-tooltip')) {
                             var id = link.href.match(patternRgx);
                             if (id) {
                                 applyComcodeTooltip(hook, id, link);
@@ -1512,7 +1512,7 @@
                     // Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in Firefox anyway)
                     event.preventDefault();
 
-                    if (src.includes($cms.getBaseUrlNohttp() + '/themes/')) {
+                    if (src.includes($util.rel($cms.getBaseUrl()) + '/themes/')) {
                         ob.editWindow = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.userLang()) + '&theme=' + encodeURIComponent($cms.getTheme()) + '&url=' + encodeURIComponent($cms.protectURLParameter(src.replace('{$BASE_URL;,0}/', ''))) + $cms.keep(), 'edit_theme_image_' + ob.id);
                     } else {
                         $cms.ui.alert('{!NOT_THEME_IMAGE;^}');
