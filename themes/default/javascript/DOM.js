@@ -473,9 +473,11 @@
                     return;
                 }
 
-                if (event.type === 'load') {
-                    //$util.inform('$dom.waitForResources(): Resource loaded successfully', loadedEl);
-                } else {
+                // if (event.type === 'load') {
+                //     $util.inform('$dom.waitForResources(): Resource loaded successfully', loadedEl);
+                // } 
+                
+                if (event.type === 'error') {
                     $util.fatal('$dom.waitForResources(): Resource failed to load', loadedEl);
                 }
 
@@ -1059,11 +1061,11 @@
             matcher = matcherFor(event.ns);
         }
         return (eventHandlers[$util.uid(element)] || []).filter(function (handler) {
-            return handler
-                && (!event.e || (handler.e === event.e))
-                && (!event.ns || matcher.test(handler.ns))
-                && (!fn || ($util.uid(handler.fn) === $util.uid(fn)))
-                && (!selector || (handler.sel === selector));
+            return handler &&
+                (!event.e || (handler.e === event.e)) &&
+                (!event.ns || matcher.test(handler.ns)) &&
+                (!fn || ($util.uid(handler.fn) === $util.uid(fn))) &&
+                (!selector || (handler.sel === selector));
         });
     }
 
@@ -2274,6 +2276,7 @@
                             if (!el.src && jsTypeRE.test(el.type)) {
                                 var win = el.ownerDocument ? el.ownerDocument.defaultView : window;
                                 (function () {
+                                    /*jshint evil: true*/
                                     eval(el.innerHTML); // eval() call
                                 }).call(win); // Set `this` context for eval
                             }

@@ -148,7 +148,7 @@
                 $dom.hide(html);
             }
 
-            arrVal(xml.children).forEach(function (node) {
+            $util.toArray(xml.children).forEach(function (node) {
                 var nodeSelfWrap, nodeSelf, el, label, htmlNode, expanding;
 
                 // Special handling of 'options' nodes, inject new options

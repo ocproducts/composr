@@ -219,6 +219,7 @@
 
                     if (code !== '') {
                         (function () {
+                            /*jshint evil: true*/
                             eval(code); // eval() call
                         }).call(el); // Set `this` context for eval
                     }
@@ -261,7 +262,7 @@
             var inputs = $util.once($dom.$$$(context, '[data-submit-on-enter]'), 'behavior.submitOnEnter');
 
             inputs.forEach(function (input) {
-                $dom.on(input, (input.nodeName.toLowerCase() == 'select') ? 'keyup' : 'keypress', function submitOnEnter(e) {
+                $dom.on(input, (input.nodeName.toLowerCase() === 'select') ? 'keyup' : 'keypress', function submitOnEnter(e) {
                     if ($dom.keyPressed(e, 'Enter')) {
                         $dom.submit(input.form);
                         e.preventDefault();

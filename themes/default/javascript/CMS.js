@@ -923,12 +923,13 @@
      * Used by audio CAPTCHA.
      * @memberof $cms
      * @param ob
+     * @param soundObject
      */
     $cms.playSelfAudioLink = function playSelfAudioLink(ob, soundObject) {
         if (soundObject) {
             // Some browsers will block the below, because the timer makes it think it is 'autoplay'; even this may fail on Safari
             $util.inform('Playing .wav fully natively');
-            soundObject.play().catch(function(error) {
+            soundObject.play().catch(function() {
                 $util.inform('Audio playback blocked, reverting to opening .wav in new window');
                 window.open(ob.href);
             });
@@ -1258,9 +1259,9 @@
                 // XML result. Handle with a potentially complex call
                 var responseXML = (xhr.responseXML && xhr.responseXML.firstChild) ? xhr.responseXML : null;
 
-                if ((responseXML == null) && xhr.responseText && xhr.responseText.includes('<html')) {
-                    //$cms.ui.alert(xhr.responseText, '{!ERROR_OCCURRED;^}', true);
-                }
+                // if ((responseXML == null) && xhr.responseText && xhr.responseText.includes('<html')) {
+                //     $cms.ui.alert(xhr.responseText, '{!ERROR_OCCURRED;^}', true);
+                // }
 
                 if (ajaxCallback != null) {
                     ajaxCallback(responseXML, xhr);
@@ -1443,10 +1444,10 @@
                 ascii = character.charCodeAt(0);
 
                 if (
-                    ((i !== 0) && (character === '_'))
-                    || ((ascii >= 48) && (ascii <= 57))
-                    || ((ascii >= 65) && (ascii <= 90))
-                    || ((ascii >= 97) && (ascii <= 122))
+                    ((i !== 0) && (character === '_')) ||
+                    ((ascii >= 48) && (ascii <= 57)) ||
+                    ((ascii >= 65) && (ascii <= 90)) ||
+                    ((ascii >= 97) && (ascii <= 122))
                 ) {
                     out += character;
                 } else {
@@ -1481,7 +1482,7 @@
     };
 
     /**
-     * JS port of the escape_comcode()
+     * JS port of the escape_comcode() PHP function
      * @memberof $cms.filter
      * @param {string} str
      * @returns {string}

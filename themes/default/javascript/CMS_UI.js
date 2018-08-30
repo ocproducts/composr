@@ -272,7 +272,7 @@
                 $cms.ui.repositionTooltip(el, event, false, false, null, false, win);
             });
         } else {
-            $dom.on(window, 'click.cmsTooltip' + $util.uid(el), function (e) {
+            $dom.on(window, 'click.cmsTooltip' + $util.uid(el), function () {
                 if ($dom.$id(el.tooltipId) && $dom.isDisplayed($dom.$id(el.tooltipId))) {
                     $cms.ui.deactivateTooltip(el);
                 }

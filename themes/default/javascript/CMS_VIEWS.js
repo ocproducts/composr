@@ -15,7 +15,7 @@
      * @memberof $cms
      * @class $cms.View
      */
-    function View(params, viewOptions) {
+    function View(/*params, viewOptions*/) {
         /** @member {number}*/
         this.uid = $util.uid(this);
         /** @member {string} */
@@ -1586,7 +1586,7 @@
      * @class GlobalHelperPanel
      * @extends $cms.View
      */
-    function GlobalHelperPanel(params) {
+    function GlobalHelperPanel() {
         GlobalHelperPanel.base(this, 'constructor', arguments);
         this.contentsEl = this.$('.js-helper-panel-contents');
     }
@@ -1803,7 +1803,7 @@
      * @class
      * @extends Menu
      */
-    function PopupMenu(params) {
+    function PopupMenu() {
         PopupMenu.base(this, 'constructor', arguments);
     }
 

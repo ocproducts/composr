@@ -217,6 +217,7 @@
      * @returns {boolean}
      */
     $util.hasEnumerable = function hasEnumerable(val) {
+        /*jshint unused: false*/
         if (val != null) {
             for (var key in val) {
                 return true;
@@ -442,12 +443,12 @@
         var len;
         minLength = Number(minLength) || 0;
 
-        return (obj != null)
-            && (typeof obj === 'object')
-            && ($util.internalName(obj) !== 'Window')
-            && (typeof (len = obj.length) === 'number')
-            && (len >= minLength)
-            && ((len === 0) || ((0 in obj) && ((len - 1) in obj)));
+        return (obj != null) &&
+            (typeof obj === 'object') &&
+            ($util.internalName(obj) !== 'Window') &&
+            (typeof (len = obj.length) === 'number') &&
+            (len >= minLength) &&
+            ((len === 0) || ((0 in obj) && ((len - 1) in obj)));
     };
 
     /**
@@ -469,6 +470,7 @@
      * @returns {string}
      */
     $util.decToHex = function decToHex(number) {
+        /*jshint bitwise: false*/
         var hexbase = '0123456789ABCDEF';
         return hexbase.charAt((number >> 4) & 0xf) + hexbase.charAt(number & 0xf);
     };
@@ -506,6 +508,7 @@
         EXTEND_SRC_OWN_ONLY = 4;
 
     function _extend(target, source, mask) {
+        /*jshint bitwise: false*/
         var key, tgt, src, isSrcArr;
 
         mask = Number(mask) || 0;
@@ -515,9 +518,9 @@
             src = source[key];
 
             if (
-                (src === undefined)
-                || ((mask & EXTEND_TGT_OWN_ONLY) && !$util.hasOwn(target, key))
-                || ((mask & EXTEND_SRC_OWN_ONLY) && !$util.hasOwn(source, key))
+                (src === undefined) ||
+                ((mask & EXTEND_TGT_OWN_ONLY) && !$util.hasOwn(target, key)) ||
+                ((mask & EXTEND_SRC_OWN_ONLY) && !$util.hasOwn(source, key))
             ) {
                 continue;
             }

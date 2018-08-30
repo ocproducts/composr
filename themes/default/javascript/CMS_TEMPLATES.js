@@ -28,11 +28,11 @@
     $cms.templates.blockMainScreenActions = function blockMainScreenActions(params, container) {
         var easySelfUrl = strVal(params.easySelfUrl);
 
-        $dom.on(container, 'click', '.js-click-action-print-screen', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-print-screen', function () {
             $cms.gaTrack(null,'{!recommend:PRINT_THIS_SCREEN;}');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-facebook', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-facebook', function () {
             $cms.gaTrack(null,'social__facebook');
         });
 
@@ -42,35 +42,35 @@
             $cms.gaTrack(null,'social__twitter');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-digg', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-digg', function () {
             $cms.gaTrack(null,'social__digg');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-linkedin', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-linkedin', function () {
             $cms.gaTrack(null,'social__linkedin');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-pinterest', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-pinterest', function () {
             $cms.gaTrack(null,'social__pinterest');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-tumblr', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-tumblr', function () {
             $cms.gaTrack(null,'social__tumblr');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-vk', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-vk', function () {
             $cms.gaTrack(null,'social__vk');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-sina-weibo', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-sina-weibo', function () {
             $cms.gaTrack(null,'social__sina_weibo');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-tencent-weibo', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-tencent-weibo', function () {
             $cms.gaTrack(null,'social__tencent_weibo');
         });
 
-        $dom.on(container, 'click', '.js-click-action-add-to-qzone', function (e, link) {
+        $dom.on(container, 'click', '.js-click-action-add-to-qzone', function () {
             $cms.gaTrack(null,'social__qzone');
         });
     };
@@ -475,7 +475,7 @@
         }
     };
 
-    $cms.templates.confirmScreen = function confirmScreen(params) {};
+    $cms.templates.confirmScreen = function confirmScreen() {};
 
     $cms.templates.warnScreen = function warnScreen() {
         if (window.top !== window) {
@@ -545,10 +545,10 @@
     };
 
     $cms.functions.spamWarning = function (e) {
-        if (e.which == 2/*middle button*/) {
+        if (e.which === 2/*middle button*/) {
             this.href += '&spam=1';
         }
-    }
+    };
 
     $cms.templates.cropTextMouseOver = function (params, el) {
         var textLarge = $cms.filter.nl(params.textLarge);
@@ -589,7 +589,7 @@
         }
     };
 
-    $cms.templates.doNextScreen = function doNextScreen(params) {};
+    $cms.templates.doNextScreen = function doNextScreen() {};
 
     function detectChange(changeDetectionUrl, refreshIfChanged, callback) {
         $cms.doAjaxRequest(changeDetectionUrl, null, 'refresh_if_changed=' + encodeURIComponent(refreshIfChanged)).then(function (xhr) {
@@ -624,21 +624,19 @@
         if (els.length === undefined) {
             els = [els];
         }
-        for (var i = 0; i < els.length; i++) {
-            els[i].addEventListener('click', (function (el) {
-                return function () {
-                    var selected = false;
-                    if (el.type === 'checkbox') {
-                        selected = (el.checked && (el.value === value)) || (!el.checked && ('' === value));
-                    } else {
-                        selected = (el.value === value);
-                    }
-                    if (selected) {
-                        $cms.ui.alert(notice, noticeTitle, true);
-                    }
-                };
-            }(els[i])));
-        }
+        $util.toArray(els).forEach(function (el) {
+            el.addEventListener('click', function () {
+                var selected = false;
+                if (el.type === 'checkbox') {
+                    selected = (el.checked && (el.value === value)) || (!el.checked && ('' === value));
+                } else {
+                    selected = (el.value === value);
+                }
+                if (selected) {
+                    $cms.ui.alert(notice, noticeTitle, true);
+                }
+            });
+        });
     };
 
     function confirmDelete(form, multi, callback) {
