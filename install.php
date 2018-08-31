@@ -409,7 +409,7 @@ function step_1()
     // Health Checks
     $_warnings = installer_health_checks();
     foreach ($_warnings as $_warning) {
-        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => comcode_to_tempcode($_warning))));
+        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => $_warning)));
     }
 
     // Some checks relating to installation permissions
@@ -2248,6 +2248,11 @@ function big_installation_common()
     require_once(get_file_base() . '/' . $config_file);
 
     require_code('database');
+
+    if (!isset($GLOBALS['SITE_DB'])) {
+        fatal_exit('Could not initialise database connection');
+    }
+
     $forum_type = get_forum_type();
     require_code('forum/' . $forum_type);
     $GLOBALS['FORUM_DRIVER'] = object_factory('Forum_driver_' . filter_naughty_harsh($forum_type));

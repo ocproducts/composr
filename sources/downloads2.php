@@ -108,7 +108,7 @@ function dload_script()
     if (!has_category_access(get_member(), 'downloads', strval($myrow['category_id']))) {
         $redirect_url = get_download_category_purchase_url($myrow['category_id']);
         if ($redirect_url !== null) {
-            return redirect_screen(null, $redirect_url);
+            redirect_exit($redirect_url);
         }
 
         access_denied('CATEGORY_ACCESS');

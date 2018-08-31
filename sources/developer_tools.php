@@ -121,7 +121,7 @@ function semi_dev_mode_startup()
                             $stream_meta = null;
                         }
 
-                        if (($stream_meta === null) || (!in_array($stream_meta['stream_type'], array('TEMP', 'MEMORY')))) {
+                        if (($stream_meta === null) || (!in_array($stream_meta['stream_type'], array('TEMP', 'MEMORY', 'STDIO')))) {
                             @exit(escape_html('Unexpected resource left open of type, ' . $type . (($type == 'stream') ? ('; ' . var_export($stream_meta, true)) : '')));
                         }
                     }

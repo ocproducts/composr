@@ -286,7 +286,7 @@ function find_user_metadata($include_referer = true, $member_id = null, $advance
         $member_data[do_lang('MEMBER_ID', null, null, null, get_site_default_lang())] = '#' . strval($member_id);
     }
     if (!is_guest($member_id)) {
-        $member_data[do_lang('cns:PROFILE', null, null, null, get_site_default_lang())] = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true, false);
+        $member_data[do_lang('cns:PROFILE', null, null, null, get_site_default_lang())] = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false);
     }
     $data[do_lang('ACCOUNT', null, null, null, get_site_default_lang())] = $member_data;
 
@@ -363,7 +363,7 @@ function find_user_metadata($include_referer = true, $member_id = null, $advance
     }
 
     if (($include_referer) && ($current_user)) {
-        $referer = cms_srv('HTTP_REFERER');
+        $referer = $_SERVER['HTTP_REFERER'];
         if ($referer != '') {
             $data[do_lang('REFERER', null, null, null, get_site_default_lang())] = $referer;
         }
@@ -435,7 +435,7 @@ function find_user_metadata($include_referer = true, $member_id = null, $advance
 
             $h = array();
 
-            $h[$l_date_time] = get_timezoned_date(tz_time($myrow['date_and_time'], get_server_timezone()), true, false, false, true);
+            $h[$l_date_time] = get_timezoned_date(tz_time($myrow['date_and_time'], get_server_timezone()), false);
 
             $page_link = convert_page_string_to_page_link($myrow['the_page']);
             list($zone, $attributes) = page_link_decode($page_link);

@@ -45,6 +45,7 @@ class lang_spelling_epic_test_set extends cms_test_case
             'hasjsstate',
             'sexualised',
             'doxxing',
+            'targetsselector',
             'gunzip',
             'hrefurl',
             'bbedit',

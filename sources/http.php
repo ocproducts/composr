@@ -289,7 +289,7 @@ abstract class HttpDownloader
     protected $byte_limit = null; // ?integer. The number of bytes to download. This is not a guarantee, it is a minimum (null: all bytes)
     protected $trigger_error = true; // boolean. Whether to throw a Composr error, on error
     protected $no_redirect = false; // boolean. Whether to block redirects (returns null when found)
-    protected $ua = 'Composr'; // string. The user-agent to identify as
+    protected $ua = 'Composr'; // ~?string. The user-agent to identify as (null: simulate Google Chrome) (false: none, useful to avoid filtering rules on the other end)
     protected $post_params = null; // ?array. An optional array of POST parameters to send; if this is null, a GET request is used (null: none). If $raw_post is set, it should be array($data)
     protected $cookies = array(); // array. An optional array of cookies to send
     protected $accept = null; // ?string. 'accept' header value (null: don't pass one)
@@ -625,6 +625,10 @@ abstract class HttpDownloader
 
         if (array_key_exists('ua', $options)) {
             $this->ua = $options['ua'];
+
+            if ($this->ua === null) {
+                $this->ua = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/0.A.B.C Safari/525.13';
+            }
         }
 
         if (array_key_exists('post_params', $options)) {
@@ -747,7 +751,9 @@ abstract class HttpDownloader
         if ($this->cookies != array()) {
             $headers .= 'Cookie: ' . $this->get_cookie_string() . "\r\n";
         }
-        $headers .= 'User-Agent: ' . rawurlencode($this->ua) . "\r\n";
+        if (is_string($this->ua)) {
+            $headers .= 'User-Agent: ' . rawurlencode($this->ua) . "\r\n";
+        }
         if ($this->auth !== null) {
             $headers .= 'Authorization: Basic ' . base64_encode(implode(':', $this->auth)) . "==\r\n";
         }
@@ -1035,7 +1041,9 @@ class HttpDownloaderCurl extends HttpDownloader
         if ($this->referer !== null) {
             curl_setopt($ch, CURLOPT_REFERER, $this->referer);
         }
-        curl_setopt($ch, CURLOPT_USERAGENT, $this->ua);
+        if (is_string($this->ua)) {
+            curl_setopt($ch, CURLOPT_USERAGENT, $this->ua);
+        }
         if ($this->byte_limit !== null) {
             curl_setopt($ch, CURLOPT_RANGE, '0-' . strval(($this->byte_limit == 0) ? 0 : ($this->byte_limit - 1)));
         }
@@ -1754,7 +1762,6 @@ class HttpDownloaderFileWrapper extends HttpDownloader
                 'http' => array(
                     'method' => $this->http_verb,
                     'header' => rtrim((($this->url_parts['host'] != $this->connect_to) ? ('Host: ' . $this->url_parts['host'] . "\r\n") : '') . $this->get_header_string()),
-                    'user_agent' => $this->ua,
                     'content' => $this->raw_payload,
                     'follow_location' => $this->no_redirect ? 0 : 1,
                     'ignore_errors' => $this->ignore_http_status,
@@ -1767,6 +1774,10 @@ class HttpDownloaderFileWrapper extends HttpDownloader
                     ),
                 ),
             );
+
+            if (is_string($this->ua)) {
+                $opts['http']['user_agent'] = $this->ua;
+            }
 
             $proxy = function_exists('get_option') ? get_option('proxy') : '';
             if ($proxy != '') {
@@ -1894,7 +1905,15 @@ class HttpDownloaderFilesystem extends HttpDownloader
         $file_path = $file_base . urldecode($parsed['path']);
 
         if ((php_function_allowed('escapeshellcmd')) && (php_function_allowed('shell_exec')) && (substr($file_path, -4) == '.php')) {
-            $cmd = 'DOCUMENT_ROOT=' . cms_escapeshellarg(dirname(get_file_base())) . ' PATH_TRANSLATED=' . cms_escapeshellarg($file_path) . ' SCRIPT_NAME=' . cms_escapeshellarg($file_path) . ' HTTP_USER_AGENT=' . cms_escapeshellarg($this->ua) . ' QUERY_STRING=' . cms_escapeshellarg($parsed['query']) . ' HTTP_HOST=' . cms_escapeshellarg($parsed['host']) . ' ' . escapeshellcmd(find_php_path(true)) . ' ' . cms_escapeshellarg($file_path);
+            $cmd = 'DOCUMENT_ROOT=' . cms_escapeshellarg(dirname(get_file_base()));
+            $cmd .= ' PATH_TRANSLATED=' . cms_escapeshellarg($file_path);
+            $cmd .= ' SCRIPT_NAME=' . cms_escapeshellarg($file_path);
+            if (is_string($this->ua)) {
+                $cmd .= ' HTTP_USER_AGENT=' . cms_escapeshellarg($this->ua);
+            }
+            $cmd .= ' QUERY_STRING=' . cms_escapeshellarg($parsed['query']);
+            $cmd .= ' HTTP_HOST=' . cms_escapeshellarg($parsed['host']);
+            $cmd .= ' ' . escapeshellcmd(find_php_path(true)) . ' ' . cms_escapeshellarg($file_path);
             $contents = shell_exec($cmd);
             $split_pos = strpos($contents, "\r\n\r\n");
             if ($split_pos !== false) {

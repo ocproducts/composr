@@ -25,7 +25,7 @@ class Hook_upon_query_add_mentor
         }
 
         if (!addon_installed('chat')) {
-            warn_exit(do_lang_tempcode('MISSING_ADDON', escape_html('chat')));
+            return;
         }
 
         if (get_forum_type() != 'cns') {
