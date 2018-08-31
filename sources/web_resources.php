@@ -77,6 +77,10 @@ function javascript_enforce($j, $theme = null, $allow_defer = false)
 
     list($minify, $https, $mobile) = _get_web_resources_env();
 
+    if (($allow_defer) && (function_exists('can_static_cache')) && (can_static_cache())) {
+        $allow_defer = false;
+    }
+
     global $SITE_INFO;
 
     // Make sure the JavaScript exists
@@ -307,6 +311,10 @@ function css_enforce($c, $theme = null, $allow_defer = false)
     }
 
     list($minify, $https, $mobile) = _get_web_resources_env();
+
+    if (($allow_defer) && (function_exists('can_static_cache')) && (can_static_cache())) {
+        $allow_defer = false;
+    }
 
     global $SITE_INFO;
 
