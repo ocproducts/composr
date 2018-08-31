@@ -2540,6 +2540,7 @@ function require_code($codename)
         } else {
             eval($file);
         }
+
         if (function_exists('init__' . str_replace('/', '__', $codename))) {
             call_user_func('init__' . str_replace('/', '__', $codename));
         }

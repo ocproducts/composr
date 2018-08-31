@@ -637,7 +637,7 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
     restore_output_state(true); // Here we reset some Tempcode environmental stuff, because template compilation or preprocessing may have dirtied things
 
     $show_border = (get_param_integer('show_border', $show_border ? 1 : 0) == 1);
-    if (!$show_border && !running_script('index')) {
+    if (!$show_border && !running_script('index') && $middle !== null) {
         $global = do_template('STANDALONE_HTML_WRAP', array(
             '_GUID' => 'fe818a6fb0870f0b211e8e52adb23f26',
             'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
@@ -660,7 +660,7 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
         // NB: We also considered the idea of using document.write() as a way to reset the output stream, but JavaScript execution will not happen before the parser (even if you force a flush and delay)
     } else {
         global $DOING_OUTPUT_PINGS;
-        if (headers_sent() && !$DOING_OUTPUT_PINGS) {
+        if (headers_sent() && !$DOING_OUTPUT_PINGS && $middle !== null) {
             $global = do_template('STANDALONE_HTML_WRAP', array(
                 '_GUID' => 'd579b62182a0f815e0ead1daa5904793',
                 'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
@@ -1269,8 +1269,6 @@ function has_no_forum()
  */
 function addon_installed($addon, $check_hookless = false)
 {
-    require_code('database');
-
     global $ADDON_INSTALLED_CACHE;
     if ($ADDON_INSTALLED_CACHE == array()) {
         if (function_exists('persistent_cache_get')) {
@@ -1287,6 +1285,8 @@ function addon_installed($addon, $check_hookless = false)
 
     // Check addons table
     if (!running_script('install')) {
+        require_code('database');
+
         if ((!$answer) && ($check_hookless)) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('addons', 'addon_name', array('addon_name' => $addon));
             if ($test !== null) {
