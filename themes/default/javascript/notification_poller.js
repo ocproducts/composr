@@ -8,7 +8,7 @@ if (typeof window.notifications_time_barrier=='undefined')
 {
 	window.notifications_already_presented={};
 
-	window.NOTIFICATION_POLL_FREQUENCY={$CONFIG_OPTION%,notification_poll_frequency};
+	window.NOTIFICATION_POLL_FREQUENCY='{$CONFIG_OPTION%,notification_poll_frequency}';
 
 	window.notifications_time_barrier=0;
 }

@@ -922,8 +922,12 @@ class Module_tickets
         if (!addon_installed('catalogues')) {
             return null;
         }
+        if (!addon_installed('search')) {
+            return null;
+        }
 
         require_code('database_search');
+        require_code('search');
 
         // We don't want to display too many --- just enough to show the top results
         $max = 10;

@@ -154,10 +154,7 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
         $date = get_timezoned_date($myrow['date_and_time']);
         $page = $myrow['the_page'];
 
-        $page_converted = preg_replace('#/pages/[^/]*/#', '/', $page);
-        if ($page_converted[0] == '/') {
-            $page_converted = substr($page_converted, 1);
-        }
+        $page_converted = preg_replace('#(^|/)pages/.*/#', '/', $page);
         if ((substr($page_converted, -4) == '.php') || (substr($page_converted, -4) == '.htm') || (substr($page_converted, -4) == '.txt')) {
             $page_converted = substr($page_converted, 0, strlen($page_converted) - 4);
         }

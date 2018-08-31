@@ -84,6 +84,7 @@ class Hook_sitemap_search extends Hook_sitemap_base
 
         $hooks = array();
         require_code('database_search');
+        require_code('search');
         foreach (array_keys($_hooks) as $hook) {
             require_code('hooks/modules/search/' . filter_naughty_harsh($hook));
             $ob = object_factory('Hook_search_' . filter_naughty_harsh($hook), true);

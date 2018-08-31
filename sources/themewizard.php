@@ -262,7 +262,7 @@ function find_theme_image_themewizard_preview($id, $silent_fail = false)
         foreach ($THEME_WIZARD_IMAGES as $expression) {
             if (($expression == $id) || ((substr($expression, -1) == '*') && (substr($id, 0, strlen($expression) - 1) . '*' == $expression))) {
                 $keep = keep_symbol(array());
-                return find_script('themewizard') . '?type=image&show=' . rawurlencode($id) . $keep;
+                return find_script('themewizard') . '?type=image&show=' . urlencode($id) . $keep;
             }
         }
     }

@@ -1441,6 +1441,7 @@ function _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $m
                 foreach ($rooms as $room) {
                     if ($room['id'] != $new_room_id) {
                         $map = array(
+                            'system_message' => 1,
                             'ip_address' => get_ip_address(),
                             'room_id' => $room['id'],
                             'member_id' => get_member(),

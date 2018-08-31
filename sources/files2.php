@@ -536,28 +536,29 @@ function find_php_path($cgi = false)
         '/usr/php/sbin',
         '/usr/php5/bin',
         '/usr/php5/sbin',
-        '/usr/php6/bin',
-        '/usr/php6/sbin',
+        '/usr/php7/bin',
+        '/usr/php7/sbin',
         'c:\\php',
         'c:\\php5',
-        'c:\\php6',
+        'c:\\php7',
         'c:\\progra~1\\php',
         'c:\\progra~1\\php5',
-        'c:\\progra~1\\php6',
+        'c:\\progra~1\\php7',
     );
     $filenames = array(
         'php.dSYM',
         'php',
         'php5',
-        'php6',
+        'php7',
         'php-cli.dSYM',
         'php-cli',
         'php5-cli',
-        'php6-cli',
+        'php7-cli',
         'php-cgi.dSYM',
         'php-cgi',
         'php5-cgi',
-        'php6-cgi',
+        'php7-cgi',
+        'php-win.exe',
     );
     foreach ($search_dirs as $dir) {
         foreach ($filenames as $file) {
@@ -925,6 +926,14 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
     if ((strpos($url, '/') !== false) && (strrpos($url, '/') < 7)) {
         $url .= '/';
+    }
+
+    // HTTP authentication in URL
+    if ($auth === null) {
+        $matches = array();
+        if (preg_match('#^https?://([^:@/]+):([^:@/]+)@#', $url, $matches) != 0) {
+            $auth = array($matches[1], $matches[2]);
+        }
     }
 
     // Initialisation

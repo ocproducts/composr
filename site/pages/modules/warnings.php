@@ -459,7 +459,7 @@ class Module_warnings extends Standard_crud_module
                     }
                     $sup = 'ORDER BY p_time';
                     if (!has_privilege(get_member(), 'view_other_pt')) {
-                        $sup = ' AND p_forum_id IS NOT NULL ' . $sup;
+                        $sup = ' AND p_cache_forum_id IS NOT NULL ' . $sup;
                     }
                     $posts_by_member = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('p.*', 't_cache_first_post_id', 't_cache_last_post_id', 't_cache_num_posts', 't_cache_first_title', 'p_cache_forum_id'), $where, $sup);
                     $spam_urls = array();
@@ -869,7 +869,7 @@ class Module_warnings extends Standard_crud_module
             $where = array('p_poster' => $member_id);
             $sup = 'ORDER BY p_time';
             if (!has_privilege(get_member(), 'view_other_pt')) {
-                $sup = ' AND p_forum_id IS NOT NULL ' . $sup;
+                $sup = ' AND p_cache_forum_id IS NOT NULL ' . $sup;
             }
             $posts_already_deleted = array();
             $posts_by_member = $GLOBALS['FORUM_DB']->query_select('f_posts', array('id', 'p_topic_id', 'p_time'), $where, $sup);

@@ -302,7 +302,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
         'submitter' => $submitter,
         'validated' => $validated,
         'date_and_time' => $time,
-        'author' => $author,
+        'author' => cms_mb_substr($author, 0, 80),
     );
     if (multi_lang_content()) {
         $map['news_article'] = 0;
@@ -525,7 +525,7 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
         'allow_trackbacks' => $allow_trackbacks,
         'notes' => $notes,
         'validated' => $validated,
-        'author' => $author,
+        'author' => cms_mb_substr($author, 0, 80),
     );
     $update_map += update_lang_comcode_attachments('news_article', $_news_article, $news_article, 'news', strval($id), null, $rows[0]['submitter']);
     $update_map += lang_remap_comcode('title', $_title, $title);

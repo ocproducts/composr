@@ -124,6 +124,7 @@ class Module_search
 
         require_lang('search');
         require_code('database_search');
+        require_code('search');
 
         if ($type == 'browse' || $type == 'results') {
             inform_non_canonical_parameter('search_under');

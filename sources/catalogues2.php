@@ -1213,6 +1213,10 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
                 }
             }
         } else {
+            if ($sup_table_name == 'short') {
+                $val = cms_mb_substr($val, 0, 255);
+            }
+
             if ($sup_table_name == 'float') {
                 $smap['cv_value'] = ((is_null($val)) || ($val == '')) ? null : floatval($val);
             } elseif ($sup_table_name == 'integer') {

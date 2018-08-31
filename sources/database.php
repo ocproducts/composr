@@ -142,8 +142,10 @@ function reload_lang_fields($full = false, $only_table = null)
     $msn_running = (is_on_multi_site_network()) && (get_forum_type() == 'cns') && (isset($GLOBALS['FORUM_DB'])); // TODO: Change in v11
 
     if (multi_lang_content() || $full) {
+        // We need to know about any kind of translated fields in these cases
         $like = db_string_equal_to('m_type', 'SHORT_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', 'LONG_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', 'SHORT_TRANS') . ' OR ' . db_string_equal_to('m_type', 'LONG_TRANS') . ' OR ' . db_string_equal_to('m_type', '?SHORT_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', '?LONG_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', '?SHORT_TRANS') . ' OR ' . db_string_equal_to('m_type', '?LONG_TRANS');
     } else {
+        // In this case we only really need to know about Comcode fields
         $like = db_string_equal_to('m_type', 'SHORT_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', 'LONG_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', '?SHORT_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', '?LONG_TRANS__COMCODE');
     }
     $sql = 'SELECT m_name,m_table,m_type FROM ' . get_table_prefix() . 'db_meta WHERE (' . $like . ')';
@@ -156,6 +158,7 @@ function reload_lang_fields($full = false, $only_table = null)
         $_table_lang_fields = $GLOBALS['SITE_DB']->query($sql, null, null, true);
     }
     if ($_table_lang_fields !== null) {
+        // Load in our data
         foreach ($_table_lang_fields as $lang_field) {
             if (!isset($TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']])) {
                 $TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']] = array();
@@ -164,15 +167,18 @@ function reload_lang_fields($full = false, $only_table = null)
             $TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']][$lang_field['m_name']] = $lang_field['m_type'];
         }
 
+        // Get correct forum DB metadata from central site
         if (($msn_running) && (($only_table === null) || (substr($only_table, 0, 2) === 'f_'))) {
             if ($only_table !== null) {
                 unset($TABLE_LANG_FIELDS_CACHE[$only_table]);
             }
+            unset($TABLE_LANG_FIELDS_CACHE['f_member_custom_fields']); // This may vary between sites in undefined ways
 
             $sql .= ' AND m_table LIKE \'' . db_encode_like('f_%') . '\'';
 
             $_table_lang_fields_forum = $GLOBALS['FORUM_DB']->query($sql, null, null, true);
             if ($_table_lang_fields_forum !== null) {
+                // Load in our data
                 foreach ($_table_lang_fields_forum as $lang_field) {
                     if (!isset($TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']])) {
                         $TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']] = array();

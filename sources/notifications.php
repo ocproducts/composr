@@ -537,7 +537,7 @@ function _find_member_statistical_notification_type($to_member_id, $notification
         reset($best_settings);
         $setting = key($best_settings);
         if (is_null($setting)) {
-            $setting = _notification_setting_available(A_INSTANT_EMAIL, $to_member_id) ? A_WEB_NOTIFICATION : A_INSTANT_EMAIL; // Nothing available, so save as an e-mail notification even though it cannot be received
+            $setting = _notification_setting_available(A_INSTANT_EMAIL, $to_member_id) ? A_INSTANT_EMAIL : A_WEB_NOTIFICATION; // Nothing available, so save as an e-mail notification even though it cannot be received
         }
     }
 

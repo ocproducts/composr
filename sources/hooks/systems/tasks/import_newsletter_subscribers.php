@@ -77,6 +77,8 @@ class Hook_task_import_newsletter_subscribers
 
         $has_interest_levels = (get_option('interest_levels') == '1');
 
+        $level = 1;
+
         do {
             $i = 0;
             $_csv_data = array();
