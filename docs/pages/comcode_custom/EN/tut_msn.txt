@@ -36,9 +36,20 @@ As custom profile fields are saved to the central site, the central site will ne
 
 For example, if a site uses points, it'll store them in special CPFs. If the central site has had the points addon removed, then the CPF will no longer exist and sites will not be able to save. Therefore it is best to not remove any addons (especially points) from the central site if you intend to use those addons on some of your other sites.
 
-[title="2"]Custom Comcode tags[/title]
+[title="2"]Editing data on satellite sites[/title]
 
-You should have the same set of Custom Comcode tags on all sites, so that they can recognise each other's Comcode correctly.
+The following should only be configured on the central site:
+ - Custom Comcode Tags
+ - Usergroups
+ - Emoticons
+
+This is so as to:
+1) Ensure consistency between sites
+2) Make sure that any uploads are uploaded to the central site rather than a satellite site (as satellite sites don't have [i]disk write[/i] access to the central site)
+
+[title="2"]Custom fields[/title]
+
+Custom fields on forum content are not supported across networks. If you set them up they'll only be viewable for the particular site that content is added/edited on, and not show up on other sites.
 
 [title="2"]Comment forums[/title]
 

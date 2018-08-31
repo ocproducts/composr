@@ -1653,6 +1653,8 @@ function build_content_where($content, $boolean_search, &$boolean_operator, $ful
 {
     list($body_words, $include_words, $disclude_words) = _boolean_search_prepare($content);
 
+    require_code('search');
+
     $under_radar = false;
     if ((is_under_radar($content)) && ($content != '')) {
         $under_radar = true;

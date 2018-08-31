@@ -182,7 +182,7 @@ function erase_comcode_cache()
                     }
 
                     $db = ((substr($table, 0, 2) == 'f_') && ($table != 'f_welcome_emails') && ($GLOBALS['FORUM_DB'] !== null)) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
-                    $db->query('UPDATE ' . $db->get_table_prefix() . $table . ' SET ' . $field . '__text_parsed=\'\' WHERE ' . db_string_not_equal_to($field . '__text_parsed', '')/*this WHERE is so indexing helps*/);
+                    $db->query('UPDATE ' . $db->get_table_prefix() . $table . ' SET ' . $field . '__text_parsed=\'\' WHERE ' . db_string_not_equal_to($field . '__text_parsed', '')/*this WHERE is so indexing helps*/, null, null, true/*in case meta DB has an issue*/);
                 }
             }
         }

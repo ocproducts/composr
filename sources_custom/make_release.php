@@ -35,7 +35,7 @@ function init__make_release()
 function make_installers($skip_file_grab = false)
 {
     foreach (array('zip', 'tar', 'gzip') as $cmd) {
-        if (shell_exec($cmd . ' -h') == '') {
+        if (shell_exec($cmd . ' -h 2>&1') == '') {
             warn_exit('Missing command in path: ' . $cmd);
         }
     }

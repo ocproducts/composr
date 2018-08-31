@@ -483,6 +483,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              '_meta_tree' => '.*',
                                              'temp' => '',
                                              'captcha' => 'uploads',
+                                             'http' => 'caches',
     );
 
     $ignore_extensions = array( // Case insensitive, define in lower case

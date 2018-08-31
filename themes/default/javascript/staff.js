@@ -46,6 +46,11 @@ function script_load_stuff_staff()
 	var bg;
 	for (i=0;i<all_e.length;i++)
 	{
+		if (!all_e[i].className) // Unexpected event, but unexpected things happen in large data sets
+		{
+			continue;
+		}
+
 		bg=abstract_get_computed_style(all_e[i],'background-image');
 		if ((all_e[i].className.indexOf('no_theme_img_click')==-1) && (bg!='none') && (bg.indexOf('url')!=-1))
 		{
