@@ -468,28 +468,10 @@
 
     $cms.templates.ajaxPagination = function ajaxPagination(params) {
         var wrapperEl = $dom.elArg('#' + params.wrapperId),
-            blockCallUrl = params.blockCallUrl,
             infiniteScrollCallUrl = params.infiniteScrollCallUrl;
 
-        $dom.internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['^[^_]*_start$', '^[^_]*_max$'], {});
-
         if (infiniteScrollCallUrl) {
-            var infiniteScrollingCommentsWrapper = function () {
-                $dom.internaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl);
-            };
-
-            $dom.on(window, {
-                scroll: infiniteScrollingCommentsWrapper,
-                touchmove: infiniteScrollingCommentsWrapper,
-                keydown: $dom.infiniteScrollingBlock,
-                mousedown: $dom.infiniteScrollingBlockHold,
-                mousemove: function () {
-                    // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-                    $dom.infiniteScrollingBlockUnhold(infiniteScrollingCommentsWrapper);
-                }
-            });
-
-            infiniteScrollingCommentsWrapper();
+            $dom.enableInternaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl);
         }
     };
 

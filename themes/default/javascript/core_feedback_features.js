@@ -285,32 +285,18 @@
 
     $cms.templates.commentAjaxHandler = function (params) {
         var urlStem = '{$FIND_SCRIPT_NOHTTP;,post_comment}?options=' + encodeURIComponent(params.options) + '&hash=' + encodeURIComponent(params.hash),
-            wrapperEl = $dom.$('#comments-wrapper');
+            wrapperEl = document.getElementById('comments-wrapper');
 
         replaceCommentsFormWithAjax(params.options, params.hash, 'comments-form', 'comments-wrapper');
 
         if (wrapperEl) {
-            $dom.internaliseAjaxBlockWrapperLinks(urlStem, wrapperEl, ['^start_comments$', '^max_comments$'], {});
+            wrapperEl.dataset.ajaxify = '{ callUrl: ' + JSON.stringify(urlStem)+ ', callParamsFromTarget: ["^start_comments$", "^max_comments$"], targetsSelector: "a[target=_self], form[target=_self]"}';
+            $dom.attachBehaviors(wrapperEl);
         }
 
         // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results
         if (params.infiniteScroll) {
-            var infiniteScrollingCommentsWrapper = function () {
-                $dom.internaliseInfiniteScrolling(urlStem, wrapperEl);
-            };
-
-            $dom.on(window, {
-                scroll: infiniteScrollingCommentsWrapper,
-                touchmove: infiniteScrollingCommentsWrapper,
-                keydown: $dom.infiniteScrollingBlock,
-                mousedown: $dom.infiniteScrollingBlockHold,
-                mousemove: function () {
-                    // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-                    $dom.infiniteScrollingBlockUnhold(infiniteScrollingCommentsWrapper);
-                }
-            });
-
-            infiniteScrollingCommentsWrapper();
+            $dom.enableInternaliseInfiniteScrolling(urlStem, wrapperEl);
         }
     };
 

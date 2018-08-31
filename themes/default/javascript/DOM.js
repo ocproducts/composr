@@ -1532,7 +1532,7 @@
                         options = { duration : duration },
                         animation = el.animate(keyFrames, options);
 
-                    animation.onfinish = function (e) {
+                    animation.onfinish = function () {
                         el.style.removeProperty('opacity');
 
                         if (Number($dom.css(el, 'opacity')) !== target) {
@@ -1580,7 +1580,7 @@
                         options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                         animation = el.animate(keyFrames, options);
 
-                    animation.onfinish = function (e) {
+                    animation.onfinish = function () {
                         $dom.hide(el);
                         resolve();
                     };
@@ -1622,7 +1622,7 @@
                         options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                         animation = el.animate(keyFrames, options);
 
-                    animation.onfinish = function (e) {
+                    animation.onfinish = function () {
                         el.style.opacity = opacity;
                         resolve();
                     };
@@ -1731,7 +1731,7 @@
                         options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                         animation = el.animate(keyFrames, options);
 
-                    animation.onfinish = function (e) {
+                    animation.onfinish = function () {
                         el.style.overflow = prevOverflow;
                         resolve();
                     };
@@ -1793,7 +1793,7 @@
                         options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                         animation = el.animate(keyFrames, options);
 
-                    animation.onfinish = function (e) {
+                    animation.onfinish = function () {
                         el.style.overflow = prevOverflow;
                         $dom.hide(el);
                         resolve();
@@ -2629,6 +2629,25 @@
         infiniteScrollBlocked = false, // Blocked due to event tracking active
         infiniteScrollMouseHeld = false;
 
+    $dom.enableInternaliseInfiniteScrolling = function enableInternaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl) {
+        var infiniteScrolling = function () {
+            $dom.internaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl);
+        };
+
+        $dom.on(window, {
+            scroll: infiniteScrolling,
+            touchmove: infiniteScrolling,
+            keydown: $dom.infiniteScrollingBlock,
+            mousedown: $dom.infiniteScrollingBlockHold,
+            mousemove: function () {
+                // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
+                $dom.infiniteScrollingBlockUnhold(infiniteScrolling);
+            }
+        });
+
+        infiniteScrolling();
+    };
+    
     /**
      * @param event
      */
@@ -2695,7 +2714,7 @@
             // Remove old pagination-load-more's
             paginationLoadMore = wrapper.querySelector('.pagination-load-more');
             if (paginationLoadMore) {
-                paginationLoadMore.parentNode.removeChild(paginationLoadMore);
+                paginationLoadMore.remove();
             }
 
             // Add in new one
@@ -2807,8 +2826,6 @@
      * @param scrollToTop
      */
     $dom.internaliseAjaxBlockWrapperLinks = function internaliseAjaxBlockWrapperLinks(urlStem, blockElement, lookFor, extraParams, append, formsToo, scrollToTop) {
-        return;
-
         urlStem = strVal(urlStem);
         blockElement = $dom.elArg(blockElement);
         lookFor = arrVal(lookFor);

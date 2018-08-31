@@ -948,7 +948,7 @@
 
                 if (targetsSelector !== '') {
                     $dom.on(ajaxifyContainer, 'click', 'a', function (e, clicked) {
-                        if (clicked.dataset.ajaxifyTarget != null) {
+                        if ((clicked.dataset.ajaxifyTarget != null) || ($util.url(clicked.href).origin !== window.location.origin)) {
                             return;
                         }
                         var targets = $util.toArray(ajaxifyContainer.querySelectorAll(targetsSelector));
@@ -958,7 +958,7 @@
                     });
 
                     $dom.on(ajaxifyContainer, 'submit', 'form', function (e, submitted) {
-                        if (submitted.dataset.ajaxifyTarget != null) {
+                        if ((submitted.dataset.ajaxifyTarget != null) || ($util.url(submitted.action).origin !== window.location.origin)) {
                             return;
                         }
                         var targets = $util.toArray(ajaxifyContainer.querySelectorAll(targetsSelector));
@@ -969,8 +969,8 @@
                 }
 
                 function doAjaxify(e, target) {
-                    if ($dom.parent(target, '[data-ajaxify]') !== ajaxifyContainer) {
-                        return; // Child of a different ajaxify container.
+                    if (($dom.parent(target, '[data-ajaxify]') !== ajaxifyContainer) || strVal(target.getAttribute((target.localName === 'a') ? 'href' : 'action')).startsWith('#')) {
+                        return; // Child of a different ajaxify container or hash href/action.
                     }
 
                     e.preventDefault();

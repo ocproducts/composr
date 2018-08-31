@@ -5,7 +5,9 @@
 	{+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 		{+START,IF,{$NEQ,{_GUID},carousel}}
 			{$SET,ajax_block_main_gallery_embed_wrapper,ajax-block-main-gallery-embed-wrapper-{$RAND%}}
-			<div id="{$GET*,ajax_block_main_gallery_embed_wrapper}">
+			{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}{+START,IF_PASSED,EXTRA_GET_PARAMS}{EXTRA_GET_PARAMS}{+END}&page={$PAGE&}}
+			<div id="{$GET*,ajax_block_main_gallery_embed_wrapper}" 
+				  data-ajaxify="{ callUrl: '{$GET;*,block_call_url}', callParamsFromTarget: ['^[^_]*_start$', '^[^_]*_max$'], targetsSelector: '.ajax-block-wrapper-links a, .ajax-block-wrapper-links form' }">
 				<div class="gallery-grid-cell-wrap raw-ajax-grow-spot">
 					{ENTRIES}
 				</div>

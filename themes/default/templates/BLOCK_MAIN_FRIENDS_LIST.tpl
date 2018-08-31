@@ -5,7 +5,8 @@
 {$SET,ajax_block_main_friends_list_wrapper,ajax-block-main-friends-list-wrapper-{$RAND%}}
 
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
-<div id="{$GET*,ajax_block_main_friends_list_wrapper}" data-tpl="blockMainFriendsList" data-ajaxify="{ callUrl: '{$FACILITATE_AJAX_BLOCK_CALL;*,{BLOCK_PARAMS}}', callParamsFromTarget: ['.*'] }">
+<div id="{$GET*,ajax_block_main_friends_list_wrapper}" data-tpl="blockMainFriendsList" 
+	  data-ajaxify="{ callUrl: '{$FACILITATE_AJAX_BLOCK_CALL;*,{BLOCK_PARAMS}}', callParamsFromTarget: ['.*'], targetsSelector: '.ajax-block-wrapper-links a, .ajax-block-wrapper-links form' }">
 	<form data-ajaxify-target="1" class="right" role="search" title="{!FRIENDS}, {!SEARCH}" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}#tab--friends" method="get" autocomplete="off">
 		{$HIDDENS_FOR_GET_FORM,{$SELF_URL}}
 
