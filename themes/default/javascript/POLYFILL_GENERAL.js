@@ -47,8 +47,12 @@
     });
 
     // Not part of a standard but it should be.
-    definePolyfill(String.prototype, 'replaceAll', function replaceAll(search, replacement) {
-        return this.split(search).join('' + replacement);
+    Object.defineProperty(String.prototype, 'replaceAll', {
+        value: function replaceAll(search, replacement) {
+            return this.split(search).join('' + replacement);
+        },
+        configurable: true,
+        writeable: true
     });
 
     // Credit: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/includes

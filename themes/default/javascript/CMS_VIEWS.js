@@ -286,9 +286,8 @@
 
             if (($dom.notDisplayed(this.contentEl) && (cookieValue === 'open')) || ($dom.isDisplayed(this.contentEl) && (cookieValue === 'closed'))) {
                 expanded = $cms.ui.toggleableTray(this.contentEl, false);
-
-                expanded = this.el.classList.toggle('is-expanded', expanded);
-                expanded = this.el.classList.toggle('is-collapsed', !expanded);
+                this.el.classList.toggle('is-expanded', expanded);
+                this.el.classList.toggle('is-collapsed', !expanded);
             }
         }
     });
@@ -481,7 +480,7 @@
 
             var self = this;
 
-            $dom.on(this.overlayEl, 'click', function (e) {
+            $dom.on(this.overlayEl, 'click', function () {
                 if ($cms.isMobile() && (self.type === 'lightbox')) { // IDEA: Swipe detect would be better, but JS does not have this natively yet
                     self.option('right');
                 }
@@ -492,143 +491,143 @@
             /*{+START,SET,icon_no}{+START,INCLUDE,ICON}NAME=buttons/no{+END}{+END}*/
 
             switch (this.type) {
-                case 'iframe':
-                    var iframeWidth = (this.width.match(/^[\d\.]+$/) !== null) ? ((this.width - 14) + 'px') : this.width,
-                        iframeHeight = (this.height.match(/^[\d\.]+$/) !== null) ? (this.height + 'px') : ((this.height === 'auto') ? (this.LOADING_SCREEN_HEIGHT + 'px') : this.height);
+            case 'iframe':
+                var iframeWidth = (this.width.match(/^[\d.]+$/) !== null) ? ((this.width - 14) + 'px') : this.width,
+                    iframeHeight = (this.height.match(/^[\d.]+$/) !== null) ? (this.height + 'px') : ((this.height === 'auto') ? (this.LOADING_SCREEN_HEIGHT + 'px') : this.height);
 
-                    var iframe = $dom.create('iframe', {
-                        'frameBorder': '0',
-                        'scrolling': 'no',
-                        'title': '',
-                        'name': 'overlay-iframe',
-                        'id': 'overlay-iframe',
-                        'className': 'js-modal-overlay-iframe',
-                        'allowTransparency': 'true',
-                        //'seamless': 'seamless',// Not supported, and therefore testable yet. Would be great for mobile browsing.
-                        'css': {
-                            'width': iframeWidth,
-                            'height': iframeHeight,
-                            'background': 'transparent'
-                        }
-                    });
-
-                    this.containerEl.appendChild(iframe);
-
-                    $dom.animateFrameLoad(iframe, 'overlay-iframe', 50, true);
-
-                    setTimeout(function () {
-                        if (self.el) {
-                            $dom.on(self.el, 'click', function (e) {
-                                if (!self.containerEl.contains(e.target)) {
-                                    // Background overlay clicked
-                                    self.option('finished');
-                                }
-                            });
-                        }
-                    }, 1000);
-
-                    $dom.on(iframe, 'load', function () {
-                        if ($dom.hasIframeAccess(iframe) && (!iframe.contentDocument.querySelector('h1')) && (!iframe.contentDocument.querySelector('h2'))) {
-                            if (iframe.contentDocument.title) {
-                                $dom.html(overlayHeader, $cms.filter.html(iframe.contentDocument.title));
-                                $dom.show(overlayHeader);
-                            }
-                        }
-                    });
-
-                    // Fiddle it, to behave like a pop-up would
-                    setTimeout(function () {
-                        $dom.illustrateFrameLoad('overlay-iframe');
-                        iframe.src = self.href;
-                        self.makeFrameLikePopup(iframe);
-
-                        if (self.iframeRestyleTimer == null) { // In case internal nav changes
-                            self.iframeRestyleTimer = setInterval(function () {
-                                self.makeFrameLikePopup(iframe);
-                            }, 300);
-                        }
-                    }, 0);
-                    break;
-
-                case 'lightbox':
-                case 'alert':
-                    if (this.yes) {
-                        button = $dom.create('button', {
-                            'type': 'button',
-                            'html': '{$GET;^,icon_proceed} ' + this.yesButton,
-                            'className': 'buttons--proceed button-screen-item js-onclick-do-option-yes'
-                        });
-
-                        this.buttonContainerEl.appendChild(button);
+                var iframe = $dom.create('iframe', {
+                    'frameBorder': '0',
+                    'scrolling': 'no',
+                    'title': '',
+                    'name': 'overlay-iframe',
+                    'id': 'overlay-iframe',
+                    'className': 'js-modal-overlay-iframe',
+                    'allowTransparency': 'true',
+                    //'seamless': 'seamless',// Not supported, and therefore testable yet. Would be great for mobile browsing.
+                    'css': {
+                        'width': iframeWidth,
+                        'height': iframeHeight,
+                        'background': 'transparent'
                     }
-                    setTimeout(function () {
-                        if (self.el) {
-                            $dom.on(self.el, 'click', function (e) {
-                                if (!self.containerEl.contains(e.target)) {
-                                    // Background overlay clicked
-                                    if (self.yes) {
-                                        self.option('yes');
-                                    } else {
-                                        self.option('cancel');
-                                    }
-                                }
-                            });
-                        }
-                    }, 1000);
-                    break;
+                });
 
-                case 'confirm':
-                    button = $dom.create('button', {
-                        'type': 'button',
-                        'html': '{$GET;^,icon_yes} ' + this.yesButton,
-                        'className': 'buttons--yes button-screen-item js-onclick-do-option-yes',
-                        'style': 'font-weight: bold;'
-                    });
-                    this.buttonContainerEl.appendChild(button);
-                    button = $dom.create('button', {
-                        'type': 'button',
-                        'html': '{$GET;^,icon_no} ' + this.noButton,
-                        'className': 'buttons--no button-screen-item js-onclick-do-option-no'
-                    });
-                    this.buttonContainerEl.appendChild(button);
-                    break;
+                this.containerEl.appendChild(iframe);
 
-                case 'prompt':
-                    this.input = $dom.create('input', {
-                        'name': 'prompt',
-                        'id': 'overlay_prompt',
-                        'type': this.inputType,
-                        'size': '40',
-                        'className': 'wide-field',
-                        'value': (this.defaultValue === null) ? '' : this.defaultValue
-                    });
-                    var inputWrap = $dom.create('div');
-                    inputWrap.appendChild(this.input);
-                    this.containerEl.appendChild(inputWrap);
+                $dom.animateFrameLoad(iframe, 'overlay-iframe', 50, true);
 
-                    if (this.yes) {
-                        button = $dom.create('button', {
-                            'type': 'button',
-                            'html': this.yesButton,
-                            'className': 'buttons--yes button-screen-item js-onclick-do-option-yes',
-                            'css': {
-                                'font-weight': 'bold'
+                setTimeout(function () {
+                    if (self.el) {
+                        $dom.on(self.el, 'click', function (e) {
+                            if (!self.containerEl.contains(e.target)) {
+                                // Background overlay clicked
+                                self.option('finished');
                             }
                         });
-                        this.buttonContainerEl.appendChild(button);
                     }
+                }, 1000);
 
-                    setTimeout(function () {
-                        if (self.el) {
-                            $dom.on(self.el, 'click', function (e) {
-                                if (!self.containerEl.contains(e.target)) {
-                                    // Background overlay clicked
+                $dom.on(iframe, 'load', function () {
+                    if ($dom.hasIframeAccess(iframe) && (!iframe.contentDocument.querySelector('h1')) && (!iframe.contentDocument.querySelector('h2'))) {
+                        if (iframe.contentDocument.title) {
+                            $dom.html(overlayHeader, $cms.filter.html(iframe.contentDocument.title));
+                            $dom.show(overlayHeader);
+                        }
+                    }
+                });
+
+                // Fiddle it, to behave like a pop-up would
+                setTimeout(function () {
+                    $dom.illustrateFrameLoad('overlay-iframe');
+                    iframe.src = self.href;
+                    self.makeFrameLikePopup(iframe);
+
+                    if (self.iframeRestyleTimer == null) { // In case internal nav changes
+                        self.iframeRestyleTimer = setInterval(function () {
+                            self.makeFrameLikePopup(iframe);
+                        }, 300);
+                    }
+                }, 0);
+                break;
+
+            case 'lightbox':
+            case 'alert':
+                if (this.yes) {
+                    button = $dom.create('button', {
+                        'type': 'button',
+                        'html': '{$GET;^,icon_proceed} ' + this.yesButton,
+                        'className': 'buttons--proceed button-screen-item js-onclick-do-option-yes'
+                    });
+
+                    this.buttonContainerEl.appendChild(button);
+                }
+                setTimeout(function () {
+                    if (self.el) {
+                        $dom.on(self.el, 'click', function (e) {
+                            if (!self.containerEl.contains(e.target)) {
+                                // Background overlay clicked
+                                if (self.yes) {
+                                    self.option('yes');
+                                } else {
                                     self.option('cancel');
                                 }
-                            });
+                            }
+                        });
+                    }
+                }, 1000);
+                break;
+
+            case 'confirm':
+                button = $dom.create('button', {
+                    'type': 'button',
+                    'html': '{$GET;^,icon_yes} ' + this.yesButton,
+                    'className': 'buttons--yes button-screen-item js-onclick-do-option-yes',
+                    'style': 'font-weight: bold;'
+                });
+                this.buttonContainerEl.appendChild(button);
+                button = $dom.create('button', {
+                    'type': 'button',
+                    'html': '{$GET;^,icon_no} ' + this.noButton,
+                    'className': 'buttons--no button-screen-item js-onclick-do-option-no'
+                });
+                this.buttonContainerEl.appendChild(button);
+                break;
+
+            case 'prompt':
+                this.input = $dom.create('input', {
+                    'name': 'prompt',
+                    'id': 'overlay_prompt',
+                    'type': this.inputType,
+                    'size': '40',
+                    'className': 'wide-field',
+                    'value': (this.defaultValue === null) ? '' : this.defaultValue
+                });
+                var inputWrap = $dom.create('div');
+                inputWrap.appendChild(this.input);
+                this.containerEl.appendChild(inputWrap);
+
+                if (this.yes) {
+                    button = $dom.create('button', {
+                        'type': 'button',
+                        'html': this.yesButton,
+                        'className': 'buttons--yes button-screen-item js-onclick-do-option-yes',
+                        'css': {
+                            'font-weight': 'bold'
                         }
-                    }, 1000);
-                    break;
+                    });
+                    this.buttonContainerEl.appendChild(button);
+                }
+
+                setTimeout(function () {
+                    if (self.el) {
+                        $dom.on(self.el, 'click', function (e) {
+                            if (!self.containerEl.contains(e.target)) {
+                                // Background overlay clicked
+                                self.option('cancel');
+                            }
+                        });
+                    }
+                }, 1000);
+                break;
             }
 
             // Cancel button handled either via button in corner (if there's no other buttons) or another button in the panel (if there's other buttons)
@@ -788,11 +787,11 @@
 
             // Calculate percentage sizes
             var match;
-            match = width.match(/^([\d\.]+)%$/);
+            match = width.match(/^([\d.]+)%$/);
             if (match !== null) {
                 width = '' + (parseFloat(match[1]) * (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY));
             }
-            match = height.match(/^([\d\.]+)%$/);
+            match = height.match(/^([\d.]+)%$/);
             if (match !== null) {
                 height = '' + (parseFloat(match[1]) * (topPageHeight - this.WINDOW_TOP_GAP - bottomGap - this.BOX_NORTH_PERIPHERARY - this.BOX_SOUTH_PERIPHERARY));
             }
@@ -890,7 +889,9 @@
                     if (iframe && ($dom.hasIframeAccess(iframe))) {
                         iframe.contentWindow.scrolledUpFor = true;
                     }
-                } catch (ignore) {}
+                } catch (ignore) {
+                    // continue
+                }
             }
         },
         /**
@@ -987,7 +988,9 @@
             function hasIframeLoaded(iframe) {
                 try {
                     return (iframe != null) && (iframe.contentWindow.location.host !== '');
-                } catch (ignore) {}
+                } catch (ignore) {
+                    // continue
+                }
 
                 return false;
             }
@@ -995,7 +998,9 @@
             function hasIframeOwnership(iframe) {
                 try {
                     return (iframe != null) && (iframe.contentWindow.location.host === window.location.host) && (iframe.contentWindow.document != null);
-                } catch (ignore) {}
+                } catch (ignore) {
+                    // continue
+                }
 
                 return false;
             }
@@ -1018,8 +1023,8 @@
             (function (i, s, o, g, r, a, m) {
                 i['GoogleAnalyticsObject'] = r;
                 i[r] = i[r] || function () {
-                        (i[r].q = i[r].q || []).push(arguments);
-                    };
+                    (i[r].q = i[r].q || []).push(arguments);
+                };
                 i[r].l = 1 * new Date();
                 a = s.createElement(o);
                 m = s.getElementsByTagName(o)[0];
@@ -1082,7 +1087,9 @@
         if (boolVal($cms.pageUrl().searchParams.get('wide_print'))) {
             try {
                 window.print();
-            } catch (ignore) {}
+            } catch (ignore) {
+                // continue
+            }
         }
 
         if (($cms.getZoneName() === 'adminzone') && $cms.configOption('background_template_compilation')) {
@@ -1195,9 +1202,9 @@
         loadSoftwareChat: function () {
             var url = 'https://kiwiirc.com/client/irc.kiwiirc.com/?nick=';
             if ($cms.getUsername() !== 'admin') {
-                url += encodeURIComponent($cms.getUsername().replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
+                url += encodeURIComponent($cms.getUsername().replace(/[^a-zA-Z0-9_\-\\[]{}^`|]/g, ''));
             } else {
-                url += encodeURIComponent($cms.getSiteName().replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
+                url += encodeURIComponent($cms.getSiteName().replace(/[^a-zA-Z0-9_\-\\[]{}^`|]/g, ''));
             }
             url += '#composrcms';
 
@@ -1342,7 +1349,7 @@
 
                 // If clicking a download link then don't show the animation
                 if (document.activeElement && (document.activeElement.href != null)) {
-                    var url = document.activeElement.href.replace(/.*:\/\/[^\/:]+/, '');
+                    var url = document.activeElement.href.replace(/.*:\/\/[^/:]+/, '');
                     if (url.includes('download') || url.includes('export')) {
                         return;
                     }
@@ -1671,7 +1678,7 @@
      * @class $cms.views.DropdownMenu
      * @extends Menu
      */
-    function DropdownMenu(params) {
+    function DropdownMenu() {
         DropdownMenu.base(this, 'constructor', arguments);
 
         this.menuContentEl = this.$('.js-el-menu-content');
@@ -1785,7 +1792,9 @@
                     popupMenu(menu + '-dexpand-' + rand, 'below', menu + '-d', true);
                     try {
                         document.getElementById('search-content').focus();
-                    } catch (ignore) {}
+                    } catch (ignore) {
+                        // continue
+                    }
                 }, 200);
             }
         },

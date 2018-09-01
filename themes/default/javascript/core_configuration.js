@@ -10,7 +10,7 @@
     function XmlConfigScreen() {
         XmlConfigScreen.base(this, 'constructor', arguments);
 
-        aceComposrLoader('xml', 'xml');
+        window.aceComposrLoader('xml', 'xml');
     }
 
     $util.inherits(XmlConfigScreen, $cms.View, /**@lends XmlConfigScreen#*/{

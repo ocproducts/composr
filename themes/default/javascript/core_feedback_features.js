@@ -289,11 +289,6 @@
 
         replaceCommentsFormWithAjax(params.options, params.hash, 'comments-form', 'comments-wrapper');
 
-        if (wrapperEl) {
-            wrapperEl.dataset.ajaxify = '{ callUrl: ' + JSON.stringify(urlStem)+ ', callParamsFromTarget: ["^start_comments$", "^max_comments$"], targetsSelector: "a[target=_self], form[target=_self]"}';
-            $cms.attachBehaviors(wrapperEl);
-        }
-
         // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results
         if (params.infiniteScroll) {
             $dom.enableInternaliseInfiniteScrolling(urlStem, wrapperEl);
@@ -342,25 +337,25 @@
         var commentsForm = $dom.elArg('#' + commentsFormId);
 
         $dom.on(commentsForm, 'submit', function commentsAjaxListener(event) {
-            var ret;
+            var defaultNotPrevented;
 
             if (event.detail && (event.detail.triggeredByDoFormPreview || event.detail.triggeredByCommentsAjaxListener )) {
-                return true;
+                return;
             }
 
             // Cancel the event from running
             event.preventDefault();
 
-            ret = $dom.trigger(commentsForm, 'submit', { detail: { triggeredByCommentsAjaxListener: true } });
+            defaultNotPrevented = $dom.trigger(commentsForm, 'submit', { detail: { triggeredByCommentsAjaxListener: true } });
 
-            if (ret === false) {
+            if (defaultNotPrevented === false) {
                 return false;
             }
 
             var commentsWrapper = $dom.$id(commentsWrapperId);
             if (!commentsWrapper) { // No AJAX, as stuff missing from template
                 commentsForm.submit();
-                return true;
+                return;
             }
 
             var submitButton = $dom.$id('submit-button');
@@ -502,7 +497,6 @@
                 $cms.loadSnippet(snippetRequest, 'rating=' + encodeURIComponent(number)).then(function (message) {
                     $dom.replaceWith(_replaceSpot, (template === '') ? ('<strong>' + message + '</strong>') : message);
                 });
-
                 return false;
             });
         });

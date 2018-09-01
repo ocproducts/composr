@@ -81,7 +81,7 @@
             toggleWebNotifications(e);
         });
 
-        $dom.on(container, 'mouseup', '.js-mouseup-find-url-tab', function (e) {
+        $dom.on(container, 'mouseup', '.js-mouseup-find-url-tab', function () {
             $cms.ui.findUrlTab();
         });
 
@@ -131,6 +131,7 @@
                 parentDepth = $dom.css(row.querySelector('th'), 'padding-left'),
                 childDepth, inputsTo;
 
+            // eslint-disable-next-line no-constant-condition
             while (true) {
                 row = $dom.next(row, 'tr');
 
@@ -227,7 +228,7 @@
         }
 
         alerts = responseXml.getElementsByTagName('pt');
-        for (var i = 0; i < alerts.length; i++) {
+        for (i = 0; i < alerts.length; i++) {
             displayAlert(alerts[i]);
         }
 
@@ -305,7 +306,9 @@
                         notificationWrapper.notification.addEventListener('click', function () {
                             try {
                                 focus();
-                            } catch (ignore) {}
+                            } catch (ignore) {
+                                // continue
+                            }
                         });
                     }
                 } else {
@@ -361,7 +364,9 @@
             el.style.top = ($dom.findPosY(button, true) + button.offsetHeight) + 'px';
             try {
                 el.style.opacity = '1.0';
-            } catch (ex) {}
+            } catch (ex) {
+                // continue
+            }
         };
         setTimeout(setPosition, 0);
 
@@ -437,6 +442,7 @@
             try {
                 isSupported = !!(/* Safari, Chrome */window.Notification || /* Chrome & ff-html5notifications plugin */window.webkitNotifications || /* Firefox Mobile */navigator.mozNotification || /* IE9+ */(window.external && window.external.msIsSiteMode() !== undefined));
             } catch (e) {
+                // continue
             }
             return isSupported;
         }()),
@@ -503,6 +509,7 @@
                     focus();
                 }
                 catch (e) {
+                    // continue
                 }
             }
         }

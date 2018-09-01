@@ -21,7 +21,9 @@
         if (boolVal($cms.pageUrl().searchParams.get('wide_print'))) {
             try {
                 window.print();
-            } catch (ignore) {}
+            } catch (ignore) {
+                // continue
+            }
         }
     };
 
@@ -101,12 +103,16 @@
 
                 try {
                     $dom.triggerResize();
-                } catch (e) {}
+                } catch (e) {
+                    // continue
+                }
 
                 setTimeout(function () { // Needed for IE10
                     try {
                         $dom.triggerResize();
-                    } catch (e) {}
+                    } catch (e) {
+                        // continue
+                    }
                 }, 1000);
             });
         }
@@ -204,7 +210,9 @@
         if ((document.activeElement != null) || (document.activeElement !== $dom.$('#password'))) {
             try {
                 $dom.$('#login_username').focus();
-            } catch (ignore) {}
+            } catch (ignore) {
+                // continue
+            }
         }
 
         $dom.on(container, 'click', '.js-click-confirm-remember-me', function (e, checkbox) {
@@ -325,7 +333,7 @@
 
         $dom.on(container, 'mouseover', '.js-mouseover-activate-member-tooltip', function (e, el) {
             el.cancelled = false;
-            $cms.loadSnippet('member_tooltip&member_id=' + submitter, null, true).then(function (result) {
+            $cms.loadSnippet('member_tooltip&member_id=' + submitter).then(function (result) {
                 if (!el.cancelled) {
                     $cms.ui.activateTooltip(el, e, result, 'auto', null, null, false, true);
                 }
@@ -504,7 +512,9 @@
             } else {
                 try {
                     window.$cms.getMainCmsWindow().focus();
-                } catch (ignore) {}
+                } catch (ignore) {
+                    // continue
+                }
 
                 window.close();
             }
@@ -570,6 +580,7 @@
     $cms.templates.handleConflictResolution = function (params) {
         var pingUrl = strVal(params.pingUrl);
 
+        // eslint-disable-next-line no-constant-condition
         if ('{$VALUE_OPTION;,disable_handle_conflict_resolution}' === '1') {
             return;
         }
@@ -607,7 +618,9 @@
 
         try {
             window.focus();
-        } catch (e) {}
+        } catch (e) {
+            // continue
+        }
 
         var soundUrl = 'data/sounds/message_received.mp3',
             baseUrl = $util.rel((!soundUrl.includes('data_custom') && !soundUrl.includes('uploads/')) ? $cms.getBaseUrl() : $cms.getCustomBaseUrl()),

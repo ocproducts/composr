@@ -442,14 +442,18 @@
                 x = (event.type === 'focus') ? (win.pageXOffset + $dom.getWindowWidth(win) / 2) : (window.currentMouseX + styleOffsetX);
                 y = (event.type === 'focus') ? (win.pageYOffset + $dom.getWindowHeight(win) / 2 - 40) : (window.currentMouseY + styleOffsetY);
             }
-        } catch (ignore) {}
+        } catch (ignore) {
+            // continue
+        }
         // Maybe mouse position actually needs to be in parent document?
         try {
             if (event.target && (event.target.ownerDocument !== win.document)) {
                 x = win.currentMouseX + styleOffsetX;
                 y = win.currentMouseY + styleOffsetY;
             }
-        } catch (ignore) {}
+        } catch (ignore) {
+            // continue
+        }
 
         // Work out which direction to render in
         var width = $dom.contentWidth(tooltipElement);

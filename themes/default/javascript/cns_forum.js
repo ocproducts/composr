@@ -51,7 +51,9 @@
             if ($cms.form.isWysiwygField(post)) {
                 try {
                     textValue = window.CKEDITOR.instances['post'].getData();
-                } catch (ignore) { }
+                } catch (ignore) { 
+                    // continue
+                }
             } else {
                 if (!post.value && post[1]) {
                     post = post[1];

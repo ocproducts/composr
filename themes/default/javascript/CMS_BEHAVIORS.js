@@ -1148,7 +1148,7 @@
         var el = options.el,
             url = (el.href === undefined) ? el.action : el.href,
             urlStripped = url.replace(/#.*/, ''),
-            newUrl = urlStripped + (!urlStripped.includes('?') ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
+            newUrl = urlStripped + (!urlStripped.includes('?') ? '?' : '&') + 'wide_high=1' + url.replace(/^[^#]+/, '');
 
         $cms.ui.open(newUrl, null, 'width=' + width + ';height=' + options.height, options.target);
     }

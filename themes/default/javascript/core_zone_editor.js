@@ -156,7 +156,7 @@
                     }
 
                     var element = $dom.$('#view-' + loadingPreviewOf);
-                    $dom.html(element, ajaxResult.textContent.replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
+                    $dom.html(element, ajaxResult.textContent.replace(/^((\s)|(<br\s*>)|(&nbsp;))*/, '').replace(/((\s)|(<br\s*>)|(&nbsp;))*$/, ''));
                     $cms.form.disablePreviewScripts(element);
                 }
             }

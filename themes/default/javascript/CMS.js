@@ -262,10 +262,10 @@
         modeName = strVal(modeName);
 
         switch (modeName) {
-            case 'mobile':
-                return $cms.isMobile() || mobileModeMql.matches;
-            case 'desktop':
-                return !$cms.isMobile() && desktopModeMql.matches;
+        case 'mobile':
+            return $cms.isMobile() || mobileModeMql.matches;
+        case 'desktop':
+            return !$cms.isMobile() && desktopModeMql.matches;
         }
 
         return false;
@@ -777,6 +777,7 @@
                 try {
                     window.scrollTo(0, $dom.findPosY(targetDiv));
                 } catch (e) {
+                    // continue
                 }
             }
 
@@ -1017,7 +1018,7 @@
         // Replace the existing icon-* class with the new one
         newClass = iconName.replace(/_/g, '-').replace(/\//g, '--');
         // Using setAttribute() because the className property on <svg> elements is a "SVGAnimatedString" object rather than a string
-        iconEl.setAttribute('class', iconEl.getAttribute('class').replace(/(^| )icon-[\w\-]+($| )/, ' icon-' + newClass + ' ').trim().replace(/ +/g, ' '));
+        iconEl.setAttribute('class', iconEl.getAttribute('class').replace(/(^| )icon-[\w-]+($| )/, ' icon-' + newClass + ' ').trim().replace(/ +/g, ' '));
     };
 
     /**
@@ -1098,6 +1099,7 @@
                 return window.parent.$cms.getMainCmsWindow();
             }
         } catch (ignore) {
+            // continue
         }
 
         try {
@@ -1105,6 +1107,7 @@
                 return window.opener.$cms.getMainCmsWindow();
             }
         } catch (ignore) {
+            // continue
         }
 
         return window;
@@ -1180,32 +1183,32 @@
             _isIe = browser.includes('msie') || browser.includes('trident') || browser.includes('edge/');
 
         switch (code) {
-            case 'touch_enabled':
-                return ('ontouchstart' in document.documentElement);
-            case 'simplified_attachments_ui':
-                return Boolean($cms.configOption('simplified_attachments_ui') && $cms.configOption('complex_uploader'));
-            case 'non_concurrent':
-                return browser.includes('iphone') || browser.includes('ipad') || browser.includes('android') || browser.includes('phone') || browser.includes('tablet');
-            case 'ios':
-                return browser.includes('iphone') || browser.includes('ipad');
-            case 'android':
-                return browser.includes('android');
-            case 'wysiwyg':
-                return !!$cms.configOption('wysiwyg');
-            case 'windows':
-                return os.includes('windows') || os.includes('win32');
-            case 'mac':
-                return os.includes('mac');
-            case 'linux':
-                return os.includes('linux');
-            case 'ie':
-                return _isIe;
-            case 'chrome':
-                return isChrome;
-            case 'gecko':
-                return isGecko;
-            case 'safari':
-                return isSafari;
+        case 'touch_enabled':
+            return ('ontouchstart' in document.documentElement);
+        case 'simplified_attachments_ui':
+            return Boolean($cms.configOption('simplified_attachments_ui') && $cms.configOption('complex_uploader'));
+        case 'non_concurrent':
+            return browser.includes('iphone') || browser.includes('ipad') || browser.includes('android') || browser.includes('phone') || browser.includes('tablet');
+        case 'ios':
+            return browser.includes('iphone') || browser.includes('ipad');
+        case 'android':
+            return browser.includes('android');
+        case 'wysiwyg':
+            return !!$cms.configOption('wysiwyg');
+        case 'windows':
+            return os.includes('windows') || os.includes('win32');
+        case 'mac':
+            return os.includes('mac');
+        case 'linux':
+            return os.includes('linux');
+        case 'ie':
+            return _isIe;
+        case 'chrome':
+            return isChrome;
+        case 'gecko':
+            return isGecko;
+        case 'safari':
+            return isSafari;
         }
 
         // Should never get here
@@ -1342,21 +1345,21 @@
 
         for (var i = 0; i < filters.length; i++) {
             switch (filters[i]) {
-                case '&':
-                    str = $cms.filter.url(str);
-                    break;
+            case '&':
+                str = $cms.filter.url(str);
+                break;
 
-                case '~':
-                    str = $cms.filter.nl(str);
-                    break;
+            case '~':
+                str = $cms.filter.nl(str);
+                break;
 
-                case '|':
-                    str = $cms.filter.id(str);
-                    break;
+            case '|':
+                str = $cms.filter.id(str);
+                break;
 
-                case '=':
-                    str = $cms.filter.html(str);
-                    break;
+            case '=':
+                str = $cms.filter.html(str);
+                break;
             }
         }
 
@@ -1392,7 +1395,7 @@
     $cms.filter.url = function url(urlPart, canTryUrlSchemes) {
         urlPart = strVal(urlPart);
         var urlPartEncoded = urlencode(urlPart);
-        canTryUrlSchemes = (canTryUrlSchemes !== undefined) ? Boolean(canTryUrlSchemes) : $cms.canTryUrlSchemes();
+        canTryUrlSchemes = (canTryUrlSchemes != null) ? Boolean(canTryUrlSchemes) : $cms.canTryUrlSchemes();
 
         if ((urlPartEncoded !== urlPart) && canTryUrlSchemes) {
             // These interfere with URL Scheme processing because they get pre-decoded and make things ambiguous
@@ -1473,16 +1476,16 @@
      */
     $cms.filter.html = function html(str) {
         return ((str != null) && (str = strVal(str))) ?
-            str.replace(/&/g, '&amp;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&apos;')
-                .replace(new RegExp('/<' + '/', 'g'), '&lt;')
-                .replace(/>/g, '&gt;')
+            str.replaceAll('&', '&amp;')
+                .replaceAll('"', '&quot;')
+                .replaceAll('\'', '&apos;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
             : '';
     };
 
     /**
-     * JS port of the escape_comcode() PHP function
+     * JS port of the comcode_escape() PHP function
      * @memberof $cms.filter
      * @param {string} str
      * @returns {string}
