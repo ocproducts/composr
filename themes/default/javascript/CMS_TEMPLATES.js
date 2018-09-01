@@ -470,8 +470,6 @@
                 });
             }, refreshTime * 1000);
         }
-
-        $dom.internaliseAjaxBlockWrapperLinks(url, element, ['.*'], {}, false, true);
     };
 
     $cms.templates.ajaxPagination = function ajaxPagination(params) {
