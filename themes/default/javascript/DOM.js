@@ -654,21 +654,23 @@
     };
 
     /**
+     * Get viewport width excluding scrollbars
      * @memberof $dom
      * @param win
      * @returns {number}
      */
     $dom.getWindowWidth = function getWindowWidth(win) {
-        return (win || window).innerWidth - 18;
+        return (win || window).document.documentElement.clientWidth;
     };
 
     /**
+     * Get viewport height excluding scrollbars
      * @memberof $dom
      * @param win
      * @returns {number}
      */
     $dom.getWindowHeight = function getWindowHeight(win) {
-        return (win || window).innerHeight - 18;
+        return (win || window).document.documentElement.clientHeight;
     };
 
     /**
@@ -679,10 +681,10 @@
     $dom.getWindowScrollHeight = function getWindowScrollHeight(win) {
         win || (win = window);
 
-        var rectA = win.document.body.parentElement.getBoundingClientRect(),
-            rectB = win.document.body.getBoundingClientRect(),
-            a = (rectA.bottom - rectA.top),
-            b = (rectB.bottom - rectB.top);
+        var rectHtml = win.document.documentElement.getBoundingClientRect(),
+            rectBody = win.document.body.getBoundingClientRect(),
+            a = (rectHtml.bottom - rectHtml.top),
+            b = (rectBody.bottom - rectBody.top);
 
         return (a > b) ? a : b;
     };
@@ -702,7 +704,7 @@
         el = $dom.elArg(el);
         notRelative = Boolean(notRelative);
 
-        var left = el.getBoundingClientRect().left + window.pageXOffset;
+        var left = el.getBoundingClientRect().left + window.scrollX;
 
         if (!notRelative) {
             while (el) {
@@ -732,7 +734,7 @@
         el = $dom.elArg(el);
         notRelative = Boolean(notRelative);
 
-        var top = el.getBoundingClientRect().top + window.pageYOffset;
+        var top = el.getBoundingClientRect().top + window.scrollY;
 
         if (!notRelative) {
             while (el != null) {
@@ -2684,19 +2686,18 @@
             return;
         }
 
-        var moreLinks = [], foundNewLinks = null;
+        var moreLinks = [], moreLinksFromPagination;
 
-        paginations.forEach(function (pagination, index) {
+        paginations.forEach(function (pagination) {
             if ($dom.notDisplayed(pagination)) {
                 return;
             }
+            
+            moreLinks = $util.toArray(pagination.getElementsByTagName('a'));
+            moreLinksFromPagination = pagination;
+            
             // Remove visibility of pagination, now we've replaced with AJAX load more link
-            var paginationParent = pagination.parentNode;
             pagination.style.display = 'none';
-
-            if (paginationParent.children.length === 0) { // Remove empty pagination wrapper
-                paginationParent.style.display = 'none';
-            }
 
             // Add AJAX load more link before where the last pagination control was
             // Remove old pagination-load-more's
@@ -2704,11 +2705,11 @@
             if (paginationLoadMore) {
                 paginationLoadMore.remove();
             }
-
+            
             // Add in new one
             var loadMoreLink = document.createElement('div');
             loadMoreLink.className = 'pagination-load-more';
-            var loadMoreLinkA = document.createElement('a');
+            var loadMoreLinkA = loadMoreLink.appendChild(document.createElement('a'));
             $dom.html(loadMoreLinkA, '{!LOAD_MORE;^}');
             loadMoreLinkA.href = '#!';
             loadMoreLinkA.onclick = (function (moreLinks) {
@@ -2716,21 +2717,15 @@
                     internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
                 };
             }(moreLinks)); // Click link -- load
-            loadMoreLink.appendChild(loadMoreLinkA);
             paginations[paginations.length - 1].parentNode.insertBefore(loadMoreLink, paginations[paginations.length - 1].nextSibling);
-
-            moreLinks = $util.toArray(pagination.getElementsByTagName('a'));
-            foundNewLinks = index;
         });
 
-        paginations.some(function (pagination, index) {
-            if (foundNewLinks != null) {// Cleanup old pagination
-                if (index !== foundNewLinks) {
-                    var _moreLinks = pagination.getElementsByTagName('a');
-                    var numLinks = _moreLinks.length;
-                    for (var i = numLinks - 1; i >= 0; i--) {
-                        _moreLinks[i].remove();
-                    }
+        paginations.some(function (pagination) {
+            if (moreLinksFromPagination != null) {// Cleanup old pagination
+                if (pagination !== moreLinksFromPagination) {
+                    $util.toArray(pagination.getElementsByTagName('a')).forEach(function (a) {
+                        a.remove();
+                    });
                 }
             } else { // Find links from an already-hidden pagination
                 moreLinks = $util.toArray(pagination.getElementsByTagName('a'));
@@ -2741,13 +2736,10 @@
         });
 
         // Is more scrolling possible?
-        var rel, foundRel = false;
-        for (var k = 0; k < moreLinks.length; k++) {
-            rel = moreLinks[k].getAttribute('rel');
-            if (rel && rel.includes('next')) {
-                foundRel = true;
-            }
-        }
+        var foundRel = moreLinks.some(function (link) {
+            return link.getAttribute('rel') && link.getAttribute('rel').includes('next');
+        });
+
         if (!foundRel) { // Ah, no more scrolling possible
             // Remove old pagination-load-more's
             paginationLoadMore = wrapper.querySelector('.pagination-load-more');
@@ -2763,11 +2755,11 @@
             wrapperHeight = wrapper.offsetHeight,
             wrapperBottom = wrapperPosY + wrapperHeight,
             windowHeight = $dom.getWindowHeight(),
-            pageHeight = $dom.getWindowScrollHeight(),
-            scrollY = window.pageYOffset;
+            pageHeight = $dom.getWindowScrollHeight();
 
         // Scroll down -- load
-        if ((scrollY + windowHeight > wrapperBottom - windowHeight * 2) && (scrollY + windowHeight < pageHeight - 30)) {// If within windowHeight*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
+        if (((window.scrollY + windowHeight) > (wrapperBottom - (windowHeight * 2))) && ((window.scrollY + windowHeight) < (pageHeight - 30))) {
+            // ^ If within windowHeight*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
             internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
         }
     }
@@ -2782,16 +2774,13 @@
             return;
         }
 
-        var wrapperInner = document.getElementById(wrapper.id + '_inner');
-        if (!wrapperInner) {
-            wrapperInner = wrapper;
-        }
+        var wrapperInner = document.getElementById(wrapper.id + '_inner') || wrapper;
 
         moreLinks.some(function (nextLink) {
             var startParam = nextLink.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
 
             if (!nextLink.rel.includes('next') || !startParam) {
-                return false;
+                return;
             }
 
             var urlStub = (urlStem.includes('?') ? '&' : '?') + (startParam[1] + '=' + startParam[2]) + '&raw=1';
