@@ -217,7 +217,6 @@
      * @returns {boolean}
      */
     $util.hasEnumerable = function hasEnumerable(val) {
-        /*jshint unused: false*/
         if (val != null) {
             for (var key in val) {
                 return true;
@@ -470,8 +469,8 @@
      * @returns {string}
      */
     $util.decToHex = function decToHex(number) {
-        /*jshint bitwise: false*/
         var hexbase = '0123456789ABCDEF';
+        // eslint-disable-next-line no-bitwise
         return hexbase.charAt((number >> 4) & 0xf) + hexbase.charAt(number & 0xf);
     };
 
@@ -508,7 +507,7 @@
         EXTEND_SRC_OWN_ONLY = 4;
 
     function _extend(target, source, mask) {
-        /*jshint bitwise: false*/
+        /*eslint-disable no-bitwise*/
         var key, tgt, src, isSrcArr;
 
         mask = Number(mask) || 0;
@@ -733,7 +732,7 @@
      */
     $util.camelCase = function camelCase(str) {
         return ((str != null) && (str = strVal(str))) ?
-            str.replace(/[\-_]+/g, ' ') // Replaces any - or _ characters with a space
+            str.replace(/[-_]+/g, ' ') // Replaces any - or _ characters with a space
                 .replace(/[^\w\s]/g, '') // Removes any non alphanumeric characters
                 .replace(/ (.)/g, function ($1) { // Upper cases the first character in each group immediately following a space (delimited by spaces)
                     return $1.toUpperCase();
@@ -957,7 +956,7 @@
         return new URL(window.location);
     };
 
-    var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i;
+    var rgxProtocol = /^[a-z0-9-.]+:(?=\/\/)/i;
     /**
      * Make a URL scheme-relative
      * 'http://example.com' -> '//example.com'

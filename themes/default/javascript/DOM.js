@@ -10,8 +10,8 @@
         return (property !== undefined) ? cs.getPropertyValue(dasherize(property)) : cs;
     }
 
-    var rgxIdSelector = /^#[\w\-]+$/,
-        rgxSimpleSelector = /^[#\.]?[\w\-]+$/,
+    var rgxIdSelector = /^#[\w-]+$/,
+        rgxSimpleSelector = /^[#.]?[\w-]+$/,
         // Special attributes that should be set via method calls
         methodAttributes = { value: true, css: true, html: true, text: true, data: true, width: true, height: true, offset: true },
         rgxNotWhite = /\S+/g;
@@ -543,7 +543,7 @@
      * @param el
      * @param [key]
      * @param [value]
-     * @returns {(DomData|string|number)}
+     * @returns {(object|string|number)}
      */
     $dom.data = function data(el, key, value) {
         // Note: We have internalised caching here. You must not change data-* attributes manually and expect this API to pick up on it.
@@ -880,7 +880,7 @@
      * @memberof $dom
      * @param el
      * @param selector
-     * @param context
+     * @param context (exclusive)
      * @returns {*}
      */
     $dom.closest = function closest(el, selector, context) {
@@ -907,7 +907,7 @@
 
         var parents = [];
 
-        while (el = el.parentElement) {
+        while ((el = el.parentElement)) {
             if ((selector === undefined) || $dom.matches(el, selector)) {
                 parents.push(el);
             }
@@ -925,7 +925,7 @@
     $dom.parent = function parent(el, selector) {
         el = $dom.elArg(el);
 
-        while (el = el.parentElement) {
+        while ((el = el.parentElement)) {
             if ((selector === undefined) || $dom.matches(el, selector)) {
                 return el;
             }
@@ -2172,7 +2172,7 @@
             for (i = 0; i < dom.length; i++) {
                 dom[i].remove();
 
-                // Cloning script[src] elements inserted using innerHTML is required for them to actually work
+                // Cloning script[src] elements inserted using innerHTML is required for them to actually be loaded and executed
                 if ((dom[i].localName === 'script') && jsTypeRE.test(dom[i].type) && dom[i].src) {
                     dom[i] = cloneScriptEl(dom[i]);
                 }
@@ -2276,7 +2276,7 @@
                             if (!el.src && jsTypeRE.test(el.type)) {
                                 var win = el.ownerDocument ? el.ownerDocument.defaultView : window;
                                 (function () {
-                                    /*jshint evil: true*/
+                                    // eslint-disable-next-line no-eval
                                     eval(el.innerHTML); // eval() call
                                 }).call(win); // Set `this` context for eval
                             }
@@ -2633,59 +2633,45 @@
         infiniteScrollMouseHeld = false;
 
     $dom.enableInternaliseInfiniteScrolling = function enableInternaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl) {
-        var infiniteScrolling = function () {
-            $dom.internaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl);
-        };
-
         $dom.on(window, {
-            scroll: infiniteScrolling,
-            touchmove: infiniteScrolling,
-            keydown: $dom.infiniteScrollingBlock,
-            mousedown: $dom.infiniteScrollingBlockHold,
+            scroll: function () {
+                internaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl)
+            },
+            touchmove: function () {
+                internaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl)
+            },
+            keydown: function (e) {
+                if (e.key === 'End') { // 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
+                    infiniteScrollBlocked = true;
+                    setTimeout(function () {
+                        infiniteScrollBlocked = false;
+                    }, 3000);
+                }
+            },
+            mousedown: function () {
+                if (!infiniteScrollBlocked) {
+                    infiniteScrollBlocked = true;
+                    infiniteScrollMouseHeld = true;
+                }
+            },
             mousemove: function () {
                 // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-                $dom.infiniteScrollingBlockUnhold(infiniteScrolling);
+                if (infiniteScrollMouseHeld) {
+                    infiniteScrollBlocked = false;
+                    infiniteScrollMouseHeld = false;
+                    internaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl);
+                }
             }
         });
 
-        infiniteScrolling();
+        internaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl);
     };
     
-    /**
-     * @param event
-     */
-    $dom.infiniteScrollingBlock = function infiniteScrollingBlock(event) {
-        if (event.key === 'End') { // 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
-            infiniteScrollBlocked = true;
-            setTimeout(function () {
-                infiniteScrollBlocked = false;
-            }, 3000);
-        }
-    };
-
-    $dom.infiniteScrollingBlockHold = function infiniteScrollingBlockHold() {
-        if (!infiniteScrollBlocked) {
-            infiniteScrollBlocked = true;
-            infiniteScrollMouseHeld = true;
-        }
-    };
-
-    /**
-     * @param infiniteScrolling
-     */
-    $dom.infiniteScrollingBlockUnhold = function infiniteScrollingBlockUnhold(infiniteScrolling) {
-        if (infiniteScrollMouseHeld) {
-            infiniteScrollBlocked = false;
-            infiniteScrollMouseHeld = false;
-            infiniteScrolling();
-        }
-    };
-
     /**
      * @param urlStem
      * @param wrapper
      */
-    $dom.internaliseInfiniteScrolling = function internaliseInfiniteScrolling(urlStem, wrapper) {
+    function internaliseInfiniteScrolling(urlStem, wrapper) {
         if (infiniteScrollBlocked || infiniteScrollPending) {
             // Already waiting for a result
             return;
@@ -2700,16 +2686,15 @@
 
         var moreLinks = [], foundNewLinks = null;
 
-        paginations.forEach(function (pagination, z) {
+        paginations.forEach(function (pagination, index) {
             if ($dom.notDisplayed(pagination)) {
                 return;
             }
             // Remove visibility of pagination, now we've replaced with AJAX load more link
             var paginationParent = pagination.parentNode;
             pagination.style.display = 'none';
-            var numNodeChildren = paginationParent.children.length;
 
-            if (numNodeChildren === 0) { // Remove empty pagination wrapper
+            if (paginationParent.children.length === 0) { // Remove empty pagination wrapper
                 paginationParent.style.display = 'none';
             }
 
@@ -2728,19 +2713,19 @@
             loadMoreLinkA.href = '#!';
             loadMoreLinkA.onclick = (function (moreLinks) {
                 return function () {
-                    $dom.internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+                    internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
                 };
             }(moreLinks)); // Click link -- load
             loadMoreLink.appendChild(loadMoreLinkA);
             paginations[paginations.length - 1].parentNode.insertBefore(loadMoreLink, paginations[paginations.length - 1].nextSibling);
 
             moreLinks = $util.toArray(pagination.getElementsByTagName('a'));
-            foundNewLinks = z;
+            foundNewLinks = index;
         });
 
-        paginations.some(function (pagination, z) {
+        paginations.some(function (pagination, index) {
             if (foundNewLinks != null) {// Cleanup old pagination
-                if (z !== foundNewLinks) {
+                if (index !== foundNewLinks) {
                     var _moreLinks = pagination.getElementsByTagName('a');
                     var numLinks = _moreLinks.length;
                     for (var i = numLinks - 1; i >= 0; i--) {
@@ -2783,16 +2768,16 @@
 
         // Scroll down -- load
         if ((scrollY + windowHeight > wrapperBottom - windowHeight * 2) && (scrollY + windowHeight < pageHeight - 30)) {// If within windowHeight*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
-            $dom.internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+            internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
         }
-    };
+    }
 
     /**
      * @param urlStem
      * @param wrapper
      * @param moreLinks
      */
-    $dom.internaliseInfiniteScrollingGo = function internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks) {
+    function internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks) {
         if (infiniteScrollPending) {
             return;
         }
@@ -2802,11 +2787,11 @@
             wrapperInner = wrapper;
         }
 
-        moreLinks.forEach(function (nextLink) {
+        moreLinks.some(function (nextLink) {
             var startParam = nextLink.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
 
             if (!nextLink.rel.includes('next') || !startParam) {
-                return;
+                return false;
             }
 
             var urlStub = (urlStem.includes('?') ? '&' : '?') + (startParam[1] + '=' + startParam[2]) + '&raw=1';
@@ -2814,8 +2799,10 @@
 
             $cms.callBlock(urlStem + urlStub, '', wrapperInner, true).then(function () {
                 infiniteScrollPending = false;
-                $dom.internaliseInfiniteScrolling(urlStem, wrapper);
+                internaliseInfiniteScrolling(urlStem, wrapper);
             });
+            
+            return true; // (break)
         });
-    };
+    }
 }(window.$cms || (window.$cms = {}), window.$util, window.$dom));

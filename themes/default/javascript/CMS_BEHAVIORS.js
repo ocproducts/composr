@@ -104,9 +104,9 @@
                 // Convert form element title attributes into composr tooltips
                 if ($cms.configOption('js_overlays')) {
                     // Convert title attributes into composr tooltips
-                    var elements = arrVal(form.elements), j;
+                    var elements = $util.toArray(form.elements), j;
 
-                    elements = elements.concat(form.querySelectorAll('input[type="image"]')); // JS DOM does not include input[type="image"] ones in form.elements
+                    elements = elements.concat(form.querySelectorAll('input[type="image"]')); // JS DOM does not include input[type="image"] elements in form.elements
 
                     for (j = 0; j < elements.length; j++) {
                         if ((elements[j].title !== undefined) && (elements[j]['original-title'] === undefined/*check tipsy not used*/) && !elements[j].classList.contains('no-tooltip')) {
@@ -219,7 +219,7 @@
 
                     if (code !== '') {
                         (function () {
-                            /*jshint evil: true*/
+                            // eslint-disable-next-line no-eval
                             eval(code); // eval() call
                         }).call(el); // Set `this` context for eval
                     }
@@ -915,6 +915,7 @@
     // Implementation for [data-ajaxify="{...}"] and [data-ajaxify-target="1"]
     // Mark ajaxified containers with [data-ajaxify="{...}"]
     // Mark links and forms to ajaxify with [data-ajaxify-target="1"] or specify a selector with the "targetsSelector" option
+    // Was previously known as $dom.internaliseAjaxBlockWrapperLinks()/internalise_ajax_block_wrapper_links()
     $cms.behaviors.ajaxify = {
         attach: function (context) {
             var els = $util.once($dom.$$$(context, '[data-ajaxify]'), 'behavior.ajaxify');
