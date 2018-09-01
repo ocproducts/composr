@@ -1097,6 +1097,7 @@ function do_site()
  */
 function save_static_caching($out, $mime_type = 'text/html')
 {
+    require_code('static_cache');
     $debugging = debugging_static_cache();
 
     // Initial assessments of whether we can cache...
