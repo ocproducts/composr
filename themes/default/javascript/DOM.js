@@ -2774,24 +2774,19 @@
             return;
         }
 
-        var wrapperInner = document.getElementById(wrapper.id + '_inner') || wrapper;
-
-        moreLinks.some(function (nextLink) {
-            var startParam = nextLink.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
-
-            if (!nextLink.rel.includes('next') || !startParam) {
-                return;
-            }
-
-            var urlStub = (urlStem.includes('?') ? '&' : '?') + (startParam[1] + '=' + startParam[2]) + '&raw=1';
+        var wrapperInner = document.getElementById(wrapper.id + '-inner') || wrapper,
+            rgxStartParam = /[&?](start|[^_]*_start|start_[^_]*)=([^&]*)/,
+            nextLink = moreLinks.find(function (link) {
+                return link.rel.includes('next') && rgxStartParam.test(link.href);
+            });
+        
+        if (nextLink != null) {
+            var startParam = nextLink.href.match(rgxStartParam);
             infiniteScrollPending = true;
-
-            $cms.callBlock(urlStem + urlStub, '', wrapperInner, true).then(function () {
+            $cms.callBlock(urlStem + (urlStem.includes('?') ? '&' : '?') + (startParam[1] + '=' + startParam[2]) + '&raw=1', '', wrapperInner, true).then(function () {
                 infiniteScrollPending = false;
                 internaliseInfiniteScrolling(urlStem, wrapper);
             });
-            
-            return true; // (break)
-        });
+        }
     }
 }(window.$cms || (window.$cms = {}), window.$util, window.$dom));
