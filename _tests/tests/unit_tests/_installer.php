@@ -35,6 +35,9 @@ class _installer_test_set extends cms_test_case
         if (($limit_to != '') && ($limit_to != 'testQuickInstallerBuildsAndDoesNotFullyCrash')) {
             return;
         }
+        if (!in_array('testQuickInstallerBuildsAndDoesNotFullyCrash', $_SERVER['argv'])) {
+            return;
+        }
 
         if (strpos(get_db_type(), 'mysql') === false) {
             $this->assertTrue(false, 'Cannot run test without MySQL');
@@ -70,6 +73,9 @@ class _installer_test_set extends cms_test_case
         if (($limit_to != '') && ($limit_to != 'testDoesNotFullyCrash')) {
             return;
         }
+        if (!in_array('testDoesNotFullyCrash', $_SERVER['argv'])) {
+            return;
+        }
 
         if (strpos(get_db_type(), 'mysql') === false) {
             $this->assertTrue(false, 'Cannot run test without MySQL');
@@ -94,6 +100,9 @@ class _installer_test_set extends cms_test_case
         if (($limit_to != '') && ($limit_to != 'testFullInstallSafeMode')) {
             return;
         }
+        if (!in_array('testFullInstallSafeMode', $_SERVER['argv'])) {
+            return;
+        }
 
         if (strpos(get_db_type(), 'mysql') === false) {
             $this->assertTrue(false, 'Cannot run test without MySQL');
@@ -110,6 +119,9 @@ class _installer_test_set extends cms_test_case
     {
         $limit_to = get_param_string('limit_to', '');
         if (($limit_to != '') && ($limit_to != 'testFullInstallNormalMode')) {
+            return;
+        }
+        if (!in_array('testFullInstallNormalMode', $_SERVER['argv'])) {
             return;
         }
 

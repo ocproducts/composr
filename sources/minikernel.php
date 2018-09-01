@@ -464,6 +464,8 @@ function fatal_exit($text)
 {
     //if (is_object($text)) $text = $text->evaluate();
 
+    set_http_status_code(500);
+
     // To break any looping of errors
     global $EXITING;
     if (($EXITING !== null) || (!class_exists('Tempcode'))) {
@@ -512,6 +514,8 @@ function fatal_exit($text)
         ));
     }
     $out_final->evaluate_echo();
+
+    echo '<!--ERROR-->';
 
     exit();
 }

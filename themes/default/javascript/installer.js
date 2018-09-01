@@ -46,14 +46,14 @@
     };
 
     $cms.templates.installerHtmlWrap = function installerHtmlWrap(params, container) {
-        var defaultForm = strVal(params.defaultForm);
+        var defaultForum = strVal(params.defaultForum);
 
-        var none = document.getElementById(defaultForm);
+        var none = document.getElementById(defaultForum);
         if (none) {
             none.checked = true;
         }
 
-        if ((defaultForm !== 'none') && (defaultForm !== 'cns')) {
+        if ((defaultForum !== 'none') && (defaultForum !== 'cns')) {
             var d = document.getElementById('forum-path');
             if (d) {
                 d.style.display = 'block';

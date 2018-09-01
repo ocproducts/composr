@@ -240,7 +240,7 @@ class Forum_driver_base
         // How to handle missing members
         if ($ret === null) {
             if (($options & USERNAME_DEFAULT_DELETED) != 0) {
-                $ret = do_lang('DELETED');
+                $ret = function_exists('do_lang') ? do_lang('DELETED') : 'Deleted';
             } elseif (($options & USERNAME_DEFAULT_ID_RAW) != 0) {
                 $ret = strval($id);
             } elseif (($options & USERNAME_DEFAULT_ID_TIDY) != 0) {

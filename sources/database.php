@@ -52,10 +52,10 @@ function init__database()
     $DB_STATIC_OBJECT = object_factory('Database_Static_' . get_db_type());
 
     // Create our main database objects
-    global $TABLE_LANG_FIELDS_CACHE;
+    global $SITE_DB, $TABLE_LANG_FIELDS_CACHE;
+    $SITE_DB = null;
     $TABLE_LANG_FIELDS_CACHE = array();
     if ((!empty($SITE_INFO['db_site'])) || (!empty($SITE_INFO['db_site_user']))) {
-        global $SITE_DB;
         /** The connector to the active site database.
          *
          * @global object $SITE_DB

@@ -1097,90 +1097,154 @@ function do_site()
  */
 function save_static_caching($out, $mime_type = 'text/html')
 {
+    $debugging = debugging_static_cache();
+
+    // Initial assessments of whether we can cache...
+
     global $SITE_INFO;
-    if (($_SERVER['REQUEST_METHOD'] != 'POST') && (isset($SITE_INFO['fast_spider_cache'])) && ($SITE_INFO['fast_spider_cache'] != '0') && (is_guest()) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
-        $bot_type = get_bot_type();
-        $supports_failover_mode = (isset($SITE_INFO['failover_mode'])) && ($SITE_INFO['failover_mode'] != 'off');
-        $supports_guest_caching = (isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1');
-        require_code('static_cache');
-        if ((($bot_type !== null) || ($supports_failover_mode) || ($supports_guest_caching)) && (can_static_cache())) {
-            $url = static_cache_current_url();
-            $fast_cache_path = get_custom_file_base() . '/caches/guest_pages/' . md5($url);
-            $fast_cache_path_failover_mode = $fast_cache_path;
-            if ($bot_type === null) {
-                $fast_cache_path .= '__non-bot';
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($debugging) {
+            error_log('SC save: No, POST request on ' . get_self_url_easy());
+        }
+
+        return;
+    }
+    if ((!isset($SITE_INFO['fast_spider_cache'])) || ($SITE_INFO['fast_spider_cache'] == '0')) {
+        if ($debugging) {
+            error_log('SC save: No, not enabled on ' . get_self_url_easy());
+        }
+
+        return;
+    }
+    if (!is_guest()) {
+        if ($debugging) {
+            error_log('SC save: No, logged in on ' . get_self_url_easy());
+        }
+
+        return;
+    }
+    if ($GLOBALS['IS_ACTUALLY_ADMIN']) {
+        if ($debugging) {
+            error_log('SC save: No, using SU to Guest on ' . get_self_url_easy());
+        }
+
+        return;
+    }
+
+    $bot_type = get_bot_type();
+    $supports_failover_mode = (isset($SITE_INFO['failover_mode'])) && ($SITE_INFO['failover_mode'] != 'off');
+    $supports_guest_caching = (isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1');
+    require_code('static_cache');
+    if (($bot_type === null) && (!$supports_failover_mode) && (!$supports_guest_caching)) {
+        error_log('SC save: No, not a bot and no failover mode or guest caching enabled, on ' . get_self_url_easy());
+    }
+
+    if (!can_static_cache()) {
+        if ($debugging) {
+            error_log('SC save: No, static cache not available according to can_static_cache() on ' . get_self_url_easy());
+        }
+
+        return;
+    }
+
+    // Work out what to cache...
+
+    if (is_object($out)) {
+        $out_evaluated = $out->evaluate(null);
+        $static_cache = $out_evaluated;
+    } else {
+        $static_cache = $out;
+    }
+
+    // Deeper assessments about what we can cache...
+
+    if (strpos($static_cache, '<meta name="robots" content="noindex') !== false) {
+        if ($debugging) {
+            error_log('SC save: No, page had set noindex on ' . get_self_url_easy());
+        }
+
+        return;
+    }
+
+    if (!$GLOBALS['STATIC_CACHE_ENABLED']) {
+        if ($debugging) {
+            error_log('SC save: No, internal signal to not cache on ' . get_self_url_easy());
+        }
+
+        return; // Something in the output tree decided this was not cacheable
+    }
+
+    // Cache...
+
+    $url = static_cache_current_url();
+
+    // Log
+    if ($debugging) {
+        error_log('SC save: Yes, on ' . get_self_url_easy());
+    }
+
+    // Remove any sessions etc
+    $static_cache = preg_replace('#(&|&amp;|&amp;amp;|%3Aamp%3A|\?)?(keep_session|keep_devtest|keep_failover)(=|%3D)\w+#', '', $static_cache);
+
+    // Add URL identifier
+    $static_cache .= "\n\n" . '<!-- Cached URL ' . htmlentities($url) . ' -->';
+
+    // Add mime type
+    $static_cache .= "\n\n" . '<!-- Mime type ' . htmlentities($mime_type) . ' -->';
+    $file_extension = ($mime_type == 'text/xml') ? '.xml' : '.htm';
+
+    // Work out cache path on disk
+    $fast_cache_path = get_custom_file_base() . '/caches/guest_pages/' . md5($url);
+    $fast_cache_path_failover_mode = $fast_cache_path;
+    if ($bot_type === null) {
+        $fast_cache_path .= '__non-bot';
+    }
+    if (!array_key_exists('js_on', $_COOKIE)) {
+        $fast_cache_path .= '__no-js';
+    }
+    if (is_mobile()) {
+        $fast_cache_path .= '__mobile';
+        $fast_cache_path_failover_mode .= '__mobile';
+    }
+    $fast_cache_path_failover_mode .= '__failover_mode';
+
+    // Save
+    if (!is_file($fast_cache_path . $file_extension) || filemtime($fast_cache_path . $file_extension) < time() - 60 * 60 * 5) {
+        write_static_cache_file($fast_cache_path . $file_extension, $static_cache, true);
+    }
+
+    // Save for failover mode
+    if ($supports_failover_mode) {
+        if (!is_file($fast_cache_path_failover_mode . $file_extension) || filemtime($fast_cache_path_failover_mode . $file_extension) < time() - 60 * 60 * 5) {
+            // Add failover messages
+            if (!empty($SITE_INFO['failover_message_place_after'])) {
+                $static_cache = str_replace($SITE_INFO['failover_message_place_after'], $SITE_INFO['failover_message_place_after'] . $SITE_INFO['failover_message'], $static_cache);
             }
-            if (!array_key_exists('js_on', $_COOKIE)) {
-                $fast_cache_path .= '__no-js';
-            }
-            if (is_mobile()) {
-                $fast_cache_path .= '__mobile';
-                $fast_cache_path_failover_mode .= '__mobile';
-            }
-            $fast_cache_path_failover_mode .= '__failover_mode';
-
-            if (is_object($out)) {
-                $out_evaluated = $out->evaluate(null);
-                $static_cache = $out_evaluated;
-            } else {
-                $static_cache = $out;
+            if (!empty($SITE_INFO['failover_message_place_before'])) {
+                $static_cache = str_replace($SITE_INFO['failover_message_place_before'], $SITE_INFO['failover_message'] . $SITE_INFO['failover_message_place_before'], $static_cache);
             }
 
-            if (!$GLOBALS['STATIC_CACHE_ENABLED']) {
-                return; // Something in the output tree decided this was not cacheable
-            }
+            // Disable all form controls
+            $static_cache = preg_replace('#<(textarea|input|select|button)#', '<$1 disabled="disabled"', $static_cache);
 
-            // Remove any sessions etc
-            $static_cache = preg_replace('#(&|&amp;|&amp;amp;|%3Aamp%3A|\?)?(keep_session|keep_devtest|keep_failover)(=|%3D)\w+#', '', $static_cache);
+            write_static_cache_file($fast_cache_path_failover_mode . $file_extension, $static_cache, false);
+        }
 
-            // Add URL identifier
-            $static_cache .= "\n\n" . '<!-- Cached URL ' . htmlentities($url) . ' -->';
-
-            // Add mime type
-            $static_cache .= "\n\n" . '<!-- Mime type ' . htmlentities($mime_type) . ' -->';
-            $file_extension = ($mime_type == 'text/xml') ? '.xml' : '.htm';
-
-            // Cache, but only if we want to
-            //  If it's a noindex page we don't (to limit cache size). That is a deep page a bot took a look at, and we even told the bot it was not important.
-            if (strpos($static_cache, '<meta name="robots" content="noindex') === false) {
-                if (!is_file($fast_cache_path . $file_extension) || filemtime($fast_cache_path . $file_extension) < time() - 60 * 60 * 5) {
-                    write_static_cache_file($fast_cache_path . $file_extension, $static_cache, true);
+        if (!empty($SITE_INFO['failover_apache_rewritemap_file'])) {
+            $url_stem = $url;
+            $url_stem = str_replace(get_base_url(true) . '/', '', $url_stem);
+            $url_stem = str_replace(get_base_url(false) . '/', '', $url_stem);
+            if (preg_match('#^' . $SITE_INFO['failover_apache_rewritemap_file'] . '$#', $url_stem) != 0) {
+                if (is_mobile()) {
+                    $rewritemap_file = get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt';
+                } else {
+                    $rewritemap_file = get_custom_file_base() . '/data_custom/failover_rewritemap.txt';
                 }
-
-                if ($supports_failover_mode) {
-                    if (!is_file($fast_cache_path_failover_mode . $file_extension) || filemtime($fast_cache_path_failover_mode . $file_extension) < time() - 60 * 60 * 5) {
-                        // Add failover messages
-                        if (!empty($SITE_INFO['failover_message_place_after'])) {
-                            $static_cache = str_replace($SITE_INFO['failover_message_place_after'], $SITE_INFO['failover_message_place_after'] . $SITE_INFO['failover_message'], $static_cache);
-                        }
-                        if (!empty($SITE_INFO['failover_message_place_before'])) {
-                            $static_cache = str_replace($SITE_INFO['failover_message_place_before'], $SITE_INFO['failover_message'] . $SITE_INFO['failover_message_place_before'], $static_cache);
-                        }
-
-                        // Disable all form controls
-                        $static_cache = preg_replace('#<(textarea|input|select|button)#', '<$1 disabled="disabled"', $static_cache);
-
-                        write_static_cache_file($fast_cache_path_failover_mode . $file_extension, $static_cache, false);
-                    }
-
-                    if (!empty($SITE_INFO['failover_apache_rewritemap_file'])) {
-                        $url_stem = $url;
-                        $url_stem = str_replace(get_base_url(true) . '/', '', $url_stem);
-                        $url_stem = str_replace(get_base_url(false) . '/', '', $url_stem);
-                        if (preg_match('#^' . $SITE_INFO['failover_apache_rewritemap_file'] . '$#', $url_stem) != 0) {
-                            if (is_mobile()) {
-                                $rewritemap_file = get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt';
-                            } else {
-                                $rewritemap_file = get_custom_file_base() . '/data_custom/failover_rewritemap.txt';
-                            }
-                            $rewritemap_file_contents = cms_file_get_contents_safe($rewritemap_file);
-                            if (strpos($rewritemap_file_contents, "\n" . $url_stem . ' ') === false) {
-                                require_code('files');
-                                $rewritemap_file_contents .= "\n" . $url_stem . ' ' . $fast_cache_path . '__failover_mode' . $file_extension;
-                                cms_file_put_contents_safe($rewritemap_file, $rewritemap_file_contents, FILE_WRITE_FIX_PERMISSIONS);
-                            }
-                        }
-                    }
+                $rewritemap_file_contents = cms_file_get_contents_safe($rewritemap_file);
+                if (strpos($rewritemap_file_contents, "\n" . $url_stem . ' ') === false) {
+                    require_code('files');
+                    $rewritemap_file_contents .= "\n" . $url_stem . ' ' . $fast_cache_path . '__failover_mode' . $file_extension;
+                    cms_file_put_contents_safe($rewritemap_file, $rewritemap_file_contents, FILE_WRITE_FIX_PERMISSIONS);
                 }
             }
         }

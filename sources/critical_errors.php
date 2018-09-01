@@ -260,6 +260,8 @@ END;
         echo '</div></body>' . "\n" . '</html>';
         $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 
+        echo '<!--ERROR-->';
+
         $contents = ob_get_contents();
         $dir = get_custom_file_base() . '/critical_errors';
         if ((is_dir($dir)) && ((!isset($_GET['page'])) || ($_GET['page'] != '_critical_error')) && ((!isset($GLOBALS['SEMI_DEV_MODE'])) || (!$GLOBALS['SEMI_DEV_MODE']) || (!empty($_GET['keep_dev_mode']) && ($_GET['keep_dev_mode'] == '0')))) {

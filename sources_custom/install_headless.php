@@ -16,18 +16,20 @@
 function do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver = 'cns', $board_path = null, $forum_base_url = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = array(), $do_index_test = true, $db_type = null)
 {
     copy(get_file_base() . '/_config.php', get_file_base() . '/_config.php.bak');
+    fix_permissions(get_file_base() . '/_config.php.bak');
 
     $success = _do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver, $board_path, $forum_base_url, $database_forums, $username_forums, $password_forums, $extra_settings, $db_type);
 
     if ($success && $do_index_test) {
         $url = get_base_url() . '/index.php?keep_no_query_limit=1';
         $http_result = cms_http_request($url, array('trigger_error' => false, 'timeout' => 20.0));
-        $success = ($http_result->message == '200');
+        $data = $http_result->data;
+        $success = ($http_result->message == '200') && (strpos($data, '<!--ERROR-->') === false);
 
         if (/*(!$success) && */(isset($_GET['debug']) || isset($_SERVER['argv'][1]))) {
             @var_dump($url);
             @var_dump($http_result->message);
-            $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags(preg_replace('#<script.*</script>#Us', '', $http_result->data)));
+            $error = $url . ' : ' . clean_installer_output_for_code_display($data);
             @print(escape_html($error));
             @ob_end_flush();
         }
@@ -175,14 +177,18 @@ function _do_install_to($database, $username, $password, $table_prefix, $safe_mo
         }
         $http_result = cms_http_request($url, array('post_params' => $post, 'timeout' => 60.0));
         $data = $http_result->data;
-        $success = ($http_result->message == '200');
+        $success = ($http_result->message == '200') && (strpos($data, '<!--ERROR-->') === false);
 
         if (/*(!$success) && */(isset($_GET['debug']) || isset($_SERVER['argv'][1]))) {
             @var_dump($url);
             @var_dump($http_result->message);
-            $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags(preg_replace('#<script.*</script>#Us', '', $data)));
+            $error = $url . ' : ' . clean_installer_output_for_code_display($data);
             @print(escape_html($error));
             @ob_end_flush();
+
+            if ((!$success) && (in_array('early_exit', $_SERVER['argv']))) {
+                exit('Exiting early due to error');
+            }
         }
 
         if (!$success) {
@@ -191,4 +197,14 @@ function _do_install_to($database, $username, $password, $table_prefix, $safe_mo
     }
 
     return true;
+}
+
+function clean_installer_output_for_code_display($data)
+{
+    $data = preg_replace('#<script.*</script>#Us', '', $data);
+    $data = preg_replace('#^.*An error has occurred#s', 'An error has occurred', $data);
+    $data = str_replace('>', ">\n", $data);
+    $data = strip_tags($data);
+    $data = preg_replace('#(\s*\n\s*)+#', "\n", $data);
+    return $data;
 }

@@ -67,6 +67,10 @@ function javascript_enforce($j, $theme = null, $allow_defer = false)
 {
     list($minify, $https, $mobile) = _get_web_resources_env();
 
+    if (($allow_defer) && (function_exists('can_static_cache')) && (can_static_cache())) {
+        $allow_defer = false;
+    }
+
     global $SITE_INFO;
 
     // Make sure the JavaScript exists
@@ -223,6 +227,10 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
         if ($temp == 'defer') {
             $GLOBALS['STATIC_CACHE_ENABLED'] = false;
 
+            if ((function_exists('debugging_static_cache')) && (debugging_static_cache())) {
+                error_log('SC: No static cache due to deferred JavaScript compilation, ' . $j);
+            }
+
             $_theme = $GLOBALS['FORUM_DRIVER']->get_theme();
             $keep = symbol_tempcode('KEEP');
             $url = find_script('script') . '?script=' . urlencode($j) . $keep->evaluate() . '&theme=' . urlencode($_theme);
@@ -296,6 +304,10 @@ function require_css($css)
 function css_enforce($c, $theme = null, $allow_defer = false)
 {
     list($minify, $https, $mobile) = _get_web_resources_env();
+
+    if (($allow_defer) && (function_exists('can_static_cache')) && (can_static_cache())) {
+        $allow_defer = false;
+    }
 
     global $SITE_INFO;
 
@@ -463,6 +475,10 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
 
         if ($temp == 'defer') {
             $GLOBALS['STATIC_CACHE_ENABLED'] = false;
+
+            if ((function_exists('debugging_static_cache')) && (debugging_static_cache())) {
+                error_log('SC: No static cache due to deferred CSS compilation, ' . $c);
+            }
 
             $_theme = ($theme === null) ? $GLOBALS['FORUM_DRIVER']->get_theme() : $theme;
             $keep = symbol_tempcode('KEEP');

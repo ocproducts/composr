@@ -36,7 +36,7 @@ $EXTERNAL_CALL = false;
 global $CSRF_TOKENS;
 $CSRF_TOKENS = true;
 global $STATIC_CACHE_ENABLED;
-$STATIC_CACHE_ENABLED = true;
+$STATIC_CACHE_ENABLED = false;
 global $IN_SELF_ROUTING_SCRIPT;
 $IN_SELF_ROUTING_SCRIPT = true;
 if (!is_file($FILE_BASE . '/sources/global.php')) {
