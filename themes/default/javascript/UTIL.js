@@ -613,7 +613,7 @@
 
     /**
      * Less verbose alternative to Object.defineProperties()
-     * @param {string} [mask] - optional, assumed to be `obj` if not of type number.
+     * @param {string} [mask] - optional, assumed to be `obj` if not of type string.
      * @param {object} obj - the target object to define properties on.
      * @param {object|string} props - is a single property's name if `value` is passed.
      * @returns {Object}

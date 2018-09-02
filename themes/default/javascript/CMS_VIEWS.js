@@ -1214,7 +1214,7 @@
             }
 
             // Listen for mouse movements to set the correct values
-            document.documentElement.addEventListener('mousemove', function (e) {
+            document.addEventListener('mousemove', function (e) {
                 window.currentMouseX = e.pageX;
                 window.currentMouseY = e.pageY;
             });

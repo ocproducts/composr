@@ -262,10 +262,10 @@
         modeName = strVal(modeName);
 
         switch (modeName) {
-        case 'mobile':
-            return $cms.isMobile() || mobileModeMql.matches;
-        case 'desktop':
-            return !$cms.isMobile() && desktopModeMql.matches;
+            case 'mobile':
+                return $cms.isMobile() || mobileModeMql.matches;
+            case 'desktop':
+                return !$cms.isMobile() && desktopModeMql.matches;
         }
 
         return false;
@@ -1183,32 +1183,32 @@
             _isIe = browser.includes('msie') || browser.includes('trident') || browser.includes('edge/');
 
         switch (code) {
-        case 'touch_enabled':
-            return ('ontouchstart' in document.documentElement);
-        case 'simplified_attachments_ui':
-            return Boolean($cms.configOption('simplified_attachments_ui') && $cms.configOption('complex_uploader'));
-        case 'non_concurrent':
-            return browser.includes('iphone') || browser.includes('ipad') || browser.includes('android') || browser.includes('phone') || browser.includes('tablet');
-        case 'ios':
-            return browser.includes('iphone') || browser.includes('ipad');
-        case 'android':
-            return browser.includes('android');
-        case 'wysiwyg':
-            return !!$cms.configOption('wysiwyg');
-        case 'windows':
-            return os.includes('windows') || os.includes('win32');
-        case 'mac':
-            return os.includes('mac');
-        case 'linux':
-            return os.includes('linux');
-        case 'ie':
-            return _isIe;
-        case 'chrome':
-            return isChrome;
-        case 'gecko':
-            return isGecko;
-        case 'safari':
-            return isSafari;
+            case 'touch_enabled':
+                return ('ontouchstart' in document.documentElement);
+            case 'simplified_attachments_ui':
+                return Boolean($cms.configOption('simplified_attachments_ui') && $cms.configOption('complex_uploader'));
+            case 'non_concurrent':
+                return browser.includes('iphone') || browser.includes('ipad') || browser.includes('android') || browser.includes('phone') || browser.includes('tablet');
+            case 'ios':
+                return browser.includes('iphone') || browser.includes('ipad');
+            case 'android':
+                return browser.includes('android');
+            case 'wysiwyg':
+                return !!$cms.configOption('wysiwyg');
+            case 'windows':
+                return os.includes('windows') || os.includes('win32');
+            case 'mac':
+                return os.includes('mac');
+            case 'linux':
+                return os.includes('linux');
+            case 'ie':
+                return _isIe;
+            case 'chrome':
+                return isChrome;
+            case 'gecko':
+                return isGecko;
+            case 'safari':
+                return isSafari;
         }
 
         // Should never get here
@@ -1345,21 +1345,21 @@
 
         for (var i = 0; i < filters.length; i++) {
             switch (filters[i]) {
-            case '&':
-                str = $cms.filter.url(str);
-                break;
-
-            case '~':
-                str = $cms.filter.nl(str);
-                break;
-
-            case '|':
-                str = $cms.filter.id(str);
-                break;
-
-            case '=':
-                str = $cms.filter.html(str);
-                break;
+                case '&':
+                    str = $cms.filter.url(str);
+                    break;
+    
+                case '~':
+                    str = $cms.filter.nl(str);
+                    break;
+    
+                case '|':
+                    str = $cms.filter.id(str);
+                    break;
+    
+                case '=':
+                    str = $cms.filter.html(str);
+                    break;
             }
         }
 
