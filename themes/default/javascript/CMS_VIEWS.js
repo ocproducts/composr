@@ -1020,18 +1020,19 @@
         /*START JS from HTML_HEAD.tpl*/
         // Google Analytics account, if one set up
         if (strVal($cms.configOption('google_analytics')).trim() && !$cms.isStaff() && !$cms.isAdmin()) {
-            (function (i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r;
-                i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments);
-                };
-                i[r].l = 1 * new Date();
-                a = s.createElement(o);
-                m = s.getElementsByTagName(o)[0];
-                a.async = 1;
-                a.src = g;
-                m.parentNode.insertBefore(a, m);
-            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            (function () {
+                window['GoogleAnalyticsObject'] = 'ga';
+                window.ga || (window.ga = function () {
+                    window.ga.q || (window.ga.q = []);
+                    window.ga.q.push(arguments);
+                });
+                window.ga.l = 1 * new Date();
+                var script = document.createElement('script'),
+                    newSibling = document.getElementsByTagName('script')[0];
+                script.async = true;
+                script.src = '//www.google-analytics.com/analytics.js';
+                newSibling.parentNode.insertBefore(script, newSibling);
+            }());
 
             var aConfig = {};
 
@@ -1072,7 +1073,7 @@
         }
         /*END JS from HTML_HEAD.tpl*/
 
-        $dom.registerMouseListener();
+        this.registerMousePositionListener();
 
         if ($dom.$('#global-messages-2')) {
             var m1 = $dom.$('#global-messages');
@@ -1198,6 +1199,27 @@
             window.location = url + append;
         },
 
+        registerMousePositionListener: function () {
+            window.currentMouseX = 0;
+            window.currentMouseY = 0;
+            
+            // Guess the initial mouse position approximately if possible:
+            var hoveredElement = document.querySelectorAll(':hover');
+            hoveredElement = hoveredElement[hoveredElement.length - 1];
+            
+            if (hoveredElement != null) {
+                var rect = hoveredElement.getBoundingClientRect();
+                window.currentMouseX = window.scrollX + rect.x;
+                window.currentMouseY = window.scrollY + rect.y;
+            }
+
+            // Listen for mouse movements to set the correct values
+            document.documentElement.addEventListener('mousemove', function (e) {
+                window.currentMouseX = e.pageX;
+                window.currentMouseY = e.pageY;
+            });
+        },
+
         /* Software Chat */
         loadSoftwareChat: function () {
             var url = 'https://kiwiirc.com/client/irc.kiwiirc.com/?nick=';
@@ -1222,7 +1244,7 @@
 
             var box = $dom.$('#software-chat-box'), img;
             if (box) {
-                box.parentNode.removeChild(box);
+                box.remove();
 
                 img = $dom.$('.software-chat-img');
                 img.style.opacity = 1;

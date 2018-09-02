@@ -215,7 +215,7 @@
         if (rgxSimpleSelector.test(selector) && ($util.isDoc(context) || $util.isEl(context))) {
             switch (selector[0]) {
                 case '#': // selector is an ID
-                    return (found = (('getElementById' in context) ? context.getElementById(selector.substr(1)) : context.querySelector(selector))) ? [found] : [];
+                    return ((found = (('getElementById' in context) ? context.getElementById(selector.substr(1)) : context.querySelector(selector)))) ? [found] : [];
                 case '.': // selector is a class name
                     return $util.toArray(context.getElementsByClassName(selector.substr(1)));
                 default: // selector is a tag name
@@ -2470,7 +2470,7 @@
 
         form = $dom.elArg(form);
 
-        arrVal(form.elements).forEach(function (field) {
+        $util.toArray(form.elements).forEach(function (field) {
             name = field.name;
             if (name && (field.localName !== 'fieldset') && !field.disabled && !(field.type in serializeExcludedTypes) && (!['radio', 'checkbox'].includes(field.type) || field.checked)) {
                 add($dom.value(field));
@@ -2502,44 +2502,7 @@
         });
         return result.join('&');
     };
-
-    /**
-     * Dimension functions
-     * @memberof $dom
-     */
-    $dom.registerMouseListener = function registerMouseListener() {
-        $dom.registerMouseListener = function () {}; // ensure this function is only executed once
-
-        document.documentElement.addEventListener('mousemove', function (e) {
-            window.currentMouseX = getMouseX(e);
-            window.currentMouseY = getMouseY(e);
-
-            function getMouseX(event) {
-                try {
-                    if (event.pageX) {
-                        return event.pageX;
-                    } else if (event.clientX) {
-                        return event.clientX + window.pageXOffset;
-                    }
-                } catch (ignore) {}
-
-                return 0;
-            }
-
-            function getMouseY(event) {
-                try {
-                    if (event.pageY) {
-                        return event.pageY;
-                    } else if (event.clientY) {
-                        return event.clientY + window.pageYOffset;
-                    }
-                } catch (ignore) {}
-
-                return 0;
-            }
-        });
-    };
-
+    
     /**
      * Automatic resizing to make frames seamless. Composr calls this automatically. Make sure id&name attributes are defined on your iframes!
      * @memberof $dom
