@@ -446,6 +446,8 @@ function should_ignore_file($path, $bitmask = 0)
         '.project' => '', // Eclipse
         '.idea' => '', // JetBrains / PhpStorm
         '.editorconfig' => '',
+        '.eslintignore' => '', // ESLint ignore file
+        '.eslintrc.json' => '', // ESLint config file
 
         // Composr control files
         'closed.html' => '',

@@ -1,0 +1,54 @@
+{
+    "extends": "eslint:recommended",
+    // Rules info: https://eslint.org/docs/rules/
+    "rules": {
+        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "linebreak-style": ["error", "unix"],
+        "eol-last": ["error", "always"],
+        "no-empty": ["error", { "allowEmptyCatch": true }],
+        "no-console": "off",
+        "no-eval": ["error"],
+        "no-implied-eval": ["error"],
+        "no-bitwise": ["error"],
+        "no-trailing-spaces": ["error", { "ignoreComments": true }],
+        "block-scoped-var": ["error"],
+        "eqeqeq": ["error", "always", { "null": "ignore" }],
+        "no-implicit-coercion": ["warn", { "string": false }],
+        "no-implicit-globals": ["error"],
+        "no-loop-func": ["warn"],
+        "no-multi-spaces": ["error"],
+        "wrap-iife": ["error"],
+        "strict": ["error"],
+        "no-use-before-define": ["error", { "functions": false } ],
+        "camelcase": ["warn"],
+        "func-call-spacing": ["error"],
+        "func-name-matching": ["error"],
+        "no-tabs": ["error"],
+        "space-before-blocks": ["error"],
+        "space-before-function-paren": ["error", {
+            "anonymous": "always",
+            "named": "never",
+            "asyncArrow": "always"
+        }],
+        "no-caller": ["error"]
+    },
+    "env": {
+        "browser": true
+    },
+    "globals": {
+        "Set"             : false,
+        "Map"             : false,
+        "WeakMap"         : false,
+        "Promise"         : false,
+        "URLSearchParams" : false,
+        "$cms"            : false,
+        "$dom"            : false,
+        "$util"           : false,
+        "objVal"          : false,
+        "arrVal"          : false,
+        "strVal"          : false,
+        "numVal"          : false,
+        "intVal"          : false,
+        "boolVal"         : false
+    }
+}
