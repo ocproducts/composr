@@ -51,7 +51,7 @@ function checkDecoding() {
     var msg =
             (is_decoding == undefined) ? "I can't tell whether the XSL processor supports disable-content-encoding!D"
                 : is_decoding ? "The XSL processor DOES support disable-content-encoding"
-                : "The XSL processor does NOT support disable-content-encoding"
+                    : "The XSL processor does NOT support disable-content-encoding"
         ;
     if (DEBUG) console.log(msg);
     return msg;
@@ -83,7 +83,7 @@ function goDecoding() {
         ) {
             // the null or markupless element needs no reworking
         } else {
-            $dom.html(toDecode[i], s);  // that's the magic
+            $dom.html(toDecode[i], s); // that's the magic
         }
     }
 

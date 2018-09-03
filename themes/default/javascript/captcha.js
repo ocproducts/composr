@@ -31,7 +31,7 @@
 
                     grecaptchaParameters = {
                         sitekey: $cms.configOption('recaptcha_site_key'),
-                        callback: function() {
+                        callback: function () {
                             captchaEl.dataset.recaptchaSuccessful = '1';
                             $dom.submit(form);
                         },

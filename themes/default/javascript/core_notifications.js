@@ -211,7 +211,7 @@
     };
 
     function _pollForNotifications(responseXml) {
-        if (!responseXml || responseXml.getElementsByTagName === undefined){
+        if (!responseXml || responseXml.getElementsByTagName === undefined) {
             return; // Some kind of error
         }
 

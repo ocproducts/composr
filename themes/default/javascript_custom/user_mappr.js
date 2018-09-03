@@ -2,6 +2,8 @@
     'use strict';
 
     $cms.templates.blockMainGoogleMapUsers = function blockMainGoogleMapUsers(params) {
+        /*globals google,MarkerClusterer*/
+
         var cluster = Boolean(params.cluster),
             latitude = strVal(params.latitude),
             longitude = strVal(params.longitude),
@@ -140,7 +142,7 @@
                         }
                     });
                 };
-            })(marker, dataPoint[0])); // These are the args passed to the dynamic function above
+            }(marker, dataPoint[0]))); // These are the args passed to the dynamic function above
         }
     };
 }(window.$cms));

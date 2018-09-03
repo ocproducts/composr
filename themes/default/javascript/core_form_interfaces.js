@@ -126,7 +126,7 @@
             var form = this.form,
                 submitBtn = document.getElementById('submit-button'),
                 inputs = form.getElementsByTagName('input'),
-                type, types = ['text', 'password', 'color', 'email', 'number', 'range', 'search',  'tel', 'url'];
+                type, types = ['text', 'password', 'color', 'email', 'number', 'range', 'search', 'tel', 'url'];
 
             for (var i = 0; i < inputs.length; i++) {
                 type = inputs[i].type;
@@ -345,7 +345,7 @@
             $cms.loadSnippet('password_strength', post, true).then(function (strength) {
                 strength = Number(strength);
                 strength *= 2;
-                if (strength > 10) {  // Normally too harsh!
+                if (strength > 10) { // Normally too harsh!
                     strength = 10;
                 }
                 ind.style.width = (strength * 10) + 'px';
@@ -371,7 +371,7 @@
     };
 
     $cms.templates.form = function (params, container) {
-        var skippable =  strVal(params.skippable);
+        var skippable = strVal(params.skippable);
 
         $dom.on(container, 'click', '.js-click-btn-skip-step', function () {
             $dom.$('#' + skippable).value = '1';
@@ -589,8 +589,8 @@
         }
 
         var block = document.getElementById('field_set_' + params.name);
-        block.addEventListener('click', function() {
-            window.setTimeout(function() {
+        block.addEventListener('click', function () {
+            window.setTimeout(function () {
                 $dom.trigger(document.getElementById('choose-' + params.name), 'click');
             }, 0);
         });
@@ -660,7 +660,7 @@
             });
         }
 
-        var soundObject = (typeof window.Audio != 'undefined') ? new Audio($dom.$('#captcha-audio').href) : null;
+        var soundObject = (typeof window.Audio !== 'undefined') ? new Audio($dom.$('#captcha-audio').href) : null;
 
         $dom.on(container, 'click', '.js-click-play-self-audio-link', function (e, link) {
             e.preventDefault();

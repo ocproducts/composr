@@ -307,7 +307,7 @@
             if (el.className.startsWith('tt-')) {
                 tooltipEl.className += ' ' + el.className;
             }
-            if (tooltip.length < 50) {  // Only break words on long tooltips. Otherwise it messes with alignment.
+            if (tooltip.length < 50) { // Only break words on long tooltips. Otherwise it messes with alignment.
                 tooltipEl.style.wordWrap = 'normal';
             }
             if (forceWidth) {
@@ -406,7 +406,7 @@
             }
 
             if ((el.parentElement.localName === 'a') && (el.parentElement.getAttribute('title')) && ((el.localName === 'abbr') || (el.parentElement.getAttribute('title').includes('{!LINK_NEW_WINDOW;^}')))) {
-                el.parentElement.title = '';  // Do not want second tooltips that are not useful
+                el.parentElement.title = '';// Do not want second tooltips that are not useful
             }
         }
 

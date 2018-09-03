@@ -226,7 +226,7 @@
                             infoWindow.open(dataMap, argMarker);
                         }
                     };
-                })(marker, data[i][0], data[i][4], data[i][5])); // These are the args passed to the dynamic function above
+                }(marker, data[i][0], data[i][4], data[i][5]))); // These are the args passed to the dynamic function above
             }
 
             if (cluster) {

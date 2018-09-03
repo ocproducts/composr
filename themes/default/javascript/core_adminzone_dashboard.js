@@ -175,11 +175,11 @@
             }).bind(this));
         },
 
-        textareaExpand: function (e, textarea){
+        textareaExpand: function (e, textarea) {
             textarea.rows = '23';
         },
 
-        textareaContract: function (e, textarea){
+        textareaContract: function (e, textarea) {
             if (!this.formEl.disableSizeChange) {
                 textarea.rows = '10';
             }

@@ -240,7 +240,7 @@
                     $dom.html('#toggle-wysiwyg-' + textarea.id, '<img width="16" height="16" src="' + $util.srl('{$IMG*;^,icons/editor/wysiwyg_on}') + '" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical-alignment" />');
                 }
 
-                try {  // Unload editor
+                try { // Unload editor
                     window.wysiwygEditors[textarea.id].destroy();
                 } catch (ignore) {}
             }
@@ -387,7 +387,7 @@
             document.body.appendChild(testDiv);
             testDiv.className = 'wysiwyg-toolbar-color-finder';
             var matches,
-                wysiwygColor = window.getComputedStyle(testDiv).getPropertyValue('color');  // NB: Used by WYSIWYG_SETTINGS.js
+                wysiwygColor = window.getComputedStyle(testDiv).getPropertyValue('color'); // NB: Used by WYSIWYG_SETTINGS.js
             testDiv.parentNode.removeChild(testDiv);
             matches = wysiwygColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/, matches);
             if (matches) {
@@ -841,7 +841,7 @@
                 var data = encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
 
                 $cms.doAjaxRequest(url, null, 'data=' + data).then(function (xhr) {
-                    var responseXML  = xhr.responseXML;
+                    var responseXML = xhr.responseXML;
                     if (responseXML && (responseXML.querySelector('result'))) {
                         var result = responseXML.querySelector('result');
                         insert = result.textContent.replace(/\s*$/, '');
@@ -866,7 +866,7 @@
                 } else {
                     // Ideally we use insertElement, as insertHtml may break up the parent tag (we want it to nest nicely)
                     var elementForInserting = window.CKEDITOR.dom.element.createFromHtml(insert);
-                    if (typeof elementForInserting.getName == 'undefined') {
+                    if (typeof elementForInserting.getName === 'undefined') {
                         editor.insertHtml(insert);
                     } else
                     {

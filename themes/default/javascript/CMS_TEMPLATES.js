@@ -122,7 +122,7 @@
         }
     };
 
-    $cms.templates.jsRefresh = function (params){
+    $cms.templates.jsRefresh = function (params) {
         if (!window.location.hash.includes('redirected_once')) {
             window.location.hash = 'redirected_once';
             $dom.submit(document.getElementById(params.formName));

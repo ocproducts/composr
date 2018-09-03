@@ -118,29 +118,29 @@
         }
 
         return new Promise(function (resolvePromise) {
-           var resolved = false;
+            var resolved = false;
 
             arrVal(form.elements).forEach(function (el) {
-               var plObj = $dom.data(el).pluploadObject;
+                var plObj = $dom.data(el).pluploadObject;
 
-               if (plObj == null) {
-                   return;
-               }
+                if (plObj == null) {
+                    return;
+                }
 
-               plObj.bind('FileUploaded', fileUploadedListener);
-           });
+                plObj.bind('FileUploaded', fileUploadedListener);
+            });
 
-           function fileUploadedListener(plObj) {
-               if (resolved) {
-                   plObj.unbind('FileUploaded', fileUploadedListener);
-                   return;
-               }
+            function fileUploadedListener(plObj) {
+                if (resolved) {
+                    plObj.unbind('FileUploaded', fileUploadedListener);
+                    return;
+                }
 
-               if ($cms.form.areUploadsComplete(form)) {
-                   resolvePromise();
-                   resolved = true;
-               }
-           }
+                if ($cms.form.areUploadsComplete(form)) {
+                    resolvePromise();
+                    resolved = true;
+                }
+            }
         });
     };
 
@@ -367,7 +367,7 @@
                     } else if (element.selectedIndex >= 0) {
                         value = element.value;
                         if ((value === '') && (element.size > 1)) {
-                            value = '-1';  // Fudge, as we have selected something explicitly that is blank
+                            value = '-1'; // Fudge, as we have selected something explicitly that is blank
                         }
                     }
                 }

@@ -32,7 +32,7 @@
                         $dom.html('#g-' + tabCode, result);
 
                         // Give DOM some time to load, and protect against errors
-                        window.setTimeout(function() {
+                        window.setTimeout(function () {
                             $cms.ui.findUrlTab();
                         }, 0);
                     });
@@ -313,7 +313,7 @@
     };
 
     $cms.templates.joinForm = function (params, container) {
-        var skippable =  strVal(params.skippable);
+        var skippable = strVal(params.skippable);
 
         joinForm(params);
 

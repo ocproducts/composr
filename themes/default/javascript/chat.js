@@ -597,14 +597,14 @@
 
     // Check for new messages
     function chatCheck(backlog, messageId, eventId) {
-        if (window.currentlySendingMessage)  { // We'll reschedule once our currently-in-progress message is sent
+        if (window.currentlySendingMessage) { // We'll reschedule once our currently-in-progress message is sent
             window.topWindow.$util.inform('Skip checking for chat messages (chat timer), as a message posting is pending completion (' + new Date().getTime() + ')');
             return null;
         }
 
         window.topWindow.$util.inform('Checking for chat messages (chat timer) (' + new Date().getTime() + ')');
 
-        eventId = intVal(eventId, -1);  // -1 Means, we don't want to look at events, but the server will give us a null event
+        eventId = intVal(eventId, -1); // -1 Means, we don't want to look at events, but the server will give us a null event
 
         // Check for new messages on the server the new or old way
         setTimeout(function () {
@@ -612,7 +612,7 @@
         }, window.MESSAGE_CHECK_INTERVAL * 1.2);
 
         var theDate = new Date();
-        if (!window.messageChecking || (window.messageChecking + window.MESSAGE_CHECK_INTERVAL <= theDate.getTime()))  { // If not currently in process, or process stalled
+        if (!window.messageChecking || (window.messageChecking + window.MESSAGE_CHECK_INTERVAL <= theDate.getTime())) { // If not currently in process, or process stalled
             window.messageChecking = theDate.getTime();
             var url;
             var _roomId = (window.loadFromRoomId == null) ? -1 : window.loadFromRoomId;
@@ -709,7 +709,7 @@
 
         // Look through our messages
         for (var i = 0; i < messages.length; i++) {
-            if (messages[i].localName === 'div')  { // MESSAGE
+            if (messages[i].localName === 'div') { // MESSAGE
                 // Find out about our message
                 id = messages[i].getAttribute('id');
                 timestamp = messages[i].getAttribute('timestamp');
@@ -788,7 +788,7 @@
 
                     if (!firstSet) {// Only if no other message sound already for this event update
                         if (!skipIncomingSound) {
-                            playChatSound(document.hidden ?  'message_background' : 'message_received', messages[i].getAttribute('sender_id'));
+                            playChatSound(document.hidden ? 'message_background' : 'message_received', messages[i].getAttribute('sender_id'));
                         }
                         flashableAlert = true;
                     }
@@ -1477,7 +1477,7 @@
             window.isShutdown = true;
         }
 
-        setTimeout(function ()  { // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
+        setTimeout(function () { // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
             window.topWindow.$cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,messages}?action=deinvolve_im' + window.topWindow.$cms.keep(), null, 'room_id=' + encodeURIComponent(roomId)); // Has to be on topWindow or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
 
             if (participants) {

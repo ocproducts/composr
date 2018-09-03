@@ -25,7 +25,7 @@
         this.fpAnimationEl = document.getElementById('image-fader-' + id);
         this.fpAnimationFaderEl = $dom.create('img', { className: 'img-thumb', src: $util.srl('{$IMG;,blank}'), css: { position: 'absolute' }});
         this.teaseTitleEl = document.getElementById('image-fader-title-' + id);
-        this.teaseScrollingTextEl =  document.getElementById('image-fader-scrolling-text-' + id);
+        this.teaseScrollingTextEl = document.getElementById('image-fader-scrolling-text-' + id);
 
         this.fpAnimationEl.parentNode.insertBefore(this.fpAnimationFaderEl, this.fpAnimationEl);
         this.fpAnimationEl.parentNode.style.position = 'relative';
@@ -393,7 +393,7 @@
                     });
                 } // else probably a video
 
-                if (slideshowFrom){
+                if (slideshowFrom) {
                     // Make sure stays the same
                     document.getElementById('slideshow_from').value = slideshowFrom.value;
                 }

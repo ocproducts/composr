@@ -330,7 +330,7 @@
 
         // Properties
         /** @type { Element }*/
-        this.el =  null;
+        this.el = null;
         /** @type { Element }*/
         this.overlayEl = null;
         /** @type { Element }*/
@@ -494,7 +494,7 @@
                 case 'iframe':
                     var iframeWidth = (this.width.match(/^[\d.]+$/) !== null) ? ((this.width - 14) + 'px') : this.width,
                         iframeHeight = (this.height.match(/^[\d.]+$/) !== null) ? (this.height + 'px') : ((this.height === 'auto') ? (this.LOADING_SCREEN_HEIGHT + 'px') : this.height);
-    
+
                     var iframe = $dom.create('iframe', {
                         'frameBorder': '0',
                         'scrolling': 'no',
@@ -510,11 +510,11 @@
                             'background': 'transparent'
                         }
                     });
-    
+
                     this.containerEl.appendChild(iframe);
-    
+
                     $dom.animateFrameLoad(iframe, 'overlay-iframe', 50, true);
-    
+
                     setTimeout(function () {
                         if (self.el) {
                             $dom.on(self.el, 'click', function (e) {
@@ -525,7 +525,7 @@
                             });
                         }
                     }, 1000);
-    
+
                     $dom.on(iframe, 'load', function () {
                         if ($dom.hasIframeAccess(iframe) && (!iframe.contentDocument.querySelector('h1')) && (!iframe.contentDocument.querySelector('h2'))) {
                             if (iframe.contentDocument.title) {
@@ -534,13 +534,13 @@
                             }
                         }
                     });
-    
+
                     // Fiddle it, to behave like a pop-up would
                     setTimeout(function () {
                         $dom.illustrateFrameLoad('overlay-iframe');
                         iframe.src = self.href;
                         self.makeFrameLikePopup(iframe);
-    
+
                         if (self.iframeRestyleTimer == null) { // In case internal nav changes
                             self.iframeRestyleTimer = setInterval(function () {
                                 self.makeFrameLikePopup(iframe);
@@ -548,7 +548,7 @@
                         }
                     }, 0);
                     break;
-    
+
                 case 'lightbox':
                 case 'alert':
                     if (this.yes) {
@@ -557,7 +557,7 @@
                             'html': '{$GET;^,icon_proceed} ' + this.yesButton,
                             'className': 'buttons--proceed button-screen-item js-onclick-do-option-yes'
                         });
-    
+
                         this.buttonContainerEl.appendChild(button);
                     }
                     setTimeout(function () {
@@ -575,7 +575,7 @@
                         }
                     }, 1000);
                     break;
-    
+
                 case 'confirm':
                     button = $dom.create('button', {
                         'type': 'button',
@@ -591,7 +591,7 @@
                     });
                     this.buttonContainerEl.appendChild(button);
                     break;
-    
+
                 case 'prompt':
                     this.input = $dom.create('input', {
                         'name': 'prompt',
@@ -604,7 +604,7 @@
                     var inputWrap = $dom.create('div');
                     inputWrap.appendChild(this.input);
                     this.containerEl.appendChild(inputWrap);
-    
+
                     if (this.yes) {
                         button = $dom.create('button', {
                             'type': 'button',
@@ -616,7 +616,7 @@
                         });
                         this.buttonContainerEl.appendChild(button);
                     }
-    
+
                     setTimeout(function () {
                         if (self.el) {
                             $dom.on(self.el, 'click', function (e) {
@@ -1202,11 +1202,11 @@
         registerMousePositionListener: function () {
             window.currentMouseX = 0;
             window.currentMouseY = 0;
-            
+
             // Guess the initial mouse position approximately if possible:
             var hoveredElement = document.querySelectorAll(':hover');
             hoveredElement = hoveredElement[hoveredElement.length - 1];
-            
+
             if (hoveredElement != null) {
                 var rect = hoveredElement.getBoundingClientRect();
                 window.currentMouseX = window.scrollX + rect.x;
@@ -1459,7 +1459,7 @@
                 var src = (target.src === undefined) ? $dom.css(target, 'background-image') : target.src;
 
                 if ((target.src === undefined) && (!event.ctrlKey) && (!event.metaKey) && (!event.altKey)) {
-                    return;  // Needs ctrl key for background images
+                    return;// Needs ctrl key for background images
                 }
                 if (!src.includes('/themes/') || ($cms.getPageName() === 'admin_themes')) {
                     return;
@@ -2159,7 +2159,7 @@
             left += popupEl.parentElement.offsetLeft;
             top += popupEl.parentElement.offsetTop;
         } else {
-            var  offsetParent = popupEl.parentElement;
+            var offsetParent = popupEl.parentElement;
             while (offsetParent) {
                 if (offsetParent && $dom.isCss(offsetParent, 'position', 'relative')) {
                     break;

@@ -83,7 +83,7 @@ $dom.load.then(function () {
                     if ($inBox.find("img").length > 0) {
                         // only bother if there are
                         // actually images...
-                        var func = function ($inBox, $cache) {
+                        var func = (function ($inBox, $cache) {
                             return function () {
                                 if (!$inBox.data("firstImageLoaded")) {
                                     $inBox.data("firstImageLoaded", "true");
@@ -91,7 +91,7 @@ $dom.load.then(function () {
                                     $inBox.columnize(options);
                                 }
                             }
-                        }($inBox, $cache);
+                        }($inBox, $cache));
                         $inBox.find("img").one("load", func);
                         $inBox.find("img").one("abort", func);
                         return;
@@ -316,7 +316,7 @@ $dom.load.then(function () {
                 }
 
                 for (var loopCount = 0; loopCount < maxLoops; loopCount++) {
-                    if (typeof window.console != 'undefined') console.log('STARTING COLUMNISATION ITERATION');
+                    if (typeof window.console !== 'undefined') console.log('STARTING COLUMNISATION ITERATION');
 
                     $inBox.empty();
                     var $destroyable; // This is where we'll pull all our data from, as we progressively fill our columns
@@ -499,4 +499,4 @@ $dom.load.then(function () {
             }
         });
     };
-})(jQuery);
+}(jQuery));

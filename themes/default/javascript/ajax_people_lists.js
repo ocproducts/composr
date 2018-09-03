@@ -93,7 +93,7 @@
             if (isDataList) {
                 currentListForEl.setAttribute('list', 'ajax_list');
             } else {
-                if (listContents.childNodes.length == 1) { // We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
+                if (listContents.childNodes.length === 1) { // We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
                     list.multiple = true;
                 } else {
                     list.size = listContents.childNodes.length + 1;
@@ -114,7 +114,7 @@
                 item = document.createElement('option');
                 item.value = listContents.children[i].getAttribute('value');
                 displaytext = item.value;
-                if (listContents.children[i].getAttribute('displayname') != '') {
+                if (listContents.children[i].getAttribute('displayname')) {
                     displaytext = listContents.children[i].getAttribute('displayname');
                 }
                 item.text = displaytext;

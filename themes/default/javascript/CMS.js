@@ -789,7 +789,7 @@
 
         function showBlockHtml(newHtml, targetDiv, append, inner) {
             var rawAjaxGrowSpot = targetDiv.querySelector('.raw-ajax-grow-spot');
-            if ((rawAjaxGrowSpot != null) && append) {  // If we actually are embedding new results a bit deeper
+            if ((rawAjaxGrowSpot != null) && append) { // If we actually are embedding new results a bit deeper
                 targetDiv = rawAjaxGrowSpot;
             }
             if (append) {
@@ -930,7 +930,7 @@
         if (soundObject) {
             // Some browsers will block the below, because the timer makes it think it is 'autoplay'; even this may fail on Safari
             $util.inform('Playing .wav fully natively');
-            soundObject.play().catch(function() {
+            soundObject.play().catch(function () {
                 $util.inform('Audio playback blocked, reverting to opening .wav in new window');
                 window.open(ob.href);
             });
@@ -1348,15 +1348,15 @@
                 case '&':
                     str = $cms.filter.url(str);
                     break;
-    
+
                 case '~':
                     str = $cms.filter.nl(str);
                     break;
-    
+
                 case '|':
                     str = $cms.filter.id(str);
                     break;
-    
+
                 case '=':
                     str = $cms.filter.html(str);
                     break;

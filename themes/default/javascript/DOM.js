@@ -12,6 +12,7 @@
 
     var rgxIdSelector = /^#[\w-]+$/,
         rgxSimpleSelector = /^[#.]?[\w-]+$/,
+        jsTypeRE = /^(?:|application\/javascript|text\/javascript)$/i,
         // Special attributes that should be set via method calls
         methodAttributes = { value: true, css: true, html: true, text: true, data: true, width: true, height: true, offset: true },
         rgxNotWhite = /\S+/g;
@@ -476,7 +477,7 @@
                 // if (event.type === 'load') {
                 //     $util.inform('$dom.waitForResources(): Resource loaded successfully', loadedEl);
                 // } 
-                
+
                 if (event.type === 'error') {
                     $util.fatal('$dom.waitForResources(): Resource failed to load', loadedEl);
                 }
@@ -1899,7 +1900,7 @@
 
         doc.body.classList.add('website-body', 'main-website-faux');
 
-        $dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax-loading"><img id="loading-image" class="vertical-alignment" width="20" height="20" src="' + $util.srl('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span class="vertical-alignment">{!LOADING;^}<\/span><\/div><\/div>');
+        $dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax-loading"><img id="loading-image" class="vertical-alignment" width="20" height="20" src="' + $util.srl('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span class="vertical-alignment">{!LOADING;^}</span></div></div>');
 
         // Stupid workaround for Google Chrome not loading an image on unload even if in cache
         setTimeout(function () {
@@ -2104,7 +2105,6 @@
     var fragmentRE = /^\s*<(\w+|!)[^>]*>/,
         singleTagRE = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
         tagExpanderRE = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/ig,
-        jsTypeRE = /^(?:|application\/javascript|text\/javascript)$/i,
         table = document.createElement('table'),
         tableRow = document.createElement('tr'),
         containers = {
@@ -2119,7 +2119,7 @@
     // The generated DOM nodes are returned as an array.
     // This function can be overridden in plugins for example to make
     // it compatible with browsers that don't support the DOM fully.
-    $dom.fragment = function(html, name, properties) {
+    $dom.fragment = function (html, name, properties) {
         var container, dom, i;
 
         html = strVal(html);
@@ -2139,7 +2139,7 @@
 
             container = containers[name];
             container.innerHTML = strVal(html);
-            $util.toArray(container.childNodes).forEach(function(child){
+            $util.toArray(container.childNodes).forEach(function (child) {
                 if (!$util.isEl(child)) {
                     return;
                 }
@@ -2182,7 +2182,7 @@
         }
 
         if ($util.isPlainObj(properties)) {
-            $util.each(properties, function(key, value) {
+            $util.each(properties, function (key, value) {
                 dom.forEach(function (node) {
                     if (!$util.isEl(node)) {
                         return;
@@ -2204,16 +2204,16 @@
     function createInsertionFunction(funcName) {
         var inside = (funcName === 'prepend') || (funcName === 'append');
 
-        return function insertionFunction(target, /*...*/args) {  // `args` can be nodes, arrays of nodes and HTML strings
+        return function insertionFunction(target, /*...*/args) {// `args` can be nodes, arrays of nodes and HTML strings
             target = $dom.elArg(target);
             args = $util.toArray(arguments, 1);
 
             var nodes = [],
                 newParent = inside ? target : target.parentNode;
 
-            args.forEach(function(arg) {
+            args.forEach(function (arg) {
                 if (Array.isArray(arg)) {
-                    arg.forEach(function(el) {
+                    arg.forEach(function (el) {
                         if (Array.isArray(el)) {
                             nodes = nodes.concat(el);
                         } else if ($util.isNode(el)) {
@@ -2502,7 +2502,7 @@
         });
         return result.join('&');
     };
-    
+
     /**
      * Automatic resizing to make frames seamless. Composr calls this automatically. Make sure id&name attributes are defined on your iframes!
      * @memberof $dom
@@ -2631,7 +2631,7 @@
 
         internaliseInfiniteScrolling(infiniteScrollCallUrl, wrapperEl);
     };
-    
+
     /**
      * @param urlStem
      * @param wrapper
@@ -2655,10 +2655,10 @@
             if ($dom.notDisplayed(pagination)) {
                 return;
             }
-            
+
             moreLinks = $util.toArray(pagination.getElementsByTagName('a'));
             moreLinksFromPagination = pagination;
-            
+
             // Remove visibility of pagination, now we've replaced with AJAX load more link
             pagination.style.display = 'none';
 
@@ -2668,7 +2668,7 @@
             if (paginationLoadMore) {
                 paginationLoadMore.remove();
             }
-            
+
             // Add in new one
             var loadMoreLink = document.createElement('div');
             loadMoreLink.className = 'pagination-load-more';
@@ -2742,7 +2742,7 @@
             nextLink = moreLinks.find(function (link) {
                 return link.rel.includes('next') && rgxStartParam.test(link.href);
             });
-        
+
         if (nextLink != null) {
             var startParam = nextLink.href.match(rgxStartParam);
             infiniteScrollPending = true;

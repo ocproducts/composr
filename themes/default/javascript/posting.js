@@ -213,7 +213,7 @@
 
             setTimeout(function () {
                 $cms.ui.showModalDialog($util.rel($cms.maintainThemeInLink(url)), '', 'width=800,height=auto,status=no,resizable=yes,scrollbars=yes,unadorned=yes').then(function (comcodeAdded) {
-                    if (!comcodeAdded) {  // Cancelled
+                    if (!comcodeAdded) { // Cancelled
                         var clearButton = document.getElementById('fsClear_file' + number);
                         if (clearButton) {
                             $dom.trigger(clearButton, 'click');
@@ -277,7 +277,7 @@
                 var name = form.elements[i].name,
                     value = $cms.form.cleverFindValue(form, form.elements[i]);
 
-                if ((name === 'title') && (value === '')) {  // Fudge, title must be filled in on many forms
+                if ((name === 'title') && (value === '')) { // Fudge, title must be filled in on many forms
                     value = 'x';
                 }
 
@@ -928,7 +928,7 @@
             $cms.ui.confirm('{!javascript:RESTORE_SAVED_FORM_DATA;^}\n\n' + biggestLengthData, null, '{!javascript:AUTO_SAVING;^}').then(function (result) {
                 if (result) {
                     for (key in fieldsToDo) {
-                        if (typeof fieldsToDo[key] != 'string') continue;
+                        if (typeof fieldsToDo[key] !== 'string') continue;
 
                         if (form.elements[key] !== undefined) {
                             //$util.inform('Restoring ' + key);
@@ -942,7 +942,7 @@
 
                     if (window.localStorage !== undefined) {
                         for (var key in fieldsToDo) {
-                            if (typeof fieldsToDo[key] != 'string') continue;
+                            if (typeof fieldsToDo[key] !== 'string') continue;
 
                             autosaveName = getAutosaveName(key);
                             if (localStorage[autosaveName] !== undefined) {

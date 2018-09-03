@@ -21,8 +21,8 @@
             className = 'class="' + className + '" ';
         }
 
-       namesToNumbers[name] = namesToNumbers.length;
-       namesToNumbers.length++;
+        namesToNumbers[name] = namesToNumbers.length;
+        namesToNumbers.length++;
 
         var p = document.getElementById('colours-go-here-' + name);
         if (!p) {
@@ -79,7 +79,7 @@
             try {
                 test.type = 'color';
             }
-            catch (e) {};
+            catch (e) {}
             if (test.type === 'text') {
                 window.jQuery("#" + name).spectrum({
                     color: color

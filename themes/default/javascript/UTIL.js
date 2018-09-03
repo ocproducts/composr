@@ -327,12 +327,12 @@
 
         // Observe the promise, saving the fulfilment in a closure scope.
         var result = promise.then(
-            function(v) {
+            function (v) {
                 isResolved = true;
                 isPending = false;
                 return v;
             },
-            function(e) {
+            function (e) {
                 isRejected = true;
                 isPending = false;
                 throw e;
@@ -762,7 +762,7 @@
             options = {};
         }
 
-        var later = function() {
+        var later = function () {
             previous = options.leading === false ? 0 : Date.now();
             timeout = null;
             result = func.apply(context, args);
@@ -811,7 +811,7 @@
     $util.debounce = function debounce(func, wait, immediate) {
         var timeout, args, context, timestamp, result;
 
-        var later = function() {
+        var later = function () {
             var last = Date.now() - timestamp;
 
             if (last < wait && last >= 0) {

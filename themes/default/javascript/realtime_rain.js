@@ -74,7 +74,7 @@
             el.timeOffset = params.relativeTimestamp;
             el.linesFor = [];
 
-            if (params.groupId !== undefined){
+            if (params.groupId !== undefined) {
                 el.linesFor.push(params.groupId);
             }
 
@@ -180,7 +180,7 @@
         var ajaxResult = responseXml && responseXml.querySelector('result');
 
         if (!ajaxResult) {
-             return;
+            return;
         }
 
         document.getElementById('loading-icon').style.display = 'none';
