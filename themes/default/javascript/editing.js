@@ -393,17 +393,17 @@
             if (matches) {
                 wysiwygColor = '#';
                 var hex;
-                hex = (parseInt(matches[1]).toString(16)) + '';
+                hex = String(parseInt(matches[1]).toString(16));
                 if (hex.length === 1) {
                     hex = '0' + hex;
                 }
                 wysiwygColor += hex;
-                hex = (parseInt(matches[2]).toString(16)) + '';
+                hex = String(parseInt(matches[2]).toString(16));
                 if (hex.length === 1) {
                     hex = '0' + hex;
                 }
                 wysiwygColor += hex;
-                hex = (parseInt(matches[3]).toString(16)) + '';
+                hex = String(parseInt(matches[3]).toString(16));
                 if (hex.length === 1) {
                     hex = '0' + hex;
                 }
@@ -1052,7 +1052,7 @@
     function showUploadSyndicationOptions(name, syndicationJson, noQuota) {
         name = strVal(name);
         syndicationJson = strVal(syndicationJson);
-        noQuota = !!noQuota;
+        noQuota = Boolean(noQuota);
 
         var htmlSpot = document.getElementById(name + '-syndication-options'),
             html = '',

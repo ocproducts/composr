@@ -2,7 +2,7 @@
     'use strict';
 
     $cms.templates.fractionalEdit = function fractionalEdit(params, el) {
-        var explicitEditingLinks = !!params.explicitEditingLinks,
+        var explicitEditingLinks = Boolean(params.explicitEditingLinks),
             url = strVal(params.url),
             editText = strVal(params.editText),
             editParamName = strVal(params.editParamName),

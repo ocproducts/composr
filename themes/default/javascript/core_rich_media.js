@@ -16,7 +16,7 @@
 
         if (params.syndicationJson != null) {
             $cms.requireJavascript('editing').then(function () {
-                window.$editing.showUploadSyndicationOptions("file" + params.i, params.syndicationJson, !!params.noQuota);
+                window.$editing.showUploadSyndicationOptions("file" + params.i, params.syndicationJson, Boolean(params.noQuota));
             });
         }
     }
@@ -116,7 +116,7 @@
         },
 
         carouselMove: function (amount) {
-            amount = +amount;
+            amount = Number(amount);
 
             if (amount > 0) {
                 this.mainEl.scrollLeft += 3;
@@ -464,7 +464,7 @@
 
     $cms.templates.comcodeImg = function comcodeImg(params) {
         var img = this,
-            refreshTime = +params.refreshTime || 0;
+            refreshTime = Number(params.refreshTime) || 0;
 
         if ((typeof params.rollover === 'string') && (params.rollover !== '')) {
             $cms.createRollover(img.id, params.rollover);
@@ -534,7 +534,7 @@
     $cms.templates.comcodeShocker = function (params) {
         var id = params.randIdShocker,
             parts = params.parts || [], part,
-            time = +params.time;
+            time = Number(params.time);
 
         window.shockerParts || (window.shockerParts = {});
         window.shockerPos || (window.shockerPos = {});

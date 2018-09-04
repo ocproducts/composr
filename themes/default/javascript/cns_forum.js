@@ -185,8 +185,8 @@
 
     $cms.templates.cnsTopicPoll = function (params) {
         var form = this,
-            minSelections = +params.minimumSelections || 0,
-            maxSelections = +params.maximumSelections || 0,
+            minSelections = Number(params.minimumSelections) || 0,
+            maxSelections = Number(params.maximumSelections) || 0,
             error = (minSelections === maxSelections) ? $util.format('{!cns:POLL_NOT_ENOUGH_ERROR_2;^}', minSelections) : $util.format('{!cns:POLL_NOT_ENOUGH_ERROR;^}', [minSelections, maxSelections]);
 
         $dom.on(form, 'submit', function (e) {

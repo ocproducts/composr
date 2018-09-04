@@ -196,7 +196,7 @@
             if (params.start === 0) {
                 // "Grow" means we should keep stacking new content on top of old. If not
                 // then we should allow old content to "fall off" the bottom of the feed.
-                window.activitiesFeedGrow = !!params.grow;
+                window.activitiesFeedGrow = Boolean(params.grow);
                 window.activitiesFeedMax = params.max;
                 if (document.getElementById('activities-feed')) {
                     setInterval(sUpdateGetData, params.refreshTime * 1000);

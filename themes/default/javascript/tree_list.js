@@ -78,7 +78,7 @@
             id = strVal(id);
             type = strVal(type) || 'c';
             ob = ob || this.treeListData;
-            serverid = !!serverid;
+            serverid = Boolean(serverid);
 
             var results = ob.getElementsByTagName((type === 'c') ? 'category' : 'entry');
             for (var i = 0; i < results.length; i++) {
@@ -554,7 +554,7 @@
         handleSelection: function handleSelection(event, assumeCtrl, target) {
             var that = this;
 
-            assumeCtrl = !!assumeCtrl;
+            assumeCtrl = Boolean(assumeCtrl);
 
             var element = $dom.$id(this.name);
 
@@ -677,7 +677,7 @@
             if (!target) {
                 return;
             }
-            target.classList.toggle('native-ui-selected', !!selected);
+            target.classList.toggle('native-ui-selected', Boolean(selected));
             target.style.cursor = 'pointer';
         }
     });

@@ -201,9 +201,9 @@
 
     $cms.templates.blockMainGalleryEmbed = function blockMainGalleryEmbed(params) {
         var container = this,
-            carouselId = params.carouselId ? ('' + params.carouselId) : '',
-            blockCallUrl = params.blockCallUrl ? ('' + params.blockCallUrl) : '',
-            currentLoadingFromPos = +params.start || 0;
+            carouselId = params.carouselId ? (String(params.carouselId)) : '',
+            blockCallUrl = params.blockCallUrl ? (String(params.blockCallUrl)) : '',
+            currentLoadingFromPos = Number(params.start) || 0;
 
         if (!carouselId|| !blockCallUrl) {
             return;
@@ -216,7 +216,7 @@
                 return; // Not close enough to need more results
             }
 
-            currentLoadingFromPos += +params.max || 0;
+            currentLoadingFromPos += Number(params.max) || 0;
 
             $cms.callBlock(blockCallUrl, 'raw=1,cache=0', ob, true);
         });

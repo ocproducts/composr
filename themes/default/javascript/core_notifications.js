@@ -65,7 +65,7 @@
     };
 
     $cms.templates.blockTopNotifications = function blockTopNotifications(params, container) {
-        window.maxNotificationsToShow = +params.max || 0;
+        window.maxNotificationsToShow = Number(params.max) || 0;
 
         $dom.on(container, 'click', '.js-click-notifications-mark-all-read', function (e) {
             e.preventDefault();
@@ -149,7 +149,7 @@
 
     $cms.templates.notificationTypes_item = function notificationTypes_item(params, container) {
         $dom.on(container, 'click', '.js-click-handle-ntype-tick', function (e, checkbox) {
-            var raw = +checkbox.dataset.tpRaw || 0,
+            var raw = Number(checkbox.dataset.tpRaw) || 0,
                 parentRow = $dom.closest(checkbox, 'tr'),
                 inputEls = $dom.$$(parentRow, 'input'),
                 firstInput = inputEls[0],
@@ -174,8 +174,8 @@
     };
 
     $coreNotifications.pollForNotifications = function pollForNotifications(forcedUpdate, delay) {
-        forcedUpdate = !!forcedUpdate;
-        delay = !!delay;
+        forcedUpdate = Boolean(forcedUpdate);
+        delay = Boolean(delay);
 
         if (delay) {
             setTimeout(function () {
@@ -380,7 +380,7 @@
              * successfully - then it is IE9+, if not - an exceptions is thrown.
              */
             try {
-                isSupported = !!(/* Safari, Chrome */window.Notification || /* Chrome & ff-html5notifications plugin */window.webkitNotifications || /* Firefox Mobile */navigator.mozNotification || /* IE9+ */(window.external && window.external.msIsSiteMode() !== undefined));
+                isSupported = Boolean(window.Notification || /* Chrome & ff-html5notifications plugin */window.webkitNotifications || /* Firefox Mobile */navigator.mozNotification || /* IE9+ */(window.external && window.external.msIsSiteMode() !== undefined));
             } catch (e) {
                 // continue
             }

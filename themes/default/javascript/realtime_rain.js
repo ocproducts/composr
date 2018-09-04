@@ -309,7 +309,7 @@
             return;
         }
 
-        avoidRemove = !!avoidRemove;
+        avoidRemove = Boolean(avoidRemove);
 
         var bubbles = document.getElementById('bubbles-go-here');
         var maxHeight = bubbles.parentNode.offsetHeight;
@@ -334,7 +334,7 @@
     }
 
     function timelineClick(prospective) {
-        prospective = !!prospective;
+        prospective = Boolean(prospective);
 
         var pos = window.currentMouseX - $dom.findPosX(document.getElementById('time-line-image'), true);
         var timelineLength = 808;
@@ -396,8 +396,8 @@
         if (!realtimedate) {
             return;
         }
-        $dom.html(realtimedate, dateObject.getFullYear() + '/' + ('' + dateObject.getMonth()) + '/' + ('' + dateObject.getDate()));
-        $dom.html(realtimetime, ('' + dateObject.getHours()) + ':' + ('' + dateObject.getMinutes()) + ':' + ('' + dateObject.getSeconds()));
+        $dom.html(realtimedate, dateObject.getFullYear() + '/' + (String(dateObject.getMonth())) + '/' + (String(dateObject.getDate())));
+        $dom.html(realtimetime, (String(dateObject.getHours())) + ':' + (String(dateObject.getMinutes())) + ':' + (String(dateObject.getSeconds())));
     }
 
 }(window.$cms, window.$util, window.$dom));

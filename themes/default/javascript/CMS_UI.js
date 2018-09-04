@@ -130,8 +130,8 @@
     $cms.ui.selectTab = function selectTab(id, tab, fromUrl, automated) {
         id = strVal(id);
         tab = strVal(tab);
-        fromUrl = !!fromUrl;
-        automated = !!automated;
+        fromUrl = Boolean(fromUrl);
+        automated = Boolean(automated);
 
         if (!fromUrl) {
             var tabMarker = $dom.$('#tab--' + tab.toLowerCase());
@@ -393,7 +393,7 @@
      * @param win
      */
     $cms.ui.repositionTooltip = function repositionTooltip(el, event, bottom, starting, tooltipElement, forceWidth, win) {
-        bottom = !!bottom;
+        bottom = Boolean(bottom);
         win || (win = window);
 
         if (!el.isOver) {
@@ -780,7 +780,7 @@
 
                         if ((bits[0] === 'dialogHeight') || (bits[0] === 'height')) {
                             if (bits[1] === '100%') {
-                                height = '' + ($dom.getWindowHeight() - 200);
+                                height = String($dom.getWindowHeight() - 200);
                             } else {
                                 height = bits[1].replace(/px$/, '');
                             }
@@ -966,8 +966,8 @@
      * @returns { $cms.views.ModalWindow }
      */
     $cms.ui.openImageIntoLightbox = function openImageIntoLightbox(initialImgUrl, description, x, n, hasFullButton, isVideo) {
-        hasFullButton = !!hasFullButton;
-        isVideo = !!isVideo;
+        hasFullButton = Boolean(hasFullButton);
+        isVideo = Boolean(isVideo);
 
         // Set up overlay for Lightbox
         var lightboxCode = /** @lang HTML */'' +

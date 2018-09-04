@@ -93,12 +93,12 @@
     };
 
     $cms.templates.blockMainGoogleMap = function blockMainGoogleMap(params) {
-        var cluster = !!params.cluster,
+        var cluster = Boolean(params.cluster),
             latitude = strVal(params.latitude),
             longitude = strVal(params.longitude),
             divId = strVal(params.divId),
             zoom = Number(params.zoom),
-            center = !!params.center,
+            center = Boolean(params.center),
             rawData = params.data,
             minLatitude = strVal(params.minLatitude),
             maxLatitude = strVal(params.maxLatitude),
