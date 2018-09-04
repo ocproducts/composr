@@ -575,7 +575,7 @@
         cookieName = strVal(cookieName);
         defaultValue = strVal(defaultValue);
 
-        var cookies = '' + document.cookie,
+        var cookies = String(document.cookie),
             startIdx = cookies.startsWith(cookieName + '=') ? 0 : cookies.indexOf(' ' + cookieName + '=');
 
         if ((startIdx === -1) || !cookieName) {
@@ -952,7 +952,7 @@
     };
 
     // Serves as a flag to indicate any new errors are probably due to us transitioning
-    window.unloaded = !!window.unloaded;
+    window.unloaded = Boolean(window.unloaded);
     window.addEventListener('beforeunload', function () {
         window.unloaded = true;
     });
@@ -1084,7 +1084,7 @@
      * @returns { Window }
      */
     $cms.getMainCmsWindow = function getMainCmsWindow(anyLargeOk) {
-        anyLargeOk = !!anyLargeOk;
+        anyLargeOk = Boolean(anyLargeOk);
 
         if ($dom.$('#main-website')) {
             return window;
@@ -1194,7 +1194,7 @@
             case 'android':
                 return browser.includes('android');
             case 'wysiwyg':
-                return !!$cms.configOption('wysiwyg');
+                return Boolean($cms.configOption('wysiwyg'));
             case 'windows':
                 return os.includes('windows') || os.includes('win32');
             case 'mac':

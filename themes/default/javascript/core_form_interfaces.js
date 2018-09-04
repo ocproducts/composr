@@ -268,7 +268,7 @@
         this.groupId = params.groupId;
         this.prefix = prefix;
 
-        $corePermissionManagement.setupPrivilegeOverrideSelector(prefix, defaultAccess, params.privilege, params.title, !!params.allGlobal);
+        $corePermissionManagement.setupPrivilegeOverrideSelector(prefix, defaultAccess, params.privilege, params.title, Boolean(params.allGlobal));
 
         if (!params.allGlobal) {
             var list = document.getElementById(prefix + '_presets');
@@ -420,7 +420,7 @@
 
     $cms.templates.formScreenInputLine = function formScreenInputLine(params) {
         $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
-            window.$jqueryAutocomplete.setUpComcodeAutocomplete(params.name, !!params.wysiwyg);
+            window.$jqueryAutocomplete.setUpComcodeAutocomplete(params.name, Boolean(params.wysiwyg));
         });
     };
 
@@ -521,16 +521,16 @@
             hook = $cms.filter.url(params.hook),
             rootId = $cms.filter.url(params.rootId),
             opts = $cms.filter.url(params.options),
-            multiSelect = !!params.multiSelect && (params.multiSelect !== '0');
+            multiSelect = Boolean(params.multiSelect) && (params.multiSelect !== '0');
 
         $cms.requireJavascript('tree_list').then(function () {
-            $cms.ui.createTreeList(params.name, '{$FIND_SCRIPT_NOHTTP;,ajax_tree}?hook=' + hook + $cms.keep(), rootId, opts, multiSelect, params.tabIndex, false, !!params.useServerId);
+            $cms.ui.createTreeList(params.name, '{$FIND_SCRIPT_NOHTTP;,ajax_tree}?hook=' + hook + $cms.keep(), rootId, opts, multiSelect, params.tabIndex, false, Boolean(params.useServerId));
         });
 
         $dom.on(container, 'change', '.js-input-change-update-mirror', function (e, input) {
             var mirror = document.getElementById(name + '-mirror');
             if (mirror) {
-                $dom.toggle(mirror.parentElement, !!input.selectedTitle);
+                $dom.toggle(mirror.parentElement, Boolean(input.selectedTitle));
                 $dom.html(mirror, input.selectedTitle ? $cms.filter.html(input.selectedTitle) : '{!NA_EM;}');
             }
         });
@@ -820,7 +820,7 @@
     $cms.templates.postingField = function postingField(params/* NB: multiple containers */) {
         var id = strVal(params.id),
             name = strVal(params.name),
-            initDragDrop = !!params.initDragDrop,
+            initDragDrop = Boolean(params.initDragDrop),
             postEl = $dom.$('#' + name),
             // Container elements:
             labelRow = $dom.$('#field-' + id +'-label'),

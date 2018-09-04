@@ -15,7 +15,7 @@
             return defaultValue;
         }
 
-        return !!val && (val !== '0'); //&& ((typeof val !== 'object') || !((p = $util.isPlainObj(val)) || $util.isArrayLike(val)) || (p ? $util.hasEnumerable(val) : (val.length > 0)));
+        return Boolean(val) && (val !== '0'); //&& ((typeof val !== 'object') || !((p = $util.isPlainObj(val)) || $util.isArrayLike(val)) || (p ? $util.hasEnumerable(val) : (val.length > 0)));
     };
 
     /**
@@ -134,10 +134,10 @@
         } else if (typeof val === 'string') {
             ret = val;
         } else if (typeof val === 'number') {
-            ret = ((val !== Infinity) && (val !== -Infinity)) ? ('' + val) : '';
+            ret = ((val !== Infinity) && (val !== -Infinity)) ? (String(val)) : '';
         } else if ((typeof val === 'object') && (val.toString !== Object.prototype.toString) && (typeof val.toString === 'function')) {
             // `val` has a .toString() implementation other than the useless generic one
-            ret = '' + val;
+            ret = String(val);
         } else {
             throw new TypeError('strVal(): Cannot coerce `val` of type "' + $util.typeName(val) + '" to a string.');
         }

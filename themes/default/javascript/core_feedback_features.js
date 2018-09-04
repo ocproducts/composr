@@ -69,10 +69,10 @@
             if (rating === undefined) {
                 rating = $dom.$(container, '.js-inp-review-rating').value;
             }
-            rating = +rating || 0;
+            rating = Number(rating) || 0;
 
             reviewBars.forEach(function (reviewBar) {
-                var barRating = +reviewBar.dataset.vwRating || 0,
+                var barRating = Number(reviewBar.dataset.vwRating) || 0,
                     shouldHighlight = barRating <= rating; // Whether to highlight this bar
 
                 reviewBar.classList.toggle('rating-star-highlight', shouldHighlight);
@@ -430,8 +430,8 @@
         contentType = strVal(contentType);
         id = strVal(id);
         type = strVal(type);
-        rating = +rating || 0;
-        visualOnly = !!visualOnly;
+        rating = Number(rating) || 0;
+        visualOnly = Boolean(visualOnly);
 
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(function (number) {
             var bit = $dom.$('#rating-bar-' + number + '--' + contentType + '--' + type + '--' + id);
@@ -512,8 +512,8 @@
      * @param isExplicitQuote
      */
     $cms.functions.topicReply = function topicReply(isThreaded, id, replyingToUsername, replyingToPost, replyingToPostPlain, isExplicitQuote) {
-        isThreaded = !!isThreaded;
-        isExplicitQuote = !!isExplicitQuote;
+        isThreaded = Boolean(isThreaded);
+        isExplicitQuote = Boolean(isExplicitQuote);
 
         var el = this,
             form = $dom.$('form#comments-form');

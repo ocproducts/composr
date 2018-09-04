@@ -775,13 +775,13 @@
             // Constrain to window width
             if (width.match(/^\d+$/) !== null) {
                 if ((parseInt(width) > topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY) || (width === 'auto')) {
-                    width = '' + (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
+                    width = String(topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
                 }
             }
 
             // Auto width means full width
             if (width === 'auto') {
-                width = '' + (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
+                width = String(topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
             }
             // NB: auto height feeds through without a constraint (due to infinite growth space), with dynamic adjustment for iframes
 
@@ -789,11 +789,11 @@
             var match;
             match = width.match(/^([\d.]+)%$/);
             if (match !== null) {
-                width = '' + (parseFloat(match[1]) * (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY));
+                width = String(parseFloat(match[1]) * (topWindowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY));
             }
             match = height.match(/^([\d.]+)%$/);
             if (match !== null) {
-                height = '' + (parseFloat(match[1]) * (topPageHeight - this.WINDOW_TOP_GAP - bottomGap - this.BOX_NORTH_PERIPHERARY - this.BOX_SOUTH_PERIPHERARY));
+                height = String(parseFloat(match[1]) * (topPageHeight - this.WINDOW_TOP_GAP - bottomGap - this.BOX_NORTH_PERIPHERARY - this.BOX_SOUTH_PERIPHERARY));
             }
 
             // Work out box dimensions
@@ -1026,7 +1026,7 @@
                     window.ga.q || (window.ga.q = []);
                     window.ga.q.push(arguments);
                 });
-                window.ga.l = 1 * new Date();
+                window.ga.l = Number(new Date());
                 var script = document.createElement('script'),
                     newSibling = document.getElementsByTagName('script')[0];
                 script.async = true;
@@ -1400,7 +1400,7 @@
                 setTimeout(function () {
                     // Stupid workaround for Google Chrome not loading an image on unload even if in cache
                     if ($dom.$('#loading-image')) {
-                        $dom.$('#loading-image').src += '';
+                        $dom.$('#loading-image').src = String($dom.$('#loading-image').src);
                     }
                 }, 100);
                 document.body.appendChild(div);

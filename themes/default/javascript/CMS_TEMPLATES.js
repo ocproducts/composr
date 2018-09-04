@@ -651,7 +651,7 @@
     };
 
     function confirmDelete(form, multi, callback) {
-        multi = !!multi;
+        multi = Boolean(multi);
 
         $cms.ui.confirm(multi ? '{!_ARE_YOU_SURE_DELETE;^}' : '{!ARE_YOU_SURE_DELETE;^}').then(function (result) {
             if (result) {

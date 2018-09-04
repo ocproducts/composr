@@ -1143,7 +1143,7 @@
         var width = strVal(options.width);
 
         if (width.match(/^\d+$/)) { // Restrain width to viewport width
-            width = Math.min(parseInt(width), $dom.getWindowWidth() - 60) + '';
+            width = String(Math.min(parseInt(width), $dom.getWindowWidth() - 60));
         }
 
         var el = options.el,

@@ -159,7 +159,7 @@
                         });
                     });
                     promiseCalls.push(function () {
-                        number = '' + (parseInt(number) + (splitFileNames.length - 1));
+                        number = String(parseInt(number) + (splitFileNames.length - 1));
                         return Promise.resolve();
                     });
                 } else {
@@ -234,7 +234,7 @@
                             comcode += tmp[1];
                         }
 
-                        number = '' + (parseInt(number) + splitFilename.length - 1);
+                        number = String(parseInt(number) + splitFilename.length - 1);
 
                         if (suffix !== '') {
                             comcode += suffix;

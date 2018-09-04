@@ -1334,7 +1334,7 @@
         }
 
         people = strVal(people);
-        justRefocus = !!justRefocus;
+        justRefocus = Boolean(justRefocus);
 
         var message = people.includes(',') ? '{!chat:ALREADY_HAVE_THIS;^}' : '{!chat:ALREADY_HAVE_THIS_SINGLE;^}';
 

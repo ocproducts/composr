@@ -1006,7 +1006,7 @@
         focusinSupported = 'onfocusin' in window;
 
     function parseEventName(event) {
-        var parts = ('' + event).split('.');
+        var parts = (String(event)).split('.');
         return { e: parts[0], ns: parts.slice(1).sort().join(' ') };
     }
 
@@ -1015,7 +1015,7 @@
     }
 
     function eventCapture(handler, captureSetting) {
-        return (!!handler.del && (!focusinSupported && (handler.e in focusEvents))) || !!captureSetting;
+        return (Boolean(handler.del) && (!focusinSupported && (handler.e in focusEvents))) || Boolean(captureSetting);
     }
 
     function realEvent(type) {
@@ -1217,9 +1217,9 @@
         if (eventInit) {
             for (var key in eventInit) {
                 if (key === 'bubbles') {
-                    bubbles = !!eventInit.bubbles;
+                    bubbles = Boolean(eventInit.bubbles);
                 } else if (key === 'cancelable') {
-                    cancelable = !!eventInit.cancelable;
+                    cancelable = Boolean(eventInit.cancelable);
                 } else if (key !== 'type') {
                     event[key] = eventInit[key];
                 }
@@ -1455,7 +1455,7 @@
      */
     $dom.toggle = function toggle(el, show) {
         el = $dom.elArg(el);
-        show = (show !== undefined) ? !!show : ($dom.css(el, 'display') === 'none');
+        show = (show !== undefined) ? Boolean(show) : ($dom.css(el, 'display') === 'none');
 
         if (show) {
             $dom.show(el);
@@ -1471,7 +1471,7 @@
      */
     $dom.toggleWithAria = function toggleWithAria(el, show) {
         el = $dom.elArg(el);
-        show = (show !== undefined) ? !!show : ($dom.css(el, 'display') === 'none');
+        show = (show !== undefined) ? Boolean(show) : ($dom.css(el, 'display') === 'none');
 
         if (show) {
             $dom.show(el);
@@ -1489,7 +1489,7 @@
      */
     $dom.toggleDisabled = function toggleDisabled(el, disabled) {
         el = $dom.elArg(el);
-        disabled = (disabled !== undefined) ? !!disabled : !el.disabled;
+        disabled = (disabled !== undefined) ? Boolean(disabled) : !el.disabled;
 
         el.disabled = disabled;
     };
@@ -1501,7 +1501,7 @@
      */
     $dom.toggleChecked = function toggleChecked(el, checked) {
         el = $dom.elArg(el);
-        checked = (checked !== undefined) ? !!checked : !el.checked;
+        checked = (checked !== undefined) ? Boolean(checked) : !el.checked;
 
         el.checked = checked;
     };

@@ -214,7 +214,7 @@
         });
 
         function setTaskHiding(hideEnable) {
-            hideEnable = !!hideEnable;
+            hideEnable = Boolean(hideEnable);
 
             var checklistRows = document.querySelectorAll('.checklist-row'), icon;
 
