@@ -720,7 +720,7 @@
                         //arguments: el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks
                         $cms.ui.activateTooltip(el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, true);
                     } catch (ex) {
-                        $util.fatal('$cms.behaviors.cmsRichTooltip.attach(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
+                        //$util.fatal('$cms.behaviors.cmsRichTooltip.attach(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
                     }
                 });
             });

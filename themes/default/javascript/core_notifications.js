@@ -81,7 +81,7 @@
             $coreNotifications.toggleMessagingBox('web-notifications', true);
         });
 
-        $dom.on(container, 'mouseup', '.js-click-find-url-tab', function (e) {
+        $dom.on(container, 'mouseup', '.js-click-find-url-tab', function () {
             $cms.ui.findUrlTab();
         });
 
@@ -94,7 +94,7 @@
             $coreNotifications.toggleMessagingBox('pts', true);
         });
 
-        function notificationsMarkAllRead(event) {
+        function notificationsMarkAllRead() {
             var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=mark_all_read';
             if (window.maxNotificationsToShow !== undefined) {
                 url += '&max=' + window.maxNotificationsToShow;
